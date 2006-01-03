@@ -54,9 +54,9 @@ public class Bomb_Smoke extends StdBomb
 		if(target.location()!=null)
 		{
 			if((!invoker().mayIFight(target))||(target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the smoke bomb!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the smoke bomb!");
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" explodes smoke into <T-YOUPOSS> eyes!"))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,affected.name()+" explodes smoke into <T-YOUPOSS> eyes!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_Blindness");

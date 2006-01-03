@@ -85,8 +85,11 @@ public class PlayerData extends StdWebMacro
 		"IMAGE",
         "MAXITEMS",
         "IMGURL",
-        "HASIMG"
+        "HASIMG",
+        "NOTES",
+        "LEVELS"
 	};
+	
 	public static int getBasicCode(String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
@@ -94,6 +97,7 @@ public class PlayerData extends StdWebMacro
 				return i;
 		return -1;
 	}
+	
 	public static String getBasic(MOB M, int i)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -211,9 +215,32 @@ public class PlayerData extends StdWebMacro
                  else
                      str.append("false, ");
                  break;
+		case 50: if(M.playerStats()!=null)
+				 	str.append(M.playerStats().notes()+", ");
+				 break;
+		case 51: if(M.playerStats()!=null)
+				 {
+					long lastDateTime=-1;
+					for(int level=0;level<=M.envStats().level();level++)
+					{
+						long dateTime=M.playerStats().leveledDateTime(level);
+						if((dateTime>1529122205)&&(dateTime!=lastDateTime))
+						{
+							str.append("<TR>");
+							if(level==0)
+							 	str.append("<TD><FONT COLOR=WHITE>Created</FONT></TD>");
+							else
+							 	str.append("<TD><FONT COLOR=WHITE>"+level+"</FONT></TD>");
+							str.append("<TD><FONT COLOR=WHITE>"+CMLib.time().date2String(dateTime)+"</FONT></TD></TR>");
+						}
+					}
+					str.append(", ");
+				 }
+				 break;
 		}
 		return str.toString();
 	}
+	
 	public static String getBasic(MOB M, String val)
 	{
 		for(int i=0;i<BASICS.length;i++)

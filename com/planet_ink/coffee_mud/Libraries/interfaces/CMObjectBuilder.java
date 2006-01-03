@@ -12,6 +12,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.IOException;
 import java.util.*;
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -65,7 +67,7 @@ public interface CMObjectBuilder extends CMObject
     public String fillCustomVectorFromXML(String xml,  Vector custom, Hashtable externalFiles);
     public String fillCustomVectorFromXML(Vector xml,  Vector custom, Hashtable externalFiles);
     public String fillAreasVectorFromXML(String buf,  Vector areas, Vector custom, Hashtable externalFiles);
-    public void addWeatherToAreaIfNecessary(Area newArea);
+    public void addAutoPropsToAreaIfNecessary(Area newArea);
     public String unpackAreaFromXML(Vector aV, Session S, boolean andRooms);
     public String unpackAreaFromXML(String buf, Session S, boolean andRooms);
     public StringBuffer getAreaXML(Area area,  Session S, HashSet custom, HashSet files, boolean andRooms);

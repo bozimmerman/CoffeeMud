@@ -143,7 +143,7 @@ public class Patroller extends ActiveTicker
 				thisRoom=(Room)((Item)ticking).owner();
 			if(thisRoom instanceof GridLocale)
 			{
-				Room R=((GridLocale)thisRoom).getRandomChild();
+				Room R=((GridLocale)thisRoom).getRandomGridChild();
 				if(R!=null) 
 				{
 					if(ticking instanceof Item)
@@ -152,7 +152,7 @@ public class Patroller extends ActiveTicker
 					if(ticking instanceof MOB)
                     {
 						R.bringMobHere((MOB)ticking,true);
-                        R.show((MOB)ticking,R,null,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,null);
+                        R.show((MOB)ticking,R,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
                     }
 				}
 				thisRoom=R;
@@ -252,7 +252,7 @@ public class Patroller extends ActiveTicker
 			            if(correction!=null)
 			            {
 			                for(int r=0;r<correction.size();r++)
-			                    if(((GridLocale)R).isMyChild((Room)correction.elementAt(r)))
+			                    if(((GridLocale)R).isMyGridChild((Room)correction.elementAt(r)))
 			                    {
 						            GridLocaleFixed=true;
 			                        R=(Room)correction.elementAt(r);
@@ -262,7 +262,7 @@ public class Patroller extends ActiveTicker
 			            if(!GridLocaleFixed)
 			            {
 			                correction=null;
-				            R=((GridLocale)R).getRandomChild();
+				            R=((GridLocale)R).getRandomGridChild();
 			            }
 			        }
 				    tickStatus=Tickable.STATUS_MISC+7;
@@ -399,7 +399,7 @@ public class Patroller extends ActiveTicker
 					for(int i=0;i<riders.size();i++)
 					{
 						Rider R=(Rider)riders.elementAt(i);
-						if(CMLib.utensils().roomLocation(R)!=thatRoom)
+						if(CMLib.map().roomLocation(R)!=thatRoom)
 							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
@@ -413,7 +413,7 @@ public class Patroller extends ActiveTicker
                                     ((MOB)R).setRiding((Rideable)ticking);
     							    tickStatus=Tickable.STATUS_MISC+31;
 									CMLib.commands().postLook((MOB)R,true);
-                                    thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,null);
+                                    thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
     							    tickStatus=Tickable.STATUS_MISC+32;
 								}
 								else

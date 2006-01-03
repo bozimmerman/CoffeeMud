@@ -90,7 +90,7 @@ public class Prayer_FleshRock extends Prayer
 			// from trying to do ANYTHING except sleep
 			if(msg.amISource(mob))
 			{
-				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&(msg.sourceMajor()>0))
 				{
 					mob.tell("Statues can't do that.");

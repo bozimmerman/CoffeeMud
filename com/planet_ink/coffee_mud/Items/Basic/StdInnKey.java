@@ -74,7 +74,11 @@ public class StdInnKey extends StdKey implements InnKey
 		if(myShopkeeper==null)
 		{
 			myShopkeeper=sk;
-			int y=sk.getShop().numberInStock(this);
+			int y=0;
+			Vector V=sk.getShop().getStoreInventory();
+			for(int v=0;v<V.size();v++)
+				if(V.elementAt(v) instanceof InnKey)
+					y++;
 			setName("key to room "+(y+1));
 			setDescription("The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.name()+", when you leave.");
 			setMiscText("INN"+(y+1));

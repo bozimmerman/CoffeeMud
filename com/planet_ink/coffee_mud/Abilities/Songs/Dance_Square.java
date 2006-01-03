@@ -101,7 +101,7 @@ public class Dance_Square extends Dance
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if((!friends.contains(follower))&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 					if((CMLib.flags().canBeSeenBy(invoker,follower)
 						&&(follower.fetchEffect(this.ID())==null)))
@@ -109,7 +109,7 @@ public class Dance_Square extends Dance
 						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						CMMsg msg3=msg2;
 						if((!friends.contains(follower))&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);

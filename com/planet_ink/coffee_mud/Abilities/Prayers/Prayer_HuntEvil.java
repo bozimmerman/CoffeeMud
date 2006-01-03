@@ -136,48 +136,12 @@ public class Prayer_HuntEvil extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		for(int i=0;i<1000;i++)
-		{
-			Room R=mob.location().getArea().getRandomProperRoom();
-			if((gameHere(R)!=null)&&(!rooms.contains(R)))
-			{
-				rooms.addElement(R);
-				break;
-			}
-		}
-
-		if(rooms.size()<=0)
-		for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(gameHere(R)!=null)
 				rooms.addElement(R);
-		}
-
-		if(rooms.size()<=0)
-		{
-			for(int i=0;i<1000;i++)
-			{
-				Room R=CMLib.map().getRandomRoom();
-				if((gameHere(R)!=null)&&(!rooms.contains(R)))
-				{
-					rooms.addElement(R);
-					break;
-				}
-			}
-			if(rooms.size()<=0)
-			{
-			    try
-			    {
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-					{
-						Room R=(Room)r.nextElement();
-						if(CMLib.flags().canAccess(mob,R))
-							if(gameHere(R)!=null)
-								rooms.addElement(R);
-					}
-			    }catch(NoSuchElementException e){}
-			}
 		}
 
 		if(rooms.size()>0)

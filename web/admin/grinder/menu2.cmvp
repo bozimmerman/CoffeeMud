@@ -23,6 +23,12 @@
 			document.AREAEDIT.target="MAP";
 			document.AREAEDIT.submit();
 		}
+		function Clicked3(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.target="MENU";
+			document.AREAEDIT.submit();
+		}
 	//-->
 	</script>
 </head>
@@ -36,13 +42,15 @@
 <TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
 	<TD WIDTH=50% ALIGN=LEFT>
+	@if?AreaData?ISGRID@<FONT COLOR=WHITE><B>Click on the map above to select an section to edit.</FONT><P>@endif@
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<INPUT TYPE=TEXT NAME=ROOMSIZE VALUE="">
 	<INPUT TYPE=BUTTON NAME=FINDIT VALUE="Map Square Size" ONCLICK="Clicked2('/grinder/map2.cmvp');">
 	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
-		@if?CheckAuthCode?AUTH_CMDAREAS=true@
-		<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
+		@if?AreaData?ISGRID@		
+			<INPUT TYPE=BUTTON NAME=PAINT VALUE="Paint Rooms" ONCLICK="Clicked3('/grinder/paintmenu.cmvp');">
+			<P>
 		@endif@
 		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>

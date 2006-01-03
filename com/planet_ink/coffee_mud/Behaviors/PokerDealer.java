@@ -203,7 +203,7 @@ public class PokerDealer extends StdBehavior
     {
         if(host instanceof MOB)
             return CMClass.getMsg((MOB)host,target,null,code,message);
-        return CMClass.getMsg(CMLib.map().god(CMLib.utensils().roomLocation(host)),target,null,code,message);
+        return CMClass.getMsg(CMLib.map().god(CMLib.map().roomLocation(host)),target,null,code,message);
     }
     
     
@@ -225,7 +225,7 @@ public class PokerDealer extends StdBehavior
             CMLib.commands().postSay((MOB)host,target,message,false,false);
         else
         {
-            Room R=CMLib.utensils().roomLocation(host);
+            Room R=CMLib.map().roomLocation(host);
             if(R!=null)
                 R.showHappens(CMMsg.MSG_OK_ACTION,message);
         }
@@ -299,7 +299,7 @@ public class PokerDealer extends StdBehavior
         // if someone tries to pick money up off the ground here
         // they need to be stopped COLD.
         if((msg.targetMinor()==CMMsg.TYP_GET)
-        &&(msg.source().location()==CMLib.utensils().roomLocation(host))
+        &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.target() instanceof Coins)
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
         &&(msg.source().location().isContent((Coins)msg.target())))
@@ -312,7 +312,7 @@ public class PokerDealer extends StdBehavior
         // may be a bet, or an anti, or an invalid action
         // we should check for that first.
         if((msg.targetMinor()==CMMsg.TYP_DROP)
-        &&(msg.source().location()==CMLib.utensils().roomLocation(host))
+        &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.target() instanceof Coins)
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
         {
@@ -352,9 +352,9 @@ public class PokerDealer extends StdBehavior
                         double change=theMoneyDropped.getTotalValue()-anti;
                         Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
                         CMMsg changeMsg=CMClass.getMsg(playerDroppingMoney,C,null,
-                                                      CMMsg.MASK_GENERAL|CMMsg.MSG_GET,"You anti up, picking up "+CMLib.beanCounter().abbreviatedPrice(currency,change)+" in change.",
-                                                      CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null,
-                                                      CMMsg.MASK_GENERAL|CMMsg.MSG_GET,"<S-NAME> antis up.");
+                                                      CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"You anti up, picking up "+CMLib.beanCounter().abbreviatedPrice(currency,change)+" in change.",
+                                                      CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null,
+                                                      CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"<S-NAME> antis up.");
                         msg.addTrailerMsg(changeMsg);
                         // now we want to clear the drop message,
                         // and modify the amount actually being dropped.
@@ -414,9 +414,9 @@ public class PokerDealer extends StdBehavior
                         double change=theMoneyDropped.getTotalValue()-amountNeededToCall;
                         Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
                         CMMsg changeMsg=CMClass.getMsg(playerDroppingMoney,C,null,
-                                                      CMMsg.MASK_GENERAL|CMMsg.MSG_GET,"You see the bet, picking up "+CMLib.beanCounter().abbreviatedPrice(currency,change)+" in change."+instructions,
-                                                      CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null,
-                                                      CMMsg.MASK_GENERAL|CMMsg.MSG_GET,"<S-NAME> see(s) the bet.");
+                                                      CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"You see the bet, picking up "+CMLib.beanCounter().abbreviatedPrice(currency,change)+" in change."+instructions,
+                                                      CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null,
+                                                      CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"<S-NAME> see(s) the bet.");
                         msg.addTrailerMsg(changeMsg);
                         // now we want to clear the drop message,
                         // and modify the amount actually being dropped.
@@ -531,7 +531,7 @@ public class PokerDealer extends StdBehavior
         if((msg.targetMinor()==CMMsg.TYP_LOOK)
         &&(msg.othersMessage()==null)
         &&(msg.target() instanceof Room)
-        &&(msg.target()==CMLib.utensils().roomLocation(host))
+        &&(msg.target()==CMLib.map().roomLocation(host))
         &&((gameState&STATE_MASK)==STATE_WAITING_FOR_ANTIS))
             communicate(host,msg.source(),"Greetings "+msg.source().name()+"! The game we are playing here is "+GAME_DESCS[gameRules]+".  The anti is "+antiAmount(host)+".  Just drop the proper money here to play.",msg);
         
@@ -539,7 +539,7 @@ public class PokerDealer extends StdBehavior
         // know that its a legal act.  we just need to
         // process it.
         if((msg.targetMinor()==CMMsg.TYP_DROP)
-        &&(msg.source().location()==CMLib.utensils().roomLocation(host))
+        &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.target() instanceof Coins)
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
         {
@@ -560,7 +560,7 @@ public class PokerDealer extends StdBehavior
         if((msg.othersMinor()==CMMsg.TYP_SPEAK)
         &&(whoseTurn!=msg.source())
         &&(CMSecurity.isASysOp(msg.source()))
-        &&(msg.source().location()==CMLib.utensils().roomLocation(host))
+        &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.othersMessage()!=null)
         &&(msg.othersMessage().length()>0))
         {
@@ -627,7 +627,7 @@ public class PokerDealer extends StdBehavior
         // this section only handles betting speech
         if((msg.othersMinor()==CMMsg.TYP_SPEAK)
         &&(whoseTurn==msg.source())
-        &&(msg.source().location()==CMLib.utensils().roomLocation(host))
+        &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.othersMessage()!=null)
         &&(msg.othersMessage().length()>0)
         &&(((gameState&STATE_MASK)==STATE_FIRST_BETTER)||((gameState&STATE_MASK)==STATE_NEXT_BETTER)))
@@ -723,7 +723,7 @@ public class PokerDealer extends StdBehavior
         if((msg.othersMinor()==CMMsg.TYP_SPEAK)
         &&(gameRules==GAME_DRAWPOKER)
         &&(whoseTurn==msg.source())
-        &&(msg.source().location()==CMLib.utensils().roomLocation(host))
+        &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.othersMessage()!=null)
         &&(msg.othersMessage().length()>0)
         &&(((gameState&STATE_MASK)==STATE_FIRST_DRAW)||((gameState&STATE_MASK)==STATE_NEXT_DRAW)))
@@ -1233,7 +1233,7 @@ public class PokerDealer extends StdBehavior
             
             // if the winner is here, give them all the gold on
             // the ground
-            if((CMLib.utensils().roomLocation(host)==winner.location())
+            if((CMLib.map().roomLocation(host)==winner.location())
             &&(CMLib.flags().isInTheGame(winner,true)))
             {
                 Room R=winner.location();
@@ -1276,7 +1276,7 @@ public class PokerDealer extends StdBehavior
                               int numberFaceUp)
     {
         if(player==null) return;
-        Room R=CMLib.utensils().roomLocation(host);
+        Room R=CMLib.map().roomLocation(host);
         HandOfCards hand=theDeck().getPlayerHand(player);
         if(hand!=null)
         {
@@ -1379,7 +1379,7 @@ public class PokerDealer extends StdBehavior
             return false;
         
         Environmental host=(Environmental)ticking;
-        Room R=CMLib.utensils().roomLocation(host);
+        Room R=CMLib.map().roomLocation(host);
         
         // first see if we lost any players
         // due to leaving the room or the game.

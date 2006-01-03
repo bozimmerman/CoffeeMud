@@ -43,7 +43,10 @@ public class Resources
     
 	public static void clearResources()
 	{
-		resources=new DVector(3);
+		synchronized(resources)
+		{
+			resources.clear();
+		}
 	}
     
     public static String buildResourcePath(String path)
@@ -100,35 +103,44 @@ public class Resources
 	
 	public static Vector findResourceKeys(String srch)
 	{
-		Vector V=new Vector();
-		for(int i=0;i<resources.size();i++)
+		synchronized(resources)
 		{
-			String key=(String)resources.elementAt(i,1);
-			if((srch.length()==0)||(key.toUpperCase().indexOf(srch.toUpperCase())>=0))
-				V.addElement(key);
+			Vector V=new Vector();
+			for(int i=0;i<resources.size();i++)
+			{
+				String key=(String)resources.elementAt(i,1);
+				if((srch.length()==0)||(key.toUpperCase().indexOf(srch.toUpperCase())>=0))
+					V.addElement(key);
+			}
+			return V;
 		}
-		return V;
 	}
 	
 	private static Object fetchResource(int x)
 	{
-		if((x<resources.size())&&(x>=0))
+		synchronized(resources)
 		{
-			if(!compress) return resources.elementAt(x,2);
-			if((((Boolean)resources.elementAt(x,3)).booleanValue())
-            &&(resources.elementAt(x,2) instanceof byte[]))
-				return new StringBuffer(CMLib.encoder().decompressString((byte[])resources.elementAt(x,2)));
-			return resources.elementAt(x,2);
+			if((x<resources.size())&&(x>=0))
+			{
+				if(!compress) return resources.elementAt(x,2);
+				if((((Boolean)resources.elementAt(x,3)).booleanValue())
+	            &&(resources.elementAt(x,2) instanceof byte[]))
+					return new StringBuffer(CMLib.encoder().decompressString((byte[])resources.elementAt(x,2)));
+				return resources.elementAt(x,2);
+			}
+			return null;
 		}
-		return null;
 	}
 	
 	public static Object getResource(String ID)
 	{
-		for(int i=0;i<resources.size();i++)
-			if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
-				return fetchResource(i);
-		return null;
+		synchronized(resources)
+		{
+			for(int i=0;i<resources.size();i++)
+				if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
+					return fetchResource(i);
+			return null;
+		}
 	}
 
 	public static Object prepareObject(Object obj)
@@ -141,34 +153,43 @@ public class Resources
 	
 	public static void submitResource(String ID, Object obj)
 	{
-		if(getResource(ID)!=null)
-			return;
-        Object prepared=prepareObject(obj);
-		resources.addElement(ID,prepared,new Boolean(prepared!=obj));
+		synchronized(resources)
+		{
+			if(getResource(ID)!=null)
+				return;
+	        Object prepared=prepareObject(obj);
+			resources.addElement(ID,prepared,new Boolean(prepared!=obj));
+		}
 	}
 	
 	public static void updateResource(String ID, Object obj)
 	{
-		for(int i=0;i<resources.size();i++)
-			if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
-			{
-                Object prepared=prepareObject(obj);
-				resources.setElementAt(i,2,prepared);
-                resources.setElementAt(i,3,new Boolean(prepared!=obj));
-				return;
-			}
+		synchronized(resources)
+		{
+			for(int i=0;i<resources.size();i++)
+				if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
+				{
+	                Object prepared=prepareObject(obj);
+					resources.setElementAt(i,2,prepared);
+	                resources.setElementAt(i,3,new Boolean(prepared!=obj));
+					return;
+				}
+		}
 	}
 	
 	public static void removeResource(String ID)
 	{
-		try{
-			for(int i=0;i<resources.size();i++)
-				if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
-				{
-					resources.removeElementAt(i);
-					return;
-				}
-		}catch(ArrayIndexOutOfBoundsException e){}
+		synchronized(resources)
+		{
+			try{
+				for(int i=0;i<resources.size();i++)
+					if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
+					{
+						resources.removeElementAt(i);
+						return;
+					}
+			}catch(ArrayIndexOutOfBoundsException e){}
+		}
 	}
 	
 	public static Vector getFileLineVector(StringBuffer buf)

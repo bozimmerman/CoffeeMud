@@ -14,7 +14,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.io.IOException;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -234,8 +236,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof Room)
 		{
 			if(E instanceof GridLocale)
-				return CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xSize())
-					  +CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).ySize())
+				return CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xGridSize())
+					  +CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).yGridSize())
 					  +getExtraEnvPropertiesStr(E);
 			return getExtraEnvPropertiesStr(E);
 		}
@@ -612,7 +614,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null) return unpackErr("Room","null 'newRoom'");
 		newRoom.setRoomID(CMLib.xml().getValFromPieces(xml,"ROOMID"));
-		if(newRoom.roomID().equals("NEW")) newRoom.setRoomID(CMLib.map().getOpenRoomID(myArea.Name()));
+		if(newRoom.roomID().equals("NEW")) newRoom.setRoomID(myArea.getNewRoomID(newRoom,-1));
 		if(CMLib.map().getRoom(newRoom.roomID())!=null) return "Room Exists: "+newRoom.roomID();
 		newRoom.setArea(myArea);
 		CMLib.database().DBCreateRoom(newRoom,roomClass);
@@ -701,24 +703,28 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				boolean changed=false;
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				synchronized(("SYNC"+R.roomID()).intern())
 				{
-					Exit exit=R.rawExits()[d];
-					if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
+					R=CMLib.map().getRoom(R);
+					boolean changed=false;
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
-						exit.setTemporaryDoorLink("");
-						R.rawDoors()[d]=newRoom;
-						changed=true;
+						Exit exit=R.rawExits()[d];
+						if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
+						{
+							exit.setTemporaryDoorLink("");
+							R.rawDoors()[d]=newRoom;
+							changed=true;
+						}
+						else
+						if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].roomID().equals(newRoom.roomID())))
+						{
+							R.rawDoors()[d]=newRoom;
+							changed=true;
+						}
 					}
-					else
-					if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].roomID().equals(newRoom.roomID())))
-					{
-						R.rawDoors()[d]=newRoom;
-						changed=true;
-					}
+					if(changed) CMLib.database().DBUpdateExits(R);
 				}
-				if(changed) CMLib.database().DBUpdateExits(R);
 			}
 	    }catch(NoSuchElementException e){}
 		CMLib.database().DBUpdateRoom(newRoom);
@@ -926,15 +932,55 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return "";
 	}
 
-    public void addWeatherToAreaIfNecessary(Area newArea)
+    public void addAutoPropsToAreaIfNecessary(Area newArea)
     {
-        if((!CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS).equalsIgnoreCase("no"))
-        &&(newArea!=null)
+        if((newArea!=null)
         &&(newArea.ID().equals("StdArea")))
         {
-            Behavior B=newArea.fetchBehavior("WeatherAffects");
-            if(B==null){ B=CMClass.getBehavior("WeatherAffects"); B.setSavable(false); newArea.addBehavior(B);}
-            B.setParms(CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS));
+	        if(!CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS).equalsIgnoreCase("no"))
+	        {
+	            Behavior B=newArea.fetchBehavior("WeatherAffects");
+	            if(B==null){ B=CMClass.getBehavior("WeatherAffects"); B.setSavable(false); newArea.addBehavior(B);}
+	            B.setParms(CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS));
+	        }
+	        if(CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim().length()>0)
+	        {
+	        	String props=CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim();
+	        	Vector allProps=CMParms.parseSemicolons(props,true);
+	        	String prop=null;
+	        	String parms=null;
+	        	Ability A=null;
+	        	Behavior B=null;
+	        	for(int v=0;v<allProps.size();v++)
+	        	{
+	        		prop=(String)allProps.elementAt(v);
+	        		parms="";
+	        		int x=prop.indexOf("(");
+	        		if(x>=0)
+	        		{
+	        			parms=prop.substring(x+1).trim();
+	        			prop=prop.substring(0,x).trim();
+	        			if(parms.endsWith(")")) parms=parms.substring(0,parms.length()-1);
+	        		}
+	        		B=CMClass.getBehavior(prop);
+	        		if((B!=null)&&(newArea.fetchBehavior(B.ID())==null))
+	        		{
+	        			B.setSavable(false); 
+	        			newArea.addBehavior(B);
+	        			B.setParms(parms);
+	        		}
+	        		else
+	        		{
+	        			A=CMClass.getAbility(prop);
+	        			if((A!=null)&&(newArea.fetchEffect(A.ID())==null))
+	        			{
+	        				A.setSavable(false);
+	        				newArea.addNonUninvokableEffect(A);
+	        				A.setMiscText(parms);
+	        			}
+	        		}
+	        	}
+	        }
         }
     }
     
@@ -980,10 +1026,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	}
 
 	public StringBuffer getAreaXML(Area area, 
-	        							  Session S, 
-	        							  HashSet custom,
-	        							  HashSet files,
-	        							  boolean andRooms)
+    							   Session S, 
+    							   HashSet custom,
+    							   HashSet files,
+    							   boolean andRooms)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
@@ -999,17 +1045,23 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{
-			if(area.properSize()==0)
+			Enumeration r=area.getCompleteMap();
+			if(!r.hasMoreElements())
 				buf.append("<AROOMS />");
 			else
 			{
 				buf.append("<AROOMS>");
-				for(Enumeration r=area.getProperMap();r.hasMoreElements();)
+				Room R=null;
+				for(;r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
-					if(S!=null) S.rawPrint(".");
-					if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
-						buf.append(getRoomXML(R,custom,files,true)+"\n\r");
+					R=(Room)r.nextElement();
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+						R=CMLib.map().getRoom(R);
+						if(S!=null) S.rawPrint(".");
+						if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
+							buf.append(getRoomXML(R,custom,files,true)+"\n\r");
+					}
 				}
 				buf.append("</AROOMS>");
 			}
@@ -1100,6 +1152,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
     public Room makeNewRoomContent(Room room)
     {
         if(room==null) return null;
+		room=CMLib.map().getRoom(room);
         Room R=CMClass.getLocale(room.ID());
         if(R==null) return null;
         R.setRoomID(room.roomID());
@@ -1108,9 +1161,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
     }
 
 	public StringBuffer getRoomMobs(Room room, 
-	        							   HashSet custom, 
-	        							   HashSet files, 
-	        							   Hashtable found)
+    							    HashSet custom, 
+    							    HashSet files, 
+    							    Hashtable found)
 	{
 		StringBuffer buf=new StringBuffer("");
         room=makeNewRoomContent(room);
@@ -1315,9 +1368,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	}
 
 	public StringBuffer getRoomItems(Room room,
-											Hashtable found,
-											HashSet files,
-											int type) // 0=item, 1=weapon, 2=armor
+									 Hashtable found,
+									 HashSet files,
+									 int type) // 0=item, 1=weapon, 2=armor
 	{
 		StringBuffer buf=new StringBuffer("");
         room=makeNewRoomContent(room);
@@ -1361,13 +1414,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	}
 
 	public StringBuffer getRoomXML(Room room, 
-	        							  HashSet custom, 
-	        							  HashSet files, 
-	        							  boolean andContent)
+        							HashSet custom, 
+        							HashSet files, 
+        							boolean andContent)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(room==null) return buf;
-
 		// do this quick before a tick messes it up!
 		Vector inhabs=new Vector();
         Room croom=makeNewRoomContent(room);
@@ -1583,8 +1635,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			setExtraEnvProperties(E,V);
 			if(E instanceof GridLocale)
 			{
-				((GridLocale)E).setXSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
-				((GridLocale)E).setYSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
+				((GridLocale)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
+				((GridLocale)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
 			}
 		}
 		else
@@ -1762,6 +1814,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		shopmob.setBudget(CMLib.xml().getValFromPieces(buf,"BUDGET"));
 		shopmob.setDevalueRate(CMLib.xml().getValFromPieces(buf,"DEVALR"));
 		shopmob.setInvResetRate(CMLib.xml().getIntFromPieces(buf,"INVRER"));
+		shopmob.getShop().emptyAllShelves();
 
 		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"STORE");
 		if(V==null)
@@ -2673,7 +2726,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			E.addBehavior(newOne);
 		}
         if(E instanceof Area)
-            addWeatherToAreaIfNecessary((Area)E);
+        	addAutoPropsToAreaIfNecessary((Area)E);
 
 		V=CMLib.xml().getRealContentsFromPieces(buf,"AFFECS");
 		if(V==null)
@@ -2956,43 +3009,50 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		newArea.setName(newName);
 		CMLib.database().DBCreateArea(newName,newArea.ID());
 		Hashtable altIDs=new Hashtable();
-		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
-			Room newRoom=(Room)room.copyOf();
-			newRoom.clearSky();
-			if(newRoom instanceof GridLocale)
-				((GridLocale)newRoom).clearGrid(null);
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				newRoom.rawDoors()[d]=null;
-			newRoom.setRoomID(CMLib.map().getOpenRoomID(newName));
-			newRoom.setArea(newArea);
-			CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
-			altIDs.put(room.roomID(),newRoom.roomID());
-			if(newRoom.numInhabitants()>0)
-				CMLib.database().DBUpdateMOBs(newRoom);
-			if(newRoom.numItems()>0)
-				CMLib.database().DBUpdateItems(newRoom);
+			synchronized(("SYNC"+room.roomID()).intern())
+			{
+				room=CMLib.map().getRoom(room);
+				Room newRoom=(Room)room.copyOf();
+				newRoom.clearSky();
+				if(newRoom instanceof GridLocale)
+					((GridLocale)newRoom).clearGrid(null);
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					newRoom.rawDoors()[d]=null;
+				newRoom.setRoomID(newArea.getNewRoomID(room,-1));
+				newRoom.setArea(newArea);
+				CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
+				altIDs.put(room.roomID(),newRoom.roomID());
+				if(newRoom.numInhabitants()>0)
+					CMLib.database().DBUpdateMOBs(newRoom);
+				if(newRoom.numItems()>0)
+					CMLib.database().DBUpdateItems(newRoom);
+			}
 		}
-		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			String altID=(String)altIDs.get(room.roomID());
 			if(altID==null) continue;
 			Room newRoom=CMLib.map().getRoom(altID);
 			if(newRoom==null) continue;
-			
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			synchronized(("SYNC"+newRoom.roomID()).intern())
 			{
-				Room R=room.rawDoors()[d];
-				String myRID=null;
-				if(R!=null) myRID=(String)altIDs.get(R.roomID());
-				Room myR=null;
-				if(myRID!=null) myR=CMLib.map().getRoom(myRID);
-				newRoom.rawDoors()[d]=myR;
+				newRoom=CMLib.map().getRoom(newRoom);
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R=room.rawDoors()[d];
+					String myRID=null;
+					if(R!=null) myRID=(String)altIDs.get(R.roomID());
+					Room myR=null;
+					if(myRID!=null) myR=CMLib.map().getRoom(myRID);
+					newRoom.rawDoors()[d]=myR;
+				}
+				CMLib.database().DBUpdateExits(newRoom);
+				newRoom.getArea().fillInAreaRoom(newRoom);
 			}
-			CMLib.database().DBUpdateExits(newRoom);
-			newRoom.getArea().fillInAreaRoom(newRoom);
 		}
 		return newArea;
 	}

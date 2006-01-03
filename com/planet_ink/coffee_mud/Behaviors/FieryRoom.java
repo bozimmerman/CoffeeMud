@@ -145,7 +145,7 @@ public class FieryRoom
 
     private void dealDamage(MOB mob) 
     {
-        CMLib.combat().postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
+        CMLib.combat().postDamage(mob, mob, null, directDamage, CMMsg.MASK_ALWAYS | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
                             "The fire here <DAMAGE> <T-NAME>!");
     }
 
@@ -163,7 +163,7 @@ public class FieryRoom
                 case RawMaterial.MATERIAL_UNKNOWN: {
                     // all these we'll make get hot and be dropped.
                     int damage = CMLib.dice().roll(1, 6, 1);
-                    CMLib.combat().postDamage(mob, mob, null, damage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
+                    CMLib.combat().postDamage(mob, mob, null, damage, CMMsg.MASK_ALWAYS | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
                     if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH)) {
                         CMLib.commands().postDrop(mob, target, false, false);
                     }

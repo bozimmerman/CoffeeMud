@@ -5,7 +5,7 @@
 <TR><TD WIDTH=85%>
 <TABLE WIDH=100% CELLSPACING=0 CELLPADDING=0>
 <TR><TD WIDTH=80%>
-<TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="keyme(event,this);" ONKEYDOWN="keydown(event,this);" SIZE=80>
+<TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="return keyme(event,this);" ONKEYDOWN="return keydown(event,this);" SIZE=80>
 </TEXTAREA>
 <TD WIDTH=15% ALIGN=CENTER VALIGN=TOP>
 <a href="javascript:sendText();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="sendText();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Submit</B></FONT></a></TD></TR></TABLE></a>
@@ -89,7 +89,7 @@
             }
             else
             if(position==0)
-                return;
+                return true;
             else
                 position--;
             if((position>=0)&&(position<input.length))
@@ -99,11 +99,12 @@
         if((event.keyCode==40)&&(position>=0))
         {
             if(position==(input.length-1))
-                return;
+                return true;
             position++;
             if((position>=0)&&(position<input.length))
                 textEl.value=input[position];
         }
+        return true;
     }
     
     function doReturn(val)
@@ -120,8 +121,11 @@
         {
             textEl.value='';
             event.cancelBubble=true;
+            event.returnValue=0;
+            textEl.value='';
             return false;
         }
+        return true;
     }
     function boxFocus()
     {

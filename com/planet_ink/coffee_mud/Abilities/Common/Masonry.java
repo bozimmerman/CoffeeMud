@@ -154,189 +154,213 @@ public class Masonry extends CraftingSkill
 					case BUILD_ROOF:
 					case BUILD_POOL:
 						{
-							Room R=null;
-							if(doingCode==BUILD_POOL)
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-									R=CMClass.getLocale("IndoorWaterSurface");
-								else
-									R=CMClass.getLocale("WaterSurface");
-							}
-							else
-								R=CMClass.getLocale("StoneRoom");
-							R.setRoomID(room.roomID());
-							R.setDisplayText(room.displayText());
-							R.setDescription(room.description());
-							R.setArea(room.getArea());
-							for(int a=room.numEffects()-1;a>=0;a--)
-							{
-								Ability A=room.fetchEffect(a);
-								if(A!=null)
+								room=CMLib.map().getRoom(room);
+								Room R=null;
+								if(doingCode==BUILD_POOL)
 								{
-									room.delEffect(A);
-									R.addEffect(A);
-								}
-							}
-							for(int i=room.numItems()-1;i>=0;i--)
-							{
-								Item I=room.fetchItem(i);
-								if(I!=null)
-								{
-									room.delItem(I);
-									R.addItem(I);
-								}
-							}
-							for(int m=room.numInhabitants()-1;m>=0;m--)
-							{
-								MOB M=room.fetchInhabitant(m);
-								if(M!=null){
-									room.delInhabitant(M);
-									R.addInhabitant(M);
-									M.setLocation(R);
-								}
-							}
-							CMLib.threads().deleteTick(room,-1);
-							for(int d=0;d<R.rawDoors().length;d++)
-							{
-								if((R.rawDoors()[d]==null)
-								||(R.rawDoors()[d].roomID().length()>0))
-									R.rawDoors()[d]=room.rawDoors()[d];
-							}
-							for(int d=0;d<R.rawExits().length;d++)
-							{
-								if((R.rawDoors()[d]==null)
-								||(R.rawDoors()[d].roomID().length()>0))
-									R.rawExits()[d]=room.rawExits()[d];
-							}
-
-							R.startItemRejuv();
-							try
-							{
-								for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-								{
-									Room R2=(Room)r.nextElement();
-									for(int d=0;d<R2.rawDoors().length;d++)
-										if(R2.rawDoors()[d]==room)
-										{
-											R2.rawDoors()[d]=R;
-											if(R2 instanceof GridLocale)
-												((GridLocale)R2).buildGrid();
-										}
-								}
-						    }catch(NoSuchElementException e){}
-						    try
-						    {
-								for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
-								{
-									MOB M=(MOB)e.nextElement();
-									if(M.getStartRoom()==room)
-										M.setStartRoom(R);
+									if((room.domainType()&Room.INDOORS)==Room.INDOORS)
+										R=CMClass.getLocale("IndoorWaterSurface");
 									else
-									if(M.location()==room)
-										M.setLocation(R);
+										R=CMClass.getLocale("WaterSurface");
 								}
-						    }catch(NoSuchElementException e){}
-							if(doingCode==BUILD_POOL)
-							{
-								Room R2=CMClass.getLocale("UnderWater");
-								R2.setRoomID(CMLib.map().getOpenRoomID(R.getArea().ID()));
-								R2.setDisplayText("Under the water");
-								R2.setDescription("You are swimming around under the water.");
-								R2.setArea(R.getArea());
-								R2.rawDoors()[Directions.UP]=R;
-								R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
-								R.rawDoors()[Directions.DOWN]=R2;
-								R.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
-								LandTitle title=CMLib.utensils().getLandTitle(R);
-								if((title!=null)&&(CMLib.utensils().getLandTitle(R2)==null))
+								else
+									R=CMClass.getLocale("StoneRoom");
+								R.setRoomID(room.roomID());
+								R.setDisplayText(room.displayText());
+								R.setDescription(room.description());
+								R.setArea(room.getArea());
+								for(int a=room.numEffects()-1;a>=0;a--)
 								{
-									LandTitle A2=(LandTitle)title.newInstance();
-									A2.setLandPrice(title.landPrice());
-									R2.addNonUninvokableEffect((Ability)A2);
-									break;
+									Ability A=room.fetchEffect(a);
+									if(A!=null)
+									{
+										room.delEffect(A);
+										R.addEffect(A);
+									}
 								}
-								CMLib.database().DBCreateRoom(R2,R2.ID());
-								CMLib.database().DBUpdateExits(R2);
+								for(int i=room.numItems()-1;i>=0;i--)
+								{
+									Item I=room.fetchItem(i);
+									if(I!=null)
+									{
+										room.delItem(I);
+										R.addItem(I);
+									}
+								}
+								for(int m=room.numInhabitants()-1;m>=0;m--)
+								{
+									MOB M=room.fetchInhabitant(m);
+									if(M!=null){
+										room.delInhabitant(M);
+										R.addInhabitant(M);
+										M.setLocation(R);
+									}
+								}
+								CMLib.threads().deleteTick(room,-1);
+								for(int d=0;d<R.rawDoors().length;d++)
+								{
+									if((R.rawDoors()[d]==null)
+									||(R.rawDoors()[d].roomID().length()>0))
+										R.rawDoors()[d]=room.rawDoors()[d];
+								}
+								for(int d=0;d<R.rawExits().length;d++)
+								{
+									if((R.rawDoors()[d]==null)
+									||(R.rawDoors()[d].roomID().length()>0))
+										R.rawExits()[d]=room.rawExits()[d];
+								}
+	
+								R.startItemRejuv();
+								try
+								{
+									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+									{
+										Room R2=(Room)r.nextElement();
+										for(int d=0;d<R2.rawDoors().length;d++)
+											if(R2.rawDoors()[d]==room)
+											{
+												R2.rawDoors()[d]=R;
+												if(R2 instanceof GridLocale)
+													((GridLocale)R2).buildGrid();
+											}
+									}
+							    }catch(NoSuchElementException e){}
+							    try
+							    {
+									for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+									{
+										MOB M=(MOB)e.nextElement();
+										if(M.getStartRoom()==room)
+											M.setStartRoom(R);
+										else
+										if(M.location()==room)
+											M.setLocation(R);
+									}
+							    }catch(NoSuchElementException e){}
+								if(doingCode==BUILD_POOL)
+								{
+									Room R2=CMClass.getLocale("UnderWater");
+									R2.setRoomID(R.getArea().getNewRoomID(R,Directions.DOWN));
+									R2.setDisplayText("Under the water");
+									R2.setDescription("You are swimming around under the water.");
+									R2.setArea(R.getArea());
+									R2.rawDoors()[Directions.UP]=R;
+									R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
+									R.rawDoors()[Directions.DOWN]=R2;
+									R.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
+									LandTitle title=CMLib.utensils().getLandTitle(R);
+									if((title!=null)&&(CMLib.utensils().getLandTitle(R2)==null))
+									{
+										LandTitle A2=(LandTitle)title.newInstance();
+										A2.setLandPrice(title.landPrice());
+										R2.addNonUninvokableEffect((Ability)A2);
+										break;
+									}
+									CMLib.database().DBCreateRoom(R2,R2.ID());
+									CMLib.database().DBUpdateExits(R2);
+								}
+	
+								R.getArea().fillInAreaRoom(R);
+								CMLib.database().DBUpdateRoom(R);
+								CMLib.database().DBUpdateExits(R);
+	                            room.destroy();
 							}
-
-							R.getArea().fillInAreaRoom(R);
-							CMLib.database().DBUpdateRoom(R);
-							CMLib.database().DBUpdateExits(R);
-                            room.destroy();
 						}
 						break;
 					case BUILD_PORTCULIS:
 						{
-							Exit x=CMClass.getExit("GenExit");
-							Exit x2=CMClass.getExit("GenExit");
-							x.setName("an archway");
-							x.setDescription("A portcullis lies this way.");
-							x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
-							x.setDoorsNLocks(true,false,true,false,false,false);
-							x2.setName("a portcullis");
-							x2.setDescription("A portcullis lies this way.");
-							x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
-							x2.setDoorsNLocks(true,false,true,false,false,false);
-							room.rawExits()[dir]=x;
-							if(room.rawDoors()[dir]!=null)
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
-								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+								room=CMLib.map().getRoom(room);
+								Exit x=CMClass.getExit("GenExit");
+								Exit x2=CMClass.getExit("GenExit");
+								x.setName("an archway");
+								x.setDescription("A portcullis lies this way.");
+								x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
+								x.setDoorsNLocks(true,false,true,false,false,false);
+								x2.setName("a portcullis");
+								x2.setDescription("A portcullis lies this way.");
+								x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
+								x2.setDoorsNLocks(true,false,true,false,false,false);
+								room.rawExits()[dir]=x;
+								if(room.rawDoors()[dir]!=null)
+								{
+									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
+									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+								}
+								CMLib.database().DBUpdateExits(room);
 							}
-							CMLib.database().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_ARCH:
 						{
-							Exit x=CMClass.getExit("GenExit");
-							Exit x2=CMClass.getExit("GenExit");
-							x.setName("an archway");
-							x.setDescription("A majestic archway towers above you.");
-							x2.setName("an archway");
-							x2.setDescription("A majestic archway towers above you.");
-							room.rawExits()[dir]=x;
-							if(room.rawDoors()[dir]!=null)
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
-								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+								room=CMLib.map().getRoom(room);
+								Exit x=CMClass.getExit("GenExit");
+								Exit x2=CMClass.getExit("GenExit");
+								x.setName("an archway");
+								x.setDescription("A majestic archway towers above you.");
+								x2.setName("an archway");
+								x2.setDescription("A majestic archway towers above you.");
+								room.rawExits()[dir]=x;
+								if(room.rawDoors()[dir]!=null)
+								{
+									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
+									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+								}
+								CMLib.database().DBUpdateExits(room);
 							}
-							CMLib.database().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_WALL:
 						{
-							room.rawExits()[dir]=null;
-							if(room.rawDoors()[dir]!=null)
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
-								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+								room=CMLib.map().getRoom(room);
+								room.rawExits()[dir]=null;
+								if(room.rawDoors()[dir]!=null)
+								{
+									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
+									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+								}
+								CMLib.database().DBUpdateExits(room);
 							}
-							CMLib.database().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_TITLE:
 						{
-							room.setDisplayText(designTitle);
-							CMLib.database().DBUpdateRoom(room);
+							synchronized(("SYNC"+room.roomID()).intern())
+							{
+								room=CMLib.map().getRoom(room);
+								room.setDisplayText(designTitle);
+								CMLib.database().DBUpdateRoom(room);
+							}
 						}
 						break;
 					case BUILD_DESC:
 						{
-							if(workingOn>=0)
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								Exit E=room.getExitInDir(workingOn);
-								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								room=CMLib.map().getRoom(room);
+								if(workingOn>=0)
 								{
-									E=generify(E);
-									room.rawExits()[workingOn]=E;
+									Exit E=room.getExitInDir(workingOn);
+									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+									{
+										E=generify(E);
+										room.rawExits()[workingOn]=E;
+									}
+									E.setDescription(designDescription);
+									CMLib.database().DBUpdateExits(room);
 								}
-								E.setDescription(designDescription);
-								CMLib.database().DBUpdateExits(room);
-							}
-							else
-							{
-								room.setDescription(designDescription);
-								CMLib.database().DBUpdateRoom(room);
+								else
+								{
+									room.setDescription(designDescription);
+									CMLib.database().DBUpdateRoom(room);
+								}
 							}
 						}
 						break;
@@ -344,46 +368,54 @@ public class Masonry extends CraftingSkill
 						{
 							Item I=CMClass.getItem("DruidicMonument");
 							room.addItem(I);
-							I.setDispossessionTime(0);
+							I.setExpirationDate(0);
 						}
 						break;
 					case BUILD_CRAWLWAY:
 						{
-							if((workingOn>=0)&&(room.getExitInDir(workingOn)!=null))
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								Exit E=room.getExitInDir(workingOn);
-								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								room=CMLib.map().getRoom(room);
+								if((workingOn>=0)&&(room.getExitInDir(workingOn)!=null))
 								{
-									E=generify(E);
-									room.rawExits()[workingOn]=E;
+									Exit E=room.getExitInDir(workingOn);
+									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+									{
+										E=generify(E);
+										room.rawExits()[workingOn]=E;
+									}
+									Ability A=CMClass.getAbility("Prop_Crawlspace");
+									if(A!=null) E.addNonUninvokableEffect(A);
+									CMLib.database().DBUpdateExits(room);
 								}
-								Ability A=CMClass.getAbility("Prop_Crawlspace");
-								if(A!=null) E.addNonUninvokableEffect(A);
-								CMLib.database().DBUpdateExits(room);
 							}
 						}
 						break;
 					case BUILD_WINDOW:
 						{
-							if((workingOn>=0)&&(room.getExitInDir(workingOn)!=null))
+							synchronized(("SYNC"+room.roomID()).intern())
 							{
-								Exit E=room.getExitInDir(workingOn);
-								if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
+								room=CMLib.map().getRoom(room);
+								if((workingOn>=0)&&(room.getExitInDir(workingOn)!=null))
 								{
-									E=generify(E);
-									room.rawExits()[workingOn]=E;
-								}
-								Room R2=room.getRoomInDir(workingOn);
-								if(R2!=null)
-								{
-									Ability A=CMClass.getAbility("Prop_RoomView");
-									if(A!=null)
+									Exit E=room.getExitInDir(workingOn);
+									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
 									{
-										A.setMiscText(CMLib.map().getExtendedRoomID(R2));
-										E.addNonUninvokableEffect(A);
+										E=generify(E);
+										room.rawExits()[workingOn]=E;
 									}
+									Room R2=room.getRoomInDir(workingOn);
+									if(R2!=null)
+									{
+										Ability A=CMClass.getAbility("Prop_RoomView");
+										if(A!=null)
+										{
+											A.setMiscText(CMLib.map().getExtendedRoomID(R2));
+											E.addNonUninvokableEffect(A);
+										}
+									}
+									CMLib.database().DBUpdateExits(room);
 								}
-								CMLib.database().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -402,7 +434,7 @@ public class Masonry extends CraftingSkill
 										R2.rawDoors()[Directions.UP]=null;
 										R2.rawExits()[Directions.UP]=null;
 									}
-									CMLib.utensils().obliterateRoom(R2);
+									CMLib.map().obliterateRoom(R2);
 									room.rawDoors()[Directions.DOWN]=null;
 									room.rawExits()[Directions.DOWN]=null;
 								}
@@ -618,9 +650,10 @@ public class Masonry extends CraftingSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
+    		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
+    		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+    		{
+    			Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if(R.displayText().equalsIgnoreCase(title))
 				{
 					commonTell(mob,"That title has already been taken.  Choose another.");

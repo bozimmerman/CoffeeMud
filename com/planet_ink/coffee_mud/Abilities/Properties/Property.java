@@ -96,6 +96,8 @@ public class Property implements Ability
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
+	public long expirationDate(){return 0;}
+	public void setExpirationDate(long time){}
 	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
 	{
 		if(affected.fetchEffect(ID())==null)

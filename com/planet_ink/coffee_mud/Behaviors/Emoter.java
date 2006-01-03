@@ -50,6 +50,7 @@ public class Emoter extends ActiveTicker
 		expires=CMParms.getParmInt(parms,"expires",0);
 	    inroom=CMParms.getParmStr(parms,"inroom","").toUpperCase();
 		emotes=null;
+		smells=null;
 	}
 
 	protected Vector emotes=null;

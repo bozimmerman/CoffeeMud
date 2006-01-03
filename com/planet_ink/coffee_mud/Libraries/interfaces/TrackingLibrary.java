@@ -59,6 +59,13 @@ public interface TrackingLibrary extends CMObject
                                 Room radiateTo,
                                 int maxDepth,
                                 HashSet ignoreRooms);
+	public Vector getRadiantRooms(Room room,
+								  boolean openOnly,
+								  boolean areaOnly,
+								  boolean noEmptyGrids,
+								  boolean noAir,
+								  boolean noWater,
+								  int maxDepth);
     public boolean beMobile(MOB mob,
                             boolean dooropen,
                             boolean wander,

@@ -4,6 +4,7 @@ set name drowning
 # this one runs every 240-480 mins
 set wait 600
 set interval 600
+set runlevel 1
 
 #since this quest relys on random specified mobs, most errors are turned OFF
 quiet

@@ -93,7 +93,7 @@ public class Chant_GrowFood extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Food newItem=(Food)CMClass.getStdItem("GenFoodResource");
+				Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
 				if(material==RawMaterial.RESOURCE_HERBS)
 					newItem.setNourishment(1);
 				else

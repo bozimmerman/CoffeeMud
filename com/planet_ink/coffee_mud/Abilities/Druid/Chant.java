@@ -46,7 +46,7 @@ public class Chant extends StdAbility
             affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH;
             if(abstractQuality()==Ability.QUALITY_MALICIOUS)
                 affectType=affectType|CMMsg.MASK_MALICIOUS;
-            if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+            if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
             return affectType;
         }
     	return super.verbalCastCode(mob,target,auto);

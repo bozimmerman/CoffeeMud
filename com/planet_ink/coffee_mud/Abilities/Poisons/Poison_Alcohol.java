@@ -251,7 +251,7 @@ public class Poison_Alcohol extends Poison
 				}
 			}
 			else
-			if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS))
 			&&(CMLib.dice().rollPercentage()<(drunkness*20))
 			&&(msg.targetMajor()>0))
 			{
@@ -290,7 +290,7 @@ public class Poison_Alcohol extends Poison
 			largest+=alchoholContribution();
 			if(found.size()>0)
 			{
-				CMMsg msg=CMClass.getMsg(mob,givenTarget,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|CMMsg.MASK_GENERAL,POISON_CAST());
+				CMMsg msg=CMClass.getMsg(mob,givenTarget,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|CMMsg.MASK_ALWAYS,POISON_CAST());
 				Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
 				if(R.okMessage(mob,msg))
 				{

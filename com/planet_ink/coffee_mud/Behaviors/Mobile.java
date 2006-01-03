@@ -199,7 +199,7 @@ public class Mobile extends ActiveTicker
                 if((A.canBeUninvoked())
                 &&(!A.isAutoInvoked())
                 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-                &&(CMLib.dice().roll(1,10,0)>1))
+                &&(CMLib.dice().roll(1,100,0)>5))
                 {
                     tickDown=0;
                     return true;

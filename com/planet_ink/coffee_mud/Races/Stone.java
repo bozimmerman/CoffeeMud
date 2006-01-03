@@ -119,7 +119,7 @@ public class Stone extends StdRace
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
 		&&(myHost instanceof MOB)
 		&&(msg.amITarget(myHost))
-        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS)))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())

@@ -78,16 +78,16 @@ public class Undress extends StdCommand
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,null);
+				msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
+					msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						if(CMLib.commands().postGet(mob,null,item,true))
-							mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
+							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else
 						mob.tell("You cannot seem to get "+item.name()+" off "+target.name()+".");

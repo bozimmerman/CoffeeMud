@@ -44,7 +44,7 @@ public class Spell_WordRecall extends Spell
     protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
     {
         int affectType=CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_RECALL;
-        if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+        if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
         return affectType;
     }
 
@@ -56,7 +56,7 @@ public class Spell_WordRecall extends Spell
         boolean success=(!mob.isInCombat())||profficiencyCheck(mob,0,auto);
         if(success)
         {
-            int AUTO=auto?CMMsg.MASK_GENERAL:0;
+            int AUTO=auto?CMMsg.MASK_ALWAYS:0;
             Room recalledRoom=mob.location();
             Room recallRoom=mob.getStartRoom();
             CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));

@@ -1610,7 +1610,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()!=null)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&((msg.tool()==null)||(msg.source().isMine(msg.tool())))
 		&&(msg.target()!=msg.source())
 		&&(!msg.target().name().equals(msg.source().name()))
@@ -2053,10 +2053,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								if(!A.invoke(officer,W.criminal(),(curPoints<=25),0))
 								{
 									A=CMClass.getAbility("Skill_Trip");
-									A.setProfficiency(100);
-									A.setAbilityCode(30);
-									if(!A.invoke(officer,W.criminal(),(curPoints<=50),0))
-										CMLib.combat().postAttack(officer,W.criminal(),officer.fetchWieldedItem());
+									if(A!=null)
+									{
+										A.setProfficiency(100);
+										A.setAbilityCode(30);
+										if(!A.invoke(officer,W.criminal(),(curPoints<=50),0))
+											CMLib.combat().postAttack(officer,W.criminal(),officer.fetchWieldedItem());
+									}
 								}
 							}
 						}

@@ -274,10 +274,6 @@ public class DefaultCharState implements CharState
 			if(expendMovement)
 			{
 				int move=-mob.location().pointsPerMove(mob);
-				if((mob.movesSinceLastTick()>4)
-				&&(mob.riding()==null)
-				&&(!CMLib.flags().isInFlight(mob)))
-					move=move-(mob.movesSinceLastTick()-4);
 				if(mob.envStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);

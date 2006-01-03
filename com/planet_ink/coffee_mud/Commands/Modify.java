@@ -183,7 +183,7 @@ public class Modify extends BaseGenerics
 
     protected void flunkCmd2(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB] [TEXT]\n\r");
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 	public void rooms(MOB mob, Vector commands)
@@ -208,10 +208,10 @@ public class Modify extends BaseGenerics
 				genRoomType(mob,mob.location(),++showNumber,showFlag);
 				genDisplayText(mob,mob.location(),++showNumber,showFlag);
 				genDescription(mob,mob.location(),++showNumber,showFlag);
-				if(mob.location() instanceof GridLocale)
+				if(mob.location() instanceof GridZones)
 				{
-					genGridLocaleX(mob,(GridLocale)mob.location(),++showNumber,showFlag);
-					genGridLocaleY(mob,(GridLocale)mob.location(),++showNumber,showFlag);
+					genGridLocaleX(mob,(GridZones)mob.location(),++showNumber,showFlag);
+					genGridLocaleY(mob,(GridZones)mob.location(),++showNumber,showFlag);
 					//((GridLocale)mob.location()).buildGrid();
 				}
 				genBehaviors(mob,mob.location(),++showNumber,showFlag);
@@ -225,7 +225,7 @@ public class Modify extends BaseGenerics
 					ok=true;
 				}
 			}
-			if(!oldRoom.sameAs(mob.location()))
+			if((!oldRoom.sameAs(mob.location()))&&(!mob.location().amDestroyed()))
 			{
 				CMLib.database().DBUpdateRoom(mob.location());
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
@@ -244,7 +244,6 @@ public class Modify extends BaseGenerics
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			Area A=CMLib.map().getArea(restStr);
-			String checkID=CMLib.map().getOpenRoomID(restStr);
 			boolean reid=false;
 			if(A==null)
 			{
@@ -267,7 +266,7 @@ public class Modify extends BaseGenerics
 						if(areaType.length()==0) areaType="StdArea";
 						A=CMLib.database().DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
-                        CMLib.coffeeMaker().addWeatherToAreaIfNecessary(A);
+                        CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 						reid=true;
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This entire area twitches.\n\r");
@@ -281,7 +280,7 @@ public class Modify extends BaseGenerics
 			else
 			{
 				mob.location().setArea(A);
-				if(!A.getProperMap().hasMoreElements())
+				if(A.getRandomProperRoom()!=null)
 					reid=true;
 				else
 					CMLib.database().DBUpdateRoom(mob.location());
@@ -290,23 +289,39 @@ public class Modify extends BaseGenerics
 			
 			if(reid)
 			{
-				String oldID=mob.location().roomID();
-				mob.location().setRoomID(checkID);
-				CMLib.database().DBReCreate(mob.location(),oldID);
+				Room R=mob.location();
+	    		synchronized(("SYNC"+R.roomID()).intern())
+	    		{
+	    			R=CMLib.map().getRoom(R);
+					String oldID=R.roomID();
+					Room reference=CMLib.map().findConnectingRoom(R);
+					String checkID=null;
+					if(reference!=null)
+						checkID=A.getNewRoomID(reference,CMLib.map().getRoomDir(reference,R));
+					else
+						checkID=A.getNewRoomID(R,-1);
+					mob.location().setRoomID(checkID);
+					CMLib.database().DBReCreate(R,oldID);
+	    		}
+				
 				try
 				{
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
-						for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
-						{
-							Room thatRoom=R.rawDoors()[dir];
-							if(thatRoom==mob.location())
+						Room R2=(Room)r.nextElement();
+			    		synchronized(("SYNC"+R2.roomID()).intern())
+			    		{
+			    			R2=CMLib.map().getRoom(R2);
+							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 							{
-								CMLib.database().DBUpdateExits(R);
-								break;
+								Room thatRoom=R2.rawDoors()[dir];
+								if((thatRoom!=null)&&(thatRoom.roomID().equals(R)))
+								{
+									CMLib.database().DBUpdateExits(R2);
+									break;
+								}
 							}
-						}
+			    		}
 					}
 			    }catch(NoSuchElementException e){}
 			}
@@ -336,7 +351,7 @@ public class Modify extends BaseGenerics
 		if((command.equalsIgnoreCase("XGRID"))&&(mob.location() instanceof GridLocale))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-			((GridLocale)mob.location()).setXSize(CMath.s_int(restStr));
+			((GridLocale)mob.location()).setXGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
@@ -345,7 +360,7 @@ public class Modify extends BaseGenerics
 		if((command.equalsIgnoreCase("YGRID"))&&(mob.location() instanceof GridLocale))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-			((GridLocale)mob.location()).setYSize(CMath.s_int(restStr));
+			((GridLocale)mob.location()).setYGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
@@ -392,7 +407,7 @@ public class Modify extends BaseGenerics
 
 		String oldName=myArea.Name();
 		Vector allMyDamnRooms=new Vector();
-		for(Enumeration e=myArea.getProperMap();e.hasMoreElements();)
+		for(Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
 			allMyDamnRooms.addElement(e.nextElement());
 
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
@@ -416,6 +431,11 @@ public class Modify extends BaseGenerics
                 genParentAreas(mob,myArea,++showNumber,showFlag);
                 genChildAreas(mob,myArea,++showNumber,showFlag);
 				genSubOps(mob,myArea,++showNumber,showFlag);
+				if(myArea instanceof GridZones)
+				{
+					genGridLocaleX(mob,(GridZones)myArea,++showNumber,showFlag);
+					genGridLocaleY(mob,(GridZones)myArea,++showNumber,showFlag);
+				}
 				genBehaviors(mob,myArea,++showNumber,showFlag);
 				genAffects(mob,myArea,++showNumber,showFlag);
 				genImage(mob,myArea,++showNumber,showFlag);
@@ -456,6 +476,17 @@ public class Modify extends BaseGenerics
 				myArea.setArchivePath(restStr);
 			}
 			else
+			if((command.equalsIgnoreCase("XGRID"))&&(myArea instanceof GridZones))
+			{
+				if(commands.size()<4) { flunkCmd2(mob); return;}
+				((GridZones)myArea).setXGridSize(CMath.s_int(restStr));
+			}
+			else
+			if((command.equalsIgnoreCase("YGRID"))&&(myArea instanceof GridZones))
+			{
+				if(commands.size()<4) { flunkCmd2(mob); return;}
+				((GridZones)myArea).setYGridSize(CMath.s_int(restStr));
+			}
 			if(command.equalsIgnoreCase("CLIMATE"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
@@ -531,33 +562,42 @@ public class Modify extends BaseGenerics
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
+				for(Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((R.roomID().startsWith(oldName+"#"))
-					&&(CMLib.map().getRoom(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
-					{
-						String oldID=R.roomID();
-						R.setRoomID(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1));
-						CMLib.database().DBReCreate(R,oldID);
-					}
-					else
-						CMLib.database().DBUpdateRoom(R);
+		    		synchronized(("SYNC"+R.roomID()).intern())
+		    		{
+		    			R=CMLib.map().getRoom(R);
+						if((R.roomID().startsWith(oldName+"#"))
+						&&(CMLib.map().getRoom(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
+						{
+			    			R=CMLib.map().getRoom(R);
+							String oldID=R.roomID();
+							R.setRoomID(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1));
+							CMLib.database().DBReCreate(R,oldID);
+						}
+						else
+							CMLib.database().DBUpdateRoom(R);
+		    		}
 				}
 				try
 				{
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						boolean doIt=false;
-						for(int d=0;d<R.rawDoors().length;d++)
-						{
-							Room R2=R.rawDoors()[d];
-							if((R2!=null)&&(R2.getArea()==myArea))
-							{ doIt=true; break;}
-						}
-						if(doIt)
-							CMLib.database().DBUpdateExits(R);
+			    		synchronized(("SYNC"+R.roomID()).intern())
+			    		{
+			    			R=CMLib.map().getRoom(R);
+							boolean doIt=false;
+							for(int d=0;d<R.rawDoors().length;d++)
+							{
+								Room R2=R.rawDoors()[d];
+								if((R2!=null)&&(R2.getArea()==myArea))
+								{ doIt=true; break;}
+							}
+							if(doIt)
+								CMLib.database().DBUpdateExits(R);
+			    		}
 					}
 			    }catch(NoSuchElementException e){}
 			}
@@ -1250,15 +1290,19 @@ public class Modify extends BaseGenerics
 						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
-							for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
-							{
-								Exit exit=room.rawExits()[e2];
-								if((exit!=null)&&(exit==thang))
+				    		synchronized(("SYNC"+room.roomID()).intern())
+				    		{
+				    			room=CMLib.map().getRoom(room);
+								for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 								{
-									CMLib.database().DBUpdateExits(room);
-									break;
+									Exit exit=room.rawExits()[e2];
+									if((exit!=null)&&(exit==thang))
+									{
+										CMLib.database().DBUpdateExits(room);
+										break;
+									}
 								}
-							}
+				    		}
 						}
 				    }catch(NoSuchElementException e){}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");

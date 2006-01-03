@@ -143,7 +143,9 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target() instanceof Room))
+				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Area)
 		&&((System.currentTimeMillis()-lastMobSave)>360000))
 		{
@@ -152,19 +154,23 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=(Room)V.elementAt(v);
-				lastMobSave=System.currentTimeMillis();
-				Vector mobs=new Vector();
-				for(int m=0;m<R.numInhabitants();m++)
+				synchronized(("SYNC"+R.roomID()).intern())
 				{
-					MOB M=R.fetchInhabitant(m);
-					if((M!=null)
-					&&(M.savable())
-					&&(M.getStartRoom()==R)
-					&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
-						mobs.addElement(M);
+					R=CMLib.map().getRoom(R);
+					lastMobSave=System.currentTimeMillis();
+					Vector mobs=new Vector();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)
+						&&(M.savable())
+						&&(M.getStartRoom()==R)
+						&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
+							mobs.addElement(M);
+					}
+					if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
+						CMLib.database().DBUpdateTheseMOBs(R,mobs);
 				}
-				if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
-					CMLib.database().DBUpdateTheseMOBs(R,mobs);
 			}
 			lastMobSave=System.currentTimeMillis();
 		}
@@ -205,9 +211,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				A=CMLib.map().getArea(landPropertyID());
 			if(lastDayDone!=A.getTimeObj().getDayOfMonth())
 			{
-			    Room R=(Room)affected;
 			    lastDayDone=A.getTimeObj().getDayOfMonth();
-			    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+			    if((landOwner().length()>0)&&rentalProperty())
 			        if(Prop_RoomForSale.doRentalProperty(A,A.Name(),landOwner(),landPrice()))
 			        {
 			            setLandOwner("");

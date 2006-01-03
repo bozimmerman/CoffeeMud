@@ -154,7 +154,7 @@ public class Prayer_Bless extends Prayer
 				Item I=getSomething(target,true);
 				while(I!=null)
 				{
-					CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
 					endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					I.recoverEnvStats();

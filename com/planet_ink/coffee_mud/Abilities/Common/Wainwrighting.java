@@ -206,7 +206,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		displayText="You are building "+building.name();
 		verb="building "+building.name();
         playSound="hammer.wav";
-		building.setDisplayText(itemName+" is here");
+		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

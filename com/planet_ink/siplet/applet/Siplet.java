@@ -1,5 +1,6 @@
 package com.planet_ink.siplet.applet;
 import com.planet_ink.siplet.support.*;
+import com.jcraft.jzlib.*;
 import java.applet.Applet;
 import java.awt.*;
 import java.net.*;
@@ -27,10 +28,11 @@ public class Siplet extends Applet
     
     public final static long serialVersionUID=6;
     public static final float VERSION_MAJOR=(float)2.0;
-    public static final long  VERSION_MINOR=2;
+    public static final long  VERSION_MINOR=3;
     protected StringBuffer buf=new StringBuffer("");
     protected Socket sock=null;
-    protected BufferedReader in;
+    protected InputStream rawin=null;
+    protected BufferedReader[] in;
     protected DataOutputStream out;
     protected boolean connected=false;
     protected TelnetFilter Telnet=new TelnetFilter(this);
@@ -84,7 +86,9 @@ public class Siplet extends Applet
         {
             //addItem("connecting to "+url+":"+port+" ");
             sock=new Socket(InetAddress.getByName(url),port);
-            in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            rawin=sock.getInputStream();
+            in=new BufferedReader[1];
+            in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out=new DataOutputStream(sock.getOutputStream());
             Telnet=new TelnetFilter(this);
             connected=true;
@@ -106,8 +110,8 @@ public class Siplet extends Applet
         connected=false;
         try
         {
-            if(in!=null)
-                in.close();
+            if((in!=null)&&(in[0]!=null))
+                in[0].close();
             if(out!=null)
                 out.close();
             if(sock!=null)
@@ -182,19 +186,13 @@ public class Siplet extends Applet
         try
         {
             while(connected
-            &&in.ready()
+            &&in[0].ready()
             &&(!sock.isClosed())
             &&(sock.isConnected()))
             {
                 try
                 {
-                    char c=(char)in.read();
-                    buf.append(c);
-                    if(c==65535)
-                    {
-                        disconnectFromURL();
-                        return;
-                    }
+                	Telnet.TelnetRead(buf,rawin,in);
                 }
                 catch(java.io.InterruptedIOException e)
                 {
@@ -214,7 +212,7 @@ public class Siplet extends Applet
                 disconnectFromURL();
             else
             if(buf.length()>0)
-                Telnet.TelenetFilter(buf,out);
+                Telnet.TelenetFilter(buf,out,rawin,in);
 
         }
         catch(Exception e)

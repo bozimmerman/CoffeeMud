@@ -68,7 +68,7 @@ public class Disease_Anthrax extends Disease
 			int damage=CMLib.dice().roll(1,6,0);
 			if(damage>1)
             {
-				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
             }
 			if((--conTickDown)<=0)
 			{

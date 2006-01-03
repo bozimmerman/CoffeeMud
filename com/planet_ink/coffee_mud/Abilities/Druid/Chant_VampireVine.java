@@ -53,9 +53,9 @@ public class Chant_VampireVine extends Chant_SummonVine
 				if(amount>3)
 				{
 					amount=amount/4;
-					CMLib.combat().postHealing(((MOB)affected),((MOB)affected),this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
+					CMLib.combat().postHealing(((MOB)affected),((MOB)affected),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,amount,null);
 					if(invoker!=null)
-						CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,null);
+						CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,amount,null);
 				}
 			}
 		}

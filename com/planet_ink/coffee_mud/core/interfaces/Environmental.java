@@ -253,6 +253,21 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, CM
      * @return whether this object is the same as the one passed in
      */
 	public boolean sameAs(Environmental E);
+	
+    /**
+     * If this object expires, it should have a timestamp saying when it expires, in real time.
+     * When it expires, a MSG_EXPIRE message will be sent to it.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#setExpirationDate(long)
+     * @return the time stamp when this thing expires
+     */
+	public long expirationDate();
+    /**
+     * If this object expires, it should have a timestamp saying when it expires, in real time.
+     * When it expires, a MSG_EXPIRE message will be sent to it.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#expirationDate()
+     * @param dateTime the time stamp when this thing expires
+     */
+	public void setExpirationDate(long dateTime);
 
 	/**
      * Add a new effect to this object, whether permanent or temporary.  After calling this method,

@@ -48,6 +48,9 @@ public interface EnglishParsing extends CMObject
     public boolean containsString(String toSrchStr, String srchStr);
     public String bumpDotNumber(String srchStr);
     public Object[] fetchFlags(String srchStr);
+    public Vector preCommandParser(Vector CMDS);
+    public String preItemParser(String item);
+    public String failedItemParser(String item);
     public Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly);

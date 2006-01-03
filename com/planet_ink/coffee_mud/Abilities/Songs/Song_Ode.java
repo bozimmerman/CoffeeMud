@@ -348,7 +348,7 @@ public class Song_Ode extends Song
 			if((A!=null)&&(A.whom!=null)&&(A.song==null))
 			{
 				String str="^S<S-NAME> finish(es) composing the "+A.songOf()+".^?";
-				CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
+				CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -404,7 +404,7 @@ public class Song_Ode extends Song
 			unsing(mob,mob,false);
 			whom=target;
 			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -84,8 +84,8 @@ public class DefaultArrestWarrant implements LegalWarrant
     public MOB victim() { return victim;}
     public MOB witness(){ return witness;}
     public MOB arrestingOfficer(){ return arrestingOfficer;}
-    public Room jail(){ return jail;}
-    public Room releaseRoom(){ return releaseRoom;}
+    public Room jail(){ return CMLib.map().getRoom(jail);}
+    public Room releaseRoom(){ return CMLib.map().getRoom(releaseRoom);}
     public String crime(){ return crime;}
     public int actionCode(){ return actionCode;}
     public String getActionParm(int code)

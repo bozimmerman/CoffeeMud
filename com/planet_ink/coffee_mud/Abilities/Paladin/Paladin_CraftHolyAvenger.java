@@ -124,7 +124,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		displayText="You are crafting "+building.name();
 		verb="crafting "+building.name();
 		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-5;
-		building.setDisplayText(itemName+" is here");
+		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(0);

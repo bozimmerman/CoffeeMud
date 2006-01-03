@@ -66,6 +66,8 @@ public class DefaultSocial implements Social
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
     public String MSPfile(){return MSPfile;}
     public void setMSPfile(String newFile){MSPfile=newFile;}
+	public long expirationDate(){return 0;}
+	public void setExpirationDate(long time){}
 
 	public boolean invoke(MOB mob,
 						  Vector commands,
@@ -103,20 +105,20 @@ public class DefaultSocial implements Social
         
 		if((Target==null)&&(targetable()))
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		if(Target==null)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,Target,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			CMMsg msg=CMClass.getMsg(mob,Target,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

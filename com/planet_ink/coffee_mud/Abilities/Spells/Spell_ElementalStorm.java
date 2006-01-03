@@ -86,7 +86,7 @@ public class Spell_ElementalStorm extends Spell
 						int damage = 0;
 						damage += CMLib.dice().roll(1,3,0);
 						if(target.location()==mob.location())
-							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
 					}
 				}
 				if(target.amDead())

@@ -349,7 +349,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
 	public boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E)
 	{
-        Room R=CMLib.utensils().roomLocation(E);
+        Room R=CMLib.map().roomLocation(E);
         if(R==null) return false;
 		Area A=R.getArea();
 		if(A==null) return false;
@@ -1594,7 +1594,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.utensils().getWornCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer(CMath.pow(2,code-1)));
+                                if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code-1)));
                             }
                         }
                     }
@@ -1617,7 +1617,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer(CMath.pow(2,code)));
+                                if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code)));
                             }
                         }
                     }
@@ -1640,7 +1640,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer(CMath.pow(2,code)));
+                                if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code)));
                             }
                         }
                     }
@@ -2077,7 +2077,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 73: // +HOUR
                 {
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
@@ -2087,7 +2087,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 74: // -HOUR
                 {
                     boolean found=false;
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
@@ -2097,7 +2097,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 75: // +season
                 {
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
@@ -2107,7 +2107,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 76: // -season
                 {
                     boolean found=false;
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
@@ -2117,7 +2117,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 77: // +month
                 {
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
@@ -2127,7 +2127,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 78: // -month
                 {
                     boolean found=false;
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
@@ -2355,7 +2355,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 31: // -area
 				{
 					boolean found=false;
-                    Room R=CMLib.utensils().roomLocation(E);
+                    Room R=CMLib.map().roomLocation(E);
                     if(R!=null)
 						for(int v=1;v<V.size();v++)
 							if(R.getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
@@ -2365,7 +2365,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 32: // +area
             {
-                Room R=CMLib.utensils().roomLocation(E);
+                Room R=CMLib.map().roomLocation(E);
 				if(R!=null)
 					for(int v=1;v<V.size();v++)
 						if(R.getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
@@ -2831,7 +2831,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 73: // +hour
                     {
-                        Room R=CMLib.utensils().roomLocation(E);
+                        Room R=CMLib.map().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
                             return false;
@@ -2840,7 +2840,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 74: // -hour
                     {
                         boolean found=false;
-                        Room R=CMLib.utensils().roomLocation(E);
+                        Room R=CMLib.map().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
                         { found=true;}
@@ -2849,7 +2849,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 75: // +season
                     {
-                        Room R=CMLib.utensils().roomLocation(E);
+                        Room R=CMLib.map().roomLocation(E);
                         if((R!=null)
                         &&((fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
                             ||(fromHereEndsWith(V,'-',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
@@ -2859,7 +2859,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 76: // -season
                     {
                         boolean found=false;
-                        Room R=CMLib.utensils().roomLocation(E);
+                        Room R=CMLib.map().roomLocation(E);
                         if((R!=null)
                         &&((fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
                             ||(fromHereEndsWith(V,'+',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
@@ -2869,7 +2869,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 77: // +month
                     {
-                        Room R=CMLib.utensils().roomLocation(E);
+                        Room R=CMLib.map().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getMonth())))
                             return false;
@@ -2878,7 +2878,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 78: // -month
                     {
                         boolean found=false;
-                        Room R=CMLib.utensils().roomLocation(E);
+                        Room R=CMLib.map().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getMonth())))
                         { found=true;}

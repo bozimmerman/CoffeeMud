@@ -641,7 +641,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
             CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
-            mob.setStartRoom(CMLib.map().getStartRoom(mob));
+            mob.setStartRoom(CMLib.map().getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
             mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
             mob.session().prompt("");
@@ -666,7 +666,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 reloadTerminal(mob);
                 mob.bringToLife(mob.getStartRoom(),true);
-                mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+                mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
             }
             mob.playerStats().leveledDateTime(0);
             CMLib.database().DBCreateCharacter(mob);
@@ -718,7 +718,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         boolean wizi=false;
 
-        String login=mob.session().prompt("name:^<USER^>");
+        String login=mob.session().prompt("name: ^<USER^>");
         if(login==null) return 0;
         login=login.trim();
         if(login.length()==0) return 0;
@@ -732,7 +732,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         boolean found=CMLib.database().DBUserSearch(mob,login);
         if(found)
         {
-            mob.session().print("password:^<PASSWORD^>");
+            mob.session().print("password: ^<PASSWORD^>");
             String password=mob.session().blockingIn();
             PlayerStats pstats=mob.playerStats();
 
@@ -842,7 +842,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     showTheNews(mob);
                     mob.bringToLife(mob.location(),false);
                     CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-                    mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+                    mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
                     for(int f=0;f<mob.numFollowers();f++)
                     {
                         MOB follower=mob.fetchFollower(f);
@@ -856,7 +856,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                             follower.setLocation(R);
                             follower.bringToLife(R,false);
                             follower.setFollowing(mob);
-                            follower.location().showOthers(follower,R,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+                            R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
                         }
                     }
                 }
@@ -872,7 +872,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     showTheNews(mob);
                     mob.bringToLife(mob.location(),true);
                     CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-                    mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+                    mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
                     CMLib.database().DBReadFollowers(mob,true);
                 }
                 if((mob.session()!=null)&&(mob.playerStats()!=null))

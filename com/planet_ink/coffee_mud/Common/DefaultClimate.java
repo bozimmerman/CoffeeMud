@@ -57,12 +57,12 @@ public class DefaultClimate implements Climate
 	public int nextWeatherType(Room room)
 	{
 		if(room==null) return nextWeather;
-		if(!CMLib.utensils().hasASky(room)) return Climate.WEATHER_CLEAR;
+		if(!CMLib.map().hasASky(room)) return Climate.WEATHER_CLEAR;
 		return nextWeather;
 	}
 	public String nextWeatherDescription(Room room)
 	{
-		if(!CMLib.utensils().hasASky(room)) return "You can't tell much about the weather from here.";
+		if(!CMLib.map().hasASky(room)) return "You can't tell much about the weather from here.";
 		return getNextWeatherDescription(room.getArea());
 	}
 	public String getNextWeatherDescription(Area A)
@@ -142,12 +142,12 @@ public class DefaultClimate implements Climate
 	public int weatherType(Room room)
 	{
 		if(room==null) return currentWeather;
-		if(!CMLib.utensils().hasASky(room)) return Climate.WEATHER_CLEAR;
+		if(!CMLib.map().hasASky(room)) return Climate.WEATHER_CLEAR;
 		return currentWeather;
 	}
 	public String weatherDescription(Room room)
 	{
-		if(!CMLib.utensils().hasASky(room))
+		if(!CMLib.map().hasASky(room))
 			return "^JYou can't tell much about the weather from here.^?";
 		return getWeatherDescription(room.getArea());
 	}
@@ -155,7 +155,7 @@ public class DefaultClimate implements Climate
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)
                 &&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
-		||(!CMLib.utensils().hasASky(room)))
+		||(!CMLib.map().hasASky(room)))
 			return false;
 		switch(weatherType(room))
 		{
@@ -176,7 +176,7 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheSun(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN))
-		||(!CMLib.utensils().hasASky(room)))
+		||(!CMLib.map().hasASky(room)))
 			return false;
 
 		switch(weatherType(room))
@@ -357,7 +357,7 @@ public class DefaultClimate implements Climate
 				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(CMLib.utensils().hasASky(R))
+					if(CMLib.map().hasASky(R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							MOB mob=R.fetchInhabitant(i);

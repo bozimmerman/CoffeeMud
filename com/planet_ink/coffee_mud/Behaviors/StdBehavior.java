@@ -157,6 +157,7 @@ public class StdBehavior implements Behavior
 		if(monster.amDead()) return false;
 		if(monster.location()==null) return false;
 		if(!CMLib.flags().aliveAwakeMobile(monster,true)) return false;
+		if(CMLib.flags().isInTheGame(monster,true)) return true;
 		return true;
 	}
 
@@ -168,7 +169,6 @@ public class StdBehavior implements Behavior
 		MOB monster=(MOB)affecting;
 		if(!canActAtAll(monster))
 			return false;
-		if(!CMLib.flags().isInTheGame(monster,false)) return false;
 		if(monster.isInCombat()) return false;
 		if(monster.amFollowing()!=null)  return false;
 		if(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0)))

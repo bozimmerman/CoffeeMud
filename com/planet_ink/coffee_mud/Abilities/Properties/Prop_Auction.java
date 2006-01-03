@@ -133,7 +133,7 @@ public class Prop_Auction extends Property
     								highBidder.tell(CMLib.beanCounter().nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
                                     if(auctioning instanceof LandTitle)
                                     {
-                                        CMMsg msg=CMClass.getMsg(M,highBidder,auctioning,CMMsg.MASK_GENERAL|CMMsg.TYP_GIVE,null);
+                                        CMMsg msg=CMClass.getMsg(M,highBidder,auctioning,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
                                         auctioning.executeMsg(highBidder,msg);
                                     }
                                 }

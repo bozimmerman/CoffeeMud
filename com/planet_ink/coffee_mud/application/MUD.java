@@ -45,8 +45,8 @@ import java.sql.*;
 
 public class MUD extends Thread implements MudHost
 {
-	public static final float HOST_VERSION_MAJOR=(float)5.0;
-	public static final long  HOST_VERSION_MINOR=1;
+	public static final float HOST_VERSION_MAJOR=(float)5.1;
+	public static final long  HOST_VERSION_MINOR=0;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
@@ -146,11 +146,11 @@ public class MUD extends Thread implements MudHost
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		DBConnection DBTEST=DBConnector.DBFetch();
 		if(DBTEST!=null) DBConnector.DBDone(DBTEST);
-		String DBerrors=DBConnector.errorStatus().toString();
-		if((DBerrors.length()==0)||(DBerrors.startsWith("OK!")))
+		if((DBConnector.amIOk())&&(CMLib.database().isConnected()))
 			Log.sysOut("MUD","Database connection successful.");
 		else
 		{
+			String DBerrors=DBConnector.errorStatus().toString();
 			Log.errOut("MUD","Fatal database error: "+DBerrors);
 			System.exit(-1);
 		}
@@ -222,7 +222,7 @@ public class MUD extends Thread implements MudHost
 
 		Log.sysOut("MUD","Loading map...");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
-		RoomLoader.DBRead();
+		CMLib.database().DBReadAllRooms(null);
 		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -458,10 +458,9 @@ public class MUD extends Thread implements MudHost
 					StringBuffer rejectText=Resources.getFileResource("text/offline.txt",true);
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.SYSTEM_MUDSTATUS)+"\n\r");
-					out.flush();
 					out.println(rejectText);
 					out.flush();
-                    try{Thread.sleep(100);}catch(Exception e){}
+                    try{Thread.sleep(1000);}catch(Exception e){}
 					out.close();
 					sock = null;
 				}
@@ -553,12 +552,19 @@ public class MUD extends Thread implements MudHost
 		if(S!=null) mob=S.mob();
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
 		CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
+		Vector roomSet=new Vector();
 		try
 		{
+			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+			{
+			    Area A=(Area)e.nextElement();
+			    A.toggleMobility(false);
+			}
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				R.send(mob,msg);
+				roomSet.addElement(R);
 			}
 	    }catch(NoSuchElementException e){}
 		if(S!=null)S.println("done");
@@ -592,104 +598,17 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)S.print("Saving room data...");
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
 			int roomCounter=0;
-			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-			{
-			    Area A=(Area)e.nextElement();
-			    A.toggleMobility(false);
-			}
-			if(CMSecurity.isSaveFlag("ROOMSHOPS")&&(!CMSecurity.isSaveFlag("ROOMMOBS")))
-			{
-			    try
-			    {
-					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-					{
-					    Room R=(Room)e.nextElement();
-					    for(int m=0;m<R.numInhabitants();m++)
-					    {
-					        MOB M=R.fetchInhabitant(m);
-					        if((M instanceof ShopKeeper)
-					        &&(M.savable())
-					        &&(M.getStartRoom()!=R)
-					        &&(M.getStartRoom()!=null))
-					            M.getStartRoom().bringMobHere(M,false);
-					    }
-					}
-			    }catch(NoSuchElementException e){}
-			}
-			else
-			if(CMSecurity.isSaveFlag("ROOMMOBS"))
-			{
-			    try
-			    {
-					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-					{
-					    Room R=(Room)e.nextElement();
-					    if(R.roomID().length()==0)
-					    for(int m=0;m<R.numInhabitants();m++)
-					    {
-					        MOB M=R.fetchInhabitant(m);
-					        if((M!=null)
-					        &&(M.savable())
-					        &&(M.getStartRoom()!=R)
-					        &&(M.getStartRoom()!=null)
-					        &&(M.getStartRoom().roomID().length()>0))
-					            M.getStartRoom().bringMobHere(M,false);
-					    }
-					}
-			    }catch(NoSuchElementException e){}
-			}
-            Vector shopmobs=new Vector();
-            Vector bodies=new Vector();
-			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			Room R=null;
+			for(Enumeration e=roomSet.elements();e.hasMoreElements();)
 			{
 			    if(((++roomCounter)%200)==0)
 			    {
 			        if(S!=null) S.print(".");
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update ("+roomCounter+")");
 			    }
-			    Room R=(Room)e.nextElement();
+			    R=(Room)e.nextElement();
 			    if(R.roomID().length()>0)
-			    {
-			        if(CMSecurity.isSaveFlag("ROOMMOBS"))
-			        {
-			            for(int m=0;m<R.numInhabitants();m++)
-			            {
-			                MOB M=R.fetchInhabitant(m);
-			                if((M!=null)&&(M.savable()))
-			                    M.setStartRoom(R);
-			            }
-			            CMLib.database().DBUpdateMOBs(R);
-			        }
-			        else
-			        if(CMSecurity.isSaveFlag("ROOMSHOPS"))
-			        {
-			            shopmobs.clear();
-			            for(int m=0;m<R.numInhabitants();m++)
-			            {
-			                MOB M=R.fetchInhabitant(m);
-			                if((M!=null)
-			                &&(M.savable())
-			                &&(M instanceof ShopKeeper)
-			                &&(M.getStartRoom()==R))
-			                    shopmobs.addElement(M);
-			            }
-			            if(shopmobs.size()>0)
-				            CMLib.database().DBUpdateTheseMOBs(R,shopmobs);
-			        }
-			        if(CMSecurity.isSaveFlag("ROOMITEMS"))
-			        {
-			            bodies.clear();
-				        for(int i=0;i<R.numItems();i++)
-				        {
-				            Item I=R.fetchItem(i);
-				            if(I instanceof DeadBody)
-				                bodies.addElement(I);
-				        }
-				        for(int i=0;i<bodies.size();i++)
-				            ((Item)bodies.elementAt(i)).destroy();
-			            CMLib.database().DBUpdateItems(R);
-			        }
-			    }
+			    	R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 			}
 			if(S!=null)S.println("done");
 			Log.sysOut("MUD","Map data saved.");

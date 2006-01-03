@@ -115,41 +115,36 @@ public class Spell_LocateObject extends Spell
 				Environmental item=null;
 				Room room=null;
                 ShopKeeper SK=null;
-				for(Iterator a=areas.iterator();a.hasNext();)
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50+adjustedLevel(mob,asLevel));
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
-				    A=(Area)a.next();
-					for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+					room=CMLib.map().getRoom((Room)r.nextElement());
+					if(!CMLib.flags().canAccess(mob,room)) continue;
+
+					item=room.fetchItem(null,what);
+					if((item!=null)&&(CMLib.flags().canBeLocated((Item)item)))
 					{
-					    room=(Room)r.nextElement();
-	
-						if(!CMLib.flags().canAccess(mob,room)) continue;
-	
-						item=room.fetchItem(null,what);
-						if((item!=null)&&(CMLib.flags().canBeLocated((Item)item)))
+						String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
+						itemsFound.addElement(str);
+					}
+					for(int i=0;i<room.numInhabitants();i++)
+					{
+						inhab=room.fetchInhabitant(i);
+						if(inhab==null) break;
+
+						item=inhab.fetchInventory(what);
+                        SK=CMLib.coffeeShops().getShopKeeper(inhab);
+						if((item==null)&&(SK!=null))
+							item=SK.getShop().getStock(what,mob,SK.whatIsSold(),inhab.getStartRoom());
+						if((item instanceof Item)
+						&&((CMLib.flags().canBeLocated((Item)item)))
+						&&(item.envStats().level()>minLevel)
+						&&(item.envStats().level()<maxLevel))
 						{
-							String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
+							String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
 							itemsFound.addElement(str);
+							break;
 						}
-						for(int i=0;i<room.numInhabitants();i++)
-						{
-							inhab=room.fetchInhabitant(i);
-							if(inhab==null) break;
-	
-							item=inhab.fetchInventory(what);
-                            SK=CMLib.coffeeShops().getShopKeeper(inhab);
-							if((item==null)&&(SK!=null))
-								item=SK.getShop().getStock(what,mob,SK.whatIsSold(),inhab.getStartRoom());
-							if((item instanceof Item)
-							&&((CMLib.flags().canBeLocated((Item)item)))
-							&&(item.envStats().level()>minLevel)
-							&&(item.envStats().level()<maxLevel))
-							{
-								String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
-								itemsFound.addElement(str);
-								break;
-							}
-						}
-						if(itemsFound.size()>0) break;
 					}
 					if(itemsFound.size()>0) break;
 				}

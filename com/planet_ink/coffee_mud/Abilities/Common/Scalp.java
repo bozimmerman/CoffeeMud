@@ -34,8 +34,8 @@ import java.util.*;
 public class Scalp extends CommonSkill
 {
 	public String ID() { return "Scalp"; }
-	public String name(){ return "Scalp";}
-	private static final String[] triggerStrings = {"SCALP"};
+	public String name(){ return "Scalping";}
+	private static final String[] triggerStrings = {"SCALP","SCALPING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public static Vector lastSoManyScalps=new Vector();
 

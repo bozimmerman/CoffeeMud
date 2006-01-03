@@ -44,7 +44,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	public Item buildMyPlant(MOB mob, Room room)
 	{
 		int code=material&RawMaterial.RESOURCE_MASK;
-		Item newItem=CMClass.getStdItem("GenItem");
+		Item newItem=CMClass.getBasicItem("GenItem");
 		String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
@@ -55,7 +55,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		newItem.setDispossessionTime(0);
+		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		Chant_SummonTree newChant=new Chant_SummonTree();

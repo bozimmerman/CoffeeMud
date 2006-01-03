@@ -12,6 +12,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.sun.rsasign.r;
+
 import java.util.*;
 
 /* 
@@ -72,6 +74,9 @@ public interface Area extends Environmental
 	public final static int NUM_CLIMATES=6;
 	public final static int ALL_CLIMATE_MASK=31;
 	
+	public final static int FLAG_THIN=1;
+	
+	public long flags();
 	public int getTechLevel();
 	public void setTechLevel(int level);
 	public String getArchivePath();
@@ -89,19 +94,32 @@ public interface Area extends Environmental
 
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);
-    public void addRoom(Room R);
-    public void delRoom(Room R);
+    public void addProperRoom(Room R);
+    public void delProperRoom(Room R);
     public Room getRoom(String roomID);
     public boolean isRoom(Room R);
-	public Enumeration getMetroMap();
-	public Enumeration getProperMap();
-	public int metroSize();
-	public int properSize();
-	public boolean inMetroArea(Area A);
-	public int numberOfProperIDedRooms();
-	public Room getRandomMetroRoom();
 	public Room getRandomProperRoom();
-	public void clearMetroCache();
+	public Enumeration getProperMap();
+    public void addProperRoomnumber(String roomID);
+    public void delProperRoomnumber(String roomID);
+	public Enumeration getCompleteMap();
+	public RoomnumberSet getProperRoomnumbers();
+	public void setProperRoomnumbers(RoomnumberSet set);
+	public RoomnumberSet getCachedRoomnumbers();
+	public int numberOfProperIDedRooms();
+	public int properSize();
+    
+	public Enumeration getMetroMap();
+    public void addMetroRoom(Room R);
+    public void delMetroRoom(Room R);
+    public void addMetroRoomnumber(String roomID);
+    public void delMetroRoomnumber(String roomID);
+	public int metroSize();
+	public boolean inMetroArea(Area A);
+	public Room getRandomMetroRoom();
+	public Vector getMetroCollection();
+	
+	public String getNewRoomID(Room startRoom, int direction);
 	
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
@@ -154,4 +172,25 @@ public interface Area extends Environmental
     public void removeParent(Area Disowned);
     public void removeParent(int Disowned);
     public boolean canParent(Area newParent);
+    
+    public class CompleteRoomEnumerator implements Enumeration
+    {
+    	Enumeration roomEnumerator=null;
+    	Area area=null;
+    	public CompleteRoomEnumerator(Area myArea){
+    		area=myArea;
+    		roomEnumerator=area.getProperRoomnumbers().getRoomIDs();
+    	}
+    	public boolean hasMoreElements(){return roomEnumerator.hasMoreElements();}
+    	public Object nextElement()
+    	{
+    		String roomID=(String)roomEnumerator.nextElement();
+    		if(roomID==null) return null;
+			Room R=area.getRoom(roomID);
+			if(R==null) return nextElement();
+			if(R.expirationDate()!=0)
+				R.setExpirationDate(R.expirationDate()+(1000*60*10));
+			return CMLib.map().getRoom(R);
+    	}
+    }
 }

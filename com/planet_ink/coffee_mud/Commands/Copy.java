@@ -198,41 +198,51 @@ public class Copy extends StdCommand
 					mob.tell(getScr("Copy","roomal",Directions.getInDirectionName(dirCode)));
 					return false;
 				}
-				Room newRoom=(Room)room.copyOf();
-				newRoom.clearSky();
-				if(newRoom instanceof GridLocale)
-					((GridLocale)newRoom).clearGrid(null);
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				{
-					newRoom.rawDoors()[d]=null;
-					newRoom.rawExits()[d]=null;
-				}
-				room.rawDoors()[dirCode]=newRoom;
-				newRoom.rawDoors()[Directions.getOpDirectionCode(dirCode)]=room;
-				if(room.rawExits()[dirCode]==null)
-					room.rawExits()[dirCode]=CMClass.getExit("Open");
-				newRoom.rawExits()[Directions.getOpDirectionCode(dirCode)]=(Exit)(room.rawExits()[dirCode].copyOf());
-				newRoom.setRoomID(CMLib.map().getOpenRoomID(room.getArea().Name()));
-				newRoom.setArea(room.getArea());
-				CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
-				CMLib.database().DBUpdateExits(newRoom);
-				CMLib.database().DBUpdateExits(room);
-				if(newRoom.numInhabitants()>0)
-					CMLib.database().DBUpdateMOBs(newRoom);
-				if(newRoom.numItems()>0)
-					CMLib.database().DBUpdateItems(newRoom);
-				newRoom.getArea().fillInAreaRoom(newRoom);
-				if(i==0)
-				{
-					if(number>1)
-						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","yy",number+"",room.roomTitle(),Directions.getInDirectionName(dirCode)));
+	    		synchronized(("SYNC"+room.roomID()).intern())
+	    		{
+	    			room=CMLib.map().getRoom(room);
+					Room newRoom=(Room)room.copyOf();
+					newRoom.clearSky();
+					if(newRoom instanceof GridLocale)
+						((GridLocale)newRoom).clearGrid(null);
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						newRoom.rawDoors()[d]=null;
+						newRoom.rawExits()[d]=null;
+					}
+					room.rawDoors()[dirCode]=newRoom;
+					newRoom.rawDoors()[Directions.getOpDirectionCode(dirCode)]=room;
+					if(room.rawExits()[dirCode]==null)
+						room.rawExits()[dirCode]=CMClass.getExit("Open");
+					newRoom.rawExits()[Directions.getOpDirectionCode(dirCode)]=(Exit)(room.rawExits()[dirCode].copyOf());
+					newRoom.setRoomID(room.getArea().getNewRoomID(room,dirCode));
+					if(newRoom.roomID().length()==0)
+					{
+						mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
+						return false;
+					}
+					newRoom.setArea(room.getArea());
+					CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
+					CMLib.database().DBUpdateExits(newRoom);
+					CMLib.database().DBUpdateExits(room);
+					if(newRoom.numInhabitants()>0)
+						CMLib.database().DBUpdateMOBs(newRoom);
+					if(newRoom.numItems()>0)
+						CMLib.database().DBUpdateItems(newRoom);
+					newRoom.getArea().fillInAreaRoom(newRoom);
+					if(i==0)
+					{
+						if(number>1)
+							room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","yy",number+"",room.roomTitle(),Directions.getInDirectionName(dirCode)));
+						else
+							room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","ma",room.roomTitle(),Directions.getInDirectionName(dirCode)));
+						Log.sysOut("SysopUtils",getScr("Copy","mk",mob.Name(),number+"",room.roomID()));
+					}
 					else
 						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","ma",room.roomTitle(),Directions.getInDirectionName(dirCode)));
-					Log.sysOut("SysopUtils",getScr("Copy","mk",mob.Name(),number+"",room.roomID()));
-				}
-				else
-					room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","ma",room.roomTitle(),Directions.getInDirectionName(dirCode)));
-				room=newRoom;
+					room=newRoom;
+	    		}
 			}
 			else
 			{

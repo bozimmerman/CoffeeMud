@@ -44,7 +44,7 @@ public class Play_Tribal extends Play
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		Room R=CMLib.utensils().roomLocation(affected);
+		Room R=CMLib.map().roomLocation(affected);
 		if(R!=null)
 		for(int m=0;m<R.numInhabitants();m++)
 		{

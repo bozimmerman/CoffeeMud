@@ -4,6 +4,8 @@ set name gobwar
 # this one runs once per day
 set wait 18600
 set interval 9600
+set runlevel 2
+set minplayers 3
 
 #set area GoblinMountains
 #set mobgroup MASK=-PLAYER -RACE +Goblin 

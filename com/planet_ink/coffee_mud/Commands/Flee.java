@@ -125,7 +125,7 @@ public class Flee extends Go
 				MOB deadMOB=CMLib.map().getLoadPlayer(mob.Name());
 				if(deadMOB!=null)
 				{
-					CMLib.utensils().obliteratePlayer(deadMOB,false);
+					CMLib.map().obliteratePlayer(deadMOB,false);
 					return false;
 				}
 			}

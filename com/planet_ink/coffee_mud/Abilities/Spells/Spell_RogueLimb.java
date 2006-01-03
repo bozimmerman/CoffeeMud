@@ -80,7 +80,7 @@ public class Spell_RogueLimb extends Spell
 		&&(CMLib.flags().aliveAwakeMobileUnbound(rogueLimb,true))
 		&&(CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-			CMLib.combat().postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
+			CMLib.combat().postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_ALWAYS|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(msg.amISource(rogueLimb)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{

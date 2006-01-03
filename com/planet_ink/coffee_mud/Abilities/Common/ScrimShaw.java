@@ -37,8 +37,8 @@ import java.util.*;
 public class ScrimShaw extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "ScrimShaw"; }
-	public String name(){ return "Scrimshaw";}
-	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAW"};
+	public String name(){ return "Scrimshawing";}
+	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BONE";}
 
@@ -251,7 +251,7 @@ public class ScrimShaw extends CraftingSkill implements ItemCraftor
 			startStr="<S-NAME> start(s) scrimshawing "+building.name()+".";
 			displayText="You are scrimshawing "+building.name();
 			verb="scrimshawing "+building.name();
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));

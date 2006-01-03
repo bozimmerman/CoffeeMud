@@ -135,6 +135,12 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
 
+	
+	public long expirationDate(){return tickDown*Tickable.TIME_TICK;}
+	public void setExpirationDate(long time){
+		if(time>System.currentTimeMillis())
+			tickDown=(int)((time-System.currentTimeMillis())/Tickable.TIME_TICK);
+	}
 	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
     public boolean savable(){ return savable;}
     public void setSavable(boolean truefalse)   { savable=truefalse; }
@@ -1040,13 +1046,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesRequired())
+		if((practicesRequired()>0)&&(student.getPractices()<practicesRequired()))
 		{
 			teacher.tell(student.name()+" does not have enough practice points to learn '"+name()+"'.");
 			student.tell("You do not have enough practice points.");
 			return false;
 		}
-		if(student.getTrains()<trainsRequired())
+		if((trainsRequired()>0)&&(student.getTrains()<trainsRequired()))
 		{
 			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
 			student.tell("You do not have enough training sessions.");
@@ -1150,7 +1156,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;
 	}
 
@@ -1162,7 +1168,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;
 	}
     protected int somanticCastMask(MOB mob,Environmental target, boolean auto)
@@ -1170,7 +1176,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesToPractice())
+		if((practicesToPractice()>0)&&(student.getPractices()<practicesToPractice()))
 		{
 			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
 			student.tell("You do not have enough practices.");
@@ -1246,9 +1252,9 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public void teach(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesRequired())
+		if((practicesRequired()>0)&&(student.getPractices()<practicesRequired()))
 			return;
-		if(student.getTrains()<trainsRequired())
+		if((trainsRequired()>0)&&(student.getTrains()<trainsRequired())) 
 			return;
 		if(student.fetchAbility(ID())==null)
 		{

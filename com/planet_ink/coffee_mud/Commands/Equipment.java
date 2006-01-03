@@ -54,6 +54,7 @@ public class Equipment extends StdCommand
         boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
                             ||((seer!=mob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0))
                             ||CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
+        HashSet alreadyDone=new HashSet();
 		for(int l=0;l<Item.WORN_ORDER.length;l++)
 		{
 		    found=0;
@@ -71,6 +72,12 @@ public class Equipment extends StdCommand
 				thisItem=mob.fetchInventory(i);
 				if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
+					if(paragraphView)
+					{
+	                	if(alreadyDone.contains(thisItem))
+	                		continue;
+	                	alreadyDone.add(thisItem);
+					}
 					found++;
 					if(CMLib.flags().canBeSeenBy(thisItem,seer))
 					{

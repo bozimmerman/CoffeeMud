@@ -263,252 +263,256 @@ public class RoomData extends StdWebMacro
 			R=CMLib.map().getRoom(last);
 			if(R==null)
 				return "No Room?!";
-			CMLib.utensils().resetRoom(R);
+			CMLib.map().resetRoom(R);
 			httpReq.getRequestObjects().put(last,R);
 		}
-		
-		StringBuffer str=new StringBuffer("");
-		if(parms.containsKey("NAME"))
-		{
-			String name=httpReq.getRequestParameter("NAME");
-			if((name==null)||(name.length()==0))
-				name=R.displayText();
-			str.append(name);
-		}
-		if(parms.containsKey("CLASSES"))
-		{
-			String className=httpReq.getRequestParameter("CLASSES");
-			if((className==null)||(className.length()==0))
-				className=CMClass.className(R);
-			Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
-			if(sorted==null)
+    	synchronized(("SYNC"+R.roomID()).intern())
+    	{
+    		R=CMLib.map().getRoom(R);
+			
+			StringBuffer str=new StringBuffer("");
+			if(parms.containsKey("NAME"))
 			{
-				Vector sortMe=new Vector();
-				for(Enumeration l=CMClass.locales();l.hasMoreElements();)
-					sortMe.addElement(CMClass.className(l.nextElement()));
-				sorted=(new TreeSet(sortMe)).toArray();
-				Resources.submitResource("MUDGRINDER-LOCALES",sorted);
+				String name=httpReq.getRequestParameter("NAME");
+				if((name==null)||(name.length()==0))
+					name=R.displayText();
+				str.append(name);
 			}
-			for(int r=0;r<sorted.length;r++)
+			if(parms.containsKey("CLASSES"))
 			{
-				String cnam=(String)sorted[r];
-				str.append("<OPTION VALUE=\""+cnam+"\"");
-				if(className.equals(cnam))
-					str.append(" SELECTED");
-				str.append(">"+cnam);
-			}
-		}
-
-		str.append(AreaData.affectsNBehaves(R,httpReq,parms));
-		if(parms.containsKey("IMAGE"))
-		{
-			String name=httpReq.getRequestParameter("IMAGE");
-			if((name==null)||(name.length()==0))
-				name=R.rawImage();
-			str.append(name);
-		}
-		if(parms.containsKey("DESCRIPTION"))
-		{
-			String desc=httpReq.getRequestParameter("DESCRIPTION");
-			if((desc==null)||(desc.length()==0))
-				desc=R.description();
-			str.append(desc);
-		}
-		if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
-		{
-			String size=httpReq.getRequestParameter("XGRID");
-			if((size==null)||(size.length()==0))
-				size=((GridLocale)R).xSize()+"";
-			str.append(size);
-		}
-		if((parms.containsKey("YGRID"))&&(R instanceof GridLocale))
-		{
-			String size=httpReq.getRequestParameter("YGRID");
-			if((size==null)||(size.length()==0))
-				size=((GridLocale)R).ySize()+"";
-			str.append(size);
-		}
-		if(parms.containsKey("ISGRID"))
-		{
-			if(R instanceof GridLocale)
-				return "true";
-			return "false";
-		}
-		if(parms.containsKey("MOBLIST"))
-		{
-			Vector classes=new Vector();
-			Vector moblist=null;
-			if(httpReq.isRequestParameter("MOB1"))
-			{
-				moblist=mobs;
-				for(int i=1;;i++)
+				String className=httpReq.getRequestParameter("CLASSES");
+				if((className==null)||(className.length()==0))
+					className=CMClass.className(R);
+				Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
+				if(sorted==null)
 				{
-					String MATCHING=httpReq.getRequestParameter("MOB"+i);
-					if(MATCHING==null)
-						break;
-					else
-					if(isAllNum(MATCHING))
+					Vector sortMe=new Vector();
+					for(Enumeration l=CMClass.locales();l.hasMoreElements();)
+						sortMe.addElement(CMClass.className(l.nextElement()));
+					sorted=(new TreeSet(sortMe)).toArray();
+					Resources.submitResource("MUDGRINDER-LOCALES",sorted);
+				}
+				for(int r=0;r<sorted.length;r++)
+				{
+					String cnam=(String)sorted[r];
+					str.append("<OPTION VALUE=\""+cnam+"\"");
+					if(className.equals(cnam))
+						str.append(" SELECTED");
+					str.append(">"+cnam);
+				}
+			}
+	
+			str.append(AreaData.affectsNBehaves(R,httpReq,parms));
+			if(parms.containsKey("IMAGE"))
+			{
+				String name=httpReq.getRequestParameter("IMAGE");
+				if((name==null)||(name.length()==0))
+					name=R.rawImage();
+				str.append(name);
+			}
+			if(parms.containsKey("DESCRIPTION"))
+			{
+				String desc=httpReq.getRequestParameter("DESCRIPTION");
+				if((desc==null)||(desc.length()==0))
+					desc=R.description();
+				str.append(desc);
+			}
+			if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
+			{
+				String size=httpReq.getRequestParameter("XGRID");
+				if((size==null)||(size.length()==0))
+					size=((GridLocale)R).xGridSize()+"";
+				str.append(size);
+			}
+			if((parms.containsKey("YGRID"))&&(R instanceof GridLocale))
+			{
+				String size=httpReq.getRequestParameter("YGRID");
+				if((size==null)||(size.length()==0))
+					size=((GridLocale)R).yGridSize()+"";
+				str.append(size);
+			}
+			if(parms.containsKey("ISGRID"))
+			{
+				if(R instanceof GridLocale)
+					return "true";
+				return "false";
+			}
+			if(parms.containsKey("MOBLIST"))
+			{
+				Vector classes=new Vector();
+				Vector moblist=null;
+				if(httpReq.isRequestParameter("MOB1"))
+				{
+					moblist=mobs;
+					for(int i=1;;i++)
 					{
-						MOB M2=getMOBFromCode(R,MATCHING);
-						if(M2!=null)
-							classes.addElement(M2);
-					}
-					else
-					if(MATCHING.indexOf("@")>0)
-					{
-						for(int m=0;m<moblist.size();m++)
+						String MATCHING=httpReq.getRequestParameter("MOB"+i);
+						if(MATCHING==null)
+							break;
+						else
+						if(isAllNum(MATCHING))
 						{
-							MOB M2=(MOB)moblist.elementAt(m);
-							if(MATCHING.equals(""+M2))
-							{	classes.addElement(M2);	break;	}
+							MOB M2=getMOBFromCode(R,MATCHING);
+							if(M2!=null)
+								classes.addElement(M2);
+						}
+						else
+						if(MATCHING.indexOf("@")>0)
+						{
+							for(int m=0;m<moblist.size();m++)
+							{
+								MOB M2=(MOB)moblist.elementAt(m);
+								if(MATCHING.equals(""+M2))
+								{	classes.addElement(M2);	break;	}
+							}
+						}
+						else
+						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+						{
+							MOB M2=(MOB)m.nextElement();
+							if(CMClass.className(M2).equals(MATCHING)
+							   &&(!M2.isGeneric()))
+							{	classes.addElement(M2.copyOf()); break;	}
 						}
 					}
+				}
+				else
+				{
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if(M.savable())
+							classes.addElement(M);
+					}
+					moblist=contributeMOBs(classes);
+				}
+				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+				for(int i=0;i<classes.size();i++)
+				{
+					MOB M=(MOB)classes.elementAt(i);
+					str.append("<TR>");
+					str.append("<TD WIDTH=90%>");
+					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
+					str.append("<OPTION VALUE=\"\">Delete!");
+					if(R.isInhabitant(M))
+						str.append("<OPTION SELECTED VALUE=\""+getMOBCode(classes,M)+"\">"+M.Name()+" ("+M.ID()+")");
 					else
+					if(moblist.contains(M))
+						str.append("<OPTION SELECTED VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
+					else
+						str.append("<OPTION SELECTED VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
+					str.append("</SELECT>");
+					str.append("</TD>");
+					str.append("<TD WIDTH=10%>");
+					str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+getMOBCode(classes,M)+"');\">");
+					str.append("</TD></TR>");
+				}
+				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+				str.append("<SELECT ONCHANGE=\"AddMOB(this);\" NAME=MOB"+(classes.size()+1)+">");
+				str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
+				for(int i=0;i<moblist.size();i++)
+				{
+					MOB M=(MOB)moblist.elementAt(i);
+					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
+				}
+				StringBuffer mlist=(StringBuffer)Resources.getResource("MUDGRINDER-MOBLIST");
+				if(mlist==null)
+				{
+					mlist=new StringBuffer("");
 					for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					{
-						MOB M2=(MOB)m.nextElement();
-						if(CMClass.className(M2).equals(MATCHING)
-						   &&(!M2.isGeneric()))
-						{	classes.addElement(M2.copyOf()); break;	}
+						MOB M=(MOB)m.nextElement();
+						if(!M.isGeneric())
+							mlist.append("<OPTION VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
+					}
+					Resources.submitResource("MUDGRINDER-MOBLIST",mlist);
+				}
+				str.append(mlist);
+				str.append("</SELECT>");
+				str.append("</TD>");
+				str.append("<TD WIDTH=10%>");
+				str.append("<INPUT TYPE=BUTTON NAME=ADDMOB VALUE=\"NEW\" ONCLICK=\"AddNewMOB();\">");
+				str.append("</TD></TR></TABLE>");
+			}
+	
+			if(parms.containsKey("ITEMLIST"))
+			{
+				Vector classes=new Vector();
+				Vector itemlist=null;
+				if(httpReq.isRequestParameter("ITEM1"))
+				{
+					itemlist=items;
+					for(int i=1;;i++)
+					{
+						String MATCHING=httpReq.getRequestParameter("ITEM"+i);
+						if(MATCHING==null)
+							break;
+						Item I2=getItemFromAnywhere(R,MATCHING);
+						if(I2!=null)
+							classes.addElement(I2);
 					}
 				}
-			}
-			else
-			{
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					MOB M=R.fetchInhabitant(m);
-					if(M.savable())
-						classes.addElement(M);
-				}
-				moblist=contributeMOBs(classes);
-			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			for(int i=0;i<classes.size();i++)
-			{
-				MOB M=(MOB)classes.elementAt(i);
-				str.append("<TR>");
-				str.append("<TD WIDTH=90%>");
-				str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
-				str.append("<OPTION VALUE=\"\">Delete!");
-				if(R.isInhabitant(M))
-					str.append("<OPTION SELECTED VALUE=\""+getMOBCode(classes,M)+"\">"+M.Name()+" ("+M.ID()+")");
 				else
-				if(moblist.contains(M))
-					str.append("<OPTION SELECTED VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
-				else
-					str.append("<OPTION SELECTED VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
-				str.append("</SELECT>");
-				str.append("</TD>");
-				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+getMOBCode(classes,M)+"');\">");
-				str.append("</TD></TR>");
-			}
-			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
-			str.append("<SELECT ONCHANGE=\"AddMOB(this);\" NAME=MOB"+(classes.size()+1)+">");
-			str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
-			for(int i=0;i<moblist.size();i++)
-			{
-				MOB M=(MOB)moblist.elementAt(i);
-				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
-			}
-			StringBuffer mlist=(StringBuffer)Resources.getResource("MUDGRINDER-MOBLIST");
-			if(mlist==null)
-			{
-				mlist=new StringBuffer("");
-				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 				{
-					MOB M=(MOB)m.nextElement();
-					if(!M.isGeneric())
-						mlist.append("<OPTION VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
-				}
-				Resources.submitResource("MUDGRINDER-MOBLIST",mlist);
-			}
-			str.append(mlist);
-			str.append("</SELECT>");
-			str.append("</TD>");
-			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDMOB VALUE=\"NEW\" ONCLICK=\"AddNewMOB();\">");
-			str.append("</TD></TR></TABLE>");
-		}
-
-		if(parms.containsKey("ITEMLIST"))
-		{
-			Vector classes=new Vector();
-			Vector itemlist=null;
-			if(httpReq.isRequestParameter("ITEM1"))
-			{
-				itemlist=items;
-				for(int i=1;;i++)
-				{
-					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-					if(MATCHING==null)
-						break;
-					Item I2=getItemFromAnywhere(R,MATCHING);
-					if(I2!=null)
+					for(int m=0;m<R.numItems();m++)
+					{
+						Item I2=R.fetchItem(m);
 						classes.addElement(I2);
+					}
+					itemlist=contributeItems(classes);
 				}
-			}
-			else
-			{
-				for(int m=0;m<R.numItems();m++)
+				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+				for(int i=0;i<classes.size();i++)
 				{
-					Item I2=R.fetchItem(m);
-					classes.addElement(I2);
+					Item I=(Item)classes.elementAt(i);
+					str.append("<TR>");
+					str.append("<TD WIDTH=90%>");
+					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
+					str.append("<OPTION VALUE=\"\">Delete!");
+					if(R.isContent(I))
+						str.append("<OPTION SELECTED VALUE=\""+getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name())));
+					else
+					if(itemlist.contains(I))
+						str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name())));
+					else
+						str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
+					str.append("</SELECT>");
+					str.append("</TD>");
+					str.append("<TD WIDTH=10%>");
+					str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+getItemCode(classes,I)+"');\">");
+					str.append("</TD></TR>");
 				}
-				itemlist=contributeItems(classes);
-			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			for(int i=0;i<classes.size();i++)
-			{
-				Item I=(Item)classes.elementAt(i);
-				str.append("<TR>");
-				str.append("<TD WIDTH=90%>");
-				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
-				str.append("<OPTION VALUE=\"\">Delete!");
-				if(R.isContent(I))
-					str.append("<OPTION SELECTED VALUE=\""+getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name())));
-				else
-				if(itemlist.contains(I))
-					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name())));
-				else
-					str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
+				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+				str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
+				str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
+				for(int i=0;i<itemlist.size();i++)
+				{
+					Item I=(Item)itemlist.elementAt(i);
+					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+				}
+				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST");
+				if(ilist==null)
+				{
+					ilist=new StringBuffer("");
+					Vector sortMe=new Vector();
+					CMClass.addAllItemClassNames(sortMe,true,true);
+					Object[] sorted=(new TreeSet(sortMe)).toArray();
+					for(int i=0;i<sorted.length;i++)
+						ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+					Resources.submitResource("MUDGRINDER-ITEMLIST",ilist);
+				}
+				str.append(ilist);
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+getItemCode(classes,I)+"');\">");
-				str.append("</TD></TR>");
+				str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
+				str.append("</TD></TR></TABLE>");
 			}
-			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
-			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
-			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-			for(int i=0;i<itemlist.size();i++)
-			{
-				Item I=(Item)itemlist.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-			}
-			StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST");
-			if(ilist==null)
-			{
-				ilist=new StringBuffer("");
-				Vector sortMe=new Vector();
-				CMClass.addAllItemClassNames(sortMe,true,true);
-				Object[] sorted=(new TreeSet(sortMe)).toArray();
-				for(int i=0;i<sorted.length;i++)
-					ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
-				Resources.submitResource("MUDGRINDER-ITEMLIST",ilist);
-			}
-			str.append(ilist);
-			str.append("</SELECT>");
-			str.append("</TD>");
-			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
-			str.append("</TD></TR></TABLE>");
-		}
-
-		String strstr=str.toString();
-		if(strstr.endsWith(", "))
-			strstr=strstr.substring(0,strstr.length()-2);
-        return clearWebMacros(strstr);
+	
+			String strstr=str.toString();
+			if(strstr.endsWith(", "))
+				strstr=strstr.substring(0,strstr.length()-2);
+	        return clearWebMacros(strstr);
+    	}
 	}
 }

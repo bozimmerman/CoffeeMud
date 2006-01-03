@@ -134,13 +134,13 @@ public class Spell_Scatter extends Spell
 							    if(target.owner() instanceof MOB)
 							    {
 							        MOB owner=(MOB)target.owner();
-									mob.location().show(owner,room,target,CMMsg.MASK_GENERAL|CMMsg.MSG_THROW,"<O-NAME> vanishes from <S-YOUPOSS> inventory!");
-									room.showOthers(owner,room,target,CMMsg.MASK_GENERAL|CMMsg.MSG_THROW,"<O-NAME> appears from out of nowhere!");
+									mob.location().show(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> vanishes from <S-YOUPOSS> inventory!");
+									room.showOthers(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> appears from out of nowhere!");
 							    }
 							    else
 							    {
-									mob.location().show(mob,room,target,CMMsg.MASK_GENERAL|CMMsg.MSG_THROW,"<O-NAME> vanishes!");
-									room.showOthers(mob,room,target,CMMsg.MASK_GENERAL|CMMsg.MSG_THROW,"<O-NAME> appears from out of nowhere!");
+									mob.location().show(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> vanishes!");
+									room.showOthers(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> appears from out of nowhere!");
 							    }
 								if(!room.isContent(target))
 								    room.bringItemHere(target,Item.REFUSE_PLAYER_DROP);

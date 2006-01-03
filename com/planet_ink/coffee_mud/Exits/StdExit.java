@@ -173,6 +173,8 @@ public class StdExit implements Exit
 	public void setMiscText(String newMiscText){miscText=newMiscText;}
 	public String text(){return miscText;}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	public long expirationDate(){return 0;}
+	public void setExpirationDate(long time){}
 
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}

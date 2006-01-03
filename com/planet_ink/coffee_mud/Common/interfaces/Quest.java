@@ -91,6 +91,12 @@ public interface Quest extends Tickable
 	public boolean wasWinner(String name);
 	// set winners list from a ; delimited string
 	public void setWinners(String list);
+	public int minPlayers();
+	public void setMinPlayers(int players);
+	public int runLevel();
+	public void setRunLevel(int level);
+	public String playerMask();
+	public void setPlayerMask(String mask);
 	
 	// for waiting...
 	public int minWait();

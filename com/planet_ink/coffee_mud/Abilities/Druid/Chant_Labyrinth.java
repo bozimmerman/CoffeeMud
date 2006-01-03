@@ -106,8 +106,8 @@ public class Chant_Labyrinth extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Something is happening...");
 
 				Room newRoom=CMClass.getLocale("CaveMaze");
-				((GridLocale)newRoom).setXSize(10);
-				((GridLocale)newRoom).setYSize(10);
+				((GridLocale)newRoom).setXGridSize(10);
+				((GridLocale)newRoom).setYGridSize(10);
 				newRoom.setDisplayText("The Labyrinth");
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				StringBuffer desc=new StringBuffer("");
@@ -138,7 +138,7 @@ public class Chant_Labyrinth extends Chant
 				{
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
-					Room newerRoom=((GridLocale)newRoom).getRandomChild();
+					Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
 					CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of thin air.");
 					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"<S-NAME> disappear(s) into the labyrinth.");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))

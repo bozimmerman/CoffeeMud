@@ -258,7 +258,7 @@ public class Prop_ClanEquipment extends Property
 						                    me.name() + " glows brightly.");
 						int flameDamage = CMLib.dice().roll(1, 6, 0);
 						flameDamage *= PowerLevel;
-						CMLib.combat().postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
+						CMLib.combat().postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect, WeaponType,
 												   "^F^<FIGHT^>The magic of " +clanName+" <DAMAGE>"+
 						                           " <T-NAME>!^</FIGHT^>^?");
 						wandUse.helpProfficiency(mob);
@@ -366,7 +366,7 @@ public class Prop_ClanEquipment extends Property
 			             clanName +
 			            " <DAMAGE> <T-NAME>!^</FIGHT^>^?";
 			CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
-								CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
+								CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,
 								WeaponType,
 								str);
 		}
@@ -399,7 +399,7 @@ public class Prop_ClanEquipment extends Property
 					    int damage = CMLib.dice().roll(1, 3, 0);
 					    damage *= PowerLevel;
 					    CMLib.combat().postDamage(mob, source, this, damage,
-					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL| TypeOfEffect
+					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS| TypeOfEffect
 												, WeaponType,
 					                            "^F^<FIGHT^>The magic of " +
 					                            clanName +
@@ -425,7 +425,7 @@ public class Prop_ClanEquipment extends Property
 			  if (msg.sourceMinor() == CMMsg.TYP_SPEAK)
 			    msg.addTrailerMsg(CMClass.getMsg(msg.source(), this,
 			                                     msg.target(), CMMsg.NO_EFFECT, null,
-			                                     CMMsg.MASK_GENERAL |
+			                                     CMMsg.MASK_ALWAYS |
 			                                     CMMsg.TYP_WAND_USE,
 			                                     msg.targetMessage(),
 			                                     CMMsg.NO_EFFECT, null));

@@ -177,14 +177,14 @@ public class Dance extends StdAbility
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 					if((R!=null)&&(R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						CMMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 						{
 							R2.send(follower,msg2);

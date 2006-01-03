@@ -428,7 +428,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		if(scripted!=null)
 		{
-			Room R=CMLib.utensils().roomLocation(scripted);
+			Room R=CMLib.map().roomLocation(scripted);
 			Log.errOut("Scriptable",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
 			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scriptable Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
 		}
@@ -504,7 +504,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(monsters!=null) return monsters;
 		StringBuffer buf=new CMFile(filename,null,true).text();
 		String thangName="null";
-		Room R=CMLib.utensils().roomLocation(scripted);
+		Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
 		    thangName=scripted.name()+" at "+CMLib.map().getExtendedRoomID((Room)scripted);
 		else
@@ -543,7 +543,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(items!=null) return items;
 		StringBuffer buf=new CMFile(filename,null,true).text();
 		String thangName="null";
-		Room R=CMLib.utensils().roomLocation(scripted);
+		Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
 		    thangName=scripted.name()+" at "+CMLib.map().getExtendedRoomID((Room)scripted);
 		else
@@ -2192,7 +2192,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					Room R2=CMLib.utensils().roomLocation(E);
+					Room R2=CMLib.map().roomLocation(E);
 					if((R==null)&&((arg2.length()==0)||(R2==null)))
 						returnable=true;
 					else
@@ -4556,6 +4556,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(Ms.elementAt(i) instanceof MOB)
 						{
 							m=(MOB)((MOB)Ms.elementAt(i)).copyOf();
+							m.text();
 							m.recoverEnvStats();
 							m.recoverCharStats();
 							m.resetToMaxState();
@@ -4666,24 +4667,24 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 if(arg.equalsIgnoreCase("area"))
                 {
                     if(lastKnownLocation!=null) 
-                        CMLib.utensils().resetArea(lastKnownLocation.getArea());
+                        CMLib.map().resetArea(lastKnownLocation.getArea());
                 }
                 else
                 if(arg.equalsIgnoreCase("room"))
                 {
                     if(lastKnownLocation!=null) 
-                        CMLib.utensils().resetRoom(lastKnownLocation);
+                        CMLib.map().resetRoom(lastKnownLocation);
                 }
                 else
                 {
                     Room R=CMLib.map().getRoom(arg);
                     if(R!=null) 
-                        CMLib.utensils().resetRoom(R);
+                        CMLib.map().resetRoom(R);
                     else
                     {
                         Area A=CMLib.map().findArea(arg);
                         if(A!=null)
-                            CMLib.utensils().resetArea(A);
+                            CMLib.map().resetArea(A);
                         else
                             scriptableError(scripted,"MPRESET","Syntax","Unknown location: "+arg+" for "+scripted.Name());
                     }
@@ -5797,7 +5798,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim();
-						if(match(str,trigger))
+						if(match(str.trim(),trigger))
 						{
 							que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str));
 							return;
@@ -5834,7 +5835,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
-						if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
+						if((trigger.equalsIgnoreCase(msg.tool().Name()))
 						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
@@ -6320,7 +6321,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
-						if(match(str,trigger))
+						if(match(str.trim(),trigger))
 							doIt=true;
 					}
 					else
@@ -6390,7 +6391,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         {
                             trigger=trigger.substring(1).trim().toUpperCase();
-                            if(match(str,trigger))
+                            if(match(str.trim(),trigger))
                                 doIt=true;
                         }
                         else
@@ -6436,7 +6437,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
                     trigger=CMParms.getPastBit(trigger.trim(),0);
                     if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
-                        doIt=str.equals(trigger.substring(1).trim());
+                        doIt=str.trim().equals(trigger.substring(1).trim());
                     else
                     {
                         Pattern P=(Pattern)patterns.get(trigger);
@@ -6495,7 +6496,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		else
 		if(ticking instanceof Environmental)
 		{
-            Room R=CMLib.utensils().roomLocation((Environmental)ticking);
+            Room R=CMLib.map().roomLocation((Environmental)ticking);
             if(R!=null) lastKnownLocation=R;
 
 			if(backupMOB==null)
@@ -6727,7 +6728,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		    tickStatus=Tickable.STATUS_BEHAVIOR+100;
 			for(int q=que.size()-1;q>=0;q--)
 			{
-				ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
+				ScriptableResponse SB=null;
+				try{SB=(ScriptableResponse)que.elementAt(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
 				if(SB.checkTimeToExecute())
                 {
                     execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message);

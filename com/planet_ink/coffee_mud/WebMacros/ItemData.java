@@ -75,57 +75,61 @@ public class ItemData extends StdWebMacro
 			R=CMLib.map().getRoom(last);
 			if(R==null)
 				return "No Room?!";
-			CMLib.utensils().resetRoom(R);
+			CMLib.map().resetRoom(R);
 			httpReq.getRequestObjects().put(last,R);
 		}
-
 		Item I=null;
 		MOB M=null;
-		if((mobNum!=null)&&(mobNum.length()>0))
-		{
-			M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
-			if(M==null)
+    	synchronized(("SYNC"+R.roomID()).intern())
+    	{
+    		R=CMLib.map().getRoom(R);
+	
+			if((mobNum!=null)&&(mobNum.length()>0))
 			{
-				M=RoomData.getMOBFromCode(R,mobNum);
+				M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
 				if(M==null)
 				{
-					StringBuffer str=new StringBuffer("No MOB?!");
-					str.append(" Got: "+mobNum);
-					str.append(", Includes: ");
-					for(int m=0;m<R.numInhabitants();m++)
+					M=RoomData.getMOBFromCode(R,mobNum);
+					if(M==null)
 					{
-						MOB M2=R.fetchInhabitant(m);
-						if((M2!=null)&&(M2.savable()))
-						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+						StringBuffer str=new StringBuffer("No MOB?!");
+						str.append(" Got: "+mobNum);
+						str.append(", Includes: ");
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M2=R.fetchInhabitant(m);
+							if((M2!=null)&&(M2.savable()))
+							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+						}
+	                    return clearWebMacros(str);
 					}
-                    return clearWebMacros(str);
+					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
 				}
-				httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
+				I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
+				if(I==null)
+				{
+					if(itemCode.equals("NEW"))
+						I=CMClass.getItem("GenItem");
+					else
+						I=RoomData.getItemFromCode(M,itemCode);
+					if(I!=null)
+						httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
+				}
 			}
-			I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
-			if(I==null)
+			else
 			{
-				if(itemCode.equals("NEW"))
-					I=CMClass.getItem("GenItem");
-				else
-					I=RoomData.getItemFromCode(M,itemCode);
-				if(I!=null)
-					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
+				I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+itemCode);
+				if(I==null)
+				{
+					if(itemCode.equals("NEW"))
+						I=CMClass.getItem("GenItem");
+					else
+						I=RoomData.getItemFromCode(R,itemCode);
+					if(I!=null)
+						httpReq.getRequestObjects().put(R.roomID()+"/"+itemCode,I);
+				}
 			}
-		}
-		else
-		{
-			I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+itemCode);
-			if(I==null)
-			{
-				if(itemCode.equals("NEW"))
-					I=CMClass.getItem("GenItem");
-				else
-					I=RoomData.getItemFromCode(R,itemCode);
-				if(I!=null)
-					httpReq.getRequestObjects().put(R.roomID()+"/"+itemCode,I);
-			}
-		}
+    	}
 
 		if(I==null)
 		{
@@ -362,7 +366,7 @@ public class ItemData extends StdWebMacro
 					for(int i=1;i<Item.WORN_DESCS.length;i++)
 					{
 						String climstr=Item.WORN_DESCS[i];
-						int mask=CMath.pow(2,i-1);
+						int mask=(int)CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);
@@ -732,7 +736,7 @@ public class ItemData extends StdWebMacro
 						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 						{
 							String constr=Container.CONTAIN_DESCS[i];
-							int mask=CMath.pow(2,i-1);
+							int mask=(int)CMath.pow(2,i-1);
 							str.append("<OPTION VALUE="+mask);
 							if((contains&mask)>0) str.append(" SELECTED");
 							str.append(">"+constr);

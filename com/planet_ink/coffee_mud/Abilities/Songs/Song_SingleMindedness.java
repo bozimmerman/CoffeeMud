@@ -47,7 +47,7 @@ public class Song_SingleMindedness extends Song
 		&&(msg.source()==affected)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS)))
 			themsg=msg;
 	}
 
@@ -56,7 +56,7 @@ public class Song_SingleMindedness extends Song
 		if((themsg!=null)
 		&&(msg.source()!=invoker())
 		&&(msg.source()==affected)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&(themsg.sourceMinor()!=msg.sourceMinor()))
 		{
 			msg.source().tell(msg.source(),null,null,"The only thing you have a mind to do is '"+themsg.sourceMessage()+"'.");

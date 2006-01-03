@@ -36,6 +36,7 @@ public class StdClanCommonItem extends StdClanItem
 	public String ID(){	return "StdClanCommonItem";}
 	protected int workDown=0;
     private static final Hashtable needChart=new Hashtable();
+    protected boolean glows=false;
     
 	public StdClanCommonItem()
 	{
@@ -155,6 +156,26 @@ public class StdClanCommonItem extends StdClanItem
         &&(resourceHere(M.location(),RawMaterial.MATERIAL_WOODEN).size()==0))
             V.addElement(new Integer(RawMaterial.MATERIAL_WOODEN));
         return V;
+    }
+
+    public void affectEnvStats(Environmental affected, EnvStats stats)
+    {
+    	super.affectEnvStats(affected,stats);
+    	if((glows)
+    	&&(affected instanceof MOB)
+    	&&(!super.amWearingAt(Item.IN_INVENTORY))
+    	&&(((MOB)affected).location()!=null)
+    	&&(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
+    	&&(((MOB)affected).getStartRoom()!=null)
+    	&&(((MOB)affected).getStartRoom().getArea()==((MOB)affected).location().getArea()))
+    		stats.setSensesMask(stats.sensesMask()|EnvStats.CAN_SEE_DARK);
+    }
+    
+    
+    public void setReadableText(String newText)
+    {
+    	super.setReadableText(newText);
+    	glows=(newText.equalsIgnoreCase("Mining"));
     }
     
     public boolean trackTo(MOB M, MOB M2)

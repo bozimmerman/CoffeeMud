@@ -80,9 +80,14 @@ public class StdLawBook extends StdItem
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
-                
+				
 				Area A2=CMLib.utensils().getLegalObject(A);
                 Law theLaw=B.legalInfo(A2);
+				if(theLaw==null)
+				{
+					msg.source().tell("There is no law here.");
+					return;
+				}
 
 				int which=-1;
 				if(CMath.s_long(msg.targetMessage())>0)

@@ -175,7 +175,7 @@ public class Prop_Smell extends Property
 	        String emote=selectSmell(true);
 	        if((emote!=null)&&(emote.length()>0))
 	        {
-		        Room room=CMLib.utensils().roomLocation(affected);
+		        Room room=CMLib.map().roomLocation(affected);
 		        if(room!=null)
 		        {
 		            emoteHere(room,(MOB)affected,emote);

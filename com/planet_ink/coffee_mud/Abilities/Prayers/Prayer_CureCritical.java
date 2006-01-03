@@ -61,7 +61,7 @@ public class Prayer_CureCritical extends Prayer
 			{
 				mob.location().send(mob,msg);
 				int healing=CMLib.dice().roll(4,adjustedLevel(mob,asLevel),6);
-				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel much better!");
 			}
 		}

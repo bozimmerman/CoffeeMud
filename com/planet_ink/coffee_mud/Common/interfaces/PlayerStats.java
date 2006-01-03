@@ -31,7 +31,7 @@ import java.util.*;
 */
 public interface PlayerStats extends CMObject
 {
-	public static final String defaultPrompt="^N<^c%hhp %mm %vmv^N>";
+	public static final String defaultPrompt="^N%E<^c%hhp %mm %vmv^N>";
 	public String getEmail();
 	public void setEmail(String newAdd);
 	/** When the USER last logged off */
@@ -50,6 +50,8 @@ public interface PlayerStats extends CMObject
 	public void setColorStr(String color);
 	public String getPrompt();
 	public void setPrompt(String prompt);
+	public String notes();
+	public void setNotes(String newnotes);
 	public HashSet getFriends();
 	public HashSet getIgnored();
 	public Vector getTitles();

@@ -77,7 +77,7 @@ public class Spell_FeignDeath extends Spell
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
@@ -99,7 +99,7 @@ public class Spell_FeignDeath extends Spell
 		}
 		else
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
-		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
+		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;

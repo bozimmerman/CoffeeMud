@@ -44,9 +44,9 @@ public class Trap_Popper extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a noise trap!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a noise trap!");
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a **POP** trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a **POP** trap!"))
 			{
 				super.spring(target);
 				Area A=target.location().getArea();
@@ -54,7 +54,7 @@ public class Trap_Popper extends StdTrap
 				{
 					Room R=(Room)e.nextElement();
 					if(R!=target.location())
-						R.showHappens(CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"You hear a loud **POP** coming from somewhere.");
+						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"You hear a loud **POP** coming from somewhere.");
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

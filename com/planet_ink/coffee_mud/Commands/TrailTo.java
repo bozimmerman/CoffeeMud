@@ -133,7 +133,7 @@ public class TrailTo extends StdCommand
 					if(set.size()==0)
 					{
 						int lowest=Integer.MAX_VALUE;
-						for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							int x=R.roomID().indexOf("#");

@@ -152,7 +152,7 @@ public class Follower extends ActiveTicker
 			else
 			if(!inventory)
 			{
-				MOB M=pickRandomMOBHere(I,CMLib.utensils().roomLocation(I));
+				MOB M=pickRandomMOBHere(I,CMLib.map().roomLocation(I));
 				if(M!=null) lastOwner=M;
 			}
 		}
@@ -217,7 +217,7 @@ public class Follower extends ActiveTicker
 			Item I=(Item)ticking;
 			if(I.container()!=null) I.setContainer(null);
 
-			Room R=CMLib.utensils().roomLocation(I);
+			Room R=CMLib.map().roomLocation(I);
 			if(R==null)	return true;
 
 			if(R!=lastOwner.location())

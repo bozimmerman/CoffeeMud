@@ -47,7 +47,8 @@ public class Fighter_WeaponBreak extends FighterSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!mob.isInCombat())
+		MOB victim=mob.getVictim();
+		if((!mob.isInCombat())||(victim==null))
 		{
 			mob.tell("You must be in combat to do this!");
 			return false;
@@ -62,25 +63,26 @@ public class Fighter_WeaponBreak extends FighterSkill
 			mob.tell("You need a weapon to break someone elses!");
 			return false;
 		}
-		if((mob.getVictim().fetchWieldedItem()==null)
-		||(!(mob.getVictim().fetchWieldedItem() instanceof Weapon))
-		||(((Weapon)mob.getVictim().fetchWieldedItem()).weaponClassification()==Weapon.CLASS_NATURAL))
+		Item item=victim.fetchWieldedItem();
+		if((item==null)
+		||(!(item instanceof Weapon))
+		||(((Weapon)item).weaponClassification()==Weapon.CLASS_NATURAL))
 		{
-			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
+			mob.tell(victim.charStats().HeShe()+" is not wielding a weapon!");
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-adjustedLevel(mob,asLevel);
+		int levelDiff=victim.envStats().level()-adjustedLevel(mob,asLevel);
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		Item hisWeapon=mob.getVictim().fetchWieldedItem();
-		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.STAT_DEXTERITY)*2));
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,mob.getVictim());
+		Item hisWeapon=victim.fetchWieldedItem();
+		int chance=(-levelDiff)+(-(victim.charStats().getStat(CharStats.STAT_DEXTERITY)*2));
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
 		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
@@ -91,7 +93,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();
-			CMMsg msg=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_NOISYMOVEMENT,str);
+			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				hisWeapon.destroy();
@@ -100,7 +102,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!");
+			return maliciousFizzle(mob,victim,"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!");
 		return success;
 	}
 

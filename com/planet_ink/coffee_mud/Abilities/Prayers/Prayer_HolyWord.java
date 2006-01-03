@@ -96,7 +96,7 @@ public class Prayer_HolyWord extends Prayer
 			if(target==null) break;
 
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 			if(CMLib.flags().isEvil(target))
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 
@@ -118,7 +118,7 @@ public class Prayer_HolyWord extends Prayer
 							Item I=Prayer_Bless.getSomething(target,true);
 							while(I!=null)
 							{
-								CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 								target.location().send(target,msg2);
 								Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 								I.recoverEnvStats();

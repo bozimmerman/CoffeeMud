@@ -37,9 +37,9 @@ public interface CoffeeShop extends CMObject
     public Environmental addStoreInventory(Environmental thisThang, ShopKeeper shop);
     public int baseStockSize();
     public int totalStockSize();
-    public void clearStoreInventory();
     public Vector getStoreInventory();
     public Vector getBaseInventory();
+    public void emptyAllShelves();
     public Environmental addStoreInventory(Environmental thisThang, int number, int price, ShopKeeper shop);
     public int totalStockWeight();
     public int totalStockSizeIncludingDuplicates();
@@ -49,7 +49,6 @@ public interface CoffeeShop extends CMObject
     public int numberInStock(Environmental likeThis);
     public Environmental getStock(String name, MOB mob, int whatISell, Room startRoom);
     public Environmental removeStock(String name, MOB mob, int whatISell, Room startRoom);
-    public void emptyAllShelves();
     public Vector removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom);
     public String makeXML(ShopKeeper shop);
     public void buildShopFromXML(String text, ShopKeeper shop);

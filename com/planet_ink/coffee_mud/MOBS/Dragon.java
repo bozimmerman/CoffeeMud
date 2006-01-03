@@ -401,7 +401,7 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(CMath.div(CMath.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
-					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
+					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
 				}
 			}
 		}
@@ -431,7 +431,7 @@ public class Dragon extends StdMOB
 											   TastyMorsel,
 											   null,
 											   CMMsg.MSG_EAT,
-											   CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,
+											   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
 											   CMMsg.MSG_NOISYMOVEMENT,
 											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
 					if(location().okMessage(TastyMorsel,EatMsg))
@@ -501,7 +501,7 @@ public class Dragon extends StdMOB
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

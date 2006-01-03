@@ -71,7 +71,7 @@ public class Spell_CauseStink extends Spell
 			}
 			if(str!=null)
 			{
-				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,str);
+				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,str);
 				if(room.okMessage(mob,msg))
 				for(int m=0;m<room.numInhabitants();m++)
 				{
@@ -84,7 +84,7 @@ public class Spell_CauseStink extends Spell
 			{
 				Room R=room.getRoomInDir(d);
 				if((R!=null)&&(R.numPCInhabitants()>0))
-					R.showHappens(CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,
+					R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,
 								  "There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d))+".");
 			}
 		}

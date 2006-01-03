@@ -101,7 +101,7 @@ public class RoomLoader
         }
         rooms.addElement(R);
     }
-
+    
     public static Room getRoom(Vector rooms, String roomID)
     {
         if(rooms.size()==0) return null;
@@ -123,7 +123,38 @@ public class RoomLoader
         return null;
     }
     
-    public static Vector DBReadRoomData(String roomID, boolean reportStatus, Vector unknownAreas)
+    public static RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
+    {
+    	RoomnumberSet roomSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+        DBConnection D=null;
+        try
+        {
+            D=DBConnector.DBFetch();
+            if(reportStatus)
+                CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Fetching roomnums for "+areaName);
+            ResultSet R=D.query("SELECT * FROM CMROOM"+((areaName==null)?"":" WHERE CMAREA='"+areaName+"'"));
+            while(R.next())
+            	roomSet.add(DBConnections.getRes(R,"CMROID"));
+		    DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+		    Log.errOut("RoomSet",sqle);
+		    if(D!=null) DBConnector.DBDone(D);
+		    return null;
+		}
+		return roomSet;
+    }
+    
+    public static Vector DBReadRoomData(String singleRoomIDtoLoad, boolean reportStatus)
+    { 
+    	return DBReadRoomData(singleRoomIDtoLoad,null,reportStatus,null,null);
+    }
+    public static Vector DBReadRoomData(String singleRoomIDtoLoad,
+    									RoomnumberSet roomsToLoad,
+    									boolean reportStatus, 
+    									Vector unknownAreas, 
+    									RoomnumberSet unloadedRooms)
     {
         Vector rooms=new Vector();
         DBConnection D=null;
@@ -132,20 +163,23 @@ public class RoomLoader
             D=DBConnector.DBFetch();
             if(reportStatus)
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting Rooms");
-            ResultSet R=D.query("SELECT * FROM CMROOM"+((roomID==null)?"":" WHERE CMROID='"+roomID+"'"));
+            ResultSet R=D.query("SELECT * FROM CMROOM"+((singleRoomIDtoLoad==null)?"":" WHERE CMROID='"+singleRoomIDtoLoad+"'"));
             recordCount=DBConnector.getRecordCount(D,R);
             updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+            String roomID=null;
             while(R.next())
             {
                 currentRecordPos=R.getRow();
                 roomID=DBConnections.getRes(R,"CMROID");
+                if((roomsToLoad!=null)
+                &&(!roomsToLoad.contains(roomID)))
+                	continue;
                 String localeID=DBConnections.getRes(R,"CMLOID");
                 Room newRoom=CMClass.getLocale(localeID);
                 if(newRoom==null)
                     Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
                 else
                 {
-                    newRoom.setRoomID(roomID);
                     String areaName=DBConnections.getRes(R,"CMAREA");
                     Area myArea=CMLib.map().getArea(areaName);
                     if(myArea==null)
@@ -156,6 +190,17 @@ public class RoomLoader
                         &&(!unknownAreas.contains(areaName)))
                             unknownAreas.addElement(areaName);
                     }
+                    myArea.addProperRoomnumber(roomID);
+                    if(CMath.bset(myArea.flags(),Area.FLAG_THIN))
+                    {
+                    	if(unloadedRooms!=null)
+                    	{
+                    		if(!unloadedRooms.contains(roomID))
+                    			unloadedRooms.add(roomID);
+	                		continue;
+                    	}
+                    }
+                    newRoom.setRoomID(roomID);
                     newRoom.setArea(myArea);
                     newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
                     if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
@@ -180,6 +225,9 @@ public class RoomLoader
     }
 
     public static void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
+    { DBReadRoomExits(roomID,allRooms,reportStatus,null);}
+    
+    public static void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus, RoomnumberSet unloadedRooms)
     {
         DBConnection D=null;
         // now grab the exits
@@ -200,7 +248,10 @@ public class RoomLoader
                 int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
                 thisRoom=getRoom(allRooms,roomID);
                 if(thisRoom==null)
-                    Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
+                {
+            		if(!unloadedRooms.contains(roomID))
+	                    Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
+                }
                 else
                 {
                     String exitID=DBConnections.getRes(R,"CMEXID");
@@ -208,6 +259,17 @@ public class RoomLoader
                     String nextRoomID=DBConnections.getRes(R,"CMNRID");
                     newRoom=getRoom(allRooms,nextRoomID);
                     Exit newExit=CMClass.getExit(exitID);
+            		if(newRoom==null)
+            		{
+            			if(((unloadedRooms!=null)&&(unloadedRooms.contains(nextRoomID)))
+            			||(CMath.bset(thisRoom.getArea().flags(),Area.FLAG_THIN)))
+            			{
+            				newRoom=CMClass.getLocale("ThinRoom");
+            				newRoom.setArea(thisRoom.getArea());
+            				newRoom.setRoomID(nextRoomID);
+            			}
+            		}
+            				
                     if((newExit==null)&&(newRoom==null))
                         Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
                     else
@@ -252,7 +314,7 @@ public class RoomLoader
                         }
                     }
                 }
-                if((currentRecordPos%updateBreak)==0)
+                if(reportStatus&&((currentRecordPos%updateBreak)==0))
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
             }
             DBConnector.DBDone(D);
@@ -264,18 +326,23 @@ public class RoomLoader
         }
     }
     
-	public static void DBRead()
+	public static void DBReadAllRooms(RoomnumberSet set)
 	{
-		while(CMLib.map().numAreas()>0)CMLib.map().delArea(CMLib.map().getFirstArea());
-
-        Vector areas=RoomLoader.DBReadAreaData(null,true);
-        if(areas==null) return;
-        for(int a=0;a<areas.size();a++)
-            CMLib.map().addArea((Area)areas.elementAt(a));
-        areas.clear();
-
+		Vector areas=null;
         Vector newAreasToCreate=new Vector();
-        Vector rooms=RoomLoader.DBReadRoomData(null,true,newAreasToCreate);
+		if(set==null)
+		{
+			while(CMLib.map().numAreas()>0)CMLib.map().delArea(CMLib.map().getFirstArea());
+	
+	        areas=RoomLoader.DBReadAreaData(null,true);
+	        if(areas==null) return;
+	        for(int a=0;a<areas.size();a++)
+	            CMLib.map().addArea((Area)areas.elementAt(a));
+	        areas.clear();
+		}
+
+        RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+        Vector rooms=RoomLoader.DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
         
 		// handle stray areas
 		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
@@ -291,11 +358,12 @@ public class RoomLoader
 			}
 		}
         
-        RoomLoader.DBReadRoomExits(null,rooms,true);
+        RoomLoader.DBReadRoomExits(null,rooms,set==null,unloadedRooms);
 
-		DBReadContent(null,rooms,true);
+		DBReadContent(null,rooms,set==null);
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
+		if(set==null)
+			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
 		for(Enumeration r=rooms.elements();r.hasMoreElements();)
 		{
@@ -304,8 +372,9 @@ public class RoomLoader
 			thisRoom.recoverRoomStats();
 		}
 
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
-			((Area)a.nextElement()).getAreaStats();
+		if(set==null)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				((Area)a.nextElement()).getAreaStats();
 	}
     
 	public static String DBReadRoomDesc(String roomID)
@@ -576,6 +645,7 @@ public class RoomLoader
 
 	private static void DBUpdateContents(Room room)
 	{
+		if((!room.savable())||(room.amDestroyed())) return;
 		Vector done=new Vector();
 		for(int i=0;i<room.numItems();i++)
 		{
@@ -583,7 +653,7 @@ public class RoomLoader
 			if((thisItem!=null)&&(!done.contains(""+thisItem))&&thisItem.savable())
 			{
 				done.addElement(""+thisItem);
-				thisItem.setDispossessionTime(0); // saved items won't clear!
+				thisItem.setExpirationDate(0); // saved items won't clear!
 				DBConnector.update(
 				"INSERT INTO CMROIT ("
 				+"CMROID, "
@@ -613,7 +683,7 @@ public class RoomLoader
 
 	public static void DBUpdateItems(Room room)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
 		DBConnector.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
@@ -629,7 +699,7 @@ public class RoomLoader
 
 	public static void DBUpdateExits(Room room)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
@@ -750,7 +820,7 @@ public class RoomLoader
 	}
 	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector();
@@ -770,7 +840,7 @@ public class RoomLoader
 
 	public static void DBUpdateMOBs(Room room)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		Vector mobs=new Vector();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
@@ -784,7 +854,7 @@ public class RoomLoader
 
 	public static void DBUpdateAll(Room room)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		DBUpdateRoom(room);
 		DBUpdateMOBs(room);
 		DBUpdateExits(room);
@@ -793,7 +863,7 @@ public class RoomLoader
 
 	public static void DBUpdateRoom(Room room)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
 		DBConnector.update(
@@ -813,7 +883,7 @@ public class RoomLoader
 
 	public static void DBReCreate(Room room, String oldID)
 	{
-		if(!room.savable()) return;
+		if((!room.savable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Recreating room "+room.roomID());
 		
@@ -914,7 +984,7 @@ public class RoomLoader
 
 	public static void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
 	{
-		if((room==null)||(!room.savable())) return;
+		if((room==null)||(!room.savable())||(room.amDestroyed())) return;
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
@@ -970,33 +1040,12 @@ public class RoomLoader
 		if(!room.savable()) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
-		while(room.numInhabitants()>0)
-		{
-			MOB inhab=room.fetchInhabitant(0);
-			if(inhab!=null)
-				room.delInhabitant(inhab);
-		}
-		DBUpdateMOBs(room);
-
-		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
-		{
-			room.rawExits()[i]=null;
-			room.rawDoors()[i]=null;
-		}
-		DBUpdateExits(room);
-
-		while(room.numItems()>0)
-		{
-			Item thisItem=room.fetchItem(0);
-			if(thisItem!=null)
-			{
-				thisItem.setContainer(null);
-				room.delItem(thisItem);
-			}
-		}
-		DBUpdateItems(room);
-
+		room.destroy();
+		DBConnector.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
+		DBConnector.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
+		DBConnector.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
 		DBConnector.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
+		room.destroy();
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());
 	}

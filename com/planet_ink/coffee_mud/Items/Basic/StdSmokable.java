@@ -270,7 +270,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().recoverRoomStats();
-				Room R=CMLib.utensils().roomLocation(msg.target());
+				Room R=CMLib.map().roomLocation(msg.target());
 				if((R!=null)&&(R!=msg.source().location()))
 					R.recoverRoomStats();
 			}
@@ -290,7 +290,7 @@ public class StdSmokable extends StdContainer implements Light
 						msg.source().recoverEnvStats();
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
-						Room R=CMLib.utensils().roomLocation(msg.tool());
+						Room R=CMLib.map().roomLocation(msg.tool());
 						if((R!=null)&&(R!=msg.source().location()))
 							R.recoverRoomStats();
 					}

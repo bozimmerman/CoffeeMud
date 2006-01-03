@@ -58,7 +58,7 @@ public class Skill_Swim extends StdSkill
 		return true;
 	}
 	public boolean placeToSwim(Environmental E)
-	{ return placeToSwim(CMLib.utensils().roomLocation(E));}
+	{ return placeToSwim(CMLib.map().roomLocation(E));}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -51,7 +51,7 @@ public class Chant_Brittle extends Chant
 				oldCondition=((Item)E).usesRemaining();
 			if(((Item)E).usesRemaining()<oldCondition)
 			{
-				Room R=CMLib.utensils().roomLocation(E);
+				Room R=CMLib.map().roomLocation(E);
 				if(R!=null)
 					R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
 				((Item)E).destroy();

@@ -77,7 +77,7 @@ public class Spell_Dragonfire extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
+				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 				{
 					mob.location().send(mob,msg);
@@ -88,7 +88,7 @@ public class Spell_Dragonfire extends Spell
 					int damage = CMLib.dice().roll(maxDie,6,maxDie);
 					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(CMath.div(damage,2.0));
-					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The dragonfire <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The dragonfire <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

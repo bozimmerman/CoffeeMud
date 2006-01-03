@@ -35,10 +35,12 @@ public class ItemGenerator extends ActiveTicker
 {
 	public String ID(){return "ItemGenerator";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	protected static boolean building=false;
 
 	protected Vector maintained=new Vector();
 	protected int minItems=1;
 	protected int maxItems=1;
+	protected int avgItems=1;
 	protected int enchantPct=10;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
@@ -109,6 +111,7 @@ public class ItemGenerator extends ActiveTicker
 		minItems=CMParms.getParmInt(parms,"minitems",1);
 		maxItems=CMParms.getParmInt(parms,"maxitems",1);
 		if(minItems>maxItems) maxItems=minItems;
+		avgItems=CMLib.dice().roll(1,maxItems-minItems,minItems);
 		enchantPct=CMParms.getParmInt(parms,"enchanted",10);
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
@@ -134,22 +137,56 @@ public class ItemGenerator extends ActiveTicker
 		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null,SK.whatIsSold(),null);
 		if(thang instanceof Area)
 		{
-			Room R=CMLib.utensils().roomLocation(I);
+			Room R=CMLib.map().roomLocation(I);
 			if(R==null) return false;
 			return ((Area)thang).inMetroArea(R.getArea());
 		}
 		else
         if(thang instanceof Room)
-        	return CMLib.utensils().roomLocation(I)==thang;
+        	return CMLib.map().roomLocation(I)==thang;
         else
 	    if(thang instanceof MOB)
 	    	return (I.owner()==thang);
 	    else
 	    if(thang instanceof Container)
 	    	return (I.owner()==((Container)thang).owner())&&(I.container()==thang);
-    	return I.owner()==CMLib.utensils().roomLocation(thang);
+    	return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
+	
+	private class ItemGenerationTicker implements Tickable
+	{
+		public String ID(){return "ItemGenerationTicker";}
+		public String name(){return "ItemGenerationTicker";}
+		public CMObject newInstance(){return this;}
+		public CMObject copyOf(){return this;}
+		public int compareTo(Object O){return (O==this)?1:0;}
+		private int tickStatus=0;
+		public long getTickStatus(){return tickStatus;}
+		public boolean tick(Tickable host, int tickID)
+		{
+			Vector allItems=new Vector();
+		    Vector skills=new Vector();
+			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			{
+				Ability A=(Ability)e.nextElement();
+				if(A instanceof ItemCraftor)
+					skills.addElement(A.copyOf());
+			}
+			Vector V=null;
+			for(int s=0;s<skills.size();s++)
+			{
+				V=((ItemCraftor)skills.elementAt(s)).craftAllItemsVectors();
+				if(V!=null)
+				for(int v=0;v<V.size();v++)
+					allItems.addElement(((Vector)V.elementAt(v)).firstElement());
+			}
+			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
+			ItemGenerator.building=false;
+			return false;
+		}
+	}
+	
 	public synchronized Vector getItems(Tickable thang, String theseparms)
 	{
 		String mask=parms;
@@ -157,33 +194,21 @@ public class ItemGenerator extends ActiveTicker
 		Vector items=(Vector)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
 		if(items==null)
 		{
-			items=new Vector();
 			Vector allItems=null;
-			synchronized(ID())
+			synchronized(ID().intern())
 			{
+				if(ItemGenerator.building) return null;
 				allItems=(Vector)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 				if(allItems==null)
 				{
-					allItems=new Vector();
-				    Vector skills=new Vector();
-					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
-					{
-						Ability A=(Ability)e.nextElement();
-						if(A instanceof ItemCraftor)
-							skills.addElement(A.copyOf());
-					}
-					Vector V=null;
-					for(int s=0;s<skills.size();s++)
-					{
-						V=((ItemCraftor)skills.elementAt(s)).craftAllItemsVectors();
-						if(V!=null)
-						for(int v=0;v<V.size();v++)
-							allItems.addElement(((Vector)V.elementAt(v)).firstElement());
-					}
-					Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
+					ItemGenerator.building=true;
+					ItemGenerationTicker ourTicker=new ItemGenerationTicker();
+					CMLib.threads().startTickDown(ourTicker,Tickable.TICKID_ITEM_BEHAVIOR|Tickable.TICKID_LONGERMASK,1234,1);
+					return null;
 				}
 			}
-			Item I=null;
+			items=new Vector();
+  		    Item I=null;
 			Vector compiled=CMLib.masking().maskCompile(mask);
 			for(int a=0;a<allItems.size();a++)
 			{
@@ -220,14 +245,10 @@ public class ItemGenerator extends ActiveTicker
 		{
 			Vector items=getItems(ticking,getParms());
 			if(items==null) return true;
-			int num=minItems;
-			if(maintained.size()>=minItems)
-				num=maintained.size()+1;
-			if(num>maxItems) num=maxItems;
 			int attempts=30;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false; 
-			while((maintained.size()<num)&&(((--attempts)>0)))
+			while((maintained.size()<avgItems)&&(((--attempts)>0)))
 			{
 				I=(Item)items.elementAt(CMLib.dice().roll(1,items.size(),-1));
 				if(I!=null)
@@ -286,11 +307,13 @@ public class ItemGenerator extends ActiveTicker
 								else
 								{
 									Vector map=new Vector();
+									Room R=null;
 									for(Enumeration e=((Area)ticking).getMetroMap();e.hasMoreElements();)
 									{
-										Room R=(Room)e.nextElement();
+										R=(Room)e.nextElement();
 										if(okRoomForMe(R)
-										&&(R.roomID().trim().length()>0))
+										&&(R.roomID().trim().length()>0)
+										&&(!map.contains(R)))
 											map.addElement(R);
 									}
 									if(map.size()>0)
@@ -302,12 +325,12 @@ public class ItemGenerator extends ActiveTicker
 						}
 						else
 					    if(ticking instanceof Environmental)
-							room=CMLib.utensils().roomLocation((Environmental)ticking);
+							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
 							break;
 							
 						if(room instanceof GridLocale)
-							room=((GridLocale)room).getRandomChild();
+							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)
 						{
 							if(CMLib.flags().isGettable(I)&&(!(I instanceof Rideable)))

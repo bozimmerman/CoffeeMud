@@ -110,7 +110,7 @@ public class ClimbableSurface extends StdRoom
 		if(CMLib.flags().isSleeping(this)) return;
 
 		if((msg.sourceMinor()==CMMsg.TYP_THROW)
-		&&(CMLib.utensils().roomLocation(msg.target())==this)
+		&&(CMLib.map().roomLocation(msg.target())==this)
 		&&(msg.tool() instanceof Item)
 		&&((!(msg.tool() instanceof Rideable))
 		   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_LADDER))

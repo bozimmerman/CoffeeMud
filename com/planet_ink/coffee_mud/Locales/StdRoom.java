@@ -27,7 +27,6 @@ import java.util.*;
        http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
@@ -52,6 +51,7 @@ public class StdRoom implements Room
 	protected boolean mobility=true;
 	protected GridLocale gridParent=null;
 	protected long tickStatus=Tickable.STATUS_NOT;
+	protected long expirationDate=0;
 
 	// base move points and thirst points per round
 	protected int myResource=-1;
@@ -193,6 +193,8 @@ public class StdRoom implements Room
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;} 
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
+	public long expirationDate(){return expirationDate;}
+	public void setExpirationDate(long time){expirationDate=time;}
 
 	public String displayText()
 	{
@@ -253,8 +255,8 @@ public class StdRoom implements Room
             if(myArea!=null)
             { 
                 // force the re-sort
-                myArea.delRoom(this);
-                myArea.addRoom(this);
+                myArea.delProperRoom(this);
+                myArea.addProperRoom(this);
             }
         }
         else
@@ -269,9 +271,9 @@ public class StdRoom implements Room
 	{
         if(newArea!=myArea)
         {
-            if(myArea!=null) myArea.delRoom(this);
+            if(myArea!=null) myArea.delProperRoom(this);
             myArea=newArea;
-            if(myArea!=null) myArea.addRoom(this);
+            if(myArea!=null) myArea.addProperRoom(this);
         }
 	}
 
@@ -405,6 +407,19 @@ public class StdRoom implements Room
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_EXPIRE:
+			{
+				if((gridParent!=null)&&(!gridParent.okMessage(myHost,msg)))
+					return false;
+				if(!CMLib.map().isClearableRoom(this)) return false;
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R2=rawDoors()[d];
+					if((R2!=null)&&(!CMLib.map().isClearableRoom(R2)))
+						return false;
+				}
+				break;
+			}
 			case CMMsg.TYP_LEAVE:
 				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
 					return false;
@@ -569,7 +584,103 @@ public class StdRoom implements Room
 			if(A!=null)
 				A.executeMsg(this,msg);
 		}
-
+		
+		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		{
+		    try
+		    {
+				MOB M=null;
+				if(CMSecurity.isSaveFlag("ROOMMOBS"))
+				{
+				    if(roomID().length()==0)
+				    for(int m=0;m<numInhabitants();m++)
+				    {
+				        M=fetchInhabitant(m);
+				        if((M!=null)
+				        &&(M.savable())
+				        &&(M.getStartRoom()!=this)
+				        &&(M.getStartRoom()!=null)
+				        &&(M.getStartRoom().roomID().length()>0))
+				            M.getStartRoom().bringMobHere(M,false);
+				    }
+				}
+				else
+				if(CMSecurity.isSaveFlag("ROOMSHOPS"))
+				{
+				    for(int m=0;m<numInhabitants();m++)
+				    {
+				        M=fetchInhabitant(m);
+				        if((M instanceof ShopKeeper)
+				        &&(M.savable())
+				        &&(M.getStartRoom()!=this)
+				        &&(M.getStartRoom()!=null))
+				            M.getStartRoom().bringMobHere(M,false);
+				    }
+				}
+		    }catch(NoSuchElementException e){}
+		}
+		
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_EXPIRE))
+		{
+			synchronized(("SYNC"+roomID()).intern())
+			{
+				if(gridParent!=null)
+					gridParent.executeMsg(myHost,msg);
+				else
+				if((roomID().length()>0)
+				&&(CMSecurity.isSaveFlag("ROOMMOBS")
+						||CMSecurity.isSaveFlag("ROOMITEMS")
+						||CMSecurity.isSaveFlag("ROOMSHOPS")))
+				{
+					MOB M=null;
+					Vector shopmobs=new Vector();
+					Vector bodies=new Vector();
+			        if(CMSecurity.isSaveFlag("ROOMMOBS"))
+			        {
+			            for(int m=0;m<numInhabitants();m++)
+			            {
+			                M=fetchInhabitant(m);
+			                if((M!=null)&&(M.savable()))
+			                    M.setStartRoom(this);
+			            }
+			            CMLib.database().DBUpdateMOBs(this);
+			        }
+			        else
+			        if(CMSecurity.isSaveFlag("ROOMSHOPS"))
+			        {
+			            for(int m=0;m<numInhabitants();m++)
+			            {
+			                M=fetchInhabitant(m);
+			                if((M!=null)
+			                &&(M.savable())
+			                &&(M instanceof ShopKeeper)
+			                &&(M.getStartRoom()==this))
+			                    shopmobs.addElement(M);
+			            }
+			            if(shopmobs.size()>0)
+				            CMLib.database().DBUpdateTheseMOBs(this,shopmobs);
+			        }
+			        if(CMSecurity.isSaveFlag("ROOMITEMS"))
+			        {
+				        for(int i=0;i<numItems();i++)
+				        {
+				            Item I=fetchItem(i);
+				            if(I instanceof DeadBody)
+				                bodies.addElement(I);
+				        }
+				        for(int i=0;i<bodies.size();i++)
+				            ((Item)bodies.elementAt(i)).destroy();
+			            CMLib.database().DBUpdateItems(this);
+			        }
+				}
+				Area A=getArea();
+				String roomID=roomID();
+				setGridParent(null);
+				CMLib.map().emptyRoom(this,null);
+	            destroy();
+	            A.addProperRoomnumber(roomID);
+			}
+		}
 	}
 
 	public void startItemRejuv()
@@ -920,26 +1031,37 @@ public class StdRoom implements Room
 		return opExit;
 	}
 
+	public Room prepareRoomInDir(Room R, int direction)
+	{
+		if(amDestroyed)
+		{
+			if(roomID().length()>0)
+			{
+				Room thinMeR=CMClass.getLocale("ThinRoom");
+				thinMeR.setRoomID(roomID());
+				if(R.rawDoors()[direction]==this)
+					R.rawDoors()[direction]=thinMeR;
+				return thinMeR.prepareRoomInDir(R,direction);
+			}
+			return null;
+		}
+		if(expirationDate()!=0)
+			setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+		return this;
+	}
+	
 	public Room getRoomInDir(int direction)
 	{
-		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS)||(amDestroyed))
 			return null;
 		Room nextRoom=rawDoors()[direction];
-		if((nextRoom==null)
-        &&(gridParent instanceof StdThinGrid))
-        {
-            GridLocale GP=getGridParent();
-			int x=GP.getChildX(this);
-			int y=GP.getChildY(this);
-			if((x>=0)&&(x<GP.xSize())&&(y>=0)&&(y<GP.ySize()))
-			    ((StdThinGrid)GP).fillExitsOfGridRoom(this,x,y);
-			nextRoom=rawDoors()[direction];
-        }
-		    
-		if(nextRoom instanceof GridLocale)
+		if(gridParent!=null) nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
+		if(nextRoom!=null) 
 		{
-			Room realRoom=((GridLocale)nextRoom).getAltRoomFrom(this,direction);
-			if(realRoom!=null) return realRoom;
+			nextRoom=nextRoom.prepareRoomInDir(this,direction);
+			if((nextRoom!=null)
+			&&(nextRoom.amDestroyed())) 
+				return null;
 		}
 		return nextRoom;
 	}
@@ -947,6 +1069,7 @@ public class StdRoom implements Room
 	{
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
+		if((gridParent!=null)&&(rawExits()[direction]==null)) getRoomInDir(direction);
 		return rawExits()[direction];
 	}
 
@@ -1017,7 +1140,7 @@ public class StdRoom implements Room
 	public boolean show(MOB source, Environmental target, int allCode, String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
 		return true;
@@ -1029,7 +1152,7 @@ public class StdRoom implements Room
                         String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
 		return true;
@@ -1043,7 +1166,7 @@ public class StdRoom implements Room
                         String allMessage)
     {
         CMMsg msg=CMClass.getMsg(source,target,tool,srcCode,tarCode,othCode,allMessage);
-        if((!CMath.bset(srcCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+        if((!CMath.bset(srcCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
             return false;
         send(source,msg);
         return true;
@@ -1057,7 +1180,7 @@ public class StdRoom implements Room
                         String othMessage)
     {
         CMMsg msg=CMClass.getMsg(source,target,tool,allCode,srcMessage,allCode,tarMessage,allCode,othMessage);
-        if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+        if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
             return false;
         send(source,msg);
         return true;
@@ -1073,7 +1196,7 @@ public class StdRoom implements Room
                         String othMessage)
     {
         CMMsg msg=CMClass.getMsg(source,target,tool,srcCode,srcMessage,tarCode,tarMessage,othCode,othMessage);
-        if((!CMath.bset(srcCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+        if((!CMath.bset(srcCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
             return false;
         send(source,msg);
         return true;
@@ -1084,7 +1207,7 @@ public class StdRoom implements Room
 						      String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
 		return true;
@@ -1096,7 +1219,7 @@ public class StdRoom implements Room
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
 		return true;
@@ -1107,7 +1230,7 @@ public class StdRoom implements Room
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
 		source.executeMsg(source,msg);
 		return true;
@@ -1119,7 +1242,7 @@ public class StdRoom implements Room
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
 		source.executeMsg(source,msg);
 		return true;
@@ -1162,9 +1285,24 @@ public class StdRoom implements Room
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid(null);
 		clearSky();
+		if((roomID().length()==0)&&(rawDoors()!=null))
+		{
+			Room roomDir=null;
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				roomDir=rawDoors()[d];
+	            if((roomDir!=null)&&(roomDir.rawDoors()!=null))
+	            for(int d2=0;d2<Directions.NUM_DIRECTIONS;d2++)
+	                if(roomDir.rawDoors()[d2]==this)
+	                {
+	                	roomDir.rawDoors()[d2]=null;
+	                	roomDir.rawExits()[d2]=null;
+	                }
+			}
+		}
 		CMLib.threads().deleteTick(this,-1);
         imageName=null;
-        setArea(null);
+        setArea(null); // this actually deletes the room from the cache map
         baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         envStats=baseEnvStats;
         exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -1261,9 +1399,9 @@ public class StdRoom implements Room
 	{
 		addItem(item);
         if(survivalRLHours<=0)
-            item.setDispossessionTime(0);
+            item.setExpirationDate(0);
         else
-    		item.setDispossessionTime(System.currentTimeMillis()+Math.round(CMath.mul(survivalRLHours,TimeManager.MILI_HOUR)));
+    		item.setExpirationDate(System.currentTimeMillis()+Math.round(CMath.mul(survivalRLHours,TimeManager.MILI_HOUR)));
 	}
 	public void delItem(Item item)
 	{
@@ -1290,6 +1428,8 @@ public class StdRoom implements Room
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
+		String newThingName=CMLib.english().preItemParser(thingName);
+		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(wornReqCode!=Item.WORNREQ_WORNONLY))
@@ -1304,7 +1444,7 @@ public class StdRoom implements Room
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				String newThingName=CMLib.english().bumpDotNumber(thingName);
+				newThingName=CMLib.english().bumpDotNumber(thingName);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
@@ -1330,11 +1470,18 @@ public class StdRoom implements Room
 		}
 		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORNREQ_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
+		if(found==null)
+		{
+			newThingName=CMLib.english().failedItemParser(thingName);
+			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,wornReqCode); 
+		}
 		return found;
 	}
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName, int wornReqCode)
 	{
 		// def was Item.WORNREQ_UNWORNONLY;
+		String newThingName=CMLib.english().preItemParser(thingName);
+		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
 		Vector V=(Vector)contents.clone();
 		for(int e=0;e<exits.length;e++)
@@ -1353,12 +1500,19 @@ public class StdRoom implements Room
 			if(visibleItem!=null)
 				found=visibleItem;
 		}
+		if(found==null)
+		{
+			newThingName=CMLib.english().failedItemParser(thingName);
+			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName,wornReqCode); 
+		}
 		return found;
 	}
 
 	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode)
 	{
 		// def was Item.WORNREQ_UNWORNONLY;
+		String newThingName=CMLib.english().preItemParser(thingName);
+		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
 		Vector V=(Vector)inhabitants.clone();
 		V.addAll(contents);
@@ -1366,12 +1520,19 @@ public class StdRoom implements Room
 		    if(exits[e]!=null)V.addElement(exits[e]);
 		if(found==null)	found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
 		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
+		if(found==null)
+		{
+			newThingName=CMLib.english().failedItemParser(thingName);
+			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName,wornReqCode); 
+		}
 		return found;
 	}
 
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
+		String newThingName=CMLib.english().preItemParser(thingName);
+		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(wornReqCode!=Item.WORNREQ_WORNONLY))
@@ -1383,7 +1544,7 @@ public class StdRoom implements Room
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				String newThingName=CMLib.english().bumpDotNumber(thingName);
+				newThingName=CMLib.english().bumpDotNumber(thingName);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
@@ -1399,6 +1560,11 @@ public class StdRoom implements Room
         for(int d=0;d<exits.length;d++)
             if((exits[d]!=null)&&(thingName.equalsIgnoreCase(Directions.getDirectionName(d))))
                 return getExitInDir(d);
+		if(found==null)
+		{
+			newThingName=CMLib.english().failedItemParser(thingName);
+			if(newThingName!=null) return fetchFromMOBRoomFavorsItems(mob,goodLocation,newThingName,wornReqCode); 
+		}
 		return found;
 	}
 

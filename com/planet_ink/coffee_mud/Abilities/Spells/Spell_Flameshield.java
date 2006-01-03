@@ -85,7 +85,7 @@ public class Spell_Flameshield extends Spell
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),1);
-							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}

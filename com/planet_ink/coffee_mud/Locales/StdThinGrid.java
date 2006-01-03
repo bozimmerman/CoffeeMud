@@ -36,8 +36,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
 	
-	public final static long EXPIRATION=1800000;
-	
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
 	protected Vector gridexits=new Vector();
@@ -46,7 +44,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected int ysize=5;
 	protected Exit ox=null;
 	
-	protected final DVector rooms=new DVector(4);
+	protected final DVector rooms=new DVector(3);
 	protected static boolean tickStarted=false;
     
 	public StdThinGrid()
@@ -65,13 +63,27 @@ public class StdThinGrid extends StdRoom implements GridLocale
             gridexits=(Vector)((StdThinGrid)E).gridexits.clone();
         }
     }
-	public String getChildLocaleID(){return "StdRoom";}
+	public String getGridChildLocaleID(){return "StdRoom";}
 
-	public int xSize(){return xsize;}
-	public int ySize(){return ysize;}
-	public void setXSize(int x){ if(x>0)xsize=x; }
-	public void setYSize(int y){ if(y>0)ysize=y; }
+	public int xGridSize(){return xsize;}
+	public int yGridSize(){return ysize;}
+	public void setXGridSize(int x){ if(x>0)xsize=x; }
+	public void setYGridSize(int y){ if(y>0)ysize=y; }
 
+	public void destroy()
+	{
+		super.destroy();
+		Room R=null;
+		for(int i=0;i<rooms.size();i++)
+		{
+			R=(Room)rooms.elementAt(i,1);
+			if(R!=null) R.destroy();
+		}
+		rooms.clear();
+		descriptions=null;
+		displayTexts=null;
+		gridexits=null;
+	}
 	
 	public void setDescription(String newDescription)
 	{
@@ -114,8 +126,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				if((((Integer)rooms.elementAt(i,2)).intValue()==x)
 				&&(((Integer)rooms.elementAt(i,3)).intValue()==y))
 				{
-				    rooms.setElementAt(i,4,new Long(System.currentTimeMillis()));
-					return (Room)rooms.elementAt(i,1);
+					Room R=(Room)rooms.elementAt(i,1);
+					R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+					return R;
 				}
 			}
 		}
@@ -123,29 +136,26 @@ public class StdThinGrid extends StdRoom implements GridLocale
         return null;
 	}
 	
-	protected static boolean cleanRoom(Room R)
+	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction)
 	{
-		if(R.getGridParent()==null) return true;
-		if(R.numInhabitants()>0) return false;
-		if(R.numItems()>0) return false;
-		for(int a=0;a<R.numEffects();a++)
-		{
-			Ability A=R.fetchEffect(a);
-			if((A!=null)&&(!A.savable()))
-				return false;
-		}
-		return true;
+		int x=getGridChildX(fromRoom);
+		int y=getGridChildY(fromRoom);
+		if((x>=0)&&(x<xGridSize())&&(y>=0)&&(y<yGridSize()))
+		    fillExitsOfGridRoom(fromRoom,x,y);
+		return fromRoom.rawDoors()[direction];
 	}
+
+	public Room getGridChild(int x, int y){ return getMakeGridRoom(x,y);}
 	
 	protected Room getMakeSingleGridRoom(int x, int y)
 	{
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
 			return null;
 		
 		Room R=getGridRoomIfExists(x,y);
 		if(R==null)
 		{
-			R=CMClass.getLocale(getChildLocaleID());
+			R=CMClass.getLocale(getGridChildLocaleID());
 			if(R==null) return null;
 			R.setGridParent(this);
 			R.setArea(getArea());
@@ -171,21 +181,35 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				R.addEffect((Ability)fetchEffect(a).copyOf());
 			for(int b=0;b<numBehaviors();b++)
 				R.addBehavior((Behavior)fetchBehavior(b).copyOf());
-			rooms.addElement(R,new Integer(x),new Integer(y),new Long(System.currentTimeMillis()));
+			R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+			rooms.addElement(R,new Integer(x),new Integer(y));
+			getArea().addProperRoom(R);
 		}
 		return R;
 	}
 	
+	public int[] getRoomXY(String roomID)
+	{
+		Room room=CMLib.map().getRoom(roomID);
+		if(room==null) return null;
+		if(!isMyGridChild(room)) return null;
+		int[] xy=new int[2];
+		xy[0]=getGridChildX(room);
+		xy[1]=getGridChildY(room);
+		return xy;
+	}
+	
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
 			return;
+		
         synchronized(R.baseEnvStats())
         {
             int mask=R.baseEnvStats().sensesMask();
-            if(CMath.bset(mask,EnvStats.SENSE_ROOMSYNC))
+            if(CMath.bset(mask,EnvStats.SENSE_ROOMGRIDSYNC))
                 return;
-            R.baseEnvStats().setSensesMask(mask|EnvStats.SENSE_ROOMSYNC);
+            R.baseEnvStats().setSensesMask(mask|EnvStats.SENSE_ROOMGRIDSYNC);
         }
 		
 		// the adjacent rooms created by this method should also take
@@ -212,7 +236,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		else
 		if((rawDoors()[Directions.WEST]!=null)&&(rawExits()[Directions.WEST]!=null))
 			linkRoom(R,rawDoors()[Directions.WEST],Directions.WEST,rawExits()[Directions.WEST],rawExits()[Directions.WEST]);
-		if(y<(ySize()-1))
+		if(y<(yGridSize()-1))
 		{
 			R2=getMakeSingleGridRoom(x,y+1);
 			if(R2!=null) 
@@ -221,7 +245,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		else
 		if((rawDoors()[Directions.SOUTH]!=null)&&(rawExits()[Directions.SOUTH]!=null))
 			linkRoom(R,rawDoors()[Directions.SOUTH],Directions.SOUTH,rawExits()[Directions.SOUTH],rawExits()[Directions.SOUTH]);
-		if(x<(xSize()-1))
+		if(x<(xGridSize()-1))
 		{
 			R2=getMakeSingleGridRoom(x+1,y);
 			if(R2!=null) 
@@ -243,7 +267,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if((rawDoors()[Directions.NORTHWEST]!=null)&&(rawExits()[Directions.NORTHWEST]!=null))
 				linkRoom(R,rawDoors()[Directions.NORTHWEST],Directions.NORTHWEST,rawExits()[Directions.NORTHWEST],rawExits()[Directions.NORTHWEST]);
 			
-			if((x>0)&&(y<(ySize()-1)))
+			if((x>0)&&(y<(yGridSize()-1)))
 			{
 				R2=getMakeSingleGridRoom(x-1,y+1);
 				if(R2!=null) 
@@ -253,7 +277,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if((rawDoors()[Directions.SOUTHWEST]!=null)&&(rawExits()[Directions.SOUTHWEST]!=null))
 				linkRoom(R,rawDoors()[Directions.SOUTHWEST],Directions.SOUTHWEST,rawExits()[Directions.SOUTHWEST],rawExits()[Directions.SOUTHWEST]);
 			
-			if((x<(xSize()-1))&&(y>0))
+			if((x<(xGridSize()-1))&&(y>0))
 			{
 				R2=getMakeSingleGridRoom(x+1,y-1);
 				if(R2!=null) 
@@ -262,7 +286,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			else
 			if((rawDoors()[Directions.NORTHEAST]!=null)&&(rawExits()[Directions.NORTHEAST]!=null))
 				linkRoom(R,rawDoors()[Directions.NORTHEAST],Directions.NORTHEAST,rawExits()[Directions.NORTHEAST],rawExits()[Directions.NORTHEAST]);
-			if((x<(xSize()-1))&&(y<(ySize()-1)))
+			if((x<(xGridSize()-1))&&(y<(yGridSize()-1)))
 			{
 				R2=getMakeSingleGridRoom(x+1,y+1);
 				if(R2!=null) 
@@ -285,11 +309,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.SOUTH:
-						if(EX.y==ySize()-1)
+						if(EX.y==yGridSize()-1)
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.EAST:
-						if(EX.x==xSize()-1)
+						if(EX.x==xGridSize()-1)
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.WEST:
@@ -297,11 +321,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.NORTHEAST:
-						if((EX.y==0)&&(EX.x==xSize()-1))
+						if((EX.y==0)&&(EX.x==xGridSize()-1))
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.SOUTHWEST:
-						if((EX.y==ySize()-1)&&(EX.x==0))
+						if((EX.y==yGridSize()-1)&&(EX.x==0))
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.NORTHWEST:
@@ -309,13 +333,13 @@ public class StdThinGrid extends StdRoom implements GridLocale
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					case Directions.SOUTHEAST:
-						if((EX.y==ySize()-1)&&(EX.x==xSize()-1))
+						if((EX.y==yGridSize()-1)&&(EX.x==xGridSize()-1))
 							tryFillInExtraneousExternal(EX,ox,R);
 						break;
 					}
 			}catch(Exception e){}
 		}
-        R.baseEnvStats().setSensesMask(CMath.unsetb(R.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC));
+        R.baseEnvStats().setSensesMask(CMath.unsetb(R.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMGRIDSYNC));
 	}
 	
 	public void tryFillInExtraneousExternal(WorldMap.CrossExit EX, Exit ox, Room linkFrom)
@@ -334,10 +358,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected Room getMakeGridRoom(int x, int y)
 	{
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
 			return null;
 		
-		startThinTick();
 		Room R=getMakeSingleGridRoom(x,y);
 		if(R==null) return null;
 		fillExitsOfGridRoom(R,x,y);
@@ -361,7 +384,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if((!EX.out)
 			&&(EX.destRoomID.equalsIgnoreCase(roomID))
 			&&(EX.dir==direction)
-			&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<ySize())&&(EX.y<ySize()))
+			&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<yGridSize())&&(EX.y<yGridSize()))
 				return getMakeGridRoom(EX.x,EX.y);
 		}
 		
@@ -370,35 +393,35 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			loc=loc.getGridParent();
 		if((oldLoc!=loc)&&(loc instanceof GridLocale))
 		{
-			int y=((GridLocale)loc).getChildY(oldLoc);
-			int x=((GridLocale)loc).getChildX(oldLoc);
+			int y=((GridLocale)loc).getGridChildY(oldLoc);
+			int x=((GridLocale)loc).getGridChildX(oldLoc);
 			
 			if((x>=0)&&(y>=0))
 			switch(opDirection)
 			{
 			case Directions.EAST:
-				if((((GridLocale)loc).ySize()==ySize()))
-					return getMakeGridRoom(xSize()-1,y);
+				if((((GridLocale)loc).yGridSize()==yGridSize()))
+					return getMakeGridRoom(xGridSize()-1,y);
 				break;
 			case Directions.WEST:
-				if((((GridLocale)loc).ySize()==ySize()))
+				if((((GridLocale)loc).yGridSize()==yGridSize()))
 					return getMakeGridRoom(0,y);
 				break;
 			case Directions.NORTH:
-				if((((GridLocale)loc).xSize()==xSize()))
+				if((((GridLocale)loc).xGridSize()==xGridSize()))
 					return getMakeGridRoom(x,0);
 				break;
 			case Directions.NORTHWEST:
 				return getMakeGridRoom(0,0);
 			case Directions.SOUTHEAST:
-				return getMakeGridRoom(xSize()-1,ySize()-1);
+				return getMakeGridRoom(xGridSize()-1,yGridSize()-1);
 			case Directions.NORTHEAST:
-				return getMakeGridRoom(xSize()-1,0);
+				return getMakeGridRoom(xGridSize()-1,0);
 			case Directions.SOUTHWEST:
-				return getMakeGridRoom(0,ySize()-1);
+				return getMakeGridRoom(0,yGridSize()-1);
 			case Directions.SOUTH:
-				if((((GridLocale)loc).xSize()==xSize()))
-					return getMakeGridRoom(x,ySize()-1);
+				if((((GridLocale)loc).xGridSize()==xGridSize()))
+					return getMakeGridRoom(x,yGridSize()-1);
 				break;
 			}
 		}
@@ -407,39 +430,39 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		switch(opDirection)
 		{
 		case Directions.NORTH:
-			x=xSize()/2;
+			x=xGridSize()/2;
 			break;
 		case Directions.SOUTH:
-			x=xSize()/2;
-			y=ySize()-1;
+			x=xGridSize()/2;
+			y=yGridSize()-1;
 			break;
 		case Directions.EAST:
-			x=xSize()-1;
-			y=ySize()/2;
+			x=xGridSize()-1;
+			y=yGridSize()/2;
 			break;
 		case Directions.WEST:
-			y=ySize()/2;
+			y=yGridSize()/2;
 			break;
 		case Directions.NORTHWEST:
 			x=0;
 			y=0;
 			break;
 		case Directions.NORTHEAST:
-			x=xSize()-1;
+			x=xGridSize()-1;
 			y=0;
 			break;
 		case Directions.SOUTHWEST:
 			x=0;
-			y=ySize()-1;
+			y=yGridSize()-1;
 			break;
 		case Directions.SOUTHEAST:
-			x=xSize()-1;
-			y=ySize()-1;
+			x=xGridSize()-1;
+			y=yGridSize()-1;
 			break;
 		case Directions.UP:
 		case Directions.DOWN:
-			x=xSize()/2;
-			y=ySize()/2;
+			x=xGridSize()/2;
+			y=yGridSize()/2;
 			break;
 		}
 		return getMakeGridRoom(x,y);
@@ -448,7 +471,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public Vector getAllRooms()
 	{
 		Vector V=new Vector();
-		getRandomChild();
+		getRandomGridChild();
 		try
 		{
 			for(int i=0;i<rooms.size();i++)
@@ -489,7 +512,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			if(room.rawDoors()[dirCode].getGridParent()==null)
 				return;
-			if(room.rawDoors()[dirCode].getGridParent().isMyChild(room.rawDoors()[dirCode]))
+			if(room.rawDoors()[dirCode].getGridParent().isMyGridChild(room.rawDoors()[dirCode]))
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
@@ -507,7 +530,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			if(room.rawDoors()[dirCode].getGridParent()==null)
 				return;
-			if(room.rawDoors()[dirCode].getGridParent().isMyChild(room.rawDoors()[dirCode]))
+			if(room.rawDoors()[dirCode].getGridParent().isMyGridChild(room.rawDoors()[dirCode]))
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
@@ -518,7 +541,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			if(loc.rawDoors()[opCode].getGridParent()==null)
 				return;
-			if(loc.rawDoors()[opCode].getGridParent().isMyChild(loc.rawDoors()[opCode]))
+			if(loc.rawDoors()[opCode].getGridParent().isMyGridChild(loc.rawDoors()[opCode]))
 				return;
 			loc.rawDoors()[opCode]=null;
 		}
@@ -532,7 +555,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		clearGrid(null);
 	}
 	
-	public boolean isMyChild(Room loc)
+	public boolean isMyGridChild(Room loc)
 	{
         try{return rooms.contains(loc);}catch(Exception e){} // optomization
 	    DVector myRooms=rooms.copyOf();
@@ -542,80 +565,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return false;
 	}
 
-	protected static void clearRoom(Room room, Room bringBackHere, ThinGridVacuum cleaner)
-	{
-		room.setGridParent(null);
-		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+7;
-		Vector inhabs=new Vector();
-		MOB M=null;
-		for(int m=0;m<room.numInhabitants();m++)
-		{
-		    M=room.fetchInhabitant(m);
-		    if(M!=null) inhabs.addElement(M);
-		}
-		for(int m=0;m<inhabs.size();m++)
-		{
-			M=(MOB)inhabs.elementAt(m);
-			if(bringBackHere!=null)
-			{
-			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+8;
-				bringBackHere.bringMobHere(M,false);
-			}
-			else
-			if((M.getStartRoom()==null)
-			||(M.getStartRoom()==room)
-			||(M.getStartRoom().ID().length()==0))
-			{
-			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+9;
-				M.destroy();
-			}
-			else
-			{
-			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+10;
-				M.getStartRoom().bringMobHere(M,false);
-			}
-			if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+11;
-		}
-		Item I=null;
-		inhabs.clear();
-		for(int i=0;i<room.numItems();i++)
-		{
-		    I=room.fetchItem(i);
-		    if(I!=null) inhabs.addElement(I);
-		}
-		for(int i=0;i<inhabs.size();i++)
-		{
-			I=(Item)inhabs.elementAt(i);
-			if(bringBackHere!=null)
-			{
-			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+12;
-				bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
-			}
-			else
-			{
-			    if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+13;
-				I.destroy();
-			}
-			if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+14;
-		}
-		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+15;
-		room.clearSky();
-		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+16;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-            if(room.rawDoors()[d]!=null)
-            for(int d2=0;d2<Directions.NUM_DIRECTIONS;d2++)
-                if(room.rawDoors()[d].rawDoors()[d2]==room)
-                {
-                    room.rawDoors()[d].rawDoors()[d2]=null;
-                    room.rawDoors()[d].rawExits()[d2]=null;
-                }
-			room.rawDoors()[d]=null;
-			room.rawExits()[d]=null;
-		}
-		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+17;
-	}
-    
 	public void clearGrid(Room bringBackHere)
 	{
 		try
@@ -623,7 +572,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		    for(int r=0;r<rooms.size();r++)
 			{
 				Room room=(Room)rooms.elementAt(r,1);
-				clearRoom(room,bringBackHere,null);
+				CMLib.map().emptyRoom(room,bringBackHere);
 			}
 		    while(rooms.size()>0)
 		    {
@@ -635,7 +584,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
         catch(Exception e){Log.debugOut("StdThinGrid",e);}
 	}
 
-	public String getChildCode(Room loc)
+	public String getGridChildCode(Room loc)
 	{
 		if(roomID().length()==0) return "";
         try{
@@ -648,7 +597,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
                 return roomID()+"#("+((Integer)rs.elementAt(i,2)).intValue()+","+((Integer)rs.elementAt(i,3)).intValue()+")";
         return "";
 	}
-	public int getChildX(Room loc)
+	public int getGridChildX(Room loc)
 	{
         try{return ((Integer)rooms.elementAt(rooms.indexOf(loc),2)).intValue();}catch(Exception x){}
         DVector rs=rooms.copyOf();
@@ -658,17 +607,17 @@ public class StdThinGrid extends StdRoom implements GridLocale
         return -1;
 	}
 	
-	public Room getRandomChild()
+	public Room getRandomGridChild()
 	{
-		int x=CMLib.dice().roll(1,xSize(),-1);
-		int y=CMLib.dice().roll(1,ySize(),-1);
+		int x=CMLib.dice().roll(1,xGridSize(),-1);
+		int y=CMLib.dice().roll(1,yGridSize(),-1);
 		Room R=getMakeGridRoom(x,y);
 		if(R==null)
 			Log.errOut("StdThinGrid",roomID()+" failed to get a random child!");
 		return R;
 	}
 	
-	public int getChildY(Room loc)
+	public int getGridChildY(Room loc)
 	{
         try{return ((Integer)rooms.elementAt(rooms.indexOf(loc),3)).intValue();}catch(Exception x){}
         DVector rs=rooms.copyOf();
@@ -678,7 +627,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
         return -1;
 	}
 	
-	public Room getChild(String childCode)
+	public Room getGridChild(String childCode)
 	{
 		if(childCode.equals(roomID()))
 			return this;
@@ -692,6 +641,32 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return getMakeGridRoom(x,y);
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		&&(msg.target() instanceof Room))
+		{
+			Room R=(Room)msg.target();
+			if(R.getGridParent()==this)
+			{
+	            DVector thisGridRooms=rooms;
+                thisGridRooms.removeElement(R);
+                Room R2=null;
+                for(int r=thisGridRooms.size()-1;r>=0;r--)
+                {
+                    R2=(Room)thisGridRooms.elementAt(r,1);
+                    for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                        if(R2.rawDoors()[d]==R)
+                        {
+                            R2.rawDoors()[d]=null;
+                            R2.rawExits()[d]=null;
+                        }
+                }
+			}
+		}
+		super.executeMsg(myHost,msg);
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -728,166 +703,5 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			}
 		}
 		return true;
-	}
-	
-	public static synchronized void startThinTick()
-	{
-		if(tickStarted) 
-			return;
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return;
-		tickStarted=true;
-        
-		//please Disable until the roomdestroy problem can be fixed.
-		ThinGridVacuum TGV=new ThinGridVacuum();
-		CMLib.threads().startTickDown(TGV,Tickable.TICKID_ROOM_BEHAVIOR,450);
-	}
-	
-	protected static class ThinGridVacuum implements Tickable
-	{
-		public String ID(){return "ThinGridVacuum";}
-		public String name(){return ID();}
-        public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ThinGridVacuum();}}
-        public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-        public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-		public long tickStatus=Tickable.STATUS_NOT;
-		public long getTickStatus(){return tickStatus;}
-		public boolean tick(Tickable ticking, int tickID)
-		{
-		    tickStatus=Tickable.STATUS_START;
-            Vector thinGrids=new Vector();
-            Room R=null;
-			try
-			{
-				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-				{
-					R=(Room)e.nextElement();
-					if(R instanceof StdThinGrid)
-                        thinGrids.addElement(R);
-                }
-            }
-            catch(java.util.NoSuchElementException  nse){}
-            StdThinGrid STG=null;
-            DVector thisGridRooms=null;
-            for(Enumeration e=thinGrids.elements();e.hasMoreElements();)
-            {
-			    STG=(StdThinGrid)e.nextElement();
-                thisGridRooms=STG.rooms;
-				if(thisGridRooms.size()==0) continue;
-			    tickStatus=Tickable.STATUS_ALIVE;
-                try
-				{
-                    Vector roomsToClear=new Vector();
-					long time=System.currentTimeMillis()-EXPIRATION;
-					for(int r=thisGridRooms.size()-1;r>=0;r--)
-                    {
-						if(((Long)thisGridRooms.elementAt(r,4)).longValue()<time)
-						{
-						    tickStatus=Tickable.STATUS_MISC;
-							R=(Room)thisGridRooms.elementAt(r,1);
-							if(!cleanRoom(R)) continue;
-						    tickStatus=Tickable.STATUS_MISC+1;
-							boolean cleanOne=true;
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-							{
-								Room R2=R.rawDoors()[d];
-								if((R2!=null)&&(!cleanRoom(R2)))
-								{ cleanOne=false; break;}
-							}
-						    tickStatus=Tickable.STATUS_MISC+2;
-							if(cleanOne)
-							{
-                                thisGridRooms.removeElementAt(r);
-                                roomsToClear.addElement(R);
-							}
-						    tickStatus=Tickable.STATUS_MISC+3;
-						}
-                    }
-                    tickStatus=Tickable.STATUS_MISC+4;
-                    Room R2=null;
-                    for(Enumeration i=roomsToClear.elements();i.hasMoreElements();)
-                    {
-                        R=(Room)i.nextElement();
-                        tickStatus=Tickable.STATUS_MISC+5;
-                        for(int r=thisGridRooms.size()-1;r>=0;r--)
-                        {
-                            R2=(Room)thisGridRooms.elementAt(r,1);
-                            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-                                if(R2.rawDoors()[d]==R)
-                                {
-                                    R2.rawDoors()[d]=null;
-                                    R2.rawExits()[d]=null;
-                                }
-                        }
-                        tickStatus=Tickable.STATUS_MISC+6;
-                        clearRoom(R,null,this);
-                        tickStatus=Tickable.STATUS_MISC+7;
-                    }
-                    tickStatus=Tickable.STATUS_MISC+8;
-                    for(Enumeration i=roomsToClear.elements();i.hasMoreElements();)
-                    {
-                        R=(Room)i.nextElement();
-                        tickStatus=Tickable.STATUS_MISC+9;
-                        // all of the below is contained in R.destroy()
-                        // it was replaced with content for debugging purposes
-                        // and will be replaced later.
-                        //R.destroy();
-                        try{
-                            for(int a=R.numEffects()-1;a>=0;a--)
-                                R.fetchEffect(a).unInvoke();
-                        }catch(Exception e2){}
-                        tickStatus=Tickable.STATUS_MISC+10;
-                        while(R.numEffects()>0)
-                            R.delEffect(R.fetchEffect(0));
-                        tickStatus=Tickable.STATUS_MISC+11;
-                        try{
-                        for(int a=R.numInhabitants()-1;a>=0;a--)
-                            R.fetchInhabitant(a).destroy();
-                        }catch(Exception e2){}
-                        tickStatus=Tickable.STATUS_MISC+12;
-                        while(R.numInhabitants()>0)
-                            R.delInhabitant(R.fetchInhabitant(0));
-                        tickStatus=Tickable.STATUS_MISC+13;
-                        while(R.numBehaviors()>0)
-                            R.delBehavior(R.fetchBehavior(0));
-                        tickStatus=Tickable.STATUS_MISC+13;
-                        try{
-                        while(R.numItems()>0)
-                            R.fetchItem(0).destroy();
-                        }catch(Exception e2){}
-                        tickStatus=Tickable.STATUS_MISC+13;
-                        while(R.numItems()>0)
-                            R.delItem(R.fetchItem(0));
-                        tickStatus=Tickable.STATUS_MISC+14;
-                        if(R instanceof GridLocale)
-                            ((GridLocale)R).clearGrid(null);
-                        tickStatus=Tickable.STATUS_MISC+15;
-                        R.clearSky();
-                        tickStatus=Tickable.STATUS_MISC+16; // once locked here
-                        CMLib.threads().deleteTick(R,-1);
-                        tickStatus=Tickable.STATUS_MISC+17; // show lock here
-                        ((StdRoom)R).imageName=null;
-                        R.setArea(null);
-                        tickStatus=Tickable.STATUS_MISC+18;  
-                        ((StdRoom)R).baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-                        ((StdRoom)R).envStats=((StdRoom)R).baseEnvStats;
-                        ((StdRoom)R).exits=new Exit[Directions.NUM_DIRECTIONS];
-                        ((StdRoom)R).doors=new Room[Directions.NUM_DIRECTIONS];
-                        ((StdRoom)R).affects=null;
-                        ((StdRoom)R).behaviors=null;
-                        ((StdRoom)R).contents=new Vector();
-                        ((StdRoom)R).inhabitants=new Vector();
-                        ((StdRoom)R).gridParent=null;
-                        tickStatus=Tickable.STATUS_MISC+19;
-                    }
-                    tickStatus=Tickable.STATUS_MISC+20;
-				}
-                catch(Exception e2){Log.debugOut("StdThinGrid",e2);}
-				tickStatus=Tickable.STATUS_MISC+21;
-			}
-            tickStatus=Tickable.STATUS_MISC+22;
-			tickStatus=Tickable.STATUS_NOT;
-			return true;
-		}
 	}
 }

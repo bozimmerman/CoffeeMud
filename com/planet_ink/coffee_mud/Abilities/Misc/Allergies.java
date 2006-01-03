@@ -77,7 +77,7 @@ public class Allergies extends StdAbility
 	        MOB mob=(MOB)affected;
 	        if((CMLib.flags().aliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
 	        {
-	            Room R=CMLib.utensils().roomLocation(mob);
+	            Room R=CMLib.map().roomLocation(mob);
 	            if(raceAllergies.size()>0)
 	            {
 		            MOB M=null;

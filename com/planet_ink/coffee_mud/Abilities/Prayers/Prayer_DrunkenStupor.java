@@ -90,7 +90,7 @@ public class Prayer_DrunkenStupor extends Prayer
 			return true;
 		if(msg.source().location()==null)
 			return true;
-		if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+		if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS))
 		&&(msg.targetMajor()>0))
 		{
 			if((msg.target() !=null)
@@ -128,7 +128,7 @@ public class Prayer_DrunkenStupor extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" to inflict a drunken stupor upon <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

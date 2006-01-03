@@ -35,7 +35,6 @@ import java.util.*;
 public class Corpse extends GenContainer implements DeadBody
 {
 	public String ID(){	return "Corpse";}
-	protected Room roomLocation=null;
 	protected CharStats charStats=null;
 	protected String mobName="";
 	protected String mobDescription="";

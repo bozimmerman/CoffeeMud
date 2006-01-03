@@ -57,6 +57,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String tranpoofin="";
 	protected String tranpoofout="";
     protected String announceMsg="";
+    protected String notes="";
 	protected int wrap=78;
     protected int[] birthday=null;
 	protected MOB replyTo=null;
@@ -102,6 +103,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setWrap(int newWrap){wrap=newWrap;}
 	public String password(){return Password;}
 	public void setPassword(String newPassword){Password=newPassword;}
+	public String notes(){return notes;}
+	public void setNotes(String newnotes){notes=newnotes;}
 	public void setChannelMask(int newMask){ channelMask=newMask;}
 	public int getChannelMask(){ return channelMask;}
 	public MOB replyTo(){	return replyTo;	}
@@ -290,11 +293,12 @@ public class DefaultPlayerStats implements PlayerStats
             +getAliasXML()
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toStringList(birthday)+"</BIRTHDAY>":"")
-			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
-			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
-            +((announceMsg.length()>0)?"<ANNOUNCE>"+announceMsg+"</ANNOUNCE>":"")
-			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+tranpoofin+"</TRANPOOFIN>":"")
-			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+tranpoofout+"</TRANPOOFOUT>":"")
+			+((poofin.length()>0)?"<POOFIN>"+CMLib.coffeeMaker().parseOutAngleBrackets(poofin)+"</POOFIN>":"")
+			+((notes.length()>0)?"<NOTES>"+CMLib.coffeeMaker().parseOutAngleBrackets(notes)+"</NOTES>":"")
+			+((poofout.length()>0)?"<POOFOUT>"+CMLib.coffeeMaker().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
+            +((announceMsg.length()>0)?"<ANNOUNCE>"+CMLib.coffeeMaker().parseOutAngleBrackets(announceMsg)+"</ANNOUNCE>":"")
+			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.coffeeMaker().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
+			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.coffeeMaker().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
             +"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
 			+getSecurityGroupStr()
             +roomSet().xml();
@@ -345,14 +349,28 @@ public class DefaultPlayerStats implements PlayerStats
         
 		poofin=CMLib.xml().returnXMLValue(str,"POOFIN");
 		if(poofin==null) poofin="";
+		poofin=CMLib.coffeeMaker().restoreAngleBrackets(poofin);
+		
 		poofout=CMLib.xml().returnXMLValue(str,"POOFOUT");
 		if(poofout==null) poofout="";
+		poofout=CMLib.coffeeMaker().restoreAngleBrackets(poofout);
+		
 		tranpoofin=CMLib.xml().returnXMLValue(str,"TRANPOOFIN");
 		if(tranpoofin==null) tranpoofin="";
+		tranpoofin=CMLib.coffeeMaker().restoreAngleBrackets(tranpoofin);
+		
 		tranpoofout=CMLib.xml().returnXMLValue(str,"TRANPOOFOUT");
 		if(tranpoofout==null) tranpoofout="";
+		tranpoofout=CMLib.coffeeMaker().restoreAngleBrackets(tranpoofout);
+		
         announceMsg=CMLib.xml().returnXMLValue(str,"ANNOUNCE");
-        if(announceMsg==null) poofout="";
+        if(announceMsg==null) announceMsg="";
+        announceMsg=CMLib.coffeeMaker().restoreAngleBrackets(announceMsg);
+        
+        notes=CMLib.xml().returnXMLValue(str,"NOTES");
+        if(notes==null) notes="";
+        notes=CMLib.coffeeMaker().restoreAngleBrackets(notes);
+		
         String dates=CMLib.xml().returnXMLValue(str,"DATES");
         if(dates==null) dates="";
         // now parse all the level date/times
@@ -467,9 +485,10 @@ public class DefaultPlayerStats implements PlayerStats
                 A=(Area)e.nextElement();
                 if(CMLib.flags().canAccess(mob,A))
                 {
-                    if(A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>0)
+                	int[] stats=A.getAreaIStats();
+                    if(stats[Area.AREASTAT_VISITABLEROOMS]>0)
                     {
-                        totalRooms+=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+                        totalRooms+=stats[Area.AREASTAT_VISITABLEROOMS];
                         totalVisits+=roomSet().roomCount(A.Name());
                     }
                 }

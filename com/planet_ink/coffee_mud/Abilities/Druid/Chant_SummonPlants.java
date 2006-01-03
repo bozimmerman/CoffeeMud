@@ -72,7 +72,7 @@ public class Chant_SummonPlants extends Chant
 	{
 		if((msg.amITarget(littlePlants))
 		&&(msg.targetMinor()==CMMsg.TYP_GET))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),littlePlants,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_GENERAL|CMMsg.MSG_DEATH,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),littlePlants,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.NO_EFFECT,null));
 	}
 
 	public static Item buildPlant(MOB mob, Room room)
@@ -111,7 +111,7 @@ public class Chant_SummonPlants extends Chant
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		newItem.setDispossessionTime(0);
+		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;

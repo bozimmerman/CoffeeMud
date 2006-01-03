@@ -63,7 +63,7 @@ public class Prayer_CauseCritical extends Prayer
 				if(msg.value()<=0)
 				{
 					int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel)+12,5);
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

@@ -297,7 +297,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor
 			displayText="You are making "+building.name();
             playSound="scissor.wav";
 			verb="making "+building.name();
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			if(bundling)
 				building.baseEnvStats().setWeight(woodRequired);

@@ -70,7 +70,7 @@ public class View extends StdCommand
 		do
 		{
             ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			Environmental itemToDo=SK.getShop().getStock(whatName,mob,SK.whatIsSold(),CMLib.utensils().roomStart(shopkeeper));
+			Environmental itemToDo=SK.getShop().getStock(whatName,mob,SK.whatIsSold(),CMLib.map().getStartRoom(shopkeeper));
 			if(itemToDo==null) break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);

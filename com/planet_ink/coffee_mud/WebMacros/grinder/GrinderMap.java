@@ -50,21 +50,21 @@ public class GrinderMap extends GrinderFlatMap
 			// for now, skip hidden areas.  Areas are often hidden if they aren't linked
 			// to the world (ie under construction or Archon only)
 			if (CMLib.flags().isHidden(A)) continue;
-			for (Enumeration r = A.getProperMap(); r.hasMoreElements(); )
+			for (Enumeration r = A.getProperRoomnumbers().getRoomIDs(); r.hasMoreElements(); )
 			{
-				Room R = (Room) r.nextElement();
-				if (R.roomID().length() > 0)
+				String roomID=(String)r.nextElement();
+				if((roomID.length() > 0)&&(roomID.indexOf("#(")<0))
 				{
-					GrinderRoom GR = new GrinderRoom(R);
+					GrinderRoom GR = new GrinderRoom(roomID);
 					areaMap.addElement(GR);
 					hashRooms.put(GR.roomID, GR);
 				}
 			}
 		}
 	}
-	public GrinderMap(Area A)
+	public GrinderMap(Area A, int[] xyxy)
 	{
-		super(A);
+		super(A,xyxy);
 	}
 
     public void rePlaceRooms()
@@ -340,6 +340,13 @@ public class GrinderMap extends GrinderFlatMap
 			           "; left: 120px; top: 10px; visibility: hidden\">");
 			buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * 130) +
 			           " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+			for(int l=0;l<5;l++)
+			{
+				buf.append("<TR HEIGHT=1>");
+				for(int x=Xstart;x<=Xbound;x++)
+					buf.append("<TD WIDTH=20><BR></TD><TD WIDTH=30><BR></TD><TD WIDTH=30><BR></TD><TD WIDTH=30><BR></TD><TD WIDTH=20><BR></TD>");
+				buf.append("</TR>");
+			}
 			for (int y = 0; y <= Ybound; y++)
 			{
 				for (int l = 0; l < 5; l++)
@@ -351,31 +358,32 @@ public class GrinderMap extends GrinderFlatMap
 							Log.sysOut("GR-HTML", "z error     : " + z + " outside " + maxZ + "-" + minZ);
 						GrinderRoom GR = grid[x][y][z];
 						if (GR == null)
-							buf.append("<TD COLSPAN=5 WIDTH=130><BR></TD>");
+							buf.append("<TD COLSPAN=5"+((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"")+"><BR></TD>");
 						else
 						{
 							switch (l)
 							{
 							case 0:
 							{ // north, up
-								buf.append("<TD WIDTH=20>"+getDoorLabelGif(Directions.NORTHWEST,GR,httpReq)+"</TD>");
-								buf.append("<TD WIDTH=30><BR></TD>");
-								buf.append("<TD WIDTH=30>" +
+								buf.append("<TD>"+getDoorLabelGif(Directions.NORTHWEST,GR,httpReq)+"</TD>");
+								buf.append("<TD><BR></TD>");
+								buf.append("<TD>" +
 								           getDoorLabelGif(Directions.NORTH, GR, httpReq) +
 								           "</TD>");
-								buf.append("<TD WIDTH=30>" +
+								buf.append("<TD>" +
 								           getDoorLabelGif(Directions.UP, GR, httpReq) +
 								           "</TD>");
-								buf.append("<TD WIDTH=20>"+getDoorLabelGif(Directions.NORTHEAST,GR,httpReq)+"</TD>");
+								buf.append("<TD>"+getDoorLabelGif(Directions.NORTHEAST,GR,httpReq)+"</TD>");
 								break;
 							}
 							case 1:
 							{ // west, east
-								buf.append("<TD WIDTH=20>" +
+								buf.append("<TD>" +
 								           getDoorLabelGif(Directions.WEST, GR, httpReq) +
 								           "</TD>");
-								buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 VALIGN=TOP ");
+								buf.append("<TD COLSPAN=3 ROWSPAN=3 VALIGN=TOP ");
 								buf.append(roomColorStyle(GR));
+								buf.append((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"");
 								buf.append(">");
 								String roomID = GR.roomID;
 								if (roomID.startsWith(area.Name() + "#")) {
@@ -384,46 +392,46 @@ public class GrinderMap extends GrinderFlatMap
 								try {
 								  buf.append("<a name=\"" +
 								             URLEncoder.encode(GR.roomID, "UTF-8") +
-								      "\" href=\"javascript:Clicked('rmmenu.cmvp','','" +
-								      GR.roomID + "','');\"><FONT SIZE=-1><B>" + roomID +
+								      "\" href=\"javascript:RoomClick('" +GR.roomID 
+								      + "');\"><FONT SIZE=-1><B>" + roomID +
 								      "</B></FONT></a><BR>");
 								}
 								catch (java.io.UnsupportedEncodingException e) {
 								  Log.errOut("GrinderMap", "Wrong Encoding");
 								}
-								buf.append("<FONT SIZE=-2>(" + CMClass.className(GR.room) +
+								buf.append("<FONT SIZE=-2>(" + CMClass.className(GR.room()) +
 								           ")<BR>");
-								String displayText = GR.room.displayText();
+								String displayText = GR.room().displayText();
 								if (displayText.length() > 20) {
 								  displayText = displayText.substring(0, 20) + "...";
 								}
 								buf.append(displayText + "</FONT></TD>");
-								buf.append("<TD WIDTH=20>" +
+								buf.append("<TD>" +
 								           getDoorLabelGif(Directions.EAST, GR, httpReq) +
 								           "</TD>");
 								break;
 							}
 							case 2: // nada
-								buf.append("<TD WIDTH=20><BR></TD>");
-								buf.append("<TD WIDTH=20><BR></TD>");
+								buf.append("<TD><BR></TD>");
+								buf.append("<TD><BR></TD>");
 								break;
 							case 3:
 							{ // alt e,w
-								buf.append("<TD WIDTH=20><BR></TD>");
-								buf.append("<TD WIDTH=20><BR></TD>");
+								buf.append("<TD><BR></TD>");
+								buf.append("<TD><BR></TD>");
 								break;
 							}
 							case 4:
 							{ // south, down
-								buf.append("<TD WIDTH=20>"+getDoorLabelGif(Directions.SOUTHWEST,GR,httpReq)+"</TD>");
-								buf.append("<TD WIDTH=30><BR></TD>");
-								buf.append("<TD WIDTH=30>" +
+								buf.append("<TD>"+getDoorLabelGif(Directions.SOUTHWEST,GR,httpReq)+"</TD>");
+								buf.append("<TD><BR></TD>");
+								buf.append("<TD>" +
 								           getDoorLabelGif(Directions.SOUTH, GR, httpReq) +
 								           "</TD>");
-								buf.append("<TD WIDTH=30>" +
+								buf.append("<TD>" +
 								           getDoorLabelGif(Directions.DOWN, GR, httpReq) +
 								           "</TD>");
-								buf.append("<TD WIDTH=20>"+getDoorLabelGif(Directions.SOUTHEAST,GR,httpReq)+"</TD>");
+								buf.append("<TD>"+getDoorLabelGif(Directions.SOUTHEAST,GR,httpReq)+"</TD>");
 								break;
 							}
 							default:
@@ -477,6 +485,11 @@ public class GrinderMap extends GrinderFlatMap
 			           "; left: 120px; top: 10px; visibility: hidden\">");
 			buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * roomSize) +
 			           " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+			buf.append("<TR HEIGHT=" + roomSize + ">");
+			for (int x = 0; x <= Xbound; x++)
+				buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize +"></TD>");
+			buf.append("</TR>");
+				
 			for (int y = 0; y <= Ybound; y++)
 			{
 				buf.append("<TR HEIGHT=" + roomSize + ">");
@@ -486,14 +499,17 @@ public class GrinderMap extends GrinderFlatMap
 						Log.sysOut("GR-HTML",
 						           "z error     : " + z + " outside " + maxZ + "-" + minZ);
 					GrinderRoom GR = grid[x][y][z];
+					String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 					if (GR == null)
-						buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize +
-						           "><font size=1>&nbsp;</font></TD>");
+						buf.append("<TD"+tdins+"></TD>");
 					  else
 					  {
-						buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize + " ");
-						buf.append(roomColorStyle(GR));
-						buf.append("><font size=1>&nbsp;</font></TD>");
+						buf.append("<TD"+tdins+" ");
+						if(!GR.isRoomGood())
+							buf.append("BGCOLOR=BLACK");
+						else
+							buf.append(roomColorStyle(GR));
+						buf.append("></TD>");
 					}
 				}
 				buf.append("</TR>");

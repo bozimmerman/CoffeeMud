@@ -245,13 +245,18 @@ public class MovingRoom extends ActiveTicker
 		if(canAct(ticking,tickID))
 		{
 			Room subwayRoom=getBehaversRoom(ticking);
+			if(subwayRoom==null)
+			{
+				Log.errOut("MovingRoom",ticking.ID()+"/"+ticking.name()+" is NOT A DADGUM ROOM!!!!");
+				return false;
+			}
 			if (currentStop==0)
 			{
                 isReversed=false;
                 nextStop=currentStop+1;
             }
 			else
-			if (currentStop==(listOfRooms.size()-1))
+			if (currentStop>=(listOfRooms.size()-1))
 			{
                 isReversed=true;
                 nextStop=currentStop-1;
@@ -265,6 +270,13 @@ public class MovingRoom extends ActiveTicker
 			{
                 nextStop=currentStop+1;
 			}
+			if((currentStop<0)||(currentStop>=listOfRooms.size())
+			||(nextStop<0)||(nextStop>=listOfRooms.size()))
+			{
+				Log.errOut("MovingRoom","Moving Room behavior on "+subwayRoom.roomID()+" HAD malformed rooms list in xml file.");
+				return false;
+			}
+			
 		    String currentStopS=(String)listOfRooms.elementAt(currentStop);
             String nextStopS=(String)listOfRooms.elementAt(nextStop);
 		    if(ticking instanceof Room)

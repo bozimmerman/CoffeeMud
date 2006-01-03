@@ -312,7 +312,7 @@ public class Skill_Disguise extends BardSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
+			CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

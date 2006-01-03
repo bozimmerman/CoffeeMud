@@ -100,9 +100,9 @@ public class CMath
     {
         return new Integer(a).doubleValue()/new Integer(b).doubleValue();
     }
-    public static int pow(int x, int y)
+    public static long pow(long x, long y)
     {
-        return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(y).doubleValue()));
+        return Math.round(Math.pow(new Long(x).doubleValue(),new Long(y).doubleValue()));
     }
     public static int squared(int x)
     {

@@ -83,7 +83,7 @@ public class Paladin_HealingHands extends StdAbility
 				int manaLost=healing;
 				if(manaLost>0) manaLost=manaLost*-1;
 				mob.curState().adjMana(manaLost,mob.maxState());
-				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
                 lastCastHelp=System.currentTimeMillis();
 			}

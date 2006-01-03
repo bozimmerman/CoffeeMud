@@ -914,7 +914,7 @@ public class Test extends StdCommand
             }
             
             reset(mobs,backups,R,IS,R2);
-            CMLib.utensils().clearTheRoom(R2);
+            CMLib.map().emptyRoom(R2,null);
             R2.destroy();
             R.rawDoors()[Directions.UP]=upRoom;
             R.rawExits()[Directions.UP]=upExit;

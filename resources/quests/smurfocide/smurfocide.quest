@@ -4,6 +4,9 @@ set name smurfocide
 # this one runs every 8-12 hours (7200+(3600*rand))*4 secpertick /60 secs /60 mins.
 set wait 7200
 set interval 3600
+set runlevel 1
+set minplayers 1
+set playermask +LEVELS ->50
 
 set area Smurfville
 # inform the quest that it occurs in Smurfville

@@ -168,6 +168,24 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return true;
 	}
 	
+	public boolean availableToTheme(String abilityID, int theme, boolean publicly)
+	{
+		for(Enumeration e=completeAbleMap.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			if(((Hashtable)completeAbleMap.get(key)).containsKey(abilityID))
+			{
+				if(key.equalsIgnoreCase("All")) return true;
+				CharClass C=CMClass.getCharClass(key);
+				if((C!=null)
+				&&((C.availabilityCode()&theme)==theme)
+				&&((!publicly)||((C.availabilityCode()&Area.THEME_SKILLONLYMASK)==0)))
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	public Vector getLevelListings(String ID, boolean checkAll, int level)
 	{
 		Vector V=new Vector();

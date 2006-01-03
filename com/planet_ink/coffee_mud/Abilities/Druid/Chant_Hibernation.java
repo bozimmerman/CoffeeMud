@@ -81,7 +81,7 @@ public class Chant_Hibernation extends Chant
 		MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob)
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 		&&(msg.sourceMajor()>0)))
 		{
@@ -115,7 +115,7 @@ public class Chant_Hibernation extends Chant
 			if(!CMLib.flags().isGolem(mob))
 			{
 				double hp=new Integer(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
-				CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
+				CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
 			}
 			double move=new Integer(mob.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
 			mob.curState().adjMovement((int)Math.round((move*.1)+(mob.envStats().level()/2)),mob.maxState());

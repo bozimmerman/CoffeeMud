@@ -191,7 +191,7 @@ public class Spell_Cogniportive extends Spell
 				str=CMParms.combine(V,1);
 				if(CMLib.english().containsString(affected.name(),str)
 				||CMLib.english().containsString(affected.displayText(),str))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
 			}
 			break;
 		default:

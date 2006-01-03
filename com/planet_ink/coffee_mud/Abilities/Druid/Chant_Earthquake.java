@@ -68,7 +68,7 @@ public class Chant_Earthquake extends Chant
 			if(!oncePerRd)
 			{
 				oncePerRd=true;
-				mob.location().show(mob,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
+				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
 			}
 			return false;
 		}
@@ -145,7 +145,7 @@ public class Chant_Earthquake extends Chant
 							if(success)
 							{
 								if(target.location()==mob.location())
-									CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+									CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 							}
 						}
 						else

@@ -48,7 +48,7 @@ public class Prop_SafePet extends Property
         &&(affected instanceof MOB)
         &&(!disabled)))
 		{
-            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
     			msg.source().tell("Ah, leave "+affected.name()+" alone.");
             ((MOB)affected).makePeace();
 			return false;

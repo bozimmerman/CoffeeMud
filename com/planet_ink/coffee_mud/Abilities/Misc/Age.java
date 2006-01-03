@@ -95,7 +95,7 @@ public class Age extends StdAbility
 			        myRace=M.baseCharStats().getMyRace();
 		        else
 		        {
-		            Room R=CMLib.utensils().roomLocation(affected);
+		            Room R=CMLib.map().roomLocation(affected);
 		            if(R!=null)
 		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
 		            ((Item)affected).destroy();
@@ -104,7 +104,7 @@ public class Age extends StdAbility
 		    }
 			if(ellapsed>=myRace.getAgingChart()[1])
 			{
-				Room R=CMLib.utensils().roomLocation(affected);
+				Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
 				{
 					Item I=(Item)affected;
@@ -176,7 +176,7 @@ public class Age extends StdAbility
 			if((ellapsed>=myRace.getAgingChart()[2])
 			&&(((MOB)affected).fetchBehavior("MudChat")==null))
 			{
-				Room R=CMLib.utensils().roomLocation(affected);
+				Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
 				{
 					MOB babe=(MOB)affected;
@@ -214,7 +214,7 @@ public class Age extends StdAbility
 			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
 			&&(((MOB)affected).charStats().getStat(CharStats.STAT_INTELLIGENCE)>1))
 			{
-				Room R=CMLib.utensils().roomLocation(affected);
+				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
 				{
 					MOB babe=(MOB)affected;
@@ -342,23 +342,36 @@ public class Age extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected instanceof Item)&&((msg.target()==affected)||(msg.tool()==affected)))
+		if((affected instanceof Item)
+		&&((msg.target()==affected)||(msg.tool()==affected)))
 		{
 			Behavior B=affected.fetchBehavior("Emoter");
+			Item baby=(Item)affected;
 			if(B==null)
 			{
 				B=CMClass.getBehavior("Emoter");
 				if(B!=null)
-					affected.addBehavior(B);
+					baby.addBehavior(B);
 			}
-			if(((Item)affected).owner() instanceof Room)
-			{ if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) B.setParms(downBabyEmoter);}
+			if(baby.owner() instanceof Room)
+			{ 
+				if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) 
+					B.setParms(downBabyEmoter);
+			}
 			else
+			if(baby.owner()!=null)
 			{
-				if(affected.description().toUpperCase().indexOf(((Item)affected).owner().name().toUpperCase())<=0)
-				{ if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) B.setParms(otherBabyEmoter);}
+				Environmental o=baby.owner();
+				if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
+				{ 
+					if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) 
+						B.setParms(otherBabyEmoter);
+				}
 				else
-				{ if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) B.setParms(happyBabyEmoter);}
+				{ 
+					if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) 
+						B.setParms(happyBabyEmoter);
+				}
 			}
 		}
 		if(((System.currentTimeMillis()-lastSoiling)>(TimeManager.MILI_MINUTE*30))&&(CMLib.dice().rollPercentage()<10))
@@ -380,7 +393,7 @@ public class Age extends StdAbility
 					if((l>0)&&(l<Integer.MAX_VALUE))
 					{
 						int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
-						if(ellapsed>=myRace.getAgingChart()[2])
+						if(ellapsed<=myRace.getAgingChart()[2])
 						    soil=true;
 					}
 			    }

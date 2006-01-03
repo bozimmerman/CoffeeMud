@@ -96,7 +96,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		Environmental target=mob.location();
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
+			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
 				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;

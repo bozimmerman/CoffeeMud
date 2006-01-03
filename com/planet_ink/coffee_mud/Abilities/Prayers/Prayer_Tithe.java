@@ -81,7 +81,7 @@ public class Prayer_Tithe extends Prayer
 		&&(msg.tool()!=null))
 		{
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(affected);
-			if(SK.getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source(),SK.whatIsSold(),CMLib.utensils().roomStart(SK)))
+			if(SK.getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source(),SK.whatIsSold(),CMLib.map().getStartRoom(SK)))
 			{
 			    ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
 				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
@@ -112,7 +112,7 @@ public class Prayer_Tithe extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with a need to tithe!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> need to tithe!^?");
-			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg3)))
 			{
 				mob.location().send(mob,msg);

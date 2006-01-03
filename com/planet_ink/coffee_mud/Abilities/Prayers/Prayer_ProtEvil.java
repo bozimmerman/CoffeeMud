@@ -54,7 +54,7 @@ public class Prayer_ProtEvil extends Prayer
 		if(CMLib.flags().isEvil(mob))
 		{
 			int damage=(int)Math.round(CMath.div(mob.envStats().level(),3.0));
-			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
+			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
 		}
 		return super.tick(ticking,tickID);
 	}

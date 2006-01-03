@@ -172,7 +172,7 @@ public class Chant_SummonTornado extends Chant
 					if(O instanceof MOB)
 					{
 						MOB M=(MOB)O;
-						msg=CMClass.getMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_GENERAL,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
+						msg=CMClass.getMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
 						CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastCode(mob,M,auto),null);
 						CMMsg msg3=CMClass.getMsg(mob,M,this,verbalCastMask(mob,M,auto)|CMMsg.TYP_JUSTICE,null);
 						if((mob.location().okMessage(M,msg))
@@ -192,7 +192,7 @@ public class Chant_SummonTornado extends Chant
 							int damage = CMLib.dice().roll(maxDie,7,1);
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(CMath.div(damage,2.0));
-							CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
 							//if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
 						}
 					}

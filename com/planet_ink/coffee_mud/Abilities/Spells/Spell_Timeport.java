@@ -90,8 +90,8 @@ public class Spell_Timeport extends Spell
 		    }
 		    else
 			if(msg.amISource((MOB)affected))
-				if((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
-				&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
+				if((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+				&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
 				{
 					msg.source().tell("Nothing just happened.  You didn't do that.");
 					return false;

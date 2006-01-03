@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
+import com.jcraft.jzlib.*;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -41,6 +41,7 @@ public class DefaultSession extends Thread implements Session
     protected Socket sock;
     protected BufferedReader in;
     protected PrintWriter out;
+    protected OutputStream rawout;
 	protected MOB mob;
 	protected boolean killFlag=false;
 	protected boolean needPrompt=false;
@@ -57,6 +58,8 @@ public class DefaultSession extends Thread implements Session
 	protected String lastStr=null;
 	protected int spamStack=0;
 	protected Vector snoops=new Vector();
+	protected Vector prevMsgs=new Vector();
+	protected StringBuffer curPrevMsg=null;
 	
 	protected boolean lastWasCR=false;
 	protected boolean lastWasLF=false;
@@ -83,6 +86,7 @@ public class DefaultSession extends Thread implements Session
     private static final HashSet mxpSupportSet=new HashSet();
     private static final Hashtable mxpVersionInfo=new Hashtable();
     private boolean bNextByteIs255=false;
+    private boolean connectionComplete=false;
     
     private int currentColor='N';
     private int lastColor=-1;
@@ -105,20 +109,22 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			sock.setSoTimeout(SOTIMEOUT);
-            OutputStream rawout=sock.getOutputStream();
+            rawout=sock.getOutputStream();
             InputStream rawin=sock.getInputStream();
             setServerTelnetMode(TELNET_ANSI,true);
             setClientTelnetMode(TELNET_ANSI,true);
             setClientTelnetMode(TELNET_TERMTYPE,true);
             requestSubOption(rawout,TELNET_TERMTYPE);
+            if(!CMSecurity.isDisabled("MCCP"))
+	            changeTelnetMode(rawout,TELNET_COMPRESS2,true);
+            
             changeTelnetMode(rawout,TELNET_MXP,true);
             changeTelnetMode(rawout,TELNET_MSP,true);
             changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
             changeTelnetMode(rawout,TELNET_NAWS,true);
             //changeTelnetMode(rawout,TELNET_BINARY,true);
             preliminaryRead(250);
-            if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("tinyfugue"))
-            &&(clientTelnetMode(TELNET_ECHO)))
+            if((!terminalType.equalsIgnoreCase("ANSI"))&&(clientTelnetMode(TELNET_ECHO)))
                 changeTelnetModeBackwards(TELNET_ECHO,false);
             rawout.flush();
             preliminaryRead(250);
@@ -128,9 +134,19 @@ public class DefaultSession extends Thread implements Session
 			out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
 			in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
             preliminaryRead(250);
-            if(!terminalType.equalsIgnoreCase("zmud")
-            &&!terminalType.equalsIgnoreCase("tinyfugue"))
+            if(terminalType.equalsIgnoreCase("ANSI"))
                 changeTelnetMode(rawout,TELNET_ECHO,true);
+        	if(clientTelnetMode(TELNET_COMPRESS2))
+        	{
+                out.flush();
+                rawout.flush();
+				try{Thread.sleep(50);}catch(Exception e){}
+                requestSubOption(rawout,TELNET_COMPRESS2);
+                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+				out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
+				try{Thread.sleep(50);}catch(Exception e){}
+        	}
             if(clientTelnetMode(Session.TELNET_MXP))
                 print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
             preliminaryRead(500);
@@ -145,6 +161,7 @@ public class DefaultSession extends Thread implements Session
                     println("\n\r\n\r\n\r<IMAGE 'intro.jpg' URL='"+path+"' H=400 W=400>\n\r\n\r");
             }
             preliminaryRead(100);
+            connectionComplete=true;
 		}
 		catch(SocketException e)
 		{
@@ -175,12 +192,16 @@ public class DefaultSession extends Thread implements Session
     {
         if(CMSecurity.isDebugging("TELNET"))
             Log.debugOut("Session","Sent sub-option: "+Session.TELNET_DESCS[optionCode]);
-        out.write((byte)TELNET_IAC);
-        out.write((byte)TELNET_SB);
-        out.write((byte)optionCode);
-        out.write((byte)1);           // Request Data
-        out.write((byte)TELNET_IAC);
-        out.write((byte)TELNET_SE);
+        if(optionCode!=TELNET_COMPRESS2)
+        {
+	        byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)1,(byte)TELNET_IAC,(byte)TELNET_SE};
+	        out.write(stream);
+        }
+        else
+        {
+	        byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)TELNET_IAC,(byte)TELNET_SE};
+	        out.write(stream);
+        }
         out.flush();
     }
     
@@ -196,6 +217,7 @@ public class DefaultSession extends Thread implements Session
             telnetSupportSet.add(new Integer(Session.TELNET_SUPRESS_GO_AHEAD));
             telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
             telnetSupportSet.add(new Integer(Session.TELNET_NAWS));
+            //telnetSupportSet.add(new Integer(Session.TELNET_COMPRESS2));
         }
         return telnetSupportSet.contains(new Integer(telnetCode));
     }
@@ -211,27 +233,24 @@ public class DefaultSession extends Thread implements Session
     private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff)
     throws IOException
     {
-        out.write((char)TELNET_IAC);
-        out.write(onOff?(char)TELNET_WILL:(char)TELNET_WONT);
-        out.write((char)telnetCode);
+    	byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
+    	out.write(command);
         out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
     public void changeTelnetMode(int telnetCode, boolean onOff)
     {
-        out.write((char)TELNET_IAC);
-        out.write(onOff?(char)TELNET_WILL:(char)TELNET_WONT);
-        out.write((char)telnetCode);
+    	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
+    	out.write(command);
         out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
     private void changeTelnetModeBackwards(int telnetCode, boolean onOff)
     {
-        out.write((char)TELNET_IAC);
-        out.write(onOff?(char)TELNET_DO:(char)TELNET_DONT);
-        out.write((char)telnetCode);
+    	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
+    	out.write(command);
         out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
@@ -259,6 +278,7 @@ public class DefaultSession extends Thread implements Session
 	public long lastLoopTime(){ return lastLoopTop;}
     public long getLastPKFight(){return lastPKFight;}
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
+    public Vector getLastMsgs(){return (Vector)prevMsgs.clone();}
 
 	public MOB mob(){return mob;}
 	public void setMob(MOB newmob)
@@ -342,15 +362,17 @@ public class DefaultSession extends Thread implements Session
         out.flush();
     }
 	
-	public void onlyPrint(String msg){onlyPrint(msg,-1);}
-	public synchronized void onlyPrint(String msg, int pageBreak)
+	public void onlyPrint(String msg){onlyPrint(msg,-1,false);}
+	public void onlyPrint(String msg, int pageBreak, boolean noCache)
 	{
 		if((out==null)||(msg==null)) return;
 		try
 		{
-			if(snoops.size()>0)
-				for(int s=0;s<snoops.size();s++)
-					((Session)snoops.elementAt(s)).onlyPrint(msg,0);
+			try{
+				if(snoops.size()>0)
+					for(int s=0;s<snoops.size();s++)
+						((Session)snoops.elementAt(s)).onlyPrint(msg,0,noCache);
+			}catch(IndexOutOfBoundsException x){}
 
 			if(msg.endsWith("\n\r")
 			&&(msg.equals(lastStr))
@@ -372,7 +394,7 @@ public class DefaultSession extends Thread implements Session
 				lastStr=msg;
 			
 			if(pageBreak<0)	pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
-			if(pageBreak>0)
+			if((pageBreak>0)&&(this==Thread.currentThread()))
 			{
 				int lines=0;
 				for(int i=0;i<msg.length();i++)
@@ -388,12 +410,33 @@ public class DefaultSession extends Thread implements Session
 							out(msg.substring(0,i).toCharArray());
 							msg=msg.substring(i+1);
 							out("<pause - enter>".toCharArray());
-							try{
-								blockingIn();
-							}catch(Exception e){return;}
+							try{ blockingIn(); }catch(Exception e){return;}
 						}
 					}
 				}
+			}
+			
+			// handle line cache -- 
+			if(!noCache)
+			for(int i=0;i<msg.length();i++)
+			{
+				if(curPrevMsg==null) curPrevMsg=new StringBuffer("");
+				if(msg.charAt(i)=='\r') continue;
+				if(msg.charAt(i)=='\n')
+				{
+					if(curPrevMsg.toString().trim().length()>0)
+					{
+						synchronized(prevMsgs)
+						{
+							while(prevMsgs.size()>=MAX_PREVMSGS)
+								prevMsgs.removeElementAt(0);
+							prevMsgs.addElement(curPrevMsg.toString());
+							curPrevMsg.setLength(0);
+						}
+					}
+					continue;
+				}
+				curPrevMsg.append(msg.charAt(i));
 			}
 			out(msg.toCharArray());
 		}
@@ -403,12 +446,12 @@ public class DefaultSession extends Thread implements Session
 	public void rawPrint(String msg){rawPrint(msg,-1);}
 	public void rawPrint(String msg, int pageBreak)
 	{ if(msg==null)return;
-	  onlyPrint((needPrompt?"":"\n\r")+msg,pageBreak);
+	  onlyPrint((needPrompt?"":"\n\r")+msg,pageBreak,false);
 	  needPrompt=true;
 	}
 
 	public void print(String msg)
-	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),-1); }
+	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),-1,false); }
 
 	public void rawPrintln(String msg){rawPrintln(msg,-1);}
 	public void rawPrintln(String msg, int pageBreak)
@@ -418,7 +461,7 @@ public class DefaultSession extends Thread implements Session
 	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)); }
 
 	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),-1);}
+	{ onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),-1,false);}
 
 	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false)); }
@@ -428,12 +471,12 @@ public class DefaultSession extends Thread implements Session
 
 	public void wraplessPrintln(String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",-1);
+	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",-1,false);
 	  needPrompt=true;
 	}
 
 	public void wraplessPrint(String msg)
-	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true),-1);
+	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true),-1,false);
 	  needPrompt=true;
 	}
 
@@ -441,14 +484,14 @@ public class DefaultSession extends Thread implements Session
 	{ colorOnlyPrint(msg,-1);}
 	public void colorOnlyPrintln(String msg, int pageBreak)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",pageBreak);
+	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",pageBreak,false);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
 	{ colorOnlyPrint(msg,-1);}
 	public void colorOnlyPrint(String msg, int pageBreak)
-	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),pageBreak);
+	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),pageBreak,false);
 	  needPrompt=true;
 	}
 
@@ -459,7 +502,7 @@ public class DefaultSession extends Thread implements Session
 
 	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",-1);
+	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",-1,false);
 	}
 
 	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
@@ -785,6 +828,20 @@ public class DefaultSession extends Thread implements Session
             if((terminalType.equalsIgnoreCase("zmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
+            if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
+            {
+            	setClientTelnetMode(last,true);
+            	if(connectionComplete)
+            	{
+	                requestSubOption(rawout,TELNET_COMPRESS2);
+	                out.flush();
+	                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+	                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+					out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
+					try{Thread.sleep(250);}catch(Exception e){}
+            	}
+            }
+            else
             if(!mightSupportTelnetMode(last))
                 changeTelnetMode(last,false);
             else
@@ -797,6 +854,11 @@ public class DefaultSession extends Thread implements Session
 		    int last=read();
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got DONT "+Session.TELNET_DESCS[last]);
             setClientTelnetMode(last,false);
+            if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
+            {
+            	setClientTelnetMode(last,false);
+				out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
+            }
             if((mightSupportTelnetMode(last)&&(serverTelnetMode(last))))
                 changeTelnetMode(last,false);
 		    break;
@@ -1135,7 +1197,7 @@ public class DefaultSession extends Thread implements Session
                                   buf.append(victim.name());
                               c++; break; }
                 case 'E': {   MOB victim=mob().getVictim();
-                              if((mob().isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
+                              if((mob().isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
                                   buf.append(victim.charStats().getMyRace().healthText(victim)+"\n\r");
                               c++; break; }
                 case 'g': { buf.append((int)Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob())/CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob()))))); c++; break;}
@@ -1283,7 +1345,7 @@ public class DefaultSession extends Thread implements Session
 					if((!killFlag)&&(mob!=null))
                     {
 						Log.sysOut("Session","login: "+mob.Name());
-                        if(loginAttempt==2)
+                        if(loginAttempt>0)
                             if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
                                 killFlag=true;
                     }
@@ -1346,7 +1408,9 @@ public class DefaultSession extends Thread implements Session
     								
     								lastStart=System.currentTimeMillis();
                                     if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
-    								mob.enqueCommand(CMDS,0);
+                                    Vector MORE_CMDS=CMLib.english().preCommandParser(CMDS);
+                                    for(int m=0;m<MORE_CMDS.size();m++)
+	    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),0);
     								lastStop=System.currentTimeMillis();
                                 }
 							}

@@ -62,7 +62,7 @@ public interface EnvStats extends CMObject
 	public final static int SENSE_ROOMUNEXPLORABLE=512;
 	public final static int SENSE_ROOMNOMOVEMENT=1024;
 	public final static int SENSE_ROOMUNMAPPABLE=2048;
-	public final static int SENSE_ROOMSYNC=4096;
+	public final static int SENSE_ROOMGRIDSYNC=4096;
 	public final static int SENSE_UNUSEDMASK14=8192;
 	public final static int SENSE_UNUSEDMASK15=16384;
 	public final static int SENSE_UNUSEDMASK16=32768;

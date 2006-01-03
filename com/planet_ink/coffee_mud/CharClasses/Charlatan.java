@@ -250,8 +250,8 @@ public class Charlatan extends StdCharClass
 				   ||(lql==classLevel-1)
 				   ||(classLevel>=25))
 				&&(!CMLib.ableMapper().getSecretSkill(A.ID()))
-				&&(!CMLib.ableMapper().classOnly("Archon",A.ID()))
-				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID())))
+				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+				&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true)))
 					choices.addElement(A);
 			}
 			if(choices.size()==0) return;

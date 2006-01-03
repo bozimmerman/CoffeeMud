@@ -161,7 +161,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if((msg.target() instanceof Item)
 			&&(((Item)msg.target()).owner() ==msg.source().location())
             &&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
-			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&(A.landOwner().length()>0)
 			&&(msg.source().location()!=null)
 		    &&(msg.othersMessage()!=null)
@@ -197,7 +197,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==affected))
+				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))
 		{
 			updateLot();
@@ -205,17 +207,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			Room R=(Room)affected;
 			if(R!=null)
 			{
-				for(int m=0;m<R.numInhabitants();m++)
+				synchronized(("SYNC"+R.roomID()).intern())
 				{
-					MOB M=R.fetchInhabitant(m);
-					if((M!=null)
-					&&(M.savable())
-					&&(M.getStartRoom()==R)
-					&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
-						mobs.addElement(M);
+					R=CMLib.map().getRoom(R);
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)
+						&&(M.savable())
+						&&(M.getStartRoom()==R)
+						&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
+							mobs.addElement(M);
+					}
+					if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
+						CMLib.database().DBUpdateTheseMOBs(R,mobs);
 				}
-				if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
-					CMLib.database().DBUpdateTheseMOBs(R,mobs);
 			}
 		}
 	}
@@ -229,35 +235,39 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	
 	public static void colorForSale(Room R, boolean rental, boolean reset)
 	{
-	    String theStr=rental?RENTSTR:SALESTR;
-	    String otherStr=rental?SALESTR:RENTSTR;
-		int x=R.description().indexOf(otherStr);
-		while(x>=0)
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
-			R.setDescription(R.description().substring(0,x));
-			CMLib.database().DBUpdateRoom(R);
-            x=R.description().indexOf(otherStr);
-		}
-		if(R.description().indexOf(theStr.trim())<0)
-		{
-			if(reset)
+			R=CMLib.map().getRoom(R);
+		    String theStr=rental?RENTSTR:SALESTR;
+		    String otherStr=rental?SALESTR:RENTSTR;
+			int x=R.description().indexOf(otherStr);
+			while(x>=0)
 			{
-				R.setDisplayText("An empty plot");
-				R.setDescription("");
+				R.setDescription(R.description().substring(0,x));
+				CMLib.database().DBUpdateRoom(R);
+	            x=R.description().indexOf(otherStr);
 			}
-			R.setDescription(R.description()+theStr);
-			CMLib.database().DBUpdateRoom(R);
-        }
-		Item I=R.fetchItem(null,"$id$");
-		if((I==null)||(!I.ID().equals("GenWallpaper")))
-		{
-			I=CMClass.getItem("GenWallpaper");
-			CMLib.flags().setReadable(I,true);
-			I.setName("id");
-			I.setReadableText("This room is "+CMLib.map().getExtendedRoomID(R));
-			I.setDescription("This room is "+CMLib.map().getExtendedRoomID(R));
-			R.addItem(I);
-			CMLib.database().DBUpdateItems(R);
+			if(R.description().indexOf(theStr.trim())<0)
+			{
+				if(reset)
+				{
+					R.setDisplayText("An empty plot");
+					R.setDescription("");
+				}
+				R.setDescription(R.description()+theStr);
+				CMLib.database().DBUpdateRoom(R);
+	        }
+			Item I=R.fetchItem(null,"$id$");
+			if((I==null)||(!I.ID().equals("GenWallpaper")))
+			{
+				I=CMClass.getItem("GenWallpaper");
+				CMLib.flags().setReadable(I,true);
+				I.setName("id");
+				I.setReadableText("This room is "+CMLib.map().getExtendedRoomID(R));
+				I.setDescription("This room is "+CMLib.map().getExtendedRoomID(R));
+				R.addItem(I);
+				CMLib.database().DBUpdateItems(R);
+			}
 		}
 	}
 
@@ -283,134 +293,138 @@ public class Prop_RoomForSale extends Property implements LandTitle
         boolean updateItems=false;
         boolean updateExits=false;
         boolean updateRoom=false;
-		if(T.landOwner().length()==0)
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
-            Item I=null;
-			for(int i=R.numItems()-1;i>=0;i--)
+			R=CMLib.map().getRoom(R);
+			if(T.landOwner().length()==0)
 			{
-				I=R.fetchItem(i);
-                if((I==null)||(I.Name().equalsIgnoreCase("id"))) continue;
-                if(clearAllItems)
-                {
-                    I.destroy();
-                    updateItems=true;
-                }
-                else
-                {
-    				if(I.dispossessionTime()==0)
-    				{
-    					long now=System.currentTimeMillis();
-    					now+=(TimeManager.MILI_HOUR*Item.REFUSE_PLAYER_DROP);
-    					I.setDispossessionTime(now);
-    				}
-    				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-    				&&(I.envStats().rejuv()!=0))
-    				{
-    					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-    					I.recoverEnvStats();
-    				}
-                }
-			}
-            Ability A=null;
-            if(clearAllItems)
-            for(int a=R.numEffects();a>=0;a--)
-            {
-                A=R.fetchEffect(a);
-                if(((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
-                {
-                    A.unInvoke();
-                    R.delEffect(A);
-                    updateRoom=true;
-                }
-            }
-            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-            {
-                Room R2=R.rawDoors()[d];
-                Exit E=R.rawExits()[d];
-                if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-                {
-                    E.setKeyName("");
-                    E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-                    updateExits=true;
-                    if(R2!=null)
-                    {
-                        E=R2.rawExits()[Directions.getOpDirectionCode(d)];
-                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-                        {
-                            E.setKeyName("");
-                            E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-                            CMLib.database().DBUpdateExits(R2);
-                            R2.getArea().fillInAreaRoom(R2);
-                        }
-                    }
-                }
-            }
-            if(updateExits)
-            {
-                CMLib.database().DBUpdateExits(R);
-                R.getArea().fillInAreaRoom(R);
-            }
-            if(updateItems)
-                CMLib.database().DBUpdateItems(R);
-            if(updateRoom)
-                CMLib.database().DBUpdateRoom(R);
-			colorForSale(R,T.rentalProperty(),resetRoomName);
-			return -1;
-		}
-		if(lastNumItems<0)
-		{
-			if((!CMLib.database().DBUserSearch(null,T.landOwner()))
-			&&(CMLib.clans().getClan(T.landOwner())==null))
-			{
-				T.setLandOwner("");
-				T.updateLot();
+	            Item I=null;
+				for(int i=R.numItems()-1;i>=0;i--)
+				{
+					I=R.fetchItem(i);
+	                if((I==null)||(I.Name().equalsIgnoreCase("id"))) continue;
+	                if(clearAllItems)
+	                {
+	                    I.destroy();
+	                    updateItems=true;
+	                }
+	                else
+	                {
+	    				if(I.expirationDate()==0)
+	    				{
+	    					long now=System.currentTimeMillis();
+	    					now+=(TimeManager.MILI_HOUR*Item.REFUSE_PLAYER_DROP);
+	    					I.setExpirationDate(now);
+	    				}
+	    				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
+	    				&&(I.envStats().rejuv()!=0))
+	    				{
+	    					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+	    					I.recoverEnvStats();
+	    				}
+	                }
+				}
+	            Ability A=null;
+	            if(clearAllItems)
+	            for(int a=R.numEffects();a>=0;a--)
+	            {
+	                A=R.fetchEffect(a);
+	                if(((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
+	                {
+	                    A.unInvoke();
+	                    R.delEffect(A);
+	                    updateRoom=true;
+	                }
+	            }
+	            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+	            {
+	                Room R2=R.rawDoors()[d];
+	                Exit E=R.rawExits()[d];
+	                if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+	                {
+	                    E.setKeyName("");
+	                    E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+	                    updateExits=true;
+	                    if(R2!=null)
+	                    {
+	                        E=R2.rawExits()[Directions.getOpDirectionCode(d)];
+	                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+	                        {
+	                            E.setKeyName("");
+	                            E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+	                            CMLib.database().DBUpdateExits(R2);
+	                            R2.getArea().fillInAreaRoom(R2);
+	                        }
+	                    }
+	                }
+	            }
+	            if(updateExits)
+	            {
+	                CMLib.database().DBUpdateExits(R);
+	                R.getArea().fillInAreaRoom(R);
+	            }
+	            if(updateItems)
+	                CMLib.database().DBUpdateItems(R);
+	            if(updateRoom)
+	                CMLib.database().DBUpdateRoom(R);
+				colorForSale(R,T.rentalProperty(),resetRoomName);
 				return -1;
 			}
-		}
-
-		int x=R.description().indexOf(SALESTR);
-		if(x>=0)
-		{
-			R.setDescription(R.description().substring(0,x));
-			CMLib.database().DBUpdateRoom(R);
-		}
-		x=R.description().indexOf(RENTSTR);
-		if(x>=0)
-		{
-			R.setDescription(R.description().substring(0,x));
-			CMLib.database().DBUpdateRoom(R);
-		}
-		
-		// this works on the priciple that
-		// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
-		// 2. if an item has ONLY been added, the dispossessiontime will be != null
-		// 3. if an item has been added AND removed, the dispossession time will be != null on the added
-		if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
-			updateItems=true;
-
-		for(int i=0;i<R.numItems();i++)
-		{
-			Item I=R.fetchItem(i);
-			if((I.dispossessionTime()!=0)
-            &&((I.savable())||(I.Name().equalsIgnoreCase("id")))
-			&&(!(I instanceof DeadBody)))
+			if(lastNumItems<0)
 			{
-				I.setDispossessionTime(0);
-				updateItems=true;
+				if((!CMLib.database().DBUserSearch(null,T.landOwner()))
+				&&(CMLib.clans().getClan(T.landOwner())==null))
+				{
+					T.setLandOwner("");
+					T.updateLot();
+					return -1;
+				}
 			}
-
-			if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-			&&(I.envStats().rejuv()!=0))
+	
+			int x=R.description().indexOf(SALESTR);
+			if(x>=0)
 			{
-				I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-				I.recoverEnvStats();
-				updateItems=true;
+				R.setDescription(R.description().substring(0,x));
+				CMLib.database().DBUpdateRoom(R);
 			}
+			x=R.description().indexOf(RENTSTR);
+			if(x>=0)
+			{
+				R.setDescription(R.description().substring(0,x));
+				CMLib.database().DBUpdateRoom(R);
+			}
+			
+			// this works on the priciple that
+			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
+			// 2. if an item has ONLY been added, the dispossessiontime will be != null
+			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
+			if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
+				updateItems=true;
+	
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if((I.expirationDate()!=0)
+	            &&((I.savable())||(I.Name().equalsIgnoreCase("id")))
+				&&(!(I instanceof DeadBody)))
+				{
+					I.setExpirationDate(0);
+					updateItems=true;
+				}
+	
+				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
+				&&(I.envStats().rejuv()!=0))
+				{
+					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+					I.recoverEnvStats();
+					updateItems=true;
+				}
+			}
+			lastNumItems=R.numItems();
+			if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
+			&&(updateItems))
+				CMLib.database().DBUpdateItems(R);
 		}
-		lastNumItems=R.numItems();
-		if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
-		&&(updateItems))
-			CMLib.database().DBUpdateItems(R);
 		return lastNumItems;
 	}
 
@@ -530,20 +544,24 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(affected instanceof Room)
 		{
             Room R=(Room)affected;
-			lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
-			if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
-			&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
-			{
-			    lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-			    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
-			        if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
-			        {
-			            setLandOwner("");
-						CMLib.database().DBUpdateRoom(R);
-						lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
-			        }
-			}
-            scheduleReset=false;
+    		synchronized(("SYNC"+R.roomID()).intern())
+    		{
+    			R=CMLib.map().getRoom(R);
+				lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
+				if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
+				&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+				{
+				    lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
+				    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+				        if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
+				        {
+				            setLandOwner("");
+							CMLib.database().DBUpdateRoom(R);
+							lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
+				        }
+				}
+	            scheduleReset=false;
+    		}
 		}
 	}
 }

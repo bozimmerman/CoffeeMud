@@ -44,15 +44,15 @@ public interface Item extends Environmental, Rider
     /** a constant used in the Locale item search classes to filter on only items being worn OR not being worn */
 	public static int WORNREQ_ANY=2;
 
-    /** a constant used for setDispossessionTime() method, as a % of an hour, representing killed mob equipment */
+    /** a constant used for setExpirationDate() method, as a % of an hour, representing killed mob equipment */
 	public static double REFUSE_MONSTER_EQ=0.5;
-    /** a constant used for setDispossessionTime() method, as a % of an hour, representing player dropped equiment */
+    /** a constant used for setExpirationDate() method, as a % of an hour, representing player dropped equiment */
 	public static double REFUSE_PLAYER_DROP=20.0;
-    /** a constant used for setDispossessionTime() method, as a % of an hour, representing resources from common skills */
+    /** a constant used for setExpirationDate() method, as a % of an hour, representing resources from common skills */
 	public static double REFUSE_RESOURCE=1.0;
-    /** a constant used for setDispossessionTime() method, as a % of an hour, representing the corpse of a monster */
+    /** a constant used for setExpirationDate() method, as a % of an hour, representing the corpse of a monster */
 	public static double REFUSE_MONSTER_BODY=0.5;
-    /** a constant used for setDispossessionTime() method, as a % of an hour, representing the corpse of a player */
+    /** a constant used for setExpirationDate() method, as a % of an hour, representing the corpse of a player */
 	public static double REFUSE_PLAYER_BODY=22.2;
 	
     /** 
@@ -368,20 +368,6 @@ public interface Item extends Environmental, Rider
      * @param E the mob or room where the item is located
      */
     public void setOwner(Environmental E);
-    /**
-     * The absolute date/time, in miliseconds, when this item is scheduled to be removed
-     * from the game and destroyed by the utilithread.  A value of 0 means the item
-     * is never destroyed.
-     * @return date/time when the item will be destroyed.
-     */
-    public long dispossessionTime();
-    /**
-     * Sets the absolute date/time, in miliseconds, when the item is scheduled to be
-     * removed from  the game and destroyed by the  utilithread.  A value of 0 means
-     * the item is never destroyed.
-     * @param time date/time when the item will be destroyed automatically.
-     */
-    public void setDispossessionTime(long time);
     
 	/** worn code constant, representing  being unworn altogether */
 	public static final long IN_INVENTORY=0;

@@ -53,7 +53,7 @@ public class Spell_MysticShine extends Spell
 	{
 		// undo the affects of this spell
 		if(affected==null) return;
-		Room room=CMLib.utensils().roomLocation(affected);
+		Room room=CMLib.map().roomLocation(affected);
 		if((canBeUninvoked())&&(room!=null))
 			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,"The glow within <S-NAME> dims.");
 		super.unInvoke();

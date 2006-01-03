@@ -335,7 +335,7 @@ public class BaseGenerics extends StdCommand
 					for(int i=0;i<Clan.ROL_DESCS[C.getGovernment()].length;i++)
 						if(newName.equalsIgnoreCase(Clan.ROL_DESCS[C.getGovernment()][i]))
 						{
-							newRole=CMath.pow(2,i-1);
+							newRole=(int)CMath.pow(2,i-1);
 							break;
 						}
 					if(newRole<0)
@@ -368,146 +368,150 @@ public class BaseGenerics extends StdCommand
 	public static Room changeRoomType(Room R, Room newRoom)
 	{
 		if((R==null)||(newRoom==null)) return R;
-		Room oldR=R;
-		R=newRoom;
-        Vector oldBehavsNEffects=new Vector();
-		for(int a=oldR.numEffects()-1;a>=0;a--)
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
-			Ability A=oldR.fetchEffect(a);
-			if(A!=null)
+			R=CMLib.map().getRoom(R);
+			Room oldR=R;
+			R=newRoom;
+	        Vector oldBehavsNEffects=new Vector();
+			for(int a=oldR.numEffects()-1;a>=0;a--)
 			{
-                if(!A.canBeUninvoked())
-                {
-                    oldBehavsNEffects.addElement(A);
-                    oldR.delEffect(A);
-                }
-                else
-    				A.unInvoke();
+				Ability A=oldR.fetchEffect(a);
+				if(A!=null)
+				{
+	                if(!A.canBeUninvoked())
+	                {
+	                    oldBehavsNEffects.addElement(A);
+	                    oldR.delEffect(A);
+	                }
+	                else
+	    				A.unInvoke();
+				}
 			}
-		}
-        for(int b=0;b<oldR.numBehaviors();b++)
-        {
-            Behavior B=oldR.fetchBehavior(b);
-            if(B!=null)
-                oldBehavsNEffects.addElement(B);
-        }
-		CMLib.threads().deleteTick(oldR,-1);
-		R.setArea(oldR.getArea());
-		R.setRoomID(oldR.roomID());
-		for(int d=0;d<R.rawDoors().length;d++)
-			R.rawDoors()[d]=oldR.rawDoors()[d];
-		for(int d=0;d<R.rawExits().length;d++)
-			R.rawExits()[d]=oldR.rawExits()[d];
-		R.setDisplayText(oldR.displayText());
-		R.setDescription(oldR.description());
-		if((R instanceof GridLocale)&&(oldR instanceof GridLocale))
-		{
-			((GridLocale)R).setXSize(((GridLocale)oldR).xSize());
-			((GridLocale)R).setYSize(((GridLocale)oldR).ySize());
-			((GridLocale)R).clearGrid(null);
-		}
-		Vector allmobs=new Vector();
-		int skip=0;
-		while(oldR.numInhabitants()>(skip))
-		{
-			MOB M=oldR.fetchInhabitant(skip);
-			if(M.savable())
+	        for(int b=0;b<oldR.numBehaviors();b++)
+	        {
+	            Behavior B=oldR.fetchBehavior(b);
+	            if(B!=null)
+	                oldBehavsNEffects.addElement(B);
+	        }
+			CMLib.threads().deleteTick(oldR,-1);
+			R.setArea(oldR.getArea());
+			R.setRoomID(oldR.roomID());
+			for(int d=0;d<R.rawDoors().length;d++)
+				R.rawDoors()[d]=oldR.rawDoors()[d];
+			for(int d=0;d<R.rawExits().length;d++)
+				R.rawExits()[d]=oldR.rawExits()[d];
+			R.setDisplayText(oldR.displayText());
+			R.setDescription(oldR.description());
+			if((R instanceof GridLocale)&&(oldR instanceof GridLocale))
 			{
-				if(!allmobs.contains(M))
-					allmobs.addElement(M);
-				oldR.delInhabitant(M);
+				((GridLocale)R).setXGridSize(((GridLocale)oldR).xGridSize());
+				((GridLocale)R).setYGridSize(((GridLocale)oldR).yGridSize());
+				((GridLocale)R).clearGrid(null);
 			}
-			else
-			if(oldR!=R)
+			Vector allmobs=new Vector();
+			int skip=0;
+			while(oldR.numInhabitants()>(skip))
 			{
-				oldR.delInhabitant(M);
-				R.bringMobHere(M,true);
-			}
-			else
-				skip++;
-		}
-		Vector allitems=new Vector();
-		while(oldR.numItems()>0)
-		{
-			Item I=oldR.fetchItem(0);
-			if(!allitems.contains(I))
-				allitems.addElement(I);
-			oldR.delItem(I);
-		}
-
-		for(int i=0;i<allitems.size();i++)
-		{
-			Item I=(Item)allitems.elementAt(i);
-			if(!R.isContent(I))
-			{
-				if(I.subjectToWearAndTear())
-					I.setUsesRemaining(100);
-				I.recoverEnvStats();
-				R.addItem(I);
-				R.recoverRoomStats();
-			}
-		}
-		for(int m=0;m<allmobs.size();m++)
-		{
-			MOB M=(MOB)allmobs.elementAt(m);
-			if(!R.isInhabitant(M))
-			{
-				MOB M2=(MOB)M.copyOf();
-				M2.setStartRoom(R);
-				M2.setLocation(R);
-                long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN/2);
-                if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
-				M2.envStats().setRejuv((int)rejuv);
-				M2.recoverCharStats();
-				M2.recoverEnvStats();
-				M2.recoverMaxState();
-				M2.resetToMaxState();
-				M2.bringToLife(R,true);
-				R.recoverRoomStats();
-				M.destroy();
-			}
-		}
-
-		try
-		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R2=(Room)r.nextElement();
-				for(int d=0;d<R2.rawDoors().length;d++)
-					if(R2.rawDoors()[d]==oldR)
-					{
-						R2.rawDoors()[d]=R;
-						if(R2 instanceof GridLocale)
-							((GridLocale)R2).buildGrid();
-					}
-			}
-	    }catch(NoSuchElementException e){}
-	    try
-	    {
-			for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
-			{
-				MOB M=(MOB)e.nextElement();
-				if(M.getStartRoom()==oldR)
-					M.setStartRoom(R);
+				MOB M=oldR.fetchInhabitant(skip);
+				if(M.savable())
+				{
+					if(!allmobs.contains(M))
+						allmobs.addElement(M);
+					oldR.delInhabitant(M);
+				}
 				else
-				if(M.location()==oldR)
-					M.setLocation(R);
+				if(oldR!=R)
+				{
+					oldR.delInhabitant(M);
+					R.bringMobHere(M,true);
+				}
+				else
+					skip++;
 			}
-	    }catch(NoSuchElementException e){}
-		R.getArea().fillInAreaRoom(R);
-        for(int i=0;i<oldBehavsNEffects.size();i++)
-        {
-            if(oldBehavsNEffects.elementAt(i) instanceof Behavior)
-                R.addBehavior((Behavior)oldBehavsNEffects.elementAt(i));
-            else
-                R.addNonUninvokableEffect((Ability)oldBehavsNEffects.elementAt(i));
-        }
-		CMLib.database().DBUpdateRoom(R);
-		CMLib.database().DBUpdateMOBs(R);
-		CMLib.database().DBUpdateItems(R);
-        oldR.destroy();
-		R.setImage(R.rawImage());
-		R.startItemRejuv();
+			Vector allitems=new Vector();
+			while(oldR.numItems()>0)
+			{
+				Item I=oldR.fetchItem(0);
+				if(!allitems.contains(I))
+					allitems.addElement(I);
+				oldR.delItem(I);
+			}
+	
+			for(int i=0;i<allitems.size();i++)
+			{
+				Item I=(Item)allitems.elementAt(i);
+				if(!R.isContent(I))
+				{
+					if(I.subjectToWearAndTear())
+						I.setUsesRemaining(100);
+					I.recoverEnvStats();
+					R.addItem(I);
+					R.recoverRoomStats();
+				}
+			}
+			for(int m=0;m<allmobs.size();m++)
+			{
+				MOB M=(MOB)allmobs.elementAt(m);
+				if(!R.isInhabitant(M))
+				{
+					MOB M2=(MOB)M.copyOf();
+					M2.setStartRoom(R);
+					M2.setLocation(R);
+	                long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN/2);
+	                if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
+					M2.envStats().setRejuv((int)rejuv);
+					M2.recoverCharStats();
+					M2.recoverEnvStats();
+					M2.recoverMaxState();
+					M2.resetToMaxState();
+					M2.bringToLife(R,true);
+					R.recoverRoomStats();
+					M.destroy();
+				}
+			}
+	
+			try
+			{
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				{
+					Room R2=(Room)r.nextElement();
+					for(int d=0;d<R2.rawDoors().length;d++)
+						if(R2.rawDoors()[d]==oldR)
+						{
+							R2.rawDoors()[d]=R;
+							if(R2 instanceof GridLocale)
+								((GridLocale)R2).buildGrid();
+						}
+				}
+		    }catch(NoSuchElementException e){}
+		    try
+		    {
+				for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+				{
+					MOB M=(MOB)e.nextElement();
+					if(M.getStartRoom()==oldR)
+						M.setStartRoom(R);
+					else
+					if(M.location()==oldR)
+						M.setLocation(R);
+				}
+		    }catch(NoSuchElementException e){}
+			R.getArea().fillInAreaRoom(R);
+	        for(int i=0;i<oldBehavsNEffects.size();i++)
+	        {
+	            if(oldBehavsNEffects.elementAt(i) instanceof Behavior)
+	                R.addBehavior((Behavior)oldBehavsNEffects.elementAt(i));
+	            else
+	                R.addNonUninvokableEffect((Ability)oldBehavsNEffects.elementAt(i));
+	        }
+			CMLib.database().DBUpdateRoom(R);
+			CMLib.database().DBUpdateMOBs(R);
+			CMLib.database().DBUpdateItems(R);
+	        oldR.destroy();
+			R.setImage(R.rawImage());
+			R.startItemRejuv();
+		}
 		return R;
 	}
 
@@ -558,6 +562,19 @@ public class BaseGenerics extends StdCommand
 		else
 		if(newName.length()>0)
 			E.setDescription(newName);
+		else
+			mob.tell(getScr("BaseGenerics","nochange"));
+	}
+
+	static void genNotes(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(getScr("BaseGenerics","notes",showNumber+"",(E.playerStats()!=null)?E.playerStats().notes():""));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
+		if((newName.length()>0)&&(E.playerStats()!=null))
+			E.playerStats().setNotes(newName);
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
@@ -2922,7 +2939,7 @@ public class BaseGenerics extends StdCommand
 					mob.tell(CMLib.lister().reallyList(CMClass.miscMagic(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(CMClass.miscTech(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(CMClass.clanItems(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(CMClass.items(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.basicItems(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(CMClass.mobTypes(),-1).toString());
 					mob.tell(getScr("BaseGenerics","msgitemground"));
 					mob.tell(getScr("BaseGenerics","msgmobsroom"));
@@ -3425,28 +3442,28 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
-	public static void genGridLocaleX(MOB mob, GridLocale E, int showNumber, int showFlag)
+	public static void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(getScr("BaseGenerics","sizex",showNumber+"",E.xSize()+""));
+		mob.tell(getScr("BaseGenerics","sizex",showNumber+"",E.xGridSize()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt(getScr("BaseGenerics","newsize"),"");
 		if(CMath.s_int(newValue)>0)
-			E.setXSize(CMath.s_int(newValue));
+			E.setXGridSize(CMath.s_int(newValue));
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
-	public static void genGridLocaleY(MOB mob, GridLocale E, int showNumber, int showFlag)
+	public static void genGridLocaleY(MOB mob, GridZones E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(getScr("BaseGenerics","sizey",showNumber+"",E.ySize()+""));
+		mob.tell(getScr("BaseGenerics","sizey",showNumber+"",E.yGridSize()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt(getScr("BaseGenerics","newsize"),"");
 		if(CMath.s_int(newValue)>0)
-			E.setYSize(CMath.s_int(newValue));
+			E.setYGridSize(CMath.s_int(newValue));
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
@@ -6450,6 +6467,7 @@ public class BaseGenerics extends StdCommand
 			genEmail(mob,me,++showNumber,showFlag);
 			genSecurity(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genNotes(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));

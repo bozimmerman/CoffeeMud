@@ -52,10 +52,11 @@ public class Skill_Puppeteer extends BardSkill
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amISource(invoker()))
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 		||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 		&&(msg.targetMinor()!=CMMsg.TYP_SPEAK)
+	    &&(msg.targetMinor()==CMMsg.TYP_ORDER)
 		&&(msg.targetMinor()!=CMMsg.TYP_PANIC)
 		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Song)))
 		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Skill_Puppeteer)))
@@ -100,7 +101,7 @@ public class Skill_Puppeteer extends BardSkill
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
 											CMLib.dice().roll(1,affected.envStats().level(),1),
-											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
+											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 /*
    Copyright 2000-2006 Bo Zimmerman
@@ -178,59 +179,34 @@ public class CMMap extends StdLibrary implements WorldMap
 		if((reverseRoom!=null)&&(reverseRoom==from))
 			return "Opposite room already exists and heads this way.  One-way link created.";
 
-		if(opRoom!=null)
-			from.rawDoors()[direction]=null;
-
-		from.rawDoors()[direction]=room;
-		Exit thisExit=from.rawExits()[direction];
-		if(thisExit==null)
+		Exit thisExit=null;
+		synchronized(("SYNC"+from.roomID()).intern())
 		{
-			thisExit=CMClass.getExit("StdOpenDoorway");
-			from.rawExits()[direction]=thisExit;
+			from=CMLib.map().getRoom(from);
+			if(opRoom!=null)
+				from.rawDoors()[direction]=null;
+	
+			from.rawDoors()[direction]=room;
+			thisExit=from.rawExits()[direction];
+			if(thisExit==null)
+			{
+				thisExit=CMClass.getExit("StdOpenDoorway");
+				from.rawExits()[direction]=thisExit;
+			}
+			CMLib.database().DBUpdateExits(from);
 		}
-		CMLib.database().DBUpdateExits(from);
-
-		if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
+		synchronized(("SYNC"+room.roomID()).intern())
 		{
-			room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
-			room.rawExits()[Directions.getOpDirectionCode(direction)]=thisExit;
-			CMLib.database().DBUpdateExits(room);
+			room=CMLib.map().getRoom(room);
+			if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
+			{
+				room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
+				room.rawExits()[Directions.getOpDirectionCode(direction)]=thisExit;
+				CMLib.database().DBUpdateExits(room);
+			}
 		}
 		return "";
 	}
-
-	public String getOpenRoomID(String AreaID)
-	{
-		int highest=Integer.MIN_VALUE;
-		int lowest=Integer.MAX_VALUE;
-		Hashtable allNums=new Hashtable();
-		try
-		{
-			for(Enumeration r=rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((R.getArea().Name().equals(AreaID))
-				&&(R.roomID().startsWith(AreaID+"#")))
-				{
-					int newnum=CMath.s_int(R.roomID().substring(AreaID.length()+1));
-					if(newnum>=highest)	highest=newnum;
-					if(newnum<=lowest) lowest=newnum;
-					allNums.put(new Integer(newnum),R);
-				}
-			}
-	    }catch(NoSuchElementException e){}
-		if((highest<0)&&(getRoom(AreaID+"#0"))==null)
-			return AreaID+"#0";
-		if(lowest>highest) lowest=highest+1;
-		for(int i=lowest;i<=highest+1000;i++)
-		{
-			if((!allNums.containsKey(new Integer(i)))
-			&&(getRoom(AreaID+"#"+i)==null))
-				return AreaID+"#"+i;
-		}
-		return AreaID+"#"+Math.random();
-	}
-
 
 	public int numRooms()
     {
@@ -275,7 +251,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Area A=R.getArea();
 		if(A==null) return "";
 		GridLocale GR=R.getGridParent();
-		if(GR!=null) return GR.getChildCode(R);
+		if(GR!=null) return GR.getGridChildCode(R);
 		return R.roomID();
 	}
 
@@ -292,7 +268,7 @@ public class CMMap extends StdLibrary implements WorldMap
                     Room R=getRoom(roomSet,calledThis.substring(0,child));
                     if((R!=null)&&(R instanceof GridLocale))
                     {
-                        R=((GridLocale)R).getChild(calledThis);
+                        R=((GridLocale)R).getGridChild(calledThis);
                         if(R!=null) return R;
                     }
                 }
@@ -324,6 +300,33 @@ public class CMMap extends StdLibrary implements WorldMap
         catch(java.util.NoSuchElementException x){}
         return null;
     }
+    
+	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis)
+	{
+		if(calledThis.startsWith("#"))
+		{
+			if(hashedRoomSet.containsKey(calledThis.substring(1)))
+				return (Room)hashedRoomSet.get(calledThis.substring(1));
+		}
+		else
+		{
+			if(hashedRoomSet.containsKey(calledThis))
+				return (Room)hashedRoomSet.get(calledThis);
+		}
+		Room R=getRoom(calledThis);
+		if(R!=null) return R;
+		return getRoom(areaName+"#"+calledThis);
+	}
+
+    public Room getRoom(Room room)
+    {
+    	if(room==null) 
+    		return null;
+    	if(room.amDestroyed())
+    		return getRoom(CMLib.map().getExtendedRoomID(room));
+    	return room;
+    }
+    
 	public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
 	public Enumeration rooms(){ return new AreaEnumerator(); }
 	public Room getRandomRoom()
@@ -456,7 +459,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Enumeration players() { return playersList.elements(); }
 
     
-	public Room getStartRoom(MOB mob)
+	public Room getDefaultStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
@@ -488,11 +491,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(room==null)
 			room=getRoom("START");
 		if((room==null)&&(numRooms()>0))
-			room=(Room)CMLib.map().rooms().nextElement();
+			room=(Room)rooms().nextElement();
 		return room;
 	}
 
-	public Room getDeathRoom(MOB mob)
+	public Room getDefaultDeathRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
@@ -526,7 +529,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return room;
 	}
 
-	public Room getBodyRoom(MOB mob)
+	public Room getDefaultBodyRoom(MOB mob)
 	{
 	    if((mob.getClanID().length()>0)
 	    &&(mob.getClanRole()!=Clan.POS_APPLICANT)
@@ -613,23 +616,27 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(int r=0;r<allMyDamnRooms.size();r++)
 		{
 			Room R=(Room)allMyDamnRooms.elementAt(r);
-			R.setArea(A);
-			if(oldName!=null)
+			synchronized(("SYNC"+R.roomID()).intern())
 			{
-				if(R.roomID().startsWith(oldName+"#"))
+				R=CMLib.map().getRoom(R);
+				R.setArea(A);
+				if(oldName!=null)
 				{
-					Room R2=getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
-					if((R2==null)||(!R2.roomID().startsWith(A.Name()+"#")))
+					if(R.roomID().startsWith(oldName+"#"))
 					{
-						String oldID=R.roomID();
-						R.setRoomID(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
-						CMLib.database().DBReCreate(R,oldID);
+						Room R2=getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+						if((R2==null)||(!R2.roomID().startsWith(A.Name()+"#")))
+						{
+							String oldID=R.roomID();
+							R.setRoomID(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+							CMLib.database().DBReCreate(R,oldID);
+						}
+						else
+							onesToRenumber.addElement(R);
 					}
 					else
-						onesToRenumber.addElement(R);
+						CMLib.database().DBUpdateRoom(R);
 				}
-				else
-					CMLib.database().DBUpdateRoom(R);
 			}
 		}
 		if(oldName!=null)
@@ -638,7 +645,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				Room R=(Room)onesToRenumber.elementAt(r);
 				String oldID=R.roomID();
-				R.setRoomID(getOpenRoomID(A.Name()));
+				R.setRoomID(A.getNewRoomID(R,-1));
 				CMLib.database().DBReCreate(R,oldID);
 			}
 		}
@@ -656,6 +663,78 @@ public class CMMap extends StdLibrary implements WorldMap
         globalHandlers.clear();
 	}
 
+    public int getRoomDir(Room from, Room to)
+    {
+    	if((from==null)||(to==null)) return -1;
+    	for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+    		if(from.getRoomInDir(d)==to)
+    			return d;
+    	return -1;
+    }
+    
+    public Room findConnectingRoom(Room room)
+    {
+    	if(room==null) return null;
+    	Room R=null;
+    	Vector otherChoices=new Vector();
+    	for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+    	{
+    		R=room.getRoomInDir(d);
+    		if(R!=null)
+    	    	for(int d1=0;d1<Directions.NUM_DIRECTIONS;d1++)
+    	    		if(R.getRoomInDir(d1)==room)
+    	    		{
+    	    			if(R.getArea()==room.getArea())
+    	    				return R;
+    	    			otherChoices.addElement(R);
+    	    		}
+    	}
+    	for(Enumeration e=rooms();e.hasMoreElements();)
+    	{
+    		R=(Room)e.nextElement();
+    		if(R==room) continue;
+	    	for(int d1=0;d1<Directions.NUM_DIRECTIONS;d1++)
+	    		if(R.getRoomInDir(d1)==room)
+	    		{
+	    			if(R.getArea()==room.getArea())
+	    				return R;
+	    			otherChoices.addElement(R);
+	    		}
+    	}
+    	if(otherChoices.size()>0)
+    		return (Room)otherChoices.firstElement();
+    	return null;
+    }
+    
+	public boolean isClearableRoom(Room R)
+	{
+		if((R==null)||(R.amDestroyed())) return true;
+		MOB M=null;
+		Room sR=null;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			M=R.fetchInhabitant(i);
+			if(M==null) continue;
+			sR=M.getStartRoom();
+			if((sR!=null)
+			&&(!sR.roomID().equals(R.roomID())))
+				return false;
+		}
+		Item I=null;
+		for(int i=0;i<R.numItems();i++)
+		{
+			I=R.fetchItem(i);
+			if((I!=null)&&(I.expirationDate()!=0))
+				return false;
+		}
+		for(int a=0;a<R.numEffects();a++)
+		{
+			Ability A=R.fetchEffect(a);
+			if((A!=null)&&(!A.savable()))
+				return false;
+		}
+		return true;
+	}
     
     public boolean explored(Room R, Vector areas)
     {
@@ -690,6 +769,287 @@ public class CMMap extends StdLibrary implements WorldMap
             }
             return curRoomEnumeration.nextElement();
         }
-        
     }
+    
+	public void obliterateRoom(Room deadRoom)
+	{
+		for(int a=deadRoom.numEffects()-1;a>=0;a--)
+		{
+			Ability A=deadRoom.fetchEffect(a);
+			if(A!=null)
+			{
+				A.unInvoke();
+				deadRoom.delEffect(A);
+			}
+		}
+		try
+		{
+			for(Enumeration r=rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
+					boolean changes=false;
+					for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
+					{
+						Room thatRoom=R.rawDoors()[dir];
+						if(thatRoom==deadRoom)
+						{
+							R.rawDoors()[dir]=null;
+							changes=true;
+							if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
+							{
+								Exit GE=R.rawExits()[dir];
+								GE.setTemporaryDoorLink(deadRoom.roomID());
+							}
+						}
+					}
+					if(changes)
+						CMLib.database().DBUpdateExits(R);
+				}
+			}
+	    }catch(NoSuchElementException e){}
+		emptyRoom(deadRoom,null);
+		deadRoom.destroy();
+		if(deadRoom instanceof GridLocale)
+			((GridLocale)deadRoom).clearGrid(null);
+		CMLib.database().DBDeleteRoom(deadRoom);
+	}
+
+	public Room roomLocation(Environmental E)
+	{
+		if(E==null) return null;
+		if(E instanceof Room)
+			return (Room)E;
+		else
+		if(E instanceof MOB)
+			return ((MOB)E).location();
+		else
+		if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
+			return (Room)((Item)E).owner();
+		else
+		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
+		   return ((MOB)((Item)E).owner()).location();
+        else
+        if(E instanceof Ability)
+            return roomLocation(((Ability)E).affecting());
+		return null;
+	}
+    public Room getStartRoom(Environmental E)
+    {
+        if(E ==null) return null;
+        if(E instanceof MOB) 
+        {
+        	return ((MOB)E).getStartRoom();
+        }
+        if(E instanceof Item)
+        {
+            if(((Item)E).owner() instanceof MOB)
+            	return getStartRoom(((Item)E).owner());
+            if(CMLib.flags().isGettable((Item)E))
+                return null;
+        }
+        if(E instanceof Ability)
+            return getStartRoom(((Ability)E).affecting());
+        if(E instanceof Area) return ((Area)E).getRandomProperRoom();
+        return roomLocation(E);
+    }
+
+    public Area areaLocation(Object E)
+    {
+        if(E==null) return null;
+        if(E instanceof Area)
+            return (Area)E;
+        else
+        if(E instanceof Room)
+            return ((Room)E).getArea();
+        else
+        if(E instanceof MOB)
+            return ((MOB)E).location().getArea();
+        else
+        if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
+            return ((Room)((Item)E).owner()).getArea();
+        else
+        if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
+           return (((MOB)((Item)E).owner()).location()).getArea();
+        return null;
+    }
+    
+	public void emptyRoom(Room room, Room bringBackHere)
+	{
+		if(room==null) return;
+		Vector inhabs=new Vector();
+		MOB M=null;
+		for(int m=0;m<room.numInhabitants();m++)
+		{
+		    M=room.fetchInhabitant(m);
+		    if(M!=null) inhabs.addElement(M);
+		}
+		for(int m=0;m<inhabs.size();m++)
+		{
+			M=(MOB)inhabs.elementAt(m);
+			if(bringBackHere!=null)
+				bringBackHere.bringMobHere(M,false);
+			else
+			if(!M.savable())
+				continue;
+			else
+			if((M.getStartRoom()==null)
+			||(M.getStartRoom()==room)
+			||(M.getStartRoom().ID().length()==0))
+				M.destroy();
+			else
+				M.getStartRoom().bringMobHere(M,false);
+		}
+		Item I=null;
+		inhabs.clear();
+		for(int i=0;i<room.numItems();i++)
+		{
+		    I=room.fetchItem(i);
+		    if(I!=null) inhabs.addElement(I);
+		}
+		for(int i=0;i<inhabs.size();i++)
+		{
+			I=(Item)inhabs.elementAt(i);
+			if(bringBackHere!=null)
+				bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
+			else
+				I.destroy();
+		}
+		room.clearSky();
+		CMLib.threads().clearDebri(room,0);
+	}
+
+
+	public void obliterateArea(String areaName)
+	{
+		Area A=getArea(areaName);
+		if(A==null) return;
+		Enumeration e=A.getCompleteMap();
+		Vector rooms=new Vector();
+		Room R=null;
+		while(e.hasMoreElements())
+		{
+			for(int i=0;(i<100)&&e.hasMoreElements();i++)
+			{
+				R=(Room)e.nextElement();
+				rooms.addElement(R);
+			}
+			while(rooms.size()>0)
+			{
+				R=(Room)rooms.elementAt(0);
+				rooms.removeElementAt(0);
+				if((R!=null)&&(R.roomID().length()>0))
+					obliterateRoom(R);
+			}
+			e=A.getCompleteMap();
+		}
+		CMLib.database().DBDeleteArea(A);
+		delArea(A);
+	}
+
+	public CMMsg resetMsg=null;
+	public void resetRoom(Room room)
+	{
+		if(room==null) return;
+		if(room.roomID().length()==0) return;
+		synchronized(("SYNC"+room.roomID()).intern())
+		{
+			room=getRoom(room);
+			boolean mobile=room.getMobility();
+			room.toggleMobility(false);
+			if(resetMsg==null) resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
+			room.executeMsg(room,resetMsg);
+			emptyRoom(room,null);
+	        Ability A=null;
+	        for(int a=room.numEffects()-1;a>=0;a--)
+	        {
+	            A=room.fetchEffect(a);
+	            if((A!=null)&&(A.canBeUninvoked()))
+	                A.unInvoke();
+	        }
+			CMLib.database().DBReadContent(room,null);
+			room.toggleMobility(mobile);
+		}
+	}
+    
+    public void resetArea(Area area)
+    {
+        boolean mobile=area.getMobility();
+        area.toggleMobility(false);
+        for(Enumeration r=area.getProperMap();r.hasMoreElements();)
+            resetRoom((Room)r.nextElement());
+        area.fillInAreaRooms();
+        area.toggleMobility(mobile);
+    }
+    
+	public void obliteratePlayer(MOB deadMOB, boolean quiet)
+	{
+		if(getPlayer(deadMOB.Name())!=null)
+		{
+		   deadMOB=getPlayer(deadMOB.Name());
+		   delPlayer(deadMOB);
+		}
+		for(int s=0;s<CMLib.sessions().size();s++)
+		{
+			Session S=CMLib.sessions().elementAt(s);
+			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
+			   deadMOB=S.mob();
+		}
+		CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+		if(deadMOB.location()!=null)
+			deadMOB.location().send(deadMOB,msg);
+		try
+		{
+			for(Enumeration r=rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if((R!=null)&&(R!=deadMOB.location()))
+				{
+					if(R.okMessage(deadMOB,msg))
+						R.sendOthers(deadMOB,msg);
+					else
+					{
+						addPlayer(deadMOB);
+						return;
+					}
+				}
+			}
+	    }catch(NoSuchElementException e){}
+		StringBuffer newNoPurge=new StringBuffer("");
+		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        boolean somethingDone=false;
+		if((protectedOnes!=null)&&(protectedOnes.size()>0))
+		{
+			for(int b=0;b<protectedOnes.size();b++)
+			{
+				String B=(String)protectedOnes.elementAt(b);
+				if(!B.equalsIgnoreCase(deadMOB.name()))
+					newNoPurge.append(B+"\n");
+                else
+                    somethingDone=true;
+			}
+            if(somethingDone)
+            {
+    			Resources.updateResource("protectedplayers.ini",newNoPurge);
+    			Resources.saveFileResource("protectedplayers.ini");		
+            }
+		}
+		
+		CMLib.database().DBDeleteMOB(deadMOB);
+		if(deadMOB.session()!=null)
+			deadMOB.session().setKillFlag(true);
+		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
+        deadMOB.destroy();
+	}
+
+	public boolean hasASky(Room room)
+	{
+		if((room==null)
+		||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		||((room.domainType()&Room.INDOORS)>0))
+			return false;
+		return true;
+	}
 }

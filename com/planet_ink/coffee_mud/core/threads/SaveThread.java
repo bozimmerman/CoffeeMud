@@ -50,7 +50,7 @@ public class SaveThread extends Thread
 		setName("SaveThread");
 	}
 
-	public void itemSweep()
+	public void titleSweep()
 	{
 		status="title sweeping";
 		try
@@ -299,7 +299,7 @@ public class SaveThread extends Thread
 					MOB M=CMLib.map().getLoadPlayer(name);
 					if(M!=null)
 					{
-						CMLib.utensils().obliteratePlayer(M,true);
+						CMLib.map().obliteratePlayer(M,true);
 						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(last))+".");
 					}
 				}
@@ -399,7 +399,7 @@ public class SaveThread extends Thread
 						Log.errOut("Save Thread","DB: "+ok);
 					else
 					{
-						itemSweep();
+						titleSweep();
                         commandJournalSweep();
 						autoPurge();
 						CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);

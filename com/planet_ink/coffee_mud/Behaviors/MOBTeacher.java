@@ -80,7 +80,7 @@ public class MOBTeacher extends CombatAbilities
 			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
 			&&((!noCommon)||((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL))
-			&&((!stdCharClass)||(!CMLib.ableMapper().classOnly("Archon",A.ID()))))
+			&&((!stdCharClass)||(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))))
 				addAbility(mob,A,pct,myAbles);
 		}
 	}

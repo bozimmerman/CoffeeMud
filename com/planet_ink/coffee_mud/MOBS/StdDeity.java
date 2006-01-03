@@ -262,6 +262,11 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
+        if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+        &&(msg.target()==location())
+        &&(CMLib.flags().isInTheGame(this,true)))
+        	return false;
+        else
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{

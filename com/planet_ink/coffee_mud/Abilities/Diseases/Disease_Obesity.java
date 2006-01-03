@@ -106,10 +106,10 @@ public class Disease_Obesity extends Disease
 	    {
 	        MOB mob=(MOB)affected;
 	        if((mob.curState().getMovement()<mob.maxState().getMovement()/10)
-	        &&((lastLoss<0)||((System.currentTimeMillis()-lastLoss)>30000)))
+	        &&((lastLoss<0)||((System.currentTimeMillis()-lastLoss)>10000)))
 	        {
 	            lastLoss=System.currentTimeMillis();
-	            int change=CMLib.dice().roll(1,5,0);
+	            int change=CMLib.dice().roll(1,10,0);
 	            int fat=amountOfFat();
 	            if(fat>=0)
 	            {

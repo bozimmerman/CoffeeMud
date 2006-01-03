@@ -46,7 +46,7 @@ public class Prop_LocationBound extends Property
 	        ||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
 		{
 		    Room whereTo=(Room)msg.target();
-	        Room R=CMLib.utensils().roomLocation(affected);
+	        Room R=CMLib.map().roomLocation(affected);
 	        if((whereTo==null)||(R==null))
 	            return true;
 	        

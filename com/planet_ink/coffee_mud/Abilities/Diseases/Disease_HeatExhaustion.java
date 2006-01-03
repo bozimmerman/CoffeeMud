@@ -56,6 +56,7 @@ public class Disease_HeatExhaustion extends Disease
         if((theRoom==null)
         &&(R!=null))
             theRoom=R.getArea().getRandomProperRoom();
+        theRoom=CMLib.map().getRoom(theRoom);
         if(R==theRoom) theRoom=null;
         return theRoom;
     }

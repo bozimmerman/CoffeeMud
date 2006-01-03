@@ -50,7 +50,7 @@ public class TimsItemTable extends StdWebMacro
 		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			Area A=(Area)e.nextElement();
-			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((endTime>0)&&(System.currentTimeMillis()>endTime))

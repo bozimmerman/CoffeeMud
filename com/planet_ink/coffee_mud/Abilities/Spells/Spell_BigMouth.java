@@ -83,9 +83,9 @@ public class Spell_BigMouth extends Spell
 				}
 
 				msg.modify(msg.source(),msg.target(),msg.tool(),
-						  msg.sourceCode()|CMMsg.MASK_GENERAL,msg.sourceMessage(),
+						  msg.sourceCode()|CMMsg.MASK_ALWAYS,msg.sourceMessage(),
 						  CMMsg.MSG_NOISYMOVEMENT,msg.targetMessage(),
-						  msg.othersCode()|CMMsg.MASK_GENERAL,msg.othersMessage());
+						  msg.othersCode()|CMMsg.MASK_ALWAYS,msg.othersMessage());
 			}
 			else
 			{
@@ -137,7 +137,7 @@ public class Spell_BigMouth extends Spell
 		Room R=null;
 		if(affected instanceof MOB)
 			R=((MOB)affected).location();
-		if(R==null)R=CMLib.utensils().roomLocation(affected);
+		if(R==null)R=CMLib.map().roomLocation(affected);
 		if(R!=null) lastKnownRoom=R;
 		return lastKnownRoom;
 	}
@@ -202,13 +202,13 @@ public class Spell_BigMouth extends Spell
 					CMMsg DigestMsg=CMClass.getMsg(mob,
 											   TastyMorsel,
 											   null,
-											   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
+											   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
 											   "<S-NAME> digest(s) <T-NAMESELF>!!");
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

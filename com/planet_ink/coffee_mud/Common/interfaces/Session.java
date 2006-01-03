@@ -37,7 +37,7 @@ public interface Session extends CMObject
     
 	public String[] clookup();
 	
-	public void onlyPrint(String msg, int pageBreak);
+	public void onlyPrint(String msg, int pageBreak, boolean noCache);
 	public void onlyPrint(String msg);
 	
 	public void rawPrintln(String msg);
@@ -138,6 +138,7 @@ public interface Session extends CMObject
     public long getLastPKFight();
     public void setLastPKFight();
     public long lastLoopTime();
+    public Vector getLastMsgs();
 	
     public void setServerTelnetMode(int telnetCode, boolean onOff);
     public boolean serverTelnetMode(int telnetCode);
@@ -153,6 +154,8 @@ public interface Session extends CMObject
     public static final int TELNET_NAWS=31;
     public static final int TELNET_TOGGLE_FLOW_CONTROL=33;
     public static final int TELNET_LINEMODE=34;
+    public static final int TELNET_COMPRESS=85;
+    public static final int TELNET_COMPRESS2=86;
     public static final int TELNET_MSP=90;
 	public static final int TELNET_MXP=91;
 	public static final int TELNET_SE=240;
@@ -175,7 +178,7 @@ public interface Session extends CMObject
         "","","","","","","","","","", //50-59
         "","","","","","","","","","", //60-69
         "","","","","","","","","","", //70-79
-        "","","","","","","","","","", //80-89
+        "","","","","","COMPRESS","COMPRESS2","","","", //80-89
         "MSP","MXP","","","","","","","","", //90-99
         "","","","","","","","","","", //100-109
         "","","","","","","","","","", //110-119
@@ -194,6 +197,8 @@ public interface Session extends CMObject
         "SE","","","","","","AYT","EC","","", //240-249
         "SB","","","ANSI","",""              //250-255
     };
+    
+    public static final int MAX_PREVMSGS=100;
     
     public static final int TELNET_LINEMODE_MODE=1;
     public static final int TELNET_LINEMODE_MODEMASK_EDIT=1;

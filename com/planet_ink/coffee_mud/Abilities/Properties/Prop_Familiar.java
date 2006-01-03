@@ -168,7 +168,7 @@ public class Prop_Familiar extends Property
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&(familiarWith!=null)
 		&&(familiarTo!=null)
 		&&((msg.amITarget(familiarWith))||(msg.amITarget(familiarTo)))

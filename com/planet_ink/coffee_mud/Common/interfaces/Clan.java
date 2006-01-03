@@ -252,72 +252,261 @@ public interface Clan extends Cloneable, Tickable
 	 */
 	public void setMorgue(String newRecall);
 
+	/**
+	 * Returns a bitmap representing the trophies won by this clan.
+	 * The bitmap is made up of Clan.TROPHY_* constants.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
+	 * @return a bitmap of the trophies
+	 */
 	public int getTrophies();
+	/**
+	 * Sets a bitmap representing the trophies won by this clan.
+	 * The bitmap is made up of Clan.TROPHY_* constants.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
+	 * @param trophyFlag a bitmap of the trophies
+	 */
 	public void setTrophies(int trophyFlag);
 
+	/** 
+	 * Returns the roomID of this clans donation room
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setDonation(String)
+	 * @return the roomID of this clans donation room
+	 */
 	public String getDonation();
+	/** 
+	 * Sets the roomID of this clans donation room
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getDonation()
+	 * @param newDonation the roomID of this clans donation room
+	 */
 	public void setDonation(String newDonation);
   
+	/**
+	 * Gets the amount of experience earned by this clan.
+	 * @return the experience earned
+	 */
 	public long getExp();
+	/**
+	 * Sets the amount of experience earned by this clan.
+	 * @param exp the experience earned
+	 */
 	public void setExp(long exp);
+	/**
+	 * Adjusts the amount of experience earned by this clan.
+	 * @param howMuch the experience adjustment, + or -
+	 */
 	public void adjExp(int howMuch);
-    
+	/**
+	 * Adjusts the amount of experience earned by a player based
+	 * on the tax rate.  Will automatically adjust the exp of
+	 * the clan and save it.
+	 * @param exp the old experience
+	 */
+	public int applyExpMods(int exp);
+	/**
+	 * Called when a member of this clan kills a member of another clan.
+	 * Will update the clan in the database.
+	 */
     public void recordClanKill();
+    /**
+     * Returns the number of other-clan kills this clan has recorded.
+     * @return the number of kills.
+     */
     public int getCurrentClanKills();
-	
+	/**
+	 * Returns the total control points represented by the list of
+	 * controlled areas given.
+	 * @see Clan#calculateMapPoints()
+	 * @see Clan#getControlledAreas()
+	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
+	 * @param controlledAreas the areas controlled
+	 * @return the number of control points represented
+	 */
 	public long calculateMapPoints(Vector controlledAreas);
+	/**
+	 * Returns the total control points earned by this clan
+	 * @see Clan#calculateMapPoints(Vector)
+	 * @see Clan#getControlledAreas()
+	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
+	 * @return the number of control points represented
+	 */
 	public long calculateMapPoints();
+	/**
+	 * Returns all the areas on the map controlled by this clan.
+	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
+	 * @return a vector of area objects
+	 */
 	public Vector getControlledAreas();
 	
-	public int applyExpMods(int exp);
+	/** 
+	 * Sets the tax rate for this clan.
+	 * @see Clan#getTaxes()
+	 * @param rate the tax rate 0-100.0
+	 */
 	public void setTaxes(double rate);
+	/** 
+	 * Gets the tax rate for this clan.
+	 * @see Clan#setTaxes(double)
+	 * @return rate the tax rate 0-100.0
+	 */
 	public double getTaxes();
-	
+	/**
+	 * Returns the set of members, where
+	 * each row represents a member, and the columns are
+	 * name, role, last login date
+	 * @see Clan#getMemberList(int)
+	 * @see com.planet_ink.coffee_mud.planet_ink.core.DVector
+	 * @return the membership
+	 */
 	public DVector getMemberList();
+	/**
+	 * Returns the set of members, where
+	 * each row represents a member, and the columns are
+	 * name, role, last login date.  Will filter by the
+	 * given Clan.POS_* constant.
+	 * @see Clan
+	 * @see com.planet_ink.coffee_mud.planet_ink.core.DVector
+	 * @param PosFilter
+	 * @return the membership
+	 */
 	public DVector getMemberList(int PosFilter);
 	
+	/**
+	 * Returns the highest ranking member of this clan.
+	 * @return the mob object for the highest ranking member.
+	 */
 	public MOB getResponsibleMember();
 
+	/**
+	 * Returns a Clan.REL_* constant denoting the relationship
+	 * between this clan and the clan of the given name.
+	 * @see Clan#setClanRelations(String, int, long)
+	 * @see Clan#getLastRelationChange(String)
+	 * @param id the name of another clan.
+	 * @return the Clan.REL_* constant
+	 */
 	public int getClanRelations(String id);
+	/**
+	 * Returns the time/date stamp when this clan last changed
+	 * its relations with the given clan.
+	 * @see Clan#setClanRelations(String, int, long)
+	 * @see Clan#getClanRelations(String)
+	 * @param id the other clan
+	 * @return when the last change was
+	 */
 	public long getLastRelationChange(String id);
+	/**
+	 * Sets a new relationship between this clan and the clan
+	 * with the given id.
+	 * @param id another clan
+	 * @param rel the Clan.REL_* constant for the new relationship
+	 * @param time a current date/time stamp for this change
+	 */
 	public void setClanRelations(String id, int rel, long time);
-	
+	/**
+	 * Returns the Clan.GVT_* constant representing the government type
+	 * of this clan.
+	 * @see Clan
+	 * @see Clan#setGovernment(int)
+	 * @return the Clan.GVT_* constant
+	 */
 	public int getGovernment();
+	/**
+	 * Returns the Clan.GVT_* constant representing the government type
+	 * of this clan.
+	 * @see Clan
+	 * @see Clan#getGovernment()
+	 * @param type the Clan.GVT_* constant
+	 */
 	public void setGovernment(int type);
-		
+	/**
+	 * Returns the Clan.POS_* constant representing the highest rank
+	 * in this clan type.
+	 * @see Clan
+	 * @return the Clan.POS_* constant
+	 */
 	public int getTopRank();
 
+	/**
+	 * Orders the system to update this clan in the database.
+	 */
 	public void update();
+	/**
+	 * Orders the system to destroy this clan in the database.
+	 */
 	public void destroyClan();
+	/**
+	 * Orders the system to create this clan in the database.
+	 */
 	public void create();
-    
+	
+    /**
+     * Represents an individual clan vote
+     * @author Bo Zimmerman
+     *
+     */
     public static class ClanVote
     {
+    	/**
+    	 * Text to describe this vote to the voter.
+    	 */
         public String voteStarter="";
+        /**
+         * One of the Clan.VSTAT_* constants representing
+         * the status of this vote.
+         * @see Clan
+         */
         public int voteStatus=0;
+        /**
+         * Date/time stamp for when the vote was started.
+         */
         public long voteStarted=0;
+        /**
+         * The command to execute if the vote passes.
+         */
         public String matter="";
+        /**
+         * The Clan.FUNC_* constant representing this vote.
+         * @see Clan
+         */
         public int function=0;
+        /**
+         * A 2 dimentional vector of the votes, where each
+         * row is a vote, with dimension 1 being the member name
+         * and dimension 2 being a Boolean representing their choice. 
+         */
         public DVector votes=null;
     }
-    
+    /** Vote just started constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
 	public final static int VSTAT_STARTED=0;
+    /** Vote has failed constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
 	public final static int VSTAT_FAILED=1;
+    /** Vote has passed constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
 	public final static int VSTAT_PASSED=2;
-	
+    /** Descriptors for the values of Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
 	public final static String[] VSTAT_DESCS={
 		"In Progress",
 		"Failed",
 		"Passed"
 	};
-	
+
+	/** Applicant constant for a clan members position. */
 	public static final int POS_APPLICANT=0;
+	/** Normal member constant for a clan members position. */
 	public static final int POS_MEMBER=1;
+	/** Staff constant for a clan members position. */
 	public static final int POS_STAFF=2;
+	/** Enchanter constant for a clan members position. */
 	public static final int POS_ENCHANTER=4;
+	/** Treasurer constant for a clan members position. */
 	public static final int POS_TREASURER=8;
+	/** Leader constant for a clan members position. */
 	public static final int POS_LEADER=16;
+	/** Boss constant for a clan members position. */
 	public static final int POS_BOSS=32;
+	/** Descriptive strings constant for the Clan.POS_* constants, ordered by value. @see Clan */
 	public static final int[] POSORDER={POS_APPLICANT,
 										POS_MEMBER,
 										POS_STAFF,
@@ -326,23 +515,31 @@ public interface Clan extends Cloneable, Tickable
 										POS_LEADER,
 										POS_BOSS};
 
+	/** constant for the Clan.getStatus() method, denoting normal status. @see Clan#getStatus() .*/ 
 	public static final int CLANSTATUS_ACTIVE=0;
+	/** constant for the Clan.getStatus() method, denoting unapproved status. @see Clan#getStatus() .*/ 
 	public static final int CLANSTATUS_PENDING=1;
+	/** constant for the Clan.getStatus() method, denoting fading status. @see Clan#getStatus() .*/ 
 	public static final int CLANSTATUS_FADING=2;
+	/** constant descriptor strings for the Clan.CLANSTATUS_* constants, ordered by their value. @see Clan .*/
 	public static final String[] CLANSTATUS_DESC={
 		"ACTIVE",
 		"PENDING",
 		"FADING"
 	};
-	
+	/** constant for Clan.getClanRelations method, denoting neutral status towards. @see Clan#getClanRelations(String) */
 	public static final int REL_NEUTRAL=0;
+	/** constant for Clan.getClanRelations method, denoting at war with. @see Clan#getClanRelations(String) */
 	public static final int REL_WAR=1;
+	/** constant for Clan.getClanRelations method, denoting hostile to. @see Clan#getClanRelations(String) */
 	public static final int REL_HOSTILE=2;
+	/** constant for Clan.getClanRelations method, denoting friendly to. @see Clan#getClanRelations(String) */
 	public static final int REL_FRIENDLY=3;
+	/** constant for Clan.getClanRelations method, denoting ally with. @see Clan#getClanRelations(String) */
 	public static final int REL_ALLY=4;
-    
+    /** constant used to determine something about clan relations */
     public static final int[] REL_NEUTRALITYGAUGE={/*REL_NEUTRAL*/0,/*REL_WAR*/4, /*REL_HOSTILE*/1,/*REL_FRIENDLY*/1,/*REL_ALLY*/4};
-
+    /** table used to determine how two clans are related when their declared relations differ.  both axis are Clan.REL_* constants. @see Clan */
 	public static final int[][] RELATIONSHIP_VECTOR={
 	{REL_NEUTRAL,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
 	{REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR},
@@ -350,10 +547,11 @@ public interface Clan extends Cloneable, Tickable
 	{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
 	{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_ALLY},
 	};
-	
+	/** descriptor strings for the Clan.REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_DESCS={
 		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
 	};
+	/** long descriptor strings for the Clan.REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_STATES={
 		"NEUTRALITY TOWARDS",
 		"WAR WITH",
@@ -361,25 +559,36 @@ public interface Clan extends Cloneable, Tickable
 		"FRIENDSHIP WITH",
 		"AN ALLIANCE WITH"
 	};
-	
+
+	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes control points. */
 	public static final int TROPHY_CONTROL=1;
+	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes exp. */
 	public static final int TROPHY_EXP=2;
+	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes most areas. */
 	public static final int TROPHY_AREA=4;
+	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes most pkills. */
     public static final int TROPHY_PK=8;
+	/** descriptor strings for the Clan.TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS_SHORT[]={"","CP","EXP","","AREA","","","","PK"};
+	/** long descriptor strings for the Clan.TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS[]={"","Most control points","Most clan experience","","Most controlled areas","","","","Most rival player-kills"};
 	
+	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Clan. */
 	public static final int GVT_DICTATORSHIP=0;
+	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Guild. */
 	public static final int GVT_OLIGARCHY=1;
+	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Republic. */
 	public static final int GVT_REPUBLIC=2;
+	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Democracy. */
 	public static final int GVT_DEMOCRACY=3;
+	/** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
 	public static final String[] GVT_DESCS={
 		"CLAN",
 		"GUILD",
 		"UNION",
 		"FELLOWSHIP"
 	};
-	
+	/** top ranks for each govt, ordered by the value of the Clan.GVT_* constants.  @see Clan */
 	public static final int[] topRanks={
 		POS_BOSS,
 		POS_BOSS,
@@ -388,38 +597,54 @@ public interface Clan extends Cloneable, Tickable
 	};
 	
 	
+	/** descriptor table with x axis being Clan.POS_* constants, and y axis being Clan.GVT_* constants.  @see Clan */
 	public static final String[][] ROL_DESCS={
 		{"APPLICANT","MEMBER","STAFF","ENCHANTER","TREASURER","LEADER","BOSS"},
 		{"APPLICANT","MEMBER","CHIEF","ENCHANTER","TREASURER","SECRETARY","GUILDMASTER"},
 		{"APPLICANT","CITIZEN","SHERIFF","ENCHANTER","TREASURER","SECRETARY","SENATOR"},
 		{"APPLICANT","CITIZEN","SOLDIER","ENCHANTER","TREASURER","MANAGER","FIRST CITIZEN"}
 	};
-	public static final int maxint=Integer.MAX_VALUE;
+	/** table w/x axis being Clan.POS_* constants, y axis being Clan.GVT_* constants, denotes max members of the ranks. */
 	public static final int[][] ROL_MAX={
-		{maxint,maxint,maxint,1,1,maxint,1},
-		{maxint,maxint,maxint,1,1,maxint,5},
-		{maxint,maxint,maxint,1,1,1,5},
-		{maxint,maxint,maxint,maxint,maxint,maxint,1}
+		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,1},
+		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,5},
+		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,1,5},
+		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1}
 	};
-	
+	/** meaningless variable-- means this clan is a clan -- does not denote government, or anything else. */
 	public static final int TYPE_CLAN=1;
-
+	/** constant for the clan function of accepting new members. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANACCEPT=0;
+	/** constant for the clan function of promoting or demoting members. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANASSIGN=1;
+	/** constant for the clan function of exihiling members. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANEXILE=2;
+	/** constant for the clan function of setting a new clan home. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANHOMESET=3;
+	/** constant for the clan function of setting a new donation room. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANDONATESET=4;
+	/** constant for the clan function of rejecting an applicant. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANREJECT=5;
+	/** constant for the clan function of writing a new clan premise. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANPREMISE=6;
+	/** constant for the clan function of acting as owner of clan property. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANPROPERTYOWNER=7;
+	/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANWITHDRAW=8;
+	/** constant for the clan function of ordering lower ranked clan members. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANCANORDERUNDERLINGS=9;
+	/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANCANORDERCONQUERED=10;
+	/** constant for the clan function of voting on promotions. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANVOTEASSIGN=11;
+	/** constant for the clan function of voting on non-promotion questions . @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANVOTEOTHER=12;
+	/** constant for the clan function of depositing and listing clan bank accounts. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANDEPOSITLIST=13;
+	/** constant for the clan function of declaring war and peace . @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANDECLARE=14;
+	/** constant for the clan function of changing the clans tax rate. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANTAX=15;
+	/** constant for the clan function of clanenchanting items. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANENCHANT=16;
-	
 }

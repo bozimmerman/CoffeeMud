@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMud MUDGrinder</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.submit();
+		}
+		function Cancel()
+		{
+			document.AREAEDIT.action='/grinder/menu1.cmvp';
+			document.AREAEDIT.target='';
+			document.AREAEDIT.ROOM.value=document.AREAEDIT.OLDROOM.value;
+			document.AREAEDIT.LINK.value=document.AREAEDIT.OLDLINK.value;
+			document.AREAEDIT.target='';
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</script>
+</head>
+<BODY>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editarea.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
+<INPUT TYPE=HIDDEN NAME=LINK VALUE="">
+<INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="">
+<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
+<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
+<TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR>
+<TD COLSPAN=3><B>Empty grid square for room: @RequestParameter?ROOM@</B></TD></TR>
+<TR><TD WIDTH=25% ALIGN=RIGHT><INPUT TYPE=BUTTON NAME=NEWROOM VALUE="Create New Room" ONCLICK="Clicked('/grinder/creategridroom.cmvp');"></TD>
+<TD WIDTH=45%><INPUT TYPE=CHECKBOX NAME=COPYROOM><FONT SIZE=-1><B>Copy @RequestParameter?OLDROOM@</B></FONT></TD>
+<TD WIDTH=15%><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel()"></TR>
+<TR><TD>&nbsp;</TD><TD><INPUT TYPE=CHECKBOX NAME=AUTOLINK CHECKED><FONT SIZE=-1><B>Auto-link to adjacent rooms</B></FONT></TD><TD>&nbsp;</TD></TR>
+</TABLE>
+</BODY>
+</HTML>
+@endif@
+@endif@

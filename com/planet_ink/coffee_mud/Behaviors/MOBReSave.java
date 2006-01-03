@@ -59,19 +59,27 @@ public class MOBReSave extends ActiveTicker
 		{
 			noRecurse=true;
 			MOB mob=(MOB)ticking;
-			synchronized(roomsReset)
-			{
-				if(!roomsReset.contains(mob.getStartRoom().roomID()))
+			Room R=mob.getStartRoom();
+	    	synchronized(("SYNC"+R.roomID()).intern())
+	    	{
+	    		R=CMLib.map().getRoom(R);
+				synchronized(roomsReset)
 				{
-					if(mob.location()!=mob.getStartRoom())
-						mob.getStartRoom().bringMobHere(mob,false);
-					roomsReset.add(mob.getStartRoom().roomID());
-					CMLib.utensils().resetRoom(mob.getStartRoom());
-					CMLib.database().DBUpdateMOBs(mob.getStartRoom());
+					if(!roomsReset.contains(R.roomID()))
+					{
+						if(mob.location()!=R)
+							R.bringMobHere(mob,false);
+						roomsReset.add(R.roomID());
+				    	synchronized(("SYNC"+R.roomID()).intern())
+				    	{
+							CMLib.map().resetRoom(R);
+							CMLib.database().DBUpdateMOBs(R);
+				    	}
+					}
 				}
-			}
-			if(canAct(ticking,tickID))
-				CMLib.database().DBUpdateRoomMOB(""+mob,mob.getStartRoom(),mob);
+				if(canAct(ticking,tickID))
+					CMLib.database().DBUpdateRoomMOB(""+mob,R,mob);
+	    	}
 		}
 		noRecurse=false;
 		return true;

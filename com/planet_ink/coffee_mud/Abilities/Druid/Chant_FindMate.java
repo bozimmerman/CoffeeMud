@@ -178,7 +178,8 @@ public class Chant_FindMate extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,false,false,false,50);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(R!=null)
@@ -189,25 +190,7 @@ public class Chant_FindMate extends Chant
 				{ rooms.addElement(R); break;}
 			}
 		}
-
-		if(rooms.size()<=0)
-		{
-		    try
-		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,R))
-						for(int i=0;i<R.numInhabitants();i++)
-						{
-							MOB M=R.fetchInhabitant(i);
-							if(isSuitableMate(M,target))
-							{ rooms.addElement(R); break;}
-						}
-				}
-		    }catch(NoSuchElementException e){}
-		}
-
+		checkSet=null;
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
 

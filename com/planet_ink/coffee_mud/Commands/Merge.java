@@ -195,7 +195,7 @@ public class Merge extends StdCommand
 			StringBuffer allFieldsMsg=new StringBuffer("");
 			Vector allKnownFields=new Vector();
 			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.items(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
@@ -301,7 +301,7 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 		else
 		{
-			sortEnumeratedList(CMClass.items(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
@@ -377,8 +377,8 @@ public class Merge extends StdCommand
 		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if(A.getProperMap().hasMoreElements()
-			&&CMSecurity.isAllowed(mob,((Room)A.getProperMap().nextElement()),"MERGE"))
+			if(A.getCompleteMap().hasMoreElements()
+			&&CMSecurity.isAllowed(mob,((Room)A.getCompleteMap().nextElement()),"MERGE"))
 				placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
@@ -392,7 +392,7 @@ public class Merge extends StdCommand
 			{
 				Area A=(Area)placesToDo.elementAt(i);
 				placesToDo.removeElement(A);
-				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,"MERGE"))
@@ -420,60 +420,64 @@ public class Merge extends StdCommand
 			if(!CMSecurity.isAllowed(mob,R,"MERGE"))
 				continue;
 			if(R.roomID().length()==0) continue;
-			boolean oldMobility=R.getArea().getMobility();
-			R.getArea().toggleMobility(false);
-			CMLib.utensils().resetRoom(R);
-			boolean savemobs=false;
-			boolean saveitems=false;
-			if(aremobs)
-			{
-				for(int m=0;m<R.numInhabitants();m++)
+	    	synchronized(("SYNC"+R.roomID()).intern())
+	    	{
+	    		R=CMLib.map().getRoom(R);
+				boolean oldMobility=R.getArea().getMobility();
+				R.getArea().toggleMobility(false);
+				CMLib.map().resetRoom(R);
+				boolean savemobs=false;
+				boolean saveitems=false;
+				if(aremobs)
 				{
-					MOB M=R.fetchInhabitant(m);
-					if((M!=null)&&(M.savable()))
-						if(tryMerge(mob,R,M,things,changes,onfields,ignore,noisy))
-							savemobs=true;
-				}
-			}
-			else
-			{
-				for(int i=0;i<R.numItems();i++)
-				{
-					Item I=R.fetchItem(i);
-					if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
-						saveitems=true;
-				}
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					MOB M=R.fetchInhabitant(m);
-					if((M!=null)&&(M.savable()))
+					for(int m=0;m<R.numInhabitants();m++)
 					{
-						for(int i=0;i<M.inventorySize();i++)
-						{
-							Item I=M.fetchInventory(i);
-							if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.savable()))
+							if(tryMerge(mob,R,M,things,changes,onfields,ignore,noisy))
 								savemobs=true;
-						}
-						if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+					}
+				}
+				else
+				{
+					for(int i=0;i<R.numItems();i++)
+					{
+						Item I=R.fetchItem(i);
+						if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
+							saveitems=true;
+					}
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.savable()))
 						{
-							Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
-							for(int i=0;i<V.size();i++)
+							for(int i=0;i<M.inventorySize();i++)
 							{
-								if(V.elementAt(i) instanceof Item)
+								Item I=M.fetchInventory(i);
+								if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
+									savemobs=true;
+							}
+							if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+							{
+								Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
+								for(int i=0;i<V.size();i++)
 								{
-									Item I=(Item)V.elementAt(i);
-									if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
-										savemobs=true;
+									if(V.elementAt(i) instanceof Item)
+									{
+										Item I=(Item)V.elementAt(i);
+										if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
+											savemobs=true;
+									}
 								}
 							}
 						}
 					}
 				}
-			}
-			if(saveitems) CMLib.database().DBUpdateItems(R);
-			if(savemobs) CMLib.database().DBUpdateMOBs(R);
-			if(mob.session()!=null)	mob.session().rawPrint(".");
-			R.getArea().toggleMobility(oldMobility);
+				if(saveitems) CMLib.database().DBUpdateItems(R);
+				if(savemobs) CMLib.database().DBUpdateMOBs(R);
+				if(mob.session()!=null)	mob.session().rawPrint(".");
+				R.getArea().toggleMobility(oldMobility);
+	    	}
 		}
 
 		if(mob.session()!=null)	mob.session().rawPrintln("!\n\rDone!");

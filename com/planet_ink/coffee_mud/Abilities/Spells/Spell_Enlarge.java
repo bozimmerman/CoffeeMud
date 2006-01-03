@@ -57,7 +57,7 @@ public class Spell_Enlarge extends Spell
 				((MOB)I.owner()).tell(I.name()+" in your inventory shrinks back to size.");
 			else
 			{
-				Room R=CMLib.utensils().roomLocation(I);
+				Room R=CMLib.map().roomLocation(I);
 				if(R!=null)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" shrinks back to normal size.");
 			}

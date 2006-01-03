@@ -35,12 +35,27 @@ public class GrinderRoom
 	public int y=0;
     public int z=0;
 	public String roomID="";
-	public Room room=null;
+	private Room roomCache=null;
+	public Room room(){
+		if((roomID.length()>0)
+		&&((roomCache==null)||(roomCache.amDestroyed())))
+		{
+			roomCache=CMLib.map().getRoom(roomID);
+			if(roomCache!=null)
+				fixExits(roomCache);
+		}
+		return roomCache;
+	}
+	public boolean isRoomGood(){return ((roomCache!=null)&&(!roomCache.amDestroyed()));}
     public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS];
-	public GrinderRoom(Room R)
+	public GrinderRoom(String newRoomID)
 	{
-		room=R;
-		roomID=R.roomID();
+		roomCache=null;
+		roomID=newRoomID;
+	}
+	
+	public void fixExits(Room R)
+	{
         for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
         {
             GrinderDir D=new GrinderDir();
@@ -54,5 +69,15 @@ public class GrinderRoom
             }
             doors[d]=D;
         }
+	}
+	public GrinderRoom(Room R)
+	{
+		roomCache=null;
+		if(!R.amDestroyed())
+		{
+			roomCache=R;
+			fixExits(R);
+		}
+		roomID=R.roomID();
 	}
 }

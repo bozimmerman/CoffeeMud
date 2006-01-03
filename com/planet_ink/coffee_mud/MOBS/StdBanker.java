@@ -261,7 +261,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			boolean proceed=false;
 			// handle interest by watching the days go by...
 			// put stuff up for sale if the account runs out
-			synchronized(bankChain())
+			synchronized(bankChain().intern())
 			{
 				Long L=(Long)bankTimes.get(bankChain());
 				if((L==null)||(L.longValue()<System.currentTimeMillis()))

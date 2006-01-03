@@ -171,7 +171,7 @@ public class Spell_StinkingCloud extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_GENERAL:0),null);
+				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((mob.location().okMessage(mob,msg))
 				   &&(mob.location().okMessage(mob,msg2))
 				   &&(target.fetchEffect(this.ID())==null))

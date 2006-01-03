@@ -152,7 +152,7 @@ public class Burning extends StdAbility
 					        for(int i=0;i<room.numInhabitants();i++)
 					        {
 					            MOB target=room.fetchInhabitant(i);
-								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.envStats().level(),5,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.envStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
 					        }
 							((Item)affected).destroy();
 					    }
@@ -237,7 +237,7 @@ public class Burning extends StdAbility
 				mob.tell("Ouch!! "+CMStrings.capitalizeAndLower(affected.name())+" is on fire!");
 				break;
 			}
-			CMLib.combat().postDamage(invoker,mob,this,CMLib.dice().roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
+			CMLib.combat().postDamage(invoker,mob,this,CMLib.dice().roll(1,5,5),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
 			return false;
 		}
 		return true;
@@ -314,7 +314,7 @@ public class Burning extends StdAbility
 				return false;
 			if((mob!=null)&&(mob.location()!=null))
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,null);
+				CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,null);
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}

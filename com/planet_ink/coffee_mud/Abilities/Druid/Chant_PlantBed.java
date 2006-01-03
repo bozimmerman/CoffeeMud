@@ -45,7 +45,7 @@ public class Chant_PlantBed extends Chant
 		super.unInvoke();
 		if(peaPod!=null)
 		{
-			Room R=CMLib.utensils().roomLocation(peaPod);
+			Room R=CMLib.map().roomLocation(peaPod);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"A pea-pod shrivels up!");
 			Rideable RI=(Rideable)peaPod;

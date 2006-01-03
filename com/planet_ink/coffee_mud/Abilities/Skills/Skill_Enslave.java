@@ -174,6 +174,7 @@ public class Skill_Enslave extends StdSkill
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==mob.location())||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
 		||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
 			mob.setFollowing(null);
 	}

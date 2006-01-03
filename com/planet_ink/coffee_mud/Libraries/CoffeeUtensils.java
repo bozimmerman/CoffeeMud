@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.io.IOException;
 import java.util.*;
 
 /* 
@@ -35,14 +36,6 @@ import java.util.*;
 public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
     public String ID(){return "CoffeeUtensils";}
-	public boolean hasASky(Room room)
-	{
-		if((room==null)
-		||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		||((room.domainType()&Room.INDOORS)>0))
-			return false;
-		return true;
-	}
 	
 	public String niceCommaList(Vector V, boolean andTOrF)
 	{
@@ -426,7 +419,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	    if(E!=null)
 	    {
 		    TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():
-		        roomLocation(E).getArea().getTimeObj();
+		        CMLib.map().roomLocation(E).getArea().getTimeObj();
 		    if(C!=null)
 		        date=CMStrings.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
 	    }
@@ -585,62 +578,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return false;
 	}
 
-	public Room roomLocation(Environmental E)
-	{
-		if(E==null) return null;
-		if(E instanceof Room)
-			return (Room)E;
-		else
-		if(E instanceof MOB)
-			return ((MOB)E).location();
-		else
-		if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
-			return (Room)((Item)E).owner();
-		else
-		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
-		   return ((MOB)((Item)E).owner()).location();
-        else
-        if(E instanceof Ability)
-            return roomLocation(((Ability)E).affecting());
-		return null;
-	}
-    public Room roomStart(Environmental E)
-    {
-        if(E ==null) return null;
-        if(E instanceof MOB) return ((MOB)E).getStartRoom();
-        if(E instanceof Item)
-        {
-            if(((Item)E).owner() instanceof MOB)
-                return ((MOB)((Item)E).owner()).getStartRoom();
-            if(CMLib.flags().isGettable((Item)E))
-                return null;
-        }
-        if(E instanceof Ability)
-            return roomStart(((Ability)E).affecting());
-        if(E instanceof Area) return ((Area)E).getRandomProperRoom();
-        return CMLib.utensils().roomLocation(E);
-    }
-
-    public Area areaLocation(Object E)
-    {
-        if(E==null) return null;
-        if(E instanceof Area)
-            return (Area)E;
-        else
-        if(E instanceof Room)
-            return ((Room)E).getArea();
-        else
-        if(E instanceof MOB)
-            return ((MOB)E).location().getArea();
-        else
-        if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
-            return ((Room)((Item)E).owner()).getArea();
-        else
-        if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
-           return (((MOB)((Item)E).owner()).location()).getArea();
-        return null;
-    }
-    
     public double memoryUse ( Environmental E, int number )
     {
 		double s=-1.0;
@@ -712,71 +649,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
-	public void obliterateRoom(Room deadRoom)
-	{
-		for(int a=deadRoom.numEffects()-1;a>=0;a--)
-		{
-			Ability A=deadRoom.fetchEffect(a);
-			if(A!=null)
-			{
-				A.unInvoke();
-				deadRoom.delEffect(A);
-			}
-		}
-		try
-		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				boolean changes=false;
-				for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
-				{
-					Room thatRoom=R.rawDoors()[dir];
-					if(thatRoom==deadRoom)
-					{
-						R.rawDoors()[dir]=null;
-						changes=true;
-						if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
-						{
-							Exit GE=R.rawExits()[dir];
-							GE.setTemporaryDoorLink(deadRoom.roomID());
-						}
-					}
-				}
-				if(changes)
-					CMLib.database().DBUpdateExits(R);
-			}
-	    }catch(NoSuchElementException e){}
-		for(int mb=deadRoom.numInhabitants()-1;mb>=0;mb--)
-		{
-			MOB mob2=deadRoom.fetchInhabitant(mb);
-			if(mob2!=null)
-			{
-				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMLib.map().getRoom(mob2.getStartRoom().roomID())!=null))
-					mob2.getStartRoom().bringMobHere(mob2,true);
-				else
-				{
-					CMLib.threads().deleteTick(mob2,-1);
-					mob2.destroy();
-				}
-			}
-		}
-		for(int i=deadRoom.numItems()-1;i>=0;i--)
-		{
-			Item item2=deadRoom.fetchItem(i);
-			if(item2!=null)
-			{
-				CMLib.threads().deleteTick(item2,-1);
-				item2.destroy();
-			}
-		}
-		clearTheRoom(deadRoom);
-		deadRoom.destroy();
-		if(deadRoom instanceof GridLocale)
-			((GridLocale)deadRoom).clearGrid(null);
-		CMLib.database().DBDeleteRoom(deadRoom);
-	}
-
 	public void roomAffectFully(CMMsg msg, Room room, int dirCode)
 	{
 		room.send(msg.source(),msg);
@@ -802,103 +674,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
-	public void obliteratePlayer(MOB deadMOB, boolean quiet)
-	{
-		if(CMLib.map().getPlayer(deadMOB.Name())!=null)
-		{
-		   deadMOB=CMLib.map().getPlayer(deadMOB.Name());
-		   CMLib.map().delPlayer(deadMOB);
-		}
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session S=CMLib.sessions().elementAt(s);
-			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
-			   deadMOB=S.mob();
-		}
-		CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
-		if(deadMOB.location()!=null)
-			deadMOB.location().send(deadMOB,msg);
-		try
-		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R!=deadMOB.location()))
-				{
-					if(R.okMessage(deadMOB,msg))
-						R.sendOthers(deadMOB,msg);
-					else
-					{
-						CMLib.map().addPlayer(deadMOB);
-						return;
-					}
-				}
-			}
-	    }catch(NoSuchElementException e){}
-		StringBuffer newNoPurge=new StringBuffer("");
-		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-        boolean somethingDone=false;
-		if((protectedOnes!=null)&&(protectedOnes.size()>0))
-		{
-			for(int b=0;b<protectedOnes.size();b++)
-			{
-				String B=(String)protectedOnes.elementAt(b);
-				if(!B.equalsIgnoreCase(deadMOB.name()))
-					newNoPurge.append(B+"\n");
-                else
-                    somethingDone=true;
-			}
-            if(somethingDone)
-            {
-    			Resources.updateResource("protectedplayers.ini",newNoPurge);
-    			Resources.saveFileResource("protectedplayers.ini");		
-            }
-		}
-		
-		CMLib.database().DBDeleteMOB(deadMOB);
-		if(deadMOB.session()!=null)
-			deadMOB.session().setKillFlag(true);
-		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
-        deadMOB.destroy();
-	}
-
-	public CMMsg resetMsg=null;
-	public void resetRoom(Room room)
-	{
-		if(room==null) return;
-        if(CMath.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
-            return;
-        room.baseEnvStats().setSensesMask(room.baseEnvStats().sensesMask()|EnvStats.SENSE_ROOMSYNC);
-		boolean mobile=room.getMobility();
-		room.toggleMobility(false);
-		if(resetMsg==null) resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
-		room.executeMsg(room,resetMsg);
-		clearTheRoom(room);
-        Ability A=null;
-        for(int a=room.numEffects()-1;a>=0;a--)
-        {
-            A=room.fetchEffect(a);
-            if((A!=null)&&(A.canBeUninvoked()))
-                A.unInvoke();
-        }
-		CMLib.database().DBReadContent(room,null);
-		room.toggleMobility(mobile);
-        if(CMath.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
-            room.baseEnvStats().setSensesMask(room.baseEnvStats().sensesMask()-EnvStats.SENSE_ROOMSYNC);
-	}
-    
-    public void resetArea(Area area)
-    {
-        boolean mobile=area.getMobility();
-        area.toggleMobility(false);
-        for(Enumeration r=area.getProperMap();r.hasMoreElements();)
-        {
-            Room R=(Room)r.nextElement();
-            resetRoom(R);
-        }
-        area.fillInAreaRooms();
-        area.toggleMobility(mobile);
-    }
     
     public void recursiveDropMOB(MOB mob,
                                  Room room,
@@ -916,7 +691,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         if(bodyFlag)
         {
             room.addItem(thisContainer);
-            thisContainer.setDispossessionTime(0);
+            thisContainer.setExpirationDate(0);
         }
         else
             room.addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
@@ -957,68 +732,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         return null;
     }
     
-	public void clearTheRoom(Room room)
-	{
-		for(int m=room.numInhabitants()-1;m>=0;m--)
-		{
-			MOB mob2=room.fetchInhabitant(m);
-			if((mob2!=null)&&(mob2.savable()))
-			{
-				if(mob2.getStartRoom()==room)
-					mob2.destroy();
-				else
-				if(mob2.getStartRoom()!=null)
-					mob2.getStartRoom().bringMobHere(mob2,true);
-			}
-		}
-		while(room.numItems()>0)
-		{
-			Item I=room.fetchItem(0);
-			I.destroy();
-		}
-		CMLib.threads().clearDebri(room,0);
-	}
-
-
-	public void clearDebriAndRestart(Room room, int taskCode)
-	{
-		CMLib.threads().clearDebri(room,0);
-		if(taskCode<2)
-		{
-			CMLib.database().DBUpdateItems(room);
-			room.startItemRejuv();
-		}
-		if((taskCode==0)||(taskCode==2))
-			CMLib.database().DBUpdateMOBs(room);
-	}
-
-	public void obliterateArea(String areaName)
-	{
-		Room foundOne=(Room)CMLib.map().rooms().nextElement();
-		while(foundOne!=null)
-		{
-			foundOne=null;
-			try
-			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(R.getArea().Name().equalsIgnoreCase(areaName))
-					{
-						foundOne=R;
-						break;
-					}
-				}
-		    }catch(NoSuchElementException e){}
-			if(foundOne!=null)
-				obliterateRoom(foundOne);
-		}
-
-		Area A=CMLib.map().getArea(areaName);
-		CMLib.database().DBDeleteArea(A);
-		CMLib.map().delArea(A);
-	}
-
 	public LandTitle getLandTitle(Area area)
 	{
 		if(area==null) return null;

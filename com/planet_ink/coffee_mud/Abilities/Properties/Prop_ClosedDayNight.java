@@ -110,7 +110,7 @@ public class Prop_ClosedDayNight extends Property
 	protected boolean closed(Environmental E)
 	{
 		boolean closed=false;
-		Room R=CMLib.utensils().roomLocation(E);
+		Room R=CMLib.map().roomLocation(E);
 		if(R==null) R=((exitRoom==null)?(Room)CMLib.map().rooms().nextElement():exitRoom);
 		if(R==null) return false;
 		if((openTime<0)&&(closeTime<0))
@@ -164,9 +164,11 @@ public class Prop_ClosedDayNight extends Property
 		{
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
-				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
-				{
-					Room R2=(Room)e.nextElement();
+			{
+        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,25);
+        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+        		{
+        			Room R2=CMLib.map().getRoom((Room)r.nextElement());
 					if((R2.roomID().indexOf(Home)>=0)
 					||CMLib.english().containsString(R2.name(),Home)
 					||CMLib.english().containsString(R2.displayText(),Home)
@@ -175,6 +177,7 @@ public class Prop_ClosedDayNight extends Property
 					if(R2.fetchInhabitant(Home)!=null)
 					{ R=R2; break;}
 				}
+			}
 			if(R!=null) return R;
 			try
 			{

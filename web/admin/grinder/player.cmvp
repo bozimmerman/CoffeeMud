@@ -307,6 +307,18 @@
 <TR>
 	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Abilities: </FONT>@AbilityPlayerNext?reset@ @loop@ @AbilityPlayerNext@ <a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE>@AbilityName@</FONT></a> <FONT COLOR=WHITE>/</FONT> @back@</TD>
 </TR>
+<TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Notes: </FONT><FONT COLOR=WHITE>@PlayerData?NOTES@</FONT></TD>
+</TR>
+<TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Leveling History: </FONT><FONT COLOR=WHITE>
+	<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0>
+	<TR><TD WIDTH=20% ROWSPAN=1000></TD><TD WIDTH=20%><FONT COLOR=YELLOW>Level</FONT></TD><TD><FONT COLOR=YELLOW>Date/Time</FONT></TD></TR>
+	@PlayerData?LEVELS@
+	</TABLE>
+	</FONT>
+	</TD>
+</TR>
 </TABLE>
 </FORM>
 </BODY>

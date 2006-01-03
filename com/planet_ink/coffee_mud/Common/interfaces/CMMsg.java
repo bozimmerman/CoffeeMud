@@ -119,7 +119,7 @@ public interface CMMsg extends CMObject
 	public static final int MASK_EYES=8192;        // looking and seeing
 	public static final int MASK_MOUTH=16384;      // speaking and eating
 	public static final int MASK_SOUND=32768;      // general body noises
-	public static final int MASK_GENERAL=65536;    // anything!
+	public static final int MASK_ALWAYS=65536;    // anything!
 	public static final int MASK_MAGIC=131072;     // the magic mask!
 	public static final int MASK_DELICATE=262144;  // for thief skills!
 	public static final int MASK_MALICIOUS=524288; // for attacking
@@ -219,6 +219,8 @@ public interface CMMsg extends CMObject
     public static final int TYP_LOGIN=90;
     public static final int TYP_LEVEL=91;
     public static final int TYP_EXAMINE=92;
+    public static final int TYP_ORDER=93;
+    public static final int TYP_EXPIRE=94;
 
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
     public static final Object[][] MISC_DESCS={
@@ -255,7 +257,7 @@ public interface CMMsg extends CMObject
 
 	// all major messages
 	public static final int NO_EFFECT=0;
-	public static final int MSG_AREAAFFECT=MASK_GENERAL|TYP_AREAAFFECT;
+	public static final int MSG_AREAAFFECT=MASK_ALWAYS|TYP_AREAAFFECT;
 	public static final int MSG_PUSH=MASK_HANDS|TYP_PUSH;
 	public static final int MSG_PULL=MASK_HANDS|TYP_PULL;
 	public static final int MSG_RECALL=MASK_SOUND|TYP_RECALL; // speak precludes animals
@@ -299,43 +301,45 @@ public interface CMMsg extends CMObject
 	public static final int MSG_CAST_ATTACK_SOMANTIC_SPELL=MSK_CAST_MALICIOUS_SOMANTIC|TYP_CAST_SPELL;
 	public static final int MSG_CAST=MSK_CAST|TYP_CAST_SPELL;
 	public static final int MSG_CAST_MALICIOUS=MSK_CAST_MALICIOUS|TYP_CAST_SPELL;
-	public static final int MSG_OK_ACTION=MASK_SOUND|MASK_GENERAL|TYP_OK_ACTION;
-	public static final int MSG_OK_VISUAL=MASK_GENERAL|TYP_OK_VISUAL;
+	public static final int MSG_OK_ACTION=MASK_SOUND|MASK_ALWAYS|TYP_OK_ACTION;
+	public static final int MSG_OK_VISUAL=MASK_ALWAYS|TYP_OK_VISUAL;
 	public static final int MSG_DRINK=MASK_HANDS|MASK_MOUTH|TYP_DRINK;
 	public static final int MSG_HANDS=MASK_HANDS|TYP_HANDS;
 	public static final int MSG_EMOTE=MASK_SOUND|MASK_HANDS|TYP_EMOTE;
-	public static final int MSG_FOLLOW=MASK_GENERAL|TYP_FOLLOW;
-	public static final int MSG_NOFOLLOW=MASK_GENERAL|TYP_NOFOLLOW;
+	public static final int MSG_FOLLOW=MASK_ALWAYS|TYP_FOLLOW;
+	public static final int MSG_NOFOLLOW=MASK_ALWAYS|TYP_NOFOLLOW;
 	public static final int MSG_WRITE=MASK_HANDS|TYP_WRITE;
 	public static final int MSG_MOUNT=MASK_MOVE|MASK_SOUND|TYP_MOUNT;
 	public static final int MSG_DISMOUNT=MASK_MOVE|MASK_SOUND|TYP_DISMOUNT;
 	public static final int MSG_SERVE=MASK_MOUTH|MASK_SOUND|TYP_SERVE;
 	public static final int MSG_REBUKE=MASK_MOUTH|MASK_SOUND|TYP_REBUKE;
 	public static final int MSG_ADVANCE=MASK_MOVE|MASK_SOUND|MASK_MALICIOUS|TYP_ADVANCE;
-	public static final int MSG_DEATH=MASK_SOUND|MASK_GENERAL|TYP_DEATH;
+	public static final int MSG_DEATH=MASK_SOUND|MASK_ALWAYS|TYP_DEATH;
 	public static final int MSG_WITHDRAW=MASK_HANDS|TYP_WITHDRAW;
 	public static final int MSG_DEPOSIT=MASK_HANDS|TYP_DEPOSIT;
-	public static final int MSG_QUIT=MASK_GENERAL|TYP_QUIT;
-	public static final int MSG_SHUTDOWN=MASK_GENERAL|TYP_SHUTDOWN;
+	public static final int MSG_QUIT=MASK_ALWAYS|TYP_QUIT;
+	public static final int MSG_SHUTDOWN=MASK_ALWAYS|TYP_SHUTDOWN;
 	public static final int MSG_VIEW=MASK_SOUND|MASK_MOUTH|TYP_VIEW;
-	public static final int MSG_RETIRE=MASK_GENERAL|TYP_RETIRE;
+	public static final int MSG_RETIRE=MASK_ALWAYS|TYP_RETIRE;
 	public static final int MSG_RETREAT=MASK_MOVE|MASK_SOUND|TYP_RETREAT;
 	public static final int MSG_PANIC=MASK_MOVE|MASK_SOUND|TYP_PANIC;
 	public static final int MSG_THROW=MASK_HANDS|MASK_SOUND|TYP_THROW;
 	public static final int MSG_EXTINGUISH=MASK_HANDS|TYP_EXTINGUISH;
-	public static final int MSG_TELL=MASK_GENERAL|TYP_TELL;
+	public static final int MSG_TELL=MASK_ALWAYS|TYP_TELL;
 	public static final int MSG_SITMOVE=MASK_MOVE|TYP_SITMOVE;
 	public static final int MSG_KNOCK=MASK_HANDS|MASK_SOUND|TYP_KNOCK;
 	public static final int MSG_PRACTICE=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_PRACTICE;
 	public static final int MSG_TEACH=MASK_HANDS|MASK_SOUND|MASK_MOUTH|MASK_MOVE|TYP_TEACH;
 	public static final int MSG_REMOVE=MASK_HANDS|TYP_REMOVE;
-	public static final int MSG_DAMAGE=MASK_GENERAL|TYP_DAMAGE;
-	public static final int MSG_HEALING=MASK_GENERAL|TYP_HEALING;
-	public static final int MSG_ROOMRESET=MASK_GENERAL|TYP_ROOMRESET;
+	public static final int MSG_DAMAGE=MASK_ALWAYS|TYP_DAMAGE;
+	public static final int MSG_HEALING=MASK_ALWAYS|TYP_HEALING;
+	public static final int MSG_ROOMRESET=MASK_ALWAYS|TYP_ROOMRESET;
 	public static final int MSG_SNIFF=MASK_HANDS|TYP_SNIFF;
 	public static final int MSG_ACTIVATE=MASK_HANDS|TYP_ACTIVATE;
 	public static final int MSG_DEACTIVATE=MASK_HANDS|TYP_DEACTIVATE;
-    public static final int MSG_LOGIN=MASK_GENERAL|TYP_LOGIN;
-    public static final int MSG_LEVEL=MASK_GENERAL|TYP_LEVEL;
+    public static final int MSG_LOGIN=MASK_ALWAYS|TYP_LOGIN;
+    public static final int MSG_LEVEL=MASK_ALWAYS|TYP_LEVEL;
     public static final int MSG_EXAMINE=MASK_EYES|TYP_EXAMINE;
+	public static final int MSG_ORDER=MASK_SOUND|MASK_MOUTH|TYP_ORDER;
+	public static final int MSG_EXPIRE=MASK_ALWAYS|TYP_EXPIRE;
 }

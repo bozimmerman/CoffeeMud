@@ -4,11 +4,24 @@
 @if?!CheckAuthCode?ANYMODAREAS=true@ <BODY> @AddFile?/grinder/nopriv.cmvp@ @else@
 
 <head>
+	<!--map.cmvp-->
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
+		function RC(room)
+		{
+			Clicked('rmmenu.cmvp','',room,'');
+		}
+		function EC(dir,room)
+		{
+			Clicked('lnkxmenu.cmvp',dir,room,'');
+		}
+		function CEX(dir,room,room2)
+		{
+			Clicked('edxmenu.cmvp',dir,room,room2);
+		}
 		function Clicked(action,link,room,linksto)
 		{
 			document.SELECTAREA.OLDROOM.value=document.SELECTAREA.ROOM.value;
@@ -163,18 +176,57 @@ function checkLocation() {
   eval(dS+object+sD+w+xx);
   setTimeout("checkLocation()",10);
 }
+@if?AreaData?ISGRID@
+	document.onclick=cellclick
+	
+	function cellclick(e)
+	{
+		if(!e) var e=window.event;
+		var tg = (e.target) ? e.target : e.srcElement;
+		if((tg!=null)&&(tg.id!=null)&&(tg.id.length>0)&&(tg.id.substr(0,1)=='X'))
+		{
+			var x=tg.id.substr(1);
+			var ypos=x.indexOf('_');
+			if(ypos>0)
+			{
+				y=x.substr(ypos+1);
+			 	x=x.substr(0,ypos);
+			 	var room=document.SELECTAREA.ROOM.value;
+			 	var link=document.SELECTAREA.LINK.value;
+			 	if((room.indexOf('_')<0)&&(room.indexOf('#')>=0))
+			 	{
+					document.SELECTAREA.OLDROOM.value=room;
+					document.SELECTAREA.OLDLINK.value=link;
+				}
+				var num=y;
+				if(x!='0')
+				{
+					var gridystr='@AreaData?GRIDY@';
+					var length=gridystr.length;
+					while(y.length<length) y='0'+y;
+					num=x+y;
+				}
+				document.SELECTAREA.ROOM.value='@AreaName@#'+num;
+				document.SELECTAREA.LINK.value='';
+				document.SELECTAREA.LINKSTO.value='';
+				document.SELECTAREA.action='/grinder/grdxmenu.cmvp';
+				document.SELECTAREA.submit();
+		 	}
+		}
+	}
+@endif@
 	//-->
 	</SCRIPT>
 </head>
 
-@if?CheckReqParm?MAPSTYLE=@
-	<BODY>
-@else@
+@if?CheckReqParm?MAPSTYLE=Z@
 	@if?!CheckReqParm?MAPLEVEL=@ 
 	<BODY OnLoad="preloadImages();setVariables();checkLocation();setTimeout(showDiv('@RequestParameterEncoded?MAPLEVEL@'),1000)">
 	@else@
 	<BODY OnLoad="preloadImages();setVariables();checkLocation()">
 	@endif@
+@else@
+	<BODY>
 @endif@
 
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>

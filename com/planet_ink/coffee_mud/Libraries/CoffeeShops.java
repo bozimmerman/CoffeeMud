@@ -280,10 +280,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
 
     public ShopKeeper.ShopPrice sellingPrice(MOB seller,
-                                                    MOB buyer,
-                                                    Environmental product,
-                                                    ShopKeeper shop,
-                                                    boolean includeSalesTax)
+                                             MOB buyer,
+                                             Environmental product,
+                                             ShopKeeper shop,
+                                             boolean includeSalesTax)
     {
         double number=1.0;
         ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
@@ -309,7 +309,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return val;
         }
 
-        double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
+        double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),false);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         // the price is 200% at 0 charisma, and 100% at 30
@@ -359,8 +359,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public ShopKeeper.ShopPrice pawningPrice(MOB buyer,
-                                                    Environmental product,
-                                                    ShopKeeper shop)
+                                             Environmental product,
+                                             ShopKeeper shop)
     {
         double number=1.0;
         if(product instanceof PackagedItems)

@@ -82,7 +82,7 @@ public class BagOfEndlessness extends BagOfHolding
 					if(newitem.owner() instanceof Room)
 					{
 						((Room)newitem.owner()).addItem(neweritem);
-						neweritem.setDispossessionTime(dispossessionTime());
+						neweritem.setExpirationDate(expirationDate());
 					}
 					neweritem.recoverEnvStats();
 				}

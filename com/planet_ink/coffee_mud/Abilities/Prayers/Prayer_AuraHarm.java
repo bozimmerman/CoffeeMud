@@ -80,12 +80,12 @@ public class Prayer_AuraHarm extends Prayer
 				if(invoker()!=null)
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(invoker(),0)+3,3);
-					CMLib.combat().postDamage(invoker(),M,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker(),M,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
 				}
 				else
 				{
 					int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())+3,3);
-					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

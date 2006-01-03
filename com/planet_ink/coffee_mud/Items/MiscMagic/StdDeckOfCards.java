@@ -280,9 +280,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
                 msg.source().tell("There are no cards left in the deck");
             else
             {
-                Room R=CMLib.utensils().roomLocation(this);
+                Room R=CMLib.map().roomLocation(this);
                 if(R!=null)
-                    R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,
+                    R.show(msg.source(),null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,
                             "<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
             }
             return false;

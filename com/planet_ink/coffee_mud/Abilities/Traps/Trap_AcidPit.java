@@ -53,7 +53,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=CMLib.dice().roll(trapLevel(),6,1);
-			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,-1,null);
+			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,null);
 			target.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid starts pouring into the room!");
 		}
 		CMLib.commands().postLook(target,true);

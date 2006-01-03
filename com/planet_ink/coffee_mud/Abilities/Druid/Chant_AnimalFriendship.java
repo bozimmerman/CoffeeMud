@@ -42,7 +42,7 @@ public class Chant_AnimalFriendship extends Chant
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected)))
 		&&(CMLib.flags().isAnimalIntelligence(msg.source())))
 		{

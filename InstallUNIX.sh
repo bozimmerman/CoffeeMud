@@ -34,7 +34,7 @@ echo "Alright, we're good to go, compiling will begin in 10 seconds."
 sleep 10
 #Next we will set up some needed variables for compiling.... and then run an if statement
 
-JAVACPATH=$Java_Home/bin/javac -nowarn -g -deprecation -classpath ".:./lib/js.jar" 
+JAVACPATH="$Java_Home/bin/javac -nowarn -g -deprecation -classpath .:./lib/js.jar:./lib/jzlib.jar" 
 
 if [ $yesnodocs = y ] ; then
 

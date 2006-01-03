@@ -111,7 +111,7 @@ public class Skill_Joke extends BardSkill
 				}
 				str="<S-NAME> joke(s) to <T-NAMESELF>:\n\r"+joke;
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_GENERAL:0),str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -92,7 +92,7 @@ public class Prayer_UnholyWord extends Prayer
 			MOB target=room.fetchInhabitant(i);
 			if(target==null) break;
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 			if(CMLib.flags().isGood(target))
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 

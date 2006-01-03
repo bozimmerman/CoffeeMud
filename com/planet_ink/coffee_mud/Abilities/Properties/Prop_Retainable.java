@@ -39,10 +39,10 @@ public class Prop_Retainable extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
     protected Room lastRoom=null;
 	
-	protected long period=0;
-	protected int periodic=0;
-	protected int price=0;
-	protected long last=0;
+	protected long payPeriodLengthInMilliseconds=0;
+	protected int payPeriodLengthInMudDays=0;
+	protected int payAmountPerPayPeriod=0;
+	protected long lastPayDayTimestamp=0;
     protected long lastMoveIn=0;
 	
 	public String accountForYourself()
@@ -54,24 +54,24 @@ public class Prop_Retainable extends Property
 		int x=text.indexOf(";");
 		if(x<0)
 		{
-			price=CMath.s_int(text);
-			last=0;
-			periodic=0;
+			payAmountPerPayPeriod=CMath.s_int(text);
+			lastPayDayTimestamp=0;
+			payPeriodLengthInMudDays=0;
 		}
 		else
 		{
-			price=CMath.s_int(text.substring(0,x));
+			payAmountPerPayPeriod=CMath.s_int(text.substring(0,x));
 			text=text.substring(x+1);
 			x=text.indexOf(";");
 			if(x<0)
 			{
-				periodic=CMath.s_int(text);
-				last=0;
+				payPeriodLengthInMudDays=CMath.s_int(text);
+				lastPayDayTimestamp=0;
 			}
 			else
 			{
-				periodic=CMath.s_int(text.substring(0,x));
-				last=CMath.s_long(text.substring(x+1));
+				payPeriodLengthInMudDays=CMath.s_int(text.substring(0,x));
+				lastPayDayTimestamp=CMath.s_long(text.substring(x+1));
 			}
 		}
 	}
@@ -103,19 +103,21 @@ public class Prop_Retainable extends Property
                             CMLib.commands().postSay(mob,mob.amFollowing(),"I guess this is my new permanent posting?",false,false);
                     }
                 }
-				if(periodic>0)
+				if(payPeriodLengthInMudDays>0)
 				{
-					if(last==0) 
+					if(lastPayDayTimestamp==0) 
 					{
-						last=System.currentTimeMillis();
-						miscText=price+";"+periodic+";"+last;
+						lastPayDayTimestamp=System.currentTimeMillis();
+						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
 					}
-					if(period<=0)
-						period=((long)periodic)*((long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))*Tickable.TIME_TICK;
-					if((System.currentTimeMillis()>(last+period))&&(CMLib.flags().isInTheGame(mob,false)))
+					if(payPeriodLengthInMilliseconds<=0)
+						payPeriodLengthInMilliseconds=((long)payPeriodLengthInMudDays)
+										*((long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))*Tickable.TIME_TICK;
+					if((System.currentTimeMillis()>(lastPayDayTimestamp+payPeriodLengthInMilliseconds))
+					&&(CMLib.flags().isInTheGame(mob,true)))
 					{
-						last=System.currentTimeMillis();
-						miscText=price+";"+periodic+";"+last;
+						lastPayDayTimestamp=System.currentTimeMillis();
+						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
 						LandTitle t=CMLib.utensils().getLandTitle(mob.location());
 						String owner="";
 						if(mob.amFollowing()!=null)
@@ -147,9 +149,9 @@ public class Prop_Retainable extends Property
 						}
 						boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(), 
 						        owner, 
-						        CMLib.utensils().getFormattedDate(mob)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(mob,price)+": Payroll: "+Name(),
+						        CMLib.utensils().getFormattedDate(mob)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
 						        CMLib.beanCounter().getCurrency(mob),
-						        new Integer(-price).doubleValue());
+						        new Integer(-payAmountPerPayPeriod).doubleValue());
 						if(paid)
 							CMLib.commands().postSay(mob,null,"Payday!",false,false);
 						else
@@ -197,11 +199,12 @@ public class Prop_Retainable extends Property
                 &&(msg.targetMinor()==CMMsg.TYP_BUY))
                 {
                     tellSkills(mob,msg.source());
-                    if(periodic>0)
-                        CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,new Integer(price).doubleValue())+" every "+period+" days.",false,false);
+                    if(payPeriodLengthInMudDays>0)
+                        CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,new Integer(payAmountPerPayPeriod).doubleValue())+" every "+payPeriodLengthInMudDays+" days.",false,false);
                     else
                         CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment.",false,false);
                     CMLib.commands().postSay(mob,msg.source(),"Please show me the way to my permanent post.",false,false);
+                    lastPayDayTimestamp=0;
                 }
                 else
 				if(mob.amFollowing()!=null)
@@ -217,6 +220,7 @@ public class Prop_Retainable extends Property
                         lastMoveIn=System.currentTimeMillis();
 					}
 					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+					||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==room)||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
 					||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
 						mob.setFollowing(null);
 				}

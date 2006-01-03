@@ -37,8 +37,8 @@ import java.util.*;
 public class Shipwright extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Shipwright"; }
-	public String name(){ return "Shipwright";}
-	private static final String[] triggerStrings = {"SHIPWRIGHT"};
+	public String name(){ return "Ship Building";}
+	private static final String[] triggerStrings = {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
 
@@ -261,7 +261,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor
 			displayText="You are carving "+building.name();
 			verb="carving "+building.name();
             playSound="saw.wav";
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

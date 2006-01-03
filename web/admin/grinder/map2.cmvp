@@ -4,11 +4,24 @@
 @if?!CheckAuthCode?ANYMODAREAS=true@ <BODY> @AddFile?/grinder/nopriv.cmvp@ @else@
 
 <head>
+	<!--map2.cmvp-->
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
+		function RC(room)
+		{
+			Clicked('rmmenu.cmvp','',room,'');
+		}
+		function EC(dir,room)
+		{
+			Clicked('lnkxmenu.cmvp',dir,room,'');
+		}
+		function CEX(dir,room,room2)
+		{
+			Clicked('edxmenu.cmvp',dir,room,room2);
+		}
 		function Clicked(action,link,room,linksto)
 		{
 			document.SELECTAREA.OLDROOM.value=document.SELECTAREA.ROOM.value;
@@ -75,17 +88,55 @@ function checkLocation() {
   eval(dS+object+sD+w+xx);
   setTimeout("checkLocation()",10);
 }
+@if?AreaData?ISGRID@
+	document.onclick=cellclick
+	
+	function cellclick(e)
+	{
+		if(!e) var e=window.event;
+		var tg = (e.target) ? e.target : e.srcElement;
+		if((tg!=null)&&(tg.id!=null)&&(tg.id.length>0)&&(tg.id.substr(0,1)=='X'))
+		{
+			var x=tg.id.substr(1);
+			var ypos=x.indexOf('_');
+			if(ypos>0)
+			{
+				y=x.substr(ypos+1);
+			 	x=x.substr(0,ypos);
+				var paintMode=top.MENU.paintmenu;
+			 	if(paintMode||window.confirm('Start editing around grid location '+x+','+y+'?'))
+			 	{
+			 		var x1=Number(x)-20;
+			 		if(x1<0) x1=0;
+			 		var y1=Number(y)-20;
+			 		if(y1<0) y1=0;
+			 		var xx=x1+40;
+			 		var yy=y1+40;
+			 		document.SELECTAREA.MAPSTYLE.value='G'+x1+'_'+y1+'_'+xx+'_'+yy+'_'+x+'_'+y;
+			 		if(paintMode) 
+				 		top.MENU.paint(document.SELECTAREA.MAPSTYLE.value);
+			 		else
+			 		{
+				 		document.SELECTAREA.target='_top';
+				 		document.SELECTAREA.action='/grinder/modarea.cmvp';
+				 		document.SELECTAREA.submit();
+			 		}
+			 	}
+		 	}
+		}
+	}
+@endif@
 	//-->
 	</SCRIPT>
 </head>
-@if?CheckReqParm?MAPSTYLE=@
-	<BODY>
-@else@
+@if?CheckReqParm?MAPSTYLE=Z@
 	@if?!CheckReqParm?MAPLEVEL=@ 
 	<BODY OnLoad="preloadImages();setVariables();checkLocation();setTimeout(showDiv('@RequestParameterEncoded?MAPLEVEL@'),1000)">
 	@else@
 	<BODY OnLoad="preloadImages();setVariables();checkLocation()">
 	@endif@
+@else@
+	<BODY>
 @endif@
 
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>

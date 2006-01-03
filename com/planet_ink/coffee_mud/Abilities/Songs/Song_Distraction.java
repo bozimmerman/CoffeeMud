@@ -50,7 +50,7 @@ public class Song_Distraction extends Song
 		// from trying to do ANYTHING except sleep
 		if(msg.amISource(mob))
 		{
-			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&(mob.isInCombat())
 			&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+50))
 			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))

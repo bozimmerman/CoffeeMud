@@ -92,7 +92,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_IGNOREMASK=48;
     public static final int SYSTEM_SIPLET=49;
     public static final int SYSTEM_PREFACTIONS=50; 
-    public static final int NUM_SYSTEM=51;
+    public static final int SYSTEM_AUTOAREAPROPS=51;
+    public static final int NUM_SYSTEM=52;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -115,7 +116,7 @@ public class CMProps extends Properties
     public static final int SYSTEMI_CLANENCHCOST=18;
     public static final int SYSTEMI_BASEMAXSTAT=19;
     public static final int SYSTEMI_MANAMINCOST=20;
-    public static final int SYSTEMI_MINMOVETIME=21;
+    //public static final int SYSTEMI_MINMOVETIME=21;
     public static final int SYSTEMI_MANACONSUMETIME=22;
     public static final int SYSTEMI_MANACONSUMEAMT=23;
     public static final int SYSTEMI_MUDBACKLOG=24;
@@ -308,6 +309,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
         setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
         setVar(SYSTEM_AUTOWEATHERPARMS,page.getStr("AUTOWEATHERPARMS"));
+        setUpLowVar(SYSTEM_AUTOAREAPROPS,page.getStr("AUTOAREAPROPS"));
         setUpLowVar(SYSTEM_MXPIMAGEPATH,page.getStr("MXPIMAGEPATH"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
         setUpLowVar(SYSTEM_PREFACTIONS,page.getStr("FACTIONS"));
@@ -339,7 +341,6 @@ public class CMProps extends Properties
 
         setIntVar(SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
         setIntVar(SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
-        setIntVar(SYSTEMI_MINMOVETIME,page.getStr("MINMOVETIME"));
         setIntVar(SYSTEMI_CLANENCHCOST,page.getStr("CLANENCHCOST"));
         setIntVar(SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
         setIntVar(SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
@@ -408,6 +409,12 @@ public class CMProps extends Properties
         CMSecurity.setDisableVars(disable);
         if(page.getStr("DISABLE").trim().length()>0)
             Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
+        if(page.getStr("DEBUG").trim().length()>0)
+        {
+            Log.sysOut("MUD","Debugging messages: "+page.getStr("DEBUG"));
+        	if(!Log.debugChannelOn())
+                Log.errOut("MUD","Debug logging is disabled! Check your DBGMSGS flag!");
+        }
         CMSecurity.setDebugVars(page.getStr("DEBUG"));
         CMSecurity.setSaveFlags(page.getStr("SAVE"));
     }

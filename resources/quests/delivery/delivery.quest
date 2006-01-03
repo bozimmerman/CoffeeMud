@@ -5,6 +5,11 @@ set name delivery
 set wait 150
 set interval 1
 
+# dont run this quest if any other quest is running.
+# this is no big deal since it repeats so often
+# the high level will mean any other quests can 
+# run though
+set runlevel 10
 
 import items quests/delivery/note.cmare
 #import our secret note

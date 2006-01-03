@@ -25,11 +25,6 @@
 			document.SELECTAREA.action=action;
 			document.SELECTAREA.submit();
 		}
-		function Threads()
-		{
-			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("thread.cmvp?AUTH=@Authenticate?AUTH@&TICKGROUPCOUNTER=0","Thread",strFeatures, false);
-		}
 		function SSort(ME,start)
 		{
 			var val='';
@@ -103,21 +98,15 @@
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
-	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
+	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
 	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckAuthCode?AUTH_BAN=true@
-	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
-	<BR>
-	@endif@
 	@if?CheckAuthCode?SYSOP=true&AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
-	<BR>
-	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
 	<BR>
 	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
 	<BR>
@@ -146,11 +135,11 @@
 	<TR><TD ALIGN=CENTER>
 	@if?CheckAuthCode?SYSOP=true&ALLMODAREAS=true@
 	<TABLE BORDER=0><TR><TD ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="Clicked('newarea.cmvp');">
+	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
 	</TD><TD ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
+	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
 	</TD><TD ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
+	<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
 	</TD><TD ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="if(confirm('Are you sure you want to delete this area?'))Clicked('areagone.cmvp');">
 	</TD>
@@ -160,7 +149,7 @@
 	@endif@
 	</TD></TR>
 	<TR><TD ALIGN=CENTER>
-	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE>
+	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z>
 	<FONT COLOR=WHITE>Use Z-Level Mapping</FONT>
 	</TD></TR>
 	</TABLE>

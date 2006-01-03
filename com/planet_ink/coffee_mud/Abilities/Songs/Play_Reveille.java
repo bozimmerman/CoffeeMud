@@ -75,7 +75,7 @@ public class Play_Reveille extends Play
 
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

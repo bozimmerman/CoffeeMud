@@ -69,7 +69,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		newItem.addNonUninvokableEffect(CMClass.getAbility("Disease_PoisonIvy"));
 		room.addItem(newItem);
-		newItem.setDispossessionTime(0);
+		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonIvy newChant=new Chant_SummonIvy();
 		newChant.PlantsLocation=room;

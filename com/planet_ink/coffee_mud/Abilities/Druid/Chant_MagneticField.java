@@ -65,7 +65,7 @@ public class Chant_MagneticField extends Chant
 	{
 		if((msg.source()==affected)
 		&&(wearingHeldMetal(affected))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&(!(msg.tool() instanceof Ability))
 		&&((msg.sourceMinor()==CMMsg.TYP_LEAVE)
 		||(msg.sourceMinor()==CMMsg.TYP_ENTER)
@@ -78,7 +78,7 @@ public class Chant_MagneticField extends Chant
 		else
 		if(((CMath.bset(msg.targetCode(),CMMsg.MASK_DELICATE)
 		   ||CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS)))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&(affected instanceof MOB))
 		{
 			if((msg.target() instanceof Item)

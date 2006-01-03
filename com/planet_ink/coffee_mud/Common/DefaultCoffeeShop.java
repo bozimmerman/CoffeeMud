@@ -73,19 +73,28 @@ public class DefaultCoffeeShop implements CoffeeShop
         }
     }
 
+    protected boolean shopCompare(Environmental thang1, Environmental thang2)
+    {
+    	if((thang1 instanceof Key)&&(thang2 instanceof Key))
+    		return thang1.sameAs(thang2);
+    	else
+        if((thang1.isGeneric())&&(thang2.isGeneric()))
+        {
+            if(thang1.Name().equals(thang2.Name()))
+                return true;
+        }
+        else
+        if(CMClass.className(thang1).equals(CMClass.className(thang2)))
+            return true;
+    	return false;
+    }
+    
     public boolean inBaseInventory(Environmental thisThang)
     {
         for(int x=0;x<baseInventory.size();x++)
         {
             Environmental E=(Environmental)baseInventory.elementAt(x);
-            if((thisThang.isGeneric())&&(E.isGeneric()))
-            {
-                if(thisThang.Name().equals(E.Name()))
-                    return true;
-            }
-            else
-            if(CMClass.className(thisThang).equals(CMClass.className(E)))
-                return true;
+            if(shopCompare(E,thisThang)) return true;
         }
         return false;
     }
@@ -103,12 +112,6 @@ public class DefaultCoffeeShop implements CoffeeShop
     public int totalStockSize()
     {
         return storeInventory.size();
-    }
-
-    public void clearStoreInventory()
-    {
-        storeInventory.clear();
-        baseInventory.clear();
     }
 
     public Vector getStoreInventory()
@@ -197,27 +200,15 @@ public class DefaultCoffeeShop implements CoffeeShop
             for(int v=baseInventory.size()-1;v>=0;v--)
             {
                 Environmental E=(Environmental)baseInventory.elementAt(v);
-                if((thisThang.isGeneric())&&(E.isGeneric()))
-                {
-                    if(thisThang.Name().equals(E.Name()))
-                        baseInventory.removeElement(E);
-                }
-                else
-                if(thisThang.ID().equals(E.ID()))
-                    baseInventory.removeElement(E);
+                if(shopCompare(E,thisThang))
+                	baseInventory.removeElement(E);
             }
         }
         for(int v=storeInventory.size()-1;v>=0;v--)
         {
             Environmental E=(Environmental)storeInventory.elementAt(v,1);
-            if((thisThang.isGeneric())&&(E.isGeneric()))
-            {
-                if(thisThang.Name().equals(E.Name()))
-                    storeInventory.removeElementAt(v);
-            }
-            else
-            if(thisThang.ID().equals(E.ID()))
-                storeInventory.removeElementAt(v);
+            if(shopCompare(E,thisThang))
+            	storeInventory.removeElement(E);
         }
     }
     
@@ -249,14 +240,8 @@ public class DefaultCoffeeShop implements CoffeeShop
         {
             E=(Environmental)storeInventory.elementAt(v,1);
             I=(Integer)storeInventory.elementAt(v,3);
-            if((likeThis.isGeneric())&&(E.isGeneric()))
-            {
-                if(E.Name().equals(likeThis.Name()))
-                    return I.intValue();
-            }
-            else
-            if(E.ID().equals(likeThis.ID()))
-                return I.intValue();
+            if(shopCompare(E,likeThis))
+            	return I.intValue();
         }
         return -1;
     }
@@ -269,14 +254,8 @@ public class DefaultCoffeeShop implements CoffeeShop
         {
             E=(Environmental)storeInventory.elementAt(v,1);
             N=(Integer)storeInventory.elementAt(v,2);
-            if((likeThis.isGeneric())&&(E.isGeneric()))
-            {
-                if(E.Name().equals(likeThis.Name()))
-                    num+=N.intValue();
-            }
-            else
-            if(E.ID().equals(likeThis.ID()))
-                num+=N.intValue();
+            if(shopCompare(E,likeThis))
+            	num+=N.intValue();
         }
 
         return num;

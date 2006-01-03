@@ -48,7 +48,7 @@ public class Prop_NoPurge extends Property
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I=R.fetchItem(i);
-					if(I!=null) I.setDispossessionTime(0);
+					if(I!=null) I.setExpirationDate(0);
 				}
 			}
 			else
@@ -56,15 +56,15 @@ public class Prop_NoPurge extends Property
 			{
 				if(((Container)affected).owner() instanceof Room)
 				{
-					((Container)affected).setDispossessionTime(0);
+					((Container)affected).setExpirationDate(0);
 					Vector V=((Container)affected).getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.elementAt(v)).setDispossessionTime(0);
+						((Item)V.elementAt(v)).setExpirationDate(0);
 				}
 			}
 			else
 			if(affected instanceof Item)
-				((Item)affected).setDispossessionTime(0);
+				((Item)affected).setExpirationDate(0);
 		}
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -77,7 +77,7 @@ public class Prop_NoPurge extends Property
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(msg.target()!=null)
 				&&(msg.target() instanceof Item))
-					((Item)msg.target()).setDispossessionTime(0);
+					((Item)msg.target()).setExpirationDate(0);
 			}
 			else
 			if(affected instanceof Container)
@@ -89,8 +89,8 @@ public class Prop_NoPurge extends Property
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
 				{
-					((Item)msg.target()).setDispossessionTime(0);
-					((Item)msg.tool()).setDispossessionTime(0);
+					((Item)msg.target()).setExpirationDate(0);
+					((Item)msg.tool()).setExpirationDate(0);
 				}
 			}
 			else
@@ -100,7 +100,7 @@ public class Prop_NoPurge extends Property
 				&&(msg.target()!=null)
 				&&(msg.target() instanceof Item)
 				&&(msg.target()==affected))
-					((Item)msg.target()).setDispossessionTime(0);
+					((Item)msg.target()).setExpirationDate(0);
 			}
 		}
 	}

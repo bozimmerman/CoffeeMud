@@ -46,181 +46,197 @@ public class GrinderExits
 	
 	public static String editExit(Room R, int dir,ExternalHTTPRequests httpReq, Hashtable parms)
 	{
-		Exit E=R.rawExits()[dir];
-		if(E==null) return "No Exit to edit?!";
-		
-		// important generic<->non generic swap!
-		String newClassID=httpReq.getRequestParameter("CLASSES");
-		if((newClassID!=null)&&(!CMClass.className(E).equals(newClassID)))
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
-			E=CMClass.getExit(newClassID);
-			R.rawExits()[dir]=E;
-		}
-		
-		String[] okparms={"NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
-						  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-						  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-						  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
-		for(int o=0;o<okparms.length;o++)
-		{
-			String parm=okparms[o];
-			boolean generic=true;
-			if(parm.startsWith(" "))
+			R=CMLib.map().getRoom(R);
+			Exit E=R.rawExits()[dir];
+			if(E==null) return "No Exit to edit?!";
+			
+			// important generic<->non generic swap!
+			String newClassID=httpReq.getRequestParameter("CLASSES");
+			if((newClassID!=null)&&(!CMClass.className(E).equals(newClassID)))
 			{
-				generic=false;
-				parm=parm.substring(1);
+				E=CMClass.getExit(newClassID);
+				R.rawExits()[dir]=E;
 			}
-			String old=httpReq.getRequestParameter(parm);
-			if(old==null) old="";
-			if(E.isGeneric()||(!generic))
-			switch(o)
+			
+			String[] okparms={"NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
+							  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
+							  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
+							  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
+							  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
+							  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
+							  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
+			for(int o=0;o<okparms.length;o++)
 			{
-			case 0: // name
-				E.setName(old);	
-				break;
-			case 1: // classes
-				break;
-			case 2: // displaytext
-				E.setDisplayText(old);	
-				break;
-			case 3: // description
-				E.setDescription(old); 
-				break;
-			case 4: // level
-				E.baseEnvStats().setLevel(CMath.s_int(old));	
-				break;
-			case 5: // levelrestricted;
-				break;
-			case 6: // istrapped
-				break;
-			case 7: // hasadoor
-				if(old.equals("on"))
-					E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),E.hasALock(),E.hasALock(),E.defaultsLocked());
-				else
-					E.setDoorsNLocks(false,true,false,false,false,false);
-				break;
-			case 8: // closedtext
-				E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),old); 
-				break;
-			case 9: // defaultsclosed
-				E.setDoorsNLocks(E.hasADoor(),E.isOpen(),old.equals("on"),E.hasALock(),E.isLocked(),E.defaultsLocked());
-				break;
-			case 10: // openword
-				E.setExitParams(E.doorName(),E.closeWord(),old,E.closedText());	
-				break;
-			case 11: // closeword
-				E.setExitParams(E.doorName(),old,E.openWord(),E.closedText());	
-				break;
-			case 12: // hasalock
-				if(old.equals("on"))
-					E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),true,E.defaultsLocked(),E.defaultsLocked());
-				else
-					E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-				break;
-			case 13: // defaultslocked
-				E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),old.equals("on"));
-				break;
-			case 14: // keyname
-				if(E.hasALock()&&(old.length()>0))
-					E.setKeyName(old);
-				break;
-			case 15: // isreadable
-				E.setReadable(old.equals("on"));
-				break;
-			case 16: // readable text
-				if(E.isReadable()) E.setReadableText(old);
-				break;
-			case 17: // isclassrestricuted
-				break;
-			case 18: // restrictedclasses
-				break;
-			case 19: // isalignmentrestricuted
-				break;
-			case 20: // restrictedalignments
-				break;
-			case 21: // misctext
-				if(!E.isGeneric())
-					E.setMiscText(old); 
-				break;
-			case 22: // is generic
-				break;
-			case 23: // door name
-				E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
-				break;
-			case 24: // image
-			    E.setImage(old);
-			    break;
+				String parm=okparms[o];
+				boolean generic=true;
+				if(parm.startsWith(" "))
+				{
+					generic=false;
+					parm=parm.substring(1);
+				}
+				String old=httpReq.getRequestParameter(parm);
+				if(old==null) old="";
+				if(E.isGeneric()||(!generic))
+				switch(o)
+				{
+				case 0: // name
+					E.setName(old);	
+					break;
+				case 1: // classes
+					break;
+				case 2: // displaytext
+					E.setDisplayText(old);	
+					break;
+				case 3: // description
+					E.setDescription(old); 
+					break;
+				case 4: // level
+					E.baseEnvStats().setLevel(CMath.s_int(old));	
+					break;
+				case 5: // levelrestricted;
+					break;
+				case 6: // istrapped
+					break;
+				case 7: // hasadoor
+					if(old.equals("on"))
+						E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),E.hasALock(),E.hasALock(),E.defaultsLocked());
+					else
+						E.setDoorsNLocks(false,true,false,false,false,false);
+					break;
+				case 8: // closedtext
+					E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),old); 
+					break;
+				case 9: // defaultsclosed
+					E.setDoorsNLocks(E.hasADoor(),E.isOpen(),old.equals("on"),E.hasALock(),E.isLocked(),E.defaultsLocked());
+					break;
+				case 10: // openword
+					E.setExitParams(E.doorName(),E.closeWord(),old,E.closedText());	
+					break;
+				case 11: // closeword
+					E.setExitParams(E.doorName(),old,E.openWord(),E.closedText());	
+					break;
+				case 12: // hasalock
+					if(old.equals("on"))
+						E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),true,E.defaultsLocked(),E.defaultsLocked());
+					else
+						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+					break;
+				case 13: // defaultslocked
+					E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),old.equals("on"));
+					break;
+				case 14: // keyname
+					if(E.hasALock()&&(old.length()>0))
+						E.setKeyName(old);
+					break;
+				case 15: // isreadable
+					E.setReadable(old.equals("on"));
+					break;
+				case 16: // readable text
+					if(E.isReadable()) E.setReadableText(old);
+					break;
+				case 17: // isclassrestricuted
+					break;
+				case 18: // restrictedclasses
+					break;
+				case 19: // isalignmentrestricuted
+					break;
+				case 20: // restrictedalignments
+					break;
+				case 21: // misctext
+					if(!E.isGeneric())
+						E.setMiscText(old); 
+					break;
+				case 22: // is generic
+					break;
+				case 23: // door name
+					E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
+					break;
+				case 24: // image
+				    E.setImage(old);
+				    break;
+				}
 			}
-		}
-		
-		if(E.isGeneric())
-		{
-			String error=GrinderExits.dispositions(E,httpReq,parms);
-			if(error.length()>0) return error;
-			error=GrinderAreas.doAffectsNBehavs(E,httpReq,parms);
-			if(error.length()>0) return error;
-		}
-		
-		//adjustments
-		if(!E.hasADoor())
-			E.setDoorsNLocks(false,true,false,false,false,false);
-				
-		CMLib.database().DBUpdateExits(R);
-		String makeSame=httpReq.getRequestParameter("MAKESAME");
-		if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
-		{
-			Room R2=R.rawDoors()[dir];
-			Exit E2=null;
-			if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(dir)]==R))
-				E2=R2.rawExits()[Directions.getOpDirectionCode(dir)];
-			if(E2!=null)
+			
+			if(E.isGeneric())
 			{
-				Exit oldE2=E2;
-				E2=(Exit)E.copyOf();
-				E2.setDisplayText(oldE2.displayText());
-				R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
-				CMLib.database().DBUpdateExits(R2);
-				R.getArea().fillInAreaRoom(R2);
+				String error=GrinderExits.dispositions(E,httpReq,parms);
+				if(error.length()>0) return error;
+				error=GrinderAreas.doAffectsNBehavs(E,httpReq,parms);
+				if(error.length()>0) return error;
 			}
-			R.getArea().fillInAreaRoom(R);
+			
+			//adjustments
+			if(!E.hasADoor())
+				E.setDoorsNLocks(false,true,false,false,false,false);
+					
+			CMLib.database().DBUpdateExits(R);
+			String makeSame=httpReq.getRequestParameter("MAKESAME");
+			if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
+			{
+				Room R2=R.rawDoors()[dir];
+				Exit E2=null;
+				if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(dir)]==R))
+					E2=R2.rawExits()[Directions.getOpDirectionCode(dir)];
+				if(E2!=null)
+				{
+					Exit oldE2=E2;
+					E2=(Exit)E.copyOf();
+					E2.setDisplayText(oldE2.displayText());
+					R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
+					CMLib.database().DBUpdateExits(R2);
+					R.getArea().fillInAreaRoom(R2);
+				}
+				R.getArea().fillInAreaRoom(R);
+			}
 		}
 		return "";
 	}
 	public static String delExit(Room R, int dir)
 	{
-		R.rawDoors()[dir]=null;
-		R.rawExits()[dir]=null;
-		CMLib.database().DBUpdateExits(R);
-		if(R instanceof GridLocale)
-			((GridLocale)R).buildGrid();
+		synchronized(("SYNC"+R.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			R.rawDoors()[dir]=null;
+			R.rawExits()[dir]=null;
+			CMLib.database().DBUpdateExits(R);
+			if(R instanceof GridLocale)
+				((GridLocale)R).buildGrid();
+		}
 		return "";
 	}
 	
 	public static String linkRooms(Room R, Room R2, int dir, int dir2)
 	{
-		R.clearSky();
-		R2.clearSky();
-		if(R instanceof GridLocale)
-			((GridLocale)R).clearGrid(null);
-		if(R2 instanceof GridLocale)
-			((GridLocale)R2).clearGrid(null);
-		
-		if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
-		if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
+		synchronized(("SYNC"+R.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			R.clearSky();
+			if(R instanceof GridLocale)
+				((GridLocale)R).clearGrid(null);
 			
-		if(R.rawExits()[dir]==null)
-			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
-		if(R2.rawExits()[dir2]==null)
-			R2.rawExits()[dir2]=CMClass.getExit("StdOpenDoorway");
-		
-		CMLib.database().DBUpdateExits(R);
-		CMLib.database().DBUpdateExits(R2);
+			if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
+				
+			if(R.rawExits()[dir]==null)
+				R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
 			
-		R.getArea().fillInAreaRoom(R);
-		R.getArea().fillInAreaRoom(R2);
+			CMLib.database().DBUpdateExits(R);
+				
+			R.getArea().fillInAreaRoom(R);
+		}
+		synchronized(("SYNC"+R2.roomID()).intern())
+		{
+			R2=CMLib.map().getRoom(R2);
+			R2.clearSky();
+			if(R2 instanceof GridLocale)
+				((GridLocale)R2).clearGrid(null);
+			if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
+			if(R2.rawExits()[dir2]==null)
+				R2.rawExits()[dir2]=CMClass.getExit("StdOpenDoorway");
+			R.getArea().fillInAreaRoom(R2);
+			CMLib.database().DBUpdateExits(R2);
+		}
 		return "";
 	}
 }

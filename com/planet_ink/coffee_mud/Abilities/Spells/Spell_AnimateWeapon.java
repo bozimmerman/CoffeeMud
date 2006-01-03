@@ -56,7 +56,7 @@ public class Spell_AnimateWeapon extends Spell
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
 											CMLib.dice().roll(1,affected.envStats().damage(),5),
-											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
+											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else

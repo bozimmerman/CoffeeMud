@@ -79,7 +79,7 @@ public class Druid_RecoverVoice extends StdAbility
 			mob.tell("You failed in your vocal meditation.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_GENERAL|CMMsg.MASK_MAGIC,null);
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_ALWAYS|CMMsg.MASK_MAGIC,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				for(int a=offensiveAffects.size()-1;a>=0;a--)

@@ -311,7 +311,7 @@ public class Weaving extends CraftingSkill implements ItemCraftor
 			startStr="<S-NAME> start(s) weaving "+building.name()+".";
 			displayText="You are weaving "+building.name();
 			verb="weaving "+building.name();
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired/2);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

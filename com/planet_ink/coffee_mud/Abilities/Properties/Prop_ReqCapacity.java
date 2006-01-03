@@ -42,6 +42,7 @@ public class Prop_ReqCapacity extends Property
     public int mobCap=Integer.MAX_VALUE;
 	public int itemCap=Integer.MAX_VALUE;
 	public int maxWeight=Integer.MAX_VALUE;
+	public boolean indoorOnly=false;
 
 	public String accountForYourself()
 	{
@@ -60,6 +61,7 @@ public class Prop_ReqCapacity extends Property
         mobCap=Integer.MAX_VALUE;
 		itemCap=Integer.MAX_VALUE;
 		maxWeight=Integer.MAX_VALUE;
+		indoorOnly=false;
 		if(txt.length()==0)
 			peopleCap=2;
 		else
@@ -72,9 +74,10 @@ public class Prop_ReqCapacity extends Property
             mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
 			itemCap=CMParms.getParmInt(txt,"items",itemCap);
 			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
+			indoorOnly=CMParms.getParmBool(txt,"indoor",indoorOnly);
 		}
 	}
-
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected!=null)
@@ -83,6 +86,7 @@ public class Prop_ReqCapacity extends Property
 		case CMMsg.TYP_ENTER:
 			if((msg.target() instanceof Room)
 			&&(peopleCap<Integer.MAX_VALUE)
+			&&((!indoorOnly)||((((Room)msg.target()).domainType()&Room.INDOORS)==Room.INDOORS))
 			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 			{
 				if(((Room)msg.target()).numInhabitants()>=peopleCap)
@@ -108,26 +112,29 @@ public class Prop_ReqCapacity extends Property
 			&&(msg.source().location()!=null))
 			{
 				Room R=msg.source().location();
-				if(itemCap<Integer.MAX_VALUE)
+				if((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
-					int soFar=0;
-					for(int i=0;i<R.numItems();i++)
-					{Item I=R.fetchItem(i); if((I!=null)&&(I.container()==null)) soFar++;}
-					if(soFar>=itemCap)
+					if(itemCap<Integer.MAX_VALUE)
 					{
-						msg.source().tell("There is no more room in here to drop "+msg.target().Name()+".");
-						return false;
+						int soFar=0;
+						for(int i=0;i<R.numItems();i++)
+						{Item I=R.fetchItem(i); if((I!=null)&&(I.container()==null)) soFar++;}
+						if(soFar>=itemCap)
+						{
+							msg.source().tell("There is no more room in here to drop "+msg.target().Name()+".");
+							return false;
+						}
 					}
-				}
-				if(maxWeight<Integer.MAX_VALUE)
-				{
-					int soFar=0;
-					for(int i=0;i<R.numItems();i++)
-					{Item I=R.fetchItem(i); if(I!=null) soFar+=I.envStats().weight();}
-					if((soFar+msg.target().envStats().weight())>=maxWeight)
+					if(maxWeight<Integer.MAX_VALUE)
 					{
-						msg.source().tell("There is no room in here to put "+msg.target().Name()+".");
-						return false;
+						int soFar=0;
+						for(int i=0;i<R.numItems();i++)
+						{Item I=R.fetchItem(i); if(I!=null) soFar+=I.envStats().weight();}
+						if((soFar+msg.target().envStats().weight())>=maxWeight)
+						{
+							msg.source().tell("There is no room in here to put "+msg.target().Name()+".");
+							return false;
+						}
 					}
 				}
 			}

@@ -52,7 +52,7 @@ public class Chant_SnatchLight extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(CMLib.utensils().roomLocation(affected)==snatchLocation())
+		if(CMLib.map().roomLocation(affected)==snatchLocation())
 		{
 			affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
 			if(CMath.bset(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE))
@@ -115,7 +115,7 @@ public class Chant_SnatchLight extends Chant
 		else
 		if(affected!=null)
 		{
-			Room R=CMLib.utensils().roomLocation(affected);
+			Room R=CMLib.map().roomLocation(affected);
 			if((invoker==null)||(R!=invoker.location()))
 			{
 				unInvoke();
@@ -150,7 +150,7 @@ public class Chant_SnatchLight extends Chant
 						}
 					}
 				}
-				Room R=CMLib.utensils().roomLocation(E);
+				Room R=CMLib.map().roomLocation(E);
 				if(R!=null) R.recoverRoomStats();
 			}
 			return;

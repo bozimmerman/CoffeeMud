@@ -169,7 +169,7 @@ public class Song_Babble extends Song
 
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{

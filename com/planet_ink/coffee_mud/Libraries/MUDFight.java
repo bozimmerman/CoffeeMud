@@ -302,7 +302,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     {
         if((mob==null))
             return false;
-        CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,""+quiet);
+        CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,""+quiet);
         msg.setValue(amount);
         if(mob.location()!=null)
         {
@@ -574,7 +574,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(deadMOB!=null)
 					{
 						Body=target.killMeDead(true);
-						CMLib.utensils().obliteratePlayer(deadMOB,false);
+						CMLib.map().obliteratePlayer(deadMOB,false);
 					}
 				}
 				else
@@ -957,8 +957,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         MOB target=(MOB)msg.target();
         
         if((!target.isInCombat())
+        &&(target.location()!=null)
         &&(target.location().isInhabitant(attacker))
-        &&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+        &&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
             ||(!(msg.tool() instanceof DiseaseAffect))))
         {
             establishRange(target,attacker,msg.tool());
@@ -1149,13 +1150,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     protected void subtickAfterAttack(MOB fighter)
     {
         MOB target=fighter.getVictim();
-        if(!fighter.isMonster())
-        {
-            if((target!=null)&&(!target.amDead())&&(CMLib.flags().canBeSeenBy(target,fighter)))
-                fighter.session().print(target.healthText()+"\n\r\n\r");
-        }
-        else
         if((target!=null)
+        &&(fighter.isMonster())
         &&((fighter.amFollowing()==null)||(fighter.amFollowing().isMonster()))
         &&(target.isMonster())
         &&(!target.amDead())

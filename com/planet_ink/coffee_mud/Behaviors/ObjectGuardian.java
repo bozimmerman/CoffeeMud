@@ -52,7 +52,7 @@ public class ObjectGuardian extends StdBehavior
 			return true;
 
 		if((mob!=monster)
-		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CMLib.utensils().roomLocation(msg.target())))
+		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CMLib.map().roomLocation(msg.target())))
 		||(msg.sourceMinor()==CMMsg.TYP_DROP)))
 		{
 			CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> drop that.");

@@ -91,7 +91,9 @@ public class QuestLoader
 	public static void DBUpdateQuests(Vector quests)
 	{
 		if(quests==null) quests=new Vector();
-		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
+		String quType="DefaultQuest";
+		if(quests.size()>0) quType=CMClass.className(quests.firstElement());
+		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
 		for(int m=0;m<quests.size();m++)
 		{
 			Quest Q=(Quest)quests.elementAt(m);

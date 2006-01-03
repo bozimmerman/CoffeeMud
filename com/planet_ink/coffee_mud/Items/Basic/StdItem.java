@@ -198,18 +198,17 @@ public class StdItem implements Item
 	{
 		owner=E;
 		if((E!=null)&&(!(E instanceof Room)))
-			setDispossessionTime(0);
+			setExpirationDate(0);
 		recoverEnvStats();
 	}
-	public long dispossessionTime()
+	public long expirationDate()
 	{
 		return dispossessionTime;
 	}
-	public void setDispossessionTime(long time)
+	public void setExpirationDate(long time)
 	{
 		dispossessionTime=time;
 	}
-
 	public boolean amDestroyed()
 	{
 		return destroyed;
@@ -658,6 +657,7 @@ public class StdItem implements Item
 		else
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_LOOK:
         case CMMsg.TYP_EXAMINE:
 		case CMMsg.TYP_READ:
@@ -796,7 +796,7 @@ public class StdItem implements Item
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
-				&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
+				&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0)
 				&&(amWearingAt(Item.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
@@ -852,7 +852,7 @@ public class StdItem implements Item
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
-				   &&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
+				   &&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0)
 				   &&(amWearingAt(Item.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
@@ -975,7 +975,7 @@ public class StdItem implements Item
 		&&(mob!=null)
 		&&(msg.target()!=null))
 		{
-			Room R=CMLib.utensils().roomLocation(msg.target());
+			Room R=CMLib.map().roomLocation(msg.target());
 			if(mob.isMine(this))
 			{
 				mob.delInventory(this);
@@ -1013,6 +1013,7 @@ public class StdItem implements Item
 			if(CMLib.flags().isReadable(this))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
 			break;
+		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_DEATH:
 			destroy();
 			break;
@@ -1077,6 +1078,7 @@ public class StdItem implements Item
 				{
 					Item thisItem = thisRoom.fetchItem(r);
 					if((thisItem!=null)
+					&&(!thisItem.amDestroyed())
 					&&(thisItem.container()!=null)
 					&&(thisItem.container()==this))
 						thisItem.destroy();
@@ -1091,6 +1093,7 @@ public class StdItem implements Item
 				{
 					Item thisItem = mob.fetchInventory(r);
 					if((thisItem!=null)
+					&&(!thisItem.amDestroyed())
 					&&(thisItem.container()!=null)
 					&&(thisItem.container()==this))
 						thisItem.destroy();

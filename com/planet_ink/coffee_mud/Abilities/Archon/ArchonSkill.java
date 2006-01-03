@@ -42,7 +42,7 @@ public class ArchonSkill extends StdAbility
 	protected int canTargetCode(){return 0;}
 
 	public int classificationCode()
-	{ return Ability.ACODE_SKILL;	}
+	{ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;	}
 
 	public MOB getTargetAnywhere(MOB mob, Vector commands, Environmental givenTarget, boolean playerOnly)
 	{ return getTargetAnywhere(mob,commands,givenTarget,false,false,playerOnly);	}

@@ -65,7 +65,7 @@ public class Disease_SARS extends Disease
 			int damage=CMLib.dice().roll(2,diseaser.envStats().level()+1,1);
 			if(CMLib.dice().rollPercentage()==1)
 				damage+=CMLib.dice().roll(10,10,1);
-			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			return true;
 		}

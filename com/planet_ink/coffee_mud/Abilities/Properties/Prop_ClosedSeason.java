@@ -92,7 +92,7 @@ public class Prop_ClosedSeason extends Property
 		if(affected==null) return;
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
-			Room R=CMLib.utensils().roomLocation(affected);
+			Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)
 			&&(closed(R.getArea()))
 			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))

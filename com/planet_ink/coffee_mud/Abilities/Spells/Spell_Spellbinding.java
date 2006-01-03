@@ -124,7 +124,7 @@ public class Spell_Spellbinding extends Spell
 			String s=getMsgFromAffect(msg.sourceMessage());
 			for(int v=0;v<spellbindings.size();v++)
 				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,"The magic of '"+s+"' swells within you!",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,"The magic of '"+s+"' swells within you!",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		}
 		else
 		if((msg.tool()==this)

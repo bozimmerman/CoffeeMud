@@ -108,7 +108,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
             if(CMLib.flags().isGettable((Item)affected))
                 return null;
         }
-        Room room=CMLib.utensils().roomLocation(affected);
+        Room room=CMLib.map().roomLocation(affected);
         if((affected instanceof Area)&&(roomHelper!=null))
             room=roomHelper.location();
         if(room==null) return null;

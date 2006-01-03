@@ -103,7 +103,7 @@ public class Skill_HandCuff extends StdSkill
 			if(msg.sourceMinor()==CMMsg.TYP_ENTER)
 				return true;
 			else
-			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
@@ -204,7 +204,7 @@ public class Skill_HandCuff extends StdSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:CMMsg.MASK_MALICIOUS),"<S-NAME> handcuff(s) <T-NAME>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),"<S-NAME> handcuff(s) <T-NAME>.");
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

@@ -43,6 +43,7 @@ public class StdWebMacro implements WebMacro
 	public boolean isAdminMacro()	{return false;}
     public CMObject newInstance(){return this;}
     public CMObject copyOf(){return this;}
+    public String getSpecialContentHeader(String filename){return null;}
 	
     public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
@@ -221,6 +222,11 @@ public class StdWebMacro implements WebMacro
                         count=0;
                         x=x+4;
                         lastSpace=x+4;
+                   }
+                   else
+                   {
+	                   s.setCharAt(x,'&');
+	                   s.insert(x+1,"lt;");
                    }
                    break;
                 case '-':

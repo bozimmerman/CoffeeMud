@@ -80,17 +80,18 @@ public class ResetWhole extends StdBehavior
 						if((B!=null)&&(B.ID().equals(ID())))
 						{ R=null; break;}
 					}
-					if(R!=null)	CMLib.utensils().resetRoom(R);
+					if(R!=null)
+						CMLib.map().resetRoom(R);
 				}
 			}
 			else
 			if(ticking instanceof Room)
-				CMLib.utensils().resetRoom((Room)ticking);
+				CMLib.map().resetRoom((Room)ticking);
 			else
 			{
 				Room room=super.getBehaversRoom(ticking);
 				if(room!=null)
-					CMLib.utensils().resetRoom(room);
+					CMLib.map().resetRoom(room);
 			}
 			lastAccess=System.currentTimeMillis();
 		}

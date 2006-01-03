@@ -160,7 +160,7 @@ public class Skill_CollectBounty extends StdSkill
 		Area legalA=CMLib.utensils().getLegalObject(R);
 		if((success)&&(legalA!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -1,0 +1,5 @@
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@if?AreaData?ISGRID@ @AddFile?/grinder/maparea.cmvp@ @else@ @AddFile?/grinder/modarea.cmvp@ @endif@
+@endif@
+@endif@

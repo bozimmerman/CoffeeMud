@@ -115,7 +115,7 @@ public class Fighter_Sweep extends FighterSkill
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_OK_ACTION|(auto?CMMsg.MASK_GENERAL:0),null);
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_OK_ACTION|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

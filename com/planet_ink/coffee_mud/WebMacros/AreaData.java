@@ -181,12 +181,27 @@ public class AreaData extends StdWebMacro
 	}
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("AREA");
-		if(last==null) return " @break@";
-
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+
+		Hashtable parms=parseParms(parm);
+		if(parms.containsKey("AREATYPES"))
+		{
+			StringBuffer str=new StringBuffer("");
+			for(Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
+			{
+				Area A=(Area)e.nextElement();
+				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+			}
+			return str.toString();
+		}
+		if(parms.containsKey("AREAISGRID"))
+		{
+			Area A=CMLib.map().getArea(""+parms.get("AREAISGRID"));
+			return ""+(A instanceof GridZones);
+		}
+		String last=httpReq.getRequestParameter("AREA");
+		if(last==null) return " @break@";
 
 		if(last.length()>0)
 		{
@@ -215,7 +230,7 @@ public class AreaData extends StdWebMacro
 					for(int i=1;i<Area.NUM_CLIMATES;i++)
 					{
 						String climstr=Area.CLIMATE_DESCS[i];
-						int mask=CMath.pow(2,i-1);
+						int mask=(int)CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);
@@ -244,6 +259,22 @@ public class AreaData extends StdWebMacro
 						name=A.rawImage();
 					str.append(name);
 				}
+				if((parms.containsKey("GRIDX"))&&(A instanceof GridZones))
+				{
+					String name=httpReq.getRequestParameter("GRIDX");
+					if((name==null)||(name.length()==0))
+						name=""+((GridZones)A).xGridSize();
+					str.append(name);
+				}
+				if((parms.containsKey("GRIDY"))&&(A instanceof GridZones))
+				{
+					String name=httpReq.getRequestParameter("GRIDY");
+					if((name==null)||(name.length()==0))
+						name=""+((GridZones)A).yGridSize();
+					str.append(name);
+				}
+				if(parms.containsKey("ISGRID"))
+					str.append(""+(A instanceof GridZones));
 				if(parms.containsKey("AUTHOR"))
 				{
 					String author=httpReq.getRequestParameter("AUTHOR");

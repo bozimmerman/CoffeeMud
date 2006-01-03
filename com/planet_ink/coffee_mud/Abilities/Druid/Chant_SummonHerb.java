@@ -70,7 +70,7 @@ public class Chant_SummonHerb extends Chant
 				mob.location().send(mob,msg);
 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
-					Food newItem=(Food)CMClass.getStdItem("GenFoodResource");
+					Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
 					newItem.setName("some herbs");
 					newItem.setDisplayText("Some herbs are growing here.");
 					newItem.setDescription("");

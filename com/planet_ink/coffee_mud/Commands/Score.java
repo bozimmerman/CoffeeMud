@@ -207,9 +207,10 @@ public class Score extends Affect
 		if(CMLib.flags().isBound(mob))
 			msg.append("^!You are bound.^?\n\r");
 
-		if(CMLib.flags().isFalling(mob))
-			msg.append("^!You are falling!!!^?\n\r");
-		else
+		// dont do falling -- the flag doubles for drowning/treading water anyway.
+		//if(CMLib.flags().isFalling(mob))
+		//	msg.append("^!You are falling!!!^?\n\r");
+		//else
 		if(CMLib.flags().isSleeping(mob))
 			msg.append("^!You are sleeping.^?\n\r");
 		else

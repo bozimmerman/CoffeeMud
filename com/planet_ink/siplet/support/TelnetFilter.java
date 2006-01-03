@@ -1,7 +1,7 @@
 package com.planet_ink.siplet.support;
 import java.io.*;
 import java.util.*;
-
+import com.jcraft.jzlib.*;
 import com.planet_ink.siplet.applet.Siplet;
 
 /* 
@@ -76,8 +76,10 @@ public class TelnetFilter
 
     protected boolean neverSupportMSP=false;
     protected boolean neverSupportMXP=false;
+    protected boolean neverSupportMCCP=false;
     protected boolean MSPsupport=false;
     protected boolean MXPsupport=false;
+    protected boolean MCCPsupport=false;
     
     private MSP mspModule=new MSP();
     private MXP mxpModule=new MXP();
@@ -96,6 +98,8 @@ public class TelnetFilter
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}
     public void setMXPSupport(boolean truefalse){MXPsupport=truefalse;}
+    public boolean MCCPsupport(){return MCCPsupport;}
+    public void setMCCPSupport(boolean truefalse){MCCPsupport=truefalse;}
     
     public boolean isUIonHold(){return MXPsupport()&&mxpModule.isUIonHold();}
     private String blinkOff(){ if(blinkOn){blinkOn=false; return "</BLINK>";}return ""; }
@@ -286,8 +290,39 @@ public class TelnetFilter
         }
         return escapeString;
     }
+
+    public static final char[] mccppattern={IAC_,IAC_SB,MCCP_COMPRESS2,IAC_,IAC_SE};
+    public int patDex=0;
+    public void TelnetRead(StringBuffer buf, InputStream rawin, BufferedReader in[])
+    	throws InterruptedIOException, IOException
+    {
+        char c=(char)in[0].read();
+        if(mccppattern[patDex]==c)
+        {
+        	patDex++;
+        	if((patDex>=mccppattern.length)&&(!neverSupportMCCP))
+        	{
+        		while(rawin.available()>0) rawin.read();
+	            ZInputStream zIn=new ZInputStream(rawin);
+	            if(debugTelnetCodes) System.out.println("MCCP compression started");
+	            in[0]=new BufferedReader(new InputStreamReader(zIn));
+	            patDex=0;
+        	}
+        	return;
+        }
+        else
+        if(patDex>0)
+        {
+        	for(int i=0;i<patDex;i++)
+        		buf.append(mccppattern[i]);
+        	patDex=0;
+        }
+        buf.append(c);
+        if(c==65535) throw new java.io.InterruptedIOException("ARGH!");
+    }
     
-    public int TelenetFilter(StringBuffer buf, DataOutputStream response)
+    
+    public int TelenetFilter(StringBuffer buf, DataOutputStream response, InputStream rawin, BufferedReader[] in)
     throws IOException
     {
         int i=0;
@@ -357,6 +392,11 @@ public class TelnetFilter
                             response.writeBytes(""+IAC_+IAC_SE);
                             response.flush();
                         }
+                        else
+                        if(subOptionCode==MCCP_COMPRESS2)
+                        {
+                        	// probably need to handle this earlier
+                        }
                         break;
                     }
                     case IAC_WILL:
@@ -416,6 +456,29 @@ public class TelnetFilter
                                 response.writeBytes(""+IAC_+IAC_DO+IAC_MXP);
                                 response.flush();
                                 setMXPSupport(true);
+                            }
+                        }
+                        else
+                        if(buf.charAt(i)==MCCP_COMPRESS2)
+                        {
+                            if(debugTelnetCodes) System.out.println("Got WILL COMPRESS2!");
+                            if(neverSupportMCCP)
+                            {
+                                if(MCCPsupport())
+                                {
+                                    if(debugTelnetCodes) System.out.println("Send DONT COMPRESS2!");
+                                    response.writeBytes(""+IAC_+IAC_DONT+MCCP_COMPRESS2);
+                                    response.flush();
+                                    setMXPSupport(false);
+                                }
+                            }
+                            else
+                            if(!MCCPsupport())
+                            {
+                                if(debugTelnetCodes) System.out.println("Send DO MCCP!");
+                                response.writeBytes(""+IAC_+IAC_DO+MCCP_COMPRESS2);
+                                response.flush();
+                                setMCCPSupport(true);
                             }
                         }
                         else

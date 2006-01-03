@@ -95,7 +95,7 @@ public class Undead extends StdRace
 				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
 				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 				{
-					CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> <DAMAGE> <T-NAMESELF>.");
+					CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> <DAMAGE> <T-NAMESELF>.");
 					if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
 						mob.setVictim(msg.source());
 				}
@@ -112,7 +112,7 @@ public class Undead extends StdRace
 				int amount=msg.value();
 				if(amount>0)
 				{
-					CMLib.combat().postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
+					CMLib.combat().postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
 					return false;
 				}
 			}

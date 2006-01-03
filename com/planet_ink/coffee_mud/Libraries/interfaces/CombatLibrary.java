@@ -277,7 +277,7 @@ public interface CombatLibrary extends CMObject
     };
     
     public static final String[][] DEFAULT_DAMAGE_WORDS={
-    {"ALL","annoy(s)", "scratch(es)","graze(s)","wound(s)","cut(s)","damage(es)","decimate(s)","murder(s)",
+    {"ALL","annoy(s)", "scratch(es)","graze(s)","wound(s)","cut(s)","damage(s)","decimate(s)","murder(s)",
         "massacre(s)", "MASSACRE(S)", "destroy(s)", "DESTROY(S)", "obliterate(s)", "OBLITERATE(S)", "**OBLITERATE(S)**", "--==::OBLITERATE(S)::==--"},
     {""+Weapon.TYPE_NATURAL, "annoy(s)", "scratch(es)","graze(s)","hit(s)","cut(s)","hurt(s)","rip(s)","crunch(es)"},
     {""+Weapon.TYPE_SLASHING, "annoy(s)", "scratch(es)","graze(s)","wound(s)","cut(s)","slice(s)","gut(s)","murder(s)"},
@@ -287,7 +287,7 @@ public interface CombatLibrary extends CMObject
     {""+Weapon.TYPE_SHOOT, "annoy(s)", "scratch(es)","graze(s)","hit(s)","pierce(s)","pierce(s)","decimate(s)","murder(s)"},
     {""+Weapon.TYPE_MELTING, "annoy(s)", "sting(s)","sizzle(s)","burn(s)","scorch(es)","dissolve(s)","melt(s)","melt(s)"},
     {""+Weapon.TYPE_STRIKING, "annoy(s)", "sting(s)","charge(s)","singe(s)","burn(s)","scorch(es)","blast(s)","incinerate(s)"},
-    {""+Weapon.TYPE_BURSTING, "annoy(s)", "scratch(es)","graze(s)","wound(s)","cut(s)","damage(es)","decimate(s)","murder(s)"},
+    {""+Weapon.TYPE_BURSTING, "annoy(s)", "scratch(es)","graze(s)","wound(s)","cut(s)","damage(s)","decimate(s)","murder(s)"},
     };
     
     public static final int[] DEFAULT_DAMAGE_THRESHHOLDS={0,3,6,10,15,25,35,50,70,100,130,165,215,295,395};

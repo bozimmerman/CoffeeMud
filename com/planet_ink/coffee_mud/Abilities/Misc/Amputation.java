@@ -545,7 +545,7 @@ public class Amputation extends StdAbility implements Amputator
 				gone=(String)VN.elementAt(CMLib.dice().roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate <T-NAMESELF>'s "+gone+"!^</FIGHT^>^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
             CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
 			{

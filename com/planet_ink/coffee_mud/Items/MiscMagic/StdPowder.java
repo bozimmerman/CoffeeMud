@@ -110,7 +110,7 @@ public class StdPowder extends StdItem implements MagicDust {
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 				{
 					A=(Ability)A.copyOf();
 					theSpells.addElement(A);

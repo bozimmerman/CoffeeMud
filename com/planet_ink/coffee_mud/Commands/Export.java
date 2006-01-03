@@ -37,7 +37,7 @@ public class Export extends StdCommand
 	private String[] access={"EXPORT"};
 	public String[] getAccessWords(){return access;}
 
-	public static void reallyExport(MOB mob, String fileName, String xml)
+	public static void reallyExport(MOB mob, Session S, String fileName, String xml)
 	{
 		if(fileName==null) return;
 		if(mob==null) return;
@@ -46,28 +46,27 @@ public class Export extends StdCommand
 
 		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
-			mob.tell("Here it is:\n\r\n\r");
+			if(S!=null) mob.tell("Here it is:\n\r\n\r");
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
-			if(mob.session()!=null)
-				mob.session().rawPrintln(xml+"\n\r\n\r");
+			if(S!=null) S.rawPrintln(xml+"\n\r\n\r");
 		}
 		else
 		if(fileName.equalsIgnoreCase("EMAIL"))
 		{
 			if(!CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 			{
-			    mob.tell("Mail forwarding is not enabled on this mud.");
+				if(S!=null) mob.tell("Mail forwarding is not enabled on this mud.");
 			    return;
 			}
 			if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
 			{
-			    mob.tell("No email box has been defined.");
+				if(S!=null) mob.tell("No email box has been defined.");
 			    return;
 			}
 			if((mob.playerStats()==null)||(mob.playerStats().getEmail().length()==0))
 			{
-			    mob.tell("No email address has been defined.");
+				if(S!=null) mob.tell("No email address has been defined.");
 			    return;
 			}
 			xml=xml.replace('\n',' ');
@@ -79,11 +78,11 @@ public class Export extends StdCommand
 			        "Exported XML",
 			        xml.toString(),
 			        -1);
-			mob.tell("XML emailed to "+mob.playerStats().getEmail());
+			if(S!=null) mob.tell("XML emailed to "+mob.playerStats().getEmail());
 		}
 		else
 		{
-			mob.tell("Writing file...");
+			if(S!=null) mob.tell("Writing file...");
 			if(fileName.indexOf(".")<0)
 				fileName=fileName+".cmare";
             new CMFile(fileName,mob,false).saveText(xml);
@@ -95,7 +94,7 @@ public class Export extends StdCommand
 			    else
                     out.write(xml.substring(i,i+65536).getBytes());
 			}*/
-			mob.tell("File '"+fileName+"' written.");
+            if(S!=null) mob.tell("File '"+fileName+"' written.");
 		}
 	}
 
@@ -107,8 +106,25 @@ public class Export extends StdCommand
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path, 3=email
 		HashSet custom=new HashSet();
 		HashSet files=new HashSet();
-
-		commands.removeElementAt(0);
+		Room room=mob.location();
+		Area area=(room!=null)?room.getArea():null;
+		Session S=mob.session();
+		while((commands.size()>0)&&(!(commands.lastElement() instanceof String)))
+		{
+			S=null;
+			Object O=commands.lastElement();
+			if(O instanceof Room)
+			{
+				room=(Room)O;
+				area=(room!=null)?room.getArea():null;
+			}
+			else
+			if(O instanceof Area)
+				area=(Area)O;
+			commands.removeElementAt(commands.size()-1);
+		}
+		if(commands.size()>0)
+			commands.removeElementAt(0);
 		if(commands.size()>0)
 		{
 			commandType=((String)commands.elementAt(0)).toUpperCase();
@@ -119,21 +135,21 @@ public class Export extends StdCommand
 		&&(!commandType.equalsIgnoreCase("PLAYER"))
 		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
-			mob.tell("Export what?  Room, World, Player, or Area?");
+			if(S!=null) mob.tell("Export what?  Room, World, Player, or Area?");
 			return false;
 		}
 		if(commandType.equalsIgnoreCase("PLAYER"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,"EXPORTPLAYERS"))
 			{
-				mob.tell("You are not allowed to export player data.");
+				if(S!=null) mob.tell("You are not allowed to export player data.");
 				return false;
 			}
 		}
 		else
-		if(!CMSecurity.isAllowed(mob,mob.location(),"EXPORT"))
+		if(!CMSecurity.isAllowed(mob,room,"EXPORT"))
 		{
-			mob.tell("You are not allowed to export room, mob, or item data.");
+			if(S!=null) mob.tell("You are not allowed to export room, mob, or item data.");
 			return false;
 		}
 
@@ -156,7 +172,7 @@ public class Export extends StdCommand
 
 			if(commands.size()==0)
 			{
-				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address.");
+				if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address.");
 				return false;
 			}
 			fileName=CMParms.combine(commands,0);
@@ -166,10 +182,20 @@ public class Export extends StdCommand
 			if(fileName.equalsIgnoreCase("email"))
 				fileNameCode=3;
 			else
+			if(fileName.equalsIgnoreCase("memory"))
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
 				{
-					mob.tell("You are not allowed to export to a file.");
+					if(S!=null) mob.tell("You are not allowed to export to memory.");
+					return false;
+				}
+				fileNameCode=4;
+			}
+			else
+			{
+				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
+				{
+					if(S!=null) mob.tell("You are not allowed to export to a file.");
 					return false;
 				}
 				CMFile F=new CMFile(fileName,mob,false);
@@ -181,7 +207,7 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
+			if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
 			return false;
 		}
 
@@ -191,14 +217,14 @@ public class Export extends StdCommand
 			if(commandType.equalsIgnoreCase("PLAYER"))
 			{
 				StringBuffer x=new StringBuffer("<PLAYERS>");
-				if(mob.session()!=null)
-					mob.session().rawPrint("Reading players...");
+				if(S!=null)
+					S.rawPrint("Reading players...");
 				Vector V=CMLib.database().getUserList();
 				for(int v=0;v<V.size();v++)
 				{
 					Vector V2=(Vector)V.elementAt(v);
 					String name=(String)V2.elementAt(0);
-					if(mob.session()!=null) mob.session().rawPrint(".");
+					if(S!=null) S.rawPrint(".");
 					MOB M=CMLib.map().getLoadPlayer(name);
 					if(M!=null)
 					{
@@ -209,35 +235,35 @@ public class Export extends StdCommand
 				}
 				if(fileNameCode==2) fileName=fileName+"/player";
 				xml=x.toString()+"</PLAYERS>";
-				if(mob.session()!=null)
-					mob.session().rawPrintln("!");
+				if(S!=null)
+					S.rawPrintln("!");
 			}
 			else
 			if(commandType.equalsIgnoreCase("ROOM"))
 			{
-				xml=CMLib.coffeeMaker().getRoomXML(mob.location(),custom,files,true).toString();
+				xml=CMLib.coffeeMaker().getRoomXML(room,custom,files,true).toString();
 				if(fileNameCode==2) fileName=fileName+"/room";
 			}
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
-				if(mob.session()!=null)
-					mob.session().rawPrint("Reading area '"+mob.location().getArea().Name()+"'...");
-				xml=CMLib.coffeeMaker().getAreaXML(mob.location().getArea(),mob.session(),custom,files,true).toString();
+				if(S!=null)
+					S.rawPrint("Reading area '"+area.Name()+"'...");
+				xml=CMLib.coffeeMaker().getAreaXML(area,S,custom,files,true).toString();
 				if(fileNameCode==2){
-					if(mob.location().getArea().getArchivePath().length()>0)
-						fileName=fileName+"/"+mob.location().getArea().getArchivePath();
+					if(area.getArchivePath().length()>0)
+						fileName=fileName+"/"+area.getArchivePath();
 					else
-						fileName=fileName+"/"+mob.location().getArea().Name();
+						fileName=fileName+"/"+area.Name();
 				}
-				if(mob.session()!=null)
-					mob.session().rawPrintln("!");
+				if(S!=null)
+					S.rawPrintln("!");
 			}
 			else
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,"EXPORT"))
 				{
-					mob.tell("You are not allowed to export world data.");
+					if(S!=null) mob.tell("You are not allowed to export world data.");
 					return false;
 				}
 				StringBuffer buf=new StringBuffer("");
@@ -247,11 +273,11 @@ public class Export extends StdCommand
 					Area A=(Area)a.nextElement();
 					if(A!=null)
 					{
-						if(mob.session()!=null)
-							mob.session().rawPrint("Reading area '"+A.name()+"'...");
-						buf.append(CMLib.coffeeMaker().getAreaXML(A,mob.session(),custom,files,true).toString());
-						if(mob.session()!=null)
-							mob.session().rawPrintln("!");
+						if(S!=null)
+							S.rawPrint("Reading area '"+A.name()+"'...");
+						buf.append(CMLib.coffeeMaker().getAreaXML(A,S,custom,files,true).toString());
+						if(S!=null)
+							S.rawPrintln("!");
 						if(fileNameCode==2)
 						{
 							String name=fileName;
@@ -259,7 +285,7 @@ public class Export extends StdCommand
 								name=fileName+"/"+A.getArchivePath();
 							else
 								name=fileName+"/"+A.Name();
-							reallyExport(mob,name,buf.toString());
+							reallyExport(mob,S,name,buf.toString());
 							buf=new StringBuffer("");
 						}
 					}
@@ -273,40 +299,40 @@ public class Export extends StdCommand
 			if(fileNameCode==2) fileName=fileName+"/mobs";
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
-				xml="<MOBS>"+CMLib.coffeeMaker().getRoomMobs(mob.location(),custom,files,found).toString()+"</MOBS>";
+				xml="<MOBS>"+CMLib.coffeeMaker().getRoomMobs(room,custom,files,found).toString()+"</MOBS>";
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
-				if(mob.session()!=null)
-					mob.session().rawPrint("Reading area mobs '"+mob.location().getArea().Name()+"'...");
+				if(S!=null)
+					S.rawPrint("Reading area mobs '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(mob.session()!=null) mob.session().rawPrint(".");
+					if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 				}
 				xml=buf.toString()+"</MOBS>";
-				if(mob.session()!=null)
-					mob.session().rawPrintln("!");
+				if(S!=null)
+					S.rawPrintln("!");
 			}
 			else
 			{
-				if(mob.session()!=null)
-					mob.session().rawPrint("Reading world mobs ...");
+				if(S!=null)
+					S.rawPrint("Reading world mobs ...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(mob.session()!=null) mob.session().rawPrint(".");
+						if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 					}
 			    }catch(NoSuchElementException e){}
 				xml=buf.toString()+"</MOBS>";
-				if(mob.session()!=null)
-					mob.session().rawPrintln("!");
+				if(S!=null)
+					S.rawPrintln("!");
 			}
 		}
 		else
@@ -336,40 +362,40 @@ public class Export extends StdCommand
 
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
-				xml="<ITEMS>"+CMLib.coffeeMaker().getRoomItems(mob.location(),found,files,type).toString()+"</ITEMS>";
+				xml="<ITEMS>"+CMLib.coffeeMaker().getRoomItems(room,found,files,type).toString()+"</ITEMS>";
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
-				if(mob.session()!=null)
-					mob.session().rawPrint("Reading area "+subType.toLowerCase()+" '"+mob.location().getArea().Name()+"'...");
+				if(S!=null)
+					S.rawPrint("Reading area "+subType.toLowerCase()+" '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(mob.session()!=null) mob.session().rawPrint(".");
+					if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 				}
 				xml=buf.toString()+"</ITEMS>";
-				if(mob.session()!=null)
-					mob.session().rawPrintln("!");
+				if(S!=null)
+					S.rawPrintln("!");
 			}
 			else
 			{
-				if(mob.session()!=null)
-					mob.session().rawPrint("Reading world "+subType.toLowerCase()+" ...");
+				if(S!=null)
+					S.rawPrint("Reading world "+subType.toLowerCase()+" ...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(mob.session()!=null) mob.session().rawPrint(".");
+						if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 					}
 			    }catch(NoSuchElementException e){}
 				xml=buf.toString()+"</ITEMS>";
-				if(mob.session()!=null)
-					mob.session().rawPrintln("!");
+				if(S!=null)
+					S.rawPrintln("!");
 			}
 		}
 		if(custom.size()>0)
@@ -406,8 +432,14 @@ public class Export extends StdCommand
 			xml+=str.toString();
 		}
         if(fileNameCode==2) fileName=fileName+"/extras";
-		reallyExport(mob,fileName,xml);
-		return false;
+        if(fileNameCode==4)
+        {
+        	commands.clear();
+        	commands.addElement(xml);
+        	return true;
+        }
+		reallyExport(mob,S,fileName,xml);
+		return true;
 	}
 	
 	public boolean canBeOrdered(){return true;}

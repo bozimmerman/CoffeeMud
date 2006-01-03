@@ -176,6 +176,18 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return -1;
 	}
 	
+	public Vector getRadiantRooms(Room room,
+								  boolean openOnly,
+								  boolean areaOnly,
+								  boolean noEmptyGrids,
+								  boolean noAir,
+								  boolean noWater,
+								  int maxDepth)
+	{
+		Vector V=new Vector();
+		getRadiantRooms(room,V,openOnly,areaOnly,noEmptyGrids,noAir,noWater,null,maxDepth,null);
+		return V;
+	}
 	public void getRadiantRooms(Room room,
 							    Vector rooms,
 							    boolean openOnly,
@@ -290,7 +302,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         if(status!=null)status[0]=Tickable.STATUS_MISC7+2;
 		if(oldRoom instanceof GridLocale)
 		{
-			Room R=((GridLocale)oldRoom).getRandomChild();
+			Room R=((GridLocale)oldRoom).getRandomGridChild();
 			if(R!=null) R.bringMobHere(mob,true);
 			oldRoom=mob.location();
 		}

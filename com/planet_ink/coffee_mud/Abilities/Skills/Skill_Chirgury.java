@@ -122,7 +122,7 @@ public class Skill_Chirgury extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^S<S-NAME> carefully perform(s) chirgury upon <T-NAME>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully perform(s) chirgury upon <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -154,7 +154,7 @@ public class Skill_Chirgury extends StdSkill
 				        ((Drink)meat).setLiquidHeld(10);
 				        ((Drink)meat).setLiquidRemaining(10);
 				        if(target instanceof MOB)
-							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
 				    }
 				    meat.setName("the "+parts[partCode].toLowerCase()+" of "+target.Name());
 				    if((parts[partCode].endsWith("S"))&&(!parts[partCode].equalsIgnoreCase("PANCREAS")))

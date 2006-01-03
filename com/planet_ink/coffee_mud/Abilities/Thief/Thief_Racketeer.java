@@ -94,7 +94,7 @@ public class Thief_Racketeer extends ThiefSkill
 		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "+CMLib.beanCounter().nameCurrencyShort(target,amount)+" of protection money from <T-NAME>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "+CMLib.beanCounter().nameCurrencyShort(target,amount)+" of protection money from <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

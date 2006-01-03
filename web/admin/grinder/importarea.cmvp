@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_IMPORTROOMS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMud MUDGrinder</title>
+</head>
+
+<body>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3>MUDGrinder -- Import an Area</H3>
+<br>
+<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/loggedin.cmvp" TARGET=_top>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<FONT COLOR=RED><B>@MUDGrinder?IMPORTAREA@</B></FONT><P>
+<INPUT TYPE=SUBMIT NAME=CONTINUE VALUE="Done">
+</FORM>
+</BODY>
+</HTML>
+@endif@ 
+@endif@

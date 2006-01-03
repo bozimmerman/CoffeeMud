@@ -85,7 +85,7 @@ public class Prop_SpellAdder extends Property
 			}
 
 			Ability A=CMClass.getAbility(thisOne);
-			if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parm);
@@ -158,7 +158,7 @@ public class Prop_SpellAdder extends Property
 			return (MOB)((Item)target).owner();
         if(trickMOB==null)
             trickMOB=CMClass.getMOB("StdMOB");
-        Room R=CMLib.utensils().roomLocation(target);
+        Room R=CMLib.map().roomLocation(target);
         trickMOB.setLocation((R==null)?CMClass.getLocale("StdRoom"):R);
 		return trickMOB;
 	}

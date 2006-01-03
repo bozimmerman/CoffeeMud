@@ -90,7 +90,7 @@ public class Song_Flight extends Song
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{

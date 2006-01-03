@@ -90,7 +90,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 	{
 		super.fillExitsOfGridRoom(R,x,y);
 		
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
 			return;
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -111,13 +111,13 @@ public class UnderWaterThinGrid extends StdThinGrid
 			else
 			if(x>0)
 			{
-				R2=getMakeSingleGridRoom(x-1,ySize()-1);
+				R2=getMakeSingleGridRoom(x-1,yGridSize()-1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.UP,ox,ox);
 			}
 			else
 			{
-				R2=getMakeSingleGridRoom(xSize()-1,ySize()-1);
+				R2=getMakeSingleGridRoom(xGridSize()-1,yGridSize()-1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.UP,ox,ox);
 			}
@@ -125,17 +125,17 @@ public class UnderWaterThinGrid extends StdThinGrid
 		
 		if(R.rawDoors()[Directions.DOWN]==null)
 		{
-			if((y==ySize()-1)&&(rawDoors()[Directions.DOWN]!=null)&&(rawExits()[Directions.DOWN]!=null))
+			if((y==yGridSize()-1)&&(rawDoors()[Directions.DOWN]!=null)&&(rawExits()[Directions.DOWN]!=null))
 				linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,rawExits()[Directions.DOWN],rawExits()[Directions.DOWN]);
 			else
-			if(y<ySize()-1)
+			if(y<yGridSize()-1)
 			{
 				R2=getMakeSingleGridRoom(x,y+1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.DOWN,ox,ox);
 			}
 			else
-			if(x<xSize()-1)
+			if(x<xGridSize()-1)
 			{
 				R2=getMakeSingleGridRoom(x+1,0);
 				if(R2!=null)
@@ -145,12 +145,12 @@ public class UnderWaterThinGrid extends StdThinGrid
 		
 		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))
 		{
-			R2=getMakeSingleGridRoom(x,ySize()-1);
+			R2=getMakeSingleGridRoom(x,yGridSize()-1);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
 		}
 		else
-		if((y==ySize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
+		if((y==yGridSize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,0);
 			if(R2!=null)
@@ -160,12 +160,12 @@ public class UnderWaterThinGrid extends StdThinGrid
 		
 		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
 		{
-			R2=getMakeSingleGridRoom(xSize()-1,y);
+			R2=getMakeSingleGridRoom(xGridSize()-1,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.WEST,ox,ox);
 		}
 		else
-		if((x==xSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
+		if((x==xGridSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
 		{
 			R2=getMakeSingleGridRoom(0,y);
 			if(R2!=null)

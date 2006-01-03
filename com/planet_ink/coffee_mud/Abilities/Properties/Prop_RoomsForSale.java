@@ -80,18 +80,22 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
-			LandTitle A=(LandTitle)R.fetchEffect(ID());
-			if((A!=null)
-			&&((!A.landOwner().equals(owner))
-			   ||(A.landPrice()!=price)
-			   ||(A.backTaxes()!=back)
-			   ||(A.rentalProperty()!=rental)))
+			synchronized(("SYNC"+R.roomID()).intern())
 			{
-				A.setLandOwner(owner);
-				A.setLandPrice(price);
-				A.setBackTaxes(back);
-				A.setRentalProperty(rental);
-				CMLib.database().DBUpdateRoom(R);
+				R=CMLib.map().getRoom(R);
+				LandTitle A=(LandTitle)R.fetchEffect(ID());
+				if((A!=null)
+				&&((!A.landOwner().equals(owner))
+				   ||(A.landPrice()!=price)
+				   ||(A.backTaxes()!=back)
+				   ||(A.rentalProperty()!=rental)))
+				{
+					A.setLandOwner(owner);
+					A.setLandPrice(price);
+					A.setBackTaxes(back);
+					A.setRentalProperty(rental);
+					CMLib.database().DBUpdateRoom(R);
+				}
 			}
 		}
 	}

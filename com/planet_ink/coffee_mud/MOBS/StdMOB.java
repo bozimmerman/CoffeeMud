@@ -83,8 +83,7 @@ public class StdMOB implements MOB
 	protected int attributesBitmap=MOB.ATT_NOTEACH;
     
     protected int tickCounter=0;
-    private long lastMoveTime=0;
-    private int movesSinceTick=0;
+    private long expirationDate=0;
     private int manaConsumeCounter=CMLib.dice().roll(1,10,0);
     private double freeActions=0.0;
 
@@ -97,17 +96,13 @@ public class StdMOB implements MOB
     public long lastTickedDateTime(){return lastTickedDateTime;}
     public void flagVariableEq(){lastTickedDateTime=-2;}
 
-    // mental characteristics
+    protected Room startRoomPossibly=null;
     protected int Alignment=0;
     protected String WorshipCharID="";
     protected String LiegeID="";
     protected int WimpHitPoint=0;
     protected int QuestPoint=0;
     protected int DeityIndex=-1;
-
-    // location!
-    protected Room StartRoom=null;
-    
     protected MOB victim=null;
     protected MOB amFollowing=null;
     protected MOB soulMate=null;
@@ -186,9 +181,12 @@ public class StdMOB implements MOB
 		return new StdMOB();
 	}
 	
-	public Room getStartRoom(){return StartRoom;}
-	public void setStartRoom(Room newVal){StartRoom=newVal;}
-
+	public Room getStartRoom(){ 
+		return CMLib.map().getRoom(startRoomPossibly);
+	}
+	public void setStartRoom(Room room){
+		startRoomPossibly=room;
+	}
 
 	public long peaceTime(){return peaceTime;}
 
@@ -239,6 +237,8 @@ public class StdMOB implements MOB
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseEnvStats().setLevel(1);
 	}
+	public long expirationDate(){return expirationDate;}
+	public void setExpirationDate(long time){expirationDate=time;}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_MOB);}
     public boolean amDestroyed(){return amDestroyed;}
 	protected void cloneFix(MOB E)
@@ -585,7 +585,7 @@ public class StdMOB implements MOB
         victim=null;
         amFollowing=null;
         soulMate=null;
-        StartRoom=null;
+        startRoomPossibly=null;
         amDestroyed=true;
 	}
 
@@ -658,12 +658,12 @@ public class StdMOB implements MOB
 			else
 				CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,new String(miscText)));
 		}
-		if(getStartRoom()==null)
-			setStartRoom(isMonster()?newLocation:CMLib.map().getStartRoom(this));
+		if(CMLib.map().getStartRoom(this)==null)
+			setStartRoom(isMonster()?newLocation:CMLib.map().getDefaultStartRoom(this));
 		setLocation(newLocation);
 		if(location()==null)
 		{
-			setLocation(getStartRoom());
+			setLocation(CMLib.map().getStartRoom(this));
 			if(location()==null)
 			{
 				Log.errOut("StdMOB",Username+" cannot get a location.");
@@ -705,6 +705,10 @@ public class StdMOB implements MOB
 			tell("(You are asleep)");
 		else
 			CMLib.commands().postLook(this,true);
+		inventory.trimToSize();
+		abilities.trimToSize();
+		affects.trimToSize();
+		behaviors.trimToSize();
 	}
 
 	public boolean isInCombat()
@@ -913,7 +917,7 @@ public class StdMOB implements MOB
 		if(isMonster())
 			deathRoom=location();
 		else
-			deathRoom=CMLib.map().getBodyRoom(this);
+			deathRoom=CMLib.map().getDefaultBodyRoom(this);
 		if(location()!=null) location().delInhabitant(this);
 		DeadBody Body=null;
 		if(createBody)
@@ -942,7 +946,7 @@ public class StdMOB implements MOB
 			setFollowing(null);
 		}
 		if((!isMonster())&&(soulMate()==null))
-			bringToLife(CMLib.map().getDeathRoom(this),true);
+			bringToLife(CMLib.map().getDefaultDeathRoom(this),true);
 		if(deathRoom!=null)
 			deathRoom.recoverRoomStats();
 		return Body;
@@ -1218,7 +1222,7 @@ public class StdMOB implements MOB
 	                {
 	                    if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
 	                    {
-	                        commandQue.removeElementAt(0);
+	                        commandQue.removeElement(ROW);
 	                        return true;
 	                    }
 	                }
@@ -1227,7 +1231,7 @@ public class StdMOB implements MOB
 	                {
 	                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
 	                    {
-	                        commandQue.removeElementAt(0);
+	                        commandQue.removeElement(ROW);
 	                        return true;
 	                    }
 	                }
@@ -1398,7 +1402,7 @@ public class StdMOB implements MOB
 				return false;
 			}
 
-			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			{
 				int srcMajor=msg.sourceMajor();
 
@@ -1748,7 +1752,7 @@ public class StdMOB implements MOB
 		&&(msg.amISource(this))
 		&&(msg.target()!=null)
 		&&(msg.target()!=this)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 		&&(msg.target() instanceof MOB)
 		&&(location()!=null)
 		&&(location()==((MOB)msg.target()).location()))
@@ -1842,7 +1846,7 @@ public class StdMOB implements MOB
 			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
 				if((msg.amISource(this))
-				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
 				{
 					mob.tell("You like yourself too much.");
@@ -1977,12 +1981,12 @@ public class StdMOB implements MOB
 					msg.source().tell(name()+" is unable to accept that from you.");
 					return false;
 				}
-				if((!CMLib.flags().canBeSeenBy(msg.tool(),this))&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
+				if((!CMLib.flags().canBeSeenBy(msg.tool(),this))&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
 				{
 					mob.tell(name()+" can't see what you are giving.");
 					return false;
 				}
-				int GC=msg.targetCode()&CMMsg.MASK_GENERAL;
+				int GC=msg.targetCode()&CMMsg.MASK_ALWAYS;
 				CMMsg msg2=CMClass.getMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
 				if(!location().okMessage(msg.source(),msg2))
 					return false;
@@ -2093,7 +2097,7 @@ public class StdMOB implements MOB
 			if(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
 				if((msg.target() instanceof MOB)
 				&&(getVictim()!=msg.target())
-				&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+				&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 					||(!(msg.tool() instanceof DiseaseAffect))))
 				{
                     CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
@@ -2154,10 +2158,6 @@ public class StdMOB implements MOB
 				setFollowing(null);
 				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				break;
-			case CMMsg.TYP_ENTER:
-				lastMoveTime=System.currentTimeMillis();
-				movesSinceTick++;
-				break;
 			default:
 				// you pretty much always know what you are doing, if you can do it.
 				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
@@ -2213,7 +2213,7 @@ public class StdMOB implements MOB
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			}
 			else
-			if((CMath.bset(targetMajor,CMMsg.MASK_GENERAL))
+			if((CMath.bset(targetMajor,CMMsg.MASK_ALWAYS))
 			||(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			||(msg.targetMinor()==CMMsg.TYP_HEALING))
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
@@ -2242,7 +2242,7 @@ public class StdMOB implements MOB
 
 			if(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)
 			&&(msg.target() instanceof MOB)
-			&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+			&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 				||(!(msg.tool() instanceof DiseaseAffect))))
                 CMLib.combat().makeFollowersFight(this,(MOB)msg.target(),msg.source());
 
@@ -2273,7 +2273,7 @@ public class StdMOB implements MOB
 			else
 			if(((CMath.bset(othersMajor,CMMsg.MASK_EYES))
 			||(CMath.bset(othersMajor,CMMsg.MASK_HANDS))
-			||(CMath.bset(othersMajor,CMMsg.MASK_GENERAL)))
+			||(CMath.bset(othersMajor,CMMsg.MASK_ALWAYS)))
 			&&((!asleep)&&(canseesrc)))
 			{
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
@@ -2404,8 +2404,6 @@ public class StdMOB implements MOB
 		return newLastTickedDateTime;
 	}
 
-	public int movesSinceLastTick(){return movesSinceTick;}
-	public long lastMovedDateTime(){return lastMoveTime;}
 	public long getTickStatus(){return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -2414,7 +2412,6 @@ public class StdMOB implements MOB
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			movesSinceTick=0;
 			if(amDead)
 			{
 				tickStatus=Tickable.STATUS_DEAD;
@@ -2426,7 +2423,7 @@ public class StdMOB implements MOB
 						envStats().setRejuv(envStats().rejuv()-1);
 						if(envStats().rejuv()<0)
 						{
-							bringToLife(getStartRoom(),true);
+							bringToLife(CMLib.map().getStartRoom(this),true);
 							location().showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 						}
 					}
@@ -2505,7 +2502,7 @@ public class StdMOB implements MOB
                 else
                 while((!amDead())&&dequeCommand());
 
-				if((riding()!=null)&&(CMLib.utensils().roomLocation(riding())!=location()))
+				if((riding()!=null)&&(CMLib.map().roomLocation(riding())!=location()))
 					setRiding(null);
                 
 				if((!isMonster())&&(soulMate()==null))
@@ -2754,7 +2751,7 @@ public class StdMOB implements MOB
         if((amFollowing()==mob)
         ||((isMonster()&&CMSecurity.isAllowed(mob,location(),"ORDER")))
         ||(getLiegeID().equals(mob.Name()))
-        ||(CMLib.utensils().doesOwnThisProperty(mob,getStartRoom())))
+        ||(CMLib.utensils().doesOwnThisProperty(mob,CMLib.map().getStartRoom(this))))
             return true;
         if((!isMonster())
         &&(CMSecurity.isAllowedEverywhere(mob,"ORDER"))

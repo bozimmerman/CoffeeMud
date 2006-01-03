@@ -71,7 +71,7 @@ public class Prayer_ElectricHealing extends Prayer
 		{
 			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The electric attack heals <S-NAME> "+recovery+" points.");
-			CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,recovery,null);
+			CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,recovery,null);
 			return false;
 		}
 		return true;

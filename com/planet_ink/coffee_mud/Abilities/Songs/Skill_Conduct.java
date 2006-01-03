@@ -70,7 +70,7 @@ public class Skill_Conduct extends BardSkill
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) conducting the symphony over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -86,7 +86,7 @@ public class Skill_Conduct extends BardSkill
 
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 					if(CMLib.flags().canBeSeenBy(invoker,follower))
 					{
 						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

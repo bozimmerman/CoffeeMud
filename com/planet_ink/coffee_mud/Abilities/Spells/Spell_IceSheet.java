@@ -63,7 +63,7 @@ public class Spell_IceSheet extends Spell
 		if(msg.source().location()==room)
 		{
 			MOB mob=msg.source();
-			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			{
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))

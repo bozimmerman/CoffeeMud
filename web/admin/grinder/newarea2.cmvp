@@ -9,14 +9,13 @@
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMud MUDGrinder</title>
 </head>
-
 <body>
 <CENTER>
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder -- Create a New Area</H3>
 <br>
 @if?MUDGrinder?ADDAREA@
-<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/modarea.cmvp" TARGET=_top>
+<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/possmodarea.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
@@ -36,5 +35,5 @@ that an area with the same name does not already exist.</FONT><P>
 </FORM>
 </BODY>
 </HTML>
-@endif@ 
-@endif@ 
+@endif@
+@endif@

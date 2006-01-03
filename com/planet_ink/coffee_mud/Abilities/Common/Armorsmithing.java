@@ -320,7 +320,7 @@ public class Armorsmithing extends CraftingSkill implements ItemCraftor
 			displayText="You are smithing "+building.name();
 			verb="smithing "+building.name();
             playSound="ratchet.wav";
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

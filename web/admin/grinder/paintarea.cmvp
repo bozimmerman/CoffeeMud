@@ -1,0 +1,12 @@
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	var answer='@MUDGrinder?PAINTROOMS@';
+	if(answer!='')
+		window.alert(answer);
+//-->
+</SCRIPT>
+@AddFile?/grinder/map2.cmvp@
+@endif@
+@endif@

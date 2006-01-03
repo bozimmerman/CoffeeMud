@@ -106,8 +106,8 @@ public class Spell_TimeStop extends Spell
 				return false;
 			default:
 				if((msg.source()!=invoker)
-				   &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
-				   &&(!CMath.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
+				   &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+				   &&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
 				{
 					msg.source().tell("Time is stopped. Nothing just happened.  You didn't do that.");
 					return false;

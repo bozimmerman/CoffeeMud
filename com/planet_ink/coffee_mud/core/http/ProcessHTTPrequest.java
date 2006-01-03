@@ -358,8 +358,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					}
 					catch(Exception e2)
 					{
-					    if(!Log.isMaskedErrMsg(e2.getMessage()))
+					    if((!Log.isMaskedErrMsg(e2.getMessage()))
+					    ||(CMSecurity.isDebugging("HTTPERR")))
 							Log.errOut(getName(),e2.getMessage());
+					    if(CMSecurity.isDebugging("HTTPERREXT"))
+					    	Log.errOut(getName(),e2);
 					}
 				}
 			}
@@ -791,9 +794,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         }
         catch (Exception e)
         {
-            if((e.getMessage()!=null)&&(!Log.isMaskedErrMsg(e.getMessage())))
+			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+            if((errMsg!=null)
+            &&((!Log.isMaskedErrMsg(errMsg))||(CMSecurity.isDebugging("HTTPERR"))))
             {
-                Log.errOut(getName(), "Exception in doVirtualPage() - " + e.getMessage() );
+                Log.errOut(getName(), "Exception in doVirtualPage() - " + errMsg );
                 Log.errOut(getName(),e);
             }
         }
@@ -831,14 +836,17 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 		BufferedReader sin = null;
 		DataOutputStream sout = null;
+		ByteArrayOutputStream bout=null;
 
 		byte[] replyData = null;
+		String contentHeader=null;
 
 		status = S_200;
 		try
 		{
 			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
-			sout = new DataOutputStream(sock.getOutputStream());
+			bout=new ByteArrayOutputStream();
+			sout = new DataOutputStream(bout);
 
 			GrabbedFile requestedFile;
 			headersOnly = false;
@@ -869,7 +877,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                         replyData=W.runBinaryMacro(this,"");
                     else
                     {
-                        
                         virtualPage=true;
                         replyData=W.runMacro(this,"").getBytes();
                     }
@@ -877,6 +884,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                 }
                 else
     				requestedFile = webServer.pageGrabber.grabFile(filename);
+                
+                if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
 
                 if(requestedFile!=null)
 				switch (requestedFile.state)
@@ -1013,7 +1022,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					status = S_303;
 					hdrRedirectTo = e.getMessage();
 					replyData = makeRedirectPage(hdrRedirectTo).getBytes();
-
 				}
 			}
 
@@ -1032,7 +1040,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 			sout.writeBytes("Server: " + HTTPserver.ServerVersionString + cr);
 			sout.writeBytes("MIME-Version: 1.0" + cr);
-			sout.writeBytes("Content-Type: " + mimetype + cr);
+			if(contentHeader!=null) 
+				sout.writeBytes(contentHeader);
+			else
+				sout.writeBytes("Content-Type: " + mimetype + cr);
 			if ((replyData != null))
 			{
 				sout.writeBytes("Content-Length: " + replyData.length);
@@ -1045,17 +1056,20 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					// must insert a blank line before message body
 					sout.writeBytes( cr );
 					sout.write(replyData);
-					sout.flush();
 				}
 			}
 
 		}
 		catch (Exception e)
 		{
-			if((e.getMessage()==null)||((!Log.isMaskedErrMsg(e.getMessage()))))
+			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+			if((errMsg!=null)
+			&&((!Log.isMaskedErrMsg(errMsg))
+			    ||(CMSecurity.isDebugging("HTTPERR"))))
 			{
-				Log.errOut(getName(),"Exception: " + e.getMessage() );
-				if(!(e instanceof java.net.SocketException))
+				Log.errOut(getName(),"Exception: " + errMsg );
+				if((!(e instanceof java.net.SocketException))
+			    ||(CMSecurity.isDebugging("HTTPERREXT")))
 					Log.errOut(getName(),e);
 			}
 		}
@@ -1069,8 +1083,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			if (sout != null)
 			{
+				
 				sout.flush();
+				OutputStream o=sock.getOutputStream();
+				o.write(bout.toByteArray());
+				o.flush();
 				sout.close();
+				o.close();
 				sout = null;
 			}
 		}
@@ -1135,10 +1154,14 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		catch (Exception e)
 		{
-			if((e.getMessage()==null)||(!Log.isMaskedErrMsg(e.getMessage())))
+			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+			if((errMsg!=null)
+			&&((!Log.isMaskedErrMsg(errMsg))
+			    ||(CMSecurity.isDebugging("HTTPERR"))))
 			{
-				Log.errOut(getName(),"Exception: " + e.getMessage() );
-				if(!(e instanceof java.net.SocketException))
+				Log.errOut(getName(),"Exception: " + errMsg );
+				if((!(e instanceof java.net.SocketException))
+			    ||(CMSecurity.isDebugging("HTTPERREXT")))
 					Log.errOut(getName(),e);
 			}
 		}
@@ -1190,8 +1213,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		catch(Exception e)
 		{
-            if(!Log.isMaskedErrMsg(e.getMessage()))
-                e.printStackTrace();
+            if((!Log.isMaskedErrMsg(e.getMessage()))
+		    ||(CMSecurity.isDebugging("HTTPERR")))
+            	Log.errOut(getName(),e.getMessage());
+		    if(CMSecurity.isDebugging("HTTPERREXT"))
+		    	Log.errOut(getName(),e);
 		};
 		if(data.size()==0)
 			data.addElement(new String(out.toByteArray()));
@@ -1369,10 +1395,14 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		catch (Exception e)
 		{
-			if((e.getMessage()==null)||(!Log.isMaskedErrMsg(e.getMessage())))
+			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+			if((errMsg!=null)
+			&&((!Log.isMaskedErrMsg(errMsg))
+			    ||(CMSecurity.isDebugging("HTTPERR"))))
 			{
-				Log.errOut(getName(),"Exception: " + e.getMessage() );
-				if(!(e instanceof java.net.SocketException))
+				Log.errOut(getName(),"Exception: " + errMsg );
+				if((!(e instanceof java.net.SocketException))
+			    ||(CMSecurity.isDebugging("HTTPERREXT")))
 					Log.errOut(getName(),e);
 			}
 		}

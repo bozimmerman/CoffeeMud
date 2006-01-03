@@ -41,6 +41,7 @@ public class Weaponsmithing extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"WEAPONSMITH","WEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
+    protected int displayColumns(){return 3;}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -205,9 +206,10 @@ public class Weaponsmithing extends CraftingSkill implements ItemCraftor
 		{
 			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
 			int toggler=1;
-			int toggleTop=3;
+			int toggleTop=displayColumns();
+			int itemWidth=(78/toggleTop)-9;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",17)+" Lvl "+CMStrings.padRight("Amt",3)+((r<(toggleTop-1)?" ":"")));
+				buf.append(CMStrings.padRight("Item",itemWidth)+" Lvl "+CMStrings.padRight("Amt",3)+((r<(toggleTop-1)?" ":"")));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -220,7 +222,7 @@ public class Weaponsmithing extends CraftingSkill implements ItemCraftor
 					if((autoGenerate>0)||((level<=mob.envStats().level())
                                         &&((canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))))
 					{
-						buf.append(CMStrings.padRight(item,17)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -316,7 +318,7 @@ public class Weaponsmithing extends CraftingSkill implements ItemCraftor
 			verb="smithing "+building.name();
             playSound="tinktinktink2.wav";
 			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-6;
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue((CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));

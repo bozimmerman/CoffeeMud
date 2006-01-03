@@ -75,7 +75,8 @@ public class Fighter_Tumble extends FighterSkill
 			&&(msg.tool() instanceof Weapon))
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-				msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
+				if(!((MOB)msg.target()).amDead())
+					msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
 				if((++hits)>=2)
 					unInvoke();
 			}
@@ -94,6 +95,11 @@ public class Fighter_Tumble extends FighterSkill
 		if((!auto)&&(!mob.isInCombat()))
 		{
 			mob.tell("You aren't in combat!");
+			return false;
+		}
+		if(!CMLib.flags().aliveAwakeMobile(mob,true))
+		{
+			mob.tell("You need to stand up!");
 			return false;
 		}
 

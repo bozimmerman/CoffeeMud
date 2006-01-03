@@ -71,7 +71,7 @@ public class EndlessThinOcean extends StdThinGrid
 	{
 		super.fillExitsOfGridRoom(R,x,y);
 		
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
 			return;
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -81,27 +81,27 @@ public class EndlessThinOcean extends StdThinGrid
 		
 		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))
 		{
-			R2=getMakeSingleGridRoom(x,ySize()/2);
+			R2=getMakeSingleGridRoom(x,yGridSize()/2);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
 		}
         else
-		if((y==ySize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
+		if((y==yGridSize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
 		{
-			R2=getMakeSingleGridRoom(x,ySize()/2);
+			R2=getMakeSingleGridRoom(x,yGridSize()/2);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
 		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
 		{
-			R2=getMakeSingleGridRoom(xSize()/2,y);
+			R2=getMakeSingleGridRoom(xGridSize()/2,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.WEST,ox,ox);
 		}
         else
-		if((x==xSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
+		if((x==xGridSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
 		{
-			R2=getMakeSingleGridRoom(xSize()/2,y);
+			R2=getMakeSingleGridRoom(xGridSize()/2,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
@@ -109,27 +109,27 @@ public class EndlessThinOcean extends StdThinGrid
         {
             if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
             {
-                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                R2=getMakeSingleGridRoom(xGridSize()/2,yGridSize()/2);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
             }
             else
-            if(((x==xSize()-1)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
+            if(((x==xGridSize()-1)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
             {
-                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                R2=getMakeSingleGridRoom(xGridSize()/2,yGridSize()/2);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
             }
-            if(((x==xSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
+            if(((x==xGridSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
             {
-                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                R2=getMakeSingleGridRoom(xGridSize()/2,yGridSize()/2);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
             }
             else
-            if(((x==0)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
+            if(((x==0)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
             {
-                R2=getMakeSingleGridRoom(xSize()/2,ySize()/2);
+                R2=getMakeSingleGridRoom(xGridSize()/2,yGridSize()/2);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
             }

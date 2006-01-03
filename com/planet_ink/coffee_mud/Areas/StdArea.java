@@ -33,6 +33,7 @@ import java.util.*;
 public class StdArea implements Area
 {
 	public String ID(){	return "StdArea";}
+	public long flags(){return 0;}
 	protected String name="the area";
 	protected String description="";
 	protected String miscText="";
@@ -41,11 +42,13 @@ public class StdArea implements Area
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected Vector properRooms=new Vector();
-	protected Vector metroRooms=null;
+	//protected Vector metroRooms=new Vector();
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
-    protected int[] statData=null;
 	protected boolean stopTicking=false;
+	protected long expirationDate=0;
+	protected RoomnumberSet properRoomIDSet=null;
+	protected RoomnumberSet metroRoomIDSet=null;
 
     protected Vector children=null;
     protected Vector parents=null;
@@ -75,6 +78,8 @@ public class StdArea implements Area
 	}
 	public String getCurrency(){return currency;}
 
+	public long expirationDate(){return expirationDate;}
+	public void setExpirationDate(long time){expirationDate=time;}
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 	protected Vector subOps=new Vector();
@@ -113,12 +118,13 @@ public class StdArea implements Area
         parents=null;
         childrenToLoad=null;
         parentsToLoad=null;
-        statData=null;
         subOps=null;
         properRooms=null;
-        metroRooms=null;
+        //metroRooms=null;
         myClock=null;
         climateObj=null;
+        properRoomIDSet=null;
+        metroRoomIDSet=null;
         amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
@@ -128,6 +134,27 @@ public class StdArea implements Area
 	{
 		if(envStats().newName()!=null) return envStats().newName();
 		return name;
+	}
+	public synchronized RoomnumberSet getProperRoomnumbers()
+	{
+		if(properRoomIDSet==null)
+			properRoomIDSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		return properRoomIDSet;
+	}
+	public RoomnumberSet getCachedRoomnumbers()
+	{
+		RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		synchronized(properRooms)
+		{
+			Room R=null;
+			for(int p=properRooms.size()-1;p>=0;p--)
+			{
+				R=(Room)properRooms.elementAt(p);
+				if(R.roomID().length()>0)
+					set.add(R.roomID());
+			}
+		}
+		return set;
 	}
 	public void setName(String newName){name=newName;}
 	public String Name(){return name;}
@@ -198,6 +225,39 @@ public class StdArea implements Area
 				subOps.removeElementAt(s);
 		}
 	}
+
+	public String getNewRoomID(Room startRoom, int direction)
+	{
+		int highest=Integer.MIN_VALUE;
+		int lowest=Integer.MAX_VALUE;
+		Hashtable allNums=new Hashtable();
+		try
+		{
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if((R.getArea().Name().equals(Name()))
+				&&(R.roomID().startsWith(Name()+"#")))
+				{
+					int newnum=CMath.s_int(R.roomID().substring(Name().length()+1));
+					if(newnum>=highest)	highest=newnum;
+					if(newnum<=lowest) lowest=newnum;
+					allNums.put(new Integer(newnum),R);
+				}
+			}
+	    }catch(NoSuchElementException e){}
+		if((highest<0)&&(CMLib.map().getRoom(Name()+"#0"))==null)
+			return Name()+"#0";
+		if(lowest>highest) lowest=highest+1;
+		for(int i=lowest;i<=highest+1000;i++)
+		{
+			if((!allNums.containsKey(new Integer(i)))
+			&&(CMLib.map().getRoom(Name()+"#"+i)==null))
+				return Name()+"#"+i;
+		}
+		return Name()+"#"+Math.random();
+	}
+
 
 	public CMObject newInstance()
 	{
@@ -455,7 +515,7 @@ public class StdArea implements Area
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition()
 			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
-		if((affected instanceof Room)&&(CMLib.utensils().hasASky((Room)affected)))
+		if((affected instanceof Room)&&(CMLib.map().hasASky((Room)affected)))
 		{
 			if((getClimateObj().weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
 			   ||(getClimateObj().weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM)
@@ -597,11 +657,16 @@ public class StdArea implements Area
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return null;
+			return new int[Area.AREASTAT_NUMBER];
+		int[] s=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
+		if(s!=null) return s;
+		Resources.removeResource("HELP_"+Name().toUpperCase());
 		getAreaStats();
-		return statData;
+		s=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
+		if(s==null) return new int[Area.AREASTAT_NUMBER];
+		return s;
 	}
-	public StringBuffer getAreaStats()
+	public synchronized StringBuffer getAreaStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return new StringBuffer("");
@@ -621,7 +686,7 @@ public class StdArea implements Area
 		    if(F.showinspecialreported())
 		        theFaction=F;
 		}
-		statData=new int[Area.AREASTAT_NUMBER];
+		int[] statData=new int[Area.AREASTAT_NUMBER];
 		statData[Area.AREASTAT_POPULATION]=0;
 		statData[Area.AREASTAT_MINLEVEL]=Integer.MAX_VALUE;
 		statData[Area.AREASTAT_MAXLEVEL]=Integer.MIN_VALUE;
@@ -630,7 +695,7 @@ public class StdArea implements Area
 		statData[Area.AREASTAT_AVGALIGN]=0;
 		statData[Area.AREASTAT_TOTLEVEL]=0;
 		statData[Area.AREASTAT_INTLEVEL]=0;
-        statData[Area.AREASTAT_VISITABLEROOMS]=numberOfProperIDedRooms();
+        statData[Area.AREASTAT_VISITABLEROOMS]=getProperRoomnumbers().roomCountAllAreas();
         s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
 		long totalAlignments=0;
         Room R=null;
@@ -665,7 +730,8 @@ public class StdArea implements Area
 		{
 			statData[Area.AREASTAT_MINLEVEL]=0;
 			statData[Area.AREASTAT_MAXLEVEL]=0;
-			s.append("Population     : 0\n\r");
+			if(getProperRoomnumbers().roomCountAllAreas()/2<properRooms.size())
+				s.append("Population     : 0\n\r");
 		}
 		else
 		{
@@ -693,6 +759,7 @@ public class StdArea implements Area
 			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
 			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
 		}
+		Resources.submitResource("STATS_"+Name().toUpperCase(),statData);
 		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;
 	}
@@ -717,18 +784,6 @@ public class StdArea implements Area
 		return null;
 	}
 
-    public void clearMetroCache()
-	{
-		synchronized(properRooms)
-		{
-            metroRooms=null;
-		}
-        try{
-            for(Enumeration e=getParents();e.hasMoreElements();)
-                ((Area)e.nextElement()).clearMetroCache();
-        } catch(NoSuchElementException e){}
-	}
-
 	public int properSize()
 	{
 		synchronized(properRooms)
@@ -736,7 +791,8 @@ public class StdArea implements Area
 			return properRooms.size();
 		}
 	}
-    public void addRoom(Room R)
+	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
+    public void addProperRoom(Room R)
     {
         if(R==null) return;
         if(R.getArea()!=this)
@@ -748,7 +804,14 @@ public class StdArea implements Area
         {
             if(!properRooms.contains(R))
             {
+                addMetroRoom(R);
+                addProperRoomnumber(R.roomID());
                 Room R2=null;
+                if(R.roomID().length()==0)
+                {
+                	properRooms.insertElementAt(R,0);
+                	return;
+                }
                 for(int i=0;i<properRooms.size();i++)
                 {
                     R2=(Room)properRooms.elementAt(i);
@@ -758,25 +821,91 @@ public class StdArea implements Area
                             properRooms.setElementAt(R,i);
                         else
                             properRooms.insertElementAt(R,i);
-                        clearMetroCache();
                         return;
                     }
                 }
                 properRooms.addElement(R);
-                clearMetroCache();
             }
         }
     }
     
+	public void addMetroRoom(Room R)
+	{
+		if(R!=null)
+		{
+			/*synchronized(metroRooms)
+			{
+				if(!metroRooms.contains(R)) 
+					metroRooms.add(R);
+			}/
+			for(int p=getNumParents()-1;p>=0;p--)
+				getParent(p).addMetroRoom(R);
+			*/
+			addMetroRoomnumber(R.roomID());
+		}
+	}
+	public void delMetroRoom(Room R)
+	{
+		if(R!=null)
+		{
+			/*synchronized(metroRooms)
+			{
+				if(metroRooms.contains(R)) 
+					metroRooms.remove(R);
+			}
+			for(int p=getNumParents()-1;p>=0;p--)
+				getParent(p).delMetroRoom(R);
+			*/
+			delMetroRoomnumber(R.roomID());
+		}
+	}
+    public void addProperRoomnumber(String roomID)
+    {
+    	if((roomID!=null)&&(roomID.length()>0))
+    	{
+	        getProperRoomnumbers().add(roomID);
+	        addMetroRoomnumber(roomID);
+    	}
+    }
+    public void delProperRoomnumber(String roomID)
+    {
+    	if((roomID!=null)&&(roomID.length()>0))
+    	{
+	        getProperRoomnumbers().remove(roomID);
+	        delMetroRoomnumber(roomID);
+    	}
+    }
+    public void addMetroRoomnumber(String roomID)
+    {
+		if(metroRoomIDSet==null)
+			metroRoomIDSet=(RoomnumberSet)getProperRoomnumbers().copyOf();
+		if((roomID!=null)&&(roomID.length()>0)&&(!metroRoomIDSet.contains(roomID)))
+		{
+			metroRoomIDSet.add(roomID);
+			for(int p=getNumParents()-1;p>=0;p--)
+				getParent(p).addMetroRoomnumber(roomID);
+		}
+    }
+    public void delMetroRoomnumber(String roomID)
+    {
+		if((metroRoomIDSet!=null)
+		&&(roomID!=null)
+		&&(roomID.length()>0)
+		&&(metroRoomIDSet.contains(roomID)))
+		{
+			metroRoomIDSet.remove(roomID);
+			for(int p=getNumParents()-1;p>=0;p--)
+				getParent(p).delMetroRoomnumber(roomID);
+		}
+    }
     public boolean isRoom(Room R)
     {
         if(R==null) return false;
-        synchronized(properRooms)
-        {
-            return properRooms.contains(R);
-        }
+        if(R.roomID().length()>0) 
+        	return getProperRoomnumbers().contains(R.roomID());
+        return properRooms.contains(R);
     }
-    public void delRoom(Room R)
+    public void delProperRoom(Room R)
     {
         if(R==null) return;
         if(R instanceof GridLocale)
@@ -786,7 +915,8 @@ public class StdArea implements Area
             if(properRooms.contains(R))
             {
                 properRooms.removeElement(R);
-                clearMetroCache();
+	            delMetroRoom(R);
+	            delProperRoomnumber(R.roomID());
             }
         }
     }
@@ -794,33 +924,33 @@ public class StdArea implements Area
     public Room getRoom(String roomID)
     {
         if(properRooms.size()==0) return null;
-        int start=0;
-        int end=properRooms.size()-1;
-        while(start<=end)
+        synchronized(properRooms)
         {
-            int mid=(end+start)/2;
-            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
-            if(comp==0)
-                return (Room)properRooms.elementAt(mid);
-            else
-            if(comp>0)
-                end=mid-1;
-            else
-                start=mid+1;
-
+	        int start=0;
+	        int end=properRooms.size()-1;
+	        while(start<=end)
+	        {
+	            int mid=(end+start)/2;
+	            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+	            if(comp==0)
+	                return (Room)properRooms.elementAt(mid);
+	            else
+	            if(comp>0)
+	                end=mid-1;
+	            else
+	                start=mid+1;
+	
+	        }
         }
         return null;
     }
     
 	public int metroSize()
 	{
-		synchronized(properRooms)
-		{
-			if(metroRooms!=null)
-				return metroRooms.size();
-			makeMetroMap();
-			return metroRooms.size();
-		}
+		int num=properSize();
+		for(int c=getNumChildren()-1;c>=0;c--)
+			num+=getChild(c).metroSize();
+		return num;
 	}
 	public int numberOfProperIDedRooms()
 	{
@@ -830,7 +960,7 @@ public class StdArea implements Area
 			Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
 				if(R instanceof GridLocale)
-					num+=((GridLocale)R).xSize()*((GridLocale)R).ySize();
+					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
 				else
 					num++;
 		}
@@ -841,17 +971,23 @@ public class StdArea implements Area
 		synchronized(properRooms)
 		{
 			if(properSize()==0) return null;
-			return (Room)properRooms.elementAt(CMLib.dice().roll(1,properRooms.size(),-1));
+			Room R=(Room)properRooms.elementAt(CMLib.dice().roll(1,properRooms.size(),-1));
+			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+			return R;
 		}
 	}
 	public Room getRandomMetroRoom()
 	{
-		synchronized(properRooms)
+		/*synchronized(metroRooms)
 		{
-			if(metroRooms==null) makeMetroMap();
 			if(metroSize()==0) return null;
-			return (Room)metroRooms.elementAt(CMLib.dice().roll(1,metroRooms.size(),-1));
-		}
+			Room R=(Room)metroRooms.elementAt(CMLib.dice().roll(1,metroRooms.size(),-1));
+			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+			return R;
+		}*/
+		Room R=getRoom(metroRoomIDSet.random()); 
+		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+		return R;
 	}
 
 	public Enumeration getProperMap()
@@ -861,38 +997,17 @@ public class StdArea implements Area
 			return properRooms.elements();
 		}
 	}
-	public Enumeration getMetroMap()
+	public Vector getMetroCollection()
 	{
-		synchronized(properRooms)
-		{
-			if(metroRooms!=null) return metroRooms.elements();
-			makeMetroMap();
-			return metroRooms.elements();
-		}
+		Vector V=(Vector)properRooms.clone();
+		V.ensureCapacity(metroSize());
+		for(int c=getNumChildren()-1;c>=0;c--)
+			V.addAll(getChild(c).getMetroCollection());
+		return V;
+		
 	}
-
-	protected void makeMetroMap()
-	{
-		synchronized(properRooms)
-		{
-			if(metroRooms!=null) return;
-            if(getNumChildren()<=0)
-            {
-                metroRooms=properRooms;
-                return;
-            }
-            Vector myMap=(Vector)properRooms.clone();
-			for(int i=0;i<getNumChildren();i++)
-			{
-				Area A=getChild(i);
-				if(A!=null)
-				for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
-					myMap.addElement(e.nextElement());
-			}
-			metroRooms=myMap;
-		}
-	}
-
+	public Enumeration getCompleteMap(){return getProperMap();}
+	public Enumeration getMetroMap(){return getMetroCollection().elements();}
 	public Vector getSubOpVectorList()
 	{
 		return subOps;

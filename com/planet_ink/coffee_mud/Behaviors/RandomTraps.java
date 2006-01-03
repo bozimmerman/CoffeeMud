@@ -39,6 +39,7 @@ public class RandomTraps extends ActiveTicker
 	protected Vector maintained=new Vector();
 	protected int minTraps=1;
 	protected int maxTraps=1;
+	protected int avgTraps=1;
 	protected boolean doAnyItems=false;
 	protected boolean doAnyContainers=false;
 	protected boolean doDooredContainers=false;
@@ -191,6 +192,8 @@ public class RandomTraps extends ActiveTicker
 		super.setParms(oldParms);
 		minTraps=CMParms.getParmInt(oldParms,"mintraps",1);
 		maxTraps=CMParms.getParmInt(oldParms,"maxtraps",1);
+		if(maxTraps<minTraps) maxTraps=minTraps;
+		avgTraps=CMLib.dice().roll(1,maxTraps-minTraps,minTraps);
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
@@ -233,12 +236,8 @@ public class RandomTraps extends ActiveTicker
 		if((canAct(ticking,tickID))||(maintained.size()<minTraps))
 		{
             tickStatus=Tickable.STATUS_MISC+2;
-			int num=minTraps;
-			if(maintained.size()>=minTraps)
-				num=maintained.size()+1;
-			if(num>maxTraps) num=maxTraps;
 			Vector allTraps=new Vector();
-			if(maintained.size()<num)
+			if(maintained.size()<avgTraps)
 				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 				{
 					Ability A=(Ability)e.nextElement();
@@ -247,7 +246,8 @@ public class RandomTraps extends ActiveTicker
 				}
 
             tickStatus=Tickable.STATUS_MISC+3;
-			while(maintained.size()<num)
+            
+			if(maintained.size()<avgTraps)
 			{
 				Vector elligible=new Vector();
 				if(ticking instanceof Room)
@@ -263,11 +263,11 @@ public class RandomTraps extends ActiveTicker
 						makeRoomElligible((Room)m.nextElement(),elligible);
 				}
 				else
-					break;
+					return true;
                 
                 tickStatus=Tickable.STATUS_MISC+6;
 				if(elligible.size()==0)
-					break;
+					return true;
 
 				int oldSize=elligible.size();
 				for(int r=0;r<oldSize;r++)
@@ -353,7 +353,7 @@ public class RandomTraps extends ActiveTicker
 				}
 
 				if(elligible.size()==0)
-					break;
+					return true;
 
                 tickStatus=Tickable.STATUS_MISC+31;
 				Environmental E=(Environmental)elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
@@ -364,7 +364,7 @@ public class RandomTraps extends ActiveTicker
 						elligibleTraps.addElement(allTraps.elementAt(t));
 
 				if(elligibleTraps.size()==0)
-					break;
+					return true;
 
                 tickStatus=Tickable.STATUS_MISC+32;
 				Trap T=(Trap)elligibleTraps.elementAt(CMLib.dice().roll(1,elligibleTraps.size(),-1));
@@ -372,22 +372,6 @@ public class RandomTraps extends ActiveTicker
 				T.setProfficiency(100);
 				T.makeLongLasting();
 				T.setSavable(false);
-				/*
-					Room R=CMLib.utensils().roomLocation(E);
-					String rname=(R!=null)?CMLib.map().getExtendedRoomID(R):"";
-					if((E instanceof Exit)&&(ticking instanceof Area))
-					{
-						for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
-						{
-							Room R2=(Room)r.nextElement();
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-								if(R2.rawExits()[d]==E)
-								{ rname=CMLib.map().getExtendedRoomID(R2)+" "+Directions.getDirectionName(d); break;}
-							if(rname.length()>0) break;
-						}
-					}
-					Log.sysOut("RandomTraps",E.name()+" in "+rname+" had "+T.name()+" set.");
-				*/
 				E.addEffect(T);
 				maintained.addElement(E);
                 tickStatus=Tickable.STATUS_MISC+33;

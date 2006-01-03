@@ -32,23 +32,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface GridLocale extends Room
+public interface GridLocale extends Room, GridZones
 {
-	public Room getAltRoomFrom(Room loc, int direction);
+	public String getGridChildLocaleID();
+	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction);
 	public void buildGrid();
 	public void clearGrid(Room bringBackHere);
-	public String getChildLocaleID();
-	public boolean isMyChild(Room loc);
-	public String getChildCode(Room loc);
-	public Room getChild(String childCode);
-	public Room getRandomChild();
-	public int getChildX(Room loc);
-	public int getChildY(Room loc);
 	public Vector getAllRooms();
-	public int xSize();
-	public int ySize();
-	public void setXSize(int x);
-	public void setYSize(int y);
 	public Vector outerExits();
 	public void addOuterExit(WorldMap.CrossExit x);
 	public void delOuterExit(WorldMap.CrossExit x);

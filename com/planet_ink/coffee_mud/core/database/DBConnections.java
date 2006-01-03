@@ -192,7 +192,12 @@ public class DBConnections
 			}
 			ThisDB=null;
 			if(Connections.size()<maxConnections)
-				try{ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);}catch(Exception e){Log.errOut("DBConnections",e.getMessage());}
+				try{ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);
+				}catch(Exception e){
+					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0)) 
+						Log.errOut("DBConnections",e.getMessage());
+					ThisDB=null;
+				}
 			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
 			{ 
 				Log.errOut("DBConnections","Failed to connect to database.");
@@ -326,6 +331,7 @@ public class DBConnections
 			Log.errOut("DBConnections",""+sqle);
 			return 0;
 		}
+		catch(java.lang.NumberFormatException nfe){ return 0;}
 	}
 
 	/** 

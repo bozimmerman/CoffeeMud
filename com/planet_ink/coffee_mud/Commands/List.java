@@ -59,6 +59,30 @@ public class List extends StdCommand
 		return lines;
 	}
 
+	public StringBuffer roomExpires(Enumeration these, Room likeRoom)
+	{
+		StringBuffer lines=new StringBuffer("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
+		if(!these.hasMoreElements()) return lines;
+		if(likeRoom==null) return lines;
+        Room thisThang=null;
+        String thisOne=null;
+        for(Enumeration r=these;r.hasMoreElements();)
+        {
+            thisThang=(Room)r.nextElement();
+            thisOne=thisThang.roomID();
+			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
+			{
+				String expires=null;
+				if(thisThang.expirationDate()==0)
+					expires="*";
+				else
+					expires=CMLib.time().date2String(thisThang.expirationDate());
+				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+expires+"\n\r");
+			}
+		}
+		lines.append("\n\r");
+		return lines;
+	}
     public StringBuffer roomPropertyDetails(Enumeration these, Room likeRoom)
     {
         StringBuffer lines=new StringBuffer("");
@@ -213,7 +237,7 @@ public class List extends StdCommand
 			int numMobs=0;
 			int totalAlignment=0;
 			int totalLevels=0;
-			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -290,7 +314,7 @@ public class List extends StdCommand
 			StringBuffer ext=new StringBuffer("links ");
 			Vector myVec=null;
 			Vector clearVec=null;
-			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -948,6 +972,7 @@ public class List extends StdCommand
         /*48*/{"OBJCOUNTERS","LISTADMIN"},
         /*49*/{"POLLS","POLLS","LISTADMIN"},
         /*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
+		/*51*/{"EXPIRES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -982,7 +1007,7 @@ public class List extends StdCommand
         {
             R=(Room)roomsToDo.nextElement();
             if(R.roomID().length()==0) continue;
-            set=CMLib.database().DBReadRoomData(CMLib.map().getExtendedRoomID(R),false,null);
+            set=CMLib.database().DBReadRoomData(CMLib.map().getExtendedRoomID(R),false);
             if((set==null)||(set.size()==0))
                 buf.append("'"+CMLib.map().getExtendedRoomID(R)+"' could not be read from the database!\n\r");
             else
@@ -1076,7 +1101,7 @@ public class List extends StdCommand
 		switch(code)
 		{
 		case 0:	s.wraplessPrintln(unlinkedExits(mob,commands)); break;
-		case 1: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.items()).toString()); break;
+		case 1: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.basicItems()).toString()); break;
 		case 2: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.armor()).toString()); break;
 		case 3: s.wraplessPrintln(listEnvResources(rest.equalsIgnoreCase("SHORT"))); break;
 		case 4: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.weapons()).toString()); break;
@@ -1144,6 +1169,7 @@ public class List extends StdCommand
         case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
         case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
+		case 51: s.wraplessPrintln(roomExpires(mob.location().getArea().getProperMap(),mob.location()).toString()); break;
         default:
 			s.println("List?!");
 			break;

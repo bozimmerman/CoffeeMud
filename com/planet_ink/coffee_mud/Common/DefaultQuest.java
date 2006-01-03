@@ -46,6 +46,9 @@ public class DefaultQuest implements Quest, Tickable
     protected Vector stuff=new Vector();
     protected Vector winners=new Vector();
     protected int minWait=-1;
+    protected int minPlayers=-1;
+    protected String playerMask="";
+    protected int runLevel=-1;
     protected int maxWait=-1;
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
@@ -87,6 +90,13 @@ public class DefaultQuest implements Quest, Tickable
     public int duration(){return duration;}
     public void setDuration(int newTicks){duration=newTicks;}
 
+	public int minPlayers(){return minPlayers;}
+	public void setMinPlayers(int players){minPlayers=players;}
+	public int runLevel(){return runLevel;}
+	public void setRunLevel(int level){runLevel=level;}
+	public String playerMask(){return playerMask;}
+	public void setPlayerMask(String mask){playerMask=mask;}
+	
     // the rest of the script.  This may be semicolon-separated instructions,
     // or a LOAD command followed by the quest script path.
     public void setScript(String parm){
@@ -112,6 +122,9 @@ public class DefaultQuest implements Quest, Tickable
         duration=-1;
         minWait=-1;
         maxWait=-1;
+        minPlayers=-1;
+        playerMask="";
+        runLevel=-1;
         for(int v=0;v<script.size();v++)
         {
             String s=(String)script.elementAt(v);
@@ -129,6 +142,18 @@ public class DefaultQuest implements Quest, Tickable
                         setDuration(CMath.s_int((String)p.elementAt(2)));
                     else
                     if((cmd.equals("WAIT"))&&(p.size()>2))
+                        setMinWait(CMath.s_int((String)p.elementAt(2)));
+                    else
+                    if((cmd.equals("MINPLAYERS"))&&(p.size()>2))
+                        setMinPlayers(CMath.s_int((String)p.elementAt(2)));
+                    else
+                    if((cmd.equals("PLAYERMASK"))&&(p.size()>2))
+                        setPlayerMask(CMParms.combine(p,2));
+                    else
+                    if((cmd.equals("RUNLEVEL"))&&(p.size()>2))
+                        setRunLevel(CMath.s_int((String)p.elementAt(2)));
+                    else
+                    if((cmd.equals("MINPLAYERS"))&&(p.size()>2))
                         setMinWait(CMath.s_int((String)p.elementAt(2)));
                     else
                     if((cmd.equals("DATE"))&&(p.size()>2))
@@ -280,9 +305,9 @@ public class DefaultQuest implements Quest, Tickable
                         break;
                     }
                     if(q.room==null)
-                        CMLib.utensils().resetArea(q.area);
+                        CMLib.map().resetArea(q.area);
                     else
-                        CMLib.utensils().resetRoom(q.room);
+                        CMLib.map().resetRoom(q.room);
                 }
                 else
                 if(cmd.equals("SET"))
@@ -849,6 +874,12 @@ public class DefaultQuest implements Quest, Tickable
                     else
                     if(cmd.equals("INTERVAL")){}
                     else
+                    if(cmd.equals("PLAYERMASK")){}
+                    else
+                    if(cmd.equals("RUNLEVEL")){}
+                    else
+                    if(cmd.equals("MINPLAYERS")){}
+                    else
                     {
                         if(!isQuiet)
                             Log.errOut("Quests","Quest '"+name()+"', unknown variable '"+cmd+"'.");
@@ -1335,7 +1366,7 @@ public class DefaultQuest implements Quest, Tickable
                             M.location().delInhabitant(M);
                         M.setLocation(null);
                         M.destroy();
-                        CMLib.utensils().resetRoom(R);
+                        CMLib.map().resetRoom(R);
                     }
                     else
                     {
@@ -1549,7 +1580,27 @@ public class DefaultQuest implements Quest, Tickable
             if(waitRemaining<0)
             {
                 ticksRemaining=duration();
-                startQuest();
+                boolean allowedToRun=true;
+                if(runLevel()>=0)
+            	for(int q=0;q<CMLib.quests().numQuests();q++)
+            	{
+            		Quest Q=CMLib.quests().fetchQuest(q);
+            		if((Q!=this)&&(Q.running())&&(Q.runLevel()<=runLevel()))
+            		{ allowedToRun=false; break;}
+            	}
+                int numElligiblePlayers=CMLib.sessions().size();
+                if(playerMask.length()>0)
+                {
+                	numElligiblePlayers=0;
+                	for(int s=CMLib.sessions().size()-1;s>=0;s--)
+                	{
+                		Session S=CMLib.sessions().elementAt(s);
+                		if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob())))
+                			numElligiblePlayers++;
+                	}
+                }
+                if((allowedToRun)&&(numElligiblePlayers>=minPlayers))
+	                startQuest();
             }
         }
         tickStatus=Tickable.STATUS_NOT;

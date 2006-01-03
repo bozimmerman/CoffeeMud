@@ -81,7 +81,7 @@ public class EndlessThinSky extends StdThinGrid
 	{
 		super.fillExitsOfGridRoom(R,x,y);
 		
-		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
 			return;
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -109,18 +109,18 @@ public class EndlessThinSky extends StdThinGrid
 			else
 			if(x>0)
 			{
-				R2=getMakeSingleGridRoom(x-1,ySize()-1);
+				R2=getMakeSingleGridRoom(x-1,yGridSize()-1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.UP,ox,ox);
 			}
 			else
 			{
-				R2=getMakeSingleGridRoom(xSize()-1,ySize()-1);
+				R2=getMakeSingleGridRoom(xGridSize()-1,yGridSize()-1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.UP,ox,ox);
 			}
 		}
-		if((y==ySize()-1)
+		if((y==yGridSize()-1)
 		&&(R.rawDoors()[Directions.DOWN]!=rawDoors()[Directions.DOWN])
 		&&(rawDoors()[Directions.DOWN]!=null)
 	    &&(rawExits()[Directions.DOWN]!=null))
@@ -132,14 +132,14 @@ public class EndlessThinSky extends StdThinGrid
 		else
 		if(R.rawDoors()[Directions.DOWN]==null)
 		{
-			if(y<ySize()-1)
+			if(y<yGridSize()-1)
 			{
 				R2=getMakeSingleGridRoom(x,y+1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.DOWN,ox,ox);
 			}
 			else
-			if(x<xSize()-1)
+			if(x<xGridSize()-1)
 			{
 				R2=getMakeSingleGridRoom(x+1,0);
 				if(R2!=null)
@@ -155,12 +155,12 @@ public class EndlessThinSky extends StdThinGrid
 		
 		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))
 		{
-			R2=getMakeSingleGridRoom(x,ySize()-1);
+			R2=getMakeSingleGridRoom(x,yGridSize()-1);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
 		}
 		else
-		if((y==ySize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
+		if((y==yGridSize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,0);
 			if(R2!=null)
@@ -170,12 +170,12 @@ public class EndlessThinSky extends StdThinGrid
 		
 		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
 		{
-			R2=getMakeSingleGridRoom(xSize()-1,y);
+			R2=getMakeSingleGridRoom(xGridSize()-1,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.WEST,ox,ox);
 		}
 		else
-		if((x==xSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
+		if((x==xGridSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
 		{
 			R2=getMakeSingleGridRoom(0,y);
 			if(R2!=null)
@@ -186,28 +186,28 @@ public class EndlessThinSky extends StdThinGrid
         {
             if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
             {
-                R2=getMakeSingleGridRoom(xSize()-1,ySize()-1);
+                R2=getMakeSingleGridRoom(xGridSize()-1,yGridSize()-1);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
             }
             else
-            if(((x==xSize()-1)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
+            if(((x==xGridSize()-1)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
             {
                 R2=getMakeSingleGridRoom(0,0);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
             }
             
-            if(((x==xSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
+            if(((x==xGridSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
             {
-                R2=getMakeSingleGridRoom(0,ySize()-1);
+                R2=getMakeSingleGridRoom(0,yGridSize()-1);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
             }
             else
-            if(((x==0)||(y==ySize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
+            if(((x==0)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
             {
-                R2=getMakeSingleGridRoom(xSize()-1,0);
+                R2=getMakeSingleGridRoom(xGridSize()-1,0);
                 if(R2!=null)
                     linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
             }

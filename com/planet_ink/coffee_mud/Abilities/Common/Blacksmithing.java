@@ -217,7 +217,7 @@ public class Blacksmithing extends CraftingSkill implements ItemCraftor
 		displayText="You are smithing "+building.name();
 		verb="smithing "+building.name();
         playSound="tinktinktink2.wav";
-		building.setDisplayText(itemName+" is here");
+		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));

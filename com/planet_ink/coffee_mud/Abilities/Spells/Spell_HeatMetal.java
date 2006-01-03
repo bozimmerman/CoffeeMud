@@ -87,7 +87,7 @@ public class Spell_HeatMetal extends Spell
 			   &&(!mob.amDead()))
 			{
 				int damage=CMLib.dice().roll(1,6,1);
-				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
 				{
 					CMLib.commands().postDrop(mob,item,false,false);

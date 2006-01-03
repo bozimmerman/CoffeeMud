@@ -284,7 +284,7 @@ public class Conquerable extends Arrest
 			if(!I.tick(this,Tickable.TICKID_CLANITEM))
                 deRegisterClanItem(i);
 			else
-				I.setDispossessionTime(0);
+				I.setExpirationDate(0);
 		}
 
 		// calculate total control points
@@ -420,7 +420,7 @@ public class Conquerable extends Arrest
 					for(int i=clanItems.size()-1;i>=0;i--)
 					{
 						ClanItem I=(ClanItem)clanItems.elementAt(i);
-						Room R=CMLib.utensils().roomLocation(I);
+						Room R=CMLib.map().roomLocation(I);
 						if(R==null)
                             deRegisterClanItem(i);
                         else
@@ -434,7 +434,7 @@ public class Conquerable extends Arrest
                             deRegisterClanItem(i);
 						else
 						if(I!=null)
-							I.setDispossessionTime(0);
+							I.setExpirationDate(0);
 					}
 				}
 
@@ -516,6 +516,26 @@ public class Conquerable extends Arrest
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
         boolean debugging=CMSecurity.isDebugging("CONQUEST");
+		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		&&(msg.target() instanceof Room)
+		&&(myArea!=null)
+		&&(!CMSecurity.isDisabled("CONQUEST"))
+		&&(totalControlPoints>=0)
+		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
+		{
+			synchronized(clanItems)
+			{
+				for(int i=0;i<clanItems.size();i++)
+				{
+					ClanItem I=(ClanItem)clanItems.elementAt(i);
+					Room R=CMLib.map().roomLocation(I);
+					if((R==msg.target())
+					&&(!((Item)I).amDestroyed())
+					&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent(I))))
+						return false;
+				}
+			}
+		}
 		if((holdingClan.length()>0)
 		&&(msg.source().getClanID().equals(holdingClan))
 		&&(!CMSecurity.isDisabled("CONQUEST")))
@@ -660,7 +680,7 @@ public class Conquerable extends Arrest
 				&&(!I.amDestroyed())
 				&&(I.ciType()==ClanItem.CI_FLAG))
 				{
-					Room R=CMLib.utensils().roomLocation(I);
+					Room R=CMLib.map().roomLocation(I);
 					if((R!=null)&&((A==null)||(A.inMetroArea(R.getArea()))))
 						return true;
 				}
@@ -811,7 +831,7 @@ public class Conquerable extends Arrest
 			}
 			else
 			if((holdingClan.length()>0)
-			&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)
+			&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 			&&(msg.source().isMonster())
 			&&(msg.source().getStartRoom()!=null)
 			&&(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))
@@ -858,7 +878,8 @@ public class Conquerable extends Arrest
 				}
 			}
 		}
-		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(myArea!=null)
 		&&(!CMSecurity.isDisabled("CONQUEST")))
 		{
@@ -876,7 +897,7 @@ public class Conquerable extends Arrest
 					for(int i=0;i<clanItems.size();i++)
 					{
 						ClanItem I=(ClanItem)clanItems.elementAt(i);
-						Room R=CMLib.utensils().roomLocation(I);
+						Room R=CMLib.map().roomLocation(I);
 						if((R!=null)
 						&&(((Area)myHost).inMetroArea(R.getArea()))
 						&&(!((Item)I).amDestroyed())

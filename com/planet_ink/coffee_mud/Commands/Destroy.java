@@ -109,7 +109,7 @@ public class Destroy extends BaseItemParser
 
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.Name()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
-			CMLib.utensils().obliteratePlayer(deadMOB,false);
+			CMLib.map().obliteratePlayer(deadMOB,false);
 			mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
             deadMOB.destroy();
@@ -180,7 +180,7 @@ public class Destroy extends BaseItemParser
 
 			if(!confirmed)
 				if(!mob.session().confirm("You are fixing permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
-			CMLib.utensils().obliterateRoom(deadRoom);
+			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,"The sound of massive destruction rings in your ears.");
 			Log.sysOut("Rooms",mob.Name()+" destroyed room "+deadRoom.roomID()+".");
@@ -200,8 +200,8 @@ public class Destroy extends BaseItemParser
 			{
 				GridLocale GL=mob.location().getGridParent();
 				Vector outer=GL.outerExits();
-				int myX=GL.getChildX(mob.location());
-				int myY=GL.getChildY(mob.location());
+				int myX=GL.getGridChildX(mob.location());
+				int myY=GL.getGridChildY(mob.location());
 				for(int v=0;v<outer.size();v++)
 				{
 					WorldMap.CrossExit CE=(WorldMap.CrossExit)outer.elementAt(v);
@@ -387,7 +387,7 @@ public class Destroy extends BaseItemParser
 			}
 			confirmed=true;
 		}
-		CMLib.utensils().obliterateArea(areaName);
+		CMLib.map().obliterateArea(areaName);
 		if(confirmed)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
@@ -531,7 +531,7 @@ public class Destroy extends BaseItemParser
 		default:
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_GENERAL|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
+		CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

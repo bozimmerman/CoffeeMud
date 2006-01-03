@@ -94,12 +94,12 @@ public class Link extends StdCommand
 		
 		WorldMap.CrossExit CE=null;
 		GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
-		int hereX=(hereGL!=null)?hereGL.getChildX(mob.location()):-1;
-		int hereY=(hereGL!=null)?hereGL.getChildY(mob.location()):-1;
+		int hereX=(hereGL!=null)?hereGL.getGridChildX(mob.location()):-1;
+		int hereY=(hereGL!=null)?hereGL.getGridChildY(mob.location()):-1;
 		Vector hereSet=(hereGL!=null)?hereGL.outerExits():null;
 		GridLocale thereGL=(room.getGridParent()!=null)?room.getGridParent():null;
-		int thereX=(thereGL!=null)?thereGL.getChildX(room):-1;
-		int thereY=(thereGL!=null)?thereGL.getChildY(room):-1;
+		int thereX=(thereGL!=null)?thereGL.getGridChildX(room):-1;
+		int thereY=(thereGL!=null)?thereGL.getGridChildY(room):-1;
 		Vector thereSet=(thereGL!=null)?thereGL.outerExits():null;
 		if(hereGL!=null)
 		{
@@ -141,7 +141,7 @@ public class Link extends StdCommand
 			
 			if((room.rawDoors()[opDir]==null)
 			||(thereGL==room.rawDoors()[opDir])
-			||(thereGL.isMyChild(room.rawDoors()[opDir])))
+			||(thereGL.isMyGridChild(room.rawDoors()[opDir])))
 			{
 				for(int v=0;v<thereSet.size();v++)
 				{

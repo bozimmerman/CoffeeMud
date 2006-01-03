@@ -602,13 +602,13 @@ public interface Ability extends Environmental
 	public static final int ACODE_POISON=11;
 	/** constant returned by classificationCode() designating this ability as a Super Power @see Ability#classificationCode() */
 	public static final int ACODE_SUPERPOWER=12;
-	/** constant used to mask classificationCode() to return only the lower order ACODE_* constant. @see Ability#classificationCode() */
+	/** constant returned by classificationCode() designating this ability as a Archon ONly Skill @see Ability#classificationCode() */
 	public static final int ALL_ACODES=31;
 	/** array of string describtions for the ACODE_* constants, indexed by their values */
 	public static final String[] ACODE_DESCS={
 		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY",
 		"THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL",
-		"DISEASE","POISON","SUPERPOWER"
+		"DISEASE","POISON","SUPERPOWER","ARCHON SKILL"
 	};
 
 	/** constant mask returned by classificationCode() designating this ability as being Divination @see Ability#classificationCode() */
@@ -628,12 +628,14 @@ public interface Ability extends Environmental
 	/** constant mask returned by classificationCode() designating this ability as being Conjuration @see Ability#classificationCode() */
 	public static final int DOMAIN_CONJURATION=8<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
+	public static final int DOMAIN_ARCHON=9<<5;
+	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_DESCS={
 		"NOTHING","DIVINATION","ABJURATION","ILLUSION",
 		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION",
-		"ENCHANTMENT/CHARM","CONJURATION"
+		"ENCHANTMENT/CHARM","CONJURATION", "ARCHON"
 	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */

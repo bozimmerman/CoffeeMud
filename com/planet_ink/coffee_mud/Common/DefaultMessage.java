@@ -137,7 +137,7 @@ public class DefaultMessage implements CMMsg
         for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
             MSGTYPE_DESCS.put(CMMsg.TYPE_DESCS[i],new Integer(i));
         for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
-            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],new Integer(CMath.pow(2,11+i)));
+            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],new Integer((int)CMath.pow(2,11+i)));
         for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
             MSGTYPE_DESCS.put(CMMsg.MISC_DESCS[i][0],CMMsg.MISC_DESCS[i][1]);
         return MSGTYPE_DESCS;
@@ -246,11 +246,11 @@ public class DefaultMessage implements CMMsg
             if(I==null)
             for(int i=0;i<MASK_DESCS.length;i++)
                 if(code2.startsWith(MASK_DESCS[i]))
-                { I=new Integer(CMath.pow(2,11+i)); break;}
+                { I=new Integer((int)CMath.pow(2,11+i)); break;}
             if(I==null)
             for(int i=0;i<MASK_DESCS.length;i++)
                 if(MASK_DESCS[i].startsWith(code2))
-                { I=new Integer(CMath.pow(2,11+i)); break;}
+                { I=new Integer((int)CMath.pow(2,11+i)); break;}
             if(I==null)
             for(int i=0;i<MISC_DESCS.length;i++)
                 if(code2.startsWith((String)MISC_DESCS[i][0]))

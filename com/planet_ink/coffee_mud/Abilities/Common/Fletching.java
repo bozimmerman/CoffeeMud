@@ -272,7 +272,7 @@ public class Fletching extends CraftingSkill implements ItemCraftor
 			displayText="You are making "+building.name();
 			verb="making "+building.name();
             playSound="sanding.wav";
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

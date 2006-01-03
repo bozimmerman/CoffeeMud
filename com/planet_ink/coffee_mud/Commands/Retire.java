@@ -56,7 +56,7 @@ public class Retire extends StdCommand
 		if(pwd.equalsIgnoreCase("Y")||pwd.equalsIgnoreCase("YES"))
 		{
 			mob.tell("Fine!  Goodbye then!");
-			CMLib.utensils().obliteratePlayer(mob,false);
+			CMLib.map().obliteratePlayer(mob,false);
 		}
 		else
 			mob.tell("Whew.  Close one.");

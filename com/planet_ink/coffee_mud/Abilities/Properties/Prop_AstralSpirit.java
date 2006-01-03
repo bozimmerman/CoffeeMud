@@ -67,7 +67,7 @@ public class Prop_AstralSpirit extends Property
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
 			   return super.okMessage(myHost,msg);
@@ -92,7 +92,7 @@ public class Prop_AstralSpirit extends Property
 		}
 		else
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
-		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
+		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;

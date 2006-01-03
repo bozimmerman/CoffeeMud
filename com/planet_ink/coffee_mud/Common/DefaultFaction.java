@@ -678,7 +678,7 @@ public class DefaultFaction implements Faction, MsgListener
 
 		if(factionAdj==0) return;
 		
-        CMMsg FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
+        CMMsg FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
         FacMsg.setValue(factionAdj);
         if(source.location()!=null)
         {
@@ -693,7 +693,7 @@ public class DefaultFaction implements Faction, MsgListener
 	                for(Enumeration e=relations.keys();e.hasMoreElements();) 
 	                {
 	                    String relID=((String)e.nextElement());
-	                    FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
+	                    FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
 	                    FacMsg.setValue((int)Math.round(CMath.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
 	                    if(source.location().okMessage(source,FacMsg))
 	                        source.location().send(source, FacMsg);
@@ -859,7 +859,7 @@ public class DefaultFaction implements Faction, MsgListener
                 {    IDdomainFilter=i<<5;  ID=newID;return true;}
             for(int i=0;i< Ability.FLAG_DESCS.length;i++)
                 if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
-                { IDflagFilter=CMath.pow(2,i);  ID=newID; return true;}
+                { IDflagFilter=(int)CMath.pow(2,i);  ID=newID; return true;}
             if(CMClass.getAbility(newID)!=null)
             { ID=newID; return true;}
             return false;
@@ -1047,12 +1047,12 @@ public class DefaultFaction implements Faction, MsgListener
                         if(not)
                         {
                             if(notflag<0) notflag=0;
-                            notflag=notflag|CMath.pow(2,i);
+                            notflag=notflag|(int)CMath.pow(2,i);
                         }
                         else
                         {
                             if(flag<0) flag=0;
-                            flag=flag|CMath.pow(2,i);
+                            flag=flag|(int)CMath.pow(2,i);
                         }
                     }
                 if(!known)

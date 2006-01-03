@@ -408,8 +408,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 						}
 					}
                     connect();
-					if(e.getMessage()!=null)
-						Log.errOut("InterMud","384-"+e.getMessage());
+        			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+					if(errMsg!=null) Log.errOut("InterMud","384-"+errMsg);
                     return;
                 }
                 try {
@@ -418,8 +418,8 @@ public class Intermud implements Runnable, Persistent, Serializable
                     data = (Vector)LPCData.getLPCData(str);
                 }
                 catch( I3Exception e ) {
-					if(e.getMessage()!=null)
-						Log.errOut("InterMud","389-"+e.getMessage());
+        			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+					if(errMsg!=null) Log.errOut("InterMud","389-"+errMsg);
                     continue;
                 }
             }
@@ -589,7 +589,8 @@ public class Intermud implements Runnable, Persistent, Serializable
             output.write(packet);
         }
         catch( java.io.IOException e ) {
-            if(e.getMessage()!=null) Log.errOut("InterMud","557-"+e.getMessage());
+			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+			if(errMsg!=null) Log.errOut("InterMud","557-"+errMsg);
         }
     }
 
@@ -621,8 +622,6 @@ public class Intermud implements Runnable, Persistent, Serializable
 		shutdown=true;
 		try { if(input!=null) input.close();}catch(Exception e){}
 		try { if(connection!=null) connection.close();}catch(Exception e){}
-		try { if(input_thread!=null) input_thread.interrupt(); }catch(Exception e){}
-		input_thread=null;
 		if(save_thread!=null)
 		{
 			try { save_thread.close();}catch(Exception e){}
@@ -631,6 +630,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 		save_thread=null;
         try { save(); }
         catch( PersistenceException e ) { }
+		try { if(input_thread!=null) input_thread.interrupt(); }catch(Exception e){}
+		input_thread=null;
 		shutdown=false;
     }
 

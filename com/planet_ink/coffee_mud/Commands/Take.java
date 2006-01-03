@@ -142,7 +142,7 @@ public class Take extends BaseItemParser
 			for(int i=0;i<V.size();i++)
 			{
 				Item giveThis=(Item)V.elementAt(i);
-				CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
+				CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
 				if(!mob.isMine(giveThis)) mob.giveItem(giveThis);

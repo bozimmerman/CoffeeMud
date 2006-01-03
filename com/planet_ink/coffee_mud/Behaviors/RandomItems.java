@@ -39,6 +39,7 @@ public class RandomItems extends ActiveTicker
 	protected Vector maintained=new Vector();
 	protected int minItems=1;
 	protected int maxItems=1;
+	protected int avgItems=1;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
@@ -141,6 +142,7 @@ public class RandomItems extends ActiveTicker
 		minItems=CMParms.getParmInt(oldParms,"minitems",1);
 		maxItems=CMParms.getParmInt(oldParms,"maxitems",1);
 		if(minItems>maxItems) maxItems=minItems;
+		avgItems=CMLib.dice().roll(1,(maxItems-minItems),minItems);
 		parms=newParms;
 		alreadyTriedLoad=false;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
@@ -167,20 +169,20 @@ public class RandomItems extends ActiveTicker
 		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null,SK.whatIsSold(),null);
 		if(thang instanceof Area)
 		{
-			Room R=CMLib.utensils().roomLocation(I);
+			Room R=CMLib.map().roomLocation(I);
 			if(R==null) return false;
 			return ((Area)thang).inMetroArea(R.getArea());
 		}
 		else
         if(thang instanceof Room)
-        	return CMLib.utensils().roomLocation(I)==thang;
+        	return CMLib.map().roomLocation(I)==thang;
         else
 	    if(thang instanceof MOB)
 	    	return (I.owner()==thang);
 	    else
 	    if(thang instanceof Container)
 	    	return (I.owner()==((Container)thang).owner())&&(I.container()==thang);
-    	return I.owner()==CMLib.utensils().roomLocation(thang);
+    	return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
 	public Vector getItems(Tickable thang, String theseparms)
@@ -296,14 +298,10 @@ public class RandomItems extends ActiveTicker
 		{
 			Vector items=getItems(ticking,getParms());
 			if(items==null) return true;
-			int num=minItems;
-			if(maintained.size()>=minItems)
-				num=maintained.size()+1;
-			if(num>maxItems) num=maxItems;
-			int attempts=30;
+			int attempts=10;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false; 
-			while((maintained.size()<num)&&(((--attempts)>0)))
+			while((maintained.size()<avgItems)&&(((--attempts)>0)))
 			{
 				I=(Item)items.elementAt(CMLib.dice().roll(1,items.size(),-1));
 				if(I!=null)
@@ -362,10 +360,12 @@ public class RandomItems extends ActiveTicker
 								else
 								{
 									Vector map=new Vector();
+									Room R=null;
 									for(Enumeration e=((Area)ticking).getMetroMap();e.hasMoreElements();)
 									{
-										Room R=(Room)e.nextElement();
+										R=(Room)e.nextElement();
 										if(okRoomForMe(R)
+										&&(!map.contains(R))
 										&&(R.roomID().trim().length()>0))
 											map.addElement(R);
 									}
@@ -378,12 +378,12 @@ public class RandomItems extends ActiveTicker
 						}
 						else
 					    if(ticking instanceof Environmental)
-							room=CMLib.utensils().roomLocation((Environmental)ticking);
+							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
 							break;
 							
 						if(room instanceof GridLocale)
-							room=((GridLocale)room).getRandomChild();
+							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)
 						{
 							Vector inhabs=new Vector();

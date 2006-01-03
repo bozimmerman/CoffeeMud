@@ -60,7 +60,7 @@ public class Ranger_Hide extends StdAbility
 				 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
 				 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
-			 &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			 &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
              &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 			 &&(msg.sourceMajor()>0))

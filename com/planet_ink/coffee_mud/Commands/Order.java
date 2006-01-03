@@ -150,11 +150,12 @@ public class Order extends StdCommand
 				mob.tell("You can't order '"+target.name()+"' around.");
 			else
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
-				if(mob.location().okMessage(mob,msg))
+				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
+				if((mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);
-					doV.addElement(target);
+					if((msg.targetMinor()==CMMsg.TYP_ORDER)&&(msg.target()==target))
+						doV.addElement(target);
 				}
 			}
 		}

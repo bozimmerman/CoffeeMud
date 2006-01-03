@@ -351,7 +351,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             ((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plain.");
     
             recallingmob.setLocation(((Room)msg.target()));
-            if((recallingmob.riding()!=null)&&(recallingmob.location()!=CMLib.utensils().roomLocation(recallingmob.riding())))
+            if((recallingmob.riding()!=null)&&(recallingmob.location()!=CMLib.map().roomLocation(recallingmob.riding())))
             {
                 int rb=recallingmob.riding().rideBasis();
                 if((rb!=Rideable.RIDEABLE_SIT)
@@ -623,9 +623,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     
     protected String dispossessionTimeLeftString(Item item)
     {
-        if(item.dispossessionTime()==0)
+        if(item.expirationDate()==0)
             return "N/A";
-        return ""+(item.dispossessionTime()-System.currentTimeMillis());
+        return ""+(item.expirationDate()-System.currentTimeMillis());
     }
 
     

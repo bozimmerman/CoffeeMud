@@ -423,6 +423,7 @@ public class DefaultClan implements Clan
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
+        boolean member=mob.getClanID().equalsIgnoreCase(clanID())&&(mob.getClanRole()>Clan.POS_APPLICANT);
         msg.append("^x"+typeName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
@@ -430,8 +431,7 @@ public class DefaultClan implements Clan
                   +"^xType            :^.^N "+CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()])+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
-        if((mob.getClanID().equalsIgnoreCase(clanID()))
-        ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+        if(member||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
             msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
             if(getMorgue().length()>0)
@@ -471,11 +471,9 @@ public class DefaultClan implements Clan
                 }
             }
         }
-        if((mob.getClanID().equalsIgnoreCase(clanID()))
-        ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+        if(member||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
-            if(mob.getClanID().equalsIgnoreCase(clanID()))
-                updateClanPrivileges(mob);
+            if(member) updateClanPrivileges(mob);
             msg.append("-----------------------------------------------------------------\n\r"
                       +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_MEMBER,true,true),16)
                       +":^.^N "+crewList(POS_MEMBER)+"\n\r");

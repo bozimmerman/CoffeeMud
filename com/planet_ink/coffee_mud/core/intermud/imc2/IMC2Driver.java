@@ -1418,12 +1418,13 @@ public final class IMC2Driver extends Thread {
         }
         catch (Exception e) 
 		{
-            if((e.getMessage()==null)
-            ||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0))
-				Log.errOut("IMC2Driver", "read: "+e.getMessage());
-            if((e.getMessage()!=null)
+			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+            if((errMsg==null)
+            ||(errMsg.toUpperCase().indexOf("TIMED OUT")<0))
+				Log.errOut("IMC2Driver", "read: "+errMsg);
+            if((errMsg!=null)
             &&(!shutdown)
-			&&(e.getMessage().toUpperCase().indexOf("CONNECTION")>=0))
+			&&(errMsg.toUpperCase().indexOf("CONNECTION")>=0))
 			{
 				imc_active = IA_NONE;
 				tracef(0, "Waiting 20 seconds and try to reconnect.");

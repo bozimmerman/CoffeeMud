@@ -100,14 +100,14 @@ public class WeatherAffects extends PuddleMaker
     
 	public Area area(Environmental host)
 	{
-		Area A=(host instanceof Area)?(Area)host:CMLib.utensils().roomLocation(host).getArea();
+		Area A=(host instanceof Area)?(Area)host:CMLib.map().roomLocation(host).getArea();
 		return A;
 	}
 	
 	public int weather(Environmental host, Room room)
 	{
 		if(room==null) return 0;
-		Area A=(host instanceof Area)?(Area)host:CMLib.utensils().roomLocation(host).getArea();
+		Area A=(host instanceof Area)?(Area)host:CMLib.map().roomLocation(host).getArea();
 		if(A!=null) return A.getClimateObj().weatherType(room);
 		return 0;
 	}
@@ -116,13 +116,14 @@ public class WeatherAffects extends PuddleMaker
 	{
 		if(!super.okMessage(host,msg)) return false;
         
+        Room R=msg.source().location();
 		if((host instanceof Area)
-        &&(msg.source().location()!=null)
-        &&(msg.source().location().getArea()!=host))
+        &&(R!=null)&&(R.getArea()!=host))
             return true;
-        int weather=weather(host,msg.source().location());
+        int weather=weather(host,R);
         // first handle the effect of storms on ranged
         // weapons
+        
         if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
         &&(msg.source().rangeToTarget()!=0)
         &&(msg.tool() instanceof Item)
@@ -140,9 +141,9 @@ public class WeatherAffects extends PuddleMaker
             case Climate.WEATHER_DUSTSTORM:
             {
 				if((CMLib.dice().rollPercentage()<windsheer)
-				&&(msg.source().location()!=null))
+				&&(R!=null))
 				{
-					msg.source().location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_ACTION,"^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?");
+					R.show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_ACTION,"^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?");
 					return false;
 				}
                 break;
@@ -150,8 +151,7 @@ public class WeatherAffects extends PuddleMaker
             }
 		}
         // then try to handle slippage in wet weather
-        if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
-        &&(msg.source().location()!=null))
+        if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))&&(R!=null))
         {
             String what=null;
             switch(weather)
@@ -173,17 +173,20 @@ public class WeatherAffects extends PuddleMaker
             }
             if((what!=null)
             &&(!CMLib.flags().isInFlight(msg.source()))
-            &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
+	        &&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+	        &&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+	        &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+	        &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
             {
                 int oldDisposition=msg.source().baseEnvStats().disposition();
                 oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
                 msg.source().baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
                 msg.source().recoverEnvStats();
-                msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"^W<S-NAME> slip(s) on the "+what+" ground.^?");
+                R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,"^W<S-NAME> slip(s) on the "+what+" ground.^?");
                 return false;
             }
         }
-        if((msg.source().location()!=null)
+        if((R!=null)
         &&(weather==Climate.WEATHER_BLIZZARD))
         {
             Ability A=CMClass.getAbility("Spell_ObscureSelf");
@@ -199,7 +202,7 @@ public class WeatherAffects extends PuddleMaker
         int realLastWeather=super.lastWeather;
         if(!super.tick(ticking,tickID))
             return false;
-        Area A=CMLib.utensils().areaLocation(ticking);
+        Area A=CMLib.map().areaLocation(ticking);
         if(A==null) return false;
         Climate C=A.getClimateObj();
         if(C==null) return false;
@@ -260,7 +263,7 @@ public class WeatherAffects extends PuddleMaker
                 for(Enumeration r=A.getProperMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
-                    if(CMLib.utensils().hasASky(R))
+                    if(CMLib.map().hasASky(R))
                         for(int i=0;i<R.numInhabitants();i++)
                         {
                             MOB mob=R.fetchInhabitant(i);
@@ -626,7 +629,7 @@ public class WeatherAffects extends PuddleMaker
         if((C.weatherType(null)==Climate.WEATHER_DROUGHT)
         &&(CMLib.dice().rollPercentage()<droughtFireChance))
         {
-            Room R=CMLib.utensils().roomLocation((Environmental)ticking);
+            Room R=CMLib.map().roomLocation((Environmental)ticking);
             if((R==null)&&(ticking instanceof Area))
                 R=((Area)ticking).getRandomProperRoom();
             if((R!=null)
@@ -760,7 +763,7 @@ public class WeatherAffects extends PuddleMaker
                     for(int i=0;i<rustThese.size();i++)
                     {
                         Item I=(Item)rustThese.elementAt(i);
-                        CMMsg msg=CMClass.getMsg(M,I,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
+                        CMMsg msg=CMClass.getMsg(M,I,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
                         if(R.okMessage(M,msg))
                         {
                             R.send(M,msg);

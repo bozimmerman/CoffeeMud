@@ -43,7 +43,9 @@ public class Prop_RoomView extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((newRoom==null)||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
+		if((newRoom==null)
+		||(newRoom.amDestroyed())
+		||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
 			newRoom=CMLib.map().getRoom(text());
 		if(newRoom==null) return super.okMessage(myHost,msg);
 

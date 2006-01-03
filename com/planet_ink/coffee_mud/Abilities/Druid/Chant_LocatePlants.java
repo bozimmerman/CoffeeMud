@@ -141,25 +141,12 @@ public class Chant_LocatePlants extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		for(Enumeration r=target.location().getArea().getProperMap();r.hasMoreElements();)
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,true,true,50);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(plantsHere(mob,R).length()>0)
 				rooms.addElement(R);
-		}
-
-		if(rooms.size()<=0)
-		{
-		    try
-		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,R))
-						if(plantsHere(target,R).length()>0)
-							rooms.addElement(R);
-				}
-		    }catch(NoSuchElementException e){}
 		}
 
 		if(rooms.size()>0)

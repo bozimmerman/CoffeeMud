@@ -44,7 +44,7 @@ public class Spell_FakeSpring extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(spring!=null))
 		{
-			Room SpringLocation=CMLib.utensils().roomLocation(spring);
+			Room SpringLocation=CMLib.map().roomLocation(spring);
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
 		}

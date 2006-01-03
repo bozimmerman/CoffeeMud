@@ -37,6 +37,7 @@ import org.mozilla.javascript.optimizer.*;
 */
 public class CMClass extends ClassLoader
 {
+	protected static boolean debugging=false;
     protected static Hashtable classes=new Hashtable();
     protected static CMClass inst=new CMClass();
     public static CMClass instance(){ return inst;}
@@ -123,7 +124,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration locales(){return locales.elements();}
 	public static Enumeration exits(){return exits.elements();}
 	public static Enumeration behaviors(){return behaviors.elements();}
-	public static Enumeration items(){return items.elements();}
+	public static Enumeration basicItems(){return items.elements();}
 	public static Enumeration weapons(){return weapons.elements();}
 	public static Enumeration armor(){return armor.elements();}
 	public static Enumeration miscMagic(){return miscMagic.elements();}
@@ -144,7 +145,7 @@ public class CMClass extends ClassLoader
     public static Item getMiscMagic(String calledThis) { return (Item)getNewGlobal(miscMagic,calledThis); }
     public static Item getMiscTech(String calledThis) { return (Item)getNewGlobal(miscTech,calledThis);}    
     public static Armor getArmor(String calledThis) { return (Armor)getNewGlobal(armor,calledThis); }
-    public static Item getStdItem(String calledThis) { return (Item)getNewGlobal(items,calledThis); }
+    public static Item getBasicItem(String calledThis) { return (Item)getNewGlobal(items,calledThis); }
     public static Behavior getBehavior(String calledThis) { return (Behavior)getNewGlobal(behaviors,calledThis); }
     public static Ability getAbility(String calledThis) { return (Ability)getNewGlobal(abilities,calledThis); }
     public static CharClass getCharClass(String calledThis){ return (CharClass)getGlobal(charClasses,calledThis);}
@@ -164,7 +165,7 @@ public class CMClass extends ClassLoader
     }
 	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric)
 	{
-		for(Enumeration i=items();i.hasMoreElements();)
+		for(Enumeration i=basicItems();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
@@ -304,6 +305,7 @@ public class CMClass extends ClassLoader
 	public static boolean loadClass(String name, String path)
 	{
 		Object set=null;
+        debugging=CMSecurity.isDebugging("CLASSLOADER");
 		int code=classCode(name);
 		switch(code)
 		{
@@ -836,6 +838,7 @@ public class CMClass extends ClassLoader
         }
         if (result==null){throw new ClassFormatError();}
         if (resolveIt){resolveClass(result);}
+        if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
         classes.put(className, result);
         return result;
     }
@@ -858,9 +861,20 @@ public class CMClass extends ClassLoader
         else
             pathName=className.replace('.','/')+".class";
         Class result = (Class)classes.get(className);
-        if (result!=null){ return result;}
+        if (result!=null)
+        {
+            if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+        	return result;
+        }
 
-        try{result=super.findSystemClass(className); if(result!=null) return result;} catch(Throwable t){}
+        try{
+        	result=super.findSystemClass(className); 
+        	if(result!=null)
+        	{
+                if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+        		return result;
+        	}
+        } catch(Throwable t){}
         
         /* Try to load it from our repository */
         CMFile CF=new CMFile(pathName,null,false);
@@ -926,6 +940,7 @@ public class CMClass extends ClassLoader
                 if(mainClass==null) mainClass=C;
             }
             Context.exit();
+            if(debugging) Log.debugOut("CMClass","Loaded: "+mainClass.getName());
             return mainClass;
         }
         return finishDefineClass(className,classData,null,resolveIt);
@@ -936,6 +951,7 @@ public class CMClass extends ClassLoader
         try
         {
             String prefix="com/planet_ink/coffee_mud/";
+            debugging=CMSecurity.isDebugging("CLASSLOADER");
             libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),ancestor("LIBRARY"));
             if(libraries.size()==0) return false;
             CMLib.registerLibraries(libraries.elements());

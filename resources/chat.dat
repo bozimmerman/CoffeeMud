@@ -18,6 +18,7 @@
 #		 (		 beginning of a 'say' expression
 #		 [		 beginning of a non-say expression targeted
 #		 {		 beginning of a non-say expression not targeted
+#		 *		 combat expression, must preceed (, [, or {
 #        #       remark
 #        "       output to stderr
 #        '       output to stdout

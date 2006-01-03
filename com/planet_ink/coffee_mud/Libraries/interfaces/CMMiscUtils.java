@@ -15,6 +15,8 @@ import com.planet_ink.coffee_mud.Libraries.Sense;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.IOException;
 import java.util.*;
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -33,49 +35,43 @@ import java.util.*;
 */
 public interface CMMiscUtils extends CMObject
 {
-    public boolean hasASky(Room room);
+    public String getFormattedDate(Environmental E);
+    public double memoryUse ( Environmental E, int number );
     public String niceCommaList(Vector V, boolean andTOrF);
+    
     public Environmental unbundle(Item I, int number);
     public int getMaterialRelativeInt(String s);
     public int getMaterialCode(String s);
     public int getResourceCode(String s);
+    public String wornList(long wornCode);
+    public int getWornCode(String name);
+    public Item makeItemResource(int type);
+    public void outfit(MOB mob, Vector items);
+    public boolean reachableItem(MOB mob, Environmental E);
+    public void extinguish(MOB source, Environmental target, boolean mundane);
+    public Environmental makeResource(int myResource, int localeCode, boolean noAnimals);
+    public int getRandomResourceOfMaterial(int material);
+    public boolean armorCheck(MOB mob, int allowedArmorLevel);
+    public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
+    
+    public Trap makeADeprecatedTrap(Environmental unlockThis);
+    public void setTrapped(Environmental myThang, boolean isTrapped);
+    public void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped);
+    public Trap fetchMyTrap(Environmental myThang);
+    
     public Law getTheLaw(Room R, MOB mob);
     public LegalBehavior getLegalBehavior(Area A);
     public LegalBehavior getLegalBehavior(Room R);
     public Area getLegalObject(Area A);
     public Area getLegalObject(Room R);
-    public int getRandomResourceOfMaterial(int material);
-    public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals);
-    public Environmental makeResource(int myResource, int localeCode, boolean noAnimals);
-    public String getFormattedDate(Environmental E);
-    public Item makeItemResource(int type);
-    public void outfit(MOB mob, Vector items);
-    public Trap makeADeprecatedTrap(Environmental unlockThis);
-    public void setTrapped(Environmental myThang, boolean isTrapped);
-    public void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped);
-    public Trap fetchMyTrap(Environmental myThang);
-    public boolean reachableItem(MOB mob, Environmental E);
-    public Room roomLocation(Environmental E);
-    public Room roomStart(Environmental E);
-    public Area areaLocation(Object E);
-    public double memoryUse ( Environmental E, int number );
-    public void extinguish(MOB source, Environmental target, boolean mundane);
-    public void obliterateRoom(Room deadRoom);
-    public void roomAffectFully(CMMsg msg, Room room, int dirCode);
-    public void obliteratePlayer(MOB deadMOB, boolean quiet);
-    public void resetRoom(Room room);
-    public void resetArea(Area area);
-    public MOB getMobPossessingAnother(MOB mob);
-    public void clearTheRoom(Room room);
-    public void clearDebriAndRestart(Room room, int taskCode);
-    public void obliterateArea(String areaName);
+    
     public LandTitle getLandTitle(Area area);
     public LandTitle getLandTitle(Room room);
     public boolean doesHavePriviledgesHere(MOB mob, Room room);
     public boolean doesOwnThisProperty(String name, Room room);
     public boolean doesOwnThisProperty(MOB mob, Room room);
-    public boolean armorCheck(MOB mob, int allowedArmorLevel);
-    public String wornList(long wornCode);
-    public int getWornCode(String name);
-    public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
+    public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals);
+    
+    public MOB getMobPossessingAnother(MOB mob);
+    public void roomAffectFully(CMMsg msg, Room room, int dirCode);
 }

@@ -77,13 +77,17 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(clanID().length()>0)
 			&&(msg.source().getClanID().equals(clanID())))
 			{
+				Room R=msg.source().location();
+				if(R==null)
+					return;
 				if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.trailerMsgs()==null))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_LOOK,null));
 				else
 				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				{
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
-                    String s=B.conquestInfo(CMLib.utensils().getLegalObject(msg.source().location()));
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                    String s="";
+                    if(B!=null) s=B.conquestInfo(CMLib.utensils().getLegalObject(R));
 					if(s.length()>0)
 						msg.source().tell(s);
 					else
@@ -102,7 +106,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				if((msg.targetMinor()==CMMsg.TYP_GET)
 				||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 				{
-					Room R=CMLib.utensils().roomLocation(this);
+					Room R=CMLib.map().roomLocation(this);
 					if(msg.source().getClanID().length()==0)
 					{
 						msg.source().tell("You must belong to a clan to take a clan item.");

@@ -167,7 +167,7 @@ public class Prop_ItemTransporter extends Property
 			&&(msg.target() instanceof Item))
 		||((affected instanceof Room)
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		    &&(affected==CMLib.utensils().roomLocation(msg.target()))
+		    &&(affected==CMLib.map().roomLocation(msg.target()))
 			&&(msg.tool() instanceof Item)))
 		{
 			if(!setDestination())

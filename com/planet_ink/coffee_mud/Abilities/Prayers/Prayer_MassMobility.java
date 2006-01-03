@@ -107,7 +107,7 @@ public class Prayer_MassMobility extends Prayer
 
 		Room room=mob.location();
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		if((success)&&(room!=null))
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of mobility!^?");

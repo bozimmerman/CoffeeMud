@@ -48,8 +48,9 @@ public class Reply extends StdCommand
 			return false;
 		}
 		if((pstats.replyTo().Name().indexOf("@")<0)
-		&&(!pstats.replyTo().isMonster())
-		&&((CMLib.map().getPlayer(pstats.replyTo().Name())==null)||(!CMLib.flags().isInTheGame(pstats.replyTo(),true))))
+		&&((CMLib.map().getPlayer(pstats.replyTo().Name())==null)
+			||(pstats.replyTo().isMonster())
+			||(!CMLib.flags().isInTheGame(pstats.replyTo(),true))))
 		{
 			mob.tell(pstats.replyTo().Name()+" is no longer logged in.");
 			return false;

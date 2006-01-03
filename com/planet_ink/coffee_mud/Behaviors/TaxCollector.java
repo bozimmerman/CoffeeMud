@@ -43,7 +43,7 @@ public class TaxCollector extends StdBehavior
 	protected int lastMonthChecked=-1;
 	protected Vector taxableProperties=new Vector();
 	protected HashSet peopleWhoOwe=new HashSet();
-	protected Room treasuryR=null;
+	protected String treasuryRoomID=null;
 	protected Item treasuryItem=null;
 
 	public void setParms(String newParms)
@@ -112,6 +112,7 @@ public class TaxCollector extends StdBehavior
 				double paidAmount=((Coins)msg.tool()).getTotalValue();
 				if(paidAmount<=0.0) return;
 			    double[] owed=totalMoneyOwed(mob,msg.source());
+			    Room treasuryR=CMLib.map().getRoom(treasuryRoomID);
 	            if(treasuryR!=null)
 	            {
 	                Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryItem);
@@ -288,7 +289,7 @@ public class TaxCollector extends StdBehavior
 					taxableProperties.clear();
 				
 				Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
-				treasuryR=(Room)Treas[0];
+				treasuryRoomID=CMLib.map().getExtendedRoomID((Room)Treas[0]);
 				treasuryItem=(Item)Treas[1];
 			}
 		}

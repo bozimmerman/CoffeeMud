@@ -108,12 +108,13 @@ public class Prop_LangTranslator extends Property
 			&&(msg.othersMessage()!=null))
 			{
 				if(!(affected instanceof MOB))
-					mob.setLocation(CMLib.utensils().roomLocation(affected));
+					mob.setLocation(CMLib.map().roomLocation(affected));
 				CMLib.commands().postSay(mob,null,"The smoke signals seem to say '"+msg.othersMessage()+"'.",false,false);
 			}
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(msg.sourceMinor()==CMMsg.TYP_ORDER)
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
 			&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE))
@@ -122,7 +123,7 @@ public class Prop_LangTranslator extends Property
 				if(str!=null)
 				{
 					if(!(affected instanceof MOB))
-						mob.setLocation(CMLib.utensils().roomLocation(affected));
+						mob.setLocation(CMLib.map().roomLocation(affected));
 					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+subStitute(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
 					else

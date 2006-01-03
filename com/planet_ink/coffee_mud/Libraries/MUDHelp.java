@@ -299,7 +299,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
 							prepend.append("Caster only");
 						else
-						if((CMClass.items().hasMoreElements())
+						if((CMClass.basicItems().hasMoreElements())
 						&&(CMClass.mobTypes().hasMoreElements())
 						&&(CMClass.exits().hasMoreElements())
 						&&(CMClass.locales().hasMoreElements()))

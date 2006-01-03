@@ -231,6 +231,8 @@ public class WaterCurrents extends ActiveTicker
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}
         protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
+    	public long expirationDate(){return 0;}
+    	public void setExpirationDate(long time){}
 
 		public void setName(String newName){}
 		public void setDescription(String newDescription){}

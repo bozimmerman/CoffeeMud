@@ -165,7 +165,7 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(".\n\rIt is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
 		if((CMLib.flags().canSee(mob))
 		&&(getTODCode()==TimeClock.TIME_NIGHT)
-		&&(CMLib.utensils().hasASky(room)))
+		&&(CMLib.map().hasASky(room)))
 		{
 			switch(room.getArea().getClimateObj().weatherType(room))
 			{
@@ -305,7 +305,7 @@ public class DefaultTimeClock implements TimeClock
 						if((mob!=null)
 						&&(!mob.isMonster()))
 						{
-							if(CMLib.utensils().hasASky(R)
+							if(CMLib.map().hasASky(R)
 							&&(!CMLib.flags().isSleeping(mob))
 							&&(CMLib.flags().canSee(mob)))
 							{

@@ -143,13 +143,24 @@ public class Domesticating extends CommonSkill
 				mob.tell("The name may not contain a space.");
 				return false;
 			}
-			if((M.name().toUpperCase().startsWith("A "))
-			||(M.name().toUpperCase().startsWith("AN "))
-			||(M.name().toUpperCase().startsWith("SOME ")))
-				newName=M.name()+" named "+newName;
+			String oldName=M.name();
+			Vector oldV=CMParms.parse(oldName);
+			if(oldV.size()>1)
+			{
+				if(oldName.endsWith(", "+((String)oldV.lastElement())))
+					oldName=oldName.substring(0,oldName.length()-(2+((String)oldV.lastElement()).length()));
+				else
+				if(oldName.endsWith("named "+((String)oldV.lastElement())))
+					oldName=oldName.substring(0,oldName.length()-(6+((String)oldV.lastElement()).length()));
+			}
+			
+			if((oldName.toUpperCase().startsWith("A "))
+			||(oldName.toUpperCase().startsWith("AN "))
+			||(oldName.toUpperCase().startsWith("SOME ")))
+				newName=oldName+" named "+newName;
 			else
-			if(M.name().indexOf(" ")>=0)
-				newName=newName+", "+M.name();
+			if(oldName.indexOf(" ")>=0)
+				newName=newName+", "+oldName;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

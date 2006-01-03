@@ -287,7 +287,7 @@ public class MasterTailoring extends CraftingSkill implements ItemCraftor
 			displayText="You are knitting "+building.name();
             playSound="scissor.wav";
 			verb="knitting "+building.name();
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired/2);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

@@ -859,6 +859,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
+        if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+        &&(msg.target()==location())
+        &&(CMLib.flags().isInTheGame(this,true)))
+        	return false;
+        else
         if(msg.amITarget(this))
         {
             switch(msg.targetMinor())

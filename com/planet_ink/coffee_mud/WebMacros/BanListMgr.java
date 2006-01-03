@@ -69,6 +69,7 @@ public class BanListMgr extends StdWebMacro
 		if(parms.containsKey("DELETE"))
 		{
 			String key=httpReq.getRequestParameter("BANNEDONE");
+			if(key==null) return "";
             CMSecurity.unban(key);
 			return "'"+key+"' no longer banned.";
 		}
@@ -76,6 +77,7 @@ public class BanListMgr extends StdWebMacro
 		if(parms.containsKey("ADD"))
 		{
 			String key=httpReq.getRequestParameter("NEWBANNEDONE");
+			if(key==null) return "";
             CMSecurity.ban(key);
 			return "'"+key+"' is now banned.";
 		}

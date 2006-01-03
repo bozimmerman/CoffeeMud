@@ -31,9 +31,19 @@ import java.util.*;
 */
 public interface RoomnumberSet extends CMObject
 {
-    public int roomCount(String areaName);
+    public int roomCount(String prefix);
+    public int roomCountAllAreas();
     public boolean contains(String str);
     public String xml();
     public void parseXML(String xml);
     public void add(String str);
+    public void add(RoomnumberSet set);
+    public void remove(String str);
+    public void remove(RoomnumberSet set);
+    public String random();
+    public Enumeration getRoomIDs();
+    //public String convertRoomID(String prefix, long coded);
+    public CMIntegerGrouper getGrouper(String areaName);
+    //public int[] convertRoomID(long coded);
+    public Vector getAreaNames();
 }

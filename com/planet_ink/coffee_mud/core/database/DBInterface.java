@@ -45,7 +45,7 @@ public class DBInterface implements DatabaseEngine
 	public Vector userList()
 	{return MOBloader.userList();}
 
-    public boolean isConnected(){return DBConnector.numConnectionsMade()>0;}
+    public boolean isConnected(){return DBConnector.amIOk();}
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
 	
@@ -85,15 +85,21 @@ public class DBInterface implements DatabaseEngine
     public Vector DBReadAreaData(String areaID, boolean reportStatus)
     {return RoomLoader.DBReadAreaData(areaID,reportStatus);}
     
-    public Vector DBReadRoomData(String roomID, boolean reportStatus, Vector unknownAreas)
-    {return RoomLoader.DBReadRoomData(roomID,reportStatus,unknownAreas);}
+    public Vector DBReadRoomData(String roomID, boolean reportStatus)
+    {return RoomLoader.DBReadRoomData(roomID,reportStatus);}
+    
+    public void DBReadAllRooms(RoomnumberSet roomsToRead)
+    { RoomLoader.DBReadAllRooms(roomsToRead);}
     
     public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
     {RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
     
 	public void DBReadContent(Room thisRoom, Vector rooms)
 	{RoomLoader.DBReadContent(thisRoom, rooms,false);}
-	
+
+    public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
+    {return RoomLoader.DBReadAreaRoomList(areaName,reportStatus);}
+
 	public void DBUpdateExits(Room room)
 	{RoomLoader.DBUpdateExits(room);}
 	

@@ -306,7 +306,7 @@ public class Carpentry extends CraftingSkill implements ItemCraftor
 			displayText="You are carving "+building.name();
             playSound="sawing.wav";
 			verb="carving "+building.name();
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

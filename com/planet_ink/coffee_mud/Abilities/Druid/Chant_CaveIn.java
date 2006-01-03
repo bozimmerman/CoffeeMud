@@ -59,7 +59,7 @@ public class Chant_CaveIn extends Chant
 			MOB mob=(MOB)affected;
 			if(msg.sourceMinor()==CMMsg.TYP_STAND)
 				return false;
-			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{

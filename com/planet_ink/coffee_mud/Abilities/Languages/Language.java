@@ -190,57 +190,92 @@ public class Language extends StdAbility
     
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected instanceof MOB)
-        &&(beingSpoken())
-		&&(msg.amISource((MOB)affected))
-		&&(msg.sourceMessage()!=null)
-		&&(msg.tool()==null)
-		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		if((affected instanceof MOB)&&(beingSpoken()))
 		{
-			String str=getMsgFromAffect(msg.othersMessage());
-			if(str==null) str=getMsgFromAffect(msg.targetMessage());
-			if(str!=null)
+			if((msg.amISource((MOB)affected))
+			&&(msg.sourceMessage()!=null)
+			&&(msg.tool()==null)
+			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 			{
-                String smsg=getMsgFromAffect(msg.sourceMessage());
-                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-profficiency(),100)));
-                if(numToMess>0) smsg=messChars(smsg,numToMess);
-                str=scrambleAll(str,numToMess);
-				msg.modify(msg.source(),
-							  msg.target(),
-							  this,
-							  msg.sourceCode(),
-							  subStitute(msg.sourceMessage(),smsg),
-							  msg.targetCode(),
-							  subStitute(msg.targetMessage(),str),
-							  msg.othersCode(),
-							  subStitute(msg.othersMessage(),str));
-                if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
-    				helpProfficiency((MOB)affected);
+				String str=getMsgFromAffect(msg.othersMessage());
+				if(str==null) str=getMsgFromAffect(msg.targetMessage());
+				if(str!=null)
+				{
+	                String smsg=getMsgFromAffect(msg.sourceMessage());
+	                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-profficiency(),100)));
+	                if(numToMess>0) smsg=messChars(smsg,numToMess);
+	                str=scrambleAll(str,numToMess);
+					msg.modify(msg.source(),
+								  msg.target(),
+								  this,
+								  msg.sourceCode(),
+								  subStitute(msg.sourceMessage(),smsg),
+								  msg.targetCode(),
+								  subStitute(msg.targetMessage(),str),
+								  msg.othersCode(),
+								  subStitute(msg.othersMessage(),str));
+	                if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
+	    				helpProfficiency((MOB)affected);
+				}
 			}
+	        else
+	        if((msg.sourceMinor()==CMMsg.TYP_WRITE)
+	        &&(msg.source()==affected)
+	        &&(msg.target() instanceof Item)
+	        &&(CMLib.flags().isReadable((Item)msg.target()))
+	        &&(msg.targetMessage()!=null)
+	        &&(msg.targetMessage().length()>0))
+	        {
+	            Ability L=null;
+	            for(int i=msg.target().numEffects()-1;i>=0;i--)
+	            {
+	                L=msg.target().fetchEffect(i);
+	                if((L instanceof Language)&&(!L.ID().equals(ID())))
+	                {
+	                    msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+name()+" writing added.");
+	                    return false;
+	                }
+	            }
+	        }
+	        else
+			if((msg.target()==affected)
+			&&(msg.source()!=affected))
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_ORDER:
+				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_SELL:
+				case CMMsg.TYP_LIST:
+				case CMMsg.TYP_VIEW:
+				case CMMsg.TYP_WITHDRAW:
+				case CMMsg.TYP_DEPOSIT:
+				if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),"ORDER"))
+				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)affected).isMonster()))
+				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)affected).isMonster())))
+				{
+					Language L=(Language)msg.source().fetchEffect(ID());
+					if((L==null)
+					||(!L.beingSpoken())
+					||((CMLib.dice().rollPercentage()*2)<(L.profficiency()+profficiency())))
+					{
+						msg.setTargetCode(CMMsg.TYP_SPEAK);
+						msg.setSourceCode(CMMsg.TYP_SPEAK);
+						msg.setOthersCode(CMMsg.TYP_SPEAK);
+						String reply=null;
+						if((L==null)||(!L.beingSpoken()))
+							reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and do(es) not appear to understand <T-YOUPOSS> words.";
+						else
+							reply="<S-NAME> <S-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
+						msg.addTrailerMsg(CMClass.getMsg((MOB)affected,msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
+					}
+					break;
+				}
+				default:
+					break;
+				}
 		}
-        else
-        if((affected instanceof MOB)
-        &&(msg.sourceMinor()==CMMsg.TYP_WRITE)
-        &&(msg.source()==affected)
-        &&(beingSpoken())
-        &&(msg.target() instanceof Item)
-        &&(CMLib.flags().isReadable((Item)msg.target()))
-        &&(msg.targetMessage()!=null)
-        &&(msg.targetMessage().length()>0))
-        {
-            Ability L=null;
-            for(int i=msg.target().numEffects()-1;i>=0;i--)
-            {
-                L=msg.target().fetchEffect(i);
-                if((L instanceof Language)&&(!L.ID().equals(ID())))
-                {
-                    msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+name()+" writing added.");
-                    return false;
-                }
-            }
-        }
 		return super.okMessage(myHost,msg);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

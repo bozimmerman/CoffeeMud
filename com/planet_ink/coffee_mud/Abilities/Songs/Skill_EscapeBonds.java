@@ -67,7 +67,7 @@ public class Skill_EscapeBonds extends BardSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.addEffect(this);

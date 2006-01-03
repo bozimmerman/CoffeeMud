@@ -536,32 +536,36 @@ public class MobData extends StdWebMacro
 			R=CMLib.map().getRoom(last);
 			if(R==null)
 				return "No Room?!";
-			CMLib.utensils().resetRoom(R);
+			CMLib.map().resetRoom(R);
 			httpReq.getRequestObjects().put(last,R);
 		}
-
-		MOB M=(MOB)httpReq.getRequestObjects().get(mobCode);
-		if(M==null)
-		{
-			if(mobCode.equals("NEW"))
-				M=CMClass.getMOB("GenMob");
-			else
-				M=RoomData.getMOBFromCode(R,mobCode);
-			if((M==null)||(!M.savable()))
+		MOB M=null;
+    	synchronized(("SYNC"+R.roomID()).intern())
+    	{
+    		R=CMLib.map().getRoom(R);
+    		M=(MOB)httpReq.getRequestObjects().get(mobCode);
+			if(M==null)
 			{
-				StringBuffer str=new StringBuffer("No MOB?!");
-				str.append(" Got: "+mobCode);
-				str.append(", Includes: ");
-				for(int m=0;m<R.numInhabitants();m++)
+				if(mobCode.equals("NEW"))
+					M=CMClass.getMOB("GenMob");
+				else
+					M=RoomData.getMOBFromCode(R,mobCode);
+				if((M==null)||(!M.savable()))
 				{
-					MOB M2=R.fetchInhabitant(m);
-					if((M2!=null)&&(M2.savable()))
-					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+					StringBuffer str=new StringBuffer("No MOB?!");
+					str.append(" Got: "+mobCode);
+					str.append(", Includes: ");
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M2=R.fetchInhabitant(m);
+						if((M2!=null)&&(M2.savable()))
+						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+					}
+	                return clearWebMacros(str);
 				}
-                return clearWebMacros(str);
+				httpReq.getRequestObjects().put(mobCode,M);
 			}
-			httpReq.getRequestObjects().put(mobCode,M);
-		}
+    	}
 
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");

@@ -69,9 +69,10 @@ public class Prayer_MassCureDisease extends Prayer
 			{
 				mob.location().send(mob,msg);
                 boolean worked=false;
-				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
-				{
-					Room R=(Room)e.nextElement();
+        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,100);
+        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+        		{
+        			Room R=CMLib.map().getRoom((Room)r.nextElement());
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB target=R.fetchInhabitant(m);

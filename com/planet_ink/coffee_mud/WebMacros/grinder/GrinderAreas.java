@@ -141,7 +141,7 @@ public class GrinderAreas
 			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMLib.map().delArea(A);
 			oldName=A.Name();
@@ -192,6 +192,15 @@ public class GrinderAreas
 		String img=httpReq.getRequestParameter("IMAGE");
 		if(img==null)img="";
 		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
+		
+		// gridy
+		String gridy=httpReq.getRequestParameter("GRIDY");
+		if((gridy!=null)&&(A instanceof GridZones))
+			((GridZones)A).setYGridSize(CMath.s_int(gridy));
+		// gridx
+		String gridx=httpReq.getRequestParameter("GRIDX");
+		if((gridx!=null)&&(A instanceof GridZones))
+			((GridZones)A).setXGridSize(CMath.s_int(gridy));
 		
 		// author
 		String author=httpReq.getRequestParameter("AUTHOR");
@@ -298,7 +307,7 @@ public class GrinderAreas
 		{
 		    Area A2=(Area)areasNeedingUpdates.elementAt(i);
 			CMLib.database().DBUpdateArea(A2.Name(),A2);
-            CMLib.coffeeMaker().addWeatherToAreaIfNecessary(A2);
+            CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A2);
 		}
 		return "";
 	}

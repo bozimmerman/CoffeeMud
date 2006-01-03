@@ -110,6 +110,9 @@ public class MudChat extends StdBehavior
 			case '"':
 				Log.sysOut("MudChat",str.substring(1));
 				break;
+			case '*':
+				if((str.length()==1)||("([{".indexOf(str.charAt(1))<0))
+					break;
 			case '(':
 			case '[':
 			case '{':
@@ -397,7 +400,7 @@ public class MudChat extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 
-		if((!canFreelyBehaveNormal(affecting))
+		if((!canActAtAll(affecting))
 		||(CMSecurity.isDisabled("MUDCHAT")))
 			return;
 		MOB mob=msg.source();
@@ -406,19 +409,19 @@ public class MudChat extends StdBehavior
 		&&(!mob.isMonster())
 		&&(CMLib.flags().canBeHeardBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(mob,monster))
-		&&(CMLib.flags().canBeSeenBy(monster,mob))
-		&&(!mob.isInCombat())
-		&&(!monster.isInCombat()))
+		&&(CMLib.flags().canBeSeenBy(monster,mob)))
 		{
 			Vector myResponses=null;
 			myChatGroup=getMyChatGroup(monster,getChatGroups(getParms()));
 			String rest[]=new String[1];
+			boolean combat=((monster.isInCombat()))||(mob.isInCombat());
 
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.amITarget(monster)
-			   ||((mob.location()==monster.location())
+			   ||((msg.target()==null)
+			      &&(mob.location()==monster.location())
 				  &&(talkDown<=0)
-				  &&(mob.location().numPCInhabitants()==1)))
+				  &&(mob.location().numPCInhabitants()<3)))
 			&&(CMLib.flags().canBeHeardBy(mob,monster))
 			&&(myChatGroup!=null)
 			&&(lastReactedTo!=msg.source())
@@ -435,6 +438,14 @@ public class MudChat extends StdBehavior
 					{
 						Vector possResponses=(Vector)myChatGroup.elementAt(i);
 						String expression=((String)possResponses.elementAt(0)).trim();
+						if(expression.startsWith("*"))
+						{
+							if(!combat) continue;
+							expression=expression.substring(1);
+						}
+						else
+						if(combat) continue;
+
 						l=expression.length();
 						if((l>0)
 						&&(expression.charAt(0)=='(')
@@ -484,6 +495,13 @@ public class MudChat extends StdBehavior
 					{
 						Vector possResponses=(Vector)myChatGroup.elementAt(i);
 						String expression=((String)possResponses.elementAt(0)).trim();
+						if(expression.startsWith("*"))
+						{
+							if(!combat) continue;
+							expression=expression.substring(1);
+						}
+						else
+						if(combat) continue;
 						l=expression.length();
 						if((l>0)
 						&&(expression.charAt(0)==c1)
@@ -516,7 +534,7 @@ public class MudChat extends StdBehavior
 		&&(ticking instanceof MOB)
 		&&(!CMSecurity.isDisabled("MUDCHAT")))
 		{
-			if(!canFreelyBehaveNormal(ticking))
+			if(!canActAtAll(ticking))
 			{
 				responseQue.removeAllElements();
 				return true;

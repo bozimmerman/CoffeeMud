@@ -57,7 +57,10 @@ public class GenClanCommonItem extends StdClanCommonItem
 	}
 
 	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	public void setReadableText(String text){
+		readableText=text;
+		glows=text.equalsIgnoreCase("Mining");
+	}
 	public void setMiscText(String newText)
 	{
 		miscText="";

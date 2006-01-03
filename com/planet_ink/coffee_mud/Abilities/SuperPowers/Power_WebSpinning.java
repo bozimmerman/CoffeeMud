@@ -61,7 +61,7 @@ public class Power_WebSpinning extends SuperPower
 			// from trying to do ANYTHING except sleep
 			if(msg.amISource(mob))
 			{
-				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 				{
@@ -145,7 +145,7 @@ public class Power_WebSpinning extends SuperPower
 				if(msg.value()<=0)
 				{
 					amountRemaining=160;
-					if(CMLib.utensils().roomLocation(target)==mob.location())
+					if(CMLib.map().roomLocation(target)==mob.location())
 					{
 						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> become(s) stuck in a mass of web!");

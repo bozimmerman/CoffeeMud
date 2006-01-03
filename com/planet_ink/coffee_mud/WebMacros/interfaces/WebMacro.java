@@ -56,6 +56,17 @@ public interface WebMacro extends CMObject
      * @return true if the macro is restricted to the admin web server
      */
 	public boolean isAdminMacro();
+	
+	/**
+	 * Whether this macro returns an attachment instead of something
+	 * displayable.  If true, the content-disposition will reflect
+	 * the filename parameter.
+	 * @see WebMacro#getFilename(ExternalHTTPRequests, String)
+	 * @param filename the filename from getFilename
+	 * @return  this is an attachment macro, so send back header
+	 */
+    public String getSpecialContentHeader(String filename);
+    
 	/**
 	 * Whether this macro substitutes as an aspect of the web path instead
 	 * of a standard web macro.  If true is returned, URLs such as:

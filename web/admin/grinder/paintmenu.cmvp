@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMud MUDGrinder</title>
+	<script language=JavaScript>
+	<!--
+		var paintmenu=true;
+		function Clicked(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.target="_top";
+			document.AREAEDIT.submit();
+		}
+		function Clicked2(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.target="MAP";
+			document.AREAEDIT.submit();
+		}
+		function Clicked3(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.target="MENU";
+			document.AREAEDIT.submit();
+		}
+		function paint(where)
+		{
+			document.AREAEDIT.PAINTAT.value=where;
+			document.AREAEDIT.action='/grinder/paintarea.cmvp';
+			document.AREAEDIT.target="MAP";
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</script>
+</head>
+<BODY>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/quickfind.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=PAINTAT VALUE="">
+<INPUT TYPE=HIDDEN NAME=ROOMSIZE VALUE="@RequestParameter?ROOMSIZE@">
+<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
+<TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+	<TR>
+	<TD WIDTH=25% ALIGN=RIGHT>
+	<FONT COLOR=WHITE>Brush size (rooms):</FONT>
+	</TD>
+	<TD WIDTH=50% ALIGN=LEFT>
+	<INPUT TYPE=TEXT SIZE=3 NAME=BRUSHSIZE VALUE="@if?CheckReqParm?BRUSHSIZE=@5@else@ @RequestParameter?BRUSHSIZE@ @endif@">
+	<INPUT TYPE=CHECKBOX NAME=NOVERLAP @if?!CheckReqParm?NOVERLAP=@CHECKED@endif@><FONT COLOR=WHITE>Overwrite existing rooms.</FONT>
+	</TD>
+	<TD WIDTH=15% ALIGN=RIGHT>
+		<INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked3('/grinder/menu2.cmvp');">
+	</TD>
+	</TR>
+	<TR>
+	<TD WIDTH=25% ALIGN=RIGHT>
+	<FONT COLOR=WHITE>Paint with which Room ID#:</FONT>
+	</TD>
+	<TD WIDTH=50% ALIGN=LEFT>
+	<INPUT TYPE=TEXT NAME=ROOM VALUE="@RequestParameter?ROOM@">
+	</TD>
+	<TD WIDTH=15% ALIGN=RIGHT>&nbsp;</TD>
+	</TR>
+	<TR><TD></TD><TD COLSPAN=2><FONT COLOR=YELLOW>*</FONT><FONT COLOR=WHITE>Separate room description and title paragraphs<BR> with the &lt;P&gt; tag to generate random values.</FONT></TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

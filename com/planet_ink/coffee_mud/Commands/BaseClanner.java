@@ -137,7 +137,7 @@ public class BaseClanner extends StdCommand
 		String[] roles=Clan.ROL_DESCS[government];
 		for(int i=0;i<roles.length;i++)
 			if(roles[i].startsWith(position.toUpperCase()))
-				return CMath.pow(2,i-1);
+				return (int)CMath.pow(2,i-1);
 		return -1;
 	}
 

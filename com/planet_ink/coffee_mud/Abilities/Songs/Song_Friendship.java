@@ -177,14 +177,14 @@ public class Song_Friendship extends Song
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						CMMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 						int levelDiff=follower.envStats().level()-mob.envStats().level();
 						if(levelDiff<0) levelDiff=0;
 

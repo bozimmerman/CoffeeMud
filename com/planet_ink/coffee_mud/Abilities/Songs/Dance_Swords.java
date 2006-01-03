@@ -132,7 +132,7 @@ public class Dance_Swords extends Dance
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
 											CMLib.dice().roll(1,affected.envStats().damage(),5),
-											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
+											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else
@@ -195,7 +195,7 @@ public class Dance_Swords extends Dance
 
 				// malicious dances must not affect the invoker!
 				int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-				if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+				if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 				if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 				{

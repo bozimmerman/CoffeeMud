@@ -51,7 +51,7 @@ public class Chant_Nectar extends Chant
 		else
 		{
 			Item littleSpring=(Item)affected;
-			Room SpringLocation=CMLib.utensils().roomLocation(littleSpring);
+			Room SpringLocation=CMLib.map().roomLocation(littleSpring);
 			if(canBeUninvoked())
 				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
 			super.unInvoke();
@@ -70,7 +70,7 @@ public class Chant_Nectar extends Chant
 		if(affected==null) return false;
 		if(!(affected instanceof Item)) return false;
 		Item littleSpring=(Item)affected;
-		Room R=CMLib.utensils().roomLocation(affected);
+		Room R=CMLib.map().roomLocation(affected);
 		if(R==null) return false;
 		if(lastNum!=R.numInhabitants())
 		{
@@ -104,7 +104,7 @@ public class Chant_Nectar extends Chant
 				{
 					MOB M=msg.source();
 					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION),0);
-					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
+					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,hp,null);
 					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
 					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2),0);

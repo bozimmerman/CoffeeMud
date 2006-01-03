@@ -63,7 +63,7 @@ public class Prayer_Restoration extends Prayer
 				int healing=target.maxState().getHitPoints()-target.curState().getHitPoints();
 				if(healing>0)
 				{
-					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
+					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
 					target.recoverCharStats();
 					target.recoverEnvStats();

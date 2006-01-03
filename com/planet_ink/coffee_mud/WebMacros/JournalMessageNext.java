@@ -40,7 +40,7 @@ public class JournalMessageNext extends StdWebMacro
 	{
 	    Item I=null;
 	    HashSet H=new HashSet();
-	    for(Enumeration e=CMClass.items();e.hasMoreElements();)
+	    for(Enumeration e=CMClass.basicItems();e.hasMoreElements();)
 	    {
 	        I=(Item)e.nextElement();
 	        if((I instanceof ArchonOnly)

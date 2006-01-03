@@ -115,6 +115,8 @@ public class Prayer_AuraStrife extends Prayer
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		Room targetRoom=target.location();
+		if(targetRoom==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -125,7 +127,7 @@ public class Prayer_AuraStrife extends Prayer
 		{
 			beneficialAffect(mob,target,asLevel,0);
 			target.recoverEnvStats();
-			target.location().recoverRoomStats();
+			targetRoom.recoverRoomStats();
 		}
 		// return whether it worked
 		return success;

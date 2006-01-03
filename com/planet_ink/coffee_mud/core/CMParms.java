@@ -70,6 +70,18 @@ public class CMParms
         return Combined.toString().trim();
     }
     
+    public static String combineWithTabs(Vector commands, int startAt)
+    {
+        StringBuffer Combined=new StringBuffer("");
+        if(commands!=null)
+        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+        {
+            String s=(String)commands.elementAt(commandIndex);
+            Combined.append(s+"\t");
+        }
+        return Combined.toString().trim();
+    }
+    
     public static String combine(Vector commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -179,6 +191,60 @@ public class CMParms
             if((!ignoreNulls)||(s2.length()>0))
                 V.addElement(s2);
             x=s.indexOf(",");
+        }
+        if((!ignoreNulls)||(s.trim().length()>0))
+            V.addElement(s.trim());
+        return V;
+    }
+    
+    public static Vector parseTabs(String s, boolean ignoreNulls)
+    {
+        Vector V=new Vector();
+        if((s==null)||(s.length()==0)) return V;
+        int x=s.indexOf("\t");
+        while(x>=0)
+        {
+            String s2=s.substring(0,x).trim();
+            s=s.substring(x+1).trim();
+            if((!ignoreNulls)||(s2.length()>0))
+                V.addElement(s2);
+            x=s.indexOf("\t");
+        }
+        if((!ignoreNulls)||(s.trim().length()>0))
+            V.addElement(s.trim());
+        return V;
+    }
+    
+    public static Vector parseAny(String s, String delimeter, boolean ignoreNulls)
+    {
+        Vector V=new Vector();
+        if((s==null)||(s.length()==0)) return V;
+        int x=s.indexOf(delimeter);
+        while(x>=0)
+        {
+            String s2=s.substring(0,x).trim();
+            s=s.substring(x+delimeter.length()).trim();
+            if((!ignoreNulls)||(s2.length()>0))
+                V.addElement(s2);
+            x=s.indexOf(delimeter);
+        }
+        if((!ignoreNulls)||(s.trim().length()>0))
+            V.addElement(s.trim());
+        return V;
+    }
+    public static Vector parseAnyWords(String s, String delimeter, boolean ignoreNulls)
+    {
+        Vector V=new Vector();
+        if((s==null)||(s.length()==0)) return V;
+        delimeter=delimeter.toUpperCase();
+        int x=s.toUpperCase().indexOf(delimeter);
+        while(x>=0)
+        {
+            String s2=s.substring(0,x).trim();
+            s=s.substring(x+delimeter.length()).trim();
+            if((!ignoreNulls)||(s2.length()>0))
+                V.addElement(s2);
+            x=s.indexOf(delimeter);
         }
         if((!ignoreNulls)||(s.trim().length()>0))
             V.addElement(s.trim());
@@ -625,6 +691,27 @@ public class CMParms
             }
             else
                 x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+        }
+        return defaultValue;
+    }
+    
+    public static boolean getParmBool(String text, String key, boolean defaultValue)
+    {
+        int x=text.toUpperCase().indexOf(key.toUpperCase());
+        while(x>=0)
+        {
+            if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+            {
+                while((x<text.length())&&(text.charAt(x)!='='))
+                    x++;
+                if((x<text.length())&&(text.charAt(x)=='='))
+                {
+                	String s=text.substring(x+1).trim();
+                	if(Character.toUpperCase(s.charAt(0))=='T') return true;
+                	if(Character.toUpperCase(s.charAt(0))=='T') return false;
+                }
+            }
+            x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
         }
         return defaultValue;
     }

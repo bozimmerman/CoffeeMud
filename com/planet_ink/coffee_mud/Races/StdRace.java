@@ -466,7 +466,7 @@ public class StdRace implements Race
                     if(thisItem.container()!=null)
                         containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
-					newItem.setDispossessionTime(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*TimeManager.MILI_HOUR));
+					newItem.setExpirationDate(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*TimeManager.MILI_HOUR));
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;

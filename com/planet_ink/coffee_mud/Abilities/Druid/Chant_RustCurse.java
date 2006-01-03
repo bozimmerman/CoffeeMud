@@ -88,7 +88,7 @@ public class Chant_RustCurse extends Chant
 				if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
 				||(CMLib.dice().rollPercentage()<10))
 				{
-					CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,"<T-NAME> rusts!","You rust!",null);
+					CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,"<T-NAME> rusts!","You rust!",null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

@@ -233,7 +233,7 @@ public class StdTitle extends StdItem implements LandTitle
 				        CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 			        else
 			            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
-                    if(SK!=null) SK.getShop().removeStock(Name(),msg.source(),SK.whatIsSold(),CMLib.utensils().roomStart(msg.target()));
+                    if(SK!=null) SK.getShop().removeStock(Name(),msg.source(),SK.whatIsSold(),CMLib.map().getStartRoom(msg.target()));
 			        destroy();
 			        return false;
 			    }
@@ -259,7 +259,7 @@ public class StdTitle extends StdItem implements LandTitle
 		        else
 		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
 				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
-				if(SK!=null) SK.getShop().removeStock(msg.tool().Name(),msg.source(),SK.whatIsSold(),CMLib.utensils().roomStart(msg.target()));
+				if(SK!=null) SK.getShop().removeStock(msg.tool().Name(),msg.source(),SK.whatIsSold(),CMLib.map().getStartRoom(msg.target()));
                 destroy();
 		        return false;
 			}

@@ -206,7 +206,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-            CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
             CMLib.color().fixSourceFightColor(msg);
             if(mob.location().okMessage(mob,msg))
             {

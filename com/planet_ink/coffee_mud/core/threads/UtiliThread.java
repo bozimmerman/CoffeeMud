@@ -49,34 +49,77 @@ public class UtiliThread extends Thread
 		setName("UtiliThread");
 	}
 
-	public void itemSweep()
+	public void vacuum()
 	{
 		boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
-		status="item sweeping";
-		long itemKillTime=System.currentTimeMillis();
+		boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
+		status="expiration sweep";
+		long currentTime=System.currentTimeMillis();
+		boolean debug=CMSecurity.isDebugging("VACUUM");
 		try
 		{
+			Vector stuffToGo=new Vector();
+			Item I=null;
+			MOB M=null;
+			Room R=null;
+			Vector roomsToGo=new Vector();
+			boolean success=true;
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-			    Room R=(Room)r.nextElement(); 
-			    
-				for(int i=0;i<R.numItems();i++)
-				{
-					Item I=R.fetchItem(i);
-					if((I!=null)
-					&&((!corpsesOnly)||(I instanceof DeadBody))
-					&&(I.dispossessionTime()!=0)
-					&&(I.owner()==R))
+			    R=(Room)r.nextElement();
+			    if((R.expirationDate()!=0)
+			    &&(currentTime>R.expirationDate())
+				&&(R.okMessage(R,CMClass.getMsg(CMLib.map().god(R),R,null,CMMsg.MSG_EXPIRE,null))))
+			    	roomsToGo.addElement(R);
+			    else
+			    if(!R.amDestroyed())
+			    {
+			    	stuffToGo.clear();
+					for(int i=0;i<R.numItems();i++)
 					{
-						if(itemKillTime>I.dispossessionTime())
-						{
-							status="destroying "+I.Name();
-							I.destroy();
-							status="item sweeping";
-							i=i-1;
-						}
+						I=R.fetchItem(i);
+						if((I!=null)
+						&&((!corpsesOnly)||(I instanceof DeadBody))
+						&&(I.expirationDate()!=0)
+						&&(I.owner()==R)
+						&&(currentTime>I.expirationDate()))
+							stuffToGo.add(I);
 					}
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						M=R.fetchInhabitant(i);
+						if((M!=null)
+						&&(!noMobs)
+						&&(M.expirationDate()!=0)
+						&&(currentTime>M.expirationDate()))
+							stuffToGo.add(M);
+					}
+			    }
+			    if(stuffToGo.size()>0)
+			    {
+			    	MOB god=CMLib.map().god(R);
+				    for(int s=0;s<stuffToGo.size();s++)
+				    {
+				    	Environmental E=(Environmental)stuffToGo.elementAt(s);
+						status="expiring "+E.Name();
+				    	success=R.showOthers(god,E,CMMsg.MSG_EXPIRE,null);
+				    	if(debug) Log.sysOut("UTILITHREAD","Expired "+E.Name()+" in "+CMLib.map().getExtendedRoomID(R)+": "+success);
+				    }
+				    stuffToGo.clear();
+			    }
+			}
+			for(int r=0;r<roomsToGo.size();r++)
+			{
+				R=(Room)roomsToGo.elementAt(r);
+		    	MOB god=CMLib.map().god(R);
+				status="expirating room "+CMLib.map().getExtendedRoomID(R);
+				if(debug)
+				{
+					String roomID=CMLib.map().getExtendedRoomID(R);
+					if(roomID.length()==0) roomID="(unassigned grid room, probably in the air)";
+			    	if(debug) Log.sysOut("UTILITHREAD","Expired "+roomID+".");
 				}
+				R.sendOthers(god,CMClass.getMsg(god,R,null,CMMsg.MSG_EXPIRE,null));
 			}
 	    }
 	    catch(java.util.NoSuchElementException e){}
@@ -98,8 +141,8 @@ public class UtiliThread extends Thread
     
 	public void checkHealth()
 	{
-		long lastDateTime=System.currentTimeMillis();
-		lastDateTime-=(5*TimeManager.MILI_MINUTE);
+		long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
+		long longerDateTime=System.currentTimeMillis()-(120*TimeManager.MILI_MINUTE);
 		status="checking";
 		try
 		{
@@ -142,7 +185,10 @@ public class UtiliThread extends Thread
 				&&(almostTock.lastStop<lastDateTime))
 				{
 					TockClient client=almostTock.lastClient;
-					if(client!=null)
+					if(client==null)
+                        insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+"! No further information.",almostTock);
+					else
+					if((!CMath.bset(client.tickID,Tickable.TICKID_LONGERMASK))||(almostTock.lastStop<longerDateTime))
 					{
 						if(client.clientObject==null)
                             insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+": NULL @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID,almostTock);
@@ -174,8 +220,6 @@ public class UtiliThread extends Thread
                             insertOrderDeathInOrder(orderedDeaths,client.lastStart,msg,almostTock);
 						}
 					}
-					else
-                        insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+"! No further information.",almostTock);
 				}
 			}
 	    }
@@ -302,7 +346,7 @@ public class UtiliThread extends Thread
                     try{Thread.sleep(2000);}catch(Exception e){}
 				if(!CMSecurity.isDisabled("UTILITHREAD"))
 				{
-					itemSweep();
+					vacuum();
 					checkHealth();
 					lastStop=System.currentTimeMillis();
 					milliTotal+=(lastStop-lastStart);

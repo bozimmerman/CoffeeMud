@@ -107,9 +107,9 @@ public class Trap_MonsterCage extends StdTrap
 		if((target!=invoker())&&(target.location()!=null)&&(text().length()>0))
 		{
 			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) opening a monster cage!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) opening a monster cage!");
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trip(s) open a caged monster!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trip(s) open a caged monster!"))
 			{
 				super.spring(target);
 				Item I=CMClass.getItem("GenCaged");

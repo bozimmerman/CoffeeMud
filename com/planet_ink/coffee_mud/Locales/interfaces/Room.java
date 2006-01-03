@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Room extends Environmental
+public interface Room extends Environmental, Affectable, Behavable
 {
 	public String roomID();
 	public void setRoomID(String newRoomID);
@@ -141,6 +141,8 @@ public interface Room extends Environmental
 	public Exit getPairedExit(int direction);
 	public Room getRoomInDir(int direction);
 	public Exit getExitInDir(int direction);
+	public Room prepareRoomInDir(Room fromRoom, int direction);
+	
 
 	public int pointsPerMove(MOB mob);
 	public int thirstPerRound(MOB mob);
@@ -213,17 +215,18 @@ public interface Room extends Environmental
 	public MOB fetchPCInhabitant(int i);
 	public void bringMobHere(MOB mob, boolean andFollowers);
 
-	public Item fetchItem(Item goodLocation, String itemID);
 	public void addItem(Item item);
 	public void addItemRefuse(Item item, double survivalRLHours);
 	public void delItem(Item item);
 	public int numItems();
 	public boolean isContent(Item item);
+	public Item fetchItem(Item goodLocation, String itemID);
 	public Item fetchItem(int i);
 	public Item fetchAnyItem(String itemID);
+	public void bringItemHere(Item item, double survivalRLHours);
+
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode);
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode);
 	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode);
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode);
-	public void bringItemHere(Item item, double survivalRLHours);
 }

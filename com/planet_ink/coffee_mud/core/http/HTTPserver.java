@@ -61,8 +61,6 @@ public class HTTPserver extends Thread implements MudHost
 	String serverDir = null;
 	String serverTemplateDir = null;
 
-	private static boolean displayedBlurb=false;
-
 	public FileGrabber pageGrabber=new FileGrabber(this);
 	public FileGrabber templateGrabber=new FileGrabber(this);
 
@@ -140,14 +138,6 @@ public class HTTPserver extends Thread implements MudHost
 		// don't want any trailing / chars
 		serverDir = FileGrabber.fixDirName(serverDir);
 
-/*		if (serverDir.charAt(serverDir.length()-1) == CMFile.pathSeparator)
-		{
-			if (serverDir.length() > 1)
-				serverDir = serverDir.substring(0,serverDir.length()-2);
-			else
-				serverDir = "";
-		}
-*/
 		if (!pageGrabber.setBaseDirectory(serverDir))
 		{
 			Log.errOut(getName(),"Could not set server base directory: "+serverDir);
@@ -155,27 +145,13 @@ public class HTTPserver extends Thread implements MudHost
 		}
 
 		if (page.getStr("TEMPLATEDIRECTORY").length()==0)
-		{
-//			serverTemplateDir = new String ("web" + CMFile.pathSeparator + partialName + ".templates");
 			serverTemplateDir = new String (serverDir + ".templates");
-		}
 		else
-		{
 			serverTemplateDir = page.getStr("TEMPLATEDIRECTORY");
-		}
-
 
 		// don't want any trailing / chars
 		serverTemplateDir = FileGrabber.fixDirName(serverTemplateDir);
 
-/*		if (serverTemplateDir.charAt(serverTemplateDir.length()-1) == CMFile.pathSeparator)
-		{
-			if (serverTemplateDir.length() > 1)
-				serverTemplateDir = serverTemplateDir.substring(0,serverTemplateDir.length()-2);
-			else
-				serverTemplateDir = "";
-		}
-*/
 		if (!templateGrabber.setBaseDirectory(serverTemplateDir))
 		{
 			Log.errOut(getName(),"Could not set server template directory: "+serverTemplateDir);
@@ -184,12 +160,6 @@ public class HTTPserver extends Thread implements MudHost
 
 		addVirtualDirectories();
 
-
-		if (!displayedBlurb)
-		{
-			displayedBlurb = true;
-			//Log.sysOut(getName(),"HTTPserver (c)2002 Jeff Kamenek");
-		}
 
 		return true;
 	}
@@ -202,7 +172,6 @@ public class HTTPserver extends Thread implements MudHost
 		{
 			String s = (String) e.nextElement();
 
-//Log.sysOut(getName(),s);
 			// nb: hard-coded!
 			if (s.startsWith("MOUNT/"))
 			{
@@ -252,10 +221,7 @@ public class HTTPserver extends Thread implements MudHost
 
 
 		if (page.getStr("ADMIN") != null && page.getStr("ADMIN").equalsIgnoreCase("true"))
-		{
-			//Log.sysOut(getName(),"Admin mode");
 			isAdminServer = true;
-		}
 		if (page.getStr("BIND") != null && page.getStr("BIND").length() > 0)
 		{
 			try
@@ -271,7 +237,6 @@ public class HTTPserver extends Thread implements MudHost
 
 		try
 		{
-			
 			Vector allports=CMParms.parseCommas(page.getStr("PORT"),true);
 			myPort=CMath.s_int((String)allports.elementAt(myServerNumber));
 			servsock=new ServerSocket(myPort, q_len, bindAddr);

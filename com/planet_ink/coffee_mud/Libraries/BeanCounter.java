@@ -509,11 +509,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 	
 	public boolean modifyThisAreaBankGold(Area A, 
-	        									 HashSet triedBanks, 
-	        									 String owner,
-	        									 String explanation,
-	        									 String currency,
-	        									 double absoluteAmount)
+    									  HashSet triedBanks, 
+    									  String owner,
+    									  String explanation,
+    									  String currency,
+    									  double absoluteAmount)
 	{
 		Room R=null;
 		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)

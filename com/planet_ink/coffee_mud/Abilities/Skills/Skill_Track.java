@@ -282,28 +282,16 @@ public class Skill_Track extends StdSkill
 		{
 		    try
 		    {
-				for(Enumeration r=thisRoom.getArea().getProperMap();r.hasMoreElements();)
+				Vector checkSet=CMLib.tracking().getRadiantRooms(thisRoom,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
 		    }catch(NoSuchElementException nse){}
 		}
 	    tickStatus=Tickable.STATUS_MISC6+6;
-
-		if(rooms.size()<=0)
-		{
-		    try
-		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(R.fetchInhabitant(mobName)!=null)
-						rooms.addElement(R);
-				}
-		    }catch(NoSuchElementException nse){}
-		}
 		
 	    tickStatus=Tickable.STATUS_MISC6+7;
 		boolean success=profficiencyCheck(mob,0,auto);

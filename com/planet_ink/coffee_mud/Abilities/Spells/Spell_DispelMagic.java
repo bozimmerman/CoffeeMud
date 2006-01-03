@@ -95,7 +95,7 @@ public class Spell_DispelMagic extends Spell
 			||(mob==target)
 			||(mob.getGroupMembers(new HashSet()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))

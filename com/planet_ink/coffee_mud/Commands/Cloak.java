@@ -57,7 +57,7 @@ public class Cloak extends StdCommand
 		else
 		if(A!=null)
 		{
-		    if(CMath.bset(A.abilityCode(),abilityCode))
+		    if(CMath.bset(A.abilityCode(),abilityCode)&&(!CMath.bset(A.abilityCode(),EnvStats.IS_NOT_SEEN)))
 		    {
 				mob.tell("You are already cloaked!");
 				return false;
@@ -77,7 +77,6 @@ public class Cloak extends StdCommand
 				mob.addEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());
 			if(A!=null) A.setAbilityCode(abilityCode);
-
 			
 			mob.recoverEnvStats();
 			mob.location().recoverRoomStats();

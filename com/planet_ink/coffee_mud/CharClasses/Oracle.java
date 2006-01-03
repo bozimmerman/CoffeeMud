@@ -223,7 +223,7 @@ public class Oracle extends Cleric
 						&&(lql>0)
 						&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
 						&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-						&&(!CMLib.ableMapper().classOnly("Archon",A.ID()))
+						&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
 					    &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 						&&(mob.fetchAbility(A.ID())==null))
 						{

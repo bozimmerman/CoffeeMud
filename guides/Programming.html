@@ -971,7 +971,7 @@ are    as follows:</font></p>
             </tr>
             <tr>
               <td width="15%">65536</td>
-              <td width="35%">MASK_GENERAL</td>
+              <td width="35%">MASK_ALWAYS</td>
               <td width="50%">Override mask which flags the message as something 
    which Must occur, regardless of the state of the source or target.</td>
             </tr>
@@ -3592,7 +3592,7 @@ only  affects MOBS.&nbsp; A value like </font><font size="3">Ability.CAN_MOBS|Ab
    whenever this property appears on an Item which is Identified.&nbsp; This 
    string would appear in addition to any secretIdentity defined for the item.</font></p>
                
-<pre>   /** this method defines how this thing responds<br>    * to environmental changes.  It may handle any<br>    * and every msg listed in the CMMsg class<br>    * from the given Environmental source */<br>   public boolean okMessage(Environmental myHost, CMMsg msg)<br>   {<br>      if((affected==null)||(!(affected instanceof MOB)))<br>         return true;<br>      MOB mob=(MOB)affected;<br><br>      if((msg.amISource(mob))&amp;&amp;(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))<br>      {<br>         if((msg.tool()!=null)&amp;&amp;(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))<br>            return super.okMessage(myHost,msg);<br>         else<br>         if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)<br>         {<br>            mob.tell("You are unable to attack in this incorporeal form.");<br>            peaceAt(mob);<br>            return false;<br>         }<br>         else<br>         if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))<br>         ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))<br>         {<br>            if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))<br>               mob.tell("You are unable to make sounds in this incorporeal form.");<br>            else<br>               mob.tell("You are unable to do that this incorporeal form.");<br>            peaceAt(mob);<br>            return false;<br>         }<br>      }<br>      else<br>      if((msg.amITarget(mob))&amp;&amp;(!msg.amISource(mob))<br>         &amp;&amp;(!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))<br>      {<br>         mob.tell(mob.name()+" doesn't seem to be here.");<br>         return false;<br>      }<br>      return true;<br>   }<br><br></pre>
+<pre>   /** this method defines how this thing responds<br>    * to environmental changes.  It may handle any<br>    * and every msg listed in the CMMsg class<br>    * from the given Environmental source */<br>   public boolean okMessage(Environmental myHost, CMMsg msg)<br>   {<br>      if((affected==null)||(!(affected instanceof MOB)))<br>         return true;<br>      MOB mob=(MOB)affected;<br><br>      if((msg.amISource(mob))&amp;&amp;(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))<br>      {<br>         if((msg.tool()!=null)&amp;&amp;(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))<br>            return super.okMessage(myHost,msg);<br>         else<br>         if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)<br>         {<br>            mob.tell("You are unable to attack in this incorporeal form.");<br>            peaceAt(mob);<br>            return false;<br>         }<br>         else<br>         if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))<br>         ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))<br>         {<br>            if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))<br>               mob.tell("You are unable to make sounds in this incorporeal form.");<br>            else<br>               mob.tell("You are unable to do that this incorporeal form.");<br>            peaceAt(mob);<br>            return false;<br>         }<br>      }<br>      else<br>      if((msg.amITarget(mob))&amp;&amp;(!msg.amISource(mob))<br>         &amp;&amp;(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))<br>      {<br>         mob.tell(mob.name()+" doesn't seem to be here.");<br>         return false;<br>      }<br>      return true;<br>   }<br><br></pre>
                
 <p align="left"><font size="4">As discussed in the Core Topics above, here 
    is an example of an okMessage method.&nbsp; In this case, we intercept 
@@ -3964,7 +3964,7 @@ have been made.</font></p>
 target.&nbsp;   We store whether or not the profficiency check failed or passed
 into the  variable success.</font></p>
                
-<pre>      success=success&amp;&amp;(target.charStats().getBodyPart(Race.BODY_LEG)&gt;0);<br>      if(success)<br>      {<br>         CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"&lt;T-NAME&gt; trip(s)!":"^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?");<br>         if(mob.location().okMessage(mob,msg))<br>         {<br>            mob.location().send(mob,msg);<br>            int durationTicks=(msg.value()&gt;0)?1:2;<br>            maliciousAffect(mob,target,asLevel,durationTicks,-1);<br>            target.tell("You hit the floor!");<br>         }<br>      }<br>      else<br>         return maliciousFizzle(mob,target,"&lt;S-NAME&gt; attempt(s) to trip &lt;T-NAMESELF&gt;, but fail(s).");<br>      return success;<br>   }<br>}<br></pre>
+<pre>      success=success&amp;&amp;(target.charStats().getBodyPart(Race.BODY_LEG)&gt;0);<br>      if(success)<br>      {<br>         CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"&lt;T-NAME&gt; trip(s)!":"^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?");<br>         if(mob.location().okMessage(mob,msg))<br>         {<br>            mob.location().send(mob,msg);<br>            int durationTicks=(msg.value()&gt;0)?1:2;<br>            maliciousAffect(mob,target,asLevel,durationTicks,-1);<br>            target.tell("You hit the floor!");<br>         }<br>      }<br>      else<br>         return maliciousFizzle(mob,target,"&lt;S-NAME&gt; attempt(s) to trip &lt;T-NAMESELF&gt;, but fail(s).");<br>      return success;<br>   }<br>}<br></pre>
                
 <p align="left"><font size="4">The rest of the invoke() method actually does 
    the work of sending the trip message and&nbsp;affecting the target if necessary,&nbsp;or
@@ -5334,7 +5334,7 @@ creature.</font></p>
   for the creature with the cold, and potentially give them another disease
   to enjoy when the Cold expires 1 tick later.</font></p>
                
-<pre>		else<br>		if((!mob.amDead())&amp;&amp;((--diseaseTick)&lt;=0))<br>		{<br>			diseaseTick=DISEASE_DELAY();<br>			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());<br>			if(mob.curState().getHitPoints()&gt;((2*diseaser.envStats().level())+1))<br>			{<br>				int damage=CMLib.dice().roll(2,diseaser.envStats().level(),1);<br>				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);<br>			}<br>			catchIt(mob);<br>			return true;<br>		}<br>		return true;<br>	}<br></pre>
+<pre>		else<br>		if((!mob.amDead())&amp;&amp;((--diseaseTick)&lt;=0))<br>		{<br>			diseaseTick=DISEASE_DELAY();<br>			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());<br>			if(mob.curState().getHitPoints()&gt;((2*diseaser.envStats().level())+1))<br>			{<br>				int damage=CMLib.dice().roll(2,diseaser.envStats().level(),1);<br>				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);<br>			}<br>			catchIt(mob);<br>			return true;<br>		}<br>		return true;<br>	}<br></pre>
                
 <p align="left"><font size="4">The last thing we do in this method is, every 
    DISEASE_DELAY ticks, we emote our DISEASE_AFFECT string, and then allow 
@@ -5478,17 +5478,17 @@ us also, so it should  definitely be called!</font><br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if((!invoker().mayIFight(target))||(CMLib.dice().rollPercentage()&lt;=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"&lt;S-NAME&gt; 
+  target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"&lt;S-NAME&gt; 
   avoid(s) setting off a shocking trap!");<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"&lt;S-NAME&gt; 
+     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"&lt;S-NAME&gt; 
   set(s) off an shocking trap!"))<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
   super.spring(target);<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
   CMLib.combat().postDamage(invoker(), target, null, CMLib.dice().roll(trapLevel(),8,1), 
-  CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC, Weapon.TYPE_STRIKING, "The shock 
+  CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC, Weapon.TYPE_STRIKING, "The shock 
 &lt;DAMAGE&gt;  &lt;T-NAME&gt;!"+CMProps.msp("shock.wav",30));<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
   if((canBeUninvoked())&amp;&amp;(affected instanceof Item))<br>

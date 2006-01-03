@@ -141,7 +141,7 @@ public class Train extends StdCommand
 			}
 		}
 		else
-		if(mob.getTrains()==0)
+		if(mob.getTrains()<=0)
 		{
 			mob.tell("You don't seem to have enough training sessions to do that.");
 			return false;
@@ -149,8 +149,17 @@ public class Train extends StdCommand
 		else
 		if(mob.getTrains()<trainsRequired)
 		{
-			mob.tell("Training that ability further will require "+trainsRequired+" training sessions.");
-			return false;
+			if(trainsRequired>1)
+			{
+				mob.tell("Training that ability further will require "+trainsRequired+" training points.");
+				return false;
+			}
+			else
+			if(trainsRequired==1)
+			{
+				mob.tell("Training that ability further will require "+trainsRequired+" training points.");
+				return false;
+			}
 		}
 
 		MOB teacher=null;
@@ -171,7 +180,12 @@ public class Train extends StdCommand
 		}
 		if((teacher==null)||((teacher!=null)&&(!CMLib.flags().canBeSeenBy(teacher,mob))))
 		{
-			mob.tell("That person doesn't seem to be here.");
+			mob.tell(teacher,null,null,"<S-NAME> can't see you!");
+			return false;
+		}
+		if((teacher!=null)&&(!CMLib.flags().canBeSeenBy(mob,teacher)))
+		{
+			mob.tell(teacher,null,null,"<S-NAME> can't see you!");
 			return false;
 		}
 		if(teacher==mob)

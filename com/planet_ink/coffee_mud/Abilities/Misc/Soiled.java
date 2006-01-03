@@ -128,7 +128,7 @@ public class Soiled extends StdAbility
 	    if(CMLib.dice().rollPercentage()==1)
 	    {
 	        Environmental E=affected;
-	        Room R=CMLib.utensils().roomLocation(E);
+	        Room R=CMLib.map().roomLocation(E);
 	        if(R!=null)
 	        {
 	            MOB M=(E instanceof MOB)?(MOB)E:null;
@@ -160,7 +160,7 @@ public class Soiled extends StdAbility
 	            }
 	            if(smell!=null)
 	            {
-	                CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_GENERAL,smell);
+	                CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_ALWAYS,smell);
 	                if(R.okMessage(M,msg))
 		            for(int m=0;m<R.numInhabitants();m++)
 		            {

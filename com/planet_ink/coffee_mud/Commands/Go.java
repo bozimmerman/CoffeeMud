@@ -36,14 +36,16 @@ public class Go extends StdCommand
 {
 	public Go(){}
 
-	private String[] access={"GO","WALK","RUN"};
+	private String[] access={"GO","WALK"};
 	public String[] getAccessWords(){return access;}
+	
+	public int energyExpenseFactor(){return 1;}
 
-	public static void ridersBehind(Vector riders,
-									Room sourceRoom,
-									Room destRoom,
-									int directionCode,
-									boolean flee)
+	public void ridersBehind(Vector riders,
+							 Room sourceRoom,
+							 Room destRoom,
+							 int directionCode,
+							 boolean flee)
 	{
 		if(riders!=null)
 		for(int r=0;r<riders.size();r++)
@@ -108,11 +110,11 @@ public class Go extends StdCommand
 		return riders;
 	}
 
-	public static Vector ridersAhead(Rider theRider,
-									 Room sourceRoom,
-									 Room destRoom,
-									 int directionCode,
-									 boolean flee)
+	public Vector ridersAhead(Rider theRider,
+							  Room sourceRoom,
+							  Room destRoom,
+							  int directionCode,
+							  boolean flee)
 	{
 		Vector riders=new Vector();
 		Rideable riding=theRider.riding();
@@ -173,20 +175,20 @@ public class Go extends StdCommand
 		return riders;
 	}
 
-	public static boolean move(MOB mob,
-						   int directionCode,
-						   boolean flee,
-						   boolean nolook,
-						   boolean noriders)
+	public boolean move(MOB mob,
+					   int directionCode,
+					   boolean flee,
+					   boolean nolook,
+					   boolean noriders)
 	{
 	    return move(mob,directionCode,flee,nolook,noriders,false);
 	}
-	public static boolean move(MOB mob,
-							   int directionCode,
-							   boolean flee,
-							   boolean nolook,
-							   boolean noriders,
-							   boolean always)
+	public boolean move(MOB mob,
+					    int directionCode,
+					    boolean flee,
+					    boolean nolook,
+					    boolean noriders,
+					    boolean always)
 	{
 		if(directionCode<0) return false;
 		if(mob==null) return false;
@@ -204,7 +206,7 @@ public class Go extends StdCommand
 		String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():Directions.getDirectionName(directionCode);
 		String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
-		int generalMask=always?CMMsg.MASK_GENERAL:0;
+		int generalMask=always?CMMsg.MASK_ALWAYS:0;
 		int leaveCode=generalMask|CMMsg.MSG_LEAVE;
 		if(flee)
 			leaveCode=generalMask|CMMsg.MSG_FLEE;
@@ -254,7 +256,8 @@ public class Go extends StdCommand
 		else
 		{
 			if(!mob.isMonster())
-				mob.curState().expendEnergy(mob,mob.maxState(),true);
+				for(int i=0;i<energyExpenseFactor();i++)
+					mob.curState().expendEnergy(mob,mob.maxState(),true);
 			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState()))&&(!gotoAllowed))
 			{
 				mob.tell(getScr("Movement","tootired"));
@@ -262,19 +265,6 @@ public class Go extends StdCommand
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
 			    mob.playerStats().adjHygiene(mob.location().pointsPerMove(mob));
-			long minMoveTime=CMProps.getIntVar(CMProps.SYSTEMI_MINMOVETIME);
-			if((minMoveTime>0)&&(!flee))
-			{
-				minMoveTime-=Math.round((mob.envStats().speed()-1.0)*100.0);
-				minMoveTime-=Math.round(mob.maxState().getMovement());
-				if((minMoveTime>0)
-				&&((System.currentTimeMillis()-mob.lastMovedDateTime())<minMoveTime))
-				{
-					try{
-						Thread.sleep(minMoveTime-(System.currentTimeMillis()-mob.lastMovedDateTime()));
-					}catch(Exception e){}
-				}
-			}
 		}
 
 		Vector riders=null;
@@ -421,6 +411,7 @@ public class Go extends StdCommand
 							else
 							{
 								Vector V=new Vector();
+								V.addElement(doing);
 								V.addElement(Directions.getDirectionName(direction));
 								mob.enqueCommand(V,0);
 							}

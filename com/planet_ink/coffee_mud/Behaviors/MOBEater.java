@@ -173,13 +173,13 @@ public class MOBEater extends ActiveTicker
 				CMMsg DigestMsg=CMClass.getMsg(mob,
 										   TastyMorsel,
 										   null,
-										   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
+										   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
 										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

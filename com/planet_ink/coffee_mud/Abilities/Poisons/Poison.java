@@ -71,7 +71,7 @@ public class Poison extends StdAbility
 			if(POISON_START_TARGETONLY().length()>0)
 			    targetMOB.tell(POISON_START_TARGETONLY());
 			if((POISON_START_TARGETONLY().length()>0)
-			||targetMOB.location().show(targetMOB,null,CMMsg.MASK_GENERAL|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
+			||targetMOB.location().show(targetMOB,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
 			{
 			    if(POISON_AFFECTTARGET())
 			    {
@@ -104,7 +104,7 @@ public class Poison extends StdAbility
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
             {
-				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_GENERAL|CMMsg.TYP_POISON,-1,null);
+				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_ALWAYS|CMMsg.TYP_POISON,-1,null);
                 if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
                     CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
             }
@@ -209,7 +209,7 @@ public class Poison extends StdAbility
 		if(success)
 		{
 			String str=auto?"":POISON_CAST();
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_GENERAL:0),str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),str);
             CMLib.color().fixSourceFightColor(msg);
 			Room R=mob.location();
 			if((target instanceof MOB)&&(((MOB)target).location()!=null))

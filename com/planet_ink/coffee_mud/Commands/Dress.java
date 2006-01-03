@@ -76,7 +76,7 @@ public class Dress extends StdCommand
 			||(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")&&(target.isMonster()))
 			||(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")&&(target.isMonster())))
 			{
-				mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
+				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
 				item.unWear();
 				target.giveItem(item);
 				item.wearIfPossible(target);
@@ -120,11 +120,11 @@ public class Dress extends StdCommand
 				{
 					if(CMLib.commands().postDrop(mob,item,true,false))
 					{
-						msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
+						msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
 						if(mob.location().okMessage(mob,msg))
 						{
 							mob.location().send(mob,msg);
-							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,null);
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);

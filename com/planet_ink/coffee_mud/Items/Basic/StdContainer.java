@@ -148,7 +148,7 @@ public class StdContainer extends StdItem implements Container
 					{
 						if((!(CMLib.flags().canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
 						&&(amWearingAt(Item.IN_INVENTORY))
-						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
+						&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0))
 						{
 							mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
 							return false;
@@ -210,7 +210,7 @@ public class StdContainer extends StdItem implements Container
 					if(newitem.container()==this)
 					{
 						if((!CMLib.flags().canBeSeenBy(newitem,mob))
-						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
+						&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0))
 						{
 							mob.tell("You can't see that.");
 							return false;
@@ -362,7 +362,7 @@ public class StdContainer extends StdItem implements Container
 		&&(msg.source().isMine(this)))
 		{
 			setContainer(null);
-			Room R=CMLib.utensils().roomLocation(msg.target());
+			Room R=CMLib.map().roomLocation(msg.target());
 			if(R!=null)
 			{
 				CMLib.utensils().recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
@@ -385,7 +385,7 @@ public class StdContainer extends StdItem implements Container
 		if(containType==0) return true;
 		for(int i=0;i<20;i++)
 			if(CMath.isSet((int)containType,i))
-				switch(CMath.pow(2,i))
+				switch((int)CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
 					if((((Item)E).material()&RawMaterial.MATERIAL_LIQUID)>0)

@@ -46,15 +46,17 @@ public interface DatabaseEngine extends CMObject
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Vector rooms);
     public Vector DBReadAreaData(String areaID, boolean reportStatus);
-    public Vector DBReadRoomData(String roomID, boolean reportStatus, Vector unknownAreas);
+    public Vector DBReadRoomData(String roomID, boolean reportStatus);
     public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus);
 	public void DBUpdateExits(Room room);
 	public String DBReadRoomMOBData(String roomID, String mobID);
 	public String DBReadRoomDesc(String roomID);
+    public void DBReadAllRooms(RoomnumberSet roomsToRead);
 	public void DBUpdateTheseMOBs(Room room, Vector mobs);
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room, String LocaleID);
 	public void DBUpdateRoom(Room room);
+    public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus);
 	public void DBUpdatePlayer(MOB mob);
     public void DBUpdatePlayerStatsOnly(MOB mob);
     public void DBUpdatePlayerAbilities(MOB mob);

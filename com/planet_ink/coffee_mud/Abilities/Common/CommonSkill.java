@@ -143,7 +143,7 @@ public class CommonSkill extends StdAbility
 	protected void commonEmote(MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_GENERAL,str);
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_ALWAYS,str);
 		else
 			mob.tell(mob,null,null,str);
 	}

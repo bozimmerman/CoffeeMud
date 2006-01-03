@@ -228,8 +228,15 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		thisRoom.setArea(mob.location().getArea());
-		thisRoom.setRoomID(CMLib.map().getOpenRoomID(mob.location().getArea().Name()));
+		Room room=mob.location();
+		thisRoom.setArea(room.getArea());
+		thisRoom.setRoomID(room.getArea().getNewRoomID(room,direction));
+		if(thisRoom.roomID().length()==0)
+		{
+			mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.roomID());
 		thisRoom.setDescription("");
 		CMLib.database().DBCreateRoom(thisRoom,Locale);
@@ -357,14 +364,14 @@ public class Create extends BaseGenerics
 		A.setName(areaName);
 		Room R=CMClass.getLocale("StdRoom");
 		R.setArea(A);
-		R.setRoomID(CMLib.map().getOpenRoomID(A.Name()));
+		R.setRoomID(A.getNewRoomID(R,-1));
 		R.setDisplayText(CMClass.className(R)+"-"+R.roomID());
 		R.setDescription("");
 		CMLib.database().DBCreateRoom(R,R.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
 		mob.tell("You are now at "+R.roomID()+".");
 		R.bringMobHere(mob,true);
-        CMLib.coffeeMaker().addWeatherToAreaIfNecessary(A);
+        CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 	}
 
 	public void classes(MOB mob, Vector commands)

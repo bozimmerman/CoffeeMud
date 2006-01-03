@@ -92,7 +92,7 @@ public class Play_Lullabies extends Song
 			return true;
 
 
-		if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(msg.targetMinor()==CMMsg.TYP_STAND)&&(asleep))
 			return false;
 		return true;

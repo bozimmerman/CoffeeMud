@@ -59,7 +59,11 @@ public class Deities extends StdCommand
 				{
 					msg.append(getScr("Deities","blessings"));
 					for(int b=0;b<D.numBlessings();b++)
-						msg.append(D.fetchBlessing(b).name()+" ");
+					{
+						msg.append(D.fetchBlessing(b).name());
+						if(b<D.numBlessings()-1)
+							msg.append(", ");
+					}
 					msg.append("\n\r");
 					msg.append(D.getWorshipTriggerDesc()+"\n\r");
 					msg.append(D.getClericTriggerDesc()+"\n\r");
@@ -68,7 +72,11 @@ public class Deities extends StdCommand
 				{
 					msg.append(getScr("Deities","grpowers"));
 					for(int b=0;b<D.numPowers();b++)
-						msg.append(D.fetchPower(b).name()+" ");
+					{
+						msg.append(D.fetchPower(b).name());
+						if(b<D.numPowers()-1)
+							msg.append(", ");
+					}
 					msg.append("\n\r");
 					msg.append(D.getClericPowerupDesc()+"\n\r");
 				}

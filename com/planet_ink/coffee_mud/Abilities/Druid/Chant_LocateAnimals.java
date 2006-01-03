@@ -136,26 +136,14 @@ public class Chant_LocateAnimals extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=CMLib.map().getRoom((Room)r.nextElement());
 			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
 
-		if(rooms.size()<=0)
-		{
-		    try
-		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,R))
-						if(animalHere(R)!=null)
-							rooms.addElement(R);
-				}
-		    }catch(NoSuchElementException e){}
-		}
 		while(rooms.size()>10)
 		    rooms.removeElementAt(CMLib.dice().roll(1,rooms.size(),-1));
 

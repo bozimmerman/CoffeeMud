@@ -209,12 +209,10 @@ public interface MOB
 	public void setWimpHitPoint(int newVal);
 	public void setQuestPoint(int newVal);
 	public long lastTickedDateTime();
-	public int movesSinceLastTick();
-	public long lastMovedDateTime();
 
 	// location!
 	public Room getStartRoom();
-	public void setStartRoom(Room newVal);
+	public void setStartRoom(Room newRoom);
 	public Room location();
 	public void setLocation(Room newRoom);
 

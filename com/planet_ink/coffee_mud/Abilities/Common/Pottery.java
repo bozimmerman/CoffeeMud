@@ -217,7 +217,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		startStr="<S-NAME> start(s) making "+building.name()+".";
 		displayText="You are making "+building.name();
 		verb="making "+building.name();
-		building.setDisplayText(itemName+" is here");
+		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));

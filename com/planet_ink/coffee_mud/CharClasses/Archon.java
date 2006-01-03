@@ -104,11 +104,11 @@ public class Archon extends StdCharClass
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-        boolean allowed=CMSecurity.isAllowedEverywhere(mob,"ALLTASKS");
-        if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityGroups().contains("ALLTASKS"))) 
-            mob.playerStats().getSecurityGroups().addElement("ALLTASKS");
+        boolean allowed=CMSecurity.isAllowedEverywhere(mob,"ALLSKILLS");
+        if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityGroups().contains("ALLSKILLS"))) 
+            mob.playerStats().getSecurityGroups().addElement("ALLSKILLS");
         super.grantAbilities(mob,isBorrowedClass);
-        if((!allowed)&&(mob.playerStats()!=null)&&(mob.playerStats().getSecurityGroups().contains("ALLTASKS"))) 
-            mob.playerStats().getSecurityGroups().removeElement("ALLTASKS");
+        if((!allowed)&&(mob.playerStats()!=null)&&(mob.playerStats().getSecurityGroups().contains("ALLSKILLS"))) 
+            mob.playerStats().getSecurityGroups().removeElement("ALLSKILLS");
 	}
 }

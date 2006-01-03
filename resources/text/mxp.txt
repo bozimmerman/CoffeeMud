@@ -40,7 +40,7 @@
 <GAUGE vichp Max=vicmaxhp color=red Caption="Enemy Damage">
 <!-- ********************************************************************* -->
 <!-- here are some archon tool elements -->
-<!ELEMENT LSTROOMID '<SEND HREF="GOTO &text;" hint="Click to goto.|GOTO &text;">' >
+<!ELEMENT LSTROOMID '<SEND HREF="GOTO &quot;&text;&quot;" hint="Click to goto.|GOTO &text;">' >
 <!ELEMENT LSTUSER '<SEND HREF="SNOOP &text;|BOOT &text;|BAN &text;|MULTIWATCH ADD &text;" hint="Right-Click to use.|SNOOP &text;|BOOT &text;|BAN &text;|MULTIWATCH ADD &text;">' >
 <!ELEMENT LSTQUEST '<SEND HREF="MODIFY QUEST &text;" hint="Click to start/stop.|MODIFY QUEST &text;">' >
 <!-- ********************************************************************* -->

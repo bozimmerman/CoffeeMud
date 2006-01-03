@@ -48,6 +48,8 @@ public class Prayer_Forgive extends Prayer
 		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 
 		String name=CMParms.combine(commands,0);
+		if(name.startsWith("$")) name=name.substring(1);
+		if(name.endsWith("$")) name=name.substring(0,name.length()-1);
 		if(name.trim().length()==0)
 		{
 			mob.tell("Forgive whom?");

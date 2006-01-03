@@ -418,7 +418,7 @@ public class JewelMaking extends CraftingSkill implements ItemCraftor
 			displayText="You are making "+building.name();
 			verb="making "+building.name();
             playSound="tinktinktink.wav";
-			building.setDisplayText(itemName+" is here");
+			building.setDisplayText(itemName+" lies here");
 			if((data[1][FOUND_CODE]>0)
 			&&(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			   ||((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))

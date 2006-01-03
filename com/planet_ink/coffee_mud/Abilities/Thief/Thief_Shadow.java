@@ -35,12 +35,9 @@ public class Thief_Shadow extends ThiefSkill
 {
 	public String ID() { return "Thief_Shadow"; }
 	public String name(){ return "Shadow";}
-	public String displayText()
-	{
-		if(shadowing!=null)
-			return "(shadowing "+shadowing.name()+")";
-		return super.displayText();
-	}
+		// can NOT have a display text since the ability instance
+		// is shared between the invoker and the target
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

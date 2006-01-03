@@ -132,7 +132,7 @@ public class Prayer_CreateIdol extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=CMClass.getStdItem("GenItem");
+				Item newItem=CMClass.getBasicItem("GenItem");
 				newItem.setBaseValue(1);
 				String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);

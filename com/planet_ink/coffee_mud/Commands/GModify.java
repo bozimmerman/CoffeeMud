@@ -228,7 +228,7 @@ public class GModify extends StdCommand
         if(checkedOut)
         {
             if(changes.size()==0)
-                mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(CMLib.utensils().roomLocation(E))+".");
+                mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E))+".");
             else
             for(int i=0;i<changes.size();i++)
             {
@@ -311,7 +311,7 @@ public class GModify extends StdCommand
             StringBuffer allFieldsMsg=new StringBuffer("");
             Vector allKnownFields=new Vector();
             sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-            sortEnumeratedList(CMClass.items(),allKnownFields,allFieldsMsg);
+            sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
             sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
             sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
             sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
@@ -359,7 +359,7 @@ public class GModify extends StdCommand
         Vector allKnownFields=new Vector();
         StringBuffer allFieldsMsg=new StringBuffer("");
         sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-        sortEnumeratedList(CMClass.items(),allKnownFields,allFieldsMsg);
+        sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
         sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
         sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
         sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
@@ -519,8 +519,8 @@ public class GModify extends StdCommand
         for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
         {
             Area A=(Area)a.nextElement();
-            if(A.getProperMap().hasMoreElements()
-            &&CMSecurity.isAllowed(mob,((Room)A.getProperMap().nextElement()),"GMODIFY"))
+            if(A.getCompleteMap().hasMoreElements()
+            &&CMSecurity.isAllowed(mob,((Room)A.getCompleteMap().nextElement()),"GMODIFY"))
                 placesToDo.addElement(A);
         }
         if(placesToDo.size()==0)
@@ -534,7 +534,7 @@ public class GModify extends StdCommand
             {
                 Area A=(Area)placesToDo.elementAt(i);
                 placesToDo.removeElement(A);
-                for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+                for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
                     if(CMSecurity.isAllowed(mob,R,"GMODIFY"))
@@ -565,53 +565,57 @@ public class GModify extends StdCommand
             if(!CMSecurity.isAllowed(mob,R,"GMODIFY"))
                 continue;
             if(R.roomID().length()==0) continue;
-            boolean oldMobility=R.getArea().getMobility();
-            R.getArea().toggleMobility(false);
-            if(changes.size()==0)
-                R=CMLib.coffeeMaker().makeNewRoomContent(R);
-            else
-                CMLib.utensils().resetRoom(R);
-            if(R==null) continue;
-            boolean savemobs=false;
-            boolean saveitems=false;
-            for(int i=0;i<R.numItems();i++)
-            {
-                Item I=R.fetchItem(i);
-                if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
-                    saveitems=true;
-            }
-            for(int m=0;m<R.numInhabitants();m++)
-            {
-                MOB M=R.fetchInhabitant(m);
-                if((M!=null)&&(M.savable()))
-                    if(tryModfy(mob,R,M,changes,onfields,noisy))
-                        savemobs=true;
-                for(int i=0;i<M.inventorySize();i++)
-                {
-                    Item I=M.fetchInventory(i);
-                    if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
-                        savemobs=true;
-                }
-                if(CMLib.coffeeShops().getShopKeeper(M)!=null)
-                {
-                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
-                    for(int i=0;i<V.size();i++)
-                    {
-                        if(V.elementAt(i) instanceof Item)
-                        {
-                            Item I=(Item)V.elementAt(i);
-                            if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
-                                savemobs=true;
-                        }
-                    }
-                }
-            }
-            if(saveitems) CMLib.database().DBUpdateItems(R);
-            if(savemobs) CMLib.database().DBUpdateMOBs(R);
-            if((mob.session()!=null)&&(changes.size()>0)) 
-                mob.session().rawPrint(".");
-            R.getArea().toggleMobility(oldMobility);
-            if(changes.size()==0) R.destroy();
+	    	synchronized(("SYNC"+R.roomID()).intern())
+	    	{
+	    		R=CMLib.map().getRoom(R);
+	            boolean oldMobility=R.getArea().getMobility();
+	            R.getArea().toggleMobility(false);
+	            if(changes.size()==0)
+	                R=CMLib.coffeeMaker().makeNewRoomContent(R);
+	            else
+	                CMLib.map().resetRoom(R);
+	            if(R==null) continue;
+	            boolean savemobs=false;
+	            boolean saveitems=false;
+	            for(int i=0;i<R.numItems();i++)
+	            {
+	                Item I=R.fetchItem(i);
+	                if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+	                    saveitems=true;
+	            }
+	            for(int m=0;m<R.numInhabitants();m++)
+	            {
+	                MOB M=R.fetchInhabitant(m);
+	                if((M!=null)&&(M.savable()))
+	                    if(tryModfy(mob,R,M,changes,onfields,noisy))
+	                        savemobs=true;
+	                for(int i=0;i<M.inventorySize();i++)
+	                {
+	                    Item I=M.fetchInventory(i);
+	                    if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+	                        savemobs=true;
+	                }
+	                if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+	                {
+	                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
+	                    for(int i=0;i<V.size();i++)
+	                    {
+	                        if(V.elementAt(i) instanceof Item)
+	                        {
+	                            Item I=(Item)V.elementAt(i);
+	                            if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+	                                savemobs=true;
+	                        }
+	                    }
+	                }
+	            }
+	            if(saveitems) CMLib.database().DBUpdateItems(R);
+	            if(savemobs) CMLib.database().DBUpdateMOBs(R);
+	            if((mob.session()!=null)&&(changes.size()>0)) 
+	                mob.session().rawPrint(".");
+	            R.getArea().toggleMobility(oldMobility);
+	            if(changes.size()==0) R.destroy();
+	    	}
         }
 
         if(mob.session()!=null) mob.session().rawPrintln("!\n\rDone!");

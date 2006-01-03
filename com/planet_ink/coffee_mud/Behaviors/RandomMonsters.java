@@ -39,6 +39,7 @@ public class RandomMonsters extends ActiveTicker
 	protected Vector maintained=new Vector();
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
+	protected int avgMonsters=1;
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 	
@@ -135,6 +136,8 @@ public class RandomMonsters extends ActiveTicker
 		super.setParms(oldParms);
 		minMonsters=CMParms.getParmInt(oldParms,"minmonsters",1);
 		maxMonsters=CMParms.getParmInt(oldParms,"maxmonsters",1);
+		if(maxMonsters<minMonsters) maxMonsters=minMonsters;
+		avgMonsters=CMLib.dice().roll(1,(maxMonsters-minMonsters),minMonsters);
 		parms=newParms;
 		alreadyTriedLoad=false;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
@@ -257,91 +260,110 @@ public class RandomMonsters extends ActiveTicker
 		return true;
 	}
 
+	protected long tickStatus=0;
+	public long getTickStatus(){return tickStatus;}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		tickStatus=Tickable.STATUS_START;
 		super.tick(ticking,tickID);
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		||(CMSecurity.isDisabled("RANDOMMONSTERS")))
+		{
+			tickStatus=Tickable.STATUS_NOT;
 			return true;
+		}
 		for(int i=maintained.size()-1;i>=0;i--)
 		{
 			try
 			{
 				MOB M=(MOB)maintained.elementAt(i);
-				if((M.amDead())||(M.location()==null)||(!M.location().isInhabitant(M)))
+				if((M.amDead())||(M.amDestroyed())||(M.location()==null)||(!M.location().isInhabitant(M)))
 					maintained.removeElement(M);
 			} catch(Exception e){	}
 		}
 		if(maintained.size()>=maxMonsters)
+		{
+			tickStatus=Tickable.STATUS_NOT;
 			return true;
+		}
+		tickStatus=Tickable.STATUS_ALIVE;
 		if((canAct(ticking,tickID))||(maintained.size()<minMonsters))
 		{
+			tickStatus=Tickable.STATUS_MISC;
 			Vector monsters=getMonsters(ticking,getParms());
-			if(monsters==null) return true;
-			int num=minMonsters;
-			if(maintained.size()>=minMonsters)
-				num=maintained.size()+1;
-			if(num>maxMonsters) num=maxMonsters;
-			while(maintained.size()<num)
+			tickStatus=Tickable.STATUS_MISC+1;
+			if(monsters==null){
+				tickStatus=Tickable.STATUS_NOT;
+				return true;
+			}
+			tickStatus=Tickable.STATUS_MISC+2;
+			if(maintained.size()<avgMonsters)
 			{
 				MOB M=(MOB)monsters.elementAt(CMLib.dice().roll(1,monsters.size(),-1));
 				if(M!=null)
 				{
+					tickStatus=Tickable.STATUS_MISC+3;
 					M=(MOB)M.copyOf();
+					tickStatus=Tickable.STATUS_MISC+4;
 					M.setStartRoom(null);
 					M.baseEnvStats().setRejuv(0);
 					M.recoverEnvStats();
+					tickStatus=Tickable.STATUS_MISC+5;
 					M.text();
 					maintained.addElement(M);
+					tickStatus=Tickable.STATUS_MISC+6;
 					if(ticking instanceof Room)
 					{
+						tickStatus=Tickable.STATUS_MISC+7;
 						if(ticking instanceof GridLocale)
 						{
-							Room room=((GridLocale)ticking).getRandomChild();
+							tickStatus=Tickable.STATUS_MISC+8;
+							Room room=((GridLocale)ticking).getRandomGridChild();
+							tickStatus=Tickable.STATUS_MISC+9;
 							M.bringToLife(room,true);
 						}
 						else
 							M.bringToLife(((Room)ticking),true);
+						tickStatus=Tickable.STATUS_MISC+10;
 						Resources.removeResource("HELP_"+((Room)ticking).getArea().name().toUpperCase());
 					}
 					else
 					if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
 					{
+						tickStatus=Tickable.STATUS_MISC+11;
 						Resources.removeResource("HELP_"+ticking.name().toUpperCase());
 						Room room=null;
+						tickStatus=Tickable.STATUS_MISC+12;
 						if(restrictedLocales==null)
 						{
+							tickStatus=Tickable.STATUS_MISC+13;
 							int tries=0;
 							while(((room==null)||(room.roomID().length()==0)||(!canFlyHere(M,room)))
 							&&((++tries)<100))
 								room=((Area)ticking).getRandomMetroRoom();
+							tickStatus=Tickable.STATUS_MISC+14;
 						}
 						else
 						{
+							tickStatus=Tickable.STATUS_MISC+15;
 							Vector map=new Vector();
-							for(Enumeration e=((Area)ticking).getMetroMap();e.hasMoreElements();)
-							{
-								Room R=(Room)e.nextElement();
-								if(okRoomForMe(M,R)
-								&&(canFlyHere(M,R))
-								&&(R.roomID().trim().length()>0))
-									map.addElement(R);
-							}
 							if(map.size()>0)
 								room=(Room)map.elementAt(CMLib.dice().roll(1,map.size(),-1));
+							tickStatus=Tickable.STATUS_MISC+16;
 						}
 						if((room!=null)&&(room instanceof GridLocale))
-							room=((GridLocale)room).getRandomChild();
+							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)
 							M.bringToLife(room,true);
 						else
 							maintained.removeElement(M);
+						tickStatus=Tickable.STATUS_MISC+17;
 					}
-					else
-						break;
 				}
 			}
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }

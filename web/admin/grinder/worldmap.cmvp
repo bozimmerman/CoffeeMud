@@ -79,10 +79,10 @@ function checkLocation() {
 	</SCRIPT>
 </head>
 
-@if?CheckReqParm?MAPSTYLE=@
-	<BODY>
-@else@
+@if?CheckReqParm?MAPSTYLE=Z@
 	<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+@else@
+	<BODY>
 @endif@
 
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>

@@ -90,19 +90,19 @@ public class Feed extends StdCommand
 				if((CMLib.commands().postDrop(mob,item,true,false))
 				   &&(mob.location().isContent(item)))
 				{
-					msg=CMClass.getMsg(target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null);
+					msg=CMClass.getMsg(target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null);
 					target.location().send(target,msg);
 					if(target.isMine(item))
 					{
 						if(item instanceof Food)
-							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_EAT,CMMsg.MSG_EAT,CMMsg.MSG_EAT,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_EAT,CMMsg.MSG_EAT,CMMsg.MSG_EAT,null);
 						else
-							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,null);
 						if(target.location().okMessage(target,msg))
 							target.location().send(target,msg);
 						if(target.isMine(item))
 						{
-							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);

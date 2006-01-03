@@ -46,7 +46,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	{
 		int material=RawMaterial.RESOURCE_OAK;
 		int code=material&RawMaterial.RESOURCE_MASK;
-		Item newItem=CMClass.getStdItem("GenItem");
+		Item newItem=CMClass.getBasicItem("GenItem");
 		String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
@@ -57,7 +57,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		newItem.setDispossessionTime(0);
+		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		Chant_GrowOak newChant=new Chant_GrowOak();
@@ -82,7 +82,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 					dmg=dmg/2;
 				if(dmg>0)
 				{
-					if(CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,dmg,null))
+					if(CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,dmg,null))
 						invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
 				}
 				hpRemaining-=dmg;

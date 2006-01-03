@@ -39,6 +39,7 @@ public class Look extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		Room R=mob.location();
 		boolean quiet=false;
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
@@ -46,7 +47,7 @@ public class Look extends StdCommand
 			quiet=true;
 		}
 		String textMsg="<S-NAME> look(s) ";
-		if(mob.location()==null) return false;
+		if(R==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
@@ -60,21 +61,21 @@ public class Look extends StdCommand
 			
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
-                CMLib.commands().lookAtExits(mob.location(),mob);
+                CMLib.commands().lookAtExits(R,mob);
 				return false;
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 			
 			if(thisThang==null)
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORNREQ_ANY);
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORNREQ_ANY);
 			if((thisThang==null)
 			&&(commands.size()>2)
 			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
 			{
 				commands.removeElementAt(1);
 				String ID2=CMParms.combine(commands,1);
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORNREQ_ANY);
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORNREQ_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
 					mob.tell("That's not a container.");
@@ -88,8 +89,8 @@ public class Look extends StdCommand
 				dirCode=Directions.getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
-					Room room=mob.location().getRoomInDir(dirCode);
-					Exit exit=mob.location().getExitInDir(dirCode);
+					Room room=R.getRoomInDir(dirCode);
+					Exit exit=R.getExitInDir(dirCode);
 					if((room!=null)&&(exit!=null))
                     {
 						thisThang=exit;
@@ -107,15 +108,15 @@ public class Look extends StdCommand
 				String name="at <T-NAMESELF>";
  				if((thisThang instanceof Room)||(thisThang instanceof Exit))
 				{
-					if(thisThang==mob.location())
+					if(thisThang==R)
 						name="around";
 					else
 					if(dirCode>=0)
 						name=Directions.getDirectionName(dirCode);
 				}
 				CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
-				if(mob.location().okMessage(mob,msg))
-					mob.location().send(mob,msg);
+				if(R.okMessage(mob,msg))
+					R.send(mob,msg);
 				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
 					CMLib.commands().lookAtExits((Room)thisThang,mob);
 			}
@@ -131,12 +132,12 @@ public class Look extends StdCommand
 					return false;
 				}
 
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
 			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
-			&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
-                CMLib.commands().lookAtExits(mob.location(),mob);
+			&&(CMLib.flags().canBeSeenBy(R,mob)))
+                CMLib.commands().lookAtExits(R,mob);
 		}
 		return false;
 	}

@@ -47,7 +47,7 @@ public class Prayer_AuraFear extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		Room R=CMLib.utensils().roomLocation(affected);
+		Room R=CMLib.map().roomLocation(affected);
 		Environmental E=affected;
 
 		super.unInvoke();
@@ -64,7 +64,7 @@ public class Prayer_AuraFear extends Prayer
 		if((--tickDown)>=0) 
 		    return super.tick(ticking,tickID);
 		tickDown=4;
-		Room R=CMLib.utensils().roomLocation(affected);
+		Room R=CMLib.map().roomLocation(affected);
 		if(R==null)
 		    return super.tick(ticking,tickID);
 

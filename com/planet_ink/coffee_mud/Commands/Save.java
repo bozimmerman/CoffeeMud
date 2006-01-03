@@ -36,6 +36,24 @@ public class Save extends StdCommand
 
 	private String[] access={"SAVE"};
 	public String[] getAccessWords(){return access;}
+	
+	public void clearSaveAndRestart(Room room, int taskCode)
+	{
+		synchronized(("SYNC"+room.roomID()).intern())
+		{
+			room=CMLib.map().getRoom(room);
+			CMLib.threads().clearDebri(room,0);
+			if(taskCode<2)
+			{
+				CMLib.database().DBUpdateItems(room);
+				room.startItemRejuv();
+			}
+			if((taskCode==0)||(taskCode==2))
+				CMLib.database().DBUpdateMOBs(room);
+		}
+	}
+
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -88,7 +106,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
-						CMLib.utensils().clearDebriAndRestart((Room)e.nextElement(),1);
+						clearSaveAndRestart((Room)e.nextElement(),1);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else
@@ -96,7 +114,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				CMLib.utensils().clearDebriAndRestart(mob.location(),1);
+				clearSaveAndRestart(mob.location(),1);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
@@ -115,7 +133,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
-						CMLib.utensils().clearDebriAndRestart((Room)e.nextElement(),0);
+						clearSaveAndRestart((Room)e.nextElement(),0);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else
@@ -123,7 +141,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				CMLib.utensils().clearDebriAndRestart(mob.location(),0);
+				clearSaveAndRestart(mob.location(),0);
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
@@ -142,7 +160,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
-						CMLib.utensils().clearDebriAndRestart((Room)e.nextElement(),2);
+						clearSaveAndRestart((Room)e.nextElement(),2);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else 
@@ -151,7 +169,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				CMLib.utensils().clearDebriAndRestart(mob.location(),2);
+				clearSaveAndRestart(mob.location(),2);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
