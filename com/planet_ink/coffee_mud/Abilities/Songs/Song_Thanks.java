@@ -37,7 +37,7 @@ public class Song_Thanks extends Song
 {
 	public String ID() { return "Song_Thanks"; }
 	public String name(){ return "Thanks";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)

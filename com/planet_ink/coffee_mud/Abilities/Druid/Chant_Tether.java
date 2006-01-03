@@ -37,7 +37,7 @@ public class Chant_Tether extends Chant
 	public String ID() { return "Chant_Tether"; }
 	public String name(){ return "Tether";}
 	public String displayText(){ return "(Tether)";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Room tetheredTo=null;

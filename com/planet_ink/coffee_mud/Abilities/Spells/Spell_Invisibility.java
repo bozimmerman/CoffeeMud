@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,10 @@ public class Spell_Invisibility extends Spell
 	public String ID() { return "Spell_Invisibility"; }
 	public String name(){return "Invisibility";}
 	public String displayText(){return "(Invisibility spell)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

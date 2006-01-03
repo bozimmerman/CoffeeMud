@@ -595,9 +595,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(buyNotView)
                 {
                     Ability A=(Ability)product;
-                    if(A.canTarget(buyer)){}
+                    if(A.canTarget(Ability.CAN_MOBS)){}
                     else
-                    if(A.canTarget(CMClass.sampleItem()))
+                    if(A.canTarget(Ability.CAN_ITEMS))
                     {
                         Item I=buyer.fetchWieldedItem();
                         if(I==null) I=buyer.fetchFirstWornItem(Item.WORN_HELD);
@@ -856,7 +856,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
         }
         if(price.questPointPrice>0) buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
-        if(price.experiencePrice>0) CMLib.combat().postExperience(buyer,null,null,-price.experiencePrice,false);
+        if(price.experiencePrice>0) CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
         buyer.recoverEnvStats();
     }
     
@@ -956,13 +956,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(M!=null){ victims[x][0]=M;victims[x][1]=M.getVictim();}
             }
             Vector V=new Vector();
-            if(A.canTarget(mobFor))
+            if(A.canTarget(Ability.CAN_MOBS))
             {
                 V.addElement("$"+mobFor.name()+"$");
                 A.invoke(seller,V,mobFor,true,0);
             }
             else
-            if(A.canTarget(CMClass.sampleItem()))
+            if(A.canTarget(Ability.CAN_ITEMS))
             {
                 Item I=mobFor.fetchWieldedItem();
                 if(I==null) I=mobFor.fetchFirstWornItem(Item.WORN_HELD);

@@ -51,10 +51,10 @@ public class BaseAbleLister extends StdCommand
 											int maxLevel)
 	{
 		Vector V=new Vector();
-		int mask=Ability.ALL_CODES;
+		int mask=Ability.ALL_ACODES;
 		if(ofDomain>=0)
 		{
-			mask=Ability.ALL_CODES|Ability.ALL_DOMAINS;
+			mask=Ability.ALL_ACODES|Ability.ALL_DOMAINS;
 			ofType=ofType|ofDomain;
 		}
 		V.addElement(new Integer(ofType));

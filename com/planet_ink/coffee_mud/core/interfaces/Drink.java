@@ -59,7 +59,7 @@ public interface Drink extends Environmental
      * often, a Drink interface implementing class is a mob without a material to draw from
      * or an Item having its own non-liquid material (like a leather waterskin containing milk).
      * Either way, this is necessary.  The material types are constants in RawMaterial.
-     * @see com.planet_ink.coffee_mud.Items.interfaces.EnvResource
+     * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
      * @return the type of liquid contained herein
      */
 	public int liquidType();
@@ -69,14 +69,14 @@ public interface Drink extends Environmental
      * often, a Drink interface implementing class is a mob without a material to draw from
      * or an Item having its own non-liquid material (like a leather waterskin containing milk).
      * Either way, this is necessary.  The material types are constants in RawMaterial.
-     * @see com.planet_ink.coffee_mud.Items.interfaces.EnvResource
+     * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
      * @param newLiquidType the type of liquid contained herein
      */
 	public void setLiquidType(int newLiquidType);
     /**
      * Set the amount of thirst points quenched every time this item is drank from.
      * @see com.planet_ink.coffee_mud.Common.interfaces.CharState
-     * @return amount of thirst quenched
+     * @param amount of thirst quenched
      */
 	public void setThirstQuenched(int amount);
     /**
@@ -87,7 +87,7 @@ public interface Drink extends Environmental
     /**
      * Sets the amount of liquid remaining in this liquid container.  Will always be less
      * less than liquidHeld();
-     * @see Drink#setLiquidHeld()
+     * @see Drink#setLiquidHeld(int)
      * @param amount amount of liquid remaining in this liquid container.
      */
 	public void setLiquidRemaining(int amount);

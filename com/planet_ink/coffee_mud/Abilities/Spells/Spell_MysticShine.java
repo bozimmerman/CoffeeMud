@@ -37,10 +37,10 @@ public class Spell_MysticShine extends Spell
 	public String ID() { return "Spell_MysticShine"; }
 	public String name(){return "Mystic Shine";}
 	public String displayText(){return "(Mystic Shine)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

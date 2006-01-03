@@ -37,11 +37,11 @@ public class Fighter_AxKick extends FighterSkill
 	public String ID() { return "Fighter_AxKick"; }
 	public String name(){ return "Ax Kick";}
 	private static final String[] triggerStrings = {"AXKICK"};
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

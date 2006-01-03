@@ -37,7 +37,7 @@ public class Chant_WindGust extends Chant
 	public String ID() { return "Chant_WindGust"; }
 	public String name(){ return renderedMundane?"wind gust":"Wind Gust";}
 	public String displayText(){return "(Blown Down)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int maxRange(){return 4;}

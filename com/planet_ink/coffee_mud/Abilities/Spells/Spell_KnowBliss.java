@@ -36,11 +36,11 @@ public class Spell_KnowBliss extends Spell
 	public String ID() { return "Spell_KnowBliss"; }
 	public String name(){return "Know Bliss";}
 	public String displayText(){return "(Know Bliss)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
 	public int hpAdjustment=0;
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void unInvoke()
 	{

@@ -39,8 +39,8 @@ public class Spell_TimeStop extends Spell
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	protected Vector fixed=new Vector();
 

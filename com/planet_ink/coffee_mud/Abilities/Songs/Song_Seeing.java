@@ -36,7 +36,7 @@ public class Song_Seeing extends Song
 {
 	public String ID() { return "Song_Seeing"; }
 	public String name(){ return "Seeing";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
     
     
     public void affectCharStats(MOB affected, CharStats affectableStats)

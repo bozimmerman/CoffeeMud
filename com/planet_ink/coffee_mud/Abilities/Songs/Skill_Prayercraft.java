@@ -35,5 +35,5 @@ public class Skill_Prayercraft extends Skill_Songcraft
 {
 	public String ID() { return "Skill_Prayercraft"; }
 	public String name(){ return "Prayercraft";}
-	public int craftType(){return Ability.PRAYER;}
+	public int craftType(){return Ability.ACODE_PRAYER;}
 }

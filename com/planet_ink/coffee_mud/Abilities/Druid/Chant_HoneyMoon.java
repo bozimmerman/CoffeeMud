@@ -37,7 +37,7 @@ public class Chant_HoneyMoon extends Chant
 	public String ID() { return "Chant_HoneyMoon"; }
 	public String name(){ return "Honey Moon";}
 	public String displayText(){return "(Honey Moon)";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}

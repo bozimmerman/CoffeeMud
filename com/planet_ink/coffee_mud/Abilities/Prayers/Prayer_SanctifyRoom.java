@@ -36,7 +36,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	public String ID() { return "Prayer_SanctifyRoom"; }
 	public String name(){return "Sanctify Room";}
 	public String displayText(){return "(Sanctify Room)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

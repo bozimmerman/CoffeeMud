@@ -72,12 +72,12 @@ public class Injury extends StdAbility
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"INJURE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return true;}
-	public int classificationCode(){return Ability.PROPERTY;}
+	public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public Vector[] injuries=new Vector[Race.BODY_PARTS];
 

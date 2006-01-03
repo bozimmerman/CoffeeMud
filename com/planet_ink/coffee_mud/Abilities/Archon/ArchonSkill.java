@@ -42,7 +42,7 @@ public class ArchonSkill extends StdAbility
 	protected int canTargetCode(){return 0;}
 
 	public int classificationCode()
-	{ return Ability.SKILL;	}
+	{ return Ability.ACODE_SKILL;	}
 
 	public MOB getTargetAnywhere(MOB mob, Vector commands, Environmental givenTarget, boolean playerOnly)
 	{ return getTargetAnywhere(mob,commands,givenTarget,false,false,playerOnly);	}
@@ -56,13 +56,13 @@ public class ArchonSkill extends StdAbility
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.MALICIOUS))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.BENEFICIAL_SELF))
+		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF))
 			target=mob;
 		else
-		if((targetName.length()==0)&&(abstractQuality()!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(abstractQuality()!=Ability.QUALITY_MALICIOUS))
 			target=mob;
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))

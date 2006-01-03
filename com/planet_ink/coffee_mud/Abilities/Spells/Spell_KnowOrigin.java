@@ -36,10 +36,10 @@ public class Spell_KnowOrigin extends Spell
 {
 	public String ID() { return "Spell_KnowOrigin"; }
 	public String name(){return "Know Origin";}
-	public int abstractQuality(){return INDIFFERENT;};
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;};
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public Room origin(MOB mob, Environmental meThang)
 	{

@@ -37,11 +37,11 @@ public class Spell_PhantomHound extends Spell
 	public String name(){return "Phantom Hound";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return MALICIOUS;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected MOB victim=null;
 	protected int pointsLeft=0;
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -41,9 +41,9 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	private static final String[] triggerStrings = {"DISEASE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public int classificationCode(){return Ability.DISEASE;}
+	public int classificationCode(){return Ability.ACODE_DISEASE;}
 
 	protected int DISEASE_TICKS(){return 48;}
 	protected int DISEASE_DELAY(){return 5;}

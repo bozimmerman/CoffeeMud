@@ -79,7 +79,7 @@ public class MOBTeacher extends CombatAbilities
 			Ability A=(Ability)a.nextElement();
 			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
-			&&((!noCommon)||((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL))
+			&&((!noCommon)||((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL))
 			&&((!stdCharClass)||(!CMLib.ableMapper().classOnly("Archon",A.ID()))))
 				addAbility(mob,A,pct,myAbles);
 		}

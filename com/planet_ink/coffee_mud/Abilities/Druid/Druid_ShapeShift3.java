@@ -35,7 +35,7 @@ public class Druid_ShapeShift3 extends Druid_ShapeShift
 {
 	public String ID() { return "Druid_ShapeShift3"; }
 	public String name(){ return "Third Totem";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public String[] triggerStrings(){return empty;}
 
 

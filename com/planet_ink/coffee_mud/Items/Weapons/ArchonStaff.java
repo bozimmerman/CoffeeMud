@@ -99,9 +99,9 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 						||(target.charStats().getCurrentClass().expless())
 						||(target.charStats().getMyRace().expless()))
-							target.charStats().getCurrentClass().level(target);
+							CMLib.leveler().level(target);
 						else
-							CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					}
 				}
 				else
@@ -116,9 +116,9 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 					||(target.charStats().getCurrentClass().expless())
 					||(target.charStats().getMyRace().expless()))
-						target.charStats().getCurrentClass().level(target);
+						CMLib.leveler().level(target);
 					else
-						CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					return;
 				}
 				else
@@ -135,7 +135,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().unLevel(target);
 					else
-						CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+						CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
 					return;
 				}
 				else

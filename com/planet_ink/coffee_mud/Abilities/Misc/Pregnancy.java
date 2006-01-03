@@ -64,13 +64,13 @@ public class Pregnancy extends StdAbility
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"IMPREGNATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return false;}
-	public int classificationCode(){return Ability.PROPERTY;}
+	public int classificationCode(){return Ability.ACODE_PROPERTY;}
     protected int ticksInLabor=0;
 
 

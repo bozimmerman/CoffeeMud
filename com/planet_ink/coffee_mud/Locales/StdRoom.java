@@ -239,6 +239,7 @@ public class StdRoom implements Room
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public void setMiscText(String newMiscText)
 	{
 		if(newMiscText.trim().length()>0)
@@ -821,19 +822,20 @@ public class StdRoom implements Room
 					bringMobHere(fol,true);
 			}
 		}
-		if(mob.riding()!=null)
+		Rideable RI=mob.riding();
+		if(RI!=null)
 		{
-			if((mob.riding().rideBasis()!=Rideable.RIDEABLE_SIT)
-			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_TABLE)
-			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_ENTERIN)
-			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)
-			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_LADDER))
+			if((RI.rideBasis()!=Rideable.RIDEABLE_SIT)
+			&&(RI.rideBasis()!=Rideable.RIDEABLE_TABLE)
+			&&(RI.rideBasis()!=Rideable.RIDEABLE_ENTERIN)
+			&&(RI.rideBasis()!=Rideable.RIDEABLE_SLEEP)
+			&&(RI.rideBasis()!=Rideable.RIDEABLE_LADDER))
 			{
-				if(mob.riding() instanceof MOB)
-					bringMobHere((MOB)mob.riding(),andFollowers);
+				if(RI instanceof MOB)
+					bringMobHere((MOB)RI,andFollowers);
 				else
 				if(mob.riding() instanceof Item)
-					bringItemHere((Item)mob.riding(),-1);
+					bringItemHere((Item)RI,-1);
 			}
 			else
 				mob.setRiding(null);

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.net.i3.Channel
+ * com.planet_ink.coffee_mud.core.intermud.packets.Channel
  * An I3 channel.
  */
 
@@ -43,7 +43,7 @@ public class Channel implements Serializable
     public String channel;
     /**
      * The modification status of this channel
-     * @see imaginary.persist.Persistent
+     * @see com.planet_ink.coffee_mud.core.intermud.persist.Persistent
      */
     public int modified;
     /**

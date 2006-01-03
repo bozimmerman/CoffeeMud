@@ -37,7 +37,7 @@ public class Prayer_CallUndead extends Prayer
     public String ID() { return "Prayer_CallUndead"; }
     public String name(){return "Call Undead";}
     protected int canTargetCode(){return 0;}
-    public int abstractQuality(){ return INDIFFERENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
     public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

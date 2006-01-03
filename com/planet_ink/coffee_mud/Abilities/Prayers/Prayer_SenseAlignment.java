@@ -35,8 +35,8 @@ public class Prayer_SenseAlignment extends Prayer
 {
 	public String ID() { return "Prayer_SenseAlignment"; }
 	public String name(){ return "Sense Alignment";}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

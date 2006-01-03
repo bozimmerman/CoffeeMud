@@ -36,7 +36,7 @@ public class Prayer_DispelUndead extends Prayer
 {
 	public String ID() { return "Prayer_DispelUndead"; }
 	public String name(){ return "Dispel Undead";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

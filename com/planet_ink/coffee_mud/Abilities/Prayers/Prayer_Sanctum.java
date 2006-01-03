@@ -36,7 +36,7 @@ public class Prayer_Sanctum extends Prayer
 	public String ID() { return "Prayer_Sanctum"; }
 	public String name(){return "Sanctum";}
 	public String displayText(){return "(Sanctum)";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 

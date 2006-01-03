@@ -38,7 +38,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"SHADOWSTRIKE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}

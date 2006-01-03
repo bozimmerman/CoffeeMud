@@ -217,7 +217,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 				return false;
 			}
 			int experienceToLose=10;
-			if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+			if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			{
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
@@ -270,7 +270,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
-			CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();

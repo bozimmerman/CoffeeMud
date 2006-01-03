@@ -39,11 +39,11 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	public String displayText(){ return "(Drained of Energy)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAINWEAKENERGY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int levelsDown=1;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

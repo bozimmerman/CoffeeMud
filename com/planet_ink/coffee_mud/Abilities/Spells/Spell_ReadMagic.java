@@ -37,7 +37,7 @@ public class Spell_ReadMagic extends Spell
 	public String name(){return "Read Magic";}
 	public String displayText(){return "(Ability to read magic)";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

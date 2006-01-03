@@ -96,6 +96,7 @@ public class Modify extends BaseGenerics
 			return;
 		}
 
+		Item copyItem=(Item)modItem.copyOf();
 		if(command.equals("LEVEL"))
 		{
 			int newLevel=CMath.s_int(restStr);
@@ -170,7 +171,8 @@ public class Modify extends BaseGenerics
 			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, HEIGHT, REJUV, USES, or MISC.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
-		Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
+		if(!copyItem.sameAs(modItem))
+			Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
 	}
 
     protected void flunkCmd1(MOB mob)
@@ -793,8 +795,10 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		MOB copyMOB=(MOB)M.copyOf();
 		modifyPlayer(mob,M);
-		Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+		if(!copyMOB.sameAs(M))
+			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
 	}
 	public void mobs(MOB mob, Vector commands)
 		throws IOException
@@ -827,6 +831,7 @@ public class Modify extends BaseGenerics
 			mob.tell(modMOB.Name()+" is a player! Try MODIFY USER!");
 			return;
 		}
+		MOB copyMOB=(MOB)modMOB.copyOf();
 
 		if(command.equals("LEVEL"))
 		{
@@ -879,7 +884,8 @@ public class Modify extends BaseGenerics
 			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, REJUV, or MISC.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 		}
-		Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
+		if(!modMOB.sameAs(copyMOB))
+			Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
 	}
 
 	public boolean errorOut(MOB mob)
@@ -1149,6 +1155,7 @@ public class Modify extends BaseGenerics
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 
                     return errorOut(mob);
+				Item copyItem=(Item)thang.copyOf();
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
@@ -1177,13 +1184,15 @@ public class Modify extends BaseGenerics
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
+				if(!copyItem.sameAs(thang))
+	                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) 
                     return errorOut(mob);
+				MOB copyMOB=(MOB)thang.copyOf();
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					int showFlag=-1;
@@ -1206,7 +1215,8 @@ public class Modify extends BaseGenerics
 							ok=true;
 						}
 					}
-                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+					if(!copyMOB.sameAs(thang))
+	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
 				}
 				else
 				if(!((MOB)thang).isMonster())
@@ -1217,7 +1227,8 @@ public class Modify extends BaseGenerics
 				else
                 {
 					genMiscSet(mob,thang);
-                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+					if(!copyMOB.sameAs(thang))
+	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
                 }
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
@@ -1231,6 +1242,7 @@ public class Modify extends BaseGenerics
 				if(thang!=null)
 				{
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
+					Exit copyExit=(Exit)thang.copyOf();
 					genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
 					try
@@ -1250,7 +1262,8 @@ public class Modify extends BaseGenerics
 						}
 				    }catch(NoSuchElementException e){}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-					Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
+					if(!copyExit.sameAs(thang))
+						Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
 				}
 				else
 				{

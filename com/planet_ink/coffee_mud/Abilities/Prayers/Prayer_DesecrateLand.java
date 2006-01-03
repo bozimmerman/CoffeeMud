@@ -37,7 +37,7 @@ public class Prayer_DesecrateLand extends Prayer
 	public String ID() { return "Prayer_DesecrateLand"; }
 	public String name(){return "Desecrate Land";}
 	public String displayText(){return "(Desecrate Land)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
@@ -49,7 +49,7 @@ public class Prayer_DesecrateLand extends Prayer
 
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 		&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 		{

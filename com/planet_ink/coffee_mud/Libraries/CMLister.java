@@ -244,7 +244,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
+					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
 						list=null;
 				}
 			}
@@ -294,7 +294,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
+					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
 						list=null;
 				}
 			}
@@ -339,7 +339,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
+					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
 						list=null;
 				}
 			}

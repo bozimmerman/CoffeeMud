@@ -37,11 +37,11 @@ public class Fighter_Shrug extends FighterSkill
 	public String name(){ return "Shrug Off";}
 	public String displayText(){return "(Braced for a hit)";}
 	private static final String[] triggerStrings = {"BRACE"};
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

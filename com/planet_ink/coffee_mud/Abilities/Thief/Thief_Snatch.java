@@ -39,7 +39,7 @@ public class Thief_Snatch extends StdAbility
 	public String name(){ return "Weapon Snatch";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"SNATCH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}

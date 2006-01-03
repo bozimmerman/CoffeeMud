@@ -71,22 +71,27 @@ public class FieryRoom
         FireTexts = newFireTexts;
     }
 
-    public boolean tick(Tickable ticking, int tickID) {
+    public boolean tick(Tickable ticking, int tickID) 
+    {
         super.tick(ticking, tickID);
         // on every tick, we may do damage OR eq handling.
         Room room = (Room) ticking;
         if ( (directDamage > 0) || (eqChance > 0)) {
             // for each inhab, do directDamage to them.
-            for (int i = 0; i < room.numInhabitants(); i++) {
+            for (int i = 0; i < room.numInhabitants(); i++) 
+            {
                 MOB inhab = room.fetchInhabitant(i);
-                if (inhab.isMonster()) {
+                if (inhab.isMonster()) 
+                {
                     boolean reallyAffect = true;
                     if (noNpc) {
                         reallyAffect = false;
                         HashSet group = inhab.getGroupMembers(new HashSet());
-                        for (Iterator e = group.iterator(); e.hasNext(); ) {
+                        for (Iterator e = group.iterator(); e.hasNext(); ) 
+                        {
                             MOB follower = (MOB) e.next();
-                            if (! (follower.isMonster())) {
+                            if (! (follower.isMonster())) 
+                            {
                                 reallyAffect = true;
                                 break;
                             }
@@ -98,9 +103,11 @@ public class FieryRoom
                             eqRoast(inhab);
                     }
                 }
-                else {
+                else 
+                {
                     if((!CMSecurity.isAllowed(inhab,inhab.location(),"ORDER"))
-        		&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) {
+	        		&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) 
+                    {
                         dealDamage(inhab);
                         if (CMLib.dice().rollPercentage() > eqChance)
                             eqRoast(inhab);
@@ -118,8 +125,10 @@ public class FieryRoom
                     String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
                     R.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
                 }
-                if (!noStop) {
-                    if(burnTicks==0) {
+                if (!noStop) 
+                {
+                    if(burnTicks==0) 
+                    {
                         // NOSTOP is false.  This means the room gets set
                         // to the torched text and the behavior goes away.
                         room.setDisplayText(newDisplay);
@@ -134,12 +143,14 @@ public class FieryRoom
         return true;
     }
 
-    private void dealDamage(MOB mob) {
+    private void dealDamage(MOB mob) 
+    {
         CMLib.combat().postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
                             "The fire here <DAMAGE> <T-NAME>!");
     }
 
-    private void eqRoast(MOB mob) {
+    private void eqRoast(MOB mob) 
+    {
         Item target = getSomething(mob);
         if (target != null) {
             switch (target.material() & RawMaterial.MATERIAL_MASK) {
@@ -170,16 +181,19 @@ public class FieryRoom
         }
     }
 
-    private static void roastRoom(Room which) {
-      for(int i=0;i<which.numItems();i++) {
-        Item target=which.fetchItem(i);
-        Ability burn = CMClass.getAbility("Burning");
-                    if((burn != null)&&(CMLib.dice().rollPercentage()>60)) {
-                        which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
-                        target.addEffect(burn);
-                        target.recoverEnvStats();
-                    }
-      }
+    private static void roastRoom(Room which) 
+    {
+		for(int i=0;i<which.numItems();i++) 
+		{
+		    Item target=which.fetchItem(i);
+		    Ability burn = CMClass.getAbility("Burning");
+			if((burn != null)&&(CMLib.dice().rollPercentage()>60)) 
+			{
+			    which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
+			    target.addEffect(burn);
+			    target.recoverEnvStats();
+			}
+		}
     }
 
     private static Item getSomething(MOB mob) {

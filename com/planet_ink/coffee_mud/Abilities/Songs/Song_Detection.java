@@ -36,7 +36,7 @@ public class Song_Detection extends Song
 {
 	public String ID() { return "Song_Detection"; }
 	public String name(){ return "Awareness";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

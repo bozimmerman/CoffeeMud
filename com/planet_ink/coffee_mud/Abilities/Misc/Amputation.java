@@ -47,12 +47,12 @@ public class Amputation extends StdAbility implements Amputator
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"AMPUTATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected Vector missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
@@ -182,10 +182,10 @@ public class Amputation extends StdAbility implements Amputator
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS)&&(mob.getVictim()!=null))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(abstractQuality()!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(abstractQuality()!=Ability.QUALITY_MALICIOUS))
 			target=mob;
 		else
 		if(targetName.length()>0)

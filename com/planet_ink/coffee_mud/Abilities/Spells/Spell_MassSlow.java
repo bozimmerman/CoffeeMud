@@ -36,9 +36,9 @@ public class Spell_MassSlow extends Spell
 	public String ID() { return "Spell_MassSlow"; }
 	public String name(){return "Mass Slow";}
 	public String displayText(){return "";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -37,10 +37,10 @@ public class Skill_Revoke extends StdSkill
 	public String name(){ return "Revoke";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"REVOKE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int maxRange(){return 10;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -82,10 +82,10 @@ public class Skill_Revoke extends StdSkill
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
 			&&(A.invoker()==mob)
-			&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-			   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-			   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-			   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT))
 			&&(A.canBeUninvoked()))
 				revokeThis=A;
 		}

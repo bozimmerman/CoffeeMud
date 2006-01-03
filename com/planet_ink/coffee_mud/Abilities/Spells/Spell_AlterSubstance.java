@@ -37,7 +37,7 @@ public class Spell_AlterSubstance extends Spell
 	public String name(){return "Alter Substance";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public String newName="";
 	public int oldMaterial=0;
 

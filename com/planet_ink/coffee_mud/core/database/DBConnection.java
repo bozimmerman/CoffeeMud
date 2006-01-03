@@ -65,20 +65,17 @@ public class DBConnection
 	 * construction
 	 * 
 	 * <br><br><b>Usage:</b> DBConnection("","","");
-	 * @param parentObject	the DBConnections object
+	 * @param DBClass	JDBC Class
 	 * @param DBService	ODBC SERVICE
 	 * @param DBUser	ODBC LOGIN USERNAME
 	 * @param DBPass	ODBC LOGIN PASSWORD
-	 * @return NA
 	 */
-	public DBConnection(DBConnections parentObject,
-						String DBClass,
+	public DBConnection(String DBClass,
 						String DBService, 
 						String DBUser, 
 						String DBPass)
 		throws SQLException
 	{
-		myParent=parentObject;
 		if((DBClass==null)||(DBClass.length()==0))
 			DBClass="sun.jdbc.odbc.JdbcOdbcDriver";
 		try
@@ -108,14 +105,21 @@ public class DBConnection
 	 * shut down this connection totally
 	 * 
 	 * <br><br><b>Usage:</b> close()
-	 * @param NA
-	 * @return NA
 	 */
 	public void close()
-		throws SQLException
 	{
-		if(myConnection!=null)
-			myConnection.close();
+		try{
+			if(myStatement!=null)
+				myStatement.close();
+		}catch(SQLException e){}
+		try{
+			if(myPreparedStatement!=null)
+				myPreparedStatement.close();
+		}catch(SQLException e){}
+		try{
+			if(myConnection!=null)
+				myConnection.close();
+		}catch(SQLException e){}
 		myConnection=null;
 		myStatement=null;
 		myPreparedStatement=null;
@@ -210,9 +214,8 @@ public class DBConnection
 	 * 
 	 * <br><br><b>Usage:</b> doneUsing("roll back");
 	 * @param Closer	Any SQL string you'd like to send
-	 * @return NA
 	 */
-	public void doneUsing(String Closer)
+	protected void doneUsing(String Closer)
 	{
 		try
 		{
@@ -224,21 +227,7 @@ public class DBConnection
 		{
 			// not a real error?
 		}
-		
-		try
-		{
-			if(myStatement!=null)
-				myStatement.close();
-			if(myPreparedStatement!=null)
-				myPreparedStatement.close();
-		}
-		catch(SQLException e)
-		{
-			// recoverable error
-		}
-		
-		myStatement=null;
-		myPreparedStatement=null;
+		close();
 		inUse=false;
 	}
 	
@@ -246,7 +235,7 @@ public class DBConnection
 	 * execute a query, returning the resultset
 	 * 
 	 * <br><br><b>Usage:</b> R=query("SELECT STATEMENT");
-	 * @param QueryString	SQL query-style string
+	 * @param queryString	SQL query-style string
 	 * @return ResultSet	The results of the query
 	 */
 	public ResultSet query(String queryString)
@@ -291,7 +280,8 @@ public class DBConnection
 	 * execute an sql update, returning the status
 	 * 
 	 * <br><br><b>Usage:</b> update("UPDATE STATEMENT");
-	 * @param UpdateString	SQL update-style string
+	 * @param updateString	SQL update-style string
+	 * @param retryNum	a retry number
 	 * @return int	The status of the update
 	 */
 	public int update(String updateString, int retryNum)
@@ -337,7 +327,6 @@ public class DBConnection
 	 * returns whether this connection is ready for use
 	 * 
 	 * <br><br><b>Usage:</b> ready();
-	 * @param NA
 	 * @return boolean	Whether this connection is ready
 	 */
 	public boolean ready()
@@ -349,7 +338,6 @@ public class DBConnection
 	 * returns whether this connection is in use
 	 * 
 	 * <br><br><b>Usage:</b> inUse();
-	 * @param NA
 	 * @return boolean	Whether this connection is in use
 	 */
 	public boolean inUse()
@@ -361,8 +349,6 @@ public class DBConnection
 	 * known errors should not be a reason to report a dead state
 	 * 
 	 * <br><br><b>Usage:</b> clearFailures();
-	 * @param NA
-	 * @return NA
 	 */
 	public void clearFailures()
 	{
@@ -378,7 +364,6 @@ public class DBConnection
 	 * returns whether this connection is *probably* dead
 	 * 
 	 * <br><br><b>Usage:</b> isProbablyDead();
-	 * @param NA
 	 * @return boolean	Whether this connection is probably dead
 	 */
 	public boolean isProbablyDead()
@@ -399,7 +384,6 @@ public class DBConnection
 	 * returns whether this connection is *probably* locked up
 	 * 
 	 * <br><br><b>Usage:</b> isProbablyLockedUp();
-	 * @param NA
 	 * @return boolean	Whether this connection is locked up
 	 */
 	public boolean isProbablyLockedUp()
@@ -414,7 +398,6 @@ public class DBConnection
 	 * returns an error if there was one
 	 * 
 	 * <br><br><b>Usage:</b> getLastError();
-	 * @param NA
 	 * @return String	The last error SQL string, if any
 	 */
 	public String getLastError()
@@ -429,7 +412,6 @@ public class DBConnection
 	 * returns the prepared statement, if creates
 	 * 
 	 * <br><br><b>Usage:</b> getPreparedStatement();
-	 * @param NA
 	 * @return PreparedStatement	the prepared statement
 	 */
 	public PreparedStatement getPreparedStatement()

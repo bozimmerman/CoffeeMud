@@ -36,11 +36,11 @@ public class Spell_DetectScrying extends Spell
 {
 	public String ID() { return "Spell_DetectScrying"; }
 	public String name(){return "Detect Scrying";}
-	public int abstractQuality(){ return INDIFFERENT;}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

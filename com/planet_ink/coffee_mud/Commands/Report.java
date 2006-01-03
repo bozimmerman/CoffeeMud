@@ -61,14 +61,14 @@ public class Report extends BaseAbleLister
 			int level=parseOutLevel(commands);
 			String s=CMParms.combine(commands,1).toUpperCase();
 			if("SPELLS".startsWith(s))
-				CMLib.commands().postSay(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.SPELL,-1,false,level)),false,false);
+				CMLib.commands().postSay(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,-1,false,level)),false,false);
 			else
 			if("SKILLS".startsWith(s))
 			{
 				Vector V=new Vector();
-				V.addElement(new Integer(Ability.THIEF_SKILL));
-				V.addElement(new Integer(Ability.SKILL));
-				V.addElement(new Integer(Ability.COMMON_SKILL));
+				V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
+				V.addElement(new Integer(Ability.ACODE_SKILL));
+				V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
 				CMLib.commands().postSay(mob,null,("^NMy skills:^? "+getAbilities(mob,V,-1,false,level)),false,false);
 			}
 			else
@@ -82,16 +82,16 @@ public class Report extends BaseAbleLister
 			}
 			else
 			if("PRAYERS".startsWith(s))
-				CMLib.commands().postSay(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.PRAYER,-1,false,level)),false,false);
+				CMLib.commands().postSay(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,-1,false,level)),false,false);
 			else
 			if(("POWERS".startsWith(s))||("SUPER POWERS".startsWith(s)))
-				CMLib.commands().postSay(mob,null,("^NMy super powers:^? "+getAbilities(mob,Ability.SUPERPOWER,-1,false,level)),false,false);
+				CMLib.commands().postSay(mob,null,("^NMy super powers:^? "+getAbilities(mob,Ability.ACODE_SUPERPOWER,-1,false,level)),false,false);
 			else
 			if("CHANTS".startsWith(s))
-				CMLib.commands().postSay(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.CHANT,-1,false,level)),false,false);
+				CMLib.commands().postSay(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.ACODE_CHANT,-1,false,level)),false,false);
 			else
 			if("SONGS".startsWith(s))
-				CMLib.commands().postSay(mob,null,("^NMy songs:^? "+getAbilities(mob,Ability.SONG,-1,false,level)),false,false);
+				CMLib.commands().postSay(mob,null,("^NMy songs:^? "+getAbilities(mob,Ability.ACODE_SONG,-1,false,level)),false,false);
 			else
 				mob.tell("'"+s+"' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, or SONGS.");
 		}

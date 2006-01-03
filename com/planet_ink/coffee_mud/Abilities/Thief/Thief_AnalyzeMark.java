@@ -37,7 +37,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}

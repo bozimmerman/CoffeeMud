@@ -36,7 +36,7 @@ public class Thief_Comprehension extends ThiefSkill
 	public String ID() { return "Thief_Comprehension"; }
 	public String name(){return "Linguistic Comprehension";}
 	public String displayText(){return "(Lang. Comprehension)";}
-	public int abstractQuality(){return OK_SELF;};
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"COMPREHEND","COMPREHENSION"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -101,7 +101,7 @@ public class Thief_Comprehension extends ThiefSkill
 		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+		&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
 		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
 			String str=this.getMsgFromAffect(msg.sourceMessage());

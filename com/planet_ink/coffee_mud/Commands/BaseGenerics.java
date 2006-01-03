@@ -506,6 +506,7 @@ public class BaseGenerics extends StdCommand
 		CMLib.database().DBUpdateMOBs(R);
 		CMLib.database().DBUpdateItems(R);
         oldR.destroy();
+		R.setImage(R.rawImage());
 		R.startItemRejuv();
 		return R;
 	}
@@ -1040,7 +1041,7 @@ public class BaseGenerics extends StdCommand
 				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 				{
 				 	A=(Ability)e.nextElement();
-				 	if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+				 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 				 	&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
 				 	    str.append(A.ID()+"\n\r");
 				}
@@ -1049,7 +1050,7 @@ public class BaseGenerics extends StdCommand
 			else
 			if((newName.length()>0)
 			&&(CMClass.getAbility(newName)!=null)
-			&&(CMClass.getAbility(newName).classificationCode()==Ability.COMMON_SKILL))
+			&&(CMClass.getAbility(newName).classificationCode()==Ability.ACODE_COMMON_SKILL))
 			{
 			    E.setCommonSkillID(CMClass.getAbility(newName).ID());
 			    break;
@@ -2635,7 +2636,7 @@ public class BaseGenerics extends StdCommand
 			for(int b=0;b<E.numBehaviors();b++)
 			{
 				Behavior B=E.fetchBehavior(b);
-				if((B!=null)&&(!B.isBorrowed()))
+				if((B!=null)&&(B.isSavable()))
 				{
 					behaviorstr+=B.ID();
 					if(B.getParms().trim().length()>0)
@@ -5573,8 +5574,8 @@ public class BaseGenerics extends StdCommand
                         if(newFlags.equalsIgnoreCase("?"))
                         {
                             StringBuffer vals=new StringBuffer(getScr("BaseGenerics","validmasks"));
-                            for(int i=0;i<Ability.TYPE_DESCS.length;i++)
-                                vals.append(Ability.TYPE_DESCS[i]+", ");
+                            for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+                                vals.append(Ability.ACODE_DESCS[i]+", ");
                             for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
                                 vals.append(Ability.DOMAIN_DESCS[i]+", ");
                             for(int i=0;i< Ability.FLAG_DESCS.length;i++)

@@ -1146,6 +1146,7 @@ public class StdMOB implements MOB
 		else
 			return new String(miscText);
 	}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
 	public String healthText()
 	{
@@ -1162,59 +1163,78 @@ public class StdMOB implements MOB
 	{
         while((!pleaseDestroy)&&((session()==null)||(!session().killFlag())))
         {
+        	Object[] doCommand=null;
             synchronized(commandQue)
             {
                 if(commandQue.size()==0) return false;
-                double diff=actions()-((Double)commandQue.elementAt(0,3)).doubleValue();
+                Object[] ROW=commandQue.elementsAt(0);
+                double diff=actions()-((Double)ROW[2]).doubleValue();
 				if(diff>=0.0)
                 {
                     long nextTime=lastCommandTime
-                                 +Math.round(((Double)commandQue.elementAt(0,3)).doubleValue()
+                                 +Math.round(((Double)ROW[2]).doubleValue()
                                              /envStats().speed()
-                                             *new Long(Tickable.TIME_TICK).doubleValue());
+                                             *TIME_TICK_DOUBLE);
                     if((System.currentTimeMillis()<nextTime)&&(session()!=null))
                         return false;
-                    lastCommandTime=System.currentTimeMillis();
+					ROW=commandQue.removeElementsAt(0);
                     setActions(diff);
-                    doCommand(commandQue.elementAt(0,1),(Vector)commandQue.elementAt(0,2));
-                    if(commandQue.size()==0) return false;
-                    commandQue.removeElementAt(0);
-                    if(commandQue.size()>0)
-                        commandQue.setElementAt(0,3,new Double(calculateTickDelay(commandQue.elementAt(0,1),0.0)));
-                    return true;
+                    doCommand=ROW;
                 }
-                if(System.currentTimeMillis()<((long[])commandQue.elementAt(0,4))[0])
+            }
+            if(doCommand!=null)
+            {
+                lastCommandTime=System.currentTimeMillis();
+                doCommand(doCommand[0],(Vector)doCommand[1]);
+                synchronized(commandQue)
+                {
+	                if(commandQue.size()>0)
+	                {
+	                	Object O=commandQue.elementAt(0,1);
+	                	Double D=new Double(calculateTickDelay(O,0.0));
+	                	if(commandQue.size()>0) commandQue.setElementAt(0,3,D);
+	                }
+	                else
+	                	return false;
+	                return true;
+                }
+            }
+            
+            synchronized(commandQue)
+            {
+                if(commandQue.size()==0) return false;
+                Object[] ROW=commandQue.elementsAt(0);
+                if(System.currentTimeMillis()<((long[])ROW[3])[0])
                     return false;
-                Object O=commandQue.elementAt(0,1);
-                Vector commands=(Vector)commandQue.elementAt(0,2);
-                ((long[])commandQue.elementAt(0,4))[0]=((long[])commandQue.elementAt(0,4))[0]+1000;
-                ((int[])commandQue.elementAt(0,5))[0]+=1;
-                int secondsElapsed=((int[])commandQue.elementAt(0,5))[0];
-                if(O instanceof Command)
-                {
-                    try
-                    { 
-                        if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
-                        {
-                            if(commandQue.size()==0) return false;
-                            commandQue.removeElementAt(0);
-                            return true;
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        return false;
-                    }
+                double diff=actions()-((Double)ROW[2]).doubleValue();
+                Object O=ROW[0];
+                Vector commands=(Vector)ROW[1];
+                ((long[])ROW[3])[0]=((long[])ROW[3])[0]+1000;
+                ((int[])ROW[4])[0]+=1;
+                int secondsElapsed=((int[])ROW[4])[0];
+                try
+                { 
+	                if(O instanceof Command)
+	                {
+	                    if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
+	                    {
+	                        commandQue.removeElementAt(0);
+	                        return true;
+	                    }
+	                }
+	                else
+	                if(O instanceof Ability)
+	                {
+	                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
+	                    {
+	                        commandQue.removeElementAt(0);
+	                        return true;
+	                    }
+	                }
                 }
-                else
-                if(O instanceof Ability)
+                catch(Exception e)
                 {
-                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
-                    {
-                        if(commandQue.size()==0) return false;
-                        commandQue.removeElementAt(0);
-                        return true;
-                    }
+                    return false;
                 }
             }
 		}
@@ -1832,7 +1852,7 @@ public class StdMOB implements MOB
 
 				if((!mayIFight(mob))
 				&&((!(msg.tool() instanceof Ability))
-				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)!=Ability.DISEASE))
+				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE))
 				{
 					mob.tell("You are not allowed to attack "+name()+".");
 					mob.setVictim(null);
@@ -1846,7 +1866,7 @@ public class StdMOB implements MOB
 				&&(!CMSecurity.isAllowed(this,location(),"PKILL"))&&(!CMSecurity.isAllowed(mob,mob.location(),"PKILL"))
 				&&(mob.envStats().level()>envStats().level()+CMProps.getPKillLevelDiff())
 				&&((!(msg.tool() instanceof Ability))
-				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)!=Ability.DISEASE))
+				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE))
 				{
 					mob.tell("That is not EVEN a fair fight.");
 					mob.setVictim(null);
@@ -2083,7 +2103,7 @@ public class StdMOB implements MOB
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_PANIC: CMLib.commands().postFlee(this,""); break;
-			case CMMsg.TYP_EXPCHANGE: CMLib.combat().handleExperienceChange(msg); break;
+			case CMMsg.TYP_EXPCHANGE: CMLib.leveler().handleExperienceChange(msg); break;
             case CMMsg.TYP_FACTIONCHANGE:
                 if(msg.othersMessage()!=null)
                 {

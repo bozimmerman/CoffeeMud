@@ -36,10 +36,10 @@ public class Skill_Juggle extends BardSkill
 	public String name(){ return "Juggle";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"JUGGLE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected Vector juggles=new Vector();
 	protected long lastJuggle=-1;

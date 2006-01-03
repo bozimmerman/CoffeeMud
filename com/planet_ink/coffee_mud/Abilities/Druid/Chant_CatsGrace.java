@@ -37,7 +37,7 @@ public class Chant_CatsGrace extends Chant
 	public String ID() { return "Chant_CatsGrace"; }
 	public String name(){return "Cats Grace";}
 	public String displayText(){return "(Cats Grace)";}
-	public int abstractQuality(){ return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

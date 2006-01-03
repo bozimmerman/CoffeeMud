@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class Thief_Hide extends ThiefSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"HIDE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -47,11 +47,7 @@ public class Thief_Hide extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

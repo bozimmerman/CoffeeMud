@@ -40,13 +40,13 @@ public class Dance extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"DANCE","DA"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SONG;}
+	public int classificationCode(){return Ability.ACODE_SONG;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int maxRange(){return 2;}
 	protected int invokerManaCost=-1;
 
 	protected boolean skipStandardDanceInvoke(){return false;}
-	protected boolean mindAttack(){return abstractQuality()==Ability.MALICIOUS;}
+	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardDanceTick(){return false;}
 	protected String danceOf(){return name();}
 
@@ -175,7 +175,7 @@ public class Dance extends StdAbility
 
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 

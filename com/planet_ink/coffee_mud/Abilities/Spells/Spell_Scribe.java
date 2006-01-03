@@ -36,7 +36,7 @@ public class Spell_Scribe extends Spell
 	public String ID() { return "Spell_Scribe"; }
 	public String name(){return "Scribe";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 
@@ -105,7 +105,7 @@ public class Spell_Scribe extends Spell
 			return false;
 
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
-		CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(mob,0,auto);

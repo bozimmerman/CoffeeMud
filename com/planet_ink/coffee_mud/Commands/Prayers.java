@@ -40,7 +40,7 @@ public class Prayers extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.PRAYER,-1,true,parseOutLevel(commands))+"\n\r");
+		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.ACODE_PRAYER,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

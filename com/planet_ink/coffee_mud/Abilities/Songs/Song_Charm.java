@@ -36,7 +36,7 @@ public class Song_Charm extends Song
 {
 	public String ID() { return "Song_Charm"; }
 	public String name(){ return "Suave";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);

@@ -47,11 +47,11 @@ public class Mageness extends CombatAbilities
 				addThis=CMClass.randomAbility();
 				if((CMLib.ableMapper().qualifyingLevel(mob,addThis)<0)
 				||(!CMLib.ableMapper().qualifiesByLevel(mob,addThis))
-				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyFactions(mob)))
+				||(((addThis.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)&&(!addThis.appropriateToMyFactions(mob)))
 				||(mob.fetchAbility(addThis.ID())!=null)
-				||((addThis.abstractQuality()!=Ability.MALICIOUS)
-				   &&(addThis.abstractQuality()!=Ability.BENEFICIAL_SELF)
-				   &&(addThis.abstractQuality()!=Ability.BENEFICIAL_OTHERS)))
+				||((addThis.abstractQuality()!=Ability.QUALITY_MALICIOUS)
+				   &&(addThis.abstractQuality()!=Ability.QUALITY_BENEFICIAL_SELF)
+				   &&(addThis.abstractQuality()!=Ability.QUALITY_BENEFICIAL_OTHERS)))
 					addThis=null;
 			}
 			if(addThis!=null)

@@ -36,7 +36,7 @@ public class Song_Strength extends Song
 {
 	public String ID() { return "Song_Strength"; }
 	public String name(){ return "Strength";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 
 	protected int amount=0;
 

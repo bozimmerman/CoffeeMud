@@ -77,7 +77,9 @@ public class Snoop extends StdCommand
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session S=CMLib.sessions().elementAt(s);
-			if((S.mob()!=null)&&(CMLib.english().containsString(S.mob().name(),whom)))
+			if((S.mob()!=null)
+		    &&((CMLib.english().containsString(S.mob().name(),whom))
+				   ||(CMLib.english().containsString(S.mob().Name(),whom))))
 			{
 				if(S==mob.session())
 				{

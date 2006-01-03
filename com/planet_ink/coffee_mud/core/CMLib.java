@@ -81,7 +81,8 @@ public class CMLib
     public static final int LIBRARY_COLOR=34;
     public static final int LIBRARY_LOGIN=35;
     public static final int LIBRARY_TIMS=36;
-    public static final int LIBRARY_TOTAL=37;
+    public static final int LIBRARY_LEVELS=37;
+    public static final int LIBRARY_TOTAL=38;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -124,6 +125,7 @@ public class CMLib
     public static SocialsList socials(){return (SocialsList)libraries[LIBRARY_SOCIALS];}
     public static CMMiscUtils utensils(){return (CMMiscUtils)libraries[LIBRARY_UTENSILS];}
     public static StatisticsLibrary coffeeTables(){return (StatisticsLibrary)libraries[LIBRARY_STATS];}
+    public static ExpLevelLibrary leveler(){return (ExpLevelLibrary)libraries[LIBRARY_LEVELS];}
     public static WorldMap map(){return (WorldMap)libraries[LIBRARY_MAP];}
     public static QuestManager quests(){return (QuestManager)libraries[LIBRARY_QUEST];}
     public static AbilityMapper ableMapper(){return (AbilityMapper)libraries[LIBRARY_ABLEMAP];}
@@ -148,6 +150,7 @@ public class CMLib
         if(O instanceof ShoppingLibrary) return LIBRARY_SHOPS;
         if(O instanceof CombatLibrary) return LIBRARY_COMBAT;
         if(O instanceof HelpLibrary) return LIBRARY_HELP;
+        if(O instanceof ExpLevelLibrary) return LIBRARY_LEVELS;
         if(O instanceof TrackingLibrary) return LIBRARY_TRACKING;
         if(O instanceof MaskingLibrary) return LIBRARY_MASKING;
         if(O instanceof ChannelsLibrary) return LIBRARY_CHANNELS;

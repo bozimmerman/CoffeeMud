@@ -204,7 +204,7 @@ public class Arcanist extends Thief
 			Ability A2=mob.fetchAbility(a);
 			if((A2!=null)
 			&&(!A2.savable())
-			&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+			&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				otherChoices.addElement(A2);
 		}
 		for(int a=0;a<otherChoices.size();a++)
@@ -236,7 +236,7 @@ public class Arcanist extends Thief
 							Ability A2=mob.fetchAbility(a);
 							if((A2!=null)
 							&&(!A2.savable())
-							&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+							&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 								otherChoices.addElement(A2);
 						}
 						A=(Ability)A.copyOf();
@@ -264,7 +264,7 @@ public class Arcanist extends Thief
 			{
 				Ability A=mob.fetchAbility(msg.tool().ID());
 				if((A!=null)&&(!A.savable())
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 					mob.delAbility(A);
 			}
 		}

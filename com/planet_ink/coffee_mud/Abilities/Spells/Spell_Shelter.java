@@ -39,8 +39,8 @@ public class Spell_Shelter extends Spell
 	public String displayText(){return "(In a shelter)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public Room previousLocation=null;
 	public Room shelter=null;

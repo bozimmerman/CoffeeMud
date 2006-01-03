@@ -1,0 +1,38 @@
+CoffeeMud (C)2000-2006 Bo Zimmerman
+Please read the LICENSE file for license information
+Please read the NOTICE file for credits information
+
+After that open up the guides/InstallationGuide.html and start reading.
+The installation guide covers installation and primary configuration.
+It also points you to where you need to go to do secondary configuration,
+and learn how to do content building.
+
+Informational web sites:
+
+Development Web Site:
+http://coffeemud.zimmers.net
+Yahoo Support group:
+http://groups.yahoo.com/group/coffeemud
+Sourceforge beta release site:
+http://sourceforge.net/projects/coffeemud
+"Home" playtest site:
+http://www.coffeemud.net
+FTP site for old and new versions:
+ftp://ftp.zimmers.net/pub/projects/coffeemud
+SVN repository:
+svn://coffeemud.net/public/CoffeeMud
+
+
+
+Files in this directory:
+
+Windows:
+mud.bat
+make.bat
+build.xml for ANT
+
+Linux:
+mudUNIX.sh
+InstallUNIX.sh
+Makefile
+build.xml for ANT

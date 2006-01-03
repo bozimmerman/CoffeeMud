@@ -36,10 +36,10 @@ public class Skill_RegionalAwareness extends StdSkill
 	public String name(){ return "Regional Awareness";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"REGION","REGIONALAWARENESS"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int overrideMana(){return 0;}
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}

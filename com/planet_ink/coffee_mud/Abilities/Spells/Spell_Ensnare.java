@@ -38,9 +38,9 @@ public class Spell_Ensnare extends Spell
 	public String displayText(){return "(Ensnared)";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public int amountRemaining=0;
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -46,7 +46,7 @@ public class Trap_NeedlePrick extends StdTrap
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		return offenders;

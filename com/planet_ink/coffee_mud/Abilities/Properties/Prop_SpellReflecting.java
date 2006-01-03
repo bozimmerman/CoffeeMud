@@ -85,7 +85,7 @@ public class Prop_SpellReflecting extends Property
 		&&(msg.tool() instanceof Ability)
 		&&(CMLib.dice().rollPercentage()<=chance)
 		&&(abilityCode()>0)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 		{
 			MOB target=null;
 			if(affected instanceof MOB)

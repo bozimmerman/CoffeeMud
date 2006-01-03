@@ -38,8 +38,8 @@ public class Spell_Awe extends Spell
 	public String name(){return "Awe";}
 	public String displayText(){return "(Awe spell)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

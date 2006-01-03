@@ -35,7 +35,7 @@ public class Song_Nothing extends Song
 {
 	public String ID() { return "Song_Nothing"; }
 	public String name(){ return "Nothing";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Song_Nothing()
 	{

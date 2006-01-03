@@ -36,8 +36,8 @@ public class Prayer_AnimateSkeleton extends Prayer
 {
 	public String ID() { return "Prayer_AnimateSkeleton"; }
 	public String name(){ return "Animate Skeleton";}
-	public int abstractQuality(){ return INDIFFERENT;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 

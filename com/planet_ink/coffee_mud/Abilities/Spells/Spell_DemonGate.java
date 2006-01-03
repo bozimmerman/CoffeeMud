@@ -36,13 +36,13 @@ public class Spell_DemonGate extends Spell
 	public String ID() { return "Spell_DemonGate"; }
 	public String name(){return "Demon Gate";}
 	public String displayText(){return "(Demon Gate)";}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
 	MOB myTarget=null;
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public boolean tick(Tickable ticking, int tickID)

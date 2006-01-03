@@ -38,7 +38,7 @@ public class Thief_Surrender extends ThiefSkill
 	public String name(){ return "Surrender";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SURRENDER"};
 	public String[] triggerStrings(){return triggerStrings;}
 

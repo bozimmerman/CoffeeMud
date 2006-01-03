@@ -37,7 +37,7 @@ public class Chant_Mold extends Chant
 	public String ID() { return "Chant_Mold"; }
 	public String name(){ return "Mold";}
 	public String displayText(){return "(Mold)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 

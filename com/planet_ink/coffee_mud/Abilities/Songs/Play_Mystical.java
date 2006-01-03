@@ -37,7 +37,7 @@ public class Play_Mystical extends Play
 {
 	public String ID() { return "Play_Mystical"; }
 	public String name(){ return "Mystical";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return name()+" Music";}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -55,8 +55,8 @@ public class Play_Mystical extends Play
 				Ability A=mob.fetchEffect(i);
 				if((A!=null)
 				&&(A instanceof StdAbility)
-				&&(A.abstractQuality()!=Ability.MALICIOUS)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				&&(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				&&(((StdAbility)A).getTickDownRemaining()==1))
                     ((StdAbility)A).setTickDownRemaining(2);
 			}

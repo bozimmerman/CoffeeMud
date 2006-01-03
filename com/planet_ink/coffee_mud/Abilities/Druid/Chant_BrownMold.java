@@ -38,8 +38,8 @@ public class Chant_BrownMold extends Chant
 	public String ID() { return "Chant_BrownMold"; }
 	public String name(){ return "Brown Mold";}
 	public String displayText(){return "(Brown Mold)";}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 

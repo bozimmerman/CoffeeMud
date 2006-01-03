@@ -195,11 +195,11 @@ public class Charlatan extends StdCharClass
 			{
 				Ability A=((Ability)msg.tool());
 				if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
-					myChar.curState().adjMana(A.usageCost(myChar)[Ability.USAGE_MANAINDEX]/4,myChar.maxState());
+					myChar.curState().adjMana(A.usageCost(myChar)[Ability.USAGEINDEX_MANA]/4,myChar.maxState());
 				if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
-					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGE_MOVEMENTINDEX]/4,myChar.maxState());
+					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGEINDEX_MOVEMENT]/4,myChar.maxState());
 				if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
-					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGE_HITPOINTSINDEX]/4,myChar.maxState());
+					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGEINDEX_HITPOINTS]/4,myChar.maxState());
 			}
 		}
 		else
@@ -207,7 +207,7 @@ public class Charlatan extends StdCharClass
 		{
 			if((msg.tool()!=null)
 			   &&(msg.tool() instanceof Ability)
-			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 			   &&(CMLib.dice().roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
 			{
@@ -268,7 +268,7 @@ public class Charlatan extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)
+				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
@@ -279,32 +279,5 @@ public class Charlatan extends StdCharClass
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+(2*affectableStats.getClassLevel(this)));
-	}
-
-	public void level(MOB mob)
-	{
-		if(CMSecurity.isDisabled("LEVELS")) return;
-		
-		Vector V=new Vector();
-		for(int a=0;a<mob.numLearnedAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if(A!=null)	V.addElement(A);
-		}
-		super.level(mob);
-		Ability able=null;
-		for(int a=0;a<mob.numLearnedAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if((A!=null)
-			&&(!V.contains(A))
-			&&(CMLib.ableMapper().qualifyingLevel(mob,A)<=0))
-				able=A;
-		}
-		if(able!=null)
-		{
-			String type=Ability.TYPE_DESCS[(able.classificationCode()&Ability.ALL_CODES)].toLowerCase();
-			mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.name()+"^?.^N");
-		}
 	}
 }

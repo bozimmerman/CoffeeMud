@@ -36,10 +36,10 @@ public class Spell_SummonArmy extends Spell
 	public String ID() { return "Spell_SummonArmy"; }
 	public String name(){return "Summon Army";}
 	public String displayText(){return "(Monster Summoning)";}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{

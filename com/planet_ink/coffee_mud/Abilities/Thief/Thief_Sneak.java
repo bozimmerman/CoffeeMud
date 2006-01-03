@@ -37,7 +37,7 @@ public class Thief_Sneak extends ThiefSkill
 	public String name(){ return "Sneak";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}

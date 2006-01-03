@@ -36,9 +36,9 @@ public class Spell_Immunity extends Spell
 	public String ID() { return "Spell_Immunity"; }
 	public String name(){return "Immunity";}
 	public String displayText(){return "(Immunity to "+immunityName+")";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	protected int immunityType=-1;
 	protected String immunityName="";

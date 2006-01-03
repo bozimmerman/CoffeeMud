@@ -38,7 +38,7 @@ public class Chant_Reincarnation extends Chant
 	public String ID() { return "Chant_Reincarnation"; }
 	public String name(){ return "Reincarnation";}
 	public String displayText(){return "(Reincarnation Geas)";}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	public boolean canBeUninvoked(){return false;}
 	protected int overrideMana(){return 200;}
 

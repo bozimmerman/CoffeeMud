@@ -44,7 +44,7 @@ public class Chant extends StdAbility
         {
             int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
             affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH;
-            if(abstractQuality()==Ability.MALICIOUS)
+            if(abstractQuality()==Ability.QUALITY_MALICIOUS)
                 affectType=affectType|CMMsg.MASK_MALICIOUS;
             if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
             return affectType;
@@ -52,7 +52,7 @@ public class Chant extends StdAbility
     	return super.verbalCastCode(mob,target,auto);
 	}
 	private static final String[] triggerStrings = {"CHANT","CH"};
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -64,7 +64,7 @@ public class Chant extends StdAbility
         else
             super.setMiscText(newText);
     }
-	public int classificationCode()	{ return renderedMundane?Ability.SKILL:Ability.CHANT;}
+	public int classificationCode()	{ return renderedMundane?Ability.ACODE_SKILL:Ability.ACODE_CHANT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

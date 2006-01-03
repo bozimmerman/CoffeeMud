@@ -37,11 +37,11 @@ public class Spell_Shove extends Spell
 	public String name(){return "Shove";}
 	public String displayText(){return "(Shoved Down)";}
 	public int maxRange(){return 4;}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Tickable.TICKID_MOB;}
 	public boolean doneTicking=false;
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

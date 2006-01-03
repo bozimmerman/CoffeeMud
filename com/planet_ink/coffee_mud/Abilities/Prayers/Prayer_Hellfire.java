@@ -36,7 +36,7 @@ public class Prayer_Hellfire extends Prayer
 {
 	public String ID() { return "Prayer_Hellfire"; }
 	public String name(){ return "Hellfire";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

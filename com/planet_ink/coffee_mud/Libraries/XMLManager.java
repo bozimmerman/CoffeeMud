@@ -38,7 +38,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * Returns the double value of a string without crashing
  	 * 
 	 * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-	 * @param double String to convert
+	 * @param DOUBLE String to convert
 	 * @return double Double value of the string
 	 */
 	public double s_double(String DOUBLE)
@@ -215,8 +215,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * <TAG>Data</TAG>
 	 * 
   	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
+	 * @param V Vector of pieces
+	 * @param tag Tag to search for
 	 * @return boolean Information from XML block
 	 */
 	public boolean getBoolFromPieces(Vector V, String tag)
@@ -234,8 +234,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * <TAG>Data</TAG>
 	 * 
   	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
+	 * @param V Vector of pieces
+	 * @param tag Tag to search for
 	 * @return int Information from XML block
 	 */
 	public int getIntFromPieces(Vector V, String tag)
@@ -249,8 +249,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * <TAG>Data</TAG>
 	 * 
   	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
+	 * @param V Vector of pieces
+	 * @param tag Tag to search for
 	 * @return long Information from XML block
 	 */
 	public long getLongFromPieces(Vector V, String tag)
@@ -263,8 +263,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * <TAG>Data</TAG>
 	 * 
   	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
+	 * @param V Vector of pieces
+	 * @param tag Tag to search for
 	 * @return double Information from XML block
 	 */
 	public double getDoubleFromPieces(Vector V, String tag)
@@ -421,7 +421,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
   	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
-	 * @return String Information from XML block
+	 * @return boolean Information from XML block
 	 */
 	public boolean returnXMLBoolean(String Blob, String Tag)
 	{

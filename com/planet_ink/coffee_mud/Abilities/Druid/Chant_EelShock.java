@@ -37,7 +37,7 @@ public class Chant_EelShock extends Chant
 	public String ID() { return "Chant_EelShock"; }
 	public String name(){return "Eel Shock";}
 	public String displayText(){return "(Stunned)";}
-	public int abstractQuality(){return MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int maxRange() {return 3;}
 	public int minRange() {return 0;}
 	protected int canAffectCode(){return CAN_MOBS;}

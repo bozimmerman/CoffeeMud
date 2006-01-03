@@ -66,7 +66,8 @@ public class Log
 		"jvm_recv",
 		"timed out",
 		"stream closed",
-        "no route to host"
+        "no route to host",
+		"protocol not available"
 	};
 	
 	public static boolean isMaskedErrMsg(String str)
@@ -81,10 +82,11 @@ public class Log
 
 	/**
 	* Reset all of the log files
-	* 
+	* ON, OFF, FILE, BOTH
 	* <br><br><b>Usage:</b>  CMProps.Initialize("ON","OFF");
-	* @param NA
-	* @return NA
+	* @param newSYSMSGS code string to describe info msgs
+	* @param newERRMSGS code string to describe error msgs
+	* @param newDBGMSGS code string to describe debug msgs
 	*/
 	public static void Initialize(String newSYSMSGS, 
 								  String newERRMSGS, 
@@ -125,9 +127,8 @@ public class Log
 	/**
 	* Start all of the log files in the system temp directory
 	* 
-	* <br><br><b>Usage:</b>  startLogFiles();
-	* @param NA
-	* @return NA
+	* <br><br><b>Usage:</b>  startLogFiles(5);
+	* @param numberOfLogs maximum number of files
 	*/
 	public static void startLogFiles(int numberOfLogs)
 	{
@@ -140,7 +141,7 @@ public class Log
 	* 
 	* <br><br><b>Usage:</b>  startLogFiles("c:\\temp");
 	* @param dirPath the place to create the file
-	* @return NA
+	* @param numberOfLogs maximum number of files
 	*/
 	public static void startLogFiles(String dirPath, int numberOfLogs)
 	{
@@ -227,7 +228,6 @@ public class Log
 	* Start all of the log files
 	* 
 	* <br><br><b>Usage:</b>  path = getLogLocation();
-	* @param NA
 	* @return the string representation of the file path
 	*/
 	public static String getLogLocation()
@@ -240,7 +240,6 @@ public class Log
  	* 
 	* <br><br><b>Usage:</b> systemOut("output mesage");
 	* @param Out String to print
-	* @return NA
 	*/
 	private static void systemOut(String Out)
 	{
@@ -295,7 +294,6 @@ public class Log
 	* @param Obj Session object
 	* @param Module The mofule name
 	* @param Message The message to print
-	* @return NA
 	*/
 	public static void sysOut(Object Obj, String Module, String Message)
 	{
@@ -327,7 +325,6 @@ public class Log
 	* @param Obj Session object
 	* @param Module The file name
 	* @param Message The message to print
-	* @return NA
 	*/
 	public static void errOut(Object Obj, String Module, String Message)
 	{
@@ -345,9 +342,8 @@ public class Log
 	* the webiq.log file, or nowhere.
  	* 
 	* <br><br><b>Usage:</b> errOut(null,"UNKN",Out);
+	* @param Module The module to print
 	* @param e	The exception whose string one wishes to print
-	* @param Message The message to print
-	* @return NA
 	*/
 	public static void errOut(String Module, Throwable e)
 	{
@@ -379,9 +375,8 @@ public class Log
 	* the webiq.log file, or nowhere.
  	* 
 	* <br><br><b>Usage:</b> debugOut(null,"UNKN",Out);
+	* @param Module The message to print
 	* @param e	The exception whose string one wishes to print
-	* @param Message The message to print
-	* @return NA
 	*/
 	public static void debugOut(String Module, Exception e)
 	{
@@ -407,7 +402,6 @@ public class Log
 	* @param Obj Session object
 	* @param Module The file name
 	* @param Message The message to print
-	* @return NA
 	*/
 	public static void debugOut(Object Obj, String Module, String Message)
 	{
@@ -426,8 +420,9 @@ public class Log
 	* the webiq.log file, or nowhere.
  	* 
 	* <br><br><b>Usage:</b> timeOut("UNKN",Out);
+	* @param Obj Session object
 	* @param Module The file name
-	* @return NA
+	* @param Message The message to print
 	*/
 	public static void timeOut(Object Obj, String Module, String Message)
 	{
@@ -448,7 +443,6 @@ public class Log
 	* <br><br><b>Usage:</b> sysOut(S,Out);
 	* @param Obj Session object
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void sysOut(Object Obj, String Out)
 	{
@@ -461,7 +455,6 @@ public class Log
 	* <br><br><b>Usage:</b> errOut(S,Out);
 	* @param Obj Session object
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void errOut(Object Obj, String Out)
 	{
@@ -473,7 +466,6 @@ public class Log
  	* 
 	* <br><br><b>Usage:</b> errOut(Out);
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void errOut(String Out)
 	{
@@ -486,7 +478,6 @@ public class Log
 	* <br><br><b>Usage:</b> sysOut(Module,Out);
 	* @param Module The module name
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void sysOut(String Module, String Out)
 	{
@@ -498,7 +489,6 @@ public class Log
  	* 
 	* <br><br><b>Usage:</b> sysOut(Out);
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void sysOut(String Out)
 	{
@@ -511,7 +501,6 @@ public class Log
 	* <br><br><b>Usage:</b> errOut(Module,Out);
 	* @param Module The module name
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void errOut(String Module, String Out)
 	{
@@ -524,7 +513,6 @@ public class Log
 	* <br><br><b>Usage:</b> debugOut(S,Out);
 	* @param Obj Session object
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void debugOut(Object Obj, String Out)
 	{
@@ -536,7 +524,6 @@ public class Log
  	* 
 	* <br><br><b>Usage:</b> debugOut(Out);
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void debugOut(String Out)
 	{
@@ -549,7 +536,6 @@ public class Log
 	* <br><br><b>Usage:</b> debugOut(Module,Out);
 	* @param Module The module name
 	* @param Out Output message
-	* @return NA
 	*/
 	public static void debugOut(String Module, String Out)
 	{

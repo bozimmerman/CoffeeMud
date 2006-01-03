@@ -38,12 +38,12 @@ public class Fighter_SmokeSignals extends FighterSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	private static final String[] triggerStrings = {"SMOKESIGNALS","SMOKESIGNAL"};
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

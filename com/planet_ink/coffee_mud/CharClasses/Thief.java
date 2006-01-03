@@ -195,7 +195,7 @@ public class Thief extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)
+				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
@@ -220,7 +220,7 @@ public class Thief extends StdCharClass
 				  ||msg.tool().ID().equals("Thief_Embezzle")
 				  ||msg.tool().ID().equals("Thief_Mug")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
-				CMLib.combat().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
+				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
 		}
 		super.executeMsg(myHost,msg);
 	}
@@ -255,11 +255,9 @@ public class Thief extends StdCharClass
 		if(CMLib.flags().isSleeping(affected)||CMLib.flags().isSitting(affected))
 			affectableStats.setArmor(affectableStats.armor()+(100-affected.baseEnvStats().armor()));
 	}
-	public void level(MOB mob)
+	public void level(MOB mob, Vector newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled("LEVELS")) 
-	        return;
-		super.level(mob);
+	    if(CMSecurity.isDisabled("LEVELS")) return;
 		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));

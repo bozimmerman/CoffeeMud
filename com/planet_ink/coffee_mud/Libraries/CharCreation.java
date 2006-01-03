@@ -971,4 +971,5 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
            pendingLogins.remove(mob.Name().toUpperCase());
         return 1;
     }
+    
 }

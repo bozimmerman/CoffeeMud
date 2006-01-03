@@ -35,7 +35,7 @@ public class Play_Break extends Play
 {
 	public String ID() { return "Play_Break"; }
 	public String name(){ return "Break";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Play_Break()
 	{

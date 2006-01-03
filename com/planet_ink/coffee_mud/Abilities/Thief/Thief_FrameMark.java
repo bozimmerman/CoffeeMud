@@ -37,7 +37,7 @@ public class Thief_FrameMark extends ThiefSkill
 	public String name(){ return "Frame Mark";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FRAME"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 50;}
@@ -68,7 +68,7 @@ public class Thief_FrameMark extends ThiefSkill
         LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 		if((B==null)
-		||(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),mob,new Integer(6))))
+		||(!B.hasWarrant(CMLib.utensils().getLegalObject(mob.location()),mob)))
 		{
 			mob.tell("You aren't wanted for anything here.");
 			return false;

@@ -97,7 +97,7 @@ public interface CharState extends CMObject
     /**
      * Set the number of hunger points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
-     * @param max the highest amount to allow the hunger number to reach
+     * @param maxHunger the highest amount to allow the hunger number to reach
      * @return whether the highest or lowest boundary was reached
      */
 	public boolean adjHunger(int byThisMuch, int maxHunger);
@@ -122,7 +122,7 @@ public interface CharState extends CMObject
     /**
      * Set the number of thirst points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
-     * @param max the highest amount to allow the thirst number to reach
+     * @param maxThirst the highest amount to allow the thirst number to reach
      * @return whether the highest or lowest boundary was reached
      */
 	public boolean adjThirst(int byThisMuch, int maxThirst);

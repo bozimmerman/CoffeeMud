@@ -76,8 +76,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()));
-		mob.setExpNextLevel(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()+1));
+		mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
+		mob.setExpNextLevel(CMLib.leveler().getLevelExperience(mob.envStats().level()+1));
 	}
 
 	public String parseOutAngleBrackets(String s)
@@ -933,7 +933,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         &&(newArea.ID().equals("StdArea")))
         {
             Behavior B=newArea.fetchBehavior("WeatherAffects");
-            if(B==null){ B=CMClass.getBehavior("WeatherAffects"); B.setBorrowed(true); newArea.addBehavior(B);}
+            if(B==null){ B=CMClass.getBehavior("WeatherAffects"); B.setSavable(false); newArea.addBehavior(B);}
             B.setParms(CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS));
         }
     }

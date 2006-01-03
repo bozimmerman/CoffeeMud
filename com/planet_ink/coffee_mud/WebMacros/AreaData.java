@@ -66,7 +66,7 @@ public class AreaData extends StdWebMacro
 			for(int b=0;b<E.numBehaviors();b++)
 			{
 				Behavior B=E.fetchBehavior(b);
-				if((B!=null)&&(!B.isBorrowed()))
+				if((B!=null)&&(B.isSavable()))
 				{
 					theclasses.addElement(CMClass.className(B));
 					String t=B.getParms();

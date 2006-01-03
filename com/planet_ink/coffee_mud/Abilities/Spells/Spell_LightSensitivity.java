@@ -36,9 +36,9 @@ public class Spell_LightSensitivity extends Spell
 	public String ID() { return "Spell_LightSensitivity"; }
 	public String name(){return "Light Sensitivity";}
 	public String displayText(){return "(Light Sensitivity)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -104,7 +104,7 @@ public class Spell_LightSensitivity extends Spell
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) extremely sensitive to light.");
 					else
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) blinded by the light.");
-					if(castingQuality(mob,target)==Ability.MALICIOUS)
+					if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 						success=maliciousAffect(mob,target,asLevel,0,-1);
 					else
 						success=beneficialAffect(mob,target,asLevel,0);
@@ -112,7 +112,7 @@ public class Spell_LightSensitivity extends Spell
 			}
 		}
 		else
-		if(castingQuality(mob,target)==Ability.MALICIOUS)
+		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 			return maliciousFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles.");
 		else
 			return beneficialVisualFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles.");

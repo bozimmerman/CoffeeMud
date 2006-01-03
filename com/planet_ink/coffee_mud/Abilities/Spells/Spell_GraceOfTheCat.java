@@ -36,9 +36,9 @@ public class Spell_GraceOfTheCat extends Spell
 	public String ID() { return "Spell_GraceOfTheCat"; }
 	public String name(){return "Grace Of The Cat";}
 	public String displayText(){return "(Grace Of The Cat)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -120,6 +120,7 @@
         {
             textEl.value='';
             event.cancelBubble=true;
+            return false;
         }
     }
     function boxFocus()

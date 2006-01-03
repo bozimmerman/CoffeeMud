@@ -236,6 +236,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);

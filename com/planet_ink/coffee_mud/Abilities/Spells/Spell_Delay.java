@@ -40,7 +40,7 @@ public class Spell_Delay extends Spell
 	protected int canTargetCode(){return CAN_ROOMS;}
 	private Ability shooter=null;
 	protected Vector parameters=null;
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public void unInvoke()
@@ -88,7 +88,7 @@ public class Spell_Delay extends Spell
 		commands.insertElementAt("CAST",0);
 		shooter=CMLib.english().getToEvoke(mob,commands);
 		parameters=commands;
-		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
+		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 		{
 			parameters=null;
 			shooter=null;
@@ -96,7 +96,7 @@ public class Spell_Delay extends Spell
 			return false;
 		}
 
-		if(shooter.enchantQuality()==Ability.MALICIOUS)
+		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
 			MOB M=mob.location().fetchInhabitant(m);

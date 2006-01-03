@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,10 +41,6 @@ public class Prop_Hidden extends Property
 										 |Ability.CAN_AREAS;}
 	protected int ticksSinceLoss=100;
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -77,7 +73,7 @@ public class Prop_Hidden extends Property
         super.affectCharStats(affected,affectableStats);
         affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,100+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
-    
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticksSinceLoss<9999)

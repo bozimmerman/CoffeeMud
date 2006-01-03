@@ -256,8 +256,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			String errMsg=GrinderRooms.editRoom(httpReq,parms,R);
-			Log.sysOut("Grinder",mob.Name()+" modified room "+R.roomID());
+			String errMsg=GrinderRooms.editRoom(httpReq,parms,mob,R);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
@@ -267,8 +266,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			String errMsg=GrinderItems.editItem(httpReq,parms,R);
-			Log.sysOut("Grinder",mob.Name()+" modified item in room "+R.roomID());
+			String errMsg=GrinderItems.editItem(httpReq,parms,mob,R);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
@@ -278,8 +276,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			String errMsg=GrinderMobs.editMob(httpReq,parms,R);
-			Log.sysOut("Grinder",mob.Name()+" modified mob in room "+R.roomID());
+			String errMsg=GrinderMobs.editMob(httpReq,parms,mob,R);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else

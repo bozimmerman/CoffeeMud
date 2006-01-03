@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,7 +63,7 @@ public class MudChat extends StdBehavior
         super.setParms(newParms);
         responseQue=new Vector();
     }
-    
+
 	protected static synchronized Vector getChatGroups(String parms)
 	{
 		Vector rsc=null;
@@ -92,7 +92,7 @@ public class MudChat extends StdBehavior
 		}
 		return null;
 	}
-	
+
 	protected static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
 		StringBuffer rsc=new CMFile("resources/"+resourceName,null,true).text();
@@ -393,10 +393,6 @@ public class MudChat extends StdBehavior
 		return response;
 	}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

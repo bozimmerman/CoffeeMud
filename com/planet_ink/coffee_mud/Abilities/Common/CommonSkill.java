@@ -41,7 +41,7 @@ public class CommonSkill extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "";}
 
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
 
@@ -64,7 +64,7 @@ public class CommonSkill extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
-	public int classificationCode()	{	return Ability.COMMON_SKILL; }
+	public int classificationCode()	{	return Ability.ACODE_COMMON_SKILL; }
 
 	protected int yield=1;
 	public int abilityCode(){return yield;}
@@ -328,7 +328,7 @@ public class CommonSkill extends StdAbility
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
 			Ability A=mob.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 			{
 				if(A instanceof CommonSkill)
 					((CommonSkill)A).aborted=true;

@@ -37,7 +37,7 @@ public class Chant_PredictPhase extends Chant
 {
 	public String ID() { return "Chant_PredictPhase"; }
 	public String name(){ return "Predict Phase";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 

@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.persist.PersistentPeer
+ * com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
  * Copyright (c) 1996 George Reese
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
@@ -39,7 +39,7 @@ public interface PersistentPeer {
     /**
      * Gets data about this peer from storage and gives it
      * back to the object for which this peer exists.
-     * @exception imaginary.persist.PersistenceException if an error occurs during restore
+     * @exception com.planet_ink.coffee_mud.core.intermud.persist.PersistenceException if an error occurs during restore
      */
     public abstract void restore() throws PersistenceException;
 
@@ -47,15 +47,15 @@ public interface PersistentPeer {
      * Triggers a save of its peer.  Implementing classes
      * should do whatever it takes to save the object in
      * this method.
-     * @exception imaginary.persist.PersistenceException if a problem occurs in saving
+     * @exception com.planet_ink.coffee_mud.core.intermud.persist.PersistenceException if a problem occurs in saving
      */
     public abstract void save() throws PersistenceException;
 
     /**
      * Assigns a persistent object to this peer for
      * persistence operations.
-     * @param ob the implementation of imaginary.persist.Persistent that this is a peer for
-     * @see imaginary.persist.Persistent
+     * @param ob the implementation of com.planet_ink.coffee_mud.core.intermud.persist.Persistent that this is a peer for
+     * @see com.planet_ink.coffee_mud.core.intermud.persist.Persistent
      */
     public abstract void setPersistent(Persistent ob);
 

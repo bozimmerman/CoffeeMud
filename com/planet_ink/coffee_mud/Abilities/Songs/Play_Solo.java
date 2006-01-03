@@ -36,7 +36,7 @@ public class Play_Solo extends Play
 {
 	public String ID() { return "Play_Solo"; }
 	public String name(){ return "Solo";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
@@ -51,7 +51,7 @@ public class Play_Solo extends Play
 			&&(msg.tool()!=null)
 			&&(!msg.tool().ID().equals(ID()))
 			&&(msg.tool() instanceof Ability)
-			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SONG)))
+			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 			{
 				MOB otherBard=msg.source();
 				if(((otherBard.envStats().level()+CMLib.dice().roll(1,30,0))>(myChar.envStats().level()+CMLib.dice().roll(1,20,0)))
@@ -103,7 +103,7 @@ public class Play_Solo extends Play
 						Ability A=M.fetchEffect(a);
 						if((A!=null)
 						&&(A.invoker()!=mob)
-						&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
+						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
 							songsToCancel.addElement(A);
 					}
 				}

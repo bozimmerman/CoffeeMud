@@ -37,14 +37,14 @@ public class Dragonbreath extends StdAbility
 {
 	public String ID() { return "Dragonbreath"; }
 	public String name(){ return "Dragonbreath";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int maxRange(){return 10;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAGONBREATH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	private final static String[][] DragonColors={
 		{"WHITE","c"},
 		{"BLACK","a"},

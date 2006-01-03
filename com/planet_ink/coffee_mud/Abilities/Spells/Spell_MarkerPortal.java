@@ -36,7 +36,7 @@ public class Spell_MarkerPortal extends Spell
 	public String ID() { return "Spell_MarkerPortal"; }
 	public String name(){return "Marker Portal";}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	Room newRoom=null;

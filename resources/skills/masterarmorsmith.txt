@@ -105,7 +105,7 @@ Embossed % Fullplate Pauldrons	30	145	33	1996	GenArmor	ARMS	0	11	0
 Embossed % Fullplate Bracer	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
 Embossed % Fullplate Vambrace	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
 Embossed % Fullplate Gauntlets	23	145	10	500	GenArmor	HANDS	0	5	0	
-Embossed % Fullplate Locking Gauntlets	26	145	10	500	GenArmor	HANDS	0	5	0	Prop_WearSpellCast;Spell_IronGrip
+Embossed % Fullplate Locking Gauntlets	26	145	10	500	GenArmor	HANDS	0	5	0	*Prop_WearSpellCast;Spell_IronGrip
 Embossed % Fullplate Girdle	27	145	10	500	GenArmor	WAIST	100	5	32	
 Embossed % Fullplate Leggings	30	145	33	1996	GenArmor	LEGS	0	22	0	
 Embossed % Fullplate Sabottons	23	145	20	1000	GenArmor	FEET	0	5	0	
@@ -139,7 +139,7 @@ Tower % Shield	55	145	90	40500	GenShield	HELD	0	30	0
 % Battleplate Vambrace	58	145	14	1372	GenArmor	LEFT WRIST||RIGHT WRIST	25	7	8	
 % Battleplate Lowerarm Cannon	58	145	14	1372	GenArmor	LEFT WRIST||RIGHT WRIST	25	7	8	
 % Battleplate Gauntlets	57	145	14	1372	GenArmor	HANDS	0	7	0	
-% Battleplate Locking Gauntlets	60	145	14	1372	GenArmor	HANDS	0	7	0	Prop_WearSpellCast;Spell_IronGrip
+% Battleplate Locking Gauntlets	60	145	14	1372	GenArmor	HANDS	0	7	0	*Prop_WearSpellCast;Spell_IronGrip
 % Battleplate Mitts	57	145	14	1372	GenArmor	HANDS	0	7	0	
 % Battleplate Handguards	57	145	14	1372	GenArmor	HANDS	0	7	0	
 % Battleplate Girdle	61	145	14	1372	GenArmor	WAIST	100	7	32	
@@ -166,7 +166,7 @@ Ancient % Bracer	78	145	16	2048	GenArmor	LEFT WRIST||RIGHT WRIST	25	8	8
 Ancient % Vambrace	78	145	16	2048	GenArmor	LEFT WRIST||RIGHT WRIST	25	8	8	
 Ancient % Lowerarm Cannon	78	145	16	2048	GenArmor	LEFT WRIST||RIGHT WRIST	25	8	8	
 Ancient % Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	
-Ancient % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	Prop_WearSpellCast;Spell_IronGrip;
+Ancient % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	*Prop_WearSpellCast;Spell_IronGrip;
 Ancient % Mitts	77	145	16	2048	GenArmor	HANDS	0	8	0	
 Ancient % Handguards	77	145	16	2048	GenArmor	HANDS	0	8	0	
 Ancient % Girdle	81	145	16	2048	GenArmor	WAIST	100	8	32	
@@ -185,7 +185,7 @@ Demonic % Coat	87	145	153	22108	GenArmor	BODY	0	78	0
 Demonic % Armbands	87	145	51	7369	GenArmor	ARMS	0	17	0	
 Demonic % Bracer	78	145	16	2048	GenArmor	LEFT WRIST||RIGHT WRIST	25	8	8	
 Demonic % Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	
-Demonic % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	Prop_WearSpellCast;Spell_IronGrip
+Demonic % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	*Prop_WearSpellCast;Spell_IronGrip
 Demonic % Girdle	81	145	16	2048	GenArmor	WAIST	100	8	32	
 Demonic % Leggings	87	145	51	7369	GenArmor	LEGS	0	34	0	
 Demonic % Greaves	77	145	32	4096	GenArmor	FEET	0	8	0	
@@ -196,7 +196,7 @@ Sacred % Armament	87	145	153	22108	GenArmor	BODY	0	78	0
 Sacred % Pauldrons	87	145	51	7369	GenArmor	ARMS	0	17	0	
 Sacred % Vambrace	78	145	16	2048	GenArmor	LEFT WRIST||RIGHT WRIST	25	8	8	
 Sacred % Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	
-Sacred % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	Prop_WearSpellCast;Spell_IronGrip
+Sacred % Locking Gauntlets	77	145	16	2048	GenArmor	HANDS	0	8	0	*Prop_WearSpellCast;Spell_IronGrip
 Sacred % Girdle	81	145	16	2048	GenArmor	WAIST	100	8	32	
 Sacred % Skirt	87	145	51	7369	GenArmor	LEGS	0	34	0	
 Sacred % Boots	78	145	32	4096	GenArmor	FEET	25	8	8	

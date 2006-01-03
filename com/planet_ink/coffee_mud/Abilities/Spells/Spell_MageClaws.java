@@ -36,9 +36,9 @@ public class Spell_MageClaws extends Spell
 	public String ID() { return "Spell_MageClaws"; }
 	public String name(){return "Mage Claws";}
 	public String displayText(){return "(Mage Claws spell)";}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;	}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

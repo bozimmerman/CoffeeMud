@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ public class Song_Rage extends Song
 {
 	public String ID() { return "Song_Rage"; }
 	public String name(){ return "Rage";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -47,10 +47,6 @@ public class Song_Rage extends Song
 	}
 
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

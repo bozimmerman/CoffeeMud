@@ -40,10 +40,10 @@ public class Skill_Enslave extends StdSkill
 	public String name(){ return "Enslave";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ENSLAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	
 	protected MOB myMaster=null;
     protected SlaveryLibrary.geasSteps STEPS=null;
@@ -113,7 +113,7 @@ public class Skill_Enslave extends StdSkill
 			{
 			    if((msg.tool()==null)
 			    ||((msg.tool() instanceof Ability)
-			    	&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+			    	&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
 			    	&&(mob.fetchAbility(msg.tool().ID())!=null)))
 		    	{
 				    if(!msg.source().Name().equals(mob.getLiegeID()))
@@ -155,7 +155,7 @@ public class Skill_Enslave extends StdSkill
 		    	}
 			    else
 		        if((msg.tool() instanceof Ability)
-				&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE))
+				&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE))
 		            CMLib.commands().postSay(mob,msg.source(),"I don't understand your words.",false,false);
 			}
 		}
@@ -190,7 +190,7 @@ public class Skill_Enslave extends StdSkill
 			    for(int a=mob.numEffects()-1;a>=0;a--)
 			    {
 			        Ability A=mob.fetchEffect(a);
-			        if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+			        if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 			            if(!A.tick(ticking,tickID))
 			                mob.delEffect(A);
 			    }

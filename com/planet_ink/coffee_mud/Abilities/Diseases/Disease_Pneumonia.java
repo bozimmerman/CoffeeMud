@@ -38,7 +38,7 @@ public class Disease_Pneumonia extends Disease
 	public String displayText(){ return "(Pneumonia)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
 	protected int DISEASE_TICKS(){return 38;}

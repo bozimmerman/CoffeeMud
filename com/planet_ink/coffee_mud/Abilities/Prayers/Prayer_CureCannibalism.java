@@ -36,7 +36,7 @@ public class Prayer_CureCannibalism extends Prayer
 {
 	public String ID() { return "Prayer_CureCannibalism"; }
 	public String name(){ return "Cure Cannibalism";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

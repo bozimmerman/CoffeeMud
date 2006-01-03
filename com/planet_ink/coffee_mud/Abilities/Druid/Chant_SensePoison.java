@@ -36,7 +36,7 @@ public class Chant_SensePoison extends Chant
 {
 	public String ID() { return "Chant_SensePoison"; }
 	public String name(){ return "Sense Poison";}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 
@@ -47,7 +47,7 @@ public class Chant_SensePoison extends Chant
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		if(fromMe instanceof MOB)
@@ -56,13 +56,13 @@ public class Chant_SensePoison extends Chant
 			for(int a=0;a<mob.numAllEffects();a++)
 			{
 				Ability A=mob.fetchEffect(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON)&&(!offenders.contains(A)))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)&&(!offenders.contains(A)))
 					offenders.addElement(A);
 			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 					offenders.addElement(A);
 			}
 		}

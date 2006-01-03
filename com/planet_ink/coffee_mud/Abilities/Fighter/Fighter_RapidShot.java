@@ -37,12 +37,12 @@ public class Fighter_RapidShot extends FighterSkill
 	public String ID() { return "Fighter_RapidShot"; }
 	public String name(){ return "Rapid Shot";}
 	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

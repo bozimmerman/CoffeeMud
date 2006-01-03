@@ -36,7 +36,7 @@ public class Dance_Jingledress extends Dance
 {
 	public String ID() { return "Dance_Jingledress"; }
 	public String name(){ return "Jingledress";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 	public long flags(){return Ability.FLAG_HEALING;}
 

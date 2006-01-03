@@ -37,7 +37,7 @@ public class Chant_SenseAge extends Chant
 	public String ID() { return "Chant_SenseAge"; }
 	public String name(){ return "Sense Age";}
 	protected int canAffectCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int manaOverride(){return 5;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

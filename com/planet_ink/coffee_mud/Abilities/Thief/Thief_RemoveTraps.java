@@ -37,7 +37,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public String name(){ return "Remove Traps";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental lastChecked=null;

@@ -36,10 +36,6 @@ public class AlignHelper extends StdBehavior
 {
 	public String ID(){return "AlignHelper";}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

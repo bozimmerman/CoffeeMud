@@ -36,12 +36,12 @@ public class Ranger_WoodlandLore extends StdAbility
 	public String ID() { return "Ranger_WoodlandLore"; }
 	public String name(){ return "Woodland Lore";}
 	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.SKILL;}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

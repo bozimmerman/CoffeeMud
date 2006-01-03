@@ -73,7 +73,7 @@ Embossed % Gorget	23	145	10	500	GenArmor	NECK	0	5	0
 % Banded Vambrace	6	85	6	108	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8	
 % Banded Lowerarm Cannon	6	85	6	108	GenArmor	LEFT WRIST||RIGHT WRIST	25	3	8	
 % Banded Gauntlets	5	85	6	108	GenArmor	HANDS	0	3	0	
-% Banded Locking Gauntlets	8	85	6	108	GenArmor	HANDS	0	3	0	Prop_WearSpellCast;Spell_IronGrip
+% Banded Locking Gauntlets	8	85	6	108	GenArmor	HANDS	0	3	0	*Prop_WearSpellCast;Spell_IronGrip
 % Banded Mitts	5	85	6	108	GenArmor	HANDS	0	3	0	
 % Banded Handguards	5	85	6	108	GenArmor	HANDS	0	3	0	
 % Banded Girdle	5	85	6	108	GenArmor	WAIST	0	3	0	
@@ -101,7 +101,7 @@ Embossed % Gorget	23	145	10	500	GenArmor	NECK	0	5	0
 % Platemail Vambrace	13	100	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
 % Platemail Lowerarm Cannon	13	100	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
 % Platemail Gauntlets	12	100	8	256	GenArmor	HANDS	0	4	0	
-% Platemail Locking Gauntlets	15	100	8	256	GenArmor	HANDS	0	4	0	Prop_WearSpellCast;Spell_IronGrip
+% Platemail Locking Gauntlets	15	100	8	256	GenArmor	HANDS	0	4	0	*Prop_WearSpellCast;Spell_IronGrip
 % Platemail Mitts	12	100	8	256	GenArmor	HANDS	0	4	0	
 % Platemail Handguards	12	100	8	256	GenArmor	HANDS	0	4	0	
 % Platemail Girdle	16	100	8	256	GenArmor	WAIST	100	4	32	
@@ -128,7 +128,7 @@ Embossed % Gorget	23	145	10	500	GenArmor	NECK	0	5	0
 % Fieldplate Vambrace	13	120	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
 % Fieldplate Lowerarm Cannon	13	120	8	256	GenArmor	LEFT WRIST||RIGHT WRIST	25	4	8	
 % Fieldplate Gauntlets	12	120	8	256	GenArmor	HANDS	0	4	0	
-% Fieldplate Locking Gauntlets	15	120	8	256	GenArmor	HANDS	0	4	0	Prop_WearSpellCast;Spell_IronGrip
+% Fieldplate Locking Gauntlets	15	120	8	256	GenArmor	HANDS	0	4	0	*Prop_WearSpellCast;Spell_IronGrip
 % Fieldplate Mitts	12	120	8	256	GenArmor	HANDS	0	4	0	
 % Fieldplate Handguards	12	120	8	256	GenArmor	HANDS	0	4	0	
 % Fieldplate Girdle	16	120	8	256	GenArmor	WAIST	100	4	32	
@@ -155,7 +155,7 @@ Embossed % Gorget	23	145	10	500	GenArmor	NECK	0	5	0
 % Fullplate Vambrace	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
 % Fullplate Lowerarm Cannon	24	145	10	500	GenArmor	LEFT WRIST||RIGHT WRIST	25	5	8	
 % Fullplate Gauntlets	23	145	10	500	GenArmor	HANDS	0	5	0	
-% Fullplate Locking Gauntlets	26	145	10	500	GenArmor	HANDS	0	5	0	Prop_WearSpellCast;Spell_IronGrip
+% Fullplate Locking Gauntlets	26	145	10	500	GenArmor	HANDS	0	5	0	*Prop_WearSpellCast;Spell_IronGrip
 % Fullplate Mitts	23	145	10	500	GenArmor	HANDS	0	5	0	
 % Fullplate Handguards	23	145	10	500	GenArmor	HANDS	0	5	0	
 % Fullplate Girdle	27	145	10	500	GenArmor	WAIST	100	5	32	

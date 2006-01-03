@@ -40,11 +40,11 @@ public class Poison extends StdAbility
 	public String displayText(){ return "(Poisoned)";}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"POISONSTING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.POISON;}
+	public int classificationCode(){return Ability.ACODE_POISON;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 3;}

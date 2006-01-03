@@ -36,9 +36,9 @@ public class Spell_FeignInvisibility extends Spell
 	public String ID() { return "Spell_FeignInvisibility"; }
 	public String name(){return "Feign Invisibility";}
 	public String displayText(){return "(Improved Invisibility)";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()
 	{

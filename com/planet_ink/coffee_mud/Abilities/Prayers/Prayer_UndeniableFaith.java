@@ -35,7 +35,7 @@ public class Prayer_UndeniableFaith extends Prayer
 {
 	public String ID() { return "Prayer_UndeniableFaith"; }
 	public String name(){ return "Undeniable Faith";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}
@@ -166,7 +166,7 @@ public class Prayer_UndeniableFaith extends Prayer
 					target.location().send(target,msg2);
 					target.setWorshipCharID(godName);
 					if(mob!=target)
-						CMLib.combat().postExperience(mob,target,null,25,false);
+						CMLib.leveler().postExperience(mob,target,null,25,false);
 					godName=mob.getWorshipCharID();
 					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH));
 					convertStack.addElement(target,new Long(System.currentTimeMillis()));

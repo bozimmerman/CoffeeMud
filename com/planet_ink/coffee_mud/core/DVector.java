@@ -60,6 +60,32 @@ public class DVector implements Cloneable, java.io.Serializable
 		if(stuff==null) return -1;
 		return stuff[0].indexOf(O);
 	}
+	public Object[] elementsAt(int x)
+	{
+		synchronized(stuff)
+		{
+			if((x<0)||(x>=stuff[0].size())) throw new java.lang.IndexOutOfBoundsException();
+			Object[] OS=new Object[dimensions];
+			for(int i=0;i<dimensions;i++)
+				OS[i]=stuff[i].elementAt(x);
+			return OS;
+		}
+	}
+	
+	public Object[] removeElementsAt(int x)
+	{
+		synchronized(stuff)
+		{
+			if((x<0)||(x>=stuff[0].size())) throw new java.lang.IndexOutOfBoundsException();
+			Object[] OS=new Object[dimensions];
+			for(int i=0;i<dimensions;i++)
+			{
+				OS[i]=stuff[i].elementAt(x);
+				stuff[i].removeElementAt(x);
+			}
+			return OS;
+		}
+	}
 	
 	public DVector copyOf()
 	{

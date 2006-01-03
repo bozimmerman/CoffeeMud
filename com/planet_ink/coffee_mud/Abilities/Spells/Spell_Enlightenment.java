@@ -36,9 +36,9 @@ public class Spell_Enlightenment extends Spell
 	public String ID() { return "Spell_Enlightenment"; }
 	public String name(){return "Enlightenment";}
 	public String displayText(){return "(Enlightenment spell)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

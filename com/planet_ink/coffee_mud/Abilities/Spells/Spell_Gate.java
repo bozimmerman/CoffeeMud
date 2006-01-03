@@ -35,7 +35,7 @@ public class Spell_Gate extends Spell
 	public String ID() { return "Spell_Gate"; }
 	public String name(){return "Gate";}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE-90;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 

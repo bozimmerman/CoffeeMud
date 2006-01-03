@@ -36,7 +36,7 @@ public class Prayer_Rockskin extends Prayer
 	public String ID() { return "Prayer_Rockskin"; }
 	public String name(){return "Rockskin";}
 	public String displayText(){return "(Rockskin)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 

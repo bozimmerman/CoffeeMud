@@ -38,9 +38,9 @@ public class Spell_SpiderClimb extends Spell
 	public String ID() { return "Spell_SpiderClimb"; }
 	public String name(){return "Spider Climb";}
 	public String displayText(){return "(Spider Climb)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

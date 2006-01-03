@@ -37,12 +37,12 @@ public class Druid_RecoverVoice extends StdAbility
 {
 	public String ID() { return "Druid_RecoverVoice"; }
 	public String name(){ return "Recover Voice";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)

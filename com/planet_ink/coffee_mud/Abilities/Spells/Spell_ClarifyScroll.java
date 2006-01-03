@@ -37,7 +37,7 @@ public class Spell_ClarifyScroll extends Spell
 	public String name(){return "Clarify Scroll";}
 	public int overrideMana(){return 50;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;	}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

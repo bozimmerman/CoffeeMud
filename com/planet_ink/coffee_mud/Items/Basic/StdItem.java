@@ -419,6 +419,7 @@ public class StdItem implements Item
 	{
 		return miscText;
 	}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -649,7 +650,7 @@ public class StdItem implements Item
 		&&((displayText().length()==0)
 		   ||((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(((Ability)msg.tool()).abstractQuality()==Ability.MALICIOUS))))
+			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
 			mob.tell("Please don't do that.");
 			return false;

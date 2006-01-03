@@ -39,7 +39,7 @@ public class Prayer_BoneMoon extends Prayer
 	public String displayText(){ return "(Bone Moon)";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_MOONCHANGING;}
 	protected int level=1;
 

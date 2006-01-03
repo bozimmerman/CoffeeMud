@@ -36,7 +36,7 @@ public class Prayer_CureDisease extends Prayer
 {
 	public String ID() { return "Prayer_CureDisease"; }
 	public String name(){ return "Cure Disease";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public static Vector returnOffensiveAffects(Environmental fromMe)

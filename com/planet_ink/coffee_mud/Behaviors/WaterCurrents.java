@@ -219,6 +219,8 @@ public class WaterCurrents extends ActiveTicker
 		protected Environmental affected=null;
 		protected int canAffectCode(){return 0;}
 		protected int canTargetCode(){return 0;}
+		public boolean canTarget(int can_code){return false;}
+		public boolean canAffect(int can_code){return false;}
 		public double castingTime(){return 0.0;}
 		public double combatCastingTime(){return 0.0;}
 		public int abilityCode(){return 0;}
@@ -272,11 +274,11 @@ public class WaterCurrents extends ActiveTicker
 		public void setAffectedOne(Environmental being){affected=being;}
 
 		public boolean putInCommandlist(){return false;}
-		public int abstractQuality(){return Ability.INDIFFERENT;}
-		public int enchantQuality(){return Ability.INDIFFERENT;}
-		public int castingQuality(MOB invoker, Environmental target){return Ability.INDIFFERENT;}
+		public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+		public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+		public int castingQuality(MOB invoker, Environmental target){return Ability.QUALITY_INDIFFERENT;}
 
-		public int classificationCode(){ return Ability.PROPERTY;}
+		public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 		public boolean savable(){ return savable;}
 		public void setSavable(boolean truefalse)	{ savable=truefalse; }
         protected boolean amDestroyed=false;
@@ -351,10 +353,9 @@ public class WaterCurrents extends ActiveTicker
 
 		public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-		public void setMiscText(String newMiscText)
-		{ miscText=newMiscText;}
-		public String text()
-		{ return miscText;}
+		public void setMiscText(String newMiscText){ miscText=newMiscText;}
+		public String text(){ return miscText;}
+		public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 		public boolean appropriateToMyFactions(MOB mob){return true;}
 		public String accountForYourself(){return "";}
 		public String requirements(){return "";}

@@ -201,7 +201,7 @@ public class StdClanCommonItem extends StdClanItem
 			if(M.fetchEffect(readableText())==null)
 			{
 				Ability A=CMClass.getAbility(readableText());
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 				{
 					A.setProfficiency(100);
                     boolean success=false;

@@ -35,7 +35,7 @@ public class Prayer_MassHeal extends Prayer
 {
 	public String ID() { return "Prayer_MassHeal"; }
 	public String name(){ return "Mass Heal";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -36,11 +36,11 @@ public class Spell_Advancement extends Spell
 	public String ID() { return "Spell_Advancement"; }
 	public String name(){ return "Advancement";}
 	public String displayText(){ return "(Advancement)";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int overrideMana(){return 100;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

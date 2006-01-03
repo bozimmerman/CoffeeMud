@@ -36,10 +36,10 @@ public class Spell_DetectSentience extends Spell
 {
 	public String ID() { return "Spell_DetectSentience"; }
 	public String name(){return "Detect Sentience";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

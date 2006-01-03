@@ -37,7 +37,7 @@ public class Prayer_Calm extends Prayer
 	public String ID() { return "Prayer_Calm"; }
 	public String name(){ return "Calm";}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

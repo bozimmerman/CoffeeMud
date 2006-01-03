@@ -38,7 +38,7 @@ public class Thief_TagTurf extends ThiefSkill
 	public String displayText(){return "(Tagged)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"TURFTAG","TAGTURF"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -51,7 +51,7 @@ public class Thief_TagTurf extends ThiefSkill
 		if((!msg.source().Name().equals(text()))
         &&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.THIEF_SKILL))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
 			msg.source().tell("You definitely aren't allowed to do that on "+text()+"'s turf.");
 			return false;

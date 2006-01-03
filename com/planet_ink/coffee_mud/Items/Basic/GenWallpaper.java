@@ -156,6 +156,7 @@ public class GenWallpaper implements Item
 		text.append(CMLib.xml().convertXMLtoTag("READ",readableText()));
 		return text.toString();
 	}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable ticking, int tickID)
 	{

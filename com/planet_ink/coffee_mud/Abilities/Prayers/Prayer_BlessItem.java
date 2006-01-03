@@ -39,7 +39,7 @@ public class Prayer_BlessItem extends Prayer
 	public String displayText(){ return "(Blessed)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

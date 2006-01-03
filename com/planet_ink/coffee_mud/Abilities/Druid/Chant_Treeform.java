@@ -37,7 +37,7 @@ public class Chant_Treeform extends Chant
 	public String ID() { return "Chant_Treeform"; }
 	public String name(){ return "Treeform";}
 	public String displayText(){return "(Treeform)";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

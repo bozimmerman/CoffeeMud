@@ -39,10 +39,10 @@ public class Prayer extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"PRAY","PR"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.PRAYER;}
+	public int classificationCode(){return Ability.ACODE_PRAYER;}
 
 
 	protected String prayWord(MOB mob)

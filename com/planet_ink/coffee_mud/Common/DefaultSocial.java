@@ -275,6 +275,7 @@ public class DefaultSocial implements Social
 	}
 	public void setMiscText(String newMiscText){}
 	public String text(){return "";}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}

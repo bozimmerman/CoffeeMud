@@ -42,9 +42,9 @@ public interface StatsAffecting
      * which are objects implementing the EnvStats interface.  See those methods for more information.
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      * @see Environmental
-     * @see Environmental#baseEnvStats()
-     * @see Environmental#envStats()
-     * @see Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
      * @param affected the host of the EnvStats object being affected
      * @param affectableStats the particular EnvStats object being affected
      */
@@ -68,11 +68,11 @@ public interface StatsAffecting
      * which are objects implementing the CharState interface.  See those methods for more information.
      * @see com.planet_ink.coffee_mud.Common.interfaces.CharState
      * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
-     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#baseCharState()
-     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#charState()
-     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#recoverCharState()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#baseState()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#curState()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#recoverMaxState()
      * @param affectedMob the host of the CharState object being affected
-     * @param affectableState the particular CharState object being affected
+     * @param affectableMaxState the particular CharState object being affected
      */
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState);
 }

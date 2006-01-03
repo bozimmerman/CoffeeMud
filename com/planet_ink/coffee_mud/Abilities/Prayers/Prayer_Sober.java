@@ -35,7 +35,7 @@ public class Prayer_Sober extends Prayer
 {
 	public String ID() { return "Prayer_Sober"; }
 	public String name(){ return "Sober";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
@@ -47,7 +47,7 @@ public class Prayer_Sober extends Prayer
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
-				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON)
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
 				&&((A.ID().toUpperCase().indexOf("INEBRIA")>=0)
 				   ||(A.ID().toUpperCase().indexOf("ALCOHOL")>=0)
 				   ||(A.ID().toUpperCase().indexOf("POLKA")>=0)

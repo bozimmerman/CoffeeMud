@@ -37,7 +37,7 @@ public class Spell_ConjureNexus extends Spell
 	public String name(){return "Conjure Nexus";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public void unInvoke()
 	{

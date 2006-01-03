@@ -36,7 +36,7 @@ public class Dance_Morris extends Dance
 {
 	public String ID() { return "Dance_Morris"; }
 	public String name(){ return "Morris";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

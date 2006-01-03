@@ -44,7 +44,7 @@ public class Bomb_Spores extends StdBomb
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
 				offenders.addElement(A);
 		}
 		return offenders;

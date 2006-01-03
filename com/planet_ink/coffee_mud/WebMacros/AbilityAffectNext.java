@@ -52,14 +52,14 @@ public class AbilityAffectNext extends StdWebMacro
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
-			int classType=A.classificationCode()&Ability.ALL_CODES;
+			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID())>=0)
 				continue;
 			boolean containsOne=false;
-			for(int i=0;i<Ability.TYPE_DESCS.length;i++)
-				if(parms.containsKey(Ability.TYPE_DESCS[i]))
+			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				if(parms.containsKey(Ability.ACODE_DESCS[i]))
 				{ containsOne=true; break;}
-			if(containsOne&&(!parms.containsKey(Ability.TYPE_DESCS[classType])))
+			if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 				okToShow=false;
 			if(parms.containsKey("NOT")) okToShow=!okToShow;
 			if(okToShow)

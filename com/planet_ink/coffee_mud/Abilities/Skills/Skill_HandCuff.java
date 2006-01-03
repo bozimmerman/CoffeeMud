@@ -38,10 +38,10 @@ public class Skill_HandCuff extends StdSkill
 	public String displayText(){ return "(Handcuffed)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_BINDING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

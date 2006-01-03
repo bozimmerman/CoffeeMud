@@ -36,10 +36,10 @@ public class Spell_Delude extends Spell
 	public String ID() { return "Spell_Delude"; }
 	public String name(){return "Delude";}
 	public String displayText(){return "(Delude spell)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	int previousAlignment=500;
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()
 	{

@@ -36,12 +36,12 @@ public class Fighter_Endurance extends FighterSkill
 	public String ID() { return "Fighter_Endurance"; }
 	public String name(){ return "Endurance";}
 	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.SKILL;}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

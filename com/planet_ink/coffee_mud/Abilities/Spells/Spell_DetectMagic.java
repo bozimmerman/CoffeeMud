@@ -37,10 +37,10 @@ public class Spell_DetectMagic extends Spell
 	public String ID() { return "Spell_DetectMagic"; }
 	public String name(){return "Detect Magic";}
 	public String displayText(){return "(Detecting Magic)";}
-	public int abstractQuality(){ return OK_SELF;}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()
 	{
@@ -71,10 +71,10 @@ public class Spell_DetectMagic extends Spell
 				if((A!=null)
 				&&(!A.isAutoInvoked())
 				&&(A.displayText().length()>0)
-				&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
+				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 				{
 					if(msg2==null)
 						msg2=msg.target().name()+" is affected by: "+A.name();

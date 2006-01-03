@@ -38,9 +38,9 @@ public class Spell_ReverseGravity extends Spell
 	public String displayText(){return "(Gravity is Reversed)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected Vector childrenAffects=new Vector();
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean tick(Tickable ticking, int tickID)

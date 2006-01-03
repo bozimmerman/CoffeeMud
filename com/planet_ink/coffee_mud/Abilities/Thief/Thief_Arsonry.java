@@ -36,7 +36,7 @@ public class Thief_Arsonry extends ThiefSkill
 	public String name(){ return "Arsonry";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ARSON","ARSONRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 

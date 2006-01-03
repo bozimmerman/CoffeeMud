@@ -36,9 +36,9 @@ public class Spell_Choke extends Spell
 	public String ID() { return "Spell_Choke"; }
 	public String name(){return "Choke";}
 	public String displayText(){return "(Choke spell)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;	}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

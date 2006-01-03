@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,24 +37,20 @@ public class Skill_Mimicry extends BardSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
     protected CMMsg lastMsg=null;
 	protected boolean disabled=false;
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affecting,true)))
 			return;
 		if(disabled) return;
-		
+
 		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
 		&&((text().length()==0)||(text().equalsIgnoreCase(msg.source().Name())))
 		&&((msg.sourceMinor()!=CMMsg.TYP_EMOTE)

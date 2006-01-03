@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 public class MoneyChanger extends StdBehavior
 {
 	public String ID(){return "MoneyChanger";}
-	
+
 	public Hashtable rates=new Hashtable();
 	public double cut=0.05;
 
@@ -89,12 +89,12 @@ public class MoneyChanger extends StdBehavior
 						    rates.put(parm,new Double(val/100.0));
 					}
 				}
-				
+
 			}
 			x=newParm.indexOf("=");
 		}
 	}
-	
+
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -139,10 +139,7 @@ public class MoneyChanger extends StdBehavior
 		}
 		return true;
 	}
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
+
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

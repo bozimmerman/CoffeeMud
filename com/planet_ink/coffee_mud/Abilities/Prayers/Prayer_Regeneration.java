@@ -36,7 +36,7 @@ public class Prayer_Regeneration extends Prayer
 	public String ID() { return "Prayer_Regeneration"; }
 	public String name(){ return "Regeneration";}
 	public String displayText(){ return "(Regeneration)";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

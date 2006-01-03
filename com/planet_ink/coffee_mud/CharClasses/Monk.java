@@ -229,10 +229,9 @@ public class Monk extends StdCharClass
 			affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
 			+(affectableStats.getClassLevel(this)*2));
 	}
-	public void level(MOB mob)
+	public void level(MOB mob, Vector newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;
-		super.level(mob);
 		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
@@ -254,7 +253,7 @@ public class Monk extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)
+				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}

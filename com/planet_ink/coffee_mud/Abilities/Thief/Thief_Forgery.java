@@ -36,7 +36,7 @@ public class Thief_Forgery extends ThiefSkill
 	public String name(){ return "Forgery";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FORGERY"};
 	public String[] triggerStrings(){return triggerStrings;}
 
@@ -87,7 +87,7 @@ public class Thief_Forgery extends ThiefSkill
 		if(newName.length()==0)
 		{
 			Ability A=CMClass.findAbility(forgeWhat);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 			{
 				mob.tell("You can't forge '"+A.name()+"'.");
 				return false;

@@ -214,7 +214,7 @@ public class Druid extends StdCharClass
             {
                 Ability A=CMClass.getAbility((String)a.nextElement());
                 if((A!=null)
-                &&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+                &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
                 &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
                     giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
             }
@@ -232,7 +232,7 @@ public class Druid extends StdCharClass
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
 		}
 		for(int a=0;a<mob.numLearnedAbilities();a++)
@@ -309,7 +309,7 @@ public class Druid extends StdCharClass
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
 		&&(CMLib.dice().rollPercentage()<50))

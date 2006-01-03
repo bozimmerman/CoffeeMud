@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 
 /**
- * The interface for all common items, and as a base for EnvResource, armor, weapons, etc.
+ * The interface for all common items, and as a base for RawMaterial, armor, weapons, etc.
  *
  * @author Bo Zimmerman
  *
@@ -67,7 +67,7 @@ public interface Item extends Environmental, Rider
      * plain site (or contained on person), or will
      * point to the Container item. 
      * @see Container
-     * @param The Container item in which this item is contained.
+     * @param newLocation Container item in which this item is contained.
      */
 	public void setContainer(Item newLocation);
     /**
@@ -173,17 +173,16 @@ public interface Item extends Environmental, Rider
      * The resource codes are composed of an integer where the highest order bits represent
      * the basic material type, and the lower order bits represent the specific material type.
      * These codes are defined in RawMaterial.
-     * @see EnvResource
-     * @return the EnvResource code describing what this item is made of.
+     * @see RawMaterial
+     * @return the RawMaterial code describing what this item is made of.
      */
 	public int material();
     /**
      * Sets the resource code representing the material out of which this item is principally made.
      * The resource codes are composed of an integer where the highest order bits represent
      * the basic material type, and the lower order bits represent the specific material type.
-     * These codes are defined in EnvResource interface.
-     * @see EnvResource
-     * @return the EnvResource code describing what this item is made of.
+     * These codes are defined in RawMaterial interface.
+     * @see RawMaterial
      */
 	public void setMaterial(int newValue);
 
@@ -297,7 +296,7 @@ public interface Item extends Environmental, Rider
      * @see Item#wearAt(long)
      * @see Item#wearIfPossible(MOB)
      * @see Item#wearEvenIfImpossible(MOB)
-     * @return the current worn code for this item
+     * @param newValue the current worn code for this item
      */
     public void setRawWornCode(long newValue);
     /**
@@ -365,7 +364,7 @@ public interface Item extends Environmental, Rider
      * and the addItem interface on Rooms.  Alone, this method is insufficient to properly
      * determine an items location, so one of the two above should be called instead.
      * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addInventory(Item)
-     * @see com.planet_ink.coffee_mud.Locales.interfaces.Item#addItem(item)
+     * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#addItem(Item)
      * @param E the mob or room where the item is located
      */
     public void setOwner(Environmental E);

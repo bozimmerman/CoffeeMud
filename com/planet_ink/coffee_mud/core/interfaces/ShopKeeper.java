@@ -187,7 +187,7 @@ public interface ShopKeeper extends Environmental
     /**
      * Sets a description of the buying budget of the shopkeeper.  Format is
      * an amount of base currency followed by HOUR,WEEK,DAY,MONTH or YEAR.
-     * @return the string for the shopkeepers buying budget
+     * @param factors the string for the shopkeepers buying budget
      */
 	public void setBudget(String factors);
     /**
@@ -207,7 +207,7 @@ public interface ShopKeeper extends Environmental
      * price drop per normal item followed by a space, followed by a number
      * representing the percentage price drop per raw resource item. A value
      * of "0 0" would mean no drop in price for either,  ever.
-     * @return the price dropping percentage rule for this shopkeeper
+     * @param factors the price dropping percentage rule for this shopkeeper
      */
 	public void setDevalueRate(String factors);
     /**
@@ -217,7 +217,7 @@ public interface ShopKeeper extends Environmental
 	public int invResetRate();
     /**
      * Sets the number of ticks between totally resetting this ShopKeepers inventory back to what it was.
-     * @return the number of ticks between total resets of inventory
+     * @param ticks the number of ticks between total resets of inventory
      */
 	public void setInvResetRate(int ticks);
 }

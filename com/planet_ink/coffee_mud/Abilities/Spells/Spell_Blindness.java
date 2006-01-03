@@ -36,9 +36,9 @@ public class Spell_Blindness extends Spell
 	public String ID() { return "Spell_Blindness"; }
 	public String name(){return "Blind";}
 	public String displayText(){return "(Blind)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

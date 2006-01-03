@@ -36,8 +36,8 @@ public class Spell_KnowPain extends Spell
 	public String ID() { return "Spell_KnowPain"; }
 	public String name(){return "Know Pain";}
 	public String displayText(){return "(Spell_KnowPain)";}
-	public int abstractQuality(){return MALICIOUS;};
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

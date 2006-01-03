@@ -39,7 +39,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 	public String name(){ return "Vampire Vine";}
 	public String displayText(){return "(Vampire Vine)";}
 	public long flags(){return Ability.FLAG_SUMMONING;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

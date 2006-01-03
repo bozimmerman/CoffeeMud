@@ -36,7 +36,7 @@ public class Spell_EnchantWand extends Spell
 	public String ID() { return "Spell_EnchantWand"; }
 	public String name(){return "Enchant Wand";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -90,7 +90,7 @@ public class Spell_EnchantWand extends Spell
 			return false;
 
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
-		CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(mob,0,auto);

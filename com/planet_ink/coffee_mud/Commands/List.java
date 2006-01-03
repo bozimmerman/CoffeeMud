@@ -1089,17 +1089,17 @@ public class List extends StdCommand
 		case 11: s.wraplessPrintln(listRaces(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 12: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.charClasses()).toString()); break;
 		case 13: s.wraplessPrintln(listSubOps(mob).toString()); break;
-		case 14: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.SPELL).toString()); break;
-		case 15: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.SONG).toString()); break;
-		case 16: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.PRAYER).toString()); break;
-		case 17: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.PROPERTY).toString()); break;
-		case 18: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString()); break;
-		case 19: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.COMMON_SKILL).toString()); break;
+		case 14: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
+		case 15: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
+		case 16: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_PRAYER).toString()); break;
+		case 17: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_PROPERTY).toString()); break;
+		case 18: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_THIEF_SKILL).toString()); break;
+		case 19: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_COMMON_SKILL).toString()); break;
 		case 20: s.println(listJournals().toString()); break;
-		case 21: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.SKILL).toString()); break;
+		case 21: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SKILL).toString()); break;
 		case 22: s.println(listQuests().toString()); break;
-		case 23: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.DISEASE).toString()); break;
-		case 24: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.POISON).toString()); break;
+		case 23: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_DISEASE).toString()); break;
+		case 24: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
 		case 25: s.println(listTicks(CMParms.combine(commands,1)).toString()); break;
 		case 26: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.miscMagic()).toString()); break;
 		case 27: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.miscTech()).toString()); break;
@@ -1134,9 +1134,9 @@ public class List extends StdCommand
 		case 38: s.println(listThreads(mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
 		case 39: s.wraplessPrintln(CMLib.lister().reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
 		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
-		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
+		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
 		case 42:
-		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.SUPERPOWER).toString()); break;
+		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
 		case 44: break;
 		case 45: break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;

@@ -36,7 +36,7 @@ public class Dance_Tarantella extends Dance
 {
 	public String ID() { return "Dance_Tarantella"; }
 	public String name(){ return "Tarantella";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
 
@@ -61,7 +61,7 @@ public class Dance_Tarantella extends Dance
 			for(int a=0;a<mob.numEffects();a++)
 			{
 				Ability A=mob.fetchEffect(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				{
 					if(offenders==null) offenders=new Vector();
 					offenders.addElement(A);

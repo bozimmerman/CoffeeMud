@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,14 +40,14 @@ public class StdBehavior implements Behavior
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
-    protected boolean isBorrowedBehavior=false;
+    protected boolean isSavableBehavior=true;
 
     public StdBehavior()
     {
         super();
         CMClass.bumpCounter(CMClass.OBJECT_BEHAVIOR);
     }
-    
+
 	protected String parms="";
 
 	/** return a new instance of the object*/
@@ -82,8 +82,8 @@ public class StdBehavior implements Behavior
 
 	}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_BEHAVIOR);}
-    public void setBorrowed(boolean truefalse){isBorrowedBehavior=truefalse;}
-    public boolean isBorrowed(){return isBorrowedBehavior;}
+    public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
+    public boolean isSavable(){return isSavableBehavior;}
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{ return false; }
 	protected MOB getBehaversMOB(Tickable ticking)
@@ -122,26 +122,21 @@ public class StdBehavior implements Behavior
 
 	public String getParms(){return parms;}
 	public void setParms(String parameters){parms=parameters;}
+	public String parmsFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public Vector externalFiles(){return null;}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		return;
 	}
 
-	/** this method is used to tell the system whether
-	 * a PENDING affect may take place
-	 */
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		return true;
 	}
 
+	public boolean canImprove(int can_code){return CMath.bset(canImproveCode(),can_code);}
 	public boolean canImprove(Environmental E)
 	{
 		if((E==null)&&(canImproveCode()==0)) return true;
@@ -181,18 +176,11 @@ public class StdBehavior implements Behavior
 		return true;
 	}
 
-	/**
-	 * this method allows any environmental object
-	 * to behave according to a timed response.  by
-	 * default, it will never be called unless the
-	 * object uses the ServiceEngine to setup service.
-	 * The tickID allows granularity with the type
-	 * of service being requested.
-	 */
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		return true;
 	}
+
 	protected static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

@@ -271,8 +271,8 @@ public class StdCharClass implements CharClass
 		&&(isQualifyingAuthority(mob,(Ability)E))
 		&&(mob.isMine(E))
 		&&(!E.ID().equals("Skill_Recall"))
-		&&(((Ability)E).classificationCode()!=Ability.COMMON_SKILL)
-		&&(((Ability)E).classificationCode()!=Ability.LANGUAGE)
+		&&(((Ability)E).classificationCode()!=Ability.ACODE_COMMON_SKILL)
+		&&(((Ability)E).classificationCode()!=Ability.ACODE_LANGUAGE)
 		&&(!CMLib.utensils().armorCheck(mob,allowedArmorLevel()))
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2)))
 			return false;
@@ -378,8 +378,7 @@ public class StdCharClass implements CharClass
 	}
 
 	public Vector outfit(){return outfitChoices;}
-	/** some general statistics about such an item
-	 * see class "EnvStats" for more information. */
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 
@@ -428,199 +427,7 @@ public class StdCharClass implements CharClass
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public void gainExperience(MOB mob,
-							   MOB victim,
-							   String homageMessage,
-							   int amount,
-							   boolean quiet)
-	{
-		if(victim!=null)
-		{
-			int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-			int levelDiff=victim.envStats().level()-mob.envStats().level();
-
-			if(levelDiff<(-levelLimit) )
-				amount=0;
-			else
-			if(levelLimit>0)
-			{
-				double levelFactor=CMath.div(levelDiff,levelLimit);
-				if(levelFactor>new Integer(levelLimit).doubleValue())
-					levelFactor=new Integer(levelLimit).doubleValue();
-				amount=(int)Math.round(new Integer(amount).doubleValue()+CMath.mul(levelFactor,amount));
-			}
-		}
-		if((mob.getLiegeID().length()>0)&&(amount>2))
-		{
-			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
-			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
-			{
-				int sireShare=(int)Math.round(CMath.div(amount,10.0));
-				if(sireShare<=0) sireShare=1;
-				amount-=sireShare;
-				CMLib.combat().postExperience(sire,null," from "+mob.name(),sireShare,quiet);
-			}
-		}
-		if((mob.getClanID().length()>0)&&(amount>2))
-		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if(C!=null) amount=C.applyExpMods(amount);
-		}
-
-		mob.setExperience(mob.getExperience()+amount);
-		if(homageMessage==null) homageMessage="";
-		if(!quiet)
-		{
-			if(amount>1)
-				mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homageMessage+".^N");
-			else
-			if(amount>0)
-				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homageMessage+".^N");
-		}
-
-		while((mob.getExperience()>=mob.getExpNextLevel())
-		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-			level(mob);
-	}
-
-	public void unLevel(MOB mob)
-	{
-		if((mob.baseEnvStats().level()<2) 
-		||(CMSecurity.isDisabled("LEVELS"))
-		||(leveless())
-		||(mob.charStats().getMyRace().leveless()))
-		    return;
-		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMProps.msp("doh.wav",60));
-		if(!mob.isMonster())
-        {
-            Vector channels=CMLib.channels().getFlaggedChannelNames("LOSTLEVELS");
-            if(!CMLib.flags().isCloaked(mob))
-            for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
-        }
-
-		levelAdjuster(mob,-1);
-		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.STAT_WISDOM),4.0))+getBonusPracLevel();
-		if(practiceGain<=0)practiceGain=1;
-		mob.setPractices(mob.getPractices()-practiceGain);
-		int trainGain=0;
-		if(trainGain<=0)trainGain=1;
-		mob.setTrains(mob.getTrains()-trainGain);
-
-		mob.recoverEnvStats();
-		mob.recoverCharStats();
-		mob.recoverMaxState();
-		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^N.\n\r");
-	}
-
-	private static final int breakLevel=25;
-	protected int neededToBeLevel(int level)
-	{
-		int neededLevel=1000;
-
-		if(level==0)
-			neededLevel=0;
-		else
-		for(int i=1;i<level;i++)
-			if(i<breakLevel)
-				neededLevel+=1000+(100*i);
-			else
-				neededLevel+=1000+(100*(breakLevel-1))+(25*(i-(breakLevel-1)));
-		return neededLevel;
-	}
-	public int getLevelExperience(int level)
-	{ return neededToBeLevel(level);}
-
-	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
-	{
-		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
-		CharClass curClass=mob.baseCharStats().getCurrentClass();
-		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
-		int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
-		int gained=mob.getExperience()-mob.getExpNextLevel();
-		if(gained<50) gained=50;
-
-		int neededNext=neededToBeLevel(mob.baseEnvStats().level());
-		int neededLower=neededToBeLevel(mob.baseEnvStats().level()-1);
-		mob.setExpNextLevel(neededNext);
-		if(mob.getExperience()>mob.getExpNextLevel())
-			mob.setExperience(neededLower+gained);
-
-		StringBuffer theNews=new StringBuffer("");
-
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
-
-		int conStat=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
-		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_CONSTITUTION));
-		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=(int)Math.floor(CMath.div(conStat,getHPDivisor())+CMLib.dice().roll(getHPDice(),getHPDie(),0));
-		if(newHitPointGain<=0)
-		{
-			if(conStat>=1)
-				newHitPointGain=adjuster;
-		}
-		else
-			newHitPointGain=newHitPointGain*adjuster;
-		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
-		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
-		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
-		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
-			(newHitPointGain!=1?"points":"point") + ", ^H");
-
-		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
-		if(lvlMul<0.1) lvlMul=.1;
-		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
-		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_STRENGTH));
-		if(mvStat>maxMvStat) mvStat=maxMvStat;
-		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),getMovementMultiplier()));
-		mvGain=mvGain*adjuster;
-		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
-		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
-		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
-
-		int attStat=mob.charStats().getStat(getAttackAttribute());
-		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+getAttackAttribute()));
-		if(attStat>=maxAttStat) attStat=maxAttStat;
-		int attGain=(int)Math.round(CMath.div(attStat,6.0))+getBonusAttackLevel();
-		if(mvStat>=25)attGain+=2;
-		else
-		if(mvStat>=22)attGain+=1;
-		attGain=attGain*adjuster;
-		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
-		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
-		theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
-
-		int man2Stat=mob.charStats().getStat(getAttackAttribute());
-		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+getAttackAttribute()));
-		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
-		
-		int manStat=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_INTELLIGENCE));
-		if(manStat>maxManStat) manStat=maxManStat;
-		int manaGain=(int)Math.floor(CMath.div(manStat,getManaDivisor())+CMLib.dice().roll(getManaDice(),getManaDie(),0));
-		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
-		manaGain=manaGain*adjuster;
-		
-		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
-		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
-
-
-
-		if((adjuster<0)&&(((classLevel+1)%getLevelsPerBonusDamage())==0))
-			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
-		else
-		if((adjuster>0)&&((classLevel%getLevelsPerBonusDamage())==0))
-			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
-		mob.recoverMaxState();
-		return theNews;
-	}
+	public void unLevel(MOB mob){}
 
 	public MOB fillOutMOB(MOB mob, int level)
 	{
@@ -639,112 +446,13 @@ public class StdCharClass implements CharClass
 		return mob;
 	}
 
-	public void loseExperience(MOB mob, int amount)
-	{
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
-        if((mob.getLiegeID().length()>0)&&(amount>2))
-        {
-			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
-			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
-            {
-                int sireShare=(int)Math.round(CMath.div(amount,10.0));
-                amount-=sireShare;
-				if(CMLib.combat().postExperience(sire,null,"",-sireShare,true))
-					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
-            }
-        }
-        if((mob.getClanID().length()>0)&&(amount>2))
-        {
-            Clan C=CMLib.clans().getClan(mob.getClanID());
-            if((C!=null)&&(C.getTaxes()>0.0))
-            {
-                int clanshare=(int)Math.round(CMath.mul(amount,C.getTaxes()));
-                if(clanshare>0)
-				{
-                    amount-=clanshare; 
-                    C.adjExp(clanshare*-1);
-					C.update();
-				}
-            }
-        }
-		mob.setExperience(mob.getExperience()-amount);
-		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
-		if((mob.getExperience()<neededLowest)
-		&&(mob.baseEnvStats().level()>1))
-			unLevel(mob);
-	}
-	public void level(MOB mob)
-	{
-	    if((CMSecurity.isDisabled("LEVELS"))
-		||(leveless())
-		||(mob.charStats().getMyRace().leveless()))
-	        return;
-        if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1)))
-            return;
-		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));
-		theNews.append(levelAdjuster(mob,1));
-		if(mob.playerStats()!=null)
-		{
-            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level());
-            Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDLEVELS");
-            Vector channels2=CMLib.channels().getFlaggedChannelNames("LEVELS");
-            if(!CMLib.flags().isCloaked(mob))
-            for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(mob.location())+".",true);
-            if(!CMLib.flags().isCloaked(mob))
-            for(int i=0;i<channels2.size();i++)
-                CMLib.commands().postChannel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
-			if(mob.soulMate()==null)
-				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
-		}
+	public void level(MOB mob, Vector gainedAbilityIDs){}
 
-		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.STAT_WISDOM),4.0))+getBonusPracLevel();
-		if(practiceGain<=0)practiceGain=1;
-		mob.setPractices(mob.getPractices()+practiceGain);
-		theNews.append(" ^H" + practiceGain+"^N practice " +
-			( practiceGain != 1? "points" : "point" ) + ", ");
-
-		int trainGain=1;
-		if(trainGain<=0)trainGain=1;
-		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^N training "+ (practiceGain != 1? "sessions" : "session" )+".\n\r^N");
-
-		mob.tell(theNews.toString());
-        HashSet oldAbilities=new HashSet();
-        for(int a=0;a<mob.numAbilities();a++)
-            oldAbilities.add(mob.fetchAbility(a).ID());
-        
-		grantAbilities(mob,false);
-
-		// check for autoinvoking abilities
-		for(int a=0;a<mob.numLearnedAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if((A!=null)
-			&&(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-				A.autoInvocation(mob);
-		}
-        
-        if(mob.charStats().getClassLevel(this)<=30)
-        for(int a=0;a<mob.numAbilities();a++)
-        {
-            Ability A=mob.fetchAbility(a);
-            if(!oldAbilities.contains(A.ID()))
-            {
-                String type=Ability.TYPE_DESCS[(A.classificationCode()&Ability.ALL_CODES)].toLowerCase();
-                mob.tell("^NYou have learned the "+type+" ^H"+A.name()+"^?.^N");
-            }
-        }
-
-		// wrap it all up
-		mob.recoverEnvStats();
-		mob.recoverCharStats();
-		mob.recoverMaxState();
-	}
-
+	public int adjustExperienceGain(MOB mob, MOB victim, int amount) { return amount;}
+	
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getHPDivisor())))+(getHPDie()*(getHPDice()+1)/2));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getManaDivisor())))+(getManaDie()*(getManaDice()+1)/2));
 	}
 
 	public int getLevelAttack(MOB mob)
@@ -790,25 +498,6 @@ public class StdCharClass implements CharClass
 		return false;
 	}
     
-    public void dispenseExperience(HashSet killers, MOB killed)
-    {
-        int totalLevels=0;
-        int expAmount=100;
-
-        for(Iterator i=killers.iterator();i.hasNext();)
-        {
-            MOB mob=(MOB)i.next();
-            totalLevels+=(mob.envStats().level()*mob.envStats().level());
-            expAmount+=25;
-        }
-		for(Iterator i=killers.iterator();i.hasNext();)
-		{
-			MOB mob=(MOB)i.next();
-			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
-			if(myAmount>100) myAmount=100;
-			CMLib.combat().postExperience(mob,killed,"",myAmount,false);
-		}
-	}
 	public String classParms(){ return "";}
 	public void setClassParms(String parms){}
 	protected static String[] CODES={"CLASS","PARMS"};

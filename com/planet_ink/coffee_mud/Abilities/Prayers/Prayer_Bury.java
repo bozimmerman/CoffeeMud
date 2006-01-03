@@ -37,7 +37,7 @@ public class Prayer_Bury extends Prayer
 	public String ID() { return "Prayer_Bury"; }
 	public String name(){ return "Bury";}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -82,7 +82,7 @@ public class Prayer_Bury extends Prayer
 					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 					int levelDiff=mob.envStats().level()-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
-					CMLib.combat().postExperience(mob,null,null,(int)Math.round(exp),false);
+					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp),false);
 				}
                 target.destroy();
 				mob.location().recoverRoomStats();

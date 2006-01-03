@@ -36,13 +36,13 @@ public class Druid_GolemForm extends StdAbility
 {
 	public String ID() { return "Druid_GolemForm"; }
 	public String name(){ return "Golem Form";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"GOLEMFORM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public Race newRace=null;
 	public String raceName="";

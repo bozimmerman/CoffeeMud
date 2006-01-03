@@ -36,7 +36,7 @@ public class Song_Silence extends Song
 {
 	public String ID() { return "Song_Silence"; }
 	public String name(){ return "Silencing";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongTick(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)

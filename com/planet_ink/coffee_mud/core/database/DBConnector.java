@@ -60,6 +60,7 @@ public class DBConnector
 	{
 		if(DBs!=null){ DBs.deregisterDriver(); DBs.killConnections();}
 		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DoErrorQueueing);
+		if(DBs.amIOk()) DBs.retryQueuedErrors();
 	}
 	
 	public static int getRecordCount(DBConnection D, ResultSet R)
@@ -93,7 +94,6 @@ public class DBConnector
 	 * The user must ALWAYS call DBDone when done with the object.
 	 * 
 	 * <br><br><b>Usage: DB=DBFetch();</b> 
-	 * @param NA
 	 * @return DBConnection	The DBConnection to use
 	 */
 	public static DBConnection DBFetch(){return (DBs!=null)?DBs.DBFetch():null;}
@@ -116,7 +116,6 @@ public class DBConnector
 	 * 
 	 * <br><br><b>Usage:</b> 
 	 * @param D	The Database connection to return to the pool
-	 * @return NA
 	 */
 	public static void DBDone(DBConnection D){ if(DBs!=null) DBs.DBDone(D);}
 
@@ -167,15 +166,12 @@ public class DBConnector
 	 * shutting down this class.
 	 * 
 	 * <br><br><b>Usage:</b> killConnections();
-	 * @param NA
-	 * @return NA
 	 */
 	public static void killConnections(){ if(DBs!=null) DBs.killConnections();}
 	
 	/** 
 	 * Return the happiness level of the connections
 	 * <br><br><b>Usage:</b> amIOk()
-	 * @param NA
 	 * @return boolean	true if ok, false if not ok
 	 */
 	public static boolean amIOk(){ return (DBs!=null)?DBs.amIOk():false;}
@@ -186,7 +182,7 @@ public class DBConnector
 	 * <br><br><b>Usage:</b> enQueueError("UPDATE SQL","error string");
 	 * @param SQLString	UPDATE style SQL statement
 	 * @param SQLError	The error message being reported
-	 * @return NA
+	 * @param count	The number of tries so far
 	 */
 	public static void enQueueError(String SQLString, String SQLError, String count)
 	{ if(DBs!=null)DBs.enQueueError(SQLString, SQLError,count);}
@@ -196,39 +192,14 @@ public class DBConnector
 	 * Queue up a failed write/update for later processing.
 	 * 
 	 * <br><br><b>Usage:</b> RetryQueuedErrors();
-	 * @param NA
-	 * @return NA
 	 */
 	public static void retryQueuedErrors()
 	{ if(DBs!=null)DBs.retryQueuedErrors();}
 	
-	/** write a buffer of data to numerous SQL records by
-	 * breaking the buffer into small chunks
-	 * 
-	 * <br><br><b>Usage:</b> writeCheeseWheelBuffer(SQL, buf);
-	 * @param SQL	The prepared statement string
-	 * @param buf	the buffer to send
-	 * @return int	the response code, or -1 for an error
-	 */
-	public static int writeCheeseWheelBuffer(String SQL, byte[] buf)
-	{ return (DBs!=null)?DBs.writeCheeseWheelBuffer(SQL,buf):0;}
-	
-	/** read a buffer of data to numerous SQL records by
-	 * breaking the buffer into small chunks
-	 * 
-	 * <br><br><b>Usage:</b> buf=readCheeseWheelBuffer(SQL);
-	 * @param SQL	The query string
-	 * @param buf	the buffer to send
-	 * @return byte[]	the buffer of data
-	 */
-	public static byte[] readCheeseWheelBuffer(String SQL)
-	{ return (DBs!=null)?DBs.readCheeseWheelBuffer(SQL):null;}
-	
 	/** list the connections 
 	 * 
 	 * <br><br><b>Usage:</b> listConnections(out);
-	 * @param PrintStream	place to send the list out to
-	 * @return NA
+	 * @param out	place to send the list out to
 	 */
 	public static void listConnections(PrintStream out)
 	{ if(DBs!=null)DBs.listConnections(out);}
@@ -236,7 +207,6 @@ public class DBConnector
 	/** return a status string, or "" if everything is ok.
 	 * 
 	 * <br><br><b>Usage:</b> errorStatus();
-	 * @param NA
 	 * @return StringBuffer	complete error status
 	 */
 	public static StringBuffer errorStatus()

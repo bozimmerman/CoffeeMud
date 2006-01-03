@@ -38,7 +38,7 @@ public class Chant_BreatheWater extends Chant
 	public String ID() { return "Chant_BreatheWater"; }
 	public String name(){ return "Fish Gills";}
 	public String displayText(){return "(Fish Gills)";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
 	public void unInvoke()
 	{

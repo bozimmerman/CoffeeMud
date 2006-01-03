@@ -36,9 +36,9 @@ public class Spell_Fly extends Spell
 	public String ID() { return "Spell_Fly"; }
 	public String name(){return "Fly";}
 	public String displayText(){return "(Fly spell)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

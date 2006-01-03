@@ -35,10 +35,10 @@ public class Spell_FutureDeath extends Spell
 {
 	public String ID() { return "Spell_FutureDeath"; }
 	public String name(){return "Future Death";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

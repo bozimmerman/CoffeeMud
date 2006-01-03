@@ -38,10 +38,10 @@ public class Spell extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CAST","CA","C"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SPELL;}
+	public int classificationCode(){return Ability.ACODE_SPELL;}
 
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
@@ -65,7 +65,7 @@ public class Spell extends StdAbility
 				Ability A=tmob.fetchEffect(i);
 				if((A!=null)
 				&&(A instanceof Spell)
-				&&(A.abstractQuality()==Ability.MALICIOUS))
+				&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
 				{
 					num++;
 					if(num>5)

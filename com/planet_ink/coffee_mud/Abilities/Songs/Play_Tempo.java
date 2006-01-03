@@ -36,7 +36,7 @@ public class Play_Tempo extends Play
 {
 	public String ID() { return "Play_Tempo"; }
 	public String name(){ return "Tempo";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -49,7 +49,7 @@ public class Play_Tempo extends Play
 			{
 				Ability A=mob.fetchEffect(i);
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 					A.tick(mob,Tickable.TICKID_MOB);
 			}
 		}

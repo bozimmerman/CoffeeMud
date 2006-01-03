@@ -36,7 +36,7 @@ public class Spell_Flagportation extends Spell
 	public String ID() { return "Spell_Flagportation"; }
 	public String name(){return "Flagportation";}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

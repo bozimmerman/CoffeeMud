@@ -37,7 +37,7 @@ public class Prayer_FleshRock extends Prayer
 	public String ID() { return "Prayer_FleshRock"; }
 	public String name(){return "Flesh Rock";}
 	public String displayText(){return "(Flesh to Rock)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public Item statue=null;

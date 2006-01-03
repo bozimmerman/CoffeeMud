@@ -36,9 +36,9 @@ public class Spell_Nondetection extends Spell
 	public String ID() { return "Spell_Nondetection"; }
 	public String name(){return "Resist Divination";}
 	public String displayText(){return "(Resist Divination)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	int amountAbsorbed=0;
 

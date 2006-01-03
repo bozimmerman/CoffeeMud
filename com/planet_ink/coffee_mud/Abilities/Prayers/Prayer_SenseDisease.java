@@ -36,10 +36,10 @@ public class Prayer_SenseDisease extends Prayer
 	public String ID() { return "Prayer_SenseDisease"; }
 	public String name(){ return "Sense Disease";}
 	public String displayText(){ return "(Sense Disease)";}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected Room lastRoom=null;
 
@@ -65,7 +65,7 @@ public class Prayer_SenseDisease extends Prayer
 			for(int m=0;m<((MOB)mob).numAllEffects();m++)
 			{
 				Ability A=((MOB)mob).fetchEffect(m);
-				if((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE)
+				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
 					return A;
 			}
 		}
@@ -73,7 +73,7 @@ public class Prayer_SenseDisease extends Prayer
 		for(int m=0;m<mob.numEffects();m++)
 		{
 			Ability A=mob.fetchEffect(m);
-			if((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE)
+			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
 				return A;
 		}
 		return null;

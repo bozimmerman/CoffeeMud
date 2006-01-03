@@ -36,9 +36,9 @@ public class Spell_Thirstless extends Spell
 	public String ID() { return "Spell_Thirstless"; }
 	public String name(){return "Thirstless";}
 	public String displayText(){return "(Thirstless)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharState(MOB affected, CharState affectableMaxState)
 	{

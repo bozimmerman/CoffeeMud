@@ -36,9 +36,9 @@ public class Spell_Toadstool extends Spell
 	public String ID() { return "Spell_Toadstool"; }
 	public String name(){return "Toadstool";}
 	public String displayText(){return "(Toadstool)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	Race newRace=null;
 

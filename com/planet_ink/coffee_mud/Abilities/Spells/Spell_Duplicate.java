@@ -36,7 +36,7 @@ public class Spell_Duplicate extends Spell
 	public String ID() { return "Spell_Duplicate"; }
 	public String name(){return "Duplicate";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -66,7 +66,7 @@ public class Spell_Duplicate extends Spell
 
 		int expLoss=(target.envStats().level()*multiPlier);
 		mob.tell("You lose "+expLoss+" experience points.");
-		CMLib.combat().postExperience(mob,null,null,-expLoss,false);
+		CMLib.leveler().postExperience(mob,null,null,-expLoss,false);
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

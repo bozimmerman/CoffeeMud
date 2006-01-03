@@ -270,7 +270,7 @@ public class Healer extends Cleric
 		&&(msg.tool() instanceof Ability)
 		&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 		&&(myChar.isMine(msg.tool()))
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
 		{
 			if((msg.target()!=null)
 			   &&(msg.target() instanceof MOB))

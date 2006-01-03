@@ -39,7 +39,7 @@ public class Prayer_AcidHealing extends Prayer
 	public String displayText(){ return "(Acid Healing)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEALING;}
 
 	public void unInvoke()

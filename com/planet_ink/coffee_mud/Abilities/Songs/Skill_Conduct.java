@@ -39,7 +39,7 @@ public class Skill_Conduct extends BardSkill
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"CONDUCT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int maxRange(){return 2;}
 
 

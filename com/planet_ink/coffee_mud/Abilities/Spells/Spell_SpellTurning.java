@@ -36,9 +36,9 @@ public class Spell_SpellTurning extends Spell
 	public String ID() { return "Spell_SpellTurning"; }
 	public String name(){return "Spell Turning";}
 	public String displayText(){return "(Spell Turning)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	protected boolean oncePerRound=false;
 
 	public void unInvoke()
@@ -68,7 +68,7 @@ public class Spell_SpellTurning extends Spell
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 		&&(!mob.amDead())
 		&&(mob!=msg.source())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,mob.envStats().level()-(msg.source().envStats().level()*3),false)))

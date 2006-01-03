@@ -36,7 +36,7 @@ public class Song_Comprehension extends Song
 {
 	public String ID() { return "Song_Comprehension"; }
 	public String name(){ return "Comprehension";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 
 	protected String getMsgFromAffect(String msg)
 	{
@@ -67,7 +67,7 @@ public class Song_Comprehension extends Song
 		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+		&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
 		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
 			String str=this.getMsgFromAffect(msg.sourceMessage());

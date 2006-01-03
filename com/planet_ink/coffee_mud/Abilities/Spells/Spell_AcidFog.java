@@ -36,13 +36,13 @@ public class Spell_AcidFog extends Spell
 	public String ID() { return "Spell_AcidFog"; }
 	public String name(){ return "Acid Fog";}
 	public String displayText(){ return "(Acid Fog)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int minRange(){return 2;}
 	public int maxRange(){return 5;}
 	Room castingLocation=null;
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

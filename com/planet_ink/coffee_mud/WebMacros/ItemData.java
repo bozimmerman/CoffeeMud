@@ -840,7 +840,7 @@ public class ItemData extends StdWebMacro
 					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 					{
 					 	A=(Ability)e.nextElement();
-					 	if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 					 	&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					 	{
 						 	str.append("<OPTION VALUE=\""+A.ID()+"\"");

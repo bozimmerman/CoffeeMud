@@ -84,7 +84,7 @@ public class VFSLoader
                     row.addElement(new Long(DBConnections.getLongRes(R,"CMMODD")));
                     row.addElement(DBConnections.getRes(R,"CMWHOM"));
                     String data=DBConnections.getRes(R,"CMDATA");
-                    row.addElement(CMLib.encoder().B64decode(data));
+                    row.addElement(B64Encoder.B64decode(data));
                 }
             }
         }
@@ -104,13 +104,13 @@ public class VFSLoader
             buf="";
         else
         if(data instanceof String)
-            buf=CMLib.encoder().B64encodeBytes(((String)data).getBytes());
+            buf=B64Encoder.B64encodeBytes(((String)data).getBytes());
         else
         if(data instanceof StringBuffer)
-            buf=CMLib.encoder().B64encodeBytes(((StringBuffer)data).toString().getBytes());
+            buf=B64Encoder.B64encodeBytes(((StringBuffer)data).toString().getBytes());
         else
         if(data instanceof byte[])
-            buf=CMLib.encoder().B64encodeBytes((byte[])data);
+            buf=B64Encoder.B64encodeBytes((byte[])data);
         else
         {
             Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());

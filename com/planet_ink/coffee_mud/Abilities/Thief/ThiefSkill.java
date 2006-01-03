@@ -35,9 +35,9 @@ public class ThiefSkill extends StdAbility
 {
 	public String ID() { return "ThiefSkill"; }
 	public String name(){ return "a Thief Skill";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
-	public int classificationCode(){	return Ability.THIEF_SKILL;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
 

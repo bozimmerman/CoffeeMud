@@ -37,12 +37,12 @@ public class Druid_MyPlants extends StdAbility
 {
 	public String ID() { return "Druid_MyPlants"; }
 	public String name(){ return "My Plants";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"MYPLANTS","PLANTS"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public static boolean isMyPlant(Item I, MOB mob)
 	{

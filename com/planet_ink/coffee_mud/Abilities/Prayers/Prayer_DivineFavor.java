@@ -37,7 +37,7 @@ public class Prayer_DivineFavor extends Prayer
     public String ID() { return "Prayer_DivineFavor"; }
     public String name(){ return "Divine Favor";}
     public String displayText(){ return "(Divine Favor)";}
-    public int abstractQuality(){ return OK_SELF;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected int canAffectCode(){return Ability.CAN_MOBS;}
     protected int canTargetCode(){return 0;}
@@ -58,6 +58,9 @@ public class Prayer_DivineFavor extends Prayer
 
     public boolean okMessage(Environmental host, CMMsg msg)
     {
+        if((msg.source()==affected)
+        &&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+        	unInvoke();
         if((msg.source()==affected)
         &&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
         &&(msg.source().getWorshipCharID().length()>0))

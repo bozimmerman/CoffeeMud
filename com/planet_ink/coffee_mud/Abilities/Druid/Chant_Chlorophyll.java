@@ -37,7 +37,7 @@ public class Chant_Chlorophyll extends Chant
 	public String ID() { return "Chant_Chlorophyll"; }
 	public String name(){return "Chlorophyll";}
 	public String displayText(){return "(Chlorophyll)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 

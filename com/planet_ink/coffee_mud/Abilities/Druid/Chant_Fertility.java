@@ -37,7 +37,7 @@ public class Chant_Fertility extends Chant
 	public String ID() { return "Chant_Fertility"; }
 	public String name(){ return "Fertility";}
 	public String displayText(){return "(Fertility)";}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
 	public void unInvoke()
 	{

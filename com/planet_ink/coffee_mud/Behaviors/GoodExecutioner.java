@@ -37,7 +37,7 @@ public class GoodExecutioner  extends StdBehavior
 	public String ID(){return "GoodExecutioner";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
     private boolean doPlayers=false;
-    
+
     public void setParms(String newParms)
     {
         super.setParms(newParms);
@@ -46,12 +46,12 @@ public class GoodExecutioner  extends StdBehavior
         doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
     }
 
-    
+
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return false;
 		if(CMLib.flags().isBoundOrHeld(M)) return false;
-		if((!M.isMonster())&&(!doPlayers)) 
+		if((!M.isMonster())&&(!doPlayers))
             return false;
 		for(int b=0;b<M.numBehaviors();b++)
 		{
@@ -62,10 +62,6 @@ public class GoodExecutioner  extends StdBehavior
 		return ((CMLib.flags().isEvil(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 	}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.net.i3.Intermud
+ * com.planet_ink.coffee_mud.core.intermud.packets.Intermud
  * Copyright (c) 1996 George Reese
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
@@ -42,8 +42,8 @@ import java.util.Vector;
  * of packets to the mudlib.  The mudlib is responsible
  * for providing two specific objects to interface with
  * this object:
- * an implementation of imaginary.net.i3.ImudServices
- * an implementation of imaginary.persist.PersistentPeer
+ * an implementation of com.planet_ink.coffee_mud.core.intermud.packets.ImudServices
+ * an implementation of com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
  * To start up the Intermud connection, call the class
  * method setup().
  * The class itself creates an instance of itself and
@@ -53,8 +53,8 @@ import java.util.Vector;
  * proper instance of Intermud.
  * @author George Reese
  * @version 1.0
- * @see imaginary.net.i3.ImudServices
- * @see imaginary.persist.PersistentPeer
+ * @see com.planet_ink.coffee_mud.core.intermud.packets.ImudServices
+ * @see com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
  */
 public class Intermud implements Runnable, Persistent, Serializable 
 {
@@ -63,11 +63,11 @@ public class Intermud implements Runnable, Persistent, Serializable
 
     /**
      * Sends a packet to the router.  The packet must
-     * be a valid subclass of imaginary.net.i3.Packet.
+     * be a valid subclass of com.planet_ink.coffee_mud.core.intermud.packets.Packet.
      * This method will then route the packet to the
      * currently running Intermud instance.
-     * @param p an instance of a subclass of imaginary.i3.net.Packet
-     * @see imaginary.net.i3.Packet
+     * @param p an instance of a subclass of com.planet_ink.coffee_mud.core.intermud.packets.Packet
+     * @see com.planet_ink.coffee_mud.core.intermud.packets.Packet
      */
     static public void sendPacket(Packet p) {
 		if(!isConnected()) return;
@@ -78,10 +78,10 @@ public class Intermud implements Runnable, Persistent, Serializable
      * Creates the initial link to an I3 router.
      * It will handle subsequent reconnections as needed
      * for as long as the mud process is running.
-     * @param imud an instance of the mudlib implementation of imaginary.net.i3.ImudServices
-     * @param peer and instance of the mudlib implementation of imaginary.net.i3.IntermudPeer
-     * @see imaginary.net.i3.ImudServices
-     * @see imaginary.persist.PersistentPeer
+     * @param imud an instance of the mudlib implementation of com.planet_ink.coffee_mud.core.intermud.packets.ImudServices
+     * @param peer and instance of the mudlib implementation of com.planet_ink.coffee_mud.core.intermud.packets.IntermudPeer
+     * @see com.planet_ink.coffee_mud.core.intermud.packets.ImudServices
+     * @see com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
      */
     static public void setup(ImudServices imud, PersistentPeer peer) {
         if( thread != null ) {
@@ -108,7 +108,7 @@ public class Intermud implements Runnable, Persistent, Serializable
      * getLocalChannel().
      * @param c the remote channel name
      * @return the local channel name for the specified remote channel name
-     * @see imaginary.net.i3.ImudServices#getLocalChannel
+     * @see com.planet_ink.coffee_mud.core.intermud.packets.ImudServices#getLocalChannel
      */
     static public String getLocalChannel(String c ) {
 		if(!isConnected()) return "";
@@ -122,7 +122,7 @@ public class Intermud implements Runnable, Persistent, Serializable
      * getRemoteChannel().
      * @param c the local channel name
      * @return the remote channel name for the specified local channel name
-     * @see imaginary.net.i3.ImudServices#getRemoteChannel
+     * @see com.planet_ink.coffee_mud.core.intermud.packets.ImudServices#getRemoteChannel
      */
     static public String getRemoteChannel(String c) {
 		if(!isConnected()) return "";
@@ -613,7 +613,7 @@ public class Intermud implements Runnable, Persistent, Serializable
     /**
      * Shuts down the connection to the router without
      * reconnecting.
-     * @see java.lang.Runnable#stop
+     * @see java.lang.Runnable#run()
      */
     public void stop()
 	{
@@ -643,7 +643,7 @@ public class Intermud implements Runnable, Persistent, Serializable
      * added to the ImudServices implementation's getChannels()
      * method.
      * @param c the channel to add to the list of known channels
-     * @see imaginary.net.i3.ImudServices#getChannels
+     * @see com.planet_ink.coffee_mud.core.intermud.packets.ImudServices#getChannels
      */
     public void addChannel(Channel c) {
         channels.addChannel(c);

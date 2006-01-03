@@ -37,9 +37,9 @@ public class Spell_Sonar extends Spell
 	public String ID() { return "Spell_Sonar"; }
 	public String name(){return "Sonar";}
 	public String displayText(){return "(Sonar)";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()
 	{

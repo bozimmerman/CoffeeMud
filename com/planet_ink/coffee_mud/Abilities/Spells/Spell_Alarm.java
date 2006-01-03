@@ -41,7 +41,7 @@ public class Spell_Alarm extends Spell
 
 	boolean waitingForLook=false;
 
-	public int classificationCode(){	return Ability.SPELL | Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){	return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;}
 
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

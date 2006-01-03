@@ -37,7 +37,7 @@ public class Chant_Darkvision extends Chant
 	public String ID() { return "Chant_Darkvision"; }
 	public String name(){return "Darkvision";}
 	public String displayText(){return "(Darkvision)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

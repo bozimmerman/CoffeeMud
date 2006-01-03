@@ -41,8 +41,23 @@ public class Property implements Ability
 	protected boolean savable=true;
 	protected String miscText="";
 	protected Environmental affected=null;
+	
+	/**
+	 * Designates whether, when used as a property/effect, what sort of objects this 
+	 * ability can affect. Uses the Ability.CAN_* constants.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @return a mask showing the type of objects this ability can affect
+	 */
 	protected int canAffectCode(){return 0;}
+	/**
+	 * Designates whether, when invoked as a skill, what sort of objects this 
+	 * ability can effectively target. Uses the Ability.CAN_* constants.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @return a mask showing the type of objects this ability can target
+	 */
 	protected int canTargetCode(){return 0;}
+	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
+	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
 	public double castingTime(){return 0.0;}
 	public double combatCastingTime(){return 0.0;}
 	public int abilityCode(){return 0;}
@@ -96,11 +111,11 @@ public class Property implements Ability
 	public void setAffectedOne(Environmental being){affected=being;}
 
 	public boolean putInCommandlist(){return false;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
-	public int castingQuality(MOB invoker, Environmental target){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int castingQuality(MOB invoker, Environmental target){return Ability.QUALITY_INDIFFERENT;}
 
-	public int classificationCode(){ return Ability.PROPERTY;}
+	public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 	public boolean savable(){ return savable;	}
 	public void setSavable(boolean truefalse)	{ savable=truefalse; }
     protected boolean amDestroyed=false;
@@ -185,8 +200,8 @@ public class Property implements Ability
 
 	public void setMiscText(String newMiscText)
 	{ miscText=newMiscText;}
-	public String text()
-	{ return miscText;}
+	public String text(){ return miscText;}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public boolean appropriateToMyFactions(MOB mob){return true;}
 	public String accountForYourself(){return "";}
 	public String requirements(){return "";}

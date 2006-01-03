@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,7 +70,7 @@ public class GenRace extends StdRace
 	public boolean classless(){return (disableFlags&Race.GENFLAG_NOCLASS)==Race.GENFLAG_NOCLASS;}
 	public boolean leveless(){return (disableFlags&Race.GENFLAG_NOLEVELS)==Race.GENFLAG_NOLEVELS;}
 	public boolean expless(){return (disableFlags&Race.GENFLAG_NOEXP)==Race.GENFLAG_NOEXP;}
-	
+
 	//                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
@@ -91,14 +91,14 @@ public class GenRace extends StdRace
 	protected String[] racialEffectNames(){return racialEffectNames;}
 	protected int[] racialEffectLevels(){return racialEffectLevels;}
 	protected String[] racialEffectParms(){return racialEffectParms;}
-	
+
 	protected String[] racialAbilityNames=null;
 	protected int[] racialAbilityLevels=null;
 	protected int[] racialAbilityProfficiencies=null;
 	protected boolean[] racialAbilityQuals=null;
 	protected String[] culturalAbilityNames=null;
 	protected int[] culturalAbilityProfficiencies=null;
-	
+
 	protected String[] racialAbilityNames(){return racialAbilityNames;}
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
@@ -107,7 +107,7 @@ public class GenRace extends StdRace
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 	protected boolean destroyBodyAfterUse=false;
 	protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
-	
+
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenRace();}}
 	public CMObject copyOf()
 	{
@@ -116,10 +116,10 @@ public class GenRace extends StdRace
 		return E;
 	}
 	public Weapon myNaturalWeapon()
-	{ 
+	{
 		if(naturalWeapon!=null)
 			return naturalWeapon;
-		return funHumanoidWeapon();	
+		return funHumanoidWeapon();
 	}
 
 	protected String arriveStr="arrives";
@@ -139,8 +139,6 @@ public class GenRace extends StdRace
 		return CMLib.combat().standardMobCondition(mob);
 	}
 
-	/** some general statistics about such an item
-	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(adjEStats!=null)
@@ -223,7 +221,7 @@ public class GenRace extends StdRace
 		else
 			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
 		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
-		
+
 		if(myResources().size()==0)	str.append("<RESOURCES/>");
 		else
 		{
@@ -276,7 +274,7 @@ public class GenRace extends StdRace
 			}
 			str.append("</RABILITIES>");
 		}
-		
+
 		if((racialEffectNames==null)||(racialEffectNames.length==0))
 			str.append("<REFFECTS/>");
 		else
@@ -292,8 +290,8 @@ public class GenRace extends StdRace
 			}
 			str.append("</REFFECTS>");
 		}
-		
-		
+
+
 		if((culturalAbilityNames==null)||(culturalAbilityNames.length==0))
 			str.append("<CABILITIES/>");
 		else
@@ -339,14 +337,14 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Not able to parse: "+parms);
 			return;
 		}
-		
+
 		String rcat=CMLib.xml().getValFromPieces(raceData,"CAT");
 		if((rcat==null)||(rcat.length()==0))
 		{
 			rcat=name;
 			return;
 		}
-		
+
 		racialCategory=rcat;
 		forbiddenWornBits=CMLib.xml().getLongFromPieces(raceData,"WEAR");
 		weightVariance=CMLib.xml().getIntFromPieces(raceData,"VWEIGHT");
@@ -357,10 +355,10 @@ public class GenRace extends StdRace
 		String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
 		if(playerval.length()>0)
 		{
-			if(playerval.startsWith("T")) 
+			if(playerval.startsWith("T"))
 				availability=Area.THEME_FANTASY;
 			else
-			if(playerval.startsWith("F")) 
+			if(playerval.startsWith("F"))
 				availability=0;
 			else
 			switch(CMath.s_int(playerval))
@@ -421,7 +419,7 @@ public class GenRace extends StdRace
 				resourceChoices.addElement(newOne);
 			}
 		}
-		
+
 		// now OUTFIT!
 		Vector oV=CMLib.xml().getRealContentsFromPieces(raceData,"OUTFIT");
 		outfitChoices=null;
@@ -440,7 +438,7 @@ public class GenRace extends StdRace
 				outfitChoices.addElement(newOne);
 			}
 		}
-		
+
 		naturalWeapon=null;
 		Vector wblk=CMLib.xml().getRealContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
@@ -475,7 +473,7 @@ public class GenRace extends StdRace
 				racialAbilityLevels[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RLEVEL");
 			}
 		}
-		
+
 		xV=CMLib.xml().getRealContentsFromPieces(raceData,"REFFECTS");
 		racialEffectNames=null;
 		racialEffectParms=null;
@@ -495,8 +493,8 @@ public class GenRace extends StdRace
 				racialEffectLevels[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RFLEVEL");
 			}
 		}
-		
-		
+
+
 		xV=CMLib.xml().getRealContentsFromPieces(raceData,"CABILITIES");
 		culturalAbilityNames=null;
 		culturalAbilityProfficiencies=null;
@@ -551,7 +549,7 @@ public class GenRace extends StdRace
 		case 10: return leaveStr();
 		case 11: return arriveStr();
 		case 12: return ((healthBuddy==null)?"":healthBuddy.ID());
-		case 13: 
+		case 13:
 		{
 			StringBuffer bbody=new StringBuffer("");
 			for(int i=0;i<bodyMask().length;i++)
@@ -584,12 +582,12 @@ public class GenRace extends StdRace
 		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
 		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
 		case 39: return CMParms.toStringList(getAgingChart());
-		case 40: return ""+disableFlags; 
+		case 40: return ""+disableFlags;
 		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		}
 		return "";
 	}
-	
+
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 	    super.startRacing(mob,verifyOnly);
@@ -603,7 +601,7 @@ public class GenRace extends StdRace
 			mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
 	    }
 	}
-	
+
 	public void setStat(String code, String val)
 	{
 		int num=0;
@@ -627,7 +625,7 @@ public class GenRace extends StdRace
 		case 10: leaveStr=val;break;
 		case 11: arriveStr=val;break;
 		case 12: healthBuddy=CMClass.getRace(val); break;
-		case 13: 
+		case 13:
 		{
 			Vector V=CMParms.parseSemicolons(val,false);
 			for(int v=0;v<V.size();v++)
@@ -655,20 +653,20 @@ public class GenRace extends StdRace
 					 }
 					 break;
 				 }
-		case 21: naturalWeapon=null; 
+		case 21: naturalWeapon=null;
 				 if(val.length()>0) naturalWeapon=CMClass.getWeapon(val);
 				 break;
 		case 22: if(naturalWeapon!=null){
-					 naturalWeapon.setMiscText(val); 
+					 naturalWeapon.setMiscText(val);
 					 naturalWeapon.recoverEnvStats();
 				 }
 				 break;
 		case 23: racialAbilityMap=null;
 				 if(CMath.s_int(val)==0){
-					 racialAbilityNames=null; 
-					 racialAbilityProfficiencies=null; 
-					 racialAbilityQuals=null; 
-					 racialAbilityLevels=null; 
+					 racialAbilityNames=null;
+					 racialAbilityProfficiencies=null;
+					 racialAbilityQuals=null;
+					 racialAbilityLevels=null;
 				 }
 				 else{
 					 racialAbilityNames=new String[CMath.s_int(val)];
@@ -694,7 +692,7 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 28: if(CMath.s_int(val)==0){
-					 culturalAbilityNames=null; 
+					 culturalAbilityNames=null;
 					 culturalAbilityProfficiencies=null;
 				 }
 				 else{
@@ -729,9 +727,9 @@ public class GenRace extends StdRace
 		case 34: destroyBodyAfterUse=CMath.s_bool(val); break;
 		case 35: racialEffectMap=null;
 				 if(CMath.s_int(val)==0){
-					 racialEffectNames=null; 
-					 racialEffectParms=null; 
-					 racialEffectLevels=null; 
+					 racialEffectNames=null;
+					 racialEffectParms=null;
+					 racialEffectLevels=null;
 				 }
 				 else{
 					 racialEffectNames=new String[CMath.s_int(val)];

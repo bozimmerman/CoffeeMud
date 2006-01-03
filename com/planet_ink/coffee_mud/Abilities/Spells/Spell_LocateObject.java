@@ -36,7 +36,7 @@ public class Spell_LocateObject extends Spell
 	public String ID() { return "Spell_LocateObject"; }
 	public String name(){return "Locate Object";}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

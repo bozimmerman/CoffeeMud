@@ -39,7 +39,7 @@ public class Prayer_Absorption extends Prayer
 	public String displayText(){ return "(Absorption)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected Ability absorbed=null;
 

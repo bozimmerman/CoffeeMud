@@ -36,7 +36,7 @@ public class Spell_Claireaudience extends Spell
 	public String name(){return "Claireaudience";}
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 	public static final DVector scries=new DVector(2);
 
 	public void unInvoke()

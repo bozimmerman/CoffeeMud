@@ -36,9 +36,9 @@ public class Spell_CharmWard extends Spell
 	public String ID() { return "Spell_CharmWard"; }
 	public String name(){return "Charm Ward";}
 	public String displayText(){return "(Charm Ward)";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
 	{
@@ -73,10 +73,10 @@ public class Spell_CharmWard extends Spell
 			&&(!mob.amDead()))
 			{
                 Ability A=(Ability)msg.tool();
-                if(((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-                ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-                ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-                ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
+                if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
     				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
 				return false;
 			}

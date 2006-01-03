@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -55,7 +56,7 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
-	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
+	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, MOB whom, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
@@ -67,6 +68,7 @@ public class GrinderRooms
 			return "Please select a class type for this room.";
 
 		CMLib.utensils().resetRoom(R);
+		Room copyRoom=(Room)R.copyOf();
 
 		if(!className.equalsIgnoreCase(CMClass.className(R)))
 		{
@@ -275,6 +277,8 @@ public class GrinderRooms
 		CMLib.database().DBUpdateItems(R);
 		R.startItemRejuv();
         if(oldR!=R) oldR.destroy();
+		if(!copyRoom.sameAs(R))
+			Log.sysOut("Grinder",whom.Name()+" modified room "+R.roomID()+".");
 		return "";
 	}
 

@@ -36,7 +36,7 @@ public class Prayer_CureLight extends Prayer
 {
 	public String ID() { return "Prayer_CureLight"; }
 	public String name(){ return "Cure Light Wounds";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

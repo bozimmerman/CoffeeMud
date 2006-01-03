@@ -36,7 +36,7 @@ public class Prayer_DemonicConsumption extends Prayer
 {
 	public String ID() { return "Prayer_DemonicConsumption"; }
 	public String name(){return "Demonic Consumption";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

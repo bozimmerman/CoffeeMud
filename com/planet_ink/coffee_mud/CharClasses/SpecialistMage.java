@@ -53,7 +53,7 @@ public class SpecialistMage extends Mage
 				int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
 				if((!CMLib.ableMapper().getDefaultGain(baseClass(),true,A.ID()))
 				&&(level>0)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
 					boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
@@ -153,7 +153,7 @@ public class SpecialistMage extends Mage
 
 		int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
 		if((skill.invoker()==myChar)
-		||(skill.abstractQuality()!=Ability.MALICIOUS))
+		||(skill.abstractQuality()!=Ability.QUALITY_MALICIOUS))
 		{
 			if(domain==opposed())
 				return duration/2;

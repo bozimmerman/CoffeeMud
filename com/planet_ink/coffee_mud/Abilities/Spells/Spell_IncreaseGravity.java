@@ -36,7 +36,7 @@ public class Spell_IncreaseGravity extends Spell
 	public String ID() { return "Spell_IncreaseGravity"; }
 	public String name(){return "Increase Gravity";}
 	public String displayText(){return "(Gravity is Increased)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected Room theGravityRoom=null;
@@ -48,7 +48,7 @@ public class Spell_IncreaseGravity extends Spell
 			theGravityRoom=(Room)affected;
 		return theGravityRoom;
 	}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

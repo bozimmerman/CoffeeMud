@@ -36,7 +36,7 @@ public class Chant_PlantPass extends Chant
 {
 	public String ID() { return "Chant_PlantPass"; }
 	public String name(){ return "Plant Pass";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}

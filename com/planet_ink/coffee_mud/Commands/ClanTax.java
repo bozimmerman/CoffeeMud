@@ -68,12 +68,16 @@ public class ClanTax extends BaseClanner
 					{
 						String t=null;
 						if((commands.size()<=1)||(!CMath.isNumber(CMParms.combine(commands,1))))
-							t=mob.session().prompt("Enter your "+C.typeName()+"'s new tax rate (0-100)\n\r: ","");
+							t=mob.session().prompt("Enter your "+C.typeName()+"'s new tax rate (0-25)\n\r: ","");
 						else
 							t=CMParms.combine(commands,1);
 						if(t.length()==0) return false;
 						int intt=CMath.s_int(t);
-						if((intt<0)||(intt>100)) return false;
+						if((intt<0)||(intt>25)) 
+						{
+							mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
+							return false;
+						}
 						commands.clear();
 						commands.addElement("clantax");
 						commands.addElement(t);

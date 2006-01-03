@@ -38,7 +38,7 @@ public class Prayer_BloodHearth extends Prayer
 	public String ID() { return "Prayer_BloodHearth"; }
 	public String name(){return "Blood Hearth";}
 	public String displayText(){return "(Blood Hearth)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

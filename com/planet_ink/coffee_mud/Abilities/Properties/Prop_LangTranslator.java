@@ -35,7 +35,7 @@ public class Prop_LangTranslator extends Property
 {
 	public String ID() { return "Prop_LangTranslator"; }
 	public String name(){return "Language Translator";}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_ROOMS;}
 	protected MOB mob=null;
     protected DVector langs=new DVector(2);
@@ -116,7 +116,7 @@ public class Prop_LangTranslator extends Property
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
-			&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE))
+			&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE))
 			{
 				String str=getMsgFromAffect(msg.sourceMessage());
 				if(str!=null)

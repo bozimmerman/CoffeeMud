@@ -37,7 +37,7 @@ public class Chant_UnicornsHealth extends Chant
 	public String ID() { return "Chant_UnicornsHealth"; }
 	public String name(){return "Unicorns Health";}
 	public String displayText(){return "(Unicorns Health)";}
-	public int abstractQuality(){ return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

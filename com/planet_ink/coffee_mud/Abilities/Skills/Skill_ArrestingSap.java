@@ -38,7 +38,7 @@ public class Skill_ArrestingSap extends StdSkill
 	public String displayText(){ return "(Knocked out)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"ASAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int enhancement=0;

@@ -37,9 +37,9 @@ public class Spell_Ugliness extends Spell
 	public String ID() { return "Spell_Ugliness";}
 	public String name(){return "Ugliness";}
 	public String displayText(){return "(Ugliness spell)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -37,7 +37,7 @@ public class Chant_HoldAnimal extends Chant
 	public String ID() { return "Chant_HoldAnimal"; }
 	public String name(){ return "Hold Animal";}
 	public String displayText(){return "(Hold Animal)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public long flags(){return Ability.FLAG_PARALYZING;}

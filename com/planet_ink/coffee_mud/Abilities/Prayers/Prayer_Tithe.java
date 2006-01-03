@@ -36,7 +36,7 @@ public class Prayer_Tithe extends Prayer
 	public String ID() { return "Prayer_Tithe"; }
 	public String name(){ return "Tithe";}
 	public String displayText(){ return "(Tithe)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -36,9 +36,9 @@ public class Spell_GreaterInvisibility extends Spell
 	public String ID() { return "Spell_GreaterInvisibility"; }
 	public String name(){return "Greater Invisibility";}
 	public String displayText(){return "(Greater Invisibility)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

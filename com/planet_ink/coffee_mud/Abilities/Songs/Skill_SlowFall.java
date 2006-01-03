@@ -36,11 +36,11 @@ public class Skill_SlowFall extends BardSkill
 	public String ID() { return "Skill_SlowFall"; }
 	public String name(){return "Slow Fall";}
 	public String displayText(){return activated?"(Slow Fall)":"";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public boolean activated=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

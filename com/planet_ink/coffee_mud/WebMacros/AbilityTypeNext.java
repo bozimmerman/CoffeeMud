@@ -45,9 +45,9 @@ public class AbilityTypeNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int i=0;i<Ability.TYPE_DESCS.length;i++)
+		for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 		{
-			String S=Ability.TYPE_DESCS[i];
+			String S=Ability.ACODE_DESCS[i];
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
 			{
 				httpReq.addRequestParameters("ABILITYTYPE",S);

@@ -43,7 +43,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * Last modified: 28 September 1996
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
- * @see imaginary.net.Interactive#redirectInput
+ * @see com.planet_ink.coffee_mud.core.intermud.net.Interactive#redirectInput
  */
 public interface Input {
     /**

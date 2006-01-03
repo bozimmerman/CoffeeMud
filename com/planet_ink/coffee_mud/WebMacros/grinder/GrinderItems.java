@@ -35,6 +35,7 @@ public class GrinderItems
 {
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  Hashtable parms,
+								  MOB whom,
 								  Room R)
 	{
 		String itemCode=httpReq.getRequestParameter("ITEM");
@@ -91,6 +92,7 @@ public class GrinderItems
 				}
 			return str.toString();
 		}
+		Item copyItem=(Item)I.copyOf();
 		Item oldI=I;
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 			I=CMClass.getItem(newClassID);
@@ -536,6 +538,8 @@ public class GrinderItems
 			httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
 		}
+		if(!copyItem.sameAs(I))
+			Log.sysOut("Grinder",whom.Name()+" modified item "+copyItem.Name()+((M!=null)?" on mob"+M.Name():"")+" in room "+R.roomID()+".");
 		return "";
 	}
 }

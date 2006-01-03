@@ -37,10 +37,10 @@ public class Skill_IdentifyPoison extends StdSkill
 	public String name(){ return "Identify Poison";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"IDPOISON","IDENTIFYPOISON"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -49,7 +49,7 @@ public class Skill_IdentifyPoison extends StdSkill
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		return offenders;

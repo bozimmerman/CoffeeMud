@@ -36,7 +36,7 @@ public class Chant_NeutralizePoison extends Chant
 {
 	public String ID() { return "Chant_NeutralizePoison"; }
 	public String name(){ return "Neutralize Poison";}
-	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 
@@ -47,7 +47,7 @@ public class Chant_NeutralizePoison extends Chant
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		return offenders;

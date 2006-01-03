@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.server.ServerThread
+ * com.planet_ink.coffee_mud.core.intermud.server.ServerThread
  * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ import java.util.Hashtable;
  * executed in the thread's run() method.
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
- * @see imaginary.server.Server
+ * @see com.planet_ink.coffee_mud.core.intermud.server.Server
  */
 public class ServerThread extends Thread {
     private java.util.Date      boot_time=null;

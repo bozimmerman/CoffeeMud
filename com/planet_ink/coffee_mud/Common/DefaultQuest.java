@@ -1361,7 +1361,7 @@ public class DefaultQuest implements Quest, Tickable
                     Behavior B=E.fetchBehavior(((Behavior)O).ID());
                     if(B==null) continue;
                     if((E instanceof MOB)&&(B instanceof ScriptingEngine))
-                        ((ScriptingEngine)B).modifyBehavior(E,(MOB)E,name());
+                        ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
                     if((V.size()>2)&&(V.elementAt(2) instanceof String))
                         B.setParms((String)V.elementAt(2));
                     else

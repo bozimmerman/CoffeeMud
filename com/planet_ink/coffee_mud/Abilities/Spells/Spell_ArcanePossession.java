@@ -37,7 +37,7 @@ public class Spell_ArcanePossession extends Spell
 	public String name(){return "Arcane Possession";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	protected MOB owner=null;
 
 	public boolean okMessage(Environmental host, CMMsg msg)

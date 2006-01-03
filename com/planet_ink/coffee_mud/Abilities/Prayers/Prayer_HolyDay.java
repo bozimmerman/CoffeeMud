@@ -40,7 +40,7 @@ public class Prayer_HolyDay extends Prayer
 	public String displayText(){ return "(Holy Day)";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected String godName="the gods";
@@ -68,7 +68,7 @@ public class Prayer_HolyDay extends Prayer
 	{
 		if((msg.tool() instanceof Ability)
 		&&(!((Ability)msg.tool()).isAutoInvoked())
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 		&&(msg.source()!=invoker()))
 		{
 			msg.source().tell("You are not allowed to work on the holy day of "+godName+".");

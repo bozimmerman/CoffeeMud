@@ -39,7 +39,7 @@ public class Poison_Liquor extends Poison_Alcohol
 	public String name(){ return "Liquor";}
 	private static final String[] triggerStrings = {"LIQUORUP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.POISON;}
+	public int classificationCode(){return Ability.ACODE_POISON;}
 
 	protected int alchoholContribution(){return 2;}
 	protected int level(){return 2;}

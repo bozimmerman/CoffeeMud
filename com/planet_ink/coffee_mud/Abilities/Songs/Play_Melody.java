@@ -36,7 +36,7 @@ public class Play_Melody extends Play
 {
 	public String ID() { return "Play_Melody"; }
 	public String name(){ return "Melody";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected String songOf(){return "a "+name();}
 
 	public void affectCharStats(MOB mob, CharStats stats)

@@ -35,7 +35,7 @@ public class Prayer_NeutralizeLand extends Prayer
 {
 	public String ID() { return "Prayer_NeutralizeLand"; }
 	public String name(){ return "Neutralize Land";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -65,10 +65,10 @@ public class Prayer_NeutralizeLand extends Prayer
 					if((A!=null)
                     &&((A.canBeUninvoked())||(A.invoker()==mob)||A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(A.text().equals(mob.getClanID()))))
                     &&(!A.isAutoInvoked())
-					&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-					   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-					   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-					   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)))
+					&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 					{
 						foundSomethingAtLeast=true;
 						if((A.invoker()!=null)&&((A.invoker().envStats().level()<=mob.envStats().level())))

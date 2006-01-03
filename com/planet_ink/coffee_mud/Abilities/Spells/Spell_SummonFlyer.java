@@ -36,13 +36,13 @@ public class Spell_SummonFlyer extends Spell
 	public String ID() { return "Spell_SummonFlyer"; }
 	public String name(){return "Summon Flyer";}
 	public String displayText(){return "(Summon Flyer)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 	protected int overrideMana(){return 50;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{

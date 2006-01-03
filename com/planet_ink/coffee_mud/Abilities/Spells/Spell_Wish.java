@@ -36,8 +36,8 @@ public class Spell_Wish extends Spell
 	public String ID() { return "Spell_Wish"; }
 	public String name(){return "Wish";}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -76,7 +76,7 @@ public class Spell_Wish extends Spell
 	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
 	{
 		if(mob==null) return;
-		CMLib.combat().postExperience(mob,null,null,-expLoss,false);
+		CMLib.leveler().postExperience(mob,null,null,-expLoss,false);
 		if(conLoss)
 		{
 			mob.tell("Your wish drains you of "+(expLoss)+" experience points and a point of constitution.");
@@ -126,7 +126,7 @@ public class Spell_Wish extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
+			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 			beneficialWordsFizzle(mob,null,"<S-NAME> wish(es) for '"+myWish+"', but the spell fizzles.");
 			return false;
 		}
@@ -150,7 +150,7 @@ public class Spell_Wish extends Spell
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
-				CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
+				CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 				beneficialWordsFizzle(mob,null,"<S-NAME> make(s) a wish comes true! Nothing happens!");
 				return false;
 			}
@@ -607,15 +607,15 @@ public class Spell_Wish extends Spell
 				   amount=CMath.s_int(wsh.substring(x).trim());
 				if(target!=mob)
 				{
-					CMLib.combat().postExperience(mob,null,null,-(amount*4),false);
+					CMLib.leveler().postExperience(mob,null,null,-(amount*4),false);
 					mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
 				}
 				else
 				{
-					CMLib.combat().postExperience(mob,null,null,-amount,false);
+					CMLib.leveler().postExperience(mob,null,null,-amount,false);
 					mob.tell("Your wish has drained you of "+amount+" experience points.");
 				}
-				CMLib.combat().postExperience((MOB)target,null,null,amount,false);
+				CMLib.leveler().postExperience((MOB)target,null,null,amount,false);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" gains experience!");
 				return true;
 			}
@@ -720,7 +720,7 @@ public class Spell_Wish extends Spell
 						{
 							for(int i2=0;i2<levelsGained;i2++)
 							{
-								MT.baseCharStats().getCurrentClass().level(MT);
+								CMLib.leveler().level(MT);
 								MT.recoverEnvStats();
 							}
 						}
@@ -896,14 +896,14 @@ public class Spell_Wish extends Spell
 					{
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{
-							CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
+							CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points, but that is beyond your wishing ability.");
 							return false;
 						}
 						if(tm.fetchAbility(A.ID())!=null)
 						{
 							A=tm.fetchAbility(A.ID());
-							CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
+							CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 						}
 						else
@@ -1070,7 +1070,7 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
-			CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
+			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+CMParms.combine(commands,0)+"'");
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");
 			return false;

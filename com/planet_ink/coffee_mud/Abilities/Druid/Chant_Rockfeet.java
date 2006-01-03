@@ -39,7 +39,7 @@ public class Chant_Rockfeet extends Chant
 	public String displayText(){return "(Rockfeet)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 0;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

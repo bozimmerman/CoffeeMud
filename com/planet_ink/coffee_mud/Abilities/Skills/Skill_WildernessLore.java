@@ -36,10 +36,10 @@ public class Skill_WildernessLore extends StdSkill
 	public String name(){ return "Wilderness Lore";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"WILDERNESSLORE","WLORE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MANA;}

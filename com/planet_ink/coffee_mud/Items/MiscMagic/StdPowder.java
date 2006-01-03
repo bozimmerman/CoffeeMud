@@ -93,7 +93,7 @@ public class StdPowder extends StdItem implements MagicDust {
         Vector spells=getSpells();
         for(Enumeration e=spells.elements();e.hasMoreElements();) {
             Ability checking=(Ability)e.nextElement();
-            if(checking.abstractQuality()==Ability.MALICIOUS)
+            if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
                 return true;
         }
         return false;

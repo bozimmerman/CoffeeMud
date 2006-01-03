@@ -36,7 +36,7 @@ public class Spell_Reinforce extends Spell
 	public String ID() { return "Spell_Reinforce"; }
 	public String name(){return "Reinforce";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

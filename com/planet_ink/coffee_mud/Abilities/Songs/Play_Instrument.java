@@ -40,7 +40,7 @@ public class Play_Instrument extends Play
 	protected void inpersistantAffect(MOB mob)
 	{
 		if((getSpell()!=null)
-		&&((mob!=invoker())||(getSpell().abstractQuality()!=MALICIOUS)))
+		&&((mob!=invoker())||(getSpell().abstractQuality()!=Ability.QUALITY_MALICIOUS)))
 		{
 			Vector chcommands=new Vector();
 			chcommands.addElement(mob.name());
@@ -62,7 +62,7 @@ public class Play_Instrument extends Play
 	public int abstractQuality()
 	{
 		if(getSpell()!=null) return getSpell().abstractQuality();
-		return BENEFICIAL_OTHERS;
+		return  Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 	protected boolean persistantSong(){return false;}
 	public String displayText(){ return "";}

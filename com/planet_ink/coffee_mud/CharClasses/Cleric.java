@@ -209,7 +209,7 @@ public class Cleric extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
@@ -222,7 +222,7 @@ public class Cleric extends StdCharClass
 		{
 			Ability A=mob.fetchAbility(a);
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 				return;
@@ -232,7 +232,7 @@ public class Cleric extends StdCharClass
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(A.appropriateToMyFactions(mob))
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
@@ -284,7 +284,7 @@ public class Cleric extends StdCharClass
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{

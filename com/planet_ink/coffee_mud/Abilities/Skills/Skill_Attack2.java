@@ -37,8 +37,8 @@ public class Skill_Attack2 extends StdSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 

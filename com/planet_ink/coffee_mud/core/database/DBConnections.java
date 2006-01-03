@@ -44,7 +44,7 @@ public class DBConnections
 	/** the odbc password */
 	protected String DBPass="";
 	/** number of connections to make*/
-	protected int numConnections=0;
+	protected int maxConnections=0;
 	/** the disconnected flag */
 	protected boolean disconnected=false;
 	/** the im in trouble flag*/
@@ -53,8 +53,6 @@ public class DBConnections
 	protected int consecutiveFailures=0;
 	/** the number of times the system has failed a request */
 	protected int consecutiveErrors=0;
-	/** Object to synchronize around on error handling*/
-	private Boolean fileSemaphore=new Boolean(true);
 	/** Object to synchronize around on error handling*/
 	protected boolean errorQueingEnabled=false;
 	/** the database connnections */
@@ -67,11 +65,12 @@ public class DBConnections
 	 * and after any killConnections() calls.
 	 * 
 	 * <br><br><b>Usage:</b> Initialize("ODBCSERVICE","USER","PASSWORD",10);
+	 * @param NEWDBClass	the odbc service
 	 * @param NEWDBService	the odbc service
 	 * @param NEWDBUser	the odbc user login
 	 * @param NEWDBPass	the odbc user password
 	 * @param NEWnumConnections	Connections to maintain
-	 * @return NA
+	 * @param DoErrorQueueing	whether to save errors to a file
 	 */
 	public DBConnections(String NEWDBClass,
 						 String NEWDBService, 
@@ -84,10 +83,9 @@ public class DBConnections
 		DBService=NEWDBService;
 		DBUser=NEWDBUser;
 		DBPass=NEWDBPass;
-		numConnections=NEWnumConnections;
+		maxConnections=NEWnumConnections;
 		Connections = new Vector();
 		errorQueingEnabled=DoErrorQueueing;
-		fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
 	}
 
 	/** 
@@ -112,7 +110,7 @@ public class DBConnections
                 if(sqle instanceof java.io.EOFException)
                 {
                     Log.errOut("DBConnections",""+sqle);
-                    fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
+                    DBDone(DBToUse);
                     return -1;
                 }
                 if(sqle instanceof SQLException)
@@ -137,84 +135,9 @@ public class DBConnections
 	}
 	
 	/** 
-	 * Should close all Connections, repopulate Connections
-	 * with fresh new database connections.
-	 * 
-	 * <br><br><b>Usage:</b> fixConnections("SVC","USR","PASS",10);
-	 * @param DBService	the odbc service
-	 * @param DBUser	the odbc user login
-	 * @param DBPass	the odbc user password
-	 * @param numConnections	Connections to maintain
-	 * @return NA
-	 */
-	private void fixConnections(String DBClass,
-								String DBService, 
-								String DBUser, 
-								String DBPass, 
-								int numConnections)
-	{
-		lockedUp=true;
-		try
-		{
-			DBConnection DBConnect = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
-			killConnections();
-			Connections=new Vector();
-			synchronized(Connections)
-			{
-				for(int c=0;c<numConnections;c++)
-				{
-					if(DBConnect.ready())
-						Connections.addElement(DBConnect);
-					if(c<numConnections-1)
-						DBConnect = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
-				}
-			}
-			lockedUp=false;
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DBConnections",sqle);
-			lockedUp=true;
-		}
-	}
-	
-	private void repairConnections(String DBClass,
-								   String DBService,
-								   String DBUser,
-								   String DBPass)
-	{
-		Log.errOut("DBConnections","Repairing connections...");	
-		try
-		{
-			synchronized(Connections)
-			{
-				lockedUp=true;
-				for(int c=0;c<Connections.size();c++)
-				{
-					DBConnection DBConnect=(DBConnection)Connections.elementAt(c);
-					if((!DBConnect.ready())||(DBConnect.isProbablyDead())||(DBConnect.isProbablyLockedUp()))
-					{
-						DBConnection DBConnect2 = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
-						Connections.setElementAt(DBConnect2,c);
-						Log.sysOut("DBConnections","Repaired one connection.");
-					}
-				}
-				lockedUp=false;
-			}
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DBConnections",""+sqle);
-			lockedUp=true;
-		}
-		Log.errOut("DBConnections","Done repairing connections.");		
-	}
-
-	/** 
 	 * Return the number of connections made. 
 	 * 
 	 * <br><br><b>Usage: n=numConnectionsMade();</b> 
-	 * @param NA
 	 * @return numConnectionsMade	The number of connections
 	 */
 	public int numConnectionsMade()
@@ -237,7 +160,6 @@ public class DBConnections
 	 * The user must ALWAYS call DBDone when done with the object.
 	 * 
 	 * <br><br><b>Usage: DB=DBFetch();</b> 
-	 * @param NA
 	 * @return DBConnection	The DBConnection to use
 	 */
 	public DBConnection DBFetch()	
@@ -252,6 +174,7 @@ public class DBConnections
 	 * 
 	 * <br><br><b>Usage: DB=DBFetchPrepared();</b> 
 	 * @param SQL	The prepared statement SQL
+	 * @param prepared	whether the statement should be a prepared one
 	 * @return DBConnection	The DBConnection to use
 	 */
 	public DBConnection DBFetchAny(String SQL, boolean prepared)
@@ -267,46 +190,30 @@ public class DBConnections
 				System.out.println(x/y);
 				// this should create a division by zero error.
 			}
-			boolean connectionFailure=false;
 			ThisDB=null;
-			for(int i=0;i<Connections.size();i++)
-			{
-				try
-				{
-					DBConnection ADB=(DBConnection)Connections.elementAt(i);
-					if(((!prepared)&&ADB.use(SQL))
-					||(prepared&&ADB.usePrepared(SQL)))
-					{
-						Connections.remove(ADB);
-						Connections.addElement(ADB);
-						ThisDB=ADB;
-						break;
-					}
-					else
-					if((!ADB.ready())||(ADB.isProbablyDead())||(ADB.isProbablyLockedUp()))
-						connectionFailure=true;
-				}
-				catch(java.lang.IndexOutOfBoundsException x){}
+			if(Connections.size()<maxConnections)
+				try{ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);}catch(Exception e){Log.errOut("DBConnections",e.getMessage());}
+			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
+			{ 
+				Log.errOut("DBConnections","Failed to connect to database.");
+				try{ThisDB.close();}catch(Exception e){}	
+				ThisDB=null;  
 			}
-			
 			if(ThisDB==null)
 			{
 				if((consecutiveFailures++)>=50)
 				{
 					if(consecutiveFailures>50)
 					{
-						lockedUp=true;
+						if(Connections.size()==0) 
+							disconnected=true;
+						else
+							lockedUp=true;
 						consecutiveFailures=0;
 					}
-					else
-					{
-						fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
-					}
 				}
-				else
+				if(Connections.size()>=maxConnections)
 				{
-					if(connectionFailure)
-						repairConnections(DBClass,DBService,DBUser,DBPass);
 					int inuse=0;
 					for(int i=0;i<Connections.size();i++)
 						if(((DBConnection)Connections.elementAt(i)).inUse())
@@ -328,11 +235,16 @@ public class DBConnections
 					}
 				}
 			}
+			else
+			{
+				ThisDB.use(SQL);
+			}
 		}
 		
 		if(ThisDB!=null)
 		{
 			consecutiveFailures=0;
+			disconnected=false;
 			lockedUp=false;
 		}
 		return ThisDB;
@@ -348,12 +260,17 @@ public class DBConnections
 	 * 
 	 * <br><br><b>Usage:</b> 
 	 * @param D	The Database connection to return to the pool
-	 * @return NA
 	 */
 	public void DBDone(DBConnection D)
 	{
+		if(D==null) return;
 		D.doneUsing("");
+		synchronized(Connections)
+		{ 
+			Connections.remove(D);
+		}
 	}
+	
 
 	/** 
 	 * When reading a database table, this routine will read in
@@ -470,8 +387,6 @@ public class DBConnections
 	 * shutting down this class.
 	 * 
 	 * <br><br><b>Usage:</b> killConnections();
-	 * @param NA
-	 * @return NA
 	 */
 	public void killConnections()
 	{
@@ -481,14 +396,7 @@ public class DBConnections
 			{
 				DBConnection DB=(DBConnection)Connections.elementAt(0);
 				Connections.removeElement(DB);
-				try
-				{
-					DB.close();
-				}
-				catch(SQLException sqle)
-				{
-					Log.errOut("DBConnections",""+sqle);
-				}
+				DB.close();
 			}
 		}
 	}
@@ -496,7 +404,6 @@ public class DBConnections
 	/** 
 	 * Return the happiness level of the connections
 	 * <br><br><b>Usage:</b> amIOk()
-	 * @param NA
 	 * @return boolean	true if ok, false if not ok
 	 */
 	public boolean amIOk()
@@ -510,7 +417,7 @@ public class DBConnections
 	 * <br><br><b>Usage:</b> enQueueError("UPDATE SQL","error string");
 	 * @param SQLString	UPDATE style SQL statement
 	 * @param SQLError	The error message being reported
-	 * @return NA
+	 * @param tries	The number of tries to redo it so far
 	 */
 	public void enQueueError(String SQLString, String SQLError, String tries)
 	{
@@ -520,12 +427,12 @@ public class DBConnections
 			return;
 		}
 		
-		synchronized(fileSemaphore)
+		synchronized("SQLErrors.que")
 		{
 			PrintWriter out=null;
 			try
 			{
-				out=new PrintWriter(new FileOutputStream("DBServer.que",true),true);
+				out=new PrintWriter(new FileOutputStream("SQLErrors.que",true),true);
 			}
 			catch(FileNotFoundException fnfe)
 			{
@@ -547,8 +454,6 @@ public class DBConnections
 	 * Queue up a failed write/update for later processing.
 	 * 
 	 * <br><br><b>Usage:</b> RetryQueuedErrors();
-	 * @param NA
-	 * @return NA
 	 */
 	public void retryQueuedErrors()
 	{
@@ -566,9 +471,9 @@ public class DBConnections
 			return;
 		}
 		
-		synchronized(fileSemaphore)
+		synchronized("SQLErrors.que")
 		{
-			File myFile=new File("DBServer.que");
+			File myFile=new File("SQLErrors.que");
 			if(myFile!=null)
 			{
 				if(myFile.canRead())
@@ -615,7 +520,7 @@ public class DBConnections
 		// did we actually READ anything?
 		if(Queue.size()==0)
 		{
-			Log.sysOut("DBConnections","DB Retry Queue is empty.  Good.");
+			//Log.sysOut("DBConnections","DB Retry Queue is empty.  Good.");
 		}
 		else
 		{
@@ -683,58 +588,10 @@ public class DBConnections
 		}
 	}
 	
-	/** write a buffer of data to numerous SQL records by
-	 * breaking the buffer into small chunks
-	 * 
-	 * <br><br><b>Usage:</b> writeCheeseWheelBuffer(SQL, buf);
-	 * @param SQL	The prepared statement string
-	 * @param buf	the buffer to send
-	 * @return int	the response code, or -1 for an error
-	 */
-	public int writeCheeseWheelBuffer(String SQL, byte[] buf)
-	{
-		DBConnection DB=null;
-		try
-		{
-			DB=DBFetchPrepared(SQL);
-			PreparedStatement preState=DB.getPreparedStatement();
-			try
-			{
-				// ===== set the buffer index
-				preState.setInt(1, 1);
-							
-				// ===== set the blob
-				preState.setBytes(2,buf);
-				//preState.setBinaryStream(2,(InputStream)bis,iNextBlockSize);
-					
-				// ===== execute the prepared statement
-				if (preState.executeUpdate() < 0)
-				{
-					// ===== error out
-					Log.errOut("DBConnections","Attachment update failed.");
-					return -1;
-				}
-			}
-			catch(Exception sqle)
-			{
-				Log.errOut("DBConnections",""+sqle);
-			}
-		}
-		catch(Exception e)
-		{
-			enQueueError(SQL,""+e,""+0);
-			reportError();
-			Log.errOut("DBConnections",""+e);
-		}
-		if(DB!=null)
-			DBDone(DB);
-		return 0;
-	}
-	
 	/** 
 	 * 
 	 * <br><br><b>Usage: update("UPDATE...");</b> 
-	 * @param updateString	the update SQL command
+	 * @param queryString	the update SQL command
 	 * @return int	the responseCode, or -1
 	 */
 	public int queryRows(String queryString)
@@ -758,7 +615,7 @@ public class DBConnections
                 if(sqle instanceof java.io.EOFException)
                 {
                     Log.errOut("DBConnections",""+sqle);
-                    fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
+                    DBDone(DBToUse);
                     return -1;
                 }
                 if(sqle instanceof SQLException)
@@ -777,64 +634,10 @@ public class DBConnections
 	}
 	
 	
-	/** read a buffer of data to numerous SQL records by
-	 * breaking the buffer into small chunks
-	 * 
-	 * <br><br><b>Usage:</b> buf=readCheeseWheelBuffer(SQL);
-	 * @param SQL	The query string
-	 * @param buf	the buffer to send
-	 * @return byte[]	the buffer of data
-	 */
-	public byte[] readCheeseWheelBuffer(String SQL)
-	{
-		ByteArrayOutputStream buf=new ByteArrayOutputStream();
-		DBConnection DB=null;
-		try
-		{
-			DB=DBFetch();
-			ResultSet allBufs=DB.query(SQL);
-			if(allBufs!=null)
-			{
-				try
-				{
-					while(allBufs.next())
-						buf.write(allBufs.getBytes("BlobData"));
-				}
-				catch(Exception e)
-				{
-                    Log.errOut("DBConnections","Error writing bytes to array.");
-                }
-			}
-			else
-			{
-				Log.errOut("DBConnections","Could not execute query: "+SQL);
-			}
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DBConnections",""+sqle);
-		}
-		catch(Exception e)
-		{
-            if(e instanceof java.io.EOFException)
-            {
-                Log.errOut("DBConnections",""+e);
-                fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
-                return null;
-            }
-			Log.errOut("DBConnections",""+e);
-		}
-		if(DB!=null)
-			DBDone(DB);
-		return buf.toByteArray();
-	}
-	
-	
 	/** list the connections 
 	 * 
 	 * <br><br><b>Usage:</b> listConnections(out);
-	 * @param PrintStream	place to send the list out to
-	 * @return NA
+	 * @param out	place to send the list out to
 	 */
 	public void listConnections(PrintStream out)
 	{
@@ -885,7 +688,6 @@ public class DBConnections
 	/** return a status string, or "" if everything is ok.
 	 * 
 	 * <br><br><b>Usage:</b> errorStatus();
-	 * @param NA
 	 * @return StringBuffer	complete error status
 	 */
 	public StringBuffer errorStatus()
@@ -895,34 +697,12 @@ public class DBConnections
 			status.append("#100 DBCONNECTIONS REPORTING A LOCKED STATE\n");
 		if(disconnected)
 			status.append("#101 DBCONNECTIONS REPORTING A DISCONNECTED STATE\n");
+		if((lockedUp)||(disconnected))
 		for(int c=0;c<Connections.size();c++)
 		{
 			DBConnection DBConnect=(DBConnection)Connections.elementAt(c);
-			if((!DBConnect.ready())||(DBConnect.isProbablyDead())||(DBConnect.isProbablyLockedUp()))
-			{
-				repairConnections(DBClass,DBService,DBUser,DBPass);
-				break;
-			}
+			DBDone(DBConnect);
 		}
-		double size=new Integer(Connections.size()).doubleValue();
-		double down=0.0;
-		for(int p=0;p<Connections.size();p++)
-		{
-			DBConnection DB=(DBConnection)Connections.elementAt(p);
-			if((!DB.ready())||(DB.isProbablyDead()))
-			{
-				status.append("#102-"+(p+1)+" DBCONNECTION IS REPORTING A DEAD STATE"+(DB.inSQLServerCommunication()?"(SERVER COMM)":""));
-				down+=1.0;
-			}
-			else
-			if(DB.isProbablyLockedUp())
-			{
-				status.append("#102-"+(p+1)+" DBCONNECTION IS REPORTING A LOCKED STATE "+(DB.inSQLServerCommunication()?"(SERVER COMM)":""));
-				down+=1.0;
-			}
-		}
-		if(((down/size)>0.25)||(lockedUp)||(disconnected))
-			fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
 		return status;
 	}
 }

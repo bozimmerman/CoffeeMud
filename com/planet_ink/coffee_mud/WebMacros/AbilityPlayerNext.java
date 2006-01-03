@@ -83,7 +83,7 @@ public class AbilityPlayerNext extends StdWebMacro
 		{
 			Ability A=(Ability)abilities.elementAt(a);
 			boolean okToShow=true;
-			int classType=A.classificationCode()&Ability.ALL_CODES;
+			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			String className=httpReq.getRequestParameter("CLASS");
 			
 			if((className!=null)&&(className.length()>0))
@@ -112,7 +112,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			}
 			if(okToShow)
 			{
-				if(parms.containsKey("DOMAIN")&&(classType==Ability.SPELL))
+				if(parms.containsKey("DOMAIN")&&(classType==Ability.ACODE_SPELL))
 				{
 					String domain=(String)parms.get("DOMAIN");
 					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))
@@ -121,10 +121,10 @@ public class AbilityPlayerNext extends StdWebMacro
 				else
 				{
 					boolean containsOne=false;
-					for(int i=0;i<Ability.TYPE_DESCS.length;i++)
-						if(parms.containsKey(Ability.TYPE_DESCS[i]))
+					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+						if(parms.containsKey(Ability.ACODE_DESCS[i]))
 						{ containsOne=true; break;}
-					if(containsOne&&(!parms.containsKey(Ability.TYPE_DESCS[classType])))
+					if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 						okToShow=false;
 				}
 			}

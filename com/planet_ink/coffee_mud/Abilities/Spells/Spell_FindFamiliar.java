@@ -36,17 +36,17 @@ public class Spell_FindFamiliar extends Spell
 	public String ID() { return "Spell_FindFamiliar"; }
 	public String name(){return "Find Familiar";}
 	public String displayText(){return "(Find Familiar)";}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public int castingQuality(MOB invoker, MOB target)
 	{
-		if((target!=null)&&(invoker!=target)) return Ability.INDIFFERENT;
-		if(invoker.numFollowers()>0) return Ability.INDIFFERENT;
-		if(invoker.isMonster()) return Ability.INDIFFERENT;
+		if((target!=null)&&(invoker!=target)) return Ability.QUALITY_INDIFFERENT;
+		if(invoker.numFollowers()>0) return Ability.QUALITY_INDIFFERENT;
+		if(invoker.isMonster()) return Ability.QUALITY_INDIFFERENT;
 		return abstractQuality();
 	}
 
@@ -61,7 +61,7 @@ public class Spell_FindFamiliar extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMLib.combat().postExperience(mob,null,null,-100,false);
+		CMLib.leveler().postExperience(mob,null,null,-100,false);
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

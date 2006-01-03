@@ -37,7 +37,7 @@ public class Spell_FoolsGold extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	boolean destroyOnNextTick=false;
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

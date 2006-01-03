@@ -177,7 +177,7 @@ public class Minstrel extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}

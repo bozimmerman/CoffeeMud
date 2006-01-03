@@ -686,7 +686,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int a=target.numEffects()-1;a>=0;a--)
 		{
 			Ability A=target.fetchEffect(a);
-			if((A!=null)&&((!mundane)||((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY)))
+			if((A!=null)&&((!mundane)||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)))
 			{
 				if((CMath.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
 				||(CMath.bset(A.flags(),Ability.FLAG_BURNING))

@@ -37,7 +37,7 @@ public class Chant_AcidRain extends Chant
 {
 	public String ID() { return "Chant_AcidRain"; }
 	public String name(){ return "Acid Rain";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 

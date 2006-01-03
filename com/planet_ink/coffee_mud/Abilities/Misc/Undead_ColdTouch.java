@@ -40,11 +40,11 @@ public class Undead_ColdTouch extends StdAbility
 	public String displayText(){ return "(Cold and Weakened)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"COLDTOUCH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

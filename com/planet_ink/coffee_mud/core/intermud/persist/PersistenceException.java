@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.persist.PersistenceException
+ * com.planet_ink.coffee_mud.core.intermud.persist.PersistenceException
  * Copyright (c) 1996 George Reese
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the

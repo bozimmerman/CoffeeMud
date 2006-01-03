@@ -36,8 +36,8 @@ public class Prayer_AnimateMummy extends Prayer
 {
 	public String ID() { return "Prayer_AnimateMummy"; }
 	public String name(){ return "Animate Mummy";}
-	public int abstractQuality(){ return INDIFFERENT;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 

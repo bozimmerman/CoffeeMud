@@ -163,7 +163,7 @@ public class Flee extends Go
 			if(XPloss&&(lostExperience>0))
 			{
 				mob.tell(getScr("Movement","fleeexp",""+lostExperience));
-				CMLib.combat().postExperience(mob,null,null,-lostExperience,false);
+				CMLib.leveler().postExperience(mob,null,null,-lostExperience,false);
 			}
 		}
 		return false;

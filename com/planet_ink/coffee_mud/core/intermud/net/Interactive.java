@@ -1,5 +1,5 @@
 /**
- * imaginary.net.Interactive
+ * com.planet_ink.coffee_mud.core.intermud.net.Interactive
  * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ public abstract class Interactive implements ServerUser {
      * Stops any running I/O threads for this interactive, closes the
      * user socket, and marks the object for destruction according to
      * the requirements of the ServerObject interface.
-     * @see imaginary.server.ServerObject#getDestructed
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerObject#getDestructed
      */
     public synchronized void destruct() {
         output_stream.flush();
@@ -210,7 +210,7 @@ public abstract class Interactive implements ServerUser {
      * the user has periodic events which occur to it,
      * the event processor will flag that the event() method
      * should be called.
-     * @see imaginary.server.ServerObject#processEvent
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerObject#processEvent
      */
     public void processEvent() {
     }
@@ -222,8 +222,8 @@ public abstract class Interactive implements ServerUser {
      * the last command time and calls the input() method with the
      * waiting command.  Otherwise it simply returns.
      * @see #input
-     * @see imaginary.server.ServerUser#processInput
-     * @see imaginary.server.ServerThread#run
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerUser#processInput
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerThread#run
      */
     public synchronized final void processInput() {
         if( input_thread != null ) {
@@ -245,8 +245,8 @@ public abstract class Interactive implements ServerUser {
      * prompt.  If I enter something at that point with no further
      * input redirection, my next input will then go back to the
      * editor.
-     * @param ob the instance of imaginary.net.Input to which input will be redirected
-     * @see imaginary.net.Input
+     * @param ob the instance of com.planet_ink.coffee_mud.core.intermud.net.Input to which input will be redirected
+     * @see com.planet_ink.coffee_mud.core.intermud.net.Input
      * @see #input
      */
     public synchronized final void redirectInput(Input ob) {
@@ -311,7 +311,7 @@ public abstract class Interactive implements ServerUser {
      * interactive management must implement the InteractiveBody
      * interface for any body to be used by a user.
      * @param ob the body to which this interactive is being connected
-     * @see imaginary.net.InteractiveBody
+     * @see com.planet_ink.coffee_mud.core.intermud.net.InteractiveBody
      */
     public void setBody(InteractiveBody ob) {
         body = ob;
@@ -460,7 +460,7 @@ public abstract class Interactive implements ServerUser {
     /**
      * Gives the user object's object id.
      * @return the object id
-     * @see imaginary.server.ServerObject#getObjectId
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerObject#getObjectId
      */
     public final String getObjectId() {
         return object_id;
@@ -469,7 +469,7 @@ public abstract class Interactive implements ServerUser {
     /**
      * Allows the server to set the object id.
      * @param id the object id assigned to this object
-     * @see imaginary.server.ServerObject#setObjectId
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerObject#setObjectId
      */
     public final void setObjectId(String id) {
         if( object_id != null ) {
@@ -523,7 +523,7 @@ public abstract class Interactive implements ServerUser {
      * Called by the server before connect() is called to assign
      * the socket for this Interactive to it.
      * @param s the socket for this connection
-     * @see imaginary.server.ServerUser#setSocket
+     * @see com.planet_ink.coffee_mud.core.intermud.server.ServerUser#setSocket
      */
     public final void setSocket(Socket s) throws java.io.IOException {
         socket = s;
@@ -544,7 +544,7 @@ public abstract class Interactive implements ServerUser {
  * Last modified 27 September 1996
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
- * @see imaginary.net.Interactive
+ * @see com.planet_ink.coffee_mud.core.intermud.net.Interactive
  */
 class InputThread implements Runnable {
     private Vector                  input_buffer;
@@ -576,7 +576,7 @@ class InputThread implements Runnable {
      * As long as the user is connected, this thread accepts
      * input from the user machine.  If the user drops link,
      * this will call loseLink() in the interactive object.
-     * @see imaginary.net.Interactive#loseLink
+     * @see com.planet_ink.coffee_mud.core.intermud.net.Interactive#loseLink
      */
     public void run() {
         while( !destructed ) {

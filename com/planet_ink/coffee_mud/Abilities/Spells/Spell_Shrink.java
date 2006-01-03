@@ -37,10 +37,10 @@ public class Spell_Shrink extends Spell
 	public String ID() { return "Spell_Shrink"; }
 	public String name(){return "Shrink";}
 	public String displayText(){return "(Shrunk)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()
 	{

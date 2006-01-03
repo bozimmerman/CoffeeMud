@@ -185,7 +185,7 @@ public class SkyWatcher extends StdCharClass
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
 		&&(CMLib.dice().rollPercentage()<50))
@@ -281,7 +281,7 @@ public class SkyWatcher extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}

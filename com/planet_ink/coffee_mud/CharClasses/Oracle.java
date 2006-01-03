@@ -275,34 +275,12 @@ public class Oracle extends Cleric
 		return outfitChoices;
 	}
 	
-	public void level(MOB mob)
+	public void level(MOB mob, Vector newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled("LEVELS")) 
-	        return;
-		Vector V=new Vector();
-		for(int a=0;a<mob.numLearnedAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if(A!=null)	V.addElement(A);
-		}
-		super.level(mob);
+	    if(CMSecurity.isDisabled("LEVELS")) return;
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
-			Ability able=null;
-			for(int a=0;a<mob.numLearnedAbilities();a++)
-			{
-				Ability A=mob.fetchAbility(a);
-				if((A!=null)
-				&&(!V.contains(A)))
-					able=A;
-			}
-			if(able!=null)
-			{
-				String type=Ability.TYPE_DESCS[(able.classificationCode()&Ability.ALL_CODES)].toLowerCase();
-				mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.name()+"^?.^N");
-			}
-			else
-			if(numNonQualified(mob)>=maxNonQualified(mob))
+			if((newAbilityIDs.size()==0)&&(numNonQualified(mob)>=maxNonQualified(mob)))
 				mob.tell("^NYou have learned no new secrets this level, as you already know ^H"+numNonQualified(mob)+"/"+maxNonQualified(mob)+"^? secret skills.^N");
 		}
 	}

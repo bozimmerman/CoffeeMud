@@ -858,7 +858,7 @@ public class MOBloader
 		for(int b=0;b<mob.numBehaviors();b++)
 		{
 			Behavior thisBehavior=mob.fetchBehavior(b);
-			if((thisBehavior!=null)&&(!thisBehavior.isBorrowed()))
+			if((thisBehavior!=null)&&(thisBehavior.isSavable()))
 			{
 				String
 				str="INSERT INTO CMCHAB ("
@@ -897,7 +897,7 @@ public class MOBloader
 		+"','"+pstats.password()
 		+"','"+mob.baseCharStats().getMyClassesStr()
 		+"','"+mob.baseCharStats().getMyRace().ID()
-		+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"')");
+		+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"');");
 	}
 
 	public static boolean DBUserSearch(MOB mob, String Login)

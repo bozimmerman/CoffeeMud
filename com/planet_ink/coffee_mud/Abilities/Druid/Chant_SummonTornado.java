@@ -39,7 +39,7 @@ public class Chant_SummonTornado extends Chant
 	public String displayText(){return "(Inside a Tornado)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

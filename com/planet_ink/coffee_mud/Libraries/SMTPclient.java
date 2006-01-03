@@ -77,18 +77,17 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
         return new SMTPclient(emailAddress);
     }
     
+    public SMTPclient()
+    {
+        super();
+    }
+
     /**
      *   Create a SMTP object pointing to the specified host
      *   @param hostid The host to connect to.
      *   @exception UnknownHostException
      *   @exception IOException
      */
-    public SMTPclient()
-    {
-        super();
-    }
-
-	/** Main constructor that initialized  internal structures*/
     public SMTPclient( String hostid, int port) throws UnknownHostException,IOException {
         sock = new Socket( hostid, port );
 		reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -102,12 +101,21 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
         }
     }
 
-	/** Main constructor that initialized  internal structures*/
+    /**
+     *   Create a SMTP object pointing to the specified host
+     *   @param address The host to connect to.
+     *   @exception IOException
+     */
     public SMTPclient( InetAddress address ) throws IOException {
         this(address, DEFAULT_PORT);
     }
 
-	/** Main constructor that initialized  internal structures*/
+    /**
+     *   Create a SMTP object pointing to the specified host
+     *   @param address The host to connect to.
+     *   @param port The host to connect to.
+     *   @exception IOException
+     */
     public SMTPclient( InetAddress address, int port ) throws IOException {
         sock = new Socket( address, port );
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
@@ -204,12 +212,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* Send a message
 	* 
 	* <br><br><b>Usage:</b>  Mailer.sendmsg(S, From, To, Subject, Message);
-	* @param S Session object
 	* @param froaddress  Address sending from
+	* @param reply_address Address reply to 
 	* @param to_address Address sending to 
+	* @param mockto_address Address sending to 
 	* @param subject Subject line
 	* @param message Message content
-	* @return NA
 	*/
     public synchronized void sendMessage(String froaddress, 
 										 String reply_address,
@@ -237,24 +245,24 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		send.print(EOL);
 		send.flush();
 		rstr = reply.readLine();
-		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
+		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		sstr = "MAIL FROM:<" + froaddress+">" ;
 		send.print(sstr);
 		send.print(EOL);
 		send.flush();
 		rstr = reply.readLine();
-		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
+		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		sstr = "RCPT TO:<" + to_address+">";
 		send.print(sstr);
 		send.print(EOL);
 		send.flush();
 		rstr = reply.readLine();
-		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
+		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		send.print("DATA");
 		send.print(EOL);
 		send.flush();
 		rstr = reply.readLine();
-		if (!rstr.startsWith("354")) throw new ProtocolException(rstr);
+		if ((rstr==null)||(!rstr.startsWith("354"))) throw new ProtocolException(""+rstr);
 		send.print("MIME-Version: 1.0");
 		send.print(EOL);
 		send.print("Date: " + CMLib.time().date2SecondsString(System.currentTimeMillis()));
@@ -366,8 +374,6 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* close this socket
 	* 
 	* <br><br><b>Usage:</b>  this.close();
-	* @param NA
-	* @return NA
 	*/
 	public void close() {
       try {
@@ -385,8 +391,6 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* close this socket
 	* 
 	* <br><br><b>Usage:</b>  finalize();
-	* @param NA
-	* @return NA
 	*/
 	public void finalize() throws Throwable {
         this.close();

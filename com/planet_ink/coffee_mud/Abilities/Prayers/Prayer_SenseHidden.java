@@ -37,9 +37,9 @@ public class Prayer_SenseHidden extends Prayer
 	public String name(){ return "Sense Hidden";}
 	public String displayText(){ return "(Sense Hidden)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -36,10 +36,10 @@ public class Spell_AddLimb extends Spell
 	public String ID() { return "Spell_AddLimb"; }
 	public String name(){return "Add Limb";}
 	public String displayText(){return "(Add Limb)";}
-	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public Item itemRef=null;
 	public long wornRef=0;
 	public int oldMsg=0;

@@ -61,7 +61,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public HashSet properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		HashSet h=null;
-		if(A.abstractQuality()!=Ability.MALICIOUS)
+		if(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
 		{
             if(caster.Name().equalsIgnoreCase("somebody"))
     			h=new HashSet();
@@ -295,38 +295,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	public boolean postExperience(MOB mob,
-								  MOB victim,
-								  String homage,
-								  int amount,
-								  boolean quiet)
-	{
-		if((mob==null)
-		||(CMSecurity.isDisabled("EXPERIENCE"))
-		||mob.charStats().getCurrentClass().expless()
-		||mob.charStats().getMyRace().expless())
-	        return false;
-		CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_GENERAL|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
-		msg.setValue(amount);
-		if(mob.location()!=null)
-		{
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
-			else
-				return false;
-		}
-		else
-		if(amount>=0)
-			mob.charStats().getCurrentClass().gainExperience(mob,victim,homage,amount,quiet);
-		else
-			mob.charStats().getCurrentClass().loseExperience(mob,-amount);
-		return true;
-	}
-
     public boolean changeFactions(MOB mob,
-                                         MOB victim,
-                                         int amount,
-                                         boolean quiet)
+                                  MOB victim,
+                                  int amount,
+                                  boolean quiet)
     {
         if((mob==null))
             return false;
@@ -535,7 +507,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
         CharClass combatCharClass=getCombatDominantClass(source,target);
 		HashSet beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
-        combatCharClass.dispenseExperience(beneficiaries,target);
+        dispenseExperience(beneficiaries,target);
         
 	    String currency=CMLib.beanCounter().getCurrency(target);
 		double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
@@ -610,7 +582,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					int expLost=CMath.s_int(whatToDo);
 					target.tell("^*You lose "+expLost+" experience points.^?^.");
-					postExperience(target,null,null,-expLost,false);
+					CMLib.leveler().postExperience(target,null,null,-expLost,false);
 				}
 				else
 				if(whatToDo.length()<3)
@@ -619,7 +591,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					int expLost=100*target.envStats().level();
 					target.tell("^*You lose "+expLost+" experience points.^?^.");
-					postExperience(target,null,null,-expLost,false);
+					CMLib.leveler().postExperience(target,null,null,-expLost,false);
 				}
 			}
 		}
@@ -889,28 +861,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     if(A!=null) A.invoke(target,CMParms.makeVector(msg),target,true,0);
                 }
             }
-        }
-    }
-    
-    public void handleExperienceChange(CMMsg msg)
-    {
-        MOB mob=msg.source();
-        if(!CMSecurity.isDisabled("EXPERIENCE")
-        &&!mob.charStats().getCurrentClass().expless()
-        &&!mob.charStats().getMyRace().expless())
-        {
-            MOB expFromKilledmob=null;
-            if(msg.target() instanceof MOB)
-                expFromKilledmob=(MOB)msg.target();
-
-            if(msg.value()>=0)
-                mob.charStats().getCurrentClass().gainExperience(mob,
-                                                                 expFromKilledmob,
-                                                                 msg.targetMessage(),
-                                                                 msg.value(),
-                                                                 CMath.s_bool(msg.othersMessage()));
-            else
-                mob.charStats().getCurrentClass().loseExperience(mob,-msg.value());
         }
     }
     
@@ -1228,6 +1178,26 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 fighter.setVictim(nextVictimM);
         }
     }
+    
+    public void dispenseExperience(HashSet killers, MOB killed)
+    {
+        int totalLevels=0;
+        int expAmount=100;
+
+        for(Iterator i=killers.iterator();i.hasNext();)
+        {
+            MOB mob=(MOB)i.next();
+            totalLevels+=(mob.envStats().level()*mob.envStats().level());
+            expAmount+=25;
+        }
+		for(Iterator i=killers.iterator();i.hasNext();)
+		{
+			MOB mob=(MOB)i.next();
+			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
+			if(myAmount>100) myAmount=100;
+			CMLib.leveler().postExperience(mob,killed,"",myAmount,false);
+		}
+	}
     
     public void tickCombat(MOB fighter)
     {

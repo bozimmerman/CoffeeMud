@@ -37,7 +37,7 @@ public class Chant_Yearning extends Chant
 	public String ID() { return "Chant_Yearning"; }
 	public String name(){ return "Yearning";}
 	public String displayText(){return "(Sexual Yearnings)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

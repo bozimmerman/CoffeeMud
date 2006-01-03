@@ -36,7 +36,7 @@ public class Play_Accompaniment extends Play
 {
 	public String ID() { return "Play_Accompaniment"; }
 	public String name(){ return "Accompaniment";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 
 	public void affectEnvStats(Environmental E, EnvStats stats)
 	{

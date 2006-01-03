@@ -36,7 +36,7 @@ public class Prayer_ProtPoison extends Prayer
 	public String ID() { return "Prayer_ProtPoison"; }
 	public String name(){ return "Protection Poison";}
 	public String displayText(){ return "(Protection/Poison)";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

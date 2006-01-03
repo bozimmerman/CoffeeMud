@@ -36,11 +36,11 @@ public class Skill_Stability extends BardSkill
 	public String ID() { return "Skill_Stability"; }
 	public String name(){return "Stability";}
 	public String displayText(){return "";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -54,7 +54,7 @@ public class Skill_Stability extends BardSkill
 		if((msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(msg.amITarget(affected))
-		&&(((Ability)msg.tool()).abstractQuality()==Ability.MALICIOUS)
+		&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-40,false)))
 		{

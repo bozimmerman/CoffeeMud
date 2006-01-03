@@ -196,7 +196,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
+	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, MOB whom, Room R)
 	{
 		String mobCode=httpReq.getRequestParameter("MOB");
 		if(mobCode==null) return "@break@";
@@ -236,6 +236,7 @@ public class GrinderMobs
 			allitems.addElement(I);
 			oldM.delInventory(I);
 		}
+		MOB copyMOB=(MOB)M.copyOf();
 
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
@@ -603,6 +604,8 @@ public class GrinderMobs
 		CMLib.database().DBUpdateMOBs(R);
 		String newMobCode=RoomData.getMOBCode(R,M);
 		httpReq.addRequestParameters("MOB",newMobCode);
+		if(!copyMOB.sameAs(M))
+			Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+" in room "+R.roomID()+".");
 		return "";
 	}
 }

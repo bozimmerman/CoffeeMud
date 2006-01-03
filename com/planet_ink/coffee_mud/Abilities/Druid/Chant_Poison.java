@@ -39,7 +39,7 @@ public class Chant_Poison extends Chant
 	public String displayText(){return "";}
 	public int canAffectCode(){return 0;}
 	public int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

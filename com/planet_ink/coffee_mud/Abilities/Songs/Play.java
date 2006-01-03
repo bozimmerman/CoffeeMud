@@ -40,13 +40,13 @@ public class Play extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"PLAY","PL","PLA"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SONG;}
+	public int classificationCode(){return Ability.ACODE_SONG;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int maxRange(){return 2;}
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
-	protected boolean mindAttack(){return abstractQuality()==Ability.MALICIOUS;}
+	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongTick(){return false;}
 	protected boolean persistantSong(){return true;}
 	protected String songOf(){return name();}
@@ -268,7 +268,7 @@ public class Play extends StdAbility
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))

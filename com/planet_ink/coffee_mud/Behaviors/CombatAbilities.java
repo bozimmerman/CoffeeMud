@@ -176,13 +176,13 @@ public class CombatAbilities extends StdBehavior
 			||(tryThisOne.isAutoInvoked())
 			||(tryThisOne.triggerStrings()==null)
 			||(tryThisOne.triggerStrings().length==0)
-			||((tryThisOne.castingQuality(mob,victim)!=Ability.MALICIOUS)
-				&&(tryThisOne.castingQuality(mob,mob)!=Ability.BENEFICIAL_SELF)
-				&&(tryThisOne.castingQuality(mob,leader)!=Ability.BENEFICIAL_OTHERS))
+			||((tryThisOne.castingQuality(mob,victim)!=Ability.QUALITY_MALICIOUS)
+				&&(tryThisOne.castingQuality(mob,mob)!=Ability.QUALITY_BENEFICIAL_SELF)
+				&&(tryThisOne.castingQuality(mob,leader)!=Ability.QUALITY_BENEFICIAL_OTHERS))
 			||(victim.fetchEffect(tryThisOne.ID())!=null))
 				tryThisOne=null;
 			else
-			if(tryThisOne.castingQuality(mob,victim)==Ability.MALICIOUS)
+			if(tryThisOne.castingQuality(mob,victim)==Ability.QUALITY_MALICIOUS)
 			{
 				switch(combatMode)
 				{
@@ -261,10 +261,10 @@ public class CombatAbilities extends StdBehavior
 					return true;
 			}
 
-			if(tryThisOne.castingQuality(mob,mob)==Ability.BENEFICIAL_SELF)
+			if(tryThisOne.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
 				victim=mob;
 			else
-			if(tryThisOne.castingQuality(mob,leader)==Ability.BENEFICIAL_OTHERS)
+			if(tryThisOne.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS)
 			{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
 	        
 
@@ -307,14 +307,14 @@ public class CombatAbilities extends StdBehavior
 			{
 				A=((Wand)myWand).getSpell();
 				if((A!=null)
-				&&((A.castingQuality(mob,mob.getVictim())==Ability.MALICIOUS)
-				||(A.castingQuality(mob,mob)==Ability.BENEFICIAL_SELF)
-				||(A.castingQuality(mob,leader)==Ability.BENEFICIAL_OTHERS)))
+				&&((A.castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS)
+				||(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
+				||(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS)))
 				{
-					if(A.castingQuality(mob,mob)==Ability.BENEFICIAL_SELF)
+					if(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
 						victim=mob;
 					else
-					if(A.castingQuality(mob,leader)==Ability.BENEFICIAL_OTHERS)
+					if(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS)
 					{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
 					else
 					if(mob.getVictim()!=null)

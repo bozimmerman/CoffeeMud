@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,7 @@ public class Thief_Shadow extends ThiefSkill
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"SHADOW"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
@@ -88,10 +88,6 @@ public class Thief_Shadow extends ThiefSkill
 		return true;
 	}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -157,7 +153,7 @@ public class Thief_Shadow extends ThiefSkill
                     +profficiency()
                     +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
-    
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

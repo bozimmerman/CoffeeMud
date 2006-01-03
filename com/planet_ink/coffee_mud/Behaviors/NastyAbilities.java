@@ -75,9 +75,9 @@ public class NastyAbilities extends ActiveTicker
 				tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 				if((tryThisOne!=null)
 				   &&(mob.fetchEffect(tryThisOne.ID())==null)
-				   &&(tryThisOne.castingQuality(mob,target)==Ability.MALICIOUS))
+				   &&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_MALICIOUS))
 				{
-					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+					if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 					{
 						if(!tryThisOne.appropriateToMyFactions(mob))
 							tryThisOne=null;
@@ -100,7 +100,7 @@ public class NastyAbilities extends ActiveTicker
 					tryThisOne.setProfficiency(100);
 					Vector V=new Vector();
 					V.addElement(target.name());
-					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+					if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 						tryThisOne.invoke(mob,new Vector(),null,false,0);
 					else
 						tryThisOne.invoke(mob,V,target,false,0);

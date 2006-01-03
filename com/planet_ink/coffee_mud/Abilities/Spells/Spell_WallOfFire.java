@@ -38,11 +38,11 @@ public class Spell_WallOfFire extends Spell
 	public String displayText(){return "(Wall of Fire)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 1;}
-	public int abstractQuality(){ return OK_SELF;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
 	protected Item theWall=null;

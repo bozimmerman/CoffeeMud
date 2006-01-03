@@ -39,14 +39,14 @@ public class Language extends StdAbility
 	public String name(){ return "Languages";}
 	private static final String[] triggerStrings = {"SPEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGPRACCOST);}
-	public int classificationCode(){return Ability.LANGUAGE;}
+	public int classificationCode(){return Ability.ACODE_LANGUAGE;}
 
 	private static Hashtable emptyHash=new Hashtable();
 	private static Vector emptyVector=new Vector();

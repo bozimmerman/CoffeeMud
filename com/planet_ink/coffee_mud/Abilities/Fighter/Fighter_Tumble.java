@@ -38,11 +38,11 @@ public class Fighter_Tumble extends FighterSkill
 	public String name(){ return "Tumble";}
 	public String displayText(){ return "(Tumbling)";}
 	private static final String[] triggerStrings = {"TUMBLE"};
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.SKILL; }
+	public int classificationCode(){ return Ability.ACODE_SKILL; }
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -36,7 +36,7 @@ public class Song_Death extends Song
 {
 	public String ID() { return "Song_Death"; }
 	public String name(){ return "Death";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

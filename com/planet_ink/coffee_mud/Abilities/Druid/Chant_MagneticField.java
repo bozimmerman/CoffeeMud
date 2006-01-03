@@ -37,7 +37,7 @@ public class Chant_MagneticField extends Chant
 	public String ID() { return "Chant_MagneticField"; }
 	public String name(){return "Magnetic Field";}
 	public String displayText(){return "(Magnetic Field chant)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_PARALYZING;}
 

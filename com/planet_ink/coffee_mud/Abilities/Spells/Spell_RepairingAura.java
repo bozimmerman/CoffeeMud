@@ -37,7 +37,7 @@ public class Spell_RepairingAura extends Spell
 	public String name(){return "Repairing Aura";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	public int overrideMana(){ return 50;}
 	public static final int REPAIR_MAX=30;
 	public int repairDown=REPAIR_MAX;

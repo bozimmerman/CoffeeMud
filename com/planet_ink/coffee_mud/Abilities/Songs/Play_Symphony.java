@@ -38,12 +38,12 @@ public class Play_Symphony extends Play
 	public String name(){ return "Symphony";}
 	public int abstractQuality(){
 		if(toDoCode<0)
-			return BENEFICIAL_OTHERS;
+			return  Ability.QUALITY_BENEFICIAL_OTHERS;
 		else
 		if(toDoCode==CODE_DOWNSAVE)
-			return MALICIOUS;
+			return Ability.QUALITY_MALICIOUS;
 		else
-			return BENEFICIAL_OTHERS;
+			return  Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 	public final static int CODE_UPSAVE=1;
 	public final static int CODE_UPDAMAGEPER3=2;
@@ -703,7 +703,7 @@ public class Play_Symphony extends Play
 					Ability A=M.fetchEffect(a);
 					if((A!=null)
 					&&(A.invoker()==M)
-					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 						A.tick(M,Tickable.TICKID_MOB);
 				}
 				return true;

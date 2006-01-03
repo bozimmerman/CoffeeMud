@@ -38,7 +38,7 @@ public class Spell_PassDoor extends Spell
 	public String displayText(){return "(Translucent)";}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)

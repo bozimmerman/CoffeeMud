@@ -37,7 +37,7 @@ public class Chant_Hunger extends Chant
 	public String ID() { return "Chant_Hunger"; }
 	public String name(){ return "Feel Hunger";}
 	public String displayText(){return "(Feel Hunger)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 

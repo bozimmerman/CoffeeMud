@@ -203,7 +203,7 @@ public class Prancer extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
@@ -249,11 +249,9 @@ public class Prancer extends StdCharClass
 
 	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level.";}
 
-	public void level(MOB mob)
+	public void level(MOB mob, Vector newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled("LEVELS")) 
-	        return;
-		super.level(mob);
+	    if(CMSecurity.isDisabled("LEVELS"))  return;
 		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));

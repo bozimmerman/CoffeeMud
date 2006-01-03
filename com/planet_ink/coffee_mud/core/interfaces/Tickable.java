@@ -71,6 +71,8 @@ public interface Tickable extends CMObject
     public final static long TIME_TICK=4000;
     /** the number of game/rounds for each real minute of time */
     public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/new Long(TIME_TICK).doubleValue());
+    /** TIME_TICK as a double */
+    public final static double TIME_TICK_DOUBLE=new Long(TIME_TICK).doubleValue();
 
     /** a mask for tickids */
     public final static int TICKMASK_SOLITARY=65536;

@@ -35,8 +35,8 @@ public class BardSkill extends StdAbility
 {
 	public String ID() { return "BardSkill"; }
 	public String name(){ return "a Bard Skill";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
-	public int classificationCode(){	return Ability.SKILL;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int classificationCode(){	return Ability.ACODE_SKILL;}
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
 

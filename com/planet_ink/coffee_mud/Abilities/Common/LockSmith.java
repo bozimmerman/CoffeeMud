@@ -269,6 +269,7 @@ public class LockSmith extends CraftingSkill
 		}
 
         String itemName=null;
+        int makeResource=-1;
         if(ldelock)
         {
             itemName="a broken lock";
@@ -291,7 +292,7 @@ public class LockSmith extends CraftingSkill
     		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
             itemName=(RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]+" key").toLowerCase();
             itemName=CMStrings.startWithAorAn(itemName);
-            building.setMaterial(data[0][FOUND_CODE]);
+            makeResource=data[0][FOUND_CODE];
         }
 		building=getBuilding(workingOn);
 		if(building==null)
@@ -299,6 +300,7 @@ public class LockSmith extends CraftingSkill
 			commonTell(mob,"There's no such thing as a GenKey!!!");
 			return false;
 		}
+        if((makeResource>=0)&&(building!=null)) building.setMaterial(makeResource);
 		completion=15-((mob.envStats().level()-workingOn.envStats().level()));
 		if(keyFlag) completion=completion/2;
 		building.setName(itemName);

@@ -37,7 +37,7 @@ public class Spell_RechargeWand extends Spell
 	public String name(){return "Recharge Wand";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int overrideMana(){return 100;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

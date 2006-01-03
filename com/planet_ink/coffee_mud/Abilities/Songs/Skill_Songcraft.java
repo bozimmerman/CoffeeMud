@@ -38,12 +38,12 @@ public class Skill_Songcraft extends BardSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public String lastID="";
-	public int craftType(){return Ability.SONG;}
+	public int craftType(){return Ability.ACODE_SONG;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -58,7 +58,7 @@ public class Skill_Songcraft extends BardSkill
 		&&(msg.tool() instanceof Ability)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==craftType())
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==craftType())
 		&&(!lastID.equalsIgnoreCase(msg.tool().ID()))
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))

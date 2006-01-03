@@ -37,11 +37,11 @@ public class Fighter_FlyingKick extends FighterSkill
 	public String ID() { return "Fighter_FlyingKick"; }
 	public String name(){ return "Flying Kick";}
 	private static final String[] triggerStrings = {"FLYINGKICK","FLYKICK"};
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int minRange(){return 1;}
 	public int maxRange(){return 5;}
 	public int usageType(){return USAGE_MOVEMENT;}

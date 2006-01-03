@@ -32,9 +32,9 @@ public class ScriptableEverymob extends StdBehavior
             return;
         Scriptable S=new Scriptable();
         S.setParms(getParms());
-        S.setBorrowed(true);
+        S.setSavable(false);
         M.addBehavior(S);
-        S.setBorrowed(true);
+        S.setSavable(false);
     }
     
     private Area determineArea(Environmental forMe)

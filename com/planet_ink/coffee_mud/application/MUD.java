@@ -46,7 +46,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)5.0;
-	public static final long  HOST_VERSION_MINOR=0;
+	public static final long  HOST_VERSION_MINOR=1;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
@@ -54,8 +54,7 @@ public class MUD extends Thread implements MudHost
 	public static UtiliThread utiliThread=null;
 	public static Server imserver=null;
 	public static IMC2Driver imc2server=null;
-	public static HTTPserver webServerThread=null;
-	public static HTTPserver adminServerThread=null;
+	public static Vector webServers=new Vector();
 	public static SMTPserver smtpServerThread=null;
 	public static Vector mudThreads=new Vector();
 	public static DVector accessed=new DVector(2);
@@ -145,6 +144,8 @@ public class MUD extends Thread implements MudHost
 		
 		
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
+		DBConnection DBTEST=DBConnector.DBFetch();
+		if(DBTEST!=null) DBConnector.DBDone(DBTEST);
 		String DBerrors=DBConnector.errorStatus().toString();
 		if((DBerrors.length()==0)||(DBerrors.startsWith("OK!")))
 			Log.sysOut("MUD","Database connection successful.");
@@ -156,11 +157,27 @@ public class MUD extends Thread implements MudHost
         
 		if(page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
 		{
-			webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub");
+			HTTPserver webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub",0);
 			webServerThread.start();
-			adminServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin");
-			adminServerThread.start();
-			CMLib.registerLibrary(new ProcessHTTPrequest(null,(adminServerThread!=null)?adminServerThread:(webServerThread!=null)?webServerThread:null,null,true));
+			webServers.addElement(webServerThread);
+			int numToDo=webServerThread.totalPorts();
+			while((--numToDo)>0)
+			{
+				webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub",numToDo);
+				webServerThread.start();
+				webServers.addElement(webServerThread);
+			}
+			webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin",0);
+			webServerThread.start();
+			webServers.addElement(webServerThread);
+			numToDo=webServerThread.totalPorts();
+			while((--numToDo)>0)
+			{
+				webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin",numToDo);
+				webServerThread.start();
+				webServers.addElement(webServerThread);
+			}
+			CMLib.registerLibrary(new ProcessHTTPrequest(null,(webServers.size()>0)?(HTTPserver)webServers.firstElement():null,null,true));
 		}
 		else
             CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
@@ -755,22 +772,15 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)S.println("All resources unloaded");
 
 
-		if(webServerThread!=null)
+		for(int i=0;i<webServers.size();i++)
 		{
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...pub webserver");
+			HTTPserver webServerThread=(HTTPserver)webServers.elementAt(i);
+			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
 			webServerThread.shutdown(S);
-			webServerThread = null;
-			Log.sysOut("MUD","Public Web Server stopped.");
-			if(S!=null)S.println("Public Web Server stopped");
+			Log.sysOut("MUD","Web server "+webServerThread.getName()+" stopped.");
+			if(S!=null)S.println("Web server "+webServerThread.getName()+" stopped");
 		}
-		if(adminServerThread!=null)
-		{
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...admin webserver");
-			adminServerThread.shutdown(S);
-			adminServerThread = null;
-			Log.sysOut("MUD","Admin Web Server stopped.");
-			if(S!=null)S.println("Admin Web Server stopped");
-		}
+		webServers.clear();
 		
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
 		Scripts.clear();

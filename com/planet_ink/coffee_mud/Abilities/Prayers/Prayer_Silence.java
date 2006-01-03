@@ -35,7 +35,7 @@ public class Prayer_Silence extends Prayer
 {
 	public String ID() { return "Prayer_Silence"; }
 	public String name(){ return "Silent";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Silenced)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

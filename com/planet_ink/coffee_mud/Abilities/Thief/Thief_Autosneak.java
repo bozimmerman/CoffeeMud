@@ -38,7 +38,7 @@ public class Thief_Autosneak extends ThiefSkill
 	public String name(){ return "AutoSneak";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean noRepeat=false;
@@ -73,12 +73,12 @@ public class Thief_Autosneak extends ThiefSkill
 					if(A.invoke(mob,CMParms.parse(Directions.getDirectionName(dir)),null,false,0))
 					{
 						int[] usage=A.usageCost(mob);
-						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGE_HITPOINTSINDEX]>0))
-							mob.curState().adjHitPoints(usage[USAGE_HITPOINTSINDEX]/2,mob.maxState());
-						if(CMath.bset(A.usageType(),Ability.USAGE_MANA)&&(usage[USAGE_MANAINDEX]>0))
-							mob.curState().adjMana(usage[USAGE_MANAINDEX]/2,mob.maxState());
-						if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT)&&(usage[USAGE_MOVEMENTINDEX]>0))
-							mob.curState().adjMovement(usage[USAGE_MOVEMENTINDEX]/2,mob.maxState());
+						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGEINDEX_HITPOINTS]>0))
+							mob.curState().adjHitPoints(usage[USAGEINDEX_HITPOINTS]/2,mob.maxState());
+						if(CMath.bset(A.usageType(),Ability.USAGE_MANA)&&(usage[USAGEINDEX_MANA]>0))
+							mob.curState().adjMana(usage[USAGEINDEX_MANA]/2,mob.maxState());
+						if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT)&&(usage[USAGEINDEX_MOVEMENT]>0))
+							mob.curState().adjMovement(usage[USAGEINDEX_MOVEMENT]/2,mob.maxState());
 					}
 					if(CMLib.dice().rollPercentage()<10)
 						helpProfficiency(mob);

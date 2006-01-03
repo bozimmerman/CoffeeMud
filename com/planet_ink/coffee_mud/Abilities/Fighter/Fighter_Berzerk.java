@@ -38,11 +38,11 @@ public class Fighter_Berzerk extends FighterSkill
 	public String name(){ return "Berzerk";}
 	public String displayText(){ return "(Berzerk)";}
 	private static final String[] triggerStrings = {"BERZERK"};
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.SKILL;}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
 
 	public int hpAdjustment=0;
 

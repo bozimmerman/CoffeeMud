@@ -21,7 +21,7 @@ It is NOT intended to be a full-blown web server! This document assumes you have
 some familiarty with HTTP, mime types, and stuff like that.</p>
 <P><STRONG><FONT 
 style="BACKGROUND-COLOR: lightskyblue">How to Connect:</FONT>  </STRONG><BR>By default, the public web site listens
-on port 27744 and the administrative web site on port 27777.&nbsp; To browse the
+on ports 80 and 27744 and the administrative web site on port 27777.&nbsp; To browse the
 default public web site, just open up the following URL in your
 browser:<BR><BR><A
  href="http://localhost:27744/">http://localhost:27744/</A></P>
@@ -65,9 +65,10 @@ The options are:
 	<li><b>PORT</b>=xx :
 			<b>[REQUIRED]</b>
 			<i>(e.g. PORT=80)</i>
+			<i>(e.g. PORT=80,27744)</i>
 			Sets the port number the web server will listen for HTTP requests on;
 			this cannot be the same port as the main MUD server or another web servers.
-			Identical to MUD server usage.
+			This list may be comma delimited to start more than one instance on different ports.
 			Normally this would go in <I>web/(servername).ini</I>.
 	<li><b>BACKLOG</b>=xx :
 			<i>(e.g. BACKLOG=10)</i>

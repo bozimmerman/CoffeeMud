@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,7 +58,7 @@ public class StdRace implements Race
     public CMObject newInstance(){return this;}
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
 	public int[] getAgingChart(){return agingChart;}
-	
+
     protected static final Vector empty=new Vector();
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
@@ -77,7 +77,7 @@ public class StdRace implements Race
 	protected int[] culturalAbilityProfficiencies(){return null;}
 	protected boolean uncharmable(){return false;}
 	protected boolean destroyBodyAfterUse(){return false;}
-	
+
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public boolean fertile(){return true;}
@@ -98,8 +98,6 @@ public class StdRace implements Race
 
 	public Race healthBuddy(){return this;}
 
-	/** some general statistics about such an item
-	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 
@@ -266,9 +264,9 @@ public class StdRace implements Race
 	{
 		return "leaves";
 	}
-	public void level(MOB mob)
-	{
-	}
+	public void level(MOB mob, Vector gainedAbilityIDs){}
+	public int adjustExperienceGain(MOB mob, MOB victim, int amount) { return amount;}
+	
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable myChar, int tickID){return true;}
 	public void startRacing(MOB mob, boolean verifyOnly)
@@ -300,7 +298,7 @@ public class StdRace implements Race
 						A.setProfficiency(culturalAbilityProfficiencies()[a]);
 						mob.addAbility(A);
 						A.autoInvocation(mob);
-						if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
+						if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 							A.invoke(mob,mob,false,0);
 					}
 				}
@@ -315,7 +313,7 @@ public class StdRace implements Race
 	}
 
 	public Vector outfit(){return outfitChoices;}
-	
+
 	public String healthText(MOB mob)
 	{
 		return CMLib.combat().standardMobCondition(mob);
@@ -374,7 +372,7 @@ public class StdRace implements Race
 			return (Weapon)naturalWeaponChoices.elementAt(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 		return CMClass.getWeapon("Natural");
 	}
-    
+
 	public Vector myResources(){return new Vector();}
 	public void setHeightWeight(EnvStats stats, char gender)
 	{
@@ -517,21 +515,21 @@ public class StdRace implements Race
 	{
 		if(racialEffectNames()==null)
 			return empty;
-		
+
 		if((racialEffectMap==null)
 		&&(racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
 		&&(racialEffectParms()!=null))
 			racialEffectMap=new Hashtable();
-		
+
 		if(racialEffectMap==null) return empty;
-		
+
 		Integer level=null;
 		if(mob!=null)
 			level=new Integer(mob.envStats().level());
 		else
 			level=new Integer(Integer.MAX_VALUE);
-		
+
 		if(racialEffectMap.containsKey(level))
 			return (Vector)racialEffectMap.get(level);
 		Vector finalV=new Vector();

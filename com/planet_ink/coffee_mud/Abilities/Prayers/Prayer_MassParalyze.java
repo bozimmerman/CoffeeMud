@@ -35,7 +35,7 @@ public class Prayer_MassParalyze extends Prayer
 {
 	public String ID() { return "Prayer_MassParalyze"; }
 	public String name(){ return "Mass Paralyze";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 	public String displayText(){ return "(Paralyzed)";}
 

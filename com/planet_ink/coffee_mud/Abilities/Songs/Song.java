@@ -40,11 +40,11 @@ public class Song extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"SING","SI"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SONG;}
+	public int classificationCode(){return Ability.ACODE_SONG;}
 	public int maxRange(){return 2;}
 
 	protected boolean skipStandardSongInvoke(){return false;}
-	protected boolean mindAttack(){return abstractQuality()==Ability.MALICIOUS;}
+	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongTick(){return false;}
 	protected String songOf(){return "Song of "+name();}
 
@@ -154,7 +154,7 @@ public class Song extends StdAbility
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))

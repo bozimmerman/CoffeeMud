@@ -127,11 +127,7 @@ public class Bard extends StdCharClass
 		}
 	}
 
-	public void gainExperience(MOB mob,
-							   MOB victim,
-							   String homage,
-							   int amount,
-							   boolean quiet)
+	public int adjustExperienceGain(MOB mob, MOB victim, int amount)
 	{
 		double theAmount=new Integer(amount).doubleValue();
 		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
@@ -154,7 +150,7 @@ public class Bard extends StdCharClass
 				}
 			}
 		}
-		super.gainExperience(mob,victim,homage,(int)Math.round(theAmount),quiet);
+		return (int)Math.round(theAmount);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
@@ -172,7 +168,7 @@ public class Bard extends StdCharClass
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}

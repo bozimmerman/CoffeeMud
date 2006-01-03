@@ -36,9 +36,9 @@ public class Spell_Fatigue extends Spell
 	public String ID() { return "Spell_Fatigue"; }
 	public String name(){return "Fatigue";}
 	public String displayText(){return "(Fatigue)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

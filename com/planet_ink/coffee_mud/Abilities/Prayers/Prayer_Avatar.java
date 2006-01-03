@@ -36,7 +36,7 @@ public class Prayer_Avatar extends Prayer
 {
 	public String ID() { return "Prayer_Avatar"; }
 	public String name(){ return "Avatar";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){
 		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))

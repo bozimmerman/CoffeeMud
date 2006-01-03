@@ -40,10 +40,10 @@ public class Fighter_Gouge extends FighterSkill
 	public String displayText(){ return "(Gouged Eyes)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"GOUGE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

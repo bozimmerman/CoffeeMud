@@ -37,7 +37,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public String ID() { return "Prayer_Contagion"; }
 	public String displayText(){ return "(Contagion)";}
 	public String name(){ return "Contagion";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -75,9 +75,9 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			if((A!=null)
 			   &&(A.canBeUninvoked())
 			   &&(!A.ID().equals(ID()))
-			   &&(A.abstractQuality()==Ability.MALICIOUS)
-			   &&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-				  ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			   &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+			   &&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				  ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
 			   &&(!A.isAutoInvoked()))
 				choices.addElement(A);
 		}

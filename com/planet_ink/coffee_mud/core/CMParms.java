@@ -884,4 +884,9 @@ public class CMParms
             V.addElement(e.nextElement());
         return V;
     }
+    
+	/** constant value representing an undefined/unimplemented miscText/parms format.*/
+	public static final String FORMAT_UNDEFINED="{UNDEFINED}";
+	/** constant value representing an always empty miscText/parms format.*/
+	public static final String FORMAT_EMPTY="{EMPTY}";
 }

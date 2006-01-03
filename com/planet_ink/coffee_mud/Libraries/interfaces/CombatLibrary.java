@@ -49,7 +49,6 @@ public interface CombatLibrary extends CMObject
     public boolean postHealing(MOB healer, MOB target, Environmental tool, int messageCode, int healing, String allDisplayMessage);
     public String replaceDamageTag(String str, int damage, int damageType);
     public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
-    public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
     public boolean changeFactions(MOB mob, MOB victim, int amount, boolean quiet);
     public void postWeaponDamage(MOB source, MOB target, Item item, boolean success);
     public void processFormation(Vector[] done, MOB leader, int level);
@@ -79,11 +78,20 @@ public interface CombatLibrary extends CMObject
     public void handleBeingHealed(CMMsg msg);
     public void handleBeingDamaged(CMMsg msg);
     public void handleBeingAssaulted(CMMsg msg);
-    public void handleExperienceChange(CMMsg msg);
     public void handleDeath(CMMsg msg);
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg);
     public void tickCombat(MOB fighter);
     
+    /**
+     * For a valid set of killers who are benefitting from having killed the given killed mob,
+     * this method will make repeated postExperience calls after having calculated their
+     * exp bounty for the kill. 
+     * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+     * @param killers a set of mobs to benefit from the kill
+     * @param killed the mob killed 
+     */
+	public void dispenseExperience(HashSet killers, MOB killed);
+	
     public static final String[] DEFAULT_ARMOR_DESCS={
         "vulnerable",
         "slightly covered",

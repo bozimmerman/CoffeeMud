@@ -40,7 +40,7 @@ public class Songs extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HSongs known:^? "+getAbilities(mob,Ability.SONG,-1,true,parseOutLevel(commands))+"\n\r");
+		msg.append("\n\r^HSongs known:^? "+getAbilities(mob,Ability.ACODE_SONG,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

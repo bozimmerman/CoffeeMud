@@ -44,12 +44,12 @@ public class Regeneration extends StdAbility
 	public String displayText(){ return "(Stat Regeneration)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"REGENERATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
     protected int permanentDamage=0;
 
 
@@ -122,13 +122,13 @@ public class Regeneration extends StdAbility
 				else
 				if(msg.tool() instanceof Ability)
 				{
-					int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES;
+					int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
 					switch(classType)
 					{
-					case Ability.SPELL:
-					case Ability.PRAYER:
-					case Ability.CHANT:
-					case Ability.SONG:
+					case Ability.ACODE_SPELL:
+					case Ability.ACODE_PRAYER:
+					case Ability.ACODE_CHANT:
+					case Ability.ACODE_SONG:
 						{
 							int x=text.indexOf("MAGIC");
 							if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))

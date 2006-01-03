@@ -37,7 +37,7 @@ public class Chant_StrikeBarren extends Chant
 	public String ID() { return "Chant_StrikeBarren"; }
 	public String name(){return "Strike Barren";}
 	public String displayText(){return "(Striken Barren)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 

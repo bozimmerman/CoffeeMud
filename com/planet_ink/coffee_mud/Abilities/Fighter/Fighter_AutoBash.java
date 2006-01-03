@@ -39,10 +39,10 @@ public class Fighter_AutoBash extends FighterSkill
 	public String displayText(){return "";};
 	private static final String[] triggerStrings = {"AUTOBASH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.SKILL; }
+	public int classificationCode(){ return Ability.ACODE_SKILL; }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

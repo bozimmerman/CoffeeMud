@@ -37,10 +37,10 @@ public class Skill_SongWrite extends BardSkill
 	public String name(){ return "Song Write";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SONGWRITE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -107,7 +107,7 @@ public class Skill_SongWrite extends BardSkill
 		if(!auto)mob.curState().setMana(0);
 
 		int experienceToLose=20*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
-		CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(mob,0,auto);

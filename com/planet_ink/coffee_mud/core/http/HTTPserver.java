@@ -49,13 +49,14 @@ public class HTTPserver extends Thread implements MudHost
 
 	public boolean isAdminServer = false;
 
-
 	public ServerSocket servsock=null;
 
 	private MudHost mud;
 	protected String partialName;
     private static final String[] STATUS_STRINGS={"waiting","processing","done"};
     private int state=0;
+    private int myPort=27744;
+    private int myServerNumber=0;
 
 	String serverDir = null;
 	String serverTemplateDir = null;
@@ -65,14 +66,14 @@ public class HTTPserver extends Thread implements MudHost
 	public FileGrabber pageGrabber=new FileGrabber(this);
 	public FileGrabber templateGrabber=new FileGrabber(this);
 
-	public HTTPserver(MudHost a_mud, String a_name)
+	public HTTPserver(MudHost a_mud, String a_name, int num)
 	{
-		super("HTTP-"+a_name);
+		super("HTTP-"+a_name+((num>0)?""+(num+1):""));
 		partialName = a_name;		//name without prefix
 		mud = a_mud;
+		myServerNumber=num;
 
-
-		if (!initServer())
+		if (!initServer(num))
 			isOK = false;
 		else
 			isOK = true;
@@ -94,7 +95,7 @@ public class HTTPserver extends Thread implements MudHost
 		return webCommon;
 	}
 
-	protected boolean initServer()
+	protected boolean initServer(int which)
 	{
 		if (!loadPropPage())
 		{
@@ -106,6 +107,15 @@ public class HTTPserver extends Thread implements MudHost
 		{
 			Log.errOut(getName(),"ERROR: required parameter missing: PORT");
 			return false;
+		}
+		if(which>0)
+		{
+			Vector V=CMParms.parseCommas(page.getStr("PORT"),true);
+			if(which>=V.size())
+			{
+				Log.errOut(getName(),"ERROR: not enough PORT entries to support #"+(which+1));
+				return false;
+			}
 		}
 		if (page.getStr("DEFAULTFILE").length()==0)
 		{
@@ -261,9 +271,12 @@ public class HTTPserver extends Thread implements MudHost
 
 		try
 		{
-			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
+			
+			Vector allports=CMParms.parseCommas(page.getStr("PORT"),true);
+			myPort=CMath.s_int((String)allports.elementAt(myServerNumber));
+			servsock=new ServerSocket(myPort, q_len, bindAddr);
 
-			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));
+			Log.sysOut(getName(),"Started on port: "+myPort);
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
 
@@ -347,9 +360,13 @@ public class HTTPserver extends Thread implements MudHost
 		super.interrupt();
 	}
 
+	public int totalPorts()
+	{
+		return CMParms.parseCommas(page.getStr("PORT"),true).size();
+	}
 	public int getPort()
 	{
-		return page.getInt("PORT");
+		return myPort;
 	}
 
 	public String getPortStr()

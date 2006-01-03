@@ -36,9 +36,9 @@ public class Spell_Friends extends Spell
 	public String ID() { return "Spell_Friends"; }
 	public String name(){return "Friends";}
 	public String displayText(){return "(Friends spell)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

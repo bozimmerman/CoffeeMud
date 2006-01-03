@@ -36,9 +36,9 @@ public class Spell_LimbRack extends Spell
 	public String ID() { return "Spell_LimbRack"; }
 	public String name(){return "Limb Rack";}
 	public String displayText(){return "(Being pulled apart)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public Vector limbsToRemove=new Vector();
 	
 	public boolean tick(Tickable ticking, int tickID)

@@ -39,10 +39,10 @@ public class Skill_Trip extends StdSkill
 	public String displayText(){ return "(Tripped)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"TRIP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_MOVING;}
 	protected int enhancement=0;
 	public int abilityCode(){return enhancement;}

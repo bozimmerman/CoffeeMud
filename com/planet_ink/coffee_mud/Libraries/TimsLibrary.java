@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.sun.rsasign.e;
 
 import java.util.*;
 
@@ -35,7 +34,6 @@ import java.util.*;
 public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 {
     public String ID(){return "TimsLibrary";}
-    protected static MOB fakeMOB=null;
     
 	public int timsLevelCalculator(Item I)
 	{
@@ -135,7 +133,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			{
 				A=(Ability)theSpells.elementAt(v);
 				int mul=1;
-				if(A.abstractQuality()==Ability.MALICIOUS) mul=-1;
+				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS) mul=-1;
 				if(ID.indexOf("HAVE")>=0)
 					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
@@ -865,7 +863,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			{
 				A=(Ability)theSpells.elementAt(v);
 				int mul=1;
-				if(A.abstractQuality()==Ability.MALICIOUS) mul=-1;
+				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS) mul=-1;
 				if(ID.indexOf("HAVE")>=0)
 					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
@@ -885,7 +883,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				A=(Ability)e.nextElement();
-				if(((A.classificationCode()&(Ability.ALL_CODES))==Ability.SPELL))
+				if(((A.classificationCode()&(Ability.ALL_ACODES))==Ability.ACODE_SPELL))
 				{
 					int lowLevel=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if((lowLevel>0)&&(lowLevel<25))
@@ -904,12 +902,12 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		while(((++tries)<1000))
 		{
 			Ability A=(Ability)spellSet.elementAt(CMLib.dice().roll(1,spellSet.size(),-1));
-			if(((malicious)&&(A.canTarget(fakeMOB))&&(A.enchantQuality()==Ability.MALICIOUS)))
+			if(((malicious)&&(A.canTarget(Ability.CAN_MOBS))&&(A.enchantQuality()==Ability.QUALITY_MALICIOUS)))
 				return A;
 			if((!malicious)
-		    &&(A.canAffect(fakeMOB))
-		    &&(A.enchantQuality()!=Ability.MALICIOUS)
-		    &&(A.enchantQuality()!=Ability.INDIFFERENT))
+		    &&(A.canAffect(Ability.CAN_MOBS))
+		    &&(A.enchantQuality()!=Ability.QUALITY_MALICIOUS)
+		    &&(A.enchantQuality()!=Ability.QUALITY_INDIFFERENT))
 				return A;
 		}
 		return null;

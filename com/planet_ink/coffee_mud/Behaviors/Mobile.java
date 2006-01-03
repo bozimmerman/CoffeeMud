@@ -198,7 +198,7 @@ public class Mobile extends ActiveTicker
                 A=mob.fetchEffect(i);
                 if((A.canBeUninvoked())
                 &&(!A.isAutoInvoked())
-                &&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+                &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
                 &&(CMLib.dice().roll(1,10,0)>1))
                 {
                     tickDown=0;

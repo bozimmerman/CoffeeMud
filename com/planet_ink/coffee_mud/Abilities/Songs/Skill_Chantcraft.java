@@ -35,5 +35,5 @@ public class Skill_Chantcraft extends Skill_Songcraft
 {
 	public String ID() { return "Skill_Chantcraft"; }
 	public String name(){ return "Chantcraft";}
-	public int craftType(){return Ability.CHANT;}
+	public int craftType(){return Ability.ACODE_CHANT;}
 }

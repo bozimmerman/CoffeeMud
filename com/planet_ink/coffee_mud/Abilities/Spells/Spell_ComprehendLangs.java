@@ -36,9 +36,9 @@ public class Spell_ComprehendLangs extends Spell
 	public String ID() { return "Spell_ComprehendLangs"; }
 	public String name(){return "Comprehend Languages";}
 	public String displayText(){return "(Comprehend Languages)";}
-	public int abstractQuality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 
 	public void unInvoke()
@@ -88,7 +88,7 @@ public class Spell_ComprehendLangs extends Spell
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
-			&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+			&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
 			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 			{
 				String str=this.getMsgFromAffect(msg.sourceMessage());

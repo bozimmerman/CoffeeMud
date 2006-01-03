@@ -316,7 +316,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
             for(int a=R.numEffects();a>=0;a--)
             {
                 A=R.fetchEffect(a);
-                if(((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY)))
+                if(((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
                 {
                     A.unInvoke();
                     R.delEffect(A);

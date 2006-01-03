@@ -37,10 +37,10 @@ public class Spell_RogueLimb extends Spell
 	public String ID() { return "Spell_RogueLimb"; }
 	public String name(){return "Rogue Limb";}
     public String displayText(){return "(Rogue Limb)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public MOB rogueLimb=null;
 

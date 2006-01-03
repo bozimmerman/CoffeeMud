@@ -35,7 +35,7 @@ public class Prayer_Plague extends Prayer
 {
 	public String ID() { return "Prayer_Plague"; }
 	public String name(){ return "Plague";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

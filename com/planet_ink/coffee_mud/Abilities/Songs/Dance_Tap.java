@@ -36,7 +36,7 @@ public class Dance_Tap extends Dance
 {
 	public String ID() { return "Dance_Tap"; }
 	public String name(){ return "Tap";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public boolean tick(Tickable ticking, int tickID)

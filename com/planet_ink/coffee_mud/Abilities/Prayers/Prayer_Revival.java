@@ -38,7 +38,7 @@ public class Prayer_Revival extends Prayer
 	public String name(){ return "Revival";}
 	public String displayText(){return "(Revival)";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
 	public void unInvoke()
 	{
@@ -137,7 +137,7 @@ public class Prayer_Revival extends Prayer
 									{
 										MOB M2=(MOB)clerics.elementAt(c);
 										if(M2!=mob)
-											CMLib.combat().postExperience(M2,M,null,25,false);
+											CMLib.leveler().postExperience(M2,M,null,25,false);
 									}
 								}
 							}

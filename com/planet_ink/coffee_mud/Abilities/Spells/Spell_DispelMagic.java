@@ -36,8 +36,8 @@ public class Spell_DispelMagic extends Spell
 	public String ID() { return "Spell_DispelMagic"; }
 	public String name(){return "Dispel Magic";}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;}
-	public int abstractQuality(){ return MALICIOUS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -51,15 +51,15 @@ public class Spell_DispelMagic extends Spell
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())
-			&&(((A.classificationCode()&Ability.SPELL)>0)||((A.classificationCode()&Ability.CHANT)>0)))
+			&&(((A.classificationCode()&Ability.ACODE_SPELL)>0)||((A.classificationCode()&Ability.ACODE_CHANT)>0)))
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
-				&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT))
 				&&((A.invoker()==mob)
     				||(A.invoker().envStats().level()<=mob.envStats().level()+5)
                     ||admin))

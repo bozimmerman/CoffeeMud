@@ -36,7 +36,7 @@ public class Play_Battlehymn extends Play
 {
 	public String ID() { return "Play_Battlehymn"; }
 	public String name(){ return "Battlehymn";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
 	protected int timesTicking=0;

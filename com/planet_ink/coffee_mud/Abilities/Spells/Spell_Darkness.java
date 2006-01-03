@@ -38,8 +38,8 @@ public class Spell_Darkness extends Spell
 	public String displayText(){return "(Darkness spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	public void unInvoke()
 	{

@@ -219,7 +219,7 @@ public class CMath
      * Returns the long value of a string without crashing
      * 
      * <br><br><b>Usage:</b> lSize = WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-     * @param long String to convert
+     * @param LONG String to convert
      * @return long Long value of the string
      */
     public static long s_long(String LONG)
@@ -234,7 +234,7 @@ public class CMath
      * Returns the floating point value of a string without crashing
      * 
      * <br><br><b>Usage:</b> lSize = WebIQBase.s_float(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-     * @param String to convert
+     * @param FLOAT String to convert
      * @return Float value of the string
      */
     public static float s_float(String FLOAT)
@@ -249,7 +249,7 @@ public class CMath
      * Returns the double value of a string without crashing
      * 
      * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-     * @param double String to convert
+     * @param DOUBLE String to convert
      * @return double Double value of the string
      */
     public static double s_double(String DOUBLE)
@@ -277,7 +277,7 @@ public class CMath
      * Returns the boolean value of a string without crashing
      * 
      * <br><br><b>Usage:</b> int num=s_bool(CMD.substring(14));
-     * @param INT Boolean value of string
+     * @param BOOL Boolean value of string
      * @return int Boolean value of the string
      */
     public static boolean s_bool(String BOOL)

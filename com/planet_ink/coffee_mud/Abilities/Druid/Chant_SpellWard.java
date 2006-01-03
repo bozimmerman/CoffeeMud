@@ -37,7 +37,7 @@ public class Chant_SpellWard extends Chant
 	public String ID() { return "Chant_SpellWard"; }
 	public String name(){return "Spell Ward";}
 	public String displayText(){return "(Spell Ward)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void unInvoke()
@@ -65,7 +65,7 @@ public class Chant_SpellWard extends Chant
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 		&&(invoker!=null)
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))

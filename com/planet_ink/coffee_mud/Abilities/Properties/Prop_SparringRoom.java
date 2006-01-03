@@ -55,7 +55,7 @@ public class Prop_SparringRoom extends Property
 			{
                 CharClass combatCharClass=CMLib.combat().getCombatDominantClass(source,target);
                 HashSet beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
-                combatCharClass.dispenseExperience(beneficiaries,target);
+                CMLib.combat().dispenseExperience(beneficiaries,target);
 			}
 			target.makePeace();
 			target.setRiding(null);

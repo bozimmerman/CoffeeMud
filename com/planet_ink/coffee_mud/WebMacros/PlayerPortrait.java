@@ -61,7 +61,7 @@ public class PlayerPortrait extends StdWebMacro
                 {
                     data=(Vector)data.firstElement();
                     String encoded=(String)data.lastElement();
-                    img=CMLib.encoder().B64decode(encoded);
+                    img=B64Encoder.B64decode(encoded);
                     if(img!=null)
                         Resources.submitResource("CMPORTRAIT-"+last,img);
                 }

@@ -36,7 +36,7 @@ public class Prayer_Disenchant extends Prayer
 {
 	public String ID() { return "Prayer_Disenchant"; }
 	public String name(){ return "Neutralize Item";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 

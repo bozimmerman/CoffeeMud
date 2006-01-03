@@ -38,11 +38,11 @@ public class Fighter_Whomp extends FighterSkill
 	public String name(){ return "Whomp";}
 	public String displayText(){return "(knocked out)";}
 	private static final String[] triggerStrings = {"WHOMP"};
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.SKILL;}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

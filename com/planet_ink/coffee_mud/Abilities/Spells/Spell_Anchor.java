@@ -36,9 +36,9 @@ public class Spell_Anchor extends Spell
 	public String ID() { return "Spell_Anchor"; }
 	public String name(){return "Anchor";}
 	public String displayText(){return "(Anchor)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
 	{
@@ -97,10 +97,10 @@ public class Spell_Anchor extends Spell
 				roomD=null;
 
             Ability A=(Ability)msg.tool();
-            if(((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-            ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-            ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-            ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
+            if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+            ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+            ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+            ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
             {
     			if(roomS!=null)
     				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");

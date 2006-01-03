@@ -37,7 +37,7 @@ public class StdSkill extends StdAbility
     boolean doneTicking=false;
     public String ID() { return "StdSkill"; }
     public String name(){ return "StdSkill";}
-    public int classificationCode(){return Ability.SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL;}
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
 }

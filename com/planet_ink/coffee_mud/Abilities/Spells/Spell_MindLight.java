@@ -38,7 +38,7 @@ public class Spell_MindLight extends Spell
 	public String displayText(){return "(Mind Light spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void unInvoke()
 	{

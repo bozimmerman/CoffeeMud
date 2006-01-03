@@ -98,9 +98,9 @@ public class CharGen extends StdCommand
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
-				mob.charStats().getCurrentClass().level(mob);
+				CMLib.leveler().level(mob);
 			else
-				CMLib.combat().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+				CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();

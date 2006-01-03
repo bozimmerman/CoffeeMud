@@ -37,9 +37,9 @@ public class Spell_Blademouth extends Spell
 	public String ID() { return "Spell_Blademouth"; }
 	public String name(){return "Blademouth";}
 	public String displayText(){return "(blades in your mouth)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public Vector limbsToRemove=new Vector();
 	
 	public void executeMsg(Environmental host, CMMsg msg)

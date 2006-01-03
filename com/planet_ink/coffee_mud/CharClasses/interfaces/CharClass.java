@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,80 +37,453 @@ import java.util.*;
  */
 public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject
 {
+	/**
+	 * Returns the generally displayable name of this class.  Usually deferred to
+	 * by name(int), which is more often called.
+	 * @see CharClass#name(int)
+	 * @see CharClass#nameSet()
+	 */
 	public String name();
+
+	/**
+	 * Returns the displayable name of this class, when the mob is the
+	 * given class level.  Usually defers to name()
+	 * @see CharClass#name()
+	 * @see CharClass#nameSet()
+	 */
     public String name(int classLevel);
+
+	/**
+	 * Returns all of the displayable names of this class.  Usually defers to name()
+	 * @see CharClass#name()
+	 * @see CharClass#name(int)
+	 */
     public String[] nameSet();
+
+    /**
+     * Returns the base-class of this class.  Typically only important in multi-classing
+     * systems that restrict class changing to those classes part of the same base class.
+     * True multi-classing systems don't need to worry about this value.  Can be the same
+     * as the ID() method.
+     * @return the base-class of this class
+     */
 	public String baseClass();
+
+	/**
+	 * Returns one or a combination of the Area.THEME_*
+	 * constants from the Area interface.  This bitmap
+	 * then describes the types of areas, skills, and
+	 * classes which can interact.
+	 * This bitmap is also used to to tell whether
+	 * the class is available for selection by users
+	 * at char creation time, whether they can
+	 * change to this class via spells, or whether
+	 * the class is utterly unavailable to them.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
+	 * @return the availability/theme of this class
+	 */
 	public int availabilityCode();
+
+	/**
+	 * Returns whether this given mob qualifies for this class, and
+	 * optionally gives them an error message.
+	 * @param mob the mob to evaluate the worthiness of
+	 * @param quiet false to give the mob error messages, true for silence
+	 * @return whether the given mob is worthy of this class
+	 */
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet);
+
+	/**
+	 * Returns any boot-time parameters that are required to fully define
+	 * this instance of a charclass.  Charclasses are shared among mobs,
+	 * but that doesn't mean mulitple instances of a single class can't
+	 * generate different versions of themselves for the classloader, with
+	 * different parameters.  GenCharClass is an example.
+	 * @see CharClass#setClassParms(String)
+	 * @see CharClass#isGeneric()
+	 * @return any parameters used to define this class
+	 */
 	public String classParms();
+
+	/**
+	 * Sets any boot-time parameters that are required to fully define
+	 * this instance of a charclass.  Charclasses are shared among mobs,
+	 * but that doesn't mean mulitple instances of a single class can't
+	 * generate different versions of themselves for the classloader, with
+	 * different parameters.  GenCharClass is an example.
+	 * @see CharClass#classParms()
+	 * @see CharClass#isGeneric()
+	 * @param parms any parameters used to define this class
+	 */
 	public void setClassParms(String parms);
+
+	/**
+	 * Returns whether this class is fully defined using the setParms
+	 * method, as opposed to being defined by its Java code.
+	 * @see CharClass#classParms()
+	 * @see CharClass#setClassParms(String)
+	 * @return whether this class is defined fully by parameters
+	 */
 	public boolean isGeneric();
+
+	/**
+	 * Returns a Vector of security flag strings granted to all mobs/players
+	 * who are this class, and the given class level or lower.
+	 * @param classLevel the class level of the mob
+	 * @return a vector of security flag strings
+	 */
     public Vector getSecurityGroups(int classLevel);
 
+    /**
+     * This method should be called whenever a mob has this class added to
+     * their charStats list. Its purpose is to outfit the mob with any
+     * necessary abilities, or perform other necessary changes to the mob
+     * to reflect the class addition or change.  A character class is
+     * considered borrowed if its existence is derived from something else,
+     * or its skills/abilities should not be saved as a permanent feature
+     * of the mob.
+     * @param mob the mob being outfitted with this class
+     * @param isBorrowedClass whether the charclasses skills are borrowed(true) or permanent
+     * @param verifyOnly send true if no skills or changes are to be made
+     */
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
+
+	/**
+	 * Called when a class is no longer the current dominant class of a player or mob,
+	 * usually during class training.
+	 * @param mob the mob whose career to end or put aside
+	 */
 	public void endCharacter(MOB mob);
-	public void gainExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
-	public void loseExperience(MOB mob, int amount);
-	public int getLevelExperience(int level);
-	public void dispenseExperience(HashSet killers, MOB killed);
+
+
+	/**
+	 * Returns whether the given mob should share in the experience gained by the killer
+	 * for having killed the killed.  Assumes the mob is in the same room, and requires
+	 * the followers of the killer be passed in.
+	 * @param killer the killer mob
+	 * @param killed who the killer mob killed
+	 * @param mob the mob whose sharing capacity is being evaluated
+	 * @param followers the killers followers
+	 * @return whether the mob shares in the exp gains
+	 */
     public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers);
-    
-	public void level(MOB mob);
-	public void unLevel(MOB mob);
-	public Vector outfit();
+
+    /**
+     * Typically called when a mob gains a level in this class, to allow the class to 
+     * assign any new skills.  Can also be called just to populate a mob with class skills,
+     * so it should also confirm any lower level skills also.
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
+     * @param mob the mob to give abilities to.
+     * @param isBorrowedClass whether the skills are savable (false) or temporary (true)
+     */
+	public void grantAbilities(MOB mob, boolean isBorrowedClass);
 	
+	/**
+	 * This method is called whenever a player gains a level while a member of this class.  If
+	 * there are any special things which need to be done to a player who gains a level, they
+	 * can be done in this method.  By default, it doesn't do anything.
+	 * @param mob the mob to level up
+	 * @param gainedAbilityIDs the set of abilities/skill IDs gained during this leveling process
+	 */
+	public void level(MOB mob, Vector gainedAbilityIDs);
+	
+	/**
+	 * Whenever a player or mob of this race gains experience, this method gets a chance
+	 * to modify the amount before the gain actually occurs.  
+	 * @param mob the player or mob gaining experience
+	 * @param victim if applicable, the mob or player who died to give the exp
+	 * @param amount the amount of exp on track for gaining
+	 * @return the adjusted amount of experience to gain
+	 */
+	public int adjustExperienceGain(MOB mob, MOB victim, int amount);
+	
+	/**
+	 * This method is called whenever a player loses a level while a member of this class.  If
+	 * there are any special things which need to be done to a player who loses a level, they
+	 * can be done in this method.  By default, it doesn't do anything.
+	 * @param mob the mob to level down
+	 */
+	public void unLevel(MOB mob);
+	
+	/**
+	 * Returns a vector of Item objects representing the standard
+	 * clothing, weapons, or other objects commonly given to players
+	 * of this class just starting out.
+	 * @return a vector of Item objects
+	 */
+	public Vector outfit();
+
+	/**
+	 * This method is called whenever a player casts a spell which has a lasting
+	 * effect on the target.  This method is called even if the class is not the
+	 * players CURRENT class.
+	 * @param myChar the caster or skill user
+	 * @param skill the skill or spell that was cast.
+	 * @param duration the default duration
+	 * @return usually, it just returns default again
+	 */
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
+	/**
+	 * This method fills in combat and rejuvination related stats for the given
+	 * mob of this class at the given level.  This method should create a mob
+	 * for the caller if mob==null.
+	 * @param mob the mob to fill out, or null
+	 * @param level the level of the mob
+	 * @return the filled in mob
+	 */
 	public MOB fillOutMOB(MOB mob, int level);
 
+	/**
+	 * Returns the amount of mana the given mob would have being
+	 * this class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of mana an npc of this class should have
+	 */
 	public int getLevelMana(MOB mob);
+	/**
+	 * Returns the number of attacks the given mob would have being
+	 * this class.
+	 * @param mob the mob who would be this class
+	 * @return the number of attacks an npc of this class should have
+	 */
 	public double getLevelSpeed(MOB mob);
+	/**
+	 * Returns the amount of movement the given mob would have being
+	 * this class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of movement an npc of this class should have
+	 */
 	public int getLevelMove(MOB mob);
+	/**
+	 * Returns the amount of combat prowess the given mob would have being
+	 * this class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of combat prowess an npc of this class should have
+	 */
 	public int getLevelAttack(MOB mob);
+	/**
+	 * Returns the armor rating the given mob would have being
+	 * this class.
+	 * @param mob the mob who would be this class
+	 * @return the armor rating an npc of this class should have
+	 */
 	public int getLevelArmor(MOB mob);
+	/**
+	 * Returns the amount of damage per hit the given mob would have being
+	 * this class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of damage per hit an npc of this class should have
+	 */
 	public int getLevelDamage(MOB mob);
+	/**
+	 * Returns the number of bonus practices received by members of
+	 * this class when they gain a level.  This is over and above
+	 * the normal formula applied during the leveling process.
+	 * @return the number of bonus practices to grant
+	 */
 	public int getBonusPracLevel();
+	/**
+	 * Returns the number of bonus attack points received by members of
+	 * this class when they gain a level.  This is over and above
+	 * the normal formula applied during the leveling process.
+	 * @return the number of bonus attack points to grant
+	 */
 	public int getBonusAttackLevel();
+	/**
+	 * Returns which of the CharStats.STAT_* constants should be
+	 * used to calculate the standard attack prowess points given
+	 * when a member of this class gains a level.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @return a CharStats.STAT_* attribute constant code
+	 */
 	public int getAttackAttribute();
+	/**
+	 * Returns the number of practices received by members of
+	 * this class when they are first created.
+	 * @return the number of initial practices to grant
+	 */
 	public int getPracsFirstLevel();
+	/**
+	 * Returns the number of training points received by members of
+	 * this class when they are first created.
+	 * @return the number of initial trains to grant
+	 */
 	public int getTrainsFirstLevel();
+	/**
+	 * Returns the number of levels which must be gained by a member
+	 * of this class before they gain 1 more point of default damage
+	 * per hit.
+	 * @return the number of levels between damage gains
+	 */
 	public int getLevelsPerBonusDamage();
+	/**
+	 * The number multiplied by this classes movement-related character stat
+	 * (Strength, Int, etc) in order to determine the BASE movement gained every
+	 * level.  This is applied after the stat score has been divided by 18.
+	 * @return a multiplier for a players movement related char stat score 
+	 */
 	public int getMovementMultiplier();
+	/**
+	 * This number is used to generate the hit point bonus for mobs/players
+	 * when they gain levels by dividing their hit point stat (constitution)
+	 * by this number.
+	 * @see CharClass#getHPDice()
+	 * @see CharClass#getHPDie()
+	 * @return the hit point char stat divisor
+	 */
 	public int getHPDivisor();
+	/**
+	 * Hit points gained upon level is calculated by multiplying this stat by
+	 * getHPDie().
+	 * @see CharClass#getHPDie()
+	 * @return a hit point gain multiplier
+	 */
 	public int getHPDice();
+	/**
+	 * Hit points gained upon level is calculated by multiplying this stat by
+	 * getHPDice().
+	 * @see CharClass#getHPDice()
+	 * @return a hit point gain multiplier
+	 */
 	public int getHPDie();
+	/**
+	 * This number is used to generate the mana bonus for mobs/players
+	 * when they gain levels by dividing their mana stat (intelligence)
+	 * by this number.
+	 * @see CharClass#getManaDice()
+	 * @see CharClass#getManaDie()
+	 * @return the mana char stat divisor
+	 */
 	public int getManaDivisor();
+	/**
+	 * mana gained upon level is calculated by multiplying this stat by
+	 * getManaDie().
+	 * @see CharClass#getManaDie()
+	 * @return a mana gain multiplier
+	 */
 	public int getManaDice();
+	/**
+	 * mana gained upon level is calculated by multiplying this stat by
+	 * getManaDice().
+	 * @see CharClass#getManaDice()
+	 * @return a mana gain multiplier
+	 */
 	public int getManaDie();
+	/**
+	 * Returns a text description of any weapon restrictions
+	 * imposed by this class upon its members.
+	 * @return a text description of weapon retrictions
+	 */
 	public String weaponLimitations();
+	/**
+	 * Returns a text description of any armor restrictions
+	 * imposed by this class upon its members.
+	 * @return a text description of armor retrictions
+	 */
 	public String armorLimitations();
+	/**
+	 * Returns a text description of any misc restrictions
+	 * imposed by this class upon its members.
+	 * @return a text description of misc retrictions
+	 */
 	public String otherLimitations();
+	/**
+	 * Returns a text description of any bonus properties
+	 * granted by this class to its members.
+	 * @return a text description of bonus properties
+	 */
 	public String otherBonuses();
+	/**
+	 * Returns a text description of the stat qualifications
+	 * required to become a member of this character class
+	 * @return a txt description of stat qualifications
+	 */
 	public String statQualifications();
+	/**
+	 * Returns a bonus or negative adjustments to the base
+	 * maximum for the CharStats.STAT_* base statistics.
+	 * The maximum is the most a player can train up to.
+	 * The array only holds enough to the first 6 base stats.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @return a six element array of adjustments to max base stats
+	 */
 	public int[] maxStatAdjustments();
-	
-	public String[] getStatCodes();
-	public String getStat(String code);
-	public void setStat(String code, String val);
-	public boolean sameAs(CharClass E);
-	
+
+	/**
+	 * Whether this class can be associated with a race.
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
+	 * @return whether this class can have a class
+	 */
 	public boolean raceless();
+	/**
+	 * Whether players of this class can be associated with an experience level.
+	 * @return whether players of this class can have a level
+	 */
 	public boolean leveless();
+	/**
+	 * Whether players of this class can gain or lose experience points.
+	 * @return whether players of this class can gain or lose experience points
+	 */
 	public boolean expless();
-	
+
+	/**
+     * Returns an array of the string names of those fields which are modifiable on this object at run-time by
+     * builders.
+     * @see CharClass#getStat(String)
+     * @see CharClass#setStat(String, String)
+     * @return list of the fields which may be set.
+     */
+	public String[] getStatCodes();
+    /**
+     * An alternative means of retreiving the values of those fields on this object which are modifiable at
+     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
+     * Values returned are always strings, even if the field itself is numeric or a list.
+     * @see CharClass#getStatCodes()
+     * @param code the name of the field to read.
+     * @return the value of the field read
+     */
+	public String getStat(String code);
+    /**
+     * An alternative means of setting the values of those fields on this object which are modifiable at
+     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
+     * The value passed in is always a string, even if the field itself is numeric or a list.
+     * @see CharClass#getStatCodes()
+     * @param code the name of the field to set
+     * @param val the value to set the field to
+     */
+	public void setStat(String code, String val);
+    /**
+     * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
+     * calling getStat on both objects and comparing the values.
+     * @see CharClass#getStatCodes()
+     * @see CharClass#getStat(String)
+     * @param E the CharClass to compare this one to
+     * @return whether this object is the same as the one passed in
+     */
+	public boolean sameAs(CharClass E);
+
+	/** constant returned by allowedArmorLevel() to designate any allowed armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_ANY=0;
+	/** constant returned by allowedArmorLevel() to designate only cloth armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_CLOTH=1;
+	/** constant returned by allowedArmorLevel() to designate only leather armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_LEATHER=2;
+	/** constant returned by allowedArmorLevel() to designate only nonmetal armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_NONMETAL=3;
+	/** constant returned by allowedArmorLevel() to designate only plant/wood armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_VEGAN=4;
+	/** constant returned by allowedArmorLevel() to designate only metal armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_METALONLY=5;
+	/** constant returned by allowedArmorLevel() to designate only metal/stone armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_OREONLY=6;
+	/** useful constant for calculating the wear locations to which armor restrictions apply */
 	public static long ARMOR_WEARMASK=Item.WORN_TORSO|Item.WORN_LEGS|Item.WORN_ARMS|Item.WORN_WAIST|Item.WORN_HEAD;
+	/** list of string descriptions for the CharClass.ARMOR_* constants, ordered by their value.  @see CharClass */
 	public static final String[] ARMOR_DESCS={
 		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
 	};
-	
+	/** list of long string descriptions for the CharClass.ARMOR_* constants, ordered by their value.  @see CharClass */
 	public static final String[] ARMOR_LONGDESC={
 		"May wear any armor.",
 		"Must wear cloth, vegetation, or paper based armor.",
@@ -120,19 +493,32 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 		"Must wear metal armor",
 		"Must wear stone, crystal, or metal armor."
 	};
-	
+
+	/** constant returned by allowedWeaponLevel() to designate any weapons. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_ANY=0;
+	/** constant returned by allowedWeaponLevel() to designate daggers only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_DAGGERONLY=1;
+	/** constant returned by allowedWeaponLevel() to designate swords/daggers only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_THIEFLIKE=2;
+	/** constant returned by allowedWeaponLevel() to designate natural weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_NATURAL=3;
+	/** constant returned by allowedWeaponLevel() to designate burglar class weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_BURGLAR=4;
+	/** constant returned by allowedWeaponLevel() to designate stone weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_ROCKY=5;
+	/** constant returned by allowedWeaponLevel() to designate mage weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_MAGELIKE=6;
+	/** constant returned by allowedWeaponLevel() to designate evil cleric weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_EVILCLERIC=7;
+	/** constant returned by allowedWeaponLevel() to designate good cleric weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_GOODCLERIC=8;
+	/** constant returned by allowedWeaponLevel() to designate neutral cleric weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_NEUTRALCLERIC=9;
+	/** constant returned by allowedWeaponLevel() to designate any cleric weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_ALLCLERIC=10;
+	/** constant returned by allowedWeaponLevel() to designate flails only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_FLAILONLY=11;
+	/** constant set of integer arrays defining the Weapon.CLASS_* constants for the CharClass.WEAPONS_* constants, ordered by CharClass.WEAPONS_* values. */
 	public static final int[][] WEAPONS_SETS={
 /*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
 /*1*/{Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER},
@@ -147,6 +533,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*10*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
 /*11*/{Weapon.CLASS_NATURAL,Weapon.CLASS_FLAILED},
 	};
+	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
 	public static final String[] WEAPONS_LONGDESC={
 /*0*/"May use any weapons.",
 /*1*/"Must use dagger-like or natural weapons.",
@@ -161,9 +548,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*10*/"Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
 /*11*/"Must use flailed weapons."
 	};
-		
+
+	/** for character classes that define themselves using getParms, this can designate racelessness bitmaps */
 	public final static int GENFLAG_NORACE=1;
+	/** for character classes that define themselves using getParms, this can designate levelless bitmaps */
 	public final static int GENFLAG_NOLEVELS=2;
+	/** for character classes that define themselves using getParms, this can designate expless bitmaps */
 	public final static int GENFLAG_NOEXP=4;
-	
 }

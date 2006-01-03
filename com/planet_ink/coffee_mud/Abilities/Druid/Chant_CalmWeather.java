@@ -37,7 +37,7 @@ public class Chant_CalmWeather extends Chant
 {
 	public String ID() { return "Chant_CalmWeather"; }
 	public String name(){ return "Calm Weather";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}

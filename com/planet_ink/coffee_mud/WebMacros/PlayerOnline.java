@@ -104,7 +104,7 @@ public class PlayerOnline extends StdWebMacro
                         {
                             if(buf==null) return "File `"+file+"` not uploaded -- no buffer!";
                             if(buf.length>MAX_IMAGE_SIZE) return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
-                            String encoded=CMLib.encoder().B64encodeBytes(buf);
+                            String encoded=B64Encoder.B64encodeBytes(buf);
                             M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+file);
                             CMLib.database().DBUpdatePlayerStatsOnly(M);
                             CMLib.database().DBCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);

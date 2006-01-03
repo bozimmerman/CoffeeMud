@@ -910,7 +910,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Ability A=I.fetchEffect(i);
 			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY))
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY))
 				return true;
 		}
 		return false;
@@ -1000,7 +1000,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public String getAbilityType(Ability A)
     {
         if(A==null) return "";
-        return Ability.TYPE_DESCS[A.classificationCode()&Ability.ALL_CODES];
+        return Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES];
     }
     public String getAbilityDomain(Ability A)
     {
@@ -1009,8 +1009,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     }
     public int getAbilityType(String name)
     {
-        for(int i=0;i<Ability.TYPE_DESCS.length;i++)
-            if(name.equalsIgnoreCase(Ability.TYPE_DESCS[i]))
+        for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+            if(name.equalsIgnoreCase(Ability.ACODE_DESCS[i]))
                 return i;
         return -1;
     }

@@ -36,7 +36,7 @@ public class Spell_FakeSpring extends Spell
 	public String name(){return "Fake Spring";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()
 	{

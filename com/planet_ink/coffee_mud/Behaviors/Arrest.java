@@ -1670,7 +1670,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 				}
 				else
-				if(laws.basicCrimes().containsKey("ASSAULT"))
+				if((laws.basicCrimes().containsKey("ASSAULT"))
+			    &&((msg.source().isMonster())||(!isTroubleMaker((MOB)msg.target()))))
 				{
 					String[] info=(String[])laws.basicCrimes().get("ASSAULT");
 					fillOutWarrant(msg.source(),

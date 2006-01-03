@@ -36,9 +36,9 @@ public class Spell_FeatherFall extends Spell
 	public String ID() { return "Spell_FeatherFall"; }
 	public String name(){return "Feather Fall";}
 	public String displayText(){return "(Feather Fall)";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

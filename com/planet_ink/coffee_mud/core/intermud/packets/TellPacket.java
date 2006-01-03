@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.net.i3.TellPacket
+ * com.planet_ink.coffee_mud.core.intermud.packets.TellPacket
  * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class TellPacket extends Packet {
 	
     /**
      * Constructs a tell package based on an I3 mud mode vector.
-     * @exception imaginary.net.i3.InvalidPacketException thrown if the incoming packet is bad
+     * @exception com.planet_ink.coffee_mud.core.intermud.packets.InvalidPacketException thrown if the incoming packet is bad
      * @param v the I3 mud mode vector containing the incoming tell
      */
     public TellPacket(Vector v) throws InvalidPacketException {
@@ -99,8 +99,8 @@ public class TellPacket extends Packet {
 
     /**
      * Sends a properly constructed outgoing tell to its target.
-     * @exception imaginary.net.i3.InvalidPacketException thrown if this packet was not properly constructed
-     * @see imaginary.net.i3.Packet#send
+     * @exception com.planet_ink.coffee_mud.core.intermud.packets.InvalidPacketException thrown if this packet was not properly constructed
+     * @see com.planet_ink.coffee_mud.core.intermud.packets.Packet#send
      */
     public void send() throws InvalidPacketException {
         if( message == null || sender_visible_name == null ) {

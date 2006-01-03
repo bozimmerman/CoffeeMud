@@ -37,12 +37,12 @@ public class Fighter_ShieldBlock extends FighterSkill
 	public String ID() { return "Fighter_ShieldBlock"; }
 	public String name(){ return "Shield Block";}
 	public String displayText(){return "";};
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.SKILL; }
+	public int classificationCode(){ return Ability.ACODE_SKILL; }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

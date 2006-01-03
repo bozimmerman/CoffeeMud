@@ -67,7 +67,7 @@ public class Alchemy extends CraftingSkill
 			else
 			if(tickUp==0)
 			{
-				if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				{
 					commonEmote(mob,"<S-NAME> start(s) praying for "+building.name()+".");
 					displayText="You are praying for "+building.name();
@@ -228,7 +228,7 @@ public class Alchemy extends CraftingSkill
 				return false;
 			}
 			int experienceToLose=10;
-			if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			{
 				requiresFire=false;
 				fire=null;
@@ -285,7 +285,7 @@ public class Alchemy extends CraftingSkill
 				return false;
 
             playSound=null;
-			CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();

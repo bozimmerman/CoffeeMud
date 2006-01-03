@@ -246,19 +246,19 @@ public class CharClassData extends StdWebMacro
 					totalqualified++;
 				Ability A=CMClass.getAbility(able);
 				if(A==null) continue;
-				if((A.abstractQuality()==Ability.BENEFICIAL_OTHERS)
-				   ||(A.abstractQuality()==Ability.BENEFICIAL_SELF))
+				if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+				   ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
 				{
 					beneficialSkills++;
 					if(gained) beneficialSkillsGained++;
 				}
-				if(A.abstractQuality()==Ability.MALICIOUS)
+				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 				{
 					maliciousSkills++;
 					if(gained) maliciousSkillsGained++;
 				}
 			}
-			M.charStats().getCurrentClass().level(M);
+			CMLib.leveler().level(M);
 		}
 		StringBuffer str=new StringBuffer("");
 		str.append("<BR>Rule#1: Avg gained skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalgained,30)),(long)100));

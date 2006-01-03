@@ -77,18 +77,18 @@ public class AbilityData extends StdWebMacro
 				{
 					switch(A.abstractQuality())
 					{
-					case Ability.MALICIOUS:
+					case Ability.QUALITY_MALICIOUS:
 						str.append("Malicious, ");
 						break;
-					case Ability.BENEFICIAL_OTHERS:
-					case Ability.BENEFICIAL_SELF:
+					case Ability.QUALITY_BENEFICIAL_OTHERS:
+					case Ability.QUALITY_BENEFICIAL_SELF:
 						str.append("Always Beneficial, ");
 						break;
-					case Ability.OK_OTHERS:
-					case Ability.OK_SELF:
+					case Ability.QUALITY_OK_OTHERS:
+					case Ability.QUALITY_OK_SELF:
 						str.append("Sometimes Beneficial, ");
 						break;
-					case Ability.INDIFFERENT:
+					case Ability.QUALITY_INDIFFERENT:
 						str.append("Circumstantial, ");
 						break;
 					}
@@ -104,18 +104,18 @@ public class AbilityData extends StdWebMacro
 				{
 					switch(A.abstractQuality())
 					{
-					case Ability.INDIFFERENT:
+					case Ability.QUALITY_INDIFFERENT:
 						str.append("Item or Room, ");
 						break;
-					case Ability.MALICIOUS:
+					case Ability.QUALITY_MALICIOUS:
 						str.append("Others, ");
 						break;
-					case Ability.BENEFICIAL_OTHERS:
-					case Ability.OK_OTHERS:
+					case Ability.QUALITY_BENEFICIAL_OTHERS:
+					case Ability.QUALITY_OK_OTHERS:
 						str.append("Caster or others, ");
 						break;
-					case Ability.BENEFICIAL_SELF:
-					case Ability.OK_SELF:
+					case Ability.QUALITY_BENEFICIAL_SELF:
+					case Ability.QUALITY_OK_SELF:
 						str.append("Caster only, ");
 						break;
 					}
@@ -133,14 +133,14 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("DOMAIN"))
 				{
 					StringBuffer thang=new StringBuffer("");
-					if((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 					{
 						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
 						domain=domain>>5;
 						thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase());
 					}
 					else
-						thang.append(Ability.TYPE_DESCS[A.classificationCode()&Ability.ALL_CODES].toLowerCase());
+						thang.append(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].toLowerCase());
 					if(thang.length()>0)
 					{
 						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));

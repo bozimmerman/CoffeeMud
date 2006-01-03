@@ -52,34 +52,47 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 	protected int practicesToPractice(){return 1;}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long flags(){return 0;}
 	public int usageType(){return USAGE_MANA;}
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
 	public int castingQuality(MOB invoker, Environmental target)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
-			return Ability.INDIFFERENT;
+			return Ability.QUALITY_INDIFFERENT;
 		switch(abstractQuality())
 		{
-		case BENEFICIAL_OTHERS:
-			if(invoker==target) return BENEFICIAL_SELF;
-			return BENEFICIAL_OTHERS;
-		case MALICIOUS:
-			return MALICIOUS;
-		case BENEFICIAL_SELF:
-			if((target instanceof MOB)&&(invoker!=target)) return INDIFFERENT;
-			return BENEFICIAL_SELF;
+		case  Ability.QUALITY_BENEFICIAL_OTHERS:
+			if(invoker==target) return  Ability.QUALITY_BENEFICIAL_SELF;
+			return  Ability.QUALITY_BENEFICIAL_OTHERS;
+		case Ability.QUALITY_MALICIOUS:
+			return Ability.QUALITY_MALICIOUS;
+		case  Ability.QUALITY_BENEFICIAL_SELF:
+			if((target instanceof MOB)&&(invoker!=target)) return Ability.QUALITY_INDIFFERENT;
+			return  Ability.QUALITY_BENEFICIAL_SELF;
 		default:
-			return INDIFFERENT;
+			return Ability.QUALITY_INDIFFERENT;
 		}
 	}
+	/**
+	 * Designates whether, when used as a property/effect, what sort of objects this 
+	 * ability can affect. Uses the Ability.CAN_* constants.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @return a mask showing the type of objects this ability can affect
+	 */
 	protected int canAffectCode(){return Ability.CAN_AREAS|
 										 Ability.CAN_ITEMS|
 										 Ability.CAN_MOBS|
 										 Ability.CAN_ROOMS|
 										 Ability.CAN_EXITS;}
+	/**
+	 * Designates whether, when invoked as a skill, what sort of objects this 
+	 * ability can effectively target. Uses the Ability.CAN_* constants.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @return a mask showing the type of objects this ability can target
+	 */
 	protected int canTargetCode(){return Ability.CAN_AREAS|
 										 Ability.CAN_ITEMS|
 										 Ability.CAN_MOBS|
@@ -116,7 +129,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		}
 		return new StdAbility();
 	}
-	public int classificationCode(){ return Ability.SKILL; }
+	public int classificationCode(){ return Ability.ACODE_SKILL; }
 
 	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
@@ -207,6 +220,8 @@ public class StdAbility extends ForeignScriptable implements Ability
 		return adjLevel;
 	}
 
+	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
+	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
 	public boolean canAffect(Environmental E)
 	{
 		if((E==null)&&(canAffectCode()==0)) return true;
@@ -240,13 +255,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS)&&(mob.getVictim()!=null))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.BENEFICIAL_SELF))
+		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF))
 			target=mob;
 		else
-		if((targetName.length()==0)&&(abstractQuality()!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(abstractQuality()!=Ability.QUALITY_MALICIOUS))
 			target=mob;
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
@@ -323,7 +338,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(givenTarget!=null)
 			target=givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.MALICIOUS))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
@@ -1133,7 +1148,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(castingQuality(mob,target)==Ability.MALICIOUS)
+		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
@@ -1145,7 +1160,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int somanticCastCode(MOB mob, Environmental target, boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-		if(castingQuality(mob,target)==Ability.MALICIOUS)
+		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL;
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
@@ -1271,31 +1286,16 @@ public class StdAbility extends ForeignScriptable implements Ability
 	}
 
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		return;
 	}
 
-	/** this method is used to tell the system whether
-	 * a PENDING message may take place
-	 */
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		return true;
 	}
 
-	/**
-	 * this method allows any environmental object
-	 * to behave according to a timed response.  by
-	 * default, it will never be called unless the
-	 * object uses the ServiceEngine to setup service.
-	 * The tickID allows granularity with the type
-	 * of service being requested.
-	 */
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))

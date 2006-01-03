@@ -38,7 +38,7 @@ public class Disease_Magepox extends Disease
 	public String displayText(){ return "(Magepox)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
 	protected int DISEASE_TICKS(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}

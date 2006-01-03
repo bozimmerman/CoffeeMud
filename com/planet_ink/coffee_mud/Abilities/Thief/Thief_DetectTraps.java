@@ -37,7 +37,7 @@ public class Thief_DetectTraps extends ThiefSkill
 	public String name(){ return "Detect Traps";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CHECK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected Environmental lastChecked=null;

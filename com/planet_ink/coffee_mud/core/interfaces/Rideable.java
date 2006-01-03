@@ -100,7 +100,7 @@ public interface Rideable extends Environmental
      * @see Rideable
      * @see Rideable#numRiders()
      * @param which which rider to detch
-     * @return
+     * @return the rider riding
      */
 	public Rider fetchRider(int which);
     /**

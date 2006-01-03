@@ -69,9 +69,9 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 							this.setUsesRemaining(this.usesRemaining()-1);
 							mob.tell("The manual glows softly, enveloping you in its wisdom.");
 							if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
-								mob.charStats().getCurrentClass().level(mob);
+								CMLib.leveler().level(mob);
 							else
-								CMLib.combat().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 					}
 					else

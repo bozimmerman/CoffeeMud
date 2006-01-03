@@ -39,7 +39,7 @@ public class Prayer_Cannibalism extends Prayer
 	public String displayText(){ return "(Cannibalism)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 
 	public void unInvoke()

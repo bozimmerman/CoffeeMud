@@ -37,7 +37,7 @@ public class Play_Dirge extends Play
 	public String ID() { return "Play_Dirge"; }
 	public String name(){ return "Dirge";}
 	protected int canAffectCode(){return 0;}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
@@ -85,7 +85,7 @@ public class Play_Dirge extends Play
 
 					// malicious songs must not affect the invoker!
 					if(CMLib.flags().canBeHeardBy(invoker,follower)&&(expGained>0))
-						CMLib.combat().postExperience(follower,null,null,expGained,false);
+						CMLib.leveler().postExperience(follower,null,null,expGained,false);
 				}
 				mob.location().recoverRoomStats();
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");

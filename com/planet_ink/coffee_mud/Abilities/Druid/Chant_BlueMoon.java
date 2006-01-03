@@ -37,8 +37,8 @@ public class Chant_BlueMoon extends Chant
 	public String ID() { return "Chant_BlueMoon"; }
 	public String name(){ return "Blue Moon";}
 	public String displayText(){return "(Blue Moon)";}
-	public int abstractQuality(){ return MALICIOUS;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}

@@ -36,11 +36,11 @@ public class Spell_Clone extends Spell
 	public String ID() { return "Spell_Clone"; }
 	public String name(){return "Clone";}
 	public String displayText(){return "(Clone)";}
-	public int abstractQuality(){return INDIFFERENT;};
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int overrideMana(){return 200;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

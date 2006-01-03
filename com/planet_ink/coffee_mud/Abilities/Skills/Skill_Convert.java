@@ -36,10 +36,10 @@ public class Skill_Convert extends StdSkill
 	public String name(){ return "Convert";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CONVERT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
     protected static DVector convertStack=new DVector(2);
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -147,7 +147,7 @@ public class Skill_Convert extends StdSkill
 					dRoom.send(target,msg2);
 				convertStack.addElement(target,new Long(System.currentTimeMillis()));
 				if(mob!=target)
-					CMLib.combat().postExperience(mob,null,null,200,false);
+					CMLib.leveler().postExperience(mob,null,null,200,false);
 			}
 		}
 		else

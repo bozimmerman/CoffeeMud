@@ -36,10 +36,10 @@ public class Skill_TuneInstrument extends BardSkill
 	public String name(){ return "Tune Instrument";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"TUNEINSTRUMENT","TUNE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

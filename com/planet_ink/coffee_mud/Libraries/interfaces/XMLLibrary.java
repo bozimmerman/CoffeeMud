@@ -31,38 +31,6 @@ import java.util.*;
 */
 public interface XMLLibrary extends CMObject
 {
-    /**
-     * Returns the double value of a string without crashing
-     * 
-     * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-     * @param double String to convert
-     * @return double Double value of the string
-     */
-    public double s_double(String DOUBLE);
-    /**
-     * Returns the integer value of a string without crashing
-     * 
-     * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
-     * @param INT Integer value of string
-     * @return int Integer value of the string
-     */
-    public int s_int(String INT);
-    /**
-     * Returns the long value of a string without crashing
-     * 
-     * <br><br><b>Usage:</b> int num=s_long(CMD.substring(14));
-     * @param LONG Long value of string
-     * @return long Long value of the string
-     */
-    public  long s_long(String LONG);
-    /**
-     * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-     * 
-     * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-     * @param TName Tag name to search for
-     * @param Data String to searh
-     * @return String Information corresponding to the tname
-     */
     public String convertXMLtoTag(String TName, String Data);
     /**
      * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
@@ -130,8 +98,8 @@ public interface XMLLibrary extends CMObject
      * <TAG>Data</TAG>
      * 
      * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
-     * @param Blob String to search
-     * @param Tag Tag to search for
+     * @param V Pieces to search
+     * @param tag Tag to search for
      * @return boolean Information from XML block
      */
     public boolean getBoolFromPieces(Vector V, String tag);
@@ -141,8 +109,8 @@ public interface XMLLibrary extends CMObject
      * <TAG>Data</TAG>
      * 
      * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
-     * @param Blob String to search
-     * @param Tag Tag to search for
+     * @param V Pieces to search
+     * @param tag Tag to search for
      * @return int Information from XML block
      */
     public int getIntFromPieces(Vector V, String tag);
@@ -152,8 +120,8 @@ public interface XMLLibrary extends CMObject
      * <TAG>Data</TAG>
      * 
      * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
-     * @param Blob String to search
-     * @param Tag Tag to search for
+     * @param V Pieces to search
+     * @param tag Tag to search for
      * @return long Information from XML block
      */
     public long getLongFromPieces(Vector V, String tag);
@@ -163,8 +131,8 @@ public interface XMLLibrary extends CMObject
      * <TAG>Data</TAG>
      * 
      * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
-     * @param Blob String to search
-     * @param Tag Tag to search for
+     * @param V Pieces to search
+     * @param tag Tag to search for
      * @return double Information from XML block
      */
     public double getDoubleFromPieces(Vector V, String tag);

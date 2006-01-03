@@ -35,7 +35,7 @@ public class Prayer_RemovePoison extends Prayer
 {
 	public String ID() { return "Prayer_RemovePoison"; }
 	public String name(){ return "Remove Poison";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public static Vector returnOffensiveAffects(Environmental fromMe)
@@ -45,7 +45,7 @@ public class Prayer_RemovePoison extends Prayer
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		return offenders;

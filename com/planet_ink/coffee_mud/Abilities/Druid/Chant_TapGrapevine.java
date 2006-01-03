@@ -37,7 +37,7 @@ public class Chant_TapGrapevine extends Chant
 	public String ID() { return "Chant_TapGrapevine"; }
 	public String name(){ return "Tap Grapevine";}
 
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	Vector myChants=new Vector();

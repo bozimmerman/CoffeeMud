@@ -4538,7 +4538,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				int t=CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(s,1)));
 				if((t!=0)&&(newTarget!=null)&&(newTarget instanceof MOB))
-					CMLib.combat().postExperience((MOB)newTarget,null,null,t,false);
+					CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
 				break;
 			}
 			case 5: // mpmload
@@ -4700,7 +4700,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     for(int a=mob.numEffects();a>=0;a--)
                     {
                         A=mob.fetchEffect(a);
-                        if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+                        if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
                         &&(A.canBeUninvoked())
                         &&(!A.isAutoInvoked()))
                             A.unInvoke();
@@ -4876,7 +4876,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setMiscText(m2);
-					if((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY)
+					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
 						newTarget.addNonUninvokableEffect(A);
 					else
 						A.invoke(monster,CMParms.parse(m2),newTarget,true,0);
@@ -5695,7 +5695,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			return true;
 		if(str.length()==0)
 			return false;
-		if(str.indexOf(patt)>=0)
+		if(str.equalsIgnoreCase(patt))
 			return true;
 		return false;
 	}

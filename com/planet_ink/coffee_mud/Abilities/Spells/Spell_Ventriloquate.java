@@ -36,7 +36,7 @@ public class Spell_Ventriloquate extends Spell
 	public String ID() { return "Spell_Ventriloquate"; }
 	public String name(){return "Ventriloquate";}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

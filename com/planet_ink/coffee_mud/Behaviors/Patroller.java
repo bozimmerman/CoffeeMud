@@ -394,6 +394,7 @@ public class Patroller extends ActiveTicker
 				{
 				    tickStatus=Tickable.STATUS_MISC+18;
 					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
+				    tickStatus=Tickable.STATUS_MISC+19;
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
 					{
@@ -407,19 +408,29 @@ public class Patroller extends ActiveTicker
 							{
 								if(R instanceof MOB)
 								{
+								    tickStatus=Tickable.STATUS_MISC+30;
 									thatRoom.bringMobHere((MOB)R,true);
                                     ((MOB)R).setRiding((Rideable)ticking);
+    							    tickStatus=Tickable.STATUS_MISC+31;
 									CMLib.commands().postLook((MOB)R,true);
                                     thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,null);
+    							    tickStatus=Tickable.STATUS_MISC+32;
 								}
 								else
 								if(R instanceof Item)
+								{
+								    tickStatus=Tickable.STATUS_MISC+33;
 									thatRoom.bringItemHere((Item)R,-1);
+								    tickStatus=Tickable.STATUS_MISC+34;
+								}
 							}
 							else
 								R.setRiding(null);
+					    tickStatus=Tickable.STATUS_MISC+35;
 					}
+				    tickStatus=Tickable.STATUS_MISC+36;
 				}
+			    tickStatus=Tickable.STATUS_MISC+37;
 				if(I.owner()==destinationRoomForThisStep)
 				    step++;
 				else

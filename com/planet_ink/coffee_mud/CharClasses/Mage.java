@@ -383,7 +383,7 @@ public class Mage extends StdCharClass
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)))
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
 		}
 		for(int a=0;a<mob.numLearnedAbilities();a++)

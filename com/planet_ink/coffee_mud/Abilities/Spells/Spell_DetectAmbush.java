@@ -37,10 +37,10 @@ public class Spell_DetectAmbush extends Spell
 	public String ID() { return "Spell_DetectAmbush"; }
 	public String name(){return "Detect Ambush";}
 	public String displayText(){return "(Detecting Ambushes)";}
-	public int abstractQuality(){ return OK_SELF;}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	Room lastRoom=null;
 	public void unInvoke()

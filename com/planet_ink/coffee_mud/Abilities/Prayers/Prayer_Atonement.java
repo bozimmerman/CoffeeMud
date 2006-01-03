@@ -36,7 +36,7 @@ public class Prayer_Atonement extends Prayer
 {
 	public String ID() { return "Prayer_Atonement"; }
 	public String name(){ return "Atonement";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

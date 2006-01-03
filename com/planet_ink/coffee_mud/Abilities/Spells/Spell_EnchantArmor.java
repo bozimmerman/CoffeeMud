@@ -36,7 +36,7 @@ public class Spell_EnchantArmor extends Spell
 	public String ID() { return "Spell_EnchantArmor"; }
 	public String name(){return "Enchant Armor";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -59,7 +59,7 @@ public class Spell_EnchantArmor extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMLib.combat().postExperience(mob,null,null,-50,false);
+		CMLib.leveler().postExperience(mob,null,null,-50,false);
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

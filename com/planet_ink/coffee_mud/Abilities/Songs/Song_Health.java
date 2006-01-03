@@ -36,7 +36,7 @@ public class Song_Health extends Song
 {
 	public String ID() { return "Song_Health"; }
 	public String name(){ return "Health";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{

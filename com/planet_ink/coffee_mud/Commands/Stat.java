@@ -287,9 +287,9 @@ public class Stat extends BaseAbleLister
 				commands.removeElementAt(0);
 			}
 			else
-			for(int a=0;a<Ability.TYPE_DESCS.length;a++)
+			for(int a=0;a<Ability.ACODE_DESCS.length;a++)
 			{
-				if((Ability.TYPE_DESCS[a]+"S").startsWith(s))
+				if((Ability.ACODE_DESCS[a]+"S").startsWith(s))
 				{
 					ableTypes=a;
 					commands.removeElementAt(0);
@@ -333,7 +333,7 @@ public class Stat extends BaseAbleLister
 		if(ableTypes>=0)
 		{
 			Vector V=new Vector();
-			int mask=Ability.ALL_CODES;
+			int mask=Ability.ALL_ACODES;
 			V.addElement(new Integer(ableTypes));
 			str=getAbilities(target,V,mask,false,-1);
 		}

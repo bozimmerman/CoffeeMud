@@ -37,8 +37,8 @@ public class Prayer_SenseTraps extends Prayer
 	public String ID() { return "Prayer_SenseTraps"; }
 	public String name(){return "Sense Traps";}
 	public String displayText(){return "(Sensing Traps)";}
-	public int abstractQuality(){ return OK_SELF;}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	Room lastRoom=null;

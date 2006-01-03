@@ -36,7 +36,7 @@ public class Chant_Bury extends Chant
 {
 	public String ID() { return "Chant_Bury"; }
 	public String name(){ return "Earthfeed";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
@@ -112,7 +112,7 @@ public class Chant_Bury extends Chant
 					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 					int levelDiff=mob.envStats().level()-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
-					CMLib.combat().postExperience(mob,null,null,(int)Math.round(exp),false);
+					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp),false);
 				}
                 target.destroy();
 				mob.location().recoverRoomStats();

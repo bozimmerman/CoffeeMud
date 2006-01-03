@@ -343,7 +343,7 @@ public class DefaultFaction implements Faction, MsgListener
         for (Enumeration e=Changes.elements();e.hasMoreElements();) 
         {
             C= (FactionChangeEvent)e.nextElement();
-            if((key.classificationCode()&Ability.ALL_CODES)==C.IDclassFilter())
+            if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
                 return C;
             if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
                 return C;
@@ -465,7 +465,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
             if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
-            ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
+            ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
                 &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
                 &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                 &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
@@ -481,7 +481,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
             if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
-            ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
+            ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
                 &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
                 &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                 &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
@@ -717,7 +717,7 @@ public class DefaultFaction implements Faction, MsgListener
          {
              usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
              if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
-             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
+             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
                  &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
                  &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                  &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
@@ -746,8 +746,8 @@ public class DefaultFaction implements Faction, MsgListener
          if(_ALL_TYPES!=null) return _ALL_TYPES;
          for(int i=0;i<Faction.FactionChangeEvent.MISC_TRIGGERS.length;i++) 
              ALL_TYPES.append(Faction.FactionChangeEvent.MISC_TRIGGERS[i]+", ");
-         for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
-             ALL_TYPES.append(Ability.TYPE_DESCS[i]+", ");
+         for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+             ALL_TYPES.append(Ability.ACODE_DESCS[i]+", ");
          for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
              ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
          for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
@@ -851,8 +851,8 @@ public class DefaultFaction implements Faction, MsgListener
             for(int i=0;i<MISC_TRIGGERS.length;i++) 
                 if(MISC_TRIGGERS[i].equalsIgnoreCase(newID))
                 { ID=newID;    return true;}
-            for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
-                if(Ability.TYPE_DESCS[i].equalsIgnoreCase(newID))
+            for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+                if(Ability.ACODE_DESCS[i].equalsIgnoreCase(newID))
                 {    IDclassFilter=i; ID=newID; return true;}
             for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
                 if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(newID))
@@ -1026,8 +1026,8 @@ public class DefaultFaction implements Faction, MsgListener
                 boolean not=strflag.startsWith("!");
                 if(not) strflag=strflag.substring(1);
                 boolean known=false;
-                for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
-                    if(Ability.TYPE_DESCS[i].equalsIgnoreCase(strflag))
+                for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+                    if(Ability.ACODE_DESCS[i].equalsIgnoreCase(strflag))
                     {
                         type=i;
                         known=true;

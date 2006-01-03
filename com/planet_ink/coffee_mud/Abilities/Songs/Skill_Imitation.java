@@ -38,14 +38,14 @@ public class Skill_Imitation extends BardSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"IMITATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public String lastID="";
-	public int craftType(){return Ability.SPELL;}
+	public int craftType(){return Ability.ACODE_SPELL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public Hashtable immitations=new Hashtable();

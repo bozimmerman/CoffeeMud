@@ -37,11 +37,11 @@ public class Antidote extends StdAbility
 {
 	public String ID() { return "Antidote"; }
 	public String name(){ return "An Antidote";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected boolean processing=false;
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
@@ -52,7 +52,7 @@ public class Antidote extends StdAbility
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
-			&&((A.classificationCode()&ALL_CODES)==Ability.POISON)
+			&&((A.classificationCode()&ALL_ACODES)==Ability.ACODE_POISON)
 			&&((text().length()==0)||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
 				offenders.addElement(A);
 		}

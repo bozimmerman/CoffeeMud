@@ -37,7 +37,7 @@ public class Spell_KnowValue extends Spell
 	public String ID() { return "Spell_KnowValue"; }
 	public String name(){return "Know Value";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

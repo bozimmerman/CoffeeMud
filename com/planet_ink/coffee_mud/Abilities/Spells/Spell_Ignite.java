@@ -36,9 +36,9 @@ public class Spell_Ignite extends Spell
 	public String ID() { return "Spell_Ignite"; }
 	public String name(){return "Ignite";}
 	public String displayText(){return "Ignite";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void ignite(MOB mob, Item I)
 	{

@@ -38,10 +38,10 @@ public class Skill_Track extends StdSkill
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"TRACKTO"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	private Hashtable cachedPaths=new Hashtable();
 	protected int cacheCode=-1;
@@ -193,7 +193,7 @@ public class Skill_Track extends StdSkill
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
-			if(commands.size()==0) 
+			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) 
 			{
 			    tickStatus=Tickable.STATUS_NOT;
 			    return true;

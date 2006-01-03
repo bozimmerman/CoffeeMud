@@ -35,7 +35,7 @@ public class Prayer_Resurrect extends Prayer
 {
 	public String ID() { return "Prayer_Resurrect"; }
 	public String name(){ return "Resurrect";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
@@ -103,7 +103,7 @@ public class Prayer_Resurrect extends Prayer
 					{
 						String whatToDo=(String)whatsToDo.elementAt(w);
 						if(whatToDo.startsWith("UNL"))
-							rejuvedMOB.charStats().getCurrentClass().level(rejuvedMOB);
+							CMLib.leveler().level(rejuvedMOB);
 						else
 						if(whatToDo.startsWith("ASTR"))
 						{}
@@ -115,7 +115,7 @@ public class Prayer_Resurrect extends Prayer
 						{
 							int expLost=CMath.s_int(whatToDo)/2;
 							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-							CMLib.combat().postExperience(rejuvedMOB,null,null,expLost,false);
+							CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 						}
 						else
 						if(whatToDo.length()<3)
@@ -124,7 +124,7 @@ public class Prayer_Resurrect extends Prayer
 						{
 							int expLost=(100*rejuvedMOB.envStats().level())/2;
 							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-							CMLib.combat().postExperience(rejuvedMOB,null,null,expLost,false);
+							CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 						}
 					}
 				}

@@ -39,7 +39,7 @@ public class Chant_WindShape extends Chant
 	public String displayText(){ return "(Wind Shape)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 
 
 	public void unInvoke()

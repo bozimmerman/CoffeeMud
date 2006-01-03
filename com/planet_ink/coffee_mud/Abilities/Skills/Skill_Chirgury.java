@@ -38,10 +38,10 @@ public class Skill_Chirgury extends StdSkill
 	public String name(){ return "Chirgury";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CHIRGURY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public static final String[] parts={"FETUS","BLOOD","HEART","LUNGS","STOMACH","PANCREAS","SPLEEN","BRAIN","LIVER","INTESTINES","TONGUE","EYES","BLADDER"};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

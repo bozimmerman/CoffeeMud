@@ -38,8 +38,8 @@ public class Spell_IceSheet extends Spell
 	public String displayText(){return "(Ice Sheet spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return MALICIOUS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 
 	public void unInvoke()

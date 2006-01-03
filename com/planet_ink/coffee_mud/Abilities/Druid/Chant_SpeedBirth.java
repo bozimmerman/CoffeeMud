@@ -37,7 +37,7 @@ public class Chant_SpeedBirth extends Chant
 	public String ID() { return "Chant_SpeedBirth"; }
 	public String name(){ return "Speed Birth";}
 	protected int canAffectCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

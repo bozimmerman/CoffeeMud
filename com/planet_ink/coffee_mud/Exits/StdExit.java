@@ -172,6 +172,7 @@ public class StdExit implements Exit
 	}
 	public void setMiscText(String newMiscText){miscText=newMiscText;}
 	public String text(){return miscText;}
+	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}
@@ -468,6 +469,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_LOOK:
         case CMMsg.TYP_EXAMINE:
             CMLib.commands().handleBeingLookedAt(msg);
+            break;
 		case CMMsg.TYP_READ:
             CMLib.commands().handleBeingRead(msg);
             break;

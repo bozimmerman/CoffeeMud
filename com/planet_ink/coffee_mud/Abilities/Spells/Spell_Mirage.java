@@ -38,8 +38,8 @@ public class Spell_Mirage extends Spell
 	public String displayText(){return "(Mirage spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public int abstractQuality(){ return MALICIOUS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	Room newRoom=null;
 

@@ -72,7 +72,7 @@ public class Prop_Familiar extends Property
 				familiarTo.delEffect(A);
 				/*if(!familiarTo.amDead())
 				{
-					CMLib.combat().postExperience(familiarTo,null,null,-50,false);
+					CMLib.leveler().postExperience(familiarTo,null,null,-50,false);
 					familiarTo.tell("You`ve just lost 50 experience points for losing your familiar");
 				}*/
 				familiarTo.recoverCharStats();

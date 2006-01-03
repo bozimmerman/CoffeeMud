@@ -37,7 +37,7 @@ public class Prayer_UnholyArmament extends Prayer
 	public String name(){ return "Unholy Armament";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public static final long[] checkOrder={

@@ -36,9 +36,9 @@ public class Spell_ObscureSelf extends Spell
 	public String ID() { return "Spell_ObscureSelf"; }
 	public String name(){return "Obscure Self";}
 	public String displayText(){return "(Obscure Self)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	private final static String[][] stuff={
 		{"<S-NAME>","<T-NAME>","someone"},
 		{"<S-HIS-HER>","<T-HIS-HER>","his or her"},

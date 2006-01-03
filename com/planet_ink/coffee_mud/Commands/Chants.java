@@ -40,7 +40,7 @@ public class Chants extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append(getScr("Chants","chantknow")+" "+getAbilities(mob,Ability.CHANT,-1,true,parseOutLevel(commands))+"\n\r");
+		msg.append(getScr("Chants","chantknow")+" "+getAbilities(mob,Ability.ACODE_CHANT,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

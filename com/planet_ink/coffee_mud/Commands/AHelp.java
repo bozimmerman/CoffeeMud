@@ -61,7 +61,7 @@ public class AHelp extends StdCommand
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY))
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
 							V.addElement(A.ID());
 					}
 					if(V.size()>0)
@@ -74,7 +74,7 @@ public class AHelp extends StdCommand
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
 							V.addElement(A.ID());
 					}
 					if(V.size()>0)
@@ -87,7 +87,7 @@ public class AHelp extends StdCommand
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 							V.addElement(A.ID());
 					}
 					if(V.size()>0)
@@ -100,7 +100,7 @@ public class AHelp extends StdCommand
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SUPERPOWER))
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
 							V.addElement(A.ID());
 					}
 					if(V.size()>0)

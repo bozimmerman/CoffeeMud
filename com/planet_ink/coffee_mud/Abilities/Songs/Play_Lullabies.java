@@ -36,7 +36,7 @@ public class Play_Lullabies extends Song
 {
 	public String ID() { return "Play_Lullabies"; }
 	public String name(){ return "Lullabies";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	boolean asleep=false;
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -37,12 +37,12 @@ public class Fighter_CalledStrike extends FighterSkill
 	public String ID() { return "Fighter_CalledStrike"; }
 	public String name(){ return "Called Strike";}
 	private static final String[] triggerStrings = {"CALLEDSTRIKE"};
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public String displayText(){return "";}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.SKILL;}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	protected String gone="";

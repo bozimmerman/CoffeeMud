@@ -37,9 +37,9 @@ public class Spell_Light extends Spell
 	public String ID() { return "Spell_Light"; }
 	public String name(){return "Light";}
 	public String displayText(){return "(Light)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

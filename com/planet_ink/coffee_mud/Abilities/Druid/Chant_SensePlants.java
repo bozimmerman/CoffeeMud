@@ -38,7 +38,7 @@ public class Chant_SensePlants extends Chant
 	public String ID() { return "Chant_SensePlants"; }
 	public String name(){return "Sense Plants";}
 	public String displayText(){return "(Sensing Plants)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
 	protected String word(){return "plants";}

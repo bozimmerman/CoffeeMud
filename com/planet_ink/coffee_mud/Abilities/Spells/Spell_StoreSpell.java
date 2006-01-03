@@ -36,7 +36,7 @@ public class Spell_StoreSpell extends Spell
 	public String ID() { return "Spell_StoreSpell"; }
 	public String name(){return "Store Spell";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return overridemana;}
 	public String spellName="";
 	protected int overridemana=-1;

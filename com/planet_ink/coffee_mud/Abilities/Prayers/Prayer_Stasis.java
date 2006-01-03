@@ -35,7 +35,7 @@ public class Prayer_Stasis extends Prayer
 {
 	public String ID() { return "Prayer_Stasis"; }
 	public String name(){ return "Stasis";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(In stasis)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -37,7 +37,7 @@ public class Prayer_Benediction extends Prayer
 	public String ID() { return "Prayer_Benediction"; }
 	public String name(){ return "Benediction";}
 	public String displayText(){ return "(Benediction)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

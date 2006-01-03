@@ -36,10 +36,10 @@ public class Prayer_SenseEvil extends Prayer
 	public String ID() { return "Prayer_SenseEvil"; }
 	public String name(){ return "Sense Evil";}
 	public String displayText(){ return "(Sense Evil)";}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -36,9 +36,9 @@ public class Spell_ManaShield extends Spell
     public String ID() { return "Spell_ManaShield"; }
     public String name(){return "Mana Shield";}
     public String displayText(){return "(Mana Shield)";}
-    public int abstractQuality(){ return BENEFICIAL_SELF;}
+    public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
     protected int canAffectCode(){return CAN_MOBS;}
-    public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+    public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
     protected double protection(){return 0.5;}
     protected String adjective(){return " a";}
 

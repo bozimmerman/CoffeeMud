@@ -39,10 +39,10 @@ public class Ranger_Track extends StdAbility
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"TRACK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -133,7 +133,7 @@ public class Ranger_Track extends StdAbility
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
-			if(commands.size()==0) return true;
+			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) return true;
 		}
 
 		theTrail=null;

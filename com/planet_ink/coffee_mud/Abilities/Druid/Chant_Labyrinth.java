@@ -37,7 +37,7 @@ public class Chant_Labyrinth extends Chant
 	public String ID() { return "Chant_Labyrinth"; }
 	public String name(){ return "Labyrinth";}
 	public String displayText(){return "(Labyrinth)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	Room oldRoom=null;

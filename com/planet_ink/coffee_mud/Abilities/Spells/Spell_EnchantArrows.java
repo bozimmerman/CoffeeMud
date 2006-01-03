@@ -38,7 +38,7 @@ public class Spell_EnchantArrows extends Spell
 	public String name(){return "Enchant Arrows";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 
@@ -62,7 +62,7 @@ public class Spell_EnchantArrows extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMLib.combat().postExperience(mob,null,null,-5,false);
+		CMLib.leveler().postExperience(mob,null,null,-5,false);
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

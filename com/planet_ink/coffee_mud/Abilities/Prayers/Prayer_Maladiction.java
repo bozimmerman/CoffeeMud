@@ -36,7 +36,7 @@ public class Prayer_Maladiction extends Prayer
 	public String ID() { return "Prayer_Maladiction"; }
 	public String name(){ return "Maladiction";}
 	public String displayText(){ return "(Maladiction)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

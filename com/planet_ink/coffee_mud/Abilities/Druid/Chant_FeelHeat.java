@@ -38,7 +38,7 @@ public class Chant_FeelHeat extends Chant
 	public String ID() { return "Chant_FeelHeat"; }
 	public String name(){ return "Feel Heat";}
 	public String displayText(){return "(Feel Heat)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 

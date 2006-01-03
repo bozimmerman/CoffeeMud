@@ -37,7 +37,7 @@ public class Chant_Hawkeye extends Chant
 	public String ID() { return "Chant_Hawkeye"; }
 	public String name(){return "Hawkeye";}
 	public String displayText(){return "(Hawkeye)";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
     public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -37,9 +37,9 @@ public class Spell_ResistCold extends Spell
 	public String ID() { return "Spell_ResistCold"; }
 	public String name(){return "Resist Cold";}
 	public String displayText(){return "(Resist Cold)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	public long flags(){return Ability.FLAG_HEATING;}
 
 	public void unInvoke()

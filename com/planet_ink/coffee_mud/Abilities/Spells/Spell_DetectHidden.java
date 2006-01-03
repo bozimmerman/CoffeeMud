@@ -37,10 +37,10 @@ public class Spell_DetectHidden extends Spell
 	public String ID() { return "Spell_DetectHidden"; }
 	public String name(){return "Detect Hidden";}
 	public String displayText(){return "(Detecting Hidden)";}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
-	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 
 	public void unInvoke()

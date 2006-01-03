@@ -38,7 +38,7 @@ public class Prayer_FeedTheDead extends Prayer
 	public String name(){ return "Feed The Dead";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_NOORDERING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -85,8 +85,8 @@ public class Prayer_FeedTheDead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				CMLib.combat().postExperience(mob,null,null,-amount,false);
-				CMLib.combat().postExperience(target,null,null,amount,false);
+				CMLib.leveler().postExperience(mob,null,null,-amount,false);
+				CMLib.leveler().postExperience(target,null,null,amount,false);
 			}
 		}
 		else

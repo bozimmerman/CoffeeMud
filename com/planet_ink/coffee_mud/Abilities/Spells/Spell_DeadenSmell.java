@@ -37,7 +37,7 @@ public class Spell_DeadenSmell extends Spell
 	public String name(){return "Deaden Smell";}
 	public String displayText(){return "(Deadened Smell)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

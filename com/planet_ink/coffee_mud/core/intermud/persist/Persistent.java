@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
- * imaginary.persist.Persistent
+ * com.planet_ink.coffee_mud.core.intermud.persist.Persistent
  * Copyright (c) 1996 George Reese
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
@@ -57,7 +57,7 @@ public interface Persistent {
      * object's PersistentPeer method to perform the
      * actual save.
      * @exception PersistenceException thrown when an error occurs in restoring
-     * @see imaginary.persist.PersistentPeer
+     * @see com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
      */
     public abstract void restore() throws PersistenceException;
 
@@ -68,7 +68,7 @@ public interface Persistent {
      * trigger the actual saving mechanism in its
      * PersistentPeer implementation.
      * @exception PersistentPeer thrown when an error occurs in saving
-     * @see imaginary.persist.PersistencePeer
+     * @see com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
      */
     public abstract void save() throws PersistenceException;
 }

@@ -36,7 +36,7 @@ public class Prayer_CauseCritical extends Prayer
 {
 	public String ID() { return "Prayer_CauseCritical"; }
 	public String name(){ return "Cause Critical Wounds";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

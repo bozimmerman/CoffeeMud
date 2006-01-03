@@ -36,13 +36,13 @@ public class Druid_ShapeShift extends StdAbility
 {
 	public String ID() { return "Druid_ShapeShift"; }
 	public String name(){ return "Shape Shift";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SHAPESHIFT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public int myRaceCode=-1;
 	public Race newRace=null;

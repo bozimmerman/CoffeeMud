@@ -62,7 +62,7 @@ public class Spells extends BaseAbleLister
 
 		}
 		else
-			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.SPELL,domain,true,lvl));
+			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,domain,true,lvl));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(spells.toString()+"\n\r");
 		return false;

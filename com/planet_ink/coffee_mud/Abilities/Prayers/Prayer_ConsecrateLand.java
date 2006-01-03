@@ -38,7 +38,7 @@ public class Prayer_ConsecrateLand extends Prayer
 	public String ID() { return "Prayer_ConsecrateLand"; }
 	public String name(){return "Consecrate Land";}
 	public String displayText(){return "(Consecrate Land)";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY;}
@@ -50,7 +50,7 @@ public class Prayer_ConsecrateLand extends Prayer
 
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 		&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 		{

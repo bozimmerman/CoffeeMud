@@ -37,7 +37,7 @@ public class Spell_MagicItem extends Spell
 	public String ID() { return "Spell_MagicItem"; }
 	public String name(){return "Magic Item";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -107,7 +107,7 @@ public class Spell_MagicItem extends Spell
 		if(success)
 		{
 			experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID()));
-			CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			setMiscText(wandThis.ID());
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
@@ -157,7 +157,7 @@ public class Spell_MagicItem extends Spell
 		}
 		else
 		{
-			CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
+			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated.");
 		}

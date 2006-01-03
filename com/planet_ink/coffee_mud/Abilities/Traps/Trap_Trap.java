@@ -249,7 +249,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public int classificationCode()
 	{
-		return Ability.TRAP;
+		return Ability.ACODE_TRAP;
 	}
 
 	public void spring(MOB target)

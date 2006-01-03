@@ -36,7 +36,7 @@ public class Song_Flying extends Song
 {
 	public String ID() { return "Song_Flying"; }
 	public String name(){ return "Flying";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -134,32 +134,32 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			int type=-1;
 			if(name.startsWith("SPELL_"))
 			{
-				type=Ability.SPELL;
+				type=Ability.ACODE_SPELL;
 				name=name.substring(6);
 			}
 			else
 			if(name.startsWith("PRAYER_"))
 			{
-				type=Ability.PRAYER;
+				type=Ability.ACODE_PRAYER;
 				name=name.substring(7);
 			}
 			else
 			if(name.startsWith("DANCE_"))
 			{
-				type=Ability.SONG;
+				type=Ability.ACODE_SONG;
 				name=name.substring(6);
 			}
 			else
 			if((name.startsWith("SONG_"))
 			||(name.startsWith("PLAY_")))
 			{
-				type=Ability.SONG;
+				type=Ability.ACODE_SONG;
 				name=name.substring(5);
 			}
 			else
 			if(name.startsWith("CHANT_"))
 			{
-				type=Ability.CHANT;
+				type=Ability.ACODE_CHANT;
 				name=name.substring(6);
 			}
 			name=name.replace('_',' ');
@@ -175,26 +175,26 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				Ability A=(Ability)a.nextElement();
 				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))
-						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
+						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_ACODES)))
 					||(A.name().equalsIgnoreCase(name)))
 				&&(!helpedPreviously.contains(A)))
 				{
 					helpedPreviously.addElement(A);
 					StringBuffer prepend=new StringBuffer("");
-					type=(A.classificationCode()&Ability.ALL_CODES);
+					type=(A.classificationCode()&Ability.ALL_ACODES);
 					prepend.append("\n\r");
 					switch(type)
 					{
-					case Ability.SPELL:
+					case Ability.ACODE_SPELL:
 						prepend.append(CMStrings.padRight("Spell",9));
 						break;
-					case Ability.PRAYER:
+					case Ability.ACODE_PRAYER:
 						prepend.append(CMStrings.padRight("Prayer",9));
 						break;
-					case Ability.CHANT:
+					case Ability.ACODE_CHANT:
 						prepend.append(CMStrings.padRight("Chant",9));
 						break;
-					case Ability.SONG:
+					case Ability.ACODE_SONG:
 						prepend.append(CMStrings.padRight("Song",9));
 						break;
 					default:
@@ -202,7 +202,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						break;
 					}
 					prepend.append(": "+A.name());
-					if(type==Ability.SPELL)
+					if(type==Ability.ACODE_SPELL)
 					{
 						prepend.append("\n\rSchool   : ");
 						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
@@ -255,7 +255,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						String names=CMLib.ableMapper().formatPreRequisites(preReqs);
 						prepend.append("\n\rRequires : "+names);
 					}
-					if(type==Ability.PRAYER)
+					if(type==Ability.ACODE_PRAYER)
 					{
 					    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 					    {
@@ -279,24 +279,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						prepend.append("\n\rQuality  : ");
 						switch(A.abstractQuality())
 						{
-						case Ability.MALICIOUS:
+						case Ability.QUALITY_MALICIOUS:
 							prepend.append("Malicious");
 							break;
-						case Ability.BENEFICIAL_OTHERS:
-						case Ability.BENEFICIAL_SELF:
+						case Ability.QUALITY_BENEFICIAL_OTHERS:
+						case Ability.QUALITY_BENEFICIAL_SELF:
 							prepend.append("Always Beneficial");
 							break;
-						case Ability.OK_OTHERS:
-						case Ability.OK_SELF:
+						case Ability.QUALITY_OK_OTHERS:
+						case Ability.QUALITY_OK_SELF:
 							prepend.append("Sometimes Beneficial");
 							break;
-						case Ability.INDIFFERENT:
+						case Ability.QUALITY_INDIFFERENT:
 							prepend.append("Circumstantial");
 							break;
 						}
 						prepend.append("\n\rTargets  : ");
-						if((A.abstractQuality()==Ability.BENEFICIAL_SELF)
-						||(A.abstractQuality()==Ability.OK_SELF))
+						if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
+						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
 							prepend.append("Caster only");
 						else
 						if((CMClass.items().hasMoreElements())
@@ -304,28 +304,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(CMClass.exits().hasMoreElements())
 						&&(CMClass.locales().hasMoreElements()))
 						{
-							Item I=(Item)CMClass.items().nextElement();
-							MOB M=(MOB)CMClass.mobTypes().nextElement();
-							Exit E=(Exit)CMClass.exits().nextElement();
-							Room R=(Room)CMClass.locales().nextElement();
-							if(A.canAffect(I)||A.canTarget(I))
+							if(A.canAffect(Ability.CAN_ITEMS)||A.canTarget(Ability.CAN_ITEMS))
 								prepend.append("Items ");
-							if(A.canAffect(M)||A.canTarget(M))
+							if(A.canAffect(Ability.CAN_MOBS)||A.canTarget(Ability.CAN_MOBS))
 								prepend.append("Creatures ");
-							if(A.canAffect(E)||A.canTarget(E))
+							if(A.canAffect(Ability.CAN_EXITS)||A.canTarget(Ability.CAN_EXITS))
 								prepend.append("Exits ");
-							if(A.canAffect(R)||A.canTarget(R))
+							if(A.canAffect(Ability.CAN_ROOMS)||A.canTarget(Ability.CAN_ROOMS))
 								prepend.append("Rooms ");
 						}
 						else
-						if(A.abstractQuality()==Ability.INDIFFERENT)
+						if(A.abstractQuality()==Ability.QUALITY_INDIFFERENT)
 							prepend.append("Items or Rooms");
 						else
-						if(A.abstractQuality()==Ability.MALICIOUS)
+						if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 							prepend.append("Others");
 						else
-						if((A.abstractQuality()==Ability.BENEFICIAL_OTHERS)
-						||(A.abstractQuality()==Ability.OK_SELF))
+						if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
 							prepend.append("Caster, or others");
 						prepend.append("\n\rRange    : ");
 						int min=A.minRange();

@@ -37,7 +37,7 @@ public class Chant_MoveSky extends Chant
 	public String ID() { return "Chant_MoveSky"; }
 	public String name(){ return "Move The Sky";}
 	public String displayText(){return "";}
-	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

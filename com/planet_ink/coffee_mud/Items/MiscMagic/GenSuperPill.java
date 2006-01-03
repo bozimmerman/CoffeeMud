@@ -170,7 +170,7 @@ public class GenSuperPill extends GenPill
 		int newMoney=CMParms.getParmPlus(readableText,"coin");
 		if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 		int exp=CMParms.getParmPlus(readableText,"expe");
-		if(exp!=0) CMLib.combat().postExperience(mob,null,null,exp,false);
+		if(exp!=0) CMLib.leveler().postExperience(mob,null,null,exp,false);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

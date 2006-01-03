@@ -47,8 +47,8 @@ public class AutoInvoke extends StdCommand
 	        Ability A=mob.fetchAbility(a);
 	        if((A!=null)
 	        &&(A.isAutoInvoked())
-	        &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.LANGUAGE)
-	        &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY))
+	        &&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)
+	        &&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY))
 	            abilities.addElement(A.ID());
 	    }
 

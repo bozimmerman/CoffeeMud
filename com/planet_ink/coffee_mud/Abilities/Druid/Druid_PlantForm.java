@@ -37,13 +37,13 @@ public class Druid_PlantForm extends StdAbility
 {
 	public String ID() { return "Druid_PlantForm"; }
 	public String name(){ return "Plant Form";}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"PLANTFORM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public Race newRace=null;
 	public String raceName="";

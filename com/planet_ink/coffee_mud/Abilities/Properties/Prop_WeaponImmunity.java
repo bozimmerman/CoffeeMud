@@ -149,13 +149,13 @@ public class Prop_WeaponImmunity extends Property
 
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Ability))
 			{
-				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES;
+				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
 				switch(classType)
 				{
-				case Ability.SPELL:
-				case Ability.PRAYER:
-				case Ability.CHANT:
-				case Ability.SONG:
+				case Ability.ACODE_SPELL:
+				case Ability.ACODE_PRAYER:
+				case Ability.ACODE_CHANT:
+				case Ability.ACODE_SONG:
 					{
 				    	foundPlusMinus=(Character)flags.get("MAGICSKILLS");
 						if(foundPlusMinus==null) foundPlusMinus=(Character)flags.get("MAGIC");

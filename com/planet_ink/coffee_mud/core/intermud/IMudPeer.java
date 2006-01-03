@@ -50,7 +50,7 @@ public class IMudPeer implements PersistentPeer
     /**
      * Gets data about this peer from storage and gives it
      * back to the object for which this peer exists.
-     * @exception imaginary.persist.PersistenceException if an error occurs during restore
+     * @exception com.planet_ink.coffee_mud.core.intermud.persist.PersistenceException if an error occurs during restore
      */
 	public void restore() throws PersistenceException
 	{
@@ -88,7 +88,7 @@ public class IMudPeer implements PersistentPeer
      * Triggers a save of its peer.  Implementing classes
      * should do whatever it takes to save the object in
      * this method.
-     * @exception imaginary.persist.PersistenceException if a problem occurs in saving
+     * @exception com.planet_ink.coffee_mud.core.intermud.persist.PersistenceException if a problem occurs in saving
      */
     public void save() throws PersistenceException
 	{
@@ -117,8 +117,8 @@ public class IMudPeer implements PersistentPeer
     /**
      * Assigns a persistent object to this peer for
      * persistence operations.
-     * @param ob the implementation of imaginary.persist.Persistent that this is a peer for
-     * @see imaginary.persist.Persistent
+     * @param ob the implementation of com.planet_ink.coffee_mud.core.intermud.persist.Persistent that this is a peer for
+     * @see com.planet_ink.coffee_mud.core.intermud.persist.Persistent
      */
     public void setPersistent(Persistent ob)
 	{

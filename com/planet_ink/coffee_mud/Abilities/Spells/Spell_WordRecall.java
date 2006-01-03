@@ -36,8 +36,8 @@ public class Spell_WordRecall extends Spell
     public String name(){ return "Word of Recall";}
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return 0;}
-    public int abstractQuality(){return Ability.INDIFFERENT;}
-    public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
     protected int overrideMana(){return Integer.MAX_VALUE-90;}
     public long flags(){return Ability.FLAG_TRANSPORTING;}
 

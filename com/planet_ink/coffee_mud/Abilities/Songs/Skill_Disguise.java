@@ -48,10 +48,10 @@ public class Skill_Disguise extends BardSkill
 	public String displayText(){ return "(In Disguise)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"DISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
     protected final static String[] whats={
 		//0!     1!      2!    3!     4!       5!     6!      7!          8!

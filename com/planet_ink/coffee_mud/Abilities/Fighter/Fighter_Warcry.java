@@ -36,12 +36,12 @@ public class Fighter_Warcry extends FighterSkill
 	public String ID() { return "Fighter_Warcry"; }
 	public String name(){ return "War Cry";}
 	public String displayText(){return "(War Cry)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings = {"WARCRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	protected int timesTicking=0;
 

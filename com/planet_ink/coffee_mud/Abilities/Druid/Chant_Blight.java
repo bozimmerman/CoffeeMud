@@ -37,7 +37,7 @@ public class Chant_Blight extends Chant
 	public String ID() { return "Chant_Blight"; }
 	public String name(){ return "Blight";}
 	public String displayText(){return "(Blight)";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 

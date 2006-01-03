@@ -221,13 +221,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		if((evokableAbility!=null)&&(commands.size()>1))
 		{
-			int classCode=evokableAbility.classificationCode()&Ability.ALL_CODES;
+			int classCode=evokableAbility.classificationCode()&Ability.ALL_ACODES;
 			switch(classCode)
 			{
-			case Ability.SPELL:
-			case Ability.SONG:
-			case Ability.PRAYER:
-			case Ability.CHANT:
+			case Ability.ACODE_SPELL:
+			case Ability.ACODE_SONG:
+			case Ability.ACODE_PRAYER:
+			case Ability.ACODE_CHANT:
 				evokableAbility=null;
 				foundMoreThanOne=true;
 				break;

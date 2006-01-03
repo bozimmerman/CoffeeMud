@@ -37,7 +37,7 @@ public class Thief_Trap extends ThiefSkill
 	public String name(){ return "Lay Traps";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"TRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -72,20 +72,18 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			Exit E=CMClass.getExit("StdExit");
-			Item I=CMClass.getItem("StdItem");
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Trap Name",15)+" "+CMStrings.padRight("Affects",17)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
 				buf.append(CMStrings.padRight(T.name(),15)+" ");
-				if(T.canAffect(mob.location()))
+				if(T.canAffect(Ability.CAN_ROOMS))
 					buf.append(CMStrings.padRight("Rooms",17)+" ");
 				else
-				if(T.canAffect(E))
+				if(T.canAffect(Ability.CAN_EXITS))
 					buf.append(CMStrings.padRight("Exits, Containers",17)+" ");
 				else
-				if(T.canAffect(I))
+				if(T.canAffect(Ability.CAN_ITEMS))
 					buf.append(CMStrings.padRight("Items",17)+" ");
 				else
 					buf.append(CMStrings.padRight("Unknown",17)+" ");

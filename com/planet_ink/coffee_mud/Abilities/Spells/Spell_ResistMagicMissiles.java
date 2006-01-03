@@ -36,9 +36,9 @@ public class Spell_ResistMagicMissiles extends Spell
 	public String ID() { return "Spell_ResistMagicMissiles"; }
 	public String name(){return "Resist Magic Missiles";}
 	public String displayText(){return "(Resist Magic Missiles)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
 	{

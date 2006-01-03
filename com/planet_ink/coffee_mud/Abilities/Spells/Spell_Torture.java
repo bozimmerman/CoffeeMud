@@ -37,9 +37,9 @@ public class Spell_Torture extends Spell
 	public String name(){return "Torture";}
 	public String displayText(){return "(being tortured)";}
 	public int maxRange(){return 1;}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()
 	{

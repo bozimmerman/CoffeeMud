@@ -37,9 +37,9 @@ public class Spell_TrueSight extends Spell
 	public String ID() { return "Spell_TrueSight"; }
 	public String name(){return "True Sight";}
 	public String displayText(){return "(True Sight)";}
-	public int abstractQuality(){ return OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()
 	{

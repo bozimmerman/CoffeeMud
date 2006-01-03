@@ -41,11 +41,11 @@ public class Druid_PackCall extends StdAbility
 	public String displayText(){return "(Pack Call)";}
 	private static final String[] triggerStrings = {"PACKCALL"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

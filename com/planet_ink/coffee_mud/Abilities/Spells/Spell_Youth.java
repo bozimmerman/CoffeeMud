@@ -37,7 +37,7 @@ public class Spell_Youth extends Spell
 	public String ID() { return "Spell_Youth"; }
 	public String name(){return "Youth";}
 	public int overrideMana(){return Integer.MAX_VALUE;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

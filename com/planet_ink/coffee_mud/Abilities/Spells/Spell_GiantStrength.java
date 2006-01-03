@@ -36,9 +36,9 @@ public class Spell_GiantStrength extends Spell
 	public String ID() { return "Spell_GiantStrength"; }
 	public String name(){return "Giant Strength";}
 	public String displayText(){return "(Giant-Strength spell)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

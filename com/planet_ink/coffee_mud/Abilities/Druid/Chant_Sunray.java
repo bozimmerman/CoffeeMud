@@ -37,7 +37,7 @@ public class Chant_Sunray extends Chant
 	public String ID() { return "Chant_Sunray"; }
 	public String name(){ return "Sunray";}
 	public String displayText(){return "(Sunray)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

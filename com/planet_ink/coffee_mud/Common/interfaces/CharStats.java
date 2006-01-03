@@ -251,7 +251,7 @@ public interface CharStats extends CMObject
     /**
      * Creates the enumerated set of character class levels stored here
      * from a semicolon list of levels.
-     * @return the semicolon list of levels
+     * @param levels the semicolon list of levels
      */
 	public void setMyLevels(String levels);
     /**
@@ -350,7 +350,7 @@ public interface CharStats extends CMObject
      * reset this setting, allowing the mobs TRUE current class to be displayed through the 
      * displayClassName method instead of the string set through this one.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
-     * @see #displayClassName(String)
+     * @see #displayClassName()
      * @see #displayClassLevel(MOB, boolean)
      * @see #displayClassLevelOnly(MOB)
      * @param newname the name of the mobs apparant current class 
@@ -361,7 +361,7 @@ public interface CharStats extends CMObject
      * reset this setting, allowing the mobs TRUE level to be displayed through the 
      * displayClassLevel method instead of the string set through this one.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
-     * @see #displayClassName(String)
+     * @see #displayClassName()
      * @see #displayClassLevel(MOB, boolean)
      * @see #displayClassLevelOnly(MOB)
      * @see #setDisplayClassName(String)
@@ -385,7 +385,7 @@ public interface CharStats extends CMObject
      * Returns a combination of the displayClassName and displayClassLevel for
      * the given mob.  If either are null, authentic values will be used.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
-     * @see #displayClassName(String)
+     * @see #displayClassName()
      * @see #setDisplayClassName(String)
      * @see #displayClassLevelOnly(MOB)
      * @param mob the mob whose class and overall level to display
@@ -397,7 +397,7 @@ public interface CharStats extends CMObject
      * Returns either the given mobs authentic classlevel/total level, 
      * or the value set through setDisplayClassLevel method.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
-     * @see #displayClassName(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats#displayClassName()
      * @see #setDisplayClassName(String)
      * @see #displayClassLevel(MOB, boolean)
      * @param mob the mob whose class and overall level to display

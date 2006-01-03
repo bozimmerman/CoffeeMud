@@ -35,7 +35,7 @@ public class Prayer_MassFreedom extends Prayer
 {
 	public String ID() { return "Prayer_MassFreedom"; }
 	public String name(){ return "Mass Freedom";}
-	public int abstractQuality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
@@ -53,12 +53,12 @@ public class Prayer_MassFreedom extends Prayer
 				{
 					newMOB.recoverEnvStats();
 					A.affectEnvStats(newMOB,newMOB.envStats());
-					int clas=A.classificationCode()&Ability.ALL_CODES;
+					int clas=A.classificationCode()&Ability.ALL_ACODES;
 					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 					   ||(CMath.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
 					if((A.invoker()==null)
-					||((clas!=Ability.SPELL)&&(clas!=Ability.CHANT)&&(clas!=Ability.PRAYER)&&(clas!=Ability.SONG))
+					||((clas!=Ability.ACODE_SPELL)&&(clas!=Ability.ACODE_CHANT)&&(clas!=Ability.ACODE_PRAYER)&&(clas!=Ability.ACODE_SONG))
 					||((A.invoker()!=null)
 					   &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
 					 	offenders.addElement(A);

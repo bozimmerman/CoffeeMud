@@ -40,8 +40,8 @@ public class Allergies extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.OK_SELF;}
-	public int classificationCode(){return Ability.PROPERTY;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
     protected HashSet resourceAllergies=new HashSet();

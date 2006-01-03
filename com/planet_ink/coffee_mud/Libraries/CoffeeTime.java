@@ -451,7 +451,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     * Returns the DD portion of a given date
     * 
     * <br><br><b>Usage:</b> String ENDYYYY=d2YYYYString();
-     * @param time The time in miliseconds
+    * @param time The time in miliseconds
     * @return String The year
     **/
     public String date2YYYYString(long time)
@@ -467,7 +467,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     * Returns the Hours portion of a given Time
     * 
     * <br><br><b>Usage:</b> String ENDHR=T2HRString();
-    * @param INTERNATIONALTIME whether international time is used
+    * @param time The time in miliseconds
     * @return String The hour
     **/
     public String date2HRString(long time)
@@ -488,7 +488,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     * Returns the Minutes portion of a given Time
     * 
     * <br><br><b>Usage:</b> String ENDMIN=T2MINString();
-     * @param time The time in miliseconds
+    * @param time The time in miliseconds
     * @return String The minutes
     **/
     public String date2MINString(long time)
@@ -645,8 +645,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     * format the date
     * 
     * <br><br><b>Usage:</b>  msgDateFormat(98374987234)
-    * @param NA
-    * @return NA
+    * @param time The time in miliseconds
+    * @return String The date
     */
     public String smtpDateFormat(long time) 
     {

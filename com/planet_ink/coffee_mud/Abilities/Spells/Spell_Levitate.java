@@ -37,9 +37,9 @@ public class Spell_Levitate extends Spell
 	public String name(){return "Levitate";}
 	public String displayText(){return "(Levitated)";}
 	public int maxRange(){return 5;}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

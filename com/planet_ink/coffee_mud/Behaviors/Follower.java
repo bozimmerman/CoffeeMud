@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ public class Follower extends ActiveTicker
 	protected int lastNumPeople=-1;
 	protected Room lastRoom=null;
 	protected MOB lastOwner=null;
-	
+
 	public Follower()
 	{
         super();
@@ -48,8 +48,8 @@ public class Follower extends ActiveTicker
 		maxTicks=0;
 		direction=-1;
 	}
-	
-    public void setParms(String newParms) 
+
+    public void setParms(String newParms)
 	{
 		minTicks=0;
 		maxTicks=0;
@@ -59,14 +59,10 @@ public class Follower extends ActiveTicker
 		realFollow=V.contains("GROUP");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
     }
-	
+
 
 	int direction=-1;
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every message listed in the CMMsg interface
-	 * from the given Environmental source */
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -74,10 +70,10 @@ public class Follower extends ActiveTicker
 		MOB mob=msg.source();
 		if(mob.amDead()) return;
 		if(mob.location()==null) return;
-		
+
 		if(affecting instanceof MOB)
 		{
-			if((!canFreelyBehaveNormal(affecting))||(realFollow)) 
+			if((!canFreelyBehaveNormal(affecting))||(realFollow))
 				return;
 
 			if((direction<0)
@@ -101,7 +97,7 @@ public class Follower extends ActiveTicker
 			}
 		}
 	}
-	
+
 	public MOB pickRandomMOBHere(Environmental ticking, Room room)
 	{
 		if(room==null) return null;
@@ -141,7 +137,7 @@ public class Follower extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		
+
 		if((ticking instanceof Item)
 		&&((lastOwner==null)
 		   ||((!inventory)&&(!CMLib.flags().isInTheGame(lastOwner,false)))))
@@ -160,15 +156,15 @@ public class Follower extends ActiveTicker
 				if(M!=null) lastOwner=M;
 			}
 		}
-		
-		if(!canAct(ticking,tickID)) 
+
+		if(!canAct(ticking,tickID))
 			return true;
-		
+
 		if(ticking instanceof MOB)
 		{
-			if(tickID!=Tickable.TICKID_MOB) 
+			if(tickID!=Tickable.TICKID_MOB)
 				return true;
-			if(!canFreelyBehaveNormal(ticking)) 
+			if(!canFreelyBehaveNormal(ticking))
 				return true;
 			if(realFollow)
 			{
@@ -198,7 +194,7 @@ public class Follower extends ActiveTicker
 
 				if(direction<0)
 					return true;
-				
+
 				boolean move=true;
 				for(int m=0;m<thisRoom.numInhabitants();m++)
 				{
@@ -220,10 +216,10 @@ public class Follower extends ActiveTicker
 		{
 			Item I=(Item)ticking;
 			if(I.container()!=null) I.setContainer(null);
-			
+
 			Room R=CMLib.utensils().roomLocation(I);
 			if(R==null)	return true;
-			
+
 			if(R!=lastOwner.location())
 				lastOwner.location().bringItemHere(I,0);
 			if((inventory)&&(R.isInhabitant(lastOwner)))
@@ -236,7 +232,7 @@ public class Follower extends ActiveTicker
 						lastOwner.location().recoverRoomStats();
 				}
 			}
-			
+
 		}
 		return true;
 	}

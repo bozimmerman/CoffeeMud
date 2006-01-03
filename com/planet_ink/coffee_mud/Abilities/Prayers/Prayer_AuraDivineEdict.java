@@ -39,7 +39,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 	public String displayText(){ return "(Edict Aura)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY;}
     protected String godName="the gods";

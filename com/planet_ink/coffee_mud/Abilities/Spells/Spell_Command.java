@@ -35,8 +35,8 @@ public class Spell_Command extends Spell
 {
 	public String ID() { return "Spell_Command"; }
 	public String name(){return "Command";}
-	public int abstractQuality(){return MALICIOUS;};
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

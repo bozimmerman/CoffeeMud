@@ -198,7 +198,7 @@ public class RaceData extends StdWebMacro
 					for(int i=0;i<mob.numLearnedAbilities();i++)
 					{
 						Ability A=mob.fetchAbility(i);
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 							if(A.profficiency()==0)
 								str.append(A.Name()+", ");
 							else

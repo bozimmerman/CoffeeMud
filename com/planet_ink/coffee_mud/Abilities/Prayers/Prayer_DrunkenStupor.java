@@ -36,7 +36,7 @@ public class Prayer_DrunkenStupor extends Prayer
 {
 	public String ID() { return "Prayer_DrunkenStupor"; }
 	public String name(){ return "Drunken Stupor";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Drunken Stupor)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

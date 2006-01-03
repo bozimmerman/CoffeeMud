@@ -37,7 +37,7 @@ public class Chant_Treemorph extends Chant
 	public String ID() { return "Chant_Treemorph"; }
 	public String name(){ return "Treemorph";}
 	public String displayText(){return "(Treemorph)";}
-	public int abstractQuality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	Item tree=null;
 	Race treeForm=null;
 

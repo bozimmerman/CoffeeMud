@@ -309,7 +309,7 @@ public class Shell extends StdCommand
                 }
                 if(mob.session()!=null)
                 {
-                    mob.session().colorOnlyPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N");
+                    mob.session().colorOnlyPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N\n\r");
                     mob.session().rawPrint(CF.text().toString(),25);
                 }
             }
@@ -470,7 +470,7 @@ public class Shell extends StdCommand
                         {
                             StringBuffer text=new StringBuffer("");
                             for(int i=0;i<vbuf.size();i++)
-                                text.append(((String)vbuf.elementAt(i))+"\r\n");
+                                text.append(((String)vbuf.elementAt(i))+"\n");
                             if(file.saveText(text))
                                 mob.tell("File saved.");
                             else

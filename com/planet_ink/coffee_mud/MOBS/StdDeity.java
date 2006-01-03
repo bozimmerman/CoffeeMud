@@ -309,13 +309,13 @@ public class StdDeity extends StdMOB implements Deity
 		if(Blessing!=null)
 		{
 			Vector V=new Vector();
-			if(Blessing.canTarget(mob))
+			if(Blessing.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.name()+"$");
 				Blessing.invoke(this,V,mob,true,mob.envStats().level());
 			}
 			else
-			if(Blessing.canTarget(CMClass.sampleItem()))
+			if(Blessing.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mob.fetchWieldedItem();
 				if(I==null) I=mob.fetchFirstWornItem(Item.WORN_HELD);
@@ -360,13 +360,13 @@ public class StdDeity extends StdMOB implements Deity
 		if(Curse!=null)
 		{
 			Vector V=new Vector();
-			if(Curse.canTarget(mob))
+			if(Curse.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement("$"+mob.name()+"$");
 				Curse.invoke(this,V,mob,true,mob.envStats().level());
 			}
 			else
-			if(Curse.canTarget(CMClass.sampleItem()))
+			if(Curse.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mob.fetchWieldedItem();
 				if(I==null) I=mob.fetchFirstWornItem(Item.WORN_HELD);
@@ -697,7 +697,7 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					{
 						msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
-						CMLib.combat().postExperience(msg.source(),null,null,-xpwrath,false);
+						CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
 					}
 				}
 				break;

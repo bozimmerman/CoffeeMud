@@ -44,12 +44,17 @@ public class Prop_NoRecall extends Property
 	{
 		if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 		{
-            if(((!(myHost instanceof Item))
-                ||(msg.source()==((Item)myHost).owner()))
-            &&(msg.source()!=null)
+            if((msg.source()!=null)
 			&&(msg.source().location()!=null))
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
-			return false;
+            {
+				if(((myHost instanceof MOB)&&((msg.source()==myHost)||(msg.source().location()==((MOB)myHost).location()))&&(msg.source().isInCombat()))
+	            ||((myHost instanceof Item)&&(msg.source()==((Item)myHost).owner()))
+	            ||((myHost instanceof Room)&&(msg.source().location()==myHost))
+				||(myHost instanceof Exit)
+				||(myHost instanceof Area))
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
+				return false;
+            }
 		}
 		return super.okMessage(myHost,msg);
 	}

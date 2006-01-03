@@ -37,10 +37,10 @@ public class Spell_HeatMetal extends Spell
 	public String ID() { return "Spell_HeatMetal"; }
 	public String name(){return "Heat Metal";}
 	public String displayText(){return "(Heated)";}
-	public int abstractQuality(){return MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_HEATING;}
 
 	protected Vector affectedItems=new Vector();

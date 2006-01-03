@@ -38,7 +38,7 @@ public class Chant_EnhanceBody extends Chant
 	public String ID() { return "Chant_EnhanceBody"; }
 	public String name(){ return "Enhance Body";}
 	public String displayText(){return "(Enhanced Body)";}
-	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

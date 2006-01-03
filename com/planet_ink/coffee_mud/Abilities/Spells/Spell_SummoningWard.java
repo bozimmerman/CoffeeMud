@@ -36,10 +36,10 @@ public class Spell_SummoningWard extends Spell
 	public String ID() { return "Spell_SummoningWard"; }
 	public String name(){return "Summoning Ward";}
 	public String displayText(){return "(Summoning Ward)";}
-	protected int quality=Ability.INDIFFERENT;
+	protected int quality=Ability.QUALITY_INDIFFERENT;
 	public int abstractQuality(){ return quality;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
 	{
@@ -87,10 +87,10 @@ public class Spell_SummoningWard extends Spell
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
                 Ability A=(Ability)msg.tool();
-                if(((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-                ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-                ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-                ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
+                if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
                 {
     				if((msg.source().location()!=null)&&(msg.source().location()!=R))
     					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
@@ -136,7 +136,7 @@ public class Spell_SummoningWard extends Spell
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?");
-			if(target instanceof Room) quality=MALICIOUS;
+			if(target instanceof Room) quality=Ability.QUALITY_MALICIOUS;
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -152,14 +152,14 @@ public class Spell_SummoningWard extends Spell
 					if(target instanceof Room)
 					{
 					    Spell_SummoningWard A=(Spell_SummoningWard)target.fetchEffect(ID());
-					    if(A!=null) A.quality=Ability.MALICIOUS;
+					    if(A!=null) A.quality=Ability.QUALITY_MALICIOUS;
 					}
 				}
 			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a summoning ward, but fail(s).");
-		quality=INDIFFERENT;
+		quality=Ability.QUALITY_INDIFFERENT;
 
 		return success;
 	}

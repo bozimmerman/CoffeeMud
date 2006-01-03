@@ -36,7 +36,7 @@ public class Prayer_Desecrate extends Prayer
 {
 	public String ID() { return "Prayer_Desecrate"; }
 	public String name(){ return "Desecrate";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
@@ -82,7 +82,7 @@ public class Prayer_Desecrate extends Prayer
 					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 					int levelDiff=mob.envStats().level()-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
-					CMLib.combat().postExperience(mob,null,null,(int)Math.round(exp),false);
+					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp),false);
 				}
                 target.destroy();
 				mob.location().recoverRoomStats();

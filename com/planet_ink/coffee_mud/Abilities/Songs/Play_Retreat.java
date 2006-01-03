@@ -36,7 +36,7 @@ public class Play_Retreat extends Play
 {
 	public String ID() { return "Play_Retreat"; }
 	public String name(){ return "Retreat";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected boolean persistantSong(){return false;}
 	protected String songOf(){return "a "+name();}

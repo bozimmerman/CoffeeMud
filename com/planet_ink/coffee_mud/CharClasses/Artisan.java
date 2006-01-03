@@ -165,11 +165,11 @@ public class Artisan extends StdCharClass
 					if((A!=null)
 					&&(!A.isAutoInvoked())
 					&&(mob.isMine(A))
-					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 						exp++;
 				}
 				if(exp>0)
-					CMLib.combat().postExperience(mob,null,null,exp,true);
+					CMLib.leveler().postExperience(mob,null,null,exp,true);
 			}
 		}
 		return super.tick(ticking,tickID);

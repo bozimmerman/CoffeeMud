@@ -38,10 +38,10 @@ public class Spell_WardArea extends Spell implements Trap
 	public String displayText(){return "(Ward Area spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	private Ability shooter=null;
 	protected Vector parameters=null;
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected boolean sprung=false;
 
 	public MOB theInvoker()
@@ -160,7 +160,7 @@ public class Spell_WardArea extends Spell implements Trap
 		commands.insertElementAt("CAST",0);
 		shooter=CMLib.english().getToEvoke(mob,commands);
 		parameters=commands;
-		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
+		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 		{
 			parameters=null;
 			shooter=null;
@@ -168,7 +168,7 @@ public class Spell_WardArea extends Spell implements Trap
 			return false;
 		}
 
-		if(shooter.enchantQuality()==Ability.MALICIOUS)
+		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
 			MOB M=mob.location().fetchInhabitant(m);

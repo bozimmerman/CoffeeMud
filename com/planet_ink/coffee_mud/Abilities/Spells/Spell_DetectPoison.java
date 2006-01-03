@@ -35,11 +35,11 @@ public class Spell_DetectPoison extends Spell
 {
 	public String ID() { return "Spell_DetectPoison"; }
 	public String name(){ return "Detect Poison";}
-	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
-	public int abstractQuality(){return Ability.OK_OTHERS;}
+	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -48,7 +48,7 @@ public class Spell_DetectPoison extends Spell
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		if(fromMe instanceof MOB)
@@ -57,7 +57,7 @@ public class Spell_DetectPoison extends Spell
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 					offenders.addElement(A);
 			}
 		}

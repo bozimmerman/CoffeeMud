@@ -36,9 +36,9 @@ public class Spell_MinorGlobe extends Spell
 	public String ID() { return "Spell_MinorGlobe"; }
 	public String name(){return "Globe";}
 	public String displayText(){return "(Invulnerability Globe)";}
-	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
 	int amountAbsorbed=0;
 
@@ -68,9 +68,9 @@ public class Spell_MinorGlobe extends Spell
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
 		&&(!mob.amDead())
 		&&(CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID())<=8)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))

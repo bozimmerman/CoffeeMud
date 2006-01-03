@@ -37,7 +37,7 @@ public class Spell_FloatingDisc extends Spell
 	public String name(){return "Floating Disc";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	boolean wasntMine=false;
 

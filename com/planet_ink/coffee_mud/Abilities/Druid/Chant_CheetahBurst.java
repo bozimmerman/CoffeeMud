@@ -37,7 +37,7 @@ public class Chant_CheetahBurst extends Chant
 	public String ID() { return "Chant_CheetahBurst"; }
 	public String name(){return "Cheetah Burst";}
 	public String displayText(){return "(Cheetah Burst)";}
-	public int abstractQuality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

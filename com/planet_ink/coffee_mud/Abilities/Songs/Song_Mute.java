@@ -36,7 +36,7 @@ public class Song_Mute extends Song
 {
 	public String ID() { return "Song_Mute"; }
 	public String name(){ return "Muting";}
-	public int abstractQuality(){ return MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

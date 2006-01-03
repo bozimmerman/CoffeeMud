@@ -62,6 +62,15 @@ public class FileInfo extends StdWebMacro
 				return ""+F.getName();
 			if(parms.containsKey("DATA"))
                 return F.textUnformatted().toString();
+			if(parms.containsKey("TEXTDATA"))
+			{
+				String s=F.text().toString();
+				s=CMStrings.replaceAll(s,"\n\r","\n");
+				s=CMStrings.replaceAll(s,"&","&amp;");
+				s=CMStrings.replaceAll(s,"@","&#64;");
+				s=CMStrings.replaceAll(s,"<","&lt;");
+				return s;
+			}
 		}
 		catch(Exception e)
 		{

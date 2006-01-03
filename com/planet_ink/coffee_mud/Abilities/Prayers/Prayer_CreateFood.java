@@ -36,7 +36,7 @@ public class Prayer_CreateFood extends Prayer
 {
 	public String ID() { return "Prayer_CreateFood"; }
 	public String name(){ return "Create Food";}
-	public int abstractQuality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

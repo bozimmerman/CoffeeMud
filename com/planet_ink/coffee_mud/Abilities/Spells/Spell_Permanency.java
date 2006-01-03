@@ -38,7 +38,7 @@ public class Spell_Permanency extends Spell
 	public String name(){return "Permanency";}
 	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -71,7 +71,7 @@ public class Spell_Permanency extends Spell
 					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
 					 &&(A instanceof StdAbility)
-					 &&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+					 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 					{
                         theOne=(StdAbility)A;
 						break;
@@ -84,7 +84,7 @@ public class Spell_Permanency extends Spell
 				}
 				else
 				if(((target instanceof Room)||(target instanceof Exit))
-				&&(theOne.enchantQuality()==Ability.MALICIOUS)
+				&&(theOne.enchantQuality()==Ability.QUALITY_MALICIOUS)
 				&&(!CMLib.utensils().doesOwnThisProperty(mob,mob.location())))
 				{
 					mob.tell("You can not make "+theOne.name()+" permanent here.");

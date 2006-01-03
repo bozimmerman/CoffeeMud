@@ -38,10 +38,10 @@ public class Spell_SummonEnemy extends Spell
 	public String name(){return "Summon Enemy";}
 	public String displayText(){return "(Enemy Summoning)";}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public int enchantQuality(){return Ability.INDIFFERENT;}
+	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{
