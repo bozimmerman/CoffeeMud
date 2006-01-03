@@ -42,8 +42,6 @@ public class EndlessSky extends StdGrid
 		super();
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_AIR;
-		domainCondition=Room.CONDITION_NORMAL;
 		setDisplayText("Up in the sky");
 		setDescription("");
 		xsize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
@@ -54,6 +52,8 @@ public class EndlessSky extends StdGrid
 			ysize=3;
 		}
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -39,7 +39,6 @@ public class LargeCaveRoom extends CaveRoom
 		super();
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();
-		maxRange=5;
 	}
-
+	public int maxRange(){return 5;}
 }

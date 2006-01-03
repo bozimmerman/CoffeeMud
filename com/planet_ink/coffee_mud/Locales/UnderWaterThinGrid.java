@@ -41,11 +41,8 @@ public class UnderWaterThinGrid extends StdThinGrid
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_UNDERWATER;
-		domainCondition=Room.CONDITION_WET;
 		setDisplayText("Under the water");
 		setDescription("");
-		baseThirst=0;
 		xsize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
 		ysize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
 		if((xsize==0)||(ysize==0))
@@ -55,6 +52,9 @@ public class UnderWaterThinGrid extends StdThinGrid
 		}
 	}
 
+	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	public int domainConditions(){return Room.CONDITION_WET;}
+	protected int baseThirst(){return 0;}
 
 	public CMObject newInstance()
 	{

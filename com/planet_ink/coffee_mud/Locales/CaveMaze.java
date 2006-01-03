@@ -39,15 +39,11 @@ public class CaveMaze extends StdMaze
 		super();
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_CAVE;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public int getMaxRange()
-	{
-		if(maxRange>=0) return maxRange;
-		return 5;
-	}
+	public int maxRange(){return 5;}
 	public String getChildLocaleID(){return "CaveRoom";}
 	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

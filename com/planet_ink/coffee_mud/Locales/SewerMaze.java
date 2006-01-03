@@ -41,9 +41,9 @@ public class SewerMaze extends StdMaze
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_CAVE;
-		domainCondition=Room.CONDITION_WET;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getChildLocaleID(){return "SewerRoom";}
 	public Vector resourceChoices(){return new Vector();}

@@ -40,9 +40,9 @@ public class Mountains extends StdRoom
 		name="the mountain";
 		baseEnvStats.setWeight(5);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public static final Integer[] resourceList={
 		new Integer(RawMaterial.RESOURCE_STONE),

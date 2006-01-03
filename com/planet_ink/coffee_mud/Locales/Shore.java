@@ -40,10 +40,10 @@ public class Shore extends StdRoom
 		name="the shore";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_DESERT;
-		domainCondition=Room.CONDITION_HOT;
-		baseThirst=1;
 	}
+	protected int baseThirst(){return 1;}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public static final Integer[] resourceList={
 		new Integer(RawMaterial.RESOURCE_FISH),

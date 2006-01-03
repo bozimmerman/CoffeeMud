@@ -38,8 +38,8 @@ public class FrozenPlains extends Plains
 	{
 		super();
 		recoverEnvStats();
-		domainCondition=Room.CONDITION_COLD;
 	}
+	public int domainConditions(){return Room.CONDITION_COLD;}
 
 	public static final Integer[] resourceList={
 		new Integer(RawMaterial.RESOURCE_FUR)};

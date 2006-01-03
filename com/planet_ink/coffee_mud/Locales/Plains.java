@@ -40,9 +40,9 @@ public class Plains extends StdRoom
 		name="the grass";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public static final Integer[] resourceList={
 		new Integer(RawMaterial.RESOURCE_WHEAT),

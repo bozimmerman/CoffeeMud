@@ -39,7 +39,6 @@ public class LargeStoneRoom extends StoneRoom
 		super();
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		maxRange=5;
 	}
-
+	public int maxRange(){return 5;}
 }

@@ -41,9 +41,9 @@ public class HillsThinGrid extends StdThinGrid
 		name="the hills";
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_HILLS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public CMObject newInstance()
 	{

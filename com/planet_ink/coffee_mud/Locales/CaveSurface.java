@@ -40,14 +40,10 @@ public class CaveSurface extends ClimbableSurface
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_CAVE;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public int getMaxRange()
-	{
-		if(maxRange>=0) return maxRange;
-		return 5;
-	}
+	public int maxRange(){return 5;}
 	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

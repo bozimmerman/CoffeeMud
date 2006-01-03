@@ -40,10 +40,10 @@ public class Desert extends StdRoom
 		name="the desert";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_DESERT;
-		domainCondition=Room.CONDITION_HOT;
-		baseThirst=4;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	public int domainConditions(){return Room.CONDITION_HOT;}
+	protected int baseThirst(){return 4;}
 
 	public static final Integer[] resourceList={
 		new Integer(RawMaterial.RESOURCE_CACTUS),

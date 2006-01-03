@@ -42,8 +42,6 @@ public class EndlessThinSky extends StdThinGrid
 		super();
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_AIR;
-		domainCondition=Room.CONDITION_NORMAL;
 		setDisplayText("Up in the sky");
 		setDescription("");
 		xsize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
@@ -54,6 +52,8 @@ public class EndlessThinSky extends StdThinGrid
 			ysize=3;
 		}
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 
 	public CMObject newInstance()

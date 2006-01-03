@@ -38,8 +38,8 @@ public class FrozenMountains extends Mountains
 	{
 		super();
 		recoverEnvStats();
-		domainCondition=Room.CONDITION_COLD;
 	}
+	public int domainConditions(){return Room.CONDITION_COLD;}
 
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

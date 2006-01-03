@@ -39,9 +39,9 @@ public class PlainsGrid extends StdGrid
 		super();
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getChildLocaleID(){return "Plains";}
 	public Vector resourceChoices(){return Plains.roomResources;}

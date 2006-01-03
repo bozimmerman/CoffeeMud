@@ -40,9 +40,9 @@ public class GreatLake extends StdGrid
 		name="the lake";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
-		domainCondition=Room.CONDITION_WET;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getChildLocaleID(){return "WaterSurface";}
 	public Vector resourceChoices(){return UnderWater.roomResources;}

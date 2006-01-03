@@ -40,9 +40,9 @@ public class HillsGrid extends StdGrid
 		name="the hills";
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_HILLS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getChildLocaleID(){return "Hills";}
 	public Vector resourceChoices(){return Hills.roomResources;}

@@ -40,9 +40,9 @@ public class ClimbableSurface extends StdRoom
 		name="the surface";
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 
 	public void mountLadder(MOB mob, Rideable ladder)

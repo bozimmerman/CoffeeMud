@@ -39,9 +39,9 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 		super();
 		name="the water";
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_WATERSURFACE;
-		domainCondition=Room.CONDITION_WET;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
 
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

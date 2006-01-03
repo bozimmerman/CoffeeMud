@@ -39,10 +39,10 @@ public class DesertMaze extends StdMaze
 		super();
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_DESERT;
-		domainCondition=Room.CONDITION_HOT;
-		baseThirst=4;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	public int domainConditions(){return Room.CONDITION_HOT;}
+	protected int baseThirst(){return 4;}
 
 	public String getChildLocaleID(){return "Desert";}
 	public Vector resourceChoices(){return Desert.roomResources;}

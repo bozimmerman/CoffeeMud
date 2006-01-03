@@ -42,8 +42,6 @@ public class MagicShelter extends StdRoom
 		setDescription("You are in a domain of complete void and peace.");
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_MAGIC;
-		domainCondition=Room.CONDITION_NORMAL;
 		Ability A=CMClass.getAbility("Prop_PeaceMaker");
 		if(A!=null)
 		{
@@ -75,6 +73,8 @@ public class MagicShelter extends StdRoom
 			addEffect(A);
 		}
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_MAGIC;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 
 

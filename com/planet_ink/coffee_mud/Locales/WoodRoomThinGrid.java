@@ -40,9 +40,9 @@ public class WoodRoomThinGrid extends StdThinGrid
 		super();
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_WOOD;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public CMObject newInstance()
 	{

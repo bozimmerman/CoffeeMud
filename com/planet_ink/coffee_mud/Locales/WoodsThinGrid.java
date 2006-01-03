@@ -40,9 +40,9 @@ public class WoodsThinGrid extends StdThinGrid
 		super();
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_WOODS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getChildLocaleID(){return "Woods";}
 	public Vector resourceChoices(){return Woods.roomResources;}

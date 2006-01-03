@@ -49,15 +49,11 @@ public class StdRoom implements Room
 	protected Vector behaviors=null;
 	protected Vector contents=new Vector();
 	protected Vector inhabitants=new Vector();
-	protected int domainType=Room.DOMAIN_OUTDOORS_CITY;
-	protected int domainCondition=Room.CONDITION_NORMAL;
-	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
 	protected boolean mobility=true;
 	protected GridLocale gridParent=null;
 	protected long tickStatus=Tickable.STATUS_NOT;
 
 	// base move points and thirst points per round
-	protected int baseThirst=1;
 	protected int myResource=-1;
 	protected long resourceFound=0;
     protected boolean amDestroyed=false;
@@ -195,15 +191,8 @@ public class StdRoom implements Room
 			return this.newInstance();
 		}
 	}
-	public int domainType()
-	{
-		return domainType;
-	}
-
-	public int domainConditions()
-	{
-		return domainCondition;
-	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;} 
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String displayText()
 	{
@@ -1413,28 +1402,20 @@ public class StdRoom implements Room
 
 	public int pointsPerMove(MOB mob)
 	{	return getArea().getClimateObj().adjustMovement(envStats().weight(),mob,this);	}
+	protected int baseThirst(){return 1;}
 	public int thirstPerRound(MOB mob)
 	{
 		switch(domainConditions())
 		{
 		case Room.CONDITION_HOT:
-			return getArea().getClimateObj().adjustWaterConsumption(baseThirst+1,mob,this);
+			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+1,mob,this);
 		case Room.CONDITION_WET:
-			return getArea().getClimateObj().adjustWaterConsumption(baseThirst-1,mob,this);
+			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()-1,mob,this);
 		}
-		return getArea().getClimateObj().adjustWaterConsumption(baseThirst,mob,this);
+		return getArea().getClimateObj().adjustWaterConsumption(baseThirst(),mob,this);
 	}
 	public int minRange(){return Integer.MIN_VALUE;}
-	public int maxRange()
-	{
-		if(maxRange>=0)
-			return maxRange;
-		else
-		if((domainType&Room.INDOORS)>0)
-			return 1;
-		else
-			return 10;
-	}
+	public int maxRange(){return((domainType()&Room.INDOORS)>0)?1:10;}
 
 	public void addEffect(Ability to)
 	{

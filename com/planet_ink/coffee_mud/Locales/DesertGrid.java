@@ -40,9 +40,9 @@ public class DesertGrid extends StdGrid
 		name="the desert";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_DESERT;
-		domainCondition=Room.CONDITION_HOT;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public String getChildLocaleID(){return "Desert";}
 	public Vector resourceChoices(){return Desert.roomResources;}

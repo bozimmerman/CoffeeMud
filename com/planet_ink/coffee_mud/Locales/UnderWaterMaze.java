@@ -41,10 +41,10 @@ public class UnderWaterMaze extends StdMaze
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_UNDERWATER;
-		domainCondition=Room.CONDITION_WET;
-		baseThirst=0;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	public int domainConditions(){return Room.CONDITION_WET;}
+	protected int baseThirst(){return 0;}
 
 
 	public String getChildLocaleID(){return "UnderWater";}

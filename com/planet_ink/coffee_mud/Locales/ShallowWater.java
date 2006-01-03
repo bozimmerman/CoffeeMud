@@ -40,10 +40,10 @@ public class ShallowWater extends StdRoom implements Drink
 		name="the water";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
-		domainCondition=Room.CONDITION_WET;
-		baseThirst=0;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
+	protected int baseThirst(){return 0;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

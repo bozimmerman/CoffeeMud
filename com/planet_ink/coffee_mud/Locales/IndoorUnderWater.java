@@ -42,10 +42,10 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_NOT_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_UNDERWATER;
-		domainCondition=Room.CONDITION_WET;
-		baseThirst=0;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
+	public int domainConditions(){return Room.CONDITION_WET;}
+	protected int baseThirst(){return 0;}
 
 
 

@@ -41,9 +41,9 @@ public class IndoorInTheAir extends StdRoom
 		name="the space";
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_AIR;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_AIR;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

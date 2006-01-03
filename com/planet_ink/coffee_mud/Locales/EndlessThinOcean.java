@@ -41,9 +41,9 @@ public class EndlessThinOcean extends StdThinGrid
 		name="the ocean";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
-		domainCondition=Room.CONDITION_WET;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public CMObject newInstance()
 	{

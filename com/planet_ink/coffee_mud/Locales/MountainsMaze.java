@@ -39,9 +39,9 @@ public class MountainsMaze extends StdMaze
 		super();
 		baseEnvStats.setWeight(5);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getChildLocaleID(){return "Mountains";}
 	public Vector resourceChoices(){return Mountains.roomResources;}

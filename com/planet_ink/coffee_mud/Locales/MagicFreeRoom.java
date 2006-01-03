@@ -39,10 +39,9 @@ public class MagicFreeRoom extends StdRoom
 		super();
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_STONE;
-		domainCondition=Room.CONDITION_NORMAL;
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 	}
-
+	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 }

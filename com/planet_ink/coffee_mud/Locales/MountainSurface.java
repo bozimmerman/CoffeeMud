@@ -39,9 +39,9 @@ public class MountainSurface extends ClimbableSurface
 		super();
 		baseEnvStats.setWeight(6);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

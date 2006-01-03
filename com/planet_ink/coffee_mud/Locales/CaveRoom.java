@@ -41,16 +41,11 @@ public class CaveRoom extends StdRoom
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_CAVE;
-
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public int getMaxRange()
-	{
-		if(maxRange>=0) return maxRange;
-		return 5;
-	}
+	public int maxRange(){return 5;}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))

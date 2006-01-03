@@ -40,9 +40,9 @@ public class SwampGrid extends StdGrid
 		name="the swamp";
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_SWAMP;
-		domainCondition=Room.CONDITION_WET;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
+	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getChildLocaleID(){return "Swamp";}
 	public Vector resourceChoices(){return Swamp.roomResources;}

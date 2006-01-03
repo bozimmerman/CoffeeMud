@@ -40,9 +40,9 @@ public class RoadGrid extends StdGrid
 		name="a road";
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getChildLocaleID(){return "Road";}
 	public Vector resourceChoices(){return Road.roomResources;}

@@ -40,8 +40,8 @@ public class SpacePort extends StdRoom
 		name="the space port";
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_SPACEPORT;
-		domainCondition=Room.CONDITION_NORMAL;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
+	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 }

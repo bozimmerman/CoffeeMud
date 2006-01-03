@@ -40,9 +40,9 @@ public class SaltWaterThinSurface extends SaltWaterSurface
 		name="the water";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
-		domainCondition=Room.CONDITION_WET;
 	}
+	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
 	protected String UnderWaterLocaleID(){return "UnderSaltWaterThinGrid";}
 	public CMObject newInstance()
 	{
