@@ -290,10 +290,10 @@ public class Modify extends BaseGenerics
 			if(reid)
 			{
 				Room R=mob.location();
+				String oldID=R.roomID();
 	    		synchronized(("SYNC"+R.roomID()).intern())
 	    		{
 	    			R=CMLib.map().getRoom(R);
-					String oldID=R.roomID();
 					Room reference=CMLib.map().findConnectingRoom(R);
 					String checkID=null;
 					if(reference!=null)
@@ -315,7 +315,7 @@ public class Modify extends BaseGenerics
 							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 							{
 								Room thatRoom=R2.rawDoors()[dir];
-								if((thatRoom!=null)&&(thatRoom.roomID().equals(R)))
+								if((thatRoom!=null)&&(thatRoom.roomID().equals(oldID)))
 								{
 									CMLib.database().DBUpdateExits(R2);
 									break;
