@@ -33,8 +33,10 @@ import java.util.*;
 public class StdGridArea extends StdArea implements Area, GridZones {
 
 	public String ID(){	return "StdGridArea";}
+	public final static String ZEROES="0000000000";
 	protected int xSize=100;
 	protected int ySize=100;
+	protected int yLength=3;
 	
 	
 	public String getNewRoomID(Room startRoom, int direction)
@@ -84,11 +86,9 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	protected String roomIDFromPos(int x, int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) return null;
-		String yStr=""+y;
-		if(x==0) return yStr;
-		int len=(""+ySize).length();
-		while(yStr.length()<len) yStr="0"+yStr;
-		return x+yStr;
+		String s=new Integer(y).toString();
+		if(x>0) return x+(ZEROES.substring(ZEROES.length()-(yLength-s.length())))+s;
+		return s;
 	}
 	public Room getGridChild(int x, int y)
 	{
@@ -142,5 +142,5 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	public int xGridSize(){ return xSize;}
 	public int yGridSize(){ return ySize;}
 	public void setXGridSize(int x){xSize=x;}
-	public void setYGridSize(int y){ySize=y;}
+	public void setYGridSize(int y){ySize=y; yLength=new Integer(ySize).toString().length();}
 }

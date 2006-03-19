@@ -344,12 +344,22 @@ public class MUDGrinder extends StdWebMacro
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "@break@";
 			String like=httpReq.getRequestParameter("ROOM");
-			String roomID=quickfind(A,like.toUpperCase());
-			Room R=null;
-			if(roomID!=null) R=CMLib.map().getRoom(roomID);
-			R=CMLib.map().getRoom(R);
-			if(R==null) return "The room you entered ("+like+") could not be found.";
-			CMLib.map().resetRoom(R);
+			Vector likeList=CMParms.parseCommas(like,true);
+			Vector RS=new Vector();
+			for(int l=0;l<likeList.size();l++)
+			{
+				like=(String)likeList.elementAt(l);
+				String roomID=quickfind(A,like.toUpperCase());
+				Room R=null;
+				if(roomID!=null) R=CMLib.map().getRoom(roomID);
+				R=CMLib.map().getRoom(R);
+				if(R==null) return "The room you entered ("+like+") could not be found.";
+				CMLib.map().resetRoom(R);
+				Room likeRoom=(Room)CMLib.map().getRoom(R).copyOf();
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++) likeRoom.rawDoors()[d]=null;
+				RS.addElement(likeRoom);
+			}
+			if(RS.size()==0) return "You did not specify a room or room list to paint from!";
 			boolean overwrite=httpReq.getRequestParameter("NOVERLAP")!=null
 								&&(httpReq.getRequestParameter("NOVERLAP").length()>0);
 			int brushSize=CMath.s_int(httpReq.getRequestParameter("BRUSHSIZE"));
@@ -366,8 +376,8 @@ public class MUDGrinder extends StdWebMacro
 			int endY=coords[5]+brushSize;
 			if(endX>=((GridZones)A).xGridSize()) endX=((GridZones)A).xGridSize()-1;
 			if(endY>=((GridZones)A).yGridSize()) endY=((GridZones)A).yGridSize()-1;
-			Room likeRoom=(Room)CMLib.map().getRoom(R).copyOf();
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++) likeRoom.rawDoors()[d]=null;
+			String roomID=null;
+			Room R=null;
 			if(overwrite)
 			for(int x=coords[4];x<=endX;x++)
 				for(int y=coords[5];y<=endY;y++)
@@ -383,16 +393,24 @@ public class MUDGrinder extends StdWebMacro
 						}
 					}
 				}
+			RoomnumberSet deferredExitSaves=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 			for(int x=coords[4];x<=endX;x++)
 				for(int y=coords[5];y<=endY;y++)
 				{
 					roomID=gridRoomID(A,x,y);
 					if(!A.getProperRoomnumbers().contains(roomID))
 					{
-						R=GrinderRooms.createGridRoom(A,roomID,likeRoom,true);
+						Room likeRoom=(Room)RS.elementAt(CMLib.dice().roll(1,RS.size(),0)-1);
+						R=GrinderRooms.createGridRoom(A,roomID,likeRoom,deferredExitSaves,true);
 						Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
 					}
 				}
+			for(Enumeration e=deferredExitSaves.getRoomIDs();e.hasMoreElements();)
+			{
+				R=CMLib.map().getRoom((String)e.nextElement());
+				CMLib.database().DBUpdateExits(R);
+			}
+			Log.sysOut("Grinder",mob.name()+" updated "+deferredExitSaves.roomCountAllAreas()+" rooms exits.");
 			//String errMsg=GrinderRooms.createRoom(R,dir,(copyThisOne!=null)&&(copyThisOne.equalsIgnoreCase("ON")));
 		}
 		else
@@ -410,7 +428,7 @@ public class MUDGrinder extends StdWebMacro
 			if((roomID==null)||(R!=null)||(roomID.length()==0)) return "@break@";
 			String copyThisOne=httpReq.getRequestParameter("COPYROOM");
 			Room copyRoom=CMLib.map().getRoom(copyThisOne);
-			Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,((link!=null)&&(link.length()>0)));
+			Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,null,((link!=null)&&(link.length()>0)));
 			if(newRoom==null) httpReq.addRequestParameters("ERRMSG","An error occurred trying to create your room.");
 			Log.sysOut("Grinder",mob.Name()+" added room "+newRoom.roomID());
 			httpReq.addRequestParameters("ROOM",newRoom.roomID());

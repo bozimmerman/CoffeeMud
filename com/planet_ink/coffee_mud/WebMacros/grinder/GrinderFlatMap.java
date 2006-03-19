@@ -81,7 +81,7 @@ public class GrinderFlatMap
 							if((thisXY[0]<xyxy[0])
 							||(thisXY[1]<xyxy[1])
 							||(thisXY[0]>xyxy[2])
-							||(thisXY[1]<xyxy[3]))
+							||(thisXY[1]>xyxy[3]))
 								continue;
 						}
 						GrinderRoom GR=new GrinderRoom(roomID);
@@ -164,7 +164,7 @@ public class GrinderFlatMap
             {
                 GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
                 int[] myxy=((GridZones)area).getRoomXY(room.roomID);
-                if(myxy==null) continue;
+				if(myxy==null) continue;
                 if((myxy[0]<boundsXYXY[0])||(myxy[1]<boundsXYXY[1])||(myxy[0]>=boundsXYXY[2])||(myxy[1]>=boundsXYXY[3]))
                 	areaMap.remove(room);
                 else

@@ -345,17 +345,13 @@ public class GrinderRooms
 		R.getArea().fillInAreaRoom(R);
 		return "";
 	}
-	public static Room createGridRoom(Area A, String roomID, Room copyThisOne, boolean autoLink)
+	public static Room createGridRoom(Area A, String roomID, Room copyThisOne, RoomnumberSet deferredExitSaves, boolean autoLink)
 	{
 		Room R=null;
 		if(copyThisOne!=null)
 		{
 			R=(Room)copyThisOne.copyOf();
 			R.setRoomID(roomID);
-			Vector V=CMParms.parseAnyWords(R.description(),"<P>",true);
-			if(V.size()>1) R.setDescription((String)V.elementAt(CMLib.dice().roll(1,V.size(),0)-1));
-			V=CMParms.parseAnyWords(R.displayText(),"<P>",true);
-			if(V.size()>1) R.setDisplayText((String)V.elementAt(CMLib.dice().roll(1,V.size(),0)-1));
 		}
 		else
 		{
@@ -393,7 +389,13 @@ public class GrinderRooms
 							R2.rawDoors()[opD]=R;
 							if(R2.rawExits()[opD]==null)
 								R2.rawExits()[opD]=CMClass.getExit("StdOpenDoorway");
-							CMLib.database().DBUpdateExits(R2);
+							if(deferredExitSaves!=null)
+							{
+								if(!deferredExitSaves.contains(R2.roomID()))
+									deferredExitSaves.add(R2.roomID());
+							}
+							else
+								CMLib.database().DBUpdateExits(R2);
 						}
 						if(R.rawDoors()[d]==null)
 						{
@@ -407,8 +409,16 @@ public class GrinderRooms
 			}
 			if(resaveMyExits)
 			{
-				CMLib.database().DBUpdateExits(R);
-				R.getArea().fillInAreaRoom(R);
+				if(deferredExitSaves!=null)
+				{
+					if(!deferredExitSaves.contains(R.roomID()))
+						deferredExitSaves.add(R.roomID());
+				}
+				else
+				{
+					CMLib.database().DBUpdateExits(R);
+					R.getArea().fillInAreaRoom(R);
+				}
 			}
 		}
 		return R;

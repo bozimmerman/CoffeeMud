@@ -104,7 +104,8 @@ function checkLocation() {
 				y=x.substr(ypos+1);
 			 	x=x.substr(0,ypos);
 				var paintMode=top.MENU.paintmenu;
-			 	if(paintMode||window.confirm('Start editing around grid location '+x+','+y+'?'))
+			 	if((paintMode&&window.confirm('Start painting around grid location '+x+','+y+'?'))
+			 	||(!paintMode&&window.confirm('Start editing around grid location '+x+','+y+'?')))
 			 	{
 			 		var x1=Number(x)-20;
 			 		if(x1<0) x1=0;

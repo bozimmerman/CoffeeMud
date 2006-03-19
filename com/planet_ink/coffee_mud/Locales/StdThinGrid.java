@@ -35,13 +35,13 @@ import java.util.*;
 public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
-	
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
 	protected Vector gridexits=new Vector();
 	
 	protected int xsize=5;
 	protected int ysize=5;
+	protected int yLength=1;
 	protected Exit ox=null;
 	
 	protected final DVector rooms=new DVector(3);
@@ -68,13 +68,13 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public int xGridSize(){return xsize;}
 	public int yGridSize(){return ysize;}
 	public void setXGridSize(int x){ if(x>0)xsize=x; }
-	public void setYGridSize(int y){ if(y>0)ysize=y; }
+	public void setYGridSize(int y){ if(y>0)ysize=y; yLength=new Integer(ysize).toString().length();}
 
 	public void destroy()
 	{
 		super.destroy();
 		Room R=null;
-		for(int i=0;i<rooms.size();i++)
+		for(int i=rooms.size()-1;i>=0;i--)
 		{
 			R=(Room)rooms.elementAt(i,1);
 			if(R!=null) R.destroy();
@@ -117,23 +117,84 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			displayTexts.addElement(newDisplayText);
 	}
 
-	protected Room getGridRoomIfExists(int x, int y)
+	private int properRoomIndex(int x, int y)
 	{
-		try
+        if(rooms.size()==0) return 0;
+		synchronized(rooms)
 		{
-			for(int i=0;i<rooms.size();i++)
-			{
-				if((((Integer)rooms.elementAt(i,2)).intValue()==x)
-				&&(((Integer)rooms.elementAt(i,3)).intValue()==y))
-				{
-					Room R=(Room)rooms.elementAt(i,1);
-					R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
-					return R;
-				}
-			}
+	        int start=0;
+	        int end=rooms.size()-1;
+        	int comp=0;
+        	long total=(xGridSize()*x)+y;
+        	long comptotal=0;
+        	int mid=0;
+	        while(start<=end)
+	        {
+	            mid=(end+start)/2;
+	            comptotal=(((Integer)rooms.elementAt(mid,2)).intValue()*xGridSize())+((Integer)rooms.elementAt(mid,3)).intValue();
+	            comp=comptotal>total?1:(comptotal==total)?0:-1;
+	            if(comp==0) return mid;
+	            else
+	            if(comp>0) 
+	            {
+	            	if(mid==0) return 0;
+	            	end=mid-1;
+	            }
+	            else 
+	            {
+	            	if(mid>=(rooms.size()-1)) 
+	            		return rooms.size()-1;
+	            	start=mid+1;
+	            }
+	        }
+        	return mid;
 		}
-        catch(Exception e){Log.debugOut("StdThinGrid",e);}
+	}
+	
+	private void addSortedRoom(Room R, int x, int y)
+	{
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())||(R==null)) return ;
+		synchronized(rooms)
+		{
+        	long total=(xGridSize()*x)+y;
+			int pos=properRoomIndex(x,y);
+			if(pos>=rooms.size())
+			{
+				rooms.addElement(R,new Integer(x),new Integer(y));
+				return;
+			}
+            long comptotal=(((Integer)rooms.elementAt(pos,2)).intValue()*xGridSize())+((Integer)rooms.elementAt(pos,3)).intValue();
+            int comp=comptotal>total?1:(comptotal==total)?0:-1;
+			if(comp==0) return;
+			if(comp>0)
+				rooms.insertElementAt(pos,R,new Integer(x),new Integer(y));
+			else
+			if(pos==rooms.size()-1)
+				rooms.addElement(R,new Integer(x),new Integer(y));
+			else
+				rooms.insertElementAt(pos+1,R,new Integer(x),new Integer(y));
+		}
+	}
+	
+	
+	
+    private Room getSortedRoom(int x,int y)
+    {
+        if(rooms.size()==0) return null;
+        synchronized(rooms)
+        {
+            int pos=properRoomIndex(x,y);
+            if((((Integer)rooms.elementAt(pos,2)).intValue()==x)&&(((Integer)rooms.elementAt(pos,3)).intValue()==y))
+            	return (Room)rooms.elementAt(pos,1);
+        }
         return null;
+    }
+    
+	protected Room getGridRoomIfExists(int x, int y) 
+	{
+		Room R=getSortedRoom(x,y);
+		if(R!=null) R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+        return R;
 	}
 	
 	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction)
@@ -182,7 +243,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			for(int b=0;b<numBehaviors();b++)
 				R.addBehavior((Behavior)fetchBehavior(b).copyOf());
 			R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
-			rooms.addElement(R,new Integer(x),new Integer(y));
+			addSortedRoom(R,x,y);
 			getArea().addProperRoom(R);
 		}
 		return R;
@@ -211,7 +272,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
                 return;
             R.baseEnvStats().setSensesMask(mask|EnvStats.SENSE_ROOMGRIDSYNC);
         }
-		
+
+        
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
 		// it does NOT
@@ -245,6 +307,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		else
 		if((rawDoors()[Directions.SOUTH]!=null)&&(rawExits()[Directions.SOUTH]!=null))
 			linkRoom(R,rawDoors()[Directions.SOUTH],Directions.SOUTH,rawExits()[Directions.SOUTH],rawExits()[Directions.SOUTH]);
+		
 		if(x<(xGridSize()-1))
 		{
 			R2=getMakeSingleGridRoom(x+1,y);
@@ -470,15 +533,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 
 	public Vector getAllRooms()
 	{
-		Vector V=new Vector();
 		getRandomGridChild();
-		try
-		{
-			for(int i=0;i<rooms.size();i++)
-				V.addElement(rooms.elementAt(i,1));
-		}
-        catch(Exception e){Log.debugOut("StdThinGrid",e);}
-		return V;
+		return (Vector)rooms.getDimensionVector(1).clone();
 	}
 	
 	protected Room alternativeLink(Room room, Room defaultRoom, int dir)
@@ -557,6 +613,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	public boolean isMyGridChild(Room loc)
 	{
+		if(loc==null) return false;
+		if(loc.getGridParent()==this) return true;
+		if(loc.getGridParent()!=null) return false;
         try{return rooms.contains(loc);}catch(Exception e){} // optomization
 	    DVector myRooms=rooms.copyOf();
 		for(int i=0;i<myRooms.size();i++)
@@ -569,17 +628,19 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	{
 		try
 		{
-		    for(int r=0;r<rooms.size();r++)
+		    DVector myRooms=rooms.copyOf();
+		    for(int r=0;r<myRooms.size();r++)
 			{
-				Room room=(Room)rooms.elementAt(r,1);
+				Room room=(Room)myRooms.elementAt(r,1);
 				CMLib.map().emptyRoom(room,bringBackHere);
 			}
-		    while(rooms.size()>0)
+		    while(myRooms.size()>0)
 		    {
-				Room room=(Room)rooms.elementAt(0,1);
+				Room room=(Room)myRooms.elementAt(0,1);
 				room.destroy();
                 rooms.removeElementAt(0);
 		    }
+		    try{rooms.clear();}catch(Exception e){}
 		}
         catch(Exception e){Log.debugOut("StdThinGrid",e);}
 	}

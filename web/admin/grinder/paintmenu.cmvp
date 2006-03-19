@@ -71,7 +71,7 @@
 	</TD>
 	<TD WIDTH=15% ALIGN=RIGHT>&nbsp;</TD>
 	</TR>
-	<TR><TD></TD><TD COLSPAN=2><FONT COLOR=YELLOW>*</FONT><FONT COLOR=WHITE>Separate room description and title paragraphs<BR> with the &lt;P&gt; tag to generate random values.</FONT></TR>
+	<TR><TD></TD><TD COLSPAN=2><FONT COLOR=YELLOW>*</FONT><FONT COLOR=WHITE>Separate multiple rooms with commas to generate random rooms.</FONT></TR>
 </TABLE>
 </FORM>
 </BODY>

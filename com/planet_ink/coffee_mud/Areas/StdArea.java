@@ -926,6 +926,8 @@ public class StdArea implements Area
         if(properRooms.size()==0) return null;
         synchronized(properRooms)
         {
+    		if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
+	    		roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
 	        int start=0;
 	        int end=properRooms.size()-1;
 	        while(start<=end)

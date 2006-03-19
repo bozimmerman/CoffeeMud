@@ -54,7 +54,7 @@ public class Mobile extends ActiveTicker
 	public Mobile()
 	{
 		super();
-		minTicks=10; maxTicks=30; chance=100;
+		minTicks=20; maxTicks=60; chance=100;
 		leash=0;
 		wander=false;
 		dooropen=false;

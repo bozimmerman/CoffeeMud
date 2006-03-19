@@ -126,23 +126,27 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			else
 			if((--invResetTickDown)<=0)
 			{
-                shop.emptyAllShelves();
 				invResetTickDown=invResetRate();
 				if(invResetTickDown==0) invResetTickDown=CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
-				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
-				if(miscText!=null)
+				if(invResetTickDown==0)
+					invResetTickDown=Integer.MAX_VALUE;
+				else
 				{
-					String shoptext;
-					if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
-						shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText));
-					else
-						shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,new String(miscText));
-					Vector xml=CMLib.xml().parseAllXML(shoptext);
-					if(xml!=null)
+	                shop.emptyAllShelves();
+					if(miscText!=null)
 					{
-						CMLib.coffeeMaker().populateShops(this,xml);
-						recoverEnvStats();
-						recoverCharStats();
+						String shoptext;
+						if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText));
+						else
+							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,new String(miscText));
+						Vector xml=CMLib.xml().parseAllXML(shoptext);
+						if(xml!=null)
+						{
+							CMLib.coffeeMaker().populateShops(this,xml);
+							recoverEnvStats();
+							recoverCharStats();
+						}
 					}
 				}
 			}
