@@ -56,43 +56,46 @@ public class Aggressive extends StdBehavior
 									 MOB mob,
 									 boolean fightMOBs)
 	{
-		if((mob!=null)
-		&&(monster!=null)
-		&&(mob!=monster)
-		&&((!mob.isMonster())||(fightMOBs))
-		&&(monster.location()!=null)
-		&&(monster.location().isInhabitant(mob))
-		&&(monster.location().getArea().getMobility())
-		&&(!CMLib.flags().isATrackingMonster(mob))
-		&&(!CMLib.flags().isATrackingMonster(monster))
-		&&(canFreelyBehaveNormal(monster))
-		&&(CMLib.flags().canBeSeenBy(mob,monster))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")))
+		if((mob!=null)&&(monster!=null)&&(mob!=monster))
 		{
-			// special backstab sneak attack!
-			if(CMLib.flags().isHidden(monster))
+			Room R=monster.location();
+			if((R!=null)
+			&&((!mob.isMonster())||(fightMOBs))
+			&&(R.isInhabitant(mob))
+			&&(R.getArea().getMobility())
+			&&(!CMLib.flags().isATrackingMonster(mob))
+			&&(!CMLib.flags().isATrackingMonster(monster))
+			&&(canFreelyBehaveNormal(monster))
+			&&(CMLib.flags().canBeSeenBy(mob,monster))
+			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
+			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
 			{
-				Ability A=monster.fetchAbility("Thief_BackStab");
-				if(A!=null)
+				// special backstab sneak attack!
+				if(CMLib.flags().isHidden(monster))
 				{
-					A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-					A.invoke(monster,mob,false,0);
+					Ability A=monster.fetchAbility("Thief_BackStab");
+					if(A!=null)
+					{
+						A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
+						A.invoke(monster,mob,false,0);
+					}
 				}
+				// normal attack
+				CMLib.combat().postAttack(monster,mob,monster.fetchWieldedItem());
+				return true;
 			}
-			// normal attack
-			CMLib.combat().postAttack(monster,mob,monster.fetchWieldedItem());
-			return true;
 		}
 		return false;
 	}
 	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
-		if(observer.location().getArea().getMobility())
-		for(int i=0;i<observer.location().numInhabitants();i++)
+		Room R=observer.location();
+		if((R!=null)
+		&&(R.getArea().getMobility()))
+		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB mob=observer.location().fetchInhabitant(i);
+			MOB mob=R.fetchInhabitant(i);
 			if((mob!=null)
             &&(mob!=observer)
             &&(CMLib.masking().maskCheck(zapStr,mob))
