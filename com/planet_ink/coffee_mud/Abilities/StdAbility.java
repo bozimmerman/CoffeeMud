@@ -1139,7 +1139,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			return false;
 		}
 		
-		Vector prereqs=CMLib.ableMapper().getUnmetPreRequisites(student,this);
+		DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(student,this);
 		if((prereqs!=null)&&(prereqs.size()>0))
 		{
 			String names=CMLib.ableMapper().formatPreRequisites(prereqs);

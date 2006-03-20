@@ -54,12 +54,12 @@ public class Arcanist extends Thief
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false,"+WIS 12");
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false,"+INT 12 +WIS 12");
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
 
 			// clan magic

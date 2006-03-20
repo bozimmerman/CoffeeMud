@@ -638,7 +638,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		    {
 				Room room=(Room)myRooms.elementAt(0,1);
 				room.destroy();
-                rooms.removeElementAt(0);
+				myRooms.removeElementAt(0);
 		    }
 		    try{rooms.clear();}catch(Exception e){}
 		}

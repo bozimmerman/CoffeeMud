@@ -40,12 +40,15 @@ public class Follow extends StdCommand
 
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
+		if(mob==null) return false;
+		Room R=mob.location();
+		if(R==null) return false;
 		if(mob.amFollowing()!=null)
 		{
 			CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
 			// no room OKaffects, since the damn leader may not be here.
 			if(mob.okMessage(mob,msg))
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 			else
 				return false;
 		}
@@ -74,6 +77,9 @@ public class Follow extends StdCommand
 
 	public boolean processFollow(MOB mob, MOB tofollow, boolean quiet)
 	{
+		if(mob==null) return false;
+		Room R=mob.location();
+		if(R==null) return false;
 		if(tofollow!=null)
 		{
 			if(tofollow==mob)
@@ -89,8 +95,8 @@ public class Follow extends StdCommand
 			if(nofollow(mob,false,false))
 			{
 				CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
-				if(mob.location().okMessage(mob,msg))
-					mob.location().send(mob,msg);
+				if(R.okMessage(mob,msg))
+					R.send(mob,msg);
 				else
 					return false;
 			}
@@ -107,6 +113,9 @@ public class Follow extends StdCommand
 	{
 		boolean quiet=false;
 
+		if(mob==null) return false;
+		Room R=mob.location();
+		if(R==null) return false;
 		if((commands.size()>2)
 		&&(commands.lastElement() instanceof String)
 		&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
@@ -130,7 +139,7 @@ public class Follow extends StdCommand
 			nofollow(mob,true,quiet);
 			return false;
 		}
-		MOB target=mob.location().fetchInhabitant(whomToFollow);
+		MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("I don't see them here.");

@@ -249,12 +249,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							prepend.append("\n\rAvailable: ");
 						prepend.append(((String)avail.elementAt(c))+" ");
 					}
-					Vector preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
+					DVector preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
 					if(preReqs.size()>0)
 					{
 						String names=CMLib.ableMapper().formatPreRequisites(preReqs);
 						prepend.append("\n\rRequires : "+names);
 					}
+					String mask=CMLib.ableMapper().getCommonExtraMask(A);
+					if((mask!=null)&&(mask.length()>0))
+						prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask));
+					
 					if(type==Ability.ACODE_PRAYER)
 					{
 					    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)

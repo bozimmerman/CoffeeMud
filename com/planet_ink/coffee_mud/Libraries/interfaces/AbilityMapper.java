@@ -40,16 +40,22 @@ public interface AbilityMapper extends CMObject
         public int defaultProfficiency=0;
         public String defaultParm="";
         public boolean isSecret=false;
-        public Vector skillPreReqs=new Vector();
+        public DVector skillPreReqs=new DVector(2);
         public String extraMask="";
     }
     
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, String defParm, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, String defParm, boolean autoGain, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, boolean autoGain, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
 									  String defaultParam, boolean autoGain, boolean secret);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
+									  String defaultParam, boolean autoGain, boolean secret, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
     								  String defaultParam, boolean autoGain, boolean secret,
     								  Vector preReqSkillsList, String extraMask);
@@ -66,10 +72,12 @@ public interface AbilityMapper extends CMObject
     public int qualifyingLevel(MOB student, Ability A);
     public String getExtraMask(String ID, boolean checkAll, String ability);
 	public String getApplicableMask(MOB student, Ability A);
-	public Vector getPreReqs(String ID, boolean checkAll, String ability);
-	public Vector getUnmetPreRequisites(MOB student, Ability A);
-	public Vector getCommonPreRequisites(Ability A);
-	public String formatPreRequisites(Vector preReqs);
+	public DVector getPreReqs(String ID, boolean checkAll, String ability);
+	public DVector getUnmetPreRequisites(MOB student, Ability A);
+	public DVector getApplicablePreRequisites(MOB mob, Ability A);
+	public DVector getCommonPreRequisites(Ability A);
+	public String getCommonExtraMask(Ability A);
+	public String formatPreRequisites(DVector preReqs);
     public int qualifyingClassLevel(MOB student, Ability A);
     public Object lowestQualifyingClassRace(MOB student, Ability A);
     public boolean qualifiesByCurrentClassAndLevel(MOB student, Ability A);

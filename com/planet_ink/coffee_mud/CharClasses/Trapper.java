@@ -49,7 +49,7 @@ public class Trapper extends Thief
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false,"+WIS 12");
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
