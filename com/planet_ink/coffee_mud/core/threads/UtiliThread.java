@@ -233,8 +233,8 @@ public class UtiliThread extends Thread
 			Tick almostTock=(Tick)orderedDeaths.elementAt(x,3);
 			Vector objs=new Vector();
             try{
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-    				objs.addElement(e.nextElement());
+    			for(Iterator e=almostTock.tickers();e.hasNext();)
+    				objs.addElement(e.next());
             }catch(NoSuchElementException e){}
 			almostTock.shutdown();
 			if(CMLib.threads() instanceof ServiceEngine)

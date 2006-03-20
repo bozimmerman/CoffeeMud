@@ -61,13 +61,11 @@ public class ServiceEngine implements ThreadEngine
 			tickGroup.addElement(tock);
 		}
 	}
-
+	
 	public Tick confirmAndGetTickThread(Tickable E, long TICK_TIME, int tickID)
 	{
 		Tick tock=null;
-        TockClient client=null;
         Tick almostTock=null;
-        Enumeration t;
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
@@ -76,19 +74,11 @@ public class ServiceEngine implements ThreadEngine
             &&(!almostTock.solitaryTicker)
             &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS))
 				tock=almostTock;
-            try{
-    			for(t=almostTock.tickers();t.hasMoreElements();)
-    			{
-    				client=(TockClient)t.nextElement();
-    				if((client.clientObject==E)&&(client.tickID==tickID))
-    					return null;
-    			}
-            }catch(NoSuchElementException e){}
-            
+        	if(almostTock.contains(E,tickID)) 
+        		return null;
 		}
 
-		if(tock!=null)
-			return tock;
+		if(tock!=null) return tock;
 		tock=new Tick(TICK_TIME);
 		addTickGroup(tock);
 		return tock;
@@ -117,23 +107,14 @@ public class ServiceEngine implements ThreadEngine
 	public boolean deleteTick(Tickable E, int tickID)
 	{
         Tick almostTock=null;
-        TockClient C=null;
-        Tickable E2=null;
+        Iterator set=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
-            try{
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-    			{
-    				C=(TockClient)e.nextElement();
-    				E2=C.clientObject;
-    				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-    				{
-    					almostTock.delTicker(C);
-    					if(tickID>=0) return true;
-    				}
-    			}
-            }catch(NoSuchElementException e){}
+			set=almostTock.getTickSet(E,tickID);
+			if(set!=null)
+			for(;set.hasNext();)
+				almostTock.delTicker((TockClient)set.next());
 		}
 		return false;
 	}
@@ -141,20 +122,12 @@ public class ServiceEngine implements ThreadEngine
 	public boolean isTicking(Tickable E, int tickID)
 	{
         Tick almostTock=null;
-        TockClient C=null;
-        Tickable E2=null;
+        Iterator set;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
-            try{
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-    			{
-    				C=(TockClient)e.nextElement();
-    				E2=C.clientObject;
-    				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-    					return true;
-    			}
-            }catch(NoSuchElementException e){}
+			set=almostTock.getTickSet(E,tickID);
+			if(set!=null) return true;
 		}
 		return false;
 	}
@@ -167,21 +140,14 @@ public class ServiceEngine implements ThreadEngine
 	protected boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
         Tick almostTock=null;
-        TockClient C=null;
-        Tickable E2=null;
+        Iterator set=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
-            try
-            {
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-    			{
-    				C=(TockClient)e.nextElement();
-    				E2=C.clientObject;
-    				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-    					C.suspended=suspend;
-    			}
-            }catch(NoSuchElementException e){}
+			set=almostTock.getTickSet(E,tickID);
+			if(set!=null)
+			for(;set.hasNext();)
+				((TockClient)set.next()).suspended=suspend;
 		}
 		return false;
 	}
@@ -293,9 +259,9 @@ public class ServiceEngine implements ThreadEngine
 				topGroupNumber=num;
 			}
             try{
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			for(Iterator e=almostTock.tickers();e.hasNext();)
     			{
-    				TockClient C=(TockClient)e.nextElement();
+    				TockClient C=(TockClient)e.next();
     				if(C.milliTotal>topObjectMillis)
     				{
     					topObjectMillis=C.milliTotal;
@@ -421,9 +387,9 @@ public class ServiceEngine implements ThreadEngine
 			almostTock=(Tick)v.nextElement();
             try
             {
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			for(Iterator e=almostTock.tickers();e.hasNext();)
     			{
-    				C=(TockClient)e.nextElement();
+    				C=(TockClient)e.next();
     				E2=C.clientObject;
     				if(isHere(E2,here))
     				{
@@ -553,9 +519,9 @@ public class ServiceEngine implements ThreadEngine
 			almostTock=(Tick)v.nextElement();
             try
             {
-    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			for(Iterator e=almostTock.tickers();e.hasNext();)
     			{
-    				C=(TockClient)e.nextElement();
+    				C=(TockClient)e.next();
     				if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
     				{
     					I=(ItemTicker)C.clientObject;

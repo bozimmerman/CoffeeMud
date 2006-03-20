@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Tick extends Thread implements TickableGroup
+public class Tick extends Thread implements TickableGroup, Cloneable
 {
 	public long lastStart=0;
 	public long lastStop=0;
@@ -46,6 +46,7 @@ public class Tick extends Thread implements TickableGroup
     private int tickObjectCounter=0;
     public long TICK_TIME=Tickable.TIME_TICK;
 	protected Vector tickers=new Vector();
+	protected Hashtable set=new Hashtable(TickableGroup.MAX_TICK_CLIENTS);
 	
 	public Tick(ThreadEngine theEngine, long sleep)
 	{
@@ -54,14 +55,55 @@ public class Tick extends Thread implements TickableGroup
 		myEngine=theEngine;
         TICK_TIME=sleep;
 	}
+
+	public Tick copyOf()
+	{
+		try{
+			Tick T=(Tick)this.clone();
+			T.tickers=(Vector)tickers.clone();
+			T.set=(Hashtable)set.clone();
+			return T;
+		}
+		catch(Exception e){}
+		return this;
+	}
 	
-	public Enumeration tickers(){return tickers.elements();}
+	public Iterator tickers(){return ((Vector)tickers.clone()).iterator();}
 	public int numTickers(){return tickers.size();}
 	public TockClient fetchTicker(int i){
 		try{
 			return (TockClient)tickers.elementAt(i);
 		}catch(Exception e){}
 		return null;
+	}
+	
+	public Iterator getTickSet(Tickable T, int tickID)
+	{
+		Vector V=(Vector)set.get(T);
+		if(V==null) return null;
+		V=(Vector)V.clone();
+		if(tickID<0) return V.iterator();
+		for(int v=V.size()-1;v>=0;v--)
+			if(((TockClient)V.elementAt(v)).tickID!=tickID)
+				V.removeElementAt(v);
+		if(V.size()==0) return null;
+		return V.iterator();
+	}
+	
+	public boolean contains(Tickable T, int tickID)
+	{
+		Vector V=(Vector)set.get(T);
+		if(V==null) return false;
+		if(tickID<0) return true;
+		V=(Vector)V.clone();
+		TockClient C=null;
+		for(int v=0;v<V.size();v++)
+		{
+			C=(TockClient)V.elementAt(v);
+			if(C.tickID==tickID)
+				return true;
+		}
+		return false;
 	}
     
     public int getCounter(){return tickObjectCounter;}
@@ -71,6 +113,13 @@ public class Tick extends Thread implements TickableGroup
 		synchronized(tickers)
 		{
 			tickers.removeElement(C);
+			Vector V=(Vector)set.get(C.clientObject);
+			if(V!=null)
+			{
+				V.remove(C);
+				if(V.size()==0) 
+					set.remove(C.clientObject);
+			}
 		}
 	}
 	public void addTicker(TockClient C)
@@ -78,6 +127,16 @@ public class Tick extends Thread implements TickableGroup
 		synchronized(tickers)
 		{
 			tickers.addElement(C);
+			Vector V=(Vector)set.get(C.clientObject);
+			if(V==null)
+			{
+				V=new Vector();
+				set.put(C.clientObject,V);
+			}
+			else
+			if(V.contains(C))
+				return;
+			V.addElement(C);
 		}
 	}
 
@@ -108,6 +167,7 @@ public class Tick extends Thread implements TickableGroup
 	public void shutdown()
 	{
 		tickers.removeAllElements();
+		set.clear();
 		this.interrupt();
 	}
 
@@ -151,9 +211,9 @@ public class Tick extends Thread implements TickableGroup
                 &&(!CMLib.threads().isAllSuspended()))
 				{
                     
-					for(Enumeration e=((Vector)tickers.clone()).elements();e.hasMoreElements();)
+					for(Iterator i=tickers();i.hasNext();)
 					{
-						TockClient client=(TockClient)e.nextElement();
+						TockClient client=(TockClient)i.next();
 						lastClient=client;
 						if((client.lastStart!=0)&&(client.lastStop!=0))
 						{
