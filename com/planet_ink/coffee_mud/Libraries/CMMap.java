@@ -622,7 +622,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				R.setArea(A);
 				if(oldName!=null)
 				{
-					if(R.roomID().startsWith(oldName+"#"))
+					if(R.roomID().toUpperCase().startsWith(oldName.toUpperCase()+"#"))
 					{
 						Room R2=getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
 						if((R2==null)||(!R2.roomID().startsWith(A.Name()+"#")))

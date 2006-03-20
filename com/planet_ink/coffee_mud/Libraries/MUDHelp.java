@@ -257,7 +257,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					}
 					String mask=CMLib.ableMapper().getCommonExtraMask(A);
 					if((mask!=null)&&(mask.length()>0))
-						prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask));
+						prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask,true));
 					
 					if(type==Ability.ACODE_PRAYER)
 					{

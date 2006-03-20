@@ -67,6 +67,7 @@ public class ServiceEngine implements ThreadEngine
 		Tick tock=null;
         TockClient client=null;
         Tick almostTock=null;
+        Enumeration t;
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
@@ -76,7 +77,7 @@ public class ServiceEngine implements ThreadEngine
             &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS))
 				tock=almostTock;
             try{
-    			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
+    			for(t=almostTock.tickers();t.hasMoreElements();)
     			{
     				client=(TockClient)t.nextElement();
     				if((client.clientObject==E)&&(client.tickID==tickID))

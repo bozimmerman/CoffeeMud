@@ -50,7 +50,8 @@ public interface MaskingLibrary extends CMObject
     public boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find);
     public boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find);
     public String maskDesc(String text);
-    public Vector maskCompile(String text);
+	public String maskDesc(String text, boolean skipFirstWord);
+	public Vector maskCompile(String text);
     public boolean maskCheck(Vector cset, Environmental E);
     public boolean maskCheck(String text, Environmental E);
     

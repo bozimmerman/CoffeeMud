@@ -479,7 +479,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return false;
     }
-	public String maskDesc(String text)
+	public String maskDesc(String text){return maskDesc(text,false);}
+	public String maskDesc(String text, boolean skipFirstWord)
 	{
 		if(text.trim().length()==0) return "Anyone";
 		StringBuffer buf=new StringBuffer("");
@@ -494,7 +495,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 				case 0: // -class
 					{
-					buf.append("Allows only ");
+					buf.append(skipFirstWord?"Only ":"Allows only ");
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
@@ -508,7 +509,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 1: // -baseclass
 					{
-						buf.append("Allows only ");
+						buf.append(skipFirstWord?"Only ":"Allows only ");
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
@@ -523,7 +524,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 2: // -Race
 					{
-						buf.append("Allows only ");
+						buf.append(skipFirstWord?"Only ":"Allows only ");
 						Vector cats=new Vector();
 						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
@@ -543,7 +544,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 12: // -Racecats
 					{
-						buf.append("Allows only these racial categories ");
+						buf.append(skipFirstWord?"Only these racial categories ":"Allows only these racial categories ");
 						Vector cats=new Vector();
 						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
@@ -562,7 +563,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 3: // -Alignment
 					{
-						buf.append("Allows only ");
+						buf.append(skipFirstWord?"Only ":"Allows only ");
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
 							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+", ");
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
@@ -576,7 +577,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 4: // -Gender
 					{
-						buf.append("Allows only ");
+						buf.append(skipFirstWord?"Only ":"Allows only ");
 						if(fromHereStartsWith(V,'+',v+1,"MALE"))
 							buf.append("Male, ");
 						if(fromHereStartsWith(V,'+',v+1,"FEMALE"))
@@ -591,18 +592,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 5: // -Levels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only "));
+							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only ":"Allows only "));
 					}
 					break;
 				case 6: // -ClassLevels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only class "));
+							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class "));
 					}
 					break;
 				case 7: // -Tattoos
 					{
-						buf.append("Requires the following tattoo(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" the following tattoo(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -634,7 +635,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 79: // -Security
 					{
-						buf.append("Requires the following security flag(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" following security flag(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -666,7 +667,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 81: // -educations
 					{
-						buf.append("Requires the following educations(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" following educations(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -698,7 +699,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 83: // -skills
 					{
-						buf.append("Requires the following skill(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" following skill(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -766,7 +767,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 14: // -Clan
 					{
-						buf.append("Requires membership in the following clan(s): ");
+						buf.append((skipFirstWord?"M":"Requires m")+"embership in the following clan(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -798,7 +799,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
                 case 50: // -Material
                     {
-                        buf.append("Requires construction from the following material(s): ");
+                        buf.append((skipFirstWord?"C":"Requires c")+"onstruction from the following material(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -838,7 +839,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 58: // -wornon
                     {
-                        buf.append("Requires ability to be worn: ");
+                        buf.append((skipFirstWord?"A":"Requires a")+"bility to be worn: ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -878,7 +879,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 71: // -senses
                     {
-                        buf.append("Requires the following sense(s): ");
+                        buf.append((skipFirstWord?"The":"Requires")+" following sense(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -934,7 +935,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 74: // -HOUR
                     {
-                        buf.append("Allowed only during the following time(s) of the day: ");
+                        buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following time(s) of the day: ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -977,7 +978,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 76: // -season
                     {
-                        buf.append("Allowed only during the following season(s): ");
+                        buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following season(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -1020,7 +1021,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 78: // -month
                     {
-                        buf.append("Allowed only during the following month(s): ");
+                        buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following month(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -1036,7 +1037,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 69: // -disposition
                     {
-                        buf.append("Requires the following disposition(s): ");
+                        buf.append((skipFirstWord?"The":"Requires")+" following disposition(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -1076,7 +1077,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 52: // -Resource
                     {
-                        buf.append("Requires construction from the following materials(s): ");
+                        buf.append((skipFirstWord?"C":"Requires c")+"onstruction from the following materials(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -1116,7 +1117,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 53: // -JavaClass
                     {
-                        buf.append("Requires being of the following type: ");
+                        buf.append((skipFirstWord?"B":"Requires b")+"eing of the following type: ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -1148,7 +1149,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
 				case 44: // -Deity
 					{
-						buf.append("Requires worshipping in the following deity(s): ");
+						buf.append((skipFirstWord?"W":"Requires w")+"orshipping in the following deity(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1196,7 +1197,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 9: // -Names
 					{
-						buf.append("Requires the following name(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" following name(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1234,7 +1235,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 17: // -anyclass
 					{
-						buf.append("Requires levels in one of the following:  ");
+						buf.append((skipFirstWord?"L":"Requires k")+"evels in one of the following:  ");
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
@@ -1262,99 +1263,99 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 19: // +str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a strength of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" strength of at least "+val+".");
 					break;
 				case 20: // +int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a intelligence of at least "+val+".");
+					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at least "+val+".");
 					break;
 				case 21: // +wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a wisdom of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at least "+val+".");
 					break;
 				case 22: // +dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a dexterity of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at least "+val+".");
 					break;
 				case 23: // +con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a constitution of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at least "+val+".");
 					break;
 				case 24: // +cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a charisma of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at least "+val+".");
 					break;
 				case 25: // -str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a strength of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" strength of at most "+val+".");
 					break;
 				case 26: // -int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a intelligence of at most "+val+".");
+					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at most "+val+".");
 					break;
 				case 27: // -wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a wisdom of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at most "+val+".");
 					break;
 				case 28: // -dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a dexterity of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at most "+val+".");
 					break;
 				case 29: // -con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a constitution of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at most "+val+".");
 					break;
 				case 30: // -cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append("Requires a charisma of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at most "+val+".");
 					break;
                 case 55: // +able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a magic/ability of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at most "+val+".");
                     break;
                 case 56: // -able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a magic/ability of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at least "+val+".");
                     break;
                 case 59: // +value
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a value of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" value of at most "+val+".");
                     break;
                 case 60: // -value
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a value of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" value of at least "+val+".");
                     break;
                 case 61: // +weight
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a weight/encumbrance of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at most "+val+".");
                     break;
                 case 62: // -weight
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a weight/encumbrance of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at least "+val+".");
                     break;
                 case 63: // +armor
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a armor rating of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" armor rating of at most "+val+".");
                     break;
                 case 64: // -armor
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a armor rating of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" armor rating of at least "+val+".");
                     break;
                 case 65: // +damage
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a damage ability of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" damage ability of at most "+val+".");
                     break;
                 case 66: // -damage
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires a damage ability of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" damage ability of at least "+val+".");
                     break;
                 case 67: // +attack
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires an attack bonus of at most "+val+".");
+                    buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at most "+val+".");
                     break;
                 case 68: // -attack
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append("Requires an attack bonus of at least "+val+".");
+                    buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at least "+val+".");
                     break;
 				case 31: // +Area
 					{
@@ -1374,7 +1375,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 32: // -Area
 					{
-						buf.append("Requires the following area(s): ");
+						buf.append((skipFirstWord?"The":"Requires the")+" following area(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1390,7 +1391,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 33: // +Item
 					{
-						buf.append("Requires the following item(s): ");
+						buf.append((skipFirstWord?"The":"Requires the")+" following item(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1406,7 +1407,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
                 case 48: // -Worn
                 {
-                    buf.append("Requires wearing the following item(s): ");
+                    buf.append((skipFirstWord?"W":"Requires w")+"earing the following item(s): ");
                     for(int v2=v+1;v2<V.size();v2++)
                     {
                         String str2=(String)V.elementAt(v2);
@@ -1438,7 +1439,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 43: // -Effects
 					{
-						buf.append("Requires participation in the following activities/effects(s): ");
+						buf.append((skipFirstWord?"P":"Requires p")+"articipation in the following activities/effects(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1454,7 +1455,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 46: // -faction
 				{
-				    buf.append("Requires the following: ");
+				    buf.append((skipFirstWord?"The":"Requires the")+" following: ");
 				    for(int v2=v+1;v2<V.size();v2++)
 				    {
 				        String str2=(String)V.elementAt(v2);
@@ -1506,7 +1507,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				if(str.startsWith("-FEMALE"))
 					buf.append("Disallows Females.  ");
 				if(str.startsWith("-NEUTER"))
-					buf.append("Allows only Males and Females.  ");
+					buf.append((skipFirstWord?"Only ":"Allows only ")+"Males and Females.  ");
 				buf.append(levelHelp(str,'-',"Disallows "));
 				if((str.startsWith("-"))
 		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))

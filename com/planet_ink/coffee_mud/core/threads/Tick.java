@@ -45,6 +45,7 @@ public class Tick extends Thread implements TickableGroup
 	private static int tickObjReference=0;
     private int tickObjectCounter=0;
     public long TICK_TIME=Tickable.TIME_TICK;
+	protected Vector tickers=new Vector();
 	
 	public Tick(ThreadEngine theEngine, long sleep)
 	{
@@ -54,8 +55,6 @@ public class Tick extends Thread implements TickableGroup
         TICK_TIME=sleep;
 	}
 	
-	protected Vector tickers=new Vector();
-
 	public Enumeration tickers(){return tickers.elements();}
 	public int numTickers(){return tickers.size();}
 	public TockClient fetchTicker(int i){

@@ -303,27 +303,6 @@ public class Modify extends BaseGenerics
 					mob.location().setRoomID(checkID);
 					CMLib.database().DBReCreate(R,oldID);
 	    		}
-				
-				try
-				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-					{
-						Room R2=(Room)r.nextElement();
-			    		synchronized(("SYNC"+R2.roomID()).intern())
-			    		{
-			    			R2=CMLib.map().getRoom(R2);
-							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
-							{
-								Room thatRoom=R2.rawDoors()[dir];
-								if((thatRoom!=null)&&(thatRoom.roomID().equals(oldID)))
-								{
-									CMLib.database().DBUpdateExits(R2);
-									break;
-								}
-							}
-			    		}
-					}
-			    }catch(NoSuchElementException e){}
 			}
 		}
 		else
@@ -580,26 +559,6 @@ public class Modify extends BaseGenerics
 							CMLib.database().DBUpdateRoom(R);
 		    		}
 				}
-				try
-				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-					{
-						Room R=(Room)r.nextElement();
-			    		synchronized(("SYNC"+R.roomID()).intern())
-			    		{
-			    			R=CMLib.map().getRoom(R);
-							boolean doIt=false;
-							for(int d=0;d<R.rawDoors().length;d++)
-							{
-								Room R2=R.rawDoors()[d];
-								if((R2!=null)&&(R2.getArea()==myArea))
-								{ doIt=true; break;}
-							}
-							if(doIt)
-								CMLib.database().DBUpdateExits(R);
-			    		}
-					}
-			    }catch(NoSuchElementException e){}
 			}
 			else
 				myArea.setName(oldName);
