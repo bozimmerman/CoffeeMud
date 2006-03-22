@@ -157,22 +157,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-SEASON",new Integer(76));
             zapCodes.put("+MONTH",new Integer(77));
             zapCodes.put("-MONTH",new Integer(78));
-            zapCodes.put("+SECURITY",new Integer(79));
-            zapCodes.put("-SECURITY",new Integer(80));
-            zapCodes.put("+SECURITIES",new Integer(79));
-            zapCodes.put("-SECURITIES",new Integer(80));
-            zapCodes.put("+SEC",new Integer(79));
-            zapCodes.put("-SEC",new Integer(80));
-            zapCodes.put("+EDU",new Integer(81));
-            zapCodes.put("-EDU",new Integer(82));
-            zapCodes.put("+EDUCATION",new Integer(81));
-            zapCodes.put("-EDUCATION",new Integer(82));
-            zapCodes.put("+EDUCATIONS",new Integer(81));
-            zapCodes.put("-EDUCATIONS",new Integer(82));
-            zapCodes.put("+SKILL",new Integer(83));
-            zapCodes.put("-SKILL",new Integer(84));
-            zapCodes.put("+SKILLS",new Integer(83));
-            zapCodes.put("-SKILLS",new Integer(84));
+            zapCodes.put("-SECURITY",new Integer(79));
+            zapCodes.put("+SECURITY",new Integer(80));
+            zapCodes.put("-SECURITIES",new Integer(79));
+            zapCodes.put("+SECURITIES",new Integer(80));
+            zapCodes.put("-SEC",new Integer(79));
+            zapCodes.put("+SEC",new Integer(80));
+            zapCodes.put("-EDU",new Integer(81));
+            zapCodes.put("+EDU",new Integer(82));
+            zapCodes.put("-EDUCATION",new Integer(81));
+            zapCodes.put("+EDUCATION",new Integer(82));
+            zapCodes.put("-EDUCATIONS",new Integer(81));
+            zapCodes.put("+EDUCATIONS",new Integer(82));
+            zapCodes.put("-SKILL",new Integer(83));
+            zapCodes.put("+SKILL",new Integer(84));
+            zapCodes.put("-SKILLS",new Integer(83));
+            zapCodes.put("+SKILLS",new Integer(84));
 		}
 		return zapCodes;
 	}
@@ -1263,15 +1263,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 19: // +str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" strength of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" strength of at least "+val+".  ");
 					break;
 				case 20: // +int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at least "+val+".");
+					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at least "+val+".  ");
 					break;
 				case 21: // +wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at least "+val+".  ");
 					break;
 				case 22: // +dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
@@ -1279,83 +1279,83 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 23: // +con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at least "+val+".  ");
 					break;
 				case 24: // +cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at least "+val+".  ");
 					break;
 				case 25: // -str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" strength of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" strength of at most "+val+".  ");
 					break;
 				case 26: // -int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at most "+val+".");
+					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at most "+val+".  ");
 					break;
 				case 27: // -wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at most "+val+".  ");
 					break;
 				case 28: // -dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at most "+val+".  ");
 					break;
 				case 29: // -con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at most "+val+".  ");
 					break;
 				case 30: // -cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at most "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at most "+val+".  ");
 					break;
                 case 55: // +able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at most "+val+".  ");
                     break;
                 case 56: // -able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at least "+val+".  ");
                     break;
                 case 59: // +value
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" value of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" value of at most "+val+".  ");
                     break;
                 case 60: // -value
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" value of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" value of at least "+val+".  ");
                     break;
                 case 61: // +weight
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at most "+val+".  ");
                     break;
                 case 62: // -weight
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at least "+val+".  ");
                     break;
                 case 63: // +armor
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" armor rating of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" armor rating of at most "+val+".  ");
                     break;
                 case 64: // -armor
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" armor rating of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" armor rating of at least "+val+".  ");
                     break;
                 case 65: // +damage
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" damage ability of at most "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" damage ability of at most "+val+".  ");
                     break;
                 case 66: // -damage
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"A":"Requires a")+" damage ability of at least "+val+".");
+                    buf.append((skipFirstWord?"A":"Requires a")+" damage ability of at least "+val+".  ");
                     break;
                 case 67: // +attack
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at most "+val+".");
+                    buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at most "+val+".  ");
                     break;
                 case 68: // -attack
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at least "+val+".");
+                    buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at least "+val+".  ");
                     break;
 				case 31: // +Area
 					{

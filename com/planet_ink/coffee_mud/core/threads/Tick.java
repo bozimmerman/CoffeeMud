@@ -83,17 +83,12 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	            mid=(end+start)/2;
 	            if(((TockClient)tickers.elementAt(mid)).clientObject.hashCode()==hashCode) return mid;
 	            if(((TockClient)tickers.elementAt(mid)).clientObject.hashCode()>hashCode)
-	            {
-	            	if(end==0) return 0;
 	                end=mid-1;
-	            }
 	            else
-	            {
-	            	if(start==tickers.size()-1) 
-	            		return tickers.size()-1;
 	                start=mid+1;
-	            }
 			}
+			if(end<0) return 0;
+			if(start>=tickers.size()) return tickers.size()-1;
 			return mid;
 		}
 	}

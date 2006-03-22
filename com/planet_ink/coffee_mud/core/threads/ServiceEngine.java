@@ -471,6 +471,12 @@ public class ServiceEngine implements ThreadEngine
 		if(which.toLowerCase().startsWith("tickermillitotal"))
 			return ""+C.milliTotal;
 		else
+		if(which.toLowerCase().startsWith("tickermilliavg"))
+		{
+			if(C.tickTotal==0) return "0";
+			return ""+(C.milliTotal/C.tickTotal);
+		}
+		else
 		if(which.toLowerCase().startsWith("tickerlaststartmillis"))
 			return ""+C.lastStart;
 		else
@@ -485,7 +491,7 @@ public class ServiceEngine implements ThreadEngine
 		else
 		if(which.toLowerCase().startsWith("tickerlastduration"))
 		{
-			if(C.lastStop>C.lastStart)
+			if(C.lastStop>=C.lastStart)
 				return CMLib.english().returnTime(C.lastStop-C.lastStart,0);
 			return CMLib.english().returnTime(System.currentTimeMillis()-C.lastStart,0);
 		}

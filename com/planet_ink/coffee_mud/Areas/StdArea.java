@@ -809,17 +809,12 @@ public class StdArea implements Area
 	            if(comp==0) return mid;
 	            else
 	            if(comp>0)
-	            {
-	            	if(end==0) return 0;
 	                end=mid-1;
-	            }
 	            else
-	            {
-	            	if(start==properRooms.size()-1) 
-	            		return properRooms.size()-1;
 	                start=mid+1;
-	            }
 			}
+			if(end<0) return 0;
+			if(start>=properRooms.size()) return properRooms.size()-1;
 			return mid;
 		}
 	}

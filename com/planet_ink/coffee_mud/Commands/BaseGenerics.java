@@ -2540,6 +2540,12 @@ public class BaseGenerics extends StdCommand
 			{
 				String tattoo=behave;
 				if((tattoo.length()>0)
+				&&(CMath.isInteger(tattoo))
+				&&(CMath.s_int(tattoo)>0)
+				&&(CMath.s_int(tattoo)<=E.playerStats().getTitles().size()))
+					tattoo=(String)E.playerStats().getTitles().elementAt(CMath.s_int(tattoo)-1);
+				else
+				if((tattoo.length()>0)
 				&&(Character.isDigit(tattoo.charAt(0)))
 				&&(tattoo.indexOf(" ")>0)
 				&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))

@@ -136,17 +136,12 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	            if(comp==0) return mid;
 	            else
 	            if(comp>0) 
-	            {
-	            	if(mid==0) return 0;
 	            	end=mid-1;
-	            }
 	            else 
-	            {
-	            	if(mid>=(rooms.size()-1)) 
-	            		return rooms.size()-1;
 	            	start=mid+1;
-	            }
 	        }
+	        if(end<0) return 0;
+	        if(start>=rooms.size()) return rooms.size()-1;
         	return mid;
 		}
 	}
