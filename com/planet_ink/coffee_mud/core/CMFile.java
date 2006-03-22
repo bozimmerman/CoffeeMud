@@ -755,7 +755,15 @@ public class CMFile
     public static Vector getVFSDirectory()
     {
         if(vfs==null)
-            vfs=CMLib.database().DBReadVFSDirectory();
+        {
+        	if(CMLib.database()==null)
+        	{
+        		vfs=new Vector();
+        		Log.errOut("CMFile","Unable to read master database directory.  Database library NOT FOUND!!");
+        	}
+        	else
+        		vfs=CMLib.database().DBReadVFSDirectory();
+        }
         return vfs;
     }
     
