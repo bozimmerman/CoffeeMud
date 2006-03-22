@@ -792,6 +792,37 @@ public class StdArea implements Area
 		}
 	}
 	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
+	protected int getProperIndex(Room R)
+	{
+		if(properRooms.size()==0) return -1;
+		if(R.roomID().length()==0) return 0;
+		String roomID=R.roomID();
+		synchronized(properRooms)
+		{
+			int start=0;
+			int end=properRooms.size()-1;
+			int mid=0;
+			while(start<=end)
+			{
+	            mid=(end+start)/2;
+	            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+	            if(comp==0) return mid;
+	            else
+	            if(comp>0)
+	            {
+	            	if(end==0) return 0;
+	                end=mid-1;
+	            }
+	            else
+	            {
+	            	if(start==properRooms.size()-1) 
+	            		return properRooms.size()-1;
+	                start=mid+1;
+	            }
+			}
+			return mid;
+		}
+	}
     public void addProperRoom(Room R)
     {
         if(R==null) return;
@@ -802,30 +833,40 @@ public class StdArea implements Area
         }
         synchronized(properRooms)
         {
-            if(!properRooms.contains(R))
-            {
-                addMetroRoom(R);
-                addProperRoomnumber(R.roomID());
-                Room R2=null;
-                if(R.roomID().length()==0)
-                {
+        	int insertAt=0;
+        	if(properRooms.size()>0)
+        	{
+	        	if(R.roomID().length()==0)
+	        	{
+	        		for(int i=0;i<properRooms.size();i++)
+	        			if(properRooms.elementAt(i)==R) 
+	        				return;
+	        			else
+	        			if(((Room)properRooms.elementAt(i)).roomID().length()>0)
+	        				break;
+	                addMetroRoom(R);
                 	properRooms.insertElementAt(R,0);
                 	return;
-                }
-                for(int i=0;i<properRooms.size();i++)
-                {
-                    R2=(Room)properRooms.elementAt(i);
-                    if(R2.roomID().compareToIgnoreCase(R.roomID())>=0)
-                    {
-                        if(R2.roomID().compareToIgnoreCase(R.roomID())==0)
-                            properRooms.setElementAt(R,i);
-                        else
-                            properRooms.insertElementAt(R,i);
-                        return;
-                    }
-                }
-                properRooms.addElement(R);
-            }
+	        	}
+        		insertAt=getProperIndex(R);
+	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(R.roomID());
+	            if(comp==0) return;
+                addMetroRoom(R);
+				if(comp>0)
+					properRooms.insertElementAt(R,insertAt);
+				else
+				if(insertAt==properRooms.size()-1)
+					properRooms.addElement(R);
+				else
+					properRooms.insertElementAt(R,insertAt+1);
+                addProperRoomnumber(R.roomID());
+        	}
+        	else
+        	{
+        		properRooms.addElement(R);
+                addProperRoomnumber(R.roomID());
+                addMetroRoom(R);
+        	}
         }
     }
     
@@ -941,7 +982,6 @@ public class StdArea implements Area
 	                end=mid-1;
 	            else
 	                start=mid+1;
-	
 	        }
         }
         return null;

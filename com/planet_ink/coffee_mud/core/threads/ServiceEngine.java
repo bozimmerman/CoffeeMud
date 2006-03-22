@@ -514,37 +514,32 @@ public class ServiceEngine implements ThreadEngine
         TockClient C=null;
         ItemTicker  I=null;
         MOB mob=null;
+        Vector roomSet=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
-            try
-            {
-    			for(Iterator e=almostTock.tickers();e.hasNext();)
-    			{
-    				C=(TockClient)e.next();
-    				if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
+			roomSet=almostTock.getLocalItems(taskCode,room);
+			if(roomSet!=null)
+				for(Enumeration e=roomSet.elements();e.hasMoreElements();)
+				{
+    				C=(TockClient)e.nextElement();
+    				if(C.clientObject instanceof ItemTicker)
     				{
     					I=(ItemTicker)C.clientObject;
-    					if(I.properLocation()==room)
-    					{
-    						almostTock.delTicker(C);
-    						I.setProperLocation(null);
-    					}
+						almostTock.delTicker(C);
+						I.setProperLocation(null);
     				}
     				else
-    				if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
+    				if(C.clientObject instanceof MOB)
     				{
     					mob=(MOB)C.clientObject;
-    					if((mob.getStartRoom()==room)
-    					&&(mob.isMonster())
-    					&&(!room.isInhabitant(mob)))
+    					if((mob.isMonster())&&(!room.isInhabitant(mob)))
     					{
     						mob.destroy();
     						almostTock.delTicker(C);
     					}
     				}
-    			}
-            }catch(NoSuchElementException e){}
+				}
 		}
 	}
     

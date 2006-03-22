@@ -109,6 +109,7 @@ public class StdMOB implements MOB
     protected int atRange=-1;
     protected long peaceTime=0;
     protected boolean amDestroyed=false;
+    protected boolean kickFlag=false;
     
     public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
@@ -560,7 +561,9 @@ public class StdMOB implements MOB
 			I.destroy();
 			delInventory(I);
 		}
-        CMLib.threads().deleteTick(this,-1);
+        if(kickFlag)
+        	CMLib.threads().deleteTick(this,-1);
+        kickFlag=false;
         clanID=null;
         charStats=baseCharStats;
         envStats=baseEnvStats;
@@ -643,6 +646,7 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
+		kickFlag=true;
 		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_MOB); // slap on the butt
@@ -675,6 +679,7 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
+		kickFlag=true;
 		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_MOB); // slap on the butt

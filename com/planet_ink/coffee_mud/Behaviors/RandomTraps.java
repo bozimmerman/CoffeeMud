@@ -282,23 +282,27 @@ public class RandomTraps extends ActiveTicker
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
                         tickStatus=Tickable.STATUS_MISC+8;
-						Exit E=R.getExitInDir(d);
-						if((R.getRoomInDir(d)!=null)
-						&&(E!=null)
-						&&((E.hasADoor())
-						&&(!E.isOpen()))
-						&&(!elligible.contains(E))
-						&&((R.getReverseExit(d)==null)
-						   ||(!elligible.contains(R.getReverseExit(d)))))
+						if(((R.rawDoors()[d]!=null) // important optomization
+						&&(R.rawDoors()[d].roomID().length()>0)))
 						{
-                            tickStatus=Tickable.STATUS_MISC+9;
-							if(E.hasALock()&&(E.isLocked())&&(doAnyLockedDoors))
-								elligible.addElement(E);
-							else
-							if(doAnyDoors)
-								elligible.addElement(E);
+							Exit E=R.getExitInDir(d);
+							if((R.getRoomInDir(d)!=null)
+							&&(E!=null)
+							&&((E.hasADoor())
+							&&(!E.isOpen()))
+							&&(!elligible.contains(E))
+							&&((R.getReverseExit(d)==null)
+							   ||(!elligible.contains(R.getReverseExit(d)))))
+							{
+	                            tickStatus=Tickable.STATUS_MISC+9;
+								if(E.hasALock()&&(E.isLocked())&&(doAnyLockedDoors))
+									elligible.addElement(E);
+								else
+								if(doAnyDoors)
+									elligible.addElement(E);
+							}
+	                        tickStatus=Tickable.STATUS_MISC+10;
 						}
-                        tickStatus=Tickable.STATUS_MISC+10;
 					}
 
                     tickStatus=Tickable.STATUS_MISC+21;

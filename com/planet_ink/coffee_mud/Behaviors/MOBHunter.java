@@ -47,7 +47,7 @@ public class MOBHunter extends ActiveTicker
 	public MOBHunter()
 	{
 		super();
-		minTicks=600; maxTicks=1200; chance=100; radius=20;
+		minTicks=600; maxTicks=1200; chance=100; radius=15;
 		tickReset();
 	}
 

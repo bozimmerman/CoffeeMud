@@ -226,19 +226,9 @@ public class Thief_Assassinate extends ThiefSkill
 		Vector rooms=new Vector();
 		if(tracking!=null)
 		{
-		    try
-		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,50);
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
-				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
-					if((CMLib.flags().canAccess(mob,R))&&(R.isInhabitant(tracking)))
-					{
-						rooms.addElement(R);
-						break;
-					}
-				}
-		    }catch(NoSuchElementException nse){}
+			Room R=tracking.location();
+			if((R!=null)&&(R.isInhabitant(tracking))&&(CMLib.flags().canAccess(mob,R)))
+				rooms.addElement(R);
 		}
 		else
 		if(mobName.length()>0)

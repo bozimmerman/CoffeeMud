@@ -6499,7 +6499,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             Room R=CMLib.map().roomLocation((Environmental)ticking);
             if(R!=null) lastKnownLocation=R;
 
-			if(backupMOB==null)
+			if((backupMOB==null)||(backupMOB.amDestroyed())||(backupMOB.amDead()))
 			{
 				backupMOB=CMClass.getMOB("StdMOB");
 				if(backupMOB!=null)
@@ -6518,7 +6518,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(backupMOB.location()!=lastKnownLocation)
 					backupMOB.setLocation(lastKnownLocation);
 			}
-			mob.bringToLife();
 		}
 		return mob;
 	}
