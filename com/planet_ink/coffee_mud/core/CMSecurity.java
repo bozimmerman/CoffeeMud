@@ -313,7 +313,8 @@ public class CMSecurity
 	
 	public static Vector getSecurityCodes(MOB mob, Room room)
 	{
-		Vector codes=new Vector();
+		Vector codes=(Vector)mob.playerStats().getSecurityGroups().clone();
+        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),codes);
 		HashSet tried=new HashSet();
 		for(Enumeration e=groups.keys();e.hasMoreElements();)
 		{
@@ -323,14 +324,15 @@ public class CMSecurity
 			for(Iterator i=H.iterator();i.hasNext();)
 			{
 				String s=(String)i.next();
-				if((!tried.contains(s))&&(!codes.contains(s)))
+				if(!tried.contains(s))
 				{
 					tried.add(s);
 					if(isAllowed(mob,room,s))
 					{
 						if(s.startsWith("AREA ")) 
 							s=s.substring(5).trim();
-						codes.addElement(s);
+						if(!codes.contains(s))
+							codes.addElement(s);
 					}
 				}
 			}
