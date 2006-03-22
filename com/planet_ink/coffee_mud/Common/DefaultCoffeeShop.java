@@ -58,6 +58,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             {
                 Environmental I3=(Environmental)I2.copyOf();
                 copyFix.put(I2,I3);
+            	CMLib.threads().deleteTick(I3,-1);
                 storeInventory.addElement(I3,N,P);
             }
         }
@@ -68,6 +69,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             {
                 Environmental I3=(Environmental)copyFix.get(I2);
                 if(I3==null) I3=(Environmental)I2.copyOf();
+            	CMLib.threads().deleteTick(I3,-1);
                 baseInventory.addElement(I3);
             }
         }
@@ -130,7 +132,11 @@ public class DefaultCoffeeShop implements CoffeeShop
     {
         if(number<0) number=1;
         if((shop.whatIsSold()==ShopKeeper.DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
-            baseInventory.addElement(thisThang.copyOf());
+        {
+        	Environmental E=(Environmental)thisThang.copyOf();
+        	CMLib.threads().deleteTick(E,-1);
+            baseInventory.addElement(E);
+        }
         Environmental originalUncopiedThang=thisThang;
         if(thisThang instanceof InnKey)
         {
@@ -139,6 +145,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             {
                 copy=(Environmental)thisThang.copyOf();
                 ((InnKey)copy).hangOnRack(shop);
+            	CMLib.threads().deleteTick(copy,-1);
                 storeInventory.addElement(copy,new Integer(1),new Integer(-1));
             }
         }
@@ -146,6 +153,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         {
             Environmental copy=null;
             thisThang=(Environmental)thisThang.copyOf();
+        	CMLib.threads().deleteTick(thisThang,-1);
             for(int e=0;e<storeInventory.size();e++)
             {
                 copy=(Environmental)storeInventory.elementAt(e,1);
@@ -294,12 +302,15 @@ public class DefaultCoffeeShop implements CoffeeShop
                 Integer possNum=(Integer)storeInventory.elementAt(index,2);
                 int possValue=possNum.intValue();
                 possValue--;
+                Environmental copyItem=(Environmental)item.copyOf();
                 if(possValue>=1)
                     storeInventory.setElementAt(index,2,new Integer(possValue));
-                if(possValue>1)
-                    item=(Environmental)item.copyOf();
-                if(possValue<1)
+                else
+                {
                     storeInventory.removeElementAt(index);
+                    item.destroy();
+                }
+                item=copyItem;
             }
             else
                 storeInventory.removeElement(item);
