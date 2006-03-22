@@ -718,7 +718,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         boolean wizi=false;
 
-        String login=mob.session().prompt("name: ^<USER^>");
+        String login=mob.session().prompt("name: ");
         if(login==null) return 0;
         login=login.trim();
         if(login.length()==0) return 0;
@@ -732,7 +732,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         boolean found=CMLib.database().DBUserSearch(mob,login);
         if(found)
         {
-            mob.session().print("password: ^<PASSWORD^>");
+            mob.session().print("password: ");
             String password=mob.session().blockingIn();
             PlayerStats pstats=mob.playerStats();
 
