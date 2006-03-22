@@ -121,7 +121,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				invResetTickDown=invResetRate();
 				if(invResetTickDown==0) invResetTickDown=CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
-				if(invResetTickDown==0)
+				if((invResetTickDown==0)||(invResetRate==Integer.MAX_VALUE))
 					invResetTickDown=Integer.MAX_VALUE;
 				else
 				{
