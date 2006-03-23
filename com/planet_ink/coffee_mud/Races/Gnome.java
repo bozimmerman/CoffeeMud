@@ -72,7 +72,7 @@ public class Gnome extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+10);
         affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING)+10);
 	}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

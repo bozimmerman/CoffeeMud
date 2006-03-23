@@ -225,7 +225,7 @@ public class Delver extends StdCharClass
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "";}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

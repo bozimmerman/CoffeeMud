@@ -160,9 +160,10 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	 * Returns a vector of Item objects representing the standard
 	 * clothing, weapons, or other objects commonly given to players
 	 * of this race just starting out.
+	 * @param myChar one who will receive the objects
 	 * @return a vector of Item objects
 	 */
-	public Vector outfit();
+	public Vector outfit(MOB myChar);
 	/**
 	 * Returns a description of the given mobs description, by
 	 * consulting the mobs curState().getHitPoints method.

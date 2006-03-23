@@ -217,7 +217,7 @@ public class Minstrel extends StdCharClass
 
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "";}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

@@ -208,10 +208,10 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("STARTINGEQ"))
 				{
-					if(R.outfit()!=null)
-					for(int i=0;i<R.outfit().size();i++)
+					if(R.outfit(null)!=null)
+					for(int i=0;i<R.outfit(null).size();i++)
 					{
-						Item I=(Item)R.outfit().elementAt(i);
+						Item I=(Item)R.outfit(null).elementAt(i);
 						if(I!=null)
 							str.append(I.Name()+", ");
 					}

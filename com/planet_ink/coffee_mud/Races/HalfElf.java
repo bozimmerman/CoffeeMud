@@ -74,7 +74,7 @@ public class HalfElf extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+5);
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+5);
 	}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

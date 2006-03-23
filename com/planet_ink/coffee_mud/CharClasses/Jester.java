@@ -215,7 +215,7 @@ public class Jester extends StdCharClass
 
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.";}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

@@ -209,9 +209,10 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * Returns a vector of Item objects representing the standard
 	 * clothing, weapons, or other objects commonly given to players
 	 * of this class just starting out.
+	 * @param myChar one who will receive the objects
 	 * @return a vector of Item objects
 	 */
-	public Vector outfit();
+	public Vector outfit(MOB myChar);
 
 	/**
 	 * This method is called whenever a player casts a spell which has a lasting

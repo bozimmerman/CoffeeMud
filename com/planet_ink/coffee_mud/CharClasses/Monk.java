@@ -260,7 +260,7 @@ public class Monk extends StdCharClass
 		}
 	}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		return null;
 	}

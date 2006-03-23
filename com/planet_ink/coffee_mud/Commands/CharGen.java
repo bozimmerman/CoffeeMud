@@ -59,7 +59,7 @@ public class CharGen extends StdCommand
 		mob.baseState().setMovement(100);
 		mob.baseState().setMana(100);
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
-		CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit());
+		CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

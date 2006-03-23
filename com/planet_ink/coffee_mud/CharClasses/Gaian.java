@@ -313,7 +313,7 @@ public class Gaian extends StdCharClass
 		}
 	}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

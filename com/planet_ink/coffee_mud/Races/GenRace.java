@@ -236,13 +236,13 @@ public class GenRace extends StdRace
 			}
 			str.append("</RESOURCES>");
 		}
-		if((outfit()==null)||(outfit().size()==0))	str.append("<OUTFIT/>");
+		if((outfit(null)==null)||(outfit(null).size()==0))	str.append("<OUTFIT/>");
 		else
 		{
 			str.append("<OUTFIT>");
-			for(int i=0;i<outfit().size();i++)
+			for(int i=0;i<outfit(null).size();i++)
 			{
-				Item I=(Item)outfit().elementAt(i);
+				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
 				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
@@ -573,9 +573,9 @@ public class GenRace extends StdRace
 		case 28: return (culturalAbilityNames==null)?"0":(""+culturalAbilityNames.length);
 		case 29: return (culturalAbilityNames==null)?"":(""+culturalAbilityNames[num]);
 		case 30: return (culturalAbilityProfficiencies==null)?"0":(""+culturalAbilityProfficiencies[num]);
-		case 31: return ""+((outfit()!=null)?outfit().size():0);
-		case 32: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
-		case 33: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
+		case 31: return ""+((outfit(null)!=null)?outfit(null).size():0);
+		case 32: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).ID():"");
+		case 33: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).text():"");
 		case 34: return ""+destroyBodyAfterUse();
 		case 35: return (racialEffectNames==null)?"0":(""+racialEffectNames.length);
 		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);

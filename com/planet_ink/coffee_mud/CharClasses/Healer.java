@@ -294,7 +294,7 @@ public class Healer extends Cleric
 		}
 	}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

@@ -411,7 +411,7 @@ public class Mage extends StdCharClass
 		}
 	}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

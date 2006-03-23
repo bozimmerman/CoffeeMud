@@ -152,10 +152,10 @@ public class CharClassData extends StdWebMacro
 						str.append(C.statQualifications()+", ");
 				if(parms.containsKey("STARTINGEQ"))
 				{
-					if(C.outfit()!=null)
-					for(int i=0;i<C.outfit().size();i++)
+					if(C.outfit(null)!=null)
+					for(int i=0;i<C.outfit(null).size();i++)
 					{
-						Item I=(Item)C.outfit().elementAt(i);
+						Item I=(Item)C.outfit(null).elementAt(i);
 						if(I!=null)
 							str.append(I.name()+", ");
 					}

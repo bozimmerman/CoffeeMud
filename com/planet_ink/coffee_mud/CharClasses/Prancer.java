@@ -178,7 +178,7 @@ public class Prancer extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String otherLimitations(){return "";}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

@@ -194,7 +194,7 @@ public class Bard extends StdCharClass
 	}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives bonus combat experience when in a group.";}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

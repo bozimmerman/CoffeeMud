@@ -197,13 +197,13 @@ public class Pregnancy extends StdAbility
 			GR.setStat("GETRSCPARM"+i,((Item)nonHuman.myResources().elementAt(i)).text());
 
 		GR.setStat("NUMOFT","");
-		Race outfitRace=(nonHuman.outfit()!=null)?nonHuman:otherRace;
-		if(outfitRace.outfit()!=null)
+		Race outfitRace=(nonHuman.outfit(null)!=null)?nonHuman:otherRace;
+		if(outfitRace.outfit(null)!=null)
 		{
-			for(int i=0;i<outfitRace.outfit().size();i++)
-				GR.setStat("GETOFTID"+i,((Item)outfitRace.outfit().elementAt(i)).ID());
-			for(int i=0;i<outfitRace.outfit().size();i++)
-				GR.setStat("GETOFTPARM"+i,((Item)outfitRace.outfit().elementAt(i)).text());
+			for(int i=0;i<outfitRace.outfit(null).size();i++)
+				GR.setStat("GETOFTID"+i,((Item)outfitRace.outfit(null).elementAt(i)).ID());
+			for(int i=0;i<outfitRace.outfit(null).size();i++)
+				GR.setStat("GETOFTPARM"+i,((Item)outfitRace.outfit(null).elementAt(i)).text());
 		}
 
 		race1.racialAbilities(null);

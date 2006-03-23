@@ -377,7 +377,7 @@ public class StdCharClass implements CharClass
 		}
 	}
 
-	public Vector outfit(){return outfitChoices;}
+	public Vector outfit(MOB myChar){return outfitChoices;}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

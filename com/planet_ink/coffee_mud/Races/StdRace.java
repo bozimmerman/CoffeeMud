@@ -312,7 +312,7 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
-	public Vector outfit(){return outfitChoices;}
+	public Vector outfit(MOB myChar){return outfitChoices;}
 
 	public String healthText(MOB mob)
 	{

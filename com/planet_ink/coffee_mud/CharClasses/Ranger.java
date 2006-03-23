@@ -237,7 +237,7 @@ public class Ranger extends StdCharClass
 		return false;
 	}
 	
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

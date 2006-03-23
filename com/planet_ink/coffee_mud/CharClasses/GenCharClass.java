@@ -280,13 +280,13 @@ public class GenCharClass extends StdCharClass
 			}
 			str.append("</NOWEAPS>");
 		}
-		if((outfit()==null)||(outfit().size()==0))	str.append("<OUTFIT/>");
+		if((outfit(null)==null)||(outfit(null).size()==0))	str.append("<OUTFIT/>");
 		else
 		{
 			str.append("<OUTFIT>");
-			for(int i=0;i<outfit().size();i++)
+			for(int i=0;i<outfit(null).size();i++)
 			{
-				Item I=(Item)outfit().elementAt(i);
+				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
 				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
@@ -549,9 +549,9 @@ public class GenCharClass extends StdCharClass
 		case 30: return (String)getAbleSet().elementAt(num,6);
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
 		case 32: return CMParms.toStringList(disallowedWeaponSet);
-		case 33: return ""+((outfit()!=null)?outfit().size():0);
-		case 34: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
-		case 35: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
+		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
+		case 34: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).ID():"");
+		case 35: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).text():"");
 		case 36: return ""+hpDie;
 		case 37: return ""+manaDice;
 		case 38: return ""+manaDie;

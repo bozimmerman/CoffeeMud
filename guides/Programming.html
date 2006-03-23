@@ -3114,7 +3114,7 @@ information on the CoffeeMud security system.</font></p>
    is for the benefit of the web macros. It describes any special bonuses 
 received   due to being this class. </font></p>
                
-<pre>public Vector outfit()<br>{<br>	if(outfitChoices==null)<br>	{<br>		outfitChoices=new Vector();<br>		Weapon w=(Weapon)CMClass.getWeapon("a mortgage");<br>		outfitChoices.addElement(w);<br>	}<br>	return outfitChoices;<br>}<br></pre>
+<pre>public Vector outfit(MOB myChar)<br>{<br>	if(outfitChoices==null)<br>	{<br>		outfitChoices=new Vector();<br>		Weapon w=(Weapon)CMClass.getWeapon("a mortgage");<br>		outfitChoices.addElement(w);<br>	}<br>	return outfitChoices;<br>}<br></pre>
                
 <p align="left"><font size="4">The outfit method should return a Vector of 
    any Class-Specific Item object equipment they may need. Clothing and so 
@@ -3269,7 +3269,7 @@ any mob or player of this race, even those affected by Shape Shift, Polymorph,
  method from  StdRace unless there other gender-based or other special qualifications 
  for  skills not defined by those four variables.</font></p>
                
-<pre>public Vector outfit()<br>{<br>	if(outfitChoices==null)<br>	{<br>		outfitChoices=new Vector();<br>		Weapon w=(Weapon)CMClass.getItem("GenPants");<br>		outfitChoices.addElement(w);<br>	}<br>	return outfitChoices;<br>}<br></pre>
+<pre>public Vector outfit(MOB myChar)<br>{<br>	if(outfitChoices==null)<br>	{<br>		outfitChoices=new Vector();<br>		Weapon w=(Weapon)CMClass.getItem("GenPants");<br>		outfitChoices.addElement(w);<br>	}<br>	return outfitChoices;<br>}<br></pre>
                
 <p align="left"><font size="4">The outfit method should return a Vector of 
    any Race-Specific Item object equipment they may need. </font></p>

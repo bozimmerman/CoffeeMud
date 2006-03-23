@@ -354,7 +354,7 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

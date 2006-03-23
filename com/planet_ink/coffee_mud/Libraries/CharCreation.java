@@ -574,7 +574,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.addInventory(t);
             mob.setWimpHitPoint(5);
 
-            CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit());
+            CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));
 
             Ability A=CMClass.getAbility("Allergies");
             if(A!=null) A.invoke(mob,mob,true,0);
@@ -640,7 +640,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
             }
             mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
-            CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
+            CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
             mob.setStartRoom(CMLib.map().getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
             mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());

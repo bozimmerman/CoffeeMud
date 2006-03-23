@@ -221,7 +221,7 @@ public class Paladin extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

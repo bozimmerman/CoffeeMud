@@ -82,7 +82,7 @@ public class Archon extends StdCharClass
 			mob.tell("This class cannot be learned.");
 		return false;
 	}
-	public Vector outfit()
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
