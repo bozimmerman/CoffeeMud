@@ -41,6 +41,8 @@ public class ItemGenerator extends ActiveTicker
 	protected int minItems=1;
 	protected int maxItems=1;
 	protected int avgItems=1;
+	protected double totalValue=0;
+	protected int maxValue=-1;
 	protected int enchantPct=10;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
@@ -173,13 +175,23 @@ public class ItemGenerator extends ActiveTicker
 				if(A instanceof ItemCraftor)
 					skills.addElement(A.copyOf());
 			}
-			Vector V=null;
+			Vector skillSet=null;
+			Vector materialSet=null;
+			Vector itemSet=null;
 			for(int s=0;s<skills.size();s++)
 			{
-				V=((ItemCraftor)skills.elementAt(s)).craftAllItemsVectors();
-				if(V!=null)
-				for(int v=0;v<V.size();v++)
-					allItems.addElement(((Vector)V.elementAt(v)).firstElement());
+				skillSet=((ItemCraftor)skills.elementAt(s)).craftAllItemsVectors();
+				if(skillSet!=null)
+				for(int v=0;v<skillSet.size();v++)
+				{
+					materialSet=(Vector)skillSet.elementAt(v);
+					for(int m=0;m<materialSet.size();m++)
+					{
+						itemSet=(Vector)materialSet.elementAt(m);
+						if(itemSet.size()>0)
+							allItems.addElement(itemSet.firstElement());
+					}
+				}
 			}
 			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
 			ItemGenerator.building=false;
@@ -195,6 +207,8 @@ public class ItemGenerator extends ActiveTicker
 		if(items==null)
 		{
 			Vector allItems=null;
+			totalValue=0;
+			maxValue=-1;
 			synchronized(ID().intern())
 			{
 				if(ItemGenerator.building) return null;
@@ -214,7 +228,17 @@ public class ItemGenerator extends ActiveTicker
 			{
 				I=(Item)allItems.elementAt(a);
 				if(CMLib.masking().maskCheck(compiled,I))
+				{
+					if(I.value()>maxValue) 
+						maxValue=I.value();
 					items.addElement(I);
+				}
+			}
+			
+			for(int a=0;a<items.size();a++)
+			{
+				I=(Item)items.elementAt(a);
+				totalValue+=CMath.div(maxValue,I.value()+1);
 			}
 			Resources.submitResource("ITEMGENERATOR-"+mask.toUpperCase().trim(),items);
 		}
@@ -245,12 +269,19 @@ public class ItemGenerator extends ActiveTicker
 		{
 			Vector items=getItems(ticking,getParms());
 			if(items==null) return true;
-			int attempts=30;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false; 
-			while((maintained.size()<avgItems)&&(((--attempts)>0)))
+			if(maintained.size()<avgItems)
 			{
-				I=(Item)items.elementAt(CMLib.dice().roll(1,items.size(),-1));
+				double pickedTotal=Math.random()*totalValue;
+				double value=-1;
+				for(int i=0;i<items.size();i++)
+				{
+					I=(Item)items.elementAt(i);
+					value=CMath.div(maxValue,I.value()+1.0);
+					if(pickedTotal<=value){ break;}
+					pickedTotal-=value;
+				}
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();
@@ -274,7 +305,7 @@ public class ItemGenerator extends ActiveTicker
 				    	if(((Container)ticking).owner() instanceof MOB)
 				    		((MOB)((Container)ticking).owner()).addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
 				    	else
-				    		break;
+				    		return true;
 						maintained.addElement(I);
 				    	I.setContainer((Container)ticking);
 				    }
@@ -321,13 +352,13 @@ public class ItemGenerator extends ActiveTicker
 								}
 							}
 							else
-								break;
+								return true;
 						}
 						else
 					    if(ticking instanceof Environmental)
 							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
-							break;
+							return true;
 							
 						if(room instanceof GridLocale)
 							room=((GridLocale)room).getRandomGridChild();

@@ -508,7 +508,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			items=craftAllItemsVectors(((Integer)rscs.elementAt(r)).intValue());
 			if((items==null)||(items.size()==0)) continue;
-			CMParms.addToVector(items,allItems);
+			allItems.addElement(items);
 		}
 		return allItems;
 	}

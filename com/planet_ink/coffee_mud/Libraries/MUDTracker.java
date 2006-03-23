@@ -36,20 +36,55 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
     public String ID(){return "MUDTracker";}
     public Vector findBastardTheBestWay(Room location,
+							            Room destRoom,
+							            boolean openOnly,
+							            boolean areaOnly,
+							            boolean noEmptyGrids,
+							            boolean noAir,
+							            boolean noWater,
+							            int maxRadius)
+    {
+    	return findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius,null);
+    }
+    public Vector findBastardTheBestWay(Room location,
                                         Room destRoom,
                                         boolean openOnly,
                                         boolean areaOnly,
                                         boolean noEmptyGrids,
                                         boolean noAir,
                                         boolean noWater,
-                                        int maxRadius)
+                                        int maxRadius,
+                                        Vector radiant)
    {
-        Vector radiant=new Vector();
-        getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius,null);
-        if(!radiant.contains(location))
-            radiant.insertElementAt(location,0);
-        if((radiant!=null)&&(radiant.size()>0)
-        &&(destRoom==radiant.lastElement()))
+        if((radiant==null)||(radiant.size()==0)){
+        	radiant=new Vector();
+            getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius,null);
+            if(!radiant.contains(location))
+                radiant.insertElementAt(location,0);
+        }
+        else
+        {
+        	Vector radiant2=new Vector(radiant.size());
+        	int r=0;
+        	boolean foundLocation=false;
+        	Object O;
+        	for(;r<radiant.size();r++)
+			{
+        		O=radiant.elementAt(r);
+        		radiant2.addElement(O);
+        		if((!foundLocation)&&(O==location))
+        			foundLocation=true;
+        		if(O==destRoom) break;
+			}
+    		if(!foundLocation)
+    		{
+                radiant.insertElementAt(location,0);
+                radiant2.insertElementAt(location,0);
+    		}
+        	if(r>=radiant.size()) return null;
+        	radiant=radiant2;
+        }
+        if((radiant.size()>0)&&(destRoom==radiant.lastElement()))
         {
             Vector thisTrail=new Vector();
             HashSet tried=new HashSet();
@@ -106,12 +141,18 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	    Vector finalTrail=null;
         Room destRoom=null;
         int pick=0;
+        Vector radiant=null;
+        if(destRooms.size()>1)
+        {
+        	radiant=new Vector();
+            getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,null,maxRadius,null);
+        }
         for(int i=0;(i<5)&&(destRooms.size()>0);i++)
         {
             pick=CMLib.dice().roll(1,destRooms.size(),-1);
             destRoom=(Room)destRooms.elementAt(pick);
             destRooms.removeElementAt(pick);
-            Vector thisTrail=findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius);
+            Vector thisTrail=findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius,radiant);
             if((thisTrail!=null)
             &&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
                 finalTrail=thisTrail;

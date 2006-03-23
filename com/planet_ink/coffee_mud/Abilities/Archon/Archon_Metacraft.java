@@ -162,7 +162,16 @@ public class Archon_Metacraft extends ArchonSkill
 					if(material>=0)
 						V=skill.craftAllItemsVectors(material);
 					else
+					{
+						Vector V2=new Vector();
 						V=skill.craftAllItemsVectors();
+						if(V!=null)
+						{
+							for(int v=0;v<V.size();v++)
+								V2.addAll((Vector)V.elementAt(v));
+							V=V2;
+						}
+					}
 					if(V!=null)
 					for(int v=0;v<V.size();v++)
 						CMParms.addToVector((Vector)V.elementAt(v),items);
