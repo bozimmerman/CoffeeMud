@@ -179,7 +179,7 @@ public class Destroy extends BaseItemParser
 			}
 
 			if(!confirmed)
-				if(!mob.session().confirm("You are fixing permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
+				if(!mob.session().confirm("You are fixing to permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
 			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,"The sound of massive destruction rings in your ears.");
