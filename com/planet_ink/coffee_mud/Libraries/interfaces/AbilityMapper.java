@@ -31,7 +31,6 @@ import java.util.*;
 */
 public interface AbilityMapper extends CMObject
 {
-
     public static class AbilityMapping
     {
         public String abilityName="";
