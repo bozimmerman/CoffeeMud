@@ -31,7 +31,7 @@ import java.util.*;
 */
 public interface EducationLibrary extends CMObject
 {
-    public class EducationDefinition
+    public static class EducationDefinition
     {
         public String ID="";
         public String name="";
