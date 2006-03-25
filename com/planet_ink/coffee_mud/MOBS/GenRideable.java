@@ -64,7 +64,7 @@ public class GenRideable extends StdRideable
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
-	private static String[] MYCODES={"RIDEBASIS","MOBSHELD"};
+	private final static String[] MYCODES={"RIDEBASIS","MOBSHELD"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)

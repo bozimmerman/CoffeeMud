@@ -67,7 +67,7 @@ public class GenClanCommonItem extends StdClanCommonItem
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"CLANID","CITYPE"};
+	private final static String[] MYCODES={"CLANID","CITYPE"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)

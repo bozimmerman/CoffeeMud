@@ -69,7 +69,7 @@ public class GenPerfume extends StdPerfume
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST"};
 	public String getStat(String code)
 	{

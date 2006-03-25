@@ -64,7 +64,7 @@ public class GenRideable extends StdRideable
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};
 	public String getStat(String code)
 	{

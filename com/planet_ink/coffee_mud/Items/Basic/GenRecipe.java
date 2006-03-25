@@ -56,7 +56,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String getRecipeCodeLine(){return recipeLine;}
 	public void setRecipeCodeLine(String line){recipeLine=line;}
 	
-	private static String[] MYCODES={"SKILLID","RECIPE"};
+	private final static String[] MYCODES={"SKILLID","RECIPE"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)

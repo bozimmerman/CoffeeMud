@@ -67,7 +67,7 @@ public class GenSSConsole extends StdShipConsole
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
 							  "FUELTYPE","POWERCAP"};
 	public String getStat(String code)

@@ -71,7 +71,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
+	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  "AMMOTYPE","AMMOCAPACITY"};
 	public String getStat(String code)
 	{

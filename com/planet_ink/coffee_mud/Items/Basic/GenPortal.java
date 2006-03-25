@@ -60,7 +60,7 @@ public class GenPortal extends StdPortal
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT"};
 	public String getStat(String code)
 	{

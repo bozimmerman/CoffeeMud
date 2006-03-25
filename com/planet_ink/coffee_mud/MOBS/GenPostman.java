@@ -69,7 +69,7 @@ public class GenPostman extends StdPostman
         super.setMiscText(newText);
         CMLib.coffeeMaker().resetGenMOB(this,newText);
     }
-    private static String[] MYCODES={"WHATISELL",
+    private final static String[] MYCODES={"WHATISELL",
                                      "PREJUDICE",
                                      "POSTCHAIN","POSTMIN","POSTLBS",
                                      "POSTHOLD","POSTNEW","POSTHELD",

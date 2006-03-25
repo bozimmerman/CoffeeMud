@@ -80,7 +80,7 @@ public class GenPotion extends StdPotion
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
 	public String getStat(String code)
 	{

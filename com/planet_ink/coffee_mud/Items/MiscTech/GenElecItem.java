@@ -64,7 +64,7 @@ public class GenElecItem extends StdElecItem
 		recoverEnvStats();
 	}
 
-	private static String[] MYCODES={"FUELTYPE","POWERCAP"};
+	private final static String[] MYCODES={"FUELTYPE","POWERCAP"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)

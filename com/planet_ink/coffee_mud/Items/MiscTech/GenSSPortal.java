@@ -72,7 +72,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 	public void activate(boolean truefalse){}
 	public boolean activated(){return true;}
 	
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};
 	public String getStat(String code)
 	{

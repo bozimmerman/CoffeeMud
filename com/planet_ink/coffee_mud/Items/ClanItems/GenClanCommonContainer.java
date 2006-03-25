@@ -72,7 +72,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 									 "CLANID","CITYPE"};
 	public String getStat(String code)
 	{

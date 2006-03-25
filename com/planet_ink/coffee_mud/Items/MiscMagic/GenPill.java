@@ -74,7 +74,7 @@ public class GenPill extends StdPill
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"NOURISHMENT"};
+	private final static String[] MYCODES={"NOURISHMENT"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)

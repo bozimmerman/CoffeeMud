@@ -162,7 +162,7 @@ public class GenCoins extends GenItem implements Coins
 		return false;
 	}
 
-	private static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
+	private final static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)

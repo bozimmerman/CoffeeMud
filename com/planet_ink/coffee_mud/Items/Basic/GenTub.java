@@ -61,7 +61,7 @@ public class GenTub extends StdTub
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
 	public String getStat(String code)

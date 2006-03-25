@@ -63,7 +63,7 @@ public class GenDeity extends StdDeity
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
-	private static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT"};
+	private final static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)

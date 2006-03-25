@@ -64,7 +64,7 @@ public class GenElecContainer extends StdElecContainer
 		recoverEnvStats();
 	}
 
-	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","FUELTYPE","POWERCAP"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","FUELTYPE","POWERCAP"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
