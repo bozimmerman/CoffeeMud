@@ -43,6 +43,7 @@ public class ColumbiaUniv extends StdLibrary implements EducationLibrary
     	EducationDefinition def=new EducationDefinition();
     	def.ID=ID.toUpperCase();
     	def.name=name;
+    	def.uncompiledMask=mask!=null?mask.trim():"";
     	if(mask.trim().length()>0) def.compiledMask=CMLib.masking().maskCompile(mask);
     	def.practiceCost=practices;
     	def.trainCost=trains;

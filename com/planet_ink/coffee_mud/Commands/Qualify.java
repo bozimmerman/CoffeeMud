@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -183,19 +184,50 @@ public class Qualify extends BaseAbleLister
 			msg.append(msg2.toString());
 		}
 
+		boolean edusFound=false;
+		if((mob!=null)
+		&&((qual.length()==0)
+			||(qual.equalsIgnoreCase("EDUS"))
+			||(qual.equalsIgnoreCase("EDUCATIONS"))))
+		{
+			Vector V=CMLib.edu().myQualifiedEducations(mob);
+			for(int v=V.size();v>=0;v--)
+				if(mob.fetchEducation(((EducationLibrary.EducationDefinition)V.elementAt(v)).ID)!=null)
+					V.removeElementAt(v);
+			if(V.size()>0)
+			{
+				StringBuffer msg2=new StringBuffer("^HEducations:^?\n\rName                          Requires\n\r");
+				EducationLibrary.EducationDefinition def=null;
+				for(int v=0;v<V.size();v++)
+				{
+					edusFound=true;
+					def=(EducationLibrary.EducationDefinition)V.elementAt(v);
+					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.uncompiledMask,true)+"\n\r");
+				}
+				msg.append(msg2.toString());
+			}
+		}
+		
 		if(msg.length()==0)
 		{
 			if(qual.length()>0)
-				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
+				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EDUS, or LANGS.");
 			else
-				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
+				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EDUS, or LANGS.");
 		}
 		else
 		if(!mob.isMonster())
 		{
 			mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
 			mob.tell("\n\rUse the GAIN command with your teacher to gain new skills and spells.");
-			if(classesFound) mob.tell("\n\rUse the TRAIN command to train for a new class.");
+			if(classesFound&&edusFound) 
+				mob.tell("\n\rUse the TRAIN command to train for a new class, or for new educations.");
+			else
+			if(classesFound) 
+				mob.tell("\n\rUse the TRAIN command to train for a new class.");
+			else
+			if(edusFound) 
+				mob.tell("\n\rUse the TRAIN command to train for new educations.");
 		}
 		return false;
 	}

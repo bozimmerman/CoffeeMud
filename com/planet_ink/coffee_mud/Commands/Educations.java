@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Libraries.interfaces;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -9,11 +9,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.EducationLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 /* 
    Copyright 2000-2006 Bo Zimmerman
 
@@ -29,24 +31,36 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface EducationLibrary extends CMObject
+public class Educations extends StdCommand
 {
-    public static class EducationDefinition
-    {
-        public String ID="";
-        public String name="";
-        public String uncompiledMask=null;
-        public Vector compiledMask=null;
-        public int practiceCost=0;
-        public int trainCost=0;
-        public int expCost=0;
-        public int qpCost=0;
-        public int timeCost=0;
-    }
-    
-    public void addDefinition(String ID, String name, String mask, int practices, int trains, int qpCost, int expCost, int timeCost);
-    public void delDefinition(String ID);
-    public EducationDefinition getDefinition(String ID);
-    public Enumeration definitions();
-    public Vector myQualifiedEducations(MOB mob);
+	public Educations(){}
+
+	private String[] access={"EDUCATIONS","EDUS"};
+	public String[] getAccessWords(){return access;}
+	public boolean execute(MOB mob, Vector commands)
+		throws java.io.IOException
+	{
+		StringBuffer msg=new StringBuffer("");
+		msg.append("\n\r^HYour educations:^? \n\r");
+		EducationLibrary.EducationDefinition def=null;
+		int col=0;
+		for(int e=0;e<mob.numEducations();e++)
+		{
+			def=CMLib.edu().getDefinition(mob.fetchEducation(e));
+			msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",20));
+			if((++col)>=3)
+			{
+				msg.append("\n\r");
+				col=0;
+			}
+		}
+		msg.append("\n\r");
+		if(!mob.isMonster())
+			mob.session().wraplessPrintln(msg.toString());
+		return false;
+	}
+	
+	public boolean canBeOrdered(){return true;}
+
+	
 }
