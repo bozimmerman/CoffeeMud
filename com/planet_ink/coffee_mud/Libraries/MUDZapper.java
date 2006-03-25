@@ -173,6 +173,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SKILL",new Integer(84));
             zapCodes.put("-SKILLS",new Integer(83));
             zapCodes.put("+SKILLS",new Integer(84));
+            zapCodes.put("+QUALLVL",new Integer(85));
+            zapCodes.put("-QUALLVL",new Integer(86));
 		}
 		return zapCodes;
 	}
@@ -237,6 +239,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
+	public boolean quallvlcheck(Vector V, int fromHere, MOB mob)
+	{
+		if(fromHere>=V.size()) return false;
+		
+		String able=(String)V.elementAt(fromHere);
+		Ability A=CMClass.getAbility(able);
+		if(A==null) return false;
+		int adjustment=0;
+		if(((fromHere+1)<V.size())&&(CMath.isInteger((String)V.elementAt(fromHere+1))))
+			adjustment=CMath.s_int((String)V.elementAt(fromHere+1));
+		int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
+		int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
+		return lvl>clvl;
+	}
+	
 	public boolean eduCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		if(mob==null) return false;
@@ -1035,6 +1052,48 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
+                case 85: // +quallvl
+                    if((v+1)<V.size())
+	                {
+	                    Ability A=CMClass.getAbility((String)V.elementAt(v+1));
+	                    if(A!=null)
+	                    {
+		                    int adjustment=0;
+		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
+		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
+		                    buf.append(A.Name());
+		                    if(adjustment!=0)
+			                    buf.append("Qualifies for "+A.Name());
+		                    else
+		                    if(adjustment<0)
+		                    	buf.append((-adjustment)+" levels before qualifying for "+A.Name());
+		                    else
+		                    	buf.append(adjustment+" levels after qualifying for "+A.Name());
+		                    buf.append(".  ");
+	                    }
+	                }
+	                break;
+	            case 86: // -quallvl
+                    if((v+1)<V.size())
+	                {
+	                    Ability A=CMClass.getAbility((String)V.elementAt(v+1));
+	                    if(A!=null)
+	                    {
+		                    int adjustment=0;
+		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
+		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
+		                    buf.append(A.Name());
+		                    if(adjustment!=0)
+			                    buf.append("Does not qualify for "+A.Name());
+		                    else
+		                    if(adjustment<0)
+		                    	buf.append("Still prior to "+(-adjustment)+" levels before qualifying for "+A.Name());
+		                    else
+		                    	buf.append("Still prior to "+adjustment+" levels after qualifying for "+A.Name());
+		                    buf.append(".  ");
+	                    }
+	                }
+	                break;
                 case 69: // -disposition
                     {
                         buf.append((skipFirstWord?"The":"Requires")+" following disposition(s): ");
@@ -1932,6 +1991,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         }
                     }
                     break;
+                case 85: // +quallvl
+                case 86: // -quallvl
+                    if((v+1)<V.size())
+	                {
+	                    Ability A=CMClass.getAbility((String)V.elementAt(v+1));
+	                    if(A!=null)
+	                    {
+		                    int adjustment=0;
+		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
+		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
+	                        Vector entry=new Vector();
+	                        buf.addElement(entry);
+	                        entry.addElement(zapCodes.get(str));
+	                        entry.addElement(A.ID());
+	                        entry.addElement(new Integer(adjustment));
+	                    }
+	                }
+                	break;
                 case 51: // +Resource
                 case 52: // -Resource
                     {
@@ -2428,6 +2505,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         if(R.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
                         { found=true; break;}
                     if(!found) return false;
+                }
+                break;
+            case 85: // +quallvl
+	            {
+	                Ability A=CMClass.getAbility((String)V.elementAt(1));
+	                int adjustment=((Integer)V.elementAt(2)).intValue();
+	        		int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
+	        		int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
+	        		if(lvl<clvl) return false;
+	            }
+                break;
+            case 86: // -quallvl
+                {
+                    Ability A=CMClass.getAbility((String)V.elementAt(1));
+                    int adjustment=((Integer)V.elementAt(2)).intValue();
+            		int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
+            		int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
+            		if(lvl>clvl) return false;
                 }
                 break;
             case 51: // +resource
@@ -3055,6 +3150,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 33: // +item
 					if(!itemCheck(V,'-',v+1,mob)) return false;
                     if(!itemCheck(V,'+',v+1,mob)) return false;
+					break;
+				case 85: // +quallvl
+					if(!quallvlcheck(V,v+1,mob)) return false;
+					break;
+				case 86: // -quallvl
+					if(quallvlcheck(V,v+1,mob)) return false;
 					break;
                 case 48: // +worn
                     if(mob!=null)
