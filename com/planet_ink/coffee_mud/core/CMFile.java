@@ -56,7 +56,6 @@ public class CMFile
     private static Vector vfs=null;
     private boolean logErrors=false;
     
-    
     private int vfsBits=0;
     private String localPath=null;
     private String path=null;
