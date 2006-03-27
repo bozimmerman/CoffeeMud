@@ -1059,8 +1059,7 @@ public class StdRoom implements Room
 		if(nextRoom!=null) 
 		{
 			nextRoom=nextRoom.prepareRoomInDir(this,direction);
-			if((nextRoom!=null)
-			&&(nextRoom.amDestroyed())) 
+			if((nextRoom!=null)&&(nextRoom.amDestroyed())) 
 				return null;
 		}
 		return nextRoom;

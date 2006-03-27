@@ -121,7 +121,7 @@ public class Chant_AnimalSpy extends Chant
 		finally
 		{
 			disable=false;
-			if((spy!=null)&&(spy.amFollowing()!=invoker)&&(!spy.amDead()))
+			if((spy!=null)&&((spy.amFollowing()!=invoker)||(spy.amDead())||(!CMLib.flags().isInTheGame(spy,true))))
 				unInvoke();
 		}
 	}

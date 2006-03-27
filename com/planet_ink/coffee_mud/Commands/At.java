@@ -79,27 +79,6 @@ public class At extends StdCommand
 							break;
 						}
 					}
-				if(room==null)
-				{
-					Vector candidates=new Vector();
-					MOB target=null;
-					try
-					{
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-						{
-							Room R=(Room)r.nextElement();
-							target=R.fetchInhabitant(srchStr);
-							if(target!=null)
-								candidates.addElement(target);
-						}
-				    }
-				    catch(NoSuchElementException e){}
-					if(candidates.size()>0)
-					{
-						target=(MOB)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
-						room=target.location();
-					}
-				}
                 if(room==null)
                 {
                     for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
@@ -121,13 +100,34 @@ public class At extends StdCommand
 					{
 						Area A=(Area)a.nextElement();
 						if((CMLib.english().containsString(A.name(),srchStr))
-						&&(A.properSize()>0))
+						&&(A.getProperRoomnumbers().roomCountAllAreas()>0))
 						{
 							int tries=0;
 							while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
 								room=A.getRandomProperRoom();
 							break;
 						}
+					}
+				}
+				if(room==null)
+				{
+					Vector candidates=new Vector();
+					MOB target=null;
+					try
+					{
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+						{
+							Room R=(Room)r.nextElement();
+							target=R.fetchInhabitant(srchStr);
+							if(target!=null)
+								candidates.addElement(target);
+						}
+				    }
+				    catch(NoSuchElementException e){}
+					if(candidates.size()>0)
+					{
+						target=(MOB)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
+						room=target.location();
 					}
 				}
 				if(room==null)

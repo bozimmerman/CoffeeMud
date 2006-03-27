@@ -166,6 +166,7 @@ public class OffLine extends Thread implements MudHost
             {
                 state=0;
                 sock=servsock.accept();
+                sock.setSoLinger(true,3);
                 state=1;
 
                 if (acceptConnections)

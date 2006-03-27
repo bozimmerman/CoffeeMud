@@ -378,6 +378,7 @@ public class MUD extends Thread implements MudHost
                 state=0;
                 if(servsock==null) break;
 				sock=servsock.accept();
+				sock.setSoLinger(true,3);
                 state=1;
 
 				if (acceptConnections)

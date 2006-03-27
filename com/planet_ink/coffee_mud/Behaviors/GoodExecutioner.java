@@ -37,6 +37,7 @@ public class GoodExecutioner  extends StdBehavior
 	public String ID(){return "GoodExecutioner";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
     private boolean doPlayers=false;
+    private boolean norecurse=false;
 
     public void setParms(String newParms)
     {
@@ -51,14 +52,19 @@ public class GoodExecutioner  extends StdBehavior
 	{
 		if(M==null) return false;
 		if(CMLib.flags().isBoundOrHeld(M)) return false;
-		if((!M.isMonster())&&(!doPlayers))
+		if(((!M.isMonster())&&(!doPlayers))||(norecurse))
             return false;
+		norecurse=true;
 		for(int b=0;b<M.numBehaviors();b++)
 		{
 			Behavior B=M.fetchBehavior(b);
-			if((B!=null)&&(B.grantsAggressivenessTo(M)))
+			if((B!=null)&&(B!=this)&&(B.grantsAggressivenessTo(M)))
+			{
+				norecurse=false;
 				return true;
+			}
 		}
+		norecurse=false;
 		return ((CMLib.flags().isEvil(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 	}
 

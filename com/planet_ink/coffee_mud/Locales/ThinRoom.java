@@ -59,23 +59,30 @@ public class ThinRoom implements Room {
 	public Vector resourceChoices(){empty.clear(); return empty;}
 	public void toggleMobility(boolean onoff){}
 	public boolean getMobility(){return true;}
+	private boolean recurse=false;
+	
 	public Room prepareRoomInDir(Room R, int direction)
 	{
 		if(R==null) return null;
-		if(roomID.length()==0) return null;
-		Room myR=CMLib.map().getRoom(roomID);
-		if(myR==null)
+		if((roomID.length()==0)||(recurse)) return null;
+		recurse=true;
+		Room myR=null;
+		synchronized(("SYNC"+roomID).intern())
 		{
-			Vector V=CMLib.database().DBReadRoomData(roomID,false);
-			if(V.size()>0)
+			myR=CMLib.map().getRoom(roomID);
+			if(myR==null)
 			{
-				myR=(Room)V.firstElement();
-				while(V.size()>1) V.removeElementAt(1);
-				CMLib.database().DBReadRoomExits(roomID,V,false);
-				CMLib.database().DBReadContent(myR,V);
-				myR.getArea().fillInAreaRoom(R);
-				if(CMath.bset(myR.getArea().flags(),Area.FLAG_THIN))
-					myR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+				Vector V=CMLib.database().DBReadRoomData(roomID,false);
+				if(V.size()>0)
+				{
+					myR=(Room)V.firstElement();
+					while(V.size()>1) V.removeElementAt(1);
+					CMLib.database().DBReadRoomExits(roomID,V,false);
+					CMLib.database().DBReadContent(myR,V);
+					myR.getArea().fillInAreaRoom(R);
+					if(CMath.bset(myR.getArea().flags(),Area.FLAG_THIN))
+						myR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+				}
 			}
 		}
 		if((myR!=null)
@@ -83,7 +90,10 @@ public class ThinRoom implements Room {
 		&&(direction<Directions.NUM_DIRECTIONS)
 		&&(R.rawDoors()[direction]==this))
 			R.rawDoors()[direction]=myR;
-		return myR;
+		recurse=false;
+		if(myR instanceof ThinRoom) return myR;
+		if(myR!=null) return myR.prepareRoomInDir(R,direction);
+		return null;
 	}
 
 	public void startItemRejuv(){}

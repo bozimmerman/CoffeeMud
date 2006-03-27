@@ -58,7 +58,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
    {
         if((radiant==null)||(radiant.size()==0)){
         	radiant=new Vector();
-            getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius,null);
+            getRadiantRooms(location,radiant,openOnly,areaOnly,noEmptyGrids,noAir,noWater,destRoom,maxRadius,null);
             if(!radiant.contains(location))
                 radiant.insertElementAt(location,0);
         }
@@ -145,7 +145,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         if(destRooms.size()>1)
         {
         	radiant=new Vector();
-            getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,null,maxRadius,null);
+            getRadiantRooms(location,radiant,openOnly,areaOnly,noEmptyGrids,noAir,noWater,null,maxRadius,null);
         }
         for(int i=0;(i<5)&&(destRooms.size()>0);i++)
         {

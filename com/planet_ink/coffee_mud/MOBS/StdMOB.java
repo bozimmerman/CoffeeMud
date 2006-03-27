@@ -110,6 +110,7 @@ public class StdMOB implements MOB
     protected long peaceTime=0;
     protected boolean amDestroyed=false;
     protected boolean kickFlag=false;
+    protected boolean imMobile=false;
     
     public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
@@ -649,7 +650,11 @@ public class StdMOB implements MOB
 		kickFlag=true;
 		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
+		{
+			imMobile=true;
 			tick(this,Tickable.TICKID_MOB); // slap on the butt
+			imMobile=false;
+		}
 	}
 	
 	public void bringToLife(Room newLocation, boolean resetStats)
@@ -681,8 +686,6 @@ public class StdMOB implements MOB
 		// will ensure no duplicate ticks, this obj, this id
 		kickFlag=true;
 		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
-		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,Tickable.TICKID_MOB); // slap on the butt
 
         Ability A=null;
 		for(int a=0;a<numLearnedAbilities();a++)
@@ -692,12 +695,10 @@ public class StdMOB implements MOB
 		}
         if(location()==null)
         {
+        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed!");
             destroy();
             return;
         }
-		location().recoverRoomStats();
-		if((!isGeneric())&&(resetStats))
-			resetToMaxState();
 		Faction F=null;
 		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
@@ -705,6 +706,22 @@ public class StdMOB implements MOB
 		    if((!F.hasFaction(this))&&(F.findAutoDefault(this)!=Integer.MAX_VALUE))
 		        addFaction(F.factionID(),F.findAutoDefault(this));
 		}
+		if(tickStatus==Tickable.STATUS_NOT)
+		{
+			imMobile=true;
+			tick(this,Tickable.TICKID_MOB); // slap on the butt
+			imMobile=false;
+		}
+        if(location()==null)
+        {
+        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed!");
+            destroy();
+            return;
+        }
+		
+		location().recoverRoomStats();
+		if((!isGeneric())&&(resetStats))
+			resetToMaxState();
 		    
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");
@@ -1542,7 +1559,7 @@ public class StdMOB implements MOB
 						&&(msg.sourceMinor()!=CMMsg.TYP_THROW))
 							return false;
 					}
-					if(!CMLib.flags().canMove(this))
+					if((!CMLib.flags().canMove(this))||(imMobile))
 					{
 						tell("You can't move!");
 						return false;

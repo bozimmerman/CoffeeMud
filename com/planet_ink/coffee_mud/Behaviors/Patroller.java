@@ -199,7 +199,6 @@ public class Patroller extends ActiveTicker
 			    return true;
 			}
 
-			
 		    tickStatus=Tickable.STATUS_MISC+3;
 			int direction=Directions.getGoodDirectionCode(nxt);
 			if(direction<0)
@@ -231,7 +230,7 @@ public class Patroller extends ActiveTicker
 			Room destinationRoomForThisStep=thatRoom;
 
 		    tickStatus=Tickable.STATUS_MISC+5;
-			if((direction<0)||(thatRoom==null))
+			if((direction<0)||(destinationRoomForThisStep==null))
 			{
 			    Room R=CMLib.map().getRoom(nxt);
 			    if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+nxt);
@@ -280,13 +279,13 @@ public class Patroller extends ActiveTicker
 					if((direction<0)||(thatRoom==null))
 			        {
 			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,
-                                    			                    	CMParms.makeVector(R),
-                                    			                    	ticking instanceof Item,
-                                    			                    	false,
-                                    			                    	true,
-                                    			                    	!airOk,
-                                    			                    	!waterOk,
-                                    			                    	diameter);
+                                    			                    	  CMParms.makeVector(R),
+                                    			                    	  ticking instanceof Item,
+                                    			                    	  false,
+                                    			                    	  true,
+                                    			                    	  !airOk,
+                                    			                    	  !waterOk,
+                                    			                    	  diameter);
 					    tickStatus=Tickable.STATUS_MISC+9;
 			            if(correction!=null)
 				            direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);

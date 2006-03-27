@@ -117,6 +117,18 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			displayTexts.addElement(newDisplayText);
 	}
 
+	public Room prepareRoomInDir(Room fromRoom, int direction)
+	{
+		if(amDestroyed)
+		{
+			Room R=CMLib.map().getRoom(roomID());
+			if(R!=null)
+				return R.prepareRoomInDir(fromRoom,direction);
+			return super.prepareRoomInDir(fromRoom,direction);
+		}
+		return getAltRoomFrom(fromRoom,direction);
+	}
+	
 	private int properRoomIndex(int x, int y)
 	{
         if(rooms.size()==0) return 0;
@@ -170,8 +182,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				rooms.insertElementAt(pos+1,R,new Integer(x),new Integer(y));
 		}
 	}
-	
-	
 	
     private Room getSortedRoom(int x,int y)
     {
@@ -685,9 +695,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	public Room getGridChild(String childCode)
 	{
-		if(childCode.equals(roomID()))
+		if(childCode.equalsIgnoreCase(roomID()))
 			return this;
-		if(!childCode.startsWith(roomID()+"#("))
+		if(!childCode.toUpperCase().startsWith(roomID().toUpperCase()+"#("))
 			return null;
 		int len=roomID().length()+2;
 		int comma=childCode.indexOf(',',len);

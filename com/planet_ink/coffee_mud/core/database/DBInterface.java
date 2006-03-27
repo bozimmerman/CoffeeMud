@@ -95,7 +95,7 @@ public class DBInterface implements DatabaseEngine
     {RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
     
 	public void DBReadContent(Room thisRoom, Vector rooms)
-	{RoomLoader.DBReadContent(thisRoom, rooms,false);}
+	{RoomLoader.DBReadContent(thisRoom, rooms,null,false);}
 
     public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
     {return RoomLoader.DBReadAreaRoomList(areaName,reportStatus);}

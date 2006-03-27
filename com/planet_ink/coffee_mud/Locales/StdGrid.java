@@ -93,11 +93,18 @@ public class StdGrid extends StdRoom implements GridLocale
 	
 	public Room prepareRoomInDir(Room fromRoom, int direction)
 	{
-		if(amDestroyed) 
+		if(amDestroyed)
+		{
+			Room R=CMLib.map().getRoom(roomID());
+			if(R!=null)
+				return R.prepareRoomInDir(fromRoom,direction);
 			return super.prepareRoomInDir(fromRoom,direction);
+		}
 		return getAltRoomFrom(fromRoom,direction);
 	}
-	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction){ return toRoom;}
+	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction){ 
+		return toRoom;
+	}
 	
 	public void setDescription(String newDescription)
 	{
@@ -694,9 +701,9 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 	public Room getGridChild(String childCode)
 	{
-		if(childCode.equals(roomID()))
+		if(childCode.equalsIgnoreCase(roomID()))
 			return this;
-		if(!childCode.startsWith(roomID()+"#("))
+		if(!childCode.toUpperCase().startsWith(roomID().toUpperCase()+"#("))
 			return null;
 		int len=roomID().length()+2;
 		int comma=childCode.indexOf(',',len);

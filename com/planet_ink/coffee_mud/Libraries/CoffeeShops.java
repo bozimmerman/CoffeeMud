@@ -208,15 +208,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return price;
     }
     
-    public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part)
+    public double prejudiceValueFromPart(MOB customer, boolean pawnTo, String part)
     {
         int x=part.indexOf("=");
         if(x<0) return 0.0;
         String sellorby=part.substring(0,x);
         part=part.substring(x+1);
-        if(sellTo&&(!sellorby.trim().equalsIgnoreCase("SELL")))
+        if(pawnTo&&(!sellorby.trim().equalsIgnoreCase("SELL")))
            return 0.0;
-        if((!sellTo)&&(!sellorby.trim().equalsIgnoreCase("BUY")))
+        if((!pawnTo)&&(!sellorby.trim().equalsIgnoreCase("BUY")))
            return 0.0;
         if(part.trim().indexOf(" ")<0)
             return CMath.s_double(part.trim());
@@ -250,7 +250,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     }
     
-    public double prejudiceFactor(MOB customer, String factors, boolean sellTo)
+    public double prejudiceFactor(MOB customer, String factors, boolean pawnTo)
     {
         factors=factors.toUpperCase();
         if(factors.length()==0) 
@@ -270,11 +270,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         {
             String part=factors.substring(0,x).trim();
             factors=factors.substring(x+1).trim();
-            double d=prejudiceValueFromPart(customer,sellTo,part);
+            double d=prejudiceValueFromPart(customer,pawnTo,part);
             if(d!=0.0) return d;
             x=factors.indexOf(";");
         }
-        double d=prejudiceValueFromPart(customer,sellTo,factors.trim());
+        double d=prejudiceValueFromPart(customer,pawnTo,factors.trim());
         if(d!=0.0) return d;
         return 1.0;
     }
