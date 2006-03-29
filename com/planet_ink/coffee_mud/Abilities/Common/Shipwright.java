@@ -53,11 +53,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CONTAINMASK=8;
 	protected static final int RCP_SPELL=9;
 
-
-	protected Item building=null;
 	protected Item key=null;
-	protected boolean mending=false;
-	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

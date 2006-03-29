@@ -55,10 +55,6 @@ public class Fletching extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_EXTRAREQ=10;
 	protected static final int RCP_SPELL=11;
 
-	protected Item building=null;
-	protected boolean messedUp=false;
-	protected boolean mending=false;
-
     protected Vector loadRecipes(){return super.loadRecipes("fletching.txt");}
 
 	public void unInvoke()

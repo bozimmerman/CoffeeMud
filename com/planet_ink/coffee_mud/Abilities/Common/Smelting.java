@@ -51,9 +51,6 @@ public class Smelting extends CraftingSkill
 	protected static final int RCP_METALONE=6;
 	protected static final int RCP_METALTWO=7;
 
-	protected Item building=null;
-	protected Item fire=null;
-	protected boolean messedUp=false;
 	protected int amountMaking=0;
 
 	public boolean tick(Tickable ticking, int tickID)

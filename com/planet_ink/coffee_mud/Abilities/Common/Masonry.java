@@ -78,7 +78,6 @@ public class Masonry extends CraftingSkill
 	protected Room room=null;
 	protected int dir=-1;
 	protected int doingCode=-1;
-	protected boolean messedUp=false;
 	protected int workingOn=-1;
 	protected String designTitle="";
 	protected String designDescription="";

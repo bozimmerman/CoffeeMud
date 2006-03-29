@@ -43,9 +43,7 @@ public class LockSmith extends CraftingSkill
     public String supportedResourceString(){return "METAL|MITHRIL";}
 
     private String keyCode="";
-	protected Item building=null;
 	protected Environmental workingOn=null;
-	protected boolean messedUp=false;
 	protected boolean boltlock=false;
     private boolean delock=false;
 

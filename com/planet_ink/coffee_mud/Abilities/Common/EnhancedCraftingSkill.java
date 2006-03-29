@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-import java.util.*;
 
+import java.util.*;
 
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -33,29 +33,16 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Distilling extends Cooking
+public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Distilling"; }
-	public String name(){ return "Distilling";}
-	private static final String[] triggerStrings = {"DISTILLING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "distill";};
-	public String cookWord(){return "distilling";};
-	public boolean honorHerbs(){return false;}
-    public String supportedResourceString(){return "MISC";}
-    protected String defaultFoodSound="hotspring.wav";
-    protected String defaultDrinkSound="hotspring.wav";
+	public String ID() { return "EnhancedCraftingSkill"; }
+	public String name(){ return "Enhanced Crafting Skill";}
 
-    protected Vector loadRecipes(){return super.loadRecipes("liquors.txt");}
-    
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
-    {
-        if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(building==null))
-            return false;
-        Ability A2=building.fetchEffect(0);
-        if((A2!=null)
-        &&(building instanceof Drink))
-            ((Drink)building).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-        return true;
-    }
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	{
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		
+		return true;
+	}
 }

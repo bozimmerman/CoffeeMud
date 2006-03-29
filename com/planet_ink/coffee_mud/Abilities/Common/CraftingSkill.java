@@ -39,6 +39,12 @@ public class CraftingSkill extends GatheringSkill
 	public String name(){ return "Crafting Skill";}
 	public long flags(){return FLAG_CRAFTING;}
     public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
+	protected Item building=null;
+	protected Item fire=null;
+	protected boolean fireRequired=true;
+	protected boolean mending=false;
+	protected boolean refitting=false;
+	protected boolean messedUp=false;
 
 	protected String replacePercent(String thisStr, String withThis)
 	{

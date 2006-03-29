@@ -54,9 +54,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-	protected Item building=null;
 	protected Item key=null;
-	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

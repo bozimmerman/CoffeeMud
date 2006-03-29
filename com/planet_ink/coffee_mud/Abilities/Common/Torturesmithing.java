@@ -54,9 +54,6 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_MATERIAL=9;
 	protected static final int RCP_SPELL=10;
 
-	protected Item building=null;
-	protected boolean messedUp=false;
-
     protected Vector loadRecipes(){return super.loadRecipes("torturesmith.txt");}
 
 	public void unInvoke()

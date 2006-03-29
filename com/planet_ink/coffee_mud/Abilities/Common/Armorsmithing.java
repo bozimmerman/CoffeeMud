@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Armorsmithing extends CraftingSkill implements ItemCraftor
+public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Armorsmithing"; }
 	public String name(){ return "Armorsmithing";}
@@ -54,11 +54,6 @@ public class Armorsmithing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=10;
 
 
-	protected Item building=null;
-	protected Item fire=null;
-	protected boolean mending=false;
-	protected boolean refitting=false;
-	protected boolean messedUp=false;
 	protected String primeMaterialDesc(){return "metal";}
 
 	public boolean tick(Tickable ticking, int tickID)

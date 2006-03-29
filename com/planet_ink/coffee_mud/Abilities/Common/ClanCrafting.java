@@ -57,10 +57,6 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=13;
 	protected static final int RCP_REQUIREDSKILL=14;
 
-
-	protected Item building=null;
-	protected boolean messedUp=false;
-
     protected Vector loadRecipes(){return super.loadRecipes("clancraft.txt");}
 
 	public void unInvoke()

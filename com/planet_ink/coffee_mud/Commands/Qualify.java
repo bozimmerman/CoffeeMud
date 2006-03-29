@@ -191,7 +191,7 @@ public class Qualify extends BaseAbleLister
 			||(qual.equalsIgnoreCase("EDUCATIONS"))))
 		{
 			Vector V=CMLib.edu().myQualifiedEducations(mob);
-			for(int v=V.size();v>=0;v--)
+			for(int v=V.size()-1;v>=0;v--)
 				if(mob.fetchEducation(((EducationLibrary.EducationDefinition)V.elementAt(v)).ID)!=null)
 					V.removeElementAt(v);
 			if(V.size()>0)

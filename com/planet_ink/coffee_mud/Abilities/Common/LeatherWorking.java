@@ -54,12 +54,6 @@ public class LeatherWorking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-
-	protected Item building=null;
-	protected boolean mending=false;
-	protected boolean refitting=false;
-	protected boolean messedUp=false;
-
 	protected Vector loadRecipes()
 	{
         String filename="leatherworking.txt";

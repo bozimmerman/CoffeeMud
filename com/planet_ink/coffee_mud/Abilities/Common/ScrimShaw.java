@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class ScrimShaw extends CraftingSkill implements ItemCraftor
+public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "ScrimShaw"; }
 	public String name(){ return "Scrimshawing";}
@@ -52,11 +52,8 @@ public class ScrimShaw extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
 
-	protected Item building=null;
 	protected Item key=null;
-	protected boolean mending=false;
-	protected boolean messedUp=false;
-
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

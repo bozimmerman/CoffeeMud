@@ -42,12 +42,8 @@ public class Alchemy extends CraftingSkill
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
     public String supportedResourceString(){return "MISC";}
 
-	protected boolean requiresFire=false;
-	protected Item building=null;
-	protected Item fire=null;
 	String oldName="";
     protected Ability theSpell=null;
-	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -55,7 +51,7 @@ public class Alchemy extends CraftingSkill
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||((requiresFire)&&((fire==null)
+			||((fireRequired)&&((fire==null)
 								||(!CMLib.flags().isOnFire(fire))
 								||(!mob.location().isContent(fire))
 								||(mob.isMine(fire))))
@@ -230,14 +226,14 @@ public class Alchemy extends CraftingSkill
 			int experienceToLose=10;
 			if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			{
-				requiresFire=false;
+				fireRequired=false;
 				fire=null;
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 			else
 			{
-				requiresFire=true;
+				fireRequired=true;
 				fire=getRequiredFire(mob,0);
 				if(fire==null) return false;
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;

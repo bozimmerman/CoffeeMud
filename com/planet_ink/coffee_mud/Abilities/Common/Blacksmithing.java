@@ -52,11 +52,6 @@ public class Blacksmithing extends CraftingSkill implements ItemCraftor
 	//protected static final int RCP_ARMORDMG=8;
 	protected static final int RCP_SPELL=9;
 
-	protected Item building=null;
-	protected Item fire=null;
-	protected boolean fireRequired=true;
-	protected boolean messedUp=false;
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

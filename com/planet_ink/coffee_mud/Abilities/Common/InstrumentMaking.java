@@ -53,9 +53,6 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_RACES=8;
 	protected static final int RCP_TYPE=9;
 
-	protected Item building=null;
-	protected boolean messedUp=false;
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

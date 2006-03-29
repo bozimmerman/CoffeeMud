@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class MasterLeatherWorking extends CraftingSkill implements ItemCraftor
+public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "MasterLeatherWorking"; }
 	public String name(){ return "Master Leather Working";}
@@ -53,12 +53,6 @@ public class MasterLeatherWorking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_ARMORDMG=8;
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
-
-
-	protected Item building=null;
-	protected boolean mending=false;
-	protected boolean refitting=false;
-	protected boolean messedUp=false;
 
     protected Vector loadRecipes(){return super.loadRecipes("masterleatherworking.txt");}
 

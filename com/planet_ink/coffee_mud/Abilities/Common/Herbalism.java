@@ -42,10 +42,8 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
-	protected Item building=null;
 	String oldName="";
 	private Ability theSpell=null;
-	protected boolean messedUp=false;
 	private static final Hashtable usage=new Hashtable();
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Tailoring extends CraftingSkill implements ItemCraftor
+public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Tailoring"; }
 	public String name(){ return "Tailoring";}
@@ -53,11 +53,6 @@ public class Tailoring extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_ARMORDMG=8;
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
-
-	protected Item building=null;
-	protected boolean mending=false;
-	protected boolean refitting=false;
-	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

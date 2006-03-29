@@ -54,13 +54,7 @@ public class JewelMaking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_EXTRAREQ=9;
 	protected static final int RCP_SPELL=10;
 
-	protected Item building=null;
-	protected Item fire=null;
-	protected boolean messedUp=false;
 	protected Vector beingDone=null;
-	protected boolean mending=false;
-	protected boolean refitting=false;
-	protected boolean fireRequired=true;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

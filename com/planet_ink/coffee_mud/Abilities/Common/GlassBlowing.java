@@ -52,10 +52,6 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
 
-	protected Item building=null;
-	protected Item fire=null;
-	protected boolean messedUp=false;
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

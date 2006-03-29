@@ -39,9 +39,7 @@ public class Taxidermy extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BODIES";}
 
-	protected Item found=null;
 	protected String foundShortName="";
-	protected boolean messedUp=false;
 
 	public Taxidermy()
 	{
@@ -57,12 +55,12 @@ public class Taxidermy extends CraftingSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
 						commonTell(mob,"You've messed up stuffing "+foundShortName+"!");
 					else
-						mob.location().addItemRefuse(found,Item.REFUSE_PLAYER_DROP);
+						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
 			}
 		}
@@ -170,43 +168,43 @@ public class Taxidermy extends CraftingSkill
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 
-		found=null;
+		building=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
 		messedUp=!profficiencyCheck(mob,0,auto);
-		if(found!=null)	foundShortName=I.Name();
+		if(building!=null)	foundShortName=I.Name();
 		int duration=15+(woodRequired/3)-mob.envStats().level();
 		if(duration>65) duration=65;
 		if(duration<10) duration=10;
-		found=CMClass.getItem("GenItem");
-		found.baseEnvStats().setWeight(woodRequired);
+		building=CMClass.getItem("GenItem");
+		building.baseEnvStats().setWeight(woodRequired);
 		String name=((DeadBody)I).mobName();
 		String desc=((DeadBody)I).mobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
-		found.setName("the stuffed body of "+name);
+		building.setName("the stuffed body of "+name);
 		CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
 		if((pose==null)||(C==null))
-			found.setDisplayText("the stuffed body of "+name+" stands here");
+			building.setDisplayText("the stuffed body of "+name+" stands here");
 		else
 		{
-			pose=CMStrings.replaceAll(pose,"<S-NAME>",found.name());
+			pose=CMStrings.replaceAll(pose,"<S-NAME>",building.name());
 			pose=CMStrings.replaceAll(pose,"<S-HIS-HER>",C.hisher());
 			pose=CMStrings.replaceAll(pose,"<S-HIM-HER>",C.himher());
 			pose=CMStrings.replaceAll(pose,"<S-HIM-HERSELF>",C.himher()+"self");
-			found.setDisplayText(pose);
+			building.setDisplayText(pose);
 		}
-		found.setDescription(desc);
-		found.setSecretIdentity("This is the work of "+mob.Name()+".");
-		found.recoverEnvStats();
+		building.setDescription(desc);
+		building.setSecretIdentity("This is the work of "+mob.Name()+".");
+		building.recoverEnvStats();
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
         playSound="scissor.wav";
-		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			found=(Item)msg.target();
+			building=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
         I.destroy();

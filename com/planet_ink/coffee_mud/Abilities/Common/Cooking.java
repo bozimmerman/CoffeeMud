@@ -53,12 +53,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public static int RCP_MAINAMNT=5;
 
 	protected Container cooking=null;
-    protected Item fire=null;
-    protected Item finalDish=null;
     protected String finalDishName=null;
     protected int finalAmount=0;
     protected Vector finalRecipe=null;
-    protected boolean burnt=false;
     protected Hashtable oldContents=null;
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
@@ -102,7 +99,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			MOB mob=(MOB)affected;
 			if((cooking==null)
 			||(requireFire()&&(fire==null))
-			||(finalDish==null)
+			||(building==null)
 			||(finalRecipe==null)
 			||(finalAmount<=0)
 			||(!isMineForCooking(mob,cooking))
@@ -134,17 +131,17 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if((cooking!=null)&&(!aborted)&&(finalRecipe!=null)&&(finalDish!=null))
+				if((cooking!=null)&&(!aborted)&&(finalRecipe!=null)&&(building!=null))
 				{
 					Vector V=cooking.getContents();
 					for(int v=0;v<V.size();v++)
 						((Item)V.elementAt(v)).destroy();
-					if((cooking instanceof Drink)&&(finalDish instanceof Drink))
+					if((cooking instanceof Drink)&&(building instanceof Drink))
 						((Drink)cooking).setLiquidRemaining(0);
 					for(int i=0;i<finalAmount*(abilityCode());i++)
 					{
-						Item food=((Item)finalDish.copyOf());
-						food.setMiscText(finalDish.text());
+						Item food=((Item)building.copyOf());
+						food.setMiscText(building.text());
 						food.recoverEnvStats();
 						if(cooking.owner() instanceof Room)
 							((Room)cooking.owner()).addItemRefuse(food,Item.REFUSE_PLAYER_DROP);
@@ -368,9 +365,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		fire=null;
 		finalRecipe=null;
 		finalAmount=0;
-		finalDish=null;
+		building=null;
 		finalDishName=null;
-		burnt=false;
+		messedUp=false;
 		oldContents=null;
 		Vector allRecipes=addRecipes(mob,loadRecipes());
 		int autoGenerate=0;
@@ -458,7 +455,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(fire==null) return false;
 		}
 
-		burnt=!profficiencyCheck(mob,0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
 		cooking=(Container)target;
@@ -604,14 +601,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		finalDishName=replacePercent((String)finalRecipe.elementAt(RCP_FINALFOOD),Character.toUpperCase(replaceName.charAt(0))+replaceName.substring(1).toLowerCase());
 		if(foodType.equalsIgnoreCase("FOOD"))
 		{
-			finalDish=CMClass.getItem("GenFood");
-			Food food=(Food)finalDish;
-			finalDish.setName(((burnt)?"burnt ":"")+finalDishName);
-			finalDish.setDisplayText("some "+((burnt)?"burnt ":"")+finalDishName+" has been left here");
-			finalDish.setDescription("It looks "+((burnt)?"burnt!":"good!"));
-			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
+			building=CMClass.getItem("GenFood");
+			Food food=(Food)building;
+			building.setName(((messedUp)?"burnt ":"")+finalDishName);
+			building.setDisplayText("some "+((messedUp)?"burnt ":"")+finalDishName+" has been left here");
+			building.setDescription("It looks "+((messedUp)?"burnt!":"good!"));
+			building.setSecretIdentity("This was prepared by "+mob.Name()+".");
 			food.setNourishment(0);
-			if(!burnt)
+			if(!messedUp)
 			{
 				boolean timesTwo=false;
 				for(int v=0;v<contents.size();v++)
@@ -640,14 +637,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		else
 		if(foodType.equalsIgnoreCase("DRINK"))
 		{
-			finalDish=CMClass.getItem("GenLiquidResource");
-			finalDish.setMiscText(cooking.text());
-			finalDish.recoverEnvStats();
-			finalDish.setName(((burnt)?"spoiled ":"")+finalDishName);
-			finalDish.setDisplayText("some "+((burnt)?"spoiled ":"")+finalDishName+" has been left here.");
-			finalDish.setDescription("It looks "+((burnt)?"spoiled!":"good!"));
-			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
-			Drink drink=(Drink)finalDish;
+			building=CMClass.getItem("GenLiquidResource");
+			building.setMiscText(cooking.text());
+			building.recoverEnvStats();
+			building.setName(((messedUp)?"spoiled ":"")+finalDishName);
+			building.setDisplayText("some "+((messedUp)?"spoiled ":"")+finalDishName+" has been left here.");
+			building.setDescription("It looks "+((messedUp)?"spoiled!":"good!"));
+			building.setSecretIdentity("This was prepared by "+mob.Name()+".");
+			Drink drink=(Drink)building;
 			for(int v=0;v<contents.size();v++)
 			{
 				Item I=(Item)contents.elementAt(v);
@@ -667,19 +664,19 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setThirstQuenched(1);
 			}
 			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
-			if(burnt)drink.setThirstQuenched(1);
+			if(messedUp)drink.setThirstQuenched(1);
             playSound=defaultDrinkSound;
 		}
 		else
 		if(CMClass.getItem(foodType)!=null)
 		{
-			finalDish=CMClass.getItem(foodType);
-			finalDish.setName(((burnt)?"ruined ":"")+finalDishName);
-			finalDish.setDisplayText("some "+((burnt)?"ruined ":"")+finalDishName+" has been left here");
-			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
-			if(finalDish instanceof Drink)
+			building=CMClass.getItem(foodType);
+			building.setName(((messedUp)?"ruined ":"")+finalDishName);
+			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
+			building.setSecretIdentity("This was prepared by "+mob.Name()+".");
+			if(building instanceof Drink)
 			{
-				Drink drink=(Drink)finalDish;
+				Drink drink=(Drink)building;
 				int rem=drink.liquidHeld();
 				drink.setLiquidRemaining(0);
 				for(int v=0;v<contents.size();v++)
@@ -688,7 +685,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
 					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
 				}
-				if((drink.liquidRemaining()>0)&&(!burnt))
+				if((drink.liquidRemaining()>0)&&(!messedUp))
 					drink.setLiquidHeld(drink.liquidRemaining());
 				else
 				{
@@ -696,42 +693,42 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					drink.setLiquidRemaining(1);
 					drink.setThirstQuenched(1);
 				}
-				finalDish.setMaterial(drink.liquidType());
+				building.setMaterial(drink.liquidType());
 			}
-			finalDish.baseEnvStats().setWeight(finalDish.baseEnvStats().weight()/finalAmount);
+			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}
 		else
 		{
-			finalDish=CMClass.getItem("GenResource");
-			if(burnt)
-				finalDish.setMaterial(RawMaterial.RESOURCE_DUST);
+			building=CMClass.getItem("GenResource");
+			if(messedUp)
+				building.setMaterial(RawMaterial.RESOURCE_DUST);
 			else
 			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
 				{
-					finalDish.setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
+					building.setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
 					break;
 				}
-			finalDish.setName(((burnt)?"ruined ":"")+finalDishName);
-			finalDish.setDisplayText("some "+((burnt)?"ruined ":"")+finalDishName+" has been left here");
-			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
-			finalDish.baseEnvStats().setWeight(finalDish.baseEnvStats().weight()/finalAmount);
+			building.setName(((messedUp)?"ruined ":"")+finalDishName);
+			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
+			building.setSecretIdentity("This was prepared by "+mob.Name()+".");
+			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}
 		
-		if(finalDish!=null)
+		if(building!=null)
 		{
 			String spell=(String)finalRecipe.elementAt(RCP_BONUSSPELL);
 			if((spell!=null)&&(spell.length()>0))
 			{
-				if(finalDish instanceof Perfume)
-					((Perfume)finalDish).setSmellList(spell);
+				if(building instanceof Perfume)
+					((Perfume)building).setSmellList(spell);
 				else
-					addSpells(finalDish,spell);
+					addSpells(building,spell);
 			}
-			finalDish.recoverEnvStats();
-			finalDish.text();
+			building.recoverEnvStats();
+			building.text();
 		}
 		//***********************************************
 		//* done figuring out recipe

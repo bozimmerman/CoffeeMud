@@ -58,11 +58,6 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_EXTRAREQ=12;
 	protected static final int RCP_SPELL=13;
 
-	protected Item building=null;
-	protected Item fire=null;
-	protected boolean mending=false;
-	protected boolean messedUp=false;
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
