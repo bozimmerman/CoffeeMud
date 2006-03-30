@@ -38,13 +38,15 @@ public class ColumbiaUniv extends StdLibrary implements EducationLibrary
 								
 	public Hashtable completeEduMap=new Hashtable();
 
-    public void addDefinition(String ID, String name, String mask, int practices, int trains, int qpCost, int expCost, int timeCost){
+    public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost){
     	if(getDefinition(ID)!=null) return;
     	EducationDefinition def=new EducationDefinition();
     	def.ID=ID.toUpperCase();
     	def.name=name;
-    	def.uncompiledMask=mask!=null?mask.trim():"";
-    	if(mask.trim().length()>0) def.compiledMask=CMLib.masking().maskCompile(mask);
+    	def.uncompiledFinalMask=listMask!=null?listMask.trim():"";
+    	if(listMask.trim().length()>0) def.compiledListMask=CMLib.masking().maskCompile(listMask);
+    	def.uncompiledListMask=finalMask!=null?finalMask.trim():"";
+    	if(finalMask.trim().length()>0) def.compiledFinalMask=CMLib.masking().maskCompile(finalMask);
     	def.practiceCost=practices;
     	def.trainCost=trains;
     	def.qpCost=qpCost;
@@ -65,7 +67,20 @@ public class ColumbiaUniv extends StdLibrary implements EducationLibrary
     	for(Enumeration e=definitions();e.hasMoreElements();)
     	{
     		D=(EducationDefinition)e.nextElement();
-    		if((D.compiledMask==null)||(CMLib.masking().maskCheck(D.compiledMask,mob)))
+    		if(((D.compiledFinalMask==null)||(CMLib.masking().maskCheck(D.compiledFinalMask,mob)))
+    		&&((D.compiledListMask==null)||(CMLib.masking().maskCheck(D.compiledListMask,mob))))
+    			V.addElement(D);
+    	}
+    	return V;
+    }
+    public Vector myListableEducations(MOB mob)
+    {
+    	EducationDefinition D=null;
+    	Vector V=new Vector();
+    	for(Enumeration e=definitions();e.hasMoreElements();)
+    	{
+    		D=(EducationDefinition)e.nextElement();
+    		if((D.compiledListMask==null)||(CMLib.masking().maskCheck(D.compiledListMask,mob)))
     			V.addElement(D);
     	}
     	return V;

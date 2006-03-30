@@ -35,18 +35,30 @@ public interface EducationLibrary extends CMObject
     {
         public String ID="";
         public String name="";
-        public String uncompiledMask=null;
-        public Vector compiledMask=null;
+        public String uncompiledListMask=null;
+        public Vector compiledListMask=null;
+        public String uncompiledFinalMask=null;
+        public Vector compiledFinalMask=null;
         public int practiceCost=0;
         public int trainCost=0;
         public int expCost=0;
         public int qpCost=0;
         public int timeCost=0;
+        public String costDescription(){
+        	StringBuffer cost=new StringBuffer("");
+        	if(practiceCost>0) cost.append(practiceCost+" practices, ");
+        	if(trainCost>0) cost.append(trainCost+" training sessions, ");
+        	if(expCost>0) cost.append(expCost+" experience points, ");
+        	if(qpCost>0) cost.append(qpCost+" quest points, ");
+        	if(cost.length()==0) return "";
+        	return cost.substring(0,cost.length()-2);
+        }
     }
     
-    public void addDefinition(String ID, String name, String mask, int practices, int trains, int qpCost, int expCost, int timeCost);
+    public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost);
     public void delDefinition(String ID);
     public EducationDefinition getDefinition(String ID);
     public Enumeration definitions();
     public Vector myQualifiedEducations(MOB mob);
+    public Vector myListableEducations(MOB mob);
 }

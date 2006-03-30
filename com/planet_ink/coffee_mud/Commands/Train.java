@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
@@ -82,6 +82,7 @@ public class Train extends StdCommand
         else
             abilityCode=-1;
 		CharClass theClass=null;
+		EducationLibrary.EducationDefinition theEducation=null;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(abilityCode<0))
 		{
@@ -126,12 +127,48 @@ public class Train extends StdCommand
 				abilityCode=105;
 			else
 			{
-				mob.tell("You can't train for '"+abilityName+"'. Try "+thingsToTrainFor.toString()+"HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.");
-				return false;
+				Vector V=CMLib.edu().myListableEducations(mob);
+				for(int v=V.size()-1;v>=0;v--)
+					if(mob.fetchEducation(((EducationLibrary.EducationDefinition)V.elementAt(v)).ID)!=null)
+						V.removeElementAt(v);
+				for(int v=0;v<V.size();v++)
+				{
+					EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)V.elementAt(v);
+					thingsToTrainFor.append(def.name+", ");
+					if((def.name.equalsIgnoreCase(abilityName))
+					&&(theEducation==null))
+						theEducation=def;
+				}
+				if(theEducation!=null)
+				{
+					if(!CMLib.edu().myQualifiedEducations(mob).contains(theEducation))
+					{
+						mob.tell("You do not yet fully qualify for that education.\n\rQualifications:"+CMLib.masking().maskDesc(theEducation.uncompiledFinalMask));
+						return false;
+					}
+					abilityCode=107;
+				}
+				if(abilityCode<0)
+				{
+					mob.tell("You can't train for '"+abilityName+"'. Try "+thingsToTrainFor.toString()+"HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.");
+					return false;
+				}
 			}
 		}
 		commands.removeElementAt(0);
 
+		if(abilityCode==107)
+		{
+			if(((theEducation.trainCost>0)&&(mob.getTrains()<theEducation.trainCost))
+			||((theEducation.practiceCost>0)&&(mob.getPractices()<theEducation.practiceCost))
+			||((theEducation.expCost>0)&&(mob.getExperience()<theEducation.expCost))
+			||((theEducation.qpCost>0)&&(mob.getQuestPoint()<theEducation.qpCost)))
+			{
+				mob.tell("Training for that education requires "+theEducation.costDescription()+".");
+				return false;
+			}
+		}
+		else
 		if(abilityCode==104)
 		{
 			if(mob.getPractices()<7)
@@ -247,6 +284,12 @@ public class Train extends StdCommand
             }
 			return false;
 		}
+		
+		if((abilityCode==107)&&(teacher.fetchEducation(theEducation.ID)==null))
+		{
+			mob.tell(mob,teacher,null,"<T-NAME> doesn't appear to know anything about that.");
+			return false;
+		}
 
 		if(abilityCode<100)
 		{
@@ -344,6 +387,16 @@ public class Train extends StdCommand
 			mob.recoverCharStats();
 			mob.charStats().getCurrentClass().startCharacter(mob,false,true);
 			break;
+		case 107:
+		{
+			mob.setPractices(mob.getPractices()-theEducation.practiceCost);
+			mob.setTrains(mob.getTrains()-theEducation.trainCost);
+			mob.setExperience(mob.getExperience()-theEducation.expCost);
+			mob.setQuestPoint(mob.getQuestPoint()-theEducation.qpCost);
+			mob.addEducation(theEducation.ID);
+			mob.tell("You have learned about "+theEducation.name+"!");
+			break;
+		}
 		}
 		return false;
 	}

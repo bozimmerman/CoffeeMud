@@ -190,7 +190,7 @@ public class Qualify extends BaseAbleLister
 			||(qual.equalsIgnoreCase("EDUS"))
 			||(qual.equalsIgnoreCase("EDUCATIONS"))))
 		{
-			Vector V=CMLib.edu().myQualifiedEducations(mob);
+			Vector V=CMLib.edu().myListableEducations(mob);
 			for(int v=V.size()-1;v>=0;v--)
 				if(mob.fetchEducation(((EducationLibrary.EducationDefinition)V.elementAt(v)).ID)!=null)
 					V.removeElementAt(v);
@@ -202,7 +202,7 @@ public class Qualify extends BaseAbleLister
 				{
 					edusFound=true;
 					def=(EducationLibrary.EducationDefinition)V.elementAt(v);
-					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.uncompiledMask,true)+"\n\r");
+					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.uncompiledFinalMask,true)+"\n\r");
 				}
 				msg.append(msg2.toString());
 			}

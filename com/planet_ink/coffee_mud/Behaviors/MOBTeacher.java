@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -37,8 +38,8 @@ public class MOBTeacher extends CombatAbilities
 	protected MOB myMOB=null;
 	protected boolean teachEverything=true;
 	protected boolean noCommon=false;
-
-
+	protected boolean noEducations=false; // doubles as a "done ticking" flag
+	protected int tickDownToKnowledge=4;
 
 	public void startBehavior(Environmental forMe)
 	{
@@ -85,6 +86,39 @@ public class MOBTeacher extends CombatAbilities
 		}
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((tickID==Tickable.TICKID_MOB)
+		&&(!noEducations)
+		&&((--tickDownToKnowledge)==0)
+		&&(ticking instanceof MOB))
+		{
+			noEducations=true;
+			MOB mob=(MOB)ticking;
+			if(teachEverything)
+			{
+				for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+				{
+					EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)e.nextElement();
+					if(mob.fetchEducation(def.ID)==null)
+						mob.addEducation(def.ID);
+				}
+			}
+			else
+			{
+				Vector V=CMLib.edu().myQualifiedEducations(mob);
+				EducationLibrary.EducationDefinition def=null;
+				for(int v=0;v<V.size();v++)
+				{
+					def=(EducationLibrary.EducationDefinition)V.elementAt(v);
+					if(mob.fetchEducation(def.ID)==null)
+						mob.addEducation(def.ID);
+				}
+			}
+		}
+		return super.tick(ticking,tickID);
+	}
+	
 	public void addAbility(MOB mob, Ability A, int pct, Hashtable myAbles)
 	{
 		if(CMLib.dice().rollPercentage()<=pct)
@@ -139,18 +173,17 @@ public class MOBTeacher extends CombatAbilities
 				noCommon=true;
 				V.removeElementAt(v);
 			}
+			if(s.equalsIgnoreCase("NOEDUS")||s.equalsIgnoreCase("NOEDU"))
+			{
+				noEducations=true;
+				V.removeElementAt(v);
+			}
 		}
 
 		if(V!=null)
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
-			if(s.equalsIgnoreCase("NOCOMMON"))
-			{
-				noCommon=true;
-				continue;
-			}
-			else
 			if(s.endsWith("%"))
 			{
 				pct=CMath.s_int(s.substring(0,s.length()-1));
@@ -171,6 +204,15 @@ public class MOBTeacher extends CombatAbilities
 			{
 				addAbility(myMOB,A,pct,myAbles);
 				teachEverything=false;
+			}
+			else
+			{
+				EducationLibrary.EducationDefinition def=CMLib.edu().getDefinition(s);
+				if(def!=null)
+				{
+					myMOB.addEducation(def.ID);
+					teachEverything=false;
+				}
 			}
 		}
 		myMOB.recoverCharStats();
@@ -194,6 +236,8 @@ public class MOBTeacher extends CombatAbilities
 		if(myMOB==null) return;
 		teachEverything=true;
 		noCommon=false;
+		noEducations=false;
+		tickDownToKnowledge=4;
 		ensureCharClass();
 	}
 
