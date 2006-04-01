@@ -777,6 +777,8 @@ public class DefaultSession extends Thread implements Session
                         Command C=CMClass.getCommand("Shutdown");
                         l="";
                         killFlag=true;
+                        out.write("\n\n\033[1z<Executing Shutdown...\n\n");
+                        M.setSession(this);
                         if(C!=null) C.execute(M,cmd);
                     }
                 }

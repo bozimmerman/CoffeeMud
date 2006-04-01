@@ -129,6 +129,23 @@ public class OffLine extends Thread implements MudHost
         {
         }
     }
+
+    public StringBuffer getFile(String fileName)
+    {
+        StringBuffer offLineText=(StringBuffer)Resources.getResource(fileName);
+        if(offLineText==null)
+        {
+        	offLineText=new StringBuffer("");
+        	try{
+	        	FileInputStream fin=new FileInputStream(fileName);
+	        	while(fin.available()>0)
+	        		offLineText.append((char)fin.read());
+	        	Resources.submitResource(fileName,offLineText);
+        	}
+        	catch(Exception e){e.printStackTrace();}
+        }
+        return offLineText;
+    }
     
     public void run()
     {
@@ -155,8 +172,7 @@ public class OffLine extends Thread implements MudHost
 
         try
         {
-            servsock=new ServerSocket(port, q_len, bindAddr);
-
+            servsock=new ServerSocket(port, q_len);
             System.out.println("Off-Line Server started on port: "+port);
             if (bindAddr != null)
                 System.out.println("Off-Line Server bound to: "+bindAddr.toString());
@@ -228,7 +244,8 @@ public class OffLine extends Thread implements MudHost
                     else
                     {
                         state=2;
-                        StringBuffer offLineText=Resources.getFileResource("text"+File.pathSeparator+"down.txt",true);
+                        String fileName="resources"+File.separator+"text"+File.separator+"down.txt";
+                        StringBuffer offLineText=getFile(fileName);
                         try
                         {
                             sock.setSoTimeout(300);
@@ -263,7 +280,8 @@ public class OffLine extends Thread implements MudHost
                 }
                 else
                 {
-                    StringBuffer rejectText=Resources.getFileResource("text"+File.pathSeparator+"offline.txt",true);
+                    String fileName="resources"+File.separator+"text"+File.separator+"offline.txt";
+                    StringBuffer rejectText=getFile(fileName);
                     PrintWriter out = new PrintWriter(sock.getOutputStream());
                     out.flush();
                     out.println(rejectText);
@@ -434,6 +452,7 @@ public class OffLine extends Thread implements MudHost
                     }
                     OffLine mud=new OffLine();
                     mud.acceptConnections=false;
+System.out.println(ports);                    
                     mud.port=CMath.s_int(ports);
                     mud.start();
                     mudThreads.addElement(mud);

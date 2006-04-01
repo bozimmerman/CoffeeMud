@@ -42,7 +42,11 @@ public class Shutdown
             OutputStream rawout=sock.getOutputStream();
             rawout.write((msg.toString()+">\n").getBytes());
             rawout.flush();
-            Thread.sleep(10000);
+            BufferedReader in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            String read="";
+            while(!read.startsWith("\033[1z<"))
+            	read=in.readLine();
+            System.out.println(read.substring("\033[1z<".length()));
         }
         catch(Exception e){e.printStackTrace();}
     }
