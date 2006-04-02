@@ -687,11 +687,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             ((GridLocale)R).clearGrid(null);
         synchronized(myRooms)
         {
-            if(myRooms.contains(R))
-            {
-                myRooms.removeElement(R);
+            if(myRooms.removeElement(R))
                 delProperRoomnumber(R.roomID());
-            }
         }
     }
     
