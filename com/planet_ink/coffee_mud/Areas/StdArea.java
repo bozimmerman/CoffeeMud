@@ -829,11 +829,13 @@ public class StdArea implements Area
         synchronized(properRooms)
         {
         	int insertAt=0;
+    		String roomID=R.roomID();
         	if(properRooms.size()>0)
         	{
 	        	if(R.roomID().length()==0)
 	        	{
-	        		for(int i=0;i<properRooms.size();i++)
+	            	int num=properRooms.size();
+	        		for(int i=0;i<num;i++)
 	        			if(properRooms.elementAt(i)==R) 
 	        				return;
 	        			else
@@ -844,7 +846,7 @@ public class StdArea implements Area
                 	return;
 	        	}
         		insertAt=getProperIndex(R);
-	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(R.roomID());
+	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0) return;
                 addMetroRoom(R);
 				if(comp>0)
@@ -854,12 +856,12 @@ public class StdArea implements Area
 					properRooms.addElement(R);
 				else
 					properRooms.insertElementAt(R,insertAt+1);
-                addProperRoomnumber(R.roomID());
+                addProperRoomnumber(roomID);
         	}
         	else
         	{
         		properRooms.addElement(R);
-                addProperRoomnumber(R.roomID());
+                addProperRoomnumber(roomID);
                 addMetroRoom(R);
         	}
         }
@@ -948,9 +950,8 @@ public class StdArea implements Area
             ((GridLocale)R).clearGrid(null);
         synchronized(properRooms)
         {
-            if(properRooms.contains(R))
+            if(properRooms.removeElement(R))
             {
-                properRooms.removeElement(R);
 	            delMetroRoom(R);
 	            delProperRoomnumber(R.roomID());
             }
