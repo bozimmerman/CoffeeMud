@@ -48,6 +48,12 @@ public class SaltWaterSurface extends WaterSurface
 		if(depth>1000) return;
 		super.giveASky(depth+1);
 		skyedYet=true;
+		
+		if((roomID().length()==0)
+		&&(getGridParent()!=null)
+		&&(getGridParent().roomID().length()==0))
+			return;
+		
 		if((rawDoors()[Directions.DOWN]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -55,8 +61,8 @@ public class SaltWaterSurface extends WaterSurface
 		{
 			Exit o=CMClass.getExit("StdOpenDoorway");
 			GridLocale sea=(GridLocale)CMClass.getLocale(UnderWaterLocaleID());
-			sea.setArea(getArea());
 			sea.setRoomID("");
+			sea.setArea(getArea());
 			rawDoors()[Directions.DOWN]=sea;
 			rawExits()[Directions.DOWN]=o;
 			sea.rawDoors()[Directions.UP]=this;

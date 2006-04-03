@@ -46,7 +46,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)5.1;
-	public static final long  HOST_VERSION_MINOR=1;
+	public static final long  HOST_VERSION_MINOR=2;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
@@ -241,8 +241,8 @@ public class MUD extends Thread implements MudHost
 			String id="START";
 			Area newArea=CMLib.database().DBCreateArea("New Area","StdArea");
 			Room room=CMClass.getLocale("StdRoom");
-			room.setArea(newArea);
 			room.setRoomID(id);
+			room.setArea(newArea);
 			room.setDisplayText("New Room");
 			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
 			RoomLoader.DBCreate(room,"StdRoom");

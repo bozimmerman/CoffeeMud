@@ -168,14 +168,12 @@ public class TrailTo extends StdCommand
 				}
 			}
 		if(R2==null) return "Unable to determine '"+where+"'.";
-System.out.println("*"+CMLib.map().getExtendedRoomID(R2)+"/"+R2);		
 		if(set.size()==0)
 			CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,radius,ignoreRooms);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{
 			Room R=(Room)set.elementAt(i);
-System.out.println("+"+CMLib.map().getExtendedRoomID(R)+"/"+R);		
 			if(R==R2){ foundAt=i; break;}
 		}
 		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";

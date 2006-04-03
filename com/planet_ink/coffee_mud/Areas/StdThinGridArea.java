@@ -76,12 +76,6 @@ public class StdThinGridArea extends StdGridArea
     	return isRoom(R.roomID());
     }
 	public Enumeration getProperMap(){return ((Vector)properRooms.clone()).elements();}
-	public Room getRandomProperRoom() 
-	{ 
-		Room R=getRoom(getProperRoomnumbers().random());
-		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
-		return R;
-	}
 	public Vector getMetroCollection()
 	{
 		int minimum=(properRoomIDSet.roomCountAllAreas()/10);

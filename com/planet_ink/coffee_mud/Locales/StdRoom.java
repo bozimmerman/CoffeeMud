@@ -284,7 +284,13 @@ public class StdRoom implements Room
 	{
 		if(skyedYet) return;
 		if(depth>1000) return;
+		
 		skyedYet=true;
+		if((roomID().length()==0)
+		&&(getGridParent()!=null)
+		&&(getGridParent().roomID().length()==0))
+			return;
+		
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -293,8 +299,8 @@ public class StdRoom implements Room
 		{
 			Exit o=CMClass.getExit("StdOpenDoorway");
 			GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
-			sky.setArea(getArea());
 			sky.setRoomID("");
+			sky.setArea(getArea());
 			rawDoors()[Directions.UP]=sky;
 			rawExits()[Directions.UP]=o;
 			sky.rawDoors()[Directions.DOWN]=this;

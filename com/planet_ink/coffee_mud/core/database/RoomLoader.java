@@ -266,8 +266,8 @@ public class RoomLoader
             			||(CMath.bset(thisRoom.getArea().flags(),Area.FLAG_THIN)))
             			{
             				newRoom=CMClass.getLocale("ThinRoom");
-            				newRoom.setArea(thisRoom.getArea());
             				newRoom.setRoomID(nextRoomID);
+            				newRoom.setArea(thisRoom.getArea());
             			}
             		}
             				

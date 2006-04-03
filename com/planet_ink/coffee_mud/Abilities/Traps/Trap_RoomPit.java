@@ -109,6 +109,7 @@ public class Trap_RoomPit extends StdTrap
 		{
 			Vector V=new Vector();
 			Room myPitUp=CMClass.getLocale("ClimbableSurface");
+			myPitUp.setRoomID("");
 			myPitUp.setArea(target.location().getArea());
 			myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
 			myPitUp.setDisplayText("Inside a dark pit");
@@ -116,6 +117,7 @@ public class Trap_RoomPit extends StdTrap
 			myPitUp.recoverEnvStats();
 
 			Room myPit=CMClass.getLocale("StdRoom");
+			myPit.setRoomID("");
 			myPit.setArea(target.location().getArea());
 			myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
 			myPit.setDisplayText("Inside a dark pit");

@@ -4637,7 +4637,6 @@ public class Import extends StdCommand
 					R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 					R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 				}
-				R.setArea(A);
 				if(R.expirationDate()!=0) R.setExpirationDate(R.expirationDate()+(360000));
 				String codeLine=eatNextLine(roomV);
 				if((!R.roomID().startsWith("#"))
@@ -4650,6 +4649,7 @@ public class Import extends StdCommand
 				}
                 
 				R.setRoomID(areaName+R.roomID());
+				R.setArea(A);
 				int codeBits=getBitMask(codeLine,0);
 				int sectorType=getBitMask(codeLine,1);
 				final String[][] secTypes={

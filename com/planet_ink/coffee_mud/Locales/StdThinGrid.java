@@ -137,13 +137,13 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	        int start=0;
 	        int end=rooms.size()-1;
         	int comp=0;
-        	long total=(xGridSize()*x)+y;
+        	long total=((long)x<<31)+y;
         	long comptotal=0;
         	int mid=0;
 	        while(start<=end)
 	        {
 	            mid=(end+start)/2;
-	            comptotal=(((Integer)rooms.elementAt(mid,2)).intValue()*xGridSize())+((Integer)rooms.elementAt(mid,3)).intValue();
+	            comptotal=(((Integer)rooms.elementAt(mid,2)).longValue()<<31)+((Integer)rooms.elementAt(mid,3)).longValue();
 	            comp=comptotal>total?1:(comptotal==total)?0:-1;
 	            if(comp==0) return mid;
 	            else
@@ -163,14 +163,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())||(R==null)) return ;
 		synchronized(rooms)
 		{
-        	long total=(xGridSize()*x)+y;
+        	long total=((long)x<<31)+y;
 			int pos=properRoomIndex(x,y);
 			if(pos>=rooms.size())
 			{
 				rooms.addElement(R,new Integer(x),new Integer(y));
 				return;
 			}
-            long comptotal=(((Integer)rooms.elementAt(pos,2)).intValue()*xGridSize())+((Integer)rooms.elementAt(pos,3)).intValue();
+            long comptotal=(((Integer)rooms.elementAt(pos,2)).longValue()<<31)+((Integer)rooms.elementAt(pos,3)).longValue();
             int comp=comptotal>total?1:(comptotal==total)?0:-1;
 			if(comp==0) return;
 			if(comp>0)
@@ -224,8 +224,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			R=CMClass.getLocale(getGridChildLocaleID());
 			if(R==null) return null;
 			R.setGridParent(this);
-			R.setArea(getArea());
 			R.setRoomID("");
+			R.setArea(getArea());
 			R.setDisplayText(displayText());
 			R.setDescription(description());
 			int c=-1;

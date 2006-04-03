@@ -71,12 +71,6 @@ public class StdThinArea extends StdArea
     	if(R.roomID().length()==0) return super.isRoom(R);
     	return isRoom(R.roomID());
     }
-	public Room getRandomProperRoom() 
-	{ 
-		Room R=getRoom(getProperRoomnumbers().random());
-		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
-		return R;
-	}
 	public Enumeration getCompleteMap(){return new CompleteRoomEnumerator(this);}
 	public Vector getMetroCollection()
 	{

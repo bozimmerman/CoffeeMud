@@ -832,18 +832,15 @@ public class StdArea implements Area
     		String roomID=R.roomID();
         	if(properRooms.size()>0)
         	{
-	        	if(R.roomID().length()==0)
+	        	if(R.roomID().length()==0) 
 	        	{
-	            	int num=properRooms.size();
-	        		for(int i=0;i<num;i++)
-	        			if(properRooms.elementAt(i)==R) 
-	        				return;
-	        			else
-	        			if(((Room)properRooms.elementAt(i)).roomID().length()>0)
-	        				break;
-	                addMetroRoom(R);
-                	properRooms.insertElementAt(R,0);
-                	return;
+	        		if((R.getGridParent()!=null)
+	        		&&(R.getGridParent().roomID().length()>0))
+	        		{
+	        			addProperRoomnumber(R.getGridParent().getGridChildCode(R));
+	        			addMetroRoom(R);
+	        		}
+	        		return;
 	        	}
         		insertAt=getProperIndex(R);
 	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(roomID);
@@ -871,30 +868,28 @@ public class StdArea implements Area
 	{
 		if(R!=null)
 		{
-			/*synchronized(metroRooms)
-			{
-				if(!metroRooms.contains(R)) 
-					metroRooms.add(R);
-			}/
-			for(int p=getNumParents()-1;p>=0;p--)
-				getParent(p).addMetroRoom(R);
-			*/
-			addMetroRoomnumber(R.roomID());
+        	if(R.roomID().length()==0) 
+        	{
+        		if((R.getGridParent()!=null)
+        		&&(R.getGridParent().roomID().length()>0))
+        			addMetroRoomnumber(R.getGridParent().getGridChildCode(R));
+        	}
+        	else
+				addMetroRoomnumber(R.roomID());
 		}
 	}
 	public void delMetroRoom(Room R)
 	{
 		if(R!=null)
 		{
-			/*synchronized(metroRooms)
-			{
-				if(metroRooms.contains(R)) 
-					metroRooms.remove(R);
-			}
-			for(int p=getNumParents()-1;p>=0;p--)
-				getParent(p).delMetroRoom(R);
-			*/
-			delMetroRoomnumber(R.roomID());
+        	if(R.roomID().length()==0) 
+        	{
+        		if((R.getGridParent()!=null)
+        		&&(R.getGridParent().roomID().length()>0))
+        			delMetroRoomnumber(R.getGridParent().getGridChildCode(R));
+        	}
+        	else
+				delMetroRoomnumber(R.roomID());
 		}
 	}
     public void addProperRoomnumber(String roomID)
@@ -950,6 +945,16 @@ public class StdArea implements Area
             ((GridLocale)R).clearGrid(null);
         synchronized(properRooms)
         {
+        	if(R.roomID().length()==0)
+        	{
+        		if((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0))
+        		{
+        			String id=R.getGridParent().getGridChildCode(R);
+        			delProperRoomnumber(id);
+        			delMetroRoom(R);
+        		}
+        	}
+        	else
             if(properRooms.removeElement(R))
             {
 	            delMetroRoom(R);
@@ -961,6 +966,7 @@ public class StdArea implements Area
     public Room getRoom(String roomID)
     {
         if(properRooms.size()==0) return null;
+        if(roomID.length()==0) return null;
         synchronized(properRooms)
         {
     		if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
@@ -1004,15 +1010,11 @@ public class StdArea implements Area
 		}
 		return num;
 	}
-	public Room getRandomProperRoom()
-	{
-		synchronized(properRooms)
-		{
-			if(properSize()==0) return null;
-			Room R=(Room)properRooms.elementAt(CMLib.dice().roll(1,properRooms.size(),-1));
-			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
-			return R;
-		}
+	public Room getRandomProperRoom() 
+	{ 
+		Room R=getRoom(getProperRoomnumbers().random());
+		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+		return R;
 	}
 	public Room getRandomMetroRoom()
 	{

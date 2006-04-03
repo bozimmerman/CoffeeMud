@@ -229,8 +229,8 @@ public class Create extends BaseGenerics
 			return;
 		}
 		Room room=mob.location();
-		thisRoom.setArea(room.getArea());
 		thisRoom.setRoomID(room.getArea().getNewRoomID(room,direction));
+		thisRoom.setArea(room.getArea());
 		if(thisRoom.roomID().length()==0)
 		{
 			mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
@@ -363,8 +363,8 @@ public class Create extends BaseGenerics
 		A=CMLib.database().DBCreateArea(areaName,areaType);
 		A.setName(areaName);
 		Room R=CMClass.getLocale("StdRoom");
-		R.setArea(A);
 		R.setRoomID(A.getNewRoomID(R,-1));
+		R.setArea(A);
 		R.setDisplayText(CMClass.className(R)+"-"+R.roomID());
 		R.setDescription("");
 		CMLib.database().DBCreateRoom(R,R.ID());
