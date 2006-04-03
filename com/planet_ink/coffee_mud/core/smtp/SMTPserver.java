@@ -64,7 +64,7 @@ public class SMTPserver extends Thread implements Tickable
 											 
 	public final static String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
-    public SMTPserver(){super("SMTP"); mud=null;isOK=false;}
+    public SMTPserver(){super("SMTP"); mud=null;isOK=false;setDaemon(true);}
 	public SMTPserver(MudHost a_mud)
 	{
 		super("SMTP");
@@ -74,6 +74,7 @@ public class SMTPserver extends Thread implements Tickable
 			isOK = false;
 		else
 			isOK = true;
+		setDaemon(true);
 	}
 
 	public MudHost getMUD()	{return mud;}

@@ -1529,6 +1529,7 @@ public final class IMC2Driver extends Thread {
 			super("IMC2-call_out");
 			setName("IMC2-call_out");
             imc_client = _imc_client;
+            setDaemon(true);
         }
 
 		public void shutdown()
@@ -1572,6 +1573,7 @@ public final class IMC2Driver extends Thread {
 			super("IMC2-call_in");
 			setName("IMC2-call_in");
             imc_client = _imc_client;
+            setDaemon(true);
         }
 
 		public void shutdown()

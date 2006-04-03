@@ -47,6 +47,7 @@ public class UtiliThread extends Thread
 	{
 		super("UtiliThread");
 		setName("UtiliThread");
+        setDaemon(true);
 	}
 
 	public void vacuum()

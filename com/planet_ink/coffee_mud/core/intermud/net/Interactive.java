@@ -569,6 +569,7 @@ class InputThread implements Runnable {
         input_buffer = new Vector(10);
         stream = new java.io.BufferedReader(new java.io.InputStreamReader(s.getInputStream()));
         thread = new Thread(this);
+        thread.setDaemon(true);
         thread.start();
     }
 

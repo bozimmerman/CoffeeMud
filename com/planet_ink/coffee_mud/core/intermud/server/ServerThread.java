@@ -68,6 +68,7 @@ public class ServerThread extends Thread {
         super("ServerThread");
         setName("ServerThread");
         setPriority(Thread.NORM_PRIORITY + 1);
+        setDaemon(true);
         mud_name = mname;
         port = mport;
 		intermuds=imud;

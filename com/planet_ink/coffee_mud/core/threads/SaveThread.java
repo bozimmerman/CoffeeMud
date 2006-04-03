@@ -48,6 +48,7 @@ public class SaveThread extends Thread
 	{
 		super("SaveThread");
 		setName("SaveThread");
+        setDaemon(true);
 	}
 
 	public void titleSweep()

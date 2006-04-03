@@ -70,7 +70,7 @@ public class HTTPserver extends Thread implements MudHost
 		partialName = a_name;		//name without prefix
 		mud = a_mud;
 		myServerNumber=num;
-
+		setDaemon(true);
 		if (!initServer(num))
 			isOK = false;
 		else

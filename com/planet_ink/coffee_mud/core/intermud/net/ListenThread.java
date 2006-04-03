@@ -41,6 +41,7 @@ public class ListenThread extends Thread {
 		setName("ListenThread");
         clients = new Vector(10, 2);
         listen = new ServerSocket(port);
+        setDaemon(true);
         start();
     }
 

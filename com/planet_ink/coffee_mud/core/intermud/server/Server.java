@@ -65,6 +65,7 @@ public class Server {
 			}
 		    started = true;
 			thread = new ServerThread(mud, port, imud);
+			thread.setDaemon(true);
 			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
 			thread.start();
 		}

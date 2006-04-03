@@ -76,7 +76,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		synchronized(tickers)
 		{
 			int start=0;
-			int end=tickers.size()-1;
+			int end=numTickers()-1;
 			int mid=0;
 			while(start<=end)
 			{
@@ -88,7 +88,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	                start=mid+1;
 			}
 			if(end<0) return 0;
-			if(start>=tickers.size()) return tickers.size()-1;
+			if(start>=numTickers()) return numTickers()-1;
 			return mid;
 		}
 	}
@@ -219,7 +219,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	            if(((TockClient)tickers.elementAt(insertAt)).clientObject.hashCode()>=C.clientObject.hashCode())
 	            	tickers.insertElementAt(C,insertAt);
 				else
-				if(insertAt==tickers.size()-1)
+				if(insertAt==numTickers()-1)
 					tickers.addElement(C);
 				else
 					tickers.insertElementAt(C,insertAt+1);
@@ -240,6 +240,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	public Tick(String a_name, long sleep)
 	{
         super("Tick."+ a_name + "." +(tickObjReference+1));
+        setDaemon(true);
         tickObjectCounter=tickObjReference++;
         TICK_TIME=sleep;
 		this.start();

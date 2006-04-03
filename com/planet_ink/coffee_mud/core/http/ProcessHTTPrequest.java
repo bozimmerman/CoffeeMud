@@ -97,6 +97,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         webServer = null;
         sock = null;
         isAdminServer = true;
+        setDaemon(true);
     }
 	public ProcessHTTPrequest(Socket a_sock,
 							  HTTPserver a_webServer,
@@ -109,6 +110,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		// thread name contains just the instance counter (faster)
 		//  and short enough to use in log
 		super( "HTTPrq-"+((a_webServer!=null)?a_webServer.getPartialName():"")+ instanceCnt++ );
+		setDaemon(true);
 		page = a_page;
 		webServer = a_webServer;
 		sock = a_sock;

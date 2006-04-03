@@ -188,6 +188,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			Log.errOut("Intermud",e);
         }
         save_thread = new SaveThread(this);
+        save_thread.setDaemon(true);
         save_thread.start();
         connect();
     }
@@ -244,6 +245,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                  "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
             connected = true;
             input_thread = new Thread(this);
+            input_thread.setDaemon(true);
             input_thread.setName("Intermud");
             input_thread.start();
             {
@@ -776,6 +778,7 @@ class SaveThread extends Thread {
     public SaveThread(Intermud imud) {
         super("Intermud save");
 		setName("Intermud save");
+		setDaemon(true);
         intermud = imud;
     }
 
