@@ -40,7 +40,9 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"ARMORSMITH","ARMORSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
-
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"DURACRAFTI","DURACRAFTII","DURACRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};}
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
 	protected static final int RCP_TICKS=2;

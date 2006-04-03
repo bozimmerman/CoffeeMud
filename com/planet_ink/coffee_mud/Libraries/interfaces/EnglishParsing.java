@@ -38,6 +38,7 @@ public interface EnglishParsing extends CMObject
     public static final int FLAG_DOT=1;
     public static final int FLAG_ALL=2;
     
+    public boolean isAnArticle(String s);
     public String cleanArticles(String s);
     public Object findCommand(MOB mob, Vector commands);
     public boolean evokedBy(Ability thisAbility, String thisWord);

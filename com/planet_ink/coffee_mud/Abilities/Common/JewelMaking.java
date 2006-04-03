@@ -34,13 +34,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class JewelMaking extends CraftingSkill implements ItemCraftor
+public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "JewelMaking"; }
 	public String name(){ return "Jewel Making";}
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

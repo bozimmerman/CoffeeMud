@@ -42,6 +42,9 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
     protected int displayColumns(){return 3;}
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
+																	"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

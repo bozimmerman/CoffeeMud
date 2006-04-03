@@ -33,13 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Carpentry extends CraftingSkill implements ItemCraftor
+public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Carpentry"; }
 	public String name(){ return "Carpentry";}
 	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "WOODEN";}
+	// inherets its enhanced crafting support from superclass -- you can make ANYTHING with this badboy!
+	
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

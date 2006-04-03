@@ -33,13 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Blacksmithing extends CraftingSkill implements ItemCraftor
+public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Blacksmithing"; }
 	public String name(){ return "Blacksmithing";}
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

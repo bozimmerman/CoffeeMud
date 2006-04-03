@@ -41,6 +41,9 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLOTH";}
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"DURACRAFTI","DURACRAFTII","DURACRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

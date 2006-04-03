@@ -34,13 +34,16 @@ import java.util.*;
    limitations under the License.
 */
 
-public class LeatherWorking extends CraftingSkill implements ItemCraftor
+public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "LeatherWorking"; }
 	public String name(){ return "Leather Working";}
 	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "LEATHER";}
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"DURACRAFTI","DURACRAFTII","DURACRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

@@ -37,10 +37,18 @@ import java.util.regex.*;
 public class EnglishParser extends StdLibrary implements EnglishParsing
 {
     public String ID(){return "EnglishParser";}
+    private final static String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
+    
+    public boolean isAnArticle(String s)
+    {
+        for(int a=0;a<articles.length;a++)
+        	if(s.toLowerCase().equals(articles[a]))
+        		return true;
+        return false;
+    }
     
     public String cleanArticles(String s)
     {
-        String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
         boolean didSomething=true;
         while(didSomething)
         {

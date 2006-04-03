@@ -395,8 +395,8 @@ public class BaseGenerics extends StdCommand
 	                oldBehavsNEffects.addElement(B);
 	        }
 			CMLib.threads().deleteTick(oldR,-1);
-			R.setArea(oldR.getArea());
 			R.setRoomID(oldR.roomID());
+			R.setArea(oldR.getArea());
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=0;d<R.rawExits().length;d++)

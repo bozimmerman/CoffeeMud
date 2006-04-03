@@ -34,13 +34,16 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fletching extends CraftingSkill implements ItemCraftor
+public class Fletching extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Fletching"; }
 	public String name(){ return "Fletching";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
+	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
+																	"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
