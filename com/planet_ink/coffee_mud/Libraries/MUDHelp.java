@@ -127,6 +127,26 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	public String fixHelp(String tag, String str, MOB forMOB)
 	{
+		if(str.startsWith("<EDUCATION>"))
+		{
+			str=str.substring(11);
+			EducationLibrary.EducationDefinition def=null;
+			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+			{
+				def=(EducationLibrary.EducationDefinition)e.nextElement();
+				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
+				{
+					StringBuffer prepend=new StringBuffer("");
+					prepend.append("\n\rEducation: "+def.name);
+					String mask=def.uncompiledListMask;
+					if(mask==null) mask="";
+					if(def.uncompiledFinalMask!=null)
+						mask=(mask+" "+def.uncompiledFinalMask).trim();
+					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask,true));
+					str=prepend.toString()+"\n\r"+str;
+				}
+			}
+		}
 		if(str.startsWith("<ABILITY>"))
 		{
 			str=str.substring(9);

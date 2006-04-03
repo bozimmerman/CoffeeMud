@@ -196,7 +196,7 @@ public class Qualify extends BaseAbleLister
 					V.removeElementAt(v);
 			if(V.size()>0)
 			{
-				StringBuffer msg2=new StringBuffer("^HEducations:^?\n\rName                          Requires\n\r");
+				StringBuffer msg2=new StringBuffer("\n\r^HEducations:^?\n\rName                          Requires\n\r");
 				EducationLibrary.EducationDefinition def=null;
 				for(int v=0;v<V.size();v++)
 				{

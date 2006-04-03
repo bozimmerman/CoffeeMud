@@ -716,7 +716,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 83: // -skills
 					{
-						buf.append((skipFirstWord?"The":"Requires")+" following skill(s): ");
+						buf.append((skipFirstWord?"O":"Requires o")+"ne of the following skill(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -733,7 +733,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		                        		prof=CMath.s_int(str2.substring(x+1,str2.length()-1));
 	                        		str2=str2.substring(0,x);
 	                        	}
-	                        	Ability A=CMClass.getAbility(str2.substring(1));
+	                        	Ability A=CMClass.getAbility(str2);
 	                        	if(A!=null)
 	                        	{
 	                        		if(prof<=0)
@@ -767,7 +767,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		                        		prof=CMath.s_int(str2.substring(x+1,str2.length()-1));
 	                        		str2=str2.substring(0,x);
 	                        	}
-	                        	Ability A=CMClass.getAbility(str2.substring(1));
+	                        	Ability A=CMClass.getAbility(str2);
 	                        	if(A!=null)
 	                        	{
 	                        		if(prof<=0)
@@ -1794,8 +1794,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
-                case 83: // +Material
-                case 84: // -Material
+                case 83: // +skills
+                case 84: // -skills
                     {
                         Vector entry=new Vector();
                         buf.addElement(entry);

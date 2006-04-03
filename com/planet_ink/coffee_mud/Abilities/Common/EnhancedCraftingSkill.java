@@ -67,6 +67,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	
 	protected String[] supportedEnhancements(){ return ALL_CODES;}
 	
+	private final static HashSet doneSkills=new HashSet();
 	static
 	{
 		for(int t=0;t<TYPES_CODES.length;t++)
@@ -78,26 +79,36 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 	
-	public EnhancedCraftingSkill()
+	public void setMiscText(String newText)
 	{
-		super();
-		EducationLibrary.EducationDefinition def=null;
-		for(int t=0;t<TYPES_CODES.length;t++)
+		super.setMiscText(newText);
+		if((!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
+		&&(!doneSkills.contains(ID()))
+		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 		{
-			for(int s=0;s<STAGES.length;s++)
-			if(supported().contains(TYPES_CODES[t]+STAGES[s]))
+			doneSkills.add(ID());
+			EducationLibrary.EducationDefinition def=null;
+			for(int t=0;t<TYPES_CODES.length;t++)
 			{
-				def=CMLib.edu().getDefinition(TYPES_CODES[t]+STAGES[s]);
-				if(def!=null)
+				for(int s=0;s<STAGES.length;s++)
+				if(supported().contains(TYPES_CODES[t]+STAGES[s]))
 				{
-					if((def.uncompiledListMask==null)||(def.uncompiledListMask.length()==0))
-						def.uncompiledListMask="-SKILLS";
-					def.uncompiledListMask+=" +"+ID();
-					def.compiledListMask=CMLib.masking().maskCompile(def.uncompiledListMask);
+					def=CMLib.edu().getDefinition(TYPES_CODES[t]+STAGES[s]);
+					if(def!=null)
+					{
+						if((def.uncompiledListMask==null)||(def.uncompiledListMask.length()==0))
+						{
+							def.uncompiledListMask="";
+							if(s>0)
+								def.uncompiledListMask+=" -EDUCATIONS +"+TYPES_CODES[t]+STAGES[s-1];
+							def.uncompiledListMask+=" -SKILLS";
+						}
+						def.uncompiledListMask+=" +"+ID();
+						def.compiledListMask=CMLib.masking().maskCompile(def.uncompiledListMask);
+					}
 				}
 			}
 		}
-		//TODO: add help entries to the list, if necessary and possible
 	}
 	protected Vector supportedV=null;
 	protected final Vector supported(){
@@ -148,9 +159,27 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	{
 		String cmd=null;
 		DVector types=null;
+		String listAdd=null;
 		if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof String))
 		{
 			cmd=(String)commands.firstElement();
+			if(cmd.equalsIgnoreCase("list"))
+			{
+				StringBuffer extras=new StringBuffer("");
+				for(int t=0;t<TYPES_CODES.length;t++)
+				{
+					for(int s=STAGES.length-1;s>=0;s--)
+						if((supported().contains(TYPES_CODES[t]+STAGES[s]))
+						&&(mob.fetchEducation(TYPES_CODES[t]+STAGES[s])!=null))
+							extras.append(STAGE_TYPES[t][s]+", ");
+				}
+				if(extras.length()>0)
+					listAdd="You can use your educations to enhance this skill by " +
+							 "prepending one or more of the following words to the name " +
+							 "of the item you wish to craft: "+extras.substring(0,extras.length()-2)+".";
+				
+			}
+			else
 			if((!cmd.equalsIgnoreCase("list"))
 			&&(!cmd.equalsIgnoreCase("mend"))
 			&&(!cmd.equalsIgnoreCase("scan")))
@@ -179,9 +208,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				}
 			}
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-		if(types!=null)
+		boolean ok=super.invoke(mob,commands,givenTarget,auto,asLevel);
+		if(listAdd!=null)
+			commonTell(mob,listAdd);
+		else
+		if((cmd!=null)&&(ok&&(types!=null)))
 		{
 			EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 			if((!aborted)
@@ -317,23 +348,6 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				building.recoverEnvStats();
 			}
 		}
-		else
-		if(cmd.equalsIgnoreCase("list"))
-		{
-			StringBuffer extras=new StringBuffer("");
-			for(int t=0;t<TYPES_CODES.length;t++)
-			{
-				for(int s=STAGES.length-1;s>=0;s--)
-					if((supported().contains(TYPES_CODES[t]+STAGES[s]))
-					&&(mob.fetchEducation(TYPES_CODES[t]+STAGES[s])!=null))
-						extras.append(STAGE_TYPES[t][s]+", ");
-			}
-			if(extras.length()>0)
-				commonTell(mob,"You can use your educations to enhance this skill by " +
-						 "prepending one or more of the following words to the name " +
-						 "of the item you wish to craft: "+extras.substring(0,extras.length()-2)+".");
-			
-		}
-		return true;
+		return ok;
 	}
 }
