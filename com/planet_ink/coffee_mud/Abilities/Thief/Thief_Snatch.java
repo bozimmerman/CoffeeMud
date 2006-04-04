@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Snatch extends StdAbility
+public class Thief_Snatch extends ThiefSkill
 {
 	public String ID() { return "Thief_Snatch"; }
 	public String name(){ return "Weapon Snatch";}

@@ -79,7 +79,7 @@ public class Spell_Delirium extends Spell
 			while((++tries)<1000)
 			{
 				Room R=invoker.location().getArea().getRandomProperRoom();
-				if(R.numInhabitants()>0)
+				if((R!=null)&&(R.numInhabitants()>0))
 				{
 					MOB possible=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 					if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
