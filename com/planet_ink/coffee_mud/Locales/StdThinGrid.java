@@ -715,6 +715,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			Room R=(Room)msg.target();
 			if(R.getGridParent()==this)
 			{
+				if((roomID().length()>0)&&(getArea()!=null))
+					getArea().delProperRoomnumber(getGridChildCode(R));
 	            DVector thisGridRooms=rooms;
                 thisGridRooms.removeElement(R);
                 Room R2=null;

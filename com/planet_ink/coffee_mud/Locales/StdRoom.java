@@ -681,11 +681,6 @@ public class StdRoom implements Room
 				}
 				Area A=getArea();
 				String roomID=roomID();
-				if((roomID.length()==0)
-				&&(getGridParent()!=null)
-				&&(getGridParent().roomID().length()>0)
-				&&(A!=null))
-					A.delProperRoomnumber(getGridParent().getGridChildCode(this));
 				setGridParent(null);
 				CMLib.map().emptyRoom(this,null);
 	            destroy();
