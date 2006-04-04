@@ -106,6 +106,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
+		DVector enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -142,6 +143,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				}
 			}
 			commonTell(mob,buf.toString());
+			enhanceList(mob);
 			return true;
 		}
 
@@ -296,6 +298,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,completion);
+			enhanceItem(mob,building,enhancedTypes);
 		}
 		else
 		if(bundling)

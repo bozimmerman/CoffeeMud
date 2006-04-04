@@ -155,31 +155,29 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		item.setDescription(applyName(item.description(),word));
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public void enhanceList(MOB mob)
+	{
+		StringBuffer extras=new StringBuffer("");
+		for(int t=0;t<TYPES_CODES.length;t++)
+		{
+			for(int s=STAGES.length-1;s>=0;s--)
+				if((supported().contains(TYPES_CODES[t]+STAGES[s]))
+				&&(mob.fetchEducation(TYPES_CODES[t]+STAGES[s])!=null))
+					extras.append(STAGE_TYPES[t][s]+", ");
+		}
+		if(extras.length()>0)
+			commonTell(mob,"You can use your educations to enhance this skill by " +
+					 "prepending one or more of the following words to the name " +
+					 "of the item you wish to craft: "+extras.substring(0,extras.length()-2)+".");
+	}
+
+	public DVector enhancedTypes(MOB mob, Vector commands)
 	{
 		String cmd=null;
 		DVector types=null;
-		String listAdd=null;
 		if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof String))
 		{
 			cmd=(String)commands.firstElement();
-			if(cmd.equalsIgnoreCase("list"))
-			{
-				StringBuffer extras=new StringBuffer("");
-				for(int t=0;t<TYPES_CODES.length;t++)
-				{
-					for(int s=STAGES.length-1;s>=0;s--)
-						if((supported().contains(TYPES_CODES[t]+STAGES[s]))
-						&&(mob.fetchEducation(TYPES_CODES[t]+STAGES[s])!=null))
-							extras.append(STAGE_TYPES[t][s]+", ");
-				}
-				if(extras.length()>0)
-					listAdd="You can use your educations to enhance this skill by " +
-							 "prepending one or more of the following words to the name " +
-							 "of the item you wish to craft: "+extras.substring(0,extras.length()-2)+".";
-				
-			}
-			else
 			if((!cmd.equalsIgnoreCase("list"))
 			&&(!cmd.equalsIgnoreCase("mend"))
 			&&(!cmd.equalsIgnoreCase("scan")))
@@ -208,146 +206,145 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				}
 			}
 		}
-		boolean ok=super.invoke(mob,commands,givenTarget,auto,asLevel);
-		if(listAdd!=null)
-			commonTell(mob,listAdd);
-		else
-		if((cmd!=null)&&(ok&&(types!=null)))
+		return types;
+	}
+	
+	public void enhanceItem(MOB mob, Item item, DVector types)
+	{
+		if(types==null) return;
+		EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
+		if((affect!=null)
+		&&(!affect.aborted)
+		&&(!affect.messedUp)
+		&&(!affect.mending)
+		&&(item!=null))
 		{
-			EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
-			if((!aborted)
-			&&(!messedUp)
-			&&(!mending)
-			&&(affect!=null)
-			&&(affect.building!=null))
+			for(int t=0;t<types.size();t++)
 			{
-				for(int t=0;t<types.size();t++)
+				int type=((Integer)types.elementAt(t,1)).intValue();
+				int stage=((Integer)types.elementAt(t,2)).intValue();
+				switch(type)
 				{
-					int type=((Integer)types.elementAt(t,1)).intValue();
-					int stage=((Integer)types.elementAt(t,2)).intValue();
-					switch(type)
+				case TYPE_LITECRAFT:
+					switch(stage)
 					{
-					case TYPE_LITECRAFT:
-						switch(stage)
-						{
-						case 0:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),-0.1));
-							building.setBaseValue(atLeast1(building.baseGoldValue(),0.2));
-							break;
-						case 1:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),-0.2));
-							building.setBaseValue(atLeast1(building.baseGoldValue(),1.0));
-							affect.tickDown*=2;
-							break;
-						case 2:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),-0.25));
-							building.setBaseValue(atLeast1(building.baseGoldValue(),2.5));
-							if(building.fetchEffect("Prop_WearAdjuster")==null)
-							{
-								Ability A=CMClass.getAbility("Prop_WearAdjuster");
-								if(A!=null) A.setMiscText("DEX+1");
-								building.addNonUninvokableEffect(A);
-							}
-							affect.tickDown*=4;
-							break;
-						}
+					case 0:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),-0.1));
+						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						break;
-					case TYPE_DURACRAFT:
-						if(!(building instanceof Armor))
-							commonTell(mob,STAGE_TYPES[type][stage]+" only applies to armor.");
-						else
-						switch(stage)
-						{
-						case 0:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),0.1));
-							building.baseEnvStats().setArmor(building.baseEnvStats().armor()+1);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),0.1));
-							break;
-						case 1:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),0.2));
-							building.baseEnvStats().setArmor(atLeast1(building.baseEnvStats().armor(),0.1)+1);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),1.5));
-							affect.tickDown*=2;
-							break;
-						case 2:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),0.25));
-							building.baseEnvStats().setArmor(atLeast1(building.baseEnvStats().armor(),0.1)+1);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),2.5));
-							if(building.fetchEffect("Prop_WearAdjuster")==null)
-							{
-								Ability A=CMClass.getAbility("Prop_WearAdjuster");
-								if(A!=null) A.setMiscText("CON+1");
-								building.addNonUninvokableEffect(A);
-							}
-							affect.tickDown*=4;
-							break;
-						}
+					case 1:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),-0.2));
+						item.setBaseValue(atLeast1(item.baseGoldValue(),1.0));
+						affect.tickDown*=2;
 						break;
-					case TYPE_QUALCRAFT:
-						switch(stage)
+					case 2:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),-0.25));
+						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
+						if(item.fetchEffect("Prop_WearAdjuster")==null)
 						{
-						case 0:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),0.5));
-							affect.tickDown*=2;
-							break;
-						case 1:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),1.0));
-							affect.tickDown*=3;
-							break;
-						case 2:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),2.5));
-							if(building.fetchEffect("Prop_WearAdjuster")==null)
-							{
-								Ability A=CMClass.getAbility("Prop_WearAdjuster");
-								if(A!=null) A.setMiscText("CHA+1");
-								building.addNonUninvokableEffect(A);
-							}
-							affect.tickDown*=4;
-							break;
+							Ability A=CMClass.getAbility("Prop_WearAdjuster");
+							if(A!=null) A.setMiscText("DEX+1");
+							item.addNonUninvokableEffect(A);
 						}
-						break;
-					case TYPE_LTHLCRAFT:
-						if(!(building instanceof Weapon))
-							commonTell(mob,STAGE_TYPES[type][stage]+" only applies to weapons.");
-						else
-						switch(stage)
-						{
-						case 0:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setDamage(atLeast1(building.baseEnvStats().damage(),0.05));
-							building.setBaseValue(atLeast1(building.baseGoldValue(),0.5));
-							affect.tickDown*=2;
-							break;
-						case 1:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setDamage(atLeast1(building.baseEnvStats().damage(),0.1));
-							building.setBaseValue(atLeast1(building.baseGoldValue(),2.0));
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),0.1));
-							affect.tickDown*=3;
-							break;
-						case 2:
-							applyName(building,STAGE_TYPES[type][stage]);
-							building.baseEnvStats().setDamage(atLeast1(building.baseEnvStats().damage(),0.15)+1);
-							building.setBaseValue(atLeast1(building.baseGoldValue(),4.0));
-							building.baseEnvStats().setWeight(atLeast1(building.baseEnvStats().weight(),0.1));
-							affect.tickDown*=5;
-							break;
-						}
+						affect.tickDown*=4;
 						break;
 					}
+					break;
+				case TYPE_DURACRAFT:
+					if(!(item instanceof Armor))
+						commonTell(mob,STAGE_TYPES[type][stage]+" only applies to armor.");
+					else
+					switch(stage)
+					{
+					case 0:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						item.baseEnvStats().setArmor(item.baseEnvStats().armor()+1);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
+						break;
+					case 1:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.2));
+						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.1)+1);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
+						affect.tickDown*=2;
+						break;
+					case 2:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.25));
+						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.1)+1);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
+						if(item.fetchEffect("Prop_WearAdjuster")==null)
+						{
+							Ability A=CMClass.getAbility("Prop_WearAdjuster");
+							if(A!=null) A.setMiscText("CON+1");
+							item.addNonUninvokableEffect(A);
+						}
+						affect.tickDown*=4;
+						break;
+					}
+					break;
+				case TYPE_QUALCRAFT:
+					switch(stage)
+					{
+					case 0:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
+						affect.tickDown*=2;
+						break;
+					case 1:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),1.0));
+						affect.tickDown*=3;
+						break;
+					case 2:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
+						if(item.fetchEffect("Prop_WearAdjuster")==null)
+						{
+							Ability A=CMClass.getAbility("Prop_WearAdjuster");
+							if(A!=null) A.setMiscText("CHA+1");
+							item.addNonUninvokableEffect(A);
+						}
+						affect.tickDown*=4;
+						break;
+					}
+					break;
+				case TYPE_LTHLCRAFT:
+					if(!(item instanceof Weapon))
+						commonTell(mob,STAGE_TYPES[type][stage]+" only applies to weapons.");
+					else
+					switch(stage)
+					{
+					case 0:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.05));
+						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
+						affect.tickDown*=2;
+						break;
+					case 1:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.1));
+						item.setBaseValue(atLeast1(item.baseGoldValue(),2.0));
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						affect.tickDown*=3;
+						break;
+					case 2:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.15)+1);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),4.0));
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						affect.tickDown*=5;
+						break;
+					}
+					break;
 				}
-				building.recoverEnvStats();
 			}
+			item.recoverEnvStats();
 		}
-		return ok;
 	}
+	
 }

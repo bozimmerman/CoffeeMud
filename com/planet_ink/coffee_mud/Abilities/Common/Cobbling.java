@@ -140,6 +140,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
+		DVector enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -185,6 +186,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(toggler!=1) buf.append("\n\r");
 			commonTell(mob,buf.toString());
+			enhanceList(mob);
 			return true;
 		}
 		if(str.equalsIgnoreCase("scan"))
@@ -389,6 +391,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,completion);
+			enhanceItem(mob,building,enhancedTypes);
 		}
 		else
 		if(bundling)
