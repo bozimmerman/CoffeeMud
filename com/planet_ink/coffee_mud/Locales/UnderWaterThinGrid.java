@@ -63,7 +63,7 @@ public class UnderWaterThinGrid extends StdThinGrid
         return new UnderWaterGrid().newInstance();
 	}
 	
-	public String getChildLocaleID(){return "UnderWater";}
+	public String getGridChildLocaleID(){return "UnderWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

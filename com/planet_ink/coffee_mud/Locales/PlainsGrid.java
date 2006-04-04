@@ -43,6 +43,6 @@ public class PlainsGrid extends StdGrid
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public String getChildLocaleID(){return "Plains";}
+	public String getGridChildLocaleID(){return "Plains";}
 	public Vector resourceChoices(){return Plains.roomResources;}
 }

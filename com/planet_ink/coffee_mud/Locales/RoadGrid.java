@@ -44,6 +44,6 @@ public class RoadGrid extends StdGrid
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public String getChildLocaleID(){return "Road";}
+	public String getGridChildLocaleID(){return "Road";}
 	public Vector resourceChoices(){return Road.roomResources;}
 }

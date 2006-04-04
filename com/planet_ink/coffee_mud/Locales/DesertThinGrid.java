@@ -52,6 +52,6 @@ public class DesertThinGrid extends StdThinGrid
         return new DesertGrid().newInstance();
 	}
 
-	public String getChildLocaleID(){return "Desert";}
+	public String getGridChildLocaleID(){return "Desert";}
 	public Vector resourceChoices(){return Desert.roomResources;}
 }

@@ -3424,7 +3424,7 @@ Import  List as well as (in this case) com.planet_ink.coffee_mud.Rooms.StdGrid,<
 <p align="left"><font size="4">Let's looks at an example of a standard grid
     room, which has much of the functionality we are interested in:</font></p>
                  
-<pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br>{<br>	public String ID(){return "RoadGrid";}<br>	public RoadGrid()<br>	{<br>		super();<br>		name="a road";<br>		baseEnvStats.setWeight(1);<br>		recoverEnvStats();<br>	}<br>	public String getChildLocaleID(){return "Road";}<br>	public Vector resourceChoices(){return Road.roomResources;}<br>	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}<br>	public int domainConditions(){return Room.CONDITION_NORMAL;}<br>}<br></pre>
+<pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br>{<br>	public String ID(){return "RoadGrid";}<br>	public RoadGrid()<br>	{<br>		super();<br>		name="a road";<br>		baseEnvStats.setWeight(1);<br>		recoverEnvStats();<br>	}<br>	public String getGridChildLocaleID(){return "Road";}<br>	public Vector resourceChoices(){return Road.roomResources;}<br>	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}<br>	public int domainConditions(){return Room.CONDITION_NORMAL;}<br>}<br></pre>
                  
 <p align="left"><font size="4">Here we see the standard RoadGrid.&nbsp; It's
     effects, behaviors, displaytext, description, and (since it is a grid

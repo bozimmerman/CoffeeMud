@@ -60,8 +60,10 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		maxStatAdj[CharStats.STAT_WISDOM]=6;
-		maxStatAdj[CharStats.STAT_INTELLIGENCE]=6;
+		maxStatAdj[CharStats.STAT_STRENGTH]=6;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=6;
+		maxStatAdj[CharStats.STAT_CHARISMA]=6;
+		maxStatAdj[CharStats.STAT_CONSTITUTION]=6;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -175,19 +177,19 @@ public class Artisan extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
-	public String statQualifications(){return "Wisdom 9+, Intelligence 9+";}
+	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Artisan.");
+				mob.tell("You need at least a 9 Strength to become a Artisan.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Intelligence to become a Artisan.");
+				mob.tell("You need at least a 9 Dexterity to become a Artisan.");
 			return false;
 		}
 		return super.qualifiesForThisClass(mob,quiet);

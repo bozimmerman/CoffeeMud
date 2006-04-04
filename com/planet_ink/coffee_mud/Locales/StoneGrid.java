@@ -43,5 +43,5 @@ public class StoneGrid extends StdGrid
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public String getChildLocaleID(){return "StoneRoom";}
+	public String getGridChildLocaleID(){return "StoneRoom";}
 }

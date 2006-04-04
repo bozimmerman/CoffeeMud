@@ -51,6 +51,6 @@ public class GreatThinLake extends StdThinGrid
 	        return super.newInstance();
         return new GreatLake().newInstance();
 	}
-	public String getChildLocaleID(){return "WaterSurface";}
+	public String getGridChildLocaleID(){return "WaterSurface";}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

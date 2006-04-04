@@ -43,7 +43,7 @@ public class WetCaveMaze extends StdMaze
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 	public int domainConditions(){return Room.CONDITION_WET;}
 
-	public String getChildLocaleID(){return "WetCaveRoom";}
+	public String getGridChildLocaleID(){return "WetCaveRoom";}
 	public int maxRange(){return 5;}
 	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

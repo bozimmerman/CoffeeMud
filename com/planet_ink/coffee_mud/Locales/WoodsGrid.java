@@ -43,6 +43,6 @@ public class WoodsGrid extends StdGrid
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public String getChildLocaleID(){return "Woods";}
+	public String getGridChildLocaleID(){return "Woods";}
 	public Vector resourceChoices(){return Woods.roomResources;}
 }

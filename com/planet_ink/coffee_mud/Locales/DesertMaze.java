@@ -44,6 +44,6 @@ public class DesertMaze extends StdMaze
 	public int domainConditions(){return Room.CONDITION_HOT;}
 	protected int baseThirst(){return 4;}
 
-	public String getChildLocaleID(){return "Desert";}
+	public String getGridChildLocaleID(){return "Desert";}
 	public Vector resourceChoices(){return Desert.roomResources;}
 }

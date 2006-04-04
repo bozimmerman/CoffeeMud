@@ -44,6 +44,6 @@ public class GreatLake extends StdGrid
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}
 
-	public String getChildLocaleID(){return "WaterSurface";}
+	public String getGridChildLocaleID(){return "WaterSurface";}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

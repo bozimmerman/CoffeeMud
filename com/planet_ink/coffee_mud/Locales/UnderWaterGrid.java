@@ -55,7 +55,7 @@ public class UnderWaterGrid extends StdGrid
 
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}
-	public String getChildLocaleID(){return "UnderWater";}
+	public String getGridChildLocaleID(){return "UnderWater";}
 	protected int baseThirst(){return 0;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

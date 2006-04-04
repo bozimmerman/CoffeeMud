@@ -50,6 +50,6 @@ public class PlainsThinGrid extends StdThinGrid
 	        return super.newInstance();
         return new PlainsGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "Plains";}
+	public String getGridChildLocaleID(){return "Plains";}
 	public Vector resourceChoices(){return Plains.roomResources;}
 }

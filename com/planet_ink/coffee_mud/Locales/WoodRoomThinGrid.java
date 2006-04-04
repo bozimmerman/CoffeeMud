@@ -50,5 +50,5 @@ public class WoodRoomThinGrid extends StdThinGrid
 	        return super.newInstance();
         return new WoodRoomGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "WoodRoom";}
+	public String getGridChildLocaleID(){return "WoodRoom";}
 }

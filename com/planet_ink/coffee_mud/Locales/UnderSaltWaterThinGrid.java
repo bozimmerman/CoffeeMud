@@ -55,7 +55,7 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	        return super.newInstance();
         return new UnderSaltWaterGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "UnderSaltWater";}
+	public String getGridChildLocaleID(){return "UnderSaltWater";}
 
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 }

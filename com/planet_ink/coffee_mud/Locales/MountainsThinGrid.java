@@ -51,6 +51,6 @@ public class MountainsThinGrid extends StdThinGrid
 	        return super.newInstance();
         return new MountainsGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "Mountains";}
+	public String getGridChildLocaleID(){return "Mountains";}
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

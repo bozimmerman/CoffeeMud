@@ -44,6 +44,6 @@ public class MountainSurfaceGrid extends StdGrid
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public String getChildLocaleID(){return "MountainSurface";}
+	public String getGridChildLocaleID(){return "MountainSurface";}
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

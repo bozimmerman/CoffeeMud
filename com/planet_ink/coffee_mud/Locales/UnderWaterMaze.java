@@ -47,7 +47,7 @@ public class UnderWaterMaze extends StdMaze
 	protected int baseThirst(){return 0;}
 
 
-	public String getChildLocaleID(){return "UnderWater";}
+	public String getGridChildLocaleID(){return "UnderWater";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

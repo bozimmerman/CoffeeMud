@@ -47,7 +47,7 @@ public class UnderSaltWaterMaze extends UnderWaterMaze
 	protected int baseThirst(){return 0;}
 
 
-	public String getChildLocaleID(){return "UnderSaltWater";}
+	public String getGridChildLocaleID(){return "UnderSaltWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

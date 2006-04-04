@@ -51,6 +51,6 @@ public class SwampThinGrid extends StdThinGrid
 	        return super.newInstance();
         return new SwampGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "Swamp";}
+	public String getGridChildLocaleID(){return "Swamp";}
 	public Vector resourceChoices(){return Swamp.roomResources;}
 }

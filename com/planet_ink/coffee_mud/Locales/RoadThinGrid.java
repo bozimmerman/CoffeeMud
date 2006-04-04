@@ -51,6 +51,6 @@ public class RoadThinGrid extends StdThinGrid
 	        return super.newInstance();
         return new RoadGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "Road";}
+	public String getGridChildLocaleID(){return "Road";}
 	public Vector resourceChoices(){return Road.roomResources;}
 }

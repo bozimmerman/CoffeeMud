@@ -38,6 +38,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public String ID() { return "EnhancedCraftingSkill"; }
 	public String name(){ return "Enhanced Crafting Skill";}
 	protected final static String[] STAGES={"I","II","III"};
+	protected final static String[] STAGESTAT={"14","18","22"};
 	protected final static int TYPE_LITECRAFT=0;
 	protected final static int TYPE_DURACRAFT=1;
 	protected final static int TYPE_QUALCRAFT=2;
@@ -46,6 +47,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											   "DURACRAFT",
 											   "QUALCRAFT",
 											   "LTHLCRAFT",
+	};
+	protected final static String[] TYPES_STATS={"DEX",
+											     "STR",
+											     "CHA",
+											     "CON",
 	};
 	protected final static String[] TYPES_NAMES={"Light Crafting",
 											   "Durable Crafting",
@@ -74,7 +80,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			for(int s=0;s<STAGES.length;s++)
 			{
-				CMLib.edu().addDefinition(TYPES_CODES[t]+STAGES[s],TYPES_NAMES[t]+" "+STAGES[s],"","",0,1,0,0,0);
+				String finalReq="+"+TYPES_STATS[t]+" "+STAGESTAT[s];
+				CMLib.edu().addDefinition(TYPES_CODES[t]+STAGES[s],TYPES_NAMES[t]+" "+STAGES[s],"",finalReq,0,1,0,0,0);
 			}
 		}
 	}

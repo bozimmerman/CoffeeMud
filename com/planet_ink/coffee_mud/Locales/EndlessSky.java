@@ -68,7 +68,7 @@ public class EndlessSky extends StdGrid
 		super.executeMsg(myHost,msg);
 		InTheAir.airAffects(this,msg);
 	}
-	public String getChildLocaleID(){return "InTheAir";}
+	public String getGridChildLocaleID(){return "InTheAir";}
 
     protected Room findCenterRoom(int dirCode)
 	{

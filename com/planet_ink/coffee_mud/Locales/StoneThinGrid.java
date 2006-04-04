@@ -50,5 +50,5 @@ public class StoneThinGrid extends StdThinGrid
 	        return super.newInstance();
         return new StoneGrid().newInstance();
 	}
-	public String getChildLocaleID(){return "StoneRoom";}
+	public String getGridChildLocaleID(){return "StoneRoom";}
 }

@@ -44,6 +44,6 @@ public class CaveMaze extends StdMaze
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public int maxRange(){return 5;}
-	public String getChildLocaleID(){return "CaveRoom";}
+	public String getGridChildLocaleID(){return "CaveRoom";}
 	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

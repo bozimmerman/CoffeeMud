@@ -45,6 +45,6 @@ public class SewerMaze extends StdMaze
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 	public int domainConditions(){return Room.CONDITION_WET;}
 
-	public String getChildLocaleID(){return "SewerRoom";}
+	public String getGridChildLocaleID(){return "SewerRoom";}
 	public Vector resourceChoices(){return new Vector();}
 }

@@ -43,5 +43,5 @@ public class WoodRoomMaze extends StdMaze
 	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public String getChildLocaleID(){return "WoodRoom";}
+	public String getGridChildLocaleID(){return "WoodRoom";}
 }

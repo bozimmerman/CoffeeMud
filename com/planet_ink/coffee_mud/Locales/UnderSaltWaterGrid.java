@@ -49,7 +49,7 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 	protected int baseThirst(){return 0;}
 
 
-	public String getChildLocaleID(){return "UnderSaltWater";}
+	public String getGridChildLocaleID(){return "UnderSaltWater";}
 
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 }
