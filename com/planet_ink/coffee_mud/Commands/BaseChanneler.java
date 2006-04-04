@@ -79,8 +79,10 @@ public class BaseChanneler extends StdCommand
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME>"+str);
 		}
 		else
-		if((message.startsWith(":")||message.startsWith(","))
-		   &&(message.trim().length()>3))
+		if(message.startsWith(",")
+		||(message.startsWith(":")
+			&&(message.length()>1)
+			&&(Character.isLetter(message.charAt(1))||message.charAt(1)==' ')))
 		{
 			String msgstr=message.substring(1);
 			Vector V=CMParms.parse(msgstr);
