@@ -63,8 +63,7 @@ public class Chant_Fertility extends Chant
 		{
 			MOB mate=(MOB)msg.target();
 			if((msg.amISource(myChar))
-			&&(msg.tool()!=null)
-			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))
 			&&(myChar.charStats().getStat(CharStats.STAT_GENDER)!=mate.charStats().getStat(CharStats.STAT_GENDER))

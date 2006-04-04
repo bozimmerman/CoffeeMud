@@ -202,8 +202,7 @@ public class StdRace implements Race
 		if(!(myHost instanceof MOB)) return;
 
 		MOB myChar=(MOB)myHost;
-		if((msg.tool()!=null)
-		&&(msg.tool().ID().equals("Social"))
+		if((msg.tool() instanceof Social)
 		&&(msg.amITarget(myChar)||(msg.source()==myChar))
 		&&(myChar.location()==msg.source().location())
 		&&(msg.tool().Name().startsWith("MATE ")

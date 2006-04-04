@@ -54,7 +54,7 @@ public class Skill_Mimicry extends BardSkill
 		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
 		&&((text().length()==0)||(text().equalsIgnoreCase(msg.source().Name())))
 		&&((msg.sourceMinor()!=CMMsg.TYP_EMOTE)
-			||((msg.tool()!=null)&&(msg.tool().ID().equals("Social")))))
+			||(msg.tool() instanceof Social)))
 			lastMsg=msg;
 	}
 

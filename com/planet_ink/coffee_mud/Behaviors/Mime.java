@@ -56,7 +56,7 @@ public class Mime extends ActiveTicker
 		if(disabled) return;
 		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
 		&&(msg.sourceMinor()==CMMsg.TYP_EMOTE)
-		||((msg.tool()!=null)&&(msg.tool().ID().equals("Social"))))
+		||(msg.tool() instanceof Social))
 			lastMsg=msg;
 	}
 

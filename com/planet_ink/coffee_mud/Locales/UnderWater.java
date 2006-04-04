@@ -99,8 +99,7 @@ public class UnderWater extends StdRoom implements Drink
 		
 		if((msg.source().playerStats()!=null)
         &&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)
-            ||((msg.tool()!=null)
-                &&(msg.tool().ID().equals("Social"))
+            ||((msg.tool() instanceof Social)
                 &&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
                 ||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
 		&&(msg.source().soulMate()==null)

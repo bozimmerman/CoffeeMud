@@ -153,8 +153,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			else
 			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_STD))
 			&&((msg.amITarget(mob))||(msg.amISource(mob)))
-			&&(msg.tool()!=null)
-			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 				catchIt(mob,msg.amITarget(mob)?msg.source():msg.target());

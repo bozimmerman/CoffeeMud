@@ -49,8 +49,7 @@ public class Play_Blues extends Play
 		if((msg.target()!=null)&&(msg.target() instanceof MOB))
 		{
 			if((msg.amISource(myChar)||(msg.amITarget(myChar))
-			&&(msg.tool()!=null)
-			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))))
 			{

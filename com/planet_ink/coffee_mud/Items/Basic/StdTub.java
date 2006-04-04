@@ -242,8 +242,7 @@ public class StdTub extends StdRideable implements Drink
 	{
 	    if((msg.source().riding()==this)
         &&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)
-            ||((msg.tool()!=null)
-                &&(msg.tool().ID().equals("Social"))
+            ||((msg.tool() instanceof Social)
                 &&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
                 ||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
 	    &&(msg.source().playerStats()!=null)

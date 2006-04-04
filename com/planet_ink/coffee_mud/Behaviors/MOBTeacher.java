@@ -106,13 +106,21 @@ public class MOBTeacher extends CombatAbilities
 			}
 			else
 			{
-				Vector V=CMLib.edu().myQualifiedEducations(mob);
-				EducationLibrary.EducationDefinition def=null;
-				for(int v=0;v<V.size();v++)
+				boolean someNew=true;
+				while(someNew)
 				{
-					def=(EducationLibrary.EducationDefinition)V.elementAt(v);
-					if(mob.fetchEducation(def.ID)==null)
-						mob.addEducation(def.ID);
+					someNew=false;
+					Vector V=CMLib.edu().myQualifiedEducations(mob);
+					EducationLibrary.EducationDefinition def=null;
+					for(int v=0;v<V.size();v++)
+					{
+						def=(EducationLibrary.EducationDefinition)V.elementAt(v);
+						if(mob.fetchEducation(def.ID)==null)
+						{
+							mob.addEducation(def.ID);
+							someNew=true;
+						}
+					}
 				}
 			}
 		}

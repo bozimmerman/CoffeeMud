@@ -108,8 +108,7 @@ public class Monkey extends StdRace
 		MOB myChar=(MOB)myHost;
 		if((msg.amITarget(myChar))
 		&&(CMLib.dice().rollPercentage()<10)
-		&&(msg.tool()!=null)
-		&&(msg.tool().ID().equals("Social"))
+		&&(msg.tool() instanceof Social)
 		&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>")))
 		{

@@ -78,8 +78,7 @@ public class Disease_Chlamydia extends Disease
 		{
 			MOB mob=(MOB)affected;
 			if(((msg.amITarget(mob))||(msg.amISource(mob)))
-			&&(msg.tool()!=null)
-			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>")))
 			{

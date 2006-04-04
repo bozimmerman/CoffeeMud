@@ -67,8 +67,7 @@ public class Skill_Enslave extends StdSkill
 			return;
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(msg.tool()!=null)
-		&&(msg.tool().ID().equals("Social"))
+		&&(msg.tool() instanceof Social)
 		&&(msg.tool().Name().equals("WHIP <T-NAME>")
 			||msg.tool().Name().equals("BEAT <T-NAME>")))
 		    speedDown=SPEEDMAX;

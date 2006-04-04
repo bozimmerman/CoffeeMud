@@ -65,8 +65,7 @@ public class Prayer_Fidelity extends Prayer
 			if((msg.amISource(myChar))
 			&&(!myChar.getLiegeID().equals(mate.Name()))
 			&&(myChar.isMarriedToLiege())
-			&&(msg.tool()!=null)
-			&&(msg.tool().ID().equals("Social"))
+			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 			{

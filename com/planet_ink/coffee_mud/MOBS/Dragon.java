@@ -401,7 +401,7 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(CMath.div(CMath.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
-					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
+					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>.");
 				}
 			}
 		}

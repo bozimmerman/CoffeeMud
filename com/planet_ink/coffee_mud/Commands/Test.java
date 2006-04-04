@@ -93,7 +93,7 @@ public class Test extends StdCommand
         Item I=CMClass.getWeapon("Dagger");
         mob.curState().setHitPoints(mob.maxState().getHitPoints());
         int curHitPoints=mob.curState().getHitPoints();
-        CMLib.combat().postDamage(mob,mob,I,5,CMMsg.MSG_WEAPONATTACK,Weapon.TYPE_PIERCING,"<S-NAME> <DAMAGE> <T-NAME>");
+        CMLib.combat().postDamage(mob,mob,I,5,CMMsg.MSG_WEAPONATTACK,Weapon.TYPE_PIERCING,"<S-NAME> <DAMAGE> <T-NAME>.");
         if(mob.curState().getHitPoints()<curHitPoints-3)
             return false;
         curHitPoints=mob.curState().getHitPoints();

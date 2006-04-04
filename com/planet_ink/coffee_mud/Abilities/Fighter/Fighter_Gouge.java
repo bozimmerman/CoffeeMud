@@ -147,7 +147,7 @@ public class Fighter_Gouge extends FighterSkill
                     if(A2!=null)
                     {
                         A2.setMiscText(mob.Name()+"/"+gone);
-                        CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>");
+                        CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>.");
                         msg2.setValue(target.maxState().getHitPoints()/20);
                         if(!A2.invoke(mob,CMParms.makeVector(msg2),target,true,0))
                         {

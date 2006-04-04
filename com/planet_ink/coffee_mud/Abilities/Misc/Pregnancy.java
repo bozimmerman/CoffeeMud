@@ -515,7 +515,7 @@ public class Pregnancy extends StdAbility
 		Race R=mob.charStats().getMyRace();
 		long tickspermudmonth=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 		tickspermudmonth=tickspermudmonth*CMClass.globalClock().getDaysInMonth();
-		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMClass.globalClock().getMonthsInYear(),0.8335));
+		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMClass.globalClock().getMonthsInYear(),0.75));
 		if(birthmonths<=0) birthmonths=5;
 		long ticksperbirthperiod=tickspermudmonth*birthmonths;
 		long millisperbirthperiod=ticksperbirthperiod*Tickable.TIME_TICK;
