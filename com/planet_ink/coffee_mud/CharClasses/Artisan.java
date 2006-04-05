@@ -60,10 +60,10 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		maxStatAdj[CharStats.STAT_STRENGTH]=6;
-		maxStatAdj[CharStats.STAT_DEXTERITY]=6;
-		maxStatAdj[CharStats.STAT_CHARISMA]=6;
-		maxStatAdj[CharStats.STAT_CONSTITUTION]=6;
+		maxStatAdj[CharStats.STAT_STRENGTH]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_CHARISMA]=4;
+		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
