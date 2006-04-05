@@ -108,6 +108,10 @@ public class CMath
     {
         return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(x).doubleValue()));
     }
+    public static boolean bset(short num, short bitmask)
+    {
+        return ((num&bitmask)==bitmask);
+    }
     public static boolean bset(int num, int bitmask)
     {
         return ((num&bitmask)==bitmask);

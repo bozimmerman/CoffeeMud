@@ -36,7 +36,6 @@ public class StdArmor extends StdContainer implements Armor
 	public String ID(){	return "StdArmor";}
 	int sheath=0;
 	int layer=0;
-	boolean opaque=true;
 	
 	public StdArmor()
 	{
@@ -64,8 +63,6 @@ public class StdArmor extends StdContainer implements Armor
 	}
 	public int getClothingLayer(){return layer;}
 	public void setClothingLayer(int newLayer){layer=newLayer;}
-	public boolean getClothingOpaque(){return opaque;}
-	public void setClothingOpaque(boolean isOpaque){opaque=isOpaque;}
 
 	protected String armorHealth()
 	{

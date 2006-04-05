@@ -30,8 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface Armor extends Container
 {
-	public int getClothingLayer();
-	public void setClothingLayer(int newLayer);
-	public boolean getClothingOpaque();
-	public void setClothingOpaque(boolean isOpaque);
+	public static final short LAYER_OPAQUE=(short)16384;
+	public short getClothingLayer();
+	public void setClothingLayer(short newLayer);
 }
