@@ -35,7 +35,7 @@ public class StdArmor extends StdContainer implements Armor
 {
 	public String ID(){	return "StdArmor";}
 	int sheath=0;
-	int layer=0;
+	short layer=0;
 	
 	public StdArmor()
 	{
@@ -61,8 +61,8 @@ public class StdArmor extends StdContainer implements Armor
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
-	public int getClothingLayer(){return layer;}
-	public void setClothingLayer(int newLayer){layer=newLayer;}
+	public short getClothingLayer(){return layer;}
+	public void setClothingLayer(short newLayer){layer=newLayer;}
 
 	protected String armorHealth()
 	{
@@ -573,7 +573,6 @@ public class StdArmor extends StdContainer implements Armor
 			return true;
 		return false;
 	}
-
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();

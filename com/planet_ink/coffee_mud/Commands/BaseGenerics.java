@@ -1654,6 +1654,15 @@ public class BaseGenerics extends StdCommand
 		return numValue;
 	}
 
+	public static boolean getBooleanData(MOB mob, String prompt, boolean oldValue)
+	throws IOException
+	{
+		boolean bool=mob.session().confirm(prompt,oldValue?"Y":"N");
+		if(bool==oldValue)
+			mob.tell(getScr("BaseGenerics","nochange"));
+		return bool;
+	}
+	
 	public static long getLongData(MOB mob, String prompt, long oldValue)
 	throws IOException
 	{
@@ -1911,6 +1920,20 @@ public class BaseGenerics extends StdCommand
 	}
 
 
+	public static void genLayer(MOB mob, Armor E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		boolean oldOpague=CMath.bset(E.getClothingLayer(),Armor.LAYER_SEETHROUGH);
+		String seeThrough=oldOpague?"opague":"see-through";
+		mob.tell(getScr("BaseGenerics","layer",showNumber+"",(E.getClothingLayer()&Armor.LAYER_MASK)+"",seeThrough));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		E.setClothingLayer((short)getNumericData(mob,getScr("BaseGenerics","newlayer"),(E.getClothingLayer()&Armor.LAYER_MASK)));
+		boolean newOpague=getBooleanData(mob,getScr("BaseGenerics","newseethrough"),oldOpague);
+		E.setClothingLayer((short)(E.getClothingLayer()|(newOpague?Armor.LAYER_SEETHROUGH:0)));
+	}
+	
+	
 	public static void genCapacity(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6185,6 +6208,7 @@ public class BaseGenerics extends StdCommand
 			genLevel(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genWornLocation(mob,me,++showNumber,showFlag);
+			genLayer(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
 			genCondition(mob,me,++showNumber,showFlag);

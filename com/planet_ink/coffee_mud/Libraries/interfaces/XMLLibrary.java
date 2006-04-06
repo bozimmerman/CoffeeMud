@@ -31,13 +31,21 @@ import java.util.*;
 */
 public interface XMLLibrary extends CMObject
 {
+    /**
+     * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+     * 
+     * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+     * @param TName Tag name to use
+     * @param Data the data
+     * @return String Information corresponding to the tname
+     */
     public String convertXMLtoTag(String TName, String Data);
     /**
      * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
      * 
      * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-     * @param TName Tag name to search for
-     * @param Data String to searh
+     * @param TName Tag name to use
+     * @param Data the data
      * @return String Information corresponding to the tname
      */
     public String convertXMLtoTag(String TName, int Data);
@@ -45,8 +53,17 @@ public interface XMLLibrary extends CMObject
      * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
      * 
      * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-     * @param TName Tag name to search for
-     * @param Data String to searh
+     * @param TName Tag name to use
+     * @param Data the data
+     * @return String Information corresponding to the tname
+     */
+    public String convertXMLtoTag(String TName, short Data);
+    /**
+     * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+     * 
+     * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+     * @param TName Tag name to use
+     * @param Data the data
      * @return String Information corresponding to the tname
      */
     public String convertXMLtoTag(String TName, boolean Data);
@@ -54,8 +71,8 @@ public interface XMLLibrary extends CMObject
      * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
      * 
      * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-     * @param TName Tag name to search for
-     * @param Data String to searh
+     * @param TName Tag name to use
+     * @param Data the data
      * @return String Information corresponding to the tname
      */
     public String convertXMLtoTag(String TName, long Data);
@@ -103,6 +120,17 @@ public interface XMLLibrary extends CMObject
      * @return boolean Information from XML block
      */
     public boolean getBoolFromPieces(Vector V, String tag);
+    
+    /**
+     * Return the data value within a given XML block
+     * <TAG>Data</TAG>
+     * 
+     * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
+     * @param V Pieces to search
+     * @param tag Tag to search for
+     * @return short Information from XML block
+     */
+    public short getShortFromPieces(Vector V, String tag);
     
     /**
      * Return the data value within a given XML block

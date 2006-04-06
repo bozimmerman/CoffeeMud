@@ -440,6 +440,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			text.append(CMLib.xml().convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
 		}
 
+		if(E instanceof Armor)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("LAYR",((Armor)E).getClothingLayer()));
+		}
+		
 		if(E instanceof LandTitle)
 			text.append(CMLib.xml().convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
 
@@ -1245,9 +1250,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	}
 
 	public StringBuffer getUniqueItemXML(Item item, 
-	        									int type, 
-	        									Hashtable found,
-	        									HashSet files)
+    									 int type, 
+    									 Hashtable found,
+    									 HashSet files)
 	{
 		StringBuffer buf=new StringBuffer("");
 		switch(type)
@@ -2067,6 +2072,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			((Weapon)E).setWeaponType(CMLib.xml().getIntFromPieces(buf,"TYPE"));
 			((Weapon)E).setWeaponClassification(CMLib.xml().getIntFromPieces(buf,"CLASS"));
 			((Weapon)E).setRanges(CMLib.xml().getIntFromPieces(buf,"MINR"),CMLib.xml().getIntFromPieces(buf,"MAXR"));
+		}
+		if(E instanceof Armor)
+		{
+			((Armor)E).setClothingLayer(CMLib.xml().getShortFromPieces(buf,"LAYR"));
 		}
 		if(E instanceof DeadBody)
 		{

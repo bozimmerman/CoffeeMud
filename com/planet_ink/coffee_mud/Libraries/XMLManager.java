@@ -65,6 +65,21 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 	
 	/**
+	 * Returns the short value of a string without crashing
+ 	 * 
+	 * <br><br><b>Usage:</b> int num=s_short(CMD.substring(14));
+	 * @param SHORT Short value of string
+	 * @return short Short value of the string
+	 */
+	public short s_short(String SHORT)
+	{
+		short sint=0;
+		try{ sint=Short.parseShort(SHORT); }
+		catch(java.lang.NumberFormatException e){ return 0;}
+		return sint;
+	}
+	
+	/**
 	 * Returns the long value of a string without crashing
  	 * 
 	 * <br><br><b>Usage:</b> int num=s_long(CMD.substring(14));
@@ -83,8 +98,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
 	 * 
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-	 * @param TName Tag name to search for
-	 * @param Data String to searh
+	 * @param TName Tag name to use
+	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
 	 */
 	public String convertXMLtoTag(String TName, String Data)
@@ -98,8 +113,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
 	 * 
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-	 * @param TName Tag name to search for
-	 * @param Data String to searh
+	 * @param TName Tag name to use
+	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
 	 */
 	public String convertXMLtoTag(String TName, int Data)
@@ -111,8 +126,21 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
 	 * 
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-	 * @param TName Tag name to search for
-	 * @param Data String to searh
+	 * @param TName Tag name to use
+	 * @param Data the data to embed
+	 * @return String Information corresponding to the tname
+	 */
+	public String convertXMLtoTag(String TName, short Data)
+	{
+		return "<"+TName+">"+Data+"</"+TName+">";
+	}
+	
+	/**
+	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+	 * 
+  	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+	 * @param TName Tag name to use
+	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
 	 */
 	public String convertXMLtoTag(String TName, boolean Data)
@@ -124,8 +152,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
 	 * 
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
-	 * @param TName Tag name to search for
-	 * @param Data String to searh
+	 * @param TName Tag name to use
+	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
 	 */
 	public String convertXMLtoTag(String TName, long Data)
@@ -243,6 +271,19 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return s_int(getValFromPieces(V,tag));
 	}
 	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+  	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
+	 * @param V Vector of pieces
+	 * @param tag Tag to search for
+	 * @return short Information from XML block
+	 */
+	public short getShortFromPieces(Vector V, String tag)
+	{
+		return s_short(getValFromPieces(V,tag));
+	}
 	
 	/**
 	 * Return the data value within a given XML block

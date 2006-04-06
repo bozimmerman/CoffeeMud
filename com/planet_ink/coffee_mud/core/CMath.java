@@ -302,6 +302,20 @@ public class CMath
         catch(Exception e){ return 0;}
         return sint;
     }
+    /**
+     * Returns the short value of a string without crashing
+     * 
+     * <br><br><b>Usage:</b> int num=s_short(CMD.substring(14));
+     * @param SHORT Short value of string
+     * @return short Short value of the string
+     */
+    public static short s_short(String SHORT)
+    {
+    	short sint=0;
+        try{ sint=Short.parseShort(SHORT); }
+        catch(Exception e){ return 0;}
+        return sint;
+    }
     
     public static boolean isLong(String INT){return isInteger(INT);}
     public static boolean isInteger(String INT)

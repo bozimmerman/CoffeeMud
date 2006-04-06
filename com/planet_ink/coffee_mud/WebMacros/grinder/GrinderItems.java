@@ -116,7 +116,7 @@ public class GrinderItems
 			        		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
 			        		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
 							  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-							  "RECIPEDATA"
+							  "RECIPEDATA", "LAYER","SEETHRU"
 							  };
 			for(int o=0;o<okparms.length;o++)
 			{
@@ -453,6 +453,14 @@ public class GrinderItems
 				    if(I instanceof Recipe)
 				        ((Recipe)I).setRecipeCodeLine(CMStrings.replaceAll(old,",","\t"));
 				    break;
+				case 80: // layer
+					if(I instanceof Armor)
+						((Armor)I).setClothingLayer(CMath.s_short(old));
+					break;
+				case 81: // see-thru
+					if(I instanceof Armor)
+						((Armor)I).setClothingLayer((short)(((Armor)I).getClothingLayer()|(old.equals("on")?Armor.LAYER_SEETHROUGH:0)));
+					break;
 				}
 			}
 			if(I.isGeneric())
