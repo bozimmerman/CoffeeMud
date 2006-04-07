@@ -600,6 +600,8 @@ public class ServiceEngine implements ThreadEngine
         {
         case (int)Tickable.STATUS_ALIVE:
             codeWord="Alive"; break;
+        case (int)Tickable.STATUS_REBIRTH:
+            codeWord="Rebirth"; break;
         case (int)Tickable.STATUS_CLASS:
             codeWord="Class"; break;
         case (int)Tickable.STATUS_DEAD:
