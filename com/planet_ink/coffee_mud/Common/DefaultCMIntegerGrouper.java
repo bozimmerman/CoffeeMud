@@ -232,7 +232,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
             if(which<count)
             {
                 if((xs[i]&NEXT_FLAG)>0)
-                	return (xs[i]&NEXT_BITS)+(count-which);
+                	return (xs[i+1]-(count-which))+1;
             	return xs[i]&NEXT_BITS;
             }
         }
@@ -245,7 +245,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
             if(which<count)
             {
                 if((ys[i]&NEXT_FLAGL)>0)
-                	return (ys[i]&NEXT_BITSL)+(count-which);
+                	return (ys[i+1]-(count-which))+1;
             	return ys[i]&NEXT_BITSL;
             }
         }

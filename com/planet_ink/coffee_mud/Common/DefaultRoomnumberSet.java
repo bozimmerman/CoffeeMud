@@ -187,7 +187,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		int[] ids=new int[3];
 		ids[1]=-1;
 		ids[2]=-1;
-		if(coded<Integer.MAX_VALUE)
+		if(coded<=CMIntegerGrouper.NEXT_BITS)
 		{
 			ids[0]=(int)coded;
 			return ids;
@@ -204,7 +204,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     public String convertRoomID(String prefix, long coded)
     {
 		if(coded==-1) return prefix;
-		if(coded<Integer.MAX_VALUE)
+		if(coded<CMIntegerGrouper.NEXT_BITS)
 			return prefix+"#"+coded;
 		long mask=0;
 		for(int i=0;i<15;i++) mask=(mask<<1)+1;
