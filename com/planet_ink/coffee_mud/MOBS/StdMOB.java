@@ -2436,6 +2436,7 @@ public class StdMOB implements MOB
 		{
 			if(amDead)
 			{
+				boolean isOk=!pleaseDestroy;
 				tickStatus=Tickable.STATUS_DEAD;
 				if(isMonster())
 				{
@@ -2445,6 +2446,7 @@ public class StdMOB implements MOB
 						envStats().setRejuv(envStats().rejuv()-1);
 						if(envStats().rejuv()<0)
 						{
+							tickStatus=Tickable.STATUS_REBIRTH;
 							bringToLife(CMLib.map().getStartRoom(this),true);
 							location().showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 						}
@@ -2453,12 +2455,13 @@ public class StdMOB implements MOB
 					{
 						tickStatus=Tickable.STATUS_END;
 						if(soulMate()==null) destroy();
-						tickStatus=Tickable.STATUS_NOT;
-						lastTickedDateTime=System.currentTimeMillis();
-						return false;
+						isOk=false;
+						
 					}
 				}
-				tickStatus=Tickable.STATUS_END;
+				tickStatus=Tickable.STATUS_NOT;
+				lastTickedDateTime=System.currentTimeMillis();
+				return isOk;
 			}
 			else
 			if(location()!=null)

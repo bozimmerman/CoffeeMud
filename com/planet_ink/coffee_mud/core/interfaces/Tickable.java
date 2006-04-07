@@ -132,6 +132,8 @@ public interface Tickable extends CMObject
     /** a tick status representing ALIVE part  of its tick access  */
 	public static long STATUS_ALIVE=7;
     /** a tick status representing OTHER part  of its tick access  */
+	public static long STATUS_REBIRTH=8;
+    /** a tick status representing ALIVE part  of its tick access  */
 	public static long STATUS_OTHER=98;
     /** a tick status representing the end of its tick access  */
 	public static long STATUS_END=99;
