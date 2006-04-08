@@ -91,10 +91,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
         if(sender==null) return false;
 		if((sender==null)||(M==null)||(M.playerStats()==null)) return false;
+		Room R=M.location();
         if(((!offlineOK))
-        &&((M.amDead())||(M.location()==null)))
+        &&((M.amDead())||(R==null)))
 		    return false;
-		
 		if(getChannelFlags(i).contains("CLANONLY"))
         {
             // only way to fail an all-clan send is to have NO clan.
@@ -111,7 +111,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((!M.playerStats().getIgnored().contains(sender.Name()))
 		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
 		&&((!areaReq)
-		   ||(M.location().getArea()==sender.location().getArea()))
+		   ||(sender.location()==null)
+		   ||(R.getArea()==sender.location().getArea()))
 		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;
@@ -148,11 +149,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
                 return false;
         }
 		
+		Room R=M.location();
 		if((!ses.killFlag())
+		&&(R!=null)
 		&&(!M.playerStats().getIgnored().contains(senderName))
 		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
 		&&((!areaReq)
-		   ||(M.location().getArea()==sender.location().getArea()))
+		   ||(sender.location()==null)
+		   ||(R.getArea()==sender.location().getArea()))
 		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;

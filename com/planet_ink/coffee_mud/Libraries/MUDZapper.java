@@ -79,30 +79,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			zapCodes.put("+NAMES",new Integer(16));
 			zapCodes.put("-ANYCLASS",new Integer(17));
 			zapCodes.put("+ANYCLASS",new Integer(18));
-			zapCodes.put("+STR",new Integer(19));
-			zapCodes.put("+INT",new Integer(20));
-			zapCodes.put("+WIS",new Integer(21));
-			zapCodes.put("+DEX",new Integer(22));
-			zapCodes.put("+CON",new Integer(23));
-			zapCodes.put("+CHA",new Integer(24));
-			zapCodes.put("+STRENGTH",new Integer(19));
-			zapCodes.put("+INTELLIGENCE",new Integer(20));
-			zapCodes.put("+WISDOM",new Integer(21));
-			zapCodes.put("+DEXTERITY",new Integer(22));
-			zapCodes.put("+CONSTITUTION",new Integer(23));
-			zapCodes.put("+CHARISMA",new Integer(24));
-			zapCodes.put("-STR",new Integer(25));
-			zapCodes.put("-STRENGTH",new Integer(25));
-			zapCodes.put("-INT",new Integer(26));
-			zapCodes.put("-INTELLIGENCE",new Integer(26));
-			zapCodes.put("-WIS",new Integer(27));
-			zapCodes.put("-WISDOM",new Integer(27));
-			zapCodes.put("-DEX",new Integer(28));
-			zapCodes.put("-DEXTERITY",new Integer(28));
-			zapCodes.put("-CON",new Integer(29));
-			zapCodes.put("-CONSTITUTION",new Integer(29));
-			zapCodes.put("-CHA",new Integer(30));
-			zapCodes.put("-CHARISMA",new Integer(30));
+			zapCodes.put("+ADJSTR",new Integer(19));
+			zapCodes.put("+ADJINT",new Integer(20));
+			zapCodes.put("+ADJWIS",new Integer(21));
+			zapCodes.put("+ADJDEX",new Integer(22));
+			zapCodes.put("+ADJCON",new Integer(23));
+			zapCodes.put("+ADJCHA",new Integer(24));
+			zapCodes.put("+ADJSTRENGTH",new Integer(19));
+			zapCodes.put("+ADJINTELLIGENCE",new Integer(20));
+			zapCodes.put("+ADJWISDOM",new Integer(21));
+			zapCodes.put("+ADJDEXTERITY",new Integer(22));
+			zapCodes.put("+ADJCONSTITUTION",new Integer(23));
+			zapCodes.put("+ADJCHARISMA",new Integer(24));
+			zapCodes.put("-ADJSTR",new Integer(25));
+			zapCodes.put("-ADJSTRENGTH",new Integer(25));
+			zapCodes.put("-ADJINT",new Integer(26));
+			zapCodes.put("-ADJINTELLIGENCE",new Integer(26));
+			zapCodes.put("-ADJWIS",new Integer(27));
+			zapCodes.put("-ADJWISDOM",new Integer(27));
+			zapCodes.put("-ADJDEX",new Integer(28));
+			zapCodes.put("-ADJDEXTERITY",new Integer(28));
+			zapCodes.put("-ADJCON",new Integer(29));
+			zapCodes.put("-ADJCONSTITUTION",new Integer(29));
+			zapCodes.put("-ADJCHA",new Integer(30));
+			zapCodes.put("-ADJCHARISMA",new Integer(30));
 			zapCodes.put("-AREA",new Integer(31));
 			zapCodes.put("+AREA",new Integer(32));
 			zapCodes.put("+ITEM",new Integer(33));
@@ -175,6 +175,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SKILLS",new Integer(84));
             zapCodes.put("+QUALLVL",new Integer(85));
             zapCodes.put("-QUALLVL",new Integer(86));
+			zapCodes.put("+STR",new Integer(87));
+			zapCodes.put("+INT",new Integer(88));
+			zapCodes.put("+WIS",new Integer(89));
+			zapCodes.put("+DEX",new Integer(90));
+			zapCodes.put("+CON",new Integer(91));
+			zapCodes.put("+CHA",new Integer(92));
+			zapCodes.put("+STRENGTH",new Integer(87));
+			zapCodes.put("+INTELLIGENCE",new Integer(88));
+			zapCodes.put("+WISDOM",new Integer(89));
+			zapCodes.put("+DEXTERITY",new Integer(90));
+			zapCodes.put("+CONSTITUTION",new Integer(91));
+			zapCodes.put("+CHARISMA",new Integer(92));
+			zapCodes.put("-STR",new Integer(93));
+			zapCodes.put("-STRENGTH",new Integer(93));
+			zapCodes.put("-INT",new Integer(94));
+			zapCodes.put("-INTELLIGENCE",new Integer(94));
+			zapCodes.put("-WIS",new Integer(95));
+			zapCodes.put("-WISDOM",new Integer(95));
+			zapCodes.put("-DEX",new Integer(96));
+			zapCodes.put("-DEXTERITY",new Integer(96));
+			zapCodes.put("-CON",new Integer(97));
+			zapCodes.put("-CONSTITUTION",new Integer(97));
+			zapCodes.put("-CHA",new Integer(98));
+			zapCodes.put("-CHARISMA",new Integer(98));
 		}
 		return zapCodes;
 	}
@@ -363,22 +387,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return entry;
 	}
 	
-	public StringBuffer levelHelp(String str, char c, String append)
+	public StringBuffer levelHelp(String lvl, char c, String append)
 	{
-		if(str.startsWith(c+">="))
-			return new StringBuffer(append+"levels greater than or equal to "+str.substring(3).trim()+".  ");
+		if(lvl.startsWith(c+">="))
+			return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
 		else
-		if(str.startsWith(c+"<="))
-			return new StringBuffer(append+"levels less than or equal to "+str.substring(3).trim()+".  ");
+		if(lvl.startsWith(c+"<="))
+			return new StringBuffer(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
 		else
-		if(str.startsWith(c+">"))
-			return new StringBuffer(append+"levels greater than "+str.substring(2).trim()+".  ");
+		if(lvl.startsWith(c+">"))
+			return new StringBuffer(append+"levels greater than "+lvl.substring(2).trim()+".  ");
 		else
-		if(str.startsWith(c+"<"))
-			return new StringBuffer(append+"levels less than "+str.substring(2).trim()+".  ");
+		if(lvl.startsWith(c+"<"))
+			return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
 		else
-		if(str.startsWith(c+"="))
-			return new StringBuffer(append+"level "+str.substring(2).trim()+" players.  ");
+		if(lvl.startsWith(c+"="))
+			return new StringBuffer(append+"level "+lvl.substring(2).trim()+" players.  ");
 		return new StringBuffer("");
 	}
 	
@@ -1320,53 +1344,101 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
-				case 19: // +str
+				case 19: // +adjstr
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" strength of at least "+val+".  ");
 					break;
-				case 20: // +int
+				case 20: // +adjint
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at least "+val+".  ");
 					break;
-				case 21: // +wis
+				case 21: // +adjwis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at least "+val+".  ");
 					break;
-				case 22: // +dex
+				case 22: // +adjdex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at least "+val+".");
 					break;
-				case 23: // +con
+				case 23: // -adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at least "+val+".  ");
 					break;
-				case 24: // +cha
+				case 24: // +adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at least "+val+".  ");
 					break;
-				case 25: // -str
+				case 25: // -adjstr
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" strength of at most "+val+".  ");
 					break;
-				case 26: // -int
+				case 26: // -adjint
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at most "+val+".  ");
 					break;
-				case 27: // -wis
+				case 27: // -adjwis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at most "+val+".  ");
 					break;
-				case 28: // -dex
+				case 28: // -adjdex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at most "+val+".  ");
 					break;
-				case 29: // -con
+				case 29: // -adjcon
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at most "+val+".  ");
 					break;
-				case 30: // -cha
+				case 30: // -adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at most "+val+".  ");
+					break;
+				case 87: // +str
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base strength of at least "+val+".  ");
+					break;
+				case 88: // +int
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"An":"Requires an")+" base intelligence of at least "+val+".  ");
+					break;
+				case 89: // +wis
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base wisdom of at least "+val+".  ");
+					break;
+				case 90: // +dex
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at least "+val+".");
+					break;
+				case 91: // +con
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base constitution of at least "+val+".  ");
+					break;
+				case 92: // +cha
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at least "+val+".  ");
+					break;
+				case 93: // -str
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base strength of at most "+val+".  ");
+					break;
+				case 94: // -int
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"An":"Requires an")+" base intelligence of at most "+val+".  ");
+					break;
+				case 95: // -wis
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base wisdom of at most "+val+".  ");
+					break;
+				case 96: // -dex
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at most "+val+".  ");
+					break;
+				case 97: // -con
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base constitution of at most "+val+".  ");
+					break;
+				case 98: // -cha
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at most "+val+".  ");
 					break;
                 case 55: // +able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
@@ -2067,18 +2139,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
-				case 19: // +str
-				case 20: // +int
-				case 21: // +wis
-				case 22: // +dex
-				case 23: // +con
-				case 24: // +cha
-				case 25: // -str
-				case 26: // -int
-				case 27: // -wis
-				case 28: // -dex
-				case 29: // -con
-				case 30: // -cha
+				case 19: // +adjstr
+				case 20: // +adjint
+				case 21: // +adjwis
+				case 22: // +adjdex
+				case 23: // -adjcha
+				case 24: // +adjcha
+				case 25: // -adjstr
+				case 26: // -adjint
+				case 27: // -adjwis
+				case 28: // -adjdex
+				case 29: // -adjcon
+				case 30: // -adjcha
+				case 87: // +str
+				case 88: // +int
+				case 89: // +wis
+				case 90: // +dex
+				case 91: // +con
+				case 92: // +cha
+				case 93: // -str
+				case 94: // -int
+				case 95: // -wis
+				case 96: // -dex
+				case 97: // -con
+				case 98: // -cha
                 case 55: // +able
                 case 56: // -able
                 case 59: // +value
@@ -2628,52 +2712,100 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
 					{ return false;}
 				break;
-			case 19: // +str
+			case 19: // +adjstr
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 20: // +int
+			case 20: // +adjint
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 21: // +wis
+			case 21: // +adjwis
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 22: // +dex
+			case 22: // +adjdex
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 23: // +con
+			case 23: // -adjcha
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 24: // +cha
+			case 24: // +adjcha
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 25: // -str
+			case 25: // -adjstr
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 26: // -int
+			case 26: // -adjint
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 27: // -wis
+			case 27: // -adjwis
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 28: // -dex
+			case 28: // -adjdex
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 29: // -con
+			case 29: // -adjcon
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
-			case 30: // -cha
+			case 30: // -adjcha
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 87: // +str
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 88: // +int
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 89: // +wis
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 90: // +dex
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 91: // +con
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 92: // +cha
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 93: // -str
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 94: // -int
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 95: // -wis
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 96: // -dex
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 97: // -con
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 98: // -cha
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
             case 55: // +able
@@ -3014,64 +3146,124 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         ||(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
 							return false;
 					break;
-				case 19: // +str
+				case 19: // +adjstr
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<val)
 						return false;
 					break;
-				case 20: // +int
+				case 20: // +adjint
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<val)
 						return false;
 					break;
-				case 21: // +wis
+				case 21: // +adjwis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_WISDOM)<val)
 						return false;
 					break;
-				case 22: // +dex
+				case 22: // +adjdex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<val)
 						return false;
 					break;
-				case 23: // +con
+				case 23: // -adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<val)
 						return false;
 					break;
-				case 24: // +cha
+				case 24: // +adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_CHARISMA)<val)
 						return false;
 					break;
-				case 25: // -str
+				case 25: // -adjstr
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_STRENGTH)>val)
 						return false;
 					break;
-				case 26: // -int
+				case 26: // -adjint
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>val)
 						return false;
 					break;
-				case 27: // -wis
+				case 27: // -adjwis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_WISDOM)>val)
 						return false;
 					break;
-				case 28: // -dex
+				case 28: // -adjdex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>val)
 						return false;
 					break;
-				case 29: // -con
+				case 29: // -adjcon
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>val)
 						return false;
 					break;
-				case 30: // -cha
+				case 30: // -adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STAT_CHARISMA)>val)
+						return false;
+					break;
+				case 87: // +str
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<val)
+						return false;
+					break;
+				case 88: // +int
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<val)
+						return false;
+					break;
+				case 89: // +wis
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<val)
+						return false;
+					break;
+				case 90: // +dex
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<val)
+						return false;
+					break;
+				case 91: // +con
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<val)
+						return false;
+					break;
+				case 92: // +cha
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<val)
+						return false;
+					break;
+				case 93: // -str
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)>val)
+						return false;
+					break;
+				case 94: // -int
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)>val)
+						return false;
+					break;
+				case 95: // -wis
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)>val)
+						return false;
+					break;
+				case 96: // -dex
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)>val)
+						return false;
+					break;
+				case 97: // -con
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>val)
+						return false;
+					break;
+				case 98: // -cha
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)>val)
 						return false;
 					break;
                 case 55: // +able
