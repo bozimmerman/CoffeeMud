@@ -124,6 +124,7 @@ public interface MaskingLibrary extends CMObject
         +"+CHA X (<WORD> those with charisma less than X)  <BR>"
         +"-DEX X (<WORD> those with dexterity greater than X)  <BR>"
         +"+DEX X (<WORD> those with dexterity less than X) <BR>"
+        +"+-ADJSTR...ADJCON (Same as above, but uses current values) <BR>"
         +"-AREA (<WORD> in all areas) <BR>"
         +"-AREA \"+my areaname\" etc.. (create exceptions) <BR>"
         +"+AREA (do not <WORD> any areas) <BR>"
