@@ -1207,7 +1207,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
         
         subtickBeforeAttack(fighter);
-        int saveAction=(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)?0:1;
+        int combatSystem=CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM);
+        int saveAction=(combatSystem!=CombatLibrary.COMBAT_DEFAULT)?0:1;
 
         int folrange=(CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)
                         &&(fighter.amFollowing()!=null)
@@ -1217,11 +1218,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                                 fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
         if(CMLib.flags().aliveAwakeMobile(fighter,true))
         {
-            if((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_MANUAL)
+            if((combatSystem!=CombatLibrary.COMBAT_MANUAL)
             ||(fighter.isMonster()))
             {
                 int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
-                if((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
+                if((combatSystem==CombatLibrary.COMBAT_DEFAULT)
                 &&(numAttacks>(int)Math.round(Math.floor(fighter.envStats().speed()+0.9))))
                     numAttacks=(int)Math.round(Math.floor(fighter.envStats().speed()+0.9));
                 for(int s=0;s<numAttacks;s++)
