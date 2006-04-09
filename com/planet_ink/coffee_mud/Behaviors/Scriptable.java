@@ -4814,7 +4814,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            lastKnownLocation.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
                     }
                 }
                 else
@@ -4825,7 +4825,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            lastKnownLocation.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
                     }
                 }
                 else
@@ -4839,7 +4839,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            lastKnownLocation.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
                     }
                 }
 				break;
