@@ -228,12 +228,12 @@ public interface MOB
 	public Item fetchInventory(Item goodLocation, String itemName);
 	public Item fetchCarried(Item goodLocation, String itemName);
 	public Item fetchWornItem(String itemName);
+	public Vector fetchWornItems(long wornCode);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
 
 
 	public int freeWearPositions(long wornCode);
-	public int numWearingHere(long wornCode);
 	public boolean isMine(Environmental env);
 	public void confirmWearability();
 	public void giveItem(Item thisContainer);

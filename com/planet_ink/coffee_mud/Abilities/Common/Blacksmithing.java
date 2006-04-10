@@ -185,7 +185,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 											woodRequired,"metal",pm,
 											0,null,null,
 											bundling,
-											autoGenerate);
+											autoGenerate,
+											enhancedTypes);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!bundling)

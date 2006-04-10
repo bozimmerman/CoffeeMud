@@ -244,7 +244,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor
 												woodRequired,"stone",pm,
 												0,null,null,
 												bundling,
-												autoGenerate);
+												autoGenerate,
+												enhancedTypes);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));

@@ -164,7 +164,8 @@ public class Taxidermy extends CraftingSkill
 											woodRequired,"cloth stuffing",pm,
 											0,null,null,
 											false,
-											0);
+											0,
+											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 

@@ -388,8 +388,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 												(multiplier==6)?1:0,
 												(multiplier==6)?"metal":null,
 												(multiplier==6)?pm1:null,
-                                                        bundling,
-												autoGenerate);
+                                                bundling,
+												autoGenerate,
+												enhancedTypes);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -660,7 +660,8 @@ public class Construction extends CraftingSkill
 											woodRequired,"wood",pm,
 											0,null,null,
 											false,
-											0);
+											0,
+											null);
 		if(idata==null) return false;
 		woodRequired=idata[0][FOUND_AMT];
 

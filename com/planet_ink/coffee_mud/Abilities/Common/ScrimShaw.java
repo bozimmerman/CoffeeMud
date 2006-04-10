@@ -230,7 +230,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
 												woodRequired,"bone",pm,
 												0,null,null,
                                                 bundling,
-												autoGenerate);
+												autoGenerate,
+												enhancedTypes);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(amount>woodRequired) woodRequired=amount;

@@ -37,6 +37,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "EnhancedCraftingSkill"; }
 	public String name(){ return "Enhanced Crafting Skill";}
+	
+	protected int materialAdjustments=0;
+	
 	protected final static String[] STAGES={"I","II","III"};
 	protected final static String[] STAGESTAT={"14","18","22"};
 	protected final static int TYPE_LITECRAFT=0;
@@ -84,6 +87,85 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				CMLib.edu().addDefinition(TYPES_CODES[t]+STAGES[s],TYPES_NAMES[t]+" "+STAGES[s],"",finalReq,0,1,0,0,0);
 			}
 		}
+	}
+	protected int[][] fetchFoundResourceData(MOB mob,
+											 int req1Required,
+											 String req1Desc, int[] req1,
+											 int req2Required,
+											 String req2Desc, int[] req2,
+											 boolean bundle,
+											 int autoGeneration,
+											 DVector eduMods)
+	{
+		if(eduMods!=null)
+		for(int t=0;t<eduMods.size();t++)
+		{
+			int type=((Integer)eduMods.elementAt(t,1)).intValue();
+			int stage=((Integer)eduMods.elementAt(t,2)).intValue();
+			switch(type)
+			{
+			case TYPE_LITECRAFT:
+				switch(stage)
+				{
+				case 0:
+					if(req1Required>0) req1Required=atLeast1(req1Required,-0.1);
+					if(req2Required>0) req2Required=atLeast1(req2Required,-0.1);
+					break;
+				case 1:
+					if(req1Required>0) req1Required=atLeast1(req1Required,-0.25);
+					if(req2Required>0) req2Required=atLeast1(req2Required,-0.25);
+					break;
+				case 2:
+					if(req1Required>0) req1Required=atLeast1(req1Required,-0.5);
+					if(req2Required>0) req2Required=atLeast1(req2Required,-0.5);
+					break;
+				}
+				break;
+			case TYPE_DURACRAFT:
+				switch(stage)
+				{
+				case 0:
+					if(req1Required>0) req1Required=atLeast1(req1Required,0.1);
+					if(req2Required>0) req2Required=atLeast1(req2Required,0.1);
+					break;
+				case 1:
+					if(req1Required>0) req1Required=atLeast1(req1Required,0.2);
+					if(req2Required>0) req2Required=atLeast1(req2Required,0.2);
+					break;
+				case 2:
+					if(req1Required>0) req1Required=atLeast1(req1Required,0.25);
+					if(req2Required>0) req2Required=atLeast1(req2Required,0.25);
+					break;
+				}
+				break;
+			case TYPE_QUALCRAFT:
+				switch(stage)
+				{
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				}
+				break;
+			case TYPE_LTHLCRAFT:
+				switch(stage)
+				{
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				}
+				break;
+			}
+		}
+		return super.fetchFoundResourceData(mob,
+				req1Required,req1Desc,req1,
+				req2Required,req2Desc,req2,
+				bundle,autoGeneration,eduMods);
 	}
 	
 	public void setMiscText(String newText)
@@ -152,14 +234,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		&&(CMLib.english().isAnArticle((String)V.firstElement())))
 			insertHere++;
 		V.insertElementAt(word.toLowerCase(),insertHere);
+		if((insertHere>0)
+		&&(((String)V.firstElement()).equalsIgnoreCase("A"))
+		&&(((String)V.firstElement()).equalsIgnoreCase("AN")))
+		{
+			V.removeElementAt(0);
+			return CMStrings.startWithAorAn(CMParms.combineWithQuotes(V,0));
+		}
 		return CMParms.combineWithQuotes(V,0);
 	}
 	
 	protected void applyName(Item item, String word)
 	{
+		String oldName=item.Name();
 		item.setName(applyName(item.Name(),word));
 		item.setDisplayText(applyName(item.displayText(),word));
 		item.setDescription(applyName(item.description(),word));
+		verb=CMStrings.replaceAll(verb,oldName,item.Name());
+		displayText=CMStrings.replaceAll(displayText,oldName,item.Name());
+		//startStr=CMStrings.replaceAll(startStr,oldName,item.Name());
 	}
 	
 	public void enhanceList(MOB mob)
@@ -182,6 +275,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	{
 		String cmd=null;
 		DVector types=null;
+		materialAdjustments=0;
 		if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof String))
 		{
 			cmd=(String)commands.firstElement();
@@ -207,6 +301,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 									cmd=(String)commands.firstElement();
 								else
 									cmd="";
+								foundSomething=true;
 								break; // you can do any from a stage, but only 1 per stage!
 							}
 					}
@@ -214,6 +309,23 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			}
 		}
 		return types;
+	}
+	
+	public void addStatAdjustment(Item item, String stat, String adjustment)
+	{
+		stat=stat.toUpperCase().trim();
+		Ability WA=item.fetchEffect("Prop_WearAdjuster");
+		if(WA==null)
+		{
+			WA=CMClass.getAbility("Prop_WearAdjuster");
+			item.addNonUninvokableEffect(WA);
+		}
+		else
+		if((CMLib.english().containsString(WA.text().toUpperCase(),stat+"+"))
+		||(CMLib.english().containsString(WA.text().toUpperCase(),stat+"-")))
+			return;
+		if(WA!=null)
+			WA.setMiscText((WA.text()+" "+stat+adjustment).trim());
 	}
 	
 	public void enhanceItem(MOB mob, Item item, DVector types)
@@ -237,25 +349,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),-0.1));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),-0.2));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.0));
 						affect.tickDown*=2;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),-0.25));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
-						if(item.fetchEffect("Prop_WearAdjuster")==null)
-						{
-							Ability A=CMClass.getAbility("Prop_WearAdjuster");
-							if(A!=null) A.setMiscText("DEX+1");
-							item.addNonUninvokableEffect(A);
-						}
+						//addStatAdjustment(item,"DEX","+1");
 						affect.tickDown*=4;
 						break;
 					}
@@ -268,28 +372,20 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
 						item.baseEnvStats().setArmor(item.baseEnvStats().armor()+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.2));
 						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
 						affect.tickDown*=2;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.25));
-						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.1)+1);
+						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
-						if(item.fetchEffect("Prop_WearAdjuster")==null)
-						{
-							Ability A=CMClass.getAbility("Prop_WearAdjuster");
-							if(A!=null) A.setMiscText("CON+1");
-							item.addNonUninvokableEffect(A);
-						}
+						//addStatAdjustment(item,"CON","+1");
 						affect.tickDown*=4;
 						break;
 					}
@@ -310,12 +406,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
-						if(item.fetchEffect("Prop_WearAdjuster")==null)
-						{
-							Ability A=CMClass.getAbility("Prop_WearAdjuster");
-							if(A!=null) A.setMiscText("CHA+1");
-							item.addNonUninvokableEffect(A);
-						}
+						addStatAdjustment(item,"CHA","+1");
 						affect.tickDown*=4;
 						break;
 					}

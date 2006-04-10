@@ -239,7 +239,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			mob.tell("You need "+expRequired+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
 			return false;
 		}
-		int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate);
+		int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate,null);
 		if(data==null) return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];

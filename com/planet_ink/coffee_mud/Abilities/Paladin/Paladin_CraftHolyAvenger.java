@@ -105,7 +105,8 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 											woodRequired,"metal",pm,
 											0,null,null,
 											false,
-											auto?RawMaterial.RESOURCE_MITHRIL:0);
+											auto?RawMaterial.RESOURCE_MITHRIL:0,
+											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 

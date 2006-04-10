@@ -702,7 +702,7 @@ public class Masonry extends CraftingSkill
 			 							woodRequired,"metal",pm,
 			 							0,null,null,
 			 							false,
-			 							0);
+			 							0,null);
 			if(idata==null) return false;
 			woodRequired=idata[0][FOUND_AMT];
 		}
@@ -713,7 +713,7 @@ public class Masonry extends CraftingSkill
 										woodRequired,"stone",pm,
 										0,null,null,
 										false,
-										0);
+										0,null);
 			if(idata==null) return false;
 			woodRequired=idata[0][FOUND_AMT];
 		}

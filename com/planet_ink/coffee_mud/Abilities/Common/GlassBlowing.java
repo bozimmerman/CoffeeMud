@@ -179,7 +179,8 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 											woodRequired,"sand",pm,
 											0,null,null,
                                             bundling,
-											autoGenerate);
+											autoGenerate,
+											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

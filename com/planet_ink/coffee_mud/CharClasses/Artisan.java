@@ -62,6 +62,8 @@ public class Artisan extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		if(!loaded())

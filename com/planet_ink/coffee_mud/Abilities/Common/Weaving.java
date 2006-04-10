@@ -291,7 +291,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 												woodRequired,"weavable material",pm,
 												0,null,null,
 												false,
-												autoGenerate);
+												autoGenerate,
+												enhancedTypes);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

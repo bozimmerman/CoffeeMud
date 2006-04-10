@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
@@ -3163,7 +3164,7 @@ public class StdMOB implements MOB
 	{
 		int x=getWearPositions(wornCode);
 		if(x<=0) return 0;
-		x=x-numWearingHere(wornCode);
+		x=x-fetchWornItems(wornCode).size();
 		if(x<=0) return 0;
 		return x;
 	}
@@ -3235,16 +3236,16 @@ public class StdMOB implements MOB
 		return add;
 	}
 
-	public int numWearingHere(long wornCode)
+	public Vector fetchWornItems(long wornCode)
 	{
-		int num=0;
+		Vector V=new Vector();
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item thisItem=fetchInventory(i);
 			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
-				num++;
+				V.addElement(thisItem);
 		}
-		return num;
+		return V;
 	}
 	public Item fetchFirstWornItem(long wornCode)
 	{

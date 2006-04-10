@@ -180,7 +180,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 											woodRequired,"wood",pm,
 											0,null,null,
 											false,
-											autoGenerate);
+											autoGenerate,
+											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
         bundling=misctype.equalsIgnoreCase("BUNDLE");

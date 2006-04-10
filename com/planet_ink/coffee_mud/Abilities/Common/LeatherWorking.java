@@ -311,7 +311,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 												(multiplier==3)?"metal":null,
 												(multiplier==3)?pm1:null,
                                                 bundling,
-												autoGenerate);
+												autoGenerate,
+												enhancedTypes);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

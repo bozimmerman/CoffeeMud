@@ -296,7 +296,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
-												autoGenerate);
+												autoGenerate,
+												enhancedTypes);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 
