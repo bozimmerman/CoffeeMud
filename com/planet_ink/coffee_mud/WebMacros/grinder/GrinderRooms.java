@@ -280,6 +280,7 @@ public class GrinderRooms
 			CMLib.database().DBUpdateItems(R);
 			R.startItemRejuv();
 	        if(oldR!=R) oldR.destroy();
+	        R.getArea().addProperRoomnumber(R.roomID()); // oldR.destroy() would kill it otherwise
 			if(!copyRoom.sameAs(R))
 				Log.sysOut("Grinder",whom.Name()+" modified room "+R.roomID()+".");
     	}

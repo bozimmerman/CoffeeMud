@@ -205,7 +205,7 @@ public class Import extends StdCommand
 		{"bagel",""+RawMaterial.RESOURCE_BREAD},
 		{"fries",""+RawMaterial.RESOURCE_POTATOES},
 		{"chicken",""+RawMaterial.RESOURCE_POULTRY},
-		{"cheese",""+RawMaterial.RESOURCE_MILK},
+		{"cheese",""+RawMaterial.RESOURCE_CHEESE},
 		{"chalk",""+RawMaterial.RESOURCE_STONE},
 		{"cotton",""+RawMaterial.RESOURCE_COTTON},
 		{"electrum",""+RawMaterial.RESOURCE_SILVER},
