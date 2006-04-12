@@ -196,9 +196,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		for(int i=0;i<15;i++) mask=(mask<<1)+1;
 		ids[2]=(int)(coded&mask);
 		long mask2=mask<<15;
-		ids[1]=(int)(coded&mask2);
+		ids[1]=(int)((coded&mask2)>>15);
 		mask|=mask2;
-		ids[0]=(int)(coded&((Long.MAX_VALUE-1)-mask));
+		ids[0]=(int)((coded&((Long.MAX_VALUE-1)-mask))>>30);
 		return ids;
     }
     public String convertRoomID(String prefix, long coded)
