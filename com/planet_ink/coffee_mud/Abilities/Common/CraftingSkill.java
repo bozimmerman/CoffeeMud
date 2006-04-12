@@ -502,6 +502,7 @@ public class CraftingSkill extends GatheringSkill
 	public Vector craftItem(String recipe)
 	{
 		Vector rscs=myResources();
+		if(rscs.size()==0) return new Vector();
 		int material=((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
 		return craftItem(recipe,material);
 	}
