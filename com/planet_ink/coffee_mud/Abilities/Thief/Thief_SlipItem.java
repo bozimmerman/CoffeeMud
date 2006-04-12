@@ -68,7 +68,7 @@ public class Thief_SlipItem extends ThiefSkill
 		}
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
-		if((!target.mayIFight(mob))&&(levelDiff<10))
+		if(!target.mayIFight(mob))
 		{
 			mob.tell("You cannot slip anything off of "+target.charStats().himher()+".");
 			return false;

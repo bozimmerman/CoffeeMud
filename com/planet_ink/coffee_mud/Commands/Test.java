@@ -207,6 +207,16 @@ public class Test extends StdCommand
         if(commands.size()>1)
         {
             String what=((String)commands.elementAt(1)).toUpperCase().trim();
+            if(what.equalsIgnoreCase("randomroompick"))
+            {
+            	int num=CMath.s_int(CMParms.combine(commands,2));
+            	int numNull=0;
+            	for(int i=0;i<num;i++)
+            		if(mob.location().getArea().getRandomProperRoom()==null)
+            			numNull++;
+            	mob.tell("Picked "+(num-numNull)+"/"+num+" rooms in this area.");
+            }
+            else
             if(what.equalsIgnoreCase("mudhourstil"))
             {
                 String startDate=CMParms.combine(commands,2);

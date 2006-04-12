@@ -198,7 +198,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		long mask2=mask<<15;
 		ids[1]=(int)((coded&mask2)>>15);
 		mask|=mask2;
-		ids[0]=(int)((coded&((Long.MAX_VALUE-1)-mask))>>30);
+		mask=mask<<30;
+		ids[0]=(int)((coded&mask)>>30);
 		return ids;
     }
     public String convertRoomID(String prefix, long coded)
@@ -210,9 +211,10 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		for(int i=0;i<15;i++) mask=(mask<<1)+1;
 		long thirdID=coded&mask;
 		long mask2=mask<<15;
-		long secondID=coded&mask2;
+		long secondID=(coded&mask2)>>15;
 		mask|=mask2;
-		long firstID=coded&((Long.MAX_VALUE-1)-mask);
+		mask=mask<<30;
+		long firstID=(coded&mask)>>30;
 		return prefix+"#"+firstID+"#("+secondID+","+thirdID+")";
     }
     public Vector getAreaNames(){ return (Vector)root.getDimensionVector(1).clone();}

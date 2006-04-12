@@ -106,7 +106,7 @@ public class Thief_Robbery extends ThiefSkill
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		if(((!target.mayIFight(mob))&&(levelDiff<10))||(CMLib.coffeeShops().getShopKeeper(target)==null))
+		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
 			mob.tell("You cannot rob from "+target.charStats().himher()+".");
 			return false;

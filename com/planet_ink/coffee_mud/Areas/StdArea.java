@@ -1013,7 +1013,7 @@ public class StdArea implements Area
 	public Room getRandomProperRoom() 
 	{ 
 		String roomID=getProperRoomnumbers().random();
-		Room R=getRoom(roomID);
+		Room R=CMLib.map().getRoom(roomID);
 		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
 		if(R==null) Log.errOut("StdArea","Unable to random-find: "+roomID);
 		return R;
@@ -1028,7 +1028,7 @@ public class StdArea implements Area
 			return R;
 		}*/
 		String roomID=metroRoomIDSet.random();
-		Room R=getRoom(roomID); 
+		Room R=CMLib.map().getRoom(roomID); 
 		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
 		if(R==null) Log.errOut("StdArea","Unable to random-metro-find: "+roomID);
 		return R;
