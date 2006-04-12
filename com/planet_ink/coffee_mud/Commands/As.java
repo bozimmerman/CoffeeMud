@@ -93,7 +93,7 @@ public class As extends StdCommand
                 return false;
             }
         }
-		Session oldSession=M.session();
+		Session hisSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
 		boolean dead=M.amDead();
@@ -128,7 +128,7 @@ public class As extends StdCommand
 			M.setLocation(oldRoom);
 		}
 		M.setSoulMate(null);
-		M.setSession(oldSession);
+		M.setSession(hisSession);
 		mySession.setMob(mob);
         mySession.initTelnetMode(myBitmap);
 		if(dead) M.removeFromGame(true);
