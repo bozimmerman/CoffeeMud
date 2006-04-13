@@ -63,7 +63,7 @@ public class Thief_StripItem extends ThiefSkill
 			return false;
 		}
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
-		if(!target.mayIFight(mob))
+		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
 			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");
 			return false;

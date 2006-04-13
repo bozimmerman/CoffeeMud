@@ -90,7 +90,7 @@ public class Thief_Steal extends ThiefSkill
 		}
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
-		if(!target.mayIFight(mob))
+		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
 			mob.tell("You cannot steal from "+target.charStats().himher()+".");
 			return false;
