@@ -225,7 +225,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if(R==null) return null;
 			R.setGridParent(this);
 			R.setRoomID("");
-			R.setArea(getArea());
 			R.setDisplayText(displayText());
 			R.setDescription(description());
 			int c=-1;
@@ -249,7 +248,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				R.addBehavior((Behavior)fetchBehavior(b).copyOf());
 			R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
 			addSortedRoom(R,x,y);
-			getArea().addProperRoom(R);
+			R.setArea(getArea());
 		}
 		return R;
 	}

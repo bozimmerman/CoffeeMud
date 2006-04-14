@@ -339,7 +339,7 @@ public class RandomMonsters extends ActiveTicker
 						{
 							tickStatus=Tickable.STATUS_MISC+13;
 							int tries=0;
-							while(((room==null)||(room.roomID().length()==0)||(!canFlyHere(M,room)))
+							while(((room==null)||(!canFlyHere(M,room)))
 							&&((++tries)<100))
 								room=((Area)ticking).getRandomMetroRoom();
 							tickStatus=Tickable.STATUS_MISC+14;
@@ -347,9 +347,13 @@ public class RandomMonsters extends ActiveTicker
 						else
 						{
 							tickStatus=Tickable.STATUS_MISC+15;
-							Vector map=new Vector();
-							if(map.size()>0)
-								room=(Room)map.elementAt(CMLib.dice().roll(1,map.size(),-1));
+							int tries=0;
+							while(((room==null)||(!okRoomForMe(M,room)))
+							&&((++tries)<100))
+							{
+								room=((Area)ticking).getRandomMetroRoom();
+System.out.println(tries+"/"+maintained.size()+"/"+CMLib.map().getExtendedRoomID(room)+"/"+room.domainType());								
+							}
 							tickStatus=Tickable.STATUS_MISC+16;
 						}
 						if((room!=null)&&(room instanceof GridLocale))

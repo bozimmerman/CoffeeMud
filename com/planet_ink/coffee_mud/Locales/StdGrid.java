@@ -565,7 +565,6 @@ public class StdGrid extends StdRoom implements GridLocale
 					Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
 					{
-						subMap[x][y]=newRoom;
 						if((y>0)&&(subMap[x][y-1]!=null))
 							linkRoom(newRoom,subMap[x][y-1],Directions.NORTH,ox,ox);
 						if((x>0)&&(subMap[x-1][y]!=null))
@@ -734,6 +733,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		Room gc=CMClass.getLocale(getGridChildLocaleID());
 		gc.setRoomID("");
 		gc.setGridParent(this);
+		subMap[x][y]=gc;
 		gc.setArea(getArea());
 		gc.setDisplayText(displayText());
 		gc.setDescription(description());

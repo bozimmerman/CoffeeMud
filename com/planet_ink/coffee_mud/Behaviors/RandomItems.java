@@ -353,24 +353,16 @@ public class RandomItems extends ActiveTicker
 								if(restrictedLocales==null)
 								{
 									int tries=0;
-									while(((room==null)||(room.roomID().length()==0))
+									while((room==null)
 									&&((++tries)<100))
 										room=((Area)ticking).getRandomMetroRoom();
 								}
 								else
 								{
-									Vector map=new Vector();
-									Room R=null;
-									for(Enumeration e=((Area)ticking).getMetroMap();e.hasMoreElements();)
-									{
-										R=(Room)e.nextElement();
-										if(okRoomForMe(R)
-										&&(!map.contains(R))
-										&&(R.roomID().trim().length()>0))
-											map.addElement(R);
-									}
-									if(map.size()>0)
-										room=(Room)map.elementAt(CMLib.dice().roll(1,map.size(),-1));
+									int tries=0;
+									while(((room==null)||(!okRoomForMe(room)))
+									&&((++tries)<100))
+										room=((Area)ticking).getRandomMetroRoom();
 								}
 							}
 							else

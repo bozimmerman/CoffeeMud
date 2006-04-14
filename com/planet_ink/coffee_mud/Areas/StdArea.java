@@ -1036,14 +1036,26 @@ public class StdArea implements Area
 
 	public Enumeration getProperMap()
 	{
-		synchronized(properRooms)
+		Vector V=(Vector)properRooms.clone();
+		Room R=null;
+		for(int v=V.size()-1;v>=0;v--)
 		{
-			return properRooms.elements();
+			R=(Room)V.elementAt(v);
+			if(R instanceof GridLocale)
+				V.addAll(((GridLocale)R).getAllRooms());
 		}
+		return V.elements();
 	}
 	public Vector getMetroCollection()
 	{
 		Vector V=(Vector)properRooms.clone();
+		Room R=null;
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			R=(Room)V.elementAt(v);
+			if(R instanceof GridLocale)
+				V.addAll(((GridLocale)R).getAllRooms());
+		}
 		V.ensureCapacity(metroSize());
 		for(int c=getNumChildren()-1;c>=0;c--)
 			V.addAll(getChild(c).getMetroCollection());
