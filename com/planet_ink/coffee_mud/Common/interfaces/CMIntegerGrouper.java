@@ -134,6 +134,8 @@ public interface CMIntegerGrouper extends CMObject
     public static final int NEXT_BITS=NEXT_FLAG-1;
     /**  Whether this number denotes the beginning of a grouping.*/
     public static final long NEXT_FLAGL=(Long.MAX_VALUE/2)+1;
+    /**  Whether this number denotes the beginning of a grouping.*/
+    public static final long GRID_FLAGL=NEXT_FLAGL/2;
     /**  a mask for room number values */
     public static final long NEXT_BITSL=NEXT_FLAGL-1;
 }

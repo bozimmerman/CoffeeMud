@@ -82,6 +82,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                     roomNum=(Long.parseLong(theRest.substring(0,x))<<30);
                     roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
                     roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
+                    if(roomNum<CMIntegerGrouper.NEXT_BITS) roomNum|=CMIntegerGrouper.GRID_FLAGL;
                 }
             }
             else
@@ -199,7 +200,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		ids[1]=(int)((coded&mask2)>>15);
 		mask|=mask2;
 		mask=mask<<30;
-		ids[0]=(int)((coded&mask)>>30);
+		ids[0]=(int)(((coded&mask)>>30)&(CMIntegerGrouper.NEXT_BITSL-CMIntegerGrouper.GRID_FLAGL));
 		return ids;
     }
     public String convertRoomID(String prefix, long coded)
@@ -214,7 +215,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		long secondID=(coded&mask2)>>15;
 		mask|=mask2;
 		mask=mask<<30;
-		long firstID=(coded&mask)>>30;
+		long firstID=(((coded&mask)>>30)&(CMIntegerGrouper.NEXT_BITSL-CMIntegerGrouper.GRID_FLAGL));
 		return prefix+"#"+firstID+"#("+secondID+","+thirdID+")";
     }
     public Vector getAreaNames(){ return (Vector)root.getDimensionVector(1).clone();}
@@ -264,6 +265,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                     roomNum=Long.parseLong(theRest.substring(0,x))<<30;
                     roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
                     roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
+                    if(roomNum<CMIntegerGrouper.NEXT_BITS) roomNum|=CMIntegerGrouper.GRID_FLAGL;
                 }
             }
             else
@@ -334,6 +336,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                     roomNum=(Long.parseLong(theRest.substring(0,x))<<30);
                     roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
                     roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
+                    if(roomNum<CMIntegerGrouper.NEXT_BITS) roomNum|=CMIntegerGrouper.GRID_FLAGL;
                 }
             }
             else
