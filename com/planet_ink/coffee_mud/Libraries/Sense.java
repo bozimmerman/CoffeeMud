@@ -313,6 +313,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SWIMMING)==EnvStats.IS_SWIMMING); }
 	public boolean isFalling(Environmental E)
 	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_FALLING)==EnvStats.IS_FALLING); }
+	public boolean isBusy(Environmental E)
+	{ return (E instanceof MOB)&&(((MOB)E).session()!=null)&&((System.currentTimeMillis()-((MOB)E).session().lastLoopTime())>30000);}
 
 	public boolean canBeHeardBy(Environmental heard , MOB hearer)
 	{
@@ -583,6 +585,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			Say.append(" (^pfalling^?)");
 		if((isGlowing(seen))&&(!(seen instanceof Room)))
 			Say.append(" (^gglowing^?)");
+		if(isBusy(seen))
+			Say.append(" (^gbusy^?)");
         if(Say.length()>1)
         {
             Say.append(" ");
@@ -906,11 +910,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	
 	public boolean enchanted(Item I)
 	{
+		// poison is not an enchantment.
+		// neither is disease, or standard properties.
 		for(int i=0;i<I.numEffects();i++)
 		{
 			Ability A=I.fetchEffect(i);
 			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY))
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON))
 				return true;
 		}
 		return false;

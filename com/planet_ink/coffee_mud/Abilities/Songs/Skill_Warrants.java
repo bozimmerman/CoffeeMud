@@ -60,7 +60,7 @@ public class Skill_Warrants extends BardSkill
 				mob.location().send(mob,msg);
 				Vector V=new Vector();
 				if(B!=null)
-                    V=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),mob);
+                    V=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),(MOB)null);
 				if(V.size()==0)
 				{
 					mob.tell("No one is wanted for anything here.");
@@ -74,7 +74,7 @@ public class Skill_Warrants extends BardSkill
                     buf.append(CMStrings.padRight(W.criminal().Name(),14)+" ");
 					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",14)+" ");
 					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",14)+" ");
-					buf.append(W.crime()+"\n\r");
+					buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,W.criminal(),W.victim(),null,W.crime(),false)+"\n\r");
 				}
 				if(!mob.isMonster()) mob.session().rawPrintln(buf.toString());
 			}

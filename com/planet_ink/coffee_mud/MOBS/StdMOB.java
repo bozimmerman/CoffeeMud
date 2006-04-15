@@ -262,19 +262,21 @@ public class StdMOB implements MOB
 		abilities=new Vector();
 		affects=new Vector();
 		behaviors=new Vector();
+		Item I2=null;
+		Item I=null;
 		for(int i=0;i<E.inventorySize();i++)
 		{
-			Item I2=E.fetchInventory(i);
+			I2=E.fetchInventory(i);
 			if(I2!=null)
 			{
-				Item I=(Item)I2.copyOf();
+				I=(Item)I2.copyOf();
 				I.setOwner(this);
 				inventory.addElement(I);
 			}
 		}
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item I2=fetchInventory(i);
+			I2=fetchInventory(i);
 			if((I2!=null)
 			&&(I2.container()!=null)
 			&&(!isMine(I2.container())))
@@ -282,15 +284,16 @@ public class StdMOB implements MOB
 					if((E.fetchInventory(ii)==I2.container())&&(ii<inventorySize()))
 					{ I2.setContainer(fetchInventory(ii)); break;}
 		}
+		Ability A=null;
 		for(int i=0;i<E.numLearnedAbilities();i++)
 		{
-			Ability A2=E.fetchAbility(i);
-			if(A2!=null)
-				abilities.addElement(A2.copyOf());
+			A=E.fetchAbility(i);
+			if(A!=null)
+				abilities.addElement(A.copyOf());
 		}
 		for(int i=0;i<E.numEffects();i++)
 		{
-			Ability A=E.fetchEffect(i);
+			A=E.fetchEffect(i);
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
@@ -652,9 +655,9 @@ public class StdMOB implements MOB
 		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
 		{
-			imMobile=true;
-			tick(this,Tickable.TICKID_MOB); // slap on the butt
-			imMobile=false;
+			try{ imMobile=true;
+				 tick(this,Tickable.TICKID_MOB); // slap on the butt
+			}finally{ imMobile=false;}
 		}
 	}
 	
@@ -709,9 +712,9 @@ public class StdMOB implements MOB
 		}
 		if(tickStatus==Tickable.STATUS_NOT)
 		{
-			imMobile=true;
-			tick(this,Tickable.TICKID_MOB); // slap on the butt
-			imMobile=false;
+			try{ imMobile=true;
+				 tick(this,Tickable.TICKID_MOB); // slap on the butt
+			}finally{ imMobile=false;}
 		}
         if(location()==null)
         {

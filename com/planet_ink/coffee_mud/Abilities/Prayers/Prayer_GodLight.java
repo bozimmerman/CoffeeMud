@@ -74,17 +74,20 @@ public class Prayer_GodLight extends Prayer
         &&((commands.size()==0)||(((String)commands.firstElement()).equalsIgnoreCase("ROOM")))
         &&(!mob.isInCombat()))
 			target=mob.location();
-		if((target==null)&&(commands.size()==0)&&(mob.isInCombat()))
-			target=mob.getVictim();
-		if(target==null)
-			target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+		else
+		{
+			if((target==null)&&(commands.size()==0)&&(mob.isInCombat()))
+				target=mob.getVictim();
+			if(target==null)
+				target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+		}
 		if(target==null) return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
 			mob.tell("This place already has the god light.");
 			return false;
 		}
-
+		
 		if((target instanceof MOB)
 		&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
@@ -102,9 +105,11 @@ public class Prayer_GodLight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
+			if(target instanceof Room) mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":((target instanceof MOB)?"^S<S-NAME> point(s) to <T-NAMESELF> and "+prayWord(mob)+". A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
+				mob.recoverEnvStats();
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{

@@ -539,6 +539,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         else
         if(msg.target() instanceof MOB)
             handleBeingMobLookedAt(msg);
+        else
+        if(msg.target() instanceof Exit)
+            handleBeingExitLookedAt(msg);
     }
 
     public String examineItemString(MOB mob, Item item)

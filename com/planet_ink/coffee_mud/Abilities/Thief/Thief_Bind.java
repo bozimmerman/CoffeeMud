@@ -67,6 +67,10 @@ public class Thief_Bind extends ThiefSkill
 		// from trying to do ANYTHING except sleep
 		if(msg.amISource(mob))
 		{
+			if((msg.sourceMinor()==CMMsg.TYP_SIT)
+			||(msg.sourceMinor()==CMMsg.TYP_STAND))
+				return true;
+			else
 			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))

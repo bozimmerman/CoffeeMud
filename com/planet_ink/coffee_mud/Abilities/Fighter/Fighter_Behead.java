@@ -146,6 +146,8 @@ public class Fighter_Behead extends FighterSkill
 					W.setOffenses(0);
 				}
 			}
+			else
+				success=false;
 			if(mob.getVictim()==target) mob.makePeace();
 			if(target.getVictim()==mob) target.makePeace();
 		}

@@ -317,8 +317,7 @@ public class StdCharClass implements CharClass
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-        if((!mob.isMonster())
-        &&((CMSecurity.isAllowedEverywhere(mob,"ALLSKILLS"))))
+        if(CMSecurity.isAllowedEverywhere(mob,"ALLSKILLS"))
         {
             // the most efficient way of doing this -- just hash em!
             Hashtable alreadyAble=new Hashtable();
@@ -346,8 +345,9 @@ public class StdCharClass implements CharClass
             for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
-                int lvl=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
+                int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
                 if((lvl>=0)
+			    &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
                 &&(!alreadyAble.containsKey(A.ID())))
                     giveMobAbility(mob,A,100,"",true,false);
             }

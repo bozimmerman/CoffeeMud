@@ -564,6 +564,30 @@ public class Conquerable extends Arrest
 			&&(((MOB)msg.target()).getStartRoom()!=null)
 			&&(myArea.inMetroArea(((MOB)msg.target()).getStartRoom().getArea())))
 				msg.setValue(0);
+			else
+			if((msg.targetMinor()==CMMsg.TYP_ORDER)
+			&&(!msg.source().isMonster())
+			&&(msg.target() instanceof MOB)
+			&&(((MOB)msg.target()).isMonster()))
+			{
+				Item badge=null;
+				Item I=null;
+				ClanItem CI=null;
+				for(int i=msg.source().inventorySize()-1;i>=0;i--)
+				{
+					I=msg.source().fetchInventory(i);
+					if(I instanceof ClanItem)
+					{
+						CI=(ClanItem)I;
+						if(CI.ciType()==ClanItem.CI_LEGALBADGE)
+						{ badge=CI; break;}
+					}
+				}
+				if(badge==null)
+				{
+					
+				}
+			}
 		}
 		else // must not be equal because of else to above
 		if((holdingClan.length()>0)

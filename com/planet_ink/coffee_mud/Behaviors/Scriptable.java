@@ -6187,10 +6187,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
 				&&(!msg.amISource(monster))&&canTrigger(19)
 				&&(msg.tool() instanceof Coins)
-                &&(((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(10).trim();
+					if(trigger.toUpperCase().startsWith("ANY"))
+						trigger=trigger.substring(3).trim();
+					else
+	                if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
+	                	break;
 					double t=0.0;
 					if(CMath.isDouble(trigger))
 					    t=CMath.s_double(trigger);

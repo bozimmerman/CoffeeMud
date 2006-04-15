@@ -84,7 +84,9 @@ public class Skill_HandCuff extends StdSkill
 					return false;
 			}
 			else
-			if(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			if((msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_SIT)
+			||(msg.sourceMinor()==CMMsg.TYP_STAND))
 				return true;
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)

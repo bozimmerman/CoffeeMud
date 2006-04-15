@@ -43,6 +43,7 @@ public interface ClanItem extends Item
     public final static int CI_DONATEJOURNAL=10;
     public final static int CI_ANTIPROPAGANDA=11;
     public final static int CI_SPECIALAPRON=12;
+    public final static int CI_LEGALBADGE=13;
 	
 	public final static String[] CI_DESC={
 		"FLAG",
@@ -57,7 +58,8 @@ public interface ClanItem extends Item
 		"SPECIALTAXER",
         "DONATIONJOURNAL",
         "ANTI-PROPAGANDA",
-        "SPECIALAPRON"
+        "SPECIALAPRON",
+        "LEGALBADGE"
 	};
 	
 	public String clanID();

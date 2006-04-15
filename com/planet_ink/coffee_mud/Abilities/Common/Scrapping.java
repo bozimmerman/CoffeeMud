@@ -62,7 +62,7 @@ public class Scrapping extends CommonSkill
 		{
 			MOB mob=(MOB)affected;
 			if((found==null)
-			||(found.amDestroyed())
+			//||(found.amDestroyed()) destroyed is GOOD!
 			||((fire!=null)&&((!CMLib.flags().isOnFire(fire))
 							||(!mob.location().isContent(fire))
 							||(mob.isMine(fire)))))

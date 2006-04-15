@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.sun.rsasign.w;
 
 
 
@@ -197,7 +198,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         {
             LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
             if((isStillACrime(W,debugging))
-            &&(CMLib.english().containsString(W.criminal().name(),name)))
+            &&((name==null)||(CMLib.english().containsString(W.criminal().name(),name))))
             {
                 W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
                 V.addElement(W);
@@ -214,7 +215,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         for(int i=0;i<laws.warrants().size();i++)
         {
             LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-            if((isStillACrime(W,debugging))&&(W.criminal()==accused))
+            if((isStillACrime(W,debugging))&&((accused==null)||(W.criminal()==accused)))
                 V.addElement(W);
         }
         return V;
@@ -1673,7 +1674,17 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if((laws.basicCrimes().containsKey("ASSAULT"))
 			    &&((msg.source().isMonster())||(!isTroubleMaker((MOB)msg.target()))))
 				{
+					boolean fair=true;
 					String[] info=(String[])laws.basicCrimes().get("ASSAULT");
+					if(laws.warrants().size()>0)
+					{
+						LegalWarrant W=(LegalWarrant)laws.warrants().lastElement();
+						if((W.victim()==msg.source())
+						&&(W.criminal()==msg.target())
+						&&(W.crime().equals(info[Law.BIT_CRIMENAME])))
+							fair=false;
+					}
+					if(fair)
 					fillOutWarrant(msg.source(),
 									laws,
 									myArea,
@@ -2510,16 +2521,18 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							A.startTickDown(judge,W.criminal(),100);
 						    A=judge.fetchAbility("Fighter_Behead");
 						    if(A==null)A=judge.fetchAbility("Prayer_Stoning");
+						    boolean served=false;
 						    if(A!=null)
 						    {
 						        A.setProfficiency(100);
-						        A.invoke(judge,W.criminal(),false,0);
+						        served=A.invoke(judge,W.criminal(),false,0);
 						    }
 							unCuff(W.criminal());
 							fileAllWarrants(laws,W,W.criminal());
 							W.criminal().recoverEnvStats();
 							W.criminal().recoverCharStats();
-							CMLib.combat().postAttack(judge,W.criminal(),judge.fetchWieldedItem());
+							if(!served)
+								CMLib.combat().postAttack(judge,W.criminal(),judge.fetchWieldedItem());
 							W.setArrestingOfficer(myArea,null);
 							W.setTravelAttemptTime(0);
 						}

@@ -418,8 +418,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	    String date=CMStrings.padRight("Unknown",11);
 	    if(E!=null)
 	    {
-		    TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():
-		        CMLib.map().roomLocation(E).getArea().getTimeObj();
+		    TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():((CMLib.map().roomLocation(E)!=null)?CMLib.map().roomLocation(E).getArea().getTimeObj():null);
 		    if(C!=null)
 		        date=CMStrings.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
 	    }

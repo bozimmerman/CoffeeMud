@@ -220,20 +220,21 @@ public class Prop_SpellAdder extends Property
         
 		Hashtable h=getMySpellsH();
 		int x=0;
-		while(x<E.numEffects())
+		Vector eff=new Vector();
+		Ability thisAffect=null;
+		for(x=0;x<E.numEffects();x++)
 		{
-			Ability thisAffect=E.fetchEffect(x);
+			thisAffect=E.fetchEffect(x);
 			if(thisAffect!=null)
-			{
-				String ID=(String)h.get(thisAffect.ID());
-				if((ID!=null)
-                &&(thisAffect.invoker()==qualifiedMOB(E)))
-				{
-					thisAffect.unInvoke();
-					x=-1;
-				}
-			}
-			x++;
+				eff.addElement(thisAffect);
+		}
+		for(x=0;x<eff.size();x++)
+		{
+			thisAffect=(Ability)eff.elementAt(x);
+			String ID=(String)h.get(thisAffect.ID());
+			if((ID!=null)
+            &&(thisAffect.invoker()==qualifiedMOB(E)))
+				thisAffect.unInvoke();
 		}
 	}
 

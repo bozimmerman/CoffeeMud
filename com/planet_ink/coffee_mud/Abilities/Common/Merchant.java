@@ -183,9 +183,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				return false;
 			}
 			case CMMsg.TYP_LIST:
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),merchantM)) 
-                    return false;
-				return super.okMessage(myHost,msg);
+                CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),merchantM); 
+				break;
 			default:
 				break;
 			}
