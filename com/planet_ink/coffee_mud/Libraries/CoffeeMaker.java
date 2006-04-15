@@ -1802,7 +1802,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				if(item.amWearingAt(Item.WORN_HELD)
 				&&(!item.rawLogicalAnd())
 				&&((item.rawProperLocationBitmap()&Item.WORN_WIELD)>0)
-				&&(M.fetchWornItems(Item.WORN_WIELD).size()==0))
+				&&(M.fetchWornItems(Item.WORN_WIELD,(short)0).size()==0))
 					item.wearAt(Item.WORN_WIELD);
 			}
 		}

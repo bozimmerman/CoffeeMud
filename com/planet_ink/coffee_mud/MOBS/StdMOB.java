@@ -3163,11 +3163,11 @@ public class StdMOB implements MOB
         return V;
     }
 
-	public int freeWearPositions(long wornCode)
+	public int freeWearPositions(long wornCode, short belowLayer)
 	{
 		int x=getWearPositions(wornCode);
 		if(x<=0) return 0;
-		x=x-fetchWornItems(wornCode).size();
+		x-=fetchWornItems(wornCode,belowLayer).size();
 		if(x<=0) return 0;
 		return x;
 	}
@@ -3239,14 +3239,22 @@ public class StdMOB implements MOB
 		return add;
 	}
 
-	public Vector fetchWornItems(long wornCode)
+	public Vector fetchWornItems(long wornCode, short aboveOrAtLayer)
 	{
 		Vector V=new Vector();
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item thisItem=fetchInventory(i);
 			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
-				V.addElement(thisItem);
+			{
+				if(thisItem instanceof Armor)
+				{
+					if(((Armor)thisItem).getClothingLayer()>=aboveOrAtLayer)
+						V.addElement(thisItem);
+				}
+				else
+					V.addElement(thisItem);
+			}
 		}
 		return V;
 	}

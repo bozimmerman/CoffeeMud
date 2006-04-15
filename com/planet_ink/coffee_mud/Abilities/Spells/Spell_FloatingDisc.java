@@ -96,7 +96,7 @@ public class Spell_FloatingDisc extends Spell
 			return false;
 		}
 
-		if(mob.freeWearPositions(Item.WORN_FLOATING_NEARBY)==0)
+		if(mob.freeWearPositions(Item.WORN_FLOATING_NEARBY,(short)0)==0)
 		{
 			mob.tell("There is no more room around you to float anything!");
 			return false;

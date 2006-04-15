@@ -126,7 +126,7 @@ public class BodyPiercing extends CommonSkill
 		String wornName=fullPartName;
 
 		if((target.getWearPositions(wornCode)<=0)
-		||(target.freeWearPositions(wornCode)<=0))
+		||(target.freeWearPositions(wornCode,(short)0)<=0))
 		{
 		    commonTell(mob,"That location is not available for piercing.");
 		    return false;

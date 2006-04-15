@@ -70,7 +70,7 @@ public class Prayer_UnholyArmament extends Prayer
 		Item I=null;
 		while(i<checkOrder.length)
 		{
-			if(mob.freeWearPositions(checkOrder[i])<=0)
+			if(mob.freeWearPositions(checkOrder[i],(short)0)<=0)
 			{ 
 				i++;
 				continue;

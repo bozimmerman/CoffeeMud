@@ -175,7 +175,7 @@ public class Draw extends Get
 				{
 					if(getThis.container()==null)
 					{
-						if(mob.freeWearPositions(Item.WORN_WIELD)==0)
+						if(mob.freeWearPositions(Item.WORN_WIELD,(short)0)==0)
 						{
 							CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_HOLD,null);
 							if(mob.location().okMessage(mob,newMsg))

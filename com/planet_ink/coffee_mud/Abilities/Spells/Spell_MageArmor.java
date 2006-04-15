@@ -73,7 +73,7 @@ public class Spell_MageArmor extends Spell
 			return false;
 		}
 
-		if(target.freeWearPositions(Item.WORN_TORSO)==0)
+		if(target.freeWearPositions(Item.WORN_TORSO,(short)0)==0)
 		{
 			mob.tell("You are already wearing something on your torso!");
 			return false;

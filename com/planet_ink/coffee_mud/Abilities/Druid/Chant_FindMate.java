@@ -146,7 +146,7 @@ public class Chant_FindMate extends Chant
 		if(((merace.equals("Human"))
 		   ||(materace.equals("Human"))
 		   ||(merace.equals(materace)))
-		&&(mate.fetchWornItems(Item.WORN_LEGS|Item.WORN_WAIST).size()==0)
+		&&(mate.fetchWornItems(Item.WORN_LEGS|Item.WORN_WAIST,(short)0).size()==0)
 		&&(CMLib.flags().canBeSeenBy(mate,forMe)))
 			return true;
 		return false;

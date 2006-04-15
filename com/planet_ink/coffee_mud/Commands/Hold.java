@@ -56,7 +56,7 @@ public class Hold extends BaseItemParser
 				Item item=(Item)items.elementAt(i);
 				int msgType=CMMsg.MSG_HOLD;
 				String str="<S-NAME> hold(s) <T-NAME>.";
-				if((mob.freeWearPositions(Item.WORN_WIELD)>0)
+				if((mob.freeWearPositions(Item.WORN_WIELD,(short)0)>0)
 				&&((item.rawProperLocationBitmap()==Item.WORN_WIELD)
 				||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD))))
 				{
