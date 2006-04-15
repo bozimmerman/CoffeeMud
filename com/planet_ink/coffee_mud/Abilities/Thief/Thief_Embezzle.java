@@ -74,7 +74,7 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		if((!target.mayIFight(mob))||(levelDiff>15))
+		if(!target.mayIFight(mob))
 		{
 			mob.tell("You cannot embezzle from "+target.charStats().himher()+".");
 			return false;
