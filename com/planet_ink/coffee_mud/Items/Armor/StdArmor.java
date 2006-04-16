@@ -36,6 +36,7 @@ public class StdArmor extends StdContainer implements Armor
 	public String ID(){	return "StdArmor";}
 	int sheath=0;
 	short layer=0;
+	short layerAttributes=0;
 	
 	public StdArmor()
 	{
@@ -63,7 +64,15 @@ public class StdArmor extends StdContainer implements Armor
 	}
 	public short getClothingLayer(){return layer;}
 	public void setClothingLayer(short newLayer){layer=newLayer;}
+	public short getLayerAttributes(){return layerAttributes;}
+	public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
 
+	public boolean canWear(MOB mob, long where)
+	{
+		if(where==0) return (whereCantWear(mob)==0);
+		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
+	}
+	
 	protected String armorHealth()
 	{
 		if(usesRemaining()>=100)
@@ -519,14 +528,17 @@ public class StdArmor extends StdContainer implements Armor
 		&&((!amWearingAt(Item.WORN_HELD))||(this instanceof Shield)))
 		{
 			affectableStats.setArmor(affectableStats.armor()-envStats().armor());
-			if(amWearingAt(Item.WORN_TORSO))
-				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*10));
-			else
-			if((amWearingAt(Item.WORN_HEAD))||(this.amWearingAt(Item.WORN_HELD)))
-				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
-			else
-			if(!amWearingAt(Item.WORN_FLOATING_NEARBY))
-				affectableStats.setArmor(affectableStats.armor()-envStats().ability());
+			if(envStats().armor()!=0)
+			{
+				if(amWearingAt(Item.WORN_TORSO))
+					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*10));
+				else
+				if((amWearingAt(Item.WORN_HEAD))||(this.amWearingAt(Item.WORN_HELD)))
+					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
+				else
+				if(!amWearingAt(Item.WORN_FLOATING_NEARBY))
+					affectableStats.setArmor(affectableStats.armor()-envStats().ability());
+			}
 		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)

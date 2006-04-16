@@ -63,7 +63,7 @@ public class Thief_Snatch extends ThiefSkill
 			return false;
 		}
 		else
-		if(mob.freeWearPositions(Item.WORN_HELD,(short)0)>0)
+		if(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0)
 		{
 			mob.tell("Your other hand needs to be free to do a weapon snatch.");
 			return false;

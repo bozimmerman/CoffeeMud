@@ -67,9 +67,66 @@ public class Equipment extends StdCommand
                 header="^N(^H"+wornName+"^?)";
                 header+=CMStrings.SPACES.substring(0,26-header.length())+": ^!";
             }
-			for(int i=0;i<mob.inventorySize();i++)
+            Vector wornHere=mob.fetchWornItems(wornCode,Short.MIN_VALUE,(short)0);
+            if(wornHere.size()==0) continue;
+            int numLocations=mob.getWearPositions(wornCode);
+            if(numLocations==0) numLocations=1;
+            Vector sets=new Vector(numLocations);
+            for(int i=0;i<numLocations;i++)
+            	sets.addElement(new Vector());
+            Item I=null;
+            Item I2=null;
+            short layer=Short.MAX_VALUE;
+            short layer2=Short.MAX_VALUE;
+            Vector set=null;
+            for(int i=0;i<wornHere.size();i++)
+            {
+            	I=(Item)wornHere.elementAt(i);
+            	if(I.container()!=null) continue;
+            	if(I instanceof Armor)
+            		layer=((Armor)I).getClothingLayer();
+            	else
+            		layer=0;
+            	for(int s=0;s<sets.size();s++)
+            	{
+            		set=(Vector)sets.elementAt(s);
+            		if(set.size()==0){ set.addElement(I); break;}
+            		for(int s2=0;s2<set.size();s2++)
+            		{
+            			I2=(Item)set.elementAt(s2);
+                    	if(I2 instanceof Armor)
+                    		layer2=((Armor)I2).getClothingLayer();
+                    	else
+                    		layer2=0;
+                    	if(layer2==layer) break;
+                    	if(layer2>layer)
+                    	{
+                    		set.insertElementAt(I,s2);
+                    		break;
+                    	}
+            		}
+            		if((layer2!=layer)
+            		&&(!set.contains(I)))
+            		{ set.addElement(I); break;}
+            	}
+            }
+            wornHere.clear();
+            for(int s=0;s<sets.size();s++)
+            {
+            	set=(Vector)sets.elementAt(s);
+            	int s2=set.size()-1;
+            	for(;s2>=0;s2--)
+            	{
+            		I2=(Item)set.elementAt(s2);
+        			wornHere.addElement(I2);
+            		if((!(I2 instanceof Armor))
+            		||(((Armor)I2).getClothingLayer()==0))
+            			break;
+            	}
+            }
+			for(int i=0;i<wornHere.size();i++)
 			{
-				thisItem=mob.fetchInventory(i);
+				thisItem=(Item)wornHere.elementAt(i);
 				if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
 					if(paragraphView)

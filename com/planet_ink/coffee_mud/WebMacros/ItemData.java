@@ -242,7 +242,7 @@ public class ItemData extends StdWebMacro
 							  "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
 							  "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
 							  "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
-							  "LAYER","SEETHRU"};
+							  "LAYER","SEETHRU","MULTIWEAR"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -863,12 +863,20 @@ public class ItemData extends StdWebMacro
 					break;
 				case 84: // layer
 					if((firstTime)&&(I instanceof Armor))
-						old=""+(((Armor)I).getClothingLayer()&(Armor.LAYER_MASK));
+						old=""+((Armor)I).getClothingLayer();
 					str.append(old);
 					break;
 				case 85: // see-thru
 					if((firstTime)&&(I instanceof Armor))
-						old=CMath.bset(((Armor)I).getClothingLayer(),Armor.LAYER_SEETHROUGH)?"":"checked";
+						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)?"":"checked";
+					else
+					if(old.equals("on"))
+						old="checked";
+					str.append(old);
+					break;
+				case 86: // multi-layer
+					if((firstTime)&&(I instanceof Armor))
+						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)?"":"checked";
 					else
 					if(old.equals("on"))
 						old="checked";

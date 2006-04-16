@@ -49,7 +49,7 @@ public class Skill_Buffoonery extends BardSkill
 		boolean[] pos=new boolean[Item.WORN_ORDER.length];
 
 		for(int i=0;i<pos.length;i++)
-			if(target.freeWearPositions(Item.WORN_ORDER[i],(short)0)>0)
+			if(target.freeWearPositions(Item.WORN_ORDER[i],(short)0,(short)0)>0)
 				pos[i]=false;
 			else
 				pos[i]=true;

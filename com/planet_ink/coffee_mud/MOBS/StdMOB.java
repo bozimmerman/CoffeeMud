@@ -3163,11 +3163,11 @@ public class StdMOB implements MOB
         return V;
     }
 
-	public int freeWearPositions(long wornCode, short belowLayer)
+	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes)
 	{
 		int x=getWearPositions(wornCode);
 		if(x<=0) return 0;
-		x-=fetchWornItems(wornCode,belowLayer).size();
+		x-=fetchWornItems(wornCode,(short)(belowLayer-1),layerAttributes).size();
 		if(x<=0) return 0;
 		return x;
 	}
@@ -3239,9 +3239,11 @@ public class StdMOB implements MOB
 		return add;
 	}
 
-	public Vector fetchWornItems(long wornCode, short aboveOrAtLayer)
+	public Vector fetchWornItems(long wornCode, short aboveOrAtLayer, short layerAttributes)
 	{
 		Vector V=new Vector();
+		boolean equalOk=(layerAttributes&Armor.LAYERMASK_MULTIWEAR)>0;
+		int lay=0;
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item thisItem=fetchInventory(i);
@@ -3249,8 +3251,15 @@ public class StdMOB implements MOB
 			{
 				if(thisItem instanceof Armor)
 				{
-					if(((Armor)thisItem).getClothingLayer()>=aboveOrAtLayer)
-						V.addElement(thisItem);
+					lay=((Armor)thisItem).getClothingLayer();
+					if(lay>=aboveOrAtLayer)
+					{
+						if((lay>aboveOrAtLayer)
+						||(!equalOk)
+						||((((Armor)thisItem).getLayerAttributes()&Armor.LAYERMASK_MULTIWEAR)==0))
+							V.addElement(thisItem);
+							
+					}
 				}
 				else
 					V.addElement(thisItem);

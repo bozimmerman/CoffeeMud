@@ -80,8 +80,10 @@ public class StdWeapon extends StdItem implements Weapon
 		super.affectEnvStats(affected,affectableStats);
 		if(amWearingAt(Item.WORN_WIELD))
 		{
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()+(envStats().ability()*10)));
-			affectableStats.setDamage(affectableStats.damage()+(envStats().damage()+(envStats().ability()*2)));
+			if(envStats().attackAdjustment()!=0)
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()+(envStats().ability()*10)));
+			if(envStats().damage()!=0)
+				affectableStats.setDamage(affectableStats.damage()+(envStats().damage()+(envStats().ability()*2)));
 		}
 	}
 	public void recoverEnvStats()

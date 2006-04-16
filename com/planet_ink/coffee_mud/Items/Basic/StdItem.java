@@ -292,8 +292,12 @@ public class StdItem implements Item
 		if(properWornBitmap==0)
 			return couldHaveBeenWornAt;
 		short layer=0;
+		short layerAtt=0;
 		if(this instanceof Armor)
+		{
 			layer=((Armor)this).getClothingLayer();
+			layerAtt=((Armor)this).getLayerAttributes();
+		}
 
 		if(!wornLogicalAnd)
 		{
@@ -302,7 +306,7 @@ public class StdItem implements Item
 				if(fitsOn(WORN_CODES[i]))
 				{
 					couldHaveBeenWornAt=WORN_CODES[i];
-					if(mob.freeWearPositions(WORN_CODES[i],layer)>0)
+					if(mob.freeWearPositions(WORN_CODES[i],layer,layerAtt)>0)
 						return 0;
 				}
 			}
@@ -311,7 +315,7 @@ public class StdItem implements Item
 		for(int i=1;i<WORN_CODES.length;i++)
 		{
 			if((fitsOn(WORN_CODES[i]))
-			&&(mob.freeWearPositions(WORN_CODES[i],layer)==0))
+			&&(mob.freeWearPositions(WORN_CODES[i],layer,layerAtt)==0))
 				return WORN_CODES[i];
 		}
 		return 0;
@@ -320,10 +324,7 @@ public class StdItem implements Item
 	public boolean canWear(MOB mob, long where)
 	{
 		if(where==0) return (whereCantWear(mob)==0);
-		short layer=0;
-		if(this instanceof Armor)
-			layer=((Armor)this).getClothingLayer();
-		return mob.freeWearPositions(where,layer)>0;
+		return mob.freeWearPositions(where,(short)0,(short)0)>0;
 	}
 
 	public long rawWornCode()

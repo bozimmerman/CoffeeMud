@@ -318,7 +318,8 @@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Armor Layer:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LAYER SIZE=5 VALUE="@ItemData?LAYER@">
-	    <INPUT TYPE=CHECKBOX NAME=SEETHRU value="on" @ItemData?SEETHRU@>Is see-through.
+	    <INPUT TYPE=CHECKBOX NAME=SEETHRU value="on" @ItemData?SEETHRU@>Is see-through.<BR>
+	    <INPUT TYPE=CHECKBOX NAME=MULTIWEAR value="on" @ItemData?MULTIWEAR@>Is multi-wear.
 	    </TD>
 	</TR>
 	<TR>

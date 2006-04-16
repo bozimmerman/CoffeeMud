@@ -116,7 +116,7 @@ public class GrinderItems
 			        		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
 			        		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
 							  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-							  "RECIPEDATA", "LAYER","SEETHRU"
+							  "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR"
 							  };
 			for(int o=0;o<okparms.length;o++)
 			{
@@ -459,7 +459,11 @@ public class GrinderItems
 					break;
 				case 81: // see-thru
 					if(I instanceof Armor)
-						((Armor)I).setClothingLayer((short)(((Armor)I).getClothingLayer()|(old.equals("on")?Armor.LAYER_SEETHROUGH:0)));
+						((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()|(old.equals("on")?Armor.LAYERMASK_SEETHROUGH:0)));
+					break;
+				case 82: // multi-wear
+					if(I instanceof Armor)
+						((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()|(old.equals("on")?Armor.LAYERMASK_MULTIWEAR:0)));
 					break;
 				}
 			}

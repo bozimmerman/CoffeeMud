@@ -100,7 +100,7 @@ public class Chant_AntTrain extends Chant
 			return false;
 		}
 
-		if(mob.freeWearPositions(Item.WORN_FLOATING_NEARBY,(short)0)==0)
+		if(mob.freeWearPositions(Item.WORN_FLOATING_NEARBY,(short)0,(short)0)==0)
 		{
 			mob.tell("There is no more room around you to float anything!");
 			return false;

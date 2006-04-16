@@ -443,6 +443,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof Armor)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("LAYR",((Armor)E).getClothingLayer()));
+			text.append(CMLib.xml().convertXMLtoTag("LAYA",((Armor)E).getLayerAttributes()));
 		}
 		
 		if(E instanceof LandTitle)
@@ -1802,7 +1803,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				if(item.amWearingAt(Item.WORN_HELD)
 				&&(!item.rawLogicalAnd())
 				&&((item.rawProperLocationBitmap()&Item.WORN_WIELD)>0)
-				&&(M.fetchWornItems(Item.WORN_WIELD,(short)0).size()==0))
+				&&(M.fetchWornItems(Item.WORN_WIELD,(short)0,(short)0).size()==0))
 					item.wearAt(Item.WORN_WIELD);
 			}
 		}
@@ -2076,6 +2077,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof Armor)
 		{
 			((Armor)E).setClothingLayer(CMLib.xml().getShortFromPieces(buf,"LAYR"));
+			((Armor)E).setLayerAttributes(CMLib.xml().getShortFromPieces(buf,"LAYA"));
 		}
 		if(E instanceof DeadBody)
 		{
