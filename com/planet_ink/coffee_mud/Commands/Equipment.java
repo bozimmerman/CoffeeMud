@@ -67,7 +67,7 @@ public class Equipment extends StdCommand
                 header="^N(^H"+wornName+"^?)";
                 header+=CMStrings.SPACES.substring(0,26-header.length())+": ^!";
             }
-            Vector wornHere=mob.fetchWornItems(wornCode,Short.MIN_VALUE,(short)0);
+            Vector wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
             if(wornHere.size()==0) continue;
             int numLocations=mob.getWearPositions(wornCode);
             if(numLocations==0) numLocations=1;
@@ -77,16 +77,24 @@ public class Equipment extends StdCommand
             Item I=null;
             Item I2=null;
             short layer=Short.MAX_VALUE;
+            short layerAtt=0;
             short layer2=Short.MAX_VALUE;
+            short layerAtt2=0;
             Vector set=null;
             for(int i=0;i<wornHere.size();i++)
             {
             	I=(Item)wornHere.elementAt(i);
             	if(I.container()!=null) continue;
             	if(I instanceof Armor)
+            	{
             		layer=((Armor)I).getClothingLayer();
+            		layerAtt=((Armor)I).getLayerAttributes();
+            	}
             	else
+            	{
             		layer=0;
+	        		layerAtt=0;
+	        	}
             	for(int s=0;s<sets.size();s++)
             	{
             		set=(Vector)sets.elementAt(s);
@@ -95,10 +103,22 @@ public class Equipment extends StdCommand
             		{
             			I2=(Item)set.elementAt(s2);
                     	if(I2 instanceof Armor)
+                    	{
                     		layer2=((Armor)I2).getClothingLayer();
+                    		layerAtt2=((Armor)I2).getLayerAttributes();
+                    	}
                     	else
+                    	{
                     		layer2=0;
-                    	if(layer2==layer) break;
+                    		layerAtt2=0;
+                    	}
+                    	if(layer2==layer)
+                    	{
+	                    	if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
+		                	&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
+	                    		set.insertElementAt(I,s2);
+                			break;
+                    	}
                     	if(layer2>layer)
                     	{
                     		set.insertElementAt(I,s2);

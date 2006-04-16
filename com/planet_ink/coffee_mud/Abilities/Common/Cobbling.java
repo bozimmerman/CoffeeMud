@@ -323,6 +323,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor
 			addSpells(building,spell);
 			if(building instanceof Armor)
 			{
+				misctype=applyLayers((Armor)building,misctype);
 				((Armor)building).setRawProperLocationBitmap(0);
 				double hardBonus=0.0;
 				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)

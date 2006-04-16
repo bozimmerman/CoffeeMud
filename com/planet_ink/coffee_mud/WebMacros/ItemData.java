@@ -868,7 +868,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 85: // see-thru
 					if((firstTime)&&(I instanceof Armor))
-						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)?"":"checked";
+						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -876,7 +876,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 86: // multi-layer
 					if((firstTime)&&(I instanceof Armor))
-						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)?"":"checked";
+						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";

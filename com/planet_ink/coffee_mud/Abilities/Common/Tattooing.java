@@ -132,7 +132,7 @@ public class Tattooing extends CommonSkill
 		    commonTell(mob,"That location is not available for tattooing.");
 		    return false;
 		}
-		if(target.freeWearPositions(wornCode,Short.MIN_VALUE,(short)0)<=0)
+		if(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0)
 		{
 		    commonTell(mob,"That location is currently covered by something.");
 		    return false;

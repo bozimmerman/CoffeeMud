@@ -409,6 +409,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(building instanceof Armor)
 			{
 				double hardBonus=0.0;
+				misctype=applyLayers((Armor)building,misctype);
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
 				{

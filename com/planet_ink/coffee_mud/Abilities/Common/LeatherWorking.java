@@ -389,6 +389,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(building instanceof Armor)
 			{
+				misctype=applyLayers((Armor)building,misctype);
 				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				if(capacity>0)

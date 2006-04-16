@@ -226,6 +226,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
+			if(building instanceof Armor)
+				misctype=applyLayers((Armor)building,misctype);
 			building.setRawProperLocationBitmap(0);
 			for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
 			{

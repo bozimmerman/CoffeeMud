@@ -351,7 +351,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(building instanceof Armor)
 			{
-
+				misctype=applyLayers((Armor)building,misctype);
 				if(capacity>0)
 				{
 					((Armor)building).setCapacity(capacity+woodRequired);

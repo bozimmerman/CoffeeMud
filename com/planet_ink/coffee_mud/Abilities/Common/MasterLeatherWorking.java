@@ -149,9 +149,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		{
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
-			int toggleTop=3;
+			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",20)+" "+CMStrings.padRight("Amt",3)+" ");
+				buf.append(CMStrings.padRight("Item",30)+" "+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Amt",3)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -163,7 +163,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if(level+20<=mob.envStats().level())
 					{
-						buf.append(CMStrings.padRight("Designer "+item,20)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight("Designer "+item,30)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -178,7 +178,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+25)<=(mob.envStats().level()))
 					{
-						buf.append(CMStrings.padRight("Cuirbouli "+item,20)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight("Cuirbouli "+item,30)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -193,7 +193,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+30)<=mob.envStats().level())
 					{
-						buf.append(CMStrings.padRight("Reinforced "+item,20)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight("Reinforced "+item,30)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -208,7 +208,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+35)<=mob.envStats().level())
 					{
-						buf.append(CMStrings.padRight("Masterwork "+item,20)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight("Masterwork "+item,30)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -223,7 +223,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+40)<=mob.envStats().level())
 					{
-						buf.append(CMStrings.padRight("Laminar "+item,20)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight("Laminar "+item,30)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -238,7 +238,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+45)<=mob.envStats().level())
 					{
-						buf.append(CMStrings.padRight("Battlemoulded "+item,20)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight("Battlemoulded "+item,30)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -466,6 +466,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			if(building instanceof Armor)
 			{
+				misctype=applyLayers((Armor)building,misctype);
 				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				if(capacity>0)

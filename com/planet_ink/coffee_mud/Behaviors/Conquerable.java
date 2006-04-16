@@ -205,12 +205,15 @@ public class Conquerable extends Arrest
 						M.setClanID("");
 				}
 			}
-            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
-            Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
-            for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
-			if(journalName.length()>0)
-				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
+			if(holdingClan.length()>0)
+			{
+	            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
+	            Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+	            for(int i=0;i<channels.size();i++)
+	                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
+				if(journalName.length()>0)
+					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
+			}
 			Law laws=getLaws(myArea,false);
 			if(laws.lawIsActivated())
 			{

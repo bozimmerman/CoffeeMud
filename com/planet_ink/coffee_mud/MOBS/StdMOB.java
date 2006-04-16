@@ -3167,7 +3167,7 @@ public class StdMOB implements MOB
 	{
 		int x=getWearPositions(wornCode);
 		if(x<=0) return 0;
-		x-=fetchWornItems(wornCode,(short)(belowLayer-1),layerAttributes).size();
+		x-=fetchWornItems(wornCode,belowLayer,layerAttributes).size();
 		if(x<=0) return 0;
 		return x;
 	}
@@ -3254,11 +3254,10 @@ public class StdMOB implements MOB
 					lay=((Armor)thisItem).getClothingLayer();
 					if(lay>=aboveOrAtLayer)
 					{
-						if((lay>aboveOrAtLayer)
-						||(!equalOk)
-						||((((Armor)thisItem).getLayerAttributes()&Armor.LAYERMASK_MULTIWEAR)==0))
+						if(((lay==aboveOrAtLayer)&&((!equalOk)||((((Armor)thisItem).getLayerAttributes()&Armor.LAYERMASK_MULTIWEAR)==0)))
+						||(lay==aboveOrAtLayer-1)
+						||(lay>aboveOrAtLayer))
 							V.addElement(thisItem);
-							
 					}
 				}
 				else

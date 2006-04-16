@@ -875,6 +875,19 @@ public class StdItem implements Item
 					mob.tell("You can't seem to remove "+name()+".");
 					return false;
 				}
+				Item I=null;
+				short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+				if(rawWornCode()>0)
+				for(int i=0;i<mob.inventorySize();i++)
+				{
+					I=mob.fetchInventory(i);
+					if(((I.rawWornCode()&rawWornCode())>0)
+					&&((!(I instanceof Armor))||(((Armor)I).getClothingLayer()>layer)))
+					{
+						mob.tell("You must remove "+I.name()+" first.");
+						return false;
+					}
+				}
 				return true;
 			}
 			if(this instanceof Container)

@@ -459,11 +459,23 @@ public class GrinderItems
 					break;
 				case 81: // see-thru
 					if(I instanceof Armor)
-						((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()|(old.equals("on")?Armor.LAYERMASK_SEETHROUGH:0)));
+					{
+						if(old.equals("on"))
+							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()|Armor.LAYERMASK_SEETHROUGH));
+						else
+						if((((Armor)I).getLayerAttributes()&Armor.LAYERMASK_SEETHROUGH)>0)
+							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()-Armor.LAYERMASK_SEETHROUGH));
+					}
 					break;
 				case 82: // multi-wear
 					if(I instanceof Armor)
-						((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()|(old.equals("on")?Armor.LAYERMASK_MULTIWEAR:0)));
+					{
+						if(old.equals("on"))
+							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()|Armor.LAYERMASK_MULTIWEAR));
+						else
+						if((((Armor)I).getLayerAttributes()&Armor.LAYERMASK_MULTIWEAR)>0)
+							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()-Armor.LAYERMASK_MULTIWEAR));
+					}
 					break;
 				}
 			}

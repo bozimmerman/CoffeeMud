@@ -1926,15 +1926,15 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber))  return;
 		boolean seeThroughBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH);
 		boolean multiWearBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR);
-		String seeThroughStr=seeThroughBool?" (opague)":" (see-through)";
+		String seeThroughStr=(!seeThroughBool)?" (opague)":" (see-through)";
 		String multiWearStr=multiWearBool?" (multi)":"";
 		mob.tell(getScr("BaseGenerics","layer",showNumber+"",E.getClothingLayer()+"",seeThroughStr,multiWearStr));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setClothingLayer((short)getNumericData(mob,getScr("BaseGenerics","newlayer"),E.getClothingLayer()));
-		boolean newOpague=getBooleanData(mob,getScr("BaseGenerics","newseethrough"),!seeThroughBool);
+		boolean newSeeThrough=getBooleanData(mob,getScr("BaseGenerics","newseethrough"),seeThroughBool);
 		boolean multiWear=getBooleanData(mob,getScr("BaseGenerics","newmultiwear"),multiWearBool);
 		E.setLayerAttributes((short)0);
-		E.setLayerAttributes((short)(E.getLayerAttributes()|(newOpague?Armor.LAYERMASK_SEETHROUGH:0)));
+		E.setLayerAttributes((short)(E.getLayerAttributes()|(newSeeThrough?Armor.LAYERMASK_SEETHROUGH:0)));
 		E.setLayerAttributes((short)(E.getLayerAttributes()|(multiWear?Armor.LAYERMASK_MULTIWEAR:0)));
 	}
 	

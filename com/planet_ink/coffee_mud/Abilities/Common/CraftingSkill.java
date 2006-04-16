@@ -398,6 +398,31 @@ public class CraftingSkill extends GatheringSkill
 		return data;
 	}
 
+	protected String applyLayers(Armor armor, String misctype)
+	{
+		int colon=misctype.indexOf(":");
+		if(colon>=0)
+		{
+			short layer=0;
+			short layerAtt=0;
+			String layers=misctype.substring(0,colon).toUpperCase().trim();
+			misctype=misctype.substring(colon+1).trim();
+			if((layers.startsWith("MS"))
+			||(layers.startsWith("SM")))
+			{ layers=layers.substring(2); layerAtt=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;}
+			else
+			if(layers.startsWith("M"))
+			{ layers=layers.substring(1); layerAtt=Armor.LAYERMASK_MULTIWEAR;}
+			else
+			if(layers.startsWith("S"))
+			{ layers=layers.substring(1); layerAtt=Armor.LAYERMASK_SEETHROUGH;}
+			layer=CMath.s_short(layers);
+			armor.setClothingLayer(layer);
+			armor.setLayerAttributes(layerAtt);
+		}
+		return misctype;
+	}
+	
 	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands, int autoGeneration)
 	{
 		if(((mob.isMonster()&&(!CMLib.flags().isAnimalIntelligence(mob)))||(autoGeneration>0))
