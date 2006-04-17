@@ -857,11 +857,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	
 	public Vector fetchItemList(Environmental from,
-									   MOB mob,
-                                       Item container,
-                                       Vector commands,
-                                       int preferredLoc,
-                                       boolean visionMatters)
+							    MOB mob,
+                                Item container,
+                                Vector commands,
+                                int preferredLoc,
+                                boolean visionMatters)
 	{
 		int addendum=1;
 		String addendumStr="";
@@ -900,10 +900,57 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			&&((!visionMatters)||(CMLib.flags().canBeSeenBy(item,mob))||(item instanceof Light))
 			&&(!V.contains(item)))
 				V.addElement(item);
-			if(item==null) return V;
+			if(item==null) break;
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToItem));
+		if(preferredLoc==Item.WORNREQ_WORNONLY)
+		{
+			Vector V2=new Vector();
+			short topLayer=0;
+			short curLayer=0;
+			int which=-1;
+			while(V.size()>0)
+			{
+				Item I=(Item)V.firstElement();
+				topLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
+				which=0;
+				for(int v=1;v<V.size();v++)
+				{
+					I=(Item)V.elementAt(v);
+					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
+					if(curLayer>topLayer)
+					{ which=v; topLayer=curLayer;}
+				}
+				V2.addElement(V.elementAt(which));
+				V.removeElementAt(which);
+			}
+			V=V2;
+		}
+		else
+		if(preferredLoc==Item.WORNREQ_UNWORNONLY)
+		{
+			Vector V2=new Vector();
+			short topLayer=0;
+			short curLayer=0;
+			int which=-1;
+			while(V.size()>0)
+			{
+				Item I=(Item)V.firstElement();
+				topLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
+				which=0;
+				for(int v=1;v<V.size();v++)
+				{
+					I=(Item)V.elementAt(v);
+					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
+					if(curLayer<topLayer)
+					{ which=v; topLayer=curLayer;}
+				}
+				V2.addElement(V.elementAt(which));
+				V.removeElementAt(which);
+			}
+			V=V2;
+		}
 		return V;
 	}
 	

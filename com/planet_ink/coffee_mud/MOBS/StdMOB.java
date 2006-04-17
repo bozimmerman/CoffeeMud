@@ -2641,23 +2641,51 @@ public class StdMOB implements MOB
 	public void confirmWearability()
 	{
 		Race R=charStats().getMyRace();
+		DVector reWearSet=new DVector(2);
+		Item item=null;
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item item=fetchInventory(i);
+			item=fetchInventory(i);
 			if((item!=null)&&(!item.amWearingAt(Item.IN_INVENTORY)))
 			{
-				long oldCode=item.rawWornCode();
+				Long oldCode=new Long(item.rawWornCode());
 				item.unWear();
-				int msgCode=CMMsg.MSG_WEAR;
-				if((oldCode&Item.WORN_WIELD)>0)
-					msgCode=CMMsg.MSG_WIELD;
+				if(reWearSet.size()==0)
+					reWearSet.addElement(item,oldCode);
 				else
-				if((oldCode&Item.WORN_HELD)>0)
-					msgCode=CMMsg.MSG_HOLD;
-				CMMsg msg=CMClass.getMsg(this,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
-				if((R.okMessage(this,msg))&&(item.okMessage(item,msg)))
-				   item.wearAt(oldCode);
+				{
+					short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
+					int d=0;
+					for(;d<reWearSet.size();d++)
+						if(reWearSet.elementAt(d,1) instanceof Armor)
+						{
+							if(((Armor)reWearSet.elementAt(d,1)).getClothingLayer()>layer)
+								break;
+						}
+						else
+						if(0>layer)
+							break;
+					if(d>=reWearSet.size())
+						reWearSet.addElement(item,oldCode);
+					else
+						reWearSet.insertElementAt(d,item,oldCode);
+				}
+					
 			}
+		}
+		for(int r=0;r<reWearSet.size();r++)
+		{
+			item=(Item)reWearSet.elementAt(r,1);
+			long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
+			int msgCode=CMMsg.MSG_WEAR;
+			if((oldCode&Item.WORN_WIELD)>0)
+				msgCode=CMMsg.MSG_WIELD;
+			else
+			if((oldCode&Item.WORN_HELD)>0)
+				msgCode=CMMsg.MSG_HOLD;
+			CMMsg msg=CMClass.getMsg(this,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
+			if((R.okMessage(this,msg))&&(item.okMessage(item,msg)))
+			   item.wearAt(oldCode);
 		}
 	}
 

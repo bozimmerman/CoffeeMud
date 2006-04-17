@@ -350,10 +350,7 @@ public class RandomMonsters extends ActiveTicker
 							int tries=0;
 							while(((room==null)||(!okRoomForMe(M,room)))
 							&&((++tries)<100))
-							{
 								room=((Area)ticking).getRandomMetroRoom();
-System.out.println(tries+"/"+maintained.size()+"/"+CMLib.map().getExtendedRoomID(room)+"/"+room.domainType());								
-							}
 							tickStatus=Tickable.STATUS_MISC+16;
 						}
 						if((room!=null)&&(room instanceof GridLocale))

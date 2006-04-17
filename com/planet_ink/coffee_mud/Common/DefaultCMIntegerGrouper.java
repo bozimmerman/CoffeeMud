@@ -221,7 +221,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
     {
     	int roomCount=roomCount();
     	if(roomCount<=0) return -1;
-    	int which=(int)Math.round(Math.random()*new Integer(roomCount).doubleValue());
+    	int which=CMLib.dice().roll(1,roomCount,-1);
     	long count=0;
         for(int i=0;i<xs.length;i++)
         {
@@ -249,6 +249,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
             	return ys[i]&NEXT_BITSL;
             }
         }
+        Log.errOut("CMINTS","Unable to select a random room int. Picked "+which+"/"+roomCount);
         return -1;
     }
 

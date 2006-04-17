@@ -160,7 +160,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	            total+=CMI.roomCount();
     	}
     	if(total<=0) return null;
-    	int which=CMLib.dice().roll(1,total,0)-1;
+    	int which=CMLib.dice().roll(1,total,-1);
+    	int grandTotal=total;
     	total=0;
         String roomID=null;
     	for(int i=0;i<root.size();i++)
@@ -177,7 +178,11 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     		}
     	}
     	if(roomID==null) return null;
-    	if(CMI==null) return roomID;
+    	if(CMI==null)
+    	{
+    		Log.errOut("RNUMS","Unable to even select an integer group! Picked "+which+"/"+grandTotal);
+    		return roomID;
+    	}
 		long selection=CMI.random();
 		return convertRoomID(roomID,selection);
     }

@@ -877,15 +877,19 @@ public class StdItem implements Item
 				}
 				Item I=null;
 				short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+				short thislayer=0;
 				if(rawWornCode()>0)
 				for(int i=0;i<mob.inventorySize();i++)
 				{
 					I=mob.fetchInventory(i);
-					if(((I.rawWornCode()&rawWornCode())>0)
-					&&((!(I instanceof Armor))||(((Armor)I).getClothingLayer()>layer)))
+					if((I!=null)&&(I!=this)&&((I.rawWornCode()&rawWornCode())>0))
 					{
-						mob.tell("You must remove "+I.name()+" first.");
-						return false;
+						thislayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
+						if(thislayer>layer)
+						{
+							mob.tell(mob,I,null,"You must remove <T-NAME> first.");
+							return false;
+						}
 					}
 				}
 				return true;
