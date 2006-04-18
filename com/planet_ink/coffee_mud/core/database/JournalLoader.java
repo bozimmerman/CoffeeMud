@@ -447,7 +447,7 @@ public class JournalLoader
 			+"','"+date
 			+"','"+to
 			+"','"+subject
-			+"','"+message+"');");
+			+"','"+message+"')");
 			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
 			if(TABLE!=null)
 			{

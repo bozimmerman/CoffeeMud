@@ -897,7 +897,7 @@ public class MOBloader
 		+"','"+pstats.password()
 		+"','"+mob.baseCharStats().getMyClassesStr()
 		+"','"+mob.baseCharStats().getMyRace().ID()
-		+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"');");
+		+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"')");
 	}
 
 	public static boolean DBUserSearch(MOB mob, String Login)
