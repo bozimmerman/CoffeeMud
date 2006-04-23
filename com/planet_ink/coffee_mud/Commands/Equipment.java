@@ -68,142 +68,149 @@ public class Equipment extends StdCommand
                 header+=CMStrings.SPACES.substring(0,26-header.length())+": ^!";
             }
             Vector wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
-            if(wornHere.size()==0) continue;
-            int numLocations=mob.getWearPositions(wornCode);
-            if(numLocations==0) numLocations=1;
-            Vector sets=new Vector(numLocations);
-            for(int i=0;i<numLocations;i++)
-            	sets.addElement(new Vector());
-            Item I=null;
-            Item I2=null;
-            short layer=Short.MAX_VALUE;
-            short layerAtt=0;
-            short layer2=Short.MAX_VALUE;
-            short layerAtt2=0;
-            Vector set=null;
-            for(int i=0;i<wornHere.size();i++)
+            int shownThisLoc=0;
+            if(wornHere.size()>0)
             {
-            	I=(Item)wornHere.elementAt(i);
-            	if(I.container()!=null) continue;
-            	if(I instanceof Armor)
-            	{
-            		layer=((Armor)I).getClothingLayer();
-            		layerAtt=((Armor)I).getLayerAttributes();
-            	}
-            	else
-            	{
-            		layer=0;
-	        		layerAtt=0;
-	        	}
-            	for(int s=0;s<sets.size();s++)
-            	{
-            		set=(Vector)sets.elementAt(s);
-            		if(set.size()==0){ set.addElement(I); break;}
-            		for(int s2=0;s2<set.size();s2++)
-            		{
-            			I2=(Item)set.elementAt(s2);
-                    	if(I2 instanceof Armor)
-                    	{
-                    		layer2=((Armor)I2).getClothingLayer();
-                    		layerAtt2=((Armor)I2).getLayerAttributes();
-                    	}
-                    	else
-                    	{
-                    		layer2=0;
-                    		layerAtt2=0;
-                    	}
-                    	if(layer2==layer)
-                    	{
-	                    	if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
-		                	&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
+	            int numLocations=mob.getWearPositions(wornCode);
+	            if(numLocations==0) numLocations=1;
+	            Vector sets=new Vector(numLocations);
+	            for(int i=0;i<numLocations;i++)
+	            	sets.addElement(new Vector());
+	            Item I=null;
+	            Item I2=null;
+	            short layer=Short.MAX_VALUE;
+	            short layerAtt=0;
+	            short layer2=Short.MAX_VALUE;
+	            short layerAtt2=0;
+	            Vector set=null;
+	            for(int i=0;i<wornHere.size();i++)
+	            {
+	            	I=(Item)wornHere.elementAt(i);
+	            	if(I.container()!=null) continue;
+	            	if(I instanceof Armor)
+	            	{
+	            		layer=((Armor)I).getClothingLayer();
+	            		layerAtt=((Armor)I).getLayerAttributes();
+	            	}
+	            	else
+	            	{
+	            		layer=0;
+		        		layerAtt=0;
+		        	}
+	            	for(int s=0;s<sets.size();s++)
+	            	{
+	            		set=(Vector)sets.elementAt(s);
+	            		if(set.size()==0){ set.addElement(I); break;}
+	            		for(int s2=0;s2<set.size();s2++)
+	            		{
+	            			I2=(Item)set.elementAt(s2);
+	                    	if(I2 instanceof Armor)
+	                    	{
+	                    		layer2=((Armor)I2).getClothingLayer();
+	                    		layerAtt2=((Armor)I2).getLayerAttributes();
+	                    	}
+	                    	else
+	                    	{
+	                    		layer2=0;
+	                    		layerAtt2=0;
+	                    	}
+	                    	if(layer2==layer)
+	                    	{
+		                    	if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
+			                	&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
+		                    		set.insertElementAt(I,s2);
+	                			break;
+	                    	}
+	                    	if(layer2>layer)
+	                    	{
 	                    		set.insertElementAt(I,s2);
-                			break;
-                    	}
-                    	if(layer2>layer)
-                    	{
-                    		set.insertElementAt(I,s2);
-                    		break;
-                    	}
-            		}
-            		if((layer2!=layer)
-            		&&(!set.contains(I)))
-            		{ set.addElement(I); break;}
-            	}
-            }
-            wornHere.clear();
-            for(int s=0;s<sets.size();s++)
-            {
-            	set=(Vector)sets.elementAt(s);
-            	int s2=set.size()-1;
-            	for(;s2>=0;s2--)
-            	{
-            		I2=(Item)set.elementAt(s2);
-        			wornHere.addElement(I2);
-            		if((!(I2 instanceof Armor))
-            		||(((Armor)I2).getClothingLayer()==0))
-            			break;
-            	}
-            }
-			for(int i=0;i<wornHere.size();i++)
-			{
-				thisItem=(Item)wornHere.elementAt(i);
-				if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
+	                    		break;
+	                    	}
+	            		}
+	            		if((layer2!=layer)
+	            		&&(!set.contains(I)))
+	            		{ set.addElement(I); break;}
+	            	}
+	            }
+	            wornHere.clear();
+	            for(int s=0;s<sets.size();s++)
+	            {
+	            	set=(Vector)sets.elementAt(s);
+	            	int s2=set.size()-1;
+	            	for(;s2>=0;s2--)
+	            	{
+	            		I2=(Item)set.elementAt(s2);
+	        			wornHere.addElement(I2);
+	            		if((!(I2 instanceof Armor))
+	            		||(((Armor)I2).getClothingLayer()==0))
+	            			break;
+	            	}
+	            }
+				for(int i=0;i<wornHere.size();i++)
 				{
-					if(paragraphView)
+					thisItem=(Item)wornHere.elementAt(i);
+					if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 					{
-	                	if(alreadyDone.contains(thisItem))
-	                		continue;
-	                	alreadyDone.add(thisItem);
+						if(paragraphView)
+						{
+		                	if(alreadyDone.contains(thisItem))
+		                		continue;
+		                	alreadyDone.add(thisItem);
+						}
+						found++;
+						if(CMLib.flags().canBeSeenBy(thisItem,seer))
+						{
+	                        if(paragraphView)
+	                        {
+	                            String name=thisItem.name();
+	                            if(name.length()>75) name=name.substring(0,75)+"...";
+	                            if(wornCode==Item.WORN_HELD)
+	                            {
+	                                if(msg.length()==0) msg.append("nothing.");
+	                                if(mob==seer)
+	                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N");
+	                                else
+	                                    msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
+	                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");                  
+	                            }
+	                            else
+	                            if(wornCode==Item.WORN_WIELD)
+	                            {
+	                                if(msg.length()==0) msg.append("nothing.");
+	                                if(mob==seer)
+	                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N.");
+	                                else
+	                                    msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
+	                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");
+	                            }
+	                            else
+	                            {
+	                                if(mob==seer)
+	                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
+	                                else
+	                                    msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
+	                            }
+	                        }
+	                        else
+	                        {
+	                            String name=thisItem.name();
+	                            if(name.length()>53) name=name.substring(0,50)+"...";
+	    						if(mob==seer)
+	    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+	    						else
+	    							msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+	                        }
+	                        shownThisLoc++;
+						}
+						else
+						if(seer==mob)
+						{
+							msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+							shownThisLoc++;
+						}
 					}
-					found++;
-					if(CMLib.flags().canBeSeenBy(thisItem,seer))
-					{
-                        if(paragraphView)
-                        {
-                            String name=thisItem.name();
-                            if(name.length()>75) name=name.substring(0,75)+"...";
-                            if(wornCode==Item.WORN_HELD)
-                            {
-                                if(msg.length()==0) msg.append("nothing.");
-                                if(mob==seer)
-                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N");
-                                else
-                                    msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
-                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");                  
-                            }
-                            else
-                            if(wornCode==Item.WORN_WIELD)
-                            {
-                                if(msg.length()==0) msg.append("nothing.");
-                                if(mob==seer)
-                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N.");
-                                else
-                                    msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
-                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");
-                            }
-                            else
-                            {
-                                if(mob==seer)
-                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
-                                else
-                                    msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
-                            }
-                        }
-                        else
-                        {
-                            String name=thisItem.name();
-                            if(name.length()>53) name=name.substring(0,50)+"...";
-    						if(mob==seer)
-    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
-    						else
-    							msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
-                        }
-					}
-					else
-					if(seer==mob)
-						msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
 				}
-			}
+            }
 			numWears=mob.getWearPositions(wornCode);
 			if(found<numWears)
 			{
@@ -227,14 +234,14 @@ public class Equipment extends StdCommand
                             if(tat.length()>53) tat=tat.substring(0,50)+"...";
                             msg.append(header+tat+"^?\n\r");
                         }
+                        shownThisLoc++;
 				    }
 				}
 			}
-			if(((!paragraphView)&&(allPlaces)&&(wornCode!=Item.WORN_FLOATING_NEARBY))
-            ||((paragraphView)&&(allPlaces)&&(wornCode!=Item.WORN_WIELD)))
+			if((allPlaces)&&(shownThisLoc==0))
 			{
-				int total=mob.getWearPositions(wornCode)-found;
-				for(int i=0;i<total;i++)
+				if(((!paragraphView)&&(wornCode!=Item.WORN_FLOATING_NEARBY))
+	            ||((paragraphView)&&(wornCode!=Item.WORN_WIELD)))
 					msg.append(header+"^?\n\r");
 			}
 		}

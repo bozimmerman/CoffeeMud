@@ -240,8 +240,7 @@ public class Language extends StdAbility
 	            }
 	        }
 	        else
-			if((msg.target()==affected)
-			&&(msg.source()!=affected))
+			if((msg.target()==affected)&&(msg.source()!=affected))
 				switch(msg.targetMinor())
 				{
 				case CMMsg.TYP_ORDER:
@@ -252,8 +251,8 @@ public class Language extends StdAbility
 				case CMMsg.TYP_WITHDRAW:
 				case CMMsg.TYP_DEPOSIT:
 				if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),"ORDER"))
-				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)affected).isMonster()))
-				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)affected).isMonster())))
+				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)msg.target()).isMonster()))
+				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)msg.target()).isMonster())))
 				{
 					Language L=(Language)msg.source().fetchEffect(ID());
 					if((L==null)
@@ -268,7 +267,7 @@ public class Language extends StdAbility
 							reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and do(es) not appear to understand <T-YOUPOSS> words.";
 						else
 							reply="<S-NAME> <S-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
-						msg.addTrailerMsg(CMClass.getMsg((MOB)affected,msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
+						msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
 					}
 					break;
 				}

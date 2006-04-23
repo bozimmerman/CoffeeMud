@@ -347,7 +347,7 @@ public class JournalLoader
 		else
 		if(which==Integer.MAX_VALUE)
 		{
-			DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+Journal+"'");
+			DBConnector.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 		}
 		else
 		{

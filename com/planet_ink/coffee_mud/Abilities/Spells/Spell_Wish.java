@@ -727,7 +727,7 @@ public class Spell_Wish extends Spell
 						else
 						while(MT.baseEnvStats().level()>newLevel)
 						{
-							MT.baseCharStats().getCurrentClass().unLevel(MT);
+							CMLib.leveler().unLevel(MT);
 							MT.recoverEnvStats();
 						}
 					}
@@ -739,7 +739,7 @@ public class Spell_Wish extends Spell
 					wishDrain(mob,baseLoss*levelsLost,true);
 					if((mob!=target)||(level>0))
 					for(int i2=0;i2<levelsLost;i2++)
-						mob.baseCharStats().getCurrentClass().unLevel(mob);
+						CMLib.leveler().unLevel(mob);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.envStats().level()+"!");
 				}
 				return true;
@@ -813,7 +813,7 @@ public class Spell_Wish extends Spell
 					if(!((MOB)target).isMonster())
 					{
 						baseLoss+=500;
-						mob.baseCharStats().getCurrentClass().unLevel(mob);
+						CMLib.leveler().unLevel(mob);
 					}
 					wishDrain(mob,baseLoss,true);
 					int oldCat=mob.baseCharStats().ageCategory();
@@ -846,9 +846,9 @@ public class Spell_Wish extends Spell
 					CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
 					wishDrain(mob,baseLoss,true);
-					mob.baseCharStats().getCurrentClass().unLevel(mob);
-					mob.baseCharStats().getCurrentClass().unLevel(mob);
-					mob.baseCharStats().getCurrentClass().unLevel(mob);
+					CMLib.leveler().unLevel(mob);
+					CMLib.leveler().unLevel(mob);
+					CMLib.leveler().unLevel(mob);
 					StringBuffer str=new StringBuffer("");
 					for(int trait=0;trait<CharStats.NUM_BASE_STATS;trait++)
 					{
@@ -911,8 +911,8 @@ public class Spell_Wish extends Spell
 							tm.addAbility(A);
 							baseLoss+=500;
 							wishDrain(mob,baseLoss,true);
-							mob.baseCharStats().getCurrentClass().unLevel(mob);
-							mob.baseCharStats().getCurrentClass().unLevel(mob);
+							CMLib.leveler().unLevel(mob);
+							CMLib.leveler().unLevel(mob);
 						}
 						A=tm.fetchAbility(A.ID());
 						A.setProfficiency(100);
@@ -1059,7 +1059,7 @@ public class Spell_Wish extends Spell
 				}
 				wishDrain(mob,baseLoss,true);
 				if(!CMSecurity.isDisabled("LEVELS"))
-					mob.baseCharStats().getCurrentClass().unLevel(mob);
+					CMLib.leveler().unLevel(mob);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
 				else

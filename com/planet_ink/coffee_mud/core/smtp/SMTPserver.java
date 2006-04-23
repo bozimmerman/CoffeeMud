@@ -96,18 +96,18 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		if (!loadPropPage())
 		{
-			Log.errOut(getName(),"ERROR: SMTPserver unable to read ini file.");
+			Log.errOut(getName(),"SMTPserver unable to read ini file.");
 			return false;
 		}
 
 		if (CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase().length()==0)
 		{
-			Log.errOut(getName(),"ERROR: required parameter missing: DOMAIN");
+			Log.errOut(getName(),"Set your coffeemud.ini parameter: DOMAIN");
 			return false;
 		}
 		if (page.getStr("PORT").length()==0)
 		{
-			Log.errOut(getName(),"ERROR: required parameter missing: PORT");
+			Log.errOut(getName(),"Set your coffeemud.ini parameter: PORT");
 			return false;
 		}
 		

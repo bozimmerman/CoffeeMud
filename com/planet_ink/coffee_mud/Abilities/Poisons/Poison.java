@@ -171,9 +171,9 @@ public class Poison extends StdAbility
 					}
 				else
 				if(msg.tool()==affected)
-					switch(msg.sourceMinor())
+					switch(msg.targetMinor())
 					{
-					case CMMsg.TYP_WEAPONATTACK:
+					case CMMsg.TYP_DAMAGE:
 						if((msg.source()!=msg.target())
 						&&(msg.target()!=null)
 						&&(myItem instanceof Weapon)

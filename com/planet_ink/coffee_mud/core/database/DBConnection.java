@@ -86,9 +86,13 @@ public class DBConnection
 		{
 			ce.printStackTrace();
 		}
-		sqlserver=true;
-		myConnection=DriverManager.getConnection(DBService,DBUser,DBPass);
-		sqlserver=false;
+        sqlserver=true;
+        java.util.Properties p = new java.util.Properties();
+        p.put("user",DBUser);
+        p.put("password",DBPass);
+        p.put("SetBigStringTryClob", "true");
+        myConnection=DriverManager.getConnection(DBService,p);
+        sqlserver=false;
 		inUse=false;
 	}
 	

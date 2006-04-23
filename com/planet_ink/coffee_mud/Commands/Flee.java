@@ -117,7 +117,7 @@ public class Flee extends Go
 				if((V.size()>1)&&(CMath.s_int((String)V.lastElement())>1))
 					times=CMath.s_int((String)V.lastElement());
 				for(int t=0;t<times;t++)
-					mob.charStats().getCurrentClass().unLevel(mob);
+					CMLib.leveler().unLevel(mob);
 			}
 			else
 			if(whatToDo.startsWith("PUR"))

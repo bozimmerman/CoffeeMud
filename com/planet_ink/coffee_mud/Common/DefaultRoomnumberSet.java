@@ -161,7 +161,6 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	}
     	if(total<=0) return null;
     	int which=CMLib.dice().roll(1,total,-1);
-    	int grandTotal=total;
     	total=0;
         String roomID=null;
     	for(int i=0;i<root.size();i++)
@@ -180,7 +179,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	if(roomID==null) return null;
     	if(CMI==null)
     	{
-    		Log.errOut("RNUMS","Unable to even select an integer group! Picked "+which+"/"+grandTotal);
+    		//Log.errOut("RNUMS","Unable to even select an integer group! Picked "+which+"/"+grandTotal);
     		return roomID;
     	}
 		long selection=CMI.random();

@@ -509,6 +509,7 @@ public class BaseGenerics extends StdCommand
 			CMLib.database().DBUpdateMOBs(R);
 			CMLib.database().DBUpdateItems(R);
 	        oldR.destroy();
+	        R.getArea().addProperRoom(R); // necessary because of the destroy
 			R.setImage(R.rawImage());
 			R.startItemRejuv();
 		}

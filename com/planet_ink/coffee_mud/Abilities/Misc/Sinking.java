@@ -139,42 +139,40 @@ public class Sinking extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			if(mob==null) return false;
-			if(mob.location()==null) return false;
+			Room R=mob.location();
+			if(R==null) return false;
 
-			if(isUnderWater(mob.location())
+			if(!isWaterSurface(R)
 			||(CMLib.flags().isWaterWorthy(mob))
 			||(CMLib.flags().isInFlight(mob))
-			||(mob.envStats().weight()<1))
+			||(mob.envStats().weight()<1)
+			||(!canSinkFrom(R,direction)))
 				return stopSinking(mob);
-			else
-			if(!canSinkFrom(mob.location(),direction))
-				return stopSinking(mob);
-			else
+			
+			Ability A=mob.fetchAbility("Skill_Swim");
+			if(((direction==Directions.DOWN)&&(A!=null))
+			&&(A.profficiencyCheck(mob,25,(A.profficiency()>=75))
+			&&(mob.curState().getMovement()>0)))
 			{
-				Ability A=mob.fetchAbility("Skill_Swim");
-				if(((direction==Directions.DOWN)&&(A!=null))
-				&&(A.profficiencyCheck(mob,25,(A.profficiency()>=75))
-				&&(mob.curState().getMovement()>0)))
+				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
+				&&(!mob.isMonster()))
 				{
-					if((mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
-					&&(!mob.isMonster()))
-					{
-                        isTreading=true;
-						mob.curState().expendEnergy(mob,mob.maxState(),true);
-                        mob.recoverEnvStats();
-						return true;
-					}
+                    isTreading=true;
+					mob.curState().expendEnergy(mob,mob.maxState(),true);
+                    mob.recoverEnvStats();
+					return true;
 				}
-                isTreading=false;
-                mob.recoverEnvStats();
-				mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
-				CMLib.tracking().move(mob,direction,false,false);
-				if(!canSinkFrom(mob.location(),direction))
-				{
-					return stopSinking(mob);
-				}
-				return true;
 			}
+            isTreading=false;
+            mob.recoverEnvStats();
+			mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
+			CMLib.tracking().move(mob,direction,false,false);
+			R=mob.location();
+			if((R!=null)&&(!canSinkFrom(R,direction)))
+			{
+				return stopSinking(mob);
+			}
+			return true;
 		}
 		else
 		if(affected instanceof Item)

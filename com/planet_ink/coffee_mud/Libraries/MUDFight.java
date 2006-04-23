@@ -537,7 +537,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				String whatToDo=(String)whatsToDo.elementAt(w);
 				if(whatToDo.startsWith("UNL"))
-					target.charStats().getCurrentClass().unLevel(target);
+					CMLib.leveler().unLevel(target);
 				else
 				if(whatToDo.startsWith("ASTR"))
 				{
@@ -976,8 +976,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     weapon=(Item)msg.tool();
                 if(weapon!=null)
                 {
-                    CMLib.combat().postWeaponDamage(attacker,target,weapon,CMLib.combat().rollToHit(attacker,target));
-                    msg.setValue(1);
+                	boolean isHit=CMLib.combat().rollToHit(attacker,target);
+                    CMLib.combat().postWeaponDamage(attacker,target,weapon,isHit);
+                    if(isHit) msg.setValue(1);
                 }
                 if((target.soulMate()==null)&&(target.playerStats()!=null)&&(target.location()!=null))
                     target.playerStats().adjHygiene(PlayerStats.HYGIENE_FIGHTDIRTY);
