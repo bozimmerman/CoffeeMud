@@ -121,7 +121,7 @@ public class Spell_MagicItem extends Spell
 				if(wand instanceof Armor)
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText(wandThis.ID()+";");
+					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
@@ -143,13 +143,13 @@ public class Spell_MagicItem extends Spell
 				if(wand.fitsOn(Item.WORN_HELD)||wand.fitsOn(Item.WORN_WIELD))
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText(wandThis.ID()+";");
+					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText(wandThis.ID()+";");
+					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				wand.recoverEnvStats();

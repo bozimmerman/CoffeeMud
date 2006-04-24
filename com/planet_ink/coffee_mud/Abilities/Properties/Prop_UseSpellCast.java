@@ -43,16 +43,16 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
         Vector V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
-        ||((mask.size()>0)
-            &&(!CMLib.masking().maskCheck(mask,qualifiedMOB(source)))))
+        ||((compiledMask!=null))&&(compiledMask.size()>0)&&(!CMLib.masking().maskCheck(compiledMask,target)))
             return false;
+        
+        MOB qualMOB=getInvokerMOB(source,target);
         
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=target.fetchEffect(A.ID());
-			if((EA==null)&&(didHappen(100))
-            &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,qualifiedMOB(source)))))
+			if((EA==null)&&(didHappen(100)))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
@@ -71,7 +71,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualifiedMOB(source),V2,target,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(qualMOB,V2,target,true,(affected!=null)?affected.envStats().level():0);
 			}
 		}
         return true;

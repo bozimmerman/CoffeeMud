@@ -97,6 +97,19 @@ public class Spell_Meld extends Spell
 
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
+			Armor armorOne=(Armor)itemOne;
+			Armor armorTwo=(Armor)itemTwo;
+			if(armorOne.getClothingLayer()!=armorTwo.getClothingLayer())
+			{
+				mob.tell("This spell can only be cast on items worn at the same layer.");
+				return false;
+			}
+			if(armorOne.getLayerAttributes()!=armorTwo.getLayerAttributes())
+			{
+				mob.tell("Those items are too different to meld together.");
+				return false;
+			}
+			
 			if(shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_NECK)
 			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_EARS)
 			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_EYES)

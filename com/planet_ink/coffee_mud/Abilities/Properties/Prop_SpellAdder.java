@@ -37,42 +37,49 @@ public class Prop_SpellAdder extends Property
 	public String ID() { return "Prop_SpellAdder"; }
 	public String name(){ return "Casting spells on oneself";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-    protected MOB trickMOB=null;
     protected Environmental lastMOB=null;
+    protected MOB invokerMOB=null;
     protected boolean processing=false;
-    protected String maskString="";
-    protected String parmString="";
-	protected Hashtable spellH=null;
 	protected Vector spellV=null;
-    protected Vector mask=new Vector();
+    protected Vector compiledMask=null;
+    
+    public String getMaskString(String newText)
+    {
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        	return newText.substring(maskindex+5).trim();
+        return "";
+    }
+    
+    public String getParmString(String newText)
+    {
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        	return newText.substring(0,maskindex).trim();
+        return newText;
+    }
     
  	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		spellV=null;
-		spellH=null;
-        mask=new Vector();
+		compiledMask=null;
         lastMOB=null;
-        int maskindex=newText.toUpperCase().indexOf("MASK=");
-        parmString=newText;
-        if(maskindex>0)
-        {
-            maskString=newText.substring(maskindex+5).trim();
-            if(maskString.length()>0)
-                CMParms.addToVector(CMLib.masking().maskCompile(maskString),mask);
-            parmString=newText.substring(0,maskindex).trim();
-        }
+        String maskString=getMaskString(newText);
+        if(maskString.length()>0)
+        	compiledMask=CMLib.masking().maskCompile(maskString);
 	}
 
 	public Vector getMySpellsV()
 	{
         if(spellV!=null) return spellV;
 		spellV=new Vector();
-		String names=parmString;
-		int del=names.indexOf(";");
-		while(del>=0)
+		String names=getParmString(text());
+		Vector set=CMParms.parseSemicolons(names,true);
+		String thisOne=null;
+		for(int s=0;s<set.size();s++)
 		{
-			String thisOne=names.substring(0,del).trim();
+			thisOne=(String)set.elementAt(s);
 			String parm="";
 			if(thisOne.endsWith(")"))
 			{
@@ -91,31 +98,13 @@ public class Prop_SpellAdder extends Property
 				A.setMiscText(parm);
                 spellV.addElement(A);
 			}
-			names=names.substring(del+1);
-			del=names.indexOf(";");
-		}
-		String parm="";
-		if(names.endsWith(")"))
-		{
-			int x=names.indexOf("(");
-			if(x>0)
-			{
-				parm=names.substring(x+1,names.length()-1);
-				names=names.substring(0,x).trim();
-			}
-		}
-		Ability A=CMClass.getAbility(names);
-		if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
-		{
-			A=(Ability)A.copyOf();
-			A.setMiscText(parm);
-            spellV.addElement(A);
 		}
 		return spellV;
 	}
 
 	public boolean didHappen(int defaultPct)
 	{
+		String parmString=getParmString(text());
 		int x=parmString.indexOf("%");
 		if(x<0)
 		{
@@ -138,29 +127,39 @@ public class Prop_SpellAdder extends Property
 		return false;
 	}
     
-	public Hashtable getMySpellsH()
+	public Hashtable makeMySpellsH(Vector V)
 	{
-        if(spellH!=null) return spellH;
-        spellH=new Hashtable();
-		Vector V=getMySpellsV();
+		Hashtable spellH=new Hashtable();
 		for(int v=0;v<V.size();v++)
             spellH.put(((Ability)V.elementAt(v)).ID(),((Ability)V.elementAt(v)).ID());
 		return spellH;
 	}
 
 
-	public MOB qualifiedMOB(Environmental target)
+	public MOB getBestInvokerMOB(Environmental target)
 	{
 		if(target instanceof MOB)
 			return (MOB)target;
-
 		if((target instanceof Item)&&(((Item)target).owner()!=null)&&(((Item)target).owner() instanceof MOB))
 			return (MOB)((Item)target).owner();
-        if(trickMOB==null)
-            trickMOB=CMClass.getMOB("StdMOB");
-        Room R=CMLib.map().roomLocation(target);
-        trickMOB.setLocation((R==null)?CMClass.getLocale("StdRoom"):R);
-		return trickMOB;
+		return null;
+	}
+	
+	public MOB getInvokerMOB(Environmental source, Environmental target)
+	{
+		MOB mob=getBestInvokerMOB(affected);
+		if(mob==null) mob=getBestInvokerMOB(source);
+		if(mob==null) mob=getBestInvokerMOB(target);
+		if(mob==null) mob=invokerMOB;
+		if(mob==null)
+		{
+	        Room R=CMLib.map().roomLocation(target);
+	        if(R==null) R=CMLib.map().roomLocation(target);
+	        if(R==null) R=CMLib.map().getRandomRoom();
+	        mob=CMLib.map().god(R);
+		}
+		invokerMOB=mob;
+		return invokerMOB;
 	}
 
 	public boolean addMeIfNeccessary(Environmental source, Environmental target)
@@ -168,10 +167,12 @@ public class Prop_SpellAdder extends Property
 		Vector V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
-        ||((mask.size()>0)
-            &&(!CMLib.masking().maskCheck(mask,qualifiedMOB(source)))))
+        ||((compiledMask!=null)
+	    	&&(compiledMask.size()>0)
+	        &&(!CMLib.masking().maskCheck(compiledMask,target))))
             return false;
         
+		MOB qualMOB=getInvokerMOB(source,target);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -195,7 +196,7 @@ public class Prop_SpellAdder extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualifiedMOB(source),V2,target,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(qualMOB,V2,target,true,(affected!=null)?affected.envStats().level():0);
 				EA=target.fetchEffect(A.ID());
                 lastMOB=target;
 			}
@@ -218,7 +219,6 @@ public class Prop_SpellAdder extends Property
 	{
         if(E==null)return;
         
-		Hashtable h=getMySpellsH();
 		int x=0;
 		Vector eff=new Vector();
 		Ability thisAffect=null;
@@ -228,13 +228,17 @@ public class Prop_SpellAdder extends Property
 			if(thisAffect!=null)
 				eff.addElement(thisAffect);
 		}
-		for(x=0;x<eff.size();x++)
+		if(eff.size()>0)
 		{
-			thisAffect=(Ability)eff.elementAt(x);
-			String ID=(String)h.get(thisAffect.ID());
-			if((ID!=null)
-            &&(thisAffect.invoker()==qualifiedMOB(E)))
-				thisAffect.unInvoke();
+			Hashtable h=makeMySpellsH(getMySpellsV());
+			for(x=0;x<eff.size();x++)
+			{
+				thisAffect=(Ability)eff.elementAt(x);
+				String ID=(String)h.get(thisAffect.ID());
+				if((ID!=null)
+	            &&(thisAffect.invoker()==getInvokerMOB(E,E)))
+					thisAffect.unInvoke();
+			}
 		}
 	}
 
@@ -248,6 +252,7 @@ public class Prop_SpellAdder extends Property
 			if(msg.targetMinor()==CMMsg.TYP_ENTER)
 				addMeIfNeccessary(msg.source(),msg.source());
 		}
+		super.executeMsg(host,msg);
 	}
 
 	public void affectEnvStats(Environmental host, EnvStats affectableStats)
@@ -284,6 +289,7 @@ public class Prop_SpellAdder extends Property
         }
         if(spellList.size()>0)
             id=pre+id+post;
+        String maskString=getMaskString(text());
         if(maskString.length()>0)
             id+="  Restrictions: "+CMLib.masking().maskDesc(maskString);
         return id;
