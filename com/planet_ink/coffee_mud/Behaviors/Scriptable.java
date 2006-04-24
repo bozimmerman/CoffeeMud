@@ -686,7 +686,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						return monster.amFollowing();
 					  return null;
 			case 'r':
-			case 'R': return getRandomMOB(monster,null,lastKnownLocation);
+			case 'R': return getFirstPC(monster,null,lastKnownLocation);
 			case 'w': return primaryItem!=null?primaryItem.owner():null;
 			case 'W': return secondaryItem!=null?secondaryItem.owner():null;
 			case 'x':
@@ -759,7 +759,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 break;
 			case 'r':
 			case 'R':
-				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
+				randMOB=getFirstPC(monster,randMOB,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
@@ -784,7 +784,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					middle=((MOB)target).charStats().heshe();
 				break;
 			case 'J':
-				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
+				randMOB=getFirstPC(monster,randMOB,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.charStats().heshe();
 				break;
@@ -801,7 +801,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					middle=((MOB)target).charStats().hisher();
 				break;
 			case 'K':
-				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
+				randMOB=getFirstPC(monster,randMOB,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.charStats().hisher();
 				break;
@@ -4166,22 +4166,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return results.toString();
 	}
 
-	protected MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
+	protected MOB getFirstPC(MOB monster, MOB randMOB, Room room)
 	{
 		if((randMOB!=null)&&(randMOB!=monster))
 			return randMOB;
-
-		if((room!=null)&&(room.numInhabitants()>0))
-		{
-			int tries=0;
-			while((++tries)<1000)
+		MOB M=null;
+		if(room!=null)
+			for(int p=0;p<room.numInhabitants();p++)
 			{
-				if((randMOB!=null)&&(randMOB!=monster))
-				   break;
-				randMOB=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
+				M=room.fetchInhabitant(p);
+				if(!M.isMonster())
+				{
+					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster()))
+						M=M.amFollowing();
+					return M;
+				}
 			}
-		}
-		return randMOB;
+		return null;
 	}
 
 	public String execute(Environmental scripted,

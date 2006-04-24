@@ -97,12 +97,12 @@ public class As extends StdCommand
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
 		boolean dead=M.amDead();
-		int myBitmap=mob.getBitmap();
-		int oldBitmap=M.getBitmap();
+		//int myBitmap=mob.getBitmap();
+		//int oldBitmap=M.getBitmap();
 		M.setSession(mySession);
 		mySession.setMob(M);
 		M.setSoulMate(mob);
-        mySession.initTelnetMode(oldBitmap);
+        //mySession.initTelnetMode(oldBitmap);
 		if(((String)commands.firstElement()).equalsIgnoreCase(getScr("As","here"))
 		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
 		{
@@ -130,7 +130,7 @@ public class As extends StdCommand
 		M.setSoulMate(null);
 		M.setSession(hisSession);
 		mySession.setMob(mob);
-        mySession.initTelnetMode(myBitmap);
+        //mySession.initTelnetMode(myBitmap);
 		if(dead) M.removeFromGame(true);
 		return false;
 	}
