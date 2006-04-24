@@ -48,7 +48,7 @@ public class ClanDetails extends BaseClanner
 			for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				Clan C=(Clan)e.nextElement();
-				if(CMLib.english().containsString(C.clanID(), qual))
+				if(CMLib.english().containsString(C.getName(), qual))
 				{
 					msg.append(C.getDetail(mob));
 					found=true;

@@ -356,9 +356,14 @@ public class Cleric extends StdCharClass
 
 	public Vector outfit(MOB myChar)
 	{
-		if(outfitChoices==null)
+		Vector outfitChoices=new Vector();
+		if(CMLib.flags().isEvil(myChar))
 		{
-			outfitChoices=new Vector();
+			Weapon w=CMClass.getWeapon("Shortsword");
+			outfitChoices.addElement(w);
+		}
+		else
+		{
 			Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.addElement(w);
 		}

@@ -42,7 +42,6 @@ public class Scrapping extends CommonSkill
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
 	protected Item found=null;
-	protected Item fire=null;
 	protected int amount=0;
 	protected String oldItemName="";
 	protected String foundShortName="";
@@ -61,11 +60,7 @@ public class Scrapping extends CommonSkill
 		&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((found==null)
-			//||(found.amDestroyed()) destroyed is GOOD!
-			||((fire!=null)&&((!CMLib.flags().isOnFire(fire))
-							||(!mob.location().isContent(fire))
-							||(mob.isMine(fire)))))
+			if((found==null)||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -179,13 +174,12 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 
-		fire=null;
 		if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PLASTIC)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 		{
-			fire=getRequiredFire(mob,0);
+			Item fire=getRequiredFire(mob,0);
 			if(fire==null) return false;
 		}
 
@@ -214,7 +208,6 @@ public class Scrapping extends CommonSkill
 			        duration+=((Item)V.elementAt(v)).envStats().weight()/2;
 			    ((Item)V.elementAt(v)).destroy();
 			}
-			found=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

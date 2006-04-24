@@ -50,10 +50,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||(fire==null)
-			||(!CMLib.flags().isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -86,21 +83,8 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;
-		fire=null;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I2=mob.location().fetchItem(i);
-			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
-			{
-				fire=I2;
-				break;
-			}
-		}
-		if((fire==null)||(!mob.location().isContent(fire)))
-		{
-			commonTell(mob,"A fire will need to be built first.");
-			return false;
-		}
+		Item fire=getRequiredFire(mob,0);
+		if(fire==null) return false;
 		DVector enhancedTypes=enhancedTypes(mob,commands);
 		building=null;
 		messedUp=false;

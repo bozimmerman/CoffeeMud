@@ -535,7 +535,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	    &&(mob.getClanRole()!=Clan.POS_APPLICANT)
 	    &&((!mob.isMonster())||(mob.getStartRoom()==null)))
 	    {
-	        Clan C=CMLib.clans().getClan(mob.getClanID());
+	    	Clan C=CMLib.clans().getClan(mob.getClanID());
 		    if((C!=null)&&(C.getMorgue().length()>0))
 		    {
 		        Room room=getRoom(C.getMorgue());

@@ -9,8 +9,9 @@ FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,ARMORDMG,CONTAINMAS
 % Hammock	5	40	30	10	GenRideable	BED	50	0	0
 % Whip	5	10	10	272	GenWeapon	FLAILED	0	6	0
 % Wig	12	20	3	20	GenArmor	HEAD	0	1	0
-% Snood	18	25	2	25	GenArmor	HEAD	0	2	0
+% Snood	18	25	2	25	GenArmor	2:HEAD	0	2	0
 % Solano	26	30	5	50	GenArmor	HEAD	0	3	0
-% Sweater	15	60	10	30	GenArmor	BODY	0	6	0	Prop_HaveResister;Cold 10%
-Hair Ribbons	3	5	1	1	GenArmor	HEAD	0	0	0
-% Boa	8	20	5	10	GenArmor	NECK	0	0	0
+% Sweater	15	60	10	30	GenArmor	2:BODY	0	6	0	Prop_HaveResister;Cold 10%
+Hair Ribbons	3	5	1	1	GenArmor	MS-3:HEAD	0	0	0
+% Boa	8	20	5	10	GenArmor	2:NECK	0	0	0
+% Belt	20	20	3	30	GenArmor	6:WAIST	0	0	0

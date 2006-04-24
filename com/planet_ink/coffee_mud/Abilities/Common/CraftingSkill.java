@@ -40,7 +40,6 @@ public class CraftingSkill extends GatheringSkill
 	public long flags(){return FLAG_CRAFTING;}
     public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
 	protected Item building=null;
-	protected Item fire=null;
 	protected boolean fireRequired=true;
 	protected boolean mending=false;
 	protected boolean refitting=false;
@@ -467,6 +466,9 @@ public class CraftingSkill extends GatheringSkill
 		Item key=null;
 		int tries=0;
 		MOB mob=CMLib.map().god(CMLib.map().getRandomRoom());
+		mob.baseEnvStats().setLevel(Integer.MAX_VALUE/2);
+		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+		mob.recoverEnvStats();
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
 			Vector V=new Vector();

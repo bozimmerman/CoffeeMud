@@ -75,9 +75,10 @@ public class MOBTeacher extends CombatAbilities
 	{
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		String className=mob.charStats().getCurrentClass().ID();
+		Ability A=null;
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			A=(Ability)a.nextElement();
 			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
 			&&((!noCommon)||((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL))
@@ -107,6 +108,10 @@ public class MOBTeacher extends CombatAbilities
 			else
 			{
 				boolean someNew=true;
+				CharStats oldBase=(CharStats)mob.baseCharStats().copyOf();
+				for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+					mob.baseCharStats().setStat(i,100);
+				mob.recoverCharStats();
 				while(someNew)
 				{
 					someNew=false;
@@ -122,6 +127,8 @@ public class MOBTeacher extends CombatAbilities
 						}
 					}
 				}
+				mob.setBaseCharStats(oldBase);
+				mob.recoverCharStats();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -324,10 +331,21 @@ public class MOBTeacher extends CombatAbilities
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
-				    if(CMClass.findAbility(s.trim().toUpperCase())==null)
+			    	boolean foundEDU=false;
+			    	for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+			    	{
+			    		EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)e.nextElement();
+			    		if(CMLib.english().containsString(def.name,s))
+			    		{
+			    			s=def.name;
+			    			foundEDU=true;
+			    			break;
+			    		}
+			    	}
+			    	if(!foundEDU)
 						CMLib.commands().postSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
-				    else
-						CMLib.commands().postSay(monster,mob,"I'm sorry, I don't know "+s,true,false);
+			    	else
+						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an education-- try TRAINing it.",true,false);
 					return;
 				}
 				if(giveABonus)

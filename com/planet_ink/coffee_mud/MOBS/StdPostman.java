@@ -283,15 +283,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public Vector parsePostalItemData(String data)
     {
-        Vector V=new Vector();
-        for(int i=0;i<5;i++)
+        Vector V=CMParms.parseSemicolons(data,false);
+        if(V.size()<NUM_PIECES)
         {
-            int x=data.indexOf(";");
-            if(x<0) return new Vector();
-            V.addElement(data.substring(0,x));
-            data=data.substring(x+1);
+        	Log.errOut("StdPostman","Man formed postal data: "+data);
+        	return new Vector();
         }
-        V.addElement(data);
         return V;
     }
     
@@ -422,11 +419,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public long postalWaitTime()
     {
-        if(postalWaitTime<0)
-        {
-            if(getStartRoom()!=null)
-                postalWaitTime=new Long((getStartRoom().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR).longValue();
-        }
+        if((postalWaitTime<0)&&(getStartRoom()!=null))
+        	postalWaitTime=10038;
+        else
+        if((postalWaitTime==10038)&&(getStartRoom()!=null))
+            postalWaitTime=new Long((getStartRoom().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR).longValue();
         return postalWaitTime;
     }
     
@@ -443,8 +440,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             Long L=(Long)postalTimes.get(postalChain()+"/"+postalBranch());
             if((L==null)||(L.longValue()<System.currentTimeMillis()))
             {
+                proceed=(L!=null);
                 L=new Long(System.currentTimeMillis()+postalWaitTime());
-                proceed=true;
                 postalTimes.remove(postalChain()+"/"+postalBranch());
                 postalTimes.put(postalChain()+"/"+postalBranch(),L);
             }
@@ -554,6 +551,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             {
             case CMMsg.TYP_GIVE:
             case CMMsg.TYP_DEPOSIT:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
                     if(msg.tool() instanceof Container)
                         ((Container)msg.tool()).emptyPlease();
@@ -629,6 +627,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 }
                 return;
             case CMMsg.TYP_WITHDRAW:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
                     String thename=msg.source().Name();
                     if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
@@ -789,61 +788,64 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             case CMMsg.TYP_LIST:
             {
                 super.executeMsg(myHost,msg);
-                Vector V=null;
-                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
-                    V=getAllLocalBoxVectors(mob.getClanID());
-                else
-                {
-                    V=getAllLocalBoxVectors(mob.Name());
-                    if(mob.isMarriedToLiege())
-                    {
-                        Vector V2=getAllLocalBoxVectors(mob.getLiegeID());
-                        if((V2!=null)&&(V2.size()>0))
-                            CMParms.addToVector(V2,V);
-                    }
-                }
-
-                TimeClock C=CMClass.globalClock();
-                if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
-                boolean codCharge=false;
-                if(V.size()==0)
-                    mob.tell("Your postal box is presently empty.");
-                else
-                {
-                    StringBuffer str=new StringBuffer("");
-                    str.append("\n\rItems in your postal box here:\n\r");
-                    str.append("^x[COD     ][From           ][Sent           ][Item                        ]^.^N");
-                    mob.tell(str.toString());
-                    for(int i=0;i<V.size();i++)
-                    {
-                        Vector V2=(Vector)V.elementAt(i);
-                        Vector pieces=parsePostalItemData((String)V2.elementAt(DATA_DATA));
-                        Item I=makeItem(pieces);
-                        if(I==null) continue;
-                        str=new StringBuffer("^N");
-                        if(getCODChargeForPiece(pieces)>0.0)
-                        {
-                            codCharge=true;
-                            str.append("["+CMStrings.padRight(""+CMLib.beanCounter().abbreviatedPrice(this,getCODChargeForPiece(pieces)),8)+"]");
-                        }
-                        else
-                            str.append("[        ]");
-                        str.append("["+CMStrings.padRight((String)pieces.elementAt(PIECE_FROM),15)+"]");
-                        TimeClock C2=C.deriveClock(CMath.s_long((String)pieces.elementAt(PIECE_TIME)));
-                        str.append("["+CMStrings.padRight(C2.getShortestTimeDescription(),15)+"]");
-                        str.append("["+CMStrings.padRight(I.Name(),28)+"]");
-                        mob.tell(str.toString()+"^T");
-                    }
-                }
-                StringBuffer str=new StringBuffer("\n\r^N");
-                if(codCharge)
-                    str.append("* COD charges above include all shipping costs.\n\r");
-                str.append("* This branch charges minimum "+CMLib.beanCounter().nameCurrencyShort(this,minimumPostage())+" postage for first pound.\n\r");
-                str.append("* An additional "+CMLib.beanCounter().nameCurrencyShort(this,postagePerPound())+" per pound is charged for packages.\n\r");
-                str.append("* A charge of "+CMLib.beanCounter().nameCurrencyShort(this,holdFeePerPound())+" per pound per month is charged for holding.\n\r");
-                str.append("* To forward your mail, 'say \""+name()+"\" \"forward <areaname>\"'.\n\r");
-                str.append("* To close your box, 'say \""+name()+"\" close'.\n\r");
-                mob.tell(str.toString());
+    			if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+    			{
+	                Vector V=null;
+	                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+	                    V=getAllLocalBoxVectors(mob.getClanID());
+	                else
+	                {
+	                    V=getAllLocalBoxVectors(mob.Name());
+	                    if(mob.isMarriedToLiege())
+	                    {
+	                        Vector V2=getAllLocalBoxVectors(mob.getLiegeID());
+	                        if((V2!=null)&&(V2.size()>0))
+	                            CMParms.addToVector(V2,V);
+	                    }
+	                }
+	
+	                TimeClock C=CMClass.globalClock();
+	                if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
+	                boolean codCharge=false;
+	                if(V.size()==0)
+	                    mob.tell("Your postal box is presently empty.");
+	                else
+	                {
+	                    StringBuffer str=new StringBuffer("");
+	                    str.append("\n\rItems in your postal box here:\n\r");
+	                    str.append("^x[COD     ][From           ][Sent           ][Item                        ]^.^N");
+	                    mob.tell(str.toString());
+	                    for(int i=0;i<V.size();i++)
+	                    {
+	                        Vector V2=(Vector)V.elementAt(i);
+	                        Vector pieces=parsePostalItemData((String)V2.elementAt(DATA_DATA));
+	                        Item I=makeItem(pieces);
+	                        if(I==null) continue;
+	                        str=new StringBuffer("^N");
+	                        if(getCODChargeForPiece(pieces)>0.0)
+	                        {
+	                            codCharge=true;
+	                            str.append("["+CMStrings.padRight(""+CMLib.beanCounter().abbreviatedPrice(this,getCODChargeForPiece(pieces)),8)+"]");
+	                        }
+	                        else
+	                            str.append("[        ]");
+	                        str.append("["+CMStrings.padRight((String)pieces.elementAt(PIECE_FROM),15)+"]");
+	                        TimeClock C2=C.deriveClock(CMath.s_long((String)pieces.elementAt(PIECE_TIME)));
+	                        str.append("["+CMStrings.padRight(C2.getShortestTimeDescription(),15)+"]");
+	                        str.append("["+CMStrings.padRight(I.Name(),28)+"]");
+	                        mob.tell(str.toString()+"^T");
+	                    }
+	                }
+	                StringBuffer str=new StringBuffer("\n\r^N");
+	                if(codCharge)
+	                    str.append("* COD charges above include all shipping costs.\n\r");
+	                str.append("* This branch charges minimum "+CMLib.beanCounter().nameCurrencyShort(this,minimumPostage())+" postage for first pound.\n\r");
+	                str.append("* An additional "+CMLib.beanCounter().nameCurrencyShort(this,postagePerPound())+" per pound is charged for packages.\n\r");
+	                str.append("* A charge of "+CMLib.beanCounter().nameCurrencyShort(this,holdFeePerPound())+" per pound per month is charged for holding.\n\r");
+	                str.append("* To forward your mail, 'say \""+name()+"\" \"forward <areaname>\"'.\n\r");
+	                str.append("* To close your box, 'say \""+name()+"\" close'.\n\r");
+	                mob.tell(str.toString());
+    			}
                 return;
             }
             default:

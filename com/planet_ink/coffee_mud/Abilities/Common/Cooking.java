@@ -98,16 +98,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			MOB mob=(MOB)affected;
 			if((cooking==null)
-			||(requireFire()&&(fire==null))
 			||(building==null)
 			||(finalRecipe==null)
 			||(finalAmount<=0)
 			||(!isMineForCooking(mob,cooking))
 			||(!meetsLidRequirements(mob,cooking))
 			||(!contentsSame(potContents(cooking),oldContents))
-			||(requireFire()&&(!CMLib.flags().isOnFire(fire)))
-			||(requireFire()&&(!mob.location().isContent(fire)))
-			||(requireFire()&&mob.isMine(fire)))
+			||(requireFire()&&(getRequiredFire(mob,0)==null)))
 			{
 				aborted=true;
 				unInvoke();
@@ -362,7 +359,6 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	{
 		verb=cookWord();
 		cooking=null;
-		fire=null;
 		finalRecipe=null;
 		finalAmount=0;
 		building=null;
@@ -451,7 +447,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 		if(requireFire())
 		{
-			fire=getRequiredFire(mob,0);
+			Item fire=getRequiredFire(mob,0);
 			if(fire==null) return false;
 		}
 

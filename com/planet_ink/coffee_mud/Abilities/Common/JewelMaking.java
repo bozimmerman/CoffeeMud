@@ -66,10 +66,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if(fireRequired)
 			{
 				if((building==null)
-				||(fire==null)
-				||(!CMLib.flags().isOnFire(fire))
-				||(!mob.location().isContent(fire))
-				||(mob.isMine(fire)))
+				||(getRequiredFire(mob,0)==null))
 				{
 					messedUp=true;
 					unInvoke();
@@ -229,7 +226,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,CMStrings.capitalizeAndLower(word)+" what jewel onto what item?");
 				return false;
 			}
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			building=null;
 			mending=false;
 			refitting=false;
@@ -300,7 +297,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
@@ -319,7 +316,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
@@ -376,7 +373,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			if(!bundling)
 			{
-				fire=getRequiredFire(mob,autoGenerate);
+				Item fire=getRequiredFire(mob,autoGenerate);
 				if(fire==null) return false;
 			}
 			else

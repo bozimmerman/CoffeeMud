@@ -62,10 +62,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(fireRequired)
 			{
 				if((building==null)
-				||(fire==null)
-				||(!CMLib.flags().isOnFire(fire))
-				||(!mob.location().isContent(fire))
-				||(mob.isMine(fire)))
+				||(getRequiredFire(mob,0)==null))
 				{
 					messedUp=true;
 					unInvoke();
@@ -192,7 +189,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(!bundling)
 		{
 			fireRequired=true;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 		}
 		else

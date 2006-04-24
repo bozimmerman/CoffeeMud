@@ -57,10 +57,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||(fire==null)
-			||(!CMLib.flags().isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -138,21 +135,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		fire=null;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I2=mob.location().fetchItem(i);
-			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
-			{
-				fire=I2;
-				break;
-			}
-		}
-		if((fire==null)||(!mob.location().isContent(fire)))
-		{
-			commonTell(mob,"You need to build a fire first.");
-			return false;
-		}
+		Item fire=getRequiredFire(mob,autoGenerate);
+		if(fire==null) return false;
 		building=null;
 		messedUp=false;
 		int amount=-1;

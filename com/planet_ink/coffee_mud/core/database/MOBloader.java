@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class MOBloader
 {
+	protected static Room emptyRoom=null;
 	public static boolean DBReadUserOnly(MOB mob)
 	{
 		if(mob.Name().length()==0) return false;
@@ -139,10 +140,14 @@ public class MOBloader
 	public static void DBRead(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
+		if(emptyRoom==null) emptyRoom=CMClass.getLocale("StdRoom");
 		int oldDisposition=mob.baseEnvStats().disposition();
 		mob.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
 		mob.envStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
 		DBReadUserOnly(mob);
+		Room oldLoc=mob.location();
+		boolean inhab=oldLoc.isInhabitant(mob);
+		mob.setLocation(emptyRoom);
 
 		DBConnection D=null;
 		// now grab the items
@@ -200,7 +205,10 @@ public class MOBloader
 		}
 		if(D!=null) DBConnector.DBDone(D);
 		D=null;
-
+		
+		mob.setLocation(oldLoc);
+		if(inhab&&(!oldLoc.isInhabitant(mob)))
+			oldLoc.addInhabitant(mob);
 
 		// now grab the abilities
 		try
@@ -267,6 +275,7 @@ public class MOBloader
 		if(D!=null) DBConnector.DBDone(D);
         D=null;
 
+        
 		mob.baseEnvStats().setDisposition(oldDisposition);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();

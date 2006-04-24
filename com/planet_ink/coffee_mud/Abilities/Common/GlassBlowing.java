@@ -58,10 +58,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||(fire==null)
-			||(!CMLib.flags().isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -139,7 +136,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		fire=getRequiredFire(mob,autoGenerate);
+		Item fire=getRequiredFire(mob,autoGenerate);
 		if(fire==null) return false;
 		building=null;
 		messedUp=false;

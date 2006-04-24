@@ -43,7 +43,6 @@ public class Equipment extends StdCommand
 		if(CMLib.flags().isSleeping(seer))
 			return new StringBuffer("(nothing you can see right now)");
 
-	    int numTattsDone=0;
 	    long wornCode=0;
 	    String header=null;
 	    int found=0;
@@ -69,10 +68,11 @@ public class Equipment extends StdCommand
             }
             Vector wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
             int shownThisLoc=0;
+            int numLocations=mob.getWearPositions(wornCode);
+            if(numLocations==0) numLocations=1;
+            int emptySlots=numLocations;
             if(wornHere.size()>0)
             {
-	            int numLocations=mob.getWearPositions(wornCode);
-	            if(numLocations==0) numLocations=1;
 	            Vector sets=new Vector(numLocations);
 	            for(int i=0;i<numLocations;i++)
 	            	sets.addElement(new Vector());
@@ -100,7 +100,11 @@ public class Equipment extends StdCommand
 	            	for(int s=0;s<sets.size();s++)
 	            	{
 	            		set=(Vector)sets.elementAt(s);
-	            		if(set.size()==0){ set.addElement(I); break;}
+	            		if(set.size()==0)
+	            		{ 
+	            			set.addElement(I); 
+	            			break;
+	            		}
 	            		for(int s2=0;s2<set.size();s2++)
 	            		{
 	            			I2=(Item)set.elementAt(s2);
@@ -127,9 +131,13 @@ public class Equipment extends StdCommand
 	                    		break;
 	                    	}
 	            		}
-	            		if((layer2!=layer)
-	            		&&(!set.contains(I)))
-	            		{ set.addElement(I); break;}
+	            		if(set.contains(I)) 
+	            			break;
+	            		if(layer2<layer)
+	            		{ 
+	            			set.addElement(I); 
+	            			break;
+	            		}
 	            	}
 	            }
 	            wornHere.clear();
@@ -142,8 +150,11 @@ public class Equipment extends StdCommand
 	            		I2=(Item)set.elementAt(s2);
 	        			wornHere.addElement(I2);
 	            		if((!(I2 instanceof Armor))
-	            		||(((Armor)I2).getClothingLayer()==0))
+	            		||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
+	            		{
+	            			emptySlots--;
 	            			break;
+	            		}
 	            	}
 	            }
 				for(int i=0;i<wornHere.size();i++)
@@ -212,15 +223,22 @@ public class Equipment extends StdCommand
 				}
             }
 			numWears=mob.getWearPositions(wornCode);
-			if(found<numWears)
+			
+			if(emptySlots>0)
 			{
-			    numTattsDone=found;
+				int numTattoosTotal=0;
+				for(int i=0;i<mob.numTattoos();i++)
+				{
+				    tat=mob.fetchTattoo(i).toUpperCase();
+				    if((tat.startsWith(wornName+":"))) numTattoosTotal++;
+				}
+				int numTattoosToShow=(int)Math.round(CMath.mul(numTattoosTotal,CMath.div(emptySlots,numLocations)));
 			    wornName=wornName.toUpperCase();
 				for(int i=0;i<mob.numTattoos();i++)
 				{
 				    tat=mob.fetchTattoo(i).toUpperCase();
 				    if((tat.startsWith(wornName+":"))
-				    &&((++numTattsDone)<=numWears))
+				    &&((--numTattoosToShow)>=0))
 				    {
                         if(paragraphView)
                         {

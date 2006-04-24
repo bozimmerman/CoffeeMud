@@ -247,7 +247,6 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		if(clookup==null)
 		{
 			clookup=new String[256];
-			
 			clookup['!']=COLOR_BOLD;		// bold
 			clookup['_']=COLOR_UNDERLINE;	// underline
 			clookup['*']=COLOR_BLINK;		// blink

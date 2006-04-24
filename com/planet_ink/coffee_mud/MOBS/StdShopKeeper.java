@@ -233,86 +233,105 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
-				if((msg.tool()!=null)
-				&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
-                    ||(CMLib.utensils().doesHavePriviledgesHere(msg.source(),getStartRoom()))
-					||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
-					||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
-				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
-                {
-                    CMLib.commands().postSay(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
-                    getShop().addStoreInventory(msg.tool(),1,-1,this);
-                    if(isGeneric()) text();
-					return;
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				{
+					if((msg.tool()!=null)
+					&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
+	                    ||(CMLib.utensils().doesHavePriviledgesHere(msg.source(),getStartRoom()))
+						||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
+						||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
+					&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
+	                {
+	                    CMLib.commands().postSay(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
+	                    getShop().addStoreInventory(msg.tool(),1,-1,this);
+	                    if(isGeneric()) text();
+						return;
+					}
 				}
 				super.executeMsg(myHost,msg);
 				break;
 			case CMMsg.TYP_VALUE:
+			{
 				super.executeMsg(myHost,msg);
-				CMLib.commands().postSay(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+					CMLib.commands().postSay(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
 				break;
+			}
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
-            {
+			{
 				super.executeMsg(myHost,msg);
-                double paid=CMLib.coffeeShops().transactPawn(this,msg.source(),this,msg.tool());
-                if(paid>Double.MIN_VALUE)
-                {
-                    budgetRemaining=budgetRemaining-Math.round(paid);
-					if(mySession!=null)
-						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-						mob.location().recoverRoomStats();
-                    if(isGeneric()) text();
-				}
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+	            {
+	                double paid=CMLib.coffeeShops().transactPawn(this,msg.source(),this,msg.tool());
+	                if(paid>Double.MIN_VALUE)
+	                {
+	                    budgetRemaining=budgetRemaining-Math.round(paid);
+						if(mySession!=null)
+							mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
+						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+							mob.location().recoverRoomStats();
+	                    if(isGeneric()) text();
+					}
+	            }
 				break;
-            }
+			}
 			case CMMsg.TYP_VIEW:
+			{
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob,whatIsSold(),getStartRoom())))
-					CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
-				break;
-			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a shopkeeper
-            {
-				super.executeMsg(myHost,msg);
-                MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
-				if((msg.tool()!=null)
-				&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom()))
-				&&(location()!=null))
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom());
-					if(products.size()==0) break;
-					Environmental product=(Environmental)products.firstElement();
-                    
-                    CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,product);
-                    
-					if(product instanceof Item)
-					{
-                        if(!CMLib.coffeeShops().purchaseItems((Item)product,products,this,mobFor))
-                            return;
-					}
-					else
-					if(product instanceof MOB)
-					{
-                        if(CMLib.coffeeShops().purchaseMOB((MOB)product,this,this,mobFor))
-                        {
-                            msg.modify(msg.source(),msg.target(),product,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
-                            product.executeMsg(myHost,msg);
-                        }
-					}
-					else
-					if(product instanceof Ability)
-                        CMLib.coffeeShops().purchaseAbility((Ability)product,this,this,mobFor);
-
-					if(mySession!=null)
-						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-						mob.location().recoverRoomStats();
+					if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob,whatIsSold(),getStartRoom())))
+						CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
 				}
 				break;
-            }
+			}
+			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a shopkeeper
+			{
+				super.executeMsg(myHost,msg);
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+	            {
+	                MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
+					if((msg.tool()!=null)
+					&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom()))
+					&&(location()!=null))
+					{
+						Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom());
+						if(products.size()==0) break;
+						Environmental product=(Environmental)products.firstElement();
+	                    
+	                    CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,product);
+	                    
+						if(product instanceof Item)
+						{
+	                        if(!CMLib.coffeeShops().purchaseItems((Item)product,products,this,mobFor))
+	                            return;
+						}
+						else
+						if(product instanceof MOB)
+						{
+	                        if(CMLib.coffeeShops().purchaseMOB((MOB)product,this,this,mobFor))
+	                        {
+	                            msg.modify(msg.source(),msg.target(),product,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+	                            product.executeMsg(myHost,msg);
+	                        }
+						}
+						else
+						if(product instanceof Ability)
+	                        CMLib.coffeeShops().purchaseAbility((Ability)product,this,this,mobFor);
+	
+						if(mySession!=null)
+							mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
+						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+							mob.location().recoverRoomStats();
+					}
+	            }
+				break;
+			}
 			case CMMsg.TYP_LIST:
+			{
+				super.executeMsg(myHost,msg);
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					super.executeMsg(myHost,msg);
 					Vector inventory=getShop().getStoreInventory();
 					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
                     int limit=CMParms.getParmInt(prejudiceFactors(),"LIMIT",0);
@@ -321,6 +340,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						mob.tell(s);
 				}
 				break;
+			}
 			default:
 				super.executeMsg(myHost,msg);
 				break;

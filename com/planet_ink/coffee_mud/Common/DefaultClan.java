@@ -438,13 +438,13 @@ public class DefaultClan implements Clan
             {
                 Room R=CMLib.map().getRoom(getMorgue());
                 if(R!=null)
-                    msg.append("^x Morgue         :^.^N "+R.displayText()+"\n\r");
+                    msg.append("^xMorgue         :^.^N "+R.displayText()+"\n\r");
             }
             if(getRecall().length()>0)
             {
                 Room R=CMLib.map().getRoom(getRecall());
                 if(R!=null)
-                    msg.append("^x Morgue         :^.^N "+R.displayText()+"\n\r");
+                    msg.append("^xRecall         :^.^N "+R.displayText()+"\n\r");
             }
         }
         msg.append("^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_BOSS,true,true),16)+":^.^N "+crewList(POS_BOSS)+"\n\r"

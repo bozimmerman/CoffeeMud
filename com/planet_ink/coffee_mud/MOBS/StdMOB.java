@@ -718,7 +718,7 @@ public class StdMOB implements MOB
 		}
         if(location()==null)
         {
-        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed!");
+        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed!!");
             destroy();
             return;
         }

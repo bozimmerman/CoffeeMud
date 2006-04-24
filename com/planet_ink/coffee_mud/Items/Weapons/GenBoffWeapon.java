@@ -123,7 +123,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenWeapon)) return false;
+		if(!(E instanceof GenBoffWeapon)) return false;
 		String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

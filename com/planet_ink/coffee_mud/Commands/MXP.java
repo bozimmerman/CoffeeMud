@@ -51,7 +51,7 @@ public class MXP extends StdCommand
                 {
                     try{mob.session().prompt("",100);}catch(Exception e){}
                 }
-                if(mob.session().serverTelnetMode(Session.TELNET_MXP))
+                if(mob.session().clientTelnetMode(Session.TELNET_MXP))
                 {
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_MXP));
 					StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);

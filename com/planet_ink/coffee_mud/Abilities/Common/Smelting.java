@@ -59,11 +59,8 @@ public class Smelting extends CraftingSkill
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||(fire==null)
 			||(amountMaking<1)
-			||(!CMLib.flags().isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -132,7 +129,7 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		fire=getRequiredFire(mob,0);
+		Item fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
 		building=null;
 		messedUp=false;

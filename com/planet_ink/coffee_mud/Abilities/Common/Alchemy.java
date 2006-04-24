@@ -51,10 +51,7 @@ public class Alchemy extends CraftingSkill
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||((fireRequired)&&((fire==null)
-								||(!CMLib.flags().isOnFire(fire))
-								||(!mob.location().isContent(fire))
-								||(mob.isMine(fire))))
+			||((fireRequired)&&(getRequiredFire(mob,0)==null))
 			||(theSpell==null))
 			{
 				aborted=true;
@@ -227,14 +224,13 @@ public class Alchemy extends CraftingSkill
 			if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			{
 				fireRequired=false;
-				fire=null;
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 			else
 			{
 				fireRequired=true;
-				fire=getRequiredFire(mob,0);
+				Item fire=getRequiredFire(mob,0);
 				if(fire==null) return false;
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;

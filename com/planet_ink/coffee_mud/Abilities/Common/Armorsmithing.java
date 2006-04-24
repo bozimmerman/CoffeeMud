@@ -64,10 +64,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||(fire==null)
-			||(!CMLib.flags().isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -204,7 +201,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
@@ -223,7 +220,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
@@ -256,7 +253,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

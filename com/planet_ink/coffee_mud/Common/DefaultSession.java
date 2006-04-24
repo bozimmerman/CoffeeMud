@@ -622,7 +622,13 @@ public class DefaultSession extends Thread implements Session
 	    {
 	    	case '>':
 	    	    if(currentColor>0)
+	    	    {
+	    	    	if(clookup()[c]==null)
+	    	    		return clookup()[currentColor];
+	    	    	if(clookup()[currentColor]==null)
+	    	    		return clookup[c];
 					return clookup()[c]+clookup()[currentColor];
+	    	    }
     	        return clookup()[c];
 	    	case '<':
 	    	case '&':

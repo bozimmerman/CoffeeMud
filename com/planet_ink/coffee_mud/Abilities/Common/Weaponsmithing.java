@@ -67,10 +67,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
-			||(fire==null)
-			||(!CMLib.flags().isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
 				unInvoke();
@@ -136,6 +133,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if((mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			return true;
 
+		if(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Commoner"))
+			return true;
 		String specialization="";
 		switch(specClass(weaponClass))
 		{
@@ -236,7 +235,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			building=null;
 			mending=false;
@@ -254,7 +253,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		{
 			mending=false;
-			fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			building=null;
 			messedUp=false;

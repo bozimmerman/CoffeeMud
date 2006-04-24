@@ -380,6 +380,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					if(msg.tool() instanceof Container)
 						((Container)msg.tool()).emptyPlease();
@@ -425,6 +426,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				return;
 			case CMMsg.TYP_WITHDRAW:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					Item old=(Item)msg.tool();
 					if(old instanceof Coins)
@@ -507,73 +509,76 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-				Vector V=null;
-				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-					V=getDepositedItems(mob.getClanID());
-				else
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					V=getDepositedItems(mob.Name());
-					if(mob.isMarriedToLiege())
-					{
-						Vector V2=getDepositedItems(mob.getLiegeID());
-						if((V2!=null)&&(V2.size()>0))
-							CMParms.addToVector(V2,V);
-					}
-				}
-
-				StringBuffer str=new StringBuffer("");
-				str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
-				String c="^x[Item                              ] ";
-				str.append(c+c+"^.^N\n\r");
-				int colNum=0;
-				boolean otherThanCoins=false;
-				for(int i=0;i<V.size();i++)
-				{
-					Item I=(Item)V.elementAt(i);
-					if(!(I instanceof Coins))
-					{
-						otherThanCoins=true;
-						String col=null;
-						col="["+CMStrings.padRight(I.name(),34)+"] ";
-						if((++colNum)>2)
-						{
-							str.append("\n\r");
-							colNum=1;
-						}
-						str.append(col);
-					}
-				}
-				if(!otherThanCoins)
-					str=new StringBuffer("\n\r^N");
-				else
-					str.append("\n\r\n\r");
-				double balance=getBalance(mob);
-				if(balance>0)
-				{
+					Vector V=null;
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
+						V=getDepositedItems(mob.getClanID());
 					else
-						str.append("Your balance is ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
+					{
+						V=getDepositedItems(mob.Name());
+						if(mob.isMarriedToLiege())
+						{
+							Vector V2=getDepositedItems(mob.getLiegeID());
+							if((V2!=null)&&(V2.size()>0))
+								CMParms.addToVector(V2,V);
+						}
+					}
+	
+					StringBuffer str=new StringBuffer("");
+					str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
+					String c="^x[Item                              ] ";
+					str.append(c+c+"^.^N\n\r");
+					int colNum=0;
+					boolean otherThanCoins=false;
+					for(int i=0;i<V.size();i++)
+					{
+						Item I=(Item)V.elementAt(i);
+						if(!(I instanceof Coins))
+						{
+							otherThanCoins=true;
+							String col=null;
+							col="["+CMStrings.padRight(I.name(),34)+"] ";
+							if((++colNum)>2)
+							{
+								str.append("\n\r");
+								colNum=1;
+							}
+							str.append(col);
+						}
+					}
+					if(!otherThanCoins)
+						str=new StringBuffer("\n\r^N");
+					else
+						str.append("\n\r\n\r");
+					double balance=getBalance(mob);
+					if(balance>0)
+					{
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							str.append("Clan "+mob.getClanID()+" has a balance of ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
+						else
+							str.append("Your balance is ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
+					}
+					if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
+					&&(mob.isMarriedToLiege()))
+					{
+						balance=getBalance(CMLib.map().getPlayer(mob.getLiegeID()));
+						str.append("Your spouses balance is ^H"+balance+"^? gold coins.");
+					}
+					if(coinInterest!=0.0)
+					{
+						double cci=CMath.mul(Math.abs(coinInterest),100.0);
+						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						str.append("\n\rThey "+ci+"weekly on money deposited here.");
+					}
+					if(itemInterest!=0.0)
+					{
+						double cci=CMath.mul(Math.abs(itemInterest),100.0);
+						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						str.append("\n\rThey "+ci+"weekly on items deposited here.");
+					}
+					mob.tell(str.toString()+"^T");
 				}
-				if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
-				&&(mob.isMarriedToLiege()))
-				{
-					balance=getBalance(CMLib.map().getPlayer(mob.getLiegeID()));
-					str.append("Your spouses balance is ^H"+balance+"^? gold coins.");
-				}
-				if(coinInterest!=0.0)
-				{
-					double cci=CMath.mul(Math.abs(coinInterest),100.0);
-					String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					str.append("\n\rThey "+ci+"weekly on money deposited here.");
-				}
-				if(itemInterest!=0.0)
-				{
-					double cci=CMath.mul(Math.abs(itemInterest),100.0);
-					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					str.append("\n\rThey "+ci+"weekly on items deposited here.");
-				}
-				mob.tell(str.toString()+"^T");
 				return;
 			}
 			default:
