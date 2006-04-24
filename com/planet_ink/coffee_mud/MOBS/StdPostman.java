@@ -283,7 +283,15 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public Vector parsePostalItemData(String data)
     {
-        Vector V=CMParms.parseSemicolons(data,false);
+        Vector V=new Vector();
+        for(int i=0;i<5;i++)
+        {
+            int x=data.indexOf(";");
+            if(x<0) break;
+            V.addElement(data.substring(0,x));
+            data=data.substring(x+1);
+        }
+        V.addElement(data);
         if(V.size()<NUM_PIECES)
         {
         	Log.errOut("StdPostman","Man formed postal data: "+data);
