@@ -250,7 +250,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_ASH=MATERIAL_VEGETATION|159;
 	public final static int RESOURCE_PERFUME=MATERIAL_LIQUID|160;
 	public final static int RESOURCE_ATLANTEANSTEEL=MATERIAL_MITHRIL|161;
-	public final static int RESOURCE_CHEESE=MATERIAL_LIQUID|162;
+	public final static int RESOURCE_CHEESE=MATERIAL_VEGETATION|162;
 	public final static int RESOURCE_MASK=255;	
 
 	
