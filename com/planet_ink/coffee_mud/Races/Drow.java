@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 
-/*
+/* 
    Copyright 2006 Lee Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,8 @@ public class Drow extends Elf
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Elf";}
-	private String[]culturalAbilityNames={"Drowish","Foraging"};
-	private int[]culturalAbilityProfficiencies={75,50};
+	private String[]culturalAbilityNames={"Drowish","Spell_Darkness", "Spell_FaerieFire"};
+	private int[]culturalAbilityProfficiencies={75,25,25};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 
@@ -50,7 +50,7 @@ public class Drow extends Elf
 
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
 	public int[] getAgingChart(){return agingChart;}
-
+	
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
@@ -64,7 +64,7 @@ public class Drow extends Elf
 				affectableStats.setArmor(affectableStats.armor() * 2);
 			}
 		}
-
+		
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED|EnvStats.CAN_SEE_DARK);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -95,8 +95,8 @@ public class Drow extends Elf
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
-			s1.setName("a delicate green shirt");
-			s1.setDisplayText("a delicate green shirt sits gracefully here.");
+			s1.setName("a delicate black shirt");
+			s1.setDisplayText("a delicate black shirt sits gracefully here.");
 			s1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.");
 			s1.text();
 			outfitChoices.addElement(s1);
@@ -110,7 +110,7 @@ public class Drow extends Elf
 
 			Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some delicate leggings");
-			p1.setDisplayText("a pair delicate brown leggings sit here.");
+			p1.setDisplayText("a pair delicate black leggings sit here.");
 			p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 			p1.text();
 			outfitChoices.addElement(p1);
@@ -173,3 +173,4 @@ public class Drow extends Elf
 		return resources;
 	}
 }
+
