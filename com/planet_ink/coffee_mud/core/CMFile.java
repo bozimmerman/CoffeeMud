@@ -773,6 +773,10 @@ public class CMFile
             filename=filename.substring(2);
         if(filename.startsWith("//"))
             filename=filename.substring(2);
+        if((filename.length()>3)
+        &&(Character.isLetter(filename.charAt(0))
+        &&(filename.charAt(1)==':')))
+        	filename=filename.substring(2);
         while(filename.startsWith("/")) filename=filename.substring(1);
         while(filename.startsWith("\\")) filename=filename.substring(1);
         while(filename.endsWith("/"))

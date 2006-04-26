@@ -880,8 +880,14 @@ public class CMProps extends Properties
 	{
 		try
 		{
-			this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
-			loaded=true;
+			CMFile F=new CMFile(filename,null,false);
+			if(F.exists())
+			{
+				this.load(new ByteArrayInputStream(F.raw()));
+				loaded=true;
+			}
+			else
+				loaded=false;
 		}
 		catch(IOException e)
 		{

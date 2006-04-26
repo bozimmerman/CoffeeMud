@@ -49,6 +49,7 @@ Players currently online: <b>@NUMPLAYERS@</B>
 					  <a href="ables.cmvp?ABILITYTYPE=PRAYER"><FONT COLOR=RED>Prayers</FONT></a>  
 					  <a href="ables.cmvp?ABILITYTYPE=CHANT"><FONT COLOR=RED>Chants</FONT></a>  
 					  <a href="skills.cmvp"><FONT COLOR=RED>Skills</FONT></a>
+					  <a href="educations.cmvp"><FONT COLOR=RED>Educations</FONT></a>  
 <P>
 @BaseCharClassNext?RESET@
 @loop@

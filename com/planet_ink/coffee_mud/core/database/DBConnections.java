@@ -405,6 +405,16 @@ public class DBConnections
 				DB.close();
 			}
 		}
+		try
+		{
+	        java.util.Properties p = new java.util.Properties();
+	        p.put("user",DBUser);
+	        p.put("password",DBPass);
+	        p.put("shutdown", "true");
+	        //DriverManager.getConnection(DBService,p);
+		}
+		catch(Exception e){}
+		
 	}
 	
 	/** 
