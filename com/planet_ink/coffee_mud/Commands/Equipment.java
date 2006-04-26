@@ -49,7 +49,6 @@ public class Equipment extends StdCommand
 	    String wornName=null;
 	    Item thisItem=null;
 	    String tat=null;
-	    int numWears=0;
         boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
                             ||((seer!=mob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0))
                             ||CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
@@ -222,18 +221,16 @@ public class Equipment extends StdCommand
 					}
 				}
             }
-			numWears=mob.getWearPositions(wornCode);
-			
 			if(emptySlots>0)
 			{
-				int numTattoosTotal=0;
+				double numTattoosTotal=0;
+			    wornName=wornName.toUpperCase();
 				for(int i=0;i<mob.numTattoos();i++)
 				{
 				    tat=mob.fetchTattoo(i).toUpperCase();
-				    if((tat.startsWith(wornName+":"))) numTattoosTotal++;
+				    if((tat.startsWith(wornName+":"))) numTattoosTotal+=1.0;
 				}
-				int numTattoosToShow=(int)Math.round(CMath.mul(numTattoosTotal,CMath.div(emptySlots,numLocations)));
-			    wornName=wornName.toUpperCase();
+				int numTattoosToShow=(int)Math.round(Math.ceil(CMath.mul(numTattoosTotal,CMath.div(emptySlots,numLocations))));
 				for(int i=0;i<mob.numTattoos();i++)
 				{
 				    tat=mob.fetchTattoo(i).toUpperCase();

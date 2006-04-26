@@ -42,6 +42,7 @@ public class Scrapping extends CommonSkill
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
 	protected Item found=null;
+	boolean fireRequired=false;
 	protected int amount=0;
 	protected String oldItemName="";
 	protected String foundShortName="";
@@ -60,7 +61,7 @@ public class Scrapping extends CommonSkill
 		&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((found==null)||(getRequiredFire(mob,0)==null))
+			if((found==null)||(fireRequired&&(getRequiredFire(mob,0)==null)))
 			{
 				messedUp=true;
 				unInvoke();
@@ -173,13 +174,14 @@ public class Scrapping extends CommonSkill
 			commonTell(mob,"You don't have enough here to get anything from.");
 			return false;
 		}
-
+		fireRequired=false;
 		if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PLASTIC)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 		{
 			Item fire=getRequiredFire(mob,0);
+			fireRequired=true;
 			if(fire==null) return false;
 		}
 
