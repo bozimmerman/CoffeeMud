@@ -70,7 +70,7 @@ public class GenArmor extends StdArmor
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","LAYER","LAYERATTRIB"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -81,6 +81,8 @@ public class GenArmor extends StdArmor
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
+		case 4: return ""+getClothingLayer();
+		case 5: return ""+getLayerAttributes();
 		}
 		return "";
 	}
@@ -95,6 +97,8 @@ public class GenArmor extends StdArmor
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_int(val)); break;
 		case 3: setContainTypes(CMath.s_long(val)); break;
+		case 4: setClothingLayer(CMath.s_short(val)); break;
+		case 5: setLayerAttributes(CMath.s_short(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){
