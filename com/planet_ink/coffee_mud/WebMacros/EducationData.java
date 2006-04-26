@@ -56,6 +56,25 @@ public class EducationData extends StdWebMacro
 						s=CMLib.help().getHelpText(E.name,null,false);
 					str.append(helpHelp(s));
 				}
+				if(parms.containsKey("SHORTHELP"))
+				{
+					String s=(String)CMLib.help().getHelpFile().getProperty(E.ID.toUpperCase());
+					if(s==null) s=(String)CMLib.help().getArcHelpFile().getProperty(E.ID.toUpperCase());
+					if(s==null) s=(String)CMLib.help().getHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+					if(s==null) s=(String)CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+					if(s!=null) 
+					{
+						if(s.toUpperCase().trim().startsWith("<EDUCATION>"))s=s.trim().substring(11);
+						str.append(helpHelp(new StringBuffer(s))+", ");
+					}
+					else
+					{
+						StringBuffer s2=CMLib.help().getHelpText(E.ID,null,false);
+						if(s2==null)
+							s2=CMLib.help().getHelpText(E.name,null,false);
+						str.append(helpHelp(s2));
+					}
+				}
 				if(parms.containsKey("NAME")) str.append(E.name+", ");
 				if(parms.containsKey("COST")) str.append(E.costDescription()+", ");
 				if(parms.containsKey("REQUIRES"))

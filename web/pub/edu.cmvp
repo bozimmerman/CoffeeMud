@@ -1,0 +1,14 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta name="robots" content="noindex,nofollow">
+<TITLE>@EducationData?NAME@</TITLE>
+</HEAD>
+<BODY BGCOLOR=#000066 TEXT=#FFFFFF>
+<H3>@EducationData?NAME@</H3>
+<TABLE WIDTH=100%>
+<TR><TD WIDTH=20% VALIGN=TOP><B>Description</B></TD><TD>@EducationData?SHORTHELP@</TD></TR>
+<TR><TD WIDTH=20% VALIGN=TOP><B>Cost</B></TD><TD>@EducationData?COST@</TD></TR>
+<TR><TD WIDTH=20% VALIGN=TOP><B>Requires</B></TD><TD>@EducationData?REQUIRES@</TD></TR>
+</BODY>
+</HTML>

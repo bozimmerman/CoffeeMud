@@ -51,7 +51,7 @@ public class EducationNext extends StdWebMacro
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
 			{
 				httpReq.addRequestParameters("EDUCATION",E.ID);
-				last=E.ID;
+				return "";
 			}
 			lastID=E.ID;
 		}

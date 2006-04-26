@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Educations/Skill enhancements</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	function openUp(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("edu.cmvp?EDUCATION="+named,
+		            "Education",strFeatures, false);
+	}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=#00FF99>
+<h3>CoffeeMud @MudServerVersion@ Educations Information</h3><P>
+
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#90ee90 ALIGN=CENTER><H2>CoffeeMud @MudServerVersion@ Educations</H2></TD></TR>
+	@EducationNext?reset@
+	@loop@
+	<TR>
+	@EducationNext?NEXT@<TD WIDTH=25%><a href="javascript:openUp('@EducationID@');"><B>@EducationData?NAME@</B></a></TD>
+	@EducationNext?NEXT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@EducationID@');"><B>@EducationData?NAME@</B></a></TD>
+	@EducationNext?NEXT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@EducationID@');"><B>@EducationData?NAME@</B></a></TD>
+	@EducationNext?NEXT&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@EducationID@');"><B>@EducationData?NAME@</B></a></TD>
+	</TR>
+	@back@
+	</TABLE>
+</BODY>
+</HTML>

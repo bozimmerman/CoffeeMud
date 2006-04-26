@@ -715,7 +715,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        if(zapCodes.containsKey(str2))
 	                            break;
 	                        if(str2.startsWith("+"))
-								buf.append(CMStrings.capitalizeAndLower(str2.substring(1))+", ");
+	                        {
+	                        	EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(str2.substring(1).toUpperCase().trim());
+	                        	if(E!=null) buf.append(E.name+", ");
+	                        }
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -731,7 +734,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        if(zapCodes.containsKey(str2))
 	                            break;
 	                        if(str2.startsWith("-"))
-								buf.append(CMStrings.capitalizeAndLower(str2.substring(1))+", ");
+	                        {
+	                        	EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(str2.substring(1).toUpperCase().trim());
+	                        	if(E!=null) buf.append(E.name+", ");
+	                        }
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));

@@ -486,9 +486,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	public StringBuffer getHelpList(String helpStr, 
-                                	       Properties rHelpFile1, 
-                                	       Properties rHelpFile2, 
-                                	       MOB forMOB)
+                        	       Properties rHelpFile1, 
+                        	       Properties rHelpFile2, 
+                        	       MOB forMOB)
 	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
