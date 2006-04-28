@@ -58,10 +58,10 @@ public class EducationData extends StdWebMacro
 				}
 				if(parms.containsKey("SHORTHELP"))
 				{
-					String s=(String)CMLib.help().getHelpFile().getProperty(E.ID.toUpperCase());
-					if(s==null) s=(String)CMLib.help().getArcHelpFile().getProperty(E.ID.toUpperCase());
-					if(s==null) s=(String)CMLib.help().getHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
-					if(s==null) s=(String)CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+					String s=CMLib.help().getHelpFile().getProperty(E.ID.toUpperCase());
+					if(s==null) s=CMLib.help().getArcHelpFile().getProperty(E.ID.toUpperCase());
+					if(s==null) s=CMLib.help().getHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+					if(s==null) s=CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
 					if(s!=null) 
 					{
 						if(s.toUpperCase().trim().startsWith("<EDUCATION>"))s=s.trim().substring(11);
