@@ -119,8 +119,10 @@ public class StdSmokable extends StdContainer implements Light
 	{
 		if((tickID==Tickable.TICKID_LIGHT_FLICKERS)
 		&&(isLit())
+		&&(tickStatus==Tickable.STATUS_NOT)
 		&&(owner()!=null))
 		{
+			tickStatus=Tickable.STATUS_ALIVE;
 			if(((--durationTicks)>0)&&(!destroyed))
 			{
 				if(((durationTicks%puffTicks)==0)
@@ -131,6 +133,7 @@ public class StdSmokable extends StdContainer implements Light
 					if((mob.location()!=null)
 					&&(CMLib.flags().aliveAwakeMobile(mob,true)))
                     {
+						tickStatus=Tickable.STATUS_WEATHER;
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,"<S-NAME> puff(s) on <T-NAME>.");
                         if(CMLib.dice().roll(1,1000,0)==1)
                         {
@@ -139,10 +142,12 @@ public class StdSmokable extends StdContainer implements Light
                         }
                     }
 				}
+				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}
 			if(owner() instanceof Room)
 			{
+				tickStatus=Tickable.STATUS_CLASS;
                 Room R=(Room)owner;
 				if(R.numInhabitants()>0)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
@@ -153,6 +158,7 @@ public class StdSmokable extends StdContainer implements Light
 			else
 			if(owner() instanceof MOB)
 			{
+				tickStatus=Tickable.STATUS_DEAD;
                 MOB M=(MOB)owner();
 				M.tell(M,null,this,"<O-NAME> burns out.");
 				durationTicks=0;
@@ -168,6 +174,7 @@ public class StdSmokable extends StdContainer implements Light
 			light(false);
 			durationTicks=0;
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		return false;
 	}
 
