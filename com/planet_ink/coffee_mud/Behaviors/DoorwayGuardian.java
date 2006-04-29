@@ -86,7 +86,6 @@ public class DoorwayGuardian extends StdBehavior
 		&&(mob!=monster)
 		&&(msg.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster))
-		&&(!CMLib.masking().maskCheck(getParms(),mob))
         &&(CMLib.flags().canSenseMoving(mob,monster)||(getParms().toUpperCase().indexOf("NOSNEAK")>=0)))
 		{
 			if(msg.target() instanceof Exit)
@@ -99,7 +98,8 @@ public class DoorwayGuardian extends StdBehavior
 					return true;
 
 				if((msg.targetMinor()!=CMMsg.TYP_CLOSE)
-				&&(msg.targetMinor()!=CMMsg.TYP_LOCK))
+				&&(msg.targetMinor()!=CMMsg.TYP_LOCK)
+				&&(CMLib.masking().maskCheck(getParms(),mob)))
 				{
 					CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
 					if(monster.location().okMessage(monster,msgs))
@@ -112,7 +112,8 @@ public class DoorwayGuardian extends StdBehavior
 			else
 			if((msg.tool()!=null)
 			&&(msg.target() instanceof Room)
-			&&(msg.tool() instanceof Exit))
+			&&(msg.tool() instanceof Exit)
+			&&(CMLib.masking().maskCheck(getParms(),mob)))
 			{
 				Exit exit=(Exit)msg.tool();
 				Exit texit[]=getParmExits(monster);

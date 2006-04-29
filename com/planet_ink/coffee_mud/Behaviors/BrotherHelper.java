@@ -45,8 +45,7 @@ public class BrotherHelper extends StdBehavior
 			if (observer.getStartRoom() == target.getStartRoom())
 				return true;
         }
-        if((observer.ID().equals(target.ID()))
-        &&(observer.name().equals(target.name())))
+        if((observer.ID().equals(target.ID()))&&(observer.name().equals(target.name())))
 			return true;
 		return false;
 	}
