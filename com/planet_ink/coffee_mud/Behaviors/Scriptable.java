@@ -707,7 +707,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(lastKnownLocation!=null)
 		{
 			str=varify(source,target,monster,primaryItem,secondaryItem,msg,str);
-			return lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORNREQ_ANY);
+			Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORNREQ_ANY);
+			if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Item.WORNREQ_ANY);
+			return E;
 		}
 		return null;
 	}
