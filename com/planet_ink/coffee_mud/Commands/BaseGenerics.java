@@ -851,6 +851,9 @@ public class BaseGenerics extends StdCommand
 				E.setReadable(true);
 				mob.tell(getScr("BaseGenerics","readabletxt",E.readableText()));
 				String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
+				if(newName.equalsIgnoreCase("null"))
+					E.setReadableText("");
+				else
 				if(newName.length()>0)
 					E.setReadableText(newName);
 				else
@@ -999,6 +1002,9 @@ public class BaseGenerics extends StdCommand
 
 				if(ok)
 				{
+					if(newName.equalsIgnoreCase("null"))
+						E.setReadableText("");
+					else
 					if(newName.length()>0)
 						E.setReadableText(newName);
 					else
