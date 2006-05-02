@@ -87,7 +87,7 @@ public class StdJournal extends StdItem
                 String adminReq=getAdminReq().trim();
                 boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob);
 				long lastTime=mob.playerStats().lastDateTime();
-				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob)))
+				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
 					return;
