@@ -40,7 +40,7 @@ public class Spell_MageArmor extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
-	Item theArmor=null;
+	Armor theArmor=null;
 
 	public void unInvoke()
 	{
@@ -100,6 +100,7 @@ public class Spell_MageArmor extends Spell
 			{
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GlowingMageArmor");
+				theArmor.setLayerAttributes(Armor.LAYERMASK_SEETHROUGH);
 				mob.addInventory(theArmor);
 				theArmor.wearAt(Item.WORN_TORSO);
 				success=beneficialAffect(mob,target,asLevel,0);
