@@ -644,7 +644,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell(getScr("BaseGenerics","closedtxt",showNumber+"",E.closedText()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
+		String newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
 		if(newName.equals("null"))
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),"");
 		else
@@ -850,7 +850,7 @@ public class BaseGenerics extends StdCommand
 			{
 				E.setReadable(true);
 				mob.tell(getScr("BaseGenerics","readabletxt",E.readableText()));
-				String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
+				String newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
 				if(newName.equalsIgnoreCase("null"))
 					E.setReadableText("");
 				else
@@ -896,7 +896,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Ammunition)
 		 ||(E instanceof Recipe)
-		 ||(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
+		 ||(E instanceof Exit)
 		 ||(E instanceof Wand)
 		 ||(E instanceof Light)
 		 ||(E instanceof Key))
@@ -919,7 +919,7 @@ public class BaseGenerics extends StdCommand
 					ok=true;
 				}
 				else
-				if(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
+				if(E instanceof Exit)
 				{
 					mob.tell(getScr("BaseGenerics","assroomid",showNumber+"",E.readableText()));
 					ok=true;
@@ -998,7 +998,7 @@ public class BaseGenerics extends StdCommand
 					}
 				}
 				else
-					newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
+					newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
 
 				if(ok)
 				{
