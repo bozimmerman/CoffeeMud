@@ -48,6 +48,7 @@ public class Chant_SummonMount extends Chant
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
+			mob.setFollowing(null);
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -75,8 +76,10 @@ public class Chant_SummonMount extends Chant
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
 					mob.delEffect(this);
+					mob.setFollowing(null);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
+					return false;
 				}
 			}
 		}

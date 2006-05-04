@@ -348,7 +348,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(6*hardness));
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
+			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			if(armordmg!=0) armordmg=armordmg+(multiplier-1);
 			if(bundling) building.setBaseValue(lostValue);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
