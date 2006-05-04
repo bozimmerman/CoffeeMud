@@ -70,6 +70,7 @@ public class DefaultSession extends Thread implements Session
     private long lastLoopTop=System.currentTimeMillis();
     private long onlineTime=System.currentTimeMillis();
     private long lastPKFight=0;
+    private long lastNPCFight=0;
     private long lastBlahCheck=0;
     private long milliTotal=0;
     private long tickTotal=0;
@@ -278,6 +279,8 @@ public class DefaultSession extends Thread implements Session
 	public long lastLoopTime(){ return lastLoopTop;}
     public long getLastPKFight(){return lastPKFight;}
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
+    public long getLastNPCFight(){return lastNPCFight;}
+    public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
     public Vector getLastMsgs(){return (Vector)prevMsgs.clone();}
 
 	public MOB mob(){return mob;}

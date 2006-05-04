@@ -137,6 +137,8 @@ public interface Session extends CMObject
     public long getMillisOnline();
     public long getLastPKFight();
     public void setLastPKFight();
+    public long getLastNPCFight();
+    public void setLastNPCFight();
     public long lastLoopTime();
     public Vector getLastMsgs();
 	
