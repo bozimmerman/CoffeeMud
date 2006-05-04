@@ -440,7 +440,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if(building instanceof Armor)
 			{
 				misctype=applyLayers((Armor)building,misctype);
-				((Armor)building).baseEnvStats().setArmor(armordmg);
+				if(armordmg!=0)
+					((Armor)building).baseEnvStats().setArmor(armordmg);
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
 				{
