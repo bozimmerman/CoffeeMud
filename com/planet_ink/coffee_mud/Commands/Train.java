@@ -294,7 +294,7 @@ public class Train extends StdCommand
 		if(abilityCode<100)
 		{
 			int teachStat=teacher.charStats().getStat(abilityCode);
-			if(curStat>teachStat)
+			if(curStat>=teachStat)
 			{
 				mob.tell("You can only train with someone whose score is higher than yours.");
 				return false;

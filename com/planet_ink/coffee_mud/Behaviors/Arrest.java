@@ -1764,15 +1764,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!CMLib.flags().isInvisible(w)))
 				{
 					String info[]=(String[])laws.basicCrimes().get("ARMED");
-					fillOutWarrant(msg.source(),
-									laws,
-								   myArea,
-								   null,
-								   info[Law.BIT_CRIMELOCS],
-								   info[Law.BIT_CRIMEFLAGS],
-								   info[Law.BIT_CRIMENAME],
-								   info[Law.BIT_SENTENCE],
-								   info[Law.BIT_WARNMSG]);
+					if((msg.source().session()==null)
+					||(((System.currentTimeMillis()-msg.source().session().getLastNPCFight())>30000)
+						&&((System.currentTimeMillis()-msg.source().session().getLastPKFight())>30000)))
+					{
+						fillOutWarrant(msg.source(),
+										laws,
+									   myArea,
+									   null,
+									   info[Law.BIT_CRIMELOCS],
+									   info[Law.BIT_CRIMEFLAGS],
+									   info[Law.BIT_CRIMENAME],
+									   info[Law.BIT_SENTENCE],
+									   info[Law.BIT_WARNMSG]);
+					}
 				}
 
 				if((laws.basicCrimes().containsKey("TRESPASSING"))

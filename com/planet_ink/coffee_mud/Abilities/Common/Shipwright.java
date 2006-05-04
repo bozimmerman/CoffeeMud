@@ -156,7 +156,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor
         bundling=false;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Wood required\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Level Capacity Wood required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -165,8 +165,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+					int capacity=CMath.s_int((String)V.elementAt(RCP_CAPACITY));
 					if(level<=mob.envStats().level())
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,5)+" "+CMStrings.padRight(""+capacity,8)+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

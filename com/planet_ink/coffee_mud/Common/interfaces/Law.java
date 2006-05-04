@@ -143,7 +143,7 @@ public interface Law extends CMObject
 		"ACTIVATED=FALSE\n"+
 		"RESISTFIGHTMSG=Resisting arrest?! How DARE you!\n"+
 		"RESISTMSG=Resisting arrest eh?  Well, have it your way.\n"+
-		"PROTECTED=+INT 3\n"+
+		"PROTECTED=+ADJINT 3\n"+
 		"ARRESTMOBS=true\n"+
 		"TRESPASSERS=-Race +Undead\n"+
 		"PAROLE1TIME=40\n"+

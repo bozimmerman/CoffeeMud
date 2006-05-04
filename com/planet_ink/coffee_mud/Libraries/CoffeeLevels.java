@@ -145,7 +145,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		baseLevelAdjuster(mob,-1);
-		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.STAT_WISDOM),4.0))+curClass.getBonusPracLevel();
+		int prac2Stat=mob.charStats().getStat(curClass.getAttackAttribute());
+		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ+curClass.getAttackAttribute()));
+		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
+		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,4.0))+curClass.getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()-practiceGain);
 		int trainGain=0;
@@ -261,7 +265,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
 
-		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.STAT_WISDOM),4.0))+curClass.getBonusPracLevel();
+		int prac2Stat=mob.charStats().getStat(curClass.getAttackAttribute());
+		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ+curClass.getAttackAttribute()));
+		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
+		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,4.0))+curClass.getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append(" ^H" + practiceGain+"^N practice " +
