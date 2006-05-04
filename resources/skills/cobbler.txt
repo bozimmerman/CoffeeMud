@@ -1,19 +1,20 @@
 name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
-% Slippers	1	10	3	5	GenArmor	1:FEET	0	2	0
-% Socks	1	10	2	2	GenArmor	-2:FEET	0	2	0
-% Stockings	3	20	1	10	GenArmor	S-3:FEET	0	2	0
-% Boots	4	40	10	20	GenArmor	2:FEET	0	3	0
-% Sabots	5	30	5	5	GenArmor	2:FEET	0	3	0
-% Sandals	6	30	3	10	GenArmor	S1:FEET	0	3	0
-% Hose	7	25	1	20	GenArmor	S-3:FEET&&LEGS	0	3	0
-Leg Length % Boots	14	70	20	150	GenArmor	1:FEET&&LEGS	0	4	0
-Stiletto Heeled % Boots	15	60	15	125	GenArmor	3:FEET	0	4	0
-% Cowboy Boots	16	45	12	60	GenArmor	2:FEET	0	4	0
-% Galloshes	16	40	12	20	GenArmor	4:FEET	0	4	0
+% Slippers	1	10	3	5	GenArmor	FEET	0	2	0
+% Shoes	1	20	5	100	GenArmor	FEET	0	1	0
+% Socks	1	10	2	2	GenArmor	-3:FEET	0	2	0
+% Stockings	3	20	1	10	GenArmor	S-4:FEET	0	2	0
+% Boots	4	40	10	20	GenArmor	1:FEET	0	3	0
+% Sabots	5	30	5	5	GenArmor	1:FEET	0	3	0
+% Sandals	6	30	3	10	GenArmor	S:FEET	0	3	0
+% Hose	7	25	1	20	GenArmor	S-2:FEET&&LEGS	0	3	0
+Leg Length % Boots	14	70	20	150	GenArmor	FEET&&LEGS	0	4	0
+Stiletto Heeled % Boots	15	60	15	125	GenArmor	2:FEET	0	4	0
+% Cowboy Boots	16	45	12	60	GenArmor	1:FEET	0	4	0
+% Galloshes	16	40	12	20	GenArmor	3:FEET	0	4	0
 High Heeled % Boots	16	50	10	75	GenArmor	2:FEET	0	4	0
-% Greaves	17	30	8	20	GenArmor	2:FEET	0	4	0
-% High Heels	17	30	5	35	GenArmor	s:FEET	0	4	0
-% Riding Boots	17	40	8	50	GenArmor	2:FEET	0	4	0
+% Greaves	17	30	8	20	GenArmor	S:FEET	0	4	0
+% High Heels	17	30	5	35	GenArmor	s-1:FEET	0	4	0
+% Riding Boots	17	40	8	50	GenArmor	1:FEET	0	4	0
 % Stiletto Heels	17	40	5	50	GenArmor	s:FEET	0	4	0
 % Pumps	18	25	4	30	GenArmor	FEET	0	4	0
 % Baby Booties	0	20	2	10	GenArmor	FEET	0	0	0

@@ -146,7 +146,9 @@ public class MOBloader
 		mob.envStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
 		DBReadUserOnly(mob);
 		Room oldLoc=mob.location();
-		boolean inhab=oldLoc.isInhabitant(mob);
+		boolean inhab=false;
+		if(oldLoc!=null)
+			inhab=oldLoc.isInhabitant(mob);
 		mob.setLocation(emptyRoom);
 
 		DBConnection D=null;

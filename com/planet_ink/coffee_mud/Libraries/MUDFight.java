@@ -967,10 +967,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
         if(target.isInCombat())
         {
-            if((!target.isMonster())&&(!attacker.isMonster()))
-                attacker.session().setLastPKFight();
-            else
-            	attacker.session().setLastNPCFight();
+        	if(attacker.session()!=null)
+        	{
+	            if(!target.isMonster())
+	                attacker.session().setLastPKFight();
+	            else
+	            	attacker.session().setLastNPCFight();
+        	}
             if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
             {
                 Item weapon=attacker.myNaturalWeapon();
