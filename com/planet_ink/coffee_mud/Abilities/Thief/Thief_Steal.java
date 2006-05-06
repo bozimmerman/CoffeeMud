@@ -74,11 +74,6 @@ public class Thief_Steal extends ThiefSkill
 			mob.tell("Steal what from whom?");
 			return false;
 		}
-		if(mob.isInCombat())
-		{
-			mob.tell("Not while you are fighting!");
-			return false;
-		}
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
@@ -86,6 +81,11 @@ public class Thief_Steal extends ThiefSkill
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			return false;
+		}
+		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
+		{
+			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
 			return false;
 		}
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
@@ -122,6 +122,8 @@ public class Thief_Steal extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
+		if(!CMLib.flags().aliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
+		
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)

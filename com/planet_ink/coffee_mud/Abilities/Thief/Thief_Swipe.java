@@ -75,15 +75,15 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell("Swipe from whom?");
 			return false;
 		}
-		if(mob.isInCombat())
-		{
-			mob.tell("Not while you are fighting!");
-			return false;
-		}
-
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
+		{
+			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
+			return false;
+		}
+		
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
@@ -111,6 +111,7 @@ public class Thief_Swipe extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
+		if(!CMLib.flags().aliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
