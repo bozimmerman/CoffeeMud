@@ -470,7 +470,8 @@ public class RoomLoader
 
     public static void DBReadContent(Room thisRoom, Vector rooms, RoomnumberSet unloadedRooms, boolean setStatus)
 	{
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS")))
+		boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMPOP"));
+		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS"))))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
 		
 		Hashtable stuff=new Hashtable();
@@ -624,16 +625,17 @@ public class RoomLoader
 			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			Room room=(Room)e.nextElement();
+			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
 			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID());
 			if(itemNums!=null)
 			{
+				String lastName=null;
 				for(Enumeration i=itemNums.elements();i.hasMoreElements();)
 				{
 					Environmental E=(Environmental)i.nextElement();
+					if((debug)&&(!lastName.equals(E.Name()))){lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
 					if(E instanceof Item)
-					{
 						room.addItem((Item)E);
-					}
 					else
 						((MOB)E).bringToLife(room,true);
 				}

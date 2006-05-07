@@ -222,7 +222,6 @@ public class DataLoader
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
-				CMLib.database().DBReadData("ARREST");
 				Vector V=new Vector();
 				V.addElement(DBConnections.getRes(R,"CMPLID"));
 				V.addElement(DBConnections.getRes(R,"CMSECT"));
