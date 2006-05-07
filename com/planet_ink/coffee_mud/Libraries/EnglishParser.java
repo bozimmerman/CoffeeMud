@@ -828,7 +828,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                 if(error.length()>0) mob.tell(error);
 				return null;
 			}
-            String what=CMParms.combine(commands,0);
+            String what=(String)commands.lastElement();
+            
             Environmental shopkeeper=fetchEnvironmental(V,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
                 for(int v=0;v<V.size();v++)

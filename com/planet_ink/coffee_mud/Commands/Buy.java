@@ -39,6 +39,21 @@ public class Buy extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		MOB mobFor=null;
+		if((commands.size()>2)
+		&&(((String)commands.elementAt(commands.size()-2)).equalsIgnoreCase("for")))
+		{
+			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
+			if(M==null)
+			{
+				mob.tell(getScr("Buy","nonecalled",((String)commands.lastElement())));
+				return false;
+			}
+			commands.removeElementAt(commands.size()-1);
+			commands.removeElementAt(commands.size()-1);
+			mobFor=M;
+		}
+
         Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,getScr("Buy","buywhatwhom"));
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
@@ -58,21 +73,6 @@ public class Buy extends StdCommand
 		{
 			maxToDo=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
-		}
-
-		MOB mobFor=null;
-		if((commands.size()>2)
-		&&(((String)commands.elementAt(commands.size()-2)).equalsIgnoreCase("for")))
-		{
-			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
-			if(M==null)
-			{
-				mob.tell(getScr("Buy","nonecalled",((String)commands.lastElement())));
-				return false;
-			}
-			commands.removeElementAt(commands.size()-1);
-			commands.removeElementAt(commands.size()-1);
-			mobFor=M;
 		}
 
 		String whatName=CMParms.combine(commands,0);

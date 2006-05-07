@@ -2280,8 +2280,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(E==null) return true;
 		if((cset==null)||(cset.size()==0)) return true;
         getMaskCodes();
+        CharStats base=null;
         MOB mob=(E instanceof MOB)?(MOB)E:null;
         Item item=(E instanceof Item)?(Item)E:null;
+        
 		for(int c=0;c<cset.size();c++)
 		{
 			Vector V=(Vector)cset.elementAt(c);
@@ -2307,7 +2309,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 4: // -gender
-				if(!V.contains(""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))))
+		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if(!V.contains(""+((char)base.getStat(CharStats.STAT_GENDER))))
 					return false;
 				break;
 			case 5: // -level
@@ -2767,51 +2770,63 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				   return false;
 				break;
 			case 87: // +str
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 88: // +int
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 89: // +wis
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 90: // +dex
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 91: // +con
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 92: // +cha
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 93: // -str
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 94: // -int
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 95: // -wis
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 96: // -dex
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 97: // -con
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 98: // -cha
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
             case 55: // +able
@@ -2935,7 +2950,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 36: // +gender
-				if(V.contains(""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))))
+		        if(base==null){ base=(CharStats)base.copyOf(); base.getMyRace().affectCharStats(mob,base);}
+				if(V.contains(""+((char)base.getStat(CharStats.STAT_GENDER))))
 					return false;
 				break;
 			case 37: // +lvlgr
@@ -2975,6 +2991,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         String mobRace=null;
         String mobAlign=null;
         String mobGender=null;
+        CharStats base=null;
         int classLevel=-1;
         Vector V=CMParms.parse(text.toUpperCase());
         MOB mob=(E instanceof MOB)?(MOB)E:null;
@@ -2998,6 +3015,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     		mobAlign=CMLib.flags().getAlignmentName(mob).substring(0,3);
     		mobGender=mob.charStats().genderName().toUpperCase();
             classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
+	        base=(CharStats)mob.baseCharStats().copyOf(); 
+	        base.getMyRace().affectCharStats(mob,base);
             if(CMSecurity.isASysOp(mob)
             ||((mob.location()!=null)&&(mob.location().getArea().amISubOp(mob.Name()))))
                 for(int v=0;v<V.size();v++)
@@ -3214,62 +3233,62 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 87: // +str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<val)
+					if(base.getStat(CharStats.STAT_STRENGTH)<val)
 						return false;
 					break;
 				case 88: // +int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<val)
+					if(base.getStat(CharStats.STAT_INTELLIGENCE)<val)
 						return false;
 					break;
 				case 89: // +wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<val)
+					if(base.getStat(CharStats.STAT_WISDOM)<val)
 						return false;
 					break;
 				case 90: // +dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<val)
+					if(base.getStat(CharStats.STAT_DEXTERITY)<val)
 						return false;
 					break;
 				case 91: // +con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<val)
+					if(base.getStat(CharStats.STAT_CONSTITUTION)<val)
 						return false;
 					break;
 				case 92: // +cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<val)
+					if(base.getStat(CharStats.STAT_CHARISMA)<val)
 						return false;
 					break;
 				case 93: // -str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)>val)
+					if(base.getStat(CharStats.STAT_STRENGTH)>val)
 						return false;
 					break;
 				case 94: // -int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)>val)
+					if(base.getStat(CharStats.STAT_INTELLIGENCE)>val)
 						return false;
 					break;
 				case 95: // -wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)>val)
+					if(base.getStat(CharStats.STAT_WISDOM)>val)
 						return false;
 					break;
 				case 96: // -dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)>val)
+					if(base.getStat(CharStats.STAT_DEXTERITY)>val)
 						return false;
 					break;
 				case 97: // -con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>val)
+					if(base.getStat(CharStats.STAT_CONSTITUTION)>val)
 						return false;
 					break;
 				case 98: // -cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)>val)
+					if(base.getStat(CharStats.STAT_CHARISMA)>val)
 						return false;
 					break;
                 case 55: // +able
