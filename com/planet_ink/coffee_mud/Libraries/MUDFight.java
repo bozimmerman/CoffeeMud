@@ -1155,13 +1155,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     }
     protected void subtickAfterAttack(MOB fighter)
     {
+    	// this code is for auto-retargeting of players
+    	// is mostly not handled by combatabilities in a smarter way
         MOB target=fighter.getVictim();
         if((target!=null)
         &&(fighter.isMonster())
         &&((fighter.amFollowing()==null)||(fighter.amFollowing().isMonster()))
         &&(target.isMonster())
         &&(!target.amDead())
-        &&(CMLib.dice().rollPercentage()<33)
+        &&(CMLib.dice().rollPercentage()==1)
         &&(fighter.location()!=null))
         {
             MOB M=null;

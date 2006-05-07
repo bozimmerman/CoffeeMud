@@ -332,6 +332,7 @@ public class MOBTeacher extends CombatAbilities
 				if(myAbility==null)
 				{
 			    	boolean foundEDU=false;
+			    	boolean foundClass=false;
 			    	for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
 			    	{
 			    		EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)e.nextElement();
@@ -342,10 +343,15 @@ public class MOBTeacher extends CombatAbilities
 			    			break;
 			    		}
 			    	}
-			    	if(!foundEDU)
-						CMLib.commands().postSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
-			    	else
+			    	if((!foundEDU)&&(CMClass.findCharClass(s.trim())!=null))
+			    		foundClass=true;
+			    	if(foundEDU)
 						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an education-- try TRAINing it.",true,false);
+			    	else
+			    	if(foundClass)
+						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an class-- try TRAINing  for it.",true,false);
+			    	else
+						CMLib.commands().postSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
 					return;
 				}
 				if(giveABonus)

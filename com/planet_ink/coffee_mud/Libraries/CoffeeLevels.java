@@ -147,7 +147,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		baseLevelAdjuster(mob,-1);
 		int prac2Stat=mob.charStats().getStat(curClass.getAttackAttribute());
 		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ+curClass.getAttackAttribute()));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_WISDOM));
 		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,4.0))+curClass.getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
@@ -267,7 +267,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		int prac2Stat=mob.charStats().getStat(curClass.getAttackAttribute());
 		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ+curClass.getAttackAttribute()));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_WISDOM));
 		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,4.0))+curClass.getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;

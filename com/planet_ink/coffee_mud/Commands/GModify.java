@@ -564,7 +564,7 @@ public class GModify extends StdCommand
             Room R=(Room)placesToDo.elementAt(r);
             if(!CMSecurity.isAllowed(mob,R,"GMODIFY"))
                 continue;
-            if(R.roomID().length()==0) continue;
+            if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
 	    	synchronized(("SYNC"+R.roomID()).intern())
 	    	{
 	    		R=CMLib.map().getRoom(R);

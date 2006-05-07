@@ -511,6 +511,7 @@ public class Create extends BaseGenerics
                 else
                 if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources/"+name+"' (N/y)? ","N")))
                 {
+                	//name=Resources.buildResourcePath("")+name;
                     StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
                     if((template==null)||(template.length()==0))
                     {

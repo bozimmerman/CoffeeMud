@@ -37,6 +37,8 @@ public class CombatAbilities extends StdBehavior
 
 
 	public int combatMode=0;
+	public DVector aggro=null;
+	public short rounds=0;
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -137,6 +139,73 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
+	public void adjustAggro(MOB mob, int amt)
+	{
+		if(aggro==null) aggro=new DVector(2);
+		synchronized(aggro)
+		{
+			Integer I=null;
+			int x=aggro.indexOf(mob);
+			if(x>=0) 
+				I=(Integer)aggro.elementAt(x,2);
+			else
+			{
+				x=aggro.size();
+				I=new Integer(0);
+				aggro.addElement(mob,I);
+			}
+			aggro.setElementAt(x,2,new Integer(I.intValue()+amt));
+		}
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		MOB mob=(MOB)host;
+		if(mob.isInCombat()) 
+		{
+			MOB victim=mob.getVictim();
+			if(victim==null){}else
+			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			&&(msg.value()>0)
+			&&(msg.source()!=host))
+			{
+				if(msg.target()==host)
+					adjustAggro(msg.source(),msg.value()*2);
+				else
+				{
+					if((victim==msg.source())
+					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+						adjustAggro(msg.source(),msg.value());
+				}
+			}
+			else
+			if((msg.targetMinor()==CMMsg.TYP_HEALING)&&(msg.value()>0)
+			&&(msg.source()!=host)
+			&&(msg.target()!=host))
+			{
+				if((msg.target()==victim)
+				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+					adjustAggro(msg.source(),msg.value()*2);
+			}
+			else
+			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+			&&(msg.source()!=host)
+			&&(msg.tool() instanceof Ability)
+			&&(((Ability)msg.tool()).classificationCode()!=Ability.ACODE_SONG))
+			{
+				if((msg.source()==victim)
+				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+				{
+					int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
+					if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
+					if(level>0) adjustAggro(msg.source(),level);
+				}
+			}
+		}
+		super.executeMsg(host,msg);
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -149,9 +218,41 @@ public class CombatAbilities extends StdBehavior
 		MOB mob=(MOB)ticking;
 
 		if(!canActAtAll(mob)) return true;
-		if(!mob.isInCombat()) return true;
+		if(!mob.isInCombat()){ if(aggro!=null)aggro=null; rounds=(short)0; return true;}
+		rounds++;
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
+		if(aggro!=null)
+		{
+			synchronized(aggro)
+			{
+				int windex=-1;
+				int winAmt=0;
+				int vicAmt=0;
+				int minAmt=mob.maxState().getHitPoints()/10;
+				for(int a=0;a<aggro.size();a++)
+				{
+					if(aggro.elementAt(a,1)==victim)
+						vicAmt=((Integer)aggro.elementAt(a,2)).intValue();
+					else
+					if((((Integer)aggro.elementAt(a,2)).intValue()>winAmt)
+					&&(CMLib.flags().canBeSeenBy((MOB)aggro.elementAt(a,1),mob)))
+					{
+						winAmt=((Integer)aggro.elementAt(a,2)).intValue();
+						windex=a;
+					}
+				}
+				if((winAmt>minAmt)
+				&&(winAmt>(vicAmt+(vicAmt/2)))
+				&&(!((MOB)aggro.elementAt(windex,1)).amDead()))
+				{
+					mob.setVictim((MOB)aggro.elementAt(windex,1));
+					victim=mob.getVictim();
+					aggro.clear();
+				}
+			}
+		}
+		
 		MOB leader=mob.amFollowing();
 		
 		// insures we only try this once!

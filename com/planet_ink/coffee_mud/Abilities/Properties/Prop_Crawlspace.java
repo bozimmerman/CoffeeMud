@@ -49,6 +49,7 @@ public class Prop_Crawlspace extends Property
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
 				if(((msg.amITarget(affected))||(msg.tool()==affected))
+				&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
 				&&(msg.source().envStats().height()>12)
 				&&(!CMLib.flags().isSitting(msg.source())))
 				{
