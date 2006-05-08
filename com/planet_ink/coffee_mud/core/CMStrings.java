@@ -111,10 +111,12 @@ public class CMStrings
     
     public static String capitalizeAndLower(String name)
     {
+    	if((name==null)||(name.length()==0)) return "";
         return (Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase()).trim();
     }
     public static String capitalizeFirstLetter(String name)
     {
+    	if((name==null)||(name.length()==0)) return "";
         return (Character.toUpperCase(name.charAt(0))+name.substring(1)).trim();
     }
     

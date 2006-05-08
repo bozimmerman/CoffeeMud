@@ -941,45 +941,6 @@ public class Modify extends BaseGenerics
 			exits(mob,commands);
 		}
 		else
-		if(commandType.equals("CLAN"))
-		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-			if(commands.size()<3)
-				mob.tell("Modify the status of which clan?  Use clanlist.");
-			else
-			{
-				String name=CMParms.combine(commands,2);
-				Clan C=CMLib.clans().findClan(name);
-				if(C==null)
-					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
-				else
-				{
-					switch(C.getStatus())
-					{
-					case Clan.CLANSTATUS_ACTIVE:
-						C.setStatus(Clan.CLANSTATUS_PENDING);
-						mob.tell("Clan '"+C.name()+"' has been changed from active to pending!");
-						C.update();
-						break;
-					case Clan.CLANSTATUS_PENDING:
-						C.setStatus(Clan.CLANSTATUS_ACTIVE);
-						mob.tell("Clan '"+C.name()+"' has been changed from pending to active!");
-						C.update();
-						break;
-					case Clan.CLANSTATUS_FADING:
-						C.setStatus(Clan.CLANSTATUS_ACTIVE);
-						mob.tell("Clan '"+C.name()+"' has been changed from fading to active!");
-						C.update();
-						break;
-					default:
-						mob.tell("Clan '"+C.name()+"' has not been changed!");
-						break;
-					}
-				}
-			}
-		}
-		else
 		if(commandType.equals("SOCIAL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
@@ -1112,6 +1073,26 @@ public class Modify extends BaseGenerics
                 {
                     modifyFaction(mob,F);
                     Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name()+" ("+F.factionID()+").");
+                }
+            }
+        }
+        else
+        if(commandType.equals("CLAN"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			if(commands.size()<3)
+				mob.tell("Modify which clan?  Use clanlist.");
+			else
+			{
+				String name=CMParms.combine(commands,2);
+				Clan C=CMLib.clans().findClan(name);
+				if(C==null)
+					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
+				else
+                if(!mob.isMonster())
+                {
+                    modifyClan(mob,C);
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Clan "+C.name()+".");
                 }
             }
         }

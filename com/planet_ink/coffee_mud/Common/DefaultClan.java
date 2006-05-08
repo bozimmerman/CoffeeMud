@@ -14,6 +14,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.sun.rsasign.v;
+
 import java.util.*;
 
 /**
@@ -40,8 +42,10 @@ public class DefaultClan implements Clan
     protected String clanPremise="";
     protected String clanRecall="";
     protected String clanMorgue="";
+    protected String clanClass="";
     protected String clanDonationRoom="";
     protected int clanTrophies=0;
+    protected int autoPosition=Clan.POS_APPLICANT;
     protected String AcceptanceSettings="";
     protected int clanType=TYPE_CLAN;
     protected int ClanStatus=0;
@@ -240,6 +244,9 @@ public class DefaultClan implements Clan
         return voteList.elements();
     }
 
+    public int getAutoPosition(){return autoPosition;}
+    public void setAutoPosition(int pos){autoPosition=pos;}
+    
     public long getExp(){return exp;}
     public void setExp(long newexp){exp=newexp;}
     public void adjExp(int howMuch)
@@ -300,6 +307,16 @@ public class DefaultClan implements Clan
         if(M.getClanID().equals(clanID())
         &&(M.getClanRole()!=POS_APPLICANT))
         {
+        	if(getClanClassC()!=null)
+        	{
+        		CharClass CC=getClanClassC();
+            	if(M.baseCharStats().getCurrentClass()!=CC)
+            	{
+            		M.baseCharStats().setCurrentClass(CC);
+            		did=true;
+            		M.recoverCharStats();
+            	}
+        	}
             if(M.fetchAbility("Spell_ClanHome")==null)
             {
                 M.addAbility(CMClass.findAbility("Spell_ClanHome"));
@@ -420,6 +437,14 @@ public class DefaultClan implements Clan
         CMLib.clans().removeClan(this);
     }
 
+    protected CharClass getClanClassC()
+    {
+    	if(clanClass.length()==0) return null;
+		CharClass C=CMClass.getCharClass(clanClass);
+		if(C==null)C=CMClass.findCharClass(clanClass);
+    	return C;
+    }
+    
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
@@ -430,6 +455,8 @@ public class DefaultClan implements Clan
                   +"-----------------------------------------------------------------\n\r"
                   +"^xType            :^.^N "+CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()])+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
+        CharClass clanC=getClanClassC();
+        if(clanC!=null) msg.append("^xClass           :^.^N "+clanC.name()+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
         if(member||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
@@ -438,13 +465,13 @@ public class DefaultClan implements Clan
             {
                 Room R=CMLib.map().getRoom(getMorgue());
                 if(R!=null)
-                    msg.append("^xMorgue         :^.^N "+R.displayText()+"\n\r");
+                    msg.append("^xMorgue          :^.^N "+R.displayText()+"\n\r");
             }
             if(getRecall().length()>0)
             {
                 Room R=CMLib.map().getRoom(getRecall());
                 if(R!=null)
-                    msg.append("^xRecall         :^.^N "+R.displayText()+"\n\r");
+                    msg.append("^xRecall          :^.^N "+R.displayText()+"\n\r");
             }
         }
         msg.append("^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_BOSS,true,true),16)+":^.^N "+crewList(POS_BOSS)+"\n\r"
@@ -766,6 +793,9 @@ public class DefaultClan implements Clan
 
     public String getAcceptanceSettings() { return AcceptanceSettings; }
     public void setAcceptanceSettings(String newSettings) { AcceptanceSettings=newSettings; }
+    
+    public String getClanClass(){return clanClass;}
+    public void setClanClass(String newClass){clanClass=newClass;}
 
     public String getPolitics() {
         StringBuffer str=new StringBuffer("");
@@ -773,6 +803,8 @@ public class DefaultClan implements Clan
         str.append(CMLib.xml().convertXMLtoTag("GOVERNMENT",""+getGovernment()));
         str.append(CMLib.xml().convertXMLtoTag("TAXRATE",""+getTaxes()));
         str.append(CMLib.xml().convertXMLtoTag("EXP",""+getExp()));
+        str.append(CMLib.xml().convertXMLtoTag("CCLASS",""+getClanClass()));
+        str.append(CMLib.xml().convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
         if(relations.size()==0)
             str.append("<RELATIONS/>");
         else
@@ -808,6 +840,8 @@ public class DefaultClan implements Clan
         government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
         exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
         taxRate=CMLib.xml().getDoubleFromPieces(poliData,"TAXRATE");
+        clanClass=CMLib.xml().getValFromPieces(poliData,"CCLASS");
+        autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
 
         // now RESOURCES!
         Vector xV=CMLib.xml().getRealContentsFromPieces(poliData,"RELATIONS");
@@ -909,8 +943,7 @@ public class DefaultClan implements Clan
             }
 
             // handle any necessary promotions
-            if((getGovernment()==GVT_DICTATORSHIP)
-            ||(getGovernment()==GVT_OLIGARCHY))
+            if((getGovernment()==GVT_DICTATORSHIP)||(getGovernment()==GVT_OLIGARCHY))
             {
                 int highest=0;
                 for(int i=numTypes.length-1;i>=0;i--)

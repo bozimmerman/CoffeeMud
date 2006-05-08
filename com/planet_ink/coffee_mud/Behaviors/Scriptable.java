@@ -5749,7 +5749,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			if(script.size()<1) continue;
 
 			String trigger=((String)script.elementAt(0)).toUpperCase().trim();
-			switch(getTriggerCode(trigger))
+			int triggerCode=getTriggerCode(trigger);
+			int targetMinorTrigger=-1;
+			switch(triggerCode)
 			{
 			case 1: // greet_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -5977,6 +5979,60 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					}
 				}
 				break;
+			case 34: // open_prog
+				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_OPEN;
+			case 35: // close_prog
+				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_CLOSE;
+			case 36: // lock_prog 
+				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_LOCK;
+			case 37: // unlock_prog
+			{
+				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_UNLOCK;
+				if((msg.targetMinor()==targetMinorTrigger)&&canTrigger(triggerCode)
+				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+				&&(!msg.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+				{
+					switch(triggerCode)
+					{
+					case 34:
+					case 36:
+						trigger=trigger.substring(9).trim(); break;
+					case 35:
+						trigger=trigger.substring(10).trim(); break;
+					case 37:
+						trigger=trigger.substring(11).trim(); break;
+					}
+					Item I=(msg.target() instanceof Item)?(Item)msg.target():defaultItem;
+					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=CMParms.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=CMParms.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			}
 			case 25: // consume_prog
 				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))

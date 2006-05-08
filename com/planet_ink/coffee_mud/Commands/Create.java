@@ -468,12 +468,6 @@ public class Create extends BaseGenerics
 			areas(mob,commands);
 		}
 		else
-		if(commandType.equals("CLAN"))
-		{
-			mob.tell("To create a new Clan, use the ClanCreate command.");
-			return false;
-		}
-		else
 		if(commandType.equals("ITEM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
@@ -575,6 +569,33 @@ public class Create extends BaseGenerics
 			}
 		}
 		else
+		if(commandType.equals("CLAN"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("You must specify a valid clan name.  Try CLANLIST and AHELP CLANS.");
+			else
+			{
+				String name=CMParms.combine(commands,2);
+				Clan C=CMLib.clans().getClanType(Clan.TYPE_CLAN);
+				C.setName(name);
+				if(C.name().trim().length()==0)
+					mob.tell("You must specify a VALID clan name.");
+				else
+				if(CMLib.clans().getClan(C.name())!=null)
+					mob.tell("That clan already exists, try CLANLIST.");
+				else
+				{
+					mob.tell("Clan '"+C.name()+"' created.");
+					C.setStatus(Clan.CLANSTATUS_ACTIVE);
+					C.create();
+					if(CMLib.clans().getClan(C.ID())==null)
+						CMLib.clans().addClan(C);
+				}
+			}
+		}
+		else
 		{
 			String allWord=CMParms.combine(commands,1);
 			String lastWord=null;
@@ -636,10 +657,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS, POLL or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, CLAN, MOB, RACE, CLASS, POLL or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS, POLL, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, CLAN, RACE, CLASS, POLL, or ROOM.");
 			}
 		}
 		return false;

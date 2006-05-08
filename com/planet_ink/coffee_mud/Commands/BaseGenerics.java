@@ -131,7 +131,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","paneltype",showNumber+"",componentType));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean continueThis=true;
-		while(continueThis)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(continueThis))
 		{
 		    continueThis=false;
 			String newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
@@ -209,7 +209,7 @@ public class BaseGenerics extends StdCommand
 		if(TC==CMClass.globalClock()) return;
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="";
-		while(newName.length()==0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()==0))
 		{
 			report=new StringBuffer(getScr("BaseGenerics","calset"));
 		    report.append(getScr("BaseGenerics","hoursperday",TC.getHoursInDay()+""));
@@ -523,7 +523,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","type",showNumber+"",CMClass.className(R)));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return R;
 		String newName="";
-		while(newName.length()==0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()==0))
 		{
 			newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
 			if(newName.trim().equals("?"))
@@ -695,7 +695,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String newName="Q";
-		while(newName.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()>0))
 		{
 			mob.tell(getScr("BaseGenerics","aeastaffname",showNumber+"",A.getSubOpList()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -724,7 +724,7 @@ public class BaseGenerics extends StdCommand
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String newArea="Q";
-		while(newArea.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newArea.length()>0))
 		{
 		    mob.tell(getScr("BaseGenerics","parentareas",showNumber+"",A.getParentsList()));
 		    if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -767,7 +767,7 @@ public class BaseGenerics extends StdCommand
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String newArea="Q";
-        while(newArea.length()>0)
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newArea.length()>0))
         {
             mob.tell(getScr("BaseGenerics","areachild",showNumber+"",A.getChildrenList()));
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -902,7 +902,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Key))
 		{
 			boolean ok=false;
-			while(!ok)
+			while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 			{
 				if(CMClass.className(E).endsWith("SuperPill"))
 				{
@@ -1018,7 +1018,7 @@ public class BaseGenerics extends StdCommand
 			mob.session().println(showNumber+getScr("BaseGenerics","curliq")+" "+RawMaterial.RESOURCE_DESCS[((Drink)E).liquidType()&RawMaterial.RESOURCE_MASK]);
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			boolean q=false;
-			while(!q)
+			while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
 			{
 				String newType=mob.session().prompt(getScr("BaseGenerics","newtype"),RawMaterial.RESOURCE_DESCS[((Drink)E).liquidType()&RawMaterial.RESOURCE_MASK]);
 				if(newType.equals("?"))
@@ -1103,7 +1103,7 @@ public class BaseGenerics extends StdCommand
 			((Potion)E).setDrunk(false);
 
 		String c="Q";
-		while(!c.equals("\n"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			mob.session().println(showNumber+getScr("BaseGenerics","gettable")+" "+(!CMath.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET)));
 			mob.session().println("    "+getScr("BaseGenerics","droppable")+" "+(!CMath.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP)));
@@ -1180,7 +1180,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		String c="Q";
-		while(!c.equals("\n"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			char letter='A';
 			String letters="";
@@ -1254,7 +1254,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String c="Q";
-		while(!c.equals("\n"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			mob.session().println(""+showNumber+getScr("BaseGenerics","climate"));
 			mob.session().println("    "+getScr("BaseGenerics","wetrainy")+" "+((A.climateType()&Area.CLIMASK_WET)>0));
@@ -1280,7 +1280,7 @@ public class BaseGenerics extends StdCommand
     {
         String c="Q";
         String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
-        while(!c.equals("\n"))
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
         {
             for(int i=0;i<CharStats.STAT_DESCS.length;i++)
                 if(i!=CharStats.STAT_GENDER)
@@ -1314,7 +1314,7 @@ public class BaseGenerics extends StdCommand
 		}
 		String c="Q";
 		String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
-		while(!c.equals("\n"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
 				if(i!=CharStats.STAT_GENDER)
@@ -1376,7 +1376,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		String c="Q";
-		while(!c.equals("\n"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			char letter='A';
 			String letters="";
@@ -1485,7 +1485,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		String change="NO";
-		while(change.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(change.length()>0))
 		{
 			mob.tell(getScr("BaseGenerics","cancontain",makeContainerTypes(E)));
 			change=mob.session().prompt(getScr("BaseGenerics","typeaddrem"),"");
@@ -1739,7 +1739,8 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","landplotid",showNumber+"",E.landPropertyID()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newText="?!?!";
-		while((newText.length()>0)&&(CMLib.map().getRoom(newText)==null))
+		while((mob.session()!=null)&&(!mob.session().killFlag())
+			&&((newText.length()>0)&&(CMLib.map().getRoom(newText)==null)))
 		{
 			newText=mob.session().prompt(getScr("BaseGenerics","newprpid"),"");
 			if((newText.length()==0)
@@ -1770,7 +1771,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","moneydata",showNumber+"",E.getNumberOfCoins()+"",CMLib.beanCounter().getDenominationName(E.getCurrency(),E.getDenomination())));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean gocontinue=true;
-		while(gocontinue)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(gocontinue))
 		{
 		    gocontinue=false;
 		    String oldCurrency=E.getCurrency();
@@ -1800,7 +1801,7 @@ public class BaseGenerics extends StdCommand
 			    E.setCurrency(oldCurrency.toUpperCase().trim());
 		}
 		gocontinue=true;
-		while(gocontinue)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(gocontinue))
 		{
 		    gocontinue=false;
 		    String newDenom=mob.session().prompt(getScr("BaseGenerics","entde"),""+E.getDenomination()).trim().toUpperCase();
@@ -1881,7 +1882,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(getScr("BaseGenerics","nochange"));
 		String clanType=ClanItem.CI_DESC[E.ciType()];
 		String s="?";
-		while(s.equals("?"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(s.equals("?")))
 		{
 			s=mob.session().prompt(getScr("BaseGenerics","newtype"),clanType);
 			if(s.equalsIgnoreCase("?"))
@@ -2097,7 +2098,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel="NSPBFMR";
-		while(!q)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
 		{
 			String newType=mob.session().choose(getScr("BaseGenerics","entvaluenew"),sel+"?","");
 			if(newType.equals("?"))
@@ -2127,7 +2128,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","themesettings",showNumber+"",Area.THEME_DESCS[A.getTechLevel()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
-		while(!q)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
 		{
 			String newType=mob.session().prompt(getScr("BaseGenerics","entnewlev"),Area.THEME_DESCS[A.getTechLevel()]);
 			if(newType.equals("?"))
@@ -2164,7 +2165,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","materialtype",showNumber+"",RawMaterial.RESOURCE_DESCS[E.material()&RawMaterial.RESOURCE_MASK]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
-		while(!q)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
 		{
 			String newType=mob.session().prompt(getScr("BaseGenerics","entnewmaterial"),RawMaterial.RESOURCE_DESCS[E.material()&RawMaterial.RESOURCE_MASK]);
 			if(newType.equals("?"))
@@ -2197,7 +2198,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","instrumentype",showNumber+"",MusicalInstrument.TYPE_DESC[E.instrumentType()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
-		while(!q)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
 		{
 			String newType=mob.session().prompt(getScr("BaseGenerics","entnewty"),MusicalInstrument.TYPE_DESC[E.instrumentType()]);
 			if(newType.equals("?"))
@@ -2265,7 +2266,7 @@ public class BaseGenerics extends StdCommand
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String newFact="Q";
-		while(newFact.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newFact.length()>0))
 		{
 		    mob.tell(getScr("BaseGenerics","factions",showNumber+"",E.getFactionListing()));
 		    if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -2335,7 +2336,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel=("ABEFHKPRSDTN");
-		while(!q)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
 		{
 			String newType=mob.session().choose(getScr("BaseGenerics","entnewvalueh"),sel+"?","");
 			if(newType.equals("?"))
@@ -2392,7 +2393,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String raceID="begin!";
-		while(raceID.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(raceID.length()>0))
 		{
 			mob.tell(getScr("BaseGenerics","race",showNumber+"",E.baseCharStats().getMyRace().ID()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -2422,7 +2423,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String classID="begin!";
-		while(classID.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(classID.length()>0))
 		{
 			StringBuffer str=new StringBuffer("");
 			for(int c=0;c<E.baseCharStats().numClasses();c++)
@@ -2515,7 +2516,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
 			for(int b=0;b<E.numTattoos();b++)
@@ -2558,7 +2559,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E.playerStats()==null) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
 			for(int b=0;b<E.playerStats().getTitles().size();b++)
@@ -2606,7 +2607,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
 			for(int b=0;b<E.numEducations();b++)
@@ -2644,7 +2645,7 @@ public class BaseGenerics extends StdCommand
 		PlayerStats P=E.playerStats();
 		if(P==null) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
 			for(int b=0;b<P.getSecurityGroups().size();b++)
@@ -2688,7 +2689,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
 			for(int b=0;b<E.numBehaviors();b++)
@@ -2774,7 +2775,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String affectstr="";
 			for(int b=0;b<E.numEffects();b++)
@@ -3132,7 +3133,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
 			for(int a=0;a<E.numLearnedAbilities();a++)
@@ -3196,6 +3197,144 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	public static void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String behave="NO";
+		DVector members=E.getMemberList();
+		DVector membersCopy=members.copyOf();
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+		{
+			String memberStr="";
+			for(int m=0;m<members.size();m++)
+				memberStr+=((String)members.elementAt(m,1))+" ("+CMLib.clans().getRoleName(E.getGovernment(),((Integer)members.elementAt(m,2)).intValue(),true,false)+"), ";
+			if(memberStr.length()>0)
+				memberStr=memberStr.substring(0,memberStr.length()-2);
+			mob.tell(getScr("BaseGenerics","clanmembers",showNumber+"",memberStr));
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			behave=mob.session().prompt(getScr("BaseGenerics","clanmemaddrem"),"");
+			if(behave.length()>0)
+			{
+				int chosenOne=-1;
+				for(int m=0;m<members.size();m++)
+					if(behave.equalsIgnoreCase((String)members.elementAt(m,1)))
+						chosenOne=m;
+				if(chosenOne>=0)
+				{
+					mob.tell(getScr("BaseGenerics","cidr",(String)members.elementAt(chosenOne,1)));
+					members.removeElementAt(chosenOne);
+				}
+				else
+				{
+					MOB M=CMLib.map().getLoadPlayer(behave);
+					if(M!=null)
+					{
+						int oldNum=-1;
+						for(int m=0;m<membersCopy.size();m++)
+							if(behave.equalsIgnoreCase((String)membersCopy.elementAt(m,1)))
+							{
+								oldNum=m;
+								members.addElement(membersCopy.elementAt(m,1),membersCopy.elementAt(m,2),membersCopy.elementAt(m,3));
+								break;
+							}
+						int index=oldNum;
+						if(index<0)
+						{
+							index=members.size();
+							members.addElement(M.Name(),new Integer(Clan.POS_MEMBER),new Long(M.playerStats().lastDateTime()));
+						}
+						
+						int newRole=-1;
+						while((mob.session()!=null)&&(!mob.session().killFlag())&&(newRole<0))
+						{
+							String newRoleStr=mob.session().prompt(getScr("BaseGenerics","clannewrole",CMLib.clans().getRoleName(E.getGovernment(),((Integer)members.elementAt(index,2)).intValue(),true,false)),"");
+							StringBuffer roles=new StringBuffer();
+							for(int i=0;i<Clan.ROL_DESCS[E.getGovernment()].length;i++)
+							{
+								roles.append(Clan.ROL_DESCS[E.getGovernment()][i]+", ");
+								if(newRoleStr.equalsIgnoreCase(Clan.ROL_DESCS[E.getGovernment()][i]))
+									newRole=Clan.POSORDER[i];
+							}
+							roles=new StringBuffer(roles.substring(0,roles.length()-2));
+							if(newRole<0)
+								mob.tell(getScr("BaseGenerics","clanrolerr",roles.toString()));
+							else
+								break;
+						}
+						if(oldNum<0)
+							mob.tell(getScr("BaseGenerics","cida",M.Name()));
+						else
+							mob.tell(getScr("BaseGenerics","cidaa",M.Name()));
+						members.setElementAt(index,2,new Integer(newRole));
+					}
+					else
+					{
+						mob.tell(getScr("BaseGenerics","clanmemerr",behave));
+					}
+				}
+				// first add missing ones
+				for(int m=0;m<members.size();m++)
+				{
+					String newName=(String)members.elementAt(m,1);
+					if(!membersCopy.contains(newName))
+					{
+						MOB M=CMLib.map().getLoadPlayer(newName);
+						if(M!=null)
+						{
+							Clan oldC=CMLib.clans().getClan(M.getClanID());
+							if((oldC!=null)
+							&&(!M.getClanID().equalsIgnoreCase(E.clanID())))
+							{
+								M.setClanID("");
+								M.setClanRole(Clan.POS_APPLICANT);
+								oldC.updateClanPrivileges(M);
+							}
+							Integer role=(Integer)members.elementAt(m,2);
+							CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), role.intValue());
+							M.setClanID(E.clanID());
+							M.setClanRole(role.intValue());
+							E.updateClanPrivileges(M);
+						}
+					}
+				}
+				// now adjust changed roles
+				for(int m=0;m<members.size();m++)
+				{
+					String newName=(String)members.elementAt(m,1);
+					if(membersCopy.contains(newName))
+					{
+						MOB M=CMLib.map().getLoadPlayer(newName);
+						int newRole=((Integer)members.elementAt(m,2)).intValue();
+						if((M!=null)&&(newRole!=M.getClanRole()))
+						{
+							CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), newRole);
+							M.setClanRole(newRole);
+							E.updateClanPrivileges(M);
+						}
+					}
+				}
+				// now remove old members
+				for(int m=0;m<membersCopy.size();m++)
+				{
+					String newName=(String)membersCopy.elementAt(m,1);
+					if(!members.contains(newName))
+					{
+						MOB M=CMLib.map().getLoadPlayer(newName);
+						if(M!=null)
+						{
+							M.setClanID("");
+							M.setClanRole(Clan.POS_APPLICANT);
+							E.updateClanPrivileges(M);
+						}
+					}
+				}
+			}
+			else
+				mob.tell(getScr("BaseGenerics","nochange"));
+		}
+	}
+	
 	public static void genDeity1(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3249,7 +3388,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
 			for(int a=0;a<E.numBlessings();a++)
@@ -3317,7 +3456,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
 			for(int a=0;a<E.numCurses();a++)
@@ -3385,7 +3524,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
-		while(behave.length()>0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
 			for(int a=0;a<E.numPowers();a++)
@@ -3531,7 +3670,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		int codeVal=-1;
-		while(codeVal!=0)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(codeVal!=0))
 		{
 			mob.tell(getScr("BaseGenerics","wearingpar"));
 			if(!E.rawLogicalAnd())
@@ -3648,7 +3787,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+CMLib.masking().maskDesc(E.getStat(Field))+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
-		while(newName.equals("?"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
 		{
 			newName=mob.session().prompt(getScr("BaseGenerics","entermask"),"");
 			if(newName.equals("?"))
@@ -3656,6 +3795,24 @@ public class BaseGenerics extends StdCommand
 		}
 		if((newName.length()>0)&&(!newName.equals("?")))
 			E.setStat(Field,newName);
+		else
+			mob.tell(getScr("BaseGenerics","nochange"));
+	}
+	static void genClanAccept(MOB mob, Clan E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+getScr("BaseGenerics","clanaccept")+": '"+CMLib.masking().maskDesc(E.getAcceptanceSettings())+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName="?";
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+		{
+			newName=mob.session().prompt(getScr("BaseGenerics","entermask"),"");
+			if(newName.equals("?"))
+				mob.tell(CMLib.masking().maskHelp("\n",getScr("BaseGenerics","allows")));
+		}
+		if((newName.length()>0)&&(!newName.equals("?")))
+			E.setAcceptanceSettings(newName);
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
@@ -3672,7 +3829,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
 		boolean setChanged=false;
-		while(newName.equals("?"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
 		{
 			newName=mob.session().prompt(getScr("BaseGenerics","weapclass"),"");
 			if(newName.equals("?"))
@@ -3769,7 +3926,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","availab",showNumber+"",Area.THEME_DESCS_EXT[CMath.s_int(E.getStat("AVAIL"))]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
-		while(newName.equals("?"))
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
 		{
 			newName=mob.session().prompt(getScr("BaseGenerics","entnewvalueh"),"");
 			if(newName.length()==0)
@@ -3796,7 +3953,7 @@ public class BaseGenerics extends StdCommand
         mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[CMath.s_int(E.getStat("PLAYER"))]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
-        while(newName.equals("?"))
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
         {
             newName=mob.session().prompt(getScr("BaseGenerics","entnewvalueh"),"");
             if(newName.length()==0)
@@ -4284,7 +4441,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMRSC"));
@@ -4356,7 +4513,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMOFT"));
@@ -4428,7 +4585,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMOFT"));
@@ -4544,7 +4701,7 @@ public class BaseGenerics extends StdCommand
 
 		mob.tell(getScr("BaseGenerics","agingchart",showNumber+"",CMParms.toStringList(E.getAgingChart())));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			String newName=mob.session().prompt(getScr("BaseGenerics","comma"),"");
 			if(newName.length()==0)
@@ -4670,7 +4827,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMRABLE"));
@@ -4764,7 +4921,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMREFF"));
@@ -4847,7 +5004,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMCABLE"));
@@ -4943,7 +5100,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMCABLE"));
@@ -5028,7 +5185,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 
@@ -5130,7 +5287,7 @@ public class BaseGenerics extends StdCommand
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while(!ok)
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {
             int showNumber=0;
             // name
@@ -5247,7 +5404,7 @@ public class BaseGenerics extends StdCommand
 
             // auto defaults
             boolean error=true;
-            me.setAutoDefaults(CMParms.parseSemicolons(CMLib.english().promptText(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2")),true));
+            me.setAutoDefaults(CMParms.parseSemicolons(CMLib.english().promptText(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg")),true));
 
             // non-auto defaults
             error=true;
@@ -5395,7 +5552,7 @@ public class BaseGenerics extends StdCommand
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","crossrelati",showNumber+""));
-                list.append(getScr("BaseGenerics","percchange",CMStrings.padRight("Faction",31)));
+                list.append(getScr("BaseGenerics","percchange","    ",CMStrings.padRight("",25)));
                 for(Enumeration e=me.relations().keys();e.hasMoreElements();)
                 {
                     String key=(String)e.nextElement();
@@ -5791,7 +5948,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edname"),"NAME");
@@ -5838,7 +5995,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			if(mob.isMonster())	return;
 			int showNumber=0;
@@ -5904,7 +6061,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -5950,7 +6107,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6002,7 +6159,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6036,7 +6193,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6081,7 +6238,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6149,7 +6306,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6211,7 +6368,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6268,7 +6425,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6315,7 +6472,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6362,7 +6519,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6455,7 +6612,7 @@ public class BaseGenerics extends StdCommand
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		String oldName=me.Name();
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
@@ -6534,6 +6691,216 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	
+	static void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(getScr("BaseGenerics","clanstatus",showNumber+"",Clan.CLANSTATUS_DESC[C.getStatus()]));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		switch(C.getStatus())
+		{
+		case Clan.CLANSTATUS_ACTIVE:
+			C.setStatus(Clan.CLANSTATUS_PENDING);
+			mob.tell("Clan '"+C.name()+"' has been changed from active to pending!");
+			break;
+		case Clan.CLANSTATUS_PENDING:
+			C.setStatus(Clan.CLANSTATUS_ACTIVE);
+			mob.tell("Clan '"+C.name()+"' has been changed from pending to active!");
+			break;
+		case Clan.CLANSTATUS_FADING:
+			C.setStatus(Clan.CLANSTATUS_ACTIVE);
+			mob.tell("Clan '"+C.name()+"' has been changed from fading to active!");
+			break;
+		default:
+			mob.tell("Clan '"+C.name()+"' has not been changed!");
+			break;
+		}
+	}
+	
+	static void genClanGovt(MOB mob, Clan C, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(getScr("BaseGenerics","clangovt",showNumber+"",C.typeName()));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		while((mob.session()!=null)&&(!mob.session().killFlag()))
+		{
+			String newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
+			if(newName.trim().length()==0)
+			{
+				mob.tell(getScr("BaseGenerics","nochange"));
+				return;
+			}
+			int newGovt=-1;
+			StringBuffer gvts=new StringBuffer();
+			for(int i=0;i<Clan.GVT_DESCS.length;i++)
+			{
+				gvts.append(Clan.GVT_DESCS[i]+", ");
+				if(newName.equalsIgnoreCase(Clan.GVT_DESCS[i]))
+					newGovt=i;
+			}
+			gvts=new StringBuffer(gvts.substring(0,gvts.length()-2));
+			if(newGovt<0)
+				mob.tell(getScr("BaseGenerics","clangvterr",gvts.toString()));
+			else
+			{
+				C.setGovernment(newGovt);
+				break;
+			}
+		}
+	}
+	
+	static void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(getScr("BaseGenerics","clanrole",showNumber+"",CMLib.clans().getRoleName(C.getGovernment(),C.getAutoPosition(),true,false)));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		while((mob.session()!=null)&&(!mob.session().killFlag()))
+		{
+			String newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
+			if(newName.trim().length()==0)
+			{
+				mob.tell(getScr("BaseGenerics","nochange"));
+				return;
+			}
+			int newRole=-1;
+			StringBuffer roles=new StringBuffer();
+			for(int i=0;i<Clan.ROL_DESCS[C.getGovernment()].length;i++)
+			{
+				roles.append(Clan.ROL_DESCS[C.getGovernment()][i]+", ");
+				if(newName.equalsIgnoreCase(Clan.ROL_DESCS[C.getGovernment()][i]))
+					newRole=Clan.POSORDER[i];
+			}
+			roles=new StringBuffer(roles.substring(0,roles.length()-2));
+			if(newRole<0)
+				mob.tell(getScr("BaseGenerics","clanrolerr",roles.toString()));
+			else
+			{
+				C.setAutoPosition(newRole);
+				break;
+			}
+		}
+	}
+	
+	static void genClanClass(MOB mob, Clan C, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		CharClass CC=CMClass.getCharClass(C.getClanClass());
+		if(CC==null)CC=CMClass.findCharClass(C.getClanClass());
+		String clasName=(CC==null)?"NONE":CC.name();
+		mob.tell(getScr("BaseGenerics","clanclas",showNumber+"",clasName));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		while((mob.session()!=null)&&(!mob.session().killFlag()))
+		{
+			String newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
+			if(newName.trim().equalsIgnoreCase("none"))
+			{
+				C.setClanClass("");
+				return;
+			}
+			else
+			if(newName.trim().length()==0)
+			{
+				mob.tell(getScr("BaseGenerics","nochange"));
+				return;
+			}
+			CharClass newC=null;
+			StringBuffer clss=new StringBuffer();
+			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+			{
+				CC=(CharClass)e.nextElement();
+				clss.append(CC.name()+", ");
+				if(newName.equalsIgnoreCase(CC.name())||(newName.equalsIgnoreCase(CC.ID())))
+					newC=CC;
+			}
+			clss=new StringBuffer(clss.substring(0,clss.length()-2));
+			if(newC==null)
+				mob.tell(getScr("BaseGenerics","clanclaserr",clss.toString()));
+			else
+			{
+				C.setClanClass(newC.ID());
+				break;
+			}
+		}
+	}
+	
+	static String genClanRoom(MOB mob, Clan C, String oldRoomID, String promptCode, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return oldRoomID;
+		mob.tell(getScr("BaseGenerics",promptCode,showNumber+"",oldRoomID));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return oldRoomID;
+		while((mob.session()!=null)&&(!mob.session().killFlag()))
+		{
+			String newName=mob.session().prompt(getScr("BaseGenerics","entnull"),"");
+			if(newName.trim().equalsIgnoreCase("null"))
+				return "";
+			else
+			if(newName.trim().length()==0)
+			{
+				mob.tell(getScr("BaseGenerics","nochange"));
+				return oldRoomID;
+			}
+			Room newRoom=CMLib.map().getRoom(newName);
+			if((newRoom==null)
+			||(CMLib.map().getExtendedRoomID(newRoom).length()==0)
+			||(!CMLib.utensils().doesOwnThisProperty(C.clanID(),newRoom)))
+				mob.tell(getScr("BaseGenerics","clanroomerr"));
+			else
+				return CMLib.map().getExtendedRoomID(newRoom);
+		}
+		return oldRoomID;
+	}
+	
+	
+	
+	public static void modifyClan(MOB mob, Clan C)
+	throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		int showFlag=-1;
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
+		String oldName=C.ID();
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+		{
+			mob.tell(getScr("BaseGenerics","Name","*",C.name()));
+			int showNumber=0;
+			genClanGovt(mob,C,++showNumber,showFlag);
+			C.setPremise(CMLib.english().promptText(mob,C.getPremise(),++showNumber,showFlag,getScr("BaseGenerics","clanprem"),true));
+			C.setExp(CMLib.english().promptLong(mob,C.getExp(),++showNumber,showFlag,getScr("BaseGenerics","clanexp")));
+			C.setTaxes(CMLib.english().promptDouble(mob,C.getTaxes(),++showNumber,showFlag,getScr("BaseGenerics","clantax")));
+			C.setMorgue(genClanRoom(mob,C,C.getMorgue(),"clanmorg",++showNumber,showFlag));
+			C.setRecall(genClanRoom(mob,C,C.getRecall(),"clanreca",++showNumber,showFlag));
+			C.setDonation(genClanRoom(mob,C,C.getDonation(),"clandona",++showNumber,showFlag));
+			genClanAccept(mob,C,++showNumber,showFlag);
+			genClanClass(mob,C,++showNumber,showFlag);
+			genClanRole(mob,C,++showNumber,showFlag);
+			genClanStatus(mob,C,++showNumber,showFlag);
+			genClanMembers(mob,C,++showNumber,showFlag);
+			/*setClanRelations, votes?*/
+			if(showFlag<-900){ ok=true; break;}
+			if(showFlag>0){ showFlag=-1; continue;}
+			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+				if(!oldName.equals(C.ID()))
+				{
+					//cycle through everything changing the name
+					CMLib.database().DBDeleteClan(C);
+					CMLib.database().DBCreateClan(C);
+				}
+				C.update();
+			}
+		}
+	}
+	
 	public static void modifyGenShopkeeper(MOB mob, ShopKeeper me)
 		throws IOException
 	{
@@ -6546,7 +6913,7 @@ public class BaseGenerics extends StdCommand
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		while(!ok)
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);

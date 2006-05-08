@@ -36,9 +36,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 {
     public String ID(){return "CMLister";}
     public String itemSeenString(MOB viewer, 
-                                        Environmental item, 
-                                        boolean useName, 
-                                        boolean longLook)
+                                 Environmental item, 
+                                 boolean useName, 
+                                 boolean longLook)
     {
         if(useName)
             return CMStrings.capitalizeFirstLetter(item.name());

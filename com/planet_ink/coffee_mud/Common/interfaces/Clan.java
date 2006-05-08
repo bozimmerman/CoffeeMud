@@ -168,7 +168,21 @@ public interface Clan extends Cloneable, Tickable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getPremise()
 	 */
 	public void setPremise(String newPremise);
+	
+	/** 
+	 * Sets this Clan's enforced character class.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getClanClass()
+	 */
+	public void setClanClass(String newClass);
 
+	/** 
+	 * Retrieves this Clan's enforced character class. 
+	 * All players who join this clan become this class.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setClanClass(String)
+	 * @return the class of this clan
+	 */
+	public String getClanClass();
+	
 	/** 
 	 * Creates the string for the 'clandetail' command, based on the
 	 * security of the given mob who will view the details.
@@ -209,6 +223,21 @@ public interface Clan extends Cloneable, Tickable
 	 */
 	public void setPolitics(String politics);
 
+	/**
+	 * Returns whether membership is automatically approved to this clan.
+	 * And if so, what the default position for members are.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAutoPosition(String)
+	 * @return xml document describing the politics of this clan
+	 */
+	public int getAutoPosition();
+	/**
+	 * Sets whether membership is automatically approved to this clan.
+	 * And if so, what the default position for members are.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getAutoPosition()
+	 * @param pos the positition to give to applicants
+	 */
+	public void setAutoPosition(int pos);
+	
 	/**
 	 * Returns one of the CLANSTAT_* constants describing the pending
 	 * status of this clan for acceptable, or whether its one its way out.

@@ -84,6 +84,7 @@ public class Train extends StdCommand
 		CharClass theClass=null;
 		EducationLibrary.EducationDefinition theEducation=null;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+		&&(!CMSecurity.isDisabled("CLASSTRAINING"))
 		&&(abilityCode<0))
 		{
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)

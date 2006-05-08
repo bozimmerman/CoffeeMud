@@ -121,6 +121,10 @@ public interface ScriptingEngine extends Behavior
         "REGMASK_PROG", // 31
         "LEVEL_PROG", // 32
         "CHANNEL_PROG", // 33
+        "OPEN_PROG", // 34
+        "CLOSE_PROG", // 35
+        "LOCK_PROG", // 36
+        "UNLOCK_PROG", // 37
     };
     
     public static final String[] funcs={

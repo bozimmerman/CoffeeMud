@@ -64,6 +64,11 @@ public class ClanData extends StdWebMacro
 					if(R!=null)	str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
+				if(parms.containsKey("AUTOPOSITION"))
+				{
+					int pos=C.getAutoPosition();
+					str.append(CMLib.clans().getRoleName(C.getGovernment(),pos,true,false)+", ");
+				}
 				if(parms.containsKey("TROPHIES"))
 				{
 				    if(C.getTrophies()==0)
@@ -79,6 +84,12 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("TAX"))
 					str.append(""+((int)Math.round(C.getTaxes()*100.0))+"%, ");
+				if(parms.containsKey("CCLASS"))
+				{
+					CharClass CC=CMClass.getCharClass(C.getClanClass());
+					if(CC==null)CC=CMClass.findCharClass(C.getClanClass());
+					if(CC!=null) str.append(CC.name()+", "); else str.append("");
+				}
 				if(parms.containsKey("EXP"))
 					str.append(""+C.getExp()+", ");
 				if(parms.containsKey("STATUS"))

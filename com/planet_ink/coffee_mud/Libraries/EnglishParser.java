@@ -1398,6 +1398,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return oldVal;
     }
     
+    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+        String newName=mob.session().prompt("Enter a new value:","");
+        if(CMath.isInteger(newName))
+            return CMath.s_long(newName);
+        mob.tell("(no change)");
+        return oldVal;
+    }
+    
     public String returnTime(long millis, long ticks)
     {
         String avg="";

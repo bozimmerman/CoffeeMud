@@ -54,11 +54,20 @@ public class ClanApply extends BaseClanner
 					{
                         if(CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob))
                         {
-    						CMLib.database().DBUpdateClanMembership(mob.Name(), C.clanID(), Clan.POS_APPLICANT);
+                        	int role=C.getAutoPosition();
+    						CMLib.database().DBUpdateClanMembership(mob.Name(), C.clanID(), role);
     						mob.setClanID(C.clanID());
-    						mob.setClanRole(Clan.POS_APPLICANT);
-    						clanAnnounce(mob,getScr("ClanApply","new",C.typeName(),C.clanID(),mob.Name()));
-    						mob.tell(getScr("ClanApply","membapplied",C.clanID()));
+    						mob.setClanRole(role);
+    						if(mob.getClanRole()==Clan.POS_APPLICANT)
+    						{
+        						clanAnnounce(mob,getScr("ClanApply","new",C.typeName(),C.clanID(),mob.Name()));
+	    						mob.tell(getScr("ClanApply","membapplied",C.clanID()));
+    						}
+    						else
+    						{
+        						clanAnnounce(mob,getScr("ClanApply","new2",C.typeName(),C.clanID(),mob.Name()));
+    							mob.tell(getScr("ClanApply","membaccept",C.clanID()));
+    						}
                         }
                         else
                         {
