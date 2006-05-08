@@ -49,6 +49,7 @@ public class Shell extends StdCommand
             {"*","FINDFILE","FF"},
             {"&","SEARCHTEXT","GREP","ST"},
             {"/","EDIT"},
+            {"~","MOVE","MV"},
             //{"?","COMPAREFILES","DIFF","CF"},
     };
     
@@ -573,7 +574,78 @@ public class Shell extends StdCommand
             }
             return false;
         }
-        case 9: // compare files
+        case 9: // move
+        {
+            if(commands.size()==2)
+                commands.addElement(".");
+            if(commands.size()<3)
+            {
+                mob.tell("^xError: source and destination must be specified!^N");
+                return false;
+            }
+            String source=(String)commands.elementAt(1);
+            String target=CMParms.combine(commands,2);
+            CMFile[] dirs=CMFile.getFileList(pwd,source,mob,false);
+            if(dirs==null)
+            {
+                mob.tell("^xError: invalid source!^N");
+                return false;
+            }
+            if(dirs.length==0)
+            {
+                mob.tell("^xError: no source files matched^N");
+                return false;
+            }
+            if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
+                target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+            CMFile DD=new CMFile(pwd,target,mob,false);
+            for(int d=0;d<dirs.length;d++)
+            {
+                CMFile SF=dirs[d];
+                if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
+                if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
+                if(SF.isDirectory())
+                {
+                    if(dirs.length==1)
+                    {
+                        mob.tell("^xError: source can not be a directory!^N"); 
+                        return false;
+                    }
+                    continue;
+                }
+                CMFile DF=DD;
+                target=DD.getVFSPathAndName();
+                if(DD.isDirectory())
+                {
+                    if(target.length()>0) 
+                        target=target+"/"+SF.getName();
+                    else
+                        target=SF.getName();
+                    target=(DD.isLocalFile())?"//"+target:"::"+target;
+                    DF=new CMFile(target,mob,false);
+                }
+                else
+                if(dirs.length>1)
+                {
+                    mob.tell("^xError: destination must be a directory!^N"); 
+                    return false;
+                }
+                if(DF.canRead()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
+                if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
+                byte[] O=SF.raw();
+                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
+                if(!DF.saveRaw(O))
+                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+                else
+                {
+                    mob.tell(desc(SF)+" moved to "+desc(DF));
+                    if(!SF.delete())
+                    	mob.tell("Unable to delete file "+desc(SF));
+                }
+            }
+            break;
+        }
+        case 10: // compare files
         {
             mob.tell("^xNot yet implemented.^N");
             return false;
