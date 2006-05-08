@@ -82,6 +82,8 @@ public class Spell_Portal extends Spell
 			return false;
 		}
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		oldRoom=null;
+		newRoom=null;
 		int tries=0;
 		while(((++tries)<10000))
 		{

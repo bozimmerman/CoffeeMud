@@ -145,16 +145,20 @@ public class Say extends StdCommand
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if(theWord.equalsIgnoreCase(getScr("Say","saycmd5")))
+			if(theWord.toUpperCase().startsWith(getScr("Say","saycmd5")))
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=mob.location().getRoomInDir(d);
 					Exit E=mob.location().getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,getScr("Say","yell1")+" "+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
-						if(R.okMessage(mob,msg))
+						Environmental tool=msg.tool();
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,getScr("Say","yell1")+" '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
+						if((R.okMessage(mob,msg))
+						&&((tool==null)||(tool.okMessage(mob,msg))))
+						{
 							R.sendOthers(mob,msg);
+						}
 					}
 				}
 		}

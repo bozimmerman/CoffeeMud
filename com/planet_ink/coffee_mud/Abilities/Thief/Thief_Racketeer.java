@@ -69,28 +69,24 @@ public class Thief_Racketeer extends ThiefSkill {
 			return false;
 		}
 
-		MOB target = (MOB) affected;
 		MOB source = msg.source();
-		Ability targetAffect = target.fetchEffect(ID());
-
-		if ((!msg.source().Name().equals(text()))
-				&& ((msg.source().getClanID().length() == 0) || (!msg.source()
-						.getClanID().equals(text())))
-				&& (msg.tool() instanceof Ability)
-				&& ((((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_THIEF_SKILL)) {
-			if (targetAffect != null) {
-				if (targetAffect.invoker() == source) {
-					source.tell(target.name()
-							+ " is currently under your protection.");
-				} else {
-					source.tell(target.name() + " is under "
-							+ targetAffect.invoker().name() + "'s protection.");
-					targetAffect.invoker().tell(
-					  "Word on the street is that "	+ source.name()
-					  + " is hassling " + target.name() + " who is under your protection.");
-				}
-				return false;
+		if((!msg.source().Name().equals(text()))
+		&&((msg.source().getClanID().length() == 0) || (!msg.source().getClanID().equals(text())))
+		&&(msg.tool() instanceof Ability)
+		&&(msg.target()==msg.target())
+		&&((((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_THIEF_SKILL)) 
+		{
+			if (invoker() == source) {
+				source.tell(msg.target().name()
+						+ " is currently under your protection.");
+			} else {
+				source.tell(msg.target().name() + " is under "
+						+ invoker().name() + "'s protection.");
+				invoker().tell(
+				  "Word on the street is that "	+ source.name()
+				  + " is hassling " + msg.target().name() + " who is under your protection.");
 			}
+			return false;
 		}
 
 		return true;

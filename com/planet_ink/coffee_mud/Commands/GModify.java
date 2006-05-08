@@ -228,7 +228,7 @@ public class GModify extends StdCommand
         if(checkedOut)
         {
             if(changes.size()==0)
-                mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E))+".");
+                mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(room)+".");
             else
             for(int i=0;i<changes.size();i++)
             {

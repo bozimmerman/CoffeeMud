@@ -167,7 +167,7 @@ public class CombatAbilities extends StdBehavior
 			if(victim==null){}else
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.value()>0)
-			&&(msg.source()!=host))
+			&&(msg.source()!=mob))
 			{
 				if(msg.target()==host)
 					adjustAggro(msg.source(),msg.value()*2);
@@ -180,8 +180,8 @@ public class CombatAbilities extends StdBehavior
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_HEALING)&&(msg.value()>0)
-			&&(msg.source()!=host)
-			&&(msg.target()!=host))
+			&&(msg.source()!=mob)
+			&&(msg.target()!=mob))
 			{
 				if((msg.target()==victim)
 				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
@@ -192,7 +192,8 @@ public class CombatAbilities extends StdBehavior
 			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&(msg.source()!=host)
 			&&(msg.tool() instanceof Ability)
-			&&(((Ability)msg.tool()).classificationCode()!=Ability.ACODE_SONG))
+			&&(((Ability)msg.tool()).classificationCode()!=Ability.ACODE_SONG)
+			&&(msg.source().isInCombat()))
 			{
 				if((msg.source()==victim)
 				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
@@ -244,7 +245,8 @@ public class CombatAbilities extends StdBehavior
 				}
 				if((winAmt>minAmt)
 				&&(winAmt>(vicAmt+(vicAmt/2)))
-				&&(!((MOB)aggro.elementAt(windex,1)).amDead()))
+				&&(!((MOB)aggro.elementAt(windex,1)).amDead())
+				&&(((MOB)aggro.elementAt(windex,1)).isInCombat()))
 				{
 					mob.setVictim((MOB)aggro.elementAt(windex,1));
 					victim=mob.getVictim();

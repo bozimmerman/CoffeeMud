@@ -1160,10 +1160,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         MOB target=fighter.getVictim();
         if((target!=null)
         &&(fighter.isMonster())
-        &&((fighter.amFollowing()==null)||(fighter.amFollowing().isMonster()))
         &&(target.isMonster())
-        &&(!target.amDead())
         &&(CMLib.dice().rollPercentage()==1)
+        &&((fighter.amFollowing()==null)||(fighter.amFollowing().isMonster()))
+        &&(!target.amDead())
         &&(fighter.location()!=null))
         {
             MOB M=null;

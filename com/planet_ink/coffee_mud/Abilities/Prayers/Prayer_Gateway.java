@@ -78,6 +78,8 @@ public class Prayer_Gateway extends Prayer
 			return false;
 		}
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		oldRoom=null;
+		newRoom=null;
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
