@@ -99,8 +99,10 @@ public class HelpTopics extends StdWebMacro
 							 ||topic.startsWith("BEHAVIOR_")
 							 ||topic.startsWith("CHANT_")
 							 ||topic.startsWith("PRAYER_")
+							 ||topic.startsWith("SKILL_")
 							 ||topic.startsWith("BEHAVIOR_")
-							 ||topic.startsWith("PROP_")))
+							 ||topic.startsWith("PROP_"))
+							 ||CMClass.getAbility(topic)!=null)
 				   continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))))

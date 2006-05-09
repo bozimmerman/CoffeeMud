@@ -43,4 +43,5 @@ public interface HelpLibrary extends CMObject
     public Properties getArcHelpFile();
     public Properties getHelpFile();
     public void unloadHelpFile(MOB mob);
+    public boolean isPlayerSkill(String helpStr);
 }

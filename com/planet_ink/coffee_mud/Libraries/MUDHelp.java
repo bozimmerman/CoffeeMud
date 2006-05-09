@@ -37,6 +37,17 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class MUDHelp extends StdLibrary implements HelpLibrary
 {
     public String ID(){return "MUDHelp";}
+    
+    public boolean isPlayerSkill(String helpStr)
+    {
+        if(helpStr.length()==0) return false;
+        if(getHelpFile().size()==0) return false;
+        StringBuffer thisTag=getHelpText(helpStr,getHelpFile(),null,true);
+        if(thisTag!=null) 
+        if(thisTag.toString().toUpperCase().startsWith("<ABILITY>")) return true;
+        return CMClass.getAbility(helpStr)!=null;
+    }
+    
     public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
     {
         if(helpStr.length()==0) return null;
@@ -387,6 +398,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
+	{ return getHelpText(helpStr,rHelpFile,forMOB,false);}
+	public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
 	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
@@ -482,6 +495,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				return CMLib.map().getArea(helpStr.trim()).getAreaStats();
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			return null;
+		if(noFix) return new StringBuffer(thisTag);
 		return new StringBuffer(fixHelp(helpStr,thisTag,forMOB));
 	}
 

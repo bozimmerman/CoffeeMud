@@ -1,0 +1,55 @@
+#container
+{
+  width: 90%;
+  margin: 10px auto;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid gray;
+  line-height: 130%;
+}
+
+#header
+{
+  padding: .5em;
+  background-color: #ddd;
+  border-bottom: 1px solid gray;
+}
+
+#header h1
+{
+  padding: 0;
+  margin: 0;
+}
+
+#nav
+{
+  float: left;
+  width: 160px;
+  margin: 0;
+  padding: 1em;
+}
+
+#content
+{
+  margin-left: 200px;
+  border-left: 1px solid gray;
+  padding: 1em;
+}
+
+#nav ol { margin: 0 0 .5em 0; }
+
+#content h2 { margin: .5em 0 .5em 0; }
+#content h3 { margin: 0 0 .5em 0; }
+#content p.center { text-align: center; }
+#content p.bold { font-weight: bold}; }
+
+div.centered 
+{
+text-align: center;
+}
+
+div.centered table 
+{
+margin: 0 auto; 
+text-align: left;
+}
