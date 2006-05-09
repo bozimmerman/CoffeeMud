@@ -223,11 +223,12 @@ public class CMFile
             return false;
         Vector file=null;
         Vector vfs=getVFSDirectory();
+        String name=getVFSPathAndName().toUpperCase()+"/";
         for(Enumeration e=vfs.elements();e.hasMoreElements();)
         {
             file=(Vector)e.nextElement();
-            if((((String)file.firstElement()).toUpperCase().startsWith(getVFSPathAndName().toUpperCase()+'/'))
-            &&(!(((String)file.firstElement()).toUpperCase().equals(getVFSPathAndName().toUpperCase()+'/'))))
+            if((((String)file.firstElement()).toUpperCase().startsWith(name))
+            &&(!(((String)file.firstElement()).toUpperCase().equals(name))))
                 return false;
         }
         return true;
@@ -249,8 +250,13 @@ public class CMFile
         if(!mayDeleteIfDirectory()) return false;
         if(canVFSEquiv())
         {
-            Vector info=getVFSInfo(getVFSPathAndName());
-            if((info==null)||(info.size()<1)) return false;
+        	String name=getVFSPathAndName();
+        	if(isDirectory()) name=name+"/";
+            Vector info=getVFSInfo(name);
+            if((info==null)||(info.size()<1))
+            {
+            	return false;
+            }
             CMLib.database().DBDeleteVFSFile((String)info.elementAt(CMFile.VFS_INFO_FILENAME));
             getVFSDirectory().remove(info);
             return true;
@@ -564,7 +570,7 @@ public class CMFile
 
     public boolean mkdir()
     {
-        if(exists())
+        if(mustOverwrite())
         {
             Log.errOut("CMFile","File exists '"+getVFSPathAndName()+"'.");
             return false;
@@ -629,11 +635,14 @@ public class CMFile
         Vector vfs=getVFSDirectory();
         if(vfs==null) return null;
         filename=vfsifyFilename(filename);
+        String filenameAsDir=filename+"/";
         Vector file=null;
+        String fnam=null;
         for(Enumeration e=vfs.elements();e.hasMoreElements();)
         {
             file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).equalsIgnoreCase(filename))
+            fnam=(String)file.firstElement();
+            if(fnam.equalsIgnoreCase(filename)||fnam.equalsIgnoreCase(filenameAsDir))
                 return file;
         }
         return null;
@@ -909,7 +918,8 @@ public class CMFile
             }
             String name=cset[c].getName().toUpperCase();
             boolean ismatch=true;
-            if((!name.equalsIgnoreCase(fixedName))&&(fixedName.length()>0))
+            if((!name.equalsIgnoreCase(fixedName))
+	            &&(fixedName.length()>0))
             for(int f=0,n=0;f<fixedName.length();f++,n++)
                 if(fixedName.charAt(f)=='?')
                 {

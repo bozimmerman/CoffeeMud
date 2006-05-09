@@ -60,6 +60,7 @@ public class Shell extends StdCommand
     private class cp_options
     {
     	boolean recurse=false;
+    	boolean preservePaths=false;
     	public cp_options(Vector cmds)
     	{
             for(int c=cmds.size()-1;c>=0;c--)
@@ -74,12 +75,84 @@ public class Shell extends StdCommand
         			case 'R':
         				recurse=true;
         				break;
+        			case 'p':
+        			case 'P':
+        				preservePaths=true;
+        				break;
         			}
             		cmds.removeElementAt(c);
             	}
             }
     	}
     }
+    
+    private Vector sortDirsUp(Vector V)
+    {
+    	Vector dirs=new Vector();
+    	CMFile CF=null;
+    	for(int v=V.size()-1;v>=0;v--)
+    	{
+    		CF=(CMFile)V.elementAt(v);
+    		if((CF.isDirectory())&&(CF.exists()))
+    		{
+    			int x=0;
+    			while(x<=dirs.size())
+    			{
+    				if(x==dirs.size())
+    				{
+    					dirs.addElement(CF);
+    					break;
+    				}
+    				else
+    				if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
+    					x++;
+    				else
+    				{
+    					dirs.insertElementAt(CF,x);
+    					break;
+    				}
+    			}
+    			V.removeElementAt(v);
+    		}
+    	}
+    	for(int v=0;v<V.size();v++)
+    		dirs.addElement(V.elementAt(v));
+    	return dirs;
+    }
+    private Vector sortDirsDown(Vector V)
+    {
+    	Vector dirs=new Vector();
+    	CMFile CF=null;
+    	for(int v=V.size()-1;v>=0;v--)
+    	{
+    		CF=(CMFile)V.elementAt(v);
+    		if((CF.isDirectory())&&(CF.exists()))
+    		{
+    			int x=0;
+    			while(x<=dirs.size())
+    			{
+    				if(x==dirs.size())
+    				{
+    					dirs.addElement(CF);
+						break;
+					}
+    				else
+    				if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
+    					x++;
+    				else
+    				{
+    					dirs.insertElementAt(CF,x);
+    					break;
+    				}
+    			}
+    			V.removeElementAt(v);
+    		}
+    	}
+    	for(int d=0;d<dirs.size();d++)
+    		V.addElement(dirs.elementAt(d));
+    	return dirs;
+    }
+    
     
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -192,7 +265,9 @@ public class Shell extends StdCommand
                 commands.addElement(".");
             if(commands.size()<3)
             {
-                mob.tell("^xError: source and destination must be specified!^N");
+                mob.tell("^xError  : source and destination must be specified!^N");
+                mob.tell("^xOptions: -r = recurse into directories.^N");
+                mob.tell("^x       : -p = preserve paths.^N");
                 return false;
             }
             String source=(String)commands.elementAt(1);
@@ -211,12 +286,13 @@ public class Shell extends StdCommand
             if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
                 target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
             CMFile DD=new CMFile(pwd,target,mob,false);
-            for(int d=0;d<dirs.length;d++)
+            Vector ddirs=sortDirsUp(CMParms.makeVector(dirs));
+            for(int d=0;d<ddirs.size();d++)
             {
-                CMFile SF=dirs[d];
+                CMFile SF=(CMFile)ddirs.elementAt(d);
                 if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
                 if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
-                if((SF.isDirectory())&&(!opts.recurse))
+                if((SF.isDirectory())&&(!opts.preservePaths))
                 {
                     if(dirs.length==1)
                     {
@@ -230,7 +306,7 @@ public class Shell extends StdCommand
                 if(DD.isDirectory())
                 {
                 	String name=SF.getName();
-                	if(opts.recurse)
+                	if((opts.recurse)&&(opts.preservePaths))
                 	{
                 		String srcPath=SF.getVFSPathAndName();
                 		if(srcPath.startsWith(pwd+"/"))
@@ -306,12 +382,13 @@ public class Shell extends StdCommand
                 mob.tell("^xError: no files matched^N");
                 return false;
             }
-            for(int d=0;d<dirs.length;d++)
+            Vector ddirs=sortDirsDown(CMParms.makeVector(dirs));
+            for(int d=0;d<ddirs.size();d++)
             {
-                CMFile CF=dirs[d];
+                CMFile CF=(CMFile)ddirs.elementAt(d);
                 if((CF==null)||(!CF.exists()))
                 {
-                    mob.tell("^xError: "+desc(CF)+"does not exist!^N");
+                    mob.tell("^xError: "+desc(CF)+" does not exist!^N");
                     return false;
                 }
                 if(!CF.canWrite())
@@ -319,9 +396,9 @@ public class Shell extends StdCommand
                     mob.tell("^xError: access denied to "+desc(CF)+"!^N");
                     return false;
                 }
-                if(!CF.delete())
+                if((!CF.delete())&&(CF.exists()))
                 {
-                    mob.tell("^xError: delete of "+desc(CF)+" failed.  If this is a directory, are you sure it's empty?^N");
+                    mob.tell("^xError: delete of "+desc(CF)+" failed.^N");
                     return false;
                 }
                 mob.tell(desc(CF)+" deleted.");
@@ -627,7 +704,9 @@ public class Shell extends StdCommand
                 commands.addElement(".");
             if(commands.size()<3)
             {
-                mob.tell("^xError: source and destination must be specified!^N");
+                mob.tell("^xError  : source and destination must be specified!^N");
+                mob.tell("^xOptions: -r = recurse into directories.^N");
+                mob.tell("^x       : -p = preserve paths.^N");
                 return false;
             }
             String source=(String)commands.elementAt(1);
@@ -646,12 +725,13 @@ public class Shell extends StdCommand
             if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
                 target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
             CMFile DD=new CMFile(pwd,target,mob,false);
-            for(int d=0;d<dirs.length;d++)
+            Vector ddirs=sortDirsUp(CMParms.makeVector(dirs));
+            for(int d=0;d<ddirs.size();d++)
             {
-                CMFile SF=dirs[d];
+                CMFile SF=(CMFile)ddirs.elementAt(d);
                 if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
                 if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
-                if((SF.isDirectory())&&(!opts.recurse))
+                if((SF.isDirectory())&&(!opts.preservePaths))
                 {
                     if(dirs.length==1)
                     {
@@ -665,7 +745,7 @@ public class Shell extends StdCommand
                 if(DD.isDirectory())
                 {
                 	String name=SF.getName();
-                	if(opts.recurse)
+                	if((opts.recurse)&&(opts.preservePaths))
                 	{
                 		String srcPath=SF.getVFSPathAndName();
                 		if(srcPath.startsWith(pwd+"/"))
@@ -704,8 +784,11 @@ public class Shell extends StdCommand
 	                else
 	                    mob.tell(desc(SF)+" moved to "+desc(DF));
                 }
-                if(!SF.delete())
-                	mob.tell("Unable to delete file "+desc(SF));
+                if((!SF.delete())&&(SF.exists()))
+                {
+                	mob.tell("^xError: Unable to delete file "+desc(SF));
+                	break;
+                }
             }
             break;
         }

@@ -873,7 +873,7 @@ public class CMParms
         return true;
     }
     
-    public static Vector makeVector(String[] O)
+    public static Vector makeVector(Object[] O)
     { 
         Vector V=new Vector();
         if(O!=null)
