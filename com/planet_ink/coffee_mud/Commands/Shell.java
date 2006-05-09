@@ -56,6 +56,30 @@ public class Shell extends StdCommand
     protected final static String[] badTextExtensions={
         ".ZIP",".JPE",".JPG",".GIF",".CLASS",".WAV",".BMP",".JPEG",".GZ",".TGZ",".JAR"
     };
+
+    private class cp_options
+    {
+    	boolean recurse=false;
+    	public cp_options(Vector cmds)
+    	{
+            for(int c=cmds.size()-1;c>=0;c--)
+            {
+            	String s=(String)cmds.elementAt(c);
+            	if(s.startsWith("-"))
+            	{
+            		for(int c2=1;c2<s.length();c2++)
+        			switch(s.charAt(c2))
+        			{
+        			case 'r':
+        			case 'R':
+        				recurse=true;
+        				break;
+        			}
+            		cmds.removeElementAt(c);
+            	}
+            }
+    	}
+    }
     
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -111,7 +135,8 @@ public class Shell extends StdCommand
         {
         case 0: // directory
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,false);
+        	cp_options opts=new cp_options(commands);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,opts.recurse);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid directory!^N");
@@ -162,6 +187,7 @@ public class Shell extends StdCommand
         }
         case 1: // copy
         {
+        	cp_options opts=new cp_options(commands);
             if(commands.size()==2)
                 commands.addElement(".");
             if(commands.size()<3)
@@ -171,7 +197,7 @@ public class Shell extends StdCommand
             }
             String source=(String)commands.elementAt(1);
             String target=CMParms.combine(commands,2);
-            CMFile[] dirs=CMFile.getFileList(pwd,source,mob,false);
+            CMFile[] dirs=CMFile.getFileList(pwd,source,mob,opts.recurse);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid source!^N");
@@ -203,10 +229,19 @@ public class Shell extends StdCommand
                 target=DD.getVFSPathAndName();
                 if(DD.isDirectory())
                 {
+                	String name=SF.getName();
+                	if(opts.recurse)
+                	{
+                		String srcPath=SF.getVFSPathAndName();
+                		if(srcPath.startsWith(pwd+"/"))
+                			name=srcPath.substring(pwd.length()+1);
+                		else
+                			name=srcPath;
+                	}
                     if(target.length()>0) 
-                        target=target+"/"+SF.getName();
+                        target=target+"/"+name;
                     else
-                        target=SF.getName();
+                        target=name;
                     target=(DD.isLocalFile())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
@@ -249,7 +284,8 @@ public class Shell extends StdCommand
         }
         case 3: // delete
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,false);
+        	cp_options opts=new cp_options(commands);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,opts.recurse);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid filename!^N");
@@ -576,6 +612,7 @@ public class Shell extends StdCommand
         }
         case 9: // move
         {
+        	cp_options opts=new cp_options(commands);
             if(commands.size()==2)
                 commands.addElement(".");
             if(commands.size()<3)
@@ -585,7 +622,7 @@ public class Shell extends StdCommand
             }
             String source=(String)commands.elementAt(1);
             String target=CMParms.combine(commands,2);
-            CMFile[] dirs=CMFile.getFileList(pwd,source,mob,false);
+            CMFile[] dirs=CMFile.getFileList(pwd,source,mob,opts.recurse);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid source!^N");
@@ -617,10 +654,19 @@ public class Shell extends StdCommand
                 target=DD.getVFSPathAndName();
                 if(DD.isDirectory())
                 {
+                	String name=SF.getName();
+                	if(opts.recurse)
+                	{
+                		String srcPath=SF.getVFSPathAndName();
+                		if(srcPath.startsWith(pwd+"/"))
+                			name=srcPath.substring(pwd.length()+1);
+                		else
+                			name=srcPath;
+                	}
                     if(target.length()>0) 
-                        target=target+"/"+SF.getName();
+                        target=target+"/"+name;
                     else
-                        target=SF.getName();
+                        target=name;
                     target=(DD.isLocalFile())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
