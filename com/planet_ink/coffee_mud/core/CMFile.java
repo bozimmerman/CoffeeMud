@@ -269,8 +269,14 @@ public class CMFile
         if(!exists()) return false;
         if(!canWrite()) return false;
         if(!mayDeleteIfDirectory()) return false;
-        if(isVFSFile()) return deleteVFS();
-        if(isLocalFile()) return deleteLocal();
+        if((isVFSDirectory())&&(!demandLocal))
+        	return deleteVFS();
+        if((isLocalDirectory())&&(!demandVFS))
+        	return deleteLocal();
+        if(isVFSFile())
+        	return deleteVFS();
+        if(isLocalFile())
+        	return deleteLocal();
         return false;
     }
     
@@ -604,10 +610,28 @@ public class CMFile
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
             return true;
         }
-        File F=new File(getIOReadableLocalPathAndName());
+        String fullPath=getIOReadableLocalPathAndName();
+        File F=new File(fullPath);
+		File PF=F.getParentFile();
+		Vector parents=new Vector();
+		while(PF!=null)
+		{
+			parents.addElement(PF);
+			PF=PF.getParentFile();
+		}
+		for(int p=parents.size()-1;p>=0;p--)
+		{
+			PF=(File)parents.elementAt(p);
+			if((PF.exists())&&(PF.isDirectory())) continue;
+			if((PF.exists()&&(!PF.isDirectory()))||(!PF.mkdir()))
+	        {
+	            Log.errOut("CMFile","Unable to mkdir '"+PF.getAbsolutePath()+"'.");
+	            return false;
+	        }
+		}
         if(F.exists())
         {
-            Log.errOut("CMFile","File exists '"+getIOReadableLocalPathAndName()+"'.");
+            Log.errOut("CMFile","File exists '"+fullPath+"'.");
             return false;
         }
         if(F.mkdir())

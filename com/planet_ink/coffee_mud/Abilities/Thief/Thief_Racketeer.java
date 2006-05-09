@@ -73,7 +73,7 @@ public class Thief_Racketeer extends ThiefSkill {
 		if((!msg.source().Name().equals(text()))
 		&&((msg.source().getClanID().length() == 0) || (!msg.source().getClanID().equals(text())))
 		&&(msg.tool() instanceof Ability)
-		&&(msg.target()==msg.target())
+		&&(msg.target()==affected)
 		&&((((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_THIEF_SKILL)) 
 		{
 			if (invoker() == source) {

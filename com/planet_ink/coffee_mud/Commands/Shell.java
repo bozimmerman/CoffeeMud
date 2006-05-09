@@ -150,7 +150,7 @@ public class Shell extends StdCommand
     	}
     	for(int d=0;d<dirs.size();d++)
     		V.addElement(dirs.elementAt(d));
-    	return dirs;
+    	return V;
     }
     
     
@@ -726,6 +726,7 @@ public class Shell extends StdCommand
                 target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
             CMFile DD=new CMFile(pwd,target,mob,false);
             Vector ddirs=sortDirsUp(CMParms.makeVector(dirs));
+            Vector dirsLater=new Vector();
             for(int d=0;d<ddirs.size();d++)
             {
                 CMFile SF=(CMFile)ddirs.elementAt(d);
@@ -774,6 +775,7 @@ public class Shell extends StdCommand
 	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
 	                else
 	                    mob.tell(desc(SF)+" copied to "+desc(DF));
+	                dirsLater.addElement(SF);
                 }
                 else
                 {
@@ -783,10 +785,20 @@ public class Shell extends StdCommand
 	                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
 	                else
 	                    mob.tell(desc(SF)+" moved to "+desc(DF));
+	                if((!SF.delete())&&(SF.exists()))
+	                {
+	                	mob.tell("^xError: Unable to delete file "+desc(SF));
+	                	break;
+	                }
                 }
-                if((!SF.delete())&&(SF.exists()))
+            }
+            dirsLater=sortDirsDown(dirsLater);
+            for(int d=0;d<dirsLater.size();d++)
+            {
+            	CMFile CF=(CMFile)dirsLater.elementAt(d);
+                if((!CF.delete())&&(CF.exists()))
                 {
-                	mob.tell("^xError: Unable to delete file "+desc(SF));
+                	mob.tell("^xError: Unable to delete dir "+desc(CF));
                 	break;
                 }
             }
