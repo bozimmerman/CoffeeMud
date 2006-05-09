@@ -141,6 +141,19 @@ public class CMFile
         &&(demandLocal||(!allowedToReadVFS)))
             vfsBits=vfsBits|CMFile.VFS_MASK_ISLOCAL;
     }
+
+    public boolean mustOverwrite()
+    {
+    	if(!isDirectory()) 
+    		return canRead();
+    	if(isLocalFile())
+            return ((localFile!=null)&&(localFile.isDirectory()));
+        String filename=getVFSPathAndName();
+        Vector info=getVFSInfo(filename);
+        if(!filename.endsWith("/")) filename=filename+"/";
+        if(info==null) info=getVFSInfo(filename);
+        return (info!=null);
+    }
     
     public boolean canRead()
     {
@@ -674,6 +687,26 @@ public class CMFile
                 return true;
         }
         return false;
+    }
+
+    public boolean isVFSDirectory()
+    {
+        Vector file=null;
+        Vector vfs=getVFSDirectory();
+        if(vfs==null) return false;
+        String dir=getVFSPathAndName().toUpperCase();
+        if(!dir.endsWith("/")) dir+="/";
+        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        {
+            file=(Vector)e.nextElement();
+            if(((String)file.firstElement()).toUpperCase().equals(dir))
+                return true;
+        }
+        return false;
+    }
+    public boolean isLocalDirectory()
+    {
+    	return (localFile!=null)&&(localFile.isDirectory());
     }
     
     public CMFile[] listFiles()

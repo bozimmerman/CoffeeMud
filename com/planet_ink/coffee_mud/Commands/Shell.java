@@ -216,7 +216,7 @@ public class Shell extends StdCommand
                 CMFile SF=dirs[d];
                 if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
                 if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
-                if(SF.isDirectory())
+                if((SF.isDirectory())&&(!opts.recurse))
                 {
                     if(dirs.length==1)
                     {
@@ -251,14 +251,24 @@ public class Shell extends StdCommand
                     mob.tell("^xError: destination must be a directory!^N"); 
                     return false;
                 }
-                if(DF.canRead()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
+                if(DF.mustOverwrite()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
                 if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
-                byte[] O=SF.raw();
-                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
-                if(!DF.saveRaw(O))
-                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+                if((SF.isDirectory())&&(opts.recurse))
+                {
+	                if(!DF.mkdir())
+	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
+	                else
+	                    mob.tell(desc(SF)+" copied to "+desc(DF));
+                }
                 else
-                    mob.tell(desc(SF)+" copied to "+desc(DF));
+                {
+	                byte[] O=SF.raw();
+	                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
+	                if(!DF.saveRaw(O))
+	                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+	                else
+	                    mob.tell(desc(SF)+" copied to "+desc(DF));
+                }
             }
             break;
         }
@@ -641,7 +651,7 @@ public class Shell extends StdCommand
                 CMFile SF=dirs[d];
                 if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
                 if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
-                if(SF.isDirectory())
+                if((SF.isDirectory())&&(!opts.recurse))
                 {
                     if(dirs.length==1)
                     {
@@ -676,18 +686,26 @@ public class Shell extends StdCommand
                     mob.tell("^xError: destination must be a directory!^N"); 
                     return false;
                 }
-                if(DF.canRead()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
+                if(DF.mustOverwrite()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
                 if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
-                byte[] O=SF.raw();
-                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
-                if(!DF.saveRaw(O))
-                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+                if((SF.isDirectory())&&(opts.recurse))
+                {
+	                if(!DF.mkdir())
+	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
+	                else
+	                    mob.tell(desc(SF)+" copied to "+desc(DF));
+                }
                 else
                 {
-                    mob.tell(desc(SF)+" moved to "+desc(DF));
-                    if(!SF.delete())
-                    	mob.tell("Unable to delete file "+desc(SF));
+	                byte[] O=SF.raw();
+	                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
+	                if(!DF.saveRaw(O))
+	                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+	                else
+	                    mob.tell(desc(SF)+" moved to "+desc(DF));
                 }
+                if(!SF.delete())
+                	mob.tell("Unable to delete file "+desc(SF));
             }
             break;
         }
