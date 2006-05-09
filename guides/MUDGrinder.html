@@ -1,100 +1,119 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
- 
-  <meta name="GENERATOR" content="Microsoft Visual Studio 6.0">
-  <title></title>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>Installing and Using MUDGrinder</title>
+    <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+    <!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index -->
+ </head>
  <body>
- 
-<p style="text-align: center;" align="center"><font size="6">Installing and
- Using<br>
-<strong> MUDGrinder</strong></font></p>
- 
-<p style="text-align: center;" align="center"><strong><font size="6"></font></strong></p>
- 
-<p><img src="images/grinder.gif">
- </p>
- 
-<p><font color="#990000"><strong><font size="5">What Is the MUDGrinder:</font></strong></font></p>
- 
-<p>The MUDGrinder is a visual editing and administration tool. &nbsp; It
-includes all of the following:<br>
-</p>
-<p><b>Control Panel</b>, for changing many of the flexible settings of the
-engine.<br>
-<b>File Browser</b> lets you browse, delete, upload, or modify text files
-in your coffeemud package.<br>
-<b>Journals Browser </b>lets you post, read, delete, or reply to any of the
-journals (message boards) in your system.<br>
-<b>Players List</b> is the place for reviewing your players, their details,
-and to quickly BAN THEM!<br>
-<b>Manage Resources</b> is an obscure tool for flushing from memory those
-things that have been loaded from disk.<br>
-<b>Quest Manager</b> allows you to create, destroy, start, stop, and update
-Quests and quest scripts.<br>
- <b>Banned List</b> is the place for adding and removing banned names and
-ip addresses.<br>
-<b>System Reports</b> gives you a quick health and status check for your
-mud.<br>
-<b>Thread Groups</b> is where you can browse all the different game area
-object threads that are running.<br>
-<b>Server Log</b> shows you the mud.log file, which is your main log file.<br>
-<b>Statistics </b>is where you can browse the gameplay statistics after you've
-been running for awhile.<br>
-</p>
-<p>Also included is a  pleasant&nbsp;alternative to the command-line interface
-described in the  <a href="ArchonGuide.html">Archon's Guide</a> for creating
-and maintaining the areas, maps,  rooms, monsters, and items inside your
-MUD.&nbsp; Instead of typing in commands,  you can point and click to design
-your maps.&nbsp; Instead of running around  with your Archon to get an idea
-of how things look, you can just point your eyes  at the map on the screen.<br>
-</p>
- 
-<p><font color="#ff0000"><strong><font size="5">Installation:</font></strong></font></p>
- 
-<p>                                 The MUDGrinder is a built in part of
-the Administrative Web  Site of the CoffeeMud HTTP Web Server.&nbsp; For
-more information on this aspect  of CoffeeMud, please refer to the <a
- href="WebServer.html">Web Server Guide</a>.&nbsp; So, if  you have successfully
-installed and started up your CoffeeMud Server, and  the Administrative Web
-Server has been successfully started as well, then  MUDGrinder is already
-installed!&nbsp; Good job!</p>
- 
-<p>To access MUDGrinder, simply connect to your  Administrative Web Site
-(<a href="http://localhost:27777/">http://localhost:27777/</a>)  and log
-into the MUDGrinder pages using your Archon administrative account  information.&nbsp;
-If you have no idea what an Archon Administrative account is,  you'll need
-to start back over again and read the <a href="InstallationGuide.html">Installation
-Guide</a>.</p>
- 
-<p><font color="#ff6666"><strong><font size="5">Not Your Mothers MUDGrinder:</font></strong></font></p>
- 
-<p>The MUDGrinder is easy to use, but it is not forgiving, and it is not
-for  wussies.&nbsp; If you make a mistake, you will probably pay for it.&nbsp;
-If you  click the wrong button, you will regret it.&nbsp; Be careful kiddies!</p>
- 
-<p><font size="5" color="#ffcc99"><strong>Using MUDGrinder:</strong></font></p>
- 
-<p><font>If you've actually played this game before, and you've read the
-<a href="ArchonGuide.html">Archon's  Guide</a>, and you understand it, you
-will have  no troubles at all.&nbsp; The MUDGrinder is merely a visual means
-of accomplishing the  same tasks, with the same objects and parameters as
-are described in the Archon's  Guide.</font></p>
- 
-<p><font>If you have any further questions, or want to know how to undo a
- mistake, &nbsp;refer to the previous section.</font></p>
- 
-<p><font color="#ffff66"><strong><font size="5">Author's Notes:</font></strong></font></p>
- 
-<p>Users of previous versions of the MUDGrinder know that the documentation
- provided for this version of the editor are twice as good as anything provided
- previously.&nbsp; However, the same caveats still apply: do not email Bo
-and  tell him that his Java and MUD puns are not funny.&nbsp; He knows they
-are  funny.&nbsp; He also knows you think they are funny and that any protests
-to the  contrary are vicious lies.</p>
- 
-<p>&nbsp;</p>
-  <br>
-</body>
+  <div id="container">
+    <div id="header">
+      <h1>
+        Installing and Using MUDGrinder
+      </h1>
+    </div>
+    <div id="nav">
+      <ol>
+        <li><a href="#what">What is MUDGrinder?</a></li>
+        <li><a href="#install">Installation</a></li>
+        <li><a href="#mother">Not Your Mothers MUDGrinder</a></li>
+        <li><a href="#use">Using MUDGrinder</a></li>
+        <li><a href="#notes">Author's Notes</a></li>
+      </ol>
+    </div>
+    <div id="content">
+      <p class="center">
+        <img src="images/grinder.gif" alt="MUDGrinder logo" />
+      </p>
+
+      <h2><a name="what">What Is the MUDGrinder:</a></h2>
+
+      <p>
+        The MUDGrinder is a visual editing and administration tool. It
+        includes all of the following:
+      </p>
+
+      <ul>
+        <li><p><b>Control Panel</b>, for changing many of the flexible settings of the engine.</p></li>
+        <li><p><b>File Browser</b> lets you browse, delete, upload, or modify text files in your CoffeeMud package.</p></li>
+        <li><p><b>Journals Browser</b> lets you post, read, delete, or reply to any of the journals (message boards) in your system.</p></li>
+        <li><p><b>Players List</b> is the place for reviewing your players, their details, and to quickly BAN THEM!</p></li>
+        <li><p><b>Manage Resources</b> is an obscure tool for flushing from memory those things that have been loaded from disk.</p></li>
+        <li><p><b>Quest Manager</b> allows you to create, destroy, start, stop, and update Quests and quest scripts.</p></li>
+        <li><p><b>Banned List</b> is the place for adding and removing banned names and ip addresses.</p></li>
+        <li><p><b>System Reports</b> gives you a quick health and status check for your mud.</p></li>
+        <li><p><b>Thread Groups</b> is where you can browse all the different game area object threads that are running.</p></li>
+        <li><p><b>Server Log</b> shows you the mud.log file, which is your main log file.</p></li>
+        <li><p><b>Statistics</b> is where you can browse the gameplay statistics after you've been running for awhile.</p></li>
+      </ul>
+
+      <p>
+       Also included is a pleasant alternative to the command-line
+       interface described in the <a href="ArchonGuide.html">Archon's
+       Guide</a> for creating and maintaining the areas, maps, rooms,
+       monsters, and items inside your MUD. Instead of typing in
+       commands, you can point and click to design your maps. Instead of
+       running around with your Archon to get an idea of how things look, you
+       can just point your eyes at the map on the screen.
+      </p>
+
+      <h2><a name="install">Installation:</a></h2>
+
+      <p>
+       The MUDGrinder is a built in part of the Administrative Web Site of the
+       CoffeeMud HTTP Web Server. For more information on this aspect of
+       CoffeeMud, please refer to the <a href="WebServer.html">Web Server
+       Guide</a>. So, if you have successfully installed and started up
+       your CoffeeMud Server, and the Administrative Web Server has been
+       successfully started as well, then MUDGrinder is already
+       installed! Good job!
+      </p>
+
+      <p>
+       To access MUDGrinder, simply connect to your Administrative Web Site
+       (<a href="http://localhost:27777/">http://localhost:27777/</a>) and log
+       into the MUDGrinder pages using your Archon administrative account
+       information. If you have no idea what an Archon Administrative
+       account is, you'll need to start back over again and read the <a href=
+       "InstallationGuide.html">Installation Guide</a>.
+      </p>
+
+      <h2><a name="mother">Not Your Mothers MUDGrinder:</a></h2>
+
+      <p>
+       The MUDGrinder is easy to use, but it is not forgiving, and it is not
+       for wussies. If you make a mistake, you will probably pay for
+       it. If you click the wrong button, you will regret it. Be
+       careful kiddies!
+      </p>
+
+      <h2><a name="use">Using MUDGrinder:</a></h2>
+
+      <p>
+       If you've actually played this game before, and you've read the
+       <a href="ArchonGuide.html">Archon's Guide</a>, and you understand it,
+       you will have no troubles at all. The MUDGrinder is merely a
+       visual means of accomplishing the same tasks, with the same objects and
+       parameters as are described in the Archon's Guide.
+      </p>
+
+      <p>
+       If you have any further questions, or want to know how to undo a
+       mistake, refer to the previous section.
+      </p>
+
+      <h2><a name="notes">Author's Notes:</a></h2>
+
+      <p>
+       Users of previous versions of the MUDGrinder know that the
+       documentation provided for this version of the editor are twice as good
+       as anything provided previously. However, the same caveats still
+       apply: do not email Bo and tell him that his Java and MUD puns are not
+       funny. He knows they are funny. He also knows you think
+       they are funny and that any protests to the contrary are vicious lies.
+      </p>
+    </div>
+  </div>
+ </body>
 </html>

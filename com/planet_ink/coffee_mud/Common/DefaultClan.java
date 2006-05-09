@@ -1256,6 +1256,7 @@ public class DefaultClan implements Clan
                 case TROPHY_AREA: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA); break;
                 case TROPHY_CONTROL: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
                 case TROPHY_EXP: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
+                case TROPHY_PK: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
                 default: awardStr=null;
                 }
                 if(awardStr!=null)

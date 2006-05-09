@@ -343,7 +343,8 @@ public class Age extends StdAbility
 	{
 		super.executeMsg(myHost,msg);
 		if((affected instanceof Item)
-		&&((msg.target()==affected)||(msg.tool()==affected)))
+		&&((msg.target()==affected)||(msg.tool()==affected))
+		&&(affected.amDestroyed()))
 		{
 			Behavior B=affected.fetchBehavior("Emoter");
 			Item baby=(Item)affected;

@@ -840,9 +840,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	}
 
 	public String fillAreaAndCustomVectorFromXML(String buf, 
-	        											Vector area, 
-	        											Vector custom,
-	        											Hashtable externalFiles)
+    											 Vector area, 
+    											 Vector custom,
+    											 Hashtable externalFiles)
 	{
 		Vector xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Fill","null 'xml'");

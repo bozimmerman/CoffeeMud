@@ -233,6 +233,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	case Clan.TROPHY_AREA: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA); break;
 	    	case Clan.TROPHY_CONTROL: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
 	    	case Clan.TROPHY_EXP: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
+	    	case Clan.TROPHY_PK: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
 	    }
 	    if(prizeStr.length()==0) return "None";
         if(prizeStr.length()>0)
@@ -252,7 +253,8 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 	    return (CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
 	        || (CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
-	        || (CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0);
+	        || (CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0)
+	        || (CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0);
 	    
 	}
 }
