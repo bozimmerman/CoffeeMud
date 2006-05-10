@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	  <title>Archon Commands Help</title>
+	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+	</head>
+	<body>
+		<div id="container">
+		<div id="header">
+		<h1> Archon Commands Help </h1>
+		<h2> CoffeeMud 5.1 </h2>
+		</div>
+		<div id="nav">
+		<ol>
+			@HelpTopics?reset@
+			@loop@
+			<li> @HelpTopics?ARCHON&SHORT&NEXT@<TD WIDTH=25%><a href="#@HelpTopics@">@HelpTopics@</a>
+			@back@
+		</ol>
+		</div>
+		<div id="content">
+			@HelpTopics?reset@
+			@loop@
+			<p>
+			@HelpTopics?ARCHON&SHORT&NEXT@<TD WIDTH=25%><a name="#@HelpTopics@"><B>@HelpTopics@</B></a>
+			<br>
+			<br>
+			<br>
+			<pre>@HelpTopics?data&ahelp&LIMIT=80@</pre>
+			</P>
+			@back@
+		</div>
+	</body>
+</html>
+

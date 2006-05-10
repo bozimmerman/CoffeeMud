@@ -156,7 +156,6 @@ public class CMColor extends StdLibrary implements ColorLibrary
                 htlookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLHTTAGS[i];
             
             // default color settings:
-            htlookup[COLORCODE_NORMAL]=HTTAG_GREY;
             htlookup[COLORCODE_HIGHLIGHT]=HTTAG_LIGHTCYAN;
             htlookup[COLORCODE_YOU_FIGHT]=HTTAG_LIGHTPURPLE;
             htlookup[COLORCODE_FIGHT_YOU]=HTTAG_LIGHTRED;
@@ -237,6 +236,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
                 if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
                     htlookup[i]=htlookup[s.charAt(1)];
             }
+            htlookup[COLORCODE_NORMAL]=HTTAG_NONE;
         }
         return htlookup;
     }

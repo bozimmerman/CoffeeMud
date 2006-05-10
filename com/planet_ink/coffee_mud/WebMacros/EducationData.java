@@ -54,7 +54,9 @@ public class EducationData extends StdWebMacro
 					StringBuffer s=CMLib.help().getHelpText(E.ID,null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(E.name,null,false);
-					str.append(helpHelp(s));
+					int limit=70;
+					if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("SHORTHELP"))
 				{

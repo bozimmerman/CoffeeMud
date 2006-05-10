@@ -48,11 +48,13 @@ public class HelpTopics extends StdWebMacro
 		else
 		if(parms.containsKey("DATA"))
 		{
+			int limit=70;
+			if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
 			if((last!=null)&&(last.length()>0))
 			{
 				StringBuffer s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
 				if(s!=null)
-                    return clearWebMacros(helpHelp(s).toString());
+                    return clearWebMacros(helpHelp(s,limit).toString());
 			}
 			return "";
 		}
@@ -93,16 +95,7 @@ public class HelpTopics extends StdWebMacro
 			for(int h=0;h<topics.size();h++)
 			{
 				String topic=(String)topics.elementAt(h);
-				if(noables&&(topic.startsWith("SPELL_")
-							 ||topic.startsWith("SONG_")
-							 ||topic.startsWith("DANCE_")
-							 ||topic.startsWith("BEHAVIOR_")
-							 ||topic.startsWith("CHANT_")
-							 ||topic.startsWith("PRAYER_")
-							 ||topic.startsWith("SKILL_")
-							 ||topic.startsWith("BEHAVIOR_")
-							 ||topic.startsWith("PROP_"))
-							 ||CMClass.getAbility(topic)!=null)
+				if(noables&&CMLib.help().isPlayerSkill(topic))
 				   continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))))

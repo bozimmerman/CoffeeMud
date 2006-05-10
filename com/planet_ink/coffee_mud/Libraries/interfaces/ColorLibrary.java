@@ -77,7 +77,7 @@ public interface ColorLibrary extends CMObject
     public static final String HTTAG_PURPLE="<FONT COLOR=PURPLE";
     public static final String HTTAG_DARKGREY="<FONT COLOR=GRAY";
     public static final String HTTAG_BLACK="<FONT COLOR=BLACK";
-    public static final String HTTAG_NONE="</FONT";
+    public static final String HTTAG_NONE="</I></U></BLINK></B></FONT";
     public static final String HTTAG_BOLD="<B";
     public static final String HTTAG_UNDERLINE="<U";
     public static final String HTTAG_BLINK="<BLINK";

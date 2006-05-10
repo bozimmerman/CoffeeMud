@@ -76,12 +76,14 @@ public class StdWebMacro implements WebMacro
                 &&(s.charAt(i+1)!=s.charAt(i))
                 &&((s.charAt(i+1)=='\r')||(s.charAt(i+1)=='\n')))
                 {
-                    s.replace(i,i+2,"<BR>");
+                	s.delete(i,i+2);
+                	s.insert(i,"<BR>");
                     i+=3;
                 }
                 else
                 {
-                    s.replace(i,i+1,"<BR>");
+                	s.delete(i,i+1);
+                	s.insert(i,"<BR>");
                     i+=3;
                 }
                 break;
@@ -108,8 +110,16 @@ public class StdWebMacro implements WebMacro
                     if(code!=null)
                     {
                         s.delete(i,i+2);
-                        s.insert(i,code+">");
-                        i+=code.length();
+                        if(code.startsWith("<"))
+                        {
+	                        s.insert(i,code+">");
+	                        i+=code.length();
+                        }
+                        else
+                        {
+                            s.insert(i,code);
+                            i+=code.length()-1;
+                        }
                     }
                 }
                 break;
@@ -193,7 +203,8 @@ public class StdWebMacro implements WebMacro
         return s.toString();
     }
     
-	protected StringBuffer helpHelp(StringBuffer s)
+	protected StringBuffer helpHelp(StringBuffer s){return helpHelp(s,70);}
+	protected StringBuffer helpHelp(StringBuffer s, int limit)
 	{
 		if(s!=null)
 		{
@@ -220,7 +231,7 @@ public class StdWebMacro implements WebMacro
                    &&(s.substring(x,x+4).equalsIgnoreCase("<BR>")))
                    {
                         count=0;
-                        x=x+4;
+                        x=x+3;
                         lastSpace=x+4;
                    }
                    else
@@ -257,13 +268,21 @@ public class StdWebMacro implements WebMacro
                         if(code!=null)
                         {
                             s.delete(x,x+2);
-                            s.insert(x,code);
-                            x+=code.length()-1;
+                            if(code.startsWith("<"))
+                            {
+	                            s.insert(x,code+">");
+	                            x+=code.length();
+                            }
+                            else
+                            {
+	                            s.insert(x,code);
+	                            x+=code.length()-1;
+                            }
                         }
                     }
                     break;
                 }
-				if(count==70)
+				if(count==limit)
 				{
 					s.replace(lastSpace,lastSpace+1,"<BR>");
 					lastSpace=lastSpace+4;

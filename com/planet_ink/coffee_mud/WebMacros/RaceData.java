@@ -56,7 +56,11 @@ public class RaceData extends StdWebMacro
 					if(s==null)
 						s=CMLib.help().getHelpText(R.name(),null,false);
 					if(s!=null)
-						str.append(helpHelp(s));
+					{
+						int limit=70;
+						if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+						str.append(helpHelp(s,limit));
+					}
 				}
 				if(parms.containsKey("PLAYABLE"))
 					str.append(Area.THEME_DESCS_EXT[R.availabilityCode()]+", ");

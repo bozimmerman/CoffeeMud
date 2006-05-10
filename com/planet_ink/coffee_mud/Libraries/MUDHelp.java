@@ -42,10 +42,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     {
         if(helpStr.length()==0) return false;
         if(getHelpFile().size()==0) return false;
-        StringBuffer thisTag=getHelpText(helpStr,getHelpFile(),null,true);
-        if(thisTag!=null) 
-        if(thisTag.toString().toUpperCase().startsWith("<ABILITY>")) return true;
-        return CMClass.getAbility(helpStr)!=null;
+		helpStr=helpStr.toUpperCase().trim();
+		if(helpStr.indexOf(" ")>=0)
+			helpStr=helpStr.replace(' ','_');
+        if(helpStr.startsWith("SPELL_")
+		 ||helpStr.startsWith("SONG_")
+		 ||helpStr.startsWith("DANCE_")
+		 ||helpStr.startsWith("BEHAVIOR_")
+		 ||helpStr.startsWith("CHANT_")
+		 ||helpStr.startsWith("PRAYER_")
+		 ||helpStr.startsWith("SKILL_")
+		 ||helpStr.startsWith("BEHAVIOR_")
+		 ||helpStr.startsWith("PROP_"))
+        	return true;
+		String thisTag=getHelpFile().getProperty(helpStr);
+		if((thisTag!=null)
+		&&(thisTag.startsWith("<ABILITY>")||thisTag.startsWith("<EDUCATION>")))
+			return true;
+		return CMClass.getAbility(helpStr)!=null;
     }
     
     public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
@@ -553,6 +567,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     			}
     			if(arcHelpFile!=null)
     			{
+    				DVector suspiciousPairs=suspiciousTags(arcHelpFile);
+    				for(int d=0;d<suspiciousPairs.size();d++)
+    					System.out.println(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
     				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
     				{
     					String key=(String)e.nextElement();
@@ -582,6 +599,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         return new Properties();
 	}
 
+	private DVector suspiciousTags(Properties p)
+	{
+		String k=null;
+		String s=null;
+		DVector pairs=new DVector(2);
+		for(Enumeration e=p.keys();e.hasMoreElements();)
+		{
+			k=(String)e.nextElement();
+			for(int i=0;i<k.length();i++)
+				if(Character.isLowerCase(k.charAt(i)))
+				{
+					pairs.addElement(k,p.get(k));
+					break;
+				}
+		}
+		return pairs;
+	}
+	
 	public Properties getHelpFile()
 	{
         try
@@ -605,7 +640,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     				}
     			}
     			if(helpFile!=null)
+    			{
+    				DVector suspiciousPairs=suspiciousTags(helpFile);
+    				for(int d=0;d<suspiciousPairs.size();d++)
+    					System.out.println(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
     				Resources.submitResource("MAIN HELP FILE",helpFile);
+    			}
     		}
     		return helpFile;
         }
