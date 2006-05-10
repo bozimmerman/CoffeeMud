@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	  <title>CoffeeMud Default Player Class Reference</title>
+	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+	</head>
+	<body>
+		<div id="container">
+		<div id="header">
+		<h1>Default Player Class Reference</h1>
+		<h2> CoffeeMud 5.1 </h2>
+		</div>
+		<div id="nav">
+		<ol>
+			@BaseCharClassNext?RESET@
+			@loop@
+			@BaseCharClassNext@
+			<LI><B>@BaseCharClassName@s: </B>
+			<ol>
+				@CharClassNext?RESET@
+				@loop@
+					<li> @CharClassNext@<a href="#@CharClassID@">@CharClassName@</a>
+				@back@
+				&nbsp;
+			</ol>
+			@back@
+		</ol>
+		</div>
+		<div id="content">
+			@BaseCharClassNext?RESET@
+			@loop@
+				@BaseCharClassNext@
+				@CharClassNext?RESET@
+				@loop@
+					@CharClassNext@
+					<P>
+					<TABLE WIDTH=95% BORDER=1>
+					<TR><TD WIDTH=95% COLSPAN=2 BGCOLOR=LIGHTGREY VALIGN=CENTER ALIGN=CENTER><a name="@CharClassID@"><H2><FONT COLOR=BLACK>@CharClassName@</FONT></H2></a></TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Description</B></TD><TD>@CharClassData?help@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Prime Statistic</B></TD><TD>@CharClassData?prime@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Qualifications</B></TD><TD>@CharClassData?quals@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Practices</B></TD><TD>@CharClassData?pracs@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Training Points</B></TD><TD>@CharClassData?trains@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Hit Points</B></TD><TD>@CharClassData?hitpoints@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Mana</B></TD><TD>@CharClassData?mana@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Movement</B></TD><TD>@CharClassData?movement@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Attack Skill</B></TD><TD>@CharClassData?attack@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Damage Bonus</B></TD><TD>@CharClassData?damage@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Other Bonuses</B></TD><TD>@CharClassData?bonuses@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Weapons</B></TD><TD>@CharClassData?weapons@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Armor</B></TD><TD>@CharClassData?armor@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Other Limitations</B></TD><TD>@CharClassData?limits@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Starting Equipment</B></TD><TD>@CharClassData?startingeq@</TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Qualifying Races</B></TD><TD>@ClassRaceNext?reset@
+							 @loop@ @ClassRaceNext@ @RaceName@ @back@ </TD></TR>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Languages</B></TD>
+					<TD>@AbilityNext?reset@ @loop@ @AbilityNext?language@ @AbilityName@ @back@</TD>
+					<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=LIGHTGREY><B>Abilities</B></TD>
+					<TD>
+						<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
+						@loop@ @LevelNext@
+						<TR><TD WIDTH=10%>@LevelNumber@</TD>
+						<TD WIDTH=90%>@AbilityNext?reset@
+						<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+							@loop@ @AbilityNext?skill&common skill&spell&prayer&song&thief skill&chant@ 
+							<TR><TD WIDTH=35%>(@AbilityData?domain@)</TD>
+							<TD WIDTH=15% ALIGN=RIGHT>@AbilityData?qualifyQ@</TD>
+							<TD WIDTH=50%>&nbsp;@AbilityName@</TD></TR>
+							@back@
+							</TABLE>
+						</TD>
+						</TR>
+						@back@
+						</TABLE></TD></TR>
+					</TABLE>
+					</P>
+				@back@
+			@back@
+		</div>
+	</body>
+</html>
+

@@ -172,13 +172,12 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("ABILITIES"))
 				{
-					int num=CMath.s_int(R.getStat("NUMCABLE"));
-					for(int i=0;i<num;i++)
+					Vector ables=R.racialAbilities(null);
+					for(int i=0;i<ables.size();i++)
 					{
-						Ability A=mob.fetchAbility(R.getStat("GETCABLE"+i));
+						Ability A=(Ability)ables.elementAt(i);
 						if(A!=null)
 						{
-							A.setProfficiency(CMath.s_int(R.getStat("GETCABLEPROF"+i)));
 							if(A.profficiency()==0)
 								str.append(A.Name()+", ");
 							else
@@ -189,10 +188,10 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("EFFECTS"))
 				{
-					int num=CMath.s_int(R.getStat("NUMREFF"));
-					for(int i=0;i<num;i++)
+					Vector ables=R.racialEffects(null);
+					for(int i=0;i<ables.size();i++)
 					{
-						Ability A=mob.fetchAbility(R.getStat("NUMREFF"+i));
+						Ability A=(Ability)ables.elementAt(i);
 						if(A!=null)
 							str.append(A.Name()+", ");
 					}

@@ -15,7 +15,7 @@
 		<ol>
 			@HelpTopics?reset@
 			@loop@
-			<li> @HelpTopics?SHORT&NEXT@<TD WIDTH=25%><a href="#@HelpTopics@">@HelpTopics@</a>
+			<li> @HelpTopics?SHORT&NEXT@<a href="#@HelpTopics@">@HelpTopics@</a>
 			@back@
 		</ol>
 		</div>
@@ -23,7 +23,7 @@
 			@HelpTopics?reset@
 			@loop@
 			<p>
-			@HelpTopics?SHORT&NEXT@<TD WIDTH=25%><a name="#@HelpTopics@"><B>@HelpTopics@</B></a>
+			@HelpTopics?SHORT&NEXT@<a name="#@HelpTopics@"><B>@HelpTopics@</B></a>
 			<br>
 			<br>
 			<br>
