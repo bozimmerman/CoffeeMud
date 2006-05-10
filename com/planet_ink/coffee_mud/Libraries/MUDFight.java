@@ -595,7 +595,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 		}
-		if(Body==null) Body=target.killMeDead(true);
+		if(Body==null) 
+			Body=target.killMeDead(true);
+		Room bodyRoom=deathRoom;
+		if((Body!=null)&&(Body.owner() instanceof Room)&&(((Room)Body.owner()).isContent(Body)))
+			bodyRoom=(Room)Body.owner();
         if((source!=null)&&(Body!=null))
         {
             Body.setKillerName(source.Name());
@@ -621,9 +625,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 
 		if((source!=null)
-        &&(deathRoom!=null)
-		&&(source.location()==deathRoom)
-		&&(deathRoom.isInhabitant(source))
+        &&(bodyRoom!=null)
+		&&(source.location()==bodyRoom)
+		&&(bodyRoom.isInhabitant(source))
 		&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
 		{
 			if((source.riding()!=null)&&(source.riding() instanceof MOB))
@@ -632,9 +636,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((source.riding()!=null)&&(source.riding() instanceof MOB))
 				source.tell("You'll need to disembark to loot the body.");
 			else
-			for(int i=deathRoom.numItems()-1;i>=0;i--)
+			for(int i=bodyRoom.numItems()-1;i>=0;i--)
 			{
-				Item item=deathRoom.fetchItem(i);
+				Item item=bodyRoom.fetchItem(i);
 				if((item!=null)
 				&&(item.container()==Body)
 				&&(CMLib.flags().canBeSeenBy(Body,source))
@@ -643,7 +647,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					CMLib.commands().postGet(source,Body,item,false);
 			}
 			if(Body.destroyAfterLooting())
-				deathRoom.recoverRoomStats();
+				bodyRoom.recoverRoomStats();
 		}
 
 		Coins C=null;
@@ -654,30 +658,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		    if(C!=null)
 		    {
 				C.recoverEnvStats();
-				deathRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-				deathRoom.recoverRoomStats();
+				bodyRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+				bodyRoom.recoverRoomStats();
 				MOB mob=(MOB)goldLooters.elementAt(g);
-				if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-					mob.tell("You'll need to dismount to get "+C.name()+" off the body.");
-				else
-				if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-					mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
-				else
-				if(CMLib.flags().canBeSeenBy(Body,mob))
-					CMLib.commands().postGet(mob,Body,C,false);
+				if(mob.location()==bodyRoom)
+				{
+					if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+						mob.tell("You'll need to dismount to get "+C.name()+" off the body.");
+					else
+					if((mob.riding()!=null)&&(mob.riding() instanceof Item))
+						mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
+					else
+					if(CMLib.flags().canBeSeenBy(Body,mob))
+						CMLib.commands().postGet(mob,Body,C,false);
+				}
 		    }
 		}
 
 		if(Body.destroyAfterLooting())
 		{
-			for(int i=deathRoom.numItems()-1;i>=0;i--)
+			for(int i=bodyRoom.numItems()-1;i>=0;i--)
 			{
-				Item item=deathRoom.fetchItem(i);
+				Item item=bodyRoom.fetchItem(i);
 				if((item!=null)&&(item.container()==Body))
 					item.setContainer(null);
 			}
 			Body.destroy();
-			deathRoom.recoverEnvStats();
+			bodyRoom.recoverEnvStats();
             return null;
 		}
         return Body;

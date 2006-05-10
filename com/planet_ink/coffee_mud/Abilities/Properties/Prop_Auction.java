@@ -88,22 +88,22 @@ public class Prop_Auction extends Property
 			switch(state)
 			{
 			case STATE_RUNOUT:
-				V.addElement("The auction for "+auctioning.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(M,bid)+".");
+				V.addElement("The auction for "+auctioning.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
 				break;
 			case STATE_ONCE:
-				V.addElement(CMLib.beanCounter().nameCurrencyShort(M,bid)+" for "+auctioning.name()+" going ONCE!");
+				V.addElement(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" for "+auctioning.name()+" going ONCE!");
 				break;
 			case STATE_TWICE:
-				V.addElement(CMLib.beanCounter().nameCurrencyShort(M,bid)+" for "+auctioning.name()+" going TWICE!");
+				V.addElement(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" for "+auctioning.name()+" going TWICE!");
 				break;
 			case STATE_THREE:
-				V.addElement(auctioning.name()+" going for "+CMLib.beanCounter().nameCurrencyShort(M,bid)+"! Last chance!");
+				V.addElement(auctioning.name()+" going for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+"! Last chance!");
 				break;
 			case STATE_CLOSED:
 				{
 					if((highBidder!=null)&&(highBidder!=invoker()))
 					{
-						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+CMLib.beanCounter().nameCurrencyShort(M,bid)+".");
+						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
 						M.doCommand(V);
 						if(!CMLib.flags().canMove(highBidder))
 						{
@@ -129,8 +129,8 @@ public class Prop_Auction extends Property
                                 {
                                     CMLib.beanCounter().subtractMoney(highBidder,currency,bid);
                                     CMLib.beanCounter().addMoney(M,currency,bid);
-    								M.tell(CMLib.beanCounter().nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
-    								highBidder.tell(CMLib.beanCounter().nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
+    								M.tell(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
+    								highBidder.tell(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
                                     if(auctioning instanceof LandTitle)
                                     {
                                         CMMsg msg=CMClass.getMsg(M,highBidder,auctioning,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
@@ -140,14 +140,14 @@ public class Prop_Auction extends Property
                                 else
                                 {
                                     M.giveItem((Item)auctioning);
-                                    M.tell("Your transaction could not be completed because "+highBidder.name()+" was unable to collect the item.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(M,bid)+".");
-                                    highBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(M,bid)+".");
+                                    M.tell("Your transaction could not be completed because "+highBidder.name()+" was unable to collect the item.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
+                                    highBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
                                 }
 							}
 							else
 							{
-								M.tell("Your transaction could not be completed.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(M,bid)+".");
-								highBidder.tell("Your transaction could not be completed.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(M,bid)+".");
+								M.tell("Your transaction could not be completed.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
+								highBidder.tell("Your transaction could not be completed.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
 							}
 						}
 					}
@@ -173,6 +173,7 @@ public class Prop_Auction extends Property
 			auctioning=target;
 			String sb=CMParms.combine(commands,0);
 		    currency=CMLib.english().numPossibleGoldCurrency(mob,sb);
+		    if(currency.length()==0) currency=CMLib.beanCounter().getCurrency(mob);
 		    double denomination=CMLib.english().numPossibleGoldDenomination(mob,currency,sb);
 		    long num=CMLib.english().numPossibleGold(mob,sb);
 		    bid=CMath.mul(denomination,num);
