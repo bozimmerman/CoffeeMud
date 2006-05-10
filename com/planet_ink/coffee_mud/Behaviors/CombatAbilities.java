@@ -254,6 +254,7 @@ public class CombatAbilities extends StdBehavior
 				}
 			}
 		}
+		if(victim==null) return true;
 		
 		MOB leader=mob.amFollowing();
 		
