@@ -9,22 +9,21 @@
     <!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors -->
   </head>
   <body>
-    <div id="container">
+    <center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr>
 
-      <div id="header">
+      <td width=100% colspan=2 bgcolor=#DFDFDF align=left>
         <h1>
           Programming for CoffeeMud 5.1
         </h1>
-      </div>
-      <div id="nav">
-        <ol>
+      </td></tr><tr><td width=20% valign=top align=left>
+        <ul>
           <li>
             <a href="#overview">Overview</a>
 
           </li>
           <li>
             <a href="#BUILD">Building</a>
-            <ol>
+            <ul>
               <li>
                 <a href="#buildwin">Windows</a>
               </li>
@@ -39,11 +38,11 @@
                 <a href="#IMPORTS">Default Import List</a>
 
               </li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#TEXT">Text</a>
-            <ol>
+            <ul>
               <li>
                 <a href="#nametag">Target Info Tag</a>
 
@@ -51,62 +50,62 @@
               <li>
                 <a href="#textcolor">Color</a>
               </li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#javascript">JavaScripting</a>
 
-            <ol>
+            <ul>
               <li>
                 <a href="#writingjavascript">Writing Your First
                 Javascript</a>
               </li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#DIG1">Core Topic 1: Message Passing</a>
-            <ol>
+            <ul>
               <li><a href="#majorcode">Major Code Bitmask</a></li>
               <li><a href="#messagepreview">Message Previewing</a></li>
               <li><a href="#messageflagging">Message Flagging and Modification</a></li>
               <li><a href="#messageexecution">Message Execution</a></li>
               <li><a href="#messagetrailers">Message Trailers</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#DIG2">Core Topic 2: State Layers</a>
-            <ol>
+            <ul>
               <li><a href="#envstats">EnvStats fields</a></li>
               <li><a href="#charstats">CharStats codes</a></li>
               <li><a href="#charstate">CharState</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#DIG3">Core Topic 3: Threading</a>
           </li>
           <li>
             <a href="#DIG4">Core Topic 4: Core Libraries</a>
-            <ol>
+            <ul>
               <li><a href="#corepurpose">Core class purposes</a></li>
               <li><a href="#corelibrarymap">Library mappings</a></li>
               <li><a href="#corecommon">Common Classes</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#CMDS">Commands</a>
           </li>
           <li>
             <a href="#MOBS">MOBs</a>
-            <ol>
+            <ul>
               <li><a href="#mobcoding">Coding a new MOB</a></li>
               <li><a href="#moblife">Life and Death</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#ITEMS">Items</a>
-            <ol>
+            <ul>
               <li><a href="#itemlife">Creation and Destruction</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#BEHAVS">Behaviors</a>
@@ -131,29 +130,29 @@
           </li>
           <li>
             <a href="#SKILLS">Skills</a>
-            <ol>
+            <ul>
               <li><a href="#skillquality">Skill Nature Flags</a></li>
               <li><a href="#skillflags">Skill Affect Flags</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#SPC">Spells, Prayers, and Chants</a>
-            <ol>
+            <ul>
              <li><a href="#spells">Spells</a></li>
              <li><a href="#spelldomain">Spell Domains</a></li>
              <li><a href="#prayers">Prayers</a></li>
              <li><a href="#chants">Chants</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#SONGS">Songs</a>
           </li>
           <li>
             <a href="#COMMON">Common Skills</a>
-            <ol>
+            <ul>
               <li><a href="#skillgathering">Gathering Skill</a></li>
               <li><a href="#skillcrafting">Crafting Skill</a></li>
-            </ol>
+            </ul>
           </li>
           <li>
             <a href="#POISON">Poisons</a>
@@ -167,9 +166,8 @@
           <li>
             <a href="#LANGS">Languages</a>
           </li>
-        </ol>
-      </div>
-      <div id="content">
+        </ul>
+      </td><td valign=top align=left>
         <img src="images/mug.jpg" alt="CoffeeMud logo" />
 
         <h2>
@@ -318,7 +316,7 @@ MOBS=%DEFAULT%;/resources/examples/MyClass.class;/resources/otherclasses
           directory(s), it is important to keep a number of things in mind:
         </p>
 
-        <ol>
+        <ul>
           <li>
             <p>
               Do not mix your object types in the same directory! Never try
@@ -385,7 +383,7 @@ MOBS=%DEFAULT%;/resources/examples/MyClass.class;/resources/otherclasses
             </p>
 
           </li>
-        </ol>
+        </ul>
         <h3>
           <a name="IMPORTS" id="IMPORTS">Complete Default Import List</a>
         </h3>
@@ -9873,7 +9871,6 @@ public class Elvish extends com.planet_ink.coffee_mud.Abilities.Languages.Langua
           value. Correct casing is taken care of by the Language base
           class.
         </p>
-      </div>
-    </div>
+	</td></tr></table></center>
   </body>
 </html>

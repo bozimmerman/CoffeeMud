@@ -7,37 +7,33 @@
     <!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
   </head>
   <body>
-    <div id="container">
-      <div id="header">
+    <center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr>
+      <td width=100% colspan=2 bgcolor=#DFDFDF align=left>
         <h1>Installing and Using CoffeeMud 5.1</h1>
-      </div>
-
-      <div id="nav">
-        <ol>
+      </td></tr><tr><td width=20% valign=top align=left>
+        <ul>
           <li><a href="#installation">Installation</a></li>
           <li><a href="#upgrading">Upgrading</a>
-            <ol>
+            <ul>
               <li><a href="#unchanged">Unchanged DB Schema</a></li>
               <li><a href="#changedfdb">Changed Schema using FakeDB</a></li>
               <li><a href="#changed">Changed Schema not using FakeDB</a></li>
-            </ol>
+            </ul>
           </li>
           <li><a href="#settings">Settings</a></li>
           <li><a href="#package">The CoffeeMud Package</a></li>
           <li><a href="#database">The CoffeeMud Database</a>
-            <ol>
+            <ul>
               <li><a href="#access">Microsoft Access on Windows</a></li>
               <li><a href="#mysqlwin">MySQL on Windows</a></li>
               <li><a href="#mysqllinux">MySQL on Linux</a></li>
               <li><a href="#hsql">HSQL</a></li>
               <li><a href="#derby">Derby</a></li>
-            </ol>
+            </ul>
           </li>
           <li><a href="#shutdown">The Offline and Shutdown Applications</a></li>
-        </ol>
-      </div>
-
-      <div id="content">
+        </ul>
+      </td><td valign=top align=left>
         <img src="images/zip.jpg" alt="unzipping" />
 
         <h2><a name="installation">Installation</a></h2>
@@ -210,7 +206,7 @@ ahelp import
           probably have.   Therefore, follow these steps:
         </p>
 
-        <ol>
+        <ul>
           <li>
           <p>
             First go into the directory that contains your olde
@@ -264,7 +260,7 @@ ahelp import
             Smile, you are done.
           </p>
           </li>
-        </ol>
+        </ul>
 
         <h3><a name="changedfdb">Changed FakeDB Database Schema Process</a></h3>
 
@@ -276,7 +272,7 @@ ahelp import
           then you ARE using fakedb and should follow these instructions:
         </p>
 
-        <ol>
+        <ul>
           <li>
           <p>
             Go into the CoffeeMud directory for your olde
@@ -327,7 +323,7 @@ ahelp import
             Smile, you are done.
           </p>
           </li>
-        </ol>
+        </ul>
 
         <h3><a name="changed">Changed Database Schema Process (not FakeDB)</a></h3>
 
@@ -337,7 +333,7 @@ ahelp import
           or some other database, follow these instructions:
         </p>
 
-        <ol>
+        <ul>
           <li>
           <p>
             Go into the CoffeeMud directory for your olde
@@ -400,7 +396,7 @@ ahelp import
             Smile, you are done.
           </p>
           </li>
-        </ol>
+        </ul>
 
         <img src="images/settings.jpg" alt="settings" />
 
@@ -1070,7 +1066,7 @@ ahelp import
         <h3><a name="access">Installing and using Microsoft Access with CoffeeMud on a
           Windows machine</a></h3>
 
-        <ol>
+        <ul>
           <li>
           <p>
             Open up Microsoft Access and select to create a
@@ -1187,12 +1183,12 @@ DBCONNECTIONS=1
             CoffeeMud, and you are done!
           </p>
           </li>
-        </ol>
+        </ul>
 
         <h3><a name="mysqlwin">Installing and using MySQL with CoffeeMud on a Windows
           machine</a></h3>
 
-        <ol>
+        <ul>
           <li>
           <p>
             Go to <a href=
@@ -1347,12 +1343,12 @@ DBCONNECTIONS=4
             you...)
           </p>
           </li>
-        </ol>
+        </ul>
 
         <h3><a name="mysqllinux">Installing and using MySQL with CoffeeMud on a UN*X or
           Linux machine</a></h3>
 
-        <ol>
+        <ul>
           <li>
           <p>
             Download and install mysql from <a href=
@@ -1423,12 +1419,12 @@ DBCONNECTIONS=4
           </p>
           </li>
 
-        </ol>
+        </ul>
 
 
         <h3><a name="hsqldb">Installing and using HSQLDB with CoffeeMud</a></h3>
 
-        <ol>
+        <ul>
         <li>Get the database software
         <p>
           Go to <a href=
@@ -1557,12 +1553,12 @@ DBCONNECTIONS=4
         <li>Smile, you are done.
         </li>
 
-        </ol>
+        </ul>
 
 
         <h3><a name="derby">Installing and using Derby (IBM Cloudscape) with CoffeeMud</a></h3>
 
-        <ol>
+        <ul>
 
         <li>Get the database software
         <p>
@@ -1700,7 +1696,7 @@ derby.storage.pageCacheSize=10000
           can be found at &lt;Derby Install Path&gt;\doc\pdf\tuning.pdf.
         </p>
         </li>
-        </ol>
+        </ul>
 
         <img src="images/nuked.jpg" alt="offline and shutdown applications" />
 
@@ -1742,7 +1738,6 @@ java com.planet_ink.coffee_mud.application.OffLine
         <pre>
 java com.planet_ink.coffee_mud.application.Shutdown localhost 5555 AdminName AdminPassword
 </pre>
-      </div>
-    </div>
+	</td></tr></table></center>
   </body>
 </html>
