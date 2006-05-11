@@ -1151,6 +1151,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.ACTION_EXECUTE:
 			if(judge!=null)
 			{
+				criminal.setFollowing(null);
 				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.actionCode(),Law.ACTIONMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.getMessage(Law.MSG_EXECUTE).length()>0)
@@ -2531,7 +2532,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						        A.setProfficiency(100);
 						        served=A.invoke(judge,W.criminal(),false,0);
 						    }
-							unCuff(W.criminal());
 							fileAllWarrants(laws,W,W.criminal());
 							W.criminal().recoverEnvStats();
 							W.criminal().recoverCharStats();
@@ -2539,6 +2539,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								CMLib.combat().postAttack(judge,W.criminal(),judge.fetchWieldedItem());
 							W.setArrestingOfficer(myArea,null);
 							W.setTravelAttemptTime(0);
+							unCuff(W.criminal());
 						}
 						else
 						{
