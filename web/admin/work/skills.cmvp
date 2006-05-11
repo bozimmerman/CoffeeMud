@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	  <title>Player Skills Reference</title>
+	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+	</head>
+	<body>
+		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
+		<h1>Player Skills Reference</h1>
+		<h2> CoffeeMud 5.1 </h2>
+		</td></tr><tr><td width=20% valign=top align=left>
+		<B>Skills</B>
+		<ul>
+			@AbilityNext?RESET@
+			@loop@
+				<li>@AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@<a href="#@AbilityID@">@AbilityID@</a>
+			&nbsp;
+			@back@
+		</ul>
+		<B>Prayers</B>
+		<ul>
+			@AbilityNext?RESET@
+			@loop@
+				<li>@AbilityNext?PRAYER@<a href="#@AbilityID@">@AbilityName@</a>
+			&nbsp;
+			@back@
+		</ul>
+		<B>Chants</B>
+		<ul>
+			@AbilityNext?RESET@
+			@loop@
+				<li>@AbilityNext?CHANT@<a href="#@AbilityID@">@AbilityName@</a>
+			&nbsp;
+			@back@
+		</ul>
+		<B>Songs/Dances/Plays</B>
+		<ul>
+			@AbilityNext?RESET@
+			@loop@
+				<li>@AbilityNext?SONG@<a href="#@AbilityID@">@AbilityName@</a>
+			&nbsp;
+			@back@
+		</ul>
+		<B>Spells</B>
+		<ul>
+			@AbilityNext?RESET@
+			@loop@
+				<li>@AbilityNext?SPELL@<a href="#@AbilityID@">@AbilityName@</a>
+			&nbsp;
+			@back@
+		</ul>
+		<B>Educations</B>
+		<ul>
+			@EducationNext?RESET@
+			@loop@
+				<li>@EducationNext?SPELL@<a href="#@EducationID@">@EducationID@</a>
+			&nbsp;
+			@back@
+		</ul>
+		</td><td valign=top align=left>
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@
+				<a name="#@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
+				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?PRAYER@
+				<a name="#@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
+				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?CHANT@
+				<a name="#@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
+				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?SONG@
+				<a name="#@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
+				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?SPELL@
+				<a name="#@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
+				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
+			@EducationNext?RESET@	@loop@ <P> @EducationNext@
+				<a name="#@EducationID@"><B>@EducationData?NAME@ (@EducationID@)</B></a><br><br><br>
+				<pre>@EducationData?help&LIMIT=80@</pre></P> @back@
+		</td></tr></table></center>
+	</body>
+</html>
