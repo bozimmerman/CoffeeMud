@@ -1172,8 +1172,8 @@ public class StdItem implements Item
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
+		if(fetchEffect(to.ID())!=null) return;
 		if(affects==null) affects=new Vector();
-		if(affects.contains(to)) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1182,8 +1182,8 @@ public class StdItem implements Item
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
+		if(fetchEffect(to.ID())!=null) return;
 		if(affects==null) affects=new Vector();
-		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}

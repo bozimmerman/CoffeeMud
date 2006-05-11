@@ -2963,7 +2963,7 @@ public class StdMOB implements MOB
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
-		if(affects.contains(to)) return;
+		if(fetchEffect(to.ID())!=null) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -2972,7 +2972,7 @@ public class StdMOB implements MOB
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
-		if(affects.contains(to)) return;
+		if(fetchEffect(to.ID())!=null) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}

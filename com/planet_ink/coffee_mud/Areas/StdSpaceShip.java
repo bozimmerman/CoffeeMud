@@ -402,12 +402,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(A==to))
-				return;
-		}
+		if(fetchEffect(to.ID())!=null) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -416,12 +411,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(A==to))
-				return;
-		}
+		if(fetchEffect(to.ID())!=null) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}

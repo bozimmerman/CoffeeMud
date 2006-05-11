@@ -601,13 +601,8 @@ public class StdExit implements Exit
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
+		if(fetchEffect(to.ID())!=null) return;
 		if(affects==null) affects=new Vector();
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(A==to))
-				return;
-		}
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -616,13 +611,8 @@ public class StdExit implements Exit
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
+		if(fetchEffect(to.ID())!=null) return;
 		if(affects==null) affects=new Vector();
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(A==to))
-				return;
-		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
