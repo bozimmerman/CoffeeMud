@@ -91,7 +91,7 @@ public class Thief_Con extends ThiefSkill
 		Object O=CMLib.english().findCommand(target,commands);
 		if(O instanceof Command)
 		{
-			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob)))
+			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
 			{
 				mob.tell("You can't con someone into doing that.");
 				return false;
