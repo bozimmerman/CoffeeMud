@@ -20,8 +20,12 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');"></TD></TR>
+	</TABLE>
 <CENTER>
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <FORM NAME=CONTROL TARGET=_top METHOD=POST ACTION="stats.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<TABLE WIDTH=100% BORDER=1>
@@ -343,13 +347,9 @@
 	</TABLE>
 	<CENTER>
 	<TABLE WIDTH=100% BORDER=0>
-	<TR><TD WIDTH=50% ALIGN=CENTER>
+	<TR><TD WIDTH=100% ALIGN=CENTER>
 	<BR>
 	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Clicked('/grinder/stats.cmvp');">
-	</TD>
-	<TD WIDTH=50% ALIGN=CENTER>
-	<BR>
-	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD></TR></TABLE>
 	<FONT COLOR=WHITE>* This statistic always applies to all users, regardless of filter.</FONT><P>
 	</CENTER>

@@ -30,6 +30,7 @@
 			document.QUESTS.FUNCTION.value=action;
 			document.QUESTS.submit();
 		}
+		function Clicked(action){Load(action);}
 		function Load(action)
 		{
 			document.QUESTS.QUEST.value="";
@@ -41,9 +42,12 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');"></TD></TR>
+	</TABLE>
 <CENTER>
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
-<BR CLEAR=RIGHT>
 <FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="quests.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=QUEST VALUE="">
@@ -97,14 +101,11 @@
 	<P>
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
-	<TD WIDTH=33% ALIGN=CENTER>
+	<TD WIDTH=50% ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=Create VALUE="New Quest" ONCLICK="Quest('');">
 	</TD>
-	<TD WIDTH=33% ALIGN=CENTER>
+	<TD WIDTH=50% ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();">
-	</TD>
-	<TD WIDTH=33% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Load('/grinder/loggedin.cmvp');">
 	</TD>
 	</TR>
 	</TABLE>

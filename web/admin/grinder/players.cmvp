@@ -27,8 +27,22 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+		@if?CheckAuthCode?AUTH_BAN=true@
+		<INPUT TYPE=BUTTON NAME=BANNED VALUE="Banned List" ONCLICK="Clicked('banners.cmvp');">
+		<BR>
+		@endif@
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+	</TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
 <CENTER>
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="players.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SORTBY VALUE="">
@@ -58,16 +72,11 @@
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=33% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Sort('@RequestParameter?SORTBY@');">
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER>
-	@if?CheckAuthCode?AUTH_BAN=true@
-	<INPUT TYPE=BUTTON NAME=BANNED VALUE="Banned List" ONCLICK="Clicked('banners.cmvp');">
-	<BR>
-	@endif@
+		<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Sort('@RequestParameter?SORTBY@');">
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>
 	</TR>
 	</TABLE>

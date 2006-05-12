@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	  <title>CoffeeMud Default Player Race Reference</title>
+	  <title>CoffeeMud Behaviors/Properties Reference</title>
 	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
 	</head>
 	<body>
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
-		<h1>Default Player Race Reference</h1>
+		<h1>Behaviors & Properties Reference</h1>
 		<h2> CoffeeMud 5.1 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
 		<B>Behaviors</B>
