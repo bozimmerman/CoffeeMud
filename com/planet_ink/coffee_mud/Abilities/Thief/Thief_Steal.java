@@ -130,6 +130,7 @@ public class Thief_Steal extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
+				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
 				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);

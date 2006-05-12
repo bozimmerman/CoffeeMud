@@ -91,6 +91,7 @@ public class Thief_StripItem extends ThiefSkill
 
 		if(!success)
 		{
+			if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to strip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off <T-NAME> and fails!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

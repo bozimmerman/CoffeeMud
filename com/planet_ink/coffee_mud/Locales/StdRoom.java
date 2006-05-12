@@ -1083,33 +1083,39 @@ public class StdRoom implements Room
 	{
 		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("MESSAGES")))
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
-		Vector inhabs=(Vector)inhabitants.clone();
-		for(int i=0;i<inhabs.size();i++)
+		synchronized(("MSG"+this).intern())
 		{
-			MOB otherMOB=(MOB)inhabs.elementAt(i);
-			if((otherMOB!=null)&&(otherMOB!=source))
-				otherMOB.executeMsg(otherMOB,msg);
+			Vector inhabs=(Vector)inhabitants.clone();
+			for(int i=0;i<inhabs.size();i++)
+			{
+				MOB otherMOB=(MOB)inhabs.elementAt(i);
+				if((otherMOB!=null)&&(otherMOB!=source))
+					otherMOB.executeMsg(otherMOB,msg);
+			}
+			executeMsg(source,msg);
 		}
-		executeMsg(source,msg);
 	}
 
     protected void reallySend(MOB source, CMMsg msg)
 	{
-		reallyReallySend(source,msg);
-		// now handle trailer msgs
-		if(msg.trailerMsgs()!=null)
+		synchronized(("MSG"+this).intern())
 		{
-			for(int i=0;i<msg.trailerMsgs().size();i++)
+			reallyReallySend(source,msg);
+			// now handle trailer msgs
+			if(msg.trailerMsgs()!=null)
 			{
-				CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
-				if((msg!=msg2)
-				&&((msg2.target()==null)
-				   ||(!(msg2.target() instanceof MOB))
-				   ||(!((MOB)msg2.target()).amDead()))
-				&&(okMessage(source,msg2)))
+				for(int i=0;i<msg.trailerMsgs().size();i++)
 				{
-					source.executeMsg(source,msg2);
-					reallyReallySend(source,msg2);
+					CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+					if((msg!=msg2)
+					&&((msg2.target()==null)
+					   ||(!(msg2.target() instanceof MOB))
+					   ||(!((MOB)msg2.target()).amDead()))
+					&&(okMessage(source,msg2)))
+					{
+						source.executeMsg(source,msg2);
+						reallyReallySend(source,msg2);
+					}
 				}
 			}
 		}
@@ -1117,8 +1123,11 @@ public class StdRoom implements Room
 
 	public void send(MOB source, CMMsg msg)
 	{
-		source.executeMsg(source,msg);
-		reallySend(source,msg);
+		synchronized(("MSG"+this).intern())
+		{
+			source.executeMsg(source,msg);
+			reallySend(source,msg);
+		}
 	}
 	public void sendOthers(MOB source, CMMsg msg)
 	{

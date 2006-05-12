@@ -150,39 +150,44 @@ public class MoneyChanger extends StdBehavior
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))
-		&&(CMLib.flags().canBeSeenBy(source,observer))
-		&&(CMLib.flags().canBeSeenBy(observer,source))
         &&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool() instanceof Coins))
 		{
-			double value=((Coins)msg.tool()).getTotalValue();
-			double takeCut=cut;
-			String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
-			if((rates.size()>0)&&(rates.containsKey(currency)))
-			    takeCut=((Double)rates.get(currency)).doubleValue();
-			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
-			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
-			    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
-			value-=amountToTake;
-			observer.recoverEnvStats();
-            Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
-			if((value>0.0)&&(C!=null))
+			if((CMLib.flags().canBeSeenBy(source,observer))
+			&&(CMLib.flags().canBeSeenBy(observer,source)))
 			{
-                // this message will actually end up triggering the hand-over.
-				CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
-                C.setOwner(observer);
-                long num=C.getNumberOfCoins();
-                String curr=C.getCurrency();
-                double denom=C.getDenomination();
-                C.destroy();
-                C.setNumberOfCoins(num);
-                C.setCurrency(curr);
-                C.setDenomination(denom);
-				msg.addTrailerMsg(newMsg);
+				double value=((Coins)msg.tool()).getTotalValue();
+				double takeCut=cut;
+				String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
+				if((rates.size()>0)&&(rates.containsKey(currency)))
+				    takeCut=((Double)rates.get(currency)).doubleValue();
+				double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
+				if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
+				    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
+				value-=amountToTake;
+				observer.recoverEnvStats();
+	            Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
+				if((value>0.0)&&(C!=null))
+				{
+	                // this message will actually end up triggering the hand-over.
+					CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+	                C.setOwner(observer);
+	                long num=C.getNumberOfCoins();
+	                String curr=C.getCurrency();
+	                double denom=C.getDenomination();
+	                C.destroy();
+	                C.setNumberOfCoins(num);
+	                C.setCurrency(curr);
+	                C.setDenomination(denom);
+					msg.addTrailerMsg(newMsg);
+				}
+				else
+					CMLib.commands().postSay(observer,source,"Gee, thanks. :)",true,false);
+	            ((Coins)msg.tool()).destroy();
 			}
 			else
-				CMLib.commands().postSay(observer,source,"Gee, thanks. :)",true,false);
-            ((Coins)msg.tool()).destroy();
+			if(!CMLib.flags().canBeSeenBy(source,observer))
+				CMLib.commands().postSay(observer,null,"Wha?  Where did this come from?  Cool!",true,false);
 		}
         else
         if((msg.source()==observer)

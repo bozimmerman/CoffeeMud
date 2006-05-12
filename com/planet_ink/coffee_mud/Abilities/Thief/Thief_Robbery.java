@@ -186,6 +186,7 @@ public class Thief_Robbery extends ThiefSkill
 			{
 				str+=" <T-NAME> spots you!";
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
+				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
 			}
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
