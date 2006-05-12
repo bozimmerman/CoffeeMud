@@ -15,6 +15,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /*
@@ -175,6 +177,40 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
+	public static Vector DBReadKey(String section, String keyMask)
+	{
+		DBConnection D=null;
+		Vector rows=new Vector();
+        Pattern P=Pattern.compile(keyMask, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
+			while(R.next())
+			{
+				String plid=DBConnections.getRes(R,"CMPLID");
+				String sect=DBConnections.getRes(R,"CMSECT");
+				String key=DBConnections.getRes(R,"CMPKEY");
+			    Matcher M=P.matcher(key);
+			    if(M.find())
+			    {
+					Vector V=new Vector();
+					V.addElement(plid);
+					V.addElement(sect);
+					V.addElement(key);
+					V.addElement(DBConnections.getRes(R,"CMPDAT"));
+					rows.addElement(V);
+			    }
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		// log comment
+		return rows;
+	}
 
 	public static Vector DBRead(String playerID, String section, String key)
 	{
@@ -290,6 +326,11 @@ public class DataLoader
         if(D!=null) DBConnector.DBDone(D);
         // log comment
         return rows;
+    }
+    
+    public static void DBUpdate(String key, String xml)
+    {
+    	DBConnector.update("UPDATE CMPDAT SET CMPDAT='"+xml+"' WHERE CMPKEY='"+key+"'");
     }
     
 	public static void DBDelete(String playerID, String section)

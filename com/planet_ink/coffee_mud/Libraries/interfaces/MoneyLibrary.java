@@ -37,6 +37,13 @@ public interface MoneyLibrary extends CMObject
     public static final String copperStandard=
         "COPPER=1 copper bit(s) (cc);10 silver bit(s) (sc);100 gold bit(s) (gc);500 platinum bit(s) (pc)";
     
+    public static final int DEBT_DEBTOR=1;
+    public static final int DEBT_OWEDTO=2;
+    public static final int DEBT_AMTDBL=3;
+    public static final int DEBT_REASON=4;
+    public static final int DEBT_DUELONG=5;
+    public static final int DEBT_INTDBL=6;
+    
     public void unloadCurrencySet(String currency);
     public DVector createCurrencySet(String currency);
     public DVector getCurrencySet(String currency);
@@ -100,4 +107,10 @@ public interface MoneyLibrary extends CMObject
     public double getTotalAbsoluteNativeValue(MOB mob);
     public double getTotalAbsoluteShopKeepersValue(MOB mob, MOB shopkeeper);
     public double getTotalAbsoluteValueAllCurrencies(MOB mob);
+	public DVector getDebt(String name);
+	public DVector getDebt(String name, String owedTo);
+	public DVector getDebtOwed(String owedTo);
+	public double getDebtOwed(String name, String owedTo);
+	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due);
+	public void delAllDebt(String name, String owedTo);
 }

@@ -204,6 +204,9 @@ public class DBInterface implements DatabaseEngine
 	public Vector DBReadData(String playerID, String section)
 	{ return DataLoader.DBRead(playerID,section);}
 	
+	public Vector DBReadDataKey(String section, String keyMask)
+	{ return DataLoader.DBReadKey(section,keyMask);}
+	
 	public int DBCountData(String playerID, String section)
 	{ return DataLoader.DBCount(playerID,section);}
 	
@@ -224,6 +227,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteData(String section)
 	{ DataLoader.DBDelete(section);}
 	
+    public void DBUpdateData(String key, String xml)
+    { DataLoader.DBUpdate(key,xml);}
+    
 	public void DBCreateData(String player, String section, String key, String data)
 	{ DataLoader.DBCreate(player,section,key,data);}
 	

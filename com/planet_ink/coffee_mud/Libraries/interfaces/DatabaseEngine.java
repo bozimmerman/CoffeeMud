@@ -43,6 +43,11 @@ public interface DatabaseEngine extends CMObject
 	public static final int JOURNAL_MSG=5;
 	public static final int JOURNAL_DATE2=6;
 	
+	public static final int PDAT_WHO=0;
+	public static final int PDAT_SECTION=1;
+	public static final int PDAT_KEY=2;
+	public static final int PDAT_XML=3;
+	
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Vector rooms);
     public Vector DBReadAreaData(String areaID, boolean reportStatus);
@@ -101,10 +106,12 @@ public interface DatabaseEngine extends CMObject
 	public Vector DBReadData(String playerID, String section);
 	public int DBCountData(String playerID, String section);
 	public Vector DBReadData(String playerID, String section, String key);
+	public Vector DBReadDataKey(String section, String keyMask);
 	public Vector DBReadData(String section);
     public Vector DBReadData(String player, Vector sections);
 	public void DBDeleteData(String playerID, String section);
 	public void DBDeleteData(String playerID, String section, String key);
+    public void DBUpdateData(String key, String xml);
 	public void DBDeleteData(String section);
 	public void DBCreateData(String player, String section, String key, String data);
 	public Vector DBReadRaces();

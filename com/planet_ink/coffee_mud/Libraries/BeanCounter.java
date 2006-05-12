@@ -355,6 +355,148 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    }
 	    return C;
 	}
+	
+	protected void parseDebt(DVector debt, String debtor, String xml)
+	{
+		Vector V=CMLib.xml().parseAllXML(xml);
+		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
+		Vector debtData=CMLib.xml().getRealContentsFromPieces(V,"DEBT");
+		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
+		for(int p=0;p<debtData.size();p++)
+		{
+			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)debtData.elementAt(p);
+			if((!ablk.tag.equalsIgnoreCase("OWE"))||(ablk.contents==null)||(ablk.contents.size()==0)) continue;
+			String owed=CMLib.xml().getValFromPieces(ablk.contents,"TO");
+			Double amt=new Double(CMLib.xml().getDoubleFromPieces(ablk.contents,"AMT"));
+			String reason=CMLib.xml().getValFromPieces(ablk.contents,"FOR");
+			Long due=new Long(CMLib.xml().getLongFromPieces(ablk.contents,"DUE"));
+			Double interest=new Double(CMLib.xml().getDoubleFromPieces(ablk.contents,"INT"));
+			debt.addElement(debtor,owed,amt,reason,due,interest);
+		}
+	}
+	protected String unparseDebt(DVector debt, String name, String owedTo)
+	{
+		StringBuffer xml=new StringBuffer("<DEBT>");
+		for(int d=0;d<debt.size();d++)
+		{
+			if((((String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR)).equalsIgnoreCase(name))
+			&&(((String)debt.elementAt(d,MoneyLibrary.DEBT_OWEDTO)).equalsIgnoreCase(owedTo)))
+			{
+				xml.append("<OWE>");
+				xml.append(CMLib.xml().convertXMLtoTag("TO",((String)debt.elementAt(d,MoneyLibrary.DEBT_OWEDTO))));
+				xml.append(CMLib.xml().convertXMLtoTag("AMT",""+((Double)debt.elementAt(d,MoneyLibrary.DEBT_AMTDBL)).doubleValue()));
+				xml.append(CMLib.xml().convertXMLtoTag("FOR",((String)debt.elementAt(d,MoneyLibrary.DEBT_REASON))));
+				xml.append(CMLib.xml().convertXMLtoTag("DUE",((Long)debt.elementAt(d,MoneyLibrary.DEBT_DUELONG)).longValue()));
+				xml.append(CMLib.xml().convertXMLtoTag("INT",""+((Double)debt.elementAt(d,MoneyLibrary.DEBT_INTDBL)).doubleValue()));
+				xml.append("</OWE>");
+			}
+		}
+		xml.append("</DEBT>");
+		return xml.toString();
+	}
+	
+	public double getDebtOwed(String name, String owedTo)
+	{
+		String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
+		synchronized(key.intern())
+		{
+			DVector debt=getDebt(name,owedTo);
+			double total=0.0;
+			for(int d=0;d<debt.size();d++)
+				total+=(((Double)debt.elementAt(d,MoneyLibrary.DEBT_AMTDBL)).doubleValue());
+			return total;
+		}
+	}
+
+	public void delAllDebt(String name, String owedTo)
+	{
+		String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
+		synchronized(key.intern())
+		{
+			CMLib.database().DBDeleteData(name.toUpperCase(),"DEBT",key);
+		}
+	}
+	
+	public DVector getDebtOwed(String owedTo)
+	{
+		Vector rows=CMLib.database().DBReadDataKey("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
+		DVector debt=new DVector(6);
+		for(int r=0;r<rows.size();r++)
+		{
+			Vector row=(Vector)rows.elementAt(r);
+			String debtor=(String)row.elementAt(DatabaseEngine.PDAT_WHO);
+			String xml=(String)row.elementAt(DatabaseEngine.PDAT_XML);
+			parseDebt(debt,debtor,xml);
+		}
+		return debt;
+	}
+	
+	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due)
+	{
+		String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
+		synchronized(key.intern())
+		{
+			DVector debt=getDebt(name,owedTo);
+			boolean update=debt.size()>0;
+			boolean done=false;
+			for(int d=0;d<debt.size();d++)
+				if((((String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR)).equalsIgnoreCase(name))
+				&&(((String)debt.elementAt(d,MoneyLibrary.DEBT_OWEDTO)).equalsIgnoreCase(owedTo))
+				&&(((Double)debt.elementAt(d,MoneyLibrary.DEBT_INTDBL)).doubleValue()==interest)
+				&&(((Long)debt.elementAt(d,MoneyLibrary.DEBT_DUELONG)).longValue()==due)
+				&&(((String)debt.elementAt(d,MoneyLibrary.DEBT_REASON)).equalsIgnoreCase(reason)))
+				{
+					double oldAmt=((Double)debt.elementAt(d,MoneyLibrary.DEBT_AMTDBL)).doubleValue();
+					oldAmt+=adjustAmt;
+					debt.setElementAt(d,MoneyLibrary.DEBT_AMTDBL,new Double(oldAmt));
+					if(oldAmt<=0.0) debt.removeElementsAt(d);
+					done=true;
+					break;
+				}
+			if((!done)&&(adjustAmt>=0.0))
+				debt.addElement(name,owedTo,new Double(adjustAmt),reason,new Long(due),new Double(interest));
+			String xml=unparseDebt(debt,name,owedTo);
+			if(update)
+			{
+				if(debt.size()==0)
+					CMLib.database().DBDeleteData(name.toUpperCase(),"DEBT",key);
+				else
+					CMLib.database().DBUpdateData(key,xml);
+			}
+			else
+				CMLib.database().DBCreateData(name.toUpperCase(),"DEBT",key,xml);
+		}
+	}
+	
+	public DVector getDebt(String name, String owedTo)
+	{
+		Vector rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
+		DVector debt=new DVector(6);
+		for(int r=0;r<rows.size();r++)
+		{
+			Vector row=(Vector)rows.elementAt(r);
+			String debtor=(String)row.elementAt(DatabaseEngine.PDAT_WHO);
+			String xml=(String)row.elementAt(DatabaseEngine.PDAT_XML);
+			parseDebt(debt,debtor,xml);
+		}
+		return debt;
+	}
+
+	public DVector getDebt(String name)
+	{
+		Vector rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT");
+		DVector debt=new DVector(4);
+		for(int r=0;r<rows.size();r++)
+		{
+			Vector row=(Vector)rows.elementAt(r);
+			String debtor=(String)row.elementAt(DatabaseEngine.PDAT_WHO);
+			String xml=(String)row.elementAt(DatabaseEngine.PDAT_XML);
+			parseDebt(debt,debtor,xml);
+		}
+		return debt;
+	}
+	
+	
 	public Coins makeBestCurrency(MOB mob, double absoluteValue)
 	{ return makeBestCurrency(getCurrency(mob),absoluteValue);}
 	public Coins makeCurrency(String currency, double denomination, long numberOfCoins)
