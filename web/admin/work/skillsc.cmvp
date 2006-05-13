@@ -2,29 +2,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	  <title>Player Skills Reference</title>
+	  <title>Player Chants Reference</title>
 	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
 	</head>
 	<body>
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
-		<h1>Player Skills Reference</h1>
+		<h1>Player Chants Reference</h1>
 		<h2> CoffeeMud 5.1 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
+		<a href="skills.cmvp"><B>Skills</B></a><BR>
 		<a href="skillsp.cmvp"><B>Prayers</B></a><BR>
-		<a href="skillsc.cmvp"><B>Chants</B></a><BR>
-		<a href="skillsd.cmvp"><B>Songs/Dances/Plays</B></a><BR>
 		<a href="skillss.cmvp"><B>Spells</B></a><BR>
 		<a href="skillse.cmvp"><B>Educations</B></a><BR>
-		<B>Skills</B><BR>
+		<a href="skillsd.cmvp"><B>Songs/Dances/Plays</B></a><BR>
+		<B>Chants</B><BR>
 		<ul>
 			@AbilityNext?RESET@
 			@loop@
-				<li>@AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@<a href="#@AbilityID@">@AbilityID@</a>
+				<li>@AbilityNext?CHANT@<a href="#@AbilityID@">@AbilityName@</a>
 			&nbsp;
 			@back@
 		</ul>
 		</td><td valign=top align=left>
-			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?CHANT@
 				<a name="#@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
 				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
 		</td></tr></table></center>
