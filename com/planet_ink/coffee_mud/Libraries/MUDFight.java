@@ -846,7 +846,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         MOB attacker=msg.source();
         MOB target=(MOB)msg.target();
         int dmg=msg.value();
-        synchronized(target)
+        synchronized(("DMG"+target.Name().toUpperCase()).intern())
         {
             if((dmg>0)&&(target.curState().getHitPoints()>0))
             {

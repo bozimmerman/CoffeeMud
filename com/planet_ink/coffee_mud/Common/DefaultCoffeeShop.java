@@ -77,6 +77,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 
     protected boolean shopCompare(Environmental thang1, Environmental thang2)
     {
+    	if((thang1==null)&&(thang2==null)) return true;
+    	if((thang1==null)||(thang2==null)) return false;
     	if((thang1 instanceof Key)&&(thang2 instanceof Key))
     		return thang1.sameAs(thang2);
     	else

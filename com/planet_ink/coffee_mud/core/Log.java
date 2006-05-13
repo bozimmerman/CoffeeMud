@@ -194,6 +194,7 @@ public class Log
 			FileOutputStream fileStream=new FileOutputStream(fileOut);
 			fileOutWriter=new PrintWriter(fileStream,true);
 			errOutWriter=systemOutWriter;
+			System.setErr(new PrintStream(fileStream));
 		}
 		catch(IOException e)
 		{

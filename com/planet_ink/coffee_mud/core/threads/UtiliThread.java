@@ -273,7 +273,8 @@ public class UtiliThread extends Thread
 
 					if(time>(check*10))
 					{
-						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
+						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", "+"LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 						status="killing session ";
 						S.logoff();
@@ -292,16 +293,20 @@ public class UtiliThread extends Thread
                         }
                         else
                         {
-    						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
+    						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+    						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
     						if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
     							Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+    						else
+    							Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", no last command available.");
                         }
 					}
 				}
 				else
 				if(time>(60000))
 				{
-					Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
+					String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+					Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
 					Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					status="killing session ";

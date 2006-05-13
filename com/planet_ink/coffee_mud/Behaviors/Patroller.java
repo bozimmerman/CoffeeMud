@@ -388,12 +388,14 @@ public class Patroller extends ActiveTicker
 				
 			    tickStatus=Tickable.STATUS_MISC+17;
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
+			    tickStatus=Tickable.STATUS_MISC+18;
 				thatRoom.bringItemHere(I,-1);
+			    tickStatus=Tickable.STATUS_MISC+19;
 				if(I.owner()==thatRoom)
 				{
-				    tickStatus=Tickable.STATUS_MISC+18;
+				    tickStatus=Tickable.STATUS_MISC+20;
 					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
-				    tickStatus=Tickable.STATUS_MISC+19;
+				    tickStatus=Tickable.STATUS_MISC+21;
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
 					{
@@ -438,7 +440,7 @@ public class Patroller extends ActiveTicker
 			else
 			if(ticking instanceof MOB)
 			{
-			    tickStatus=Tickable.STATUS_MISC+19;
+			    tickStatus=Tickable.STATUS_MISC+22;
 				// ridden things dont wander!
 				MOB mob=(MOB)ticking;
 
@@ -467,7 +469,7 @@ public class Patroller extends ActiveTicker
 				    return true;
 				}
 
-			    tickStatus=Tickable.STATUS_MISC+20;
+			    tickStatus=Tickable.STATUS_MISC+23;
 				Ability A=mob.fetchAbility("Thief_Sneak");
 				if(A!=null)
 				{
@@ -492,7 +494,7 @@ public class Patroller extends ActiveTicker
 					rideFlag=false;
 				}
 
-			    tickStatus=Tickable.STATUS_MISC+21;
+			    tickStatus=Tickable.STATUS_MISC+24;
 				if(mob.location()==destinationRoomForThisStep)
 					step++;
 				else

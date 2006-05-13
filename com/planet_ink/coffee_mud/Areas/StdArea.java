@@ -478,7 +478,9 @@ public class StdArea implements Area
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{
+			tickStatus=Tickable.STATUS_ALIVE;
 			getClimateObj().tick(this,tickID);
+			tickStatus=Tickable.STATUS_REBIRTH;
 			getTimeObj().tick(this,tickID);
 			for(int b=0;b<numBehaviors();b++)
 			{
