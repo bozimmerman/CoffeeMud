@@ -435,12 +435,16 @@ public class CMProps extends Properties
         int len=0;
         StringBuffer newMsg=null;
         String upp=msg.toUpperCase();
+        String filterStr=null;
         for(int f=0;f<filter.size();f++)
         {
-            fdex=upp.indexOf((String)filter.elementAt(f));
-            while(fdex>=0)
+        	filterStr=(String)filter.elementAt(f);
+        	if(filterStr.length()==0) continue;
+            fdex=upp.indexOf(filterStr);
+            int ctr=0;
+            while((fdex>=0)&&((++ctr)<999))
             {
-                len=fdex+((String)filter.elementAt(f)).length();
+                len=fdex+(filterStr).length();
                 if(((fdex==0)
                     ||(Character.isWhitespace(upp.charAt(fdex-1)))
                     ||((fdex>1)&&(upp.charAt(fdex-2)=='^')))
@@ -455,7 +459,7 @@ public class CMProps extends Properties
                             newMsg.setCharAt(fdex,'*');
                             upp=newMsg.toString().toUpperCase();
                         }
-                    fdex=upp.indexOf((String)filter.elementAt(f));
+                    fdex=upp.indexOf(filterStr);
                 }
                 else
                     fdex=-1;
