@@ -139,6 +139,13 @@ public class UtiliThread extends Thread
         }
         DV.addElement(new Long(lastStart),msg,tock);
     }
+
+    public void debugDumpStack(Thread theThread)
+    {
+		java.lang.StackTraceElement[] s=(java.lang.StackTraceElement[])Thread.getAllStackTraces().get(theThread);
+		for(int i=0;i<s.length;i++)
+			Log.debugOut("UtiliDump","   "+s[i].getFileName()+": "+s[i].getLineNumber());
+    }
     
 	public void checkHealth()
 	{
@@ -221,6 +228,7 @@ public class UtiliThread extends Thread
                             insertOrderDeathInOrder(orderedDeaths,client.lastStart,msg,almostTock);
 						}
 					}
+                    debugDumpStack(almostTock);
 				}
 			}
 	    }

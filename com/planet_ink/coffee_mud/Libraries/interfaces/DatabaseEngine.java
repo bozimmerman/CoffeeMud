@@ -112,6 +112,7 @@ public interface DatabaseEngine extends CMObject
 	public void DBDeleteData(String playerID, String section);
 	public void DBDeleteData(String playerID, String section, String key);
     public void DBUpdateData(String key, String xml);
+    public void DBReCreateData(String name, String section, String key, String xml);
 	public void DBDeleteData(String section);
 	public void DBCreateData(String player, String section, String key, String data);
 	public Vector DBReadRaces();

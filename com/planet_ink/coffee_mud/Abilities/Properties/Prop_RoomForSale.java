@@ -520,8 +520,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		        }
 		        if(changesMade)
 		        {
-			        CMLib.database().DBDeleteData(owner,"RENTAL INFO","RENTAL INFO/"+owner);
-			        CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
+			        CMLib.database().DBReCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
 				    V=new Vector();
 			        V.addElement(owner);
 			        V.addElement("RENTAL INFO");

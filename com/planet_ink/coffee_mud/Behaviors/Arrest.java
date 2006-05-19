@@ -168,8 +168,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
             if(getLawParms().equalsIgnoreCase("custom")
             &&(myArea!=null))
             {
-                CMLib.database().DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
-                CMLib.database().DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+                CMLib.database().DBReCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
                 return true;
             }
         }

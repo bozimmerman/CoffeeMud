@@ -91,7 +91,6 @@ public class PlayerOnline extends StdWebMacro
                         CMSecurity.ban(M.playerStats().getEmail());
                     if(canModify&&(parms.containsKey("NEWIMAGE")))
                     {
-                        CMLib.database().DBDeleteData(M.Name(),"CMPORTRAIT");
                         Resources.removeResource("CMPORTRAIT-"+M.Name());
                         String file=httpReq.getRequestParameter("FILE");
                         if(file==null) file="";
@@ -107,7 +106,7 @@ public class PlayerOnline extends StdWebMacro
                             String encoded=B64Encoder.B64encodeBytes(buf);
                             M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+file);
                             CMLib.database().DBUpdatePlayerStatsOnly(M);
-                            CMLib.database().DBCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
+                            CMLib.database().DBReCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
                             Resources.submitResource("CMPORTRAIT-"+M.Name(),buf);
                             return "Image successfully uploaded.";
                         }

@@ -219,8 +219,7 @@ public class Conquerable extends Arrest
 			{
 				laws.setInternalStr("ACTIVATED","FALSE");
 				laws.resetLaw();
-				CMLib.database().DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
-				CMLib.database().DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+				CMLib.database().DBReCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 			}
 
 		}
@@ -915,7 +914,6 @@ public class Conquerable extends Arrest
 			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
 			{
 				totalControlPoints=-1;
-				CMLib.database().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 				StringBuffer data=new StringBuffer("");
 				data.append(CMLib.xml().convertXMLtoTag("CLANID",holdingClan));
 				data.append("<ACITEMS>");
@@ -960,7 +958,7 @@ public class Conquerable extends Arrest
 				holdingClan="";
 				clanControlPoints=new DVector(2);
 				data.append("</ACITEMS>");
-				CMLib.database().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
+				CMLib.database().DBReCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
 		}
 	}

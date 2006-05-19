@@ -423,6 +423,11 @@ public class StdContainer extends StdItem implements Container
 					   ||((Armor)E).fitsOn(Item.WORN_WAIST)))
 						return true;
 					break;
+				case CONTAIN_FOOTWEAR:
+					if((E instanceof Armor)
+					&&(((Armor)E).fitsOn(Item.WORN_FEET)))
+						return true;
+					break;
 				case CONTAIN_OTHERWEAPONS:
 					if((E instanceof Weapon)
 					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_SWORD)

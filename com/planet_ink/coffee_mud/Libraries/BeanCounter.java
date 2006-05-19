@@ -607,8 +607,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			    int x=last.indexOf(";|;",1024);
 			    if(x>=0) last=last.substring(x+3);
 			}
-			CMLib.database().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
-			CMLib.database().DBCreateData(owner,(String)D.elementAt(1),(String)D.elementAt(2),last+explanation+";|;");
+			CMLib.database().DBReCreateData(owner,(String)D.elementAt(1),(String)D.elementAt(2),last+explanation+";|;");
 		}
 		else
 			CMLib.database().DBCreateData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
@@ -638,9 +637,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					if((absoluteAmount>0.0)||(value>=(-absoluteAmount)))
 					{
 					    C=makeBestCurrency(currency,value+absoluteAmount);
-						CMLib.database().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
 						if(C!=null)
-							CMLib.database().DBCreateData(owner,(String)D.elementAt(1),""+C+Math.random(),"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
+							CMLib.database().DBReCreateData(owner,(String)D.elementAt(1),(String)D.elementAt(2),"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
+						else
+							CMLib.database().DBDeleteData(owner,(String)D.elementAt(1),(String)D.elementAt(2));
 						bankLedger(bankName,owner,explanation);
 						return true;
 					}

@@ -227,6 +227,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteData(String section)
 	{ DataLoader.DBDelete(section);}
 	
+    public void DBReCreateData(String name, String section, String key, String xml)
+    { DataLoader.DBReCreate(name,section,key,xml);}
     public void DBUpdateData(String key, String xml)
     { DataLoader.DBUpdate(key,xml);}
     

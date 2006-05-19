@@ -155,7 +155,8 @@ public abstract class Interactive implements ServerUser {
             input_thread = null;
         }
         try {
-            socket.close();
+        	if(socket!=null)
+	            socket.close();
         }
         catch( java.io.IOException e ) {
 			Log.errOut("IMInteractive",e);

@@ -265,12 +265,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
     }
     
 	public String fullOutFilter(Session S,
-									   MOB mob,
-									   Environmental source,
-									   Environmental target,
-									   Environmental tool,
-									   String msg,
-									   boolean wrapOnly)
+							    MOB mob,
+							    Environmental source,
+							    Environmental target,
+							    Environmental tool,
+							    String msg,
+							    boolean wrapOnly)
 	{
 		if(mob==null) return msg;
 		if(msg==null) return null;

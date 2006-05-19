@@ -107,15 +107,12 @@ public class DefaultClan implements Clan
         if((lastClanKillRecord==null)||(!lastClanKillRecord.equals(str.toString())))
         {
             lastClanKillRecord=str.toString();
-            CMLib.database().DBDeleteData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
-            try{Thread.sleep(200);}catch(Exception e){}
-            CMLib.database().DBCreateData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
+            CMLib.database().DBReCreateData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
         }
     }
     
     public void updateVotes()
     {
-        CMLib.database().DBDeleteData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
         StringBuffer str=new StringBuffer("");
         for(Enumeration e=votes();e.hasMoreElements();)
         {
@@ -137,7 +134,9 @@ public class DefaultClan implements Clan
             }
         }
         if(str.length()>0)
-            CMLib.database().DBCreateData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
+            CMLib.database().DBReCreateData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
+        else
+            CMLib.database().DBDeleteData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
     }
     public void addVote(Object CV)
     {

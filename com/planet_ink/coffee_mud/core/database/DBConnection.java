@@ -226,6 +226,8 @@ public class DBConnection
 			if(!Closer.equals(""))
 				if(myStatement!=null)
 					myStatement.executeUpdate(Closer);
+			if(myConnection!=null)
+				myConnection.commit();
 		}
 		catch(SQLException e)
 		{

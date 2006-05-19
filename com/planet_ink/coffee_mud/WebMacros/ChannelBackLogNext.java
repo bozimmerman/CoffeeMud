@@ -87,7 +87,7 @@ public class ChannelBackLogNext extends StdWebMacro
 					    str="";
 					str=CMStrings.removeColors(str);
 					if(CMLib.channels().mayReadThisChannel(msg.source(),areareq,mob,channelInt,true))
-						return clearWebMacros(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,msg.source(),msg.target(),msg.tool(),str,false));
+						return clearWebMacros(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,msg.source(),msg.target(),msg.tool(),CMStrings.removeColors(str),false));
 				}
 			}
 			return "";

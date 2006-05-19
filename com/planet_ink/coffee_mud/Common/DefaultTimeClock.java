@@ -389,8 +389,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if((loaded)&&(loadName!=null))
 		{
-			CMLib.database().DBDeleteData(loadName,"TIMECLOCK");
-			CMLib.database().DBCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
+			CMLib.database().DBReCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
 			+"<MONTHS>"+CMParms.toStringList(getMonthNames())+"</MONTHS>"

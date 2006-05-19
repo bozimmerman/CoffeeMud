@@ -242,12 +242,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							if(mob.playerStats()!=null)
 							{
 								mob.playerStats().setReplyTo(target);
-								mob.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,mob,target,null,msg.sourceMessage(),false));
+								mob.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,mob,target,null,CMStrings.removeColors(msg.sourceMessage()),false));
 							}
 							if(target.playerStats()!=null)
 							{
 								target.playerStats().setReplyTo(mob);
-								target.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,msg.targetMessage(),false));
+								target.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(msg.targetMessage()),false));
 							}
 						}
 					}

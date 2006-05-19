@@ -328,6 +328,31 @@ public class DataLoader
         return rows;
     }
     
+    public static void DBReCreate(String name, String section, String key, String xml)
+    {
+    	synchronized(("RECREATE"+key).intern())
+    	{
+			DBConnection D=null;
+			try
+			{
+				D=DBConnector.DBFetch();
+				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+				boolean exists=R.next();
+				DBConnector.DBDone(D);
+				if(exists)
+					DBUpdate(key,xml);
+				else
+					DBCreate(name,section,key,xml);
+				return;
+	        }
+	        catch(Exception sqle)
+	        {
+	            Log.errOut("DataLoader",sqle);
+	        }
+	        if(D!=null) DBConnector.DBDone(D);
+    	}
+    }
+    
     public static void DBUpdate(String key, String xml)
     {
     	DBConnector.update("UPDATE CMPDAT SET CMPDAT='"+xml+"' WHERE CMPKEY='"+key+"'");
