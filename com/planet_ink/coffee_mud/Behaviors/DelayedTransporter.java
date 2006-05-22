@@ -102,7 +102,7 @@ public class DelayedTransporter extends ActiveTicker
 							inhab.tell("You are whisked nowhere at all, since '"+roomName+"' is nowhere to be found.");
 						else
 							otherRoom.bringMobHere(inhab,true);
-						transportees.remove(I);
+						transportees.remove(inhab.Name());
 						gone=true;
 					}
 				if(!gone)
