@@ -40,10 +40,71 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	{
 		return super.fixAccoutingsWithMask("Affects on the wearer: "+text());
 	}
+	
+    public boolean checked=false;
+    public boolean disabled=false;
+    public boolean layered=false;
+
+    public void check(MOB mob, Armor A)
+    {
+    	if(!layered){ checked=true; disabled=false;}
+    	if(A.amWearingAt(Item.IN_INVENTORY))
+    	{
+    		checked=false;
+    		return;
+    	}
+    	if(checked) return;
+    	Item I=null;
+    	disabled=false;
+    	for(int i=0;i<mob.inventorySize();i++)
+    	{
+    		I=mob.fetchInventory(i);
+    		if((I instanceof Armor)
+    		&&(!I.amWearingAt(Item.IN_INVENTORY))
+    		&&((I.rawWornCode()&A.rawWornCode())>0)
+    		&&(I!=A))
+    		{
+    			disabled=A.getClothingLayer()<=((Armor)I).getClothingLayer();
+    			if(disabled)
+    			{
+    				break;
+    			}
+    		}
+    	}
+		checked=true;
+    }
+
+    public void setMiscText(String newText)
+    {
+    	super.setMiscText(newText);
+        layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
+    }
+    
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_REMOVE)
+			||(msg.sourceMinor()==CMMsg.TYP_WEAR)
+			||(msg.sourceMinor()==CMMsg.TYP_WIELD)
+			||(msg.sourceMinor()==CMMsg.TYP_HOLD)
+			||(msg.sourceMinor()==CMMsg.TYP_DROP))
+				checked=false;
+			else
+			{
+				check(msg.source(),(Armor)affected);
+				super.executeMsg(host,msg);
+			}
+		}
+		else
+			super.executeMsg(host,msg);
+	}
+	
     public boolean canApply(MOB mob)
     {
         if(!super.canApply(mob))
             return false;
+		if(disabled&&checked) return false;
         if((!((Item)affected).amWearingAt(Item.IN_INVENTORY))
         &&((!((Item)affected).amWearingAt(Item.WORN_FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.WORN_FLOATING_NEARBY))))
             return true;

@@ -93,23 +93,33 @@ public class QuestLoader
 		if(quests==null) quests=new Vector();
 		String quType="DefaultQuest";
 		if(quests.size()>0) quType=CMClass.className(quests.firstElement());
-		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
-		for(int m=0;m<quests.size();m++)
+		DBConnection D=null;
+		try
 		{
-			Quest Q=(Quest)quests.elementAt(m);
-			DBConnector.update(
-			"INSERT INTO CMQUESTS ("
-			+"CMQUESID, "
-			+"CMQUTYPE, "
-			+"CMQSCRPT, "
-			+"CMQWINNS "
-			+") values ("
-			+"'"+Q.name()+"',"
-			+"'"+CMClass.className(Q)+"',"
-			+"'"+Q.script()+" ',"
-			+"'"+Q.getWinnerStr()+" '"
-			+")");
+			D=DBConnector.DBFetch();
+			D.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'",0);
+			for(int m=0;m<quests.size();m++)
+			{
+				Quest Q=(Quest)quests.elementAt(m);
+				D.update(
+				"INSERT INTO CMQUESTS ("
+				+"CMQUESID, "
+				+"CMQUTYPE, "
+				+"CMQSCRPT, "
+				+"CMQWINNS "
+				+") values ("
+				+"'"+Q.name()+"',"
+				+"'"+CMClass.className(Q)+"',"
+				+"'"+Q.script()+" ',"
+				+"'"+Q.getWinnerStr()+" '"
+				+")",0);
+			}
 		}
+		catch(java.sql.SQLException sqle)
+		{
+			Log.errOut("Quest",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
 	}
 
 }

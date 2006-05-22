@@ -83,7 +83,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
     
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		if((affected instanceof Armor)&&(msg.source()==((Item)affected).owner()))
+		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 			||(msg.sourceMinor()==CMMsg.TYP_WEAR)

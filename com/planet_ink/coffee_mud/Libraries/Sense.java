@@ -450,7 +450,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 hideFactor+=100;
             int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM);
             if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
-                detectFactor+=(100+seer.envStats().level());
+                detectFactor+=100;
             else // the 100 represents proff, and level represents time searching.
                 detectFactor+=seer.charStats().getStat(CharStats.STAT_SAVE_OVERLOOKING);
             if(seen instanceof MOB)

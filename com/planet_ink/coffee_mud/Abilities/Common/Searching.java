@@ -74,10 +74,14 @@ public class Searching extends CommonSkill
             {
                 searchRoom=((MOB)affected).location();
                 bonusThisRoom=0;
+                ((MOB)affected).recoverCharStats();
             }
             else
             if(bonusThisRoom<affected.envStats().level())
+            {
                 bonusThisRoom+=5;
+                ((MOB)affected).recoverCharStats();
+            }
 		}
 		return super.tick(ticking,tickID);
 	}
