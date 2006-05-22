@@ -284,6 +284,8 @@ public class UtiliThread extends Thread
 						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", "+"LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+						if(S instanceof Thread)
+							debugDumpStack((Thread)S);
 						status="killing session ";
 						S.logoff();
 						S.logoff();
@@ -295,6 +297,8 @@ public class UtiliThread extends Thread
 					{
                         if((S.mob()==null)||(S.mob().Name()==null)||(S.mob().Name().length()==0))
                         {
+    						if(S instanceof Thread)
+    							debugDumpStack((Thread)S);
                             S.logoff();
                             S.logoff();
                             CMLib.sessions().removeElement(S);
@@ -304,9 +308,9 @@ public class UtiliThread extends Thread
     						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
     						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
     						if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
-    							Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+    							Log.errOut("UtiliThread","STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
     						else
-    							Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", no last command available.");
+    							Log.errOut("UtiliThread","STATUS  is :"+S.getStatus()+", no last command available.");
                         }
 					}
 				}
@@ -318,10 +322,12 @@ public class UtiliThread extends Thread
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
 					Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					status="killing session ";
+					if(S instanceof Thread)
+						debugDumpStack((Thread)S);
 					S.logoff();
 					S.logoff();
 					CMLib.sessions().removeElement(S);
-					status="checking CMLib.sessions().";
+					status="checking player sessions";
 				}
 			}
 		}
