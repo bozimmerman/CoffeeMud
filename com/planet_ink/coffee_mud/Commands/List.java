@@ -712,6 +712,7 @@ public class List extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("\n\r");
 		boolean activeOnly=false;
+		String mask=null;
 		if("ACTIVE".startsWith(whichTickTock.toUpperCase())&&(whichTickTock.length()>0))
 		{
 		    activeOnly=true;
@@ -725,6 +726,10 @@ public class List extends StdCommand
 		int whichTick=-1;
 		if(CMath.isInteger(whichTickTock)&&(whichTickTock.length()>0)) 
 		    whichTick=CMath.s_int(whichTickTock);
+		else
+		if(whichTickTock.length()>0)
+			mask=whichTickTock.toUpperCase().trim();
+		if((mask!=null)&&(mask.length()==0)) mask=null;
 		for(int v=0;v<numGroups;v++)
 		{
 			int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+v));
@@ -737,18 +742,21 @@ public class List extends StdCommand
 				if((!activeOnly)||(isActive))
 				{
 					String name=CMLib.threads().tickInfo("tickerName"+v+"-"+t);
-					String id=CMLib.threads().tickInfo("tickerID"+v+"-"+t);
-					String status=CMLib.threads().tickInfo("tickercodeword"+v+"-"+t);
-					boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+v+"-"+t));
-					if(((col++)==2)||(activeOnly))
+					if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
 					{
-						msg.append("\n\r");
-						col=1;
+						String id=CMLib.threads().tickInfo("tickerID"+v+"-"+t);
+						String status=CMLib.threads().tickInfo("tickercodeword"+v+"-"+t);
+						boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+v+"-"+t));
+						if(((col++)==2)||(activeOnly))
+						{
+							msg.append("\n\r");
+							col=1;
+						}
+						msg.append(CMStrings.padRight(""+v,4)
+								   +CMStrings.padRight(name,18)
+								   +" "+CMStrings.padRight(id+"",5)
+								   +(activeOnly?(status+(suspended?"*":"")):CMStrings.padRight(status+(suspended?"*":""),10)));
 					}
-					msg.append(CMStrings.padRight(""+v,4)
-							   +CMStrings.padRight(name,18)
-							   +" "+CMStrings.padRight(id+"",5)
-							   +(activeOnly?(status+(suspended?"*":"")):CMStrings.padRight(status+(suspended?"*":""),10)));
 				}
 			}
 		}
