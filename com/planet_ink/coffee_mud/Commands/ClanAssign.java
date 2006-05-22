@@ -40,7 +40,7 @@ public class ClanAssign extends BaseClanner
 		throws java.io.IOException
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
-		commands.setElementAt("clanassign",0);
+		commands.setElementAt(getAccessWords()[0],0);
 		if(commands.size()<3)
 		{
 			mob.tell(getScr("ClanAssign","specname"));

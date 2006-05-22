@@ -266,24 +266,30 @@ public class Train extends StdCommand
 		    return false;
 		}
 
-		if((abilityCode==106)
-		&&(!teacher.charStats().getCurrentClass().baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
-		&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))
-		&&(teacher.charStats().getClassLevel(theClass)<1))
-	    {
-			if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
-            {
-                CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
-                String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
-				mob.tell("You can only learn that from another "+baseClassName+".");
-            }
-			else
-            {
-                int classLevel=mob.charStats().getClassLevel(theClass);
-                if(classLevel<0) classLevel=0;
-				mob.tell("You can only learn that from another "+theClass.name(classLevel)+".");
-            }
-			return false;
+		if(abilityCode==106)
+		{
+			boolean canTeach=false;
+			for(int c=0;c<teacher.charStats().numClasses();c++)
+				if(teacher.charStats().getMyClass(c).baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
+					canTeach=true;
+			if((!canTeach)
+			&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))
+			&&(teacher.charStats().getClassLevel(theClass)<1))
+		    {
+				if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
+	            {
+	                CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
+	                String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
+					mob.tell("You can only learn that from another "+baseClassName+".");
+	            }
+				else
+	            {
+	                int classLevel=mob.charStats().getClassLevel(theClass);
+	                if(classLevel<0) classLevel=0;
+					mob.tell("You can only learn that from another "+theClass.name(classLevel)+".");
+	            }
+				return false;
+			}
 		}
 		
 		if((abilityCode==107)&&(teacher.fetchEducation(theEducation.ID)==null))

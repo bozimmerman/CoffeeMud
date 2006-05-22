@@ -687,6 +687,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					  return null;
 			case 'r':
 			case 'R': return getFirstPC(monster,null,lastKnownLocation);
+			case 'c':
+			case 'C': return getFirstAnyone(monster,null,lastKnownLocation);
 			case 'w': return primaryItem!=null?primaryItem.owner():null;
 			case 'W': return secondaryItem!=null?secondaryItem.owner():null;
 			case 'x':
@@ -732,6 +734,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 'a':
 				if(lastKnownLocation!=null)
 					middle=lastKnownLocation.getArea().name();
+				break;
+			case 'c':
+			case 'C':
+				randMOB=getFirstAnyone(monster,randMOB,lastKnownLocation);
+				if(randMOB!=null)
+					middle=randMOB.name();
 				break;
 			case 'i':
 				if(monster!=null)
@@ -2776,6 +2784,26 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+			case 78: // exp
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"EXP","Syntax",evaluable);
+					break;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					int val1=((MOB)E).getExperience();
+					returnable=simpleEval(scripted,""+val1,arg3,arg2,"EXP");
+				}
+				break;
+			}
             case 76: // value
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4051,6 +4079,21 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+			case 89: // exp
+			{
+				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if(E==null)
+					results.append(false);
+				else
+				{
+					int val1=0;
+					if(E instanceof MOB)
+						val1=((MOB)E).getExperience();
+					results.append(val1);
+				}
+				break;
+			}
             case 76: // value
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4177,7 +4220,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			for(int p=0;p<room.numInhabitants();p++)
 			{
 				M=room.fetchInhabitant(p);
-				if(!M.isMonster())
+				if((!M.isMonster())&&(M!=monster))
+				{
+					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster()))
+						M=M.amFollowing();
+					return M;
+				}
+			}
+		return null;
+	}
+	protected MOB getFirstAnyone(MOB monster, MOB randMOB, Room room)
+	{
+		if((randMOB!=null)&&(randMOB!=monster))
+			return randMOB;
+		MOB M=null;
+		if(room!=null)
+			for(int p=0;p<room.numInhabitants();p++)
+			{
+				M=room.fetchInhabitant(p);
+				if(M!=monster)
 				{
 					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster()))
 						M=M.amFollowing();
@@ -4967,6 +5028,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
 				{
 					MOB themob=(MOB)newTarget;
+					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2))))
+						range=""+(themob.fetchFaction(faction)-CMath.s_int(range.substring(2)));
+					else
+					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1))))
+						range=""+(themob.fetchFaction(faction)-CMath.s_int(range.substring(1)));
                     if(CMath.isInteger(range))
                         themob.addFaction(F.factionID(),CMath.s_int(range));
                     else
@@ -6415,6 +6481,26 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
 						else
 							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+						return;
+					}
+				}
+				break;
+			case 38: // social prog
+				if(!msg.amISource(monster)
+				&&canTrigger(38)
+				&&(msg.tool() instanceof Social))
+				{
+					trigger=CMParms.getPastBit(trigger.trim(),0);
+					if(((Social)msg.tool()).Name().toUpperCase().startsWith(trigger.toUpperCase()))
+					{
+						Item Tool=defaultItem;
+						if(msg.target() instanceof MOB)
+							que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name()));
+						else
+						if(msg.target() instanceof Item)
+							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,msg.tool().Name()));
+						else
+							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,msg.tool().Name()));
 						return;
 					}
 				}

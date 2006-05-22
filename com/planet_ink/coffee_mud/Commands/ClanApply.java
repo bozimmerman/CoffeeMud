@@ -39,7 +39,7 @@ public class ClanApply extends BaseClanner
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		commands.setElementAt("clanapply",0);
+		commands.setElementAt(getAccessWords()[0],0);
 		String qual=CMParms.combine(commands,1).toUpperCase();
 		if(mob.isMonster()) return false;
 		StringBuffer msg=new StringBuffer("");

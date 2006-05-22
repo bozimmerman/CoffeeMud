@@ -40,6 +40,12 @@ public class Prop_RoomWatch extends Property
 	public String accountForYourself()
 	{ return "Different View of "+text();	}
 
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		newRooms=null;
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

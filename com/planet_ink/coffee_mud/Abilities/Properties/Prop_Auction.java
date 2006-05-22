@@ -174,8 +174,8 @@ public class Prop_Auction extends Property
 			String sb=CMParms.combine(commands,0);
 		    currency=CMLib.english().numPossibleGoldCurrency(mob,sb);
 		    if(currency.length()==0) currency=CMLib.beanCounter().getCurrency(mob);
-		    double denomination=CMLib.english().numPossibleGoldDenomination(mob,currency,sb);
-		    long num=CMLib.english().numPossibleGold(mob,sb);
+		    double denomination=CMLib.english().numPossibleGoldDenomination(null,currency,sb);
+		    long num=CMLib.english().numPossibleGold(null,sb);
 		    bid=CMath.mul(denomination,num);
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
@@ -199,8 +199,8 @@ public class Prop_Auction extends Property
 				    myCurrency=CMLib.english().numPossibleGoldCurrency(mob,sb);
 				    if(myCurrency!=null)
 				    {
-					    double denomination=CMLib.english().numPossibleGoldDenomination(mob,currency,sb);
-					    long num=CMLib.english().numPossibleGold(mob,sb);
+					    double denomination=CMLib.english().numPossibleGoldDenomination(null,currency,sb);
+					    long num=CMLib.english().numPossibleGold(null,sb);
 					    b=CMath.mul(denomination,num);
 					    bwords=CMLib.beanCounter().getDenominationName(myCurrency,denomination,num);
 				    }

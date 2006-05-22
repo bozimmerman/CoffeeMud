@@ -108,12 +108,6 @@ public class Channel extends BaseChanneler
             return false;
 		}
         
-        if(flags.contains("READONLY"))
-        {
-            mob.tell(getScr("Channel","readonly"));
-            return false;
-        }
-        
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
@@ -135,6 +129,12 @@ public class Channel extends BaseChanneler
 			}
 		}
 		else
+        if(flags.contains("READONLY"))
+        {
+            mob.tell(getScr("Channel","readonly"));
+            return false;
+        }
+        else
 			reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
 	}

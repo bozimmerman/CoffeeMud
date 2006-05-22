@@ -40,15 +40,16 @@ public class ClanMorgueSet extends BaseClanner
 		throws java.io.IOException
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
-		commands.setElementAt("clanmorgueeset",0);
-
 		Room R=mob.location();
 		if(skipChecks)
+		{
+			commands.setElementAt(getAccessWords()[0],0);
 			R=CMLib.map().getRoom(CMParms.combine(commands,1));
+		}
 		else
 		{
 			commands.clear();
-			commands.addElement("clanmorgueeset");
+			commands.addElement(getAccessWords()[0]);
 			commands.addElement(CMLib.map().getExtendedRoomID(R));
 		}
 

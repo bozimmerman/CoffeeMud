@@ -145,7 +145,7 @@ public class Falling extends StdAbility
 				{
 					mob.tell("\n\r\n\rYOU ARE FALLING "+addStr.toUpperCase()+"!!\n\r\n\r");
 					if(!reversed())
-						damageToTake+=CMLib.dice().roll(1,6,0);
+						damageToTake+=CMLib.dice().roll(1,(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),0.1)),0);
 				}
 				temporarilyDisable=true;
 				CMLib.tracking().move(mob,direction,false,false);

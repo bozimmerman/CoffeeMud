@@ -41,7 +41,7 @@ public class ClanAccept extends BaseClanner
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
 
-		commands.setElementAt("clanaccept",0);
+		commands.setElementAt(getAccessWords()[0],0);
 		String qual=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		Clan C=null;

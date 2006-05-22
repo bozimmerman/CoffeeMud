@@ -99,6 +99,8 @@ public class Thief_Detection extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
+			target.recoverCharStats();
+			target.recoverEnvStats();
 			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
 			CMLib.commands().postLook(target,false);

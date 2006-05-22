@@ -228,7 +228,7 @@ public interface MOB
 	public Item fetchInventory(Item goodLocation, String itemName);
 	public Item fetchCarried(Item goodLocation, String itemName);
 	public Item fetchWornItem(String itemName);
-	public Vector fetchWornItems(long wornCode, short aboveOrAtLayer, short layerAttributes);
+	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
 

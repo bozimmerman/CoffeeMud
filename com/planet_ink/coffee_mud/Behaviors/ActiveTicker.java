@@ -39,6 +39,7 @@ public class ActiveTicker extends StdBehavior
 	protected int minTicks=10;
 	protected int maxTicks=30;
 	protected int chance=100;
+	//protected short speed=1;
 	protected int tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 
 	protected void tickReset()

@@ -257,7 +257,7 @@ public class Language extends StdAbility
 					Language L=(Language)msg.source().fetchEffect(ID());
 					if((L==null)
 					||(!L.beingSpoken())
-					||((CMLib.dice().rollPercentage()*2)<(L.profficiency()+profficiency())))
+					||((CMLib.dice().rollPercentage()*2)>(L.profficiency()+profficiency())))
 					{
 						msg.setTargetCode(CMMsg.TYP_SPEAK);
 						msg.setSourceCode(CMMsg.TYP_SPEAK);

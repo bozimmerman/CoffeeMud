@@ -41,7 +41,7 @@ public class ClanDeclare extends BaseClanner
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
 
-		commands.setElementAt("clandeclare",0);
+		commands.setElementAt(getAccessWords()[0],0);
 		if(commands.size()<3)
 		{
 			mob.tell(getScr("ClanDeclare","specname"));

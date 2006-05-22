@@ -125,6 +125,7 @@ public interface ScriptingEngine extends Behavior
         "CLOSE_PROG", // 35
         "LOCK_PROG", // 36
         "UNLOCK_PROG", // 37
+        "SOCIAL_PROG", // 38
     };
     
     public static final String[] funcs={
@@ -204,7 +205,8 @@ public interface ScriptingEngine extends Behavior
         "HASNUM", // 74
         "CURRENCY", // 75
         "VALUE", // 76
-        "EXPLORED" // 77
+        "EXPLORED", // 77
+        "EXP", // 78
     };
     public static final String[] methods={
         "MPASOUND", //1

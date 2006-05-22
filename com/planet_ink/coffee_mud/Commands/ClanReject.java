@@ -40,7 +40,7 @@ public class ClanReject extends BaseClanner
 		throws java.io.IOException
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
-		commands.setElementAt("clanreject",0);
+		commands.setElementAt(getAccessWords()[0],0);
 
 		String qual=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");

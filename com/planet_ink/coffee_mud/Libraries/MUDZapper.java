@@ -1324,7 +1324,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 17: // -anyclass
 					{
-						buf.append((skipFirstWord?"L":"Requires k")+"evels in one of the following:  ");
+						buf.append((skipFirstWord?"L":"Requires l")+"evels in one of the following:  ");
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();

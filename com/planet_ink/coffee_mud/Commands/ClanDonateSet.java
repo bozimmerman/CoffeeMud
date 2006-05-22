@@ -41,7 +41,7 @@ public class ClanDonateSet extends BaseClanner
 		throws java.io.IOException
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
-		commands.setElementAt("clandonateset",0);
+		commands.setElementAt(getAccessWords()[0],0);
 
 		Room R=mob.location();
 		if(skipChecks)
@@ -49,7 +49,7 @@ public class ClanDonateSet extends BaseClanner
 		else
 		{
 			commands.clear();
-			commands.addElement("clandonateset");
+			commands.addElement(getAccessWords()[0]);
 			commands.addElement(CMLib.map().getExtendedRoomID(R));
 		}
 

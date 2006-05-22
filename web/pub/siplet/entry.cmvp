@@ -8,7 +8,7 @@
 <TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="return keyme(event||window.event,this);" ONKEYDOWN="return keydown(event||window.event,this);" SIZE=80>
 </TEXTAREA>
 <TD WIDTH=15% ALIGN=CENTER VALIGN=TOP>
-<a href="javascript:sendText();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="sendText();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Submit</B></FONT></a></TD></TR></TABLE></a>
+<a href="javascript:sendTextField();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="sendTextField();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Submit</B></FONT></a></TD></TR></TABLE></a>
 </TD>
 </TD></TR></TABLE>
 <TD WIDTH=15% ALIGN=CENTER VALIGN=TOP>
@@ -50,12 +50,17 @@
         }
     }
     
-    function sendText()
+    function sendTextField()
     {
         var textEl=document.getElementById("TEXT");
+        sendText(textEl.value);
+    }
+    function sendText(val)
+    {
+        top.term.addToWindow(val+'<BR>');
         position=-1;
-        enqueText(textEl.value);
-    	top.term.sendData(textEl.value);
+        enqueText(val);
+    	top.term.sendData(val);
         boxFocus();
     }
     
@@ -72,7 +77,7 @@
     {
         if((event.keyCode==13)||(event.keyCode==10))
         {
-            doReturn(textEl.value);
+            sendText(textEl.value);
             event.cancelBubble=true;
             event.returnValue=0;
             textEl.value='';
@@ -104,13 +109,6 @@
                 textEl.value=input[position];
         }
         return true;
-    }
-    
-    function doReturn(val)
-    {
-        top.term.addToWindow(val+'<BR>');
-        sendText();
-        document.ENTER.TEXT.value='';
     }
     
     function keyme(event,textEl)

@@ -63,7 +63,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	};
 	
 	protected final static String[][] STAGE_TYPES={
-		{"Light","Suptle","Agile"},
+		{"Light","Supple","Agile"},
 		{"Strong","Reinforced","Fortified"},
 		{"Fine","Beautiful","Exquisite"},
 		{"Damaging","Brutal","Lethal"},

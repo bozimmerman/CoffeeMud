@@ -458,12 +458,12 @@ public class Conquerable extends Arrest
                     int chance=calcRevoltChance(A);
                     if(CMLib.dice().rollPercentage()<chance)
                     {
-                        if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
+                        if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
                         Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
                         for(int i=0;i<channels.size();i++)
-                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".",false);
+                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
                         if(journalName.length()>0)
-                            CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".","See the subject line.",-1);
+                            CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.",-1);
                         endClanRule();
                     }
                 }

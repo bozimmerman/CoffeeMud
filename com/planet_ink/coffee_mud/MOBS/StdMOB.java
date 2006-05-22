@@ -3268,7 +3268,7 @@ public class StdMOB implements MOB
 		return add;
 	}
 
-	public Vector fetchWornItems(long wornCode, short aboveOrAtLayer, short layerAttributes)
+	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes)
 	{
 		Vector V=new Vector();
 		boolean equalOk=(layerAttributes&Armor.LAYERMASK_MULTIWEAR)>0;
@@ -3281,11 +3281,12 @@ public class StdMOB implements MOB
 				if(thisItem instanceof Armor)
 				{
 					lay=((Armor)thisItem).getClothingLayer();
-					if(lay>=aboveOrAtLayer)
+					if(lay>=(aboveOrAroundLayer-1))
 					{
-						if(((lay==aboveOrAtLayer)&&((!equalOk)||((((Armor)thisItem).getLayerAttributes()&Armor.LAYERMASK_MULTIWEAR)==0)))
-						||(lay==aboveOrAtLayer-1)
-						||(lay>aboveOrAtLayer))
+						if(((lay>aboveOrAroundLayer-2)
+							&&(lay<aboveOrAroundLayer+2)
+							&&((!equalOk)||((((Armor)thisItem).getLayerAttributes()&Armor.LAYERMASK_MULTIWEAR)==0)))
+						||(lay>aboveOrAroundLayer))
 							V.addElement(thisItem);
 					}
 				}

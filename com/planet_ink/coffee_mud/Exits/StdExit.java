@@ -303,6 +303,9 @@ public class StdExit implements Exit
 		case CMMsg.TYP_FLEE:
 			return true;
 		case CMMsg.TYP_CLOSE:
+		{
+			if(closeWord().length()==0) 
+				setExitParams(doorName(),openWord(),"close",closedText());
 			if(isOpen)
 			{
 				if(!hasADoor())
@@ -314,7 +317,10 @@ public class StdExit implements Exit
 			}
 			mob.tell("The "+doorName()+" is already "+closeWordPastTense()+".");
 			return false;
+		}
 		case CMMsg.TYP_OPEN:
+		{
+			if(openWord().length()==0) setExitParams(doorName(),"open",closeWord(),closedText());
 			if(!hasADoor())
 			{
 				mob.tell("There is nothing to "+openWord()+" that way!");
@@ -331,6 +337,7 @@ public class StdExit implements Exit
 				return false;
 			}
 			return true;
+		}
 		case CMMsg.TYP_PUSH:
 			if((isOpen())||(!hasADoor()))
 			{

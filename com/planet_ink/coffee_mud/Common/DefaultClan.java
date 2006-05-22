@@ -127,8 +127,10 @@ public class DefaultClan implements Clan
                 str.append("<VOTES>");
                 for(int v=0;v<CV.votes.size();v++)
                 {
+                    str.append("<VOTE>");
                     str.append(CMLib.xml().convertXMLtoTag("BY",(String)CV.votes.elementAt(v,1)));
                     str.append(CMLib.xml().convertXMLtoTag("YN",""+((Boolean)CV.votes.elementAt(v,2)).booleanValue()));
+                    str.append("</VOTE>");
                 }
                 str.append("</VOTES>");
             }
@@ -595,7 +597,7 @@ public class DefaultClan implements Clan
             case FUNC_CLANASSIGN:
                 return 0;
             case FUNC_CLANEXILE:
-                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+                return (role==POS_BOSS)?1:-1;
             case FUNC_CLANHOMESET:
                 return 0;
             case FUNC_CLANTAX:
@@ -603,7 +605,7 @@ public class DefaultClan implements Clan
             case FUNC_CLANDONATESET:
                 return 0;
             case FUNC_CLANREJECT:
-                return (role==POS_BOSS)?1:-1;
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
             case FUNC_CLANPREMISE:
                 return 0;
             case FUNC_CLANDECLARE:
