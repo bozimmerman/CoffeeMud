@@ -94,7 +94,7 @@ public class Prop_WeaponImmunity extends Property
 				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
 				&&(i!=CharStats.STAT_SAVE_MAGIC))
 				{
-					foundPlusMinus=(Character)flags.get(CharStats.STATE_NAMES[i]);
+					foundPlusMinus=(Character)flags.get(CharStats.STAT_NAMES[i]);
 					if(foundPlusMinus!=null)
 					{
 						if((foundPlusMinus.charValue()=='-')&&(immune))

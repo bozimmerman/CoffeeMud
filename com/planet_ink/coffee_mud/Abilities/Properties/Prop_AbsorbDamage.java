@@ -69,7 +69,7 @@ public class Prop_AbsorbDamage extends Property
 				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
 				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
 				{
-					x=text.indexOf(CharStats.STATE_NAMES[i]);
+					x=text.indexOf(CharStats.STAT_NAMES[i]);
 					if(x>0)
 					{
 						if((text.charAt(x-1)=='-')&&(immune>=0))

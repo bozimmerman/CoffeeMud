@@ -48,7 +48,7 @@ public class Prop_ReqStat extends Property
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			for(int c=0;c<CharStats.STAT_NAMES.length;c++)
-				if(CMParms.getParmCompare(text(),STAT_NAMES[c],msg.source().charStats().getStat(c))<0)
+				if(CMParms.getParmCompare(text(),CharStats.STAT_NAMES[c],msg.source().charStats().getStat(c))<0)
 				{
 
 				}
