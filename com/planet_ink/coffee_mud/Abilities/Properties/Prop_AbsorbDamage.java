@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,11 +69,7 @@ public class Prop_AbsorbDamage extends Property
 				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
 				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
 				{
-					Vector V=CMParms.parse(CharStats.STAT_DESCS[i]);
-					if(((String)V.lastElement()).equals("SAVE"))
-						x=text.indexOf((String)V.firstElement());
-					else
-						x=text.indexOf((String)V.lastElement());
+					x=text.indexOf(CharStats.STATE_NAMES[i]);
 					if(x>0)
 					{
 						if((text.charAt(x-1)=='-')&&(immune>=0))

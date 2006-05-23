@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ public class CMParms
             Combined.append((String)commands.elementAt(commandIndex)+" ");
         return Combined.toString().trim();
     }
-    
+
     public static String combineWithQuotes(Vector commands, int startAt, int endAt)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -43,7 +43,7 @@ public class CMParms
         }
         return Combined.toString().trim();
     }
-    
+
     public static String combineAfterIndexWithQuotes(Vector commands, String match)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -56,7 +56,7 @@ public class CMParms
         }
         return Combined.toString().trim();
     }
-    
+
     public static String combineWithQuotes(Vector commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -69,7 +69,7 @@ public class CMParms
         }
         return Combined.toString().trim();
     }
-    
+
     public static String combineWithTabs(Vector commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -81,7 +81,7 @@ public class CMParms
         }
         return Combined.toString().trim();
     }
-    
+
     public static String combine(Vector commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -90,11 +90,11 @@ public class CMParms
             Combined.append((String)commands.elementAt(commandIndex)+" ");
         return Combined.toString().trim();
     }
-    
+
     public static Vector parse(String str)
     {   return parse(str,-1);   }
-    
-    
+
+
     public static Vector paramParse(String str)
     {
         Vector commands=parse(str);
@@ -128,7 +128,7 @@ public class CMParms
         }
         return commands;
     }
-    
+
     public static Vector parse(String str, int upTo)
     {
         Vector commands=new Vector();
@@ -173,7 +173,7 @@ public class CMParms
                         commands.addElement(str);
                     break;
                 }
-                    
+
             }
         }
         return commands;
@@ -196,7 +196,7 @@ public class CMParms
             V.addElement(s.trim());
         return V;
     }
-    
+
     public static Vector parseTabs(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();
@@ -214,7 +214,7 @@ public class CMParms
             V.addElement(s.trim());
         return V;
     }
-    
+
     public static Vector parseAny(String s, String delimeter, boolean ignoreNulls)
     {
         Vector V=new Vector();
@@ -250,7 +250,7 @@ public class CMParms
             V.addElement(s.trim());
         return V;
     }
-    
+
     public static Vector parseSquiggles(String s)
     {
         Vector V=new Vector();
@@ -265,7 +265,7 @@ public class CMParms
         }
         return V;
     }
-    
+
     public static Vector parseSentences(String s)
     {
         Vector V=new Vector();
@@ -280,7 +280,7 @@ public class CMParms
         }
         return V;
     }
-    
+
     public static Vector parseSquiggleDelimited(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();
@@ -298,7 +298,7 @@ public class CMParms
             V.addElement(s);
         return V;
     }
-    
+
     public static Vector parseSemicolons(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();
@@ -316,7 +316,7 @@ public class CMParms
             V.addElement(s.trim());
         return V;
     }
-    
+
     public static Vector parseSpaces(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();
@@ -334,7 +334,7 @@ public class CMParms
             V.addElement(s.trim());
         return V;
     }
-    
+
     public static int numBits(String s)
     {
         int i=0;
@@ -376,9 +376,9 @@ public class CMParms
             return num+1;
         return num;
     }
-    
+
     public static String cleanBit(String s)
-    { 
+    {
         while(s.startsWith(" "))
             s=s.substring(1);
         while(s.endsWith(" "))
@@ -393,10 +393,10 @@ public class CMParms
     }
     public static String getCleanBit(String s, int which)
     { return cleanBit(getBit(s,which));}
-    
+
     public static String getPastBitClean(String s, int which)
     { return cleanBit(getPastBit(s,which));}
-    
+
     public static String getPastBit(String s, int which)
     {
         int i=0;
@@ -447,7 +447,7 @@ public class CMParms
         }
         return "";
     }
-    
+
 
     public static String getBit(String s, int which)
     {
@@ -495,7 +495,7 @@ public class CMParms
             return t;
         return "";
     }
-    
+
     public static String getParmStr(String text, String key, String defaultVal)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -515,9 +515,9 @@ public class CMParms
                     while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
                     {
                         if(text.charAt(x)=='\"')
-                        { 
-                            endWithQuote=true; 
-                            x++; 
+                        {
+                            endWithQuote=true;
+                            x++;
                             break;
                         }
                         x++;
@@ -540,6 +540,55 @@ public class CMParms
                 x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
         }
         return defaultVal;
+    }
+
+    public static int getParmCompare(String text, String key, int value)
+    {
+        int x=text.toUpperCase().indexOf(key.toUpperCase());
+        while(x>=0)
+        {
+            if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+            {
+                while((x<text.length())
+					&&(text.charAt(x)!='>')
+					&&(text.charAt(x)!='<')
+					&&(text.charAt(x)!='!')
+					&&(text.charAt(x)!='='))
+                    x++;
+                if(x<text.length()-1)
+                {
+					char comp=text.charAt(x);
+					boolean andEqual=(text.charAt(x)=='=');
+					if(text.charAt(x+1)=='='){ x++; andEqual=true;}
+					if(x<text.length()-1)
+					{
+						while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+							x++;
+						if(x<text.length())
+						{
+							text=text.substring(x);
+							x=0;
+							while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+								x++;
+							int found=CMath.s_int(text.substring(0,x));
+							if(andEqual&&(found==value))
+								return (comp=='!')?-1:1;
+							switch(comp)
+							{
+								case '>': if(value>found) return 1; return -1;
+								case '<': if(value<found) return 1; return -1;
+								case '!': return 1;
+							}
+							return 0;
+						}
+					}
+                }
+                x=-1;
+            }
+            else
+                x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+        }
+        return 0;
     }
 
     public static int getParmPlus(String text, String key)
@@ -624,7 +673,7 @@ public class CMParms
         }
         return 0.0;
     }
-    
+
     public static double getParmDouble(String text, String key, double defaultValue)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -659,8 +708,8 @@ public class CMParms
         }
         return defaultValue;
     }
-    
-    
+
+
     public static int getParmInt(String text, String key, int defaultValue)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -694,7 +743,7 @@ public class CMParms
         }
         return defaultValue;
     }
-    
+
     public static boolean getParmBool(String text, String key, boolean defaultValue)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -715,7 +764,7 @@ public class CMParms
         }
         return defaultValue;
     }
-    
+
     public static String[] toStringArray(Vector V)
     {
         if((V==null)||(V.size()==0)){
@@ -727,7 +776,7 @@ public class CMParms
             s[v]=V.elementAt(v).toString();
         return s;
     }
-    
+
     public static long[] toLongArray(Vector V)
     {
         if((V==null)||(V.size()==0)){
@@ -750,7 +799,7 @@ public class CMParms
             s[v]=CMath.s_int(V.elementAt(v).toString());
         return s;
     }
-    
+
     public static String toSemicolonList(byte[] bytes)
     {
         StringBuffer str=new StringBuffer("");
@@ -758,7 +807,7 @@ public class CMParms
             str.append(Byte.toString(bytes[b])+(b<(bytes.length-1)?";":""));
         return str.toString();
     }
-    
+
     public static String toSemicolonList(String[] bytes)
     {
         StringBuffer str=new StringBuffer("");
@@ -766,7 +815,7 @@ public class CMParms
             str.append(bytes[b]+(b<(bytes.length-1)?";":""));
         return str.toString();
     }
-    
+
     public static String toSemicolonList(Vector bytes)
     {
         StringBuffer str=new StringBuffer("");
@@ -774,7 +823,7 @@ public class CMParms
             str.append(bytes.elementAt(b)+(b<(bytes.size()-1)?";":""));
         return str.toString();
     }
-    
+
     public static byte[] fromByteList(String str)
     {
         Vector V=CMParms.parseSemicolons(str,true);
@@ -787,7 +836,7 @@ public class CMParms
         }
         return new byte[0];
     }
-    
+
     public static String[] toStringArray(HashSet V)
     {
         if((V==null)||(V.size()==0)){
@@ -800,7 +849,7 @@ public class CMParms
             s[v++]=(i.next()).toString();
         return s;
     }
-    
+
     public static String toStringList(String[] V)
     {
         if((V==null)||(V.length==0)){
@@ -812,7 +861,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
+
     public static String toStringList(long[] V)
     {
         if((V==null)||(V.length==0)){
@@ -824,7 +873,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
+
     public static String toStringList(int[] V)
     {
         if((V==null)||(V.length==0)){
@@ -836,8 +885,8 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
-    
+
+
     public static String toStringList(Vector V)
     {
         if((V==null)||(V.size()==0)){
@@ -849,7 +898,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
+
     public static String toStringList(HashSet V)
     {
         if((V==null)||(V.size()==0)){
@@ -861,7 +910,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
+
     public static boolean equalVectors(Vector V1, Vector V2)
     {
         if((V1==null)&&(V2==null)) return true;
@@ -872,9 +921,9 @@ public class CMParms
                 return false;
         return true;
     }
-    
+
     public static Vector makeVector(Object[] O)
-    { 
+    {
         Vector V=new Vector();
         if(O!=null)
         for(int s=0;s<O.length;s++)
@@ -891,7 +940,7 @@ public class CMParms
     { Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
     public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
     { Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
-        
+
     public static HashSet makeHashSet(){return new HashSet();}
     public static HashSet makeHashSet(Object O)
     {HashSet H=new HashSet(); H.add(O); return H;}
@@ -901,7 +950,7 @@ public class CMParms
     {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); return H;}
     public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
     {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
-    
+
     public static String[] toStringArray(Hashtable V)
     {
         if((V==null)||(V.size()==0)){
@@ -918,14 +967,14 @@ public class CMParms
         }
         return s;
     }
-    
+
     public static void addToVector(Vector from, Vector to)
     {
         if(from!=null)
         for(int i=0;i<from.size();i++)
             to.addElement(from.elementAt(i));
     }
-    
+
     public static boolean vectorOfStringContainsIgnoreCase(Vector V, String s)
     {
         for(int v=0;v<V.size();v++)
@@ -933,7 +982,7 @@ public class CMParms
                 return true;
         return false;
     }
-    
+
     public static String toStringList(Hashtable V)
     {
         if((V==null)||(V.size()==0)){
@@ -947,8 +996,8 @@ public class CMParms
         }
         return s.toString();
     }
-    
-    
+
+
     public static Vector copyVector(Vector V)
     {
         Vector V2=new Vector();
@@ -962,8 +1011,8 @@ public class CMParms
         }
         return V2;
     }
-    
-    
+
+
     public static Vector denumerate(Enumeration e)
     {
         Vector V=new Vector();
@@ -971,7 +1020,7 @@ public class CMParms
             V.addElement(e.nextElement());
         return V;
     }
-    
+
 	/** constant value representing an undefined/unimplemented miscText/parms format.*/
 	public static final String FORMAT_UNDEFINED="{UNDEFINED}";
 	/** constant value representing an always empty miscText/parms format.*/

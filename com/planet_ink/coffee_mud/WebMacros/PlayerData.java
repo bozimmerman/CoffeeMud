@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -89,7 +89,7 @@ public class PlayerData extends StdWebMacro
         "NOTES",
         "LEVELS"
 	};
-	
+
 	public static int getBasicCode(String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
@@ -97,7 +97,7 @@ public class PlayerData extends StdWebMacro
 				return i;
 		return -1;
 	}
-	
+
 	public static String getBasic(MOB M, int i)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -151,7 +151,7 @@ public class PlayerData extends StdWebMacro
 				 break;
 		case 25: {
 		    		Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
-		    		if(FR!=null) 
+		    		if(FR!=null)
 		    		    str.append(FR.name()+", ");
 		    		else
 		    		    str.append(M.fetchFaction(CMLib.factions().AlignID()));
@@ -203,11 +203,11 @@ public class PlayerData extends StdWebMacro
 		case 45: str.append(M.maxState().getMovement()+", "); break;
 		case 46: str.append(M.rawImage()+", "); break;
         case 47: str.append(M.maxItems()+", "); break;
-        case 48: 
+        case 48:
         {
                  String image=M.image();
                  if(image.length()>0)
-                     str.append(CMProps.mxpImagePath(image)+image+", "); 
+                     str.append(CMProps.mxpImagePath(image)+image+", ");
                  break;
         }
         case 49: if(CMProps.mxpImagePath(M.image()).length()>0)
@@ -240,7 +240,7 @@ public class PlayerData extends StdWebMacro
 		}
 		return str.toString();
 	}
-	
+
 	public static String getBasic(MOB M, String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
@@ -274,16 +274,11 @@ public class PlayerData extends StdWebMacro
 					str.append((set?"ON":"OFF")+",");
 				}
 			}
-			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+			for(int i=0;i<CharStats.STAT_NAMES.length;i++)
 			{
-				String stat=CharStats.STAT_DESCS[i];
+				String stat=CharStats.STAT_NAMES[i];
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
-					if(stat.endsWith(" SAVE"))
-						stat=((String)CMParms.parse(stat).firstElement());
-					else
-					if(stat.startsWith("SAVE "))
-						stat=((String)CMParms.parse(stat).lastElement());
 					CharStats C=M.charStats();
 					if(parms.containsKey("BASE"+stat))
 					{

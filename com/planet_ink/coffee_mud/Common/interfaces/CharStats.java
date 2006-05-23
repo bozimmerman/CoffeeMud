@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -105,7 +105,7 @@ public interface CharStats extends CMObject
 	public final static int NUM_STATS=31;
 
     /**
-     * Get the value of one of the STAT_ constants, representing attributes, 
+     * Get the value of one of the STAT_ constants, representing attributes,
      * saving throws, and max attributes, from the CharStats interface.
      * @see CharStats
      * @param statNum which STAT_ constant to get a value for
@@ -113,7 +113,7 @@ public interface CharStats extends CMObject
      */
 	public int getStat(int statNum);
     /**
-     * Get the value of one of the mob stats, representing attributes, 
+     * Get the value of one of the mob stats, representing attributes,
      * saving throws, and max attributes, from the CharStats interface.
      * The abilityName is cross referenced with STAT_DESCS string array
      * to determine the proper STAT_ constant.
@@ -124,7 +124,7 @@ public interface CharStats extends CMObject
      */
 	public int getStat(String abilityName);
     /**
-     * Set the value of one of the STAT_ constants, representing attributes, 
+     * Set the value of one of the STAT_ constants, representing attributes,
      * saving throws, and max attributes, from the CharStats interface.
      * @see CharStats
      * @param statNum which STAT_ constant to get a value for
@@ -150,7 +150,7 @@ public interface CharStats extends CMObject
      * @return the STAT_ constant value from CharStats interface
      */
 	public int getCode(String abilityName);
-    
+
     /**
      * Uses the saving throw stats stored here the the mob, modified by basic attributes,
      * to return a final Saving Throw value for this mob.
@@ -159,12 +159,12 @@ public interface CharStats extends CMObject
      * @return the final saving throw value
      */
 	public int getSave(int which);
-    /** 
+    /**
      * Get saving throw and max stat info as an semicolon string list.
      * @return semicolon string
      */
     public String getSavesAsString();
-    /** 
+    /**
      * set saving throw and max stat info from a semicolon string list.
      * @param str semicolon string
      */
@@ -187,7 +187,7 @@ public interface CharStats extends CMObject
      */
     public void alterBodypart(int racialPartNumber, int number);
     /**
-     * Check the difference between the number of a given body part which 
+     * Check the difference between the number of a given body part which
      * this mob has and the number he or she should have.  The
      * racial part number comes from the Race interface BODY_ constants.
      * The return value is positive or negative reflecting the change.
@@ -211,11 +211,11 @@ public interface CharStats extends CMObject
 
 	/**
      * Returns the number of character classes that this mob has 0 or more
-     * levels in. 
+     * levels in.
      * @return number of character classes
 	 */
 	public int numClasses();
-    /** 
+    /**
      * Returns the CharClass object for this mob which corresponds to the
      * the given index.  The oldest class is always indexed at 0, with next
      * newest at 1, and the current one last.
@@ -224,7 +224,7 @@ public interface CharStats extends CMObject
      * @return the CharClass object
      */
 	public CharClass getMyClass(int i);
-    /** 
+    /**
      * Returns the CharClass object for this mob which corresponds to the
      * the final index.  The oldest class is always indexed at 0, with next
      * newest at 1, and the current one last.
@@ -233,8 +233,8 @@ public interface CharStats extends CMObject
      * @return the 0 index CharClass object
      */
 	public CharClass getCurrentClass();
-    /** 
-     * Returns the number of levels that this mob has in the CharClass 
+    /**
+     * Returns the number of levels that this mob has in the CharClass
      * object which corresponds to the final index.
      * The oldest class is always indexed at 0, with next
      * newest at 1, and the current one last.
@@ -275,7 +275,7 @@ public interface CharStats extends CMObject
      */
 	public void setCurrentClass(CharClass aClass);
     /**
-     * Sets the current class level for the mob to the given level. 
+     * Sets the current class level for the mob to the given level.
      * @param level The chararacter class level to set the current class to
      */
     public void setCurrentClassLevel(int level);
@@ -302,7 +302,7 @@ public interface CharStats extends CMObject
      */
 	public int combinedSubLevels();
     /**
-     * Changes the number of class levels the mob has in the given character class 
+     * Changes the number of class levels the mob has in the given character class
      * to the given level.  If the mob does not have any levels in the given
      * class, then setCurrentClass will be called first.
      * @see #setCurrentClass(CharClass)
@@ -338,34 +338,34 @@ public interface CharStats extends CMObject
 	public String raceName();
     /**
      * Changes the apparant race of ths mob by setting a new name.  A value of null will
-     * reset this setting, allowing the mobs TRUE race to be displayed through the 
+     * reset this setting, allowing the mobs TRUE race to be displayed through the
      * raceName method instead of the string set through this one.
      * @see com.planet_ink.coffee_mud.Races.interfaces.Race
      * @see #setRaceName(String)
-     * @param newRaceName the name of the mobs apparant race 
+     * @param newRaceName the name of the mobs apparant race
      */
 	public void setRaceName(String newRaceName);
     /**
      * Changes the apparant char class of ths mob by setting a new name.  A value of null will
-     * reset this setting, allowing the mobs TRUE current class to be displayed through the 
+     * reset this setting, allowing the mobs TRUE current class to be displayed through the
      * displayClassName method instead of the string set through this one.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
      * @see #displayClassName()
      * @see #displayClassLevel(MOB, boolean)
      * @see #displayClassLevelOnly(MOB)
-     * @param newname the name of the mobs apparant current class 
+     * @param newname the name of the mobs apparant current class
      */
 	public void setDisplayClassName(String newname);
     /**
      * Changes the apparant level of ths mob by setting a new name.  A value of null will
-     * reset this setting, allowing the mobs TRUE level to be displayed through the 
+     * reset this setting, allowing the mobs TRUE level to be displayed through the
      * displayClassLevel method instead of the string set through this one.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
      * @see #displayClassName()
      * @see #displayClassLevel(MOB, boolean)
      * @see #displayClassLevelOnly(MOB)
      * @see #setDisplayClassName(String)
-     * @param newlevel the name of the mobs apparant level 
+     * @param newlevel the name of the mobs apparant level
      */
 	public void setDisplayClassLevel(String newlevel);
     /**
@@ -394,7 +394,7 @@ public interface CharStats extends CMObject
      */
 	public String displayClassLevel(MOB mob, boolean shortForm);
     /**
-     * Returns either the given mobs authentic classlevel/total level, 
+     * Returns either the given mobs authentic classlevel/total level,
      * or the value set through setDisplayClassLevel method.
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
      * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats#displayClassName()
@@ -425,12 +425,12 @@ public interface CharStats extends CMObject
      * is called on the mobs charStats() object, as opposed to baseCharStats(), it
      * may return something different than charStats().getStat(GENDER)  For this
      * reason, you should ONLY use this method when you want to display the mobs
-     * current gender. 
+     * current gender.
      * @see #setGenderName(String)
      * @return the apparant gender of the mob
      */
 	public String genderName();
-    
+
     /**
      * Based on the apparant gender of the mob, return the appropriate word "him", "her", or "it".
      * @return the gender-correct pronoun for this mob
@@ -469,14 +469,14 @@ public interface CharStats extends CMObject
      */
 	public int ageCategory();
     /**
-     * Returns the string name of the age category for this mob, based on the age 
-     * stat constant stored here.  The age category names are defined in the Race 
+     * Returns the string name of the age category for this mob, based on the age
+     * stat constant stored here.  The age category names are defined in the Race
      * interface in the AGE_DESCS_ constant.
      * @see com.planet_ink.coffee_mud.Races.interfaces.Race#AGE_DESCS
      * @return the name of the age category for this mob
      */
 	public String ageName();
-    
+
     /** string array of abbreviations of each stat code, ordered by numeric value */
     public static final String[] STAT_ABBR=
     {
@@ -512,7 +512,7 @@ public interface CharStats extends CMObject
         "vH",
         "vO"
     };
-    
+
     /** string array of descriptions of each stat code, ordered by numeric value */
     public static final String[] STAT_DESCS=
     {
@@ -547,6 +547,78 @@ public interface CharStats extends CMObject
         "AGE",
         "SAVE VS DETECTION",
         "SAVE VS OVERLOOKING"
+    };
+
+    /** string array of descriptions of each stat code, ordered by numeric value */
+    public static final String[] STAT_NAMES=
+    {
+        "STRENGTH",
+        "INTELLIGENCE",
+        "DEXTERITY",
+        "CONSTITUTION",
+        "CHARISMA",
+        "WISDOM",
+        "GENDER",
+        "PARALYSIS",
+        "FIRE",
+        "COLD",
+        "WATER",
+        "GAS",
+        "MIND",
+        "GENERAL",
+        "JUSTICE",
+        "ACID",
+        "ELECTRICITY",
+        "POISON",
+        "UNDEAD",
+        "MAGIC",
+        "DISEASE",
+        "TRAPS",
+        "MAXSTRENGTH",
+        "MAXINTELLIGENCE",
+        "MAXDEXTERITY",
+        "MAXCONSTITUTION",
+        "MAXCHARISMA",
+        "MAXWISDOM",
+        "AGE",
+        "DETECTION",
+        "OVERLOOKING"
+    };
+
+    /** string array of attributable descriptions of each stat code, ordered by numeric value */
+    public static final String[] STAT_DESC_ATTS=
+    {
+        "STRONG",
+        "INTELLIGENT",
+        "DEXTEROUS",
+        "HEALTHY",
+        "CHARISMATIC",
+        "WISE",
+        "",
+        "RESISTANT TO PARALYSIS",
+        "RESISTANT TO FIRE",
+        "RESISTANT TO COLD",
+        "RESISTANT TO WATER",
+        "RESISTANT TO GAS",
+        "RESISTANT TO MIND ATTACKS",
+        "RESISTANT",
+        "RESISTANT TO UNDIGNIFIED ATTACKS",
+        "RESISTANT TO ACID",
+        "RESISTANT TO ELECTRICITY",
+        "RESISTANT TO POISON",
+        "RESISTANT TO UNDEAD",
+        "RESISTANT TO MAGIC",
+        "RESISTANT TO DISEASE",
+        "RESISTANT TO TRAPS",
+        "POTENTIALLY STRONG",
+        "POTENTIALLY INTELLIGENT",
+        "POTENTIALLY DEXTROUS",
+        "POTENTIALLY HEALTHY",
+        "POTENTIALLY CHARISMATIC",
+        "POTENTIALLY WISE",
+        "OLD",
+        "CONCEILED",
+        "WATCHFUL"
     };
 
     /** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */

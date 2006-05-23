@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,7 @@ public class Prop_WeaponImmunity extends Property
 	        }
             flags.put(s,c);
 	    }
-	    
+
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -94,11 +94,7 @@ public class Prop_WeaponImmunity extends Property
 				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
 				&&(i!=CharStats.STAT_SAVE_MAGIC))
 				{
-					Vector V=CMParms.parse(CharStats.STAT_DESCS[i]);
-					if(((String)V.lastElement()).equals("SAVE"))
-					    foundPlusMinus=(Character)flags.get(V.firstElement());
-					else
-					    foundPlusMinus=(Character)flags.get(V.lastElement());
+					foundPlusMinus=(Character)flags.get(CharStats.STATE_NAMES[i]);
 					if(foundPlusMinus!=null)
 					{
 						if((foundPlusMinus.charValue()=='-')&&(immune))
