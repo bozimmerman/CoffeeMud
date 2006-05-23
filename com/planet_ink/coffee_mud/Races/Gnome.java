@@ -98,6 +98,9 @@ public class Gnome extends StdRace
 			p1.setDescription("This pair of small pants is made of bits and pieces of many other pants, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools.");
 			p1.text();
 			outfitChoices.addElement(p1);
+			
+			Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.addElement(s3);
 		}
 		return outfitChoices;
 	}

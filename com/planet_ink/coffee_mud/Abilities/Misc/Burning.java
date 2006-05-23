@@ -322,12 +322,17 @@ public class Burning extends StdAbility
 			target.recoverEnvStats();
 			if(target instanceof Item)
 			{
-				((Item)target).owner().recoverEnvStats();
-				if(((Item)target).owner() instanceof Room)
-					((Room)((Item)target).owner()).recoverRoomStats();
-				else
-				if(((Item)target).owner() instanceof MOB)
-					((MOB)((Item)target).owner()).location().recoverRoomStats();
+				Environmental owner=((Item)target).owner();
+				if(owner!=null)
+				{
+					owner.recoverEnvStats();
+					if(owner instanceof Room)
+						((Room)owner).recoverRoomStats();
+					else
+					if(owner instanceof MOB)
+						if(((MOB)owner).location()!=null)
+							((MOB)owner).location().recoverRoomStats();
+				}
 			}
 		}
 		return true;

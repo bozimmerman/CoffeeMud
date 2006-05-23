@@ -95,6 +95,9 @@ public class SmallElfKin extends StdRace
 			p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 			p1.text();
 			outfitChoices.addElement(p1);
+			
+			Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.addElement(s3);
 		}
 		return outfitChoices;
 	}

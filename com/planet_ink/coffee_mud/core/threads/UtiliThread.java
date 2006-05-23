@@ -144,7 +144,7 @@ public class UtiliThread extends Thread
     {
 		java.lang.StackTraceElement[] s=(java.lang.StackTraceElement[])Thread.getAllStackTraces().get(theThread);
 		for(int i=0;i<s.length;i++)
-			Log.debugOut("UtiliDump","   "+s[i].getFileName()+": "+s[i].getLineNumber());
+			Log.debugOut("UtiliDump","   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
     }
     
 	public void checkHealth()
@@ -297,8 +297,6 @@ public class UtiliThread extends Thread
 					{
                         if((S.mob()==null)||(S.mob().Name()==null)||(S.mob().Name().length()==0))
                         {
-    						if(S instanceof Thread)
-    							debugDumpStack((Thread)S);
                             S.logoff();
                             S.logoff();
                             CMLib.sessions().removeElement(S);

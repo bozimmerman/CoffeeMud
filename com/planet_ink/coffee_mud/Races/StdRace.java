@@ -338,7 +338,7 @@ public class StdRace implements Race
 					break;
 					case 5:
 					naturalWeapon.setName("an elbow");
-					naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 6:
 					naturalWeapon.setName("a backhand");

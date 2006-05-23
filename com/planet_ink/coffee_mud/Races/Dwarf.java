@@ -97,6 +97,9 @@ public class Dwarf extends StdRace
 			p1.setDescription("There are lots of little loops and folks for hanging tools about it.");
 			p1.text();
 			outfitChoices.addElement(p1);
+			
+			Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.addElement(s3);
 		}
 		return outfitChoices;
 	}

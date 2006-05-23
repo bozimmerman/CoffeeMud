@@ -75,6 +75,8 @@ public class Human extends StdRace
 			outfitChoices.addElement(s2);
 			Armor p1=CMClass.getArmor("GenPants");
 			outfitChoices.addElement(p1);
+			Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.addElement(s3);
 		}
 		return outfitChoices;
 	}

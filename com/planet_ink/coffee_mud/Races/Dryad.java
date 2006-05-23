@@ -109,6 +109,9 @@ public class Dryad extends StdRace
 			p1.setDescription("Obviously fine craftmenship, with delicate folds and intricate designs.  It looks very alluring!");
 			p1.text();
 			outfitChoices.addElement(p1);
+			
+			Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.addElement(s3);
 		}
 		return outfitChoices;
 	}
