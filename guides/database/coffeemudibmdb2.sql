@@ -73,7 +73,7 @@ CREATE TABLE CMvarchar (
 	CMHEIT int ,
 	CMWEIT int ,
 	CMPRPT varchar (250) ,
-	CMCOLR varchar (50) ,
+	CMCOLR varchar (100) ,
 	CMLSIP varchar (100) ,
 	CMCLAN varchar (100) ,
 	CMCLRO integer ,

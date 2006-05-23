@@ -100,7 +100,7 @@ CREATE TABLE CMCHAR (
 	CMHEIT int NULL ,
 	CMWEIT int NULL ,
 	CMPRPT varchar(250) NULL,
-	CMCOLR varchar(50) NULL,
+	CMCOLR varchar(100) NULL,
 	CMLSIP varchar(100) NULL,
 	CMCLAN varchar(100) NULL,
 	CMCLRO integer NULL,
