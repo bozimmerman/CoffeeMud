@@ -312,7 +312,7 @@ public class StdLawBook extends StdItem
                                     if(x1>0)
                                         V2.addElement(Law.ACTIONMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
                                     else
-                                        V2.addElement(Law.ACTIONMASK_DESCS[i],"");
+                                        V2.addElement(Law.ACTIONMASK_DESCS[i].toLowerCase(),"");
                                     break;
                                 }
                             }
