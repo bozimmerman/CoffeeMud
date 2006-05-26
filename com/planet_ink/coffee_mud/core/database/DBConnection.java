@@ -91,7 +91,6 @@ public class DBConnection
         p.put("user",DBUser);
         p.put("password",DBPass);
         p.put("SetBigStringTryClob", "true");
-Log.errOut("DBCONN",new Exception());
         myConnection=DriverManager.getConnection(DBService,p);
         sqlserver=false;
 		inUse=false;
@@ -113,7 +112,6 @@ Log.errOut("DBCONN",new Exception());
 	 */
 	public void close()
 	{
-Log.errOut("DBCLOSE",new Exception());
 		try{
 			if(myStatement!=null)
 				myStatement.close();
@@ -147,7 +145,7 @@ Log.errOut("DBCLOSE",new Exception());
 			{
 				myPreparedStatement=null;
 				sqlserver=true;
-				myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+				myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			}
 			catch(SQLException e)
 			{
