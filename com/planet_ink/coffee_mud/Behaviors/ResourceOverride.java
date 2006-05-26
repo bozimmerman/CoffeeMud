@@ -34,28 +34,26 @@ import java.util.*;
 public class ResourceOverride extends StdBehavior
 {
 	public String ID(){return "ResourceOverride";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS;}
+	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
-
-	int lastResourceSet=-1;
-	public boolean tick(Tickable ticking, int tickID)
+	private int tickDown=1;
+	private Vector rscs=new Vector();
+	private Vector roomTypes=new Vector();
+	public void setParms(String newStr)
 	{
-		super.tick(ticking,tickID);
-		if(tickID!=Tickable.TICKID_ROOM_BEHAVIOR) return true;
-		if(!(ticking instanceof Room)) return true;
-		Room R=(Room)ticking;
-		if((lastResourceSet<0)
-		||(R.myResource()!=lastResourceSet)
-		||(R.myResource()<0))
+		super.setParms(newStr);
+		rscs.clear();
+		roomTypes.clear();
+		Vector V=CMParms.parse(getParms());
+		if(V.size()==0) return;
+		for(int v=0;v<V.size();v++)
 		{
-			Vector V=CMParms.parse(getParms());
-			if(V.size()==0) return true;
 			// first try for a real one
 			int code=-1;
-			String which=((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).toUpperCase().trim();
+			String which=((String)V.elementAt(v)).toUpperCase().trim();
 			if((CMath.s_int(which)>0)||(which.equalsIgnoreCase("0")))
 			   code=CMath.s_int(which);
-
+	
 			if(code<0)
 			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 			{
@@ -88,8 +86,54 @@ public class ResourceOverride extends StdBehavior
 						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
 					}
 			}
-			lastResourceSet=code;
-			R.setResource(code);
+			if(code>=0)
+			{
+				if(!rscs.contains(new Integer(code)))
+					rscs.add(new Integer(code));
+			}
+			else
+			{
+				for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+					if(which.equalsIgnoreCase(Room.outdoorDomainDescs[i]))
+					{ code=i; break;}
+				if(code<0)
+					for(int i=0;i<Room.indoorDomainDescs.length;i++)
+						if(which.equalsIgnoreCase(Room.indoorDomainDescs[i]))
+						{ code=Room.INDOORS|i; break;}
+				if(!roomTypes.contains(new Integer(code)))
+					roomTypes.add(new Integer(code));
+			}
+		}
+	}
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		super.tick(ticking,tickID);
+		if(rscs.size()==0) return true;
+		if((--tickDown)>0) return true;
+		if((tickID==Tickable.TICKID_ROOM_BEHAVIOR)
+		&&(ticking instanceof Room))
+		{
+			tickDown=2;
+			Room R=(Room)ticking;
+			if(!rscs.contains(new Integer(R.myResource())))
+				R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
+		}
+		else
+		if((tickID==Tickable.TICKID_AREA)
+		&&(ticking instanceof Room))
+		{
+			tickDown=5;
+			Area A=(Area)ticking;
+			Room R=null;
+			if(!rscs.contains(new Integer(R.myResource())))
+				R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
+			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			{
+				R=(Room)e.nextElement();
+				if(((roomTypes.size()==0)||(!roomTypes.contains(new Integer(R.domainType()))))
+				&&(!rscs.contains(new Integer(R.myResource()))))
+					R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
+			}
 		}
 		return true;
 	}
