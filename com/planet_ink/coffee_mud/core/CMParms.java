@@ -542,7 +542,9 @@ public class CMParms
         return defaultVal;
     }
 
-    public static int getParmCompare(String text, String key, int value)
+    private static int[] makeIntArray(int x, int y){ int[] xy=new int[2]; xy[0]=x;xy[1]=y;return xy;}
+    
+    public static int[] getParmCompare(String text, String key, int value)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -572,14 +574,14 @@ public class CMParms
 								x++;
 							int found=CMath.s_int(text.substring(0,x));
 							if(andEqual&&(found==value))
-								return (comp=='!')?-1:1;
+								return makeIntArray(comp,(comp=='!')?-1:1);
 							switch(comp)
 							{
-								case '>': if(value>found) return 1; return -1;
-								case '<': if(value<found) return 1; return -1;
-								case '!': return 1;
+								case '>': return makeIntArray(comp,(value>found)?1:-1);
+								case '<': return makeIntArray(comp,(value<found)?1:-1);
+								case '!': makeIntArray(comp,1);
 							}
-							return 0;
+							return makeIntArray(comp,0);
 						}
 					}
                 }
@@ -588,7 +590,7 @@ public class CMParms
             else
                 x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
         }
-        return 0;
+        return makeIntArray('\0',0);
     }
 
     public static int getParmPlus(String text, String key)

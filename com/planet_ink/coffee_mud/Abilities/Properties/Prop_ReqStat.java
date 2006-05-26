@@ -38,6 +38,40 @@ public class Prop_ReqStat extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
 
+	public String accountForYourself()
+	{
+		return "Entry restricted as follows: "+CMLib.masking().maskDesc(miscText);
+	}
+
+	public boolean passesMuster(MOB mob)
+	{
+		if(mob==null) return false;
+		if(CMLib.flags().isATrackingMonster(mob))
+			return true;
+		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+			return true;
+		int[] comp=null;
+		for(int c=0;c<CharStats.STAT_NAMES.length;c++)
+			if((comp=CMParms.getParmCompare(text(),CharStats.STAT_NAMES[c],mob.charStats().getStat(c)))[1]<0)
+			{
+				switch(comp[0])
+				{
+				case '=':
+				case '!':
+					mob.tell("You aren't the right "+CMStrings.capitalizeAndLower(CharStats.STAT_NAMES[c])+" to go there.");
+					break;
+				case '<':
+					mob.tell("You are too "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" to go there.");
+					break;
+				case '>':
+					mob.tell("You are not "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" enough to go there.");
+					break;
+				}
+				return false;
+			}
+		return true;
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
@@ -45,14 +79,21 @@ public class Prop_ReqStat extends Property
 		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
 		   &&(!CMLib.flags().isFalling(msg.source()))
-		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area))
+		   &&(!passesMuster(msg.source())))
+				return false;
+		HashSet H=new HashSet();
+		if(text().toUpperCase().indexOf("NOFOL")>=0)
+			H.add(msg.source());
+		else
 		{
-			for(int c=0;c<CharStats.STAT_NAMES.length;c++)
-				if(CMParms.getParmCompare(text(),CharStats.STAT_NAMES[c],msg.source().charStats().getStat(c))<0)
-				{
-
-				}
+			msg.source().getGroupMembers(H);
+			for(Iterator e=H.iterator();e.hasNext();)
+				((MOB)e.next()).getRideBuddies(H);
 		}
-		return super.okMessage(myHost,msg);
+		for(Iterator e=H.iterator();e.hasNext();)
+			if(passesMuster((MOB)e.next()))
+				return super.okMessage(myHost,msg);
+		return false;
 	}
 }

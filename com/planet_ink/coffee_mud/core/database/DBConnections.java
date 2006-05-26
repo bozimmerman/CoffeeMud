@@ -193,6 +193,7 @@ public class DBConnections
 			ThisDB=null;
 			if(Connections.size()<maxConnections)
 				try{ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);
+				Connections.addElement(ThisDB);
 				}catch(Exception e){
 					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0)) 
 						Log.errOut("DBConnections",e.getMessage());
@@ -203,6 +204,17 @@ public class DBConnections
 				Log.errOut("DBConnections","Failed to connect to database.");
 				try{ThisDB.close();}catch(Exception e){}	
 				ThisDB=null;  
+			}
+			if(ThisDB==null)
+			{
+				try{
+					for(int i=0;i<Connections.size();i++)
+						if(((DBConnection)Connections.elementAt(i)).use(""))
+						{
+							ThisDB=((DBConnection)Connections.elementAt(i));
+							break;
+						}
+				}catch(Exception e){}
 			}
 			if(ThisDB==null)
 			{
@@ -217,7 +229,7 @@ public class DBConnections
 						consecutiveFailures=0;
 					}
 				}
-				if(Connections.size()>=maxConnections)
+				if((ThisDB==null)&&(Connections.size()>=maxConnections))
 				{
 					int inuse=0;
 					for(int i=0;i<Connections.size();i++)
@@ -270,9 +282,12 @@ public class DBConnections
 	{
 		if(D==null) return;
 		D.doneUsing("");
-		synchronized(Connections)
-		{ 
-			Connections.remove(D);
+		if(!D.ready())
+		{
+			synchronized(Connections)
+			{ 
+				Connections.remove(D);
+			}
 		}
 	}
 	
