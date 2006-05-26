@@ -192,8 +192,9 @@ public class DBConnections
 			}
 			ThisDB=null;
 			if(Connections.size()<maxConnections)
-				try{ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);
-				Connections.addElement(ThisDB);
+				try{
+					ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);
+					Connections.addElement(ThisDB);
 				}catch(Exception e){
 					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0)) 
 						Log.errOut("DBConnections",e.getMessage());
