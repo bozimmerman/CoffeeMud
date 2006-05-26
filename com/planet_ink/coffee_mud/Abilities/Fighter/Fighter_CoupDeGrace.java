@@ -79,7 +79,10 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			}
 			if(!CMLib.flags().isSleeping(mob.getVictim()))
 			{
-				mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
+				if(CMLib.flags().isSitting(mob.getVictim()))
+					mob.tell(mob.getVictim().charStats().HeShe()+" is on the ground, but not prone!");
+				else
+					mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
 				return false;
 			}
 		}

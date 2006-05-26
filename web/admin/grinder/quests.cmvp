@@ -28,9 +28,10 @@
 		{
 			document.QUESTS.QUEST.value=quest;
 			document.QUESTS.FUNCTION.value=action;
+			document.QUESTS.action='/grinder/quests.cmvp';
 			document.QUESTS.submit();
 		}
-		function Clicked(action){Load(action);}
+		function Clicked2(action){Load(action);}
 		function Load(action)
 		{
 			document.QUESTS.QUEST.value="";
@@ -45,7 +46,7 @@
 	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');"></TD></TR>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked2('/grinder/loggedin.cmvp');"></TD></TR>
 	</TABLE>
 <CENTER>
 <FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="quests.cmvp">

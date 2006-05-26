@@ -92,6 +92,7 @@ public class DBConnection
         p.put("password",DBPass);
         p.put("SetBigStringTryClob", "true");
         myConnection=DriverManager.getConnection(DBService,p);
+        Log.debugOut("New connection made to :"+DBService+" using "+DBClass);        
         sqlserver=false;
 		inUse=false;
 	}

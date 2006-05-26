@@ -112,12 +112,15 @@ public class TaxCollector extends StdBehavior
 				double paidAmount=((Coins)msg.tool()).getTotalValue();
 				if(paidAmount<=0.0) return;
 			    double[] owed=totalMoneyOwed(mob,msg.source());
-			    Room treasuryR=CMLib.map().getRoom(treasuryRoomID);
-	            if(treasuryR!=null)
-	            {
-	                Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryItem);
-    				if(COIN!=null) COIN.putCoinsBack();
-	            }
+			    if(treasuryRoomID==null)
+			    {
+				    Room treasuryR=CMLib.map().getRoom(treasuryRoomID);
+		            if(treasuryR!=null)
+		            {
+		                Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryItem);
+	    				if(COIN!=null) COIN.putCoinsBack();
+		            }
+			    }
 	            
 				if((demanded!=null)&&(demanded.contains(msg.source())))
 				{
