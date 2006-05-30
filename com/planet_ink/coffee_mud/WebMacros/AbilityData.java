@@ -132,6 +132,28 @@ public class AbilityData extends StdWebMacro
 				            str.append(F.usageFactors(A)+", ");
 				    }
 				}
+				if(parms.containsKey("ALLOWS"))
+				{
+					Vector allows=CMLib.ableMapper().getAllowsList(A.ID());
+					Ability A2=null;
+					if((allows!=null)&&(allows.size()>0))
+					{
+						EducationLibrary.EducationDefinition def=null;
+						for(int a=0;a<allows.size();a++)
+						{
+							String allowStr=(String)allows.elementAt(a);
+							def=CMLib.edu().getDefinition(allowStr);
+							if(def!=null)
+								str.append(def.name+", ");
+							else
+							{
+								A2=CMClass.getAbility(allowStr);
+								if(A2!=null)
+									str.append(A2.Name()+", ");
+							}
+						}
+					}
+				}
 				if(parms.containsKey("DOMAIN"))
 				{
 					StringBuffer thang=new StringBuffer("");

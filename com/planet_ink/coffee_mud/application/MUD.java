@@ -868,7 +868,7 @@ public class MUD extends Thread implements MudHost
 				CMProps.setVar(CMProps.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
 				CMProps.setIntVar(CMProps.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
 				Log.startLogFiles(page.getInt("NUMLOGS"));
-				Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
+				Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"));
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));

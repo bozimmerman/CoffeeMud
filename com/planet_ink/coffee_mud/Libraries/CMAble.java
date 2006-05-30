@@ -37,6 +37,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 								
 	public Hashtable completeAbleMap=new Hashtable();
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
+	public Hashtable allows=new Hashtable();
 	
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
@@ -131,6 +132,82 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProfficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 	
+	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
+	{
+		for(int v=0;v<preReqSkillsList.size();v++)
+		{
+			String s=(String)preReqSkillsList.elementAt(v);
+			int x=s.indexOf("(");
+			if((x>=0)&&(s.endsWith(")")))
+				s=s.substring(0,x);
+			if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
+			{
+				String ID2=ID;
+				while(allows.contains("*"+ID2))
+					ID2="*"+ID2;
+				allows.put("*"+ID2,s);
+			}
+			else
+			{
+				Vector V=(Vector)allows.get(s);
+				if(V==null){ V=new Vector(); allows.put(s,V);}
+				if(!V.contains(ID))V.addElement(ID);
+			}
+		}
+		if((extraMask!=null)&&(extraMask.trim().length()>0))
+		{
+			Vector preReqsOf=CMLib.masking().getAbilityEduReqs(extraMask);
+			for(int v=0;v<preReqsOf.size();v++)
+			{
+				String s=(String)preReqsOf.elementAt(v);
+				if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
+				{
+					String ID2=ID;
+					while(allows.contains("*"+ID2))
+						ID2="*"+ID2;
+					allows.put("*"+ID2,s);
+				}
+				else
+				{
+					Vector V=(Vector)allows.get(s);
+					if(V==null){ V=new Vector(); allows.put(s,V);}
+					if(!V.contains(ID))V.addElement(ID);
+				}
+			}
+		}
+	}
+	
+	public Vector getAllowsList(String ID)
+	{
+		String KEYID=null;
+		String abilityID=null;
+		Vector remove=null;
+		for(Enumeration e=allows.keys();e.hasMoreElements();) 
+		{
+			KEYID=(String)e.nextElement();
+			if(KEYID.startsWith("*"))
+			{
+				abilityID=(String)allows.get(KEYID);
+				if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(",")>0))
+				{
+					Vector orset=getOrSet(ID,abilityID);
+					if(orset.size()!=0)
+					{
+						String KEYID2=KEYID;
+						while(KEYID2.startsWith("*")) KEYID2=KEYID2.substring(1);
+						addPreRequisites(KEYID2,orset,"");
+						if(remove==null) remove=new Vector();
+						remove.addElement(KEYID);
+					}
+				}
+			}
+		}
+		if(remove!=null)
+			for(int r=0;r<remove.size();r++)
+				allows.remove(remove.elementAt(r));
+		return (Vector)allows.get(ID);
+	}
+	
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
@@ -153,6 +230,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.extraMask=extraMask;
 		
 		able.skillPreReqs=new DVector(2);
+		addPreRequisites(ability,preReqSkillsList,extraMask);
 		for(int v=0;v<preReqSkillsList.size();v++)
 		{
 			String s=(String)preReqSkillsList.elementAt(v);
@@ -311,63 +389,68 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return -1;
 	}
 
-	public void fillPreRequisites(Ability A, DVector rawPreReqs)
+	public Vector getOrSet(String errStr, String abilityID)
 	{
 		Ability preA=null;
+		Vector orset=new Vector();
+		Vector preorset=CMParms.parseCommas(abilityID,true);
+		for(int p=0;p<preorset.size();p++)
+		{
+			abilityID=(String)preorset.elementAt(p);
+			if(abilityID.startsWith("*"))
+			{
+				String a=abilityID.substring(1).toUpperCase();
+				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+				{ 
+					preA=(Ability)e.nextElement();
+					if(preA.ID().toUpperCase().endsWith(a))
+						orset.addElement(preA.ID());
+				}
+			}
+			else
+			if(abilityID.endsWith("*"))
+			{
+				String a=abilityID.substring(0,abilityID.length()-1).toUpperCase();
+				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+				{ 
+					preA=(Ability)e.nextElement();
+					if(preA.ID().toUpperCase().startsWith(a))
+						orset.addElement(preA.ID());
+				}
+			}
+			else
+				orset.addElement(abilityID);
+		}
+		for(int o=orset.size()-1;o>=0;o--)
+		{
+			abilityID=(String)orset.elementAt(o);
+			preA=CMClass.getAbility(abilityID);
+			if(preA==null) 
+			{
+				preA=CMClass.findAbility(abilityID);
+				if(preA!=null)
+					orset.setElementAt(preA.ID(),o);
+				else
+				{
+					Log.errOut("CMAble","Skill "+errStr+" requires nonexistant skill "+abilityID+".");
+					orset.clear();
+					break;
+				}
+			}
+		}
+		return orset;
+	}
+	
+	public void fillPreRequisites(Ability A, DVector rawPreReqs)
+	{
 		for(int v=0;v<rawPreReqs.size();v++)
 		{
 			String abilityID=(String)rawPreReqs.elementAt(v,1);
 			if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(",")>0))
 			{
-				Vector orset=new Vector();
-				Vector preorset=CMParms.parseCommas(abilityID,true);
-				for(int p=0;p<preorset.size();p++)
-				{
-					abilityID=(String)preorset.elementAt(p);
-					if(abilityID.startsWith("*"))
-					{
-						String a=abilityID.substring(1).toUpperCase();
-						for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
-						{ 
-							preA=(Ability)e.nextElement();
-							if(preA.ID().toUpperCase().endsWith(a))
-								orset.addElement(preA.ID());
-						}
-					}
-					else
-					if(abilityID.endsWith("*"))
-					{
-						String a=abilityID.substring(0,abilityID.length()-1).toUpperCase();
-						for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
-						{ 
-							preA=(Ability)e.nextElement();
-							if(preA.ID().toUpperCase().startsWith(a))
-								orset.addElement(preA.ID());
-						}
-					}
-					else
-						orset.addElement(abilityID);
-				}
-				rawPreReqs.setElementAt(v,1,orset);
-				for(int o=orset.size()-1;o>=0;o--)
-				{
-					abilityID=(String)orset.elementAt(o);
-					preA=CMClass.getAbility(abilityID);
-					if(preA==null) 
-					{
-						preA=CMClass.findAbility(abilityID);
-						if(preA!=null)
-							orset.setElementAt(preA.ID(),o);
-						else
-						{
-							Log.errOut("CMAble","Skill "+A.ID()+" requires nonexistant skill "+abilityID+".");
-							orset.clear();
-							break;
-						}
-					}
-				}
-				if(orset.size()==0)
-					rawPreReqs.removeElementAt(v);
+				Vector orset=getOrSet(A.ID(),abilityID);
+				if(orset.size()!=0)
+					rawPreReqs.setElementAt(v,1,orset);
 			}
 			else
 			{

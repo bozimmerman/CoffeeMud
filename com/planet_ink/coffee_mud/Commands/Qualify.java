@@ -202,7 +202,7 @@ public class Qualify extends BaseAbleLister
 				{
 					edusFound=true;
 					def=(EducationLibrary.EducationDefinition)V.elementAt(v);
-					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.uncompiledFinalMask,true)+"\n\r");
+					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.finalRequirements(),true)+"\n\r");
 				}
 				msg.append(msg2.toString());
 			}

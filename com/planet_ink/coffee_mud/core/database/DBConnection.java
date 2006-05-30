@@ -35,6 +35,8 @@ import java.sql.*;
 */
 public class DBConnection
 {
+	private static final boolean FLAG_RECONNECT=false;
+	
 	/** Connection object being used*/
 	private Connection myConnection=null;
 	
@@ -92,7 +94,7 @@ public class DBConnection
         p.put("password",DBPass);
         p.put("SetBigStringTryClob", "true");
         myConnection=DriverManager.getConnection(DBService,p);
-        Log.debugOut("New connection made to :"+DBService+" using "+DBClass);        
+        //Log.debugOut("New connection made to :"+DBService+" using "+DBClass);        
         sqlserver=false;
 		inUse=false;
 	}
@@ -234,7 +236,7 @@ public class DBConnection
 		{
 			// not a real error?
 		}
-		//close();
+		if(FLAG_RECONNECT) close();
 		inUse=false;
 	}
 	

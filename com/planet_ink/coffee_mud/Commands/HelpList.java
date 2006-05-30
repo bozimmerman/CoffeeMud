@@ -60,11 +60,11 @@ public class HelpList extends StdCommand
 		if((thisTag==null)||(thisTag.length()==0))
 		{
 			mob.tell("No help entries match '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
-			Log.errOut("Help",mob.Name()+" wanted help list match on "+helpStr);
+			Log.hlpOut("Help",mob.Name()+" wanted help list match on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln("^xHelp File Matches:^.^?\n\r^N"+thisTag.toString());
+			mob.session().wraplessPrintln("^xHelp File Matches:^.^?\n\r^N"+thisTag.toString().replace('_',' '));
 		return false;
 	}
 	

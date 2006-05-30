@@ -185,15 +185,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					def=CMLib.edu().getDefinition(TYPES_CODES[t]+STAGES[s]);
 					if(def!=null)
 					{
-						if((def.uncompiledListMask==null)||(def.uncompiledListMask.length()==0))
+						String addToList="";
+						if((def.listRequirements()==null)||(def.listRequirements().length()==0))
 						{
-							def.uncompiledListMask="";
 							if(s>0)
-								def.uncompiledListMask+=" -EDUCATIONS +"+TYPES_CODES[t]+STAGES[s-1];
-							def.uncompiledListMask+=" -SKILLS";
+								addToList+=" -EDUCATIONS +"+TYPES_CODES[t]+STAGES[s-1];
+							addToList+=" -SKILLS";
 						}
-						def.uncompiledListMask+=" +"+ID();
-						def.compiledListMask=CMLib.masking().maskCompile(def.uncompiledListMask);
+						def.addListMask(addToList+" +"+ID());
 					}
 				}
 			}

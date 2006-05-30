@@ -521,6 +521,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return false;
     }
 	public String maskDesc(String text){return maskDesc(text,false);}
+	
+	
 	public String maskDesc(String text, boolean skipFirstWord)
 	{
 		if(text.trim().length()==0) return "Anyone";
@@ -1659,6 +1661,60 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf.toString();
 	}
 
+	public Vector getAbilityEduReqs(String text)
+	{
+		Vector preReqs=new Vector();
+		if(text.trim().length()==0) 
+			return preReqs;
+        Hashtable zapCodes=getMaskCodes();
+		Vector V=CMParms.parse(text.toUpperCase());
+		String str=null;
+		String str2=null;
+		for(int v=0;v<V.size();v++)
+		{
+			str=(String)V.elementAt(v);
+			if(zapCodes.containsKey(str))
+				switch(((Integer)zapCodes.get(str)).intValue())
+				{
+				case 81: // -educations
+					{
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							str2=(String)V.elementAt(v2);
+	                        if(zapCodes.containsKey(str2))
+	                            break;
+	                        if(str2.startsWith("+"))
+	                        {
+	                        	EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(str2.substring(1).toUpperCase().trim());
+	                        	if(E!=null) preReqs.addElement(E.ID);
+	                        }
+						}
+					}
+				break;
+				case 83: // -skills
+					{
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							str2=(String)V.elementAt(v2);
+	                        if(zapCodes.containsKey(str2))
+	                            break;
+	                        if(str2.startsWith("+"))
+	                        {
+	                        	str2=str2.substring(1);
+	                        	int x=str2.indexOf("(");
+	                        	if(x>0) str2=str2.substring(0,x);
+	                        	Ability A=CMClass.getAbility(str2);
+	                        	if(A!=null)
+	                        		preReqs.addElement(A.ID());
+	                        }
+						}
+					}
+				break;
+				}
+		}
+		return preReqs;
+	}
+	
 	public Vector maskCompile(String text)
 	{
 		Vector buf=new Vector();

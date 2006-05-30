@@ -79,13 +79,28 @@ public class EducationData extends StdWebMacro
 				}
 				if(parms.containsKey("NAME")) str.append(E.name+", ");
 				if(parms.containsKey("COST")) str.append(E.costDescription()+", ");
-				if(parms.containsKey("REQUIRES"))
+				if(parms.containsKey("REQUIRES")) str.append(CMLib.masking().maskDesc(E.allRequirements())+", ");
+				if(parms.containsKey("ALLOWS"))
 				{
-					String req=E.uncompiledListMask;
-					if(req==null) req=""; else req=req.trim();
-					if((E.uncompiledFinalMask!=null)&&(E.uncompiledFinalMask.length()>0))
-						req=req+" "+E.uncompiledFinalMask;
-					str.append(CMLib.masking().maskDesc(req)+", ");
+					Vector allows=CMLib.ableMapper().getAllowsList(E.ID);
+					if((allows!=null)&&(allows.size()>0))
+					{
+						EducationLibrary.EducationDefinition def=null;
+						Ability A=null;
+						for(int a=0;a<allows.size();a++)
+						{
+							String allowStr=(String)allows.elementAt(a);
+							def=CMLib.edu().getDefinition(allowStr);
+							if(def!=null)
+								str.append(def.name+", ");
+							else
+							{
+								A=CMClass.getAbility(allowStr);
+								if(A!=null)
+									str.append(A.Name()+", ");
+							}
+						}
+					}
 				}
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))

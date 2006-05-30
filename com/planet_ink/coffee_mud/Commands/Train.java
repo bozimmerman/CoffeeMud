@@ -144,7 +144,7 @@ public class Train extends StdCommand
 				{
 					if(!CMLib.edu().myQualifiedEducations(mob).contains(theEducation))
 					{
-						mob.tell("You do not yet fully qualify for that education.\n\rQualifications:"+CMLib.masking().maskDesc(theEducation.uncompiledFinalMask));
+						mob.tell("You do not yet fully qualify for that education.\n\rQualifications:"+CMLib.masking().maskDesc(theEducation.finalRequirements()));
 						return false;
 					}
 					abilityCode=107;

@@ -55,8 +55,17 @@ public class Help extends StdCommand
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			mob.tell("No help is available on '"+helpStr+"'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.");
-			Log.errOut("Help",mob.Name()+" wanted help on "+helpStr);
+			StringBuffer thisList=
+	    		CMLib.help().getHelpList(
+		        helpStr,
+		        CMLib.help().getHelpFile(),
+		        CMSecurity.isAllowed(mob,mob.location(),"AHELP")?CMLib.help().getArcHelpFile():null,
+		        mob);
+			if((thisList!=null)&&(thisList.length()>0))
+				mob.tell("No help is available on '"+helpStr+"'.\n\rHowever, here are some search matches:\n\r^N"+thisList.toString().replace('_',' '));
+			else
+				mob.tell("No help is available on '"+helpStr+"'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.");
+			Log.hlpOut("Help",mob.Name()+" wanted help on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())

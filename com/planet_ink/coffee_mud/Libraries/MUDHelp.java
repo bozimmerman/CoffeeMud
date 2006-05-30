@@ -150,6 +150,42 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return ""+whichConsumed;
 	}
 
+	private void appendAllowed(StringBuffer prepend, String ID)
+	{
+		Vector allows=CMLib.ableMapper().getAllowsList(ID);
+		EducationLibrary.EducationDefinition def=null;
+		Ability A=null;
+		if((allows!=null)&&(allows.size()>0))
+		{
+			prepend.append("\n\rAllows   : ");
+			int lastLine=11;
+			for(int a=0;a<allows.size();a++)
+			{
+				String allowStr=(String)allows.elementAt(a);
+				def=CMLib.edu().getDefinition(allowStr);
+				if(def!=null)
+				{
+					prepend.append(def.name+" ");
+					lastLine+=(def.name.length()+1);
+				}
+				else
+				{
+					A=CMClass.getAbility(allowStr);
+					if(A!=null)
+					{
+						prepend.append(A.Name()+" ");
+						lastLine+=(A.Name().length()+1);
+					}
+				}
+				if((lastLine>60)&&(a<(allows.size()-1)))
+				{
+					lastLine=11;
+					prepend.append("\n\rAllows   : ");
+				}
+			}
+		}
+	}
+	
 	public String fixHelp(String tag, String str, MOB forMOB)
 	{
 		if(str.startsWith("<EDUCATION>"))
@@ -163,11 +199,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					StringBuffer prepend=new StringBuffer("");
 					prepend.append("\n\rEducation: "+def.name);
-					String mask=def.uncompiledListMask;
-					if(mask==null) mask="";
-					if(def.uncompiledFinalMask!=null)
-						mask=(mask+" "+def.uncompiledFinalMask).trim();
-					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask,true));
+					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(def.allRequirements(),true));
+					appendAllowed(prepend,def.ID);
 					str=prepend.toString()+"\n\r"+str;
 				}
 			}
@@ -303,7 +336,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					String mask=CMLib.ableMapper().getCommonExtraMask(A);
 					if((mask!=null)&&(mask.length()>0))
 						prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask,true));
-					
+					appendAllowed(prepend,A.ID());
 					if(type==Ability.ACODE_PRAYER)
 					{
 					    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
@@ -567,9 +600,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     			}
     			if(arcHelpFile!=null)
     			{
-    				DVector suspiciousPairs=suspiciousTags(arcHelpFile);
-    				for(int d=0;d<suspiciousPairs.size();d++)
-    					System.out.println(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+    				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
+    				//for(int d=0;d<suspiciousPairs.size();d++)
+    				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
     				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
     				{
     					String key=(String)e.nextElement();
@@ -641,9 +674,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     			}
     			if(helpFile!=null)
     			{
-    				DVector suspiciousPairs=suspiciousTags(helpFile);
-    				for(int d=0;d<suspiciousPairs.size();d++)
-    					System.out.println(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+    				///DVector suspiciousPairs=suspiciousTags(helpFile);
+    				//for(int d=0;d<suspiciousPairs.size();d++)
+    				//	Sy/stem.out.pr/intln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
     				Resources.submitResource("MAIN HELP FILE",helpFile);
     			}
     		}

@@ -35,15 +35,15 @@ public class Prop_ReqStat extends Property
 {
 	public String ID() { return "Prop_ReqStat"; }
 	public String name(){ return "Require stat values";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 
 
 	public String accountForYourself()
 	{
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
-
-	public boolean passesMuster(MOB mob)
+	
+	public boolean passesMuster(MOB mob, String msg)
 	{
 		if(mob==null) return false;
 		if(CMLib.flags().isATrackingMonster(mob))
@@ -58,13 +58,13 @@ public class Prop_ReqStat extends Property
 				{
 				case '=':
 				case '!':
-					mob.tell("You aren't the right "+CMStrings.capitalizeAndLower(CharStats.STAT_NAMES[c])+" to go there.");
+					mob.tell("You aren't the right "+CMStrings.capitalizeAndLower(CharStats.STAT_NAMES[c])+" to "+msg+".");
 					break;
 				case '<':
-					mob.tell("You are too "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" to go there.");
+					mob.tell("You are too "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" to "+msg+".");
 					break;
 				case '>':
-					mob.tell("You are not "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" enough to go there.");
+					mob.tell("You are not "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" enough to "+msg+".");
 					break;
 				}
 				return false;
@@ -74,26 +74,69 @@ public class Prop_ReqStat extends Property
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected!=null)
-		   &&(msg.target()!=null)
-		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
-			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-		   &&(!CMLib.flags().isFalling(msg.source()))
-		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area))
-		   &&(!passesMuster(msg.source())))
-				return false;
-		HashSet H=new HashSet();
-		if(text().toUpperCase().indexOf("NOFOL")>=0)
-			H.add(msg.source());
-		else
+		if(affected!=null)
 		{
-			msg.source().getGroupMembers(H);
-			for(Iterator e=H.iterator();e.hasNext();)
-				((MOB)e.next()).getRideBuddies(H);
+			if((msg.target()!=null)
+		    &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
+		    &&(!CMLib.flags().isFalling(msg.source()))
+		    &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+			{
+				if(passesMuster(msg.source(),"go there"))
+					return super.okMessage(myHost,msg);
+				return false;
+			}
+			else
+			if((affected instanceof Item)
+			&&(((Item)affected).owner() instanceof MOB))
+			{
+				Item myItem=(Item)affected;
+				if(msg.amISource((MOB)myItem.owner()))
+					switch(msg.sourceMinor())
+					{
+					case CMMsg.TYP_FILL:
+						if((myItem instanceof Drink)
+						&&(msg.tool()!=myItem)
+						&&(msg.amITarget(myItem)))
+						{
+							if(passesMuster(msg.source(),"fill that"))
+								return super.okMessage(myHost,msg);
+							return false;
+						}
+						break;
+					case CMMsg.TYP_WEAR:
+						if((myItem instanceof Armor)
+					    &&(msg.amITarget(myItem)))
+						{
+							if(passesMuster(msg.source(),"wear that"))
+								return super.okMessage(myHost,msg);
+							return false;
+						}
+						break;
+					case CMMsg.TYP_PUT:
+						if((myItem instanceof Container)
+						&&(msg.amITarget(myItem)))
+						{
+							if(passesMuster(msg.source(),"put that in there"))
+								return super.okMessage(myHost,msg);
+							return false;
+						}
+						break;
+					case CMMsg.TYP_WIELD:
+					case CMMsg.TYP_HOLD:
+						if((!(myItem instanceof Drink))
+					    &&(!(myItem instanceof Armor))
+					    &&(!(myItem instanceof Container))
+					    &&(msg.amITarget(myItem)))
+						{
+							if(passesMuster(msg.source(),"hold that"))
+								return super.okMessage(myHost,msg);
+							return false;
+						}
+						break;
+					}
+			}
 		}
-		for(Iterator e=H.iterator();e.hasNext();)
-			if(passesMuster((MOB)e.next()))
-				return super.okMessage(myHost,msg);
-		return false;
+		return super.okMessage(myHost,msg);
 	}
 }

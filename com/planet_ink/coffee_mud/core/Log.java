@@ -39,6 +39,8 @@ public class Log
     
 	/**	reroutable error channel */
 	private static PrintWriter errOutWriter=null;
+	/**	reroutable error channel */
+	private static PrintWriter helpOutWriter=null;
 	/**	reroutable debug channel */
 	private static PrintWriter debugOutWriter=null;
 	/**	reroutable logging channel */
@@ -49,6 +51,8 @@ public class Log
 	private static String sysMsgs="ON";
 	/**	debug messages status */
 	private static String dbgMsgs="OFF";
+	/**	help messages status */
+	private static String hlpMsgs="OFF";
 	/**	error messages status */
 	private static String errMsgs="ON";
 	/** SPACES for headers */
@@ -90,11 +94,13 @@ public class Log
 	*/
 	public static void Initialize(String newSYSMSGS, 
 								  String newERRMSGS, 
-								  String newDBGMSGS)
+								  String newDBGMSGS,
+								  String newHLPMSGS)
 	{
 		sysMsgs=newSYSMSGS;
 		errMsgs=newERRMSGS;
 		dbgMsgs=newDBGMSGS;
+		hlpMsgs=newHLPMSGS;
 		
 		if(sysMsgs.equalsIgnoreCase("ON"))
 			systemOutWriter=new PrintWriter(System.out,true);
@@ -113,6 +119,30 @@ public class Log
 		else
 		if((errMsgs.equalsIgnoreCase("FILE"))||(errMsgs.equalsIgnoreCase("BOTH")))
 			errOutWriter=fileOutWriter;
+		
+		if(hlpMsgs.equalsIgnoreCase("ON"))
+			helpOutWriter=new PrintWriter(System.out,true);
+		else
+		if(hlpMsgs.equalsIgnoreCase("OFF"))
+			helpOutWriter=null;
+		else
+		if((hlpMsgs.equalsIgnoreCase("FILE"))||(hlpMsgs.equalsIgnoreCase("BOTH")))
+			helpOutWriter=fileOutWriter;
+		else
+		if(hlpMsgs.equalsIgnoreCase("OWNFILE"))
+		{
+			File fileOut=new File("helpmisses.log");
+			try
+			{
+				filePath = fileOut.getAbsolutePath();
+				FileOutputStream fileStream=new FileOutputStream(fileOut,true);
+				helpOutWriter=new PrintWriter(fileStream,true);
+			}
+			catch(IOException e)
+			{
+				Log.errOut("Log",e);
+			}
+		}
 		
 		if(dbgMsgs.equalsIgnoreCase("ON"))
 			debugOutWriter=new PrintWriter(System.out,true);
@@ -339,6 +369,25 @@ public class Log
 	}
 	
 	/**
+	* Handles help logging entries.  Sends them to System.out,
+	* the log file, or nowhere.
+ 	* 
+	* <br><br><b>Usage:</b> errOut(null,"UNKN",Out);
+	* @param Module The file name
+	* @param Message The message to print
+	*/
+	public static void hlpOut(String Module, String Message)
+	{
+		if(helpOutWriter!=null)
+		{
+			helpOutWriter.println(getLogHeader(null,"Help",Module, Message));
+			helpOutWriter.flush();
+			if(hlpMsgs.equalsIgnoreCase("BOTH"))
+				systemOut(getLogHeader(null,"Help",Module, Message));
+		}
+	}
+	
+	/**
 	* Handles error logging entries.  Sends them to System.out,
 	* the webiq.log file, or nowhere.
  	* 
@@ -548,18 +597,25 @@ public class Log
 	 */
 	public static void close()
 	{
+		if((helpOutWriter!=systemOutWriter)
+		&&(helpOutWriter!=fileOutWriter))
+			helpOutWriter.close();
 		fileOutWriter.close();
 		errOutWriter=null;
 		systemOutWriter=null;
-		systemOutWriter=null;
 		debugOutWriter=null;
 		fileOutWriter=null;
+		helpOutWriter=null;
 	}
 
 	
 	public static boolean errorChannelOn()
 	{
 		return errOutWriter!=null;
+	}
+	public static boolean helpChannelOn()
+	{
+		return helpOutWriter!=null;
 	}
 	public static boolean debugChannelOn()
 	{

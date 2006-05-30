@@ -35,10 +35,38 @@ public interface EducationLibrary extends CMObject
     {
         public String ID="";
         public String name="";
-        public String uncompiledListMask=null;
+        private String uncompiledListMask="";
         public Vector compiledListMask=null;
-        public String uncompiledFinalMask=null;
+        private String uncompiledFinalMask="";
         public Vector compiledFinalMask=null;
+        public String allRequirements(){
+			String req=uncompiledListMask;
+			if(req==null) req=""; else req=req.trim();
+			if((uncompiledFinalMask!=null)&&(uncompiledFinalMask.length()>0))
+				req=req+" "+uncompiledFinalMask;
+			return req.trim();
+        }
+        public String listRequirements(){return uncompiledListMask;}
+        public String finalRequirements(){return uncompiledFinalMask;}
+        public void addListMask(String mask){
+        	if((mask==null)||(mask.length()==0)) return;
+        	if(uncompiledListMask==null)
+	        	uncompiledListMask=mask;
+        	else
+	        	uncompiledListMask+=mask;
+        	compiledListMask=CMLib.masking().maskCompile(uncompiledListMask);
+        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),mask.trim());
+        }
+        public void addFinalMask(String mask){ 
+        	if((mask==null)||(mask.length()==0)) return;
+        	if(uncompiledFinalMask==null)
+	        	uncompiledFinalMask=mask;
+        	else
+	        	uncompiledFinalMask+=mask;
+        	compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
+        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),mask.trim());
+        }
+        
         public int practiceCost=0;
         public int trainCost=0;
         public int expCost=0;

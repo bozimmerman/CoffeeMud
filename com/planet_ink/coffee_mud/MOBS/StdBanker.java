@@ -607,6 +607,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(msg.tool()==null) 
                         return false;
 					double balance=getBalance(mob);
+					if((whatISell==ShopKeeper.DEAL_CLANBANKER)
+					&&((msg.source().getClanID().length()==0)
+					  ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
+					{
+						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						return false;
+					}
 					if(msg.tool() instanceof Coins)
 					{
 						if((Double.MAX_VALUE-balance)<=((Coins)msg.tool()).getTotalValue())
@@ -620,13 +627,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 						    return false;
 						}
 						return true;
-					}
-					if((whatISell==ShopKeeper.DEAL_CLANBANKER)
-					&&((msg.source().getClanID().length()==0)
-					  ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
-					{
-						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
-						return false;
 					}
 					if(!(msg.tool() instanceof Item))
 					{

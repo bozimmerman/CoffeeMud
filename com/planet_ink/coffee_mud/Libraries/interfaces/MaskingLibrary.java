@@ -40,6 +40,7 @@ public interface MaskingLibrary extends CMObject
     public boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob);
     public boolean levelCheck(String text, char prevChar, int lastPlace, int lvl);
     public Vector levelCompiledHelper(String str, char c, Vector entry);
+	public Vector getAbilityEduReqs(String text);
     public StringBuffer levelHelp(String str, char c, String append);
     public boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find);
     public boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob);

@@ -59,12 +59,14 @@ public interface AbilityMapper extends CMObject
     								  String defaultParam, boolean autoGain, boolean secret,
     								  Vector preReqSkillsList, String extraMask);
     public void delCharAbilityMapping(String ID, String ability);
+	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask);
     public void delCharMappings(String ID);
     public Enumeration getClassAbles(String ID);
     public boolean qualifiesByAnyCharClass(String abilityID);
     public int lowestQualifyingLevel(String ability);
     public boolean classOnly(String classID, String abilityID);
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
+	public Vector getAllowsList(String ID);
     public Vector getLevelListings(String ID, boolean checkAll, int level);
     public Vector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
     public int getQualifyingLevel(String ID, boolean checkAll, String ability);

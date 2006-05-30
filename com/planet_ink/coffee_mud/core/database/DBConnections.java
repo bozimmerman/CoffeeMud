@@ -36,6 +36,8 @@ import java.sql.*;
 */
 public class DBConnections
 {
+	private static final boolean FLAG_RECONNECT=false;
+	
 	protected String DBClass="";
 	/** the odbc service*/
 	protected String DBService="";
@@ -206,7 +208,7 @@ public class DBConnections
 				try{ThisDB.close();}catch(Exception e){}	
 				ThisDB=null;  
 			}
-			if(ThisDB==null)
+			if((ThisDB==null)&&(!FLAG_RECONNECT))
 			{
 				try{
 					for(int i=0;i<Connections.size();i++)
