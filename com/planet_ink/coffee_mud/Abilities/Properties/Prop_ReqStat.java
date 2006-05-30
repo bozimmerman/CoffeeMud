@@ -76,6 +76,19 @@ public class Prop_ReqStat extends Property
 	{
 		if(affected!=null)
 		{
+			if((msg.target()==affected)
+			&&(affected instanceof Exit)
+			&&(((Exit)affected).hasADoor()))
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_OPEN:
+					if(passesMuster(msg.source(),((Exit)affected).openWord()+" that"))
+						return super.okMessage(myHost,msg);
+					return false;
+				}
+			}
+			else
 			if((msg.target()!=null)
 		    &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
