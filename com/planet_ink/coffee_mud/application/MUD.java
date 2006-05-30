@@ -143,7 +143,7 @@ public class MUD extends Thread implements MudHost
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 		
 		
-		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
+		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),page.getBoolean("DBREUSE"),true);
 		DBConnection DBTEST=DBConnector.DBFetch();
 		if(DBTEST!=null) DBConnector.DBDone(DBTEST);
 		if((DBConnector.amIOk())&&(CMLib.database().isConnected()))

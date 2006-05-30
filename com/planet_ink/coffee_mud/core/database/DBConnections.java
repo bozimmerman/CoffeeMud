@@ -36,8 +36,6 @@ import java.sql.*;
 */
 public class DBConnections
 {
-	private static final boolean FLAG_RECONNECT=false;
-	
 	protected String DBClass="";
 	/** the odbc service*/
 	protected String DBService="";
@@ -61,6 +59,9 @@ public class DBConnections
 	protected Vector Connections;
 	/** set this to true once, cuz it makes it all go away. **/
 	protected boolean YOU_ARE_DONE=false;
+	/** whether to reuse connections */
+	protected boolean reuse=false;
+	
 	
 	/** 
 	 * Initialize this class.  Must be called at first,
@@ -72,6 +73,7 @@ public class DBConnections
 	 * @param NEWDBUser	the odbc user login
 	 * @param NEWDBPass	the odbc user password
 	 * @param NEWnumConnections	Connections to maintain
+	 * @param Reuse	Whether to reuse connections
 	 * @param DoErrorQueueing	whether to save errors to a file
 	 */
 	public DBConnections(String NEWDBClass,
@@ -79,12 +81,14 @@ public class DBConnections
 						 String NEWDBUser, 
 						 String NEWDBPass, 
 						 int NEWnumConnections,
+						 boolean NEWreuse,
 						 boolean DoErrorQueueing)
 	{
 		DBClass=NEWDBClass;
 		DBService=NEWDBService;
 		DBUser=NEWDBUser;
 		DBPass=NEWDBPass;
+		reuse=NEWreuse;
 		maxConnections=NEWnumConnections;
 		Connections = new Vector();
 		errorQueingEnabled=DoErrorQueueing;
@@ -195,20 +199,14 @@ public class DBConnections
 			ThisDB=null;
 			if(Connections.size()<maxConnections)
 				try{
-					ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass);
+					ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass,reuse);
 					Connections.addElement(ThisDB);
 				}catch(Exception e){
 					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0)) 
 						Log.errOut("DBConnections",e.getMessage());
 					ThisDB=null;
 				}
-			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
-			{ 
-				Log.errOut("DBConnections","Failed to connect to database.");
-				try{ThisDB.close();}catch(Exception e){}	
-				ThisDB=null;  
-			}
-			if((ThisDB==null)&&(!FLAG_RECONNECT))
+			if((ThisDB==null)&&(reuse))
 			{
 				try{
 					for(int i=0;i<Connections.size();i++)
@@ -218,6 +216,12 @@ public class DBConnections
 							break;
 						}
 				}catch(Exception e){}
+			}
+			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
+			{ 
+				Log.errOut("DBConnections","Failed to connect to database.");
+				try{ThisDB.close();}catch(Exception e){}	
+				ThisDB=null;  
 			}
 			if(ThisDB==null)
 			{

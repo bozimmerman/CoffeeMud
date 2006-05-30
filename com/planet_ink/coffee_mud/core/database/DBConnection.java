@@ -35,8 +35,6 @@ import java.sql.*;
 */
 public class DBConnection
 {
-	private static final boolean FLAG_RECONNECT=false;
-	
 	/** Connection object being used*/
 	private Connection myConnection=null;
 	
@@ -60,6 +58,8 @@ public class DBConnection
 	
 	protected boolean sqlserver=false;
 	
+	protected boolean isReusable=false;
+	
 	/** parent container of this connection **/
 	private DBConnections myParent=null;	
 	
@@ -71,11 +71,13 @@ public class DBConnection
 	 * @param DBService	ODBC SERVICE
 	 * @param DBUser	ODBC LOGIN USERNAME
 	 * @param DBPass	ODBC LOGIN PASSWORD
+	 * @param DBReuse   Whether the connection can be reused.
 	 */
 	public DBConnection(String DBClass,
 						String DBService, 
 						String DBUser, 
-						String DBPass)
+						String DBPass,
+						boolean DBReuse)
 		throws SQLException
 	{
 		if((DBClass==null)||(DBClass.length()==0))
@@ -89,6 +91,7 @@ public class DBConnection
 			ce.printStackTrace();
 		}
         sqlserver=true;
+        isReusable=DBReuse;
         java.util.Properties p = new java.util.Properties();
         p.put("user",DBUser);
         p.put("password",DBPass);
@@ -236,7 +239,7 @@ public class DBConnection
 		{
 			// not a real error?
 		}
-		if(FLAG_RECONNECT) close();
+		if(!isReusable) close();
 		inUse=false;
 	}
 	

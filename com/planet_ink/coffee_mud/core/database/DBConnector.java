@@ -38,6 +38,7 @@ public class DBConnector
 	private static String DBService="";
 	private static String DBUser="";
 	private static String DBPass="";
+	private static boolean DBReuse=false;
 	private static int numConnections=0;
 	private static boolean DoErrorQueueing=false;
 	
@@ -46,6 +47,7 @@ public class DBConnector
 								String NEWDBUser, 
 								String NEWDBPass, 
 								int NEWnumConnections,
+								boolean NEWReuse,
 								boolean NEWDoErrorQueueing)
 	{
 		DBClass=NEWDBClass;
@@ -54,12 +56,13 @@ public class DBConnector
 		DBPass=NEWDBPass;
 		numConnections=NEWnumConnections;
 		DoErrorQueueing=NEWDoErrorQueueing;
+		DBReuse=NEWReuse;
 		reconnect();
 	}
 	public static void reconnect()
 	{
 		if(DBs!=null){ DBs.deregisterDriver(); DBs.killConnections();}
-		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DoErrorQueueing);
+		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DBReuse,DoErrorQueueing);
 		if(DBs.amIOk()) DBs.retryQueuedErrors();
 	}
 	
