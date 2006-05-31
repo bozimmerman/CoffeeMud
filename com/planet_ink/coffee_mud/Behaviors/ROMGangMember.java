@@ -48,7 +48,8 @@ public class ROMGangMember extends StdBehavior
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB inhab=observer.location().fetchInhabitant(i);
-			if(inhab!=null)
+			if((inhab!=null)
+			&&((inhab.isMonster())||(inhab.getClanID().length()==0)||(!inhab.getClanID().equals(observer.getClanID()))))
 			{
 				for(int b=0;b<inhab.numBehaviors();b++)
 				{
