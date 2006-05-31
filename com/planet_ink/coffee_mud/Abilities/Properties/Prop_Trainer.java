@@ -58,16 +58,32 @@ public class Prop_Trainer extends Prop_StatTrainer
 	{
 		if((!built)&&(affected instanceof MOB))
 		{
+			Vector allowedClasses=new Vector();
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				allowedClasses.addElement(c.nextElement());
+			Vector allowedEducations=new Vector();
+			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+				allowedEducations.addElement(((EducationLibrary.EducationDefinition)e.nextElement()).ID);
+			boolean eduFind=false;
+			boolean claFind=false;
+			Vector V=CMParms.parse(text());
+			String s=null;
+			for(int v=0;v<V.size();v++)
+			{
+				s=(String)V.elementAt(v);
+			}
+			
+			
 			MOB mob=(MOB)affected;
 			CharClass C=null;
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(int c=0;c<allowedClasses.size();c++)
 			{
-				C=(CharClass)c.nextElement();
+				C=(CharClass)allowedClasses.elementAt(c);
 				addCharClassIfNotFound(mob,C);
 			}
-			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+			for(int e=0;e<allowedEducations.size();e++)
 			{
-				EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)e.nextElement();
+				EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)allowedEducations.elementAt(e);
 				if(mob.fetchEducation(def.ID)==null) mob.addEducation(def.ID);
 			}
 			mob.recoverCharStats();
