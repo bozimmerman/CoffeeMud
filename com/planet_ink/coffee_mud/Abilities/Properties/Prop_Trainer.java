@@ -58,24 +58,46 @@ public class Prop_Trainer extends Prop_StatTrainer
 	{
 		if((!built)&&(affected instanceof MOB))
 		{
+			built=true;
+			CharClass C=null;
 			Vector allowedClasses=new Vector();
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
-				allowedClasses.addElement(c.nextElement());
 			Vector allowedEducations=new Vector();
-			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
-				allowedEducations.addElement(((EducationLibrary.EducationDefinition)e.nextElement()).ID);
-			boolean eduFind=false;
-			boolean claFind=false;
 			Vector V=CMParms.parse(text());
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
 				s=(String)V.elementAt(v);
+				if(s.equalsIgnoreCase("all")) continue;
+				C=CMClass.getCharClass(s);
+				if(C!=null)
+				{
+					if((v>0)&&(((String)V.elementAt(v-1)).equalsIgnoreCase("ALL")))
+					{
+						String baseClass=C.baseClass();
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							C=(CharClass)c.nextElement();
+							if((C.baseClass().equalsIgnoreCase(baseClass))
+							&&(!allowedClasses.contains(C.ID())))
+								allowedClasses.addElement(C.ID());
+						}
+					}
+					else
+						allowedClasses.addElement(C.ID());
+				}
+				else
+				if(CMLib.edu().getDefinition(s)!=null)
+					allowedEducations.addElement(s.trim().toUpperCase());
 			}
+			if(allowedClasses.size()==0)
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				allowedClasses.addElement(c.nextElement());
+			if(allowedEducations.size()==0)
+			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+				allowedEducations.addElement(((EducationLibrary.EducationDefinition)e.nextElement()).ID);
 			
 			
 			MOB mob=(MOB)affected;
-			CharClass C=null;
 			for(int c=0;c<allowedClasses.size();c++)
 			{
 				C=(CharClass)allowedClasses.elementAt(c);
