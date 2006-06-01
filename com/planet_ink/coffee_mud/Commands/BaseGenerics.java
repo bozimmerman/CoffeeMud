@@ -5474,7 +5474,7 @@ public class BaseGenerics extends StdCommand
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","factionmod",showNumber+""));
-                list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Loss",6)+CMStrings.padRight("Gain",6)+"\n\r");
+                list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight("Loss",6)+"\n\r");
                 StringBuffer choices=new StringBuffer("");
                 for(int r=0;r<me.factors().size();r++)
                 {
@@ -5486,8 +5486,8 @@ public class BaseGenerics extends StdCommand
                         choices.append(((char)('A'+r)));
                         list.append("    "+(((char)('A'+r))+") "));
                         list.append(CMStrings.padRight((String)factor.elementAt(2),30)+" ");
-                        list.append(CMStrings.padRight(""+Math.round(CMath.s_double((String)factor.elementAt(1))*100.0)+"%",5)+" ");
-                        list.append(CMStrings.padRight(""+Math.round(CMath.s_double((String)factor.elementAt(0))*100.0)+"%",5)+"\n\r");
+                        list.append(CMStrings.padRight(""+Math.round(CMath.s_double((String)factor.elementAt(0))*100.0)+"%",5)+" ");
+                        list.append(CMStrings.padRight(""+Math.round(CMath.s_double((String)factor.elementAt(1))*100.0)+"%",5)+"\n\r");
                     }
                 }
                 mob.tell(list.toString());

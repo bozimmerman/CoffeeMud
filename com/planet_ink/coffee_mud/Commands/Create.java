@@ -498,6 +498,11 @@ public class Create extends BaseGenerics
             else
             {
                 String name=CMParms.combine(commands,2);
+                if((name.indexOf(" ")>=0)||(name.length()==0))
+                {
+                	mob.tell("That name is not allowed. No spaces!");
+                	return false;
+                }
                 Faction F=CMLib.factions().getFaction(name);
                 if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F!=null)
