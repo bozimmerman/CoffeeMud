@@ -257,7 +257,8 @@ public class Equipment extends StdCommand
 			{
 				if(((!paragraphView)&&(wornCode!=Item.WORN_FLOATING_NEARBY))
 	            ||((paragraphView)&&(wornCode!=Item.WORN_WIELD)))
-					msg.append(header+"^?\n\r");
+					for(int i=mob.getWearPositions(wornCode)-1;i>=0;i--)
+						msg.append(header+"^?\n\r");
 			}
 		}
 		if(msg.length()==0)

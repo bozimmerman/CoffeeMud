@@ -103,8 +103,8 @@ public class Prayer_DivinePerspective extends Prayer
 		if(success)
 		{
 			mobName=target.Name();
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) the holy perspective of '"+mobName+"'.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) the holy perspective of '"+mobName+"'.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
