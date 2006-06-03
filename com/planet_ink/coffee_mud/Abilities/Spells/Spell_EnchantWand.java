@@ -55,7 +55,7 @@ public class Spell_EnchantWand extends Spell
 		}
 		if(!(target instanceof Wand))
 		{
-			mob.tell("You can't enchant that.");
+			mob.tell(mob,target,null,"You can't enchant <T-NAME>.");
 			return false;
 		}
 

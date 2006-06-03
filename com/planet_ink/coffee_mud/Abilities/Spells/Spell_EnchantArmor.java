@@ -47,7 +47,7 @@ public class Spell_EnchantArmor extends Spell
 
 		if(!(target instanceof Armor))
 		{
-			mob.tell("You can't enchant that with an Enchant Armor spell!");
+			mob.tell(mob,target,null,"You can't enchant <T-NAME> with an Enchant Armor spell!");
 			return false;
 		}
 		if((target.envStats().ability()>2)&&(!auto))

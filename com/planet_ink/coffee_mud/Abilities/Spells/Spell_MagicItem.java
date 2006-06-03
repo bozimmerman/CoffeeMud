@@ -56,7 +56,7 @@ public class Spell_MagicItem extends Spell
 		}
 		if(!(target instanceof Item))
 		{
-			mob.tell("You can't enchant that.");
+			mob.tell(mob,target,null,"You can't enchant <T-NAME>.");
 			return false;
 		}
 

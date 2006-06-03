@@ -55,7 +55,7 @@ public class Spell_EnchantArrows extends Spell
 
 		if((!(target instanceof Ammunition))||(!((Ammunition)target).ammunitionType().equalsIgnoreCase("arrows")))
 		{
-			mob.tell("You can't enchant that with an Enchant Arrows spell!");
+			mob.tell(mob,target,null,"You can't enchant <T-NAME> ith an Enchant Arrows spell!");
 			return false;
 		}
 

@@ -47,7 +47,7 @@ public class Spell_EnchantWeapon extends Spell
 
 		if(!(target instanceof Weapon))
 		{
-			mob.tell("You can't enchant that with an Enchant Weapon spell!");
+			mob.tell(mob,target,null,"You can't enchant <T-NAME> with an Enchant Weapon spell!");
 			return false;
 		}
 		if((target.envStats().ability()>2)&&(!auto))
