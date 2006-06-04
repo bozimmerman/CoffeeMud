@@ -45,5 +45,7 @@ public class Druidness extends CombatAbilities
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Druid");
 		newCharacter(mob);
+		//%%%%%att,armor,damage,hp,mana,move
+		setCombatStats(mob,0,-25,-25,0,+25,0);
 	}
 }

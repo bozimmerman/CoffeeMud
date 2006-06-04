@@ -44,5 +44,7 @@ public class Fighterness extends CombatAbilities
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Fighter");
 		newCharacter(mob);
+		//%%%%%att,armor,damage,hp,mana,move
+		setCombatStats(mob,25,25,25,-25,0,15);
 	}
 }

@@ -64,7 +64,7 @@ public class Mageness extends CombatAbilities
 			}
 		}
 	}
-
+	
 	public void startBehavior(Environmental forMe)
 	{
 		super.startBehavior(forMe);
@@ -74,5 +74,7 @@ public class Mageness extends CombatAbilities
 		makeClass(mob,getParmsMinusCombatMode(),"Mage");
 		newCharacter(mob);
 		getSomeMoreMageAbilities(mob);
+		//%%%%%att,armor,damage,hp,mana,move
+		setCombatStats(mob,-50,-50,-25,-45,50,-50);
 	}
 }

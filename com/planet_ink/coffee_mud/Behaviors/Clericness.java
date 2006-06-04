@@ -46,5 +46,7 @@ public class Clericness extends CombatAbilities
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Cleric");
 		newCharacter(mob);
+		//%%%%%att,armor,damage,hp,mana,move
+		setCombatStats(mob,0,0,-25,-30,+25,-50);
 	}
 }
