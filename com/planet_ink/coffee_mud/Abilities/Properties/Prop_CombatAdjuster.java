@@ -35,7 +35,7 @@ public class Prop_CombatAdjuster extends Property
 {
 	public String ID() { return "Prop_CombatAdjuster"; }
 	public String name(){ return "Adjust combat stats";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canAffectCode(){return 0;}
 	// attack, damage, armor, hp, mana, move
     protected double[] alladj={1.0,1.0,1.0,1.0,1.0,1.0};
 	public String accountForYourself()
