@@ -112,7 +112,7 @@ public class TaxCollector extends StdBehavior
 				double paidAmount=((Coins)msg.tool()).getTotalValue();
 				if(paidAmount<=0.0) return;
 			    double[] owed=totalMoneyOwed(mob,msg.source());
-			    if(treasuryRoomID==null)
+			    if(treasuryRoomID!=null)
 			    {
 				    Room treasuryR=CMLib.map().getRoom(treasuryRoomID);
 		            if(treasuryR!=null)

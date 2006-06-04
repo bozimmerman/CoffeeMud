@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -351,6 +352,8 @@ public class StdCharClass implements CharClass
                 &&(!alreadyAble.containsKey(A.ID())))
                     giveMobAbility(mob,A,100,"",true,false);
             }
+            for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+            	mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID);
             alreadyAble.clear();
             alreadyAff.clear();
         }

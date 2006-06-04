@@ -47,8 +47,10 @@ public class Addictions extends StdAbility
     public boolean isAutoInvoked(){return true;}
     public boolean canBeUninvoked(){return false;}
     private Item puffCredit=null;
+    private final static long CRAVE_TIME=TimeManager.MILI_HOUR;
+    private final static long WITHDRAW_TIME=TimeManager.MILI_DAY;
     
-    private boolean craving(){return (System.currentTimeMillis()-lastFix)>TimeManager.MILI_HOUR;}
+    private boolean craving(){return (System.currentTimeMillis()-lastFix)>CRAVE_TIME;}
     
     public boolean tick(Tickable ticking, int tickID)
     {
@@ -59,7 +61,7 @@ public class Addictions extends StdAbility
         &&(CMLib.dice().rollPercentage()<=((System.currentTimeMillis()-lastFix)/TimeManager.MILI_HOUR))
         &&(ticking instanceof MOB))
         {
-            if((System.currentTimeMillis()-lastFix)>TimeManager.MILI_DAY)
+            if((System.currentTimeMillis()-lastFix)>WITHDRAW_TIME)
             {
                 ((MOB)ticking).tell("You've managed to kick your addiction.");
                 canBeUninvoked=true;

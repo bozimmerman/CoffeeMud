@@ -432,7 +432,7 @@ public class StdItem implements Item
 	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(destroyed)
+		if(destroyed) 
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)

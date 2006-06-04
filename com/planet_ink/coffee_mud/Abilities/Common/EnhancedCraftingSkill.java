@@ -234,8 +234,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			insertHere++;
 		V.insertElementAt(word.toLowerCase(),insertHere);
 		if((insertHere>0)
-		&&(((String)V.firstElement()).equalsIgnoreCase("A"))
-		&&(((String)V.firstElement()).equalsIgnoreCase("AN")))
+		&&((((String)V.firstElement()).equalsIgnoreCase("A"))
+			||(((String)V.firstElement()).equalsIgnoreCase("AN"))))
 		{
 			V.removeElementAt(0);
 			return CMStrings.startWithAorAn(CMParms.combineWithQuotes(V,0));

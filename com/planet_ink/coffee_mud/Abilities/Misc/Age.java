@@ -68,7 +68,7 @@ public class Age extends StdAbility
     protected double divisor=0.0;
     protected long lastSoiling=0;
 
-	public final static String happyBabyEmoter="min=1 max=500 chance=10;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
+	public final static String happyBabyEmoter="min=1 max=500 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
 	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
@@ -342,75 +342,78 @@ public class Age extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected instanceof Item)
-		&&((msg.target()==affected)||(msg.tool()==affected))
-		&&(affected.amDestroyed()))
+		if((affected!=null)
+		&&(!affected.amDestroyed()))
 		{
-			Behavior B=affected.fetchBehavior("Emoter");
-			Item baby=(Item)affected;
-			if(B==null)
+			if((affected instanceof Item)
+			&&((msg.target()==affected)||(msg.tool()==affected)))
 			{
-				B=CMClass.getBehavior("Emoter");
-				if(B!=null)
-					baby.addBehavior(B);
-			}
-			if(baby.owner() instanceof Room)
-			{ 
-				if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) 
-					B.setParms(downBabyEmoter);
-			}
-			else
-			if(baby.owner()!=null)
-			{
-				Environmental o=baby.owner();
-				if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
+				Behavior B=affected.fetchBehavior("Emoter");
+				Item baby=(Item)affected;
+				if(B==null)
+				{
+					B=CMClass.getBehavior("Emoter");
+					if(B!=null)
+						baby.addBehavior(B);
+				}
+				if(baby.owner() instanceof Room)
 				{ 
-					if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) 
-						B.setParms(otherBabyEmoter);
+					if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) 
+						B.setParms(downBabyEmoter);
 				}
 				else
-				{ 
-					if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) 
-						B.setParms(happyBabyEmoter);
+				if(baby.owner()!=null)
+				{
+					Environmental o=baby.owner();
+					if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
+					{ 
+						if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) 
+							B.setParms(otherBabyEmoter);
+					}
+					else
+					{ 
+						if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) 
+							B.setParms(happyBabyEmoter);
+					}
 				}
 			}
-		}
-		if(((System.currentTimeMillis()-lastSoiling)>(TimeManager.MILI_MINUTE*30))&&(CMLib.dice().rollPercentage()<10))
-		{
-		    if(lastSoiling==0)
-			    lastSoiling=System.currentTimeMillis();
-		    else
-		    {
-			    lastSoiling=System.currentTimeMillis();
-			    boolean soil=(affected instanceof CagedAnimal);
-			    MOB mob=null;
-			    if(affected instanceof MOB)
-			    {
-			        mob=(MOB)affected;
-				    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
-					if(divisor==0.0)
-					    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
-					long l=CMath.s_long(text());
-					if((l>0)&&(l<Integer.MAX_VALUE))
-					{
-						int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
-						if(ellapsed<=myRace.getAgingChart()[2])
-						    soil=true;
-					}
-			    }
-			    if(invoker()!=null)
-			        mob=invoker();
+			if(((System.currentTimeMillis()-lastSoiling)>(TimeManager.MILI_MINUTE*30))&&(CMLib.dice().rollPercentage()<10))
+			{
+			    if(lastSoiling==0)
+				    lastSoiling=System.currentTimeMillis();
 			    else
-			    if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
-			        mob=(MOB)((Item)affected).owner();
-			    if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null))
 			    {
-			        Ability A=CMClass.getAbility("Soiled");
-			        if(A!=null) A.invoke(mob,affected,true,0);
+				    lastSoiling=System.currentTimeMillis();
+				    boolean soil=(affected instanceof CagedAnimal);
+				    MOB mob=null;
+				    if(affected instanceof MOB)
+				    {
+				        mob=(MOB)affected;
+					    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
+						if(divisor==0.0)
+						    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+						long l=CMath.s_long(text());
+						if((l>0)&&(l<Integer.MAX_VALUE))
+						{
+							int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+							if(ellapsed<=myRace.getAgingChart()[2])
+							    soil=true;
+						}
+				    }
+				    if(invoker()!=null)
+				        mob=invoker();
+				    else
+				    if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
+				        mob=(MOB)((Item)affected).owner();
+				    if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null))
+				    {
+				        Ability A=CMClass.getAbility("Soiled");
+				        if(A!=null) A.invoke(mob,affected,true,0);
+				    }
 			    }
-		    }
+			}
+			doThang();
 		}
-		doThang();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
