@@ -118,8 +118,8 @@ public class MOBloader
 				for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
 
 				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
-				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
-				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
+				while(mob.numExpertises()>0)mob.delExpertise(mob.fetchExpertise(0));
+				for(int v=0;v<V9.size();v++) mob.addExpertise((String)V9.elementAt(v));
 				if(pstats.getBirthday()==null)
 				    stats.setStat(CharStats.STAT_AGE,pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
@@ -610,11 +610,11 @@ public class MOBloader
 				pfxml.append(mob.fetchTattoo(i)+";");
 			pfxml.append("</TATTS>");
 		}
-		if(mob.numEducations()>0)
+		if(mob.numExpertises()>0)
 		{
 			pfxml.append("<EDUS>");
-			for(int i=0;i<mob.numEducations();i++)
-				pfxml.append(mob.fetchEducation(i)+";");
+			for(int i=0;i<mob.numExpertises();i++)
+				pfxml.append(mob.fetchExpertise(i)+";");
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));

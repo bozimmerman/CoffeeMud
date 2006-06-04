@@ -146,6 +146,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						if(cooking.owner() instanceof MOB)
 							((MOB)cooking.owner()).addInventory(food);
 						food.setContainer(cooking);
+						if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+						&&(cooking instanceof Drink))
+							((Drink)cooking).setLiquidRemaining(0);
+							
 					}
 				}
 			}

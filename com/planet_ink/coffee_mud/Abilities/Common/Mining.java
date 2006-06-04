@@ -120,6 +120,16 @@ public class Mining extends GatheringSkill
 		verb="mining";
         playSound="dig.wav";
 		found=null;
+		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_PRECIOUS,mob.location()))
+		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_GLASS,mob.location()))
+		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SAND,mob.location()))
+		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_ROCK,mob.location()))
+		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_METAL,mob.location()))
+		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_MITHRIL,mob.location())))
+		{
+			commonTell(mob,"You don't think this is a good place to mine.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();

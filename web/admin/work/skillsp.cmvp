@@ -14,7 +14,7 @@
 		<a href="skillsc.cmvp"><B>Chants</B></a><BR>
 		<a href="skillsd.cmvp"><B>Songs/Dances/Plays</B></a><BR>
 		<a href="skillss.cmvp"><B>Spells</B></a><BR>
-		<a href="skillse.cmvp"><B>Educations</B></a><BR>
+		<a href="skillse.cmvp"><B>Expertises</B></a><BR>
 		<B>Prayers</B><BR>
 		<ul>
 			@AbilityNext?RESET@

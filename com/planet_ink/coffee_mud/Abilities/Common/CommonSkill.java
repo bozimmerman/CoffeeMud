@@ -302,6 +302,23 @@ public class CommonSkill extends StdAbility
 		return buildCostArray(mob,consumed);
 	}
 
+	public boolean confirmPossibleMaterialLocation(int resource, Room location)
+	{
+		if(location==null) return false;
+		Integer I=new Integer(resource);
+		boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
+		Vector resources=location.resourceChoices();
+		if(resources!=null)
+		for(int i=0;i<resources.size();i++)
+			if(isMaterial&&(resource==(((Integer)resources.elementAt(i)).intValue()&RawMaterial.MATERIAL_MASK)))
+				return true;
+			else
+			if(resources.elementAt(i).equals(I))
+				return true;
+		return false;
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())

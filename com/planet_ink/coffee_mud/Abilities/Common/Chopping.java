@@ -123,6 +123,11 @@ public class Chopping extends GatheringSkill
 		verb="chopping";
         playSound=null;
 		found=null;
+		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
+		{
+			commonTell(mob,"You can't find anything to chop here.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();

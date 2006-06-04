@@ -82,7 +82,7 @@ public class CMLib
     public static final int LIBRARY_LOGIN=35;
     public static final int LIBRARY_TIMS=36;
     public static final int LIBRARY_LEVELS=37;
-    public static final int LIBRARY_EDUS=38;
+    public static final int LIBRARY_EXPERTISES=38;
     public static final int LIBRARY_TOTAL=39;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
@@ -139,7 +139,7 @@ public class CMLib
     public static TimeManager time(){return (TimeManager)libraries[LIBRARY_TIME];}
     public static ColorLibrary color(){return (ColorLibrary)libraries[LIBRARY_COLOR];}
     public static CharCreationLibrary login(){return (CharCreationLibrary)libraries[LIBRARY_LOGIN];}
-    public static EducationLibrary edu(){return (EducationLibrary)libraries[LIBRARY_EDUS];}
+    public static ExpertiseLibrary expertises(){return (ExpertiseLibrary)libraries[LIBRARY_EXPERTISES];}
     
     public static int convertToLibraryCode(Object O)
     {
@@ -181,7 +181,7 @@ public class CMLib
         if(O instanceof ColorLibrary) return LIBRARY_COLOR;
         if(O instanceof CharCreationLibrary) return LIBRARY_LOGIN;
         if(O instanceof ItemBuilderLibrary) return LIBRARY_TIMS;
-        if(O instanceof EducationLibrary) return LIBRARY_EDUS;
+        if(O instanceof ExpertiseLibrary) return LIBRARY_EXPERTISES;
         return -1;
     }
     

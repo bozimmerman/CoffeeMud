@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class EducationData extends StdWebMacro
+public class ExpertiseData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
@@ -41,11 +41,11 @@ public class EducationData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("EDUCATION");
+		String last=httpReq.getRequestParameter("EXPERTISE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(last);
+			ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
 			if(E!=null)
 			{
 				StringBuffer str=new StringBuffer("");
@@ -66,7 +66,7 @@ public class EducationData extends StdWebMacro
 					if(s==null) s=CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
 					if(s!=null) 
 					{
-						if(s.toUpperCase().trim().startsWith("<EDUCATION>"))s=s.trim().substring(11);
+						if(s.toUpperCase().trim().startsWith("<EXPERTISE>"))s=s.trim().substring(11);
 						str.append(helpHelp(new StringBuffer(s))+", ");
 					}
 					else
@@ -85,12 +85,12 @@ public class EducationData extends StdWebMacro
 					Vector allows=CMLib.ableMapper().getAllowsList(E.ID);
 					if((allows!=null)&&(allows.size()>0))
 					{
-						EducationLibrary.EducationDefinition def=null;
+						ExpertiseLibrary.ExpertiseDefinition def=null;
 						Ability A=null;
 						for(int a=0;a<allows.size();a++)
 						{
 							String allowStr=(String)allows.elementAt(a);
-							def=CMLib.edu().getDefinition(allowStr);
+							def=CMLib.expertises().getDefinition(allowStr);
 							if(def!=null)
 								str.append(def.name+", ");
 							else

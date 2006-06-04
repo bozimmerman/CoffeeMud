@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.EducationLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -31,22 +31,22 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Educations extends StdCommand
+public class Expertises extends StdCommand
 {
-	public Educations(){}
+	public Expertises(){}
 
-	private String[] access={"EDUCATIONS","EDUS"};
+	private String[] access={"EXPERTISES","EXPS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HYour educations:^? \n\r");
-		EducationLibrary.EducationDefinition def=null;
+		msg.append("\n\r^HYour expertises:^? \n\r");
+		ExpertiseLibrary.ExpertiseDefinition def=null;
 		int col=0;
-		for(int e=0;e<mob.numEducations();e++)
+		for(int e=0;e<mob.numExpertises();e++)
 		{
-			def=CMLib.edu().getDefinition(mob.fetchEducation(e));
+			def=CMLib.expertises().getDefinition(mob.fetchExpertise(e));
 			msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",20));
 			if((++col)>=3)
 			{

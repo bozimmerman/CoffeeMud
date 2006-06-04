@@ -61,7 +61,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 			built=true;
 			CharClass C=null;
 			Vector allowedClasses=new Vector();
-			Vector allowedEducations=new Vector();
+			Vector allowedExpertises=new Vector();
 			Vector V=CMParms.parse(text());
 			String s=null;
 			for(int v=0;v<V.size();v++)
@@ -86,15 +86,15 @@ public class Prop_Trainer extends Prop_StatTrainer
 						allowedClasses.addElement(C.ID());
 				}
 				else
-				if(CMLib.edu().getDefinition(s)!=null)
-					allowedEducations.addElement(s.trim().toUpperCase());
+				if(CMLib.expertises().getDefinition(s)!=null)
+					allowedExpertises.addElement(s.trim().toUpperCase());
 			}
 			if(allowedClasses.size()==0)
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				allowedClasses.addElement(c.nextElement());
-			if(allowedEducations.size()==0)
-			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
-				allowedEducations.addElement(((EducationLibrary.EducationDefinition)e.nextElement()).ID);
+			if(allowedExpertises.size()==0)
+			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+				allowedExpertises.addElement(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID);
 			
 			
 			MOB mob=(MOB)affected;
@@ -103,10 +103,10 @@ public class Prop_Trainer extends Prop_StatTrainer
 				C=(CharClass)allowedClasses.elementAt(c);
 				addCharClassIfNotFound(mob,C);
 			}
-			for(int e=0;e<allowedEducations.size();e++)
+			for(int e=0;e<allowedExpertises.size();e++)
 			{
-				EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)allowedEducations.elementAt(e);
-				if(mob.fetchEducation(def.ID)==null) mob.addEducation(def.ID);
+				ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)allowedExpertises.elementAt(e);
+				if(mob.fetchExpertise(def.ID)==null) mob.addExpertise(def.ID);
 			}
 			mob.recoverCharStats();
 			mob.recoverEnvStats();

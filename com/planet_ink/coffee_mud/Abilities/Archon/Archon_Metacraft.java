@@ -103,7 +103,7 @@ public class Archon_Metacraft extends ArchonSkill
 		boolean everyFlag=false;
 		if(recipe.equalsIgnoreCase("everything"))
 		{
-			skillsToUse=craftingSkills;
+			skillsToUse=(Vector)craftingSkills.clone();
 			everyFlag=true;
 			recipe=null;
 		}
@@ -132,14 +132,14 @@ public class Archon_Metacraft extends ArchonSkill
 			{
 				skill=(ItemCraftor)craftingSkills.elementAt(i);
 				Vector V=skill.matchingRecipeNames(recipe,false);
-				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill); break;}
+				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill);}
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.elementAt(i);
 				Vector V=skill.matchingRecipeNames(recipe,true);
-				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill); break;}
+				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill);}
 			}
 		}
 		if(skillsToUse.size()==0)
@@ -196,6 +196,7 @@ public class Archon_Metacraft extends ArchonSkill
 				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
 			}
 			mob.location().recoverEnvStats();
+			if(!everyFlag) break;
 		}
 		if(!success)
 		{

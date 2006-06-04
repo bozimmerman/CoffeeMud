@@ -180,7 +180,8 @@ public class Oracle extends Cleric
 				if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)
 					qualifies=true;
 			}
-			if(!qualifies)
+			if((!qualifies)
+			&&(CMLib.ableMapper().getQualifyingLevel(mob.baseCharStats().getMyRace().ID(),true,A.ID())<0))
 				numNonQualified++;
 		}
 		return numNonQualified;

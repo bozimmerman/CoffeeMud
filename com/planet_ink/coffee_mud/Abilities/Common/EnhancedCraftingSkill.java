@@ -84,7 +84,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			for(int s=0;s<STAGES.length;s++)
 			{
 				String finalReq="+"+TYPES_STATS[t]+" "+STAGESTAT[s];
-				CMLib.edu().addDefinition(TYPES_CODES[t]+STAGES[s],TYPES_NAMES[t]+" "+STAGES[s],"",finalReq,0,1,0,0,0);
+				CMLib.expertises().addDefinition(TYPES_CODES[t]+STAGES[s],TYPES_NAMES[t]+" "+STAGES[s],"",finalReq,0,1,0,0,0);
 			}
 		}
 	}
@@ -95,13 +95,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											 String req2Desc, int[] req2,
 											 boolean bundle,
 											 int autoGeneration,
-											 DVector eduMods)
+											 DVector expMods)
 	{
-		if(eduMods!=null)
-		for(int t=0;t<eduMods.size();t++)
+		if(expMods!=null)
+		for(int t=0;t<expMods.size();t++)
 		{
-			int type=((Integer)eduMods.elementAt(t,1)).intValue();
-			int stage=((Integer)eduMods.elementAt(t,2)).intValue();
+			int type=((Integer)expMods.elementAt(t,1)).intValue();
+			int stage=((Integer)expMods.elementAt(t,2)).intValue();
 			switch(type)
 			{
 			case TYPE_LITECRAFT:
@@ -165,7 +165,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return super.fetchFoundResourceData(mob,
 				req1Required,req1Desc,req1,
 				req2Required,req2Desc,req2,
-				bundle,autoGeneration,eduMods);
+				bundle,autoGeneration,expMods);
 	}
 	
 	public void setMiscText(String newText)
@@ -176,20 +176,20 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 		{
 			doneSkills.add(ID());
-			EducationLibrary.EducationDefinition def=null;
+			ExpertiseLibrary.ExpertiseDefinition def=null;
 			for(int t=0;t<TYPES_CODES.length;t++)
 			{
 				for(int s=0;s<STAGES.length;s++)
 				if(supported().contains(TYPES_CODES[t]+STAGES[s]))
 				{
-					def=CMLib.edu().getDefinition(TYPES_CODES[t]+STAGES[s]);
+					def=CMLib.expertises().getDefinition(TYPES_CODES[t]+STAGES[s]);
 					if(def!=null)
 					{
 						String addToList="";
 						if((def.listRequirements()==null)||(def.listRequirements().length()==0))
 						{
 							if(s>0)
-								addToList+=" -EDUCATIONS +"+TYPES_CODES[t]+STAGES[s-1];
+								addToList+=" -EXPERTISES +"+TYPES_CODES[t]+STAGES[s-1];
 							addToList+=" -SKILLS";
 						}
 						def.addListMask(addToList+" +"+ID());
@@ -261,11 +261,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			for(int s=STAGES.length-1;s>=0;s--)
 				if((supported().contains(TYPES_CODES[t]+STAGES[s]))
-				&&(mob.fetchEducation(TYPES_CODES[t]+STAGES[s])!=null))
+				&&(mob.fetchExpertise(TYPES_CODES[t]+STAGES[s])!=null))
 					extras.append(STAGE_TYPES[t][s]+", ");
 		}
 		if(extras.length()>0)
-			commonTell(mob,"You can use your educations to enhance this skill by " +
+			commonTell(mob,"You can use your expertises to enhance this skill by " +
 					 "prepending one or more of the following words to the name " +
 					 "of the item you wish to craft: "+extras.substring(0,extras.length()-2)+".");
 	}
@@ -290,7 +290,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 						for(int s=STAGES.length-1;s>=0;s--)
 							if((supported().contains(TYPES_CODES[t]+STAGES[s]))
-							&&(mob.fetchEducation(TYPES_CODES[t]+STAGES[s])!=null)
+							&&(mob.fetchExpertise(TYPES_CODES[t]+STAGES[s])!=null)
 							&&(cmd.equalsIgnoreCase(STAGE_TYPES[t][s])))
 							{
 								commands.removeElementAt(0);

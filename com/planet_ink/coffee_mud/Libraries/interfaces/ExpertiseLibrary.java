@@ -29,9 +29,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface EducationLibrary extends CMObject
+public interface ExpertiseLibrary extends CMObject
 {
-    public static class EducationDefinition
+    public static class ExpertiseDefinition
     {
         public String ID="";
         public String name="";
@@ -85,8 +85,8 @@ public interface EducationLibrary extends CMObject
     
     public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost);
     public void delDefinition(String ID);
-    public EducationDefinition getDefinition(String ID);
+    public ExpertiseDefinition getDefinition(String ID);
     public Enumeration definitions();
-    public Vector myQualifiedEducations(MOB mob);
-    public Vector myListableEducations(MOB mob);
+    public Vector myQualifiedExpertises(MOB mob);
+    public Vector myListableExpertises(MOB mob);
 }

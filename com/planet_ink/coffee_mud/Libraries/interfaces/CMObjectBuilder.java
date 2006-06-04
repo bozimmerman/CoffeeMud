@@ -45,7 +45,7 @@ public interface CMObjectBuilder extends CMObject
             "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
             "DISPOSITION","SENSES","ARMOR",
             "DAMAGE","ATTACK","SPEED","AFFBEHAV",
-            "ABLES","INVENTORY","TATTS","EDUS","IMG",
+            "ABLES","INVENTORY","TATTS","EXPS","IMG",
             "FACTIONS"};
     
     public boolean get(int x, int m);

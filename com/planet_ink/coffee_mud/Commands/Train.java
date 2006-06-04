@@ -82,7 +82,7 @@ public class Train extends StdCommand
         else
             abilityCode=-1;
 		CharClass theClass=null;
-		EducationLibrary.EducationDefinition theEducation=null;
+		ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(!CMSecurity.isDisabled("CLASSTRAINING"))
 		&&(abilityCode<0))
@@ -128,23 +128,23 @@ public class Train extends StdCommand
 				abilityCode=105;
 			else
 			{
-				Vector V=CMLib.edu().myListableEducations(mob);
+				Vector V=CMLib.expertises().myListableExpertises(mob);
 				for(int v=V.size()-1;v>=0;v--)
-					if(mob.fetchEducation(((EducationLibrary.EducationDefinition)V.elementAt(v)).ID)!=null)
+					if(mob.fetchExpertise(((ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v)).ID)!=null)
 						V.removeElementAt(v);
 				for(int v=0;v<V.size();v++)
 				{
-					EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)V.elementAt(v);
+					ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
 					thingsToTrainFor.append(def.name+", ");
 					if((def.name.equalsIgnoreCase(abilityName))
-					&&(theEducation==null))
-						theEducation=def;
+					&&(theExpertise==null))
+						theExpertise=def;
 				}
-				if(theEducation!=null)
+				if(theExpertise!=null)
 				{
-					if(!CMLib.edu().myQualifiedEducations(mob).contains(theEducation))
+					if(!CMLib.expertises().myQualifiedExpertises(mob).contains(theExpertise))
 					{
-						mob.tell("You do not yet fully qualify for that education.\n\rQualifications:"+CMLib.masking().maskDesc(theEducation.finalRequirements()));
+						mob.tell("You do not yet fully qualify for that expertise.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
 						return false;
 					}
 					abilityCode=107;
@@ -160,12 +160,12 @@ public class Train extends StdCommand
 
 		if(abilityCode==107)
 		{
-			if(((theEducation.trainCost>0)&&(mob.getTrains()<theEducation.trainCost))
-			||((theEducation.practiceCost>0)&&(mob.getPractices()<theEducation.practiceCost))
-			||((theEducation.expCost>0)&&(mob.getExperience()<theEducation.expCost))
-			||((theEducation.qpCost>0)&&(mob.getQuestPoint()<theEducation.qpCost)))
+			if(((theExpertise.trainCost>0)&&(mob.getTrains()<theExpertise.trainCost))
+			||((theExpertise.practiceCost>0)&&(mob.getPractices()<theExpertise.practiceCost))
+			||((theExpertise.expCost>0)&&(mob.getExperience()<theExpertise.expCost))
+			||((theExpertise.qpCost>0)&&(mob.getQuestPoint()<theExpertise.qpCost)))
 			{
-				mob.tell("Training for that education requires "+theEducation.costDescription()+".");
+				mob.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
 				return false;
 			}
 		}
@@ -292,7 +292,7 @@ public class Train extends StdCommand
 			}
 		}
 		
-		if((abilityCode==107)&&(teacher.fetchEducation(theEducation.ID)==null))
+		if((abilityCode==107)&&(teacher.fetchExpertise(theExpertise.ID)==null))
 		{
 			mob.tell(mob,teacher,null,"<T-NAME> doesn't appear to know anything about that.");
 			return false;
@@ -396,12 +396,12 @@ public class Train extends StdCommand
 			break;
 		case 107:
 		{
-			mob.setPractices(mob.getPractices()-theEducation.practiceCost);
-			mob.setTrains(mob.getTrains()-theEducation.trainCost);
-			mob.setExperience(mob.getExperience()-theEducation.expCost);
-			mob.setQuestPoint(mob.getQuestPoint()-theEducation.qpCost);
-			mob.addEducation(theEducation.ID);
-			mob.tell("You have learned about "+theEducation.name+"!");
+			mob.setPractices(mob.getPractices()-theExpertise.practiceCost);
+			mob.setTrains(mob.getTrains()-theExpertise.trainCost);
+			mob.setExperience(mob.getExperience()-theExpertise.expCost);
+			mob.setQuestPoint(mob.getQuestPoint()-theExpertise.qpCost);
+			mob.addExpertise(theExpertise.ID);
+			mob.tell("You have learned about "+theExpertise.name+"!");
 			break;
 		}
 		}

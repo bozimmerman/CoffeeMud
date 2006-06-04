@@ -62,6 +62,7 @@ public class Addictions extends StdAbility
             if((System.currentTimeMillis()-lastFix)>TimeManager.MILI_DAY)
             {
                 ((MOB)ticking).tell("You've managed to kick your addiction.");
+                canBeUninvoked=true;
                 unInvoke();
                 ((MOB)ticking).delEffect(this);
                 return false;

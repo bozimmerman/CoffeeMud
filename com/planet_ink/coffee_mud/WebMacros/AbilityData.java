@@ -138,11 +138,11 @@ public class AbilityData extends StdWebMacro
 					Ability A2=null;
 					if((allows!=null)&&(allows.size()>0))
 					{
-						EducationLibrary.EducationDefinition def=null;
+						ExpertiseLibrary.ExpertiseDefinition def=null;
 						for(int a=0;a<allows.size();a++)
 						{
 							String allowStr=(String)allows.elementAt(a);
-							def=CMLib.edu().getDefinition(allowStr);
+							def=CMLib.expertises().getDefinition(allowStr);
 							if(def!=null)
 								str.append(def.name+", ");
 							else

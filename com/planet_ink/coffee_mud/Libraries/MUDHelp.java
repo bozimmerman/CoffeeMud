@@ -57,7 +57,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         	return true;
 		String thisTag=getHelpFile().getProperty(helpStr);
 		if((thisTag!=null)
-		&&(thisTag.startsWith("<ABILITY>")||thisTag.startsWith("<EDUCATION>")))
+		&&(thisTag.startsWith("<ABILITY>")||thisTag.startsWith("<EXPERTISE>")))
 			return true;
 		return CMClass.getAbility(helpStr)!=null;
     }
@@ -153,7 +153,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	private void appendAllowed(StringBuffer prepend, String ID)
 	{
 		Vector allows=CMLib.ableMapper().getAllowsList(ID);
-		EducationLibrary.EducationDefinition def=null;
+		ExpertiseLibrary.ExpertiseDefinition def=null;
 		Ability A=null;
 		if((allows!=null)&&(allows.size()>0))
 		{
@@ -162,7 +162,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			for(int a=0;a<allows.size();a++)
 			{
 				String allowStr=(String)allows.elementAt(a);
-				def=CMLib.edu().getDefinition(allowStr);
+				def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{
 					prepend.append(def.name+" ");
@@ -188,17 +188,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	
 	public String fixHelp(String tag, String str, MOB forMOB)
 	{
-		if(str.startsWith("<EDUCATION>"))
+		if(str.startsWith("<EXPERTISE>"))
 		{
 			str=str.substring(11);
-			EducationLibrary.EducationDefinition def=null;
-			for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+			ExpertiseLibrary.ExpertiseDefinition def=null;
+			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
-				def=(EducationLibrary.EducationDefinition)e.nextElement();
+				def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
 				{
 					StringBuffer prepend=new StringBuffer("");
-					prepend.append("\n\rEducation: "+def.name);
+					prepend.append("\n\rExpertise: "+def.name);
 					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(def.allRequirements(),true));
 					appendAllowed(prepend,def.ID);
 					str=prepend.toString()+"\n\r"+str;

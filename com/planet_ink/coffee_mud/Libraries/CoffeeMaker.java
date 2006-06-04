@@ -586,11 +586,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					text.append(((MOB)E).fetchTattoo(i)+";");
 				text.append("</TATTS>");
 			}
-			if(((MOB)E).numEducations()>0)
+			if(((MOB)E).numExpertises()>0)
 			{
 				text.append("<EDUS>");
-				for(int i=0;i<((MOB)E).numEducations();i++)
-					text.append(((MOB)E).fetchEducation(i)+";");
+				for(int i=0;i<((MOB)E).numExpertises();i++)
+					text.append(((MOB)E).fetchExpertise(i)+";");
 				text.append("</EDUS>");
 			}
 		}
@@ -2250,8 +2250,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo((String)V9.elementAt(v));
 			
 			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
-			while(((MOB)E).numEducations()>0)((MOB)E).delEducation(((MOB)E).fetchEducation(0));
-			for(int v=0;v<V9.size();v++) ((MOB)E).addEducation((String)V9.elementAt(v));
+			while(((MOB)E).numExpertises()>0)((MOB)E).delExpertise(((MOB)E).fetchExpertise(0));
+			for(int v=0;v<V9.size();v++) ((MOB)E).addExpertise((String)V9.elementAt(v));
 
 			if(E instanceof ShopKeeper)
 				populateShops(E,buf);
@@ -2284,11 +2284,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			pfxml.append("</TATTS>");
 		}
-		if(mob.numEducations()>0)
+		if(mob.numExpertises()>0)
 		{
 			pfxml.append("<EDUS>");
-			for(int i=0;i<mob.numEducations();i++)
-				pfxml.append(mob.fetchEducation(i)+";");
+			for(int i=0;i<mob.numExpertises();i++)
+				pfxml.append(mob.fetchExpertise(i)+";");
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
@@ -2451,8 +2451,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
-			while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
-			for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
+			while(mob.numExpertises()>0)mob.delExpertise(mob.fetchExpertise(0));
+			for(int v=0;v<V9.size();v++) mob.addExpertise((String)V9.elementAt(v));
 			mob.baseCharStats().setSavesFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
 			mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
 			mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
@@ -2914,8 +2914,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				 return str.toString();
 				}
 		case 19:{StringBuffer str=new StringBuffer("");
-				 for(int i=0;i<M.numEducations();i++)
-					 str.append(M.fetchEducation(i)+";");
+				 for(int i=0;i<M.numExpertises();i++)
+					 str.append(M.fetchExpertise(i)+";");
 				 return str.toString();
 				}
 		case 20: return M.rawImage();
@@ -2992,8 +2992,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 19:
 			{
 				Vector V9=CMParms.parseSemicolons(val,true);
-				while(M.numEducations()>0)M.delEducation(M.fetchEducation(0));
-				for(int v=0;v<V9.size();v++) M.addEducation((String)V9.elementAt(v));
+				while(M.numExpertises()>0)M.delExpertise(M.fetchExpertise(0));
+				for(int v=0;v<V9.size();v++) M.addExpertise((String)V9.elementAt(v));
 			}
 			break;
 		case 20: M.setImage(val); break;

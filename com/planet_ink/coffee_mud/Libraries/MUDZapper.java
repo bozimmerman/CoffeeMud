@@ -163,12 +163,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SECURITIES",new Integer(80));
             zapCodes.put("-SEC",new Integer(79));
             zapCodes.put("+SEC",new Integer(80));
-            zapCodes.put("-EDU",new Integer(81));
-            zapCodes.put("+EDU",new Integer(82));
-            zapCodes.put("-EDUCATION",new Integer(81));
-            zapCodes.put("+EDUCATION",new Integer(82));
-            zapCodes.put("-EDUCATIONS",new Integer(81));
-            zapCodes.put("+EDUCATIONS",new Integer(82));
+            zapCodes.put("-EXPERTISE",new Integer(81));
+            zapCodes.put("+EXPERTISE",new Integer(82));
+            zapCodes.put("-EXPERTISES",new Integer(81));
+            zapCodes.put("+EXPERTISES",new Integer(82));
             zapCodes.put("-SKILL",new Integer(83));
             zapCodes.put("+SKILL",new Integer(84));
             zapCodes.put("-SKILLS",new Integer(83));
@@ -281,8 +279,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public boolean eduCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		if(mob==null) return false;
-		for(int v=0;v<mob.numEducations();v++)
-			if(fromHereEqual(V,plusMinus,fromHere,mob.fetchEducation(v)))
+		for(int v=0;v<mob.numExpertises();v++)
+			if(fromHereEqual(V,plusMinus,fromHere,mob.fetchExpertise(v)))
 				return true;
 		return false;
 	}
@@ -708,9 +706,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
-				case 81: // -educations
+				case 81: // -expertises
 					{
-						buf.append((skipFirstWord?"The":"Requires")+" following educations(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" following expertises(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -718,7 +716,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                            break;
 	                        if(str2.startsWith("+"))
 	                        {
-	                        	EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(str2.substring(1).toUpperCase().trim());
+	                        	ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 	                        	if(E!=null) buf.append(E.name+", ");
 	                        }
 						}
@@ -727,9 +725,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 				break;
-				case 82: // +educations
+				case 82: // +expertises
 					{
-						buf.append("Disallows the following educations(s): ");
+						buf.append("Disallows the following expertises(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -737,7 +735,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                            break;
 	                        if(str2.startsWith("-"))
 	                        {
-	                        	EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(str2.substring(1).toUpperCase().trim());
+	                        	ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 	                        	if(E!=null) buf.append(E.name+", ");
 	                        }
 						}
@@ -1676,7 +1674,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(zapCodes.containsKey(str))
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
-				case 81: // -educations
+				case 81: // -expertises
 					{
 						for(int v2=v+1;v2<V.size();v2++)
 						{
@@ -1685,7 +1683,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                            break;
 	                        if(str2.startsWith("+"))
 	                        {
-	                        	EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(str2.substring(1).toUpperCase().trim());
+	                        	ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 	                        	if(E!=null) preReqs.addElement(E.ID);
 	                        }
 						}
@@ -1856,7 +1854,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 7: // -Tattoos
 				case 79: // -security
-				case 81: // -education
+				case 81: // -expertise
 				case 14: // -Clan
 				case 44: // -Deity
 				case 43: // -Effect
@@ -1903,7 +1901,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				case 8: // +Tattoos
 				case 80: // +security
-				case 82: // +education
+				case 82: // +expertise
 				case 15: // +Clan
 				case 45: // +Deity
 				case 42: // +Effect
@@ -2448,19 +2446,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{ return false;}
 				}
 				break;
-			case 81: // -education
+			case 81: // -expertise
 				{
 					boolean found=false;
 					for(int v=1;v<V.size();v++)
-						if(mob.fetchEducation((String)V.elementAt(v))!=null)
+						if(mob.fetchExpertise((String)V.elementAt(v))!=null)
 						{ found=true; break;}
 					if(!found) return false;
 				}
 				break;
-			case 82: // +education
+			case 82: // +expertise
 				{
 					for(int v=1;v<V.size();v++)
-						if(mob.fetchEducation((String)V.elementAt(v))!=null)
+						if(mob.fetchExpertise((String)V.elementAt(v))!=null)
 						{ return false;}
 				}
 				break;
@@ -3128,10 +3126,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 80: // +security
 					if(securityCheck(V,'-',v+1,mob)) return false;
 					break;
-				case 81: // -educations
+				case 81: // -expertises
 					if(!eduCheck(V,'+',v+1,mob)) return false;
 					break;
-				case 82: // +educations
+				case 82: // +expertises
 					if(eduCheck(V,'-',v+1,mob)) return false;
 					break;
 				case 83: // -skills

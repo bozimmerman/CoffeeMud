@@ -2602,7 +2602,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genEducations(MOB mob, MOB E, int showNumber, int showFlag)
+	public static void genExpertises(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2610,27 +2610,27 @@ public class BaseGenerics extends StdCommand
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
-			for(int b=0;b<E.numEducations();b++)
+			for(int b=0;b<E.numExpertises();b++)
 			{
-				String B=E.fetchEducation(b);
+				String B=E.fetchExpertise(b);
 				if(B!=null)	behaviorstr+=B+", ";
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(getScr("BaseGenerics","educations",showNumber+"",behaviorstr));
+			mob.tell(getScr("BaseGenerics","expertises",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt(getScr("BaseGenerics","lessonent"),"");
 			if(behave.length()>0)
 			{
-				if(E.fetchEducation(behave)!=null)
+				if(E.fetchExpertise(behave)!=null)
 				{
 					mob.tell(getScr("BaseGenerics","behaverem",behave));
-					E.delEducation(behave);
+					E.delExpertise(behave);
 				}
 				else
 				{
 					mob.tell(getScr("BaseGenerics","behaveadd",behave));
-					E.addEducation(behave);
+					E.addExpertise(behave);
 				}
 			}
 			else
@@ -6577,7 +6577,7 @@ public class BaseGenerics extends StdCommand
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
-			genEducations(mob,me,++showNumber,showFlag);
+			genExpertises(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
@@ -6661,7 +6661,7 @@ public class BaseGenerics extends StdCommand
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
-			genEducations(mob,me,++showNumber,showFlag);
+			genExpertises(mob,me,++showNumber,showFlag);
 			genTitles(mob,me,++showNumber,showFlag);
 			genEmail(mob,me,++showNumber,showFlag);
 			genSecurity(mob,me,++showNumber,showFlag);
@@ -6980,7 +6980,7 @@ public class BaseGenerics extends StdCommand
 			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genFaction(mob,mme,++showNumber,showFlag);
 			genTattoos(mob,(MOB)me,++showNumber,showFlag);
-			genEducations(mob,(MOB)me,++showNumber,showFlag);
+			genExpertises(mob,(MOB)me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

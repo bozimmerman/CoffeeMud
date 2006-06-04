@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.EducationLibrary.EducationDefinition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ColumbiaUniv extends StdLibrary implements EducationLibrary
+public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
     public String ID(){return "ColumbiaUniv";}
 								
@@ -40,7 +40,7 @@ public class ColumbiaUniv extends StdLibrary implements EducationLibrary
 
     public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost){
     	if(getDefinition(ID)!=null) return;
-    	EducationDefinition def=new EducationDefinition();
+    	ExpertiseDefinition def=new ExpertiseDefinition();
     	def.ID=ID.toUpperCase();
     	def.name=name;
     	def.addListMask(listMask);
@@ -56,28 +56,28 @@ public class ColumbiaUniv extends StdLibrary implements EducationLibrary
     	completeEduMap.remove(ID);
     }
     public Enumeration definitions(){ return ((Hashtable)completeEduMap.clone()).elements();}
-    public EducationDefinition getDefinition(String ID){ return (EducationDefinition)completeEduMap.get(ID.trim().toUpperCase());}
+    public ExpertiseDefinition getDefinition(String ID){ return (ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
     
-    public Vector myQualifiedEducations(MOB mob)
+    public Vector myQualifiedExpertises(MOB mob)
     {
-    	EducationDefinition D=null;
+    	ExpertiseDefinition D=null;
     	Vector V=new Vector();
     	for(Enumeration e=definitions();e.hasMoreElements();)
     	{
-    		D=(EducationDefinition)e.nextElement();
+    		D=(ExpertiseDefinition)e.nextElement();
     		if(((D.compiledFinalMask==null)||(CMLib.masking().maskCheck(D.compiledFinalMask,mob)))
     		&&((D.compiledListMask==null)||(CMLib.masking().maskCheck(D.compiledListMask,mob))))
     			V.addElement(D);
     	}
     	return V;
     }
-    public Vector myListableEducations(MOB mob)
+    public Vector myListableExpertises(MOB mob)
     {
-    	EducationDefinition D=null;
+    	ExpertiseDefinition D=null;
     	Vector V=new Vector();
     	for(Enumeration e=definitions();e.hasMoreElements();)
     	{
-    		D=(EducationDefinition)e.nextElement();
+    		D=(ExpertiseDefinition)e.nextElement();
     		if((D.compiledListMask==null)||(CMLib.masking().maskCheck(D.compiledListMask,mob)))
     			V.addElement(D);
     	}

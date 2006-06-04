@@ -266,12 +266,12 @@ public interface MOB
 	public Ability findAbility(String name);
 	public Ability fetchAbility(String ID);
 
-	/** Manipulation of the education list */
-	public void addEducation(String of);
-	public void delEducation(String of);
-	public int numEducations();
-	public String fetchEducation(int x);
-	public String fetchEducation(String of);
+	/** Manipulation of the expertise list */
+	public void addExpertise(String of);
+	public void delExpertise(String of);
+	public int numExpertises();
+	public String fetchExpertise(int x);
+	public String fetchExpertise(String of);
 
 	/** Manipulation of the tatoo list */
 	public void addTattoo(String of);

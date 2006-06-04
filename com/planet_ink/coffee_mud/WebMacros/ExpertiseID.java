@@ -29,17 +29,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class EducationID extends StdWebMacro
+public class ExpertiseID extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("EDUCATION");
+		String last=httpReq.getRequestParameter("EXPERTISE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			EducationLibrary.EducationDefinition E=CMLib.edu().getDefinition(last);
+			ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
 			if(E!=null) return E.ID;
 		}
 		return "";

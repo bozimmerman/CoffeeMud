@@ -69,7 +69,7 @@ public class StdMOB implements MOB
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 	protected Vector tattoos=new Vector();
-	protected Vector educations=new Vector();
+	protected Vector expertises=new Vector();
     protected Hashtable factions=new Hashtable();
 
 	protected DVector commandQue=new DVector(5);
@@ -584,7 +584,7 @@ public class StdMOB implements MOB
         affects=new Vector();
         behaviors=new Vector();
         tattoos=new Vector();
-        educations=new Vector();
+        expertises=new Vector();
         factions=new Hashtable();
         commandQue=new DVector(5);
         curState=maxState;
@@ -3054,23 +3054,23 @@ public class StdMOB implements MOB
 	}
 
 
-	/** Manipulation of the education list */
-	public void addEducation(String of)
+	/** Manipulation of the expertise list */
+	public void addExpertise(String of)
 	{
-		if(educations==null) educations=new Vector();
-		if(fetchEducation(of)==null) educations.addElement(of);
+		if(expertises==null) expertises=new Vector();
+		if(fetchExpertise(of)==null) expertises.addElement(of);
 	}
-	public void delEducation(String of)
+	public void delExpertise(String of)
 	{
-		of=fetchEducation(of);
-		if(of!=null) educations.removeElement(of);
+		of=fetchExpertise(of);
+		if(of!=null) expertises.removeElement(of);
 	}
-	public int numEducations(){return (educations==null)?0:educations.size();}
-	public String fetchEducation(int x){try{return (String)educations.elementAt(x);}catch(Exception e){} return null;}
-	public String fetchEducation(String of){
+	public int numExpertises(){return (expertises==null)?0:expertises.size();}
+	public String fetchExpertise(int x){try{return (String)expertises.elementAt(x);}catch(Exception e){} return null;}
+	public String fetchExpertise(String of){
 		try{
-			for(int i=0;i<numEducations();i++)
-				if(fetchEducation(i).equalsIgnoreCase(of)) return fetchEducation(i);
+			for(int i=0;i<numExpertises();i++)
+				if(fetchExpertise(i).equalsIgnoreCase(of)) return fetchExpertise(i);
 		}catch(Exception e){}
 		return null;
 	}

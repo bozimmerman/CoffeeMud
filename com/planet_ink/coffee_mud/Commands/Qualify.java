@@ -187,21 +187,21 @@ public class Qualify extends BaseAbleLister
 		boolean edusFound=false;
 		if((mob!=null)
 		&&((qual.length()==0)
-			||(qual.equalsIgnoreCase("EDUS"))
-			||(qual.equalsIgnoreCase("EDUCATIONS"))))
+			||(qual.equalsIgnoreCase("EXPS"))
+			||(qual.equalsIgnoreCase("EXPERTISES"))))
 		{
-			Vector V=CMLib.edu().myListableEducations(mob);
+			Vector V=CMLib.expertises().myListableExpertises(mob);
 			for(int v=V.size()-1;v>=0;v--)
-				if(mob.fetchEducation(((EducationLibrary.EducationDefinition)V.elementAt(v)).ID)!=null)
+				if(mob.fetchExpertise(((ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v)).ID)!=null)
 					V.removeElementAt(v);
 			if(V.size()>0)
 			{
-				StringBuffer msg2=new StringBuffer("\n\r^HEducations:^?\n\rName                          Requires\n\r");
-				EducationLibrary.EducationDefinition def=null;
+				StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
+				ExpertiseLibrary.ExpertiseDefinition def=null;
 				for(int v=0;v<V.size();v++)
 				{
 					edusFound=true;
-					def=(EducationLibrary.EducationDefinition)V.elementAt(v);
+					def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
 					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.finalRequirements(),true)+"\n\r");
 				}
 				msg.append(msg2.toString());
@@ -211,9 +211,9 @@ public class Qualify extends BaseAbleLister
 		if(msg.length()==0)
 		{
 			if(qual.length()>0)
-				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EDUS, or LANGS.");
+				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPS, or LANGS.");
 			else
-				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EDUS, or LANGS.");
+				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPS, or LANGS.");
 		}
 		else
 		if(!mob.isMonster())
@@ -221,13 +221,13 @@ public class Qualify extends BaseAbleLister
 			mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
 			mob.tell("\n\rUse the GAIN command with your teacher to gain new skills and spells.");
 			if(classesFound&&edusFound) 
-				mob.tell("\n\rUse the TRAIN command to train for a new class, or for new educations.");
+				mob.tell("\n\rUse the TRAIN command to train for a new class, or for new expertises.");
 			else
 			if(classesFound) 
 				mob.tell("\n\rUse the TRAIN command to train for a new class.");
 			else
 			if(edusFound) 
-				mob.tell("\n\rUse the TRAIN command to train for new educations.");
+				mob.tell("\n\rUse the TRAIN command to train for new expertises.");
 		}
 		return false;
 	}

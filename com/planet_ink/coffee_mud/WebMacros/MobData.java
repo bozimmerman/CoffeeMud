@@ -601,7 +601,7 @@ public class MobData extends StdWebMacro
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EDUCATIONS",
+						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EXPERTISES",
 						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
                           "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
                           "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK"};
@@ -883,12 +883,12 @@ public class MobData extends StdWebMacro
 				}
 				str.append(old);
 				break;
-			case 39: // educations
+			case 39: // expertises
 				if(firstTime)
 				{
 					old="";
-					for(int i=0;i<M.numEducations();i++)
-						old+=M.fetchEducation(i)+";";
+					for(int i=0;i<M.numExpertises();i++)
+						old+=M.fetchExpertise(i)+";";
 				}
 				str.append(old);
 				break;

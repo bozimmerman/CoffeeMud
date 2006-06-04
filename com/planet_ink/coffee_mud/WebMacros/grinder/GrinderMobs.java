@@ -250,7 +250,7 @@ public class GrinderMobs
 							  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 							  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
 							  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
-							  "CLANID","TATTOOS","EDUCATIONS",
+							  "CLANID","TATTOOS","EXPERTISES",
 							  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
 	                          "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
 	                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK"};
@@ -409,12 +409,12 @@ public class GrinderMobs
 							M.addTattoo((String)V.elementAt(v));
 					}
 					break;
-				case 41: // educations
+				case 41: // expertises
 					{
 						Vector V=CMParms.parseSemicolons(old,true);
-						while(M.numEducations()>0) M.delEducation(M.fetchEducation(0));
+						while(M.numExpertises()>0) M.delExpertise(M.fetchExpertise(0));
 						for(int v=0;v<V.size();v++)
-							M.addEducation((String)V.elementAt(v));
+							M.addExpertise((String)V.elementAt(v));
 					}
 					break;
 				case 42: // budget

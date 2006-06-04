@@ -38,7 +38,7 @@ public class MOBTeacher extends CombatAbilities
 	protected MOB myMOB=null;
 	protected boolean teachEverything=true;
 	protected boolean noCommon=false;
-	protected boolean noEducations=false; // doubles as a "done ticking" flag
+	protected boolean noExpertises=false; // doubles as a "done ticking" flag
 	protected int tickDownToKnowledge=4;
 
 	public void startBehavior(Environmental forMe)
@@ -90,19 +90,19 @@ public class MOBTeacher extends CombatAbilities
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(!noEducations)
+		&&(!noExpertises)
 		&&((--tickDownToKnowledge)==0)
 		&&(ticking instanceof MOB))
 		{
-			noEducations=true;
+			noExpertises=true;
 			MOB mob=(MOB)ticking;
 			if(teachEverything)
 			{
-				for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+				for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 				{
-					EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)e.nextElement();
-					if(mob.fetchEducation(def.ID)==null)
-						mob.addEducation(def.ID);
+					ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+					if(mob.fetchExpertise(def.ID)==null)
+						mob.addExpertise(def.ID);
 				}
 			}
 			else
@@ -115,14 +115,14 @@ public class MOBTeacher extends CombatAbilities
 				while(someNew)
 				{
 					someNew=false;
-					Vector V=CMLib.edu().myQualifiedEducations(mob);
-					EducationLibrary.EducationDefinition def=null;
+					Vector V=CMLib.expertises().myQualifiedExpertises(mob);
+					ExpertiseLibrary.ExpertiseDefinition def=null;
 					for(int v=0;v<V.size();v++)
 					{
-						def=(EducationLibrary.EducationDefinition)V.elementAt(v);
-						if(mob.fetchEducation(def.ID)==null)
+						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+						if(mob.fetchExpertise(def.ID)==null)
 						{
-							mob.addEducation(def.ID);
+							mob.addExpertise(def.ID);
 							someNew=true;
 						}
 					}
@@ -188,9 +188,9 @@ public class MOBTeacher extends CombatAbilities
 				noCommon=true;
 				V.removeElementAt(v);
 			}
-			if(s.equalsIgnoreCase("NOEDUS")||s.equalsIgnoreCase("NOEDU"))
+			if(s.equalsIgnoreCase("NOEXPS")||s.equalsIgnoreCase("NOEXP"))
 			{
-				noEducations=true;
+				noExpertises=true;
 				V.removeElementAt(v);
 			}
 		}
@@ -222,10 +222,10 @@ public class MOBTeacher extends CombatAbilities
 			}
 			else
 			{
-				EducationLibrary.EducationDefinition def=CMLib.edu().getDefinition(s);
+				ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
 				if(def!=null)
 				{
-					myMOB.addEducation(def.ID);
+					myMOB.addExpertise(def.ID);
 					teachEverything=false;
 				}
 			}
@@ -251,7 +251,7 @@ public class MOBTeacher extends CombatAbilities
 		if(myMOB==null) return;
 		teachEverything=true;
 		noCommon=false;
-		noEducations=false;
+		noExpertises=false;
 		tickDownToKnowledge=4;
 		ensureCharClass();
 	}
@@ -331,22 +331,22 @@ public class MOBTeacher extends CombatAbilities
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
-			    	boolean foundEDU=false;
+			    	boolean foundEXP=false;
 			    	boolean foundClass=false;
-			    	for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+			    	for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 			    	{
-			    		EducationLibrary.EducationDefinition def=(EducationLibrary.EducationDefinition)e.nextElement();
+			    		ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 			    		if(CMLib.english().containsString(def.name,s))
 			    		{
 			    			s=def.name;
-			    			foundEDU=true;
+			    			foundEXP=true;
 			    			break;
 			    		}
 			    	}
-			    	if((!foundEDU)&&(CMClass.findCharClass(s.trim())!=null))
+			    	if((!foundEXP)&&(CMClass.findCharClass(s.trim())!=null))
 			    		foundClass=true;
-			    	if(foundEDU)
-						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an education-- try TRAINing it.",true,false);
+			    	if(foundEXP)
+						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an expertise-- try TRAINing it.",true,false);
 			    	else
 			    	if(foundClass)
 						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an class-- try TRAINing  for it.",true,false);

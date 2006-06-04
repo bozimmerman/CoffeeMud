@@ -31,31 +31,31 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class EducationNext extends StdWebMacro
+public class ExpertiseNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("EDUCATION");
+		String last=httpReq.getRequestParameter("EXPERTISE");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("EDUCATION");
+			if(last!=null) httpReq.removeRequestParameter("EXPERTISE");
 			return "";
 		}
 		String lastID="";
-		for(Enumeration e=CMLib.edu().definitions();e.hasMoreElements();)
+		for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
-			EducationLibrary.EducationDefinition E=(EducationLibrary.EducationDefinition)e.nextElement();
+			ExpertiseLibrary.ExpertiseDefinition E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
 			{
-				httpReq.addRequestParameters("EDUCATION",E.ID);
+				httpReq.addRequestParameters("EXPERTISE",E.ID);
 				return "";
 			}
 			lastID=E.ID;
 		}
-		httpReq.addRequestParameters("EDUCATION","");
+		httpReq.addRequestParameters("EXPERTISE","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

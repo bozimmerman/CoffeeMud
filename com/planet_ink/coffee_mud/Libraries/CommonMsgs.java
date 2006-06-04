@@ -594,10 +594,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
         else
             response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
-        if((this instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
-            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)this).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)this).weaponType()])+" damage.  ");
+        if((item instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)item).weaponType()])+" damage.  ");
         else
-        if((this instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+        if((item instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
         {
             if(item.envStats().height()>0)
                 response.append(" It is a size "+item.envStats().height()+", and is worn on the ");
@@ -669,10 +669,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 buf.append(item.name()+" contains:^<!ENTITY container \""+item.name()+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
                 Vector newItems=new Vector();
-                if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
+                if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
                 {
                     GenLiquidResource l=new GenLiquidResource();
-                    int myResource=((Drink)this).liquidType();
+                    int myResource=((Drink)item).liquidType();
                     l.setMaterial(myResource);
                     ((Drink)l).setLiquidType(myResource);
                     l.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
@@ -998,7 +998,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     room=(Room)msg.tool();
                 else
                 for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
-                    if(mob.location().getExitInDir(r)==this)
+                    if(mob.location().getExitInDir(r)==exit)
                     {
                         room=mob.location().getRoomInDir(r);
                         break;
@@ -1006,7 +1006,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if(room!=null)
                 for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
                     if((mob.location().getRoomInDir(r)==room)
-                    &&((mob.location().getExitInDir(r)==this)))
+                    &&((mob.location().getExitInDir(r)==exit)))
                         direction=r;
                 mob.tell(exit.viewableText(mob,room).toString());
                 if(isAClearExitView(mob,room,exit)&&(direction>=0))

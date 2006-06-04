@@ -166,6 +166,11 @@ public class Drilling extends GatheringSkill
 		verb="drilling";
 		found=null;
         playSound=null;
+		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_LIQUID,mob.location()))
+		{
+			commonTell(mob,"You don't think this is a good place to drill.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();

@@ -2,13 +2,13 @@
 <HTML>
 <HEAD>
 <meta name="robots" content="noindex,nofollow">
-<TITLE>@EducationData?NAME@</TITLE>
+<TITLE>@ExpertiseData?NAME@</TITLE>
 </HEAD>
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
-<H3>@EducationData?NAME@</H3>
+<H3>@ExpertiseData?NAME@</H3>
 <TABLE WIDTH=100%>
-<TR><TD WIDTH=20% VALIGN=TOP><B>Description</B></TD><TD>@EducationData?SHORTHELP@</TD></TR>
-<TR><TD WIDTH=20% VALIGN=TOP><B>Cost</B></TD><TD>@EducationData?COST@</TD></TR>
-<TR><TD WIDTH=20% VALIGN=TOP><B>Requires</B></TD><TD>@EducationData?REQUIRES@</TD></TR>
+<TR><TD WIDTH=20% VALIGN=TOP><B>Description</B></TD><TD>@ExpertiseData?SHORTHELP@</TD></TR>
+<TR><TD WIDTH=20% VALIGN=TOP><B>Cost</B></TD><TD>@ExpertiseData?COST@</TD></TR>
+<TR><TD WIDTH=20% VALIGN=TOP><B>Requires</B></TD><TD>@ExpertiseData?REQUIRES@</TD></TR>
 </BODY>
 </HTML>

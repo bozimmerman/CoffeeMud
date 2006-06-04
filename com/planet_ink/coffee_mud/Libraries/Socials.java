@@ -335,13 +335,16 @@ public class Socials extends StdLibrary implements SocialsList
                     newOne=mob.session().prompt("\n\rNew target (TARGET,NONE,ALL,SELF): ","").toUpperCase().trim();
                 if(newOne.startsWith("<")||newOne.startsWith(">")||(newOne.startsWith("T-")))
                     newOne="TNAME";
-                if(newOne.equals("TNAME")) newOne=" <T-NAME>";
+                if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET")) newOne=" <T-NAME>";
                 else
-                if(newOne.equals("NONE")) newOne="";
+                if(newOne.equalsIgnoreCase("NONE")) newOne="";
                 else
                 if(!newOne.equals("ALL")&&!newOne.equals("SELF")
                 &&!mob.session().confirm("'"+newOne+"' is a non-standard target.  Are you sure (y/N)? ","N"))
+                {
+                	rest="";
                     pickNewSocial=true;
+                }
                 else
                     newOne=" "+newOne;
                 if(!pickNewSocial)
