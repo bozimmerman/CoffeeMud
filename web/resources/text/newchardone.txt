@@ -1,0 +1,14 @@
+
+
+^xCharacter creation complete!^.^?^N
+Your next step is to begin exploring.  Follow any instructions you read 
+on the screen, and enter the commands LOOK or HELP if you need some
+additional clues.
+
+^xThe Rules of CoffeeMud!^.^?^N
+^H1.^N No killing, stealing from, or otherwise harassing newbie players.
+^H2.^N Maintain the illusion of fantasy by role-playing your character.
+^H3.^N Exploitation of system any problems is forbidden! If you find a bug, 
+or a loophole in the gameplay, report it with the BUG command!
+
+Press >>ENTER<< to Begin!

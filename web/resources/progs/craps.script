@@ -1,0 +1,137 @@
+ONCE_PROG
+	MPSETVAR $i CPMAXBET '20'
+	MPSETVAR $i CPMAXBET '*$%LEVEL($i)%'
+~
+
+GREET_PROG 100
+	IF VAR($i BJANTE == '')
+		MPSETVAR $i CPMAXBET '20'
+		MPSETVAR $i CPMAXBET '*$%LEVEL($i)%'
+	ENDIF
+	IF ISPC($n) AND VAR($n CPMYBET == '')
+		say "$n" Hey $n. Wanna play some craps?
+		say "$n" If you want to join in, just drop some money here.
+	ENDIF
+~
+
+FUNCTION_PROG ClearOut
+	MPSETVAR $n CPDIE1
+	MPSETVAR $n CPDIE2
+	MPSETVAR $n CPTOTAL
+	MPSETVAR $n CPTOTAL
+	MPSETVAR $n CPMYTEMP
+	MPSETVAR $n CPMYBET
+	MPSETVAR $n CPDICE 
+~
+
+DROP_PROG 'stdcoins' 'gencoins'
+	IF ISHERE($o) AND GOLDAMT($o > 0)
+		IF GOLDAMT($o > '$<$i CPMAXBET>')
+			say "$n" Whoa! I can't cover THAT much.  $<$i CPMAXBET> is the max bet!
+			MPOLOAD $%GOLDAMT($o)%
+			give $%GOLDAMT($o)% $n
+		ELSE
+			IF VAR($n CPMYBET > 0)
+				MPSETVAR $n CPMYTEMP $%GOLDAMT($o)%
+				MPSETVAR $n CPMYTEMP +$<$n CPMYBET>
+				IF VAR($n CPMYTEMP > '$<$i CPMAXBET>')
+					say "$n" Whoa! I can't cover THAT much.  $<$i CPMAXBET> is the max bet!
+					MPOLOAD $%GOLDAMT($o)%
+					give $%GOLDAMT($o)% $n
+				ELSE
+					say "$n" Ok! Your total bet is now $<$n CPMYTEMP>
+					MPSETVAR $n CPMYBET $<$n CPMYTEMP>
+				ENDIF
+				MPSETVAR $n CPMYTEMP
+			ELSE
+				MPSETVAR $n CPMYBET $%GOLDAMT($o)%
+				say "$n" Ok! Now, just take these dice and emote 'throw' or 'toss' (EMOTE THROW) to play.
+				MPSETVAR $n CPDICE 
+			ENDIF
+		ENDIF
+		MPPURGE $o
+	ENDIF
+~
+
+ACT_PROG throw throws toss tosses
+	IF ISPC($n) AND VAR($n CPMYBET == '')
+		say "$n" Wanna play some craps? Just drop some money here.
+	ELSE
+		MPSETVAR $n CPDIE1 '$%RANDNUM(6)%'
+		MPSETVAR $n CPDIE2 '$%RANDNUM(6)%'
+		MPSETVAR $n CPTOTAL $<$n CPDIE1>
+		MPSETVAR $n CPTOTAL +$<$n CPDIE2>
+		IF VAR($n CPDICE == '')
+			MPECHO The come out dice thrown by $n roll to a stop, showing $<$n CPDIE1> and $<$n CPDIE2>.
+			MPSETVAR $n CPDICE $<$n CPTOTAL>
+			IF VAR($n CPDICE == 2) OR VAR($n CPDICE == 3) OR VAR($n CPDICE == 12)
+				say "$n" You rolled craps! Sorry man. Throw down some more money to play again!
+				MPCALLFUNC ClearOut
+			ELSE
+				IF VAR($n CPDICE == 7) OR VAR($n CPDICE == 11)
+					say "$n" We have a winner! Great roll!
+					MPSETVAR $n CPMYBET '*2'
+					MPOLOAD $<$n CPMYBET>
+					give $<$n CPMYBET> $n
+					say "$n" Drop some more money to play again!
+					MPCALLFUNC ClearOut
+				ELSE
+					say "$n" Ok, your point is $<$n CPDICE>.  Throw those dice again!
+				ENDIF
+			ENDIF
+		ELSE
+			MPECHO The dice thrown by $n roll to a stop, showing $<$n CPDIE1> and $<$n CPDIE2>.
+			IF VAR($n CPTOTAL == 7)
+				say "$n" Ouch! Unlucky 7! You lose!  Put down some more money to play again!
+				MPCALLFUNC ClearOut
+			ELSE
+				IF VAR($n CPDICE == '$<$n CPTOTAL>')
+					say "$n" You made your point!  That's a winner!
+					MPSETVAR $n CPMYBET '*2'
+					MPOLOAD $<$n CPMYBET>
+					give $<$n CPMYBET> $n
+					say "$n" Drop some more money and play again!
+					MPCALLFUNC ClearOut
+				ELSE
+					say "$n" No help. Throw those dice again.
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+SPEECH_PROG toss throw tosses throws
+	IF ISPC($n) AND VAR($n CPMYBET == '')
+		say "$n" Wanna play some craps? Just drop some money here.
+	ELSE
+		say "$n" Hey! Less talk and more dice!  Try entering EMOTE $g.
+	ENDIF
+~
+
+SPEECH_PROG point
+	IF ISPC($n) AND VAR($n CPMYBET == '')
+		say "$n" Wanna play some craps? Just drop some money here.
+	ELSE
+		IF VAR($n CPDICE == '')
+			say "$n" You havn't tossed your dice yet! Try entering EMOTE THROW.
+		ELSE
+			say "$n" Your point is $<$n CPDICE>.  Now throw those dice!
+		ENDIF
+		
+	ENDIF
+~
+SPEECH_PROG rules rule 
+	say "$n" You may bet any amount between the minimum ante, and the maximum bet.  You then roll two dice.  A total of 7 or 11 wins.  A total or 2, 3, or 12 loses.  Any other value becomes the point.  You must then continue to roll dice until you match the point again, or roll 7 and lose.
+~
+
+SPEECH_PROG ante
+    say "$n" There's no ANTE man.  Just drop some money (DROP 10) to play!
+~
+SPEECH_PROG cheat cheater cheating
+	say "$n" No cheaters here, man.  Those dice are straight!
+	innocent
+~
+
+SPEECH_PROG wrote credit design credits author
+	say "$n" I was written by Bo Zimmerman.
+~

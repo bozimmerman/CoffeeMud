@@ -1,0 +1,35 @@
+#set the quest name
+set name robbed
+
+# this one runs every 8-12 hours (7200+(3600*rand))*4 secpertick /60 secs /60 mins.
+set wait 7200
+set interval 3600
+set runlevel 1
+
+set area Midgaard
+# inform the quest that it occurs in Midgaard
+
+set mobgroup MASK=+NAMES -guildmaster "-the waiter"
+# create a subgroup of the mobs in the above area that excludes waiters and guildmasters
+
+set mobtype ShopKeeper
+# load up any mob from the above group of type shopkeeper. Will set a room!
+
+give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
+# load the above behavior into the last mob (in this case, the shopkeeper)
+
+set locale CityStreet 
+# find any locale in Midgaard of type CityStreet
+
+set mobgroup
+set mob "the thief"
+# load up any mob from area with that name.  Since a room was set above, this will
+# move the mob into the room (locale CityStreet)
+
+give behavior Scriptable "LOAD=quests/robbed/thief.script"
+# load the above behavior into the last mob (in this case, the thief)
+
+set duration 450
+# the duration of the quest is 30 minutes (450 ticks).  The scripts on the mobs will
+# do the rest...
+

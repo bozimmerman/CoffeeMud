@@ -1,0 +1,26 @@
+#set the quest name
+set name drowning
+
+# this one runs every 240-480 mins
+set wait 600
+set interval 600
+set runlevel 1
+
+#since this quest relys on random specified mobs, most errors are turned OFF
+quiet
+
+set locale ANY SaltWaterSurface WaterSurface SaltWaterThinSurface WaterThinSurface
+# select a random locale of some water surface type
+# the above will select any rooms whose locale IDs hand the words Ocean or Water in them.
+
+quiet set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
+# find a random human in that area and bring him or her there
+
+give ability Skill_Swim 100
+
+give behavior Scriptable LOAD=quests/drowning/drowning.script
+# load the above behavior into the last mob (Human)
+
+set duration 450
+# the duration of the quest is 5 minutes (450 ticks).  The scripts on the mobs will
+# do the rest...

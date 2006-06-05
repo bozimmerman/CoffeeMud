@@ -1,0 +1,62 @@
+# Here is another sample script that demonstrates some of the funkier 
+# commands, such as creating and destroying items and people.
+GREET_PROG 75
+dance
+say "$n" Welcome $n! I am a strange trader!  Give me stuff and see what happens!
+~
+
+HITPRCNT_PROG 20
+yell "$n" I AM GONNA DIE! HEEEELLLLPPP!!!!
+flee
+~
+
+FIGHT_PROG 99
+IF RAND(15)
+	say "$n" Think yer TOUGH eh?
+ELSE
+	IF RAND(15)
+		say "$n" Take THAT!
+	ELSE
+		IF RAND(15)
+			say "$n" Isn't this FUN?!
+		ELSE
+			IF RAND(15)
+				say "$n" Whack! Whack! Whack!!!
+			ELSE
+				IF RAND(15)
+					say "$n" You are IN for it NOW!
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+~
+
+DEATH_PROG
+MPASOUND You hear someone say, "Goodbye, cruel world...IT'S $n FAULT!!"
+~
+
+MASK_PROG wiggies
+say "$n" MAN! I LOVE to wiggie!
+wiggy $n
+~
+
+GIVE_PROG all
+IF GOLDAMT($o < 100)
+	say "$n" You can do better than THAT.
+	drop $o
+ELSE
+	IF GOLDAMT($o < 500)
+		say "$n" You are getting closer, but no.
+		drop $o
+	ELSE
+		say "$n" THAT's what I LIKE!
+		MPOLOAD a nice tunic
+		give "a nice tunic" "$n"
+		MPCAST Bless $n
+		MPMLOAD horse
+		MPFORCE 'a horse' hug "$n"
+		MPPURGE horse
+	ENDIF
+ENDIF
+~

@@ -1,0 +1,8 @@
+\n\r\n\r^pSelect from one of the following themes.  They will affect your race and class choices going forward.^N
+
+^XFantasy      :^.^? Battle the forces of good and evil in this world of dragons, magic, and valiant swordplay.
+
+^XTechnological:^.^? See the future on distant worlds and the reaches of space as you build a trade empire.
+
+^XHeroic       :^.^? Play a superhero or supervillian in this struggle for notoriety and dominance.
+

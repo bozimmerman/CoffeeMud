@@ -1,0 +1,45 @@
+FINALFOOD,FOODDRINK,BONUSSPELL,LEVEL,MAININGR,MAINAMNT,OTHERINGREDIENTS...,OTHERAMOUNTS...
+mush	FOOD		1	hops	2	water	1										
+hard-boiled eggs	FOOD		1	eggs	1	water	1										
+corn on the cob	FOOD		2	corn	1												
+fried eggs	FOOD		2	eggs													
+creamed corn	FOOD		3	corn	1	milk	1										
+fried tomatoes	FOOD		3	tomatoes	1												
+cooked olives	FOOD		4	olives	1												
+fried rice	FOOD		4	rice	1												
+coffee	DRINK		5	coffeebeans	1	water	1										
+cocoa	DRINK		5	cocoa	1	water	1										
+mashed potatoes	FOOD		6	potatoes	1	milk	1	butter	1								
+% steak	FOOD		7	meat	1												
+% steak	FOOD		7	beef	1												
+fried % FOOD	FOOD		8	poultry	1												
+lamb chops	FOOD		9	mutton	1												
+% fillet	FOOD		10	fish	1												
+fish and chips	FOOD		10	fish	1	potatoes	1										
+pancakes	FOOD		11	wheat	1	water	1	eggs	1								
+waffles	FOOD		11	wheat	1	water	1	eggs	1	fruit							
+gumbo	FOOD		12	fish	1	water	1	greens	1								
+tomato soup	FOOD		13	tomatoes	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+rice soup	FOOD		14	rice	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+carrot soup	FOOD		15	carrots	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+hot fudge	FOOD		16	Chocolate	10												
+pepper soup	FOOD		17	peppers	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+vegetable soup	FOOD		17	greens	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+hot chocolate	FOOD		18	cocoa	1	milk	1										
+soap	SOAP		19	ash	1	limes	1	beef	1								
+dolmas	FOOD		20	rice	1	grapes	1										
+kabobs	FOOD		21	peppers	1	meat	-1	fish	1								
+% stew	FOOD		22	meat	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+% stew	FOOD		23	beef	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+% stew	FOOD		24	pork	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+% stew	FOOD		25	poultry	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+lamb stew	FOOD		26	mutton	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+quesadillas	FOOD		27	corn tortilla	1	cheese	1	beef	1								
+tacos	FOOD		27	corn tortilla	1	beef	1	greens	1	tomatoes	1	cheese	1				
+spaghetti	FOOD		28	pasta	2	tomatoes	1										
+fettucini	FOOD		28	fish	1	pasta	2	cream	1	herbs	1						
+spaghetti and meatballs	FOOD		29	pasta	2	tomatoes	1	beef	1								
+pot roast	FOOD		29	beef	1	potatoes	1	carrots	1	onion	1	herbs	1				
+hot fudge brownies	FOOD		30	cocoa	10	wheat	1	eggs	1	sugar	1	hot fudge	2				
+beef and noodles	FOOD		62	beef	1	pasta	1	water	1	carrots	1						
+burrito	FOOD		91	corn tortilla	1	beans	1	cheese	1								

@@ -1,0 +1,303 @@
+ONCE_PROG
+	MPSETVAR $i BJANTE $%LEVEL($i)%
+	MPSETVAR $i BJMAXBET '20'
+	MPSETVAR $i BJMAXBET '*$%LEVEL($i)%'
+~
+
+GREET_PROG 100
+	IF VAR($i BJANTE == '')
+		MPSETVAR $i BJANTE $%LEVEL($i)%
+		MPSETVAR $i BJMAXBET '20'
+		MPSETVAR $i BJMAXBET '*$%LEVEL($i)%'
+	ENDIF
+	IF ISPC($n) AND VAR($n MYBJVALS == '')
+		say "$n" Hello $n. I'm dealing blackjack.
+		say "$n" My ante is $<$i BJANTE>. If you want to join in, give me $<$i BJANTE>.
+	ENDIF
+~
+
+FUNCTION_PROG RandomCard
+	MPSETVAR $n BJCARDVAL '$%RANDNUM(13)%'
+	MPSETVAR $n BJCARDNAME '$<$n BJCARDVAL>'
+	MPSETVAR $n BJCARDSUIT '$%RANDNUM(4)%'
+	IF VAR($n BJCARDSUIT == '1')
+		MPSETVAR $n BJCARDSUIT Hearts
+	ENDIF
+	IF VAR($n BJCARDSUIT == '2')
+		MPSETVAR $n BJCARDSUIT Clubs
+	ENDIF
+	IF VAR($n BJCARDSUIT == '3')
+		MPSETVAR $n BJCARDSUIT Spades
+	ENDIF
+	IF VAR($n BJCARDSUIT == '4')
+		MPSETVAR $n BJCARDSUIT Diamonds
+	ENDIF
+	IF VAR($n BJCARDNAME == '1')
+		MPSETVAR $n BJCARDNAME Ace
+		MPSETVAR $n BJCARDVAL 11
+	ENDIF
+	IF VAR($n BJCARDNAME == '11')
+		MPSETVAR $n BJCARDNAME Jack
+		MPSETVAR $n BJCARDVAL 10
+	ENDIF
+	IF VAR($n BJCARDNAME == '12')
+		MPSETVAR $n BJCARDNAME Queen
+		MPSETVAR $n BJCARDVAL 10
+	ENDIF
+	IF VAR($n BJCARDNAME == '13')
+		MPSETVAR $n BJCARDNAME King
+		MPSETVAR $n BJCARDVAL 10
+	ENDIF
+	MPSETVAR $n CARDCODE '$<$n BJCARDNAME>$<$n BJCARDSUIT>'
+~
+
+FUNCTION_PROG AddToTotal
+	MPSETVAR $n BJTOTAL '0'
+	MPSETVAR $n BJTOTAL +$g.0
+	MPSETVAR $n BJTOTAL +$g.1
+	MPSETVAR $n BJTOTAL +$g.2
+	MPSETVAR $n BJTOTAL +$g.3
+	MPSETVAR $n BJTOTAL +$g.4
+~
+
+FUNCTION_PROG DealOut
+	MPCALLFUNC RandomCard
+	MPWHILE (STRIN('$<$n DEALT>' '$<$n CARDCODE>'))	MPCALLFUNC RandomCard $n
+	MPSETVAR $n DEALT $<$n DEALT> $<$n CARDCODE>
+	MPSETVAR $n BJLIST $g $<$n BJCARDVAL>
+	MPCALLFUNC AddToTotal $<$n BJLIST>
+	IF VAR($n BJTOTAL > 21) AND EVAL('$<$n BJLIST>.0' == '11')
+		MPSETVAR $n BJLIST 1 $<$n BJLIST>.1 $<$n BJLIST>.2 $<$n BJLIST>.3 $<$n BJLIST>.4 $<$n BJLIST>.5
+		MPCALLFUNC AddToTotal $<$n BJLIST>
+	ENDIF
+	IF VAR($n BJTOTAL > 21) AND EVAL('$<$n BJLIST>.1' == '11')
+		MPSETVAR $n BJLIST $<$n BJLIST>.0 1 $<$n BJLIST>.2 $<$n BJLIST>.3 $<$n BJLIST>.4 $<$n BJLIST>.5
+		MPCALLFUNC AddToTotal $<$n BJLIST>
+	ENDIF
+	IF VAR($n BJTOTAL > 21) AND EVAL('$<$n BJLIST>.2' == '11')
+		MPSETVAR $n BJLIST $<$n BJLIST>.0 $<$n BJLIST>.1 1 $<$n BJLIST>.3 $<$n BJLIST>.4 $<$n BJLIST>.5
+		MPCALLFUNC AddToTotal $<$n BJLIST>
+	ENDIF
+	IF VAR($n BJTOTAL > 21) AND EVAL('$<$n BJLIST>.3' == '11')
+		MPSETVAR $n BJLIST $<$n BJLIST>.0 $<$n BJLIST>.1 $<$n BJLIST>.2 1 $<$n BJLIST>.4 $<$n BJLIST>.5
+		MPCALLFUNC AddToTotal $<$n BJLIST>
+	ENDIF
+	IF VAR($n BJTOTAL > 21) AND EVAL('$<$n BJLIST>.4' == '11')
+		MPSETVAR $n BJLIST $<$n BJLIST>.0 $<$n BJLIST>.1 $<$n BJLIST>.2 $<$n BJLIST>.3 1 $<$n BJLIST>.5
+		MPCALLFUNC AddToTotal $<$n BJLIST>
+	ENDIF
+	IF VAR($n BJTOTAL > 21) AND EVAL('$<$n BJLIST>.5' == '11')
+		MPSETVAR $n BJLIST $<$n BJLIST>.0 $<$n BJLIST>.1 $<$n BJLIST>.2 $<$n BJLIST>.3 $<$n BJLIST>.4 1
+		MPCALLFUNC AddToTotal $<$n BJLIST>
+	ENDIF
+~
+
+FUNCTION_PROG GameOver
+	MPSETVAR $n MYBJVALS
+	MPSETVAR $n MYBJTOTAL
+	MPSETVAR $n BJLIST
+	MPSETVAR $n BJTOTAL
+	MPSETVAR $n BJCARDNAME
+	MPSETVAR $n BJCARDVAL
+	MPSETVAR $n BJCARDSUIT
+	MPSETVAR $n DEALERBJVALS
+	MPSETVAR $n TOTALBJBET 
+~
+
+FUNCTION_PROG GameWinOver
+	say "$n" $G
+	MPSETVAR $n TOTALBJBET '*2'
+	MPOLOAD $<$n TOTALBJBET>
+	give $<$n TOTALBJBET> $n
+	MPCALLFUNC GameOver
+~
+
+FUNCTION_PROG GameTieOver
+	say "$n" $G
+	MPCALLFUNC GameOver
+~
+
+FUNCTION_PROG GameWin2Over
+	say "$n" $G
+	MPSETVAR $n TOTALBJBET '*3'
+	MPOLOAD $<$n TOTALBJBET>
+	give $<$n TOTALBJBET> $n
+	MPCALLFUNC GameOver
+~
+
+FUNCTION_PROG GameLoseOver
+	say "$n" $G
+	MPCALLFUNC GameOver
+~
+
+GIVE_PROG 'stdcoins' 'gencoins'
+	MPGSET $i MONEY 0
+	IF VAR($n MYBJVALS == '')
+		IF (GOLDAMT($o >= '$<$i BJANTE>'))
+			IF (GOLDAMT($o > '$<$i BJMAXBET>'))
+				say "$n" I'm sorry, that is worth far too much for this table.  I will only wager as high as $<$i BJMAXBET>.
+				MPOLOAD $%GOLDAMT($o)%
+				give $%GOLDAMT($o)% $n
+			ELSE
+				MPSETVAR $n DEALT ''
+				MPSETVAR $n MYBJVALS ''
+				MPSETVAR $n DEALERBJVALS ''
+				MPSETVAR $n TOTALBJBET $%GOLDAMT($o)%
+				say "$n" That's the ante.  Here we go!
+				
+				MPCALLFUNC DealOut $<$n MYBJVALS>
+				MPSETVAR $n MYBJVALS $<$n BJLIST>
+				MPSETVAR $n CARD1 $<$n BJCARDNAME> of $<$n BJCARDSUIT>
+				MPCALLFUNC DealOut $<$n MYBJVALS>
+				MPSETVAR $n MYBJVALS $<$n BJLIST>
+				say $n You draw the $<$n CARD1> and the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+				IF VAR($n BJTOTAL == 21)
+					MPCALLFUNC GameWin2Over You have blackjack!  You win!
+				ELSE
+					MPCALLFUNC DealOut $<$n DEALERBJVALS>
+					MPSETVAR $n DEALERBJVALS $<$n BJLIST>
+					MPSETVAR $n CARD1 $<$n BJCARDNAME> of $<$n BJCARDSUIT>
+					MPCALLFUNC DealOut $<$n DEALERBJVALS>
+					MPSETVAR $n DEALERBJVALS $<$n BJLIST>
+					say $n The dealer draws the $<$n CARD1> and the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+					IF VAR($n BJTOTAL == 21)
+						MPCALLFUNC GameLoseOver The dealer draws blackjack.  You lose!
+					ELSE
+						say $n Would you like to 'HIT' or 'STAY'?
+					ENDIF
+				ENDIF
+			ENDIF
+		ELSE
+			say $n The ante is $<$i BJANTE>.
+			MPOLOAD $%GOLDAMT($o)%
+			give $%GOLDAMT($o)% $n
+		ENDIF
+	ENDIF
+~
+
+SPEECH_PROG hit
+	IF VAR($n MYBJVALS == '')
+		say "$n" You are not currently playing.  Ante up $<$i BJANTE> and we'll start up a game.
+	ELSE
+		MPCALLFUNC DealOut $<$n MYBJVALS>
+		MPSETVAR $n MYBJVALS $<$n BJLIST>
+		say $n You draw the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+			
+		IF VAR($n BJTOTAL > 21)
+			MPCALLFUNC GameLoseOver You went bust. Sorry, you lose!
+		ELSE
+			IF EVAL('$<$n MYBJVALS>.4' > 0)
+				MPCALLFUNC GameWinOver Thats five cards without a bust! You win!
+			ELSE
+				MPCALLFUNC AddToTotal $<$n DEALERBJVALS>
+				IF VAR($n BJTOTAL < 17)
+					MPCALLFUNC DealOut $<$n DEALERBJVALS>
+					MPSETVAR $n DEALERBJVALS $<$n BJLIST>
+					say $n The dealer draws the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+					IF VAR($n BJTOTAL > 21)
+						MPCALLFUNC GameWinOver The house goes bust. You win!
+					ELSE
+						IF EVAL('$<$n DEALERBJVALS>.4' > 0)
+							MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
+						ELSE
+							say $n Would you like to 'HIT' or 'STAY'?
+						ENDIF
+					ENDIF
+				ELSE
+					say $n Would you like to 'HIT' or 'STAY'?
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+FUNCTION_PROG DoStay
+	MPCALLFUNC AddToTotal $<$n MYBJVALS>
+	MPSETVAR $n MYBJTOTAL $<$n BJTOTAL>
+	MPCALLFUNC AddToTotal $<$n DEALERBJVALS>
+	
+	IF EVAL('$<$n BJTOTAL>' > '$<$n MYBJTOTAL>')
+		MPCALLFUNC GameLoseOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  You lose.
+	ELSE
+		IF EVAL('$<$n BJTOTAL>' >= '17') AND EVAL('$<$n BJTOTAL>' < '$<$n MYBJTOTAL>')
+			MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
+		ELSE
+			IF EVAL('$<$n BJTOTAL>' == '$<$n MYBJTOTAL>') AND VAR($n BJTOTAL >= 17)
+				MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
+			ELSE
+				MPCALLFUNC DealOut $<$n DEALERBJVALS>
+				MPSETVAR $n DEALERBJVALS $<$n BJLIST>
+				say $n The dealer draws the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+				IF VAR($n BJTOTAL > 21)
+					MPCALLFUNC GameWinOver The house busts. You win!
+				ELSE
+					IF EVAL('$<$n DEALERBJVALS>.4' > 0)
+						MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
+					ELSE
+						IF VAR($n BJTOTAL > '$<$n MYBJTOTAL>')
+							MPCALLFUNC GameLoseOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  You lose.
+						ELSE
+							IF VAR($n BJTOTAL == '$<$n MYBJTOTAL>')
+								MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
+							ELSE
+								IF VAR($n BJTOTAL < 17)
+									MPCALLFUNC DoStay
+								ELSE
+									MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+SPEECH_PROG stay stand
+	IF VAR($n MYBJVALS == '')
+		say "$n" You are not currently playing.  Ante up $<$i BJANTE> and we'll start up a game.
+	ELSE
+		MPCALLFUNC DoStay	
+	ENDIF
+~
+
+SPEECH_PROG round? round
+IF VAR($n MYBJVALS == '')
+	say "$n" You are not currently playing.  Ante up $<$i BJANTE> and we'll start up a game.
+ELSE
+	IF EVAL('$<$n MYBJVALS>.5' > 0)
+		say "$n" You are in round 5.
+	ELSE
+		IF EVAL('$<$n MYBJVALS>.4' > 0)
+			say "$n" You are in round 4.
+		ELSE
+			IF EVAL('$<$n MYBJVALS>.3' > 0)
+				say "$n" You are in round 3.
+			ELSE
+				IF EVAL('$<$n MYBJVALS>.2' > 0)
+					say "$n" You are in round 2.
+				ELSE
+					say "$n" You are playing, I think.
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+~
+SPEECH_PROG rules rule 
+	say "$n" This is blackjack.  You know, twenty-one?  The card game?
+~
+SPEECH_PROG ante
+    say "$n" My ante is $<$i BJANTE>.
+~
+SPEECH_PROG cheat cheater cheating
+	say "$n" I do have to use a separate deck for each player, if that's what you mean.  Otherwise, I have no idea what you're talking about.
+	innocent
+~
+
+# pretty please leave this
+SPEECH_PROG wrote credit design credits author
+	say "$n" I was written by Bo Zimmerman, inspired by code from Jeremy Vyska of False Realities MUD
+~

@@ -1,0 +1,19 @@
+#set the quest name
+set name diseased
+
+# this one runs every 8-12 hours (7200+(3600*rand))*4 secpertick /60 secs /60 mins.
+set wait 7200
+set interval 3600
+set runlevel 1
+
+set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
+# load up any mob from any area.  Will set a room!
+
+give behavior Scriptable LOAD=quests/diseased/diseased.script
+# load the above behavior into the last mob (Human)
+
+give affect Disease_Plague
+
+set duration 450
+# the duration of the quest is 30 minutes (450 ticks).  The scripts on the mobs will
+# do the rest...

@@ -1,0 +1,192 @@
+<MOVINGDATA>
+  <INSTRUCTIONS>
+	<One> First off you -must- make the xml document -before- setting Moving behaviour on the room.</One>
+	<Two> Second the rooms in the STOPS section -must- exist -before- you make the XML document.</Two>
+	<Three> The moving behaviour parameters are as such:
+		min=3 max=3 chance=100;[XML section];[time at stops];[time between stops]
+	   [XML section] is the group the class will parse, in the second example its SUBWAY
+	   [time at stops] is the ticks the room waits at each stop (ie. 4 sec per tick)</Three>
+	<Four> Look at the Examples below to see what to fill in each field. <NOTE/> it might be easier to view the examples in a XML viewer such as Internet Explorer.</Four>
+	<Five> You can inclue the following to be translated on the fly.
+	   <A/>$disproom	-when the door is opened: (room is stopped)
+			 	this is the room name the door leads to.
+				-when the door is closed: (room is moving to next stop)
+			 	this is the room that is the next stop.
+	   <B/>$inopendir   -this is the direction the door opens from the inside.
+	   <C/>$outopendir  -this is the direction the door opens from the outside.
+	   <D/>$traveldir   -this is the current direction the room is traveling</Five>
+    <Six>Remember to remove all exits to and from your moving room before adding the MovingRoom behavior</Six>
+  </INSTRUCTIONS>
+  <EXAMPLE>
+    <ROOMPRINTNAME>[very short name of the mover for the MoverMap, example. 'the crowded subway car' = 'subway car']</ROOMPRINTNAME>
+    <LINEPRINTNAME>[the name of this movers line, examples 'Bus #1','flight 104','The soft desert caravan']</LINEPRINTNAME>
+    <DISPLOC>[either 'true' or 'false', true means the movermap will show the current place of the mover and its direction]</DISPLOC>
+    <STOPS>
+      <STOP1>[stop id of first room the mover will stop at]</STOP1>
+      <STOP2>[stop id of second room the mover will stop at]</STOP2>
+      <STOP3>[stop id of third room the mover will stop at]</STOP3>
+      <STOP4>[stop id of fourth room the mover will stop at]</STOP4>
+    </STOPS>
+    <NORMALDIRECTION>
+      <TRAVELDIRECTION>[direction the mover is going while traveling from STOP1 to STOPx]</TRAVELDIRECTION>
+      <DOORSDIRECTION>[direction the door opens from inside the mover to the stop while traveling from STOP1 to STOPx]</DOORSDIRECTION>
+      <INSIDE>
+        <ARRIVALINFO>[what will be echoed in the moving room when the mover arrives and it is traveling from STOP1 to STOPx]</ARRIVALINFO>
+        <DEPARTINFO>[what will be echoed in the moving room when the mover departs and it is traveling from STOP1 to STOPx]</DEPARTINFO>
+      </INSIDE>
+      <OUTSIDE>
+        <ARRIVALINFO>[what will be echoed in the room the mover arrives at when the mover arrives at it and it is traveling from STOP1 to STOPx]</ARRIVALINFO>
+        <DEPARTINFO>[what will be echoed in the room the mover departs from when the mover departs at it and it is traveling from STOP1 to STOPx]</DEPARTINFO>
+      </OUTSIDE>
+    </NORMALDIRECTION>
+    <REVERSEDIRECTION>
+      <TRAVELDIRECTION>[direction the mover is going while traveling from STOPx to STOP1]</TRAVELDIRECTION>
+      <DOORSDIRECTION>[direction the door opens from inside the mover to the stop while traveling from STOPx to STOP1]</DOORSDIRECTION>
+      <INSIDE>
+        <ARRIVALINFO>[what will be echoed in the moving room when the mover arrives and it is traveling from STOPx to STOP1]</ARRIVALINFO>
+        <DEPARTINFO>[what will be echoed in the moving room when the mover departs and it is traveling from STOPx to STOP1]</DEPARTINFO>
+      </INSIDE>
+      <OUTSIDE>
+        <ARRIVALINFO>[what will be echoed in the room the mover arrives at when the mover arrives at it and it is traveling from STOPx to STOP1]</ARRIVALINFO>
+        <DEPARTINFO>[what will be echoed in the room the mover departs from when the mover departs at it and it is traveling from STOPx to STOP1]</DEPARTINFO>
+      </OUTSIDE>
+    </REVERSEDIRECTION>
+    <ROOMDESCRIPTIONS>
+      <NORMALDIRECTION>
+        <INSIDE>
+          <DOOROPENED>[the text appended to the description of the mover while it is at a stop and it is traveling from STOP1 to STOPx]</DOOROPENED>
+	  <DOORCLOSED>[the text appended to the description of the mover while it is not at a stop (ie. moving) and traveling from STOP1 to STOPx]</DOORCLOSED>
+        </INSIDE>
+        <OUTSIDE>
+	  <DOOROPENED>[The text appended to the description of the stop while the mover is stoped there and it is traveling from STOP1 to STOPx]</DOOROPENED>
+	  <DOORCLOSED>[the text appended to the description of the stop while the mover is not stopped there and it is traveling from STOP1 to STOPx]</DOORCLOSED>
+        </OUTSIDE>
+      </NORMALDIRECTION>
+      <REVERSEDIRECTION>
+        <INSIDE>
+          <DOOROPENED>[the text appended to the description of the mover while it is at a stop and it is traveling from STOPx to STOP1]</DOOROPENED>
+	  <DOORCLOSED>[the text appended to the description of the mover while it is not at a stop (ie. moving) and traveling from STOPx to STOP1]</DOORCLOSED>
+        </INSIDE>
+        <OUTSIDE>
+	  <DOOROPENED>[The text appended to the description of the stop while the mover is stoped there and it is traveling from STOPx to STOP1]</DOOROPENED>
+	  <DOORCLOSED>[the text appended to the description of the stop while the mover is not stopped there and it is traveling from STOPx to STOP1]</DOORCLOSED>
+        </OUTSIDE>
+      </REVERSEDIRECTION>
+    </ROOMDESCRIPTIONS>
+  </EXAMPLE>
+  <SUBWAY>
+    <ROOMPRINTNAME>subway car</ROOMPRINTNAME>
+    <LINEPRINTNAME>Subway Line #1</LINEPRINTNAME>
+    <DISPLOC>true</DISPLOC>
+    <STOPS>
+      <STOP1>Subway System#0</STOP1>
+      <STOP2>Subway System#1</STOP2>
+      <STOP3>Subway System#2</STOP3>
+      <STOP4>Subway System#3</STOP4>
+      <STOP5>Subway System#4</STOP5>
+    </STOPS>
+    <NORMALDIRECTION>
+      <TRAVELDIRECTION>west</TRAVELDIRECTION>
+      <DOORSDIRECTION>north</DOORSDIRECTION>
+      <INSIDE>
+        <ARRIVALINFO>The subway car stops at $disproom and the doors to the $inopendir swish opened.</ARRIVALINFO>
+        <DEPARTINFO>The subway car doors swish closed and the train departs to the $traveldir.\nA crackly voice coming through the small speakers on the car roof says,\n       'Next Stop $disproom.'</DEPARTINFO>
+      </INSIDE>
+      <OUTSIDE>
+        <ARRIVALINFO>A $traveldirbound subway car arrives on the platform to the $outopendir and the doors swish opened.</ARRIVALINFO>
+        <DEPARTINFO>The subway cars doors swish closed\nThe subway car departs $traveldir down the tunnel.</DEPARTINFO>
+      </OUTSIDE>
+    </NORMALDIRECTION>
+    <REVERSEDIRECTION>
+      <TRAVELDIRECTION>east</TRAVELDIRECTION>
+      <DOORSDIRECTION>south</DOORSDIRECTION>
+      <INSIDE>
+        <ARRIVALINFO>The subway car stops at $disproom and the doors to the $inopendir swish opened.</ARRIVALINFO>
+        <DEPARTINFO>The subway car doors swish closed and the train departs to the $traveldir.\nA crackly voice coming through the small speakers on the car roof says,\n       'Next Stop $disproom.'</DEPARTINFO>
+      </INSIDE>
+      <OUTSIDE>
+        <ARRIVALINFO>An $traveldirbound subway car arrives on the platform to the $outopendir and the doors swish opened.</ARRIVALINFO>
+        <DEPARTINFO>The subway cars doors swish closed\nThe subway car departs $traveldir down the tunnel.</DEPARTINFO>
+      </OUTSIDE>
+    </REVERSEDIRECTION>
+    <ROOMDESCRIPTIONS>
+      <NORMALDIRECTION>
+        <INSIDE>
+          <DOOROPENED>A metalic sliding door to the $inopendir leads to the platform of $disproom.</DOOROPENED>
+	  <DOORCLOSED>Both metalic sliding doors are closed.  The car is traveling $traveldir.</DOORCLOSED>
+        </INSIDE>
+        <OUTSIDE>
+	  <DOOROPENED>A $traveldirbound subway car is waiting at the platform to the $outopendir.</DOOROPENED>
+	  <DOORCLOSED>The tracks are empty of subway cars.</DOORCLOSED>
+        </OUTSIDE>
+      </NORMALDIRECTION>
+      <REVERSEDIRECTION>
+        <INSIDE>
+          <DOOROPENED>A metalic sliding door to the $inopendir leads to the platform of $disproom.</DOOROPENED>
+	  <DOORCLOSED>Both metalic sliding doors are closed.  The car is traveling $traveldir.</DOORCLOSED>
+        </INSIDE>
+        <OUTSIDE>
+	  <DOOROPENED>A $traveldirbound subway car is waiting at the platform to the $outopendir.</DOOROPENED>
+	  <DOORCLOSED>The tracks are empty of subway cars.</DOORCLOSED>
+        </OUTSIDE>
+      </REVERSEDIRECTION>
+    </ROOMDESCRIPTIONS>
+  </SUBWAY>
+  <BUSONE>
+    <ROOMPRINTNAME>bus</ROOMPRINTNAME>
+    <LINEPRINTNAME>Bus #1</LINEPRINTNAME>
+    <DISPLOC>true</DISPLOC>
+    <STOPS>
+      <STOP1>City of Glass#9</STOP1>
+      <STOP2>City of Glass#5</STOP2>
+      <STOP3>City of Glass#10</STOP3>
+      <STOP4>City of Glass#13</STOP4>
+    </STOPS>
+    <NORMALDIRECTION>
+      <TRAVELDIRECTION>west</TRAVELDIRECTION>
+      <DOORSDIRECTION>north</DOORSDIRECTION>
+      <INSIDE>
+        <ARRIVALINFO>The bus comes to a stop, doors to the $inopendir open.\nThe driver yells:\n       '$disproom'</ARRIVALINFO>
+        <DEPARTINFO>The drive closes the door and the bus lurches foreward.</DEPARTINFO>
+      </INSIDE>
+      <OUTSIDE>
+        <ARRIVALINFO>The $traveldirbound Bus number 1 arrives.\nThe doors swing opened.</ARRIVALINFO>
+        <DEPARTINFO>The bus doors swing closed.\nThe bus speeds off $traveldir</DEPARTINFO>
+      </OUTSIDE>
+    </NORMALDIRECTION>
+    <REVERSEDIRECTION>
+      <TRAVELDIRECTION>east</TRAVELDIRECTION>
+      <DOORSDIRECTION>north</DOORSDIRECTION>
+      <INSIDE>
+        <ARRIVALINFO>The bus comes to a stop, doors to the $inopendir open.\nThe driver yells:\n       '$disproom'</ARRIVALINFO>
+        <DEPARTINFO>The drive closes the door and the bus lurches foreward.</DEPARTINFO>
+      </INSIDE>
+      <OUTSIDE>
+        <ARRIVALINFO>The $traveldirbound Bus number 1 arrives.\nThe doors swing opened.</ARRIVALINFO>
+        <DEPARTINFO>The bus doors swing closed.\nThe bus speeds off $traveldir</DEPARTINFO>
+      </OUTSIDE>
+    </REVERSEDIRECTION>
+    <ROOMDESCRIPTIONS>
+      <NORMALDIRECTION>
+        <INSIDE>
+          <DOOROPENED>The bus doors are opened.</DOOROPENED>
+	  <DOORCLOSED>The bus is traveling along to the $traveldir</DOORCLOSED>
+        </INSIDE>
+        <OUTSIDE>
+	  <DOOROPENED>A bus is here loading passengers.</DOOROPENED>
+	  <DOORCLOSED></DOORCLOSED>
+        </OUTSIDE>
+      </NORMALDIRECTION>
+      <REVERSEDIRECTION>
+        <INSIDE>
+          <DOOROPENED>The bus doors are opened.</DOOROPENED>
+	  <DOORCLOSED>The bus is traveling along to the $traveldir</DOORCLOSED>
+        </INSIDE>
+        <OUTSIDE>
+	  <DOOROPENED>A bus is here loading passengers.</DOOROPENED>
+	  <DOORCLOSED></DOORCLOSED>
+        </OUTSIDE>
+      </REVERSEDIRECTION>
+    </ROOMDESCRIPTIONS>
+  </BUSONE>
+</MOVINGDATA>
