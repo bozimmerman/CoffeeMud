@@ -59,7 +59,10 @@ public class Spell_SummonArmy extends Spell
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		{
 			unInvoke();
+			if(msg.source().playerStats()!=null) msg.source().playerStats().setUpdated(0);
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

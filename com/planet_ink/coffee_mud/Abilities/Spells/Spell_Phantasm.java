@@ -92,7 +92,10 @@ public class Spell_Phantasm extends Spell
 			MOB mob=(MOB)affected;
 			if((msg.amISource(mob)||msg.amISource(mob.amFollowing()))
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			{
 				unInvoke();
+				if(msg.source().playerStats()!=null) msg.source().playerStats().setUpdated(0);
+			}
 			else
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH "+mob.name()+"."));

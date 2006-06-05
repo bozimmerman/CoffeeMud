@@ -92,7 +92,10 @@ public class Song_Friendship extends Song
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		{
 			unInvoke();
+			if(msg.source().playerStats()!=null) msg.source().playerStats().setUpdated(0);
+		}
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
