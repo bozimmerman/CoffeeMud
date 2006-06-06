@@ -632,10 +632,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         return new Properties();
 	}
 
-	private DVector suspiciousTags(Properties p)
+	protected DVector suspiciousTags(Properties p)
 	{
 		String k=null;
-		String s=null;
 		DVector pairs=new DVector(2);
 		for(Enumeration e=p.keys();e.hasMoreElements();)
 		{
