@@ -49,7 +49,8 @@ public class CMStrings
             ||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0))))) 
                 x--;
         if(x<0) return str;
-        if(str.charAt(x)=='.') return str.trim()+" ";
+        if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?')) 
+        	return str.trim()+" ";
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
     
