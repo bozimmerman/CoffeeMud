@@ -219,16 +219,27 @@ public class Arrest extends StdBehavior implements LegalBehavior
         return V;
     }
     
+    public boolean addWarrant(Law laws, LegalWarrant W)
+    {
+        if(!theLawIsEnabled()) return false;
+        if((laws!=null)&&(!laws.warrants().contains(W)))
+        {
+            laws.warrants().addElement(W);
+        	if(W.criminal()!=null)
+        	{
+	            Vector channels=CMLib.channels().getFlaggedChannelNames("WARRANTS");
+	            for(int i=0;i<channels.size();i++)
+	                CMLib.commands().postChannel((String)channels.elementAt(i),"",W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
+        	}
+            return true;
+        }
+        return false;
+    }
     public boolean addWarrant(Area myArea, LegalWarrant W)
     {
         if(!theLawIsEnabled()) return false;
         Law laws=getLaws(myArea,false);
-        if((laws!=null)&&(!laws.warrants().contains(W)))
-        {
-            laws.warrants().addElement(W);
-            return true;
-        }
-        return false;
+        return addWarrant(laws,W);
     }
     public boolean addWarrant(Area myArea, MOB accused, MOB victim, String crimeLocs, String crimeFlags, String crime, String sentence, String warnMsg)
     {
@@ -1451,7 +1462,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if(CMSecurity.isDebugging("ARREST")) 
 			    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant filled out.");
-			laws.warrants().addElement(W);
+			addWarrant(laws,W);
 		}
 		else
 			if(CMSecurity.isDebugging("ARREST")) 
