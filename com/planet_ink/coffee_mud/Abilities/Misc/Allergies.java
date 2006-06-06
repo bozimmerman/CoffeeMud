@@ -185,7 +185,10 @@ public class Allergies extends StdAbility
 			Vector allChoices=new Vector();
 		    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		        if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
-		        &&((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY))
+		        &&((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_COTTON)
+		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_IRON)
+		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_WOOD))
 			        allChoices.addElement(RawMaterial.RESOURCE_DESCS[i]);
 		    Race R=null;
 	        for(Enumeration r=CMClass.races();r.hasMoreElements();)

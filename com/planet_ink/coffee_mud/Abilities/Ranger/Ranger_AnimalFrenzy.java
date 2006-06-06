@@ -93,9 +93,9 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				{
 				}
 			}
-			if((CMLib.dice().rollPercentage()==1)
-			   &&(invoker.isInCombat())
-			   &&(rangersGroup.size()>0))
+			if((CMLib.dice().rollPercentage()<5)
+		    &&(invoker.isInCombat())
+		    &&(rangersGroup.size()>0))
 				helpProfficiency(invoker);
 		}
 		return true;
