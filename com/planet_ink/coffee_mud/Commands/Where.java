@@ -472,7 +472,7 @@ public class Where extends StdCommand
 				}
 			}
 			msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r");
-			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-10)));i--)
+			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 				msg.append(((String)scores.elementAt(i,1))+"\n\r");
 			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 			if(!mob.isMonster())
