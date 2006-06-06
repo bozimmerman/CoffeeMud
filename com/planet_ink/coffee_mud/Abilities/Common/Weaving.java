@@ -60,6 +60,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 	protected boolean mending=false;
 	protected boolean refitting=false;
 	protected boolean messedUp=false;
+	protected Item key=null;
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -103,10 +105,18 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 							building.recoverEnvStats();
 						}
 						else
+						{
 							mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+							if(key!=null)
+							{
+								mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
+								key.setContainer(building);
+							}
+						}
 					}
 				}
 				building=null;
+				key=null;
 				mending=false;
 			}
 		}
@@ -197,6 +207,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
+			key=null;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
@@ -212,6 +223,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			building=null;
 			mending=false;
+			key=null;
 			refitting=false;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
@@ -249,6 +261,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
+			key=null;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{
@@ -345,6 +358,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
+			key=null;
 			if(building instanceof Armor)
 			{
 				misctype=applyLayers((Armor)building,misctype);
@@ -378,6 +392,30 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(true);
 					}
+				}
+			}
+			else
+			if(building instanceof Container)
+			{
+				if(capacity>0)
+				{
+					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)building).setContainTypes(canContain);
+				}
+				if(misctype.equalsIgnoreCase("LID"))
+					((Container)building).setLidsNLocks(true,false,false,false);
+				else
+				if(misctype.equalsIgnoreCase("LOCK"))
+				{
+					((Container)building).setLidsNLocks(true,false,true,false);
+					((Container)building).setKeyName(new Double(Math.random()).toString());
+					key=CMClass.getItem("GenKey");
+					((Key)key).setKey(((Container)building).keyName());
+					key.setName("a key");
+					key.setDisplayText("a small key sits here");
+					key.setDescription("looks like a key to "+building.name());
+					key.recoverEnvStats();
+					key.text();
 				}
 			}
 			if(building instanceof Rideable)
@@ -417,6 +455,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(autoGenerate>0)
 		{
+			if(key!=null) commands.addElement(key);
 			commands.addElement(building);
 			return true;
 		}
