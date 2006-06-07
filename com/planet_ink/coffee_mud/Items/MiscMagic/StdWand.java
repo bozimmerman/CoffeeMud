@@ -171,10 +171,11 @@ public class StdWand extends StdItem implements Wand
 								  Wand me)
 	{
 		if((mob.isMine(me))
+		   &&(message!=null)
 		   &&(!me.amWearingAt(Item.IN_INVENTORY)))
 		{
 			Environmental target=null;
-			if((mob.location()!=null))
+			if(mob.location()!=null)
 				target=afftarget;
 			int x=message.toUpperCase().indexOf(me.magicWord().toUpperCase());
 			if(x>=0)

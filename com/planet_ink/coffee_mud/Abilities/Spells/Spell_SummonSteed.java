@@ -127,6 +127,7 @@ public class Spell_SummonSteed extends Spell
                         mob.tell(target.name() + " seems unwilling to follow you.");
                 }
                 else
+                if(squabble.location()!=null)
                 {
                     squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?");
                     target.setVictim(squabble);

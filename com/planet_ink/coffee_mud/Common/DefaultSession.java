@@ -349,29 +349,20 @@ public class DefaultSession extends Thread implements Session
 
 	public void out(char[] c)
 	{
-		synchronized(out)
-		{
-		    out.write(c);
-		    out.flush();
-		}
+	    out.write(c);
+	    out.flush();
 	}
     
     public void out(String c)
     {
-		synchronized(out)
-		{
-	        out.write(c);
-	        out.flush();
-		}
+        out.write(c);
+        out.flush();
     }
     
     public void out(char c)
     {
-		synchronized(out)
-		{
-	        out.write(c);
-	        out.flush();
-		}
+        out.write(c);
+        out.flush();
     }
 	
 	public void onlyPrint(String msg){onlyPrint(msg,-1,false);}
