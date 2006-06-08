@@ -63,9 +63,9 @@ public class Thief_Assassinate extends ThiefSkill
 
 			MOB mob=(MOB)affected;
 
-
-			if(mob.location()==null) return false;
-			if(mob.location().isInhabitant(tracking))
+			Room room=mob.location();
+			if(room==null) return false;
+			if(room.isInhabitant(tracking))
 			{
 				if(CMLib.flags().isHidden(mob))
 				{
@@ -80,8 +80,8 @@ public class Thief_Assassinate extends ThiefSkill
 
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Room nextRoom=mob.location().getRoomInDir(d);
-				Exit nextExit=mob.location().getExitInDir(d);
+				Room nextRoom=room.getRoomInDir(d);
+				Exit nextExit=room.getExitInDir(d);
 				if((nextRoom!=null)
 				   &&(nextExit!=null)
 				   &&(nextExit.isOpen())
@@ -110,8 +110,8 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
 				if(mob.isMonster())
 				{
-					Room nextRoom=mob.location().getRoomInDir(nextDirection);
-					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
+					Room nextRoom=room.getRoomInDir(nextDirection);
+					if((nextRoom!=null)&&(nextRoom.getArea()==room.getArea()))
 					{
 						if(!nextRoom.isInhabitant(tracking))
 						{
