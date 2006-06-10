@@ -351,10 +351,20 @@ public class StdTitle extends StdItem implements LandTitle
 				    if(B!=null)
 				    {
 						Area A2=CMLib.utensils().getLegalObject(R);
-						Law theLaw=B.legalInfo(A2);
-						String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
-						if((taxs!=null)&&(taxs.length()==0)&&(CMath.s_double(taxs)>0.0))
-						    msg.source().tell("A property tax of "+CMath.s_double(taxs)+"% of "+A.landPrice()+" will be paid monthly out of your bank account.");
+						if(A2==null)
+							Log.errOut("StdTitle",CMLib.map().getExtendedRoomID(R)+" has a legal behavior, but no area!");
+						else
+						{
+							Law theLaw=B.legalInfo(A2);
+							if(theLaw==null)
+								Log.errOut("StdTitle",A2.Name()+" has no law.");
+							else
+							{
+								String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
+								if((taxs!=null)&&(taxs.length()==0)&&(CMath.s_double(taxs)>0.0))
+								    msg.source().tell("A property tax of "+CMath.s_double(taxs)+"% of "+A.landPrice()+" will be paid monthly out of your bank account.");
+							}
+						}
 				    }
 			    }
 			}
