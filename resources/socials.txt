@@ -84,6 +84,10 @@ oo	BOW	You bow deeply.	<S-NAME> bows deeply.
 oo	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows before you.	Who's that?	
 oo	BOW SELF	You kiss your toes.	<S-NAME> folds up like a jacknife and kisses <S-HIS-HER> own toes.			
 ss	BRB	Hope to see you soon!	<S-NAME> will be right back!			
+ov	BRICK	You throw a brick at someone, but miss.	<S-NAME> throws a brick wildly through the air.  <S-HE-SHE> looks pissed!			
+ov	BRICK <T-NAME>	You throw a brick at <T-NAME>.	<S-NAME> throws a brick at <T-NAME>!	<S-NAME> throws a brick at you!  Now what did you do?	Brick who?	
+ov	BRICK ALL	You start throwing bricks at everyone!	<S-NAME> has gone mad, and starts throwing bricks at everyone!		You start throwing bricks madly at everyone, but no one is there!	
+ov	BRICK SELF	You dodge an incoming brick!	<S-NAME> ducks underneath an incoming brick.			
 mo	BUFF	DAMN I`m good!!!	<S-NAME> buffs <S-HIS-HER> nails on <S-HIS-HER> cloak.			
 ss	BURP	Burp.	<S-NAME> burps.	<S-NAME> burps in your general direction.		burp.wav
 ss	BURP <T-NAME>	You burp loudly to <T-HIM-HER> in response.	<S-NAME> burps loudly in response to <T-NAMESELF>'s remark.	<S-NAME> burps loudly in response to your remark.	You can't find your victim.	burp.wav
@@ -454,7 +458,7 @@ mo	PISSED	You are PISSED!	<S-NAME> is PISSED so watch out!
 mo	PISSED <T-NAME>	You turn a stoney gaze toward <T-NAMESELF>... you are SOOO pissed at <T-NAMESELF>!	<S-NAME> glares at <S-NAME>.... <S-NAME> is SOOO PISSED at <S-HIM-HER>!	<S-NAME> is pissed at you now... What do you think <S-HE-SHE>'ll DO?	That person is not here...	
 mo	PISSED SELF	You are PISSED at yourself!	<S-NAME> is so pissed at <S-HIM-HERSELF>.  How could <S-HE-SHE> be so stupid???			
 ww	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HER> case to anyone who will listen... You ALMOST feel sorry for <S-HIS-HER>.			
-mv	POCKETS	You shove your hands into your pockets, look skyward and whistle a jaunty tune.	<S-NAME> shoves <S-HIS-HER> hands into <S-HIS-HER> pockets, looks skyward and whistles a jaunty tune.			
+mv	POCKETS	You shove your hands into your pockets, look skyward and whistle a jaunty tune.	<s-name> shoves <s-his-her> hands into <s-his-her> pockets, looks skyward and whistles a jaunty tune.			
 mo	POINT	You point in every direction.	<S-NAME> points excitedly!			
 mo	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.	
 mv	POINT DOWN	You point down.	<S-NAME> points down.			
@@ -562,6 +566,9 @@ mo	SMILE SELF	You smile at yourself.	<S-NAME> smiles at <S-HIM-HERSELF>.
 mo	SMIRK	You smirk.	<S-NAME> smirks.			
 mo	SMIRK <T-NAME>	You smirk at <T-NAME>.	<S-NAME> smirks at <T-NAME>.	<S-NAME> smirks at you.	You want to smirk to whom?	
 mo	SMIRK SELF	You smirk at yourself.  Okay.....	<S-NAME> smirks at <S-HIS-HER> own 'wisdom'.			
+mo	SMOOCH	You smooch thin air.	<S-NAME> puckers up and smooches nothing but air.			
+ov	SMOOCH <T-NAME>	You smooch <T-NAME>.	<S-NAME> smoochs <T-NAME>.	<S-NAME> smooches you.	Smooch who?	
+so	SMOOCH SELF	You smooch yourself.	<s-name> smooches <S-his-her> own hand.			
 ss	SMURF	Who would you like to smurf?				
 ss	SMURF <T-NAME>	You smurf <T-NAMESELF>.	<S-NAME> smurf(s) <T-NAMESELF>.	<S-NAME> smurfs you!	That's not smurfy! They left!	
 ss	SMURF SELF	You smurf.	<S-NAME> smurfs.			
