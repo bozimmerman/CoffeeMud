@@ -475,7 +475,7 @@ public class CMProps extends Properties
     // info, and the info provided.
     public static String msp(String soundName, int volume, int priority)
     {
-        if((soundName==null)||(soundName.length()==0)) return "";
+        if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled("MSP")) return "";
         if(getVar(SYSTEM_MSPPATH).length()>0)
             return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+") ";
         return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
@@ -485,7 +485,8 @@ public class CMProps extends Properties
     {
         if((fileName==null)||(fileName.trim().length()==0))
             return "";
-        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        ||(CMSecurity.isDisabled("MXP")))
             return "";
         if(getVar(SYSTEM_MXPIMAGEPATH).endsWith("/"))
             return getVar(SYSTEM_MXPIMAGEPATH);
@@ -494,7 +495,8 @@ public class CMProps extends Properties
     
     public static String mxpImage(Environmental E, String parms)
     {
-        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        ||(CMSecurity.isDisabled("MXP")))
             return "";
         String image=E.image();
         if(image.length()==0) return "";
@@ -505,7 +507,8 @@ public class CMProps extends Properties
     
     public static String mxpImage(Environmental E, String parms, String pre, String post)
     {
-        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        ||(CMSecurity.isDisabled("MXP")))
             return "";
         String image=E.image();
         if(image.length()==0) return "";
@@ -535,7 +538,8 @@ public class CMProps extends Properties
     
     public static String getDefaultMXPImage(Object O)
     {
-        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+        ||(CMSecurity.isDisabled("MXP")))
             return "";
         Hashtable H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)

@@ -110,14 +110,17 @@ public class SoundEcho extends StdAbility
 					if((room!=sourceRoom)&&(!doneRooms.contains(room)))
 					{
 						doneRooms.add(room);
-						if(CMLib.dice().rollPercentage()<50)
+						if(room.numInhabitants()>0)
 						{
-							int direction=CMLib.tracking().radiatesFromDir(room,rooms);
-							echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getFromDirectionName(direction)+".");
+							if(CMLib.dice().rollPercentage()<50)
+							{
+								int direction=CMLib.tracking().radiatesFromDir(room,rooms);
+								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getFromDirectionName(direction)+".");
+							}
+							else
+								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1))+".");
+							room.sendOthers(msg.source(),echoMsg);
 						}
-						else
-							echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1))+".");
-						room.sendOthers(msg.source(),echoMsg);
 					}
 				}
 			}

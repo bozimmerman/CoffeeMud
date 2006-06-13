@@ -37,7 +37,7 @@ public interface CharCreationLibrary extends CMObject
     public void reloadTerminal(MOB mob);
     public void showTheNews(MOB mob);
     public boolean checkExpiration(MOB mob);
-    public boolean createCharacter(MOB mob, String login)
+    public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException;
     // 0=no login, 1=login, 2=swap login
     public int login(MOB mob, int attempt)

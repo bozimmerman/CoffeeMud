@@ -617,7 +617,7 @@ public interface CharStats extends CMObject
         "POTENTIALLY CHARISMATIC",
         "POTENTIALLY WISE",
         "OLD",
-        "CONCEILED",
+        "CONCEALED",
         "WATCHFUL"
     };
 

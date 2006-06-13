@@ -119,8 +119,10 @@ public class DefaultSession extends Thread implements Session
             if(!CMSecurity.isDisabled("MCCP"))
 	            changeTelnetMode(rawout,TELNET_COMPRESS2,true);
             
-            changeTelnetMode(rawout,TELNET_MXP,true);
-            changeTelnetMode(rawout,TELNET_MSP,true);
+            if(!CMSecurity.isDisabled("MXP"))
+	            changeTelnetMode(rawout,TELNET_MXP,true);
+            if(!CMSecurity.isDisabled("MSP"))
+	            changeTelnetMode(rawout,TELNET_MSP,true);
             changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
             changeTelnetMode(rawout,TELNET_NAWS,true);
             //changeTelnetMode(rawout,TELNET_BINARY,true);
@@ -262,9 +264,11 @@ public class DefaultSession extends Thread implements Session
         setServerTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
         setClientTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
         boolean changedSomething=false;
-        if(CMath.bset(mobbitmap,MOB.ATT_MXP)!=clientTelnetMode(TELNET_MXP))
+        boolean mxpSet=(!CMSecurity.isDisabled("MXP"))&&CMath.bset(mobbitmap,MOB.ATT_MXP);
+        if(mxpSet!=clientTelnetMode(TELNET_MXP))
         { changeTelnetMode(TELNET_MXP,!clientTelnetMode(TELNET_MXP)); changedSomething=true;}
-        if(CMath.bset(mobbitmap,MOB.ATT_SOUND)!=clientTelnetMode(TELNET_MSP))
+        boolean mspSet=(!CMSecurity.isDisabled("MSP"))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
+        if(mspSet!=clientTelnetMode(TELNET_MSP))
         { changeTelnetMode(TELNET_MSP,!clientTelnetMode(TELNET_MSP)); changedSomething=true;}
         try{if(changedSomething) blockingIn(500);}catch(Exception e){}
     }

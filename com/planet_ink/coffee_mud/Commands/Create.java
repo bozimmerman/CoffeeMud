@@ -195,6 +195,43 @@ public class Create extends BaseGenerics
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
 
+	public void players(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE USER [PLAYER NAME]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+	
+		String mobID=CMParms.combine(commands,2);
+		MOB M=CMLib.map().getLoadPlayer(mobID);
+		if(M!=null)
+		{
+			mob.tell("There is already a player called '"+M.Name()+"'!");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		if(!CMLib.login().isOkName(mobID))
+		{
+			mob.tell("'"+mobID+"' is not a valid name.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		mobID=CMStrings.capitalizeAndLower(mobID);
+		M=CMClass.getMOB("StdMOB");
+		M.setName(mobID);
+		CMLib.login().createCharacter(M,mobID,mob.session());
+		M=CMLib.map().getLoadPlayer(mobID);
+		if(M!=null)
+		{
+			if(CMLib.flags().isInTheGame(M,true))
+				M.removeFromGame(false);
+			modifyPlayer(mob,M);
+			Log.sysOut("Mobs",mob.Name()+" created player "+M.Name()+".");
+		}
+	}
 
 	public void rooms(MOB mob, Vector commands)
 	{
@@ -527,6 +564,13 @@ public class Create extends BaseGenerics
             }
         }
         else
+		if(commandType.equals("USER"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			players(mob,commands);
+		}
+		else
 		if(commandType.equals("MOB"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);

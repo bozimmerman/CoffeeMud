@@ -192,7 +192,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(S==null) return;
         
         S.initTelnetMode(mob.getBitmap());
-        if(CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
+        if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
+        &&(!CMSecurity.isDisabled("MXP")))
         {
             if(S.clientTelnetMode(Session.TELNET_MXP))
             {
@@ -210,7 +211,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             S.setClientTelnetMode(Session.TELNET_MXP,false);
         }
         
-        if(CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
+        if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
+        &&(!CMSecurity.isDisabled("MSP")))
         {
             if(!S.clientTelnetMode(Session.TELNET_MSP))
                 mob.tell("MSP sounds have been disabled for this session.");
@@ -255,13 +257,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return true;
     }
 
-    public boolean createCharacter(MOB mob, String login)
+    public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException
     {
-        if(mob.session().confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+        if(session.confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
         {
             login=CMStrings.capitalizeAndLower(login.trim());
-            mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text().toString());
+            session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text().toString());
             
             boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 
@@ -269,9 +271,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if(!emailPassword)
             while(password.length()==0)
             {
-                password=mob.session().prompt("\n\rEnter a password: ","");
+                password=session.prompt("\n\rEnter a password: ","");
                 if(password.length()==0)
-                    mob.session().println("\n\rYou must enter a password to continue.");
+                	session.println("\n\rYou must enter a password to continue.");
             }
 
             mob.setName(login);
@@ -281,22 +283,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
             while(true)
             {
-                String newEmail=mob.session().prompt("\n\rEnter your e-mail address:");
+                String newEmail=session.prompt("\n\rEnter your e-mail address:");
                 String confirmEmail=newEmail;
-                if(emailPassword) mob.session().println("This email address will be used to send you a password.");
-                if(emailReq) confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+                if(emailPassword) session.println("This email address will be used to send you a password.");
+                if(emailReq) confirmEmail=session.prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
                 if(((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
                    ||(!emailReq))
                 {
                     mob.playerStats().setEmail(newEmail);
                     break;
                 }
-                mob.session().println("\n\rThat email address combination was invalid.\n\r");
+                session.println("\n\rThat email address combination was invalid.\n\r");
             }
             if((mob.playerStats().getEmail()!=null)&&CMSecurity.isBanned(mob.playerStats().getEmail()))
             {
-                mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-                mob.session().setKillFlag(true);
+                session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+                if(mob.session()==session)
+                	session.setKillFlag(true);
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                    pendingLogins.remove(mob.Name().toUpperCase());
                 return false;
@@ -305,11 +308,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
             mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
-            if(mob.session().confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
+            if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
                 mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
-            if(mob.session().clientTelnetMode(Session.TELNET_MSP))
+            if((session.clientTelnetMode(Session.TELNET_MSP))
+            &&(!CMSecurity.isDisabled("MSP")))
                 mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
-            if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+            if((session.clientTelnetMode(Session.TELNET_MXP))
+            &&(!CMSecurity.isDisabled("MXP")))
                 mob.setBitmap(mob.getBitmap()|MOB.ATT_MXP);
 
             int themeCode=CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME);
@@ -333,11 +338,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         choices="F";
                         selections="/F";
                     }
-                    while((theme<0)&&(!mob.session().killFlag()))
+                    while((theme<0)&&(!session.killFlag()))
                     {
-                        mob.session().println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text().toString());
-                        mob.session().print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
-                        String themeStr=mob.session().choose(": ",choices,"");
+                    	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text().toString());
+                    	session.print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
+                        String themeStr=session.choose(": ",choices,"");
                         if(themeStr.toUpperCase().startsWith("F"))
                             theme=Area.THEME_FANTASY;
                         if(themeStr.toUpperCase().startsWith("H"))
@@ -348,7 +353,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     break;
             }
             if(!CMSecurity.isDisabled("RACES"))
-                mob.session().println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
+            	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
 
             StringBuffer listOfRaces=new StringBuffer("[");
             boolean tmpFirst = true;
@@ -380,11 +385,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             while(newRace==null)
             {
-                mob.session().print("\n\r^!Please choose from the following races (?):^N\n\r");
-                mob.session().print(listOfRaces.toString());
-                String raceStr=mob.session().prompt("\n\r: ","");
+            	session.print("\n\r^!Please choose from the following races (?):^N\n\r");
+            	session.print(listOfRaces.toString());
+                String raceStr=session.prompt("\n\r: ","");
                 if(raceStr.trim().equalsIgnoreCase("?"))
-                    mob.session().println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
+                	session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
                 else
                 {
                     newRace=CMClass.getRace(raceStr);
@@ -421,8 +426,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     if(newRace!=null)
                     {
                         StringBuffer str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
-                        if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
-                        if(!mob.session().confirm("^!Is ^H"+newRace.name()+"^N^! correct (Y/n)?^N","Y"))
+                        if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");
+                        if(!session.confirm("^!Is ^H"+newRace.name()+"^N^! correct (Y/n)?^N","Y"))
                             newRace=null;
                     }
                 }
@@ -435,7 +440,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             String Gender="";
             while(Gender.length()==0)
-                Gender=mob.session().choose("\n\r^!What is your gender (M/F)?^N","MF","");
+                Gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","");
 
             mob.baseCharStats().setStat(CharStats.STAT_GENDER,Gender.toUpperCase().charAt(0));
             mob.baseCharStats().getMyRace().startRacing(mob,false);
@@ -443,7 +448,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
                 mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000*60*60*24*CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS)));
 
-            mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text().toString());
+            session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text().toString());
 
             boolean mayCont=true;
             StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
@@ -483,18 +488,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     statstr.append(CMStrings.padRight("Constitution",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+"\n\r");
                     statstr.append(CMStrings.padRight("Charisma",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ))+"\n\r");
                     statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
-                    mob.session().println(statstr.toString());
+                    session.println(statstr.toString());
                     if(!CMSecurity.isDisabled("CLASSES")
                     &&!mob.baseCharStats().getMyRace().classless())
-                        mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
+                    	session.println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 
-                    if(!mob.session().confirm("^!Would you like to re-roll (y/N)?^N","N"))
+                    if(!session.confirm("^!Would you like to re-roll (y/N)?^N","N"))
                         mayCont=false;
                 }
             }
             if(!CMSecurity.isDisabled("CLASSES")
             &&!mob.baseCharStats().getMyRace().classless())
-                mob.session().println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
+                session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
 
             CharClass newClass=null;
             Vector qualClasses=classQualifies(mob,theme);
@@ -521,11 +526,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             else
             while(newClass==null)
             {
-                mob.session().print("\n\r^!Please choose from the following Classes:\n\r");
-                mob.session().print("^H[" + listOfClasses.toString() + "]^N");
-                String ClassStr=mob.session().prompt("\n\r: ","");
+                session.print("\n\r^!Please choose from the following Classes:\n\r");
+                session.print("^H[" + listOfClasses.toString() + "]^N");
+                String ClassStr=session.prompt("\n\r: ","");
                 if(ClassStr.trim().equalsIgnoreCase("?"))
-                    mob.session().println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
+                    session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
                 else
                 {
                     newClass=CMClass.findCharClass(ClassStr);
@@ -552,8 +557,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     if((newClass!=null)&&(classOkForMe(mob,newClass,theme)))
                     {
                         StringBuffer str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false);
-                        if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
-                        if(!mob.session().confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
+                        if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");
+                        if(!session.confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
                             newClass=null;
                     }
                     else
@@ -600,7 +605,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if(mine.size()>1)
                 {
                     if((F.choiceIntro()!=null)&&(F.choiceIntro().length()>0))
-                        mob.session().println(null,null,null,"\n\r\n\r"+new CMFile("resources/"+F.choiceIntro(),null,true).text().toString());
+                        session.println(null,null,null,"\n\r\n\r"+new CMFile("resources/"+F.choiceIntro(),null,true).text().toString());
                     StringBuffer menu=new StringBuffer("Select one: ");
                     Vector namedChoices=new Vector();
                     for(int m=0;m<mine.size();m++)
@@ -618,9 +623,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     {
                         String alignment="";
                         while((!namedChoices.contains(alignment))
-                        &&(!mob.session().killFlag()))
+                        &&(!session.killFlag()))
                         {
-                            alignment=mob.session().prompt(menu.toString().substring(0,menu.length()-2)+".\n\r: ","").toUpperCase();
+                            alignment=session.prompt(menu.toString().substring(0,menu.length()-2)+".\n\r: ","").toUpperCase();
                             if(!namedChoices.contains(alignment))
                                 for(int i=0;i<namedChoices.size();i++)
                                     if(((String)namedChoices.elementAt(i)).startsWith(alignment.toUpperCase()))
@@ -630,7 +635,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                                     if(((String)namedChoices.elementAt(i)).indexOf(alignment.toUpperCase())>=0)
                                     { alignment=(String)namedChoices.elementAt(i); break;}
                         }
-                        if(!mob.session().killFlag())
+                        if(!session.killFlag())
                         {
                             int valueIndex=namedChoices.indexOf(alignment);
                             if(valueIndex>=0)
@@ -643,8 +648,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
             mob.setStartRoom(CMLib.map().getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
-            mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
-            mob.session().prompt("");
+            session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
+            session.prompt("");
             boolean logoff=false;
             if(emailPassword)
             {
@@ -658,13 +663,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                           mob.Name(),
                           "Password for "+mob.Name(),
                           "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
-                mob.tell("Your account has been created.  You will receive an email with your password shortly.");
+                session.println("Your account has been created.  You will receive an email with your password shortly.");
                 try{Thread.sleep(2000);}catch(Exception e){}
-                mob.session().setKillFlag(true);
+                if(mob.session()==session)
+	                session.setKillFlag(true);
             }
             else
             {
-                reloadTerminal(mob);
+            	if(mob.session()==session)
+	                reloadTerminal(mob);
                 mob.bringToLife(mob.getStartRoom(),true);
                 mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
             }
@@ -673,10 +680,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if(CMLib.map().getPlayer(mob.Name())==null)
                 CMLib.map().addPlayer(mob);
 
-            if((mob.session()==null)||(mob.playerStats()==null)) return false;
-            mob.playerStats().setLastIP(mob.session().getAddress());
+            if((session==null)||(mob.playerStats()==null)) return false;
+            mob.playerStats().setLastIP(session.getAddress());
             Log.sysOut("FrontDoor","Created user: "+mob.Name());
-            CMProps.addNewUserByIP(mob.session().getAddress());
+            CMProps.addNewUserByIP(session.getAddress());
             for(int s=0;s<CMLib.sessions().size();s++)
             {
                 Session S=CMLib.sessions().elementAt(s);
@@ -960,7 +967,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 mob.setPlayerStats(null);
             }
             else
-                return createCharacter(mob,login)?1:0;
+                return createCharacter(mob,login,mob.session())?1:0;
             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                pendingLogins.remove(mob.Name().toUpperCase());
             return 0;
