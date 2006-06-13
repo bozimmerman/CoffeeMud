@@ -40,6 +40,7 @@ public class Spell_SummonArmy extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public boolean hasFought=false;
 
 	public void unInvoke()
 	{
@@ -63,6 +64,23 @@ public class Spell_SummonArmy extends Spell
 			unInvoke();
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setUpdated(0);
 		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((affected==null)
+		||(!(affected instanceof MOB))
+	    ||(((MOB)affected).amDead())
+		||(((MOB)affected).amFollowing()==null)
+		||((hasFought)&&(!((MOB)affected).isInCombat())))
+		{
+			unInvoke();
+			return false;
+		}
+		else
+		if(!hasFought)
+			hasFought=((MOB)affected).isInCombat();
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -99,6 +117,7 @@ public class Spell_SummonArmy extends Spell
 						newMOB.setFollowing(mob);
 					if(newMOB.getVictim()!=null)
 						newMOB.getVictim().setVictim(newMOB);
+					hasFought=false;
 					beneficialAffect(mob,newMOB,asLevel,0);
 				}
 			}

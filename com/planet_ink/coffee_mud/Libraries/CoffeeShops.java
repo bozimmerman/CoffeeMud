@@ -504,10 +504,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return false;
     }
     public boolean standardBuyEvaluation(MOB seller,
-                                                MOB buyer,
-                                                Environmental product,
-                                                ShopKeeper shop,
-                                                boolean buyNotView)
+                                         MOB buyer,
+                                         Environmental product,
+                                         ShopKeeper shop,
+                                         boolean buyNotView)
     {
         if((product!=null)
         &&(shop.getShop().doIHaveThisInStock("$"+product.Name()+"$",buyer,shop.whatIsSold(),(seller!=null)?seller.getStartRoom():null)))
@@ -741,9 +741,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public double transactPawn(MOB shopkeeper,
-                                      MOB pawner,
-                                      ShopKeeper shop,
-                                      Environmental product)
+                               MOB pawner,
+                               ShopKeeper shop,
+                               Environmental product)
     {
         Environmental coreSoldItem=product;
         Environmental rawSoldItem=product;
@@ -812,9 +812,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public void transactMoneyOnly(MOB seller,
-                                         MOB buyer,
-                                         ShopKeeper shop,
-                                         Environmental product)
+                                  MOB buyer,
+                                  ShopKeeper shop,
+                                  Environmental product)
     {
         if((seller==null)||(seller.location()==null)||(buyer==null)||(shop==null)||(product==null))
             return;
@@ -888,9 +888,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public boolean purchaseMOB(MOB product,
-                                      MOB seller,
-                                      ShopKeeper shop,
-                                      MOB mobFor)
+                               MOB seller,
+                               ShopKeeper shop,
+                               MOB mobFor)
     {
         if((seller==null)||(seller.location()==null)||(product==null)||(shop==null)||(mobFor==null))
             return false;

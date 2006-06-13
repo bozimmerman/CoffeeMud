@@ -55,7 +55,7 @@ public class Poison extends StdAbility
 	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";}
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(invoker().envStats().level(),3,1):0;}
+	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(2,invoker().envStats().level(),1):0;}
     protected boolean processing=false;
 
 	protected int poisonTick=3;
