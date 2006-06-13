@@ -62,8 +62,12 @@ public class Spell_Sonar extends Spell
 			MOB victim=mob.getVictim();
 			if((victim==null)||(CMLib.flags().canBeHeardBy(victim,mob)))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_VICTIM);
-			if((victim==null)&&(CMLib.flags().canHear(mob)))
+			if(CMLib.flags().canHear(mob))
+			{
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_SEE)>0)
+					affectableStats.setSensesMask(CMath.unsetb(affectableStats.sensesMask(),EnvStats.CAN_NOT_SEE));
+			}
 		}
 	}
 
