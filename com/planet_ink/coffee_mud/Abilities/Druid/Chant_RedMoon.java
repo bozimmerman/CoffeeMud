@@ -78,7 +78,7 @@ public class Chant_RedMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			if(!Chant_BlueMoon.moonInSky(R,this))
+			if(!R.getArea().getClimateObj().canSeeTheMoon(R,this))
 				unInvoke();
 		}
 		return true;
@@ -88,7 +88,7 @@ public class Chant_RedMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
+		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
 			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;

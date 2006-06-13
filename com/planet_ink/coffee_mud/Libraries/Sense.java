@@ -473,7 +473,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				   return true;
 				if((canSeeVictims(seer))&&(seer.getVictim()==seen))
 					return true;
-                if(R.getArea().getClimateObj().canSeeTheMoon(R))
+                if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
                     switch(R.getArea().getTimeObj().getMoonPhase())
                     {
                     case TimeClock.PHASE_FULL:
@@ -487,7 +487,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isInDark(seen)) 
 		{
             if((seen instanceof Room)
-            &&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen))))
+            &&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
                 switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
                 {
                 case TimeClock.PHASE_FULL:
@@ -513,7 +513,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             Room R=seer.location();
             if((R!=null)&&(isInDark(R)))
             {
-                if(R.getArea().getClimateObj().canSeeTheMoon(R))
+                if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
                 {
                     switch(R.getArea().getTimeObj().getMoonPhase())
                     {
@@ -529,7 +529,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         if(isInDark(seen)) 
         {
             if((seen instanceof Room)
-            &&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen))))
+            &&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
                 switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
                 {
                 case TimeClock.PHASE_FULL:

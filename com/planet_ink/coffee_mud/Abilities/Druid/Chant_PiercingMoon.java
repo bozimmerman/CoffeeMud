@@ -112,7 +112,7 @@ public class Chant_PiercingMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location()))
+					if(!mob.location().getArea().getClimateObj().canSeeTheStars(mob.location()))
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon pierces through the clouds!");
 					else
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon brightens!");

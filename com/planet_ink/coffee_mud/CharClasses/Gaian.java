@@ -79,6 +79,7 @@ public class Gaian extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PlantSelf",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFlower",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHerb",false);
 

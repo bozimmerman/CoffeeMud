@@ -1893,7 +1893,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(monster.location()!=null)
 				{
 					if(arg1.length()==0)
-						returnable=monster.location().getArea().getClimateObj().canSeeTheMoon(monster.location());
+						returnable=monster.location().getArea().getClimateObj().canSeeTheStars(monster.location());
 					else
 					for(int a=0;a<TimeClock.PHASE_DESC.length;a++)
 						if((TimeClock.PHASE_DESC[a]).startsWith(arg1.toUpperCase())

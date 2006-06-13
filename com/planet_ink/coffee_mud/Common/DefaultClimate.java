@@ -151,7 +151,16 @@ public class DefaultClimate implements Climate
 			return "^JYou can't tell much about the weather from here.^?";
 		return getWeatherDescription(room.getArea());
 	}
-	public boolean canSeeTheMoon(Room room)
+	public boolean canSeeTheMoon(Room room, Ability butNotA)
+	{
+		if(canSeeTheStars(room)) return true;
+		Vector V=CMLib.flags().flaggedAffects(room,Ability.FLAG_MOONSUMMONING);
+		for(int v=0;v<V.size();v++)
+			if(V.elementAt(v)!=butNotA)
+				return true;
+		return false;
+	}
+	public boolean canSeeTheStars(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)
                 &&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))

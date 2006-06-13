@@ -121,7 +121,7 @@ public class Chant_Shapelessness extends Chant
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already shapeless.");
 			return false;
 		}
-		if((!auto)&&(!Chant_BlueMoon.moonInSky(mob.location(),null)))
+		if((!auto)&&(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location(),null)))
 		{
 			mob.tell("You must be able under the moons glow for this magic to work.");
 			return false;

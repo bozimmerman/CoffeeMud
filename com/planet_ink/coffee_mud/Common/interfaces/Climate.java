@@ -93,12 +93,20 @@ public interface Climate extends Tickable, CMObject
 	 */
 	public String nextWeatherDescription(Room room);
 	/**
+	 * Returns whether a player can see the stars from
+	 * the current room.
+	 * @param room the room vantage point
+	 * @return whether the stars can be seen.
+	 */
+	public boolean canSeeTheStars(Room room);
+	/**
 	 * Returns whether a player can see the moon from
 	 * the current room.
 	 * @param room the room vantage point
+	 * @param butNotA an ability to exempt from moon flags
 	 * @return whether the moon can be seen.
 	 */
-	public boolean canSeeTheMoon(Room room);
+	public boolean canSeeTheMoon(Room room, Ability butNotA);
 	/**
 	 * Returns whether a player can see the sun from
 	 * the current room.

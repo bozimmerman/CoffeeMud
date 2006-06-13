@@ -74,6 +74,7 @@ public class SkyWatcher extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_StarGazing",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
             CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHail",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictPhase",true);
