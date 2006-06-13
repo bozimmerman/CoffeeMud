@@ -93,8 +93,8 @@ public class Prayer_FlameWeapon extends Prayer
 		{
 			if((affected!=null)&&(affected instanceof Item))
 			{
-				if(((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
-				&&((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION))
+				if(((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				||((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 				{
 					if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
 						((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).name()+" consume it.");

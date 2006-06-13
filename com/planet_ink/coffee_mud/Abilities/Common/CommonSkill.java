@@ -83,7 +83,11 @@ public class CommonSkill extends StdAbility
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
 			if((tickUp%4)==0)
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+"."+sound);
+			{
+				int total=tickUp+tickDown;
+				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
+				mob.location().show(mob,null,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
+			}
 			if((helping)
 			&&(helpingAbility!=null)
 			&&(helpingAbility.affected instanceof MOB)

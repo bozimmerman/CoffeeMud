@@ -944,6 +944,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         else
         {
+            if(CMSecurity.isDisabled("NEWPLAYERS"))
+            {
+                mob.session().print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
+                mob.setName("");
+                mob.setPlayerStats(null);
+            }
+            else
             if(!isOkName(login))
             {
                 mob.session().println("\n\rThat name is unrecognized.\n\rThat name is also not available for new users.\n\r  Choose another name (no spaces allowed)!\n\r");

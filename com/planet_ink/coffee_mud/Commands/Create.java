@@ -706,10 +706,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, CLAN, MOB, RACE, CLASS, POLL or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, CLAN, MOB, RACE, CLASS, POLL, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, CLAN, RACE, CLASS, POLL, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, CLAN, RACE, CLASS, POLL, USER, or ROOM.");
 			}
 		}
 		return false;
