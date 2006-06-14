@@ -73,7 +73,6 @@ public class Beastmaster extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_NaturalCommunion",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_BestowName",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
@@ -102,6 +101,7 @@ public class Beastmaster extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_Bite",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_AnimalFriendship",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalCommunion",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_FurCoat",false);

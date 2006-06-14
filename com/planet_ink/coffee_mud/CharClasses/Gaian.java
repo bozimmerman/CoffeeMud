@@ -79,7 +79,6 @@ public class Gaian extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PlantSelf",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFlower",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHerb",false);
 
@@ -100,6 +99,7 @@ public class Gaian extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_PlantSelf",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_GrowClub",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Root",false);
