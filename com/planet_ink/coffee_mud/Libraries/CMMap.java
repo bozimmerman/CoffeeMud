@@ -414,13 +414,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	{ 
 		synchronized(playersList)
 		{
-			MOB M;
-			for (Enumeration p=players(); p.hasMoreElements();)
-			{
-				M = (MOB)p.nextElement();
-				if (M.Name().equalsIgnoreCase(newOne.Name()))
-					return;
-			}
+			if(getPlayer(newOne.Name())!=null) return;
+			if(playersList.contains(newOne)) return;
 			playersList.add(newOne);
 		} 
 	}
