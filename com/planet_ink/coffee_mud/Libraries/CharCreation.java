@@ -677,8 +677,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             mob.playerStats().leveledDateTime(0);
             CMLib.database().DBCreateCharacter(mob);
-            if(CMLib.map().getPlayer(mob.Name())==null)
-                CMLib.map().addPlayer(mob);
+            CMLib.map().addPlayer(mob);
 
             if((session==null)||(mob.playerStats()==null)) return false;
             mob.playerStats().setLastIP(session.getAddress());

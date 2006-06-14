@@ -277,8 +277,7 @@ public class Age extends StdAbility
 					newMan.recoverMaxState();
 					newMan.resetToMaxState();
 					CMLib.database().DBCreateCharacter(newMan);
-					if(CMLib.map().getPlayer(newMan.Name())==null)
-						CMLib.map().addPlayer(newMan);
+					CMLib.map().addPlayer(newMan);
 
 					newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());

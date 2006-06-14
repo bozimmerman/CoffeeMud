@@ -410,17 +410,32 @@ public class CMMap extends StdLibrary implements WorldMap
     public Enumeration postOffices() { return postOfficeList.elements(); }
     
 	public int numPlayers() { return playersList.size(); }
-	public void addPlayer(MOB newOne) { playersList.add(newOne); }
-	public void delPlayer(MOB oneToDel) { playersList.remove(oneToDel); }
+	public void addPlayer(MOB newOne) 
+	{ 
+		synchronized(playersList)
+		{
+			MOB M;
+			for (Enumeration p=players(); p.hasMoreElements();)
+			{
+				M = (MOB)p.nextElement();
+				if (M.Name().equalsIgnoreCase(newOne.Name()))
+					return;
+			}
+			playersList.add(newOne);
+		} 
+	}
+	public void delPlayer(MOB oneToDel) { synchronized(playersList){playersList.remove(oneToDel);} }
 	public MOB getPlayer(String calledThis)
 	{
 		MOB M = null;
-
-		for (Enumeration p=players(); p.hasMoreElements();)
+		synchronized(playersList)
 		{
-			M = (MOB)p.nextElement();
-			if (M.Name().equalsIgnoreCase(calledThis))
-				return M;
+			for (Enumeration p=players(); p.hasMoreElements();)
+			{
+				M = (MOB)p.nextElement();
+				if (M.Name().equalsIgnoreCase(calledThis))
+					return M;
+			}
 		}
 		return null;
 	}
@@ -429,34 +444,37 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return null;
-
-		MOB M=getPlayer(last);
-		if(M!=null) return M;
-
-		for(Enumeration p=players();p.hasMoreElements();)
+		MOB M=null;
+		synchronized(playersList)
 		{
-			MOB mob2=(MOB)p.nextElement();
-			if(mob2.Name().equalsIgnoreCase(last))
-			{ return mob2;}
+			M=getPlayer(last);
+			if(M!=null) return M;
+	
+			for(Enumeration p=players();p.hasMoreElements();)
+			{
+				MOB mob2=(MOB)p.nextElement();
+				if(mob2.Name().equalsIgnoreCase(last))
+				{ return mob2;}
+			}
+	
+			MOB TM=CMClass.getMOB("StdMOB");
+			if(CMLib.database().DBUserSearch(TM,last))
+			{
+				M=CMClass.getMOB("StdMOB");
+				M.setName(TM.Name());
+				CMLib.database().DBReadPlayer(M);
+				CMLib.database().DBReadFollowers(M,false);
+				if(M.playerStats()!=null)
+					M.playerStats().setUpdated(M.playerStats().lastDateTime());
+				M.recoverEnvStats();
+				M.recoverCharStats();
+			}
+	        TM.destroy();
 		}
-
-		MOB TM=CMClass.getMOB("StdMOB");
-		if(CMLib.database().DBUserSearch(TM,last))
-		{
-			M=CMClass.getMOB("StdMOB");
-			M.setName(TM.Name());
-			CMLib.database().DBReadPlayer(M);
-			CMLib.database().DBReadFollowers(M,false);
-			if(M.playerStats()!=null)
-				M.playerStats().setUpdated(M.playerStats().lastDateTime());
-			M.recoverEnvStats();
-			M.recoverCharStats();
-		}
-        TM.destroy();
 		return M;
 	}
 
-	public Enumeration players() { return playersList.elements(); }
+	public Enumeration players() { return ((Vector)playersList.clone()).elements(); }
 
     
 	public Room getDefaultStartRoom(MOB mob)

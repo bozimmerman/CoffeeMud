@@ -299,8 +299,8 @@ public class MOBloader
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 
-		if(CMLib.map().getPlayer(mob.Name())==null)
-			CMLib.map().addPlayer(mob);
+		// wont add if same name already exists
+		CMLib.map().addPlayer(mob);
 	}
 
 	public static Vector userList()
