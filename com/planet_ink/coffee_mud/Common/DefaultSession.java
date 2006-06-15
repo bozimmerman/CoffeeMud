@@ -353,20 +353,23 @@ public class DefaultSession extends Thread implements Session
 
 	public void out(char[] c)
 	{
-	    out.write(c);
-	    out.flush();
+		if((out!=null)&&(!out.checkError()))
+		    out.write(c);
+		out.checkError();
 	}
     
     public void out(String c)
     {
-        out.write(c);
-        out.flush();
+		if((out!=null)&&(!out.checkError()))
+		    out.write(c);
+		out.checkError();
     }
     
     public void out(char c)
     {
-        out.write(c);
-        out.flush();
+		if((out!=null)&&(!out.checkError()))
+		    out.write(c);
+		out.checkError();
     }
 	
 	public void onlyPrint(String msg){onlyPrint(msg,-1,false);}
