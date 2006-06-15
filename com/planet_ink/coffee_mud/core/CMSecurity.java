@@ -106,7 +106,8 @@ public class CMSecurity
 	
 	public static boolean isASysOp(MOB mob)
 	{
-		return CMLib.masking().maskCheck(compiledSysop,mob);
+		return CMLib.masking().maskCheck(compiledSysop,mob)
+				||((mob.soulMate()!=null)&&(isASysOp(mob.soulMate())));
 	}
 	
 	
@@ -114,7 +115,9 @@ public class CMSecurity
 	{
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
 		if((mob.playerStats().getSecurityGroups().size()==0)
         &&(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).size()==0))
             return false;
@@ -125,7 +128,9 @@ public class CMSecurity
     {
         if(isASysOp(mob)) return true;
         if(mob==null) return false;
-        if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         if(mob.playerStats().getSecurityGroups().size()==0)
             return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
@@ -186,7 +191,9 @@ public class CMSecurity
     {
         if(isASysOp(mob)) return true;
         if(mob==null) return false;
-        if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         if(mob.playerStats().getSecurityGroups().size()==0)
             return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
@@ -248,9 +255,11 @@ public class CMSecurity
     
     public static boolean canAccessFile(MOB mob, Room room, String path, boolean isVFS)
     {
-        if(isASysOp(mob)) return true;
         if(mob==null) return false;
-        if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(isASysOp(mob)) return true;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         if(mob.playerStats().getSecurityGroups().size()==0)
             return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
@@ -343,9 +352,11 @@ public class CMSecurity
 	
 	public static boolean isAllowedStartsWith(MOB mob, Room room, String code)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob==null) return false;
+        if(isASysOp(mob)) return true;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
 		Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
@@ -375,9 +386,11 @@ public class CMSecurity
 	
 	public static boolean isAllowed(MOB mob, Room room, String code)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob==null) return false;
+        if(isASysOp(mob)) return true;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
@@ -402,9 +415,11 @@ public class CMSecurity
 	}
 	public static boolean isAllowedStartsWith(MOB mob, String code)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob==null) return false;
+        if(isASysOp(mob)) return true;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
@@ -451,9 +466,11 @@ public class CMSecurity
 	}
 	public static boolean isAllowedEverywhere(MOB mob, String code)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob==null) return false;
+        if(isASysOp(mob)) return true;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
@@ -473,9 +490,11 @@ public class CMSecurity
 	}
 	public static boolean isAllowedAnywhere(MOB mob, String code)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob==null) return false;
+        if(isASysOp(mob)) return true;
+		if((mob.playerStats()==null)
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+			return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
