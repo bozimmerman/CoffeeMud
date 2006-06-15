@@ -941,29 +941,48 @@ public class StdRoom implements Room
 			}
 		}
 		Rideable RI=mob.riding();
-		if(RI!=null)
+		if((RI!=null)&&(CMLib.map().roomLocation(RI)==oldRoom))
 		{
-			if((RI.rideBasis()!=Rideable.RIDEABLE_SIT)
-			&&(RI.rideBasis()!=Rideable.RIDEABLE_TABLE)
-			&&(RI.rideBasis()!=Rideable.RIDEABLE_ENTERIN)
-			&&(RI.rideBasis()!=Rideable.RIDEABLE_SLEEP)
-			&&(RI.rideBasis()!=Rideable.RIDEABLE_LADDER))
+			if(RI.isMobileRideBasis())
 			{
 				if(RI instanceof MOB)
 					bringMobHere((MOB)RI,andFollowers);
 				else
-				if(mob.riding() instanceof Item)
-					bringItemHere((Item)RI,-1);
+				if(RI instanceof Item)
+					bringItemHere((Item)RI,Item.REFUSE_PLAYER_DROP,andFollowers);
+				// refuse is good for above, since mostly moving player stuff around
 			}
 			else
 				mob.setRiding(null);
+		}
+		if((andFollowers)&&(oldRoom!=null)&&(mob instanceof Rideable)&&(oldRoom!=this))
+		{
+			Rider RR=null;
+			for(int r=0;r<((Rideable)mob).numRiders();r++)
+			{
+				RR=((Rideable)mob).fetchRider(r);
+				if(CMLib.map().roomLocation(RR)==oldRoom)
+				{
+					if(((Rideable)mob).isMobileRideBasis())
+					{
+						if(RR instanceof MOB)
+							bringMobHere((MOB)RR,andFollowers);
+						else
+						if(RR instanceof Item)
+							bringItemHere((Item)RR,Item.REFUSE_PLAYER_DROP,andFollowers);
+						// refuse is good for above, since mostly moving player stuff around
+					}
+					else
+						RR.setRiding(null);
+				}
+			}
 		}
 		if(oldRoom!=null)
 			oldRoom.recoverRoomStats();
 		recoverRoomStats();
 	}
 
-	public void bringItemHere(Item item, double survivalRLHours)
+	public void bringItemHere(Item item, double survivalRLHours, boolean andRiders)
 	{
 		if(item==null) return;
 
@@ -989,22 +1008,39 @@ public class StdRoom implements Room
 		}
 		item.setContainer(null);
 		
-		if(item.riding()!=null)
+		if((item.riding()!=null)&&(o instanceof Room)&&(CMLib.map().roomLocation(item.riding())==o))
 		{
-			if((item.riding().rideBasis()!=Rideable.RIDEABLE_SIT)
-			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_TABLE)
-			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_ENTERIN)
-			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)
-			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_LADDER))
+			if(((Rideable)item.riding()).isMobileRideBasis())
 			{
 				if(item.riding() instanceof MOB)
 					bringMobHere((MOB)item.riding(),true);
 				else
 				if(item.riding() instanceof Item)
-					bringItemHere((Item)item.riding(),-1);
+					bringItemHere((Item)item.riding(),-1,true);
 			}
 			else
 				item.setRiding(null);
+		}
+		if(andRiders&&(o instanceof Room)&&(item instanceof Rideable)&&(o!=this))
+		{
+			Rider RR=null;
+			for(int r=0;r<((Rideable)item).numRiders();r++)
+			{
+				RR=((Rideable)item).fetchRider(r);
+				if(CMLib.map().roomLocation(RR)==o)
+				{
+					if(((Rideable)item).isMobileRideBasis())
+					{
+						if(RR instanceof MOB)
+							bringMobHere((MOB)RR,true);
+						else
+						if(RR instanceof Item)
+							bringItemHere((Item)RR,Item.REFUSE_PLAYER_DROP,true);
+					}
+					else
+						RR.setRiding(null);
+				}
+			}
 		}
 		
 		if(o instanceof Room)

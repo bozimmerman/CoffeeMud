@@ -89,7 +89,7 @@ public class MOBEater extends ActiveTicker
 		for(int i=0;i<these.size();i++)
 		{
 			if(these.elementAt(i) instanceof Item)
-				lastKnownLocation.bringItemHere((Item)these.elementAt(i),Item.REFUSE_PLAYER_DROP);
+				lastKnownLocation.bringItemHere((Item)these.elementAt(i),Item.REFUSE_PLAYER_DROP,false);
 			else
 			if(these.elementAt(i) instanceof MOB)
 				lastKnownLocation.bringMobHere((MOB)these.elementAt(i),false);

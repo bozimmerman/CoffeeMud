@@ -110,7 +110,7 @@ public class Chant_Earthpocket extends Chant
 							pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()-EnvStats.IS_NOT_SEEN);
 							pocket.recoverEnvStats();
 						}
-						((MOB)affected).location().bringItemHere(pocket,0);
+						((MOB)affected).location().bringItemHere(pocket,0,false);
 					}
 					else
 					if(!CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))

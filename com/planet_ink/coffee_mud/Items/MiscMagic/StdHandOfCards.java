@@ -164,7 +164,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
                 ((Room)owner()).addItem(card);
             else
             if(!((Room)owner()).isContent(card))
-                ((Room)owner()).bringItemHere(card,Item.REFUSE_PLAYER_DROP);
+                ((Room)owner()).bringItemHere(card,Item.REFUSE_PLAYER_DROP,false);
         }
         else
         {

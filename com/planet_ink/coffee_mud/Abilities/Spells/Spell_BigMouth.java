@@ -121,7 +121,7 @@ public class Spell_BigMouth extends Spell
 			}
 			if((msg.target() instanceof Item)
 			&&(!(msg.target() instanceof Food)))
-				Stomach().bringItemHere((Item)msg.target(),Item.REFUSE_MONSTER_EQ);
+				Stomach().bringItemHere((Item)msg.target(),Item.REFUSE_MONSTER_EQ,false);
 		}
 		if((msg.amISource(mob))
 		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))

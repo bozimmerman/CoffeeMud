@@ -596,7 +596,7 @@ public class DefaultQuest implements Quest, Tickable
                             q.error=true; break;
                         }
                         if(q.room!=null)
-                            q.room.bringItemHere(q.item,-1);
+                            q.room.bringItemHere(q.item,-1,true);
                         else
                         if(q.item.owner() instanceof Room)
                             q.room=(Room)q.item.owner();
@@ -852,7 +852,7 @@ public class DefaultQuest implements Quest, Tickable
                             q.error=true; break;
                         }
                         if(q.room!=null)
-                            q.room.bringItemHere(q.item,-1);
+                            q.room.bringItemHere(q.item,-1,true);
                         else
                         if(q.item.owner() instanceof Room)
                             q.room=(Room)q.item.owner();

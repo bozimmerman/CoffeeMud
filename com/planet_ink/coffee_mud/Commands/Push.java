@@ -88,7 +88,7 @@ public class Push extends Go
 		        if(dirCode>=0)
 		        {
 			        if(openThis instanceof Item)
-			            R.bringItemHere((Item)openThis,Item.REFUSE_PLAYER_DROP);
+			            R.bringItemHere((Item)openThis,Item.REFUSE_PLAYER_DROP,true);
 			        else
 			        if(openThis instanceof MOB)
 			            move((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);

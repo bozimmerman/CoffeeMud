@@ -64,6 +64,18 @@ public class StdRideable extends StdContainer implements Rideable
 		super.destroy();
 	}
 
+	public boolean isMobileRideBasis()
+	{
+		switch(rideBasis()){
+			case RIDEABLE_SIT:
+			case RIDEABLE_TABLE:
+			case RIDEABLE_ENTERIN:
+			case RIDEABLE_SLEEP:
+			case RIDEABLE_LADDER:
+				return false;
+		}
+		return true;
+	}
 	// common item/mob stuff
 	public int rideBasis(){return rideBasis;}
 	public void setRideBasis(int basis){rideBasis=basis;}

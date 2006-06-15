@@ -202,7 +202,7 @@ public class ThinRoom implements Room {
 	public Item fetchItem(Item goodLocation, String itemID){return null;}
 	public Item fetchItem(int i){return null;}
 	public Item fetchAnyItem(String itemID){return null;}
-	public void bringItemHere(Item item, double survivalRLHours){}
+	public void bringItemHere(Item item, double survivalRLHours, boolean andRiders){}
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode){return null;}
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode){return null;}

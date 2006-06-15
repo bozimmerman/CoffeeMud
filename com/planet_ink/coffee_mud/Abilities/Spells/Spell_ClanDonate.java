@@ -85,7 +85,7 @@ public class Spell_ClanDonate extends Spell
                 if(clanDonateRoom.okMessage(mob,msg))
                 {
                     mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
-                    clanDonateRoom.bringItemHere(target,Item.REFUSE_PLAYER_DROP);
+                    clanDonateRoom.bringItemHere(target,Item.REFUSE_PLAYER_DROP,false);
                     clanDonateRoom.recoverRoomStats();
                     clanDonateRoom.sendOthers(mob,msg);
                 }

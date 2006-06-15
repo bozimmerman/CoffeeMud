@@ -147,7 +147,7 @@ public class Patroller extends ActiveTicker
 				if(R!=null) 
 				{
 					if(ticking instanceof Item)
-						R.bringItemHere((Item)ticking,-1);
+						R.bringItemHere((Item)ticking,-1,false);
 					else
 					if(ticking instanceof MOB)
                     {
@@ -389,7 +389,7 @@ public class Patroller extends ActiveTicker
 			    tickStatus=Tickable.STATUS_MISC+17;
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
 			    tickStatus=Tickable.STATUS_MISC+18;
-				thatRoom.bringItemHere(I,-1);
+				thatRoom.bringItemHere(I,-1,false);
 			    tickStatus=Tickable.STATUS_MISC+19;
 				if(I.owner()==thatRoom)
 				{
@@ -421,7 +421,7 @@ public class Patroller extends ActiveTicker
 								if(R instanceof Item)
 								{
 								    tickStatus=Tickable.STATUS_MISC+33;
-									thatRoom.bringItemHere((Item)R,-1);
+									thatRoom.bringItemHere((Item)R,-1,false);
 								    tickStatus=Tickable.STATUS_MISC+34;
 								}
 							}

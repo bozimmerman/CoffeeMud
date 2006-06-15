@@ -223,7 +223,7 @@ public interface Room extends Environmental, Affectable, Behavable
 	public Item fetchItem(Item goodLocation, String itemID);
 	public Item fetchItem(int i);
 	public Item fetchAnyItem(String itemID);
-	public void bringItemHere(Item item, double survivalRLHours);
+	public void bringItemHere(Item item, double survivalRLHours, boolean andRiders);
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode);
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode);

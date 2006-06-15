@@ -50,6 +50,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 
 
 	// common item/mob stuff
+	public boolean isMobileRideBasis(){return false;}
 	public int rideBasis(){return Rideable.RIDEABLE_ENTERIN;}
 	public void setRideBasis(int basis){}
 	public int riderCapacity(){ return 1;}

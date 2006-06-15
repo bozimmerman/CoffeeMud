@@ -221,7 +221,7 @@ public class Follower extends ActiveTicker
 			if(R==null)	return true;
 
 			if(R!=lastOwner.location())
-				lastOwner.location().bringItemHere(I,0);
+				lastOwner.location().bringItemHere(I,0,true);
 			if((inventory)&&(R.isInhabitant(lastOwner)))
 			{
 				CMLib.commands().postGet(lastOwner,null,I,true);

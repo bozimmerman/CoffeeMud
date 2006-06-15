@@ -178,7 +178,7 @@ public class Falling extends StdAbility
 			if(canFallFrom(room,direction))
 			{
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
-                nextRoom.bringItemHere(item,Item.REFUSE_PLAYER_DROP);
+                nextRoom.bringItemHere(item,Item.REFUSE_PLAYER_DROP,false);
 				room=nextRoom;
 				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
 				return true;

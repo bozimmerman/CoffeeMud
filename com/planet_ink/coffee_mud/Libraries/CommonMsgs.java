@@ -357,15 +357,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             recallingmob.setLocation(((Room)msg.target()));
             if((recallingmob.riding()!=null)&&(recallingmob.location()!=CMLib.map().roomLocation(recallingmob.riding())))
             {
-                int rb=recallingmob.riding().rideBasis();
-                if((rb!=Rideable.RIDEABLE_SIT)
-                &&(rb!=Rideable.RIDEABLE_SLEEP)
-                &&(rb!=Rideable.RIDEABLE_TABLE)
-                &&(rb!=Rideable.RIDEABLE_ENTERIN)
-                &&(rb!=Rideable.RIDEABLE_LADDER))
+            	if(recallingmob.riding().mobileRideBasis())
                 {
                     if(recallingmob.riding() instanceof Item)
-                        recallingmob.location().bringItemHere((Item)recallingmob.riding(),-1);
+                        recallingmob.location().bringItemHere((Item)recallingmob.riding(),-1,true);
                     else
                     if(recallingmob.riding() instanceof MOB)
                         recallingmob.location().bringMobHere((MOB)recallingmob.riding(),true);

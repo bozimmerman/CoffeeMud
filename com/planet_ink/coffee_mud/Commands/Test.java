@@ -267,7 +267,7 @@ public class Test extends StdCommand
                 IS=giveTo(CMClass.getWeapon("Sword"),HaveEnabler,mobs[0],null,0);
                 if(!spellCheck(mobs[0])){ mob.tell("Error1-1"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0);
+                R.bringItemHere(IS[0],0,true);
                 R.recoverRoomStats();
                 if(spellCheck(mobs[0])){ mob.tell("Error1-2"); return false;}
                 
@@ -279,8 +279,8 @@ public class Test extends StdCommand
                 if(spellCheck(mobs[1])){ mob.tell("Error1-4"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0);
-                R.bringItemHere(IS[1],0);
+                R.bringItemHere(IS[0],0,true);
+                R.bringItemHere(IS[1],0,true);
                 R.recoverRoomStats();
                 if(spellCheck(mobs[0])){ mob.tell("Error1-5"); return false;}
                 if(spellCheck(mobs[1])){ mob.tell("Error1-6"); return false;}
@@ -295,7 +295,7 @@ public class Test extends StdCommand
                 IS=giveTo(CMClass.getWeapon("Sword"),HaveSpellCast,mobs[0],null,0);
                 if(!effectCheck(mobs[0])){ mob.tell("Error2-1"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0);
+                R.bringItemHere(IS[0],0,true);
                 R.recoverRoomStats();
                 if(effectCheck(mobs[0])){ mob.tell("Error2-2"); return false;}
                 
@@ -307,8 +307,8 @@ public class Test extends StdCommand
                 if(effectCheck(mobs[1])){ mob.tell("Error2-4"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0);
-                R.bringItemHere(IS[1],0);
+                R.bringItemHere(IS[0],0,true);
+                R.bringItemHere(IS[1],0,true);
                 R.recoverRoomStats();
                 if(effectCheck(mobs[0])){ mob.tell("Error2-5"); return false;}
                 if(effectCheck(mobs[1])){ mob.tell("Error2-6"); return false;}
@@ -321,8 +321,8 @@ public class Test extends StdCommand
                 if(effectCheck(mobs[1])){ mob.tell("Error2-8"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0);
-                R.bringItemHere(IS[1],0);
+                R.bringItemHere(IS[0],0,true);
+                R.bringItemHere(IS[1],0,true);
                 R.recoverRoomStats();
                 if(effectCheck(mobs[0])){ mob.tell("Error2-9"); return false;}
                 if(effectCheck(mobs[1])){ mob.tell("Error2-10"); return false;}
@@ -696,7 +696,7 @@ public class Test extends StdCommand
                 R.recoverRoomStats();
                 if(!testResistance(mobs[0])){ mob.tell("Error16-2"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0);
+                R.bringItemHere(IS[0],0,true);
                 R.recoverRoomStats();
                 if(testResistance(mobs[0])){ mob.tell("Error16-3"); return false;}
                 
@@ -711,8 +711,8 @@ public class Test extends StdCommand
                 if(testResistance(mobs[1])){ mob.tell("Error16-7"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0);
-                R.bringItemHere(IS[1],0);
+                R.bringItemHere(IS[0],0,true);
+                R.bringItemHere(IS[1],0,true);
                 R.recoverRoomStats();
                 if(testResistance(mobs[0])){ mob.tell("Error16-8"); return false;}
                 if(testResistance(mobs[1])){ mob.tell("Error16-9"); return false;}
@@ -789,7 +789,7 @@ public class Test extends StdCommand
                 R.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error19-2"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0);
+                R.bringItemHere(IS[0],0,true);
                 R.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-3"); return false;}
                 
@@ -803,8 +803,8 @@ public class Test extends StdCommand
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error19-7"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0);
-                R.bringItemHere(IS[1],0);
+                R.bringItemHere(IS[0],0,true);
+                R.bringItemHere(IS[1],0,true);
                 R.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-8"); return false;}
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-9"); return false;}

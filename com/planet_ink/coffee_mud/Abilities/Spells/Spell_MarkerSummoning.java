@@ -126,7 +126,7 @@ public class Spell_MarkerSummoning extends Spell
 				{
 					Item I=(Item)items.elementAt(i);
 					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" disappears in a summoning swirl!");
-					newRoom.bringItemHere(I,-1);
+					newRoom.bringItemHere(I,-1,false);
 					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" appears in a burst of light!");
 				}
 			}

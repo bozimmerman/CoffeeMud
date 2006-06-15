@@ -64,6 +64,13 @@ public interface Rideable extends Environmental
 	};
 
     /** 
+     * Whether the type of rideable is mobile.
+     * @see Rideable
+     * @return Whether this type of rideable is mobile
+     */
+	public boolean isMobileRideBasis();
+	
+    /** 
      * The type of rideable object this is.
      * @see Rideable
      * @return the RIDEABLE_* constant describing how this is ridden

@@ -123,7 +123,7 @@ public class Prop_Auction extends Property
                             &&(CMLib.flags().isInTheGame(M,true)))
 							{
 								((Item)auctioning).unWear();
-								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
+								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP,false);
 								if(CMLib.commands().postGet(highBidder,null,(Item)auctioning,false)
                                 ||(highBidder.isMine(auctioning)))
                                 {

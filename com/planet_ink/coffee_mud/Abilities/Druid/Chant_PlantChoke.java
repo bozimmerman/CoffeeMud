@@ -59,7 +59,7 @@ public class Chant_PlantChoke extends Chant
 			{
 				mob.tell(I.name()+" loosens its grip on your neck and falls off.");
 				I.setRawWornCode(0);
-				mob.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP);
+				mob.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
 			}
 		}
 	}

@@ -406,7 +406,7 @@ public class DefaultClan implements Clan
                 I.setContainer(null);
                 I.wearAt(Item.IN_INVENTORY);
                 if(R!=null)
-                    R.bringItemHere(I,0);
+                    R.bringItemHere(I,0,false);
                 else
                 if(M.isMine(I))
                     I.destroy();

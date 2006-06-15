@@ -926,7 +926,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			I=(Item)inhabs.elementAt(i);
 			if(bringBackHere!=null)
-				bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
+				bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
 			else
 				I.destroy();
 		}
