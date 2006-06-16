@@ -226,6 +226,20 @@ public class StdAbility extends ForeignScriptable implements Ability
 		return adjLevel;
 	}
 
+	public int experienceLevels(MOB caster, int asLevel)
+	{
+		if(caster==null) return 1;
+		int adjLevel=1;
+		int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
+		if((caster.isMonster())||(qualifyingLevel>=0))
+			adjLevel=(CMLib.ableMapper().qualifyingClassLevel(caster,this)-qualifyingLevel)+1;
+		else
+			adjLevel=(caster.envStats().level()%30)-CMLib.ableMapper().lowestQualifyingLevel(this.ID())+1;
+		if(asLevel>0) adjLevel=asLevel;
+		if(adjLevel<1) return 1;
+		return adjLevel;
+	}
+
 	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
 	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
 	public boolean canAffect(Environmental E)
