@@ -310,6 +310,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
             if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
                 mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
+            else
+            {
+                mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
+                session.setServerTelnetMode(Session.TELNET_ANSI,false);
+                session.setClientTelnetMode(Session.TELNET_ANSI,false);
+            }
             if((session.clientTelnetMode(Session.TELNET_MSP))
             &&(!CMSecurity.isDisabled("MSP")))
                 mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
