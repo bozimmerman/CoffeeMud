@@ -108,7 +108,7 @@ public class Skill_Convert extends StdSkill
 			{
 				if(target.getMyDeity()!=null)
 				{
-					mob.tell(target.name()+" is worshiping "+target.getMyDeity().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
+					mob.tell(target.name()+" is worshipping "+target.getMyDeity().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
                     if(mob.isMonster())
                         CMLib.commands().postSay(mob,target,"You already worship "+target.getMyDeity().Name()+".",false,false);
 					return false;
