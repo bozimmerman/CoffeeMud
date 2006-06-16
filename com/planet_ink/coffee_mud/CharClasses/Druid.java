@@ -71,6 +71,7 @@ public class Druid extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Staff",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
