@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -31,34 +30,44 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ThiefSkill extends StdAbility
+public class Thief_SilentDrop extends ThiefSkill
 {
-	public String ID() { return "ThiefSkill"; }
-	public String name(){ return "a Thief Skill";}
+	public String ID() { return "Thief_SilentDrop"; }
+	public String name(){ return "Silent Drop";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}
-    protected int canAffectCode(){return 0;}
-    protected int canTargetCode(){return CAN_MOBS;}
-    
-    protected int getStealthLevel(MOB mob){ return super.getExpertiseLevel(mob,"STEALTH");}
+	private static final String[] triggerStrings = {"SILENTDROP","SDROP"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if((commands.size()<1)&&(givenTarget==null))
+		{
+			mob.tell("What would you like to drop?");
+			return false;
+		}
+		Item item=super.getTarget(mob,null,givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+		if(item==null) return false;
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)
-		&&(!mob.isMonster())
-		&&(!disregardsArmorCheck(mob))
-		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
-		&&(mob.isMine(this))
-		&&(mob.location()!=null)
-		&&(CMLib.dice().rollPercentage()<50))
+		boolean success=profficiencyCheck(mob,0,auto);
+
+		if(success)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) "+name()+" due to <S-HIS-HER> clumsy armor!");
-			return false;
+			CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DROP,"<S-NAME> drop(s) <O-NAME>.",CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
 		}
-		return true;
+		else
+			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to drop <T-NAME> quietly, but fail(s).");
+		return success;
 	}
 }

@@ -1010,7 +1010,7 @@ public class StdRoom implements Room
 		
 		if((item.riding()!=null)&&(o instanceof Room)&&(CMLib.map().roomLocation(item.riding())==o))
 		{
-			if(((Rideable)item.riding()).isMobileRideBasis())
+			if(item.riding().isMobileRideBasis())
 			{
 				if(item.riding() instanceof MOB)
 					bringMobHere((MOB)item.riding(),true);

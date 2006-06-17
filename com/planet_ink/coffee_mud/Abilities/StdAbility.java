@@ -1350,6 +1350,21 @@ public class StdAbility extends ForeignScriptable implements Ability
         return true;
     }
 
+    protected int getExpertiseLevel(MOB mob, String expertise)
+    {
+    	int level=0;
+    	for(int i=0;i<mob.numExpertises();i++)
+    	{
+    		String X=mob.fetchExpertise(i);
+    		if(X.toUpperCase().startsWith(expertise))
+    		{
+    			int x=CMath.s_int(X.substring(expertise.length()));
+    			if(x>level) level=x;
+    		}
+    	}
+    	return level;
+    }
+
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}
 	public void delEffect(Ability to){}

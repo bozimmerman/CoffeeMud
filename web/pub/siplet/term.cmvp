@@ -179,7 +179,7 @@ function addToPrompt(x,att)
 {
     top.entry.document.ENTER.TEXT.value=x;
     if(!att)
-        top.entry.doReturn(x);
+        top.entry.sendText(x);
     else
         top.entry.document.ENTER.TEXT.value+=" ";
 }
