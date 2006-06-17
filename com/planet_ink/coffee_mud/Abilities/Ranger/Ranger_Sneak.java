@@ -82,7 +82,7 @@ public class Ranger_Sneak extends StdAbility
 			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
 				highestLevel=mob.envStats().level();
 		}
-		int levelDiff=mob.envStats().level()-highestLevel;
+		int levelDiff=(mob.envStats().level()+(super.getExpertiseLevel(mob,"STEALTH")*2))-highestLevel;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

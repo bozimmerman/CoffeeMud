@@ -42,7 +42,8 @@ public class ThiefSkill extends StdAbility
     protected int canTargetCode(){return CAN_MOBS;}
     
     protected int getStealthLevel(MOB mob){ return super.getExpertiseLevel(mob,"STEALTH");}
-
+    protected int getAlertLevel(MOB mob){return super.getExpertiseLevel((MOB)affected,"ALERT");}
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

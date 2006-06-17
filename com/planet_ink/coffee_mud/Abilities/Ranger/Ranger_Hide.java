@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Ranger;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.Thief.Thief_Hide;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -44,7 +45,8 @@ public class Ranger_Hide extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-
+	protected int bonus=0;
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -79,6 +81,11 @@ public class Ranger_Hide extends StdAbility
 		if(CMLib.flags().isSneaking(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
 	}
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,profficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -139,6 +146,7 @@ public class Ranger_Hide extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
+				((Ranger_Hide)newOne).bonus=super.getExpertiseLevel(mob,"STEALTH");
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();

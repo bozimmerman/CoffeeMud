@@ -227,7 +227,7 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 
 		shadowing=null;
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getStealthLevel(mob)*2));
 
 		boolean success=profficiencyCheck(mob,-(levelDiff*10),auto);
 

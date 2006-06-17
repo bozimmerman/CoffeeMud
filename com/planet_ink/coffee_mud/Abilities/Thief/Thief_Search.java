@@ -61,7 +61,7 @@ public class Thief_Search extends ThiefSkill
             if(((MOB)affected).location()!=lastRoom)
             {
                 lastRoom=((MOB)affected).location();
-                bonusThisRoom=0;
+                bonusThisRoom=getAlertLevel((MOB)affected);
                 ((MOB)affected).recoverCharStats();
             }
             else

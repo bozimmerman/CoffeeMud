@@ -71,8 +71,15 @@ public class Thief_Alertness extends ThiefSkill
 				}
 				if(choices!=null)
 				{
-					Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-					mob.tell(I.name()+": "+I.description());
+					int alert=getAlertLevel(mob);
+					if(alert<=0)alert=1;
+					while((alert>0)&&(choices.size()>0))
+					{
+						Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+						choices.removeElement(I);
+						mob.tell(I.name()+": "+I.description());
+						alert--;
+					}
 				}
 			}
 		}

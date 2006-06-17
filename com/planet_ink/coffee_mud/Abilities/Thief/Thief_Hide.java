@@ -43,7 +43,8 @@ public class Thief_Hide extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
-
+	private int bonus=0;
+	
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
@@ -113,7 +114,7 @@ public class Thief_Hide extends ThiefSkill
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,profficiency()+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+        affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,profficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -164,6 +165,7 @@ public class Thief_Hide extends ThiefSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
+				((Thief_Hide)newOne).bonus=getStealthLevel(mob);
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
