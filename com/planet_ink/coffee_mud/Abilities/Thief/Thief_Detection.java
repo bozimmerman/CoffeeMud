@@ -65,7 +65,7 @@ public class Thief_Detection extends ThiefSkill
             if(((MOB)affected).location()!=lastRoom)
             {
                 lastRoom=((MOB)affected).location();
-                bonusThisRoom=super.getAlertLevel((MOB)affected);
+                bonusThisRoom=super.getAlertLevel((MOB)affected)*2;
                 ((MOB)affected).recoverCharStats();
             }
             else

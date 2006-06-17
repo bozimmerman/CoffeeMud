@@ -146,7 +146,7 @@ public class Ranger_Hide extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
-				((Ranger_Hide)newOne).bonus=super.getExpertiseLevel(mob,"STEALTH");
+				((Ranger_Hide)newOne).bonus=super.getExpertiseLevel(mob,"STEALTH")*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();

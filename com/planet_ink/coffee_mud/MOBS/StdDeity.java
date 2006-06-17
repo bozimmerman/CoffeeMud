@@ -559,7 +559,7 @@ public class StdDeity extends StdMOB implements Deity
 				switch(DT.triggerCode)
 				{
 				case TRIGGER_SAY:
-					if(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0)
+					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 						yup=true;
 					break;
 				case TRIGGER_TIME:
@@ -609,7 +609,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					break;
 				case TRIGGER_EMOTE:
-					if(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0)
+					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 						yup=true;
 					break;
 				case TRIGGER_PUTVALUE:

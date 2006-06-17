@@ -165,7 +165,7 @@ public class Thief_Hide extends ThiefSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
-				((Thief_Hide)newOne).bonus=getStealthLevel(mob);
+				((Thief_Hide)newOne).bonus=getStealthLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();

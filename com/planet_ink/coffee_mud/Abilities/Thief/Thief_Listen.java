@@ -67,7 +67,10 @@ public class Thief_Listen extends ThiefSkill
 				&&(!lastSaid.equals(msg.sourceMessage())))
 				{
 					lastSaid=msg.sourceMessage();
-					invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
+					if((invoker().envStats().level()+(getAlertLevel(invoker())*10))>msg.source().envStats().level())
+						invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
+					else
+						invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
 				}
 			}
 			else
@@ -78,7 +81,10 @@ public class Thief_Listen extends ThiefSkill
 			&&(!lastSaid.equals(msg.sourceMessage())))
 			{
 				lastSaid=msg.sourceMessage();
-				invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
+				if((invoker().envStats().level()+(getAlertLevel(invoker())*10))>msg.source().envStats().level())
+					invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
+				else
+					invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
 			}
 
 		}
