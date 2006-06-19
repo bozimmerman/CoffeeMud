@@ -33,7 +33,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultQuest implements Quest, Tickable
+public class DefaultQuest implements Quest, Tickable, CMObject
 {
 
     public String ID(){return "DefaultQuest";}
@@ -53,6 +53,7 @@ public class DefaultQuest implements Quest, Tickable
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
     private boolean stoppingQuest=false;
+    protected DVector vars=new DVector(2);
 
     protected Vector addons=new Vector();
     // contains a set of vectors, vectors are formatted as such:
@@ -80,11 +81,16 @@ public class DefaultQuest implements Quest, Tickable
         }
     }
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
     // the unique name of the quest
     public String startDate(){return startDate;}
-    public void setStartDate(String newName){startDate=newName;}
+    public void setStartDate(String newDate){
+        int x=newDate.indexOf("-");
+        if((x>0)
+        &&(CMath.isInteger(newDate.substring(0,x)))
+        &&(CMath.isInteger(newDate.substring(x+1))))
+	    	startDate=newDate;
+    }
     
     // the duration, in ticks
     public int duration(){return duration;}
@@ -125,59 +131,25 @@ public class DefaultQuest implements Quest, Tickable
         minPlayers=-1;
         playerMask="";
         runLevel=-1;
+        vars.clear();
+        
+        String line=null;
+        Vector parsedLine=null;
+        String cmd=null;
+        String var=null;
+        String val=null;
         for(int v=0;v<script.size();v++)
         {
-            String s=(String)script.elementAt(v);
-            Vector p=CMParms.parse(s);
-            if(p.size()>0)
+            line=(String)script.elementAt(v);
+            parsedLine=CMParms.parse(line);
+            if(parsedLine.size()>0)
             {
-                String cmd=((String)p.elementAt(0)).toUpperCase();
-                if((cmd.equals("SET"))&&(p.size()>1))
+                cmd=((String)parsedLine.elementAt(0)).toUpperCase();
+                if((cmd.equals("SET"))&&(parsedLine.size()>1))
                 {
-                    cmd=((String)p.elementAt(1)).toUpperCase();
-                    if((cmd.equals("NAME"))&&(p.size()>2))
-                        setName(CMParms.combine(p,2));
-                    else
-                    if((cmd.equals("DURATION"))&&(p.size()>2))
-                        setDuration(CMath.s_int((String)p.elementAt(2)));
-                    else
-                    if((cmd.equals("WAIT"))&&(p.size()>2))
-                        setMinWait(CMath.s_int((String)p.elementAt(2)));
-                    else
-                    if((cmd.equals("MINPLAYERS"))&&(p.size()>2))
-                        setMinPlayers(CMath.s_int((String)p.elementAt(2)));
-                    else
-                    if((cmd.equals("PLAYERMASK"))&&(p.size()>2))
-                        setPlayerMask(CMParms.combine(p,2));
-                    else
-                    if((cmd.equals("RUNLEVEL"))&&(p.size()>2))
-                        setRunLevel(CMath.s_int((String)p.elementAt(2)));
-                    else
-                    if((cmd.equals("MINPLAYERS"))&&(p.size()>2))
-                        setMinWait(CMath.s_int((String)p.elementAt(2)));
-                    else
-                    if((cmd.equals("DATE"))&&(p.size()>2))
-                    {
-                        String s2=CMParms.combine(p,2);
-                        int x=s2.indexOf("-");
-                        if((x>0)
-                        &&(CMath.isInteger(s2.substring(0,x)))
-                        &&(CMath.isInteger(s2.substring(x+1))))
-                            setStartDate(s2);
-                    }
-                    else
-                    if((cmd.equals("MUDDAY"))&&(p.size()>2))
-                    {
-                        String s2=CMParms.combine(p,2);
-                        int x=s2.indexOf("-");
-                        if((x>0)
-                        &&(CMath.isInteger(s2.substring(0,x)))
-                        &&(CMath.isInteger(s2.substring(x+1))))
-                            setStartDate("MUDDAY "+s2);
-                    }
-                    else
-                    if((cmd.equals("INTERVAL"))&&(p.size()>2))
-                        setWaitInterval(CMath.s_int((String)p.elementAt(2)));
+                    var=((String)parsedLine.elementAt(1)).toUpperCase();
+                    val=CMParms.combine(parsedLine,2);
+                    setStat(var,val);
                 }
             }
         }
@@ -862,24 +834,7 @@ public class DefaultQuest implements Quest, Tickable
                         q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
                     }
                     else
-                    if(cmd.equals("NAME")){}
-                    else
-                    if(cmd.equals("DATE")){}
-                    else
-                    if(cmd.equals("MUDDAY")){}
-                    else
-                    if(cmd.equals("DURATION")){}
-                    else
-                    if(cmd.equals("WAIT")){}
-                    else
-                    if(cmd.equals("INTERVAL")){}
-                    else
-                    if(cmd.equals("PLAYERMASK")){}
-                    else
-                    if(cmd.equals("RUNLEVEL")){}
-                    else
-                    if(cmd.equals("MINPLAYERS")){}
-                    else
+                    if(!isStat(cmd))
                     {
                         if(!isQuiet)
                             Log.errOut("Quests","Quest '"+name()+"', unknown variable '"+cmd+"'.");
@@ -1835,6 +1790,97 @@ public class DefaultQuest implements Quest, Tickable
         }
         return script;
     }
+	public String[] getCodes(){
+		String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
+		for(int i=0;i<QCODES.length;i++)
+			CCODES[i]=QCODES[i];
+		for(int i=0;i<MYSTERY_QCODES.length;i++)
+			CCODES[QCODES.length+i]=MYSTERY_QCODES[i];
+		return QCODES;
+	}
+	protected int getCodeNum(String code)
+	{
+		String[] CCODES=getCodes();
+		for(int i=0;i<CCODES.length;i++)
+			if(code.equalsIgnoreCase(CCODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(DefaultQuest E){
+		String[] CCODES=getCodes();
+		for(int i=0;i<CCODES.length;i++)
+			if(!E.getStat(CCODES[i]).equals(getStat(CCODES[i])))
+			   return false;
+		return true;
+	}
+	
+	private boolean isSpecialQCode(String code)
+	{
+		code=code.toUpperCase().trim();
+		for(int i=0;i<SPECIAL_QCODES.length;i++)
+			if(code.equals(SPECIAL_QCODES[i])) return true;
+		return false;
+	}
+	private boolean isMysteryQCode(String code)
+	{
+		code=code.toUpperCase().trim();
+		for(int i=0;i<MYSTERY_QCODES.length;i++)
+			if(code.equals(MYSTERY_QCODES[i])) return true;
+		return false;
+	}
+	
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code)){
+		case 0: break;
+		case 1: setName(val); break;
+		case 2: setDuration(CMath.s_int(val)); break;
+		case 3: setMinWait(CMath.s_int(val)); break;
+		case 4: setMinPlayers(CMath.s_int(val)); break;
+		case 5: setPlayerMask(val); break;
+		case 6: setRunLevel(CMath.s_int(val)); break;
+		case 7: setStartDate(val); break;
+		case 8: setStartDate(val); break;
+		case 9: setWaitInterval(CMath.s_int(val)); break;
+		default:
+			if(isMysteryQCode(code))
+			{
+				int x=vars.indexOf(code.toUpperCase().trim());
+				if(x>=0) 
+					vars.setElementAt(x,2,val);
+				else
+					vars.addElement(code.toUpperCase().trim(),val);
+			}
+			break;
+		}
+	}
+	public boolean isStat(String code)
+	{
+		if((getCodeNum(code)>=0)
+		||(isSpecialQCode(code))
+		||(isMysteryQCode(code))) 
+			return true;
+		return false;
+	}
+	public String getStat(String code)
+	{
+		switch(getCodeNum(code)){
+		case 0: return ""+ID();
+		case 1: return ""+name();
+		case 2: return ""+duration();
+		case 3: return ""+minWait();
+		case 4: return ""+minPlayers();
+		case 5: return ""+playerMask();
+		case 6: return ""+runLevel();
+		case 7: return ""+startDate();
+		case 8: return ""+startDate();
+		case 9: return ""+waitInterval();
+		default: 
+			int x=vars.indexOf(code.toUpperCase().trim());
+			if(x>=0) return (String)vars.elementAt(x,2);
+			return "";
+		}
+	}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     protected static class JScriptQuest extends ScriptableObject
     {
         public String getClassName(){ return "JScriptQuest";}

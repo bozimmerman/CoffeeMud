@@ -36,7 +36,7 @@ public interface Quest extends Tickable
 	public String name();
 	public void setName(String newName);
 	
-    // the unique name of the quest
+    // the unique start date of the quest
     public String startDate();
     public void setStartDate(String newName);
     
@@ -112,5 +112,20 @@ public interface Quest extends Tickable
 	public int ticksRemaining();
 	public int minsRemaining();
 	public int waitRemaining();
-    
+	
+	public final static String[] QCODES={"CLASS","NAME","DURATION","WAIT","MINPLAYERS","PLAYERMASK",
+										 "RUNLEVEL","DATE","MUDDAY","INTERVAL"};
+	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
+												 "ROOM","MOB","ITEM"};
+	//TODO: add the following:
+	// SETS or GROUPS for each (when there are optional ones) -- allow integration with above mob/item groups
+	// EVIDENCE, ALIBY sets need to figure in, and be able to load from lists dependent on ACTION and/or FACTION
+	// for MOTIVE, FACTION, need to be able to specify a source for the list
+	// for ACTION, FACTION, need to be able to LOAD in optional overrides for all of these -- some are dependent on this
+	// need to add ROOMGROUP to standard QCODES for selection of WHEREAT and WHEREHAPPENED
+	// as stated previously, need ability to specify the following: groups of choices (unknowns), chosen among unknown (truth
+	// of the unknown), irrelevant (ignored), and chosen -- the known.
+	public static final String[] MYSTERY_QCODES={"FACTION","AGENT","ACTION","TARGET","MOTIVE",
+												 "WHEREHAPPENED","WHEREAT","WHENHAPPENED","WHENAT",
+												 "TOOL"};
 }
