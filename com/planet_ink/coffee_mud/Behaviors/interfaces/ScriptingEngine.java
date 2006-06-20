@@ -126,6 +126,8 @@ public interface ScriptingEngine extends Behavior
         "LOCK_PROG", // 36
         "UNLOCK_PROG", // 37
         "SOCIAL_PROG", // 38
+        "LOOK_PROG", // 39
+        "LLOOK_PROG", // 40
     };
     
     public static final String[] funcs={

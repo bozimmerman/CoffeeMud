@@ -5964,6 +5964,76 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					}
 				}
 				break;
+			case 40: // llook_prog
+				if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&canTrigger(40)
+				&&((msg.amITarget(affecting))||(affecting instanceof Area))
+				&&(!msg.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+				{
+					trigger=trigger.substring(10).trim();
+					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=CMParms.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=CMParms.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
+			case 39: // look_prog
+				if((msg.targetMinor()==CMMsg.TYP_LOOK)&&canTrigger(39)
+				&&((msg.amITarget(affecting))||(affecting instanceof Area))
+				&&(!msg.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+				{
+					trigger=trigger.substring(9).trim();
+					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
+						||(msg.target().ID().equalsIgnoreCase(trigger))
+						||(trigger.equalsIgnoreCase("ALL")))
+						{
+							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
+							return;
+						}
+					}
+					else
+					{
+						int num=CMParms.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=CMParms.getCleanBit(trigger,i).toUpperCase();
+							if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
+							||(msg.target().ID().equalsIgnoreCase(t))
+							||(t.equalsIgnoreCase("ALL")))
+							{
+								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
+								return;
+							}
+						}
+					}
+				}
+				break;
 			case 20: // get_prog
 				if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
