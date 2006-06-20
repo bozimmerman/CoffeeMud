@@ -1981,6 +1981,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=simpleEval(scripted,""+lastKnownLocation.numPCInhabitants(),arg2,arg1,"NUMPCSROOM");
 				break;
 			}
+			case 79: // numpcsarea
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				if(lastKnownLocation!=null)
+				{
+					int num=0;
+					for(int s=0;s<CMLib.sessions().size();s++)
+					{
+						Session S=CMLib.sessions().elementAt(s);
+						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+							num++;
+					}
+					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSAREA");
+				}
+				break;
+			}
             case 77: // explored
             {
                 String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
@@ -3629,6 +3646,21 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				if(lastKnownLocation!=null)
 					results.append(""+lastKnownLocation.numPCInhabitants());
+				break;
+			}
+			case 79: // numpcsarea
+			{
+				if(lastKnownLocation!=null)
+				{
+					int num=0;
+					for(int s=0;s<CMLib.sessions().size();s++)
+					{
+						Session S=CMLib.sessions().elementAt(s);
+						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+							num++;
+					}
+					results.append(""+num);
+				}
 				break;
 			}
             case 77: // explored

@@ -207,6 +207,7 @@ public interface ScriptingEngine extends Behavior
         "VALUE", // 76
         "EXPLORED", // 77
         "EXP", // 78
+        "NUMPCSAREA", // 79
     };
     public static final String[] methods={
         "MPASOUND", //1

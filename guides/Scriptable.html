@@ -196,6 +196,7 @@
                   <li><a href="#nummobs">nummobs</a></li>
                   <li><a href="#nummobsinarea">nummobsinarea</a></li>
                   <li><a href="#nummobsroom">nummobsroom</a></li>
+                  <li><a href="#numpcsarea">numpcsarea</a></li>
                   <li><a href="#numpcsroom">numpcsroom</a></li>
                   <li><a href="#numraces">numraces</a></li>
                   <li><a href="#numracesinarea">numracesinarea</a></li>
@@ -2148,6 +2149,12 @@ monsters area             matching the given mob name.           </td>
 as the scripted             monster, including the monster, whose name or 
 display text             matches the name pattern.           </td>
             </tr>
+           <tr>
+             <td>             NUMPCSAREA()           </td>
+             <td>             Returns the number of pcs in the same area
+as  the scripted             monster.           </td>
+           </tr>
+           <tr>
            <tr>
              <td>             NUMPCSROOM()           </td>
              <td>             Returns the number of pcs in the same room
@@ -4296,6 +4303,22 @@ logical operators from above.       </p>
                   
       <pre>if nummobsroom(* &gt; 10)<br>  mpecho There are more than 10 mobs in this room.<br>else<br>  mpecho There are 10 or less mobs in the room.<br>endif<br></pre>
                         
+      <h3><a name="numpcsroom">numpcsroom</a></h3>
+                        
+      <p>         Usage:       </p>
+                  
+      <pre>numpcsarea( == number)<br></pre>
+                        
+      <p>         This function compares the total number of         players
+ in the same area as the monster to the number given.         This function
+ counts players only, including the hidden and         undetectable. The
+'=='  may also be any of the logical operators         from above.      
+      </p>
+                        
+      <p>         EXAMPLES:       </p>
+                  
+      <pre>if numpcsarea( &gt; 10)<br>  mpecho There are more than 10 pcs in this area.<br>else<br>  mpecho There are 10 or less pcs in the area.<br>endif<br></pre>
+      
       <h3><a name="numpcsroom">numpcsroom</a></h3>
                         
       <p>         Usage:       </p>
