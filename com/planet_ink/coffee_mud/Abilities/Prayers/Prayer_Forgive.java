@@ -50,6 +50,7 @@ public class Prayer_Forgive extends Prayer
 		String name=CMParms.combine(commands,0);
 		if(name.startsWith("$")) name=name.substring(1);
 		if(name.endsWith("$")) name=name.substring(0,name.length()-1);
+		if((name.trim().length()==0)&&(givenTarget!=null)) name=givenTarget.Name(); 
 		if(name.trim().length()==0)
 		{
 			mob.tell("Forgive whom?");
@@ -57,7 +58,7 @@ public class Prayer_Forgive extends Prayer
 		}
 		Vector warrants=new Vector();
 		if(B!=null)
-            warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),mob);
+            warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),name);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

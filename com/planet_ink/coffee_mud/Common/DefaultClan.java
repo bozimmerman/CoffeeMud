@@ -467,6 +467,12 @@ public class DefaultClan implements Clan
                 if(R!=null)
                     msg.append("^xMorgue          :^.^N "+R.displayText()+"\n\r");
             }
+            if(getDonation().length()>0)
+            {
+                Room R=CMLib.map().getRoom(getDonation());
+                if(R!=null)
+                    msg.append("^xDonations       :^.^N "+R.displayText()+"\n\r");
+            }
             if(getRecall().length()>0)
             {
                 Room R=CMLib.map().getRoom(getRecall());

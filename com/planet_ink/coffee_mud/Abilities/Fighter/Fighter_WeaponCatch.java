@@ -59,8 +59,8 @@ public class Fighter_WeaponCatch extends FighterSkill
 		&&(mob.rangeToTarget()==0))
 		{
 			CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
-                    "<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catch the weapon!",
                     "<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!",
+                    "<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catch the weapon!",
                     "<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!"
                     );
 			if(mob.location().okMessage(mob,msg2))
