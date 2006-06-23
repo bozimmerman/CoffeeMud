@@ -221,6 +221,7 @@ public interface CMMsg extends CMObject
     public static final int TYP_EXAMINE=92;
     public static final int TYP_ORDER=93;
     public static final int TYP_EXPIRE=94;
+    public static final int TYP_BORROW=95;
 
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
     public static final Object[][] MISC_DESCS={
@@ -239,7 +240,7 @@ public interface CMMsg extends CMObject
         "QUIT", "SHUTDOWN", "VIEW", "RETIRE", "RETREAT","PANIC", "THROW", "EXTINGUISH", 
         "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
         "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
-        "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE"
+        "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "BORROW"
     };
     public static final String[] MASK_DESCS={
         "HANDS","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"
@@ -342,4 +343,5 @@ public interface CMMsg extends CMObject
     public static final int MSG_EXAMINE=MASK_EYES|TYP_EXAMINE;
 	public static final int MSG_ORDER=MASK_SOUND|MASK_MOUTH|TYP_ORDER;
 	public static final int MSG_EXPIRE=MASK_ALWAYS|TYP_EXPIRE;
+	public static final int MSG_BORROW=MASK_HANDS|TYP_BORROW;
 }

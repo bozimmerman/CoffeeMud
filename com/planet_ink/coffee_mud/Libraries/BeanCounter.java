@@ -614,10 +614,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 	
 	public boolean modifyBankGold(String bankName, 
-	        							 String owner,
-	        							 String explanation,
-	        							 String currency,
-	        							 double absoluteAmount)
+    							  String owner,
+    							  String explanation,
+    							  String currency,
+    							  double absoluteAmount)
 	{
 		Vector V=CMLib.database().DBReadAllPlayerData(owner);
 		for(int v=0;v<V.size();v++)
