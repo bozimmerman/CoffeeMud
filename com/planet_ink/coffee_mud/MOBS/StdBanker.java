@@ -37,6 +37,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected double coinInterest=-0.008;
 	protected double itemInterest=-0.001;
+	protected double loanInterest=0.01;
 	protected static Hashtable bankTimes=new Hashtable();
 
 	public StdBanker()
@@ -245,12 +246,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return null;
 	};
 
-
+	public long timeInterval()
+	{
+		return new Long((location().getArea().getTimeObj().getHoursInDay())
+				*MudHost.TIME_MILIS_PER_MUDHOUR
+				*location().getArea().getTimeObj().getDaysInMonth()).longValue();
+	}
 
 	public void setCoinInterest(double interest){coinInterest=interest;};
 	public void setItemInterest(double interest){itemInterest=interest;};
 	public double getCoinInterest(){return coinInterest;};
 	public double getItemInterest(){return itemInterest;};
+	public void setLoanInterest(double interest){loanInterest=interest;}
+	public double getLoanInterest(){return loanInterest;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -268,7 +276,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				Long L=(Long)bankTimes.get(bankChain());
 				if((L==null)||(L.longValue()<System.currentTimeMillis()))
 				{
-					L=new Long(System.currentTimeMillis()+new Long((location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*5).longValue());
+					L=new Long(System.currentTimeMillis()+timeInterval());
 					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),L);
@@ -332,7 +340,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 								else
 								if(newBalance>0.0)
 								{
-									double amtDueNow=CMath.div((dueAmount+intDue),(timeRemaining/(Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH))));
+									double amtDueNow=CMath.div((dueAmount+intDue),(timeRemaining/timeInterval()));
 							        CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
 									CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
 								}
@@ -475,9 +483,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 					    }
 						else
 							CMLib.commands().postDrop(this,old,true,false);
-						double interestRate=0.01;
-						int months=10;
-						long dueAt=System.currentTimeMillis()+(Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*months);
+						double interestRate=getLoanInterest();
+						int months=2;
+						while((months<(location().getArea().getTimeObj().getMonthsInYear()*10))&&(CMath.div(amt,months)>250.0)) months++;
+						long dueAt=System.currentTimeMillis()+(timeInterval()*months);
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 							CMLib.beanCounter().adjustDebt(msg.source().getClanID(),bankChain(),amt,"Bank Loan",interestRate,dueAt);
 						else
@@ -642,9 +651,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 							str.append("\n\r"
 									+((whatISell==ShopKeeper.DEAL_CLANBANKER)?"Clan "+mob.getClanID():"You")
 									+" owe ^H"+CMLib.beanCounter().nameCurrencyLong(this,dueAmount)+"^? in debt.\n\r"
-									+"Monthly interest is "+intRate+"%.  "
+									+"Monthly interest is "+(intRate*100.0)+"%.  "
 									+"The loan must be paid in full in "
-									+(timeRemaining/(Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)))+"months.");
+									+(timeRemaining/timeInterval())+"months.");
 					}
 					if(coinInterest!=0.0)
 					{
@@ -713,7 +722,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
 						return false;
 					}
-					double minbalance=(totalItemsWorth(mob)/2.0)+CMath.div(((Item)msg.tool()).value(),2.0);
+					double minbalance=(totalItemsWorth(mob)/MIN_ITEM_BALANCE_DIVIDEND)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVIDEND);
 					if(balance<minbalance)
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -805,7 +814,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 					}
-					double minbalance=(collateral/2.0);
+					double minbalance=(collateral/MIN_ITEM_BALANCE_DIVIDEND);
 					if(msg.tool() instanceof Coins)
 					{
 						if(((Coins)msg.tool()).getTotalValue()>balance)

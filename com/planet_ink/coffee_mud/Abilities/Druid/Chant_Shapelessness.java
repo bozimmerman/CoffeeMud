@@ -92,6 +92,7 @@ public class Chant_Shapelessness extends Chant
 			case CMMsg.TYP_REMOVE:
 			case CMMsg.TYP_DELICATE_HANDS_ACT:
 			case CMMsg.TYP_WITHDRAW:
+			case CMMsg.TYP_BORROW:
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_HANDS:

@@ -253,7 +253,8 @@ public class GrinderMobs
 							  "CLANID","TATTOOS","EXPERTISES",
 							  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
 	                          "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-	                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK"};
+	                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
+	                          "LOANINT"};
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];
@@ -462,6 +463,10 @@ public class GrinderMobs
 	                if(M instanceof ShopKeeper)
 	                    ((ShopKeeper)M).setIgnoreMask(old);
 	                break;
+				case 54: // loan interest
+					if((M instanceof Banker)&&(old.length()>0))
+						((Banker)M).setLoanInterest(CMath.s_double(old));
+					break;
 				}
 			}
 	

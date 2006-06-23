@@ -604,7 +604,8 @@ public class MobData extends StdWebMacro
 						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EXPERTISES",
 						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
                           "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK"};
+                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
+                          "LOANINT"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -945,11 +946,16 @@ public class MobData extends StdWebMacro
                     old=""+((PostOffice)M).maxMudMonthsHeld();
                 str.append(old);
                 break;
-            case 51:
+            case 51: // ignore mask
                 if((firstTime)&&(M instanceof ShopKeeper))
                     old=((ShopKeeper)M).ignoreMask();
                 str.append(old);
                 break;
+			case 52: // loan interest
+				if((firstTime)&&(M instanceof Banker))
+					old=""+((Banker)M).getLoanInterest();
+				str.append(old);
+				break;
 			}
 			if(firstTime)
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);

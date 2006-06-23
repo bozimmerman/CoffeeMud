@@ -17,9 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-// this ability is the very picture of the infectuous msg.
-// It lobs itself onto other qualified objects, and withdraws
-// again when it will.  Don't lothe the HaveAdjuster, LOVE IT.
 /* 
    Copyright 2000-2006 Bo Zimmerman
 

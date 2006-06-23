@@ -2002,6 +2002,14 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
+	public static void genBanker4(MOB mob, Banker E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(getScr("BaseGenerics","loaninter",showNumber+"",E.getLoanInterest()+""));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		E.setLoanInterest(getDoubleData(mob,getScr("BaseGenerics","entvaluenew"),E.getLoanInterest()));
+	}
 
 	public static void genSpeed(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException

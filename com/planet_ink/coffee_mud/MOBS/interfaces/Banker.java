@@ -37,6 +37,8 @@ public interface Banker extends ShopKeeper
 	public final static int DATA_KEY=2;
 	public final static int DATA_DATA=3;
 	
+	public final static double MIN_ITEM_BALANCE_DIVIDEND=5.0;
+	
 	public void addDepositInventory(String mob, Item thisThang);
 	public void addDepositInventory(MOB mob, Item thisThang);
 	public boolean delDepositInventory(String mob, Item thisThang);
@@ -49,6 +51,8 @@ public interface Banker extends ShopKeeper
 	public Item findDepositInventory(MOB mob, String likeThis);
 	public void setCoinInterest(double interest);
 	public void setItemInterest(double interest);
+	public void setLoanInterest(double interest);
+	public double getLoanInterest();
 	public double getCoinInterest();
 	public double getItemInterest();
 	public String bankChain();

@@ -145,6 +145,7 @@ public class Prop_ClosedDayNight extends Property
 		   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
 		   ||(msg.targetMinor()==CMMsg.TYP_DEPOSIT)
 		   ||(msg.targetMinor()==CMMsg.TYP_WITHDRAW)
+		   ||(msg.targetMinor()==CMMsg.TYP_BORROW)
 		   ||(msg.targetMinor()==CMMsg.TYP_VIEW)))
 		{
 			ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);

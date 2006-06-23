@@ -78,6 +78,7 @@ public class Prayer_HolyDay extends Prayer
 		if(((msg.sourceMinor()==CMMsg.TYP_BUY)
 			||(msg.sourceMinor()==CMMsg.TYP_SELL)
 			||(msg.sourceMinor()==CMMsg.TYP_WITHDRAW)
+			||(msg.sourceMinor()==CMMsg.TYP_BORROW)
 			||(msg.sourceMinor()==CMMsg.TYP_DEPOSIT))
 		&&(msg.source()!=invoker()))
 		{

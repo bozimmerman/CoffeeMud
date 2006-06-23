@@ -381,6 +381,11 @@
 		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ITEMINT SIZE=7 VALUE="@MobData?ITEMINT@">
 		    </TD>
 		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Loan Interest Rate:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LOANINT SIZE=7 VALUE="@MobData?LOANINT@">
+		    </TD>
+		</TR>
 	@else@
 		@if?MobData?ISPOSTMAN@
 			<TR>

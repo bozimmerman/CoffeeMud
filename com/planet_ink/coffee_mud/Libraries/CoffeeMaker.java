@@ -499,7 +499,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			{
 				text.append(CMLib.xml().convertXMLtoTag("BANK",""+((Banker)E).bankChain()));
 				text.append(CMLib.xml().convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
-				text.append(CMLib.xml().convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
+				text.append(CMLib.xml().convertXMLtoTag("ITEMINT",""+((Banker)E).getItemInterest()));
+				text.append(CMLib.xml().convertXMLtoTag("LOANINT",""+((Banker)E).getLoanInterest()));
 			}
             if(E instanceof PostOffice)
             {
@@ -2137,7 +2138,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			{
 				((Banker)E).setBankChain(CMLib.xml().getValFromPieces(buf,"BANK"));
 				((Banker)E).setCoinInterest(CMLib.xml().getDoubleFromPieces(buf,"COININT"));
-				((Banker)E).setCoinInterest(CMLib.xml().getDoubleFromPieces(buf,"ITEMINT"));
+				((Banker)E).setItemInterest(CMLib.xml().getDoubleFromPieces(buf,"ITEMINT"));
+				String loanInt=CMLib.xml().getValFromPieces(buf,"LOANINT");
+				if(loanInt.length()>0) ((Banker)E).setLoanInterest(CMath.s_double(loanInt));
 			}
             
             if(E instanceof PostOffice)

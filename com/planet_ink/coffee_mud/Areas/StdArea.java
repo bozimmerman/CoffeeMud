@@ -413,6 +413,7 @@ public class StdArea implements Area
 				case CMMsg.TYP_REMOVE:
 				case CMMsg.TYP_VIEW:
 				case CMMsg.TYP_WITHDRAW:
+				case CMMsg.TYP_BORROW:
 					break;
 				default:
 					{
