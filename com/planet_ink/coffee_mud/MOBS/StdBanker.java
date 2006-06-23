@@ -457,6 +457,34 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 				}
 				return;
+			case CMMsg.TYP_BORROW:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				{
+					Item old=(Item)msg.tool();
+					if(old instanceof Coins)
+					{
+						MOB borrower=msg.source();
+					    bankLedger(borrower,"Loan of "+old.Name()+": "+msg.source().Name());
+				        addInventory(old);
+				        double amt=((Coins)old).getTotalValue();
+						CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> loan(s) <O-NAME> to <T-NAMESELF>.");
+						if(location().okMessage(this,newMsg))
+						{
+							location().send(this,newMsg);
+							((Coins)old).putCoinsBack();
+					    }
+						else
+							CMLib.commands().postDrop(this,old,true,false);
+						double interestRate=0.01;
+						int months=10;
+						long dueAt=System.currentTimeMillis()+(Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*months);
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							CMLib.beanCounter().adjustDebt(msg.source().getClanID(),bankChain(),amt,"Bank Loan",interestRate,dueAt);
+						else
+							CMLib.beanCounter().adjustDebt(msg.source().Name(),bankChain(),amt,"Bank Loan",interestRate,dueAt);
+					}
+				}
+				break;
 			case CMMsg.TYP_WITHDRAW:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
