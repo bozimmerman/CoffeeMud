@@ -354,6 +354,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 							for(int v=0;v<V.size();v++)
 							{
 								Item I=(Item)V.elementAt(v);
+								if((I instanceof LandTitle)&&(((LandTitle)I).landOwner().length()>0))
+								{
+									((LandTitle)I).setLandOwner("");
+									((LandTitle)I).updateTitle();
+									((LandTitle)I).updateLot();
+								}
 								if(!(I instanceof Coins))
                                     getShop().addStoreInventory(I,this);
 							}
@@ -475,7 +481,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					    bankLedger(borrower,"Loan of "+old.Name()+": "+msg.source().Name());
 				        addInventory(old);
 				        double amt=((Coins)old).getTotalValue();
-						CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> loan(s) <O-NAME> to <T-NAMESELF>.");
+						CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 						if(location().okMessage(this,newMsg))
 						{
 							location().send(this,newMsg);
@@ -632,40 +638,33 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 						debt=CMLib.beanCounter().getDebt(mob.getClanID(),bankChain());
 					else
-					{
 						debt=CMLib.beanCounter().getDebt(mob.Name(),bankChain());
-						if(mob.isMarriedToLiege())
-						{
-							balance=getBalance(CMLib.map().getPlayer(mob.getLiegeID()));
-							str.append("Your spouses balance is ^H"+balance+"^? gold coins.");
-						}
-					}
-					
+					if(debt!=null)
 					for(int d=0;d<debt.size();d++)
 					{
 						long debtDueAt=((Long)debt.elementAt(d,MoneyLibrary.DEBT_DUELONG)).longValue();
 						double intRate=((Double)debt.elementAt(d,MoneyLibrary.DEBT_INTDBL)).doubleValue();
 						double dueAmount=((Double)debt.elementAt(d,MoneyLibrary.DEBT_AMTDBL)).doubleValue();
 						long timeRemaining=debtDueAt-System.currentTimeMillis();
-						if(timeRemaining>System.currentTimeMillis())
+						if(timeRemaining>0)
 							str.append("\n\r"
 									+((whatISell==ShopKeeper.DEAL_CLANBANKER)?"Clan "+mob.getClanID():"You")
 									+" owe ^H"+CMLib.beanCounter().nameCurrencyLong(this,dueAmount)+"^? in debt.\n\r"
 									+"Monthly interest is "+(intRate*100.0)+"%.  "
 									+"The loan must be paid in full in "
-									+(timeRemaining/timeInterval())+"months.");
+									+(timeRemaining/timeInterval())+" months.");
 					}
 					if(coinInterest!=0.0)
 					{
 						double cci=CMath.mul(Math.abs(coinInterest),100.0);
 						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rThey "+ci+"weekly on money deposited here.");
+						str.append("\n\rThey "+ci+"monthly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
 						double cci=CMath.mul(Math.abs(itemInterest),100.0);
 						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rThey "+ci+"weekly on items deposited here.");
+						str.append("\n\rThey "+ci+"monthly on items deposited here.");
 					}
 					mob.tell(str.toString()+"^T");
 				}
@@ -895,7 +894,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					return false;
 				}
 				double collateralRemaining=((Coins)msg.tool()).getTotalValue()-totalItemsWorth(mob);
-				if(collateralRemaining>=0)
+				if(collateralRemaining>0)
 				{
 					StringBuffer str=new StringBuffer("");
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -945,13 +944,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						double cci=CMath.mul(Math.abs(coinInterest),100.0);
 						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rWe "+ci+"weekly on money deposited here.");
+						str.append("\n\rWe "+ci+"monthly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
 						double cci=CMath.mul(Math.abs(itemInterest),100.0);
 						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rWe "+ci+"weekly on items kept with us.");
+						str.append("\n\rWe "+ci+"monthly on items kept with us.");
 					}
 					if(bankChain().length()>0)
 						str.append("\n\rI am a banker for "+bankChain()+".");
