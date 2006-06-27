@@ -36,6 +36,19 @@ public class OutFit extends StdCommand
 
 	private String[] access={"OUTFIT"};
 	public String[] getAccessWords(){return access;}
+    public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
+    throws java.io.IOException
+	{
+    	if(actionsRemaining>0.0)
+    		mob.tell("You invoke a plea for mystical outfitting and await the answer.");
+    	else
+    	if(secondsElapsed>4.0)
+    		mob.tell("Your plea swirls around you.");
+    	else
+    	if(secondsElapsed>8.0)
+    		mob.tell("You feel your outfit plea is almost answered.");
+	    return true;
+	}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -47,13 +60,14 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,C.outfit(mob));
 		if(R!=null)
 			CMLib.utensils().outfit(mob,R.outfit(mob));
+		mob.tell("\n\r");
 		Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"));
 		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
 		return false;
 	}
-    public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0)*4;}
+    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0)*4;}
 	public boolean canBeOrdered(){return false;}
 
 	
