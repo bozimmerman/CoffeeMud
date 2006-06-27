@@ -49,6 +49,7 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,R.outfit(mob));
 		Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"));
+		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

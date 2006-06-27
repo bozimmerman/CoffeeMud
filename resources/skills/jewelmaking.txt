@@ -36,4 +36,4 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,extraMaterialRequiremen
 % Statue	42	240	450	1000	GenItem	STATUE	0	0	PRECIOUS
 % Badge	22	60	4	150	GenArmor	MS:TORSO	0	0
 % Medal	33	80	1	100	GenArmor	MS:TORSO	0	0
-% Hero's Medal	44	80	1	500	GenArmor	MS:TORSO	0	0	PRECIOUS
+% Hero`s Medal	44	80	1	500	GenArmor	MS:TORSO	0	0	PRECIOUS

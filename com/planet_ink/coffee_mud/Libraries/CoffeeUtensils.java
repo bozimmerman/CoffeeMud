@@ -465,6 +465,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				mob.addInventory(I);
 				if(I.whereCantWear(mob)<=0)
 					I.wearIfPossible(mob);
+				if(((I instanceof Armor)||(I instanceof Weapon))
+				&&(I.amWearingAt(Item.IN_INVENTORY)))
+					I.destroy();
 			}
 		}
 	}

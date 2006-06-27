@@ -1,7 +1,7 @@
 name,level,ticks,wood,value,class,misc,capacity,armor,containmask,spell
 Pointy % Cap	2	10	2	2	GenArmor	1:HEAD	0	1	0
 % Sombrero	6	20	3	8	GenArmor	1:HEAD	0	2	0
-% Chef's Hat	10	30	8	2	GenArmor	HEAD	0	3	0
+% Chef`s Hat	10	30	8	2	GenArmor	HEAD	0	3	0
 % Coxcomb	12	20	3	2	GenArmor	HEAD	0	3	0
 % Turban	17	25	8	2	GenArmor	1:HEAD	0	4	0
 % Fedora	18	20	4	2	GenArmor	1:HEAD	0	4	0
@@ -25,15 +25,15 @@ Great % Kilt	24	100	8	96	GenArmor	S2:LEGS	0	10	0
 % Overalls	8	40	9	62	GenArmor	1:TORSO&&LEGS	5	10	0
 % Pajamas	20	30	9	175	GenArmor	-2:TORSO&&LEGS	0	0	0
 % Gi	24	30	23	112	GenArmor	TORSO&&LEGS	0	25	0
-% Children's Tunic	0	30	2	12	GenArmor	-1:TORSO	0	0	0
-% Children's Dress	0	30	2	15	GenArmor	-1:TORSO&&LEGS	0	0	0
-% Children's Pants	0	20	2	15	GenArmor	-1:LEGS	0	0	0
-% Kid's Shirt	0	30	2	10	GenArmor	-1:TORSO	0	0	0
-% Children's Coat	0	40	4	20	GenArmor	2:BODY	0	0	0
-% Children's Mitts	0	5	1	5	GenArmor	HANDS	0	0	0
-% Children's Hat	0	10	1	5	GenArmor	1:HEAD	0	0	0
-% Children's Scarf	0	5	1	5	GenArmor	1:NECK	0	0	0
-% Children's Long Sleeve Shirt	0	40	3	15	GenArmor	-1:TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST	0	0	0
+% Children`s Tunic	0	30	2	12	GenArmor	-1:TORSO	0	0	0
+% Children`s Dress	0	30	2	15	GenArmor	-1:TORSO&&LEGS	0	0	0
+% Children`s Pants	0	20	2	15	GenArmor	-1:LEGS	0	0	0
+% Kid`s Shirt	0	30	2	10	GenArmor	-1:TORSO	0	0	0
+% Children`s Coat	0	40	4	20	GenArmor	2:BODY	0	0	0
+% Children`s Mitts	0	5	1	5	GenArmor	HANDS	0	0	0
+% Children`s Hat	0	10	1	5	GenArmor	1:HEAD	0	0	0
+% Children`s Scarf	0	5	1	5	GenArmor	1:NECK	0	0	0
+% Children`s Long Sleeve Shirt	0	40	3	15	GenArmor	-1:TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST	0	0	0
 % Onesie	0	10	1	8	GenArmor	-2:TORSO&&LEGS	0	0	0
 % Long-Sleeve Onesie	0	15	1	13	GenArmor	-2:TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST&&LEGS	0	0	0
 % Diaper	0	5	1	2	GenArmor	-4:WAIST&&LEGS	0	0	0
