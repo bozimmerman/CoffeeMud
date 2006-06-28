@@ -128,7 +128,7 @@ public class Song extends StdAbility
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		unsing(mob,mob,true);
 		if(success)
 		{

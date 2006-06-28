@@ -100,7 +100,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 										 Ability.CAN_EXITS;}
 
 	protected boolean isAnAutoEffect=false;
-	protected int profficiency=0;
+	protected int proficiency=0;
 	protected boolean savable=true;
 	public String miscText="";
 	protected MOB invoker=null;
@@ -160,11 +160,11 @@ public class StdAbility extends ForeignScriptable implements Ability
 	// ** For most abilities, the following stuff actually matters */
 	public void setMiscText(String newMiscText)	{ miscText=newMiscText;}
 	public String text(){ return miscText;}
-	public int profficiency(){ return profficiency;}
-	public void setProfficiency(int newProfficiency)
+	public int proficiency(){ return proficiency;}
+	public void setProficiency(int newProficiency)
 	{
-		profficiency=newProfficiency;
-		if(profficiency>100) profficiency=100;
+		proficiency=newProficiency;
+		if(proficiency>100) proficiency=100;
 	}
 
 	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
@@ -519,13 +519,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 		}
 	}
 
-	public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto)
+	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto)
 	{
 		
 		if(auto)
 		{
 			isAnAutoEffect=true;
-			setProfficiency(100);
+			setProficiency(100);
 			return true;
 		}
 		
@@ -533,7 +533,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		   return true;
 
 		isAnAutoEffect=false;
-		int pctChance=profficiency();
+		int pctChance=proficiency();
 		if(pctChance>95) pctChance=95;
 		if(pctChance<5) pctChance=5;
 
@@ -699,7 +699,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		return buildCostArray(mob,consumed);
 	}
 
-	public void helpProfficiency(MOB mob)
+	public void helpProficiency(MOB mob)
 	{
 		if(mob==null) return;
 		Ability A=mob.fetchAbility(ID());
@@ -714,17 +714,17 @@ public class StdAbility extends ForeignScriptable implements Ability
         if(!A.appropriateToMyFactions(mob))
             return;
         
-		if(A.profficiency()<100)
+		if(A.proficiency()<100)
 		{
-			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
+			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.proficiency())
 			{
 			    int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
 			    if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
 			    {
 					// very important, since these can be autoinvoked affects (copies)!
-					A.setProfficiency(A.profficiency()+1);
-					if((this!=A)&&(profficiency()<100))
-						setProfficiency(profficiency()+1);
+					A.setProficiency(A.proficiency()+1);
+					if((this!=A)&&(proficiency()<100))
+						setProficiency(proficiency()+1);
 					if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 						mob.tell("You become better at "+A.name()+".");
 					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
@@ -732,7 +732,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			}
 		}
 		else
-			A.setProfficiency(100);
+			A.setProficiency(100);
 	}
 
     public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
@@ -808,7 +808,7 @@ public class StdAbility extends ForeignScriptable implements Ability
                 }
             }
             
-			helpProfficiency(mob);
+			helpProficiency(mob);
 		}
 		else
 			isAnAutoEffect=true;
@@ -1004,10 +1004,10 @@ public class StdAbility extends ForeignScriptable implements Ability
 		Ability yourAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			if(yourAbility.profficiency()<25)
+			if(yourAbility.proficiency()<25)
 			{
-				teacher.tell("You are not profficient enough to teach '"+name()+"'");
-				student.tell(teacher.name()+" is not profficient enough to teach '"+name()+"'.");
+				teacher.tell("You are not proficient enough to teach '"+name()+"'");
+				student.tell(teacher.name()+" is not proficient enough to teach '"+name()+"'.");
 				return false;
 			}
 			return true;
@@ -1129,10 +1129,10 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 		if(teacherAbility!=null)
 		{
-			if(teacherAbility.profficiency()<25)
+			if(teacherAbility.proficiency()<25)
 			{
-				teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
-				student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
+				teacher.tell("You aren't proficient enough to teach '"+name()+"'.");
+				student.tell(teacher.name()+" isn't proficient enough to teach you '"+name()+"'.");
 				return false;
 			}
 		}
@@ -1239,24 +1239,24 @@ public class StdAbility extends ForeignScriptable implements Ability
 			return false;
 		}
 
-		if(yourAbility.profficiency()>teacherAbility.profficiency())
+		if(yourAbility.proficiency()>teacherAbility.proficiency())
 		{
-			teacher.tell("You aren't profficient enough to teach any more about '"+name()+"'.");
-			student.tell(teacher.name()+" isn't profficient enough to teach any more about '"+name()+"'.");
+			teacher.tell("You aren't proficient enough to teach any more about '"+name()+"'.");
+			student.tell(teacher.name()+" isn't proficient enough to teach any more about '"+name()+"'.");
 			return false;
 		}
 		else
-		if(yourAbility.profficiency()>74)
+		if(yourAbility.proficiency()>74)
 		{
 			teacher.tell("You can't teach "+student.charStats().himher()+" any more about '"+name()+"'.");
 			student.tell("You can't learn any more about '"+name()+"' except through dilligence.");
 			return false;
 		}
 
-		if(teacherAbility.profficiency()<25)
+		if(teacherAbility.proficiency()<25)
 		{
-			teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
-			student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
+			teacher.tell("You aren't proficient enough to teach '"+name()+"'.");
+			student.tell(teacher.name()+" isn't proficient enough to teach you '"+name()+"'.");
 			return false;
 		}
 		if(CMLib.flags().isSleeping(student)||CMLib.flags().isSitting(student))
@@ -1287,9 +1287,9 @@ public class StdAbility extends ForeignScriptable implements Ability
 			student.setPractices(student.getPractices()-practicesRequired());
 			student.setTrains(student.getTrains()-trainsRequired());
 			Ability newAbility=(Ability)newInstance();
-			newAbility.setProfficiency((int)Math.round(CMath.mul(profficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
-			if(newAbility.profficiency()>75)
-				newAbility.setProfficiency(75);
+			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
+			if(newAbility.proficiency()>75)
+				newAbility.setProficiency(75);
 			student.addAbility(newAbility);
 			newAbility.autoInvocation(student);
 		}
@@ -1303,12 +1303,12 @@ public class StdAbility extends ForeignScriptable implements Ability
 		Ability yourAbility=student.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			if(yourAbility.profficiency()<75)
+			if(yourAbility.proficiency()<75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice());
-				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0))));
-				if(yourAbility.profficiency()>75)
-					yourAbility.setProfficiency(75);
+				yourAbility.setProficiency(yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0))));
+				if(yourAbility.proficiency()>75)
+					yourAbility.setProficiency(75);
 			}
 		}
 	}

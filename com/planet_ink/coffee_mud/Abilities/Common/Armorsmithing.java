@@ -380,7 +380,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
 
 		if(bundling)

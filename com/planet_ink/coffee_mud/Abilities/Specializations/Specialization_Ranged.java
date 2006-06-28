@@ -52,7 +52,7 @@ public class Specialization_Ranged extends Specialization_Weapon
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(msg.tool() instanceof Item)
 		&&(msg.target() instanceof MOB))
-			helpProfficiency((MOB)affected);
+			helpProficiency((MOB)affected);
 		super.executeMsg(myHost,msg);
 	}
 }

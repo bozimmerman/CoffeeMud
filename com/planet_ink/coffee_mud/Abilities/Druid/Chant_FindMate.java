@@ -174,7 +174,7 @@ public class Chant_FindMate extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
 		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,false,false,false,50);

@@ -2218,7 +2218,7 @@ public class Import extends StdCommand
 			if(CMath.isSet(affFlag,15))
 			{
 				Ability A=(Ability)CMClass.getAbility("Thief_Sneak").copyOf();
-				A.setProfficiency(100);
+				A.setProficiency(100);
 				M.addAbility(A);
 			}
 

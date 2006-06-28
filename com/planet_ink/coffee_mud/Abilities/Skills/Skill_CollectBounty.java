@@ -155,7 +155,7 @@ public class Skill_CollectBounty extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		Area legalA=CMLib.utensils().getLegalObject(R);
 		if((success)&&(legalA!=null))

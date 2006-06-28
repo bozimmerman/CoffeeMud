@@ -60,13 +60,13 @@ public class Fighter_Intimidate extends FighterSkill
 			&&(msg.source().getVictim()!=target)
 			&&(levelDiff<0)
             &&(mob.location()==target.location())
-			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
 				msg.source().tell("You are too intimidated by "+target.name());
 				if(msg.source().location()!=lastRoom)
 				{
 					lastRoom=msg.source().location();
-					helpProfficiency(target);
+					helpProficiency(target);
 				}
 				if(target.getVictim()==msg.source())
 				{

@@ -154,7 +154,7 @@ public class Thief_Bind extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -171,7 +171,7 @@ public class Thief_Bind extends ThiefSkill
 						maxRange=0;
 						double prof=0.0;
 						Ability A=mob.fetchAbility("Specialization_Ranged");
-						if(A!=null) prof=CMath.div(A.profficiency(),20);
+						if(A!=null) prof=CMath.div(A.proficiency(),20);
 						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
 					}
 					else

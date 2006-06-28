@@ -77,7 +77,7 @@ public class Paladin extends StdAbility
 			}
 		}
 		if(CMLib.dice().rollPercentage()==1)
-			helpProfficiency(invoker);
+			helpProficiency(invoker);
 		return true;
 	}
 

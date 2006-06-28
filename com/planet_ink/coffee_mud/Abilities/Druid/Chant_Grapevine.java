@@ -99,7 +99,7 @@ public class Chant_Grapevine extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

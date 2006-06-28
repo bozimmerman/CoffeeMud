@@ -123,7 +123,7 @@ public class Spell_Wish extends Spell
 
 		int baseLoss=25;
 		CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
@@ -915,7 +915,7 @@ public class Spell_Wish extends Spell
 							CMLib.leveler().unLevel(mob);
 						}
 						A=tm.fetchAbility(A.ID());
-						A.setProfficiency(100);
+						A.setProficiency(100);
 						A.autoInvocation(tm);
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" now knows "+A.name()+"!");
 						return true;

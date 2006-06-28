@@ -147,7 +147,7 @@ public class Druid_PackCall extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			invoker=mob;
@@ -177,7 +177,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.setDescription("");
 					newMOB.copyFactions(mob);
 					Ability A=CMClass.getAbility("Fighter_Rescue");
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					newMOB.addAbility(A);
 					newMOB.setVictim(victim);
 					newMOB.setLocation(mob.location());

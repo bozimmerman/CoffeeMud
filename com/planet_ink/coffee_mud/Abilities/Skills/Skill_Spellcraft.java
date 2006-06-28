@@ -64,13 +64,13 @@ public class Skill_Spellcraft extends StdSkill
 		&&(mob.location().isInhabitant(msg.source()))
 		&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
 		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 		{
 			Ability A=(Ability)copyOf();
 			A.setMiscText(msg.tool().ID());
 			lastID=msg.tool().ID();
 			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-			helpProfficiency(mob);
+			helpProficiency(mob);
 		}
 	}
 }

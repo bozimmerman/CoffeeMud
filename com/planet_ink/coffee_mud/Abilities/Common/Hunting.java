@@ -194,7 +194,7 @@ public class Hunting extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();
-		if((profficiencyCheck(mob,0,auto))
+		if((proficiencyCheck(mob,0,auto))
 		   &&(nearByRoom()!=null)
 		   &&(resourceType!=RawMaterial.RESOURCE_FISH)
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)

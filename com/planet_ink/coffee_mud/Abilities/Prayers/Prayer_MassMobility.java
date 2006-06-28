@@ -103,7 +103,7 @@ public class Prayer_MassMobility extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		Room room=mob.location();
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;

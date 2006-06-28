@@ -46,11 +46,11 @@ public class UmberHulk extends StdRace
 	protected static Vector resources=new Vector();
     private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
 	private int[]racialAbilityLevels={1,10};
-	private int[]racialAbilityProfficiencies={100,50};
+	private int[]racialAbilityProficiencies={100,50};
 	private boolean[]racialAbilityQuals={false,false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

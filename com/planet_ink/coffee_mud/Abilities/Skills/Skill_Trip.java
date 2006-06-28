@@ -135,7 +135,7 @@ public class Skill_Trip extends StdSkill
 			levelDiff=0;
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STAT_DEXTERITY));
 		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.STAT_DEXTERITY)).doubleValue()-9.0)*3.0))));
-		boolean success=profficiencyCheck(mob,adjustment,auto);
+		boolean success=proficiencyCheck(mob,adjustment,auto);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{

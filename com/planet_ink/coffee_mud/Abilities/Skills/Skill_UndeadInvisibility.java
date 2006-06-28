@@ -60,7 +60,7 @@ public class Skill_UndeadInvisibility extends StdSkill
 				{
 					target.makePeace();
 					target.setVictim(null);
-					helpProfficiency((MOB)affected);
+					helpProficiency((MOB)affected);
 				}
 				return false;
 			}

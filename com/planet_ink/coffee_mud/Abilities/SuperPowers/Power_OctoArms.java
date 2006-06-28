@@ -56,7 +56,7 @@ public class Power_OctoArms extends SuperPower
 			&&(mob.charStats().getBodyPart(Race.BODY_ARM)>2))
 			{
 				if(CMLib.dice().rollPercentage()>95)
-					helpProfficiency(mob);
+					helpProficiency(mob);
 				int arms=mob.charStats().getBodyPart(Race.BODY_ARM)-2;
 				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				naturalWeapon.setName("a huge snaking arm");

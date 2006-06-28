@@ -108,7 +108,7 @@ public class Thief_Alertness extends ThiefSkill
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?"<T-NAME> become(s) alert.":"<S-NAME> become(s) suddenly alert.");
 		if(!success)

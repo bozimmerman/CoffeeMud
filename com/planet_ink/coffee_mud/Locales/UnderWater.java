@@ -74,7 +74,7 @@ public class UnderWater extends StdRoom implements Drink
 				Ability sinking=CMClass.getAbility("Sinking");
 				if(sinking!=null)
 				{
-					sinking.setProfficiency(avg);
+					sinking.setProficiency(avg);
 					sinking.setAffectedOne(room);
 					sinking.invoke(null,null,E,true,0);
 				}
@@ -132,12 +132,12 @@ public class UnderWater extends StdRoom implements Drink
 					Ability A=mob.fetchEffect("Sinking");
 					if(A!=null)
 					{
-						if(A.profficiency()>=100)
+						if(A.proficiency()>=100)
 						{
 							foundReversed=true;
 							mightNeedAdjusting.addElement(mob);
 						}
-						foundNormal=foundNormal||(A.profficiency()<=0);
+						foundNormal=foundNormal||(A.proficiency()<=0);
 					}
 					else
 					if((!CMath.bset(mob.baseEnvStats().disposition(),EnvStats.IS_SWIMMING))
@@ -154,12 +154,12 @@ public class UnderWater extends StdRoom implements Drink
 				Ability A=item.fetchEffect("Sinking");
 				if(A!=null)
 				{
-					if(A.profficiency()>=100)
+					if(A.proficiency()>=100)
 					{
 						foundReversed=true;
 						mightNeedAdjusting.addElement(item);
 					}
-					foundNormal=foundNormal||(A.profficiency()<=0);
+					foundNormal=foundNormal||(A.proficiency()<=0);
 				}
 				else
 					needToFall.addElement(item);
@@ -170,7 +170,7 @@ public class UnderWater extends StdRoom implements Drink
 		{
 			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
 			Ability A=E.fetchEffect("Sinking");
-			if(A!=null) A.setProfficiency(avg);
+			if(A!=null) A.setProficiency(avg);
 		}
 		for(int i=0;i<needToFall.size();i++)
 			makeSink((Environmental)needToFall.elementAt(i),room,avg);

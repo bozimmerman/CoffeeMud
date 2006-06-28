@@ -117,7 +117,7 @@ public class CombatAbilities extends StdBehavior
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)
 			{
-				if(A.profficiency()<50)	A.setProfficiency(50);
+				if(A.proficiency()<50)	A.setProficiency(50);
 				oldAbilities.addElement(A);
 			}
 		}
@@ -134,7 +134,7 @@ public class CombatAbilities extends StdBehavior
 					a=a-1;
 				}
 				else
-					newOne.setProfficiency(100);
+					newOne.setProficiency(100);
 			}
 		}
 	}
@@ -400,7 +400,7 @@ public class CombatAbilities extends StdBehavior
 			{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
 	        
 
-			tryThisOne.setProfficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
+			tryThisOne.setProficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
 			if(tryThisOne.invoke(mob,V,victim,false,0))
@@ -413,7 +413,7 @@ public class CombatAbilities extends StdBehavior
 		&&(mob.fetchAbility("Skill_WandUse")!=null))
 		{
 			Ability A=mob.fetchAbility("Skill_WandUse");
-			if(A!=null) A.setProfficiency(100);
+			if(A!=null) A.setProficiency(100);
 			Item myWand=null;
 			Item backupWand=null;
 			for(int i=0;i<mob.inventorySize();i++)

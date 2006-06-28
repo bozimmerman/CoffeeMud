@@ -55,7 +55,7 @@ public class Fighter_CounterAttack extends FighterSkill
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool() instanceof Ability)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
 		&&(mob.rangeToTarget()==0))
 		{
 			if(msg.tool().ID().equals("Skill_Parry"))

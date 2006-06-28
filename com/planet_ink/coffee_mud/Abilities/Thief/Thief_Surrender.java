@@ -65,7 +65,7 @@ public class Thief_Surrender extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.getVictim());
 	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);

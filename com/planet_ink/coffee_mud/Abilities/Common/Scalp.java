@@ -141,7 +141,7 @@ public class Scalp extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		failed=!profficiencyCheck(mob,0,auto);
+		failed=!proficiencyCheck(mob,0,auto);
 		CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scalping <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{

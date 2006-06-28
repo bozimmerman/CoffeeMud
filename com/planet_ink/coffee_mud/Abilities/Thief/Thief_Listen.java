@@ -135,7 +135,7 @@ public class Thief_Listen extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			success=profficiencyCheck(mob,0,auto);
+			success=proficiencyCheck(mob,0,auto);
 			int numberHeard=0;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
@@ -145,10 +145,10 @@ public class Thief_Listen extends ThiefSkill
 			}
 			if((success)&&(numberHeard>0))
 			{
-				if((profficiency()>50)||(room==mob.location()))
+				if((proficiency()>50)||(room==mob.location()))
 				{
 					mob.tell("You definitely hear "+numberHeard+" creature(s).");
-					if(profficiency()>((room==mob.location())?50:75))
+					if(proficiency()>((room==mob.location())?50:75))
 					{
 						sourceRoom=mob.location();
 						beneficialAffect(mob,room,asLevel,((room==mob.location())?0:10));

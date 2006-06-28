@@ -112,7 +112,7 @@ public class Thief_Swipe extends ThiefSkill
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		if(!CMLib.flags().aliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
-		boolean success=profficiencyCheck(mob,levelDiff,auto);
+		boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{

@@ -53,7 +53,7 @@ public class Dance_CanCan extends Dance
 			if(kick==null)
 			{
 				kick=CMClass.getAbility("Fighter_Kick");
-				kick.setProfficiency(100);
+				kick.setProficiency(100);
 			}
 			int oldMana=mob.curState().getMana();
 			kick.invoke(mob,mob.getVictim(),false,0);

@@ -287,7 +287,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			int completion=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
 
-			messedUp=!profficiencyCheck(mob,0,auto);
+			messedUp=!proficiencyCheck(mob,0,auto);
 			if(autoGenerate>0)
 			{
 				commands.addElement(building);

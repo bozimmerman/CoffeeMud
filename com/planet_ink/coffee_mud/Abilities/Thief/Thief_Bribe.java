@@ -85,7 +85,7 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 		
-		int oldProfficiency=profficiency();
+		int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -95,7 +95,7 @@ public class Thief_Bribe extends ThiefSkill
 						+new Long(((100-(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)))*target.envStats().level()).doubleValue();
 
 		String currency=CMLib.beanCounter().getCurrency(target);
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if((!success)||(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired))
 		{
@@ -124,7 +124,7 @@ public class Thief_Bribe extends ThiefSkill
 			target.recoverEnvStats();
 		}
 		if(target==lastChecked)
-			setProfficiency(oldProfficiency);
+			setProficiency(oldProficiency);
 		lastChecked=target;
 		return success;
 	}

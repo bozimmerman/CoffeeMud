@@ -60,7 +60,7 @@ public class Bee extends StdMOB
 		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		Ability A=CMClass.getAbility("Poison_BeeSting");
 		if(A!=null) {
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			addAbility(A);
 		}
 

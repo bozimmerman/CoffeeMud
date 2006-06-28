@@ -64,7 +64,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 		&&(!(msg.tool() instanceof Electronics))
 		&&(mob.rangeToTarget()>0)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0))
 		{
 			Item w=(Item)msg.tool();
@@ -108,7 +108,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 					if(mob.isMine(w))
 						CMLib.combat().postAttack(mob,msg.source(),w);
 					doneThisRound=true;
-					helpProfficiency(mob);
+					helpProficiency(mob);
 					return false;
 				}
 			}

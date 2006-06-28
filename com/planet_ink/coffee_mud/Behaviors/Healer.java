@@ -81,7 +81,7 @@ public class Healer extends ActiveTicker
 				thisOne.setSavable(false);
 				mob.addAbility(thisOne);
 			}
-			thisOne.setProfficiency(100);
+			thisOne.setProficiency(100);
 			Vector V=new Vector();
 			if((target!=null)&&(target!=mob)&&(!target.isMonster()))
 				V.addElement(target.name());

@@ -63,10 +63,10 @@ public class Fighter_Roll extends FighterSkill
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&(!doneThisRound)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false)))
 		{
 			doneThisRound=true;
-			double pctRecovery=(CMath.div(profficiency(),100.0)*Math.random());
+			double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
 			regain=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
 			msg.setValue(msg.value()-regain);
 		}
@@ -93,7 +93,7 @@ public class Fighter_Roll extends FighterSkill
 		&&(regain>0))
 		{
 			msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));
-			helpProfficiency(mob);
+			helpProficiency(mob);
 			regain=-1;
 		}
 	}

@@ -62,7 +62,7 @@ public class Chant_Treemind extends Chant
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 		{
 			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
@@ -95,7 +95,7 @@ public class Chant_Treemind extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));

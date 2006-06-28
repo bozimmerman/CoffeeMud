@@ -70,7 +70,7 @@ public class Prayer_Regrowth extends Prayer
 		if(target==null)return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 		    return false;
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a bright light.":"^S<S-NAME> "+prayWord(mob)+" over <T-NAMESELF> for restorative healing.^?");

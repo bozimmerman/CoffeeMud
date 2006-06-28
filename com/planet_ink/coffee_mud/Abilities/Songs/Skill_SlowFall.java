@@ -56,12 +56,12 @@ public class Skill_SlowFall extends BardSkill
 			if((affected.fetchEffect("Falling")!=null)
 			   &&((!(affected instanceof MOB))
 				  ||(((MOB)affected).fetchAbility(ID())==null)
-				  ||profficiencyCheck((MOB)affected,0,false)))
+				  ||proficiencyCheck((MOB)affected,0,false)))
 			{
 				activated=true;
 				affected.recoverEnvStats();
 				if(affected instanceof MOB)
-					helpProfficiency((MOB)affected);
+					helpProficiency((MOB)affected);
 			}
 			else
 			if(activated)

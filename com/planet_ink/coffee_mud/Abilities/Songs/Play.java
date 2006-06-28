@@ -242,7 +242,7 @@ public class Play extends StdAbility
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobileUnbound(mob,false)))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		unplay(mob,mob,true);
 		if(success)
 		{

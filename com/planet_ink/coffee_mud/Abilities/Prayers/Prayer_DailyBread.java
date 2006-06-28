@@ -52,7 +52,7 @@ public class Prayer_DailyBread extends Prayer
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Item Bread=null;
 		Item BreadContainer=null;
 		for(int i=0;i<target.inventorySize();i++)

@@ -66,7 +66,7 @@ public class Spell_ResistPetrification extends Spell
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equalsIgnoreCase("Spell_FleshStone"))
 		&&(!mob.amDead())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
 			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the Stone to Flesh spell from <T-NAME>!");
 			return false;
@@ -83,7 +83,7 @@ public class Spell_ResistPetrification extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) flowingly protected.":"^S<S-NAME> invoke(s) a flowing barrier of protection around <T-NAMESELF>.^?");

@@ -125,7 +125,7 @@ public class Prayer_CreateIdol extends Prayer
 		}
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(material>0))
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an idol.^?");

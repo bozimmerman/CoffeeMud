@@ -141,7 +141,7 @@ public class Spell_Torture extends Spell
 			{
 	           Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				"<S-NAME> admit(s) that <S-HE-SHE> knows "+A.name()+" at "+A.profficiency()+"%.");
+				"<S-NAME> admit(s) that <S-HE-SHE> knows "+A.name()+" at "+A.proficiency()+"%.");
 	        }
 			break;
         }
@@ -202,7 +202,7 @@ public class Spell_Torture extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

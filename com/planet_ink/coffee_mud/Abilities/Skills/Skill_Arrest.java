@@ -116,13 +116,13 @@ public class Skill_Arrest extends StdSkill
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STAT_STRENGTH));
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto);
+		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto);
 		if(success)
 		{
 			Ability A=CMClass.getAbility("Skill_ArrestingSap");
 			if(A!=null)
 			{
-				A.setProfficiency(100);
+				A.setProficiency(100);
 				A.setAbilityCode(10);
 				A.invoke(mob,target,true,0);
 			}

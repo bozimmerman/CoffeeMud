@@ -43,9 +43,9 @@ public class Lizard extends StdRace
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES;}
 	public String racialCategory(){return "Reptile";}
 	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProfficiencies={75};
+	private int[]culturalAbilityProficiencies={75};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };

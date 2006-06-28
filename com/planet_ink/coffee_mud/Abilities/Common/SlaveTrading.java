@@ -79,7 +79,7 @@ public class SlaveTrading extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		if(profficiencyCheck(mob,0,auto))
+		if(proficiencyCheck(mob,0,auto))
 		{
 			CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))

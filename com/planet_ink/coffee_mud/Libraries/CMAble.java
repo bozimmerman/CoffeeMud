@@ -66,14 +66,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  String defParm,
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,defParm,autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  String defParm,
 									  boolean autoGain,
 									  String extraMasks)
@@ -81,13 +81,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  boolean autoGain,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),extraMasks); }
@@ -117,20 +117,20 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProfficiency,defaultParam,autoGain,secret,new Vector(),"");}
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),"");}
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProfficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 	
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
 	{
@@ -211,7 +211,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
-									  int defaultProfficiency,
+									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret,
@@ -226,7 +226,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.autoGain=autoGain;
 		able.isSecret=secret;
 		able.defaultParm=defaultParam;
-		able.defaultProfficiency=defaultProfficiency;
+		able.defaultProficiency=defaultProficiency;
 		able.extraMask=extraMask;
 		
 		able.skillPreReqs=new DVector(2);
@@ -544,7 +544,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 				abilityID=(String)V.elementAt(v,1);
 				A2=student.fetchAbility(abilityID);
-				if((A2!=null)&&(A2.profficiency()>=prof.intValue()))
+				if((A2!=null)&&(A2.proficiency()>=prof.intValue()))
 					V.removeElementAt(v);
 				else
 				if(!qualifiesByLevel(student,abilityID))
@@ -557,7 +557,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				{
 					abilityID=(String)orset.elementAt(o);
 					A2=student.fetchAbility(abilityID);
-					if((A2!=null)&&(A2.profficiency()>=prof.intValue()))
+					if((A2!=null)&&(A2.proficiency()>=prof.intValue()))
 					{
 						orset.clear();
 						break;
@@ -993,19 +993,19 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return "";
 	}
 	
-	public int getDefaultProfficiency(String ID, boolean checkAll, String ability)
+	public int getDefaultProficiency(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
-				return ((AbilityMapping)ableMap.get(ability)).defaultProfficiency;
+				return ((AbilityMapping)ableMap.get(ability)).defaultProficiency;
 		}
 		if((checkAll)&&(completeAbleMap.containsKey("All")))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
-				return ((AbilityMapping)ableMap.get(ability)).defaultProfficiency;
+				return ((AbilityMapping)ableMap.get(ability)).defaultProficiency;
 		}
 		return 0;
 	}

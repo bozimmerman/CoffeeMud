@@ -116,7 +116,7 @@ public class Prayer_Gateway extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,-profNeg,auto);
+		boolean success=proficiencyCheck(mob,-profNeg,auto);
 
 		if((success)
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)

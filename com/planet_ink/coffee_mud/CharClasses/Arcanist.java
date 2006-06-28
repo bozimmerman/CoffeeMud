@@ -240,7 +240,7 @@ public class Arcanist extends Thief
 								otherChoices.addElement(A2);
 						}
 						A=(Ability)A.copyOf();
-						A.setProfficiency(0);
+						A.setProficiency(0);
 						A.setSavable(false);
 						mob.addAbility(A);
 						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))

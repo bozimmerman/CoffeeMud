@@ -80,7 +80,7 @@ public class Skill_Disarm extends StdSkill
 		else
 			levelDiff=0;
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
-		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
+		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
 		   &&((hisWeapon.fitsOn(Item.WORN_WIELD))
 			  ||hisWeapon.fitsOn(Item.WORN_WIELD|Item.WORN_HELD)))

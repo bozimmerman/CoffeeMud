@@ -98,14 +98,14 @@ public class Thief_Con extends ThiefSkill
 			}
 		}
 
-		int oldProfficiency=profficiency();
+		int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=(mob.envStats().level()-target.envStats().level())*10;
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);
+		boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);
 
 		if(!success)
 		{
@@ -125,7 +125,7 @@ public class Thief_Con extends ThiefSkill
 			target.recoverEnvStats();
 		}
 		if(target==lastChecked)
-			setProfficiency(oldProfficiency);
+			setProficiency(oldProficiency);
 		lastChecked=target;
 		return success;
 	}

@@ -136,7 +136,7 @@ public class Chant_SummonVine extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -179,7 +179,7 @@ public class Chant_SummonVine extends Chant
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");
-		A.setProfficiency(100);
+		A.setProficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setVictim(victim);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);

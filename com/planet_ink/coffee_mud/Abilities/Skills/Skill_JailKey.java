@@ -92,7 +92,7 @@ public class Skill_JailKey extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) <S-HIS-HER> jailkey on "+unlockThis.name()+" and fail(s).");

@@ -69,7 +69,7 @@ public class InTheAir extends StdRoom
 				Ability falling=CMClass.getAbility("Falling");
 				if(falling!=null)
 				{
-					falling.setProfficiency(avg);
+					falling.setProficiency(avg);
 					falling.setAffectedOne(room);
 					falling.invoke(null,null,E,true,0);
 				}
@@ -93,12 +93,12 @@ public class InTheAir extends StdRoom
 				Ability A=mob.fetchEffect("Falling");
 				if(A!=null)
 				{
-					if(A.profficiency()>=100)
+					if(A.proficiency()>=100)
 					{
 						foundReversed=true;
 						mightNeedAdjusting.addElement(mob);
 					}
-					foundNormal=foundNormal||(A.profficiency()<=0);
+					foundNormal=foundNormal||(A.proficiency()<=0);
 				}
 				else
 					needToFall.addElement(mob);
@@ -112,12 +112,12 @@ public class InTheAir extends StdRoom
 				Ability A=item.fetchEffect("Falling");
 				if(A!=null)
 				{
-					if(A.profficiency()>=100)
+					if(A.proficiency()>=100)
 					{
 						foundReversed=true;
 						mightNeedAdjusting.addElement(item);
 					}
-					foundNormal=foundNormal||(A.profficiency()<=0);
+					foundNormal=foundNormal||(A.proficiency()<=0);
 				}
 				else
                 if(item.container()==null)
@@ -129,7 +129,7 @@ public class InTheAir extends StdRoom
 		{
 			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
 			Ability A=E.fetchEffect("Falling");
-			if(A!=null) A.setProfficiency(avg);
+			if(A!=null) A.setProficiency(avg);
 		}
 		for(int i=0;i<needToFall.size();i++)
 			makeFall((Environmental)needToFall.elementAt(i),room,avg);

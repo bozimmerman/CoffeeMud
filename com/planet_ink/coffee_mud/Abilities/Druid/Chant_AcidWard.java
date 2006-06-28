@@ -73,7 +73,7 @@ public class Chant_AcidWard extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"An oily field of protection appears around <T-NAME>.":"^S<S-NAME> chant(s) for an oily field of protection around <T-NAMESELF>.^?");

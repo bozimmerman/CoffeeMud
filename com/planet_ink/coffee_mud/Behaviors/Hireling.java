@@ -241,8 +241,8 @@ public class Hireling extends StdBehavior
 				for (int a = 0; a < observer.numAbilities(); a++)
 				{
 					Ability A = observer.fetchAbility(a);
-					if(A.profficiency() == 0)
-						A.setProfficiency(50 + observer.envStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+					if(A.proficiency() == 0)
+						A.setProficiency(50 + observer.envStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 					skills.append(", " + A.name());
 				}
 				if(skills.length()>2)
@@ -293,8 +293,8 @@ public class Hireling extends StdBehavior
 					for(int a=0;a<observer.numAbilities();a++)
 					{
 						Ability A=observer.fetchAbility(a);
-						if(A.profficiency()==0)
-							A.setProfficiency(50+observer.envStats().level()-CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+						if(A.proficiency()==0)
+							A.setProficiency(50+observer.envStats().level()-CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 						skills.append(", "+A.name());
 					}
 					workingFor=source.Name();

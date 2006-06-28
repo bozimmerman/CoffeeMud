@@ -58,7 +58,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");
-		A.setProfficiency(100);
+		A.setProficiency(100);
 		newMOB.addAbility(A);
 		A=null;
 		int classlevel=CMLib.ableMapper().qualifyingClassLevel(caster,this)-CMLib.ableMapper().qualifyingLevel(caster,this);
@@ -71,7 +71,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		}
 		if(A!=null)
 		{
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			newMOB.addAbility(A);
 		}
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));

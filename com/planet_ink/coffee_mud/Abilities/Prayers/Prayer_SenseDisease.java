@@ -179,7 +179,7 @@ public class Prayer_SenseDisease extends Prayer
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

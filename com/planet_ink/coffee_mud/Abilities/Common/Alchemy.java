@@ -292,7 +292,7 @@ public class Alchemy extends CraftingSkill
 
 			int completion=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
-			messedUp=!profficiencyCheck(mob,0,auto);
+			messedUp=!proficiencyCheck(mob,0,auto);
 
 			CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(mob.location().okMessage(mob,msg))

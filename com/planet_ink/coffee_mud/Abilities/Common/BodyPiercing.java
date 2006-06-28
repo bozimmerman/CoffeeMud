@@ -153,7 +153,7 @@ public class BodyPiercing extends CommonSkill
 			writing=Item.WORN_DESCS[partNum].toUpperCase()+":A pierced "+wornName.toLowerCase();
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
-		if(!profficiencyCheck(mob,0,auto)) writing="";
+		if(!proficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".");

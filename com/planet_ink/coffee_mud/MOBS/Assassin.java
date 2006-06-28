@@ -53,25 +53,25 @@ public class Assassin extends GenMob
 		Ability A=CMClass.getAbility("Thief_Hide");
 		if(A!=null)
 		{
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			addAbility(A);
 		}
 		A=CMClass.getAbility("Thief_Sneak");
 		if(A!=null)
 		{
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			addAbility(A);
 		}
 		A=CMClass.getAbility("Thief_BackStab");
 		if(A!=null)
 		{
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			addAbility(A);
 		}
 		A=CMClass.getAbility("Thief_Assassinate");
 		if(A!=null)
 		{
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			addAbility(A);
 		}
 		Item I=CMClass.getWeapon("Longsword");

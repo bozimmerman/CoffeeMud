@@ -51,7 +51,7 @@ public class Specialization_Natural extends Specialization_Weapon
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&((msg.tool()==null)))
-			helpProfficiency((MOB)affected);
+			helpProficiency((MOB)affected);
 	}
 
 
@@ -62,7 +62,7 @@ public class Specialization_Natural extends Specialization_Weapon
 		if((affected instanceof MOB)&&(((MOB)affected).fetchWieldedItem()==null))
 		{
 			activated=true;
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
 		}
 	}
 }

@@ -138,7 +138,7 @@ public class Spell_KnowOrigin extends Spell
 			return false;
 
 		Room R=origin(mob,target);
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(R!=null))
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");

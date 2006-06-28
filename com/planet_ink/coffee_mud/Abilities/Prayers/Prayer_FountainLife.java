@@ -70,7 +70,7 @@ public class Prayer_FountainLife extends Prayer
 
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the fountain of life.^?");

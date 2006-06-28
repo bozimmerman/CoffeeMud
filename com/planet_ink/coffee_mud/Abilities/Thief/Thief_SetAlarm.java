@@ -139,7 +139,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
 		if(mob.location().okMessage(mob,msg))

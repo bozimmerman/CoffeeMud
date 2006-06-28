@@ -53,10 +53,10 @@ public class Fighter_BlindFighting extends FighterSkill
 		if(!mob.isInCombat()) return;
 		if((!CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
 		&&(CMLib.flags().canBeHeardBy(mob.getVictim(),mob))
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 		{
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_VICTIM);
-			helpProfficiency(mob);
+			helpProficiency(mob);
 		}
 	}
 }

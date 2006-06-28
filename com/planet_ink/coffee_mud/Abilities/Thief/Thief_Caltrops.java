@@ -92,7 +92,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		Environmental target=mob.location();
 		if(success)
 		{

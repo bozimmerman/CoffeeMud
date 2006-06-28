@@ -105,7 +105,7 @@ public class AnimalTraining extends CommonSkill
 							else
 							if(skill instanceof Ability)
 							{
-								((Ability)skill).setProfficiency(100);
+								((Ability)skill).setProficiency(100);
 								animal.addAbility((Ability)skill);
 							}
 							animal.recoverCharStats();
@@ -244,7 +244,7 @@ public class AnimalTraining extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		messedUp=!profficiencyCheck(mob,-taming.envStats().level(),auto);
+		messedUp=!proficiencyCheck(mob,-taming.envStats().level(),auto);
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
 		verb="training "+M.name();

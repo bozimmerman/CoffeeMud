@@ -43,16 +43,16 @@ public class Dryad extends StdRace
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Fairy-kin";}
 	private String[]culturalAbilityNames={"Fey"};
-	private int[]culturalAbilityProfficiencies={50};
+	private int[]culturalAbilityProficiencies={50};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	private String[]racialAbilityNames={"Chant_GrowOak","Druid_PlantForm"};
 	private int[]racialAbilityLevels={1, 10};
-	private int[]racialAbilityProfficiencies={100, 60};
+	private int[]racialAbilityProficiencies={100, 60};
 	private boolean[]racialAbilityQuals={false,false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -45,16 +45,16 @@ public class Dragon extends StdRace
 	public String racialCategory(){return "Dragon";}
 	private String[]racialAbilityNames={"Dragonbreath","WingFlying"};
 	private int[]racialAbilityLevels={5,1};
-	private int[]racialAbilityProfficiencies={100,100};
+	private int[]racialAbilityProficiencies={100,100};
 	private boolean[]racialAbilityQuals={false,false};
 	protected String[] racialAbilityNames(){return racialAbilityNames;}
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProfficiencies={100};
+	private int[]culturalAbilityProficiencies={100};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };

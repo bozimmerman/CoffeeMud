@@ -95,7 +95,7 @@ public class Spell_Summon extends Spell
 			return false;
 
 		int adjustment=(target.envStats().level()-mob.envStats().level())*3;
-		boolean success=profficiencyCheck(mob,-adjustment,auto);
+		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{

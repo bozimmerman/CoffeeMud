@@ -320,13 +320,13 @@ public class DefaultClan implements Clan
             if(M.fetchAbility("Spell_ClanHome")==null)
             {
                 M.addAbility(CMClass.findAbility("Spell_ClanHome"));
-                (M.fetchAbility("Spell_ClanHome")).setProfficiency(50);
+                (M.fetchAbility("Spell_ClanHome")).setProficiency(50);
                 did=true;
             }
             if(M.fetchAbility("Spell_ClanDonate")==null)
             {
                 M.addAbility(CMClass.findAbility("Spell_ClanDonate"));
-                (M.fetchAbility("Spell_ClanDonate")).setProfficiency(100);
+                (M.fetchAbility("Spell_ClanDonate")).setProficiency(100);
                 did=true;
             }
         }
@@ -349,7 +349,7 @@ public class DefaultClan implements Clan
             if(M.fetchAbility("Spell_Flagportation")==null)
             {
                 M.addAbility(CMClass.findAbility("Spell_Flagportation"));
-                (M.fetchAbility("Spell_Flagportation")).setProfficiency(100);
+                (M.fetchAbility("Spell_Flagportation")).setProficiency(100);
                 did=true;
             }
         }

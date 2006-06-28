@@ -94,8 +94,8 @@ public class Fighter_FieldTactics extends FighterSkill
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0))
 		{
-			if(CMLib.dice().rollPercentage()<5) helpProfficiency((MOB)affected);
-			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(profficiency(),400.0))));
+			if(CMLib.dice().rollPercentage()<5) helpProficiency((MOB)affected);
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),400.0))));
 		}
 		else
 		if((hidden)&&(!hiding(affected)))
@@ -143,8 +143,8 @@ public class Fighter_FieldTactics extends FighterSkill
 			if((hidden)&&((System.currentTimeMillis()-sitTime)>(60*2*1000)))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 			activated=true;
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
-			affectableStats.setArmor(affectableStats.armor()-(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
+			affectableStats.setArmor(affectableStats.armor()-(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
 		}
 		else
 		{

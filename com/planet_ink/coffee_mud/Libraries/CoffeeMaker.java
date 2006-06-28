@@ -310,7 +310,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			{
 				abilitystr.append("<ABLTY>");
 				abilitystr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
-				abilitystr.append(CMLib.xml().convertXMLtoTag("APROF",""+A.profficiency()));
+				abilitystr.append(CMLib.xml().convertXMLtoTag("APROF",""+A.proficiency()));
 				abilitystr.append(CMLib.xml().convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
 				abilitystr.append("</ABLTY>");
 			}
@@ -1737,9 +1737,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			String proff=CMLib.xml().getValFromPieces(ablk.contents,"APROF");
 			if(proff.length()>0)
-				newOne.setProfficiency(CMath.s_int(proff));
+				newOne.setProficiency(CMath.s_int(proff));
 			else
-				newOne.setProfficiency(100);
+				newOne.setProficiency(100);
 			setPropertiesStr(newOne,adat,true);
 			if(M.fetchAbility(newOne.ID())==null)
 			{

@@ -49,7 +49,7 @@ public class Thief_Search extends ThiefSkill
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
     public boolean tick(Tickable ticking, int tickID)
@@ -94,7 +94,7 @@ public class Thief_Search extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> examine(s) <S-HIS-HER> surroundings carefully.");
 		if(!success)

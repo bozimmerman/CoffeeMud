@@ -373,7 +373,7 @@ public class RandomTraps extends ActiveTicker
                 tickStatus=Tickable.STATUS_MISC+32;
 				Trap T=(Trap)elligibleTraps.elementAt(CMLib.dice().roll(1,elligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
-				T.setProfficiency(100);
+				T.setProficiency(100);
 				T.makeLongLasting();
 				T.setSavable(false);
 				E.addEffect(T);

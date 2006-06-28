@@ -56,7 +56,7 @@ public class Spell_MassFeatherfall extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -74,7 +74,7 @@ public class Spell_MassFeatherfall extends Spell
 				{
 					mob.location().send(mob,msg);
 					Spell_FeatherFall fall=new Spell_FeatherFall();
-					fall.setProfficiency(profficiency());
+					fall.setProficiency(proficiency());
 					fall.beneficialAffect(mob,target,asLevel,0);
 				}
 			}

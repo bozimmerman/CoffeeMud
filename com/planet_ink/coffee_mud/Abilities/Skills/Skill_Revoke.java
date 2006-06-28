@@ -99,7 +99,7 @@ public class Skill_Revoke extends StdSkill
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());

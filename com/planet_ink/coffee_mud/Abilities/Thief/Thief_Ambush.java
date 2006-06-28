@@ -83,7 +83,7 @@ public class Thief_Ambush extends ThiefSkill
 				return false;
 			}
 		}
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to set up an ambush, but fail(s).");

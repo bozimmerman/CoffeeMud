@@ -65,7 +65,7 @@ public class Chant_SpeedAging extends Chant
 		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 	    }
 	            
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

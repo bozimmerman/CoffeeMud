@@ -74,7 +74,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 				{
 					target.makePeace();
 					target.setVictim(null);
-					helpProfficiency((MOB)affected);
+					helpProficiency((MOB)affected);
 				}
 				return false;
 			}
@@ -109,7 +109,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

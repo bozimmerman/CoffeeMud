@@ -46,7 +46,7 @@ public class Skill_Recall extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=(!mob.isInCombat())||profficiencyCheck(mob,0,auto);
+		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			Room recalledRoom=mob.location();

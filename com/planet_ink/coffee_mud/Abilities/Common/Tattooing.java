@@ -170,7 +170,7 @@ public class Tattooing extends CommonSkill
 		writing=wornName.toUpperCase()+":A tattoo of "+message;
 		verb="tattooing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
-		if(!profficiencyCheck(mob,0,auto)) writing="";
+		if(!proficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";

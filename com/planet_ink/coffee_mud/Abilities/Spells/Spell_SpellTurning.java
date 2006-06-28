@@ -71,7 +71,7 @@ public class Spell_SpellTurning extends Spell
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 		&&(!mob.amDead())
 		&&(mob!=msg.source())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,mob.envStats().level()-(msg.source().envStats().level()*3),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,mob.envStats().level()-(msg.source().envStats().level()*3),false)))
 		{
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
@@ -97,7 +97,7 @@ public class Spell_SpellTurning extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a reflective barrier of protection around <T-NAMESELF>.^?");

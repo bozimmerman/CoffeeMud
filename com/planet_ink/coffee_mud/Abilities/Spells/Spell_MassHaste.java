@@ -56,7 +56,7 @@ public class Spell_MassHaste extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -77,7 +77,7 @@ public class Spell_MassHaste extends Spell
 					mob.location().send(mob,msg);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> speed(s) up!");
 					Spell_Haste haste=new Spell_Haste();
-					haste.setProfficiency(profficiency());
+					haste.setProficiency(proficiency());
 					haste.beneficialAffect(mob,target,asLevel,0);
 				}
 			}

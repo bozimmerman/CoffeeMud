@@ -124,7 +124,7 @@ public class Thief_Mark extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,levelDiff,auto);
+		boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");

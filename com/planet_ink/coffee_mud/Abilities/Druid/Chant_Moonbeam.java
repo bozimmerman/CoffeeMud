@@ -75,7 +75,7 @@ public class Chant_Moonbeam extends Chant
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
 		if(mob.location().okMessage(mob,msg))

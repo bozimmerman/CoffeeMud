@@ -77,7 +77,7 @@ public class Chant_Sunray extends Chant
 		}
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

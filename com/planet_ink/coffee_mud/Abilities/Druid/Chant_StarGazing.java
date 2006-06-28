@@ -94,7 +94,7 @@ public class Chant_StarGazing extends Chant
 			}
 			if((System.currentTimeMillis()-lastTime)<60000) 
 				return true;
-			if(!profficiencyCheck(null,0,false)) 
+			if(!proficiencyCheck(null,0,false)) 
 				return true;
 			lastTime=System.currentTimeMillis();
 			Room room=mob.location();
@@ -154,7 +154,7 @@ public class Chant_StarGazing extends Chant
 		}
 		
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -167,7 +167,7 @@ public class Chant_StarGazing extends Chant
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE-1000);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 			}
 		}
 		else

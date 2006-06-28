@@ -64,7 +64,7 @@ public class Spell_ChainLightening extends Spell
 		int maxDie=adjustedLevel(mob,asLevel);
 		int damage = CMLib.dice().roll(maxDie,8,1);
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMProps.msp("lightning.wav",40)))

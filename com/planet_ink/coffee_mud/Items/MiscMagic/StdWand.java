@@ -134,7 +134,7 @@ public class StdWand extends StdItem implements Wand
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
 				Ability wandUse=mob.fetchAbility("Skill_WandUse");
-				if((wandUse==null)||(!wandUse.profficiencyCheck(null,0,false)))
+				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
 					mob.tell(this.name()+" glows faintly for a moment, then fades.");
 				else
 				{
@@ -156,7 +156,7 @@ public class StdWand extends StdItem implements Wand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly.");
 							this.setUsesRemaining(this.usesRemaining()-1);
 							A.invoke(mob, V, target, true,envStats().level());
-							wandUse.helpProfficiency(mob);
+							wandUse.helpProficiency(mob);
 							return;
 						}
 					}
@@ -185,7 +185,7 @@ public class StdWand extends StdItem implements Wand
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
 				Ability wandUse=mob.fetchAbility("Skill_WandUse");
-				if((wandUse==null)||(!wandUse.profficiencyCheck(null,0,false)))
+				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
 					mob.tell(me.name()+" glows faintly for a moment, then fades.");
 				else
 				{
@@ -207,7 +207,7 @@ public class StdWand extends StdItem implements Wand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
 							A.invoke(mob, V, target, true, me.envStats().level());
-							wandUse.helpProfficiency(mob);
+							wandUse.helpProficiency(mob);
 							return;
 						}
 					}

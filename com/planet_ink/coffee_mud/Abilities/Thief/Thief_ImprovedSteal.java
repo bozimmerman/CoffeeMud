@@ -52,9 +52,9 @@ public class Thief_ImprovedSteal extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Steal")))
 		{
-			helpProfficiency(mob);
+			helpProficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Steal");
-			A.setAbilityCode(profficiency()/5);
+			A.setAbilityCode(proficiency()/5);
 		}
 		return super.okMessage(myHost,msg);
 	}

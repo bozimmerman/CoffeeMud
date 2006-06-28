@@ -104,7 +104,7 @@ public class Chant_Shamblermorph extends Chant
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,-(levelDiff*10),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 		boolean malicious=!target.getGroupMembers(new HashSet()).contains(mob);
 		if(success)
 		{

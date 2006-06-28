@@ -152,7 +152,7 @@ public class Fighter_Pin extends FighterSkill
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=profficiencyCheck(mob,(-levelDiff)+(-(((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH))*5))),auto)&&(hit);
+		boolean success=proficiencyCheck(mob,(-levelDiff)+(-(((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH))*5))),auto)&&(hit);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{

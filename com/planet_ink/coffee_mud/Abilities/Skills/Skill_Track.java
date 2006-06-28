@@ -294,7 +294,7 @@ public class Skill_Track extends StdSkill
 	    tickStatus=Tickable.STATUS_MISC6+6;
 		
 	    tickStatus=Tickable.STATUS_MISC6+7;
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(rooms.size()>0)
 		{
 			theTrail=null;

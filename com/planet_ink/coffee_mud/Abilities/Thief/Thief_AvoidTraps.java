@@ -45,7 +45,7 @@ public class Thief_AvoidTraps extends ThiefSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(profficiency()/2));
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2));
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -57,7 +57,7 @@ public class Thief_AvoidTraps extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Trap)
 		&&(CMLib.dice().rollPercentage()>90))
-			helpProfficiency(mob);
+			helpProficiency(mob);
 		return super.okMessage(myHost,msg);
 	}
 }

@@ -44,11 +44,11 @@ public class Tabaxi extends GreatCat
 	public String racialCategory(){return "Feline";}
 	private String[] racialAbilityNames={"Skill_Hide","Skill_Sneak"};
 	private int[]racialAbilityLevels={4,4};
-	private int[]racialAbilityProfficiencies={50,50};
+	private int[]racialAbilityProficiencies={50,50};
 	private boolean[]racialAbilityQuals={false,false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

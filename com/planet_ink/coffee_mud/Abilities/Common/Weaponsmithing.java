@@ -344,7 +344,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			building.recoverEnvStats();
 		}
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
 
 		if(bundling)

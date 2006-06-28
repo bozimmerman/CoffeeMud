@@ -68,7 +68,7 @@ public class Spell_ResistCold extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) warmly protected.":"^S<S-NAME> invoke(s) a warm field of protection around <T-NAMESELF>.^?");

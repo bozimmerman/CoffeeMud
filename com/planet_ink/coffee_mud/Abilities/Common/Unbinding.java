@@ -152,7 +152,7 @@ public class Unbinding extends CommonSkill
 			found=target;
             verb="unbinding "+found.name();
             displayText="You are "+verb;
-            found=profficiencyCheck(mob,0,auto)?found:null;
+            found=proficiencyCheck(mob,0,auto)?found:null;
             beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

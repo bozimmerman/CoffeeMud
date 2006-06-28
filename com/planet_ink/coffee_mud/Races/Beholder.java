@@ -44,11 +44,11 @@ public class Beholder extends StdRace
 	public String racialCategory(){return "Unique";}
     private String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
 	private int[]racialAbilityLevels={1,1,1,5,10,10,15,20,30,30};
-	private int[]racialAbilityProfficiencies={50,50,50,50,50,50,100,50,50,50};
+	private int[]racialAbilityProficiencies={50,50,50,50,50,50,100,50,50,50};
 	private boolean[]racialAbilityQuals={false,false,false,false,false,false,false,false,false,false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

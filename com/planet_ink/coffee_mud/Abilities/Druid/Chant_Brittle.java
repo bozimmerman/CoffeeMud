@@ -99,7 +99,7 @@ public class Chant_Brittle extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		oldCondition=-1;
 		if(success)
 		{

@@ -111,7 +111,7 @@ public class Engraving extends CommonSkill
 		verb="engraving on "+target.name();
 		displayText="You are "+verb;
 		found=target;
-		if((!profficiencyCheck(mob,0,auto))||(!write.profficiencyCheck(mob,0,auto)))
+		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<3) duration=3;

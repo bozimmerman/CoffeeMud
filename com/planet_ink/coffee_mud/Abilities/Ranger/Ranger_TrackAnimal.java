@@ -163,7 +163,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
 		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,75);

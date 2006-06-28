@@ -393,7 +393,7 @@ public class CommonSkill extends StdAbility
 		activityRoom=mob.location();
 		
         if(!bundling)
-    		helpProfficiency(mob);
+    		helpProficiency(mob);
 
 		return true;
 	}

@@ -143,11 +143,11 @@ public class Thief_Shadow extends ThiefSkill
         if((shadowing!=null)&&(shadowing.location()==affected.location()))
             affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
                     25
-                    +profficiency()
+                    +proficiency()
                     +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
         else
             affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
-                    +profficiency()
+                    +proficiency()
                     +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 
@@ -229,7 +229,7 @@ public class Thief_Shadow extends ThiefSkill
 		shadowing=null;
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getStealthLevel(mob)*2));
 
-		boolean success=profficiencyCheck(mob,-(levelDiff*10),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
 		if(!success)
 		{

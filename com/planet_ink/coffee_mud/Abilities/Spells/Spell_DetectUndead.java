@@ -90,7 +90,7 @@ public class Spell_DetectUndead extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

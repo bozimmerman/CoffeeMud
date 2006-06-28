@@ -49,7 +49,7 @@ public class Skill_WildernessLore extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> take(s) a quick look at the terrain.");
 		if(mob.location().okMessage(mob,msg))
 		{

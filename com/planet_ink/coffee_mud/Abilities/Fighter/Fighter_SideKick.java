@@ -60,7 +60,7 @@ public class Fighter_SideKick extends FighterSkill
 			&&(!anyWeapons(mob)))
 			{
 				if(CMLib.dice().rollPercentage()>95)
-					helpProfficiency(mob);
+					helpProficiency(mob);
 				MOB elligibleTarget=null;
 				for(int m=0;m<mob.location().numInhabitants();m++)
 				{

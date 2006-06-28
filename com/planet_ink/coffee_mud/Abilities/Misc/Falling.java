@@ -43,7 +43,7 @@ public class Falling extends StdAbility
 	public Room room=null;
 	int damageToTake=0;
 
-    protected boolean reversed(){return profficiency()==100;}
+    protected boolean reversed(){return proficiency()==100;}
 
     protected boolean isWaterSurface(Room R)
 	{
@@ -260,7 +260,7 @@ public class Falling extends StdAbility
 		if(E.fetchEffect("Falling")==null)
 		{
 			Falling F=new Falling();
-			F.setProfficiency(profficiency());
+			F.setProficiency(proficiency());
 			F.invoker=null;
 			if(E instanceof MOB)
 				F.invoker=(MOB)E;

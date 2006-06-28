@@ -132,6 +132,7 @@ public class Ranger extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalCommunion",false);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
@@ -219,7 +220,7 @@ public class Ranger extends StdCharClass
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}

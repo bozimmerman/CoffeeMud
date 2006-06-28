@@ -455,7 +455,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(fire==null) return false;
 		}
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
 		cooking=(Container)target;

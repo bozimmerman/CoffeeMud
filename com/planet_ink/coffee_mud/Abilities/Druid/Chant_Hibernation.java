@@ -102,7 +102,7 @@ public class Chant_Hibernation extends Chant
 		MOB mob=(MOB)affected;
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!profficiencyCheck(null,0,false)) return true;
+		if(!proficiencyCheck(null,0,false)) return true;
 
 		if((!mob.isInCombat())
 		&&(CMLib.flags().isSleeping(mob)))
@@ -141,7 +141,7 @@ public class Chant_Hibernation extends Chant
 			return false;
 		}
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -155,7 +155,7 @@ public class Chant_Hibernation extends Chant
 				mob.location().send(mob,msg);
 				oldState=mob.curState();
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE-1000);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 			}
 		}
 		else

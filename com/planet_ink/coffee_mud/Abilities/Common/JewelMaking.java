@@ -276,7 +276,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 				verb="mounting "+materialName+" onto "+building.name();
 			}
 			beingDone.addElement(jewelI);
-			messedUp=!profficiencyCheck(mob,0,auto);
+			messedUp=!proficiencyCheck(mob,0,auto);
 			completion=10;
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 			if(mob.location().okMessage(mob,msg))
@@ -494,7 +494,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 		}
 
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<8) completion=8;
 
 		if(bundling)

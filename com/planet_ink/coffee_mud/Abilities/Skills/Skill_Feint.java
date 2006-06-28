@@ -102,7 +102,7 @@ public class Skill_Feint extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)),auto);
+		boolean success=proficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)),auto);
 
 		if(success)
 		{

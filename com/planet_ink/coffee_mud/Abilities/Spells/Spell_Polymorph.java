@@ -96,7 +96,7 @@ public class Spell_Polymorph extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2),auto);
+		boolean success=proficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2),auto);
 
 		if(success)
 		{

@@ -83,7 +83,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		Item hisWeapon=victim.fetchWieldedItem();
 		int chance=(-levelDiff)+(-(victim.charStats().getStat(CharStats.STAT_DEXTERITY)*2));
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
-		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
+		boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&(hisWeapon.envStats().ability()==0)

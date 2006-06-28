@@ -223,7 +223,7 @@ public class Farming extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((profficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
+		if((proficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
 		{
 			found=(Item)CMLib.utensils().makeResource(code,mob.location().domainType(),false);
 			if((found!=null)

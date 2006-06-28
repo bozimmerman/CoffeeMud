@@ -441,7 +441,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 		}
 
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
 		if(bundling)

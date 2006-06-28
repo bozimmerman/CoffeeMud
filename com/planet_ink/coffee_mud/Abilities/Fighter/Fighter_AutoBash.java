@@ -56,12 +56,12 @@ public class Fighter_AutoBash extends FighterSkill
 		&&(mob.rangeToTarget()==0)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(mob.fetchFirstWornItem(Item.WORN_HELD) instanceof Shield)
-		&&(profficiencyCheck(null,0,false)))
+		&&(proficiencyCheck(null,0,false)))
 		{
 			Ability A=mob.fetchAbility("Skill_Bash");
 			if(A!=null) A.invoke(mob,mob.getVictim(),false,0);
 			if(CMLib.dice().rollPercentage()<10)
-				helpProfficiency(mob);
+				helpProficiency(mob);
 		}
 		return true;
 	}
@@ -76,7 +76,7 @@ public class Fighter_AutoBash extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

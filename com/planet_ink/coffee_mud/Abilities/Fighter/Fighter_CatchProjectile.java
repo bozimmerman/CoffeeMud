@@ -65,7 +65,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 		&&(mob.rangeToTarget()>0)
 		&&(mob.fetchEffect("Fighter_ReturnProjectile")==null)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0))
 		{
 			Item w=(Item)msg.tool();
@@ -105,7 +105,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 				{
 					mob.location().send(mob,msg2);
 					doneThisRound=true;
-					helpProfficiency(mob);
+					helpProficiency(mob);
 					return false;
 				}
 			}

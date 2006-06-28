@@ -225,14 +225,14 @@ public class Pregnancy extends StdAbility
 			GR.setStat("GETRABLE"+i,(String)data1.elementAt(i));
 			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
 			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)data1.elementAt(i))));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)data1.elementAt(i)));
 		}
 		for(int i=0;i<data2.size();i++)
 		{
 			GR.setStat("GETRABLE"+(i+data1.size()),(String)data2.elementAt(i));
 			GR.setStat("GETRABLELVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
 			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)data2.elementAt(i))));
-			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
 
 		data1=race1.racialEffects(null);
@@ -251,13 +251,13 @@ public class Pregnancy extends StdAbility
 		{
 			GR.setStat("GETREFF"+i,(String)data1.elementAt(i));
 			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
-			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)data1.elementAt(i)));
 		}
 		for(int i=0;i<data2.size();i++)
 		{
 			GR.setStat("GETREFF"+(i+data1.size()),(String)data2.elementAt(i));
 			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
-			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
 
 		CMClass.addRace(GR);
@@ -510,7 +510,7 @@ public class Pregnancy extends StdAbility
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
 		Race R=mob.charStats().getMyRace();
 		long tickspermudmonth=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);

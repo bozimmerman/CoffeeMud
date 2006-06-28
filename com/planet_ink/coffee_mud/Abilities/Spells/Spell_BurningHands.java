@@ -52,7 +52,7 @@ public class Spell_BurningHands extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

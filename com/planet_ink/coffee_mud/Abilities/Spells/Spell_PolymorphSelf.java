@@ -141,7 +141,7 @@ public class Spell_PolymorphSelf extends Spell
 
         fakeMOB.destroy();
 		int statDiff=mobStatTotal-fakeStatTotal;
-		boolean success=profficiencyCheck(mob,-(statDiff*5),auto);
+		boolean success=proficiencyCheck(mob,-(statDiff*5),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

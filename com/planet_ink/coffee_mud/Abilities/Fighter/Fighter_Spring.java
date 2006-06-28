@@ -73,7 +73,7 @@ public class Fighter_Spring extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

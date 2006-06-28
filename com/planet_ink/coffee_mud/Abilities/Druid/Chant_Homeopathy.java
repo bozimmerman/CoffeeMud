@@ -48,7 +48,7 @@ public class Chant_Homeopathy extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"Something is happening to <T-NAME>!":"^S<S-NAME> chant(s) homeopathically to <T-NAME>^?");

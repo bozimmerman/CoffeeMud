@@ -92,7 +92,7 @@ public class Thief_BackStab extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
 		if(mob.location().okMessage(mob,msg))

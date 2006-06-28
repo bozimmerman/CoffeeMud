@@ -131,7 +131,7 @@ public class Chopping extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();
-		if((profficiencyCheck(mob,0,auto))
+		if((proficiencyCheck(mob,0,auto))
 		   &&((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 		{
 			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);

@@ -44,11 +44,11 @@ public class Scorpion extends StdRace
 	public String racialCategory(){return "Arachnid";}
     private String[]racialAbilityNames={"Poison_Heartstopper"};
 	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProfficiencies={10};
+	private int[]racialAbilityProficiencies={10};
 	private boolean[]racialAbilityQuals={false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

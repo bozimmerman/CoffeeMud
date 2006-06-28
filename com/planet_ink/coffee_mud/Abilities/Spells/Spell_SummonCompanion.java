@@ -83,7 +83,7 @@ public class Spell_SummonCompanion extends Spell
             return false;
 
         int adjustment=(target.envStats().level()-mob.envStats().level())*3;
-        boolean success=profficiencyCheck(mob,-adjustment,auto);
+        boolean success=proficiencyCheck(mob,-adjustment,auto);
         
         if(success)
         {

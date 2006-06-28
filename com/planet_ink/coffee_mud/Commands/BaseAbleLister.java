@@ -102,7 +102,7 @@ public class BaseAbleLister extends StdCommand
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+thisAbility.name()+"^</HELP^>",(col==3)?18:19));
+					thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(thisAbility.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+thisAbility.name()+"^</HELP^>",(col==3)?18:19));
 				}
 			}
 			if(thisLine.length()>0)

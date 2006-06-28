@@ -69,7 +69,7 @@ public class Chant_ControlWeather extends Chant
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
 		if(A!=null) size=size-((A.invoker().envStats().level()-mob.envStats().level())*10);
-		boolean success=profficiencyCheck(mob,-size,auto);
+		boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");

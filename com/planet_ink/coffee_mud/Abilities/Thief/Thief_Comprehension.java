@@ -79,7 +79,7 @@ public class Thief_Comprehension extends ThiefSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((queue.size()>0)&&(affected instanceof MOB)&&(profficiencyCheck((MOB)affected,0,false)))
+		if((queue.size()>0)&&(affected instanceof MOB)&&(proficiencyCheck((MOB)affected,0,false)))
 		{
 			CMMsg msg=(CMMsg)queue.firstElement();
 			queue.removeElementAt(0);
@@ -144,7 +144,7 @@ public class Thief_Comprehension extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

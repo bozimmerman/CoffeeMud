@@ -143,9 +143,9 @@ public class Thief_Racketeer extends ThiefSkill {
 		if (!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 
-		double amount = new Long(CMLib.dice().roll(profficiency(),
+		double amount = new Long(CMLib.dice().roll(proficiency(),
 				target.envStats().level(), 0)).doubleValue();
-		boolean success = profficiencyCheck(mob, -(levelDiff), auto);
+		boolean success = proficiencyCheck(mob, -(levelDiff), auto);
 		if (success) {
 			CMMsg msg = CMClass.getMsg(mob, target, this,
 					(auto ? CMMsg.MASK_ALWAYS : 0) | CMMsg.MSG_THIEF_ACT,

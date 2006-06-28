@@ -61,7 +61,7 @@ public class Prayer_Wave extends Prayer
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
 		for(Iterator e=h.iterator();e.hasNext();)
 		{

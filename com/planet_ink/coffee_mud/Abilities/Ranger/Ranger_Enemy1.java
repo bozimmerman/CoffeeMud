@@ -103,8 +103,8 @@ public class Ranger_Enemy1 extends StdAbility
 		if((victim!=null)&&(victim.charStats().getMyRace().racialCategory().equals(text())))
 		{
 			int level=1+CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this);
-			double damBonus=CMath.mul(CMath.div(profficiency(),100.0),level);
-			double attBonus=CMath.mul(CMath.div(profficiency(),100.0),3*level);
+			double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
+			double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
 		}

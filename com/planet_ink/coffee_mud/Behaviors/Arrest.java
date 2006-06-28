@@ -2074,14 +2074,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							Ability A=CMClass.getAbility("Skill_ArrestingSap");
 							if(A!=null){
 								int curPoints=(int)Math.round(CMath.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
-								A.setProfficiency(100);
+								A.setProficiency(100);
 								A.setAbilityCode(10);
 								if(!A.invoke(officer,W.criminal(),(curPoints<=25),0))
 								{
 									A=CMClass.getAbility("Skill_Trip");
 									if(A!=null)
 									{
-										A.setProfficiency(100);
+										A.setProficiency(100);
 										A.setAbilityCode(30);
 										if(!A.invoke(officer,W.criminal(),(curPoints<=50),0))
 											CMLib.combat().postAttack(officer,W.criminal(),officer.fetchWieldedItem());
@@ -2539,7 +2539,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						    boolean served=false;
 						    if(A!=null)
 						    {
-						        A.setProfficiency(100);
+						        A.setProficiency(100);
 						        served=A.invoke(judge,W.criminal(),false,0);
 						    }
 							fileAllWarrants(laws,W,W.criminal());

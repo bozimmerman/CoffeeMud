@@ -475,12 +475,12 @@ public class Patroller extends ActiveTicker
 				{
 					Vector V=new Vector();
 					V.add(Directions.getDirectionName(direction));
-					if(A.profficiency()<50)
+					if(A.proficiency()<50)
 					{
-						A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
+						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 						Ability A2=mob.fetchAbility("Thief_Hide");
 						if(A2!=null)
-							A2.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
+							A2.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 					}
 					CharState oldState=(CharState)mob.curState().copyOf();
 					A.invoke(mob,V,null,false,0);

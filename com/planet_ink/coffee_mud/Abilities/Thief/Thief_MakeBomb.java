@@ -101,7 +101,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
+		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
 											 -trapThis.envStats().level())*3),auto);
 		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)

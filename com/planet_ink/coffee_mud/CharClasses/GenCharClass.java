@@ -484,7 +484,7 @@ public class GenCharClass extends StdCharClass
 			String AID=(String)V.elementAt(v);
 			VA.addElement(AID,
 						  ""+CMLib.ableMapper().getQualifyingLevel(ID(),true,AID),
-						  ""+CMLib.ableMapper().getDefaultProfficiency(ID(),true,AID),
+						  ""+CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
 						  ""+CMLib.ableMapper().getDefaultGain(ID(),true,AID),
 						  ""+CMLib.ableMapper().getSecretSkill(ID(),true,AID),
 						  ""+CMLib.ableMapper().getDefaultParm(ID(),true,AID));

@@ -70,7 +70,7 @@ public class Prayer_MassDeafness extends Prayer
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
 		if(success)
 		{

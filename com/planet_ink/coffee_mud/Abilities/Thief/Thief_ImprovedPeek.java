@@ -52,9 +52,9 @@ public class Thief_ImprovedPeek extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Peek")))
 		{
-			helpProfficiency(mob);
+			helpProficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Peek");
-			A.setAbilityCode(profficiency()/5);
+			A.setAbilityCode(proficiency()/5);
 		}
 		return super.okMessage(myHost,msg);
 	}

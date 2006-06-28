@@ -75,7 +75,7 @@ public class Spell_FaerieFire extends Spell
 		MOB target = getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

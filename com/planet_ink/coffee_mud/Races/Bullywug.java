@@ -43,16 +43,16 @@ public class Bullywug extends StdRace
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES;}
 	public String racialCategory(){return "Amphibian";}
 	private String[]culturalAbilityNames={"Goblinese","Skill_Hunting"};
-	private int[]culturalAbilityProfficiencies={100,50};
+	private int[]culturalAbilityProficiencies={100,50};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProfficiencies={100};
+	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                             		   an ey ea he ne ar ha to le fo no gi mo wa ta wi

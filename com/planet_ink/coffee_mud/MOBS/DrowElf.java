@@ -114,7 +114,7 @@ public class DrowElf extends StdMOB
 			return true;
 
 		Ability dark=CMClass.getAbility("Spell_Darkness");
-		dark.setProfficiency(100);
+		dark.setProficiency(100);
 		dark.setSavable(false);
 		if(this.fetchAbility(dark.ID())==null)
 		   this.addAbility(dark);

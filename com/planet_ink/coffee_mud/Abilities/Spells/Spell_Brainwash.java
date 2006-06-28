@@ -96,7 +96,7 @@ public class Spell_Brainwash extends Spell
 						  subStitute(msg.targetMessage(),str),
 						  msg.othersCode(),
 						  subStitute(msg.othersMessage(),str));
-				helpProfficiency((MOB)affected);
+				helpProficiency((MOB)affected);
 			}
 		}
 	    return super.okMessage(host,msg);
@@ -138,7 +138,7 @@ public class Spell_Brainwash extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

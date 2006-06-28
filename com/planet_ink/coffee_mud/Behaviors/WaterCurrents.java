@@ -267,10 +267,10 @@ public class WaterCurrents extends ActiveTicker
 				affected.addEffect(this);
 		}
 
-		public int profficiency(){return 0;}
-		public void setProfficiency(int newProfficiency){}
-		public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
-		public void helpProfficiency(MOB mob){}
+		public int proficiency(){return 0;}
+		public void setProficiency(int newProficiency){}
+		public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
+		public void helpProficiency(MOB mob){}
 
 		public Environmental affecting(){return affected;}
 		public void setAffectedOne(Environmental being){affected=being;}

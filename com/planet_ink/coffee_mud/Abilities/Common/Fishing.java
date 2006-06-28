@@ -136,7 +136,7 @@ public class Fishing extends GatheringSkill
         playSound="fishreel.wav";
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		if((profficiencyCheck(mob,0,auto))
+		if((proficiencyCheck(mob,0,auto))
 		   &&(foundFish>0))
 		{
 			found=(Item)CMLib.utensils().makeResource(foundFish,mob.location().domainType(),false);

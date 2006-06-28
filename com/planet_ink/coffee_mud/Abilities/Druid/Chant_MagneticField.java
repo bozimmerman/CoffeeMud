@@ -132,7 +132,7 @@ public class Chant_MagneticField extends Chant
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,-(levelDiff*2),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*2),auto);
 
 		if(success)
 		{

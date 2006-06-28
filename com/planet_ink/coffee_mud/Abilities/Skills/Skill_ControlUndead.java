@@ -89,7 +89,7 @@ public class Skill_ControlUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,(mob.envStats().level()-target.envStats().level())*30,auto);
+		boolean success=proficiencyCheck(mob,(mob.envStats().level()-target.envStats().level())*30,auto);
 
 		if(success)
 		{

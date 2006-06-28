@@ -65,7 +65,7 @@ public class Thief_Mug extends ThiefSkill
 			return false;
 
 		Item stolen=target.fetchCarried(null,itemToSteal);
-		boolean success=profficiencyCheck(mob,levelDiff,auto);
+		boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(!success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug <T-NAME> and fails!");

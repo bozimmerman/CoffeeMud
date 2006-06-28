@@ -105,7 +105,7 @@ public class Thief_CarefulStep extends ThiefSkill
 				levelDiff=levelDiff*8;
 			else
 				levelDiff=levelDiff*10;
-			success=profficiencyCheck(mob,levelDiff,auto);
+			success=proficiencyCheck(mob,levelDiff,auto);
 			int oldDex=mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
 			if(success)
 				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,oldDex+100);

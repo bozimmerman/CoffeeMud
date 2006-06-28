@@ -72,7 +72,7 @@ public class Prayer_Regeneration extends Prayer
 
 		if(((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		&&(!mob.isInCombat())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 		&&(tickID==Tickable.TICKID_MOB))
 		{
 			mob.curState().recoverTick(mob,mob.maxState());
@@ -100,7 +100,7 @@ public class Prayer_Regeneration extends Prayer
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

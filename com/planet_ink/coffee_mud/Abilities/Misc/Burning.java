@@ -122,7 +122,7 @@ public class Burning extends StdAbility
 									break;
 								}
 								Burning B=new Burning();
-								B.setProfficiency(durationOfBurn);
+								B.setProficiency(durationOfBurn);
 								B.invoke(invoker,I,true,0);
 								break;
 							}
@@ -318,7 +318,7 @@ public class Burning extends StdAbility
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
-			beneficialAffect(mob,target,asLevel,profficiency());
+			beneficialAffect(mob,target,asLevel,proficiency());
 			target.recoverEnvStats();
 			if(target instanceof Item)
 			{

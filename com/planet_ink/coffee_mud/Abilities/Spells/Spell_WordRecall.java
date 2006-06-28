@@ -53,7 +53,7 @@ public class Spell_WordRecall extends Spell
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;
 
-        boolean success=(!mob.isInCombat())||profficiencyCheck(mob,0,auto);
+        boolean success=(!mob.isInCombat())||proficiencyCheck(mob,0,auto);
         if(success)
         {
             int AUTO=auto?CMMsg.MASK_ALWAYS:0;

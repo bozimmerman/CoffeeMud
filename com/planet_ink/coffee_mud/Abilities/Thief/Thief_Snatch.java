@@ -94,7 +94,7 @@ public class Thief_Snatch extends ThiefSkill
 		else
 			levelDiff=0;
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,mob.getVictim());
-		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
+		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&((hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD)

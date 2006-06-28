@@ -100,7 +100,7 @@ public class MOBHunter extends ActiveTicker
 				{
 					if(debug) Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' found prey: '"+prey.Name()+"'");
 					Ability A=CMClass.getAbility("Thief_Assassinate");
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					mob.curState().setMana(mob.maxState().getMana());
 					mob.curState().setMovement(mob.maxState().getMovement());
 					A.invoke(mob, new Vector(), prey, false,0);

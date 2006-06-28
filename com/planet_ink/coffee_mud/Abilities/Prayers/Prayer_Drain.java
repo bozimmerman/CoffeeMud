@@ -53,7 +53,7 @@ public class Prayer_Drain extends Prayer
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

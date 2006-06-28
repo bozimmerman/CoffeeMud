@@ -63,7 +63,7 @@ public class Spell_FindFamiliar extends Spell
 
 		CMLib.leveler().postExperience(mob,null,null,-100,false);
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

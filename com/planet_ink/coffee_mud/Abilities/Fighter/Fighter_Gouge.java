@@ -120,7 +120,7 @@ public class Fighter_Gouge extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);;
 		if((success)&&(hit))
 		{

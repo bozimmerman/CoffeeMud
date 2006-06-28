@@ -43,9 +43,9 @@ public class Common extends Language
 		super();
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),100,true);}
-		profficiency=100;
+		proficiency=100;
 	}
-	public int profficiency(){return 100;}
+	public int proficiency(){return 100;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

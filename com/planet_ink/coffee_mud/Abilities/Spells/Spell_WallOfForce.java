@@ -149,7 +149,7 @@ public class Spell_WallOfForce extends Spell
 		Environmental target = mob.location();
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

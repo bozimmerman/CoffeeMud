@@ -105,7 +105,7 @@ public class Spell_ManaBurn extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_INTELLIGENCE))+(levelDiff*5)),auto);
+		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_INTELLIGENCE))+(levelDiff*5)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

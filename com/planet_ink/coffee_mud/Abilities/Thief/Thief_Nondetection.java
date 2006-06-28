@@ -98,7 +98,7 @@ public class Thief_Nondetection extends ThiefSkill
 				if(!active)
 				{
 					active=true;
-					helpProfficiency((MOB)affected);
+					helpProficiency((MOB)affected);
 					affected.recoverEnvStats();
 				}
 			}

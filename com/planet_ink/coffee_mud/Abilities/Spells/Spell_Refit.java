@@ -48,7 +48,7 @@ public class Spell_Refit extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,((mob.envStats().level()-target.envStats().level())*5),auto);
+		boolean success=proficiencyCheck(mob,((mob.envStats().level()-target.envStats().level())*5),auto);
 
 		if(success)
 		{

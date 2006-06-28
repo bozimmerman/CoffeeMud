@@ -77,7 +77,7 @@ public class Prayer_Paralyze extends Prayer
 
 
 
-		boolean success=profficiencyCheck(mob,-25-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
+		boolean success=proficiencyCheck(mob,-25-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

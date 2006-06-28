@@ -82,7 +82,7 @@ public class Prayer_UnholyWord extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		String str=auto?"The unholy word is spoken.":"^S<S-NAME> speak(s) the unholy word"+ofDiety(mob)+" to <T-NAMESELF>.^?";
 
 		Room room=mob.location();

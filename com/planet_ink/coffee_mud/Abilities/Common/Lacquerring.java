@@ -154,7 +154,7 @@ public class Lacquerring extends CommonSkill
 		displayText="You are "+verb;
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
-		if(!profficiencyCheck(mob,0,auto)) writing="";
+		if(!proficiencyCheck(mob,0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) lacquering <T-NAME>.");

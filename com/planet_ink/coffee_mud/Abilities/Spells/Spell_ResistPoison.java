@@ -68,7 +68,7 @@ public class Spell_ResistPoison extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) well protected.":"^S<S-NAME> invoke(s) an anti-venom field of protection around <T-NAMESELF>.^?");

@@ -109,7 +109,7 @@ public class Prop_WeakBridge extends Property
 							if(!CMLib.flags().isFalling(mob))
 							{
 								Ability falling=CMClass.getAbility("Falling");
-								falling.setProfficiency(0);
+								falling.setProficiency(0);
 								falling.setAffectedOne(msg.target());
 								falling.invoke(null,null,mob,true,0);
 							}
@@ -170,7 +170,7 @@ public class Prop_WeakBridge extends Property
 								&&(mob.location()==affected))
 								{
 									Ability falling=CMClass.getAbility("Falling");
-									falling.setProfficiency(0);
+									falling.setProficiency(0);
 									falling.setAffectedOne(affected);
 									falling.invoke(null,null,mob,true,0);
 								}

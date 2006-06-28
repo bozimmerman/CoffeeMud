@@ -95,7 +95,7 @@ public class UmberHulk extends StdMOB
 			return true;
 
       Ability confuse=CMClass.getAbility("Spell_Confusion");
-		confuse.setProfficiency(75);
+		confuse.setProficiency(75);
 		if(this.fetchAbility(confuse.ID())==null)
 		   this.addAbility(confuse);
 		else

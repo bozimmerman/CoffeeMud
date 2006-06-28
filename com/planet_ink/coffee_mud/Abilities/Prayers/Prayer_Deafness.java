@@ -75,7 +75,7 @@ public class Prayer_Deafness extends Prayer
 
 
 
-		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
+		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

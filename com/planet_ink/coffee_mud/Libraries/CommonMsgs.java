@@ -595,9 +595,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if((item instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
         {
             if(item.envStats().height()>0)
-                response.append(" It is a size "+item.envStats().height()+", and is worn on the ");
+                response.append(" It is a size "+item.envStats().height()+", and is ");
             else
-                response.append(" It is your size, and is worn on the ");
+                response.append(" It is your size, and is ");
+            StringBuffer wornList=((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_HELD)))
+            					 ?new StringBuffer("")
+            					 :new StringBuffer("worn on the ");
             for(int l=0;l<Item.WORN_CODES.length;l++)
             {
                 int wornCode=1<<l;
@@ -605,11 +608,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 {
                     if(((item.rawProperLocationBitmap()&wornCode)==wornCode))
                     {
-                        response.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
+                    	wornList.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
                         if(item.rawLogicalAnd())
-                            response.append("and ");
+                        	wornList.append("and ");
                         else
-                            response.append("or ");
+                        	wornList.append("or ");
                     }
                 }
             }

@@ -43,7 +43,7 @@ public class Prayer_MassHeal extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		for(Iterator e=h.iterator();e.hasNext();)

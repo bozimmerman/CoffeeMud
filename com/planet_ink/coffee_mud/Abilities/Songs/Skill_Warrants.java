@@ -51,7 +51,7 @@ public class Skill_Warrants extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.STAT_CHARISMA)),auto);
+		boolean success=proficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.STAT_CHARISMA)),auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);

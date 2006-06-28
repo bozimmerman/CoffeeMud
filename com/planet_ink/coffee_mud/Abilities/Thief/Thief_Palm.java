@@ -47,7 +47,7 @@ public class Thief_Palm extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to palm something and fail(s).");
 		else

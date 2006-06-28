@@ -404,7 +404,7 @@ public class Mage extends StdCharClass
 				grantable.removeElement(AID);
 				giveMobAbility(mob,
 							   CMClass.getAbility(AID),
-							   CMLib.ableMapper().getDefaultProfficiency(ID(),true,AID),
+							   CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
 							   CMLib.ableMapper().getDefaultParm(ID(),true,AID),
 							   isBorrowedClass);
 			}

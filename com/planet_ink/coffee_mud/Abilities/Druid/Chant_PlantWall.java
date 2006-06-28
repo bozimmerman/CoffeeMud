@@ -182,7 +182,7 @@ public class Chant_PlantWall extends Chant
 		Environmental target = mob.location();
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

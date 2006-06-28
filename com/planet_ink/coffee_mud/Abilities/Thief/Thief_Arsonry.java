@@ -107,7 +107,7 @@ public class Thief_Arsonry extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,-levelDiff,auto);
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> commit(s) arsonry against <T-NAME>.");
@@ -117,7 +117,7 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(targetRoom!=mob.location()) targetRoom.sendOthers(mob,msg);
 				Ability B=CMClass.getAbility("Burning");
-				B.setProfficiency(CMLib.flags().burnStatus(target));
+				B.setProficiency(CMLib.flags().burnStatus(target));
 				B.invoke(mob,target,true,asLevel);
 			}
 		}

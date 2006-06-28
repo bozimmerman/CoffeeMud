@@ -65,7 +65,7 @@ public class Thief_Graffiti extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,-levelDiff,auto);
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> write(s) graffiti here.");

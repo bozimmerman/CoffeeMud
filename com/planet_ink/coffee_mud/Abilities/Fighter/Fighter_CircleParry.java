@@ -84,13 +84,13 @@ public class Fighter_CircleParry extends FighterSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
 					CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
-					if((profficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
+					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))
 					{
 						lastTime=true;
 						mob.location().send(mob,msg2);
-						helpProfficiency(mob);
+						helpProficiency(mob);
 						return false;
 					}
 					lastTime=false;

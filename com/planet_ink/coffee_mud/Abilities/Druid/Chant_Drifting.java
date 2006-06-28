@@ -87,7 +87,7 @@ public class Chant_Drifting extends Chant
 		{
 			Ability A=CMClass.getAbility("Falling");
 			A.setAffectedOne(null);
-			A.setProfficiency(100);
+			A.setProficiency(100);
 			A.invoke(null,null,affected,true,0);
 			affected.recoverEnvStats();
 		}
@@ -139,7 +139,7 @@ public class Chant_Drifting extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

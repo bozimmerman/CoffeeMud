@@ -56,7 +56,7 @@ public class Spell_MassFly extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -76,7 +76,7 @@ public class Spell_MassFly extends Spell
 					if(mob.location()==target.location())
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
 					Spell_Fly fly=new Spell_Fly();
-					fly.setProfficiency(profficiency());
+					fly.setProficiency(proficiency());
 					fly.beneficialAffect(mob,target,asLevel,0);
 				}
 			}

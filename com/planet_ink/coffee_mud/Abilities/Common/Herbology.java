@@ -120,7 +120,7 @@ public class Herbology extends CommonSkill
 		displayText="You are "+verb;
 		found=target;
 		messedUp=false;
-		if(!profficiencyCheck(mob,0,auto)) messedUp=true;
+		if(!proficiencyCheck(mob,0,auto)) messedUp=true;
 		int duration=10-(mob.envStats().level()/3);
 		if(duration<2) duration=2;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");

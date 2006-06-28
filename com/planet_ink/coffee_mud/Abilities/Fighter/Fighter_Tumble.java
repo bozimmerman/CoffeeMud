@@ -110,7 +110,7 @@ public class Fighter_Tumble extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");

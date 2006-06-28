@@ -70,7 +70,7 @@ public class Fighter_Cleave extends FighterSkill
 			{
                 mob.location().send(mob,msg);
 				CMLib.combat().postAttack(mob,nextTarget,w);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 			}
 		}
 		thisTarget=null;
@@ -103,7 +103,7 @@ public class Fighter_Cleave extends FighterSkill
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)
 			&&(w.weaponClassification()!=Weapon.CLASS_NATURAL)
 			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 			{
 				nextTarget=null;
 				thisTarget=null;

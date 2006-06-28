@@ -102,7 +102,7 @@ public class Spell_FeatherFall extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

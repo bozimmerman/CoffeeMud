@@ -178,10 +178,10 @@ public class RaceData extends StdWebMacro
 						Ability A=(Ability)ables.elementAt(i);
 						if(A!=null)
 						{
-							if(A.profficiency()==0)
+							if(A.proficiency()==0)
 								str.append(A.Name()+", ");
 							else
-								str.append(A.Name()+"("+A.profficiency()+"%), ");
+								str.append(A.Name()+"("+A.proficiency()+"%), ");
 						}
 					}
 
@@ -202,10 +202,10 @@ public class RaceData extends StdWebMacro
 					{
 						Ability A=mob.fetchAbility(i);
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
-							if(A.profficiency()==0)
+							if(A.proficiency()==0)
 								str.append(A.Name()+", ");
 							else
-								str.append(A.Name()+"("+A.profficiency()+"%), ");
+								str.append(A.Name()+"("+A.proficiency()+"%), ");
 					}
 
 				}

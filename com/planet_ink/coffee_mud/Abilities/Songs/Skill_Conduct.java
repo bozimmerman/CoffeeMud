@@ -54,7 +54,7 @@ public class Skill_Conduct extends BardSkill
 		if(SYMPHONY==null)
 		{
 			SYMPHONY=CMClass.getAbility("Play_Symphony");
-			SYMPHONY.setProfficiency(100);
+			SYMPHONY.setProficiency(100);
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -62,7 +62,7 @@ public class Skill_Conduct extends BardSkill
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobileUnbound(mob,false)))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		new Play().unplay(mob,mob,false);
 		if(success)
 		{

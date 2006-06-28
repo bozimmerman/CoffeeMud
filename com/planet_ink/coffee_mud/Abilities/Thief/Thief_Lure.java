@@ -90,7 +90,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
-		boolean success=profficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?5:10)),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?5:10)),auto);
 		success=success&&(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_TRAPS));
 		success=success&&(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_MIND));
 

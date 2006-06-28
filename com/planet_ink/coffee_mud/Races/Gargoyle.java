@@ -37,11 +37,11 @@ public class Gargoyle extends StoneGolem
 	public String name(){ return "Gargoyle"; }
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProfficiencies={100};
+	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
 	protected String[] racialAbilityNames(){return racialAbilityNames;}
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

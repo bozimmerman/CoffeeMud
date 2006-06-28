@@ -89,7 +89,7 @@ public class Druid_Rend extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH)-10,auto);
+		boolean success=proficiencyCheck(mob,mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH)-10,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

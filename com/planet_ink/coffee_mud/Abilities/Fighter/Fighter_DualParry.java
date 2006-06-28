@@ -77,13 +77,13 @@ public class Fighter_DualParry extends FighterSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
 					CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
-					if((profficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
+					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))
 					{
 						lastTime=true;
 						mob.location().send(mob,msg2);
-						helpProfficiency(mob);
+						helpProficiency(mob);
 						return false;
 					}
 					lastTime=false;

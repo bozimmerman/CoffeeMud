@@ -100,7 +100,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		mob.curState().adjMovement(-150,mob.maxState());
 		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2));
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
+		boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/4))))
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);

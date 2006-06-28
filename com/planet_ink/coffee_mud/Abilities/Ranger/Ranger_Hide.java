@@ -84,7 +84,7 @@ public class Ranger_Hide extends StdAbility
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,profficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+        affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -134,7 +134,7 @@ public class Ranger_Hide extends StdAbility
 			str="You creep behind some rocks and remain completely still.";
 
 
-		boolean success=profficiencyCheck(mob,levelDiff*10,auto);
+		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");

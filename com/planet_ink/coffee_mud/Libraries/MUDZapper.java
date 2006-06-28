@@ -253,7 +253,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						int x=sub.lastIndexOf(")");
 						if(x<0) return true;
 						x=CMath.s_int(sub.substring(1,x));
-						return (A.profficiency()<x);
+						return (A.proficiency()<x);
 					}
 				}
 			}
@@ -769,7 +769,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        		if(prof<=0)
 	                        			buf.append(A.name()+", ");
 	                        		else
-	                        			buf.append(A.name()+" at "+prof+"% profficiency, ");
+	                        			buf.append(A.name()+" at "+prof+"% proficiency, ");
 	                        	}
 	                        }
 						}
@@ -803,7 +803,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        		if(prof<=0)
 	                        			buf.append(A.name()+", ");
 	                        		else
-	                        			buf.append(A.name()+" at more than "+prof+"% profficiency, ");
+	                        			buf.append(A.name()+" at more than "+prof+"% proficiency, ");
 	                        	}
 	                        }
 						}
@@ -2469,7 +2469,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					for(int v=1;v<V.size();v+=2)
 					{
 						A=mob.fetchAbility((String)V.elementAt(v));
-						if((A!=null)&&(A.profficiency()>=((Integer)V.elementAt(v+1)).intValue()))
+						if((A!=null)&&(A.proficiency()>=((Integer)V.elementAt(v+1)).intValue()))
 						{ found=true; break;}
 					}
 					if(!found) return false;
@@ -2481,7 +2481,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					for(int v=1;v<V.size();v++)
 					{
 						A=mob.fetchAbility((String)V.elementAt(v));
-						if((A!=null)&&(A.profficiency()>=((Integer)V.elementAt(v+1)).intValue()))
+						if((A!=null)&&(A.proficiency()>=((Integer)V.elementAt(v+1)).intValue()))
 						{ return false;}
 					}
 				}

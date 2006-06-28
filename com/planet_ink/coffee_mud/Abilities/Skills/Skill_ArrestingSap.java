@@ -137,7 +137,7 @@ public class Skill_ArrestingSap extends StdSkill
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STAT_STRENGTH));
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto);
+		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

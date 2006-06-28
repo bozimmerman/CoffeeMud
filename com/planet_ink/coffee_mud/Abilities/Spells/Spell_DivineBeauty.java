@@ -75,7 +75,7 @@ public class Spell_DivineBeauty extends Spell
 
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

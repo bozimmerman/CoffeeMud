@@ -119,14 +119,14 @@ public class Skill_Swim extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		Room R=mob.location();
 		if((R!=null)
 		&&(R.okMessage(mob,msg)))
 		{
 			R.send(mob,msg);
-			success=profficiencyCheck(mob,0,auto);
+			success=proficiencyCheck(mob,0,auto);
 			if(!success)
 				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
 			else

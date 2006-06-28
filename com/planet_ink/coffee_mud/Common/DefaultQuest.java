@@ -1575,7 +1575,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             V.addElement(A4);
             V.addElement(A4.text());
             A4.setMiscText(parms);
-            A4.setProfficiency(100);
+            A4.setProficiency(100);
         }
         else
         {
@@ -1584,7 +1584,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             A4.setMiscText(parms);
             V.addElement(A4);
             V.addElement(A4);
-            A4.setProfficiency(100);
+            A4.setProficiency(100);
             mob.addAbility(A4);
         }
         addons.addElement(V);

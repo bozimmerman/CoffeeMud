@@ -42,7 +42,7 @@ public class Sinking extends StdAbility
     protected boolean isTreading=false;
 	public Room room=null;
 
-    protected boolean reversed(){return profficiency()==100;}
+    protected boolean reversed(){return proficiency()==100;}
 
     protected boolean isWaterSurface(Room R)
 	{
@@ -151,7 +151,7 @@ public class Sinking extends StdAbility
 			
 			Ability A=mob.fetchAbility("Skill_Swim");
 			if(((direction==Directions.DOWN)&&(A!=null))
-			&&(A.profficiencyCheck(mob,25,(A.profficiency()>=75))
+			&&(A.proficiencyCheck(mob,25,(A.proficiency()>=75))
 			&&(mob.curState().getMovement()>0)))
 			{
 				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
@@ -253,7 +253,7 @@ public class Sinking extends StdAbility
 		if(E.fetchEffect("Sinking")==null)
 		{
 			Sinking F=new Sinking();
-			F.setProfficiency(profficiency());
+			F.setProficiency(proficiency());
 			F.invoker=null;
 			if(E instanceof MOB)
 				F.invoker=(MOB)E;

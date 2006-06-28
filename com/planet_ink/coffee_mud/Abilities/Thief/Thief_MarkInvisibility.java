@@ -76,12 +76,12 @@ public class Thief_MarkInvisibility extends ThiefSkill
 			if((mark!=null)
 			&&(mob.location()!=null)
 			&&(mob.location().isInhabitant(mark))
-			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 			{
 				if(!active)
 				{
 					active=true;
-					helpProfficiency(mob);
+					helpProficiency(mob);
 					mob.recoverEnvStats();
 				}
 			}

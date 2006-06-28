@@ -84,7 +84,7 @@ public class NiceAbilities extends ActiveTicker
 			if(tryThisOne!=null)
 				if((target!=null)&&(target!=mob)&&(!target.isMonster()))
 				{
-					tryThisOne.setProfficiency(100);
+					tryThisOne.setProficiency(100);
 					Vector V=new Vector();
 					V.addElement(target.name());
 					tryThisOne.invoke(mob,V,target,false,0);

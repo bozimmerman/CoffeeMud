@@ -320,10 +320,10 @@ public class LockSmith extends CraftingSkill
 		building.text();
 		building.recoverEnvStats();
 
-		int profficiencyAddition=0;
+		int proficiencyAddition=0;
 		if(workingOn.envStats().level()>mob.envStats().level())
-			profficiencyAddition=workingOn.envStats().level()-mob.envStats().level();
-		messedUp=!profficiencyCheck(mob,profficiencyAddition*5,auto);
+			proficiencyAddition=workingOn.envStats().level()-mob.envStats().level();
+		messedUp=!proficiencyCheck(mob,proficiencyAddition*5,auto);
 		if(completion<8) completion=8;
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);

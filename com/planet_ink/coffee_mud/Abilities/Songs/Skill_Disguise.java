@@ -308,7 +308,7 @@ public class Skill_Disguise extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,adjustment,auto);
+		boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(success)
 		{

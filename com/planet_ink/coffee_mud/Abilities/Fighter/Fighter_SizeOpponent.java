@@ -55,7 +55,7 @@ public class Fighter_SizeOpponent extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			invoker=mob;

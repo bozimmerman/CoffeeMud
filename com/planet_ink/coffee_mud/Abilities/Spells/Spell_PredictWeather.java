@@ -89,7 +89,7 @@ public class Spell_PredictWeather extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

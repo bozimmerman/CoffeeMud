@@ -326,7 +326,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						for(int d=debt.size()-1;d>=0;d--)
 						{
 							String debtor=(String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR);
-							if(debtor.equals(name))
+							if(debtor.equalsIgnoreCase(name))
 							{
 								long debtDueAt=((Long)debt.elementAt(d,MoneyLibrary.DEBT_DUELONG)).longValue();
 								double intRate=((Double)debt.elementAt(d,MoneyLibrary.DEBT_INTDBL)).doubleValue();

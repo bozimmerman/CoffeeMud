@@ -552,7 +552,7 @@ public class Masonry extends CraftingSkill
 
 		if(firstWord.equalsIgnoreCase("help"))
 		{
-			messedUp=!profficiencyCheck(mob,0,auto);
+			messedUp=!proficiencyCheck(mob,0,auto);
 			completion=25;
 			commands.removeElementAt(0);
 			MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
@@ -802,7 +802,7 @@ public class Masonry extends CraftingSkill
 				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
 			break;
 		}
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
         playSound="stone.wav";
 		if(completion<15) completion=15;

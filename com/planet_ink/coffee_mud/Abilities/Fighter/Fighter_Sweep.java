@@ -97,7 +97,7 @@ public class Fighter_Sweep extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
             CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?");

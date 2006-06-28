@@ -43,16 +43,16 @@ public class Wyvern extends StdRace
 	public long forbiddenWornBits(){return Item.WORN_HELD|Item.WORN_WIELD|Item.WORN_WAIST;}
 	public String racialCategory(){return "Reptile";}
 	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProfficiencies={50};
+	private int[]culturalAbilityProficiencies={50};
 	protected String[] culturalAbilityNames(){return culturalAbilityNames;}
-	protected int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	protected int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProfficiencies={100};
+	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
 	protected String[] racialAbilityNames(){return racialAbilityNames;}
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

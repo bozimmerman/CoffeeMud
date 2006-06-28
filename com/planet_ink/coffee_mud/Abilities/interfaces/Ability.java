@@ -514,51 +514,51 @@ public interface Ability extends Environmental
 	public void startTickDown(MOB invoker, Environmental affected, int tickTime);
 
 	/**
-	 * Returns a number from 0-100 representing the percent of profficiency
+	 * Returns a number from 0-100 representing the percent of proficiency
 	 * the mob or player who has this instance in their Abilities list has in
 	 * this skill.  Is also used for other miscellaneous purposes by other non-skill
 	 * Abilities, such as Drowning.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
-	 * @see Ability#setProfficiency(int)
-	 * @return the profficiency from 0-100
+	 * @see Ability#setProficiency(int)
+	 * @return the proficiency from 0-100
 	 */
-	public int profficiency();
+	public int proficiency();
 	
 	/**
-	 * Sets a number from 0-100 representing the percent of profficiency
+	 * Sets a number from 0-100 representing the percent of proficiency
 	 * the mob or player who has this instance in their Abilities list has in
 	 * this skill.  Is also used for other miscellaneous purposes by other non-skill
 	 * Abilities, such as Drowning.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
-	 * @see Ability#profficiency()
-	 * @param newProfficiency the profficiency from 0-100
+	 * @see Ability#proficiency()
+	 * @param newProficiency the proficiency from 0-100
 	 */
-	public void setProfficiency(int newProfficiency);
+	public void setProficiency(int newProficiency);
 	
 	/**
-	 * Returns whether the given mob passes their profficiency check in this skill
+	 * Returns whether the given mob passes their proficiency check in this skill
 	 * at this time.  Will accept a numeric adjustment, positive or negative, to
-	 * their base profficiency.  Will also accept an auto parameter, which forces
+	 * their base proficiency.  Will also accept an auto parameter, which forces
 	 * this method to always return true.
-	 * @see Ability#profficiency()
-	 * @param mob the mob whose profficiency to check
-	 * @param adjustment a positive or negative adjustment to the mobs base profficiency
+	 * @see Ability#proficiency()
+	 * @param mob the mob whose proficiency to check
+	 * @param adjustment a positive or negative adjustment to the mobs base proficiency
 	 * @param auto if true, this method returns true always
-	 * @return whether the mob passes their profficiency check
+	 * @return whether the mob passes their proficiency check
 	 */
-	public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto);
+	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto);
 	
 	/**
-	 * This method should, occassionally, add to the profficiency the given mob
+	 * This method should, occassionally, add to the proficiency the given mob
 	 * has in this skill.  There are no guarentees about how often this method
 	 * is called, but presumably it is called when the mob is doing something
-	 * that exercises this skill in some way.  How often profficiency is effected
+	 * that exercises this skill in some way.  How often proficiency is effected
 	 * by this method is up to the method, but is typically time-based, and based
 	 * on intelligence and other factors.
-	 * @see Ability#profficiency()
-	 * @param mob the mob whose profficiency in this skill to possibly advance
+	 * @see Ability#proficiency()
+	 * @param mob the mob whose proficiency in this skill to possibly advance
 	 */
-	public void helpProfficiency(MOB mob);
+	public void helpProficiency(MOB mob);
 	
 	/** usageType() constant meaning that the skill is free @see Ability#usageType()*/
 	public final static int USAGE_NADA=0;

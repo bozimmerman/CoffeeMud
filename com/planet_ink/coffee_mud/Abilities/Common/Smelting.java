@@ -209,7 +209,7 @@ public class Smelting extends CraftingSkill
         playSound="sizzling.wav";
 		verb="smelting "+doneResourceDesc.toLowerCase();
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
 		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);

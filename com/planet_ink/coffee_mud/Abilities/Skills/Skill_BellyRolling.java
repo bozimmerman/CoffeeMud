@@ -67,13 +67,13 @@ public class Skill_BellyRolling extends StdSkill
 		{
 			// can't use -NAME for msg.source() lest sitting prevent it
 			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
-			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50,false))
+			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50,false))
 			&&((msg.source().getVictim()==mob)||(msg.source().getVictim()==null))
 			&&(mob.location().okMessage(mob,msg2)))
 			{
 				doneThisRound=true;
 				mob.location().send(mob,msg2);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 				return false;
 			}
 		}

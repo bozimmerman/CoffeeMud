@@ -67,14 +67,14 @@ public class Skill_Dodge extends StdSkill
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
 			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
-			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93,false))
+			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93,false))
 			&&(msg.source().getVictim()==mob)
 		    &&(!doneThisRound)
 			&&(mob.location().okMessage(mob,msg2)))
 			{
 				doneThisRound=true;
 				mob.location().send(mob,msg2);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 				return false;
 			}
 		}

@@ -66,9 +66,9 @@ public class Paladin_HealingHands extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		helpProfficiency(mob);
+		helpProficiency(mob);
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

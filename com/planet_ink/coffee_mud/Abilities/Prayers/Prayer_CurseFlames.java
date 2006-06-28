@@ -56,7 +56,7 @@ public class Prayer_CurseFlames extends Prayer
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		Item fireSource=null;
 		for(int i=0;i<target.inventorySize();i++)

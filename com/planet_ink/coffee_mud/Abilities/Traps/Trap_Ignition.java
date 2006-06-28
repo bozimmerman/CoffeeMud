@@ -92,7 +92,7 @@ public class Trap_Ignition extends StdTrap
 				Ability B=CMClass.getAbility("Burning");
 				if(B!=null)
 				{
-					B.setProfficiency(trapLevel()/5);
+					B.setProficiency(trapLevel()/5);
 					B.invoke(invoker(),affected,true,0);
 				}
 				if(affected instanceof Item)

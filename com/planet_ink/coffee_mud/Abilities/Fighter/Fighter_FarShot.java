@@ -71,7 +71,7 @@ public class Fighter_FarShot extends FighterSkill
 			   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
 			   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
 			&&(!qualifiedWeapons.contains(msg.target()))
-			&&((msg.source().fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
+			&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				qualifiedWeapons.addElement(msg.target());
 				Ability A=(Ability)this.copyOf();
@@ -111,10 +111,10 @@ public class Fighter_FarShot extends FighterSkill
 			&&(w instanceof Weapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((Weapon)w).ammunitionType().length()>0)
-			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				if((CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<10))
-					helpProfficiency(mob);
+					helpProficiency(mob);
 				if(!qualifiedWeapons.contains(w))
 				{
 					qualifiedWeapons.addElement(w);

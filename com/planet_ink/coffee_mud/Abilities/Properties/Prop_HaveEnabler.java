@@ -88,7 +88,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 				}
                 Ability A2=newMOB.fetchEffect(A.ID());
-				A.setProfficiency(proff);
+				A.setProficiency(proff);
 				newMOB.addAbility(A);
 				A.setSavable(false);
                 A.autoInvocation(newMOB);

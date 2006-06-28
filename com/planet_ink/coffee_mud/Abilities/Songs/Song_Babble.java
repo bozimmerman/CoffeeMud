@@ -127,7 +127,7 @@ public class Song_Babble extends Song
 							  subStitute(msg.targetMessage(),smsg),
 							  msg.othersCode(),
 							  subStitute(msg.othersMessage(),smsg));
-				helpProfficiency((MOB)affected);
+				helpProficiency((MOB)affected);
 			}
 		}
 		return super.okMessage(myHost,msg);
@@ -144,7 +144,7 @@ public class Song_Babble extends Song
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		unsing(mob,mob,true);
 		if(success)
 		{

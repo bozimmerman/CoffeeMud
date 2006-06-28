@@ -76,7 +76,7 @@ public class Spell_MysticShine extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> invoke(s) a bright shine upon the surface of <T-NAMESELF>!^?");
 		if(mob.location().okMessage(mob,msg))

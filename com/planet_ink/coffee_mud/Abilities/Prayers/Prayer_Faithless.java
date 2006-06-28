@@ -60,7 +60,7 @@ public class Prayer_Faithless extends Prayer
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;
 		if(target.getWorshipCharID().length()>0)
 			D=CMLib.map().getDeity(target.getWorshipCharID());

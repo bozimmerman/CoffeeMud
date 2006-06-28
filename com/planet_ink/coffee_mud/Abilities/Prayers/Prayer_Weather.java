@@ -48,7 +48,7 @@ public class Prayer_Weather extends Prayer
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size-(mob.envStats().level()*20);
 		if(size<0) size=0;
-		boolean success=profficiencyCheck(mob,-size,auto);
+		boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");

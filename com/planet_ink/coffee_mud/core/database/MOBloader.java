@@ -220,8 +220,8 @@ public class MOBloader
 			while(R.next())
 			{
 				String abilityID=DBConnections.getRes(R,"CMABID");
-				int profficiency=(int)DBConnections.getLongRes(R,"CMABPF");
-				if(profficiency==Integer.MIN_VALUE)
+				int proficiency=(int)DBConnections.getLongRes(R,"CMABPF");
+				if(proficiency==Integer.MIN_VALUE)
 				{
 					Behavior newBehavior=CMClass.getBehavior(abilityID);
 					if(newBehavior==null)
@@ -239,18 +239,18 @@ public class MOBloader
 						Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 					else
 					{
-						if((profficiency<0)||(profficiency==Integer.MAX_VALUE))
+						if((proficiency<0)||(proficiency==Integer.MAX_VALUE))
 						{
-							if(profficiency==Integer.MAX_VALUE)
+							if(proficiency==Integer.MAX_VALUE)
 							{
-								newAbility.setProfficiency(100);
+								newAbility.setProficiency(100);
 								mob.addNonUninvokableEffect(newAbility);
 								newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
 							}
 							else
 							{
-								profficiency=profficiency+200;
-								newAbility.setProfficiency(profficiency);
+								proficiency=proficiency+200;
+								newAbility.setProficiency(proficiency);
 								newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
 								
 								Ability newAbility2=(Ability)newAbility.copyOf();
@@ -261,7 +261,7 @@ public class MOBloader
 						}
 						else
 						{
-							newAbility.setProfficiency(profficiency);
+							newAbility.setProficiency(proficiency);
 							newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
 							newAbility.recoverEnvStats();
 							mob.addAbility(newAbility);
@@ -816,14 +816,14 @@ public class MOBloader
 			Ability thisAbility=mob.fetchAbility(a);
 			if((thisAbility!=null)&&(thisAbility.savable()))
 			{
-				int profficiency=thisAbility.profficiency();
+				int proficiency=thisAbility.proficiency();
                 Ability effectA=mob.fetchEffect(thisAbility.ID());
                 if(effectA!=null)
                 {
                     if((effectA.savable())
                     &&(!effectA.canBeUninvoked())
                     &&(!effectA.isAutoInvoked()))
-                        profficiency=profficiency-200;
+                        proficiency=proficiency-200;
                 }
 				H.add(thisAbility.ID());
 				
@@ -837,7 +837,7 @@ public class MOBloader
 				+") values ("
 				+"'"+mob.Name()+"',"
 				+"'"+thisAbility.ID()+"',"
-				+profficiency+",'"
+				+proficiency+",'"
 				+thisAbility.text()+"'"
 				+")";
 				V.addElement(str);

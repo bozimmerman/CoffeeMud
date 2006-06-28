@@ -122,7 +122,7 @@ public class Thief_Flay extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> flay(s) the bare back of <T-NAMESELF>!");
 		if(mob.location().okMessage(mob,msg))
 		{

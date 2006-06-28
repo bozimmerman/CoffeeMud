@@ -96,7 +96,7 @@ public class Skill_ScrollCopy extends StdSkill
 			if(A!=null)
 				T.delAbility(A);
 		}
-		thisSpell.setProfficiency(50);
+		thisSpell.setProficiency(50);
 		T.addAbility(thisSpell);
 		if(!thisSpell.canBeLearnedBy(T,mob))
 			return false;
@@ -104,7 +104,7 @@ public class Skill_ScrollCopy extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -90,7 +90,7 @@ public class Thief_UsePoison extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> attempt(s) to poison <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))

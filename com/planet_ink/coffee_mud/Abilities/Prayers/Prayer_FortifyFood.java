@@ -56,7 +56,7 @@ public class Prayer_FortifyFood extends Prayer
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(((Food)target).nourishment()>1000)
 		{

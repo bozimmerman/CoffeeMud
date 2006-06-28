@@ -133,7 +133,7 @@ public class Foraging extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();
-		if((profficiencyCheck(mob,0,auto))
+		if((proficiencyCheck(mob,0,auto))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(resourceType==RawMaterial.RESOURCE_HEMP)
 			  ||(resourceType==RawMaterial.RESOURCE_SILK)

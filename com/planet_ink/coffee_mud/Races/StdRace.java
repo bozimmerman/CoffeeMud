@@ -70,11 +70,11 @@ public class StdRace implements Race
 	protected Hashtable racialAbilityMap=null;
 	protected String[] racialAbilityNames(){return null;}
 	protected int[] racialAbilityLevels(){return null;}
-	protected int[] racialAbilityProfficiencies(){return null;}
+	protected int[] racialAbilityProficiencies(){return null;}
 	protected boolean[] racialAbilityQuals(){return null;}
 	protected boolean mappedCulturalAbilities=false;
 	protected String[] culturalAbilityNames(){return null;}
-	protected int[] culturalAbilityProfficiencies(){return null;}
+	protected int[] culturalAbilityProficiencies(){return null;}
 	protected boolean uncharmable(){return false;}
 	protected boolean destroyBodyAfterUse(){return false;}
 
@@ -283,15 +283,15 @@ public class StdRace implements Race
 			}
 			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 
-			if((culturalAbilityNames()!=null)&&(culturalAbilityProfficiencies()!=null)
-			   &&(culturalAbilityNames().length==culturalAbilityProfficiencies().length))
+			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
+			   &&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
 			{
 				for(int a=0;a<culturalAbilityNames().length;a++)
 				{
 					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
 					if(A!=null)
 					{
-						A.setProfficiency(culturalAbilityProfficiencies()[a]);
+						A.setProficiency(culturalAbilityProficiencies()[a]);
 						mob.addAbility(A);
 						A.autoInvocation(mob);
 						if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
@@ -538,7 +538,7 @@ public class StdRace implements Race
 				Ability A=CMClass.getAbility(racialEffectNames()[v]);
 				if(A!=null)
 				{
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					A.setSavable(false);
 					A.setMiscText(racialEffectParms()[v]);
 					A.makeNonUninvokable();
@@ -555,7 +555,7 @@ public class StdRace implements Race
 		if((racialAbilityMap==null)
 		&&(racialAbilityNames()!=null)
 		&&(racialAbilityLevels()!=null)
-		&&(racialAbilityProfficiencies()!=null)
+		&&(racialAbilityProficiencies()!=null)
 		&&(racialAbilityQuals()!=null))
 		{
 			racialAbilityMap=new Hashtable();
@@ -564,7 +564,7 @@ public class StdRace implements Race
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
 											 racialAbilityLevels()[i],
 											 racialAbilityNames()[i],
-											 racialAbilityProfficiencies()[i],
+											 racialAbilityProficiencies()[i],
 											 "",
 											 !racialAbilityQuals()[i],
 											 false);
@@ -585,7 +585,7 @@ public class StdRace implements Race
 			Ability A=CMClass.getAbility((String)V.elementAt(v));
 			if(A!=null)
 			{
-				A.setProfficiency(CMLib.ableMapper().getDefaultProfficiency(ID(),false,A.ID()));
+				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));
 				A.setSavable(false);
 				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
 				finalV.addElement(A);

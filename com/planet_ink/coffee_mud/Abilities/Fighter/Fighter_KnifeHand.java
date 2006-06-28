@@ -59,7 +59,7 @@ public class Fighter_KnifeHand extends FighterSkill
 			&&(!anyWeapons(mob)))
 			{
 				if(CMLib.dice().rollPercentage()>95)
-					helpProfficiency(mob);
+					helpProficiency(mob);
 				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				naturalWeapon.setName("a knife hand");
 				naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);

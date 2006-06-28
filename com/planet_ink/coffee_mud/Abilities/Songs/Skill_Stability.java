@@ -56,7 +56,7 @@ public class Skill_Stability extends BardSkill
 		&&(msg.amITarget(affected))
 		&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-40,false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40,false)))
 		{
 			Room roomS=null;
 			Room roomD=null;
@@ -74,7 +74,7 @@ public class Skill_Stability extends BardSkill
 				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
 			if(roomD!=null)
 				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
-			helpProfficiency((MOB)affected);
+			helpProficiency((MOB)affected);
 			return false;
 		}
 		return true;

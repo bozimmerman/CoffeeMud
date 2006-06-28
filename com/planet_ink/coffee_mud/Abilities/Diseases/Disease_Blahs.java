@@ -70,7 +70,7 @@ public class Disease_Blahs extends Disease
 				Ability A=CMClass.getAbility("Blah");
 				if(A!=null)
 				{
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					A.invoke(msg.source(),null,true,0);
 					A.setAffectedOne(msg.source());
 					if(!A.okMessage(myHost,msg))

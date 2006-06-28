@@ -45,7 +45,7 @@ public class Prayer_Nullification extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB target=mob.location().fetchInhabitant(i);

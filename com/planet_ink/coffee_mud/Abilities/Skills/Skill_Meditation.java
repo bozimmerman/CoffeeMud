@@ -90,7 +90,7 @@ public class Skill_Meditation extends StdSkill
 		MOB mob=(MOB)affected;
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!profficiencyCheck(null,0,false)) return true;
+		if(!proficiencyCheck(null,0,false)) return true;
 
 		if((mob.curState().getHunger()<=0)
 		||(mob.curState().getThirst()<=0))
@@ -133,7 +133,7 @@ public class Skill_Meditation extends StdSkill
 			return false;
 		}
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -146,7 +146,7 @@ public class Skill_Meditation extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE-1000);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 			}
 		}
 		else

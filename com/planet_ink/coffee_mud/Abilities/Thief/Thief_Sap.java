@@ -142,7 +142,7 @@ public class Thief_Sap extends ThiefSkill
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
+		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

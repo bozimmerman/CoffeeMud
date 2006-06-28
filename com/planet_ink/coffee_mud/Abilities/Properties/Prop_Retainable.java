@@ -177,8 +177,8 @@ public class Prop_Retainable extends Property
         for (int a = 0; a < me.numAbilities(); a++)
         {
             Ability A = me.fetchAbility(a);
-            if(A.profficiency() == 0)
-                A.setProfficiency(50 + me.envStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+            if(A.proficiency() == 0)
+                A.setProficiency(50 + me.envStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
             skills.append(", " + A.name());
         }
         if(me instanceof ShopKeeper)

@@ -58,7 +58,7 @@ public class Mageness extends CombatAbilities
 			{
 				addThis=(Ability)addThis.newInstance();
 				addThis.setSavable(false);
-				addThis.setProfficiency(50);
+				addThis.setProficiency(50);
 				mob.addAbility(addThis);
 				addThis.autoInvocation(mob);
 			}

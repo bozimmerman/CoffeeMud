@@ -47,7 +47,7 @@ public class Prayer_MoralBalance extends Prayer
 			return false;
 
         
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
         CMMsg msg2=null;
         if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
             msg2=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");

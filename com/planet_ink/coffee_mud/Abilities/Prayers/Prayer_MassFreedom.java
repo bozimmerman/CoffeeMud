@@ -76,7 +76,7 @@ public class Prayer_MassFreedom extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");

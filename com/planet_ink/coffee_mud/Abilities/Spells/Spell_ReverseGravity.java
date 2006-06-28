@@ -59,7 +59,7 @@ public class Spell_ReverseGravity extends Spell
 					inhab.makePeace();
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(null);
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					A.invoke(null,null,inhab,true,0);
 					A=inhab.fetchEffect("Falling");
 					if(A!=null)
@@ -75,7 +75,7 @@ public class Spell_ReverseGravity extends Spell
 				{
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(room);
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					A.invoke(null,null,inhab,true,0);
 					A=inhab.fetchEffect("Falling");
 					if(A!=null)
@@ -100,7 +100,7 @@ public class Spell_ReverseGravity extends Spell
 				if(invoker!=null)
 				{
 					Ability me=invoker.fetchEffect(ID());
-					if(me!=null) me.setProfficiency(0);
+					if(me!=null) me.setProficiency(0);
 				}
 			}
 			else
@@ -111,13 +111,13 @@ public class Spell_ReverseGravity extends Spell
 				{
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Gravity returns to normal..");
 					Ability me=mob.location().fetchEffect(ID());
-					if(me!=null) me.setProfficiency(0);
+					if(me!=null) me.setProficiency(0);
 				}
 			}
 			while(childrenAffects.size()>0)
 			{
 				Ability A=(Ability)childrenAffects.elementAt(0);
-				A.setProfficiency(0);
+				A.setProficiency(0);
 				childrenAffects.removeElement(A);
 			}
 		}
@@ -142,7 +142,7 @@ public class Spell_ReverseGravity extends Spell
 		}
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

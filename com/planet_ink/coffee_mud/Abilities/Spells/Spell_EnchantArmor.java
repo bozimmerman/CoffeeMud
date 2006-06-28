@@ -61,7 +61,7 @@ public class Spell_EnchantArmor extends Spell
 
 		CMLib.leveler().postExperience(mob,null,null,-50,false);
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

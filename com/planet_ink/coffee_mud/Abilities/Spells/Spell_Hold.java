@@ -82,7 +82,7 @@ public class Spell_Hold extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)
 		{

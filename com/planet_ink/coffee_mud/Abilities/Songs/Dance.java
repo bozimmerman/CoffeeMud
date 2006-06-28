@@ -144,7 +144,7 @@ public class Dance extends StdAbility
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		undance(mob,null,true);
 

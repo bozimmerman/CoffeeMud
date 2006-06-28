@@ -44,11 +44,11 @@ public class Equine extends StdRace
 	public String racialCategory(){return "Equine";}
 	private String[]racialAbilityNames={"Fighter_Kick"};
 	private int[]racialAbilityLevels={5};
-	private int[]racialAbilityProfficiencies={40};
+	private int[]racialAbilityProficiencies={40};
 	private boolean[]racialAbilityQuals={false};
 	protected String[] racialAbilityNames(){return racialAbilityNames;}
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

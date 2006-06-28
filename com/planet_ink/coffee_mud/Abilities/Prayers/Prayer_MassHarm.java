@@ -46,7 +46,7 @@ public class Prayer_MassHarm extends Prayer
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
 		for(Iterator e=h.iterator();e.hasNext();)
 		{

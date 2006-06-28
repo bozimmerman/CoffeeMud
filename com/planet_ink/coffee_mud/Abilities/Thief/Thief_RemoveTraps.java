@@ -59,12 +59,12 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(unlockThis==null)
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(unlockThis==null) return false;
-		int oldProfficiency=profficiency();
+		int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
+		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		Trap opTrap=null;
@@ -93,7 +93,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
-				setProfficiency(oldProfficiency);
+				setProficiency(oldProficiency);
 			if(success)
 			{
 				if(theTrap!=null)

@@ -69,7 +69,7 @@ public class Prayer_RestoreVoice extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		Vector offensiveAffects=returnOffensiveAffects(mob,target);
 
 		if((success)&&(offensiveAffects.size()>0))

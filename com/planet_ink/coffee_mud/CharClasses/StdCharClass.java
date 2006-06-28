@@ -295,15 +295,15 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
-	{ giveMobAbility(mob,A,profficiency,defaultParm,isBorrowedClass,true);}
-	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass, boolean autoInvoke)
+	protected void giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass)
+	{ giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);}
+	protected void giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass, boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)
 		{
 			A=(Ability)A.copyOf();
 			A.setSavable(!isBorrowedClass);
-			A.setProfficiency(profficiency);
+			A.setProficiency(proficiency);
 			A.setMiscText(defaultParm);
 			mob.addAbility(A);
 			if(autoInvoke)
@@ -333,11 +333,11 @@ public class StdCharClass implements CharClass
                 Ability A=mob.fetchAbility(a);
                 if(A!=null)
                 {
-                    A.setProfficiency(100);
+                    A.setProficiency(100);
                     A.setSavable(false);
                     Ability A2=(Ability)alreadyAff.get(A.ID());
                     if(A2!=null)
-                        A2.setProfficiency(100);
+                        A2.setProficiency(100);
                     else
                         A.autoInvocation(mob);
                     alreadyAble.put(A.ID(),A);
@@ -364,7 +364,7 @@ public class StdCharClass implements CharClass
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
 			&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 		}
 	}
 	public void endCharacter(MOB mob)

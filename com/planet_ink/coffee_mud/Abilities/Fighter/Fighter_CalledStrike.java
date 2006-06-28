@@ -203,7 +203,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
             CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");

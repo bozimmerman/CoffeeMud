@@ -125,7 +125,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
 				&&(CMLib.flags().isStanding(mob))
-				&&(profficiencyCheck(mob,0,false))
+				&&(proficiencyCheck(mob,0,false))
 				&&(!mob.getVictim().amDead()))
 				{
 					primaryWeapon.setRawWornCode(Item.WORN_HELD);
@@ -136,7 +136,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 					primaryWeapon.setRawWornCode(Item.WORN_WIELD);
 					mob.recoverEnvStats();
 					if(CMLib.dice().rollPercentage()==1)
-						helpProfficiency(mob);
+						helpProficiency(mob);
 				}
 			}
 		}

@@ -204,7 +204,7 @@ public class Language extends StdAbility
 				if(str!=null)
 				{
 	                String smsg=getMsgFromAffect(msg.sourceMessage());
-	                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-profficiency(),100)));
+	                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-proficiency(),100)));
 	                if(numToMess>0) smsg=messChars(smsg,numToMess);
 	                str=scrambleAll(str,numToMess);
 					msg.modify(msg.source(),
@@ -217,7 +217,7 @@ public class Language extends StdAbility
 								  msg.othersCode(),
 								  subStitute(msg.othersMessage(),str));
 	                if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
-	    				helpProfficiency((MOB)affected);
+	    				helpProficiency((MOB)affected);
 				}
 			}
 	        else
@@ -257,7 +257,7 @@ public class Language extends StdAbility
 					Language L=(Language)msg.source().fetchEffect(ID());
 					if((L==null)
 					||(!L.beingSpoken())
-					||((CMLib.dice().rollPercentage()*2)>(L.profficiency()+profficiency())))
+					||((CMLib.dice().rollPercentage()*2)>(L.proficiency()+proficiency())))
 					{
 						msg.setTargetCode(CMMsg.TYP_SPEAK);
 						msg.setSourceCode(CMMsg.TYP_SPEAK);
@@ -287,7 +287,7 @@ public class Language extends StdAbility
 				if((A!=null)&&(A instanceof Language))
 				{
 					if(mob.isMonster())
-						A.setProfficiency(100);
+						A.setProficiency(100);
 					if(A.ID().equals(ID()))
 						((Language)A).setBeingSpoken(true);
 					else
@@ -319,7 +319,7 @@ public class Language extends StdAbility
 			String str=this.getMsgFromAffect(msg.sourceMessage());
 			if(str!=null)
 			{
-				int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-profficiency(),100)));
+				int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-proficiency(),100)));
 				if(numToMess>0)
 					str=messChars(str,numToMess);
 				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
@@ -404,7 +404,7 @@ public class Language extends StdAbility
             else
             {
                 if(L!=null)
-                    numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.profficiency(),100)));
+                    numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.proficiency(),100)));
                 String original=messChars(str,numToMess);
                 str=scrambleAll(str,numToMess);
                 msg.source().tell("It says '"+str+"'");

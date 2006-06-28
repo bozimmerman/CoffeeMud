@@ -190,7 +190,7 @@ public class Scrapping extends CommonSkill
 			return false;
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		found=CMLib.utensils().makeItemResource(I.material());
 		foundShortName="nothing";
         playSound="ripping.wav";

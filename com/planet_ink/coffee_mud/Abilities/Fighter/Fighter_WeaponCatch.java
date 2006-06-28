@@ -55,7 +55,7 @@ public class Fighter_WeaponCatch extends FighterSkill
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool() instanceof Ability)
 		&&(msg.tool().ID().equals("Skill_Disarm"))
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
 		&&(mob.rangeToTarget()==0))
 		{
 			CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
@@ -66,7 +66,7 @@ public class Fighter_WeaponCatch extends FighterSkill
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);
-				helpProfficiency(mob);
+				helpProficiency(mob);
 				return false;
 			}
 		}

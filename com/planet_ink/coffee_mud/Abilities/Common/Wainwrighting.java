@@ -255,7 +255,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		building.recoverEnvStats();
 
 
-		messedUp=!profficiencyCheck(mob,0,auto);
+		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<15) completion=15;
 
 		if(bundling)

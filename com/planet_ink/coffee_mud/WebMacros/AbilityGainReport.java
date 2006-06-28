@@ -62,14 +62,14 @@ public class AbilityGainReport extends StdWebMacro
                             if(CMLib.ableMapper().getDefaultGain(C.ID(),true,A.ID()))
                                 autogains=true;
                             qualifiesFor=true;
-                            if(CMLib.ableMapper().getDefaultProfficiency(C.ID(),true,A.ID())>bestProf)
-                                bestProf=CMLib.ableMapper().getDefaultProfficiency(C.ID(),true,A.ID());
+                            if(CMLib.ableMapper().getDefaultProficiency(C.ID(),true,A.ID())>bestProf)
+                                bestProf=CMLib.ableMapper().getDefaultProficiency(C.ID(),true,A.ID());
                         }
                     }
                 }
                 if((!autogains)&&(qualifiesFor)&&(!trainedFor.contains(A.ID())))
                     trainedFor.add(A.ID());
-                if((qualifiesFor)&&(A.profficiency()>bestProf))
+                if((qualifiesFor)&&(A.proficiency()>bestProf))
                 {
                     long[] stats=(long[])profSpent.get(A.ID());
                     if(stats==null) 
@@ -77,7 +77,7 @@ public class AbilityGainReport extends StdWebMacro
                         stats=new long[3];
                         profSpent.put(A.ID(),stats);
                     }
-                    stats[0]+=(A.profficiency()-bestProf);
+                    stats[0]+=(A.proficiency()-bestProf);
                     stats[1]++;
                     stats[2]=stats[0]/stats[1];
                 }

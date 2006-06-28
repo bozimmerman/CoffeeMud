@@ -43,7 +43,7 @@ public class Searching extends CommonSkill
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
 
 	protected boolean success=false;
@@ -99,7 +99,7 @@ public class Searching extends CommonSkill
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		if(profficiencyCheck(mob,0,auto))
+		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		int duration=3;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"<S-NAME> start(s) searching."));

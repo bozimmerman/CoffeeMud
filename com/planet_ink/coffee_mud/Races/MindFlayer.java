@@ -39,16 +39,16 @@ public class MindFlayer extends Humanoid
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Illithid";}
 	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm"};
-	private int[]culturalAbilityProfficiencies={100,50};
+	private int[]culturalAbilityProficiencies={100,50};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
     private String[]racialAbilityNames={"Spell_DetectSentience","Spell_CombatPrecognition"};
 	private int[]racialAbilityLevels={10,30};
-	private int[]racialAbilityProfficiencies={50,30};
+	private int[]racialAbilityProficiencies={50,30};
 	private boolean[]racialAbilityQuals={true,false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

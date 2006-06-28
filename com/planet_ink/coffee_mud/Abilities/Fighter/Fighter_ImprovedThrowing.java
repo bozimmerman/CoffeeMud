@@ -53,8 +53,8 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 		&&(msg.value()>0)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
-			if(CMLib.dice().rollPercentage()<25) helpProfficiency((MOB)affected);
-			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(profficiency(),100.0))));
+			if(CMLib.dice().rollPercentage()<25) helpProficiency((MOB)affected);
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),100.0))));
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -69,7 +69,7 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 			if((myWeapon!=null)
 			&&(myWeapon instanceof Weapon)
 			&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_THROWN))
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
 		}
 	}
 

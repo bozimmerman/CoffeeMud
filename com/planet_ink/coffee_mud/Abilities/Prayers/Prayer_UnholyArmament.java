@@ -189,7 +189,7 @@ public class Prayer_UnholyArmament extends Prayer
 		}
 
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if((success)&&(I!=null))
 		{

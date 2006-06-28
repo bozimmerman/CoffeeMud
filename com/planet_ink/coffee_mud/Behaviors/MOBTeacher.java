@@ -143,12 +143,12 @@ public class MOBTeacher extends CombatAbilities
 			{
 				A=(Ability)A.copyOf();
 				A.setSavable(false);
-				A.setProfficiency(100);
+				A.setProficiency(100);
 				myAbles.put(A.ID(),A);
 				mob.addAbility(A);
 			}
 			else
-				A2.setProfficiency(100);
+				A2.setProficiency(100);
 		}
 	}
 
@@ -366,7 +366,7 @@ public class MOBTeacher extends CombatAbilities
 					CMLib.commands().postSay(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
 					return;
 				}
-				myAbility.setProfficiency(75);
+				myAbility.setProficiency(75);
 				if(!myAbility.canBeTaughtBy(monster,mob))
 					return;
 				if(!myAbility.canBeLearnedBy(monster,mob))

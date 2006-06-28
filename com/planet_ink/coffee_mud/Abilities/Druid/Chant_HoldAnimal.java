@@ -88,7 +88,7 @@ public class Chant_HoldAnimal extends Chant
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
+		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)
 		{

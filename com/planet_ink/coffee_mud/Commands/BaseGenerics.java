@@ -3189,7 +3189,7 @@ public class BaseGenerics extends StdCommand
 							{
 								chosenOne=(Ability)chosenOne.copyOf();
 								E.addAbility(chosenOne);
-								chosenOne.setProfficiency(50);
+								chosenOne.setProficiency(50);
 								chosenOne.autoInvocation(mob);
 							}
 						}

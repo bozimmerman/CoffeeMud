@@ -48,7 +48,7 @@ public class Prayer_RemoveDeathMark extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		Hashtable remove=new Hashtable();
 		Ability E=target.fetchEffect("Thief_Mark");
 		if(E!=null) remove.put(E,target);

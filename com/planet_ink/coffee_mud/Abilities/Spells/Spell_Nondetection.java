@@ -67,7 +67,7 @@ public class Spell_Nondetection extends Spell
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 		&&(!mob.amDead())
-		&&((mob.fetchAbility(ID())==null)||(profficiency()>99)||profficiencyCheck(null,0,false)))
+		&&((mob.fetchAbility(ID())==null)||(proficiency()>99)||proficiencyCheck(null,0,false)))
 			return false;
 		return true;
 	}
@@ -81,7 +81,7 @@ public class Spell_Nondetection extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));

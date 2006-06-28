@@ -5183,7 +5183,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
         ID(),         // class/race to assign the skill to
         1,            // level the skill is qualified for
         "Skill_Swim", // the java ID of the ability to qualify for
-        0,            // default profficiency to give after gaining
+        0,            // default proficiency to give after gaining
         "",           // any misc parameters to pass to the Skill_Swim skill
         false,        // true for the class to gain automatically, false to qualify
         false,        // whether this skill is unlisted for this class
@@ -5213,7 +5213,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
           itself, followed by the level at which this class gains or
           qualifies for the skill. Next is the <code>ID()</code> value of the Ability to
           allow this class to qualify for, followed by the default
-          profficiency which this class displays in the skill (typically 0).
+          proficiency which this class displays in the skill (typically 0).
           The next parameter are any special parameters that affects the way
           this class uses the skill, followed by a boolean which establishes
           whether the player will receive this skill automaticallyy when he or
@@ -5345,7 +5345,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
         {
           giveMobAbility( mob,
             A,
-            CMLib.abilityMapping().getDefaultprofficiency( ID(), true, A.ID() ),
+            CMLib.abilityMapping().getDefaultproficiency( ID(), true, A.ID() ),
             CMLib.abilityMapping().getDefaultParm( ID(), true, A.ID() ),
             isBorrowedClass
           );
@@ -5593,7 +5593,7 @@ public class Grumbler extends com.planet_ink.coffee_mud.Races.StdRace
         <pre>
   private String[] racialAbilityNames = { "Skill_Trip", "Fighter_Whomp" };
   private int[] racialAbilityLevels = { 1, 3 };
-  private int[] racialAbilityProfficiencies = { 75, 50 };
+  private int[] racialAbilityProficiencies = { 75, 50 };
   private boolean[] racialAbilityQuals = { false, false };
 
   protected String[] racialAbilityNames()
@@ -5606,7 +5606,7 @@ public class Grumbler extends com.planet_ink.coffee_mud.Races.StdRace
     return null;
   }
 
-  protected int[] racialAbilityProfficiencies()
+  protected int[] racialAbilityProficiencies()
   {
     return null;
   }
@@ -5628,11 +5628,11 @@ public class Grumbler extends com.planet_ink.coffee_mud.Races.StdRace
           word, and is not autoinvoked. A racial ability may be qualified for
           or automaticallyy gained. If the skill is qualified for, then upon
           reaching the designated player level, the player may GAIN the
-          skill, and will have a default profficiency as designated. If the
+          skill, and will have a default proficiency as designated. If the
           skill is not qualified for, then it is automaticallyy gained. This
           means that all mobs or players of this race, who have obtained the
           necessary player level, will have access to the use of the skill as
-          if they had learned it, and at the profficiency designated. Racial
+          if they had learned it, and at the proficiency designated. Racial
           Abilities are available to any mob or player of this race, even
           those affected by Shape Shift, Polymorph, or similar skills.
         </p>
@@ -5642,7 +5642,7 @@ public class Grumbler extends com.planet_ink.coffee_mud.Races.StdRace
           variables are ordered with relative to each other. The
           <code>racialAbilityNames</code> is a list of the Ability class ID. The
           <code>racialAbilityLevels</code> is the level at which the skill is qualified
-          for or gained. The <code>racialAbilityProfficiencies()</code> is the profficiency
+          for or gained. The <code>racialAbilityProficiencies()</code> is the proficiency
           of skills automaticallyy gained. The <code>racialAbilityQuals()</code> tells
           whether or not the skill is automaticallyy gained (false) or is only
           qualified for (true).
@@ -5650,7 +5650,7 @@ public class Grumbler extends com.planet_ink.coffee_mud.Races.StdRace
 
         <p>
           The method above (<code>racialAbilities()</code>) will return a Vector of Ability
-          objects, with profficiency already set, appropriate to the mob
+          objects, with proficiency already set, appropriate to the mob
           passed in. This vector should consist only of automaticallyy gained
           abilities appropriate to the level of the mob. If the four
           variables are set properly, the programmer will not need to
@@ -5679,16 +5679,16 @@ public class Grumbler extends com.planet_ink.coffee_mud.Races.StdRace
 
 <pre>
   private String[] culturalAbilityNames = { "Dwarven", "Mining" };
-  private int[] culturalAbilityProfficiencies = { 100, 50 };
+  private int[] culturalAbilityProficiencies = { 100, 50 };
 
   public String[] culturalAbilityNames()
   {
     return culturalAbilityNames;
   }
 
-  public int[] culturalAbilityProfficiencies()
+  public int[] culturalAbilityProficiencies()
   {
-    return culturalAbilityProfficiencies;
+    return culturalAbilityProficiencies;
   }
 </pre>
         <p>
@@ -7035,7 +7035,7 @@ public class Skill_Trip extends com.planet_ink.coffee_mud.Abilities.StdAbility
           false on normal invocations of the skill, and true whenever the
           skill should always invoke no matter what. Setting auto to true not
           only changes the output string for the skill, but overrides
-          profficiency checks as well.
+          proficiency checks as well.
         </p>
 
         <pre>
@@ -7151,19 +7151,19 @@ public class Skill_Trip extends com.planet_ink.coffee_mud.Abilities.StdAbility
     int adjustment =
     (-levelDiff) + (-( 35 + ( (int)Math.round( temp * 3.0 ) ) ) );
 
-    boolean success = profficiencyCheck( mob, adjustment, auto );
+    boolean success = proficiencyCheck( mob, adjustment, auto );
 </pre>
 
         <p>
-          The <code>profficiencyCheck()</code> method called at the end here will determine
-          of the user of the skill has passed their profficiency check. The
+          The <code>proficiencyCheck()</code> method called at the end here will determine
+          of the user of the skill has passed their proficiency check. The
           first parameter of this method is the invoking mob, followed by
           either a positive (or helpful) adjustment, or a negative (not
           helpful) adjustment. The second parameter is the auto flag
-          mentioned above, to allow overrides of the normal profficiency. In
+          mentioned above, to allow overrides of the normal proficiency. In
           the case of Trip, we calculate an adjustment based both on level
           and the dexterity of the target. We store whether or not the
-          profficiency check failed or passed into the variable success.
+          proficiency check failed or passed into the variable success.
         </p>
 
         <pre>
@@ -7201,7 +7201,7 @@ public class Skill_Trip extends com.planet_ink.coffee_mud.Abilities.StdAbility
         <p>
           The rest of the <code>invoke()</code> method actually does the work of sending
           the trip message and affecting the target if necessary, or sending
-          the "fizzle" message if the profficiency check failed (success was
+          the "fizzle" message if the proficiency check failed (success was
           false).
         </p>
 
@@ -7408,7 +7408,7 @@ public class Spell_ResistFire extends com.planet_ink.coffee_mud.Abilities.Spells
       return false;
     }
 
-    boolean success = profficiencyCheck( mob, 0, auto );
+    boolean success = proficiencyCheck( mob, 0, auto );
     if( success )
     {
       CMMsg msg = CMClass.getMsg( mob,
@@ -7441,7 +7441,7 @@ public class Spell_ResistFire extends com.planet_ink.coffee_mud.Abilities.Spells
         <p>
           The <code>invoke()</code> method above follows the one in Skill_Abilities very
           closely. You will see that no adjustment is made to the
-          profficiency check, and that, since this is not
+          proficiency check, and that, since this is not
           aAbility.QUALITY_MALICIOUS ability, calls are made to
           <code>beneficialAffect()</code> and <code>beneficialWordsFizzle()</code> instead of
           <code>maliciousAffect()</code> and <code>maliciousFizzle()</code>. The main difference to notice
@@ -7497,7 +7497,7 @@ public class Prayer_Anger extends com.planet_ink.coffee_mud.Abilities.Prayers.Pr
       return false;
     }
 
-    boolean success = profficiencyCheck( mob, 0, auto );
+    boolean success = proficiencyCheck( mob, 0, auto );
 
     boolean someoneIsFighting = false;
     for( int i = 0; i &lt; mob.location().numInhabitants(); i++ )
@@ -7552,7 +7552,7 @@ public class Prayer_Anger extends com.planet_ink.coffee_mud.Abilities.Prayers.Pr
           The last special note is down in the message construction in the
           <code>invoke()</code> method. The <code>invoke()</code> method above
           follows the one in Skill_Abilities very closely. You will see that
-          no adjustment is made to the profficiency check, for instance. The
+          no adjustment is made to the proficiency check, for instance. The
           main difference to notice here, however, is the line constructing
           the evoking message. You will notice that where the message code
           should be specified, a method call to <code>affectType()</code>, which is a
@@ -7621,7 +7621,7 @@ public class Chant_AlterTime extends com.planet_ink.coffee_mud.Abilities.Druid.C
       return false;
     }
 
-    boolean success = profficiencyCheck( mob, 0, auto );
+    boolean success = proficiencyCheck( mob, 0, auto );
     if( success )
     {
       // it worked, so build a copy of this ability,
@@ -7695,7 +7695,7 @@ public class Chant_AlterTime extends com.planet_ink.coffee_mud.Abilities.Druid.C
           The last special note is down in the message
           construction in the <code>invoke()</code> method. The <code>invoke()</code>
           method above follows the one in Skill_Abilities very closely. You
-          will see that no adjustment is made to the profficiency check, for
+          will see that no adjustment is made to the proficiency check, for
           instance. The main difference to notice here, however, is the line
           constructing the evoking message. You will notice that where the
           message code should be specified, a method call to <code>affectType()</code>,
@@ -8215,7 +8215,7 @@ public class Fishing extends com.planet_ink.coffee_mud.Abilities.Common.Gatherin
         </p>
 
         <pre>
-    if( ( profficiencyCheck( mob, 0, auto ) )
+    if( ( proficiencyCheck( mob, 0, auto ) )
         &amp;&amp; ( foundFish &gt; 0 )
       )
     {
@@ -8230,7 +8230,7 @@ public class Fishing extends com.planet_ink.coffee_mud.Abilities.Common.Gatherin
 
         <p>
           Now we check to see if two important conditions have occurred; the
-          first being whether the player has passed his or her profficiency
+          first being whether the player has passed his or her proficiency
           check, and the second being whether the foundFish variable was
           assigned. Remember that the foundFish variable represents the
           material &amp; resource code for the type of fish we will catch. If
@@ -8988,7 +8988,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
         </p>
 
         <pre>
-    messedUp =! profficiencyCheck( mob, 0, auto );
+    messedUp =! proficiencyCheck( mob, 0, auto );
     if( completion &lt; 4 )
     {
       completion = 4;
@@ -9010,7 +9010,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 
         <p>
           Now we can set our messedUp flag based on a
-          profficiency check, and change our common skill player-message
+          proficiency check, and change our common skill player-message
           strings based on whether we are bundling.
         </p>
 

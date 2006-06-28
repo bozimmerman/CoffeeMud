@@ -45,7 +45,7 @@ public class Skill_Attack2 extends StdSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
         if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
-    		affectableStats.setSpeed(affectableStats.speed()+(1.0*(new Integer(profficiency()).doubleValue()/100.0)));
+    		affectableStats.setSpeed(affectableStats.speed()+(1.0*(new Integer(proficiency()).doubleValue()/100.0)));
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -62,6 +62,6 @@ public class Skill_Attack2 extends StdSkill
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
 		&&(msg.target() instanceof MOB))
-			helpProfficiency(mob);
+			helpProficiency(mob);
 	}
 }

@@ -84,7 +84,7 @@ public class Thief_Panhandling extends ThiefSkill
 				&&(CMLib.flags().canBeSeenBy(mob2,mob))
 				&&(mob2!=mob)
 				&&(!mobsHitUp.contains(mob2))
-				&&(profficiencyCheck(mob,0,false)))
+				&&(proficiencyCheck(mob,0,false)))
 				{
 					switch(CMLib.dice().roll(1,10,0))
 					{
@@ -184,7 +184,7 @@ public class Thief_Panhandling extends ThiefSkill
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
 		if(!success)

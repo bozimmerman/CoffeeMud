@@ -45,7 +45,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(profficiency()/2));
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -59,7 +59,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 		&&(msg.tool() instanceof Trap))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> deftly avoid(s) a trap.");
-			helpProfficiency(mob);
+			helpProficiency(mob);
 			return false;
 		}
 		return super.okMessage(myHost,msg);

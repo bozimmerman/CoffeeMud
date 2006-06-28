@@ -3272,7 +3272,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 				{
 					Ability A=((MOB)E).findAbility(arg2);
-					if(A!=null) results.append(""+A.profficiency());
+					if(A!=null) results.append(""+A.proficiency());
 				}
 				break;
 			}
@@ -4958,7 +4958,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(cast!=null) A=CMClass.findAbility(cast);
 				if((newTarget!=null)&&(A!=null))
 				{
-					A.setProfficiency(100);
+					A.setProficiency(100);
 					A.invoke(monster,newTarget,false,0);
 				}
 				break;
@@ -5735,7 +5735,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(cast!=null) A=CMClass.getAbility(cast);
 				if((newTarget!=null)&&(A!=null)&&(newTarget instanceof MOB))
 				{
-					A.setProfficiency(CMath.s_int(p2));
+					A.setProficiency(CMath.s_int(p2));
 					A.setMiscText(m2);
 					((MOB)newTarget).addAbility(A);
 				}

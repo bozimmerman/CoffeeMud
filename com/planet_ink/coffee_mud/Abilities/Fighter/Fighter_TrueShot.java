@@ -53,7 +53,7 @@ public class Fighter_TrueShot extends FighterSkill
 		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			gettingBonus=true;
-			int bonus=(int)Math.round(CMath.mul(affectableStats.attackAdjustment(),(CMath.div(profficiency(),200.0))));
+			int bonus=(int)Math.round(CMath.mul(affectableStats.attackAdjustment(),(CMath.div(proficiency(),200.0))));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+bonus);
 		}
 		else
@@ -75,6 +75,6 @@ public class Fighter_TrueShot extends FighterSkill
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
 		&&(msg.target() instanceof MOB))
-			helpProfficiency(mob);
+			helpProficiency(mob);
 	}
 }

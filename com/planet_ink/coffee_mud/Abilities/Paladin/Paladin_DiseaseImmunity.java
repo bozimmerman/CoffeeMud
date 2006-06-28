@@ -47,7 +47,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 		&&(msg.targetMinor()==CMMsg.TYP_DISEASE)
 		&&(!mob.amDead())
 		&&(CMLib.flags().isGood(mob))
-		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
+		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			return false;
 		return super.okMessage(myHost,msg);
 	}
@@ -55,6 +55,6 @@ public class Paladin_DiseaseImmunity extends Paladin
 	{
 		super.affectCharStats(affected,affectableStats);
 		if((affected!=null)&&(CMLib.flags().isGood(affected)))
-			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+50+profficiency());
+			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+50+proficiency());
 	}
 }

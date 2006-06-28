@@ -52,10 +52,10 @@ public class Thief_Safecracking extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Pick")))
 		{
-			helpProfficiency(mob);
+			helpProficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Pick");
-			A.setAbilityCode(profficiency()/5);
-			if((msg.target()!=null)&&(CMLib.dice().rollPercentage()<profficiency()))
+			A.setAbilityCode(proficiency()/5);
+			if((msg.target()!=null)&&(CMLib.dice().rollPercentage()<proficiency()))
 			{
 				A=msg.target().fetchEffect("Spell_WizardLock");
 				if(A!=null) A.unInvoke();

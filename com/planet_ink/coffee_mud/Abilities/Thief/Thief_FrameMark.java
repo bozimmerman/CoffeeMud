@@ -87,7 +87,7 @@ public class Thief_FrameMark extends ThiefSkill
 
 		int levelDiff=(target.envStats().level()-mob.envStats().level()*15);
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(mob,levelDiff,auto);
+		boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 

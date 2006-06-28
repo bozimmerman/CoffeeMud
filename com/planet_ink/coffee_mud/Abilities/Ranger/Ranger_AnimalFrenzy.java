@@ -96,7 +96,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			if((CMLib.dice().rollPercentage()<5)
 		    &&(invoker.isInCombat())
 		    &&(rangersGroup.size()>0))
-				helpProfficiency(invoker);
+				helpProficiency(invoker);
 		}
 		return true;
 	}
@@ -106,8 +106,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((invoker!=null)&&(affected!=invoker)&&(invoker.isInCombat()))
 		{
-			int invoAtt=(int)Math.round(CMath.mul(CMath.div(profficiency(),100.0),invoker.envStats().attackAdjustment()));
-			int damBonus=(int)Math.round(CMath.mul(affectableStats.damage(),(CMath.div(profficiency(),100.0)*4.0)));
+			int invoAtt=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),invoker.envStats().attackAdjustment()));
+			int damBonus=(int)Math.round(CMath.mul(affectableStats.damage(),(CMath.div(proficiency(),100.0)*4.0)));
 			affectableStats.setDamage(affectableStats.damage()+damBonus);
 			if(affectableStats.attackAdjustment()<invoAtt)
 				affectableStats.setAttackAdjustment(invoAtt);

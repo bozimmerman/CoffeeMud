@@ -39,14 +39,14 @@ public class OutFit extends StdCommand
     public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
     throws java.io.IOException
 	{
-    	if(actionsRemaining>0.0)
-    		mob.tell("You invoke a plea for mystical outfitting and await the answer.");
+    	if(secondsElapsed>8.0)
+    		mob.tell("You feel your outfit plea is almost answered.");
     	else
     	if(secondsElapsed>4.0)
     		mob.tell("Your plea swirls around you.");
     	else
-    	if(secondsElapsed>8.0)
-    		mob.tell("You feel your outfit plea is almost answered.");
+    	if(actionsRemaining>0.0)
+    		mob.tell("You invoke a plea for mystical outfitting and await the answer.");
 	    return true;
 	}
 	public boolean execute(MOB mob, Vector commands)

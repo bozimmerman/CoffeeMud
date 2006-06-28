@@ -104,7 +104,7 @@ public class Fighter_Behead extends FighterSkill
 		else
 			levelDiff=0;
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=profficiencyCheck(mob,0,auto)&&(hit);
+		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);

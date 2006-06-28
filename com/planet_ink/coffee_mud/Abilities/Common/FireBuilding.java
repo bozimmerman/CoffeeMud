@@ -67,7 +67,7 @@ public class FireBuilding extends CommonSkill
 						lighting=I;
 					}
 					Ability B=CMClass.getAbility("Burning");
-					B.setProfficiency(durationOfBurn);
+					B.setProficiency(durationOfBurn);
 					B.invoke(mob,lighting,true,0);
 				}
 				lighting=null;
@@ -126,7 +126,7 @@ public class FireBuilding extends CommonSkill
 			return false;
 
 		String name=CMParms.combine(commands,0);
-		int profficiencyAdjustment=0;
+		int proficiencyAdjustment=0;
 		int completion=6;
 		if(name.equalsIgnoreCase("fire"))
 		{
@@ -212,25 +212,25 @@ public class FireBuilding extends CommonSkill
 		case Climate.WEATHER_BLIZZARD:
 		case Climate.WEATHER_SNOW:
 		case Climate.WEATHER_THUNDERSTORM:
-			profficiencyAdjustment=-80;
+			proficiencyAdjustment=-80;
 			break;
 		case Climate.WEATHER_DROUGHT:
-			profficiencyAdjustment=50;
+			proficiencyAdjustment=50;
 			break;
 		case Climate.WEATHER_DUSTSTORM:
 		case Climate.WEATHER_WINDY:
-			profficiencyAdjustment=-10;
+			proficiencyAdjustment=-10;
 			break;
 		case Climate.WEATHER_HEAT_WAVE:
-			profficiencyAdjustment=10;
+			proficiencyAdjustment=10;
 			break;
 		case Climate.WEATHER_RAIN:
 		case Climate.WEATHER_SLEET:
 		case Climate.WEATHER_HAIL:
-			profficiencyAdjustment=-50;
+			proficiencyAdjustment=-50;
 			break;
 		}
-		failed=!profficiencyCheck(mob,profficiencyAdjustment,auto);
+		failed=!proficiencyCheck(mob,proficiencyAdjustment,auto);
 
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(completion<4) completion=4;

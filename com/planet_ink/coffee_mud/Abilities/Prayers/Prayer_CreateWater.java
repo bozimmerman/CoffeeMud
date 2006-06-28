@@ -66,7 +66,7 @@ public class Prayer_CreateWater extends Prayer
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" over <T-NAME> for water.^?");

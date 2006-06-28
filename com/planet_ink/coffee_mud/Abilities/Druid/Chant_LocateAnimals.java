@@ -133,7 +133,7 @@ public class Chant_LocateAnimals extends Chant
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
 		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);

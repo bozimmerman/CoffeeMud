@@ -97,7 +97,7 @@ public class NastyAbilities extends ActiveTicker
 						if((M!=null)&&(M.getVictim()!=null))
 							H.put(M,M.getVictim());
 					}
-					tryThisOne.setProfficiency(100);
+					tryThisOne.setProficiency(100);
 					Vector V=new Vector();
 					V.addElement(target.name());
 					if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)

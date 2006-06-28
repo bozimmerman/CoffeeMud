@@ -61,9 +61,9 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
 		{
-			int regain=(int)Math.round(CMath.mul(CMath.div(profficiency(),100.0),2.0));
+			int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0));
 			msg.setValue(msg.value()-regain);
 		}
 		return true;
@@ -81,7 +81,7 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
-			helpProfficiency(mob);
+			helpProficiency(mob);
 			regain=-1;
 		}
 	}

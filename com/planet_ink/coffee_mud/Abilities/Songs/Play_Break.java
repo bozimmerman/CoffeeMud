@@ -40,9 +40,9 @@ public class Play_Break extends Play
 	public Play_Break()
 	{
 		super();
-		setProfficiency(100);
+		setProficiency(100);
 	}
-	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
+	public void setProficiency(int newProficiency){	super.setProficiency(100);}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -36,7 +36,7 @@ public interface AbilityMapper extends CMObject
         public String abilityName="";
         public int qualLevel=-1;
         public boolean autoGain=false;
-        public int defaultProfficiency=0;
+        public int defaultProficiency=0;
         public String defaultParm="";
         public boolean isSecret=false;
         public DVector skillPreReqs=new DVector(2);
@@ -47,15 +47,15 @@ public interface AbilityMapper extends CMObject
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, String defParm, boolean autoGain);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, String defParm, boolean autoGain, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, boolean autoGain);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, boolean autoGain, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, String defParm, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, String defParm, boolean autoGain, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, boolean autoGain, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
     								  String defaultParam, boolean autoGain, boolean secret,
     								  Vector preReqSkillsList, String extraMask);
     public void delCharAbilityMapping(String ID, String ability);
@@ -91,5 +91,5 @@ public interface AbilityMapper extends CMObject
     public boolean getSecretSkill(MOB mob, String ability);
     public boolean getSecretSkill(String ability);
     public String getDefaultParm(String ID, boolean checkAll, String ability);
-    public int getDefaultProfficiency(String ID, boolean checkAll, String ability);
+    public int getDefaultProficiency(String ID, boolean checkAll, String ability);
 }

@@ -246,7 +246,7 @@ public class Prop_ClanEquipment extends Property
 				}
 				message = message.trim();
 				Ability wandUse = mob.fetchAbility("Skill_WandUse");
-				if ( (wandUse == null) || (!wandUse.profficiencyCheck(mob,0, false)))
+				if ( (wandUse == null) || (!wandUse.proficiencyCheck(mob,0, false)))
 				{
 					mob.tell(me.name() + " glows faintly for a moment, then fades.");
 				}
@@ -261,7 +261,7 @@ public class Prop_ClanEquipment extends Property
 						CMLib.combat().postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect, WeaponType,
 												   "^F^<FIGHT^>The magic of " +clanName+" <DAMAGE>"+
 						                           " <T-NAME>!^</FIGHT^>^?");
-						wandUse.helpProfficiency(mob);
+						wandUse.helpProficiency(mob);
 						return;
 					}
 				}
