@@ -86,6 +86,27 @@ public class Prop_ReqStat extends Property
 					if(passesMuster(msg.source(),((Exit)affected).openWord()+" that"))
 						return super.okMessage(myHost,msg);
 					return false;
+				case CMMsg.TYP_CLOSE:
+					if(passesMuster(msg.source(),((Exit)affected).closeWord()+" that"))
+						return super.okMessage(myHost,msg);
+					return false;
+				}
+			}
+			else
+			if((msg.target()==affected)
+			&&(affected instanceof Container)
+			&&(((Container)affected).hasALid()))
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_OPEN:
+					if(passesMuster(msg.source(),"open that"))
+						return super.okMessage(myHost,msg);
+					return false;
+				case CMMsg.TYP_CLOSE:
+					if(passesMuster(msg.source(),"close that"))
+						return super.okMessage(myHost,msg);
+					return false;
 				}
 			}
 			else
