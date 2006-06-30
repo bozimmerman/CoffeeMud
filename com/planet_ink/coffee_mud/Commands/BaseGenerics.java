@@ -2054,7 +2054,7 @@ public class BaseGenerics extends StdCommand
 
 		if(mob.session().confirm(getScr("BaseGenerics","confammo",defaultAmmo),defaultAmmo))
 		{
-			mob.tell(getScr("BaseGenerics","ammotype",E.ammunitionType()));
+			mob.tell(getScr("BaseGenerics","ammotype2",E.ammunitionType()));
 			String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 			if(newName.length()>0)
 			{
