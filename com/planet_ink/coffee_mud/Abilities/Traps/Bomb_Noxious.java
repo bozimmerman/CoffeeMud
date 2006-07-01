@@ -60,7 +60,11 @@ public class Bomb_Noxious extends StdBomb
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_StinkingCloud");
-				if(A!=null) A.invoke(target,target,true,invoker().envStats().level());
+				if(A!=null){
+					A.invoke(target,target,true,invoker().envStats().level());
+					A=target.fetchEffect(A.ID());
+					if(A!=null)A.setInvoker(invoker());
+				}
 			}
 		}
 	}

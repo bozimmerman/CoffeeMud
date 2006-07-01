@@ -73,7 +73,9 @@ public class StdFood extends StdItem implements Food
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EAT:
-				if((mob.isMine(this))||(!CMLib.flags().isGettable(this)))
+				if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+				||(mob.isMine(this))
+				||(!CMLib.flags().isGettable(this)))
 					return true;
 				mob.tell("You don't have that.");
 				return false;

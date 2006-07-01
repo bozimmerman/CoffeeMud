@@ -344,4 +344,5 @@ public interface CMMsg extends CMObject
 	public static final int MSG_ORDER=MASK_SOUND|MASK_MOUTH|TYP_ORDER;
 	public static final int MSG_EXPIRE=MASK_ALWAYS|TYP_EXPIRE;
 	public static final int MSG_BORROW=MASK_HANDS|TYP_BORROW;
+	public static final int MSG_EAT_GROUND=MASK_MOUTH|TYP_EAT;
 }

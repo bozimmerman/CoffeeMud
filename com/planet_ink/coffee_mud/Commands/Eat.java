@@ -49,14 +49,18 @@ public class Eat extends StdCommand
 		Environmental thisThang=null;
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
 		if((thisThang==null)
-		||((thisThang!=null)
-		   &&(!mob.isMine(thisThang))
-		   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
+		||((thisThang!=null)&&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
 			return false;
 		}
-		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>."+CMProps.msp("gulp.wav",10));
+		boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
+		if((!mob.isMine(thisThang))&&(hasHands))
+		{
+			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
+			return false;
+		}
+		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,"<S-NAME> eat(s) <T-NAMESELF>."+CMProps.msp("gulp.wav",10));
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;
