@@ -4538,14 +4538,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						scriptableError(scripted,"MPSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
 						break;
 					}
-					else
-					{
-						if(newTarget instanceof MOB)
-							((MOB)newTarget).recoverCharStats();
-						newTarget.recoverEnvStats();
-						if(newTarget instanceof MOB)
-							((MOB)newTarget).recoverMaxState();
-					}
+					if(newTarget instanceof MOB)
+						((MOB)newTarget).recoverCharStats();
+					newTarget.recoverEnvStats();
+					if(newTarget instanceof MOB)
+						((MOB)newTarget).recoverMaxState();
 				}
 				break;
 			}
@@ -4634,14 +4631,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						scriptableError(scripted,"MPGSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
 						break;
 					}
-					else
-					{
-						if(newTarget instanceof MOB)
-							((MOB)newTarget).recoverCharStats();
-						newTarget.recoverEnvStats();
-						if(newTarget instanceof MOB)
-							((MOB)newTarget).recoverMaxState();
-					}
+					if(newTarget instanceof MOB)
+						((MOB)newTarget).recoverCharStats();
+					newTarget.recoverEnvStats();
+					if(newTarget instanceof MOB)
+						((MOB)newTarget).recoverMaxState();
 				}
 				break;
 			}

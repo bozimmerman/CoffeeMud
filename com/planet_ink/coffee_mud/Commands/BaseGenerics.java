@@ -5224,7 +5224,7 @@ public class BaseGenerics extends StdCommand
             }
 		    genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nana"),"NAME");
 			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","baba"),"BASE");
-            genClassAvailability(mob,me,+showNumber,showFlag);
+            genClassAvailability(mob,me,++showNumber,showFlag);
 			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","ipip"),"HPDIV");
 			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","didi"),"HPDICE");
 			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","hphp"),"HPDIE");
