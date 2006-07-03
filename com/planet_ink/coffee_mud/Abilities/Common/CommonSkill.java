@@ -311,6 +311,10 @@ public class CommonSkill extends StdAbility
 		if(location==null) return false;
 		Integer I=new Integer(resource);
 		boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
+		int roomResourceType=location.myResource();
+		if(((isMaterial&&(resource==(roomResourceType&RawMaterial.MATERIAL_MASK))))
+		||(I.intValue()==roomResourceType))
+			return true;
 		Vector resources=location.resourceChoices();
 		if(resources!=null)
 		for(int i=0;i<resources.size();i++)

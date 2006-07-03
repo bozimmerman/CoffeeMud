@@ -158,7 +158,8 @@ public class Soiled extends StdAbility
 	            case 4: smell="Whew! <S-NAME> stinks!"; break;
 	            case 5: smell="<S-NAME> must have let one go!"; break;
 	            }
-	            if(smell!=null)
+	            if((smell!=null)
+	            &&(CMLib.flags().isInTheGame(M,true)))
 	            {
 	                CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_ALWAYS,smell);
 	                if(R.okMessage(M,msg))
@@ -166,7 +167,7 @@ public class Soiled extends StdAbility
 		            {
 		                MOB mob=R.fetchInhabitant(m);
 		                if(CMLib.flags().canSmell(mob))
-		                    mob.executeMsg(mob,msg);
+		                    mob.executeMsg(M,msg);
 		            }
 	            }
                 if(killmob) M.destroy();

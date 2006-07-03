@@ -40,19 +40,16 @@ public class Song_Serenity extends Song
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
-		if(!CMLib.flags().canBeHeardBy(invoker,(MOB)affected)) return true;
-
+		if(affected==null) return super.okMessage(myHost,msg);
+		if(!(affected instanceof MOB)) return super.okMessage(myHost,msg);
 		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		   &&(msg.amISource((MOB)affected))
-		   &&(msg.target()!=null)
-		   &&(affected!=msg.target()))
+		&&(CMLib.flags().canBeHeardBy(invoker,msg.source()))
+	    &&(msg.target()!=null))
 		{
 			msg.source().makePeace();
 			msg.source().tell("You feel too peaceful to fight.");
 			return false;
 		}
-		return true;
+		return super.okMessage(myHost,msg);
 	}
 }

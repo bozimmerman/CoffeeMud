@@ -816,23 +816,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
-	public boolean qualifiesByLevel(MOB student, Ability A)
-	{
-		if(student==null) return false;
-		for(int c=student.charStats().numClasses()-1;c>=0;c--)
-		{
-			CharClass C=student.charStats().getMyClass(c);
-			int level=getQualifyingLevel(C.ID(),true,A.ID());
-			if((level>=0)
-			&&(student.charStats().getClassLevel(C)>=level))
-				return true;
-		}
-		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
-		if((level>=0)&&(student.envStats().level()>=level))
-			return true;
-		return false;
-	}
-
+	public boolean qualifiesByLevel(MOB student, Ability A){return (A==null)?false:qualifiesByLevel(student,A.ID());}
 	public boolean qualifiesByLevel(MOB student, String ability)
 	{
 		if(student==null) return false;
