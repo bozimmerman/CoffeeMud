@@ -5375,7 +5375,13 @@ public class BaseGenerics extends StdCommand
                     if(newName.trim().length()==0)
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        FR.setCodeName(newName.toUpperCase().trim());
+                    {
+                    	Faction FC=CMLib.factions().getFactionByRangeCodeName(newName.toUpperCase().trim());
+                    	if((FC!=null)&&(FC!=me))
+                            mob.tell(getScr("BaseGenerics","facexists"));
+                    	else
+	                        FR.setCodeName(newName.toUpperCase().trim());
+                    }
                     StringBuffer prompt=new StringBuffer(getScr("BaseGenerics","virtuename"));
                     StringBuffer choices=new StringBuffer("");
                     for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
