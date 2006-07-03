@@ -179,19 +179,24 @@ public class Spell_Cogniportive extends Spell
 			{
 				String msgStr=msg.sourceMessage();
 				int x=msgStr.indexOf("'");
-				if(x<0) break;
-				msgStr=msgStr.substring(x+1);
-				x=msgStr.lastIndexOf("'");
-				if(x<0) break;
-				msgStr=msgStr.substring(0,x);
-				Vector V=CMParms.parse(msgStr);
-				if(V.size()<2) break;
-				String str=(String)V.firstElement();
-				if(!str.equalsIgnoreCase("HOME")) break;
-				str=CMParms.combine(V,1);
-				if(CMLib.english().containsString(affected.name(),str)
-				||CMLib.english().containsString(affected.displayText(),str))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
+				if(x>=0)
+				{
+					msgStr=msgStr.substring(x+1);
+					x=msgStr.lastIndexOf("'");
+					if(x>=0)
+					{
+						msgStr=msgStr.substring(0,x);
+						Vector V=CMParms.parse(msgStr);
+						if((V.size()>=2)
+						&&(((String)V.firstElement()).equalsIgnoreCase("HOME")))
+						{
+							String str=CMParms.combine(V,1);
+							if(CMLib.english().containsString(affected.name(),str)
+							||CMLib.english().containsString(affected.displayText(),str))
+								msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
+						}
+					}
+				}
 			}
 			break;
 		default:
