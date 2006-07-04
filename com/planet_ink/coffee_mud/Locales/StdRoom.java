@@ -225,7 +225,7 @@ public class StdRoom implements Room
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
 			return CMLib.encoder().decompressString(description);
 		else
-			return new String(description);
+			return CMStrings.bytesToStr(description);
 	}
 	public void setDescription(String newDescription)
 	{
@@ -235,7 +235,7 @@ public class StdRoom implements Room
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
 			description=CMLib.encoder().compressString(newDescription);
 		else
-			description=newDescription.getBytes();
+			description=CMStrings.strToBytes(newDescription);
 	}
 	public String text()
 	{

@@ -565,6 +565,10 @@ public class BaseGenerics extends StdCommand
 			E.setDescription(newName);
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
+System.out.println("1."+CMParms.toStringList(newName.toCharArray()));
+System.out.println("2."+CMParms.toStringList(E.description().getBytes()));
+System.out.println("3."+CMParms.toStringList(CMStrings.strToBytes(newName)));
+System.out.println("4."+CMParms.toStringList(CMStrings.strToBytes(""+((char)149)+" "+((char)150)+" "+((char)151))));
 	}
 
 	static void genNotes(MOB mob, MOB E, int showNumber, int showFlag)
