@@ -210,6 +210,9 @@ public interface ScriptingEngine extends Behavior
         "EXPLORED", // 77
         "EXP", // 78
         "NUMPCSAREA", // 79
+        "QUESTPOINTS", // 80
+        "TRAINS", // 81
+        "PRACS", // 82
     };
     public static final String[] methods={
         "MPASOUND", //1
@@ -270,6 +273,9 @@ public interface ScriptingEngine extends Behavior
         "MPSTOP", // 56
         "<SCRIPT>", // 57
         "MPRESET", // 58
+        "MPQUESTPOINTS", // 59
+        "MPTRAINS", // 60
+        "MPPRACS", // 61
     };
 
     public final static String[] clanVars={

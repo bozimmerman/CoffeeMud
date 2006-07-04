@@ -876,6 +876,30 @@ public class CMParms
         return s.toString().substring(2);
     }
 
+    public static String toStringList(byte[] V)
+    {
+        if((V==null)||(V.length==0)){
+            return "";
+        }
+        StringBuffer s=new StringBuffer("");
+        for(int v=0;v<V.length;v++)
+            s.append(", "+((int)V[v]));
+        if(s.length()==0) return "";
+        return s.toString().substring(2);
+    }
+
+    public static String toStringList(char[] V)
+    {
+        if((V==null)||(V.length==0)){
+            return "";
+        }
+        StringBuffer s=new StringBuffer("");
+        for(int v=0;v<V.length;v++)
+            s.append(", "+((long)V[v]));
+        if(s.length()==0) return "";
+        return s.toString().substring(2);
+    }
+
     public static String toStringList(int[] V)
     {
         if((V==null)||(V.length==0)){

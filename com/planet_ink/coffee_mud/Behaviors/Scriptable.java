@@ -2502,6 +2502,66 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+			case 80: // questpoints
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"QUESTPOINTS","Syntax",evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					int val1=((MOB)E).getQuestPoint();
+					returnable=simpleEval(scripted,""+val1,arg3,arg2,"QUESTPOINTS");
+				}
+				break;
+			}
+			case 81: // trains
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"TRAINS","Syntax",evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					int val1=((MOB)E).getTrains();
+					returnable=simpleEval(scripted,""+val1,arg3,arg2,"TRAINS");
+				}
+				break;
+			}
+			case 82: // pracs
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"PRACS","Syntax",evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					int val1=((MOB)E).getPractices();
+					returnable=simpleEval(scripted,""+val1,arg3,arg2,"PRACS");
+				}
+				break;
+			}
 			case 66: // clanrank
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -3950,6 +4010,30 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					results.append(E.envStats().level());
 				break;
 			}
+			case 80: // questpoints
+			{
+				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if(E instanceof MOB)
+					results.append(((MOB)E).getQuestPoint());
+				break;
+			}
+			case 81: // trains
+			{
+				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if(E instanceof MOB)
+					results.append(((MOB)E).getTrains());
+				break;
+			}
+			case 82: // pracs
+			{
+				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if(E instanceof MOB)
+					results.append(((MOB)E).getPractices());
+				break;
+			}
 			case 68: // clandata
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4645,6 +4729,63 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				int t=CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(s,1)));
 				if((t!=0)&&(newTarget!=null)&&(newTarget instanceof MOB))
 					CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
+				break;
+			}
+			case 59: // questpoints
+			{
+				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(s,1));
+				if(newTarget instanceof MOB)
+				{
+					if(CMath.isNumber(val)) 
+						((MOB)newTarget).setQuestPoint(CMath.s_int(val));
+					else
+					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
+						((MOB)newTarget).setQuestPoint(((MOB)newTarget).getQuestPoint()+CMath.s_int(val.substring(2).trim()));
+					else
+					if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
+						((MOB)newTarget).setQuestPoint(((MOB)newTarget).getQuestPoint()-CMath.s_int(val.substring(2).trim()));
+					else
+                        scriptableError(scripted,"QUESTPOINTS","Syntax","Bad syntax "+val+" for "+scripted.Name());
+				}
+				break;
+			}
+			case 60: // trains
+			{
+				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(s,1));
+				if(newTarget instanceof MOB)
+				{
+					if(CMath.isNumber(val)) 
+						((MOB)newTarget).setTrains(CMath.s_int(val));
+					else
+					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
+						((MOB)newTarget).setTrains(((MOB)newTarget).getTrains()+CMath.s_int(val.substring(2).trim()));
+					else
+					if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
+						((MOB)newTarget).setTrains(((MOB)newTarget).getTrains()-CMath.s_int(val.substring(2).trim()));
+					else
+                        scriptableError(scripted,"TRAINS","Syntax","Bad syntax "+val+" for "+scripted.Name());
+				}
+				break;
+			}
+			case 61: // pracs
+			{
+				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(s,1));
+				if(newTarget instanceof MOB)
+				{
+					if(CMath.isNumber(val)) 
+						((MOB)newTarget).setPractices(CMath.s_int(val));
+					else
+					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
+						((MOB)newTarget).setPractices(((MOB)newTarget).getPractices()+CMath.s_int(val.substring(2).trim()));
+					else
+					if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
+						((MOB)newTarget).setPractices(((MOB)newTarget).getPractices()-CMath.s_int(val.substring(2).trim()));
+					else
+                        scriptableError(scripted,"PRACS","Syntax","Bad syntax "+val+" for "+scripted.Name());
+				}
 				break;
 			}
 			case 5: // mpmload
