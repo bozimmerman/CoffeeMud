@@ -81,7 +81,7 @@ public class Thief_Pick extends ThiefSkill
 		boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");
+			beneficialVisualFizzle(mob,unlockThis,"<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s).");
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
@@ -89,9 +89,9 @@ public class Thief_Pick extends ThiefSkill
 			{
 				if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isLocked()))
 				||((unlockThis instanceof Container)&&(!((Container)unlockThis).isLocked())))
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) and relock(s) "+unlockThis.name()+".");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> vibrate(s) and click(s).":"<S-NAME> pick(s) and relock(s) <T-NAME>.");
 				else
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on <T-NAME>.");
 				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

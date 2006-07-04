@@ -144,18 +144,34 @@ public class Trapper extends Thief
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
-				if(CMLib.ableMapper().lowestQualifyingClassRace(myChar,(Ability)msg.tool())==this)
+				if((msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
+				||(msg.tool().ID().equalsIgnoreCase("Thief_Sneak")))
 				{
-					if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
+					CharClass C=null;
+					CharClass chosenC=null;
+					for(int c=0;c<myChar.charStats().numClasses();c++)
 					{
-						myChar.tell("You don't know how to hide outside the wilderness.");
-						return false;
+						C=myChar.charStats().getMyClass(c);
+						if(C==null) continue;
+						int qlvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),false,msg.tool().ID());
+						if((qlvl>=0)
+						&&(myChar.charStats().getClassLevel(C)>=qlvl)
+						&&((chosenC==null)||(chosenC==this)))
+							chosenC=C;
 					}
-					else
-					if(msg.tool().ID().equalsIgnoreCase("Thief_Sneak"))
+					if(chosenC==this)
 					{
-						myChar.tell("You don't know how to sneak outside the wilderness.");
-						return false;
+						if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
+						{
+							myChar.tell("You don't know how to hide outside the wilderness.");
+							return false;
+						}
+						else
+						if(msg.tool().ID().equalsIgnoreCase("Thief_Sneak"))
+						{
+							myChar.tell("You don't know how to sneak outside the wilderness.");
+							return false;
+						}
 					}
 				}
 			}

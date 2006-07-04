@@ -1841,7 +1841,10 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(getScr("BaseGenerics","hitpointsmod",showNumber+"",E.baseEnvStats().ability()+""));
+		if(E.isMonster())
+			mob.tell(getScr("BaseGenerics","hitpointsmod",showNumber+"",E.baseEnvStats().ability()+""));
+		else
+			mob.tell(getScr("BaseGenerics","hitpointsmodp",showNumber+"",E.baseEnvStats().ability()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newLevelStr=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
 		int newLevel=CMath.s_int(newLevelStr);
