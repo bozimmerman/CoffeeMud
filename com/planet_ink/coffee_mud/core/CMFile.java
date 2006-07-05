@@ -511,7 +511,8 @@ public class CMFile
         return false;
     }
     
-    public boolean saveText(Object data)
+    public boolean saveText(Object data){ return saveText(data,false);}
+    public boolean saveText(Object data, boolean append)
     {
         if(data==null)
         {
@@ -539,6 +540,7 @@ public class CMFile
             O=new StringBuffer(data.toString());
         if(!isLocalFile())
         {
+        	if(append) O=new StringBuffer(text().append(O).toString());
             String filename=getVFSPathAndName();
             Vector info=getVFSInfo(filename);
             if(info!=null)
@@ -561,7 +563,7 @@ public class CMFile
         try
         {
             File F=new File(getIOReadableLocalPathAndName());
-            FileWriter FW=new FileWriter(F);
+            FileWriter FW=new FileWriter(F,append);
             FW.write(saveBufNormalize(O).toString());
             FW.close();
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);

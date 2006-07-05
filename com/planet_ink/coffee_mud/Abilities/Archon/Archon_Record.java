@@ -66,15 +66,28 @@ public class Archon_Record extends ArchonSkill
 		}
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID)) return false;
+		if(sess==null) return false;
+		if((affected instanceof MOB)
+		&&(((MOB)affected).session()!=null)
+		&&(!(((MOB)affected).session().amBeingSnoopedBy(sess))))
+			((MOB)affected).session().startBeingSnoopedBy(sess);
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
+		MOB target=CMLib.map().getLoadPlayer(CMParms.combine(commands,0));
+		if(target==null) target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;
-		
-		Ability A=target.fetchEffect(ID());
+
+		Archon_Record A=(Archon_Record)target.fetchEffect(ID());
 		if(A!=null)
 		{
-			A.unInvoke();
+			target.delEffect(A);
+			if(target.playerStats()!=null) target.playerStats().setUpdated(0);
 			mob.tell(target.Name()+" will no longer be recorded.");
 			return true;
 		}
@@ -98,14 +111,11 @@ public class Archon_Record extends ArchonSkill
 				else
 				{
 	                Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
+					Archon_Record A2=(Archon_Record)copyOf();
 					FakeSession F=new FakeSession(file);
-					target.session().startBeingSnoopedBy(F);
-					beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
-					Archon_Record A2=(Archon_Record)target.fetchEffect(ID());
-					if(A2!=null) 
-						A2.sess=F;
-					else
-						target.session().stopBeingSnoopedBy(F);
+					A2.sess=F;
+	                target.addNonUninvokableEffect(A2);
+	                mob.tell("Enter RECORD "+mob.Name()+" again to stop recording.");
 				}
 			}
 		}
@@ -133,7 +143,7 @@ public class Archon_Record extends ArchonSkill
 		public void onlyPrint(String msg, int pageBreak, boolean noCache){
 			synchronized(theFile)
 			{
-				theFile.saveText(theFile.text().append(msg));
+				theFile.saveText(msg,true);
 			}
 		}
 		public void onlyPrint(String msg){}

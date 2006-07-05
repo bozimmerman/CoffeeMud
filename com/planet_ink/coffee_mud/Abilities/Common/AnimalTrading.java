@@ -70,7 +70,7 @@ public class AnimalTrading extends CommonSkill
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
+				commonTell(mob,M.name()+" doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.");
 				return false;
 			}
 			taming=M;
