@@ -145,7 +145,9 @@ public class InTheAir extends StdRoom
 	{
 		if(CMLib.flags().isSleeping(room))
 			return true;
-		if((msg.sourceMinor()==CMMsg.TYP_SIT)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
+		if((msg.sourceMinor()==CMMsg.TYP_SIT)
+		&&(!(msg.target() instanceof Exit))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
 		{
 		    msg.source().tell("You can't sit here.");
 		    return false;

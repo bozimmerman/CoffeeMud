@@ -48,14 +48,15 @@ public class Thief_RemoveTraps extends ThiefSkill
 		String whatTounlock=CMParms.combine(commands,0);
 		Environmental unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		Room R=mob.location();
 		Room nextRoom=null;
 		if(dirCode>=0)
 		{
-			nextRoom=mob.location().getRoomInDir(dirCode);
-			unlockThis=mob.location().getExitInDir(dirCode);
+			nextRoom=R.getRoomInDir(dirCode);
+			unlockThis=R.getExitInDir(dirCode);
 		}
 		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
-			unlockThis=mob.location();
+			unlockThis=R;
 		if(unlockThis==null)
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(unlockThis==null) return false;
@@ -66,20 +67,33 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
+		Vector permSetV=new Vector();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
+		if(theTrap!=null) permSetV.addElement(unlockThis);
 		Trap opTrap=null;
+		boolean permanent=false;
+		if((unlockThis instanceof Room)
+		&&(CMLib.utensils().doesOwnThisProperty(mob,((Room)unlockThis))))
+			permanent=true;
+		else
 		if(unlockThis instanceof Exit)
 		{
+			Room R2=null;
 			if(dirCode<0)
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
+				if(R.getExitInDir(d)==unlockThis){ dirCode=d; R2=R.getRoomInDir(d); break;}
+			if((CMLib.utensils().doesOwnThisProperty(mob,R))
+			||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
+				permanent=true;
 			if(dirCode>=0)
 			{
-				Exit exit=mob.location().getReverseExit(dirCode);
+				Exit exit=R.getReverseExit(dirCode);
 				if(exit!=null)
 					opTrap=CMLib.utensils().fetchMyTrap(exit);
+				if(opTrap!=null) permSetV.addElement(exit);
 				Trap roomTrap=null;
 				if(nextRoom!=null) roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
+				if(roomTrap!=null) permSetV.addElement(nextRoom);
 				if((theTrap!=null)&&(theTrap.disabled())&&(roomTrap!=null))
 				{
 					opTrap=null;
@@ -89,9 +103,9 @@ public class Thief_RemoveTraps extends ThiefSkill
 			}
 		}
 		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
-		if(mob.location().okMessage(mob,msg))
+		if(R.okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProficiency(oldProficiency);
 			if(success)
@@ -100,6 +114,16 @@ public class Thief_RemoveTraps extends ThiefSkill
 					theTrap.disable();
 				if(opTrap!=null)
 					opTrap.disable();
+				if(permanent)
+				{
+					for(int i=0;i<permSetV.size();i++)
+					{
+						if(theTrap!=null){ theTrap.unInvoke(); ((Environmental)permSetV.elementAt(i)).delEffect(theTrap);}
+						if(opTrap!=null){ opTrap.unInvoke(); ((Environmental)permSetV.elementAt(i)).delEffect(opTrap);}
+					}
+					CMLib.database().DBUpdateRoom(R);
+					CMLib.database().DBUpdateExits(R);
+				}
 			}
 			if(!auto)
 				mob.tell("You have completed your attempt.");

@@ -6976,6 +6976,7 @@ public class BaseGenerics extends StdCommand
 				genBanker1(mob,(Banker)me,++showNumber,showFlag);
 				genBanker2(mob,(Banker)me,++showNumber,showFlag);
 				genBanker3(mob,(Banker)me,++showNumber,showFlag);
+				genBanker4(mob,(Banker)me,++showNumber,showFlag);
 			}
 			else
             if(me instanceof PostOffice)

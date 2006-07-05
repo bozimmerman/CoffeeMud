@@ -164,6 +164,7 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))
+		&&(!(msg.target() instanceof Exit))
 		&&((msg.source().riding()==null)||(!CMLib.flags().isSwimming(msg.source().riding()))))
 		{
 			msg.source().tell("You cannot rest here.");

@@ -37,7 +37,7 @@ public interface Banker extends ShopKeeper
 	public final static int DATA_KEY=2;
 	public final static int DATA_DATA=3;
 	
-	public final static double MIN_ITEM_BALANCE_DIVIDEND=5.0;
+	public final static double MIN_ITEM_BALANCE_DIVIDEND=10.0;
 	
 	public void addDepositInventory(String mob, Item thisThang);
 	public void addDepositInventory(MOB mob, Item thisThang);

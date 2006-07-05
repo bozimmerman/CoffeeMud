@@ -274,9 +274,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 			synchronized(bankChain().intern())
 			{
 				Long L=(Long)bankTimes.get(bankChain());
-				if((L==null)||(L.longValue()<System.currentTimeMillis()))
+				long timeInterval=1;
+				if(((L==null)||(L.longValue()<System.currentTimeMillis()))
+				&&(location!=null)
+				&&(location.getArea()!=null)
+				&&(location.getArea().getTimeObj()!=null)
+				&&(CMLib.flags().isInTheGame(this,true)))
 				{
-					L=new Long(System.currentTimeMillis()+timeInterval());
+					timeInterval=timeInterval();
+					L=new Long(System.currentTimeMillis()+timeInterval);
 					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),L);
@@ -335,17 +341,20 @@ public class StdBanker extends StdShopKeeper implements Banker
 								String reason=(String)debt.elementAt(d,MoneyLibrary.DEBT_REASON);
 								double intDue=CMath.mul(intRate,dueAmount);
 								long timeRemaining=debtDueAt-System.currentTimeMillis();
-								if(timeRemaining<0)
+								if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
 									newBalance=-1.0;
 								else
-								if(newBalance>0.0)
 								{
-									double amtDueNow=CMath.div((dueAmount+intDue),(timeRemaining/timeInterval()));
-							        CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
-									CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
+									double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
+									if(newBalance>=amtDueNow)
+									{
+								        CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
+										CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
+										newBalance-=amtDueNow;
+									}
+									else
+										CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue,reason,intRate,debtDueAt);
 								}
-								else
-									CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue,reason,intRate,debtDueAt);
 								debt.removeElementAt(d);
 							}
 						}
@@ -491,7 +500,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 							CMLib.commands().postDrop(this,old,true,false);
 						double interestRate=getLoanInterest();
 						int months=2;
-						while((months<(location().getArea().getTimeObj().getMonthsInYear()*10))&&(CMath.div(amt,months)>250.0)) months++;
+						while((months<(location().getArea().getTimeObj().getMonthsInYear()*10))
+							&&(CMath.div(amt,months)>250.0)) months++;
 						long dueAt=System.currentTimeMillis()+(timeInterval()*months);
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 							CMLib.beanCounter().adjustDebt(msg.source().getClanID(),bankChain(),amt,"Bank Loan",interestRate,dueAt);
