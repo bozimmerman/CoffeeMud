@@ -65,7 +65,7 @@ public class Spell_BaseClanEq extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0) return false;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))
 		{
 			mob.tell("You aren't even a member of a clan.");
 			return false;

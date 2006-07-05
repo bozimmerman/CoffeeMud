@@ -92,7 +92,8 @@ public class Thief_TagTurf extends ThiefSkill
         Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-            if((A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))))
+            if((A.text().equals(mob.Name())
+            		||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0)))
             &&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
             {
                 A.unInvoke();

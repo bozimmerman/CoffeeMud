@@ -43,9 +43,9 @@ public class Spell_ClanHome extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room clanHomeRoom=null;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell("You aren't even a full member of a clan.");
 			return false;
 		}
 		Clan C=CMLib.clans().getClan(mob.getClanID());

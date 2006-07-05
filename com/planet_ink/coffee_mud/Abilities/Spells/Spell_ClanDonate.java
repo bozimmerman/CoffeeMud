@@ -51,7 +51,7 @@ public class Spell_ClanDonate extends Spell
 		}
 		
 		Room clanDonateRoom=null;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))
 		{
 			mob.tell("You aren't even a member of a clan.");
 			return false;
