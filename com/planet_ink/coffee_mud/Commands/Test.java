@@ -237,9 +237,28 @@ public class Test extends StdCommand
                 System.out.println("MilliDiff="+millidiff);
                 return true;
             }
-            
-            
-            
+            else
+            if(what.equalsIgnoreCase("horsedraggers"))
+            {
+            	MOB M=CMClass.getMOB("GenMOB");
+            	M.setName("MrRider");
+            	M.setDisplayText("MrRider is here");
+            	Behavior B=CMClass.getBehavior("Mobile");
+            	B.setParms("min=1 max=1 chance=99 wander");
+            	M.addBehavior(B);
+            	M.bringToLife(mob.location(),true);
+            	MOB M2=CMClass.getMOB("GenRideable");
+            	M2.setName("a pack horse");
+            	M2.setDisplayText("a pack horse is here");
+            	M2.bringToLife(mob.location(),true);
+            	M.setRiding((Rideable)M2);
+            	Behavior B2=CMClass.getBehavior("Scriptable");
+            	B2.setParms("RAND_PROG 100;IF !ISHERE(nondescript);MPECHO LOST MY CONTAINER $d $D!; GOSSIP LOST MY CONTAINER! $d $D; MPPURGE $i;ENDIF;~;");
+            	M2.addBehavior(B2);
+            	Item I=CMClass.getBasicItem("LockableContainer");
+            	mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+            	I.setRiding((Rideable)M2);
+            }
             
             Ability A2=null;
             Item I=null;
