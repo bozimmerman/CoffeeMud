@@ -1173,8 +1173,9 @@ public class DefaultSession extends Thread implements Session
         {
             if(mob.playerStats()!=null)
                 mob.playerStats().setLastDateTime(System.currentTimeMillis());
+            if(CMLib.flags().isInTheGame(mob,true))
+	            CMLib.database().DBUpdateFollowers(mob);
             mob.removeFromGame(true);
-            CMLib.database().DBUpdateFollowers(mob);
         }
         status=Session.STATUS_LOGOUT3;
         CMLib.sessions().removeElement(this);
