@@ -106,6 +106,7 @@ public class Chant_AnimalSpy extends Chant
 			if(msg.amISource(invoker)
 			&&(!disable)
 			&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(msg.sourceMessage()!=null)
 			&&((msg.sourceCode()&CMMsg.MASK_MAGIC)==0))
 			{
 				int start=msg.sourceMessage().indexOf("\'");

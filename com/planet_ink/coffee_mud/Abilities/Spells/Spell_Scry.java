@@ -39,6 +39,7 @@ public class Spell_Scry extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	public static final DVector scries=new DVector(2);
+	private boolean recurse=false;
 
 	public void unInvoke()
 	{
@@ -64,7 +65,9 @@ public class Spell_Scry extends Spell
 		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
 			CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
+			recurse=true;
 			msg.target().executeMsg(msg.target(),newAffect);
+			recurse=false;
 		}
 		else
 		if((affected instanceof MOB)
@@ -72,8 +75,13 @@ public class Spell_Scry extends Spell
 		&&(msg.source() != invoker)
 		&&(invoker.location()!=((MOB)affected).location())
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
-		&&(msg.othersMessage()!=null))
+		&&(msg.othersMessage()!=null)
+		&&(!recurse))
+		{
+			recurse=true;
 			invoker.executeMsg(invoker,msg);
+			recurse=false;
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

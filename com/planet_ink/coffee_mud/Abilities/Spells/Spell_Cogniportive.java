@@ -175,7 +175,8 @@ public class Spell_Cogniportive extends Spell
 				waveIfAble(mob,msg.tool(),(Item)affected);
 			break;
 		case CMMsg.TYP_SPEAK:
-			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(msg.sourceMessage()!=null))
 			{
 				String msgStr=msg.sourceMessage();
 				int x=msgStr.indexOf("'");

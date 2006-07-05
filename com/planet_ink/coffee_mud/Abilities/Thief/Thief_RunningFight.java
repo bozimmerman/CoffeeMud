@@ -47,12 +47,15 @@ public class Thief_RunningFight extends ThiefSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(lastOpponent!=null))
 		{
-			MOB mob=(MOB)affected;
-			if((mob.location()!=null)&&(mob.location().isInhabitant(lastOpponent)))
+			synchronized(lastOpponent)
 			{
-				mob.setVictim(lastOpponent);
-				lastOpponent.setVictim(mob);
-				lastOpponent=null;
+				MOB mob=(MOB)affected;
+				if((mob.location()!=null)&&(mob.location().isInhabitant(lastOpponent)))
+				{
+					mob.setVictim(lastOpponent);
+					lastOpponent.setVictim(mob);
+					lastOpponent=null;
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);

@@ -44,6 +44,7 @@ public class Prop_OpenPassword extends Property
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(affected!=null)
+		&&(msg.sourceMessage()!=null)
 		&&((msg.sourceCode()&CMMsg.MASK_MAGIC)==0))
 		{
 			int start=msg.sourceMessage().indexOf("\'");

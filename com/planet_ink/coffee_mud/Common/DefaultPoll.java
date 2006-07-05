@@ -283,7 +283,10 @@ public class DefaultPoll implements Poll
         }
         catch(java.io.IOException x)
         {
-            Log.errOut("Polls",x);
+        	if(Log.isMaskedErrMsg(x.getMessage()))
+	            Log.errOut("Polls",x.getMessage());
+        	else
+	            Log.errOut("Polls",x);
         }
     }
     

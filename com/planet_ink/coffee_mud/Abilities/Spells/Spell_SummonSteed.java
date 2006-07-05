@@ -212,6 +212,7 @@ public class Spell_SummonSteed extends Spell
 		{
             MOB possibleBitch = mob.fetchFollower(i);
             if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
+            &&(possibleBitch.location()==newPackmate.location())
             && (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.envStats().level() > 75))
                 return possibleBitch;
         }
