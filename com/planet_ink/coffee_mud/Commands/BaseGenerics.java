@@ -2285,7 +2285,7 @@ public class BaseGenerics extends StdCommand
 		    if(newFact.length()>0)
 		    {
 		        Faction lookedUp=CMLib.factions().getFactionByName(newFact);
-		        if(lookedUp==null) CMLib.factions().getFaction(newFact);
+		        if(lookedUp==null) lookedUp=CMLib.factions().getFaction(newFact);
 		        if(lookedUp!=null)
 		        {
 		            if (E.fetchFaction(lookedUp.factionID())!=Integer.MAX_VALUE)
