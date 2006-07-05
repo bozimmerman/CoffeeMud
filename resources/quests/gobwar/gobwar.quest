@@ -7,11 +7,12 @@ set interval 9600
 set runlevel 2
 set minplayers 3
 
-#set area GoblinMountains
-#set mobgroup MASK=-PLAYER -RACE +Goblin 
-#give behavior Scriptable LOAD=quests/gobwar/goblin.script
-#give behavior MobileAggressive -Goblin MOBKILL
-#give behavior Scavenger
+set area GoblinMountains
+set mobgroup MASK=-PLAYER -RACE +Goblin 
+ive ability Skill_Climb
+give behavior Scriptable LOAD=quests/gobwar/goblin.script
+give behavior MobileAggressive -Goblin MOBKILL
+give behavior Scavenger
 
 set mobgroup
 set room
@@ -20,6 +21,7 @@ set mob
 
 set area Goblin Nation
 set mobgroup MASK=-PLAYER -RACE +Goblin 
+give ability Skill_Climb
 give behavior Scriptable LOAD=quests/gobwar/goblin.script
 give behavior MobileAggressive -Goblin MOBKILL
 give behavior Scavenger
@@ -31,6 +33,7 @@ set mob
 
 set area Goblin Stronghold
 set mobgroup MASK=-PLAYER -RACE +Goblin 
+give ability Skill_Climb
 give behavior Scriptable LOAD=quests/gobwar/goblin.script
 give behavior MobileAggressive -Goblin MOBKILL
 give behavior Scavenger
@@ -42,6 +45,7 @@ set mob
 
 set area Miden`nir
 set mobgroup MASK=-PLAYER -RACE +Goblin 
+give ability Skill_Climb
 give behavior Scriptable LOAD=quests/gobwar/goblin.script
 give behavior MobileAggressive -Goblin MOBKILL
 give behavior Scavenger
