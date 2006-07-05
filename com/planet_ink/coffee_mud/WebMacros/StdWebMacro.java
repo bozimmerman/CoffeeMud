@@ -47,7 +47,7 @@ public class StdWebMacro implements WebMacro
 	
     public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
-        return CMStrings.strToBytes(runMacro(httpReq,parm));
+        return runMacro(httpReq,parm).getBytes();
     }
 	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
 	{
