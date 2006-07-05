@@ -374,6 +374,7 @@ public class Construction extends CraftingSkill
 								X.setOpenDelayTicks(9999);
 								X.setExitParams("door","close","open","a closed door");
 								X.setDoorsNLocks(true,false,true,false,false,false);
+								X.recoverEnvStats();
 								X.text();
 								room.rawExits()[dir]=X;
 								if(room.rawDoors()[dir]!=null)
@@ -381,6 +382,8 @@ public class Construction extends CraftingSkill
 									Exit X2=(Exit)X.copyOf();
 									if(doingCode==BUILD_SECRETDOOR)
 										X2.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
+									X2.recoverEnvStats();
+									X2.text();
 									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=X2;
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}

@@ -173,7 +173,8 @@ public class LockSmith extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(commands.size()==0)
+		if((commands.size()==0)
+		||(CMParms.combine(commands,0).equalsIgnoreCase("list")))
 		{
 			commonTell(mob,"Locksmith what or where? Enter the name of a container or door direction. Put the word \"boltlock\" in front of the door direction to make a one-way lock.  Put the word \"delock\" in front of the door direction to remove the locks.");
 			return false;
