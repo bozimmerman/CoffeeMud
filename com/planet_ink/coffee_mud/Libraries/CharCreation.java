@@ -866,6 +866,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         {
                             if(R==null) R=mob.location();
                             follower.setLocation(R);
+                            follower.setFollowing(mob); // before for bestow names sake
                             follower.bringToLife(R,false);
                             follower.setFollowing(mob);
                             R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");

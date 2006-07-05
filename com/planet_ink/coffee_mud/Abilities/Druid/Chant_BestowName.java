@@ -46,7 +46,7 @@ public class Chant_BestowName extends Chant
 		super.affectEnvStats(affected,affectedStats);
 		if((affected instanceof MOB)
 		&&(((MOB)affected).amFollowing()==null)
-		&&(CMLib.flags().isInTheGame(affected,false)))
+		&&(CMLib.flags().isInTheGame(affected,true)))
 		{
 			affected.delEffect(affected.fetchEffect(ID()));
 			affectedStats.setName(null);
