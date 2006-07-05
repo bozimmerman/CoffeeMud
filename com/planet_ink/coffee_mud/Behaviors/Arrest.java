@@ -395,12 +395,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							String s=CMStrings.replaceAll((String)data.elementAt(3),"~","\n");
 							s=CMStrings.replaceAll(s,"`","'");
-							lawprops.load(new ByteArrayInputStream(s.getBytes()));
+							lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
 						}
 						else
 						{
 							String s=Law.defaultLaw;
-							lawprops.load(new ByteArrayInputStream(s.getBytes()));
+							lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
 							s=CMStrings.replaceAll(s,"\n","~");
 							s=CMStrings.replaceAll(s,"'","`");
 							CMLib.database().DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
@@ -409,7 +409,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					{
 						String s=Law.defaultLaw;
-						lawprops.load(new ByteArrayInputStream(s.getBytes()));
+						lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
 						s=CMStrings.replaceAll(s,"\n","~");
 						s=CMStrings.replaceAll(s,"\r","~");
 						s=CMStrings.replaceAll(s,"'","`");

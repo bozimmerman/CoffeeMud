@@ -57,7 +57,7 @@ public class GenShopkeeper extends StdShopKeeper
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
 			miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
 		else
-			miscText=CMLib.coffeeMaker().getPropertiesStr(this,false).getBytes();
+			miscText=CMStrings.strToBytes(CMLib.coffeeMaker().getPropertiesStr(this,false));
 		return super.text();
 	}
 

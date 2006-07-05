@@ -86,14 +86,6 @@ public class Export extends StdCommand
 			if(fileName.indexOf(".")<0)
 				fileName=fileName+".cmare";
             new CMFile(fileName,mob,false).saveText(xml);
-            /*
-			for(int i=0;i<xml.length();i+=65536)
-			{
-			    if((i+65536)>=xml.length())
-                    out.write(xml.substring(i).getBytes());
-			    else
-                    out.write(xml.substring(i,i+65536).getBytes());
-			}*/
             if(S!=null) mob.tell("File '"+fileName+"' written.");
 		}
 	}

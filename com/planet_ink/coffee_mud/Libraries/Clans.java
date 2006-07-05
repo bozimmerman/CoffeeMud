@@ -169,13 +169,13 @@ public class Clans extends StdLibrary implements ClanManager
 				// do nothing
 			}
 			else
-			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character((new String("y")).charAt(0))))
+			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character(("y").charAt(0))))
 			{
 				roleName.setCharAt(roleName.length()-1,'i');
 				roleName.append("es");
 			}
 			else
-			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character((new String("s")).charAt(0))))
+			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character(("s").charAt(0))))
 			{
 				roleName.append("es");
 			}

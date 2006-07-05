@@ -138,7 +138,7 @@ public class MUDGrinder extends StdWebMacro
             boolean deleteIfExists=false;
             if(httpReq.getRequestParameter("DELFIRST")!=null)
             	deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
-            StringBuffer buf=new StringBuffer(new String(bufBytes));
+            StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
     		Vector V=CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT");
     		V.addElement(buf);
     		Command C=CMClass.getCommand("Import");

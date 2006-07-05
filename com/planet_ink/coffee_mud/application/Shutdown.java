@@ -40,7 +40,7 @@ public class Shutdown
                 msg.append(" "+a[i]);
             Socket sock=new Socket(a[0],CMath.s_int(a[1]));
             OutputStream rawout=sock.getOutputStream();
-            rawout.write((msg.toString()+">\n").getBytes());
+            rawout.write(CMStrings.strToBytes((msg.toString()+">\n")));
             rawout.flush();
             BufferedReader in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
             String read="";

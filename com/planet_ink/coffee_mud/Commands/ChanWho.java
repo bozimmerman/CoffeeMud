@@ -67,7 +67,7 @@ public class ChanWho extends StdCommand
 			mob.tell(getScr("ChanWho","validname"));
 			return false;
 		}
-		String head=new String("^x"+getScr("ChanWho","listening")+" "+channel+":^?^.^N\n\r");
+		String head="^x"+getScr("ChanWho","listening")+" "+channel+":^?^.^N\n\r";
 		StringBuffer buf=new StringBuffer("");
         boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains("SAMEAREA");
 		for(int s=0;s<CMLib.sessions().size();s++)

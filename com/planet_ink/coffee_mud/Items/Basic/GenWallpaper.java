@@ -179,7 +179,7 @@ public class GenWallpaper implements Item
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
 			return CMLib.encoder().decompressString(description);
 		else
-			return new String(description);
+			return CMStrings.bytesToStr(description);
 	}
 	public void setDescription(String newDescription)
 	{
@@ -189,7 +189,7 @@ public class GenWallpaper implements Item
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
 			description=CMLib.encoder().compressString(newDescription);
 		else
-			description=newDescription.getBytes();
+			description=CMStrings.strToBytes(newDescription);
 	}
 	public void setContainer(Item newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}

@@ -669,7 +669,7 @@ public class StdMOB implements MOB
 			if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
 				CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText)));
 			else
-				CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,new String(miscText)));
+				CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText)));
 		}
 		if(CMLib.map().getStartRoom(this)==null)
 			setStartRoom(isMonster()?newLocation:CMLib.map().getDefaultStartRoom(this));
@@ -1145,7 +1145,7 @@ public class StdMOB implements MOB
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
 			return CMLib.encoder().decompressString(description);
 		else
-			return new String(description);
+			return CMStrings.bytesToStr(description);
 	}
 	public void setDescription(String newDescription)
 	{
@@ -1155,7 +1155,7 @@ public class StdMOB implements MOB
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
 			description=CMLib.encoder().compressString(newDescription);
 		else
-			description=newDescription.getBytes();
+			description=CMStrings.strToBytes(newDescription);
 	}
 	public void setMiscText(String newText)
 	{
@@ -1165,7 +1165,7 @@ public class StdMOB implements MOB
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
 			miscText=CMLib.encoder().compressString(newText);
 		else
-			miscText=newText.getBytes();
+			miscText=CMStrings.strToBytes(newText);
 	}
 	public String text()
 	{
@@ -1175,7 +1175,7 @@ public class StdMOB implements MOB
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
 			return CMLib.encoder().decompressString(miscText);
 		else
-			return new String(miscText);
+			return CMStrings.bytesToStr(miscText);
 	}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 

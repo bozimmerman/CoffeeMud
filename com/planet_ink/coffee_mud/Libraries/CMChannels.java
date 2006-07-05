@@ -430,7 +430,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			ichannelList.addElement("");
 		}
 
-		channelNames.addElement(new String("AUCTION"));
+		channelNames.addElement("AUCTION");
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
         channelFlags.addElement(new Vector());

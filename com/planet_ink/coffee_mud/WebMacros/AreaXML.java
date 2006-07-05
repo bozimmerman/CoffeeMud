@@ -83,7 +83,7 @@ public class AreaXML extends StdWebMacro
 		if(C==null) return null;
 		try{if(!C.execute(mob,V)) return null;}catch(Exception e){return null;}
 		if((V.size()==0)||(!(V.firstElement() instanceof String))) return null;
-		return ((String)V.firstElement()).getBytes();
+		return CMStrings.strToBytes((String)V.firstElement());
     }
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException

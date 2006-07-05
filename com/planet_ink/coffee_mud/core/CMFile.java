@@ -301,7 +301,7 @@ public class CMFile
                 if(data instanceof StringBuffer)
                     return (StringBuffer)data;
                 if(data instanceof byte[])
-                    return new StringBuffer(new String((byte[])data));
+                    return new StringBuffer(CMStrings.bytesToStr((byte[])data));
             }
             else
             if(logErrors)
@@ -354,7 +354,7 @@ public class CMFile
                 if(data instanceof StringBuffer)
                     return (StringBuffer)data;
                 if(data instanceof byte[])
-                    return new StringBuffer(new String((byte[])data));
+                    return new StringBuffer(CMStrings.bytesToStr((byte[])data));
             }
             else
             if(logErrors)
@@ -400,9 +400,9 @@ public class CMFile
                 if(data instanceof byte[])
                     return (byte[])data;
                 if(data instanceof String)
-                    return ((String)data).getBytes();
+                    return CMStrings.strToBytes((String)data);
                 if(data instanceof StringBuffer)
-                    return ((StringBuffer)data).toString().getBytes();
+                    return CMStrings.strToBytes(((StringBuffer)data).toString());
             }
             else
             if(logErrors)
@@ -427,7 +427,7 @@ public class CMFile
 
     public StringBuffer textVersion(byte[] bytes)
     {
-        StringBuffer text=new StringBuffer(new String(bytes));
+        StringBuffer text=new StringBuffer(CMStrings.bytesToStr(bytes));
         for(int i=0;i<text.length();i++)
             if((text.charAt(i)<0)||(text.charAt(i)>127))
                 return null;
@@ -491,9 +491,9 @@ public class CMFile
         {
             File F=new File(getIOReadableLocalPathAndName());
             if(O instanceof StringBuffer)
-                O=((StringBuffer)O).toString().getBytes();
+                O=CMStrings.strToBytes(((StringBuffer)O).toString());
             if(O instanceof String)
-                O=((String)O).getBytes();
+                O=CMStrings.strToBytes(((String)O));
             if(O instanceof byte[])
             {
                 FileOutputStream FW=new FileOutputStream(F,false);
@@ -533,7 +533,7 @@ public class CMFile
             O=(StringBuffer)data;
         else
         if(data instanceof byte[])
-            O=new StringBuffer(new String((byte[])data));
+            O=new StringBuffer(CMStrings.bytesToStr((byte[])data));
         else
         if(data!=null)
             O=new StringBuffer(data.toString());

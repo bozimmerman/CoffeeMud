@@ -44,7 +44,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
             synchronized (encodeBuffer)
             {
                 int len = decompresser.inflate(encodeBuffer);
-                return new String(encodeBuffer, 0, len, "UTF-8");
+                return new String(encodeBuffer, 0, len, "iso-8859-1");
             }
         }
         catch (Exception ex)
@@ -62,7 +62,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
         try
         {
             compresser.reset();
-            compresser.setInput(s.getBytes("UTF-8"));
+            compresser.setInput(s.getBytes("iso-8859-1"));
             compresser.finish();
             
             synchronized (encodeBuffer)

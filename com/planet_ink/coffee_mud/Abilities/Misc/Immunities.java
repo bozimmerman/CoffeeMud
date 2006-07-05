@@ -46,18 +46,18 @@ public class Immunities extends StdAbility
 
 
 	public static Object[][] immunityTypes={
-		{new Integer(CMMsg.TYP_ACID), new String("ACID")},
-		{new Integer(CMMsg.TYP_WATER), new String("WATER")},
-		{new Integer(CMMsg.TYP_COLD), new String("COLD")},
-		{new Integer(CMMsg.TYP_DISEASE), new String("DISEASE")},
-		{new Integer(CMMsg.TYP_ELECTRIC), new String("ELECTRIC")},
-		{new Integer(CMMsg.TYP_FIRE), new String("FIRE")},
-		{new Integer(CMMsg.TYP_GAS), new String("GAS")},
-		{new Integer(CMMsg.TYP_JUSTICE), new String("JUSTICE")},
-		{new Integer(CMMsg.TYP_MIND), new String("MIND")},
-		{new Integer(CMMsg.TYP_PARALYZE), new String("PARALYZE")},
-		{new Integer(CMMsg.TYP_POISON), new String("POISON")},
-		{new Integer(CMMsg.TYP_UNDEAD), new String("UNDEAD")},
+		{new Integer(CMMsg.TYP_ACID), "ACID"},
+		{new Integer(CMMsg.TYP_WATER), "WATER"},
+		{new Integer(CMMsg.TYP_COLD), "COLD"},
+		{new Integer(CMMsg.TYP_DISEASE), "DISEASE"},
+		{new Integer(CMMsg.TYP_ELECTRIC), "ELECTRIC"},
+		{new Integer(CMMsg.TYP_FIRE), "FIRE"},
+		{new Integer(CMMsg.TYP_GAS), "GAS"},
+		{new Integer(CMMsg.TYP_JUSTICE), "JUSTICE"},
+		{new Integer(CMMsg.TYP_MIND), "MIND"},
+		{new Integer(CMMsg.TYP_PARALYZE), "PARALYZE"},
+		{new Integer(CMMsg.TYP_POISON), "POISON"},
+		{new Integer(CMMsg.TYP_UNDEAD), "UNDEAD"},
 	};
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

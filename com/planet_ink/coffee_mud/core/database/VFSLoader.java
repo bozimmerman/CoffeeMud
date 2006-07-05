@@ -104,10 +104,10 @@ public class VFSLoader
             buf="";
         else
         if(data instanceof String)
-            buf=B64Encoder.B64encodeBytes(((String)data).getBytes());
+            buf=B64Encoder.B64encodeBytes(CMStrings.strToBytes((String)data));
         else
         if(data instanceof StringBuffer)
-            buf=B64Encoder.B64encodeBytes(((StringBuffer)data).toString().getBytes());
+            buf=B64Encoder.B64encodeBytes(CMStrings.strToBytes(((StringBuffer)data).toString()));
         else
         if(data instanceof byte[])
             buf=B64Encoder.B64encodeBytes((byte[])data);

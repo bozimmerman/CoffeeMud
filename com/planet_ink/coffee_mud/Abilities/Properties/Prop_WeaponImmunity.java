@@ -59,7 +59,7 @@ public class Prop_WeaponImmunity extends Property
 	            c=new Character('+');
 	        if(s.startsWith("LEVEL"))
 	        {
-	            c=new String(((Character)c).charValue()+" "+s.substring(5).trim());
+	            c=((Character)c).charValue()+" "+s.substring(5).trim();
 	            s=s.substring(5).trim();
 	        }
             flags.put(s,c);

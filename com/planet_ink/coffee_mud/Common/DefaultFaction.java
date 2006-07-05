@@ -128,7 +128,7 @@ public class DefaultFaction implements Faction, MsgListener
         boolean debug = false;
         
         ID = fID;
-        CMProps alignProp = new CMProps(new ByteArrayInputStream(file.toString().getBytes()));
+        CMProps alignProp = new CMProps(new ByteArrayInputStream(CMStrings.strToBytes(file.toString())));
 		if(alignProp.isEmpty()) return;
         name=alignProp.getStr("NAME");
         choiceIntro=alignProp.getStr("CHOICEINTRO");

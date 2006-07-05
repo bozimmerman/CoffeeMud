@@ -132,7 +132,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText));
 						else
-							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,new String(miscText));
+							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText));
 						Vector xml=CMLib.xml().parseAllXML(shoptext);
 						if(xml!=null)
 						{
