@@ -62,7 +62,8 @@ public class Spell_Scry extends Spell
 		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 		&&(invoker!=null)
 		&&(msg.target()!=null)
-		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
+		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room)))
+		&&(!recurse))
 		{
 			CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
 			recurse=true;
