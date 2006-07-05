@@ -107,6 +107,7 @@ public interface DatabaseEngine extends CMObject
 	public int DBCountData(String playerID, String section);
 	public Vector DBReadData(String playerID, String section, String key);
 	public Vector DBReadDataKey(String section, String keyMask);
+	public Vector DBReadDataKey(String key);
 	public Vector DBReadData(String section);
     public Vector DBReadData(String player, Vector sections);
 	public void DBDeleteData(String playerID, String section);

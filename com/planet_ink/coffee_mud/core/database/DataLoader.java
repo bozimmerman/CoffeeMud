@@ -212,6 +212,36 @@ public class DataLoader
 		return rows;
 	}
 
+	public static Vector DBReadKey(String key)
+	{
+		DBConnection D=null;
+		Vector rows=new Vector();
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+			while(R.next())
+			{
+				String plid=DBConnections.getRes(R,"CMPLID");
+				String sect=DBConnections.getRes(R,"CMSECT");
+				key=DBConnections.getRes(R,"CMPKEY");
+				Vector V=new Vector();
+				V.addElement(plid);
+				V.addElement(sect);
+				V.addElement(key);
+				V.addElement(DBConnections.getRes(R,"CMPDAT"));
+				rows.addElement(V);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		// log comment
+		return rows;
+	}
+
 	public static Vector DBRead(String playerID, String section, String key)
 	{
 		DBConnection D=null;

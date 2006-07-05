@@ -206,6 +206,8 @@ public class DBInterface implements DatabaseEngine
 	
 	public Vector DBReadDataKey(String section, String keyMask)
 	{ return DataLoader.DBReadKey(section,keyMask);}
+	public Vector DBReadDataKey(String key)
+	{ return DataLoader.DBReadKey(key);}
 	
 	public int DBCountData(String playerID, String section)
 	{ return DataLoader.DBCount(playerID,section);}
