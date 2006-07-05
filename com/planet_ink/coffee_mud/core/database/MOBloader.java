@@ -758,7 +758,6 @@ public class MOBloader
 				+thisMOB.baseEnvStats().level()+","
 				+thisMOB.baseEnvStats().ability()
 				+")";
-System.out.println(thisMOB.text());				
 				V.addElement(str);
 			}
 		}

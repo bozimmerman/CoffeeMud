@@ -114,7 +114,6 @@ public class SaveThread extends Thread
 		for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
 		{
 			MOB mob=(MOB)p.nextElement();
-System.out.println(mob.Name()+"/"+mob.playerStats().lastUpdated()+"/"+mob.playerStats().lastDateTime());			
 			if(!mob.isMonster())
 			{
 				status="just saving "+mob.Name();
