@@ -37,27 +37,43 @@ public class BankAccountInfo extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
+		MOB playerM=null;
+		Area playerA=null;
+		boolean destroyPlayer=false;
+		try{
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("BANKCHAIN");
 		if(last==null) return " @break@";
 		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
 		String player=httpReq.getRequestParameter("PLAYER");
-		MOB playerM=null;
-		Area playerA=null;
+		if((player==null)||(player.length()==0))
+			player=httpReq.getRequestParameter("CLAN");
+		Banker B=CMLib.map().getBank(last,last);
+		if(B==null) return "BANKER not found?!";
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((M==null)||(!M.Name().equalsIgnoreCase(player)))
 			&&(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS)")))
 				return "";
-			playerM=CMLib.map().getLoadPlayer(player);
+			Clan C=CMLib.clans().getClan(player);
+			if(C!=null)
+			{
+				playerM=CMClass.getMOB("StdMOB");
+				playerM.setName(C.clanID());
+				playerM.setLocation(CMLib.map().getStartRoom(B));
+				playerM.setStartRoom(CMLib.map().getStartRoom(B));
+				playerM.setClanID(C.clanID());
+				playerM.setClanRole(Clan.POS_BOSS);
+				destroyPlayer=true;
+			}
+			else
+				playerM=CMLib.map().getLoadPlayer(player);
 			if(playerM!=null) playerA=CMLib.map().getStartArea(playerM);
 			if((playerM==null)||(playerA==null)) 
 				return "PLAYER not found!";
 		}
 		else
 			return "PLAYER not set!";
-		Banker B=CMLib.map().getBank(last,last);
-		if(B==null) return "BANKER not found?!";
 		double balance=B.getBalance(playerM);
 		if(balance<=0.0) return "";
 		if(parms.containsKey("BALANCE")) 
@@ -108,5 +124,6 @@ public class BankAccountInfo extends StdWebMacro
 			return list.toString();
 		}
 		return "";
+		}finally{if(destroyPlayer) playerM.destroy();}
 	}
 }
