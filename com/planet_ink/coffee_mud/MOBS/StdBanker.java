@@ -177,8 +177,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		return getDepositInventory(mob).size();
 	};
+	public Vector getDepositedItems(MOB mob)
+	{
+		if(mob==null) return new Vector();
+		return getDepositedItems((whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.Name():mob.getClanID());
+	}
 	public Vector getDepositedItems(String mob)
 	{
+		if((mob==null)||(mob.length()==0)) return new Vector();
 		Vector V=getDepositInventory(mob);
 		Vector mine=new Vector();
 		for(int v=0;v<V.size();v++)

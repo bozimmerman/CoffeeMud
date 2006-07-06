@@ -43,13 +43,15 @@ public class BankAccountInfo extends StdWebMacro
 		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
 		String player=httpReq.getRequestParameter("PLAYER");
 		MOB playerM=null;
+		Area playerA=null;
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((M==null)||(!M.Name().equalsIgnoreCase(player)))
 			&&(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS)")))
 				return "";
 			playerM=CMLib.map().getLoadPlayer(player);
-			if((playerM==null)||(CMLib.map().getStartArea(playerM)==null)) 
+			if(playerM!=null) playerA=CMLib.map().getStartArea(playerM);
+			if((playerM==null)||(playerA==null)) 
 				return "PLAYER not found!";
 		}
 		else
@@ -60,13 +62,51 @@ public class BankAccountInfo extends StdWebMacro
 		if(balance<=0.0) return "";
 		if(parms.containsKey("BALANCE")) 
 			return CMLib.beanCounter().nameCurrencyLong(playerM,balance);
-		if(parms.containsKey("DEBTDUE"))
+		if((parms.containsKey("DEBTAMT"))
+		||(parms.containsKey("DEBTRSN"))
+		||(parms.containsKey("DEBTDUE"))
+		||(parms.containsKey("DEBTINT")))
 		{
 			Vector debtV=B.getDebtInfo(playerM);
 			if((debtV==null)||(debtV.size()==0)) return "N/A";
-			
+			double debt=((Double)debtV.elementAt(MoneyLibrary.DEBT_AMTDBL-1)).doubleValue();
+			String reason=((String)debtV.elementAt(MoneyLibrary.DEBT_REASON-1));
+			String intRate=CMath.div((int)Math.round(((Double)debtV.elementAt(MoneyLibrary.DEBT_INTDBL)).doubleValue()*10000.0),100.0)+"%";
+			long dueLong=((Long)debtV.elementAt(MoneyLibrary.DEBT_DUELONG-1)).longValue();
+			long timeRemaining=dueLong-dueLong;
+			String dueDate="";
+			if(timeRemaining<0)
+				dueDate="Past due.";
+			else
+			{
+				int mudHoursToGo=(int)(timeRemaining/MudHost.TIME_MILIS_PER_MUDHOUR);
+				if(playerA.getTimeObj()==null)
+					dueDate="Not available";
+				else
+				{
+					TimeClock T=(TimeClock)playerA.getTimeObj().copyOf();
+					T.tickTock(mudHoursToGo);
+					dueDate=T.getShortTimeDescription();
+				}
+			}
+			if(parms.containsKey("DEBTAMT")) return CMLib.beanCounter().nameCurrencyLong(playerM,debt);
+			if(parms.containsKey("DEBTRSN")) return reason;
+			if(parms.containsKey("DEBTDUE")) return dueDate;
+			if(parms.containsKey("DEBTINT")) return intRate;
 		}
-		
+		if(parms.containsKey("NUMITEMS")) return ""+B.getDepositedItems(playerM).size();
+		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM));
+		if(parms.containsKey("ITEMSLIST"))
+		{
+			Vector V=B.getDepositedItems(playerM);
+			StringBuffer list=new StringBuffer("");
+			for(int v=0;v<V.size();v++)
+			{
+				list.append(((Environmental)V.elementAt(v)).name());
+				if(v<(V.size()-1)) list.append(", ");
+			}
+			return list.toString();
+		}
 		return "";
 	}
 }

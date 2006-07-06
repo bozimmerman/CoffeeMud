@@ -47,6 +47,7 @@ public interface Banker extends ShopKeeper
 	public int numberDeposited(String mob);
 	public Vector getAccountNames();
 	public Vector getDepositInventory(String mob);
+	public Vector getDepositedItems(MOB mob);
 	public Item findDepositInventory(String mob, String likeThis);
 	public Item findDepositInventory(MOB mob, String likeThis);
 	public void setCoinInterest(double interest);
