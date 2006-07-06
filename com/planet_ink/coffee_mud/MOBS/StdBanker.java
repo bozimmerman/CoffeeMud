@@ -270,6 +270,20 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public double getItemInterest(){return itemInterest;};
 	public void setLoanInterest(double interest){loanInterest=interest;}
 	public double getLoanInterest(){return loanInterest;}
+	public Vector getDebtInfo(MOB mob)
+	{
+		DVector debt=CMLib.beanCounter().getDebtOwed(bankChain());
+		if(mob==null) return null;
+		String whom=(whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.getClanID():mob.Name();
+		if((whom==null)||(whom.length()==0)) return null;
+		for(int d=0;d<debt.size();d++)
+		{
+			String debtor=(String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR);
+			if(debtor.equalsIgnoreCase(whom))
+				return debt.getRowVector(d);
+		}
+		return null;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -412,7 +426,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return true;
 	}
 
-	protected double getBalance(MOB mob)
+	public double getBalance(MOB mob)
 	{
 		Item old=findDepositInventory(mob,""+Integer.MAX_VALUE);
 		if((old!=null)&&(old instanceof Coins))
@@ -420,7 +434,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return 0;
 	}
 
-	protected double totalItemsWorth(MOB mob)
+	public double totalItemsWorth(MOB mob)
 	{
 		Vector V=null;
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)

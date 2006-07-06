@@ -57,4 +57,7 @@ public interface Banker extends ShopKeeper
 	public double getItemInterest();
 	public String bankChain();
 	public void setBankChain(String name);
+	public double getBalance(MOB mob);
+	public double totalItemsWorth(MOB mob);
+	public Vector getDebtInfo(MOB mob);
 }

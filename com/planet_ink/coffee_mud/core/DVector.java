@@ -240,6 +240,16 @@ public class DVector implements Cloneable, java.io.Serializable
             return stuff[dim-1];
         }
     }
+    public Vector getRowVector(int row)
+    {
+		Vector V=new Vector();
+		synchronized(stuff)
+		{
+			for(int v=0;v<dimensions;v++)
+				V.addElement(stuff[v].elementAt(row));
+		}
+		return V;
+    }
 	public Object elementAt(int i, int dim)
 	{
 		synchronized(stuff)
