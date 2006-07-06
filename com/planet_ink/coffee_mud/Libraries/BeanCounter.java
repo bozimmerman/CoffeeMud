@@ -657,29 +657,29 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
     									  String currency,
     									  double absoluteAmount)
 	{
+		Banker B=null;
 		Room R=null;
-		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().banks();e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement();
-			for(int m=0;m<R.numInhabitants();m++)
+			B=(Banker)e.nextElement();
+			R=CMLib.map().roomLocation(B);
+			if((R!=null)
+			&&(R.getArea()==A)
+			&&(!triedBanks.contains(B.bankChain())))
 			{
-				MOB M=R.fetchInhabitant(m);
-				if((M instanceof Banker)&&(!triedBanks.contains(((Banker)M).bankChain())))
-				{
-					if(modifyBankGold(((Banker)M).bankChain(),owner,explanation,currency,absoluteAmount))
-						return true;
-					triedBanks.add(((Banker)M).bankChain());
-				}
+				triedBanks.add(B.bankChain());
+				if(modifyBankGold(B.bankChain(),owner,explanation,currency,absoluteAmount))
+					return true;
 			}
 		}
 		return false;
 	}
 	
 	public boolean modifyLocalBankGold(Area A, 
-	        								  String owner,
-	        								  String explanation,
-	        								  String currency,
-	        								  double absoluteAmount)
+    								   String owner,
+    								   String explanation,
+    								   String currency,
+    								   double absoluteAmount)
 	{
 		HashSet triedBanks=new HashSet();
 		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,currency,absoluteAmount))

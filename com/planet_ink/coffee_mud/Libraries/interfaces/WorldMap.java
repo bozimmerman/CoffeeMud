@@ -71,6 +71,7 @@ public interface WorldMap extends CMObject
     public void resetArea(Area area);
     public void resetRoom(Room room);
     public Room getStartRoom(Environmental E);
+    public Area getStartArea(Environmental E);
     public Room roomLocation(Environmental E);
     public void emptyRoom(Room room, Room bringBackHere);
     public boolean hasASky(Room room);
@@ -107,6 +108,7 @@ public interface WorldMap extends CMObject
     public void delBank(Banker oneToDel);
     public Banker getBank(String chain, String areaNameOrBranch);
     public Enumeration banks();
+	public Iterator bankChains(Area AreaOrNull);
     
     /************************************************************************/
     /**							 PLAYERS 	     							*/

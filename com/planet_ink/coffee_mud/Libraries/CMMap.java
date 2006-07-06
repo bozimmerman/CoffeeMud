@@ -401,13 +401,12 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             P = (PostOffice)i.nextElement();
             if((P.postalChain().equalsIgnoreCase(chain))
-            &&(CMLib.map().getStartRoom(P)!=null)
-            &&(CMLib.map().getStartRoom(P).getArea()==A))
+            &&(CMLib.map().getStartArea(P)==A))
                 return P;
         }
         return null;
     }
-    public Enumeration postOffices() { return postOfficeList.elements(); }
+    public Enumeration postOffices() { return ((Vector)postOfficeList.clone()).elements(); }
     
     public int numBanks() { return bankList.size(); }
     public void addBank(Banker newOne)
@@ -435,13 +434,28 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             B = (Banker)i.nextElement();
             if((B.bankChain().equalsIgnoreCase(chain))
-            &&(CMLib.map().getStartRoom(B)!=null)
-            &&(CMLib.map().getStartRoom(B).getArea()==A))
+            &&(CMLib.map().getStartArea(B)==A))
                 return B;
         }
         return null;
     }
-    public Enumeration banks() { return bankList.elements(); }
+    public Enumeration banks() { return ((Vector)bankList.clone()).elements(); }
+	public Iterator bankChains(Area AreaOrNull)
+	{
+		HashSet H=new HashSet();
+		Banker B=null;
+		for(Enumeration e=banks();e.hasMoreElements();)
+		{
+			B=(Banker)e.nextElement();
+			if((!H.contains(B.bankChain())) 
+			&&((AreaOrNull==null)
+				||(getStartArea(B)==AreaOrNull)
+				||(AreaOrNull.isChild(getStartArea(B)))))
+					H.add(B.bankChain());
+		}
+		return H.iterator();
+	}
+	
     
 	public int numPlayers() { return playersList.size(); }
 	public void addPlayer(MOB newOne) 
@@ -883,6 +897,14 @@ public class CMMap extends StdLibrary implements WorldMap
             return roomLocation(((Ability)E).affecting());
 		return null;
 	}
+	public Area getStartArea(Environmental E)
+	{
+		if(E instanceof Area) return (Area)E;
+		Room R=getStartRoom(E);
+		if(R==null) return null;
+		return R.getArea();
+	}
+	
     public Room getStartRoom(Environmental E)
     {
         if(E ==null) return null;
