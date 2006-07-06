@@ -117,8 +117,7 @@ public class SpecialistMage extends Mage
 			{
                 int classLevel=myChar.charStats().getClassLevel(this);
                 if(classLevel>30) classLevel=30;
-				int recovery=(int)Math.round(CMath.mul(msg.value(),CMath.mul(0.02,classLevel)));
-				msg.setValue(msg.value()-recovery);
+                msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0+CMath.mul(0.02,classLevel))));
 			}
 		}
 		else
@@ -127,18 +126,14 @@ public class SpecialistMage extends Mage
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability))
 		{
+            int classLevel=myChar.charStats().getClassLevel(this);
+            if(classLevel>30) classLevel=30;
 			if((domain==domain())
-			&&(myChar.charStats().getClassLevel(this)>=5))
-			{
-				int recovery=(int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.02,myChar.charStats().getClassLevel(this))));
-				msg.setValue(msg.value()-recovery);
-			}
+			&&(classLevel>=5))
+				msg.setValue((int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.02,classLevel))));
 			else
 			if(domain==opposed())
-			{
-				int recovery=(int)Math.round(CMath.mul((msg.value()),1.0+CMath.mul(0.02,30-myChar.charStats().getClassLevel(this))));
-				msg.setValue(msg.value()-recovery);
-			}
+				msg.setValue((int)Math.round(CMath.mul((msg.value()),1.0+CMath.mul(0.02,classLevel))));
 		}
 
 		return super.okMessage(myChar,msg);
