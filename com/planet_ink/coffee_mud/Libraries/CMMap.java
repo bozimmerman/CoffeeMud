@@ -40,6 +40,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Vector playersList = new Vector();
 	public Vector deitiesList = new Vector();
     public Vector postOfficeList=new Vector();
+    public Vector bankList=new Vector();
 	public Hashtable startRooms=new Hashtable();
 	public Hashtable deathRooms=new Hashtable();
 	public Hashtable bodyRooms=new Hashtable();
@@ -400,14 +401,47 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             P = (PostOffice)i.nextElement();
             if((P.postalChain().equalsIgnoreCase(chain))
-            &&(P instanceof MOB)
-            &&(((MOB)P).getStartRoom()!=null)
-            &&(((MOB)P).getStartRoom().getArea()==A))
+            &&(CMLib.map().getStartRoom(P)!=null)
+            &&(CMLib.map().getStartRoom(P).getArea()==A))
                 return P;
         }
         return null;
     }
     public Enumeration postOffices() { return postOfficeList.elements(); }
+    
+    public int numBanks() { return bankList.size(); }
+    public void addBank(Banker newOne)
+    {
+        if (!bankList.contains(newOne))
+        	bankList.add(newOne);
+    }
+    public void delBank(Banker oneToDel)
+    {
+    	bankList.remove(oneToDel);
+    }
+    public Banker getBank(String chain, String areaNameOrBranch)
+    {
+    	Banker B = null;
+        for (Enumeration i=banks(); i.hasMoreElements();)
+        {
+            B = (Banker)i.nextElement();
+            if((B.bankChain().equalsIgnoreCase(chain))
+            &&(B.bankChain().equalsIgnoreCase(areaNameOrBranch)))
+                return B;
+        }
+        Area A=findArea(areaNameOrBranch);
+        if(A==null) return null;
+        for (Enumeration i=banks(); i.hasMoreElements();)
+        {
+            B = (Banker)i.nextElement();
+            if((B.bankChain().equalsIgnoreCase(chain))
+            &&(CMLib.map().getStartRoom(B)!=null)
+            &&(CMLib.map().getStartRoom(B).getArea()==A))
+                return B;
+        }
+        return null;
+    }
+    public Enumeration banks() { return bankList.elements(); }
     
 	public int numPlayers() { return playersList.size(); }
 	public void addPlayer(MOB newOne) 

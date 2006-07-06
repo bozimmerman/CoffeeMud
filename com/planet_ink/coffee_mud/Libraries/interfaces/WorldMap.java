@@ -102,7 +102,11 @@ public interface WorldMap extends CMObject
     public void delPostOffice(PostOffice oneToDel);
     public PostOffice getPostOffice(String chain, String areaNameOrBranch);
     public Enumeration postOffices();
-    
+    public int numBanks();
+    public void addBank(Banker newOne);
+    public void delBank(Banker oneToDel);
+    public Banker getBank(String chain, String areaNameOrBranch);
+    public Enumeration banks();
     
     /************************************************************************/
     /**							 PLAYERS 	     							*/

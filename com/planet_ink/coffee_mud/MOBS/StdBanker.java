@@ -65,6 +65,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 		recoverCharStats();
 	}
 
+    public void destroy()
+    {
+        super.destroy();
+        CMLib.map().delBank(this);
+    }
+    public void bringToLife(Room newLocation, boolean resetStats)
+    {
+        super.bringToLife(newLocation,resetStats);
+        CMLib.map().addBank(this);
+    }
+    
 
 
 	public int whatIsSold(){return whatISell;}
