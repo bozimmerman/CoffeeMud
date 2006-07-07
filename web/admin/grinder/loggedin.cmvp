@@ -94,7 +94,7 @@
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
-	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
+	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@

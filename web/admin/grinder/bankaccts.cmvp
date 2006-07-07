@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?SYSOP=true&AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Bank Accounts Browser</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.PLAYBACK.action=action;
+			document.PLAYBACK.submit();
+		}
+		function Clicked1(chain)
+		{
+			document.BANKCHAIN.BANKCHAIN.value=chain;
+			document.BANKCHAIN.PLAYER.value='';
+			document.BANKCHAIN.action="bankaccts.cmvp#"+chain;
+			document.BANKCHAIN.submit();
+		}
+		function Clicked2(chain,player)
+		{
+			document.BANKCHAIN.BANKCHAIN.value=chain;
+			document.BANKCHAIN.PLAYER.value=player;
+			document.BANKCHAIN.action="bankaccts.cmvp#"+chain;
+			document.BANKCHAIN.submit();
+		}
+		function sfideas()
+		{
+			document.BANKCHAIN.action="sfideas.cmvp";
+			document.BANKCHAIN.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Player Manager" ONCLICK="Clicked('/grinder/players.cmvp');"></TD></TR>
+	</TABLE>
+<CENTER>
+<FORM NAME=BANKCHAIN TARGET=_top METHOD=POST ACTION="/grinder/bankaccts.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=BANKCHAIN VALUE="@RequestParameter?BANKCHAIN@">
+<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@RequestParameter?PLAYER@">
+<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Bank Account Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
+		@AddRequestParameter?OLDCHAIN=@@RequestParameter?BANKCHAIN@@ @
+		@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
+		@AddRequestParameter?PLAYER=@
+		@BankChainNext?RESET@
+		@loop@
+			@BankChainNext@
+		    <TR><TD WIDTH=30% VALIGN=TOP>
+			<a name="@BankChainName@" href="javascript:Clicked1('@BankChainName@')"><FONT COLOR=YELLOW>@BankChainName@</FONT></a>
+			@if?CheckReqParm?BANKCHAIN=@@RequestParameter?OLDCHAIN@@ @
+				@PlayerNext?RESET@
+				<UL>
+				@loop@
+					@PlayerNext@
+					@if?BankAccountInfo?HASACCT@
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')">@PlayerID@</a></LI>
+					@endif@
+				@back@
+				@ClanNext?RESET@
+				</UL>
+				<UL>
+				@loop@
+					@ClanNext@
+					@if?BankAccountInfo?HASACCT@
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?CLAN@')">@ClanID@</a></LI>
+					@endif@
+				@back@
+				</UL>
+				</TD>
+				<TD WIDTH=70% VALIGN=TOP>
+				@AddRequestParameter?PLAYER=@@RequestParameter?OLDPLAYER@@ @
+				@if?!CheckReqParm?PLAYER=@
+					<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+					<TR>
+						<TD WIDTH=20%><FONT COLOR=YELLOW>Balance: </FONT>
+						</TD>
+						<TD WIDTH=80%><FONT COLOR=WHITE>@BankAccountInfo?BALANCE@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Deposited Items: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@BankAccountInfo?ITEMSLIST@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Deposited Worth: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@BankAccountInfo?ITEMSWORTH@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Debt: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@BankAccountInfo?DEBTAMT@ (@BankAccountInfo?DEBTINT@)</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Debt due: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@BankAccountInfo?DEBTDUE@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Debt info: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@BankAccountInfo?DEBTRSN@</FONT></TD>
+					</TR>
+					</TABLE>
+				@endif@
+				</TD>
+				</TR>
+			@else@
+			<TD><BR></TR>
+			@endif@
+			@AddRequestParameter?PLAYER=@
+		@back@
+</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=100% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@RequestParameter?BANKCHAIN@','@RequestParameter?JOURNALMESSAGE@');">
+	</TD>
+	</TR>
+	</TABLE>
+</FORM>
+<FORM NAME=PLAYBACK TARGET=_top METHOD=POST ACTION="/grinder/players.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
+

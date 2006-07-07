@@ -38,7 +38,7 @@ public class BankChainNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		MOB playerM=null;
-		boolean destroyPlayer=true;
+		boolean destroyPlayer=false;
 		try{
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("BANKCHAIN");
@@ -85,7 +85,9 @@ public class BankChainNext extends StdWebMacro
 				if(playerM!=null)
 				{
 					Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
-					if((bankerM==null)||(bankerM.getBalance(playerM)<=0.0))
+					if((bankerM==null)
+					||((!playerM.getClanID().equals(playerM.Name()))&&(bankerM.whatIsSold()==Banker.DEAL_CLANBANKER))
+					||(((Double)BankAccountInfo.getMakeAccountInfo(httpReq,bankerM,playerM,null).firstElement()).doubleValue()<=0.0))
 					{
 						lastID=bankChain;
 						continue;

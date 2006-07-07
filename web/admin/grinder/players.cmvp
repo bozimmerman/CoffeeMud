@@ -33,6 +33,10 @@
 		<INPUT TYPE=BUTTON NAME=BANNED VALUE="Banned List" ONCLICK="Clicked('banners.cmvp');">
 		<BR>
 		@endif@
+		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+		<INPUT TYPE=BUTTON NAME=BANNED VALUE="Bank Accounts" ONCLICK="Clicked('bankaccts.cmvp');">
+		<BR>
+		@endif@
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
 		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">

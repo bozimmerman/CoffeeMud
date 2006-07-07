@@ -180,7 +180,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public Vector getDepositedItems(MOB mob)
 	{
 		if(mob==null) return new Vector();
-		return getDepositedItems((whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.Name():mob.getClanID());
+		return getDepositedItems((whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.getClanID():mob.Name());
 	}
 	public Vector getDepositedItems(String mob)
 	{
@@ -451,8 +451,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			Item I=(Item)V.elementAt(v);
-			if(I instanceof Coins) continue;
-			min+=I.value();
+			if(!(I instanceof Coins))
+				min+=I.value();
 		}
 		return min;
 	}
