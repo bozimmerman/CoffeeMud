@@ -348,40 +348,6 @@ public class OffLine extends Thread implements MudHost
         }
         super.interrupt();
     }
-    public static int activeCount(ThreadGroup tGroup)
-    {
-        int realAC=0;
-        int ac = tGroup.activeCount();
-        Thread tArray[] = new Thread [ac+1];
-        tGroup.enumerate(tArray);
-        for (int i = 0; i<ac; ++i)
-        {
-            if (tArray[i] != null && tArray[i].isAlive())
-                realAC++;
-        }
-        return realAC;
-    }
-
-    public static int killCount(ThreadGroup tGroup, Thread thisOne)
-    {
-        int killed=0;
-
-        int ac = tGroup.activeCount();
-        Thread tArray[] = new Thread [ac+1];
-        tGroup.enumerate(tArray);
-        for (int i = 0; i<ac; ++i)
-        {
-            if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != thisOne))
-            {
-                tArray[i].interrupt();
-                try{Thread.sleep(500);}catch(Exception e){}
-                killed++;
-            }
-        }
-        return killed;
-    }
-
-
     public String getHost()
     {
         return host;
@@ -452,7 +418,6 @@ public class OffLine extends Thread implements MudHost
                     }
                     OffLine mud=new OffLine();
                     mud.acceptConnections=false;
-System.out.println(ports);                    
                     mud.port=CMath.s_int(ports);
                     mud.start();
                     mudThreads.addElement(mud);
