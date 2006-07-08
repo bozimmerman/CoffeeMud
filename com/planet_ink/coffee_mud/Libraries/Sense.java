@@ -440,7 +440,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     		   return false;
             int hideFactor=seen.envStats().level();
             if(seen instanceof MOB)
-                hideFactor+=(((MOB)seen).charStats().getStat(CharStats.STAT_DEXTERITY));
+                hideFactor+=(((MOB)seen).charStats().getStat(CharStats.STAT_DEXTERITY))/2;
             if(CMath.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
                 hideFactor+=100;
             else
@@ -448,13 +448,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 hideFactor+=((MOB)seen).charStats().getStat(CharStats.STAT_SAVE_DETECTION);
             else
                 hideFactor+=100;
-            int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM);
+            int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM)/2;
             if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
                 detectFactor+=100;
             else // the 100 represents proff, and level represents time searching.
                 detectFactor+=seer.charStats().getStat(CharStats.STAT_SAVE_OVERLOOKING);
             if(seen instanceof MOB)
-                detectFactor+=(seen.envStats().height()-seer.envStats().height());
+                detectFactor+=(int)Math.round(Math.sqrt(new Integer(seen.envStats().height()).doubleValue()))-(int)Math.round(Math.sqrt(new Integer(seer.envStats().height()).doubleValue()));
             if(hideFactor>detectFactor)
                 return false;
         }
