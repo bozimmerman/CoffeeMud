@@ -1139,7 +1139,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         Vector mobsToDo=null;
                         if(cmd.equalsIgnoreCase("MOB"))
+                        {
+                        	mobsToDo=new Vector();
                         	mobsToDo.addElement(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
+                        }
                         else
                         {
                         	mobsToDo=(Vector)choices.clone();
@@ -1210,7 +1213,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         Vector itemsToDo=null;
                         if(cmd.equalsIgnoreCase("ITEM"))
+                        {
+                        	itemsToDo=new Vector();
                             itemsToDo.addElement(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
+                        }
                         else
                         {
                         	itemsToDo=(Vector)choices.clone();
@@ -1279,7 +1285,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             q.error=true; break;
                         }
                         String mobName=CMParms.combine(p,2);
-                        Vector choices=null;
+                        Vector choices=new Vector();
                         for(int i=stuff.size()-1;i>=0;i--)
                         {
                             Environmental E2=(Environmental)stuff.elementAt(i);
