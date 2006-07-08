@@ -109,6 +109,7 @@ public class SchoolMonster extends StdRace
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(msg.value()>0)
 		&&(((msg.target()==myHost)&&(myHost instanceof MOB))))
 			msg.setValue(msg.value()*2);
 		return super.okMessage(myHost,msg);

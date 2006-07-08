@@ -310,7 +310,8 @@ public class Burning extends StdAbility
 		if(target==null) return false;
 		if(target.fetchEffect("Burning")==null)
 		{
-			if((target instanceof Item)&&(((Item)target).material()==RawMaterial.RESOURCE_NOTHING))
+			if(((target instanceof Item)&&(((Item)target).material()==RawMaterial.RESOURCE_NOTHING))
+			||(target instanceof ClanItem))
 				return false;
 			if((mob!=null)&&(mob.location()!=null))
 			{

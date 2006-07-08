@@ -1937,7 +1937,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber))  return;
 		boolean seeThroughBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH);
 		boolean multiWearBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR);
-		String seeThroughStr=(!seeThroughBool)?" (opague)":" (see-through)";
+		String seeThroughStr=(!seeThroughBool)?" (opaque)":" (see-through)";
 		String multiWearStr=multiWearBool?" (multi)":"";
 		mob.tell(getScr("BaseGenerics","layer",showNumber+"",E.getClothingLayer()+"",seeThroughStr,multiWearStr));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;

@@ -126,7 +126,8 @@ public class Thief_Robbery extends ThiefSkill
 			if((stolen instanceof Ability)
 			||(stolen instanceof MOB)
 			||(stolen instanceof Room)
-			||(stolen instanceof LandTitle))
+			||(stolen instanceof LandTitle)
+			||(shop.getShop().stockPrice(stolen)<0))
 			{
 				mob.tell(mob,target,stolen,"You cannot rob '<O-NAME>' from <T-NAME>.");
 				return false;

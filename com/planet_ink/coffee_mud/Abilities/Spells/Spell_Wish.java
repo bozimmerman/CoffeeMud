@@ -605,16 +605,8 @@ public class Spell_Wish extends Spell
 				int amount=25;
 				if((x>=0)&&(CMath.isNumber(wsh.substring(x).trim())))
 				   amount=CMath.s_int(wsh.substring(x).trim());
-				if(target!=mob)
-				{
-					CMLib.leveler().postExperience(mob,null,null,-(amount*4),false);
-					mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
-				}
-				else
-				{
-					CMLib.leveler().postExperience(mob,null,null,-amount,false);
-					mob.tell("Your wish has drained you of "+amount+" experience points.");
-				}
+				CMLib.leveler().postExperience(mob,null,null,-(amount*4),false);
+				mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
 				CMLib.leveler().postExperience((MOB)target,null,null,amount,false);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" gains experience!");
 				return true;
