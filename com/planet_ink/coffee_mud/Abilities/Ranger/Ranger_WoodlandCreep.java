@@ -37,7 +37,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 {
 	public String ID() { return "Ranger_WoodlandCreep"; }
 	public String name(){ return "Woodland Creep";}
-	public String displayText(){ return "";}
+	public String displayText(){ return "(Creeping through foliage)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -50,7 +50,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		affectableStats.setSpeed(0.5);
 	}
@@ -91,7 +91,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already invisible.");
+			mob.tell("You are already creeping around.");
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 			return false;
 		}
 
-		String str="You creep into some foliage and remain completely still.";
+		String str="You creep into some foliage.";
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
