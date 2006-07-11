@@ -421,20 +421,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
 
     public boolean standardSellEvaluation(MOB seller,
-                                                 MOB buyer,
-                                                 Environmental product,
-                                                 ShopKeeper shop,
-                                                 double maxToPay,
-                                                 double maxEverPaid,
-                                                 boolean sellNotValue)
+                                          MOB buyer,
+                                          Environmental product,
+                                          ShopKeeper shop,
+                                          double maxToPay,
+                                          double maxEverPaid,
+                                          boolean sellNotValue)
     {
         if((product!=null)
         &&(shop.doISellThis(product))
         &&(!(product instanceof Coins)))
         {
-            if(seller.location()!=null)
+        	Room sellerR=seller.location();
+            if(sellerR!=null)
             {
-                int medianLevel=seller.location().getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+                int medianLevel=sellerR.getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
                 if(medianLevel>0)
                 {
                     String range=CMParms.getParmStr(shop.prejudiceFactors(),"RANGE","0");

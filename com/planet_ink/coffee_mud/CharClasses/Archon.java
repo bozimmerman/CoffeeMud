@@ -72,6 +72,12 @@ public class Archon extends StdCharClass
 			// temporarily here until we find a place for them
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SlaveTrading",false);
+			
+			// new thieves skills
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false,CMParms.parseSemicolons("Thief_Hide",true),"+WIS 14");
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false,CMParms.parseSemicolons("Thief_ImprovedHide",true),"+INT 18");
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false,null,"+DEX 10");
+			CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false,null,"+DEX 18");
 		}
 	}
 

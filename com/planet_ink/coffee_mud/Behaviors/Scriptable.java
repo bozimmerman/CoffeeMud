@@ -2214,6 +2214,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					comp=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 					arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				}
+				else
+				{
+					scriptableError(scripted,"INROOM","Syntax",evaluable);
+					return returnable;
+				}
+					
 				Room R=getRoom(arg2,lastKnownLocation);
 				if(E==null)
 					returnable=false;

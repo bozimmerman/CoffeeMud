@@ -134,6 +134,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
 	{
+		if(preReqSkillsList==null) return;
 		for(int v=0;v<preReqSkillsList.size();v++)
 		{
 			String s=(String)preReqSkillsList.elementAt(v);
@@ -231,6 +232,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(ability,preReqSkillsList,extraMask);
+		if(preReqSkillsList!=null)
 		for(int v=0;v<preReqSkillsList.size();v++)
 		{
 			String s=(String)preReqSkillsList.elementAt(v);

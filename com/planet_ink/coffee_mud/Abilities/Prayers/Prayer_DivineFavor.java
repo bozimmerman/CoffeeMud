@@ -66,9 +66,9 @@ public class Prayer_DivineFavor extends Prayer
         &&(msg.source().getWorshipCharID().length()>0))
         {
             if(msg.value()<0)
-                msg.setValue(msg.value()/2);
+                msg.setValue((int)Math.round(CMath.mul(msg.value(),0.9)));
             else
-                msg.setValue(msg.value()*2);
+                msg.setValue((int)Math.round(CMath.mul(msg.value(),1.1)));
         }
         return super.okMessage(host,msg);
     }
