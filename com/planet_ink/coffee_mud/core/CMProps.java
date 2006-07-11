@@ -444,7 +444,7 @@ public class CMProps extends Properties
             int ctr=0;
             while((fdex>=0)&&((++ctr)<999))
             {
-                len=fdex+(filterStr).length();
+                len=fdex+filterStr.length();
                 if(((fdex==0)
                     ||(Character.isWhitespace(upp.charAt(fdex-1)))
                     ||((fdex>1)&&(upp.charAt(fdex-2)=='^')))
@@ -462,7 +462,10 @@ public class CMProps extends Properties
                     fdex=upp.indexOf(filterStr);
                 }
                 else
-                    fdex=-1;
+                if(fdex<(filterStr.length()-1))
+                	fdex=upp.indexOf(filterStr,fdex+1);
+                else
+                	fdex=-1;
             }
         }
         if(newMsg!=null) return newMsg.toString();
