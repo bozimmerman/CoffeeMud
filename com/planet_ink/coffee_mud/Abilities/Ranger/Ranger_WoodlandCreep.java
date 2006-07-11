@@ -50,7 +50,8 @@ public class Ranger_WoodlandCreep extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		affectableStats.setSpeed(0.5);
 	}
