@@ -96,12 +96,12 @@ public class AnimalTaming extends CommonSkill
 						else
 						{
 							int amount=1;
-							amount=amount*(abilityCode());
+							amount=amount*abilityCode();
 							if(amount>animal.numBehaviors())
 								amount=animal.numBehaviors();
 							String s="";
 							if(amount>1)
-								s="of "+amount+" of ";
+								s="of "+amount+" ";
 							s+="of "+animal.charStats().himher()+" behaviors";
 							mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to tame "+animal.name()+" "+s+".");
 							for(int i=0;i<amount;i++)

@@ -70,7 +70,6 @@ public class CommonSkill extends StdAbility
 	public int abilityCode(){return yield;}
 	public void setAbilityCode(int newCode){yield=newCode;}
 
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

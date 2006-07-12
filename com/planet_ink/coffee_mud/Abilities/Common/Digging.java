@@ -91,7 +91,7 @@ public class Digging extends GatheringSkill
 						amount++;
 					if((found.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 						amount=CMLib.dice().roll(1,55,0);
-					amount=amount*(abilityCode());
+					amount=amount*abilityCode();
 					String s="s";
 					if((amount==1)||(foundShortName.endsWith("s"))) s="";
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");
