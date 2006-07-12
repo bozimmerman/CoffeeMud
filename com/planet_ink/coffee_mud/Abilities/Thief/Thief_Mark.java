@@ -89,16 +89,31 @@ public class Thief_Mark extends ThiefSkill
 				if(x<0) return super.tick(me,tickID);
 				MOB M=mob.location().fetchInhabitant(text().substring(0,x));
 				if(M!=null)
+				{
 					mark=M;
-				ticks=CMath.s_int(text().substring(x+1));
+					ticks=CMath.s_int(text().substring(x+1));
+				}
+				else
+				{
+					mark=null;
+					ticks=0;
+					setMiscText("");
+				}
 			}
 			else
 			if(mob.location().isInhabitant(mark)
-			   &&(CMLib.flags().canBeSeenBy(mark,mob))
-			   &&(!CMLib.flags().canBeSeenBy(mob,mark)))
+		    &&(CMLib.flags().canBeSeenBy(mark,mob))
+		    &&(!CMLib.flags().canBeSeenBy(mob,mark)))
 			{
 				ticks++;
 				setMiscText(mark.Name()+"/"+ticks);
+			}
+			else
+			if(mark.amDestroyed())
+			{
+				mark=null;
+				ticks=0;
+				setMiscText("");
 			}
 		}
 		return true;

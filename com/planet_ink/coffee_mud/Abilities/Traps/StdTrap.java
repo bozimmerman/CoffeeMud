@@ -42,6 +42,7 @@ public class StdTrap extends StdAbility implements Trap
 	protected int trapLevel(){return -1;}
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
+	private String invokerName=null;
 
 	public int baseRejuvTime(int level)
 	{
@@ -86,11 +87,18 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if(invoker==null)
 		{
-			invoker=CMClass.getMOB("StdMOB");
-			invoker.setLocation(CMClass.getLocale("StdRoom"));
-			invoker.baseEnvStats().setLevel(affected.envStats().level());
-			invoker.envStats().setLevel(affected.envStats().level());
+			if((invokerName!=null)&&(!invokerName.equalsIgnoreCase("null")))
+				invoker=CMLib.map().getLoadPlayer(invokerName);
+			if(invoker==null)
+			{
+				invoker=CMClass.getMOB("StdMOB");
+				invoker.setLocation(CMClass.getLocale("StdRoom"));
+				invoker.baseEnvStats().setLevel(affected.envStats().level());
+				invoker.envStats().setLevel(affected.envStats().level());
+			}
 		}
+		else
+			invokerName=invoker.Name();
 		return super.invoker();
 	}
 
@@ -99,6 +107,22 @@ public class StdTrap extends StdAbility implements Trap
 		return Ability.ACODE_TRAP;
 	}
 
+	public void setMiscText(String text){
+		if(text.startsWith("`"))
+		{
+			int x=text.indexOf("` ",1);
+			if(x>=0)
+			{
+				invokerName=text.substring(1,x);
+				text=text.substring(x+2);
+			}
+		}
+		super.setMiscText(text);
+	}
+	public String text(){
+		return "`"+invokerName+"` "+super.text();
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((!disabled())&&(affected instanceof Item))
@@ -258,6 +282,14 @@ public class StdTrap extends StdAbility implements Trap
 			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
+	
+	public void setInvoker(MOB mob)
+	{
+		if(mob!=null) 
+			invokerName=mob.Name();
+		super.setInvoker(mob);
+	}
+	
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
