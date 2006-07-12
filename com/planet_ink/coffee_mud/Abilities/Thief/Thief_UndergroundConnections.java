@@ -103,8 +103,23 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			Thief_UndergroundConnections underA=(Thief_UndergroundConnections)target.fetchEffect(ID());
 			if(underA!=null)
 			{
-				Vector trail=new Vector();
-				trail=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,true,30);
+				Vector choices=new Vector();
+				Vector trail=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,true,30);
+				for(int c=0;c<trail.size();c++)
+				{
+					R=(Room)trail.elementAt(c);
+					if(R.getArea()!=A)
+					{
+						boolean worksForMe=false;
+						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							if((R.getRoomInDir(d)!=null)&&(R.getRoomInDir(d).getArea()==A))
+							{
+								Exit E=R.getExitInDir(d);
+								
+								worksForMe=true;
+							}
+					}
+				}
 				
 			}
 		}
