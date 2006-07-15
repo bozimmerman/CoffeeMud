@@ -51,7 +51,6 @@ public class Ranger_WoodlandCreep extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		affectableStats.setSpeed(0.5);
 	}
@@ -77,9 +76,11 @@ public class Ranger_WoodlandCreep extends StdAbility
 			mob.recoverEnvStats();
 		}
 		if((msg.source()==affected)
-		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)))
+		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+		&&(msg.source().isInCombat())
+		&&(msg.source().rangeToTarget()<=0))
 		{
-			unInvoke();
+ 			unInvoke();
 			mob.recoverEnvStats();
 		}
 		return;
