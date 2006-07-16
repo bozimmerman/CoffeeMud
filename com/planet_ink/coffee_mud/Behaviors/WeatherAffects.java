@@ -585,7 +585,9 @@ public class WeatherAffects extends PuddleMaker
                 {
                     R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                     MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
-                    if((M!=null)&&(!CMLib.flags().isSleeping(M)))
+                    if((M!=null)
+                    &&(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
+                    &&(!CMLib.flags().isSleeping(M)))
                     {
                         Ability A2=CMClass.getAbility("Skill_Dirt");
                         if(A2!=null) A2.invoke(M,M,true,0);
@@ -618,7 +620,8 @@ public class WeatherAffects extends PuddleMaker
                     R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                     MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
                     Ability A2=CMClass.getAbility("Chant_SummonHail");
-                    if(A2!=null)
+                    if((A2!=null)
+                    &&(C.weatherType(R)==Climate.WEATHER_HAIL))
                     {
                         A2.setMiscText("RENDER MUNDANE"); 
                         A2.invoke(M,M,true,M.envStats().level());
