@@ -82,9 +82,9 @@ public class Trap_BearTrap extends StdTrap
 		&&(trapped.location()!=null))
 		{
 			if((((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_FLEE))
-				&&(msg.amITarget(affected)))
+				&&(msg.amITarget(affected))
 			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
-			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
+			||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 			{
 				if(trapped.location().show(trapped,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) to get out of the bear trap."))
 				{
@@ -110,7 +110,10 @@ public class Trap_BearTrap extends StdTrap
 		trapped=null;
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if((!invoker().mayIFight(target))||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))
+			||(isLocalNPCMobWLocalTrap(target))
+			||(target==invoker())
+			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) a bear trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))

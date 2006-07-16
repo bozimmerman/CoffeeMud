@@ -274,7 +274,7 @@ public class SaveThread extends Thread
 							Resources.saveFileResource("warnedplayers.ini");
                             if(CMSecurity.isDebugging("AUTOPURGE"))
                                 Log.debugOut("SaveThread",name+" is now warned.");
-							warnPrePurge(M,when-warn);
+							warnPrePurge(M,warn-when);
 						}
 					}
                     else

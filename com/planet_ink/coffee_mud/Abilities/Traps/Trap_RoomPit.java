@@ -173,6 +173,8 @@ public class Trap_RoomPit extends StdTrap
 		if((target!=invoker())&&(target.location()!=null)&&(!CMLib.flags().isInFlight(target)))
 		{
 			if((!invoker().mayIFight(target))
+			||(isLocalNPCMobWLocalTrap(target))
+			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) falling into a pit!");
 			else

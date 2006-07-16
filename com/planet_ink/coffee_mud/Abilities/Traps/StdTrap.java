@@ -65,6 +65,18 @@ public class StdTrap extends StdAbility implements Trap
 			   ||(affected==null)
 			   ||(affected.fetchEffect(ID())==null);
 	}
+	
+	public boolean isLocalNPCMobWLocalTrap(MOB target)
+	{
+		if((target.isMonster())
+		&&(!canBeUninvoked())
+		&&(target.getStartRoom()!=null)
+		&&(target.location()!=null)
+		&&(target.getStartRoom().getArea()==target.location().getArea()))
+			return true;
+		return false;
+	}
+	
 	public void disable(){
 		disabled=true;
 		sprung=true;

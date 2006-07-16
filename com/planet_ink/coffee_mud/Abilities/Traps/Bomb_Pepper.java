@@ -53,7 +53,10 @@ public class Bomb_Pepper extends StdBomb
 	{
 		if(target.location()!=null)
 		{
-			if((!invoker().mayIFight(target))||(target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))
+			||(isLocalNPCMobWLocalTrap(target))
+			||(target==invoker())
+			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the water bomb!");
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))
