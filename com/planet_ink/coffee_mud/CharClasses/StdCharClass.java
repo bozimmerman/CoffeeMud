@@ -82,6 +82,7 @@ public class StdCharClass implements CharClass
 		{
 			commonMapped=true;
 			CMLib.ableMapper().addCharAbilityMapping("All",5,"Armorsmithing",false,CMParms.parseSemicolons("Blacksmithing(75)",true),"+STR 12");
+CMLib.ableMapper().addCharAbilityMapping("All", 1,"Skill_RegionalAwareness", 100,true);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Blacksmithing",false,"+STR 10");
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Butchering",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Carpentry",false,"+CON 10");
@@ -358,14 +359,22 @@ public class StdCharClass implements CharClass
             alreadyAff.clear();
         }
         else
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-		{
-			Ability A=(Ability)a.nextElement();
-			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
-			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
-			&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+        {
+        	Vector onesToAdd=new Vector();
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			{
+				Ability A=(Ability)a.nextElement();
+				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
+				&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
+				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					onesToAdd.addElement(A);
+			}
+			for(int v=0;v<onesToAdd.size();v++)
+			{
+				Ability A=(Ability)onesToAdd.elementAt(v);
 				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
-		}
+			}
+        }
 	}
 	public void endCharacter(MOB mob)
 	{

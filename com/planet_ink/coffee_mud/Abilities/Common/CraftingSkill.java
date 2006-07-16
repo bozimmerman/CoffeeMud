@@ -159,10 +159,10 @@ public class CraftingSkill extends GatheringSkill
 				oneComma=false;
 			}
 		}
+		if((oneComma)&&(str.substring(start).trim().length()>0))
+			V2.addElement(str.substring(start));
 		if(V2.size()>1)
 		{
-			if(oneComma)
-				V2.addElement(str.substring(start,str.length()));
 			if(V2.size()>longestList) longestList=V2.size();
 			V.addElement(V2);
 		}

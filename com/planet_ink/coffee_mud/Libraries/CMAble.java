@@ -69,7 +69,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  int defaultProficiency,
 									  String defParm,
 									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,defParm,autoGain,false,new Vector(),""); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defParm,autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
@@ -77,20 +77,20 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String defParm,
 									  boolean autoGain,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,defParm,autoGain,false,new Vector(),extraMasks); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defParm,autoGain,false,new Vector(),extraMasks); }
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
 									  int defaultProficiency,
 									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,"",autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
 									  int defaultProficiency,
 									  boolean autoGain,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),extraMasks); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,"",autoGain,false,new Vector(),extraMasks); }
 	
 	public void delCharAbilityMapping(String ID, String ability)
 	{

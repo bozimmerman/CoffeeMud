@@ -598,21 +598,22 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 response.append(" It is a size "+item.envStats().height()+", and is ");
             else
                 response.append(" It is your size, and is ");
-            StringBuffer wornList=((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_HELD)))
+            StringBuffer wornList=((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
             					 ?new StringBuffer("")
             					 :new StringBuffer("worn on the ");
             for(int l=0;l<Item.WORN_CODES.length;l++)
             {
                 int wornCode=1<<l;
-                if(CMLib.flags().wornLocation(wornCode).length()>0)
+                if(CMath.bset(item.rawProperLocationBitmap(),wornCode))
                 {
-                    if(((item.rawProperLocationBitmap()&wornCode)==wornCode))
-                    {
-                    	wornList.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
+                	String wornString=CMLib.flags().wornLocation(wornCode);
+	                if(wornString.length()>0)
+ 	                {
+	                	response.append(CMStrings.capitalizeAndLower(wornString)+" ");
                         if(item.rawLogicalAnd())
-                        	wornList.append("and ");
+                        	response.append("and ");
                         else
-                        	wornList.append("or ");
+                        	response.append("or ");
                     }
                 }
             }
