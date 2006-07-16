@@ -68,11 +68,14 @@ public class StdTrap extends StdAbility implements Trap
 	
 	public boolean isLocalNPCMobWLocalTrap(MOB target)
 	{
+		if(target==null) return false;
+		Room R=target.location();
 		if((target.isMonster())
 		&&(!canBeUninvoked())
+		&&(R!=null)
 		&&(target.getStartRoom()!=null)
-		&&(target.location()!=null)
-		&&(target.getStartRoom().getArea()==target.location().getArea()))
+		&&(target.getStartRoom().getArea()==R.getArea())
+		&&((CMLib.utensils().getLandTitle(R)==null)||(CMLib.utensils().doesHavePriviledgesHere(target,R))))
 			return true;
 		return false;
 	}
