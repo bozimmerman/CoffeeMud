@@ -124,4 +124,6 @@ public interface CMFlagLibrary extends CMObject
     public String getAbilityDomain(Ability A);
     public int getAbilityType(String name);
     public int getAbilityDomain(String name);
+	public int getDetectScore(MOB seer);
+	public int getHideScore(Environmental seen);
 }

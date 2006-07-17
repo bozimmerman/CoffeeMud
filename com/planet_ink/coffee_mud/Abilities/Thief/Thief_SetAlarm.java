@@ -71,7 +71,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
 		{
 			if((!msg.amISource(invoker())
-			&&(CMLib.dice().rollPercentage()>msg.source().charStats().getStat(CharStats.STAT_SAVE_TRAPS))))
+			&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.STAT_SAVE_TRAPS))))
 				spring(msg.source());
 		}
 	}

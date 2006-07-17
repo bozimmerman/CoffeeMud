@@ -103,7 +103,7 @@ public class Test extends StdCommand
         if(mob.curState().getHitPoints()<curHitPoints)
             return false;
         curHitPoints=mob.curState().getHitPoints();
-        if(mob.charStats().getStat(CharStats.STAT_SAVE_ACID)<30)
+        if(mob.charStats().getSave(CharStats.STAT_SAVE_ACID)<30)
             return false;
         return true;
     }

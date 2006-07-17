@@ -343,7 +343,7 @@ public class WeatherAffects extends PuddleMaker
                     if(heatExhaustionChance>5) heatExhaustionChance-=5;
                     if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.25));
                 }
-                int save=(M.charStats().getStat(CharStats.STAT_SAVE_COLD)+M.charStats().getStat(CharStats.STAT_SAVE_WATER))/2;
+                int save=(M.charStats().getSave(CharStats.STAT_SAVE_COLD)+M.charStats().getSave(CharStats.STAT_SAVE_WATER))/2;
                 if((CMLib.dice().rollPercentage()<(coldChance-save))
                 &&((C.weatherType(M.location())!=Climate.WEATHER_CLEAR)))
                 {
@@ -397,7 +397,7 @@ public class WeatherAffects extends PuddleMaker
                     }
                 }
                 if((heatExhaustionChance>0)
-                &&(CMLib.dice().rollPercentage()<(heatExhaustionChance-M.charStats().getStat(CharStats.STAT_SAVE_FIRE)))
+                &&(CMLib.dice().rollPercentage()<(heatExhaustionChance-M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
                 &&(C.weatherType(M.location())!=Climate.WEATHER_CLEAR))
                 {
                     Ability COLD=CMClass.getAbility("Disease_HeatExhaustion");

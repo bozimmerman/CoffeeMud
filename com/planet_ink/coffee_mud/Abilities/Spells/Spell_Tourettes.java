@@ -81,7 +81,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			&&(!mob.amDead())
 			&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 			&&(CMLib.flags().canSpeak(mob))
-			&&(CMLib.flags().canBeHeardBy(target,mob)))
+			&&(CMLib.flags().canBeHeardBy(mob,target))
+			&&(CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				String say="Penis wrinkle!";
 				switch(CMLib.dice().roll(1,30,0))

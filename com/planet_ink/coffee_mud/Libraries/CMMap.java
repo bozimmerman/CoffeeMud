@@ -871,6 +871,12 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 	    }catch(NoSuchElementException e){}
+	    for(int m=deadRoom.numInhabitants()-1;m>=0;m--)
+	    {
+	    	MOB M=deadRoom.fetchInhabitant(m);
+	    	if((M!=null)&&(M.playerStats()!=null))
+				M.getStartRoom().bringMobHere(M,true);
+	    }
 		emptyRoom(deadRoom,null);
 		deadRoom.destroy();
 		if(deadRoom instanceof GridLocale)

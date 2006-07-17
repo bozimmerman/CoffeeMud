@@ -413,6 +413,45 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
+	public int getHideScore(Environmental seen)
+	{
+		if((seen!=null)&&(isHidden(seen)))
+        {
+            int hideFactor=seen.envStats().level();
+            if(seen instanceof MOB)
+                hideFactor+=(((MOB)seen).charStats().getStat(CharStats.STAT_DEXTERITY))/2;
+            if(CMath.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
+                hideFactor+=100;
+            else
+            if(seen instanceof MOB)
+            {
+                hideFactor+=((MOB)seen).charStats().getSave(CharStats.STAT_SAVE_DETECTION);
+                if(seen.envStats().height()>=0)
+	            	hideFactor-=(int)Math.round(Math.sqrt(new Integer(seen.envStats().height()).doubleValue()));
+            }
+            else
+                hideFactor+=100;
+            return hideFactor;
+        }
+		return 0;
+	}
+	
+	public int getDetectScore(MOB seer)
+	{
+		if((seer!=null)&&(canSeeHidden(seer)))
+		{
+            int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM)/2;
+            if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
+                detectFactor+=100;
+            else // the 100 represents proff, and level represents time searching.
+                detectFactor+=seer.charStats().getSave(CharStats.STAT_SAVE_OVERLOOKING);
+            if(seer.envStats().height()>=0)
+	            detectFactor-=(int)Math.round(Math.sqrt(new Integer(seer.envStats().height()).doubleValue()));
+            return detectFactor;
+		}
+		return 0;
+	}
+	
 	public boolean canBeSeenBy(Environmental seen , MOB seer)
 	{
 		if(seer==seen) return true;
@@ -438,27 +477,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         {
             if((!canSeeHidden(seer))||(seer==null))
     		   return false;
-            int hideFactor=seen.envStats().level();
-            if(seen instanceof MOB)
-                hideFactor+=(((MOB)seen).charStats().getStat(CharStats.STAT_DEXTERITY))/2;
-            if(CMath.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
-                hideFactor+=100;
-            else
-            if(seen instanceof MOB)
-                hideFactor+=((MOB)seen).charStats().getStat(CharStats.STAT_SAVE_DETECTION);
-            else
-                hideFactor+=100;
-            int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM)/2;
-            if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
-                detectFactor+=100;
-            else // the 100 represents proff, and level represents time searching.
-                detectFactor+=seer.charStats().getStat(CharStats.STAT_SAVE_OVERLOOKING);
-            if(seen instanceof MOB)
-                detectFactor+=(int)Math.round(Math.sqrt(new Integer(seen.envStats().height()).doubleValue()))-(int)Math.round(Math.sqrt(new Integer(seer.envStats().height()).doubleValue()));
-            if(hideFactor>detectFactor)
+            if(this.getHideScore(seen)>getDetectScore(seer))
                 return false;
         }
-        
 
 		if((seer!=null)&&(!(seen instanceof Room)))
 		{

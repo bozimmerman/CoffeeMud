@@ -144,6 +144,17 @@ public class DefaultCharStats implements CharStats
 			combined+=myLevels[i].intValue();
 		return combined;
 	}
+	public int combinedLevels()
+	{
+		if((myClasses==null)
+		   ||(myLevels==null))
+			return 0;
+		
+		int combined=0;
+		for(int i=0;i<myLevels.length-1;i++)
+			combined+=myLevels[i].intValue();
+		return combined;
+	}
 	public void setDisplayClassName(String newName){displayClassName=newName;}
 	public String displayClassName()
 	{	
@@ -461,8 +472,12 @@ public class DefaultCharStats implements CharStats
 			return getStat(STAT_SAVE_MAGIC)+getStat(STAT_INTELLIGENCE);
 		case STAT_SAVE_TRAPS:
 			return getStat(STAT_SAVE_TRAPS)+getStat(STAT_DEXTERITY);
+		case STAT_SAVE_OVERLOOKING:
+			return getStat(STAT_SAVE_OVERLOOKING);
+		case STAT_SAVE_DETECTION: 
+			return getStat(STAT_SAVE_DETECTION);
 		}
-		return 0;
+		return getStat(which);
 	}
 
 	// create a new one of these
