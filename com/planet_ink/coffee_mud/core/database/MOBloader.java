@@ -34,6 +34,11 @@ import java.util.*;
 */
 public class MOBloader
 {
+	protected DBConnector DB=null;
+	public MOBloader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
 	protected static Room emptyRoom=null;
 	public static boolean DBReadUserOnly(MOB mob)
 	{

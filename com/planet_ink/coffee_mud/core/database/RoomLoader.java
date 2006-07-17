@@ -33,6 +33,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class RoomLoader
 {
+	protected DBConnector DB=null;
+	public RoomLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
 	private static int recordCount=1;
 	private static int currentRecordPos=1;
 	private static int updateBreak=1;

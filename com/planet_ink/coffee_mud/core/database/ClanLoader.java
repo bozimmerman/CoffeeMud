@@ -34,6 +34,11 @@ import java.util.*;
  */
 public class ClanLoader
 {
+	protected DBConnector DB=null;
+	public ClanLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
     protected static int currentRecordPos=1;
     protected static int recordCount=0;
 

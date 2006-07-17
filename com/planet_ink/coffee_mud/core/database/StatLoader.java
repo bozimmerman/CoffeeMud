@@ -34,6 +34,11 @@ import java.util.*;
 */
 public class StatLoader
 {
+	protected DBConnector DB=null;
+	public StatLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
 	public static CoffeeTableRow DBRead(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))

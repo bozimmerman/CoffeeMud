@@ -34,6 +34,11 @@ import java.util.*;
 */
 public class PollLoader
 {
+	protected DBConnector DB=null;
+	public PollLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
     public static Vector DBRead(String name)
     {
         DBConnection D=null;

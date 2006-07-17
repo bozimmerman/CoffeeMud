@@ -33,6 +33,11 @@ import java.util.*;
 */
 public class QuestLoader
 {
+	protected DBConnector DB=null;
+	public QuestLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
 	public static void DBRead(MudHost myHost)
 	{
 		CMLib.quests().shutdown();

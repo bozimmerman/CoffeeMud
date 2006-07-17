@@ -34,6 +34,11 @@ import java.util.*;
 */
 public class JournalLoader
 {
+	protected DBConnector DB=null;
+	public JournalLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
 	public static synchronized int DBCount(String Journal, String from, String to)
 	{
 		int ct=0;

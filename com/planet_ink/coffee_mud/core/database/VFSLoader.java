@@ -34,8 +34,11 @@ import java.util.*;
 */
 public class VFSLoader
 {
-
-    private VFSLoader(){};
+	protected DBConnector DB=null;
+	public VFSLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
     
     public static Vector DBReadDirectory()
     {

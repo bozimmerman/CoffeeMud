@@ -36,6 +36,11 @@ import java.util.regex.Pattern;
 */
 public class DataLoader
 {
+	protected DBConnector DB=null;
+	public DataLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
 	public static Vector DBReadRaces()
 	{
 		DBConnection D=null;
