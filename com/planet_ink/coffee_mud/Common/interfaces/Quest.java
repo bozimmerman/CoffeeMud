@@ -119,8 +119,7 @@ public interface Quest extends Tickable
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP"};
 	//TODO: add the following:
 	// EVIDENCE, ALIBY sets need to figure in, and be able to load from lists dependent on ACTION and/or FACTION
-	// still need to add ability to include other quest scripts, and some way to add behaviors/props to implement
-	// random alibies... thats the last thing I think.
+	// some way to add behaviors/props to implement random alibies... thats the last thing I think. -- yes, it is!
 	public static final String[] MYSTERY_QCODES={"FACTION","FACTIONGROUP",
 												 "AGENT","AGENTGROUP",
 												 "ACTION","ACTIONGROUP",
