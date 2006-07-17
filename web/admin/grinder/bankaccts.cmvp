@@ -61,7 +61,7 @@
 				@loop@
 					@PlayerNext@
 					@if?BankAccountInfo?HASACCT@
-						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')">@PlayerID@</a></LI>
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')">@PlayerID@</a> <FONT SIZE=-1 COLOR=WHITE>(@BankAccountInfo?BALANCE@)</FONT></LI>
 					@endif@
 				@back@
 				@ClanNext?RESET@
