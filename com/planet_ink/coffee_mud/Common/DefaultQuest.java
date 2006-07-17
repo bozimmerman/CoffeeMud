@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.sun.rsasign.v;
 
 import java.util.*;
 
@@ -197,6 +198,25 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             choices3.addElement(E);
         }
         return choices;
+    }
+
+    private TimeClock getMysteryTimeNow(QuestState q)
+    {
+    	TimeClock NOW=null;
+        if((q.mysteryData.whereAt!=null)&&(q.mysteryData.whereAt.getArea()!=null)) 
+        	NOW=(TimeClock)q.mysteryData.whereAt.getArea().getTimeObj().copyOf();
+        else
+        if((q.mysteryData.whereHappened!=null)&&(q.mysteryData.whereHappened.getArea()!=null)) 
+        	NOW=(TimeClock)q.mysteryData.whereAt.getArea().getTimeObj().copyOf();
+        else
+        if((q.room!=null)&&(q.room.getArea()!=null)) 
+        	NOW=(TimeClock)q.room.getArea().getTimeObj().copyOf();
+        else
+        if(q.area!=null) 
+        	NOW=(TimeClock)q.area.getTimeObj().copyOf();
+        else
+        	NOW=(TimeClock)CMClass.globalClock().copyOf();
+        return NOW;
     }
     
     
@@ -454,7 +474,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         q.room.recoverRoomStats();
                         q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
                     }
-                    else
                     if(cmd.equals("MOBGROUP"))
                     {
                         q.mobGroup=null;
@@ -989,6 +1008,401 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
                     }
                     else
+                    if(cmd.equals("AGENT"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(p.size()>2)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', agent syntax '"+CMParms.combine(p,2)+"'.");
+                            q.error=true; break;
+                        }
+                    	if(q.mob==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', agent !mob.");
+                            q.error=true; break;
+                        }
+                    	q.mysteryData.agent=q.mob;
+                    }
+                    else
+                    if(cmd.equals("FACTION"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                        if(p.size()<3) continue;
+                        String numStr=CMParms.combine(p,2);
+                        Faction F=null;
+                        if(numStr.equalsIgnoreCase("ANY"))
+                        {
+                        	int numFactions=CMLib.factions().factionSet().size();
+                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
+                        	int curFaction=0;
+                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
+                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
+                        	{
+                        		F=(Faction)e.nextElement();
+                        		if(curFaction==whichFaction)
+                        			break;
+                        		curFaction++;
+                        	}
+                        }
+                        else
+                        {
+	                        F=CMLib.factions().getFaction(numStr);
+	                        if(F==null) F=CMLib.factions().getFactionByName(numStr);
+                        }
+                        if(F==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !faction #'"+numStr+"'.");
+                            q.error=true; break;
+                        }
+                        q.mysteryData.faction=F;
+                    }
+                    else
+                    if(cmd.equals("FACTIONGROUP"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	q.mysteryData.factionGroup=null;
+                        if(p.size()<3) continue;
+                        String numStr=CMParms.combine(p,2);
+                        Faction F=null;
+                    	if(q.mysteryData.faction!=null)
+                    		q.mysteryData.factionGroup.addElement(q.mysteryData.faction);
+                        if(CMath.isInteger(numStr)||numStr.equalsIgnoreCase("ALL"))
+                        {
+                        	int numFactions=CMLib.factions().factionSet().size();
+                        	if(numStr.equalsIgnoreCase("ALL")) numStr=""+numFactions;
+                        	int num=CMath.s_int(numStr);
+                        	if(num>=numFactions) num=numFactions;
+                        	int tries=500;
+                        	while((q.mysteryData.factionGroup.size()<num)&&(--tries>0))
+                        	{
+	                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
+	                        	int curFaction=0;
+	                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
+	                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
+	                        	{
+	                        		F=(Faction)e.nextElement();
+	                        		if(curFaction==whichFaction)
+	                        			break;
+	                        		curFaction++;
+	                        	}
+	                        	if(!q.mysteryData.factionGroup.contains(F))
+	                        		q.mysteryData.factionGroup.addElement(F);
+                        	}
+                        }
+                        else
+                        {
+	                        for(int pi=2;pi<p.size();pi++)
+	                        {
+		                        F=CMLib.factions().getFaction((String)p.elementAt(pi));
+		                        if(F==null) F=CMLib.factions().getFactionByName((String)p.elementAt(pi));
+		                        if(F==null)
+		                        {
+		                            if(!isQuiet)
+		                                Log.errOut("Quest","Quest '"+name()+"', !factiongroup '"+(String)p.elementAt(pi)+"'.");
+		                            q.error=true; break;
+		                        }
+	                        	if(!q.mysteryData.factionGroup.contains(F))
+	                        		q.mysteryData.factionGroup.addElement(F);
+	                        }
+	                        if(q.error) break;
+                        }
+                        if((q.mysteryData.factionGroup.size()>0)&&(q.mysteryData.faction==null))
+	                        q.mysteryData.faction=(Faction)q.mysteryData.factionGroup.elementAt(CMLib.dice().roll(1,q.mysteryData.factionGroup.size(),-1));
+                    }
+                    else
+                    if(cmd.equals("AGENTGROUP"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                        q.mysteryData.agentGroup=null;
+                        if(p.size()<3) continue;
+                        String numStr=CMParms.combine(p,2).toUpperCase();
+                        if(!CMath.isInteger(numStr))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup #'"+numStr+"'.");
+                            q.error=true; break;
+                        }
+                        if((q.mobGroup==null)||(q.mobGroup.size()==0))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup mobgroup.");
+                            q.error=true; break;
+                        }
+                        Vector V=(Vector)q.mobGroup.clone();
+                        q.mysteryData.agentGroup=new Vector();
+                        if(q.mysteryData.agent!=null)
+                        	q.mysteryData.agentGroup.addElement(q.mysteryData.agent);
+                        int num=CMath.s_int(numStr);
+                        if(num>=V.size()) num=V.size();
+                        while((q.mysteryData.agentGroup.size()<num)&&(V.size()>0))
+                        {
+                        	int dex=CMLib.dice().roll(1,V.size(),-1);
+                        	Object O=V.elementAt(dex);
+                        	V.removeElementAt(dex);
+                        	q.mysteryData.agentGroup.addElement(O);
+                            if(q.mysteryData.agent==null) q.mysteryData.agent=(MOB)O;
+                        	num--;
+                        }
+                    }
+                    else   
+                    if(cmd.equals("WHEREHAPPENEDGROUP")||cmd.equals("WHEREATGROUP"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("WHEREHAPPENEDGROUP"))
+	                    	q.mysteryData.whereHappenedGroup=null;
+                    	else
+	                        q.mysteryData.whereAtGroup=null;
+                        if(p.size()<3) continue;
+                        String numStr=CMParms.combine(p,2).toUpperCase();
+                        if(!CMath.isInteger(numStr))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
+                            q.error=true; break;
+                        }
+                        if((q.roomGroup==null)||(q.roomGroup.size()==0))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" roomGroup.");
+                            q.error=true; break;
+                        }
+                        Vector V=(Vector)q.roomGroup.clone();
+                        Vector V2=new Vector();
+                        Room R=null;
+                    	if(cmd.equals("WHEREHAPPENEDGROUP"))
+                    	{
+	                    	q.mysteryData.whereHappenedGroup=V2;
+	                    	R=q.mysteryData.whereHappened;
+                    	}
+                    	else
+                    	{
+	                        q.mysteryData.whereAtGroup=null;
+	                    	R=q.mysteryData.whereAt;
+                    	}
+                    	if(R!=null) V2.addElement(R);
+                        int num=CMath.s_int(numStr);
+                        if(num>=V.size()) num=V.size();
+                        while((V2.size()<num)&&(V.size()>0))
+                        {
+                        	int dex=CMLib.dice().roll(1,V.size(),-1);
+                        	Object O=V.elementAt(dex);
+                        	V.removeElementAt(dex);
+                        	if(!V2.contains(O)) V2.addElement(O);
+                            if(R==null) R=(Room)O;
+                        	num--;
+                        }
+                    	if(cmd.equals("WHEREHAPPENEDGROUP"))
+                    		q.mysteryData.whereHappened=R;
+                    	else
+                    		q.mysteryData.whereAt=R;
+                    }
+                    else   
+                    if(cmd.equals("WHENHAPPENEDGROUP")||cmd.equals("WHENATGROUP"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("WHENHAPPENEDGROUP"))
+	                    	q.mysteryData.whenHappenedGroup=null;
+                    	else
+	                        q.mysteryData.whenAtGroup=null;
+                        if(p.size()<3) continue;
+                        Vector V2=new Vector();
+                        TimeClock NOW=getMysteryTimeNow(q);
+                        TimeClock TC=null;
+                    	if(TC!=null) V2.addElement(TC);
+                    	if(cmd.equals("WHENHAPPENEDGROUP"))
+                    	{
+	                    	q.mysteryData.whenHappenedGroup=V2;
+	                    	TC=q.mysteryData.whenHappened;
+                    	}
+                    	else
+                    	{
+	                        q.mysteryData.whenAtGroup=V2;
+	                        TC=q.mysteryData.whenAt;
+                    	}
+                    	for(int pi=2;pi<p.size();pi++)
+                    	{
+                    		String numStr=(String)p.elementAt(pi);
+                    		if(!CMath.isInteger(numStr))
+                    		{
+                                if(!isQuiet)
+                                    Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
+                                q.error=true; break;
+                    		}
+                    		TimeClock TC2=(TimeClock)NOW.copyOf();
+                    		TC2.tickTock(CMath.s_int(numStr));
+                    		V2.addElement(TC2);
+                    	}
+                    	if(q.error) break;
+                    	if((V2.size()>0)&&(TC==null))
+                    		TC=(TimeClock)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+                    	if(cmd.equals("WHENHAPPENEDGROUP"))
+                    		q.mysteryData.whenHappened=TC;
+                    	else
+                    		q.mysteryData.whenAt=TC;
+                    }
+                    else
+                    if(cmd.equals("WHENHAPPENED")
+                    ||cmd.equals("WHENAT"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("WHENHAPPENED"))
+                    		q.mysteryData.whenHappened=null;
+                    	else
+                    		q.mysteryData.whenAt=null;
+                        if(p.size()<3) continue;
+                        TimeClock NOW=getMysteryTimeNow(q);
+                        TimeClock TC=null;
+                        String numStr=CMParms.combine(p,2);
+                		if(!CMath.isInteger(numStr))
+                		{
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
+                            q.error=true; break;
+                		}
+                		TC=(TimeClock)NOW.copyOf();
+                		TC.tickTock(CMath.s_int(numStr));
+                    	if(cmd.equals("WHENHAPPENED"))
+	                    	q.mysteryData.whenHappened=TC;
+                    	else
+	                    	q.mysteryData.whenAt=TC;
+                    }
+                    else   
+                    if(cmd.equals("MOTIVEGROUP"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("MOTIVEGROUP"))
+	                    	q.mysteryData.motiveGroup=null;
+                        if(p.size()<3) continue;
+                        Vector V2=new Vector();
+                        String Mstr=null;
+                    	if(cmd.equals("MOTIVEGROUP"))
+                    	{
+	                    	q.mysteryData.motiveGroup=V2;
+	                    	Mstr=q.mysteryData.motive;
+                    	}
+                    	if(Mstr!=null) V2.addElement(Mstr);
+                        for(int pi=2;pi<p.size();pi++)
+                        	if(!V2.contains(p.elementAt(pi)))
+	                        	V2.addElement(p.elementAt(pi));
+                        if((V2.size()>0)&&(Mstr==null))
+                        	Mstr=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+                    	if(cmd.equals("MOTIVEGROUP"))
+                    		q.mysteryData.motive=Mstr;
+                    }
+                    else
+                    if(cmd.equals("MOTIVE"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	q.mysteryData.motive=null;
+                        if(p.size()<3) continue;
+                        q.mysteryData.motive=CMParms.combine(p,2);
+                    }
+                    else
+                    if(cmd.equals("WHEREHAPPENED")
+                    ||cmd.equals("WHEREAT"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(p.size()>2)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" syntax '"+CMParms.combine(p,2)+"'.");
+                            q.error=true; break;
+                        }
+                    	if(q.room==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !room.");
+                            q.error=true; break;
+                        }
+                    	if(cmd.equals("WHEREHAPPENED"))
+	                    	q.mysteryData.whereHappened=q.room;
+                    	else
+	                    	q.mysteryData.whereAt=q.room;
+                    }
+                    else   
+                    if(cmd.equals("TARGETGROUP")
+                    ||cmd.equals("TOOLGROUP"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("TARGETGROUP"))
+	                    	q.mysteryData.targetGroup=null;
+                    	else
+	                    	q.mysteryData.toolGroup=null;
+                        if(p.size()<3) continue;
+                        String numStr=CMParms.combine(p,2).toUpperCase();
+                        if(!CMath.isInteger(numStr))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
+                            q.error=true; break;
+                        }
+                        if(((q.mobGroup==null)||(q.mobGroup.size()==0))
+                        &&((q.itemGroup==null)||(q.itemGroup.size()==0)))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" mobgroup itemgroup.");
+                            q.error=true; break;
+                        }
+                        Vector V;
+                        if((q.mobGroup!=null)&&(q.mobGroup.size()>0))
+                        	V=(Vector)q.mobGroup.clone();
+                        else
+                        	V=(Vector)q.itemGroup.clone();
+                        Vector V2=new Vector();
+                        Environmental finalE=null;
+                    	if(cmd.equals("TARGETGROUP"))
+                    	{
+	                    	q.mysteryData.targetGroup=V2;
+	                    	finalE=q.mysteryData.target;
+                    	}
+                    	else
+                    	{
+	                    	q.mysteryData.toolGroup=V2;
+	                    	finalE=q.mysteryData.tool;
+                    	}
+                    	if(finalE!=null)V2.addElement(finalE);
+                        int num=CMath.s_int(numStr);
+                        if(num>=V.size()) num=V.size();
+                        while((V2.size()<num)&&(V.size()>0))
+                        {
+                        	int dex=CMLib.dice().roll(1,V.size(),-1);
+                        	Object O=V.elementAt(dex);
+                        	V.removeElementAt(dex);
+                        	if(!V2.contains(O)) V2.addElement(O);
+                            if(finalE==null) finalE=(Environmental)O;
+                        	num--;
+                        }
+                    	if(cmd.equals("TARGETGROUP"))
+                    		q.mysteryData.target=finalE;
+                    	else
+                    		q.mysteryData.tool=finalE;
+                    }
+                    else
+                    if(cmd.equals("TARGET")
+                    ||cmd.equals("TOOL"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(p.size()>2)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" syntax '"+CMParms.combine(p,2)+"'.");
+                            q.error=true; break;
+                        }
+                    	if(q.envObject==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !object.");
+                            q.error=true; break;
+                        }
+                    	if(cmd.equals("TARGET"))
+	                    	q.mysteryData.target=q.envObject;
+                    	else
+	                    	q.mysteryData.tool=q.envObject;
+                    }
+                    else   
                     if(!isStat(cmd))
                     {
                         if(!isQuiet)

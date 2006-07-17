@@ -120,7 +120,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 							}
 					}
 				}
-				
+				//TODO: have a basket or wagon pick him up, he hears noises as he is trudged through city, then he is told
+				// to get out.
 			}
 		}
 		return success;
