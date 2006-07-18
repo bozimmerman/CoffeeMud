@@ -39,7 +39,8 @@ public interface ScriptingEngine extends Behavior
                           Item primaryItem,
                           Item secondaryItem,
                           Vector script,
-                          String msg);
+                          String msg,
+                          Object[] tmp);
     
     public boolean eval(Environmental scripted,
                         MOB source,
@@ -48,6 +49,7 @@ public interface ScriptingEngine extends Behavior
                         Item primaryItem,
                         Item secondaryItem,
                         String msg,
+                        Object[] tmp,
                         String evaluable);
 
     public boolean endQuest(Environmental hostObj, MOB mob, String quest);
@@ -213,6 +215,7 @@ public interface ScriptingEngine extends Behavior
         "QUESTPOINTS", // 80
         "TRAINS", // 81
         "PRACS", // 82
+        //"QSTAT", // 83
     };
     public static final String[] methods={
         "MPASOUND", //1
@@ -276,6 +279,8 @@ public interface ScriptingEngine extends Behavior
         "MPQUESTPOINTS", // 59
         "MPTRAINS", // 60
         "MPPRACS", // 61
+        "FOR", // 62
+        //"MPQSET", // 63
     };
 
     public final static String[] clanVars={

@@ -144,11 +144,32 @@ public interface Quest extends Tickable
     	public Vector whereHappenedGroup;
     	public Room whereAt;
     	public Vector whereAtGroup;
+    	public String action;
+    	public Vector actionGroup;
     	public String motive;
     	public Vector motiveGroup;
     	public TimeClock whenHappened;
     	public Vector whenHappenedGroup;
     	public TimeClock whenAt;
     	public Vector whenAtGroup;
+    	public Object getStat(String statName)
+    	{
+    		int code=-1;
+    		for(int i=0;i<MYSTERY_QCODES.length;i++)
+    			if(statName.equalsIgnoreCase(MYSTERY_QCODES[i]))
+    			{ code=i; break;}
+    		switch(code){
+	    		case 0: return faction;  case 1: return factionGroup; 
+	    		case 2: return agent;  case 3: return agentGroup; 
+	    		case 4: return action;  case 5: return actionGroup; 
+	    		case 6: return target;  case 7: return targetGroup; 
+	    		case 8: return motive;  case 9: return motiveGroup; 
+	    		case 10: return whereHappened;  case 11: return whereHappenedGroup; 
+	    		case 12: return whenHappened;  case 13: return whenHappenedGroup; 
+	    		case 14: return whenAt;  case 15: return whenAtGroup; 
+	    		case 16: return tool;  case 17: return toolGroup; 
+    		}
+    		return null;
+    	}
     }
 }
