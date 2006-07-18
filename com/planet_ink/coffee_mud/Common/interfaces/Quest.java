@@ -121,10 +121,12 @@ public interface Quest extends Tickable
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
-												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP"};
+												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
+												 "ROOMGROUPAROUND","LOCALEGROUPAROUND"};
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF"};
 	//TODO: add the following:
+	//LOAD=alibies/mob-item.aliby {AGENT} {ACTION}
 	// EVIDENCE, ALIBY sets need to figure in, and be able to load from lists dependent on ACTION and/or FACTION
 	// some way to add behaviors/props to implement random alibies... thats the last thing I think. -- yes, it is!
 	public static final String[] MYSTERY_QCODES={"FACTION","FACTIONGROUP",

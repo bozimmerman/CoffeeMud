@@ -598,9 +598,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 response.append(" It is a size "+item.envStats().height()+", and is ");
             else
                 response.append(" It is your size, and is ");
-            StringBuffer wornList=((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
+            response.append(((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
             					 ?new StringBuffer("")
-            					 :new StringBuffer("worn on the ");
+            					 :new StringBuffer("worn on the "));
             for(int l=0;l<Item.WORN_CODES.length;l++)
             {
                 int wornCode=1<<l;

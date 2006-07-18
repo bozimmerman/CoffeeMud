@@ -710,13 +710,32 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
                     }
                     else
-                    if(cmd.equals("LOCALE")||cmd.equals("LOCALEGROUP"))
+                    if(cmd.equals("LOCALE")||cmd.equals("LOCALEGROUP")||cmd.equals("LOCALEGROUPAROUND"))
                     {
                     	if(cmd.equals("LOCALE"))
 	                        q.room=null;
                     	else
                     		q.roomGroup=null;
                         if(p.size()<3) continue;
+                        int range=0;
+                        if(cmd.equals("LOCALEGROUPAROUND"))
+                        {
+                        	if(p.size()<4) continue;
+                        	range=CMath.s_int((String)p.elementAt(2));
+                        	if(range<=0)
+                        	{
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', !localegrouparound #'"+((String)p.elementAt(2)+"'."));
+	                            q.error=true; break;
+                        	}
+                        	if(q.room==null)
+                        	{
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', localegrouparound !room.");
+	                            q.error=true; break;
+                        	}
+                        	p.removeElementAt(2);
+                        }
                         Vector names=new Vector();
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
@@ -779,13 +798,32 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                     }
                     else
-                    if(cmd.equals("ROOM")||cmd.equals("ROOMGROUP"))
+                    if(cmd.equals("ROOM")||cmd.equals("ROOMGROUP")||cmd.equals("ROOMGROUPAROUND"))
                     {
                     	if(cmd.equals("ROOM"))
 	                        q.room=null;
                     	else
                     		q.roomGroup=null;
                         if(p.size()<3) continue;
+                        int range=0;
+                        if(cmd.equals("ROOMGROUPAROUND"))
+                        {
+                        	if(p.size()<4) continue;
+                        	range=CMath.s_int((String)p.elementAt(2));
+                        	if(range<=0)
+                        	{
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', !roomgrouparound #'"+((String)p.elementAt(2)+"'."));
+	                            q.error=true; break;
+                        	}
+                        	if(q.room==null)
+                        	{
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', roomgrouparound !room.");
+	                            q.error=true; break;
+                        	}
+                        	p.removeElementAt(2);
+                        }
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
@@ -803,7 +841,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             try
                             {
                                 Enumeration e=CMLib.map().rooms();
-                                if(q.area!=null) e=q.area.getMetroMap();
+                                if(range>0) 
+                                	e=CMLib.tracking().getRadiantRooms(q.room,false,false,false,false,false,range).elements();
+                                else
+                                if(q.area!=null) 
+                                	e=q.area.getMetroMap();
                                 for(;e.hasMoreElements();)
                                 {
                                     Room R2=(Room)e.nextElement();
@@ -843,7 +885,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 }
                             }catch(NoSuchElementException e){}
                         }
-                        if(cmd.equalsIgnoreCase("ROOMGROUP"))
+                        if(cmd.equalsIgnoreCase("ROOMGROUP")||cmd.equalsIgnoreCase("ROOMGROUPAROUND"))
                         {
                         	if((choices!=null)&&(choices.size()>0))
 	                        	q.roomGroup=(Vector)choices.clone();
@@ -2698,22 +2740,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(!E.getStat(CCODES[i]).equals(getStat(CCODES[i])))
 			   return false;
 		return true;
-	}
-	
-	private boolean isSpecialQCode(String code)
-	{
-		code=code.toUpperCase().trim();
-		for(int i=0;i<SPECIAL_QCODES.length;i++)
-			if(code.equals(SPECIAL_QCODES[i])) return true;
-		return false;
-	}
-	
-	private boolean isMysteryQCode(String code)
-	{
-		code=code.toUpperCase().trim();
-		for(int i=0;i<MYSTERY_QCODES.length;i++)
-			if(code.equals(MYSTERY_QCODES[i])) return true;
-		return false;
 	}
 	
 	public void setStat(String code, String val)
