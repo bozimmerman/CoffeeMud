@@ -43,7 +43,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected boolean alreadyDateStarted=false;
     protected int duration=450; // about 30 minutes
     protected String parms="";
-    protected Vector stuff=new Vector();
     protected Vector winners=new Vector();
     protected int minWait=-1;
     protected int minPlayers=-1;
@@ -53,7 +52,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
     private boolean stoppingQuest=false;
-    protected DVector vars=new DVector(2);
+    QuestState questState=new QuestState();
 
     protected Vector addons=new Vector();
     // contains a set of vectors, vectors are formatted as such:
@@ -81,6 +80,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
+	public Object getQuestObject(String named)
+	{
+		int code=-1;
+		for(int i=0;i<QCODES.length;i++)
+			if(named.equalsIgnoreCase(QCODES[i]))
+			{ code=i; break;}
+		switch(code)
+		{
+		case 0: return ID();
+		case 1: return name();
+		case 2: return ""+duration();
+		case 3: return ""+minWait();
+		case 4: return ""+minPlayers();
+		case 5: return ""+playerMask();
+		case 6: return ""+runLevel();
+		case 7: return ""+startDate();
+		case 8: return ""+startDate();
+		case 9: return ""+waitInterval();
+		}
+		return questState.getStat(named);
+	}
 
     // the unique name of the quest
     public String startDate(){return startDate;}
@@ -131,7 +151,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         minPlayers=-1;
         playerMask="";
         runLevel=-1;
-        vars.clear();
         
         String line=null;
         Vector parsedLine=null;
@@ -1744,9 +1763,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         String mobName=CMParms.combine(p,2);
                         Vector choices=new Vector();
-                        for(int i=stuff.size()-1;i>=0;i--)
+                        for(int i=q.stuff.size()-1;i>=0;i--)
                         {
-                            Environmental E2=(Environmental)stuff.elementAt(i);
+                            Environmental E2=(Environmental)q.stuff.elementAt(i);
                             if((E2!=q.mob)&&(E2 instanceof MOB))
                             {
                                 MOB M2=(MOB)E2;
@@ -1978,22 +1997,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         if(running()) stopQuest();
         Vector script=parseScripts(script());
-        stuff.clear();
-        QuestState q=new QuestState();
-        parseQuestScript(script,q);
-        if(q.error)
+        questState=new QuestState();
+        parseQuestScript(script,questState);
+        if(questState.error)
         {
-            if(!q.beQuiet)
+            if(!questState.beQuiet)
                 Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
         }
         else
-        if(!q.done)
+        if(!questState.done)
             Log.errOut("Quest","Nothing parsed in '"+name()+"', quest not started");
         else
         if(duration()<0)
             Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
 
-        if((!q.error)&&(q.done)&&(duration()>=0))
+        if((!questState.error)&&(questState.done)&&(duration()>=0))
         {
             waitRemaining=-1;
             ticksRemaining=duration();
@@ -2008,11 +2026,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         if(stoppingQuest) return;
         stoppingQuest=true;
-        if(stuff.size()>0)
+        if(questState.stuff.size()>0)
         {
-            for(int i=0;i<stuff.size();i++)
+            for(int i=0;i<questState.stuff.size();i++)
             {
-                Environmental E=(Environmental)stuff.elementAt(i);
+                Environmental E=(Environmental)questState.stuff.elementAt(i);
                 if(E instanceof Item)
                     ((Item)E).destroy();
                 else
@@ -2040,7 +2058,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                 }
             }
-            stuff.clear();
+            questState.stuff.clear();
         }
         if(addons.size()>0)
         {
@@ -2305,8 +2323,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public void runtimeRegisterObject(Environmental object)
     {
-        if(!stuff.contains(object))
-            stuff.addElement(object);
+        if(!questState.stuff.contains(object))
+        	questState.stuff.addElement(object);
     }
     
     public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms)
@@ -2359,15 +2377,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             B.setParms(parms);
             behaving.addBehavior(B);
         }
+        if(B instanceof ScriptingEngine) 
+        	((ScriptingEngine)B).registerDefaultQuest(this);
         addons.addElement(V);
     }
     
     public int wasQuestMob(String name)
     {
         int num=1;
-        for(int i=0;i<stuff.size();i++)
+        for(int i=0;i<questState.stuff.size();i++)
         {
-            Environmental E=(Environmental)stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E instanceof MOB)
             {
                 if(E.name().equalsIgnoreCase(name))
@@ -2381,9 +2401,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public int wasQuestItem(String name)
     {
         int num=1;
-        for(int i=0;i<stuff.size();i++)
+        for(int i=0;i<questState.stuff.size();i++)
         {
-            Environmental E=(Environmental)stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E instanceof Item)
             {
                 if(E.name().equalsIgnoreCase(name))
@@ -2396,7 +2416,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public boolean isQuestObject(Environmental E)
     { 
-    	return ((stuff!=null)&&(stuff.contains(E)));
+    	return ((questState.stuff!=null)&&(questState.stuff.contains(E)));
     }
     
     public String getQuestObjectName(int i)
@@ -2409,9 +2429,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public Environmental getQuestObject(int i)
     {
         i=i-1; // starts counting at 1
-        if((i>=0)&&(i<stuff.size()))
+        if((i>=0)&&(i<questState.stuff.size()))
         {
-            Environmental E=(Environmental)stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             return E;
         }
         return null;
@@ -2420,9 +2440,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public MOB getQuestMob(int i)
     {
         int num=1;
-        for(int x=0;x<stuff.size();x++)
+        for(int x=0;x<questState.stuff.size();x++)
         {
-            Environmental E=(Environmental)stuff.elementAt(x);
+            Environmental E=(Environmental)questState.stuff.elementAt(x);
             if(E instanceof MOB)
             {
                 if(num==i) return (MOB)E;
@@ -2435,9 +2455,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public Item getQuestItem(int i)
     {
         int num=1;
-        for(int x=0;x<stuff.size();x++)
+        for(int x=0;x<questState.stuff.size();x++)
         {
-            Environmental E=(Environmental)stuff.elementAt(x);
+            Environmental E=(Environmental)questState.stuff.elementAt(x);
             if(E instanceof Item)
             {
                 if(num==i) return (Item)E;
@@ -2463,9 +2483,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public int wasQuestObject(String name)
     {
-        for(int i=0;i<stuff.size();i++)
+        for(int i=0;i<questState.stuff.size();i++)
         {
-            Environmental E=(Environmental)stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E.name().equalsIgnoreCase(name))
                 return (i+1);
         }
@@ -2474,9 +2494,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public boolean isQuestObject(String name, int i)
     {
-        if((i>=0)&&(i<stuff.size()))
+        if((i>=0)&&(i<questState.stuff.size()))
         {
-            Environmental E=(Environmental)stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E.name().equalsIgnoreCase(name))
                 return true;
         }
@@ -2517,6 +2537,112 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 script.addElement(CMStrings.replaceAll(cmd,"\\;",";"));
         }
         return script;
+    }
+    
+	public static class QuestState
+    {
+        public MysteryData mysteryData=new MysteryData();
+        public Vector loadedMobs=new Vector();
+        public Vector loadedItems=new Vector();
+        public Area area=null;
+        public Room room=null;
+        public MOB mob=null;
+        public Vector mobGroup=null;
+        public Vector itemGroup=null;
+        public Vector roomGroup=null;
+        public Item item=null;
+        public Environmental envObject=null;
+        public boolean error=false;
+        public boolean done=false;
+        public boolean beQuiet=false;
+        public Vector stuff=new Vector();
+        public DVector vars=new DVector(2);
+        
+    	public Object getStat(String statName)
+    	{
+    		int x=statName.indexOf("#");
+    		String whichStr=null;
+    		int whichNum=-1;
+    		if(x>=0){
+    			whichStr=statName.substring(x+1);
+    			if(whichStr.length()>0) whichNum=CMath.s_int(whichStr);
+    			statName=statName.substring(0,x);
+    		}
+    		Object O=null;
+    		int code=-1;
+    		for(int i=0;i<QOBJS.length;i++)
+    			if(statName.equalsIgnoreCase(QOBJS[i]))
+    			{ code=i; break;}
+    		switch(code)
+    		{
+    		case 0: O=loadedMobs; break;
+    		case 1: O=loadedItems; break;
+    		case 2: O=area; break;
+    		case 3: O=room; break;
+    		case 4: O=mobGroup; break;
+    		case 5: O=itemGroup; break;
+    		case 6: O=roomGroup; break;
+    		case 7: O=item; break;
+    		case 8: O=envObject; break;
+    		case 9: O=stuff; break;
+    		default:
+    			if(mysteryData!=null) 
+    				O=getStat(statName);
+    			break;
+    		}
+    		if(O instanceof Vector)
+    		{
+    			Vector V=(Vector)O;
+    			if((whichStr!=null)&&((whichNum<=0)||(whichNum>V.size())))
+    				return ""+V.size();
+    			if(whichStr!=null)
+    				return V.elementAt(whichNum-1);
+    		}
+    		return O;
+    	}
+    }
+    
+    public static class MysteryData
+    {
+    	public Vector factionGroup;
+    	public Faction faction;
+    	public MOB agent;
+    	public Vector agentGroup;
+    	public Environmental target;
+    	public Vector targetGroup;
+    	public Environmental tool;
+    	public Vector toolGroup;
+    	public Room whereHappened;
+    	public Vector whereHappenedGroup;
+    	public Room whereAt;
+    	public Vector whereAtGroup;
+    	public String action;
+    	public Vector actionGroup;
+    	public String motive;
+    	public Vector motiveGroup;
+    	public TimeClock whenHappened;
+    	public Vector whenHappenedGroup;
+    	public TimeClock whenAt;
+    	public Vector whenAtGroup;
+    	public Object getStat(String statName)
+    	{
+    		int code=-1;
+    		for(int i=0;i<MYSTERY_QCODES.length;i++)
+    			if(statName.equalsIgnoreCase(MYSTERY_QCODES[i]))
+    			{ code=i; break;}
+    		switch(code){
+	    		case 0: return faction;  case 1: return factionGroup; 
+	    		case 2: return agent;  case 3: return agentGroup; 
+	    		case 4: return action;  case 5: return actionGroup; 
+	    		case 6: return target;  case 7: return targetGroup; 
+	    		case 8: return motive;  case 9: return motiveGroup; 
+	    		case 10: return whereHappened;  case 11: return whereHappenedGroup; 
+	    		case 12: return whenHappened;  case 13: return whenHappenedGroup; 
+	    		case 14: return whenAt;  case 15: return whenAtGroup; 
+	    		case 16: return tool;  case 17: return toolGroup; 
+    		}
+    		return null;
+    	}
     }
     
 	public String[] getCodes()
@@ -2576,14 +2702,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: setStartDate(val); break;
 		case 9: setWaitInterval(CMath.s_int(val)); break;
 		default:
-			if(isMysteryQCode(code))
-			{
-				int x=vars.indexOf(code.toUpperCase().trim());
-				if(x>=0) 
-					vars.setElementAt(x,2,val);
-				else
-					vars.addElement(code.toUpperCase().trim(),val);
-			}
+			int x=questState.vars.indexOf(code.toUpperCase().trim());
+			if(x>=0) 
+				questState.vars.setElementAt(x,2,val);
+			else
+				questState.vars.addElement(code.toUpperCase().trim(),val);
 			break;
 		}
 	}
@@ -2591,8 +2714,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public boolean isStat(String code)
 	{
 		if((getCodeNum(code)>=0)
-		||(isSpecialQCode(code))
-		||(isMysteryQCode(code))) 
+		||(questState.vars.contains(code)))
 			return true;
 		return false;
 	}
@@ -2611,8 +2733,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
 		default: 
-			int x=vars.indexOf(code.toUpperCase().trim());
-			if(x>=0) return (String)vars.elementAt(x,2);
+			int x=questState.vars.indexOf(code.toUpperCase().trim());
+			if(x>=0) return (String)questState.vars.elementAt(x,2);
 			return "";
 		}
 	}
@@ -2633,24 +2755,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         public JScriptQuest(Quest Q, QuestState S){quest=Q; state=S;}
         public static String[] functions = { "quest", "setupState", "toJavaString"};
         public String toJavaString(Object O){return Context.toString(O);}
-    }
-    
-    protected static class QuestState
-    {
-        public MysteryData mysteryData=new MysteryData();
-        public Vector loadedMobs=new Vector();
-        public Vector loadedItems=new Vector();
-        public Area area=null;
-        public Room room=null;
-        public MOB mob=null;
-        public Vector mobGroup=null;
-        public Vector itemGroup=null;
-        public Vector roomGroup=null;
-        public Item item=null;
-        public Environmental envObject=null;
-        public boolean error=false;
-        public boolean done=false;
-        public boolean beQuiet=false;
     }
     
 }
