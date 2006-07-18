@@ -290,7 +290,7 @@ public interface CombatLibrary extends CMObject
     {""+Weapon.TYPE_BURSTING, "annoy(s)", "scratch(es)","graze(s)","wound(s)","cut(s)","damage(s)","decimate(s)","murder(s)"},
     };
     
-    public static final int[] DEFAULT_DAMAGE_THRESHHOLDS={0,3,6,10,15,25,35,50,70,100,130,165,215,295,495,695,999};
+    public static final int[] DEFAULT_DAMAGE_THRESHHOLDS={0,3,6,10,15,25,35,50,70,100,130,165,215,295,495,695,Integer.MAX_VALUE};
     
     public static final String[] DEFAULT_HEALTH_CHART={
         "^r<MOB>^r is hovering on deaths door!^N",
