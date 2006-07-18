@@ -2246,7 +2246,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				MOB which=null;
 				if(lastKnownLocation!=null)
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-				int ct=0;
+				int ct=1;
 				if(which!=null)
 				for(int i=0;i<which.inventorySize();i++)
 				{
@@ -3766,7 +3766,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental which=null;
 				if(lastKnownLocation!=null)
-					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim()));
+					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
 				if(which!=null)
 					results.append(which.name());
 				break;
@@ -3775,7 +3775,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental which=null;
-				int ct=0;
+				int ct=1;
 				if(lastKnownLocation!=null)
 				for(int i=0;i<lastKnownLocation.numItems();i++)
 				{
@@ -3899,9 +3899,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				MOB M=null;
 				if(lastKnownLocation!=null)
-					M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim()));
+					M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
 				Item which=null;
-				int ct=0;
+				int ct=1;
 				if(M!=null)
 				for(int i=0;i<M.inventorySize();i++)
 				{
@@ -3922,8 +3922,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				MOB which=null;
 				if(lastKnownLocation!=null)
-					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim()));
-				int ct=0;
+					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+				int ct=1;
 				if(which!=null)
 				for(int i=0;i<which.inventorySize();i++)
 				{
