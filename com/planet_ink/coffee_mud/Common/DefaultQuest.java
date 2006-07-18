@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.sun.rsasign.v;
 
 import java.util.*;
 
@@ -1271,11 +1270,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    	q.mysteryData.whenAt=TC;
                     }
                     else   
-                    if(cmd.equals("MOTIVEGROUP"))
+                    if(cmd.equals("MOTIVEGROUP")||cmd.equals("ACTIONGROUP"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	if(cmd.equals("MOTIVEGROUP"))
 	                    	q.mysteryData.motiveGroup=null;
+                    	else
+	                    	q.mysteryData.actionGroup=null;
                         if(p.size()<3) continue;
                         Vector V2=new Vector();
                         String Mstr=null;
@@ -1283,6 +1284,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	{
 	                    	q.mysteryData.motiveGroup=V2;
 	                    	Mstr=q.mysteryData.motive;
+                    	}
+                    	else
+                    	{
+	                    	q.mysteryData.actionGroup=V2;
+	                    	Mstr=q.mysteryData.action;
                     	}
                     	if(Mstr!=null) V2.addElement(Mstr);
                         for(int pi=2;pi<p.size();pi++)
@@ -1292,6 +1298,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	Mstr=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
                     	if(cmd.equals("MOTIVEGROUP"))
                     		q.mysteryData.motive=Mstr;
+                    	else
+                    		q.mysteryData.action=Mstr;
                     }
                     else
                     if(cmd.equals("MOTIVE"))
@@ -1300,6 +1308,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	q.mysteryData.motive=null;
                         if(p.size()<3) continue;
                         q.mysteryData.motive=CMParms.combine(p,2);
+                    }
+                    else
+                    if(cmd.equals("ACTION"))
+                    {
+                    	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	q.mysteryData.action=null;
+                        if(p.size()<3) continue;
+                        q.mysteryData.action=CMParms.combine(p,2);
                     }
                     else
                     if(cmd.equals("WHEREHAPPENED")
