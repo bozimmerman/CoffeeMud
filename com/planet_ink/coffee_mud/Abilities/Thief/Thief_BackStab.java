@@ -66,6 +66,11 @@ public class Thief_BackStab extends ThiefSkill
 			mob.tell(target.name()+" is watching you too closely to do that.");
 			return false;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("You are too busy to focus on backstabbing right now.");
+			return false;
+		}
 
 		CMLib.commands().postDraw(mob,false,true);
 
