@@ -174,7 +174,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public Vector sortSelect(Environmental E, String str,
+    private void questifyScriptableBehavs(Environmental E)
+    {
+    	if(E==null) return;
+    	Behavior B=null;
+    	for(int b=0;b<E.numBehaviors();b++)
+    	{
+    		B=E.fetchBehavior(b);
+    		if(B instanceof ScriptingEngine)
+    			((ScriptingEngine)B).registerDefaultQuest(this);
+    	}
+    }
+    private Vector sortSelect(Environmental E, String str,
                              Vector choices,
                              Vector choices0,
                              Vector choices1,
@@ -475,6 +486,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', !mob '"+p+"'.");
                             q.error=true; break;
                         }
+                        questifyScriptableBehavs(q.mob);
                         if(q.room!=null)
                             q.room.bringMobHere(q.mob,false);
                         else
@@ -686,6 +698,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', !item '"+p+"'.");
                             q.error=true; break;
                         }
+                        questifyScriptableBehavs(q.item);
                         if(q.room!=null)
                             q.room.bringItemHere(q.item,-1,true);
                         else
@@ -926,6 +939,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', !mob '"+mobName+"'.");
                             q.error=true; break;
                         }
+                        questifyScriptableBehavs(q.mob);
                         if(q.room!=null)
                             q.room.bringMobHere(q.mob,false);
                         else
@@ -1008,6 +1022,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', !item '"+itemName+"'.");
                             q.error=true; break;
                         }
+                        questifyScriptableBehavs(q.item);
                         if(q.room!=null)
                             q.room.bringItemHere(q.item,-1,true);
                         else
@@ -1034,6 +1049,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', agent !mob.");
                             q.error=true; break;
                         }
+                        questifyScriptableBehavs(q.mob);
                     	q.mysteryData.agent=q.mob;
                         q.mob=q.mysteryData.agent;
                         q.envObject=q.mob;
@@ -1159,6 +1175,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             if(q.mysteryData.agent==null) q.mysteryData.agent=(MOB)O;
                         	num--;
                         }
+                        questifyScriptableBehavs(q.mob);
                         q.mob=q.mysteryData.agent;
                         q.mobGroup=(Vector)q.mysteryData.agentGroup.clone();
                         q.envObject=q.mysteryData.agent;
@@ -1417,12 +1434,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         {
 	                        q.mobGroup=(Vector)V2.clone();
 	                        q.mob=(MOB)finalE;
+	                        questifyScriptableBehavs(q.mob);
                         }
                         else
                         if(finalE instanceof Item)
                         {
 	                        q.itemGroup=(Vector)V2.clone();
 	                        q.item=(Item)finalE;
+	                        questifyScriptableBehavs(q.item);
                         }
                         q.envObject=finalE;
                     	if(cmd.equals("TARGETGROUP"))
@@ -1452,10 +1471,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	else
 	                    	q.mysteryData.tool=q.envObject;
                     	if(q.envObject instanceof MOB)
+                    	{
                     		q.mob=(MOB)q.envObject;
+                            questifyScriptableBehavs(q.mob);
+                    	}
                     	else
                     	if(q.envObject instanceof Item)
+                    	{
                     		q.item=(Item)q.envObject;
+                            questifyScriptableBehavs(q.item);
+                    	}
                     }
                     else   
                     if(!isStat(cmd))
@@ -1629,6 +1654,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int m=0;m<mobsToDo.size();m++)
                         {
                         	q.mob=(MOB)mobsToDo.firstElement();
+                            questifyScriptableBehavs(q.mob);
 	                        q.envObject=q.mob;
 	                        q.room=choiceRoom;
 	                        if(q.room==null)
@@ -1703,6 +1729,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int m=0;m<itemsToDo.size();m++)
                         {
                         	q.item=(Item)itemsToDo.firstElement();
+                            questifyScriptableBehavs(q.item);
 	                        q.envObject=q.item;
 	                        q.room=choiceRoom;
 	                        if(q.room==null)
@@ -1825,6 +1852,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             for(int i3=0;i3<itemSet.size();i3++)
                             {
                             	Item I3=(Item)itemSet.elementAt(i3);
+                                questifyScriptableBehavs(I3);
 	                            if(q.item==I3)
 	                            {
 		                            M2.giveItem(I3);
