@@ -56,6 +56,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     private HashSet registeredSpecialEvents=new HashSet();
     private Hashtable noTrigger=new Hashtable();
 	protected long tickStatus=Tickable.STATUS_NOT;
+	private Quest defaultQuest=null;
 
 	public long getTickStatus()
 	{
@@ -64,6 +65,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	    return tickStatus;
 	}
 
+    public void registerDefaultQuest(Quest Q){
+    	defaultQuest=Q;
+    }
     public boolean endQuest(Environmental hostObj, MOB mob, String quest)
     {
         if(mob!=null)
@@ -78,7 +82,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     trigger=((String)script.elementAt(0)).toUpperCase().trim();
                 if((getTriggerCode(trigger)==13) //questtimeprog
                 &&(!oncesDone.contains(script))
-                &&(CMParms.getCleanBit(trigger,1).equalsIgnoreCase(quest))
+                &&(CMParms.getCleanBit(trigger,1).equalsIgnoreCase(quest)||(quest.equalsIgnoreCase("*")))
                 &&(CMath.s_int(CMParms.getCleanBit(trigger,2).trim())<0))
                 {
                     oncesDone.addElement(script);
@@ -445,10 +449,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	protected boolean simpleEvalStr(Environmental scripted,
-								  String arg1,
-								  String arg2,
-								  String cmp,
-								  String cmdName)
+									String arg1,
+									String arg2,
+									String cmp,
+									String cmdName)
 	{
 		int x=arg1.compareToIgnoreCase(arg2);
 		if(cmp.equalsIgnoreCase("=="))
@@ -995,7 +999,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						{
 							int num=CMath.s_int(mid.substring(0,y).trim());
 							mid=mid.substring(y+1).trim();
-							Quest Q=CMLib.quests().fetchQuest(mid);
+							Quest Q=mid.equals("*")?defaultQuest:CMLib.quests().fetchQuest(mid);
 							if(Q!=null)	middle=Q.getQuestItemName(num);
 						}
 						back=back.substring(x+1);
@@ -1014,7 +1018,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						{
 							int num=CMath.s_int(mid.substring(0,y).trim());
 							mid=mid.substring(y+1).trim();
-							Quest Q=CMLib.quests().fetchQuest(mid);
+							Quest Q=mid.equals("*")?defaultQuest:CMLib.quests().fetchQuest(mid);
 							if(Q!=null)	middle=Q.getQuestMobName(num);
 						}
 						back=back.substring(x+1);
@@ -1811,7 +1815,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				Quest Q=CMLib.quests().fetchQuest(arg2);
+				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1825,7 +1829,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=CMLib.quests().fetchQuest(arg2);
+				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1836,7 +1840,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=CMLib.quests().fetchQuest(arg2);
+				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1935,11 +1939,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACES");
 				break;
 			}
-			case 30: // questitem
+			case 30: // questobj
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=CMLib.quests().fetchQuest(arg2);
+				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -2629,6 +2633,24 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					int val1=((MOB)E).getQuestPoint();
 					returnable=simpleEval(scripted,""+val1,arg3,arg2,"QUESTPOINTS");
 				}
+				break;
+			}
+			case 83: // qvar
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
+				Quest Q=arg1.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg1);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"QUESTPOINTS","Syntax",evaluable);
+					return returnable;
+				}
+				if(Q==null)
+					returnable=false;
+				else
+					returnable=simpleEvalStr(scripted,Q.getStat(arg2),arg4,arg3,"QVAR");
 				break;
 			}
 			case 81: // trains
@@ -3716,7 +3738,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				results.append(num);
 				break;
 			}
-			case 30: // questitem
+			case 30: // questobj
 				results.append("[unimplemented function]");
 				break;
 			case 16: // hitprcnt
@@ -4127,6 +4149,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E instanceof MOB)
 					results.append(((MOB)E).getQuestPoint());
+				break;
+			}
+			case 83: // qvar
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				if((arg1.length()!=0)&&(arg2.length()!=0))
+				{
+					Quest Q=arg1.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg1);
+					if(Q!=null) results.append(Q.getStat(arg2));
+				}
 				break;
 			}
 			case 81: // trains
@@ -4848,6 +4881,49 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+			case 63: // mpargset
+			{
+				String arg1=CMParms.getCleanBit(s,1);
+				String arg2=CMParms.getPastBitClean(s,1);
+				if((arg1.length()!=2)||(!arg1.startsWith("$")))
+				{
+					scriptableError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
+					break;
+				}
+				Object O=getArgumentMOB(arg2,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(O==null) O=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				if((O==null)&&(!arg2.trim().startsWith("$"))) 
+					O=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,arg2);
+				char c=arg1.charAt(1);
+				if(Character.isDigit(c))
+				{
+					if((O instanceof String)&&(((String)O).equalsIgnoreCase("null")))
+						O=null;
+					tmp[CMath.s_int(Character.toString(c))]=O;
+				}
+				else
+				switch(arg1.charAt(1))
+				{
+				case 'N': 
+				case 'n': if(O instanceof MOB) source=(MOB)O; break;
+				case 'I':
+				case 'i': if(O instanceof Environmental) scripted=(Environmental)O;
+						  if(O instanceof MOB) monster=(MOB)O;
+						  break;
+				case 'T':
+				case 't': if(O instanceof Environmental) target=(Environmental)O; break;
+				case 'O':
+				case 'o': if(O instanceof Item) primaryItem=(Item)O; break;
+				case 'P':
+				case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
+				case 'd': 
+				case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
+				default:
+					scriptableError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
+					break;
+				}
+				break;
+			}
 			case 35: // mpgset
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -4949,7 +5025,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
 				break;
 			}
-			case 59: // questpoints
+			case 59: // mpquestpoints
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
@@ -4966,6 +5042,18 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					else
                         scriptableError(scripted,"QUESTPOINTS","Syntax","Bad syntax "+val+" for "+scripted.Name());
 				}
+				break;
+			}
+			case 65: // MPQSET
+			{
+				String qstr=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
+				Quest Q=qstr.equals("*")?defaultQuest:CMLib.quests().fetchQuest(qstr);
+				if(Q==null)
+                    scriptableError(scripted,"QUESTPOINTS","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
+				else
+					Q.setStat(var,val);
 				break;
 			}
 			case 60: // trains
@@ -5773,7 +5861,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 20: // mpsetvar
 			{
 				String which=CMParms.getCleanBit(s,1);
-				Environmental E=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
 				if(!which.equals("*"))
@@ -5953,7 +6041,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 53: // mpwalkto
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
 				Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)	
 				{
@@ -5965,8 +6053,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 21: //MPENDQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(10).trim());
-				Quest Q=CMLib.quests().fetchQuest(s);
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+				Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
 				if(Q!=null) Q.stopQuest();
 				else
 					scriptableError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
@@ -5974,11 +6062,60 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 23: //MPSTARTQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(12).trim());
-				Quest Q=CMLib.quests().fetchQuest(s);
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+				Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
 				if(Q!=null) Q.startQuest();
 				else
 					scriptableError(scripted,"MPSTARTQUEST","Unknown","Quest: "+s);
+				break;
+			}
+			case 64: //MPLOADQUESTOBJ
+			{
+				String questName=CMParms.getCleanBit(s,1).trim();
+				questName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,questName);
+				Quest Q=questName.equals("*")?defaultQuest:CMLib.quests().fetchQuest(questName);
+				if(Q==null)
+				{
+					scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Quest: "+questName);
+					break;
+				}
+				Object O=Q.getQuestObject(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2)));
+				if(O==null)
+				{
+					scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Unknown var "+CMParms.getCleanBit(s,2)+" for Quest: "+questName);
+					break;
+				}
+				String varArg=CMParms.getPastBit(s,2);
+				if((varArg.length()!=2)||(!varArg.startsWith("$")))
+				{
+					scriptableError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
+					break;
+				}
+				
+				char c=varArg.charAt(1);
+				if(Character.isDigit(c))
+					tmp[CMath.s_int(Character.toString(c))]=O;
+				else
+				switch(c)
+				{
+				case 'N': 
+				case 'n': if(O instanceof MOB) source=(MOB)O; break;
+				case 'I':
+				case 'i': if(O instanceof Environmental) scripted=(Environmental)O;
+						  if(O instanceof MOB) monster=(MOB)O;
+						  break;
+				case 'T':
+				case 't': if(O instanceof Environmental) target=(Environmental)O; break;
+				case 'O':
+				case 'o': if(O instanceof Item) primaryItem=(Item)O; break;
+				case 'P':
+				case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
+				case 'd': 
+				case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
+				default:
+					scriptableError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
+					break;
+				}
 				break;
 			}
 			case 22: //MPQUESTWIN
@@ -5992,7 +6129,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(whoName.length()>0)
 				{
 					s=CMParms.getPastBitClean(s,1);
-					Quest Q=CMLib.quests().fetchQuest(s);
+					Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
 					if(Q!=null) 
                         Q.declareWinner(whoName);
 					else
@@ -7329,7 +7466,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 13: // questtimeprog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
-					Quest Q=CMLib.quests().fetchQuest(CMParms.getCleanBit(trigger,1));
+					Quest Q=CMParms.getCleanBit(trigger,1).equals("*")?defaultQuest:CMLib.quests().fetchQuest(CMParms.getCleanBit(trigger,1));
 					if((Q!=null)&&(Q.running())&&(!Q.stopping()))
 					{
 						int time=CMath.s_int(CMParms.getCleanBit(trigger,2).trim());

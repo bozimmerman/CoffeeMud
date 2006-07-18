@@ -71,6 +71,7 @@ public interface Quest extends Tickable
 	public Environmental getQuestObject(int i);
 	public MOB getQuestMob(int i);
 	public Item getQuestItem(int i);
+	public Object getQuestObject(String named);
 	
     // these methods should only be used WHILE a quest script is running
     // they are called when you want the quest engine to be aware of a
@@ -113,10 +114,16 @@ public interface Quest extends Tickable
 	public int minsRemaining();
 	public int waitRemaining();
 	
-	public final static String[] QCODES={"CLASS","NAME","DURATION","WAIT","MINPLAYERS","PLAYERMASK",
-										 "RUNLEVEL","DATE","MUDDAY","INTERVAL"};
+	public boolean isStat(String code);
+	public String getStat(String code);
+	public void setStat(String code, String val);
+	
+	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
+										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP"};
+	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
+		 								"ITEM", "ENVOBJ", "STUFF"};
 	//TODO: add the following:
 	// EVIDENCE, ALIBY sets need to figure in, and be able to load from lists dependent on ACTION and/or FACTION
 	// some way to add behaviors/props to implement random alibies... thats the last thing I think. -- yes, it is!
@@ -130,46 +137,4 @@ public interface Quest extends Tickable
 												 "WHENHAPPENED","WHENHAPPENEDGROUP",
 												 "WHENAT","WHENATGROUP",
 												 "TOOL","TOOLGROUP"};
-    public static class MysteryData
-    {
-    	public Vector factionGroup;
-    	public Faction faction;
-    	public MOB agent;
-    	public Vector agentGroup;
-    	public Environmental target;
-    	public Vector targetGroup;
-    	public Environmental tool;
-    	public Vector toolGroup;
-    	public Room whereHappened;
-    	public Vector whereHappenedGroup;
-    	public Room whereAt;
-    	public Vector whereAtGroup;
-    	public String action;
-    	public Vector actionGroup;
-    	public String motive;
-    	public Vector motiveGroup;
-    	public TimeClock whenHappened;
-    	public Vector whenHappenedGroup;
-    	public TimeClock whenAt;
-    	public Vector whenAtGroup;
-    	public Object getStat(String statName)
-    	{
-    		int code=-1;
-    		for(int i=0;i<MYSTERY_QCODES.length;i++)
-    			if(statName.equalsIgnoreCase(MYSTERY_QCODES[i]))
-    			{ code=i; break;}
-    		switch(code){
-	    		case 0: return faction;  case 1: return factionGroup; 
-	    		case 2: return agent;  case 3: return agentGroup; 
-	    		case 4: return action;  case 5: return actionGroup; 
-	    		case 6: return target;  case 7: return targetGroup; 
-	    		case 8: return motive;  case 9: return motiveGroup; 
-	    		case 10: return whereHappened;  case 11: return whereHappenedGroup; 
-	    		case 12: return whenHappened;  case 13: return whenHappenedGroup; 
-	    		case 14: return whenAt;  case 15: return whenAtGroup; 
-	    		case 16: return tool;  case 17: return toolGroup; 
-    		}
-    		return null;
-    	}
-    }
 }

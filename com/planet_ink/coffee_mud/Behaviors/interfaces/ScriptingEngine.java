@@ -51,7 +51,7 @@ public interface ScriptingEngine extends Behavior
                         String msg,
                         Object[] tmp,
                         String evaluable);
-
+    public void registerDefaultQuest(Quest Q);
     public boolean endQuest(Environmental hostObj, MOB mob, String quest);
     public static class ScriptableResponse
     {
@@ -215,7 +215,7 @@ public interface ScriptingEngine extends Behavior
         "QUESTPOINTS", // 80
         "TRAINS", // 81
         "PRACS", // 82
-        //"QSTAT", // 83
+        "QVAR", // 83
     };
     public static final String[] methods={
         "MPASOUND", //1
@@ -280,7 +280,9 @@ public interface ScriptingEngine extends Behavior
         "MPTRAINS", // 60
         "MPPRACS", // 61
         "FOR", // 62
-        //"MPQSET", // 63
+        "MPARGSET", // 63
+        "MPLOADQUESTOBJ", // 64
+        "MPQSET", // 65
     };
 
     public final static String[] clanVars={
