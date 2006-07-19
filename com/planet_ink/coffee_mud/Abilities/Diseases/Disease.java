@@ -50,6 +50,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_DONE(){return "Your disease has run its course.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
+	protected boolean DISEASE_REQSEE(){return false;}
 
 	public int difficultyLevel(){return 0;}
 	public int abilityCode(){return 0;}
@@ -63,9 +64,11 @@ public class Disease extends StdAbility implements DiseaseAffect
 		if(invoker==target) return true;
 		if(diseased==null) diseased=mob;
 		if((diseased==null)&&(target instanceof MOB)) diseased=(MOB)target;
+		
 		if((target!=null)
 		&&(diseased!=null)
-		&&(target.fetchEffect(ID())==null))
+		&&(target.fetchEffect(ID())==null)
+		&&((!DISEASE_REQSEE())||((target instanceof MOB)&&(CMLib.flags().canBeSeenBy(diseased,(MOB)target)))))
 		{
 			if(target instanceof MOB)
 			{
