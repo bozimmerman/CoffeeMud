@@ -35,7 +35,7 @@ public class Spell_PassDoor extends Spell
 {
 	public String ID() { return "Spell_PassDoor"; }
 	public String name(){return "Pass Door";}
-	public String displayText(){return "(Translucent)";}
+	public String displayText(){return "(Pass Door)";}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -44,8 +44,7 @@ public class Spell_PassDoor extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affected,affectedStats);
-		if(canBeUninvoked())
-			affectedStats.setDisposition(affectedStats.disposition()|EnvStats.IS_NOT_SEEN);
+		affectedStats.setDisposition(affectedStats.disposition()|EnvStats.IS_INVISIBLE);
 		affectedStats.setHeight(-1);
 	}
 
