@@ -497,6 +497,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         q.room.recoverRoomStats();
                         q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
                     }
+                    else
                     if(cmd.equals("MOBGROUP"))
                     {
                         q.mobGroup=null;
