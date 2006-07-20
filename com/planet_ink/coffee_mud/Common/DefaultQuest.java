@@ -2670,13 +2670,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     			O=questState.getStat(eval);
     			switch(code)
     			{
-    			case '+':
-    				if(O instanceof Vector) 
-    					CMParms.addToVector((Vector)O,V);
-    				else
-    				if(O!=null) 
-    					V.addElement(O);
-    				break;
     			case '-':
     				if(O instanceof Vector)
     					CMParms.delFromVector((Vector)O,V);
@@ -2684,8 +2677,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     				if(O!=null)
     					V.removeElement(O);
     				break;
-    			default:
-    				V.addElement(O);
+    			case '+': case ' ':
+    				if(O instanceof Vector) 
+    					CMParms.addToVector((Vector)O,V);
+    				else
+    				if(O!=null) 
+    					V.addElement(O);
     				break;
     			}
     			if(i<allParms.length()) code=allParms.charAt(i);
