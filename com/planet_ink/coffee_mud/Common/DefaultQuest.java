@@ -53,7 +53,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
     private boolean stoppingQuest=false;
-    QuestState masterQuestState=new QuestState();
+    QuestState questState=new QuestState();
 
     protected Vector addons=new Vector();
     // contains a set of vectors, vectors are formatted as such:
@@ -100,7 +100,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
 		}
-		return masterQuestState.getStat(named);
+		return questState.getStat(named);
 	}
 
     // the unique name of the quest
@@ -230,32 +230,33 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return choices;
     }
 
-    private TimeClock getMysteryTimeNow(QuestState q)
+    private TimeClock getMysteryTimeNowFromState()
     {
     	TimeClock NOW=null;
-        if((q.mysteryData.whereAt!=null)&&(q.mysteryData.whereAt.getArea()!=null)) 
-        	NOW=(TimeClock)q.mysteryData.whereAt.getArea().getTimeObj().copyOf();
+    	if(questState.mysteryData==null) return (TimeClock)CMClass.globalClock().copyOf();
+        if((questState.mysteryData.whereAt!=null)&&(questState.mysteryData.whereAt.getArea()!=null)) 
+        	NOW=(TimeClock)questState.mysteryData.whereAt.getArea().getTimeObj().copyOf();
         else
-        if((q.mysteryData.whereHappened!=null)&&(q.mysteryData.whereHappened.getArea()!=null)) 
-        	NOW=(TimeClock)q.mysteryData.whereAt.getArea().getTimeObj().copyOf();
+        if((questState.mysteryData.whereHappened!=null)&&(questState.mysteryData.whereHappened.getArea()!=null)) 
+        	NOW=(TimeClock)questState.mysteryData.whereAt.getArea().getTimeObj().copyOf();
         else
-        if((q.room!=null)&&(q.room.getArea()!=null)) 
-        	NOW=(TimeClock)q.room.getArea().getTimeObj().copyOf();
+        if((questState.room!=null)&&(questState.room.getArea()!=null)) 
+        	NOW=(TimeClock)questState.room.getArea().getTimeObj().copyOf();
         else
-        if(q.area!=null) 
-        	NOW=(TimeClock)q.area.getTimeObj().copyOf();
+        if(questState.area!=null) 
+        	NOW=(TimeClock)questState.area.getTimeObj().copyOf();
         else
         	NOW=(TimeClock)CMClass.globalClock().copyOf();
         return NOW;
     }
 
-    public void parseQuestScriptWArgs(Vector script, QuestState q, Vector args)
+    public void parseQuestScriptWArgs(Vector script, Vector args)
     {
     	if(args==null) args=new Vector();
     	Vector theseArgs=new Vector();
     	int[] indexes=new int[args.size()];
     	//if(indexes.length==0)
-	        parseQuestScript(script, q, theseArgs);
+	        parseQuestScript(script, theseArgs);
     	//else
     	//while(true)
     	//{
@@ -263,8 +264,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	//}
     }
     
-    public void parseQuestScript(Vector script, QuestState q, Vector args)
+    public void parseQuestScript(Vector script, Vector args)
     {
+    	QuestState q=questState;
         for(int v=0;v<script.size();v++)
         {
             String s=(String)script.elementAt(v);
@@ -1329,7 +1331,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        q.mysteryData.whenAtGroup=null;
                         if(p.size()<3) continue;
                         Vector V2=new Vector();
-                        TimeClock NOW=getMysteryTimeNow(q);
+                        TimeClock NOW=getMysteryTimeNowFromState();
                         TimeClock TC=null;
                     	if(TC!=null) V2.addElement(TC);
                     	if(cmd.equals("WHENHAPPENEDGROUP"))
@@ -1373,7 +1375,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	else
                     		q.mysteryData.whenAt=null;
                         if(p.size()<3) continue;
-                        TimeClock NOW=getMysteryTimeNow(q);
+                        TimeClock NOW=getMysteryTimeNowFromState();
                         TimeClock TC=null;
                         String numStr=CMParms.combine(p,2);
                 		if(!CMath.isInteger(numStr))
@@ -1675,7 +1677,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                 	boolean error=q.error;
                 	Vector args2=new Vector();
-                	parseQuestScriptWArgs(parseScripts(s,args2),q.copyOf(),args2);
+                	parseQuestScriptWArgs(parseScripts(s,args2),args2);
                 	if((!error)&&(q.error)) 
                 		break;
                 }
@@ -2116,10 +2118,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         if(running()) stopQuest();
         Vector args=new Vector();
-        QuestState questState=new QuestState();
-        masterQuestState=questState;
+        questState=new QuestState();
         Vector script=parseScripts(script(),args);
-        parseQuestScript(script,questState,args);
+        parseQuestScript(script,args);
         if(questState.error)
         {
             if(!questState.beQuiet)
@@ -2147,11 +2148,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         if(stoppingQuest) return;
         stoppingQuest=true;
-        if(masterQuestState.stuff.size()>0)
+        if(questState.stuff.size()>0)
         {
-            for(int i=0;i<masterQuestState.stuff.size();i++)
+            for(int i=0;i<questState.stuff.size();i++)
             {
-                Environmental E=(Environmental)masterQuestState.stuff.elementAt(i);
+                Environmental E=(Environmental)questState.stuff.elementAt(i);
                 if(E instanceof Item)
                     ((Item)E).destroy();
                 else
@@ -2179,7 +2180,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                 }
             }
-            masterQuestState.stuff.clear();
+            questState.stuff.clear();
         }
         if(addons.size()>0)
         {
@@ -2444,8 +2445,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public void runtimeRegisterObject(Environmental object)
     {
-        if(!masterQuestState.stuff.contains(object))
-        	masterQuestState.stuff.addElement(object);
+        if(!questState.stuff.contains(object))
+        	questState.stuff.addElement(object);
     }
     
     public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms)
@@ -2506,9 +2507,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public int wasQuestMob(String name)
     {
         int num=1;
-        for(int i=0;i<masterQuestState.stuff.size();i++)
+        for(int i=0;i<questState.stuff.size();i++)
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E instanceof MOB)
             {
                 if(E.name().equalsIgnoreCase(name))
@@ -2522,9 +2523,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public int wasQuestItem(String name)
     {
         int num=1;
-        for(int i=0;i<masterQuestState.stuff.size();i++)
+        for(int i=0;i<questState.stuff.size();i++)
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E instanceof Item)
             {
                 if(E.name().equalsIgnoreCase(name))
@@ -2537,7 +2538,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public boolean isQuestObject(Environmental E)
     { 
-    	return ((masterQuestState.stuff!=null)&&(masterQuestState.stuff.contains(E)));
+    	return ((questState.stuff!=null)&&(questState.stuff.contains(E)));
     }
     
     public String getQuestObjectName(int i)
@@ -2550,9 +2551,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public Environmental getQuestObject(int i)
     {
         i=i-1; // starts counting at 1
-        if((i>=0)&&(i<masterQuestState.stuff.size()))
+        if((i>=0)&&(i<questState.stuff.size()))
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             return E;
         }
         return null;
@@ -2561,9 +2562,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public MOB getQuestMob(int i)
     {
         int num=1;
-        for(int x=0;x<masterQuestState.stuff.size();x++)
+        for(int x=0;x<questState.stuff.size();x++)
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(x);
+            Environmental E=(Environmental)questState.stuff.elementAt(x);
             if(E instanceof MOB)
             {
                 if(num==i) return (MOB)E;
@@ -2576,9 +2577,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public Item getQuestItem(int i)
     {
         int num=1;
-        for(int x=0;x<masterQuestState.stuff.size();x++)
+        for(int x=0;x<questState.stuff.size();x++)
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(x);
+            Environmental E=(Environmental)questState.stuff.elementAt(x);
             if(E instanceof Item)
             {
                 if(num==i) return (Item)E;
@@ -2604,9 +2605,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public int wasQuestObject(String name)
     {
-        for(int i=0;i<masterQuestState.stuff.size();i++)
+        for(int i=0;i<questState.stuff.size();i++)
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E.name().equalsIgnoreCase(name))
                 return (i+1);
         }
@@ -2615,9 +2616,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public boolean isQuestObject(String name, int i)
     {
-        if((i>=0)&&(i<masterQuestState.stuff.size()))
+        if((i>=0)&&(i<questState.stuff.size()))
         {
-            Environmental E=(Environmental)masterQuestState.stuff.elementAt(i);
+            Environmental E=(Environmental)questState.stuff.elementAt(i);
             if(E.name().equalsIgnoreCase(name))
                 return true;
         }
@@ -2683,8 +2684,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     		}
     		if(eval!=null)
     		{
-    			if(!masterQuestState.isStat(eval)) throw new CMException ("Not specified: "+eval);
-    			O=masterQuestState.getStat(eval);
+    			if(!questState.isStat(eval)) throw new CMException ("Not specified: "+eval);
+    			O=questState.getStat(eval);
     			switch(code)
     			{
     			case '-':
@@ -2736,16 +2737,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         public Vector stuff=new Vector();
         public DVector vars=new DVector(2);
 
-        public QuestState copyOf()
-        {
-        	QuestState q2=null;
-        	try{
-        		q2=(QuestState)clone();
-        		if(mysteryData!=null) q2.mysteryData=mysteryData.copyOf();
-        	}catch(CloneNotSupportedException x){q2=this;}
-        	return q2;
-        }
-        
         public boolean isStat(String statName)
         {
     		int x=statName.indexOf("#");
@@ -2824,14 +2815,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	public Vector whenHappenedGroup;
     	public TimeClock whenAt;
     	public Vector whenAtGroup;
-        public MysteryData copyOf()
-        {
-        	MysteryData m2=null;
-        	try{
-        		m2=(MysteryData)clone();
-        	}catch(CloneNotSupportedException x){m2=this;}
-        	return m2;
-        }
         public boolean isStat(String statName)
         {
     		for(int i=0;i<MYSTERY_QCODES.length;i++)
@@ -2901,11 +2884,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: setStartDate(val); break;
 		case 9: setWaitInterval(CMath.s_int(val)); break;
 		default:
-			int x=masterQuestState.vars.indexOf(code.toUpperCase().trim());
+			int x=questState.vars.indexOf(code.toUpperCase().trim());
 			if(x>=0) 
-				masterQuestState.vars.setElementAt(x,2,val);
+				questState.vars.setElementAt(x,2,val);
 			else
-				masterQuestState.vars.addElement(code.toUpperCase().trim(),val);
+				questState.vars.addElement(code.toUpperCase().trim(),val);
 			break;
 		}
 	}
@@ -2913,7 +2896,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public boolean isStat(String code)
 	{
 		if((getCodeNum(code)>=0)
-		||(masterQuestState.vars.contains(code)))
+		||(questState.vars.contains(code)))
 			return true;
 		return false;
 	}
@@ -2932,8 +2915,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
 		default: 
-			int x=masterQuestState.vars.indexOf(code.toUpperCase().trim());
-			if(x>=0) return (String)masterQuestState.vars.elementAt(x,2);
+			int x=questState.vars.indexOf(code.toUpperCase().trim());
+			if(x>=0) return (String)questState.vars.elementAt(x,2);
 			return "";
 		}
 	}
