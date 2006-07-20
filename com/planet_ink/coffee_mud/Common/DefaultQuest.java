@@ -254,14 +254,49 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
     	if(args==null) args=new Vector();
     	Vector theseArgs=new Vector();
-    	int[] indexes=new int[args.size()];
-    	//if(indexes.length==0)
+        boolean moreToDo=true;
+    	while(moreToDo)
+    	{
+	    	boolean bumped=false;
+    		moreToDo=false;
+	    	if(args.size()>0)
+	    	{
+		    	int[] indexes=new int[args.size()];
+		    	for(int i=0;i<args.size();i++)
+		    		if((args.elementAt(i) instanceof Vector)
+		    		&&(((Vector)args.elementAt(i)).size()>0))
+		    			indexes[i]=0;
+		    		else
+		    			indexes[i]=-1;
+		    	theseArgs.clear();
+		    	Vector V=null;
+		    	for(int i=0;i<args.size();i++)
+		    	{
+		    		if(indexes[i]<0)
+		    			theseArgs.addElement(args.elementAt(i));
+		    		else
+		    		{
+		    			V=(Vector)args.elementAt(i);
+		    			theseArgs.addElement(V.elementAt(indexes[i]));
+			    		if(!bumped)
+			    		{
+			    			bumped=true;
+			    			indexes[i]++;
+			    			if(indexes[i]>=V.size())
+			    			{
+			    				indexes[i]=0;
+			    				bumped=false;
+			    			}
+			    		}
+		    		}
+		    	}
+		        for(int i=0;i<indexes[i];i++)
+		        	if(indexes[i]>=0){ moreToDo=true; break;}
+	    	}
 	        parseQuestScript(script, theseArgs);
-    	//else
-    	//while(true)
-    	//{
-    		
-    	//}
+	        if((moreToDo)&&(!bumped))
+	        	break;
+    	}
     }
     
     public void parseQuestScript(Vector script, Vector args)
