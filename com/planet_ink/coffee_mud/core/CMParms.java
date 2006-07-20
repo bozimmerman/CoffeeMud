@@ -1012,6 +1012,12 @@ public class CMParms
         for(int i=0;i<from.size();i++)
             to.addElement(from.elementAt(i));
     }
+    public static void delFromVector(Vector del, Vector from)
+    {
+        if(del!=null)
+        for(int i=0;i<del.size();i++)
+            from.removeElement(del.elementAt(i));
+    }
 
     public static boolean vectorOfStringContainsIgnoreCase(Vector V, String s)
     {
