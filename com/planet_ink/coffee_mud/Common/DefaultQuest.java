@@ -396,7 +396,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.area=null;
                         if(p.size()<3) continue;
-                        try{ q.area=(Area)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+                        try{ q.area=(Area)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         Vector names=new Vector();
                         Vector areas=new Vector();
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
@@ -445,7 +445,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.mob=null;
                         if(p.size()<3) continue;
-                        try{ q.mob=(MOB)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+                        try{ q.mob=(MOB)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         Vector choices=new Vector();
                         Vector mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
                         for(int t=0;t<mobTypes.size();t++)
@@ -556,7 +556,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.mobGroup=null;
                         if(p.size()<3) continue;
-                        try{ q.mobGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+                        try{ q.mobGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
@@ -615,7 +615,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.itemGroup=null;
                         if(p.size()<3) continue;
-                        try{ q.itemGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+                        try{ q.itemGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
@@ -674,7 +674,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.item=null;
                         if(p.size()<3) continue;
-                        try{ q.item=(Item)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+                        try{ q.item=(Item)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         Vector choices=new Vector();
                         Vector itemTypes=new Vector();
                         for(int i=2;i<p.size();i++)
@@ -773,12 +773,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("LOCALE"))
                     	{
 	                        q.room=null;
-	                        try{ q.room=(Room)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+	                        try{ q.room=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                     	}
                     	else
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                     	}
                         if(p.size()<3) continue;
                         int range=0;
@@ -867,12 +867,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("ROOM"))
                     	{
 	                        q.room=null;
-	                        try{ q.room=(Room)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+	                        try{ q.room=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                     	}
                     	else
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                     	}
                         if(p.size()<3) continue;
                         int range=0;
@@ -984,7 +984,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.mob=null;
                         if(p.size()<3) continue;
-                        try{ q.mob=(MOB)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+                        try{ q.mob=(MOB)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
@@ -1068,7 +1068,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.item=null;
                         if(p.size()<3) continue;
-                        try{ q.item=(Item)getObjectIfSpecified(p,2,0); continue;}catch(Exception e){}
+                        try{ q.item=(Item)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
@@ -1261,7 +1261,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                         q.mysteryData.agentGroup=null;
                         if(p.size()<3) continue;
-                        try{ q.mysteryData.agentGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+                        try{ q.mysteryData.agentGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                         String numStr=CMParms.combine(p,2).toUpperCase();
                         if(!CMath.isInteger(numStr))
                         {
@@ -1302,12 +1302,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("WHEREHAPPENEDGROUP"))
                     	{
 	                    	q.mysteryData.whereHappenedGroup=null;
-	                        try{ q.mysteryData.whereHappenedGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+	                        try{ q.mysteryData.whereHappenedGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                     	}
                     	else
                     	{
 	                        q.mysteryData.whereAtGroup=null;
-	                        try{ q.mysteryData.whereAtGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+	                        try{ q.mysteryData.whereAtGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                     	}
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2).toUpperCase();
@@ -1361,9 +1361,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	if(cmd.equals("WHENHAPPENEDGROUP"))
+                    	{
 	                    	q.mysteryData.whenHappenedGroup=null;
+	                        try{ q.mysteryData.whenHappenedGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+                    	}
                     	else
+                    	{
 	                        q.mysteryData.whenAtGroup=null;
+	                        try{ q.mysteryData.whenAtGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+                    	}
                         if(p.size()<3) continue;
                         Vector V2=new Vector();
                         TimeClock NOW=getMysteryTimeNowFromState();
@@ -1406,9 +1412,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	if(cmd.equals("WHENHAPPENED"))
+                    	{
                     		q.mysteryData.whenHappened=null;
+	                        try{ q.mysteryData.whenHappened=(TimeClock)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                    	}
                     	else
+                    	{
                     		q.mysteryData.whenAt=null;
+	                        try{ q.mysteryData.whenAt=(TimeClock)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                    	}
                         if(p.size()<3) continue;
                         TimeClock NOW=getMysteryTimeNowFromState();
                         TimeClock TC=null;
@@ -1431,9 +1443,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	if(cmd.equals("MOTIVEGROUP"))
+                    	{
 	                    	q.mysteryData.motiveGroup=null;
+	                        try{ q.mysteryData.motiveGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+                    	}
                     	else
+                    	{
 	                    	q.mysteryData.actionGroup=null;
+	                        try{ q.mysteryData.actionGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+                    	}
                         if(p.size()<3) continue;
                         Vector V2=new Vector();
                         String Mstr=null;
@@ -1464,6 +1482,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	q.mysteryData.motive=null;
                         if(p.size()<3) continue;
+                        try{ q.mysteryData.motive=(String)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         q.mysteryData.motive=CMParms.combine(p,2);
                     }
                     else
@@ -1472,6 +1491,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	q.mysteryData.action=null;
                         if(p.size()<3) continue;
+                        try{ q.mysteryData.action=(String)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
                         q.mysteryData.action=CMParms.combine(p,2);
                     }
                     else
@@ -1479,6 +1499,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     ||cmd.equals("WHEREAT"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("WHEREHAPPENED"))
+                    	{
+                            try{ q.mysteryData.whereHappened=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                    	}
+                    	else
+                    	{
+                            try{ q.mysteryData.whereAt=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                    	}
                     	if(p.size()>2)
                         {
                             if(!isQuiet)
@@ -1505,12 +1533,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("TARGETGROUP"))
                     	{
 	                    	q.mysteryData.targetGroup=null;
-	                        try{ q.mysteryData.targetGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+	                        try{ q.mysteryData.targetGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                     	}
                     	else
                     	{
 	                    	q.mysteryData.toolGroup=null;
-	                        try{ q.mysteryData.toolGroup=(Vector)getObjectIfSpecified(p,2,1); continue;}catch(Exception e){}
+	                        try{ q.mysteryData.toolGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                     	}
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2).toUpperCase();
@@ -1581,6 +1609,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     ||cmd.equals("TOOL"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	if(cmd.equals("TARGET"))
+                    	{
+                            try{ q.mysteryData.target=(Environmental)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                    	}
+                    	else
+                    	{
+                            try{ q.mysteryData.tool=(Environmental)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                    	}
                     	if(p.size()>2)
                         {
                             if(!isQuiet)
@@ -2696,7 +2732,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return script;
     }
     
-    private Object getObjectIfSpecified(Vector parms, int startp, int object0vector1)
+    private Object getObjectIfSpecified(Vector parms, Vector args, int startp, int object0vector1)
     	throws CMException
     {
     	if(parms.size()-startp==0) throw new CMException("Not specified");
@@ -2714,13 +2750,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     		if((i==allParms.length())
     		||((i<allParms.length())&&((allParms.charAt(i)=='+')||(allParms.charAt(i)=='-'))))
     		{
-    			eval=allParms.substring(lastI,i).trim();
+    			eval=allParms.substring(lastI,i).trim().toUpperCase();
     			lastI=i+1;
     		}
     		if(eval!=null)
     		{
-    			if(!questState.isStat(eval)) throw new CMException ("Not specified: "+eval);
-    			O=questState.getStat(eval);
+    			if(eval.startsWith("ARG")&&CMath.isInteger(eval.substring(3)))
+    			{
+    				int num=CMath.s_int(eval.substring(3));
+    				if((num<=0)||(num>args.size()))  throw new CMException ("Not specified: "+eval);
+    				O=args.elementAt(num);
+    			}
+    			else
+    			{
+	    			if(!questState.isStat(eval)) throw new CMException ("Not specified: "+eval);
+	    			O=questState.getStat(eval);
+    			}
     			switch(code)
     			{
     			case '-':
