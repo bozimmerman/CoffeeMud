@@ -128,7 +128,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // or a LOAD command followed by the quest script path.
     public void setScript(String parm){
         parms=parm;
-        setVars(parseScripts(parm,new Vector()));
+        setVars(parseScripts(parm,new Vector(),new Vector()));
     }
     public String script(){return parms;}
 
@@ -301,10 +301,33 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public void parseQuestScript(Vector script, Vector args)
     {
+    	Vector finalScript=new Vector();
+    	for(int v=0;v<script.size();v++)
+    	{
+    		if(script.elementAt(v) instanceof String)
+    			finalScript.addElement(script.elementAt(v));
+    		else
+    		if(script.elementAt(v) instanceof Vector)
+    		{
+    			int vs=v;
+    			while((v<script.size())&&(script.elementAt(v) instanceof Vector))
+    				v++;
+    			int rnum=vs+CMLib.dice().roll(1,v-vs,-1);
+    			if(rnum<script.size())
+    			{
+    				Vector V=(Vector)script.elementAt(rnum);
+    				for(int v2=0;v2<V.size();v2++)
+    					if(V.elementAt(v2) instanceof String)
+	    					finalScript.addElement(V.elementAt(v2));
+    			}
+    		}
+    	}
+    	
+    	script=finalScript;
     	QuestState q=questState;
         for(int v=0;v<script.size();v++)
         {
-            String s=(String)script.elementAt(v);
+            String s=modifyStringFromArgs((String)script.elementAt(v),args);
             Vector p=CMParms.parse(s);
             boolean isQuiet=q.beQuiet;
             if(p.size()>0)
@@ -396,7 +419,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.area=null;
                         if(p.size()<3) continue;
-                        try{ q.area=(Area)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                        try{ q.area=(Area)getObjectIfSpecified(p,args,2,0); continue;}catch(CMException ex){}
                         Vector names=new Vector();
                         Vector areas=new Vector();
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
@@ -445,95 +468,98 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.mob=null;
                         if(p.size()<3) continue;
-                        try{ q.mob=(MOB)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
-                        Vector choices=new Vector();
-                        Vector mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
-                        for(int t=0;t<mobTypes.size();t++)
-                        {
-                            String mobType=(String)mobTypes.elementAt(t);
-                            if(mobType.startsWith("-")) continue;
-                            if(q.mobGroup==null)
-                            {
-                                try
-                                {
-                                    Enumeration e=CMLib.map().rooms();
-                                    if(q.roomGroup!=null) e=q.roomGroup.elements();
-                                    else
-                                    if(q.area!=null) e=q.area.getMetroMap();
-                                    for(;e.hasMoreElements();)
-                                    {
-                                        Room R2=(Room)e.nextElement();
-                                        for(int i=0;i<R2.numInhabitants();i++)
-                                        {
-                                            MOB M2=R2.fetchInhabitant(i);
-                                            if((M2!=null)&&(M2.isMonster()))
-                                            {
-                                                if(mobType.equalsIgnoreCase("any"))
-                                                    choices.addElement(M2);
-                                                else
-                                                if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
-                                                ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
-                                                ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-                                                ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
-                                                    choices.addElement(M2);
-                                            }
-                                        }
-                                    }
-                                }catch(NoSuchElementException e){}
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
-                                    {
-                                        MOB M2=(MOB)e.nextElement();
-                                        if((M2!=null)&&(M2.isMonster()))
-                                        {
-                                            if(mobType.equalsIgnoreCase("any"))
-                                                choices.addElement(M2);
-                                            else
-                                            if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
-                                            ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
-                                            ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-                                            ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
-                                                choices.addElement(M2);
-                                        }
-                                    }
-                                }catch(NoSuchElementException e){}
-                            }
+                        try{ 
+                        	q.mob=(MOB)getObjectIfSpecified(p,args,2,0); 
+                        }catch(CMException ex){
+	                        Vector choices=new Vector();
+	                        Vector mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
+	                        for(int t=0;t<mobTypes.size();t++)
+	                        {
+	                            String mobType=(String)mobTypes.elementAt(t);
+	                            if(mobType.startsWith("-")) continue;
+	                            if(q.mobGroup==null)
+	                            {
+	                                try
+	                                {
+	                                    Enumeration e=CMLib.map().rooms();
+	                                    if(q.roomGroup!=null) e=q.roomGroup.elements();
+	                                    else
+	                                    if(q.area!=null) e=q.area.getMetroMap();
+	                                    for(;e.hasMoreElements();)
+	                                    {
+	                                        Room R2=(Room)e.nextElement();
+	                                        for(int i=0;i<R2.numInhabitants();i++)
+	                                        {
+	                                            MOB M2=R2.fetchInhabitant(i);
+	                                            if((M2!=null)&&(M2.isMonster()))
+	                                            {
+	                                                if(mobType.equalsIgnoreCase("any"))
+	                                                    choices.addElement(M2);
+	                                                else
+	                                                if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+	                                                ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+	                                                ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+	                                                ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
+	                                                    choices.addElement(M2);
+	                                            }
+	                                        }
+	                                    }
+	                                }catch(NoSuchElementException e){}
+	                            }
+	                            else
+	                            {
+	                                try
+	                                {
+	                                    for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
+	                                    {
+	                                        MOB M2=(MOB)e.nextElement();
+	                                        if((M2!=null)&&(M2.isMonster()))
+	                                        {
+	                                            if(mobType.equalsIgnoreCase("any"))
+	                                                choices.addElement(M2);
+	                                            else
+	                                            if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+	                                            ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+	                                            ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+	                                            ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
+	                                                choices.addElement(M2);
+	                                        }
+	                                    }
+	                                }catch(NoSuchElementException e){}
+	                            }
+	                        }
+	                        if(choices!=null)
+	                        for(int t=0;t<mobTypes.size();t++)
+	                        {
+	                            String mobType=(String)mobTypes.elementAt(t);
+	                            if(!mobType.startsWith("-")) continue;
+	                            mobType=mobType.substring(1);
+	                            for(int i=choices.size()-1;i>=0;i--)
+	                            {
+	                                MOB M2=(MOB)choices.elementAt(i);
+	                                if((M2!=null)&&(M2.isMonster()))
+	                                {
+	                                    if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+	                                    ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+	                                    ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+	                                    ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0)
+	                                    ||(M2.name().toUpperCase().indexOf(mobType)>=0)
+	                                    ||(M2.displayText().toUpperCase().indexOf(mobType)>=0))
+	                                        choices.removeElement(M2);
+	                                }
+	                            }
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                        {
+	                            for(int c=choices.size()-1;c>=0;c--)
+	                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
+	                                    choices.removeElementAt(c);
+	                            if((choices.size()==0)&&(!isQuiet))
+	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
-                        if(choices!=null)
-                        for(int t=0;t<mobTypes.size();t++)
-                        {
-                            String mobType=(String)mobTypes.elementAt(t);
-                            if(!mobType.startsWith("-")) continue;
-                            mobType=mobType.substring(1);
-                            for(int i=choices.size()-1;i>=0;i--)
-                            {
-                                MOB M2=(MOB)choices.elementAt(i);
-                                if((M2!=null)&&(M2.isMonster()))
-                                {
-                                    if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
-                                    ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
-                                    ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-                                    ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0)
-                                    ||(M2.name().toUpperCase().indexOf(mobType)>=0)
-                                    ||(M2.displayText().toUpperCase().indexOf(mobType)>=0))
-                                        choices.removeElement(M2);
-                                }
-                            }
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                        {
-                            for(int c=choices.size()-1;c>=0;c--)
-                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
-                                    choices.removeElementAt(c);
-                            if((choices.size()==0)&&(!isQuiet))
-                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.mob==null)
                         {
                             if(!isQuiet)
@@ -556,50 +582,53 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.mobGroup=null;
                         if(p.size()<3) continue;
-                        try{ q.mobGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                         Vector choices=null;
-                        Vector choices0=new Vector();
-                        Vector choices1=new Vector();
-                        Vector choices2=new Vector();
-                        Vector choices3=new Vector();
                         String mobName=CMParms.combine(p,2).toUpperCase();
-                        String mask="";
-                        int x=s.lastIndexOf("MASK=");
-                        if(x>=0)
-                        {
-                            mask=s.substring(x+5).trim();
-                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
-                        }
-                        if(mobName.length()==0) mobName="ANY";
-                        try
-                        {
-                            Enumeration e=CMLib.map().rooms();
-                            if(q.roomGroup!=null) e=q.roomGroup.elements();
-                            else
-                            if(q.area!=null) e=q.area.getMetroMap();
-                            for(;e.hasMoreElements();)
-                            {
-                                Room R2=(Room)e.nextElement();
-                                for(int i=0;i<R2.numInhabitants();i++)
-                                {
-                                    MOB M2=R2.fetchInhabitant(i);
-                                    if((M2!=null)&&(M2.isMonster()))
-                                    {
-                                        if(!CMLib.masking().maskCheck(mask,M2))
-                                            continue;
-                                        choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
-                                    }
-                                }
-                            }
-                        }catch(NoSuchElementException e){}
-                        
-                        if((choices!=null)&&(choices.size()>0))
-                        {
-                            for(int c=choices.size()-1;c>=0;c--)
-                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
-                                    choices.removeElementAt(c);
-                            if((choices.size()==0)&&(!isQuiet))
-                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+                        try{ 
+                        	choices=(Vector)getObjectIfSpecified(p,args,2,1); 
+                        }catch(CMException ex){
+	                        Vector choices0=new Vector();
+	                        Vector choices1=new Vector();
+	                        Vector choices2=new Vector();
+	                        Vector choices3=new Vector();
+	                        String mask="";
+	                        int x=s.lastIndexOf("MASK=");
+	                        if(x>=0)
+	                        {
+	                            mask=s.substring(x+5).trim();
+	                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+	                        }
+	                        if(mobName.length()==0) mobName="ANY";
+	                        try
+	                        {
+	                            Enumeration e=CMLib.map().rooms();
+	                            if(q.roomGroup!=null) e=q.roomGroup.elements();
+	                            else
+	                            if(q.area!=null) e=q.area.getMetroMap();
+	                            for(;e.hasMoreElements();)
+	                            {
+	                                Room R2=(Room)e.nextElement();
+	                                for(int i=0;i<R2.numInhabitants();i++)
+	                                {
+	                                    MOB M2=R2.fetchInhabitant(i);
+	                                    if((M2!=null)&&(M2.isMonster()))
+	                                    {
+	                                        if(!CMLib.masking().maskCheck(mask,M2))
+	                                            continue;
+	                                        choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+	                                    }
+	                                }
+	                            }
+	                        }catch(NoSuchElementException e){}
+	                        
+	                        if((choices!=null)&&(choices.size()>0))
+	                        {
+	                            for(int c=choices.size()-1;c>=0;c--)
+	                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
+	                                    choices.removeElementAt(c);
+	                            if((choices.size()==0)&&(!isQuiet))
+	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        }
                         }
                         if((choices!=null)&&(choices.size()>0))
                             q.mobGroup=choices;
@@ -615,43 +644,45 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.itemGroup=null;
                         if(p.size()<3) continue;
-                        try{ q.itemGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
                         Vector choices=null;
-                        Vector choices0=new Vector();
-                        Vector choices1=new Vector();
-                        Vector choices2=new Vector();
-                        Vector choices3=new Vector();
                         String itemName=CMParms.combine(p,2).toUpperCase();
-                        String mask="";
-                        int x=s.lastIndexOf("MASK=");
-                        if(x>=0)
-                        {
-                            mask=s.substring(x+5).trim();
-                            itemName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+                        try{ 
+                        	q.itemGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+                        }catch(CMException ex){
+	                        Vector choices0=new Vector();
+	                        Vector choices1=new Vector();
+	                        Vector choices2=new Vector();
+	                        Vector choices3=new Vector();
+	                        String mask="";
+	                        int x=s.lastIndexOf("MASK=");
+	                        if(x>=0)
+	                        {
+	                            mask=s.substring(x+5).trim();
+	                            itemName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+	                        }
+	                        if(itemName.length()==0) itemName="ANY";
+	                        try
+	                        {
+	                            Enumeration e=CMLib.map().rooms();
+	                            if(q.roomGroup!=null) e=q.roomGroup.elements();
+	                            else
+	                            if(q.area!=null) e=q.area.getMetroMap();
+	                            for(;e.hasMoreElements();)
+	                            {
+	                                Room R2=(Room)e.nextElement();
+	                                for(int i=0;i<R2.numItems();i++)
+	                                {
+	                                    Item I2=R2.fetchItem(i);
+	                                    if(I2!=null)
+	                                    {
+	                                        if(!CMLib.masking().maskCheck(mask,I2))
+	                                            continue;
+	                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+	                                    }
+	                                }
+	                            }
+	                        }catch(NoSuchElementException e){}
                         }
-                        if(itemName.length()==0) itemName="ANY";
-                        try
-                        {
-                            Enumeration e=CMLib.map().rooms();
-                            if(q.roomGroup!=null) e=q.roomGroup.elements();
-                            else
-                            if(q.area!=null) e=q.area.getMetroMap();
-                            for(;e.hasMoreElements();)
-                            {
-                                Room R2=(Room)e.nextElement();
-                                for(int i=0;i<R2.numItems();i++)
-                                {
-                                    Item I2=R2.fetchItem(i);
-                                    if(I2!=null)
-                                    {
-                                        if(!CMLib.masking().maskCheck(mask,I2))
-                                            continue;
-                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
-                                    }
-                                }
-                            }
-                        }catch(NoSuchElementException e){}
-                        
                         if((choices!=null)&&(choices.size()>0))
                         {
                             for(int c=choices.size()-1;c>=0;c--)
@@ -674,29 +705,47 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.item=null;
                         if(p.size()<3) continue;
-                        try{ q.item=(Item)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
-                        Vector choices=new Vector();
-                        Vector itemTypes=new Vector();
-                        for(int i=2;i<p.size();i++)
-                            itemTypes.addElement(p.elementAt(i));
-                        for(int t=0;t<itemTypes.size();t++)
-                        {
-                            String itemType=((String)itemTypes.elementAt(t)).toUpperCase();
-                            if(itemType.startsWith("-")) continue;
-                            try
-                            {
-                                if(q.itemGroup==null)
-                                {
-                                    Enumeration e=CMLib.map().rooms();
-                                    if(q.roomGroup!=null) e=q.roomGroup.elements();
-                                    else
-                                    if(q.area!=null) e=q.area.getMetroMap();
-	                                for(;e.hasMoreElements();)
+                        try{ 
+                        	q.item=(Item)getObjectIfSpecified(p,args,2,0); 
+                        }catch(CMException ex){
+	                        Vector choices=new Vector();
+	                        Vector itemTypes=new Vector();
+	                        for(int i=2;i<p.size();i++)
+	                            itemTypes.addElement(p.elementAt(i));
+	                        for(int t=0;t<itemTypes.size();t++)
+	                        {
+	                            String itemType=((String)itemTypes.elementAt(t)).toUpperCase();
+	                            if(itemType.startsWith("-")) continue;
+	                            try
+	                            {
+	                                if(q.itemGroup==null)
 	                                {
-	                                    Room R2=(Room)e.nextElement();
-	                                    for(int i=0;i<R2.numItems();i++)
+	                                    Enumeration e=CMLib.map().rooms();
+	                                    if(q.roomGroup!=null) e=q.roomGroup.elements();
+	                                    else
+	                                    if(q.area!=null) e=q.area.getMetroMap();
+		                                for(;e.hasMoreElements();)
+		                                {
+		                                    Room R2=(Room)e.nextElement();
+		                                    for(int i=0;i<R2.numItems();i++)
+		                                    {
+		                                        Item I2=R2.fetchItem(i);
+		                                        if((I2!=null))
+		                                        {
+		                                            if(itemType.equalsIgnoreCase("any"))
+		                                                choices.addElement(I2);
+		                                            else
+		                                            if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+		                                                choices.addElement(I2);
+		                                        }
+		                                    }
+		                                }
+	                                }
+	                                else
+	                                {
+	                                    for(Enumeration e=q.itemGroup.elements();e.hasMoreElements();)
 	                                    {
-	                                        Item I2=R2.fetchItem(i);
+	                                        Item I2=(Item)e.nextElement();
 	                                        if((I2!=null))
 	                                        {
 	                                            if(itemType.equalsIgnoreCase("any"))
@@ -707,49 +756,34 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                        }
 	                                    }
 	                                }
-                                }
-                                else
-                                {
-                                    for(Enumeration e=q.itemGroup.elements();e.hasMoreElements();)
-                                    {
-                                        Item I2=(Item)e.nextElement();
-                                        if((I2!=null))
-                                        {
-                                            if(itemType.equalsIgnoreCase("any"))
-                                                choices.addElement(I2);
-                                            else
-                                            if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
-                                                choices.addElement(I2);
-                                        }
-                                    }
-                                }
-                            }catch(NoSuchElementException e){}
+	                            }catch(NoSuchElementException e){}
+	                        }
+	                        if(choices!=null)
+	                        for(int t=0;t<itemTypes.size();t++)
+	                        {
+	                            String itemType=(String)itemTypes.elementAt(t);
+	                            if(!itemType.startsWith("-")) continue;
+	                            itemType=itemType.substring(1);
+	                            for(int i=choices.size()-1;i>=0;i--)
+	                            {
+	                                Item I2=(Item)choices.elementAt(i);
+	                                if((CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+	                                ||(I2.name().toUpperCase().indexOf(itemType)>=0)
+	                                ||(I2.displayText().toUpperCase().indexOf(itemType)>=0))
+	                                    choices.removeElement(I2);
+	                            }
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                        {
+	                            for(int c=choices.size()-1;c>=0;c--)
+	                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
+	                                    choices.removeElementAt(c);
+	                            if((choices.size()==0)&&(!isQuiet))
+	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
-                        if(choices!=null)
-                        for(int t=0;t<itemTypes.size();t++)
-                        {
-                            String itemType=(String)itemTypes.elementAt(t);
-                            if(!itemType.startsWith("-")) continue;
-                            itemType=itemType.substring(1);
-                            for(int i=choices.size()-1;i>=0;i--)
-                            {
-                                Item I2=(Item)choices.elementAt(i);
-                                if((CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
-                                ||(I2.name().toUpperCase().indexOf(itemType)>=0)
-                                ||(I2.displayText().toUpperCase().indexOf(itemType)>=0))
-                                    choices.removeElement(I2);
-                            }
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                        {
-                            for(int c=choices.size()-1;c>=0;c--)
-                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
-                                    choices.removeElementAt(c);
-                            if((choices.size()==0)&&(!isQuiet))
-                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.item==null)
                         {
                             if(!isQuiet)
@@ -773,12 +807,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("LOCALE"))
                     	{
 	                        q.room=null;
-	                        try{ q.room=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.room=(Room)getObjectIfSpecified(p,args,2,0); 
+	                        	if(q.room!=null)
+	                        	{
+	                        		q.area=q.room.getArea();
+		                        	q.envObject=q.room;
+	                        	}
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                     	else
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         int range=0;
@@ -859,6 +901,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.error=true; break;
 	                        }
 	                        q.area=q.room.getArea();
+	                    	q.envObject=q.room;
                         }
                     }
                     else
@@ -867,12 +910,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("ROOM"))
                     	{
 	                        q.room=null;
-	                        try{ q.room=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.room=(Room)getObjectIfSpecified(p,args,2,0); 
+	                        	if(q.room!=null)
+	                        	{
+	                        		q.area=q.room.getArea();
+		                        	q.envObject=q.room;
+	                        	}
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                     	else
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         int range=0;
@@ -977,6 +1028,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.error=true; break;
 	                        }
 	                        q.area=q.room.getArea();
+	                    	q.envObject=q.room;
                         }
                     }
                     else
@@ -984,68 +1036,71 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.mob=null;
                         if(p.size()<3) continue;
-                        try{ q.mob=(MOB)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
-                        Vector choices=null;
-                        Vector choices0=new Vector();
-                        Vector choices1=new Vector();
-                        Vector choices2=new Vector();
-                        Vector choices3=new Vector();
                         String mobName=CMParms.combine(p,2).toUpperCase();
-                        String mask="";
-                        int x=s.lastIndexOf("MASK=");
-                        if(x>=0)
-                        {
-                            mask=s.substring(x+5).trim();
-                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+                        try{ 
+                        	q.mob=(MOB)getObjectIfSpecified(p,args,2,0); 
+                        }catch(CMException ex){
+	                        Vector choices=null;
+	                        Vector choices0=new Vector();
+	                        Vector choices1=new Vector();
+	                        Vector choices2=new Vector();
+	                        Vector choices3=new Vector();
+	                        String mask="";
+	                        int x=s.lastIndexOf("MASK=");
+	                        if(x>=0)
+	                        {
+	                            mask=s.substring(x+5).trim();
+	                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+	                        }
+	                        if(mobName.length()==0) mobName="ANY";
+	                        if(q.mobGroup!=null)
+	                        {
+	                            for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
+	                            {
+	                                MOB M2=(MOB)e.nextElement();
+	                                if((M2!=null)&&(M2.isMonster()))
+	                                {
+	                                    if(!CMLib.masking().maskCheck(mask,M2))
+	                                        continue;
+	                                    choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+	                                }
+	                            }
+	                        }
+	                        else
+	                        {
+	                            try
+	                            {
+	                                Enumeration e=CMLib.map().rooms();
+	                                if(q.roomGroup!=null) e=q.roomGroup.elements();
+	                                else
+	                                if(q.area!=null) e=q.area.getMetroMap();
+	                                for(;e.hasMoreElements();)
+	                                {
+	                                    Room R2=(Room)e.nextElement();
+	                                    for(int i=0;i<R2.numInhabitants();i++)
+	                                    {
+	                                        MOB M2=R2.fetchInhabitant(i);
+	                                        if((M2!=null)&&(M2.isMonster()))
+	                                        {
+	                                            if(!CMLib.masking().maskCheck(mask,M2))
+	                                                continue;
+	                                            choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+	                                        }
+	                                    }
+	                                }
+	                            }catch(NoSuchElementException e){}
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                        {
+	                            for(int c=choices.size()-1;c>=0;c--)
+	                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
+	                                    choices.removeElementAt(c);
+	                            if((choices.size()==0)&&(!isQuiet))
+	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
-                        if(mobName.length()==0) mobName="ANY";
-                        if(q.mobGroup!=null)
-                        {
-                            for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
-                            {
-                                MOB M2=(MOB)e.nextElement();
-                                if((M2!=null)&&(M2.isMonster()))
-                                {
-                                    if(!CMLib.masking().maskCheck(mask,M2))
-                                        continue;
-                                    choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                                Enumeration e=CMLib.map().rooms();
-                                if(q.roomGroup!=null) e=q.roomGroup.elements();
-                                else
-                                if(q.area!=null) e=q.area.getMetroMap();
-                                for(;e.hasMoreElements();)
-                                {
-                                    Room R2=(Room)e.nextElement();
-                                    for(int i=0;i<R2.numInhabitants();i++)
-                                    {
-                                        MOB M2=R2.fetchInhabitant(i);
-                                        if((M2!=null)&&(M2.isMonster()))
-                                        {
-                                            if(!CMLib.masking().maskCheck(mask,M2))
-                                                continue;
-                                            choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
-                                        }
-                                    }
-                                }
-                            }catch(NoSuchElementException e){}
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                        {
-                            for(int c=choices.size()-1;c>=0;c--)
-                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
-                                    choices.removeElementAt(c);
-                            if((choices.size()==0)&&(!isQuiet))
-                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.mob==null)
                         {
                             if(!isQuiet)
@@ -1068,68 +1123,71 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.item=null;
                         if(p.size()<3) continue;
-                        try{ q.item=(Item)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
-                        Vector choices=null;
-                        Vector choices0=new Vector();
-                        Vector choices1=new Vector();
-                        Vector choices2=new Vector();
-                        Vector choices3=new Vector();
                         String itemName=CMParms.combine(p,2).toUpperCase();
-                        String mask="";
-                        int x=s.lastIndexOf("MASK=");
-                        if(x>=0)
-                        {
-                            mask=s.substring(x+5).trim();
-                            itemName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+                        try{ 
+                        	q.item=(Item)getObjectIfSpecified(p,args,2,0); 
+                        }catch(CMException ex){
+	                        Vector choices=null;
+	                        Vector choices0=new Vector();
+	                        Vector choices1=new Vector();
+	                        Vector choices2=new Vector();
+	                        Vector choices3=new Vector();
+	                        String mask="";
+	                        int x=s.lastIndexOf("MASK=");
+	                        if(x>=0)
+	                        {
+	                            mask=s.substring(x+5).trim();
+	                            itemName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
+	                        }
+	                        if(itemName.trim().length()==0) itemName="ANY";
+	                        try
+	                        {
+	                        if(q.itemGroup!=null)
+	                        {
+	                            for(Enumeration e=q.itemGroup.elements();e.hasMoreElements();)
+	                            {
+	                                Item I2=(Item)e.nextElement();
+	                                if(I2!=null)
+	                                {
+	                                    if(!CMLib.masking().maskCheck(mask,I2))
+	                                        continue;
+	                                    choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+	                                }
+	                            }
+	                        }
+	                        else
+	                        {
+	                            Enumeration e=CMLib.map().rooms();
+	                            if(q.roomGroup!=null) e=q.roomGroup.elements();
+	                            else
+	                            if(q.area!=null) e=q.area.getMetroMap();
+	                            for(;e.hasMoreElements();)
+	                            {
+	                                Room R2=(Room)e.nextElement();
+	                                for(int i=0;i<R2.numItems();i++)
+	                                {
+	                                    Item I2=R2.fetchItem(i);
+	                                    if(I2!=null)
+	                                    {
+	                                        if(!CMLib.masking().maskCheck(mask,I2))
+	                                            continue;
+	                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+	                                    }
+	                                }
+	                            }
+	                        }
+	                        }catch(NoSuchElementException e){}
+	                        if((choices!=null)&&(choices.size()>0))
+	                        {
+	                            for(int c=choices.size()-1;c>=0;c--)
+	                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
+	                                    choices.removeElementAt(c);
+	                            if((choices.size()==0)&&(!isQuiet))
+	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        }
+	                        if((choices!=null)&&(choices.size()>0))
+	                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
-                        if(itemName.trim().length()==0) itemName="ANY";
-                        try
-                        {
-                        if(q.itemGroup!=null)
-                        {
-                            for(Enumeration e=q.itemGroup.elements();e.hasMoreElements();)
-                            {
-                                Item I2=(Item)e.nextElement();
-                                if(I2!=null)
-                                {
-                                    if(!CMLib.masking().maskCheck(mask,I2))
-                                        continue;
-                                    choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Enumeration e=CMLib.map().rooms();
-                            if(q.roomGroup!=null) e=q.roomGroup.elements();
-                            else
-                            if(q.area!=null) e=q.area.getMetroMap();
-                            for(;e.hasMoreElements();)
-                            {
-                                Room R2=(Room)e.nextElement();
-                                for(int i=0;i<R2.numItems();i++)
-                                {
-                                    Item I2=R2.fetchItem(i);
-                                    if(I2!=null)
-                                    {
-                                        if(!CMLib.masking().maskCheck(mask,I2))
-                                            continue;
-                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
-                                    }
-                                }
-                            }
-                        }
-                        }catch(NoSuchElementException e){}
-                        if((choices!=null)&&(choices.size()>0))
-                        {
-                            for(int c=choices.size()-1;c>=0;c--)
-                                if(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null)
-                                    choices.removeElementAt(c);
-                            if((choices.size()==0)&&(!isQuiet))
-                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.item==null)
                         {
                             if(!isQuiet)
@@ -1151,11 +1209,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     if(cmd.equals("AGENT"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
-                    	if(p.size()>2)
-                        {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', agent syntax '"+CMParms.combine(p,2)+"'.");
-                            q.error=true; break;
+                        try{ 
+                        	q.mob=(MOB)getObjectIfSpecified(p,args,2,0); 
+                        }catch(CMException ex){
+	                    	if(p.size()>2)
+	                        {
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', agent syntax '"+CMParms.combine(p,2)+"'.");
+	                            q.error=true; break;
+	                        }
                         }
                     	if(q.mob==null)
                         {
@@ -1175,24 +1237,28 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2);
                         Faction F=null;
-                        if(numStr.equalsIgnoreCase("ANY"))
-                        {
-                        	int numFactions=CMLib.factions().factionSet().size();
-                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
-                        	int curFaction=0;
-                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
-                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
-                        	{
-                        		F=(Faction)e.nextElement();
-                        		if(curFaction==whichFaction)
-                        			break;
-                        		curFaction++;
-                        	}
-                        }
-                        else
-                        {
-	                        F=CMLib.factions().getFaction(numStr);
-	                        if(F==null) F=CMLib.factions().getFactionByName(numStr);
+                        try{ 
+                        	F=(Faction)getObjectIfSpecified(p,args,2,0); 
+                        }catch(CMException ex){
+	                        if(numStr.equalsIgnoreCase("ANY"))
+	                        {
+	                        	int numFactions=CMLib.factions().factionSet().size();
+	                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
+	                        	int curFaction=0;
+	                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
+	                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
+	                        	{
+	                        		F=(Faction)e.nextElement();
+	                        		if(curFaction==whichFaction)
+	                        			break;
+	                        		curFaction++;
+	                        	}
+	                        }
+	                        else
+	                        {
+		                        F=CMLib.factions().getFaction(numStr);
+		                        if(F==null) F=CMLib.factions().getFactionByName(numStr);
+	                        }
                         }
                         if(F==null)
                         {
@@ -1208,51 +1274,57 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	q.mysteryData.factionGroup=null;
                         if(p.size()<3) continue;
-                        String numStr=CMParms.combine(p,2);
-                        Faction F=null;
-                    	if(q.mysteryData.faction!=null)
-                    		q.mysteryData.factionGroup.addElement(q.mysteryData.faction);
-                        if(CMath.isInteger(numStr)||numStr.equalsIgnoreCase("ALL"))
-                        {
-                        	int numFactions=CMLib.factions().factionSet().size();
-                        	if(numStr.equalsIgnoreCase("ALL")) numStr=""+numFactions;
-                        	int num=CMath.s_int(numStr);
-                        	if(num>=numFactions) num=numFactions;
-                        	int tries=500;
-                        	while((q.mysteryData.factionGroup.size()<num)&&(--tries>0))
-                        	{
-	                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
-	                        	int curFaction=0;
-	                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
-	                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
-	                        	{
-	                        		F=(Faction)e.nextElement();
-	                        		if(curFaction==whichFaction)
-	                        			break;
-	                        		curFaction++;
-	                        	}
-	                        	if(!q.mysteryData.factionGroup.contains(F))
-	                        		q.mysteryData.factionGroup.addElement(F);
-                        	}
-                        }
-                        else
-                        {
-	                        for(int pi=2;pi<p.size();pi++)
+                        try{ 
+                        	q.mysteryData.factionGroup=(Vector)getObjectIfSpecified(p,args,2,1);
+                        }catch(CMException ex){
+	                        String numStr=CMParms.combine(p,2);
+	                        Faction F=null;
+	                    	if(q.mysteryData.faction!=null)
+	                    		q.mysteryData.factionGroup.addElement(q.mysteryData.faction);
+	                        if(CMath.isInteger(numStr)||numStr.equalsIgnoreCase("ALL"))
 	                        {
-		                        F=CMLib.factions().getFaction((String)p.elementAt(pi));
-		                        if(F==null) F=CMLib.factions().getFactionByName((String)p.elementAt(pi));
-		                        if(F==null)
-		                        {
-		                            if(!isQuiet)
-		                                Log.errOut("Quest","Quest '"+name()+"', !factiongroup '"+(String)p.elementAt(pi)+"'.");
-		                            q.error=true; break;
-		                        }
-	                        	if(!q.mysteryData.factionGroup.contains(F))
-	                        		q.mysteryData.factionGroup.addElement(F);
+	                        	int numFactions=CMLib.factions().factionSet().size();
+	                        	if(numStr.equalsIgnoreCase("ALL")) numStr=""+numFactions;
+	                        	int num=CMath.s_int(numStr);
+	                        	if(num>=numFactions) num=numFactions;
+	                        	int tries=500;
+	                        	while((q.mysteryData.factionGroup.size()<num)&&(--tries>0))
+	                        	{
+		                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
+		                        	int curFaction=0;
+		                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
+		                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
+		                        	{
+		                        		F=(Faction)e.nextElement();
+		                        		if(curFaction==whichFaction)
+		                        			break;
+		                        		curFaction++;
+		                        	}
+		                        	if(!q.mysteryData.factionGroup.contains(F))
+		                        		q.mysteryData.factionGroup.addElement(F);
+	                        	}
 	                        }
-	                        if(q.error) break;
+	                        else
+	                        {
+		                        for(int pi=2;pi<p.size();pi++)
+		                        {
+			                        F=CMLib.factions().getFaction((String)p.elementAt(pi));
+			                        if(F==null) F=CMLib.factions().getFactionByName((String)p.elementAt(pi));
+			                        if(F==null)
+			                        {
+			                            if(!isQuiet)
+			                                Log.errOut("Quest","Quest '"+name()+"', !factiongroup '"+(String)p.elementAt(pi)+"'.");
+			                            q.error=true; break;
+			                        }
+		                        	if(!q.mysteryData.factionGroup.contains(F))
+		                        		q.mysteryData.factionGroup.addElement(F);
+		                        }
+		                        if(q.error) break;
+	                        }
                         }
-                        if((q.mysteryData.factionGroup.size()>0)&&(q.mysteryData.faction==null))
+                        if((q.mysteryData.factionGroup!=null)
+                        &&(q.mysteryData.factionGroup.size()>0)
+                        &&(q.mysteryData.faction==null))
 	                        q.mysteryData.faction=(Faction)q.mysteryData.factionGroup.elementAt(CMLib.dice().roll(1,q.mysteryData.factionGroup.size(),-1));
                     }
                     else
@@ -1261,38 +1333,46 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                         q.mysteryData.agentGroup=null;
                         if(p.size()<3) continue;
-                        try{ q.mysteryData.agentGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
-                        String numStr=CMParms.combine(p,2).toUpperCase();
-                        if(!CMath.isInteger(numStr))
-                        {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup #'"+numStr+"'.");
-                            q.error=true; break;
+                        try{ 
+                        	q.mysteryData.agentGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+                            if((q.mysteryData.agentGroup!=null)
+                            &&(q.mysteryData.agentGroup.size()>0)
+                            &&(q.mysteryData.agent==null))
+    	                        q.mysteryData.agent=(MOB)q.mysteryData.agentGroup.elementAt(CMLib.dice().roll(1,q.mysteryData.agentGroup.size(),-1));
+                        }catch(CMException ex){
+	                        String numStr=CMParms.combine(p,2).toUpperCase();
+	                        if(!CMath.isInteger(numStr))
+	                        {
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup #'"+numStr+"'.");
+	                            q.error=true; break;
+	                        }
+	                        if((q.mobGroup==null)||(q.mobGroup.size()==0))
+	                        {
+	                            if(!isQuiet)
+	                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup mobgroup.");
+	                            q.error=true; break;
+	                        }
+	                        Vector V=(Vector)q.mobGroup.clone();
+	                        q.mysteryData.agentGroup=new Vector();
+	                        if(q.mysteryData.agent!=null)
+	                        	q.mysteryData.agentGroup.addElement(q.mysteryData.agent);
+	                        int num=CMath.s_int(numStr);
+	                        if(num>=V.size()) num=V.size();
+	                        while((q.mysteryData.agentGroup.size()<num)&&(V.size()>0))
+	                        {
+	                        	int dex=CMLib.dice().roll(1,V.size(),-1);
+	                        	Object O=V.elementAt(dex);
+	                        	V.removeElementAt(dex);
+	                        	q.mysteryData.agentGroup.addElement(O);
+	                            if(q.mysteryData.agent==null) q.mysteryData.agent=(MOB)O;
+	                        	num--;
+	                        }
+	                        questifyScriptableBehavs(q.mob);
                         }
-                        if((q.mobGroup==null)||(q.mobGroup.size()==0))
-                        {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup mobgroup.");
-                            q.error=true; break;
-                        }
-                        Vector V=(Vector)q.mobGroup.clone();
-                        q.mysteryData.agentGroup=new Vector();
-                        if(q.mysteryData.agent!=null)
-                        	q.mysteryData.agentGroup.addElement(q.mysteryData.agent);
-                        int num=CMath.s_int(numStr);
-                        if(num>=V.size()) num=V.size();
-                        while((q.mysteryData.agentGroup.size()<num)&&(V.size()>0))
-                        {
-                        	int dex=CMLib.dice().roll(1,V.size(),-1);
-                        	Object O=V.elementAt(dex);
-                        	V.removeElementAt(dex);
-                        	q.mysteryData.agentGroup.addElement(O);
-                            if(q.mysteryData.agent==null) q.mysteryData.agent=(MOB)O;
-                        	num--;
-                        }
-                        questifyScriptableBehavs(q.mob);
                         q.mob=q.mysteryData.agent;
-                        q.mobGroup=(Vector)q.mysteryData.agentGroup.clone();
+                        if(q.mysteryData.agentGroup!=null)
+	                        q.mobGroup=(Vector)q.mysteryData.agentGroup.clone();
                         q.envObject=q.mysteryData.agent;
                     }
                     else   
@@ -1302,12 +1382,26 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("WHEREHAPPENEDGROUP"))
                     	{
 	                    	q.mysteryData.whereHappenedGroup=null;
-	                        try{ q.mysteryData.whereHappenedGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.whereHappenedGroup=(Vector)getObjectIfSpecified(p,args,2,1);
+	                        	q.roomGroup=q.mysteryData.whereHappenedGroup;
+	                        	q.mysteryData.whereHappened=((q.roomGroup==null)||(q.roomGroup.size()==0))?null:
+	                        								(Room)q.roomGroup.elementAt(CMLib.dice().roll(1,q.roomGroup.size(),-1));
+	                            q.envObject=q.mysteryData.whereHappened;
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                     	else
                     	{
 	                        q.mysteryData.whereAtGroup=null;
-	                        try{ q.mysteryData.whereAtGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.whereAtGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	q.roomGroup=q.mysteryData.whereAtGroup;
+	                        	q.mysteryData.whereAt=((q.roomGroup==null)||(q.roomGroup.size()==0))?null:
+	                        						  (Room)q.roomGroup.elementAt(CMLib.dice().roll(1,q.roomGroup.size(),-1));
+	                            q.envObject=q.mysteryData.whereAt;
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2).toUpperCase();
@@ -1360,20 +1454,33 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     if(cmd.equals("WHENHAPPENEDGROUP")||cmd.equals("WHENATGROUP"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	Vector V2;
+                        TimeClock TC=null;
                     	if(cmd.equals("WHENHAPPENEDGROUP"))
                     	{
 	                    	q.mysteryData.whenHappenedGroup=null;
-	                        try{ q.mysteryData.whenHappenedGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.whenHappenedGroup=(Vector)getObjectIfSpecified(p,args,2,1);
+	                        	V2=q.mysteryData.whenHappenedGroup;
+	                        	if((V2!=null)&&(V2.size()>0))
+		                    		q.mysteryData.whenHappened=(TimeClock)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                     	else
                     	{
 	                        q.mysteryData.whenAtGroup=null;
-	                        try{ q.mysteryData.whenAtGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.whenAtGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	V2=q.mysteryData.whenAtGroup;
+	                        	if((V2!=null)&&(V2.size()>0))
+		                    		q.mysteryData.whenAt=(TimeClock)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
-                        Vector V2=new Vector();
+                        V2=new Vector();
                         TimeClock NOW=getMysteryTimeNowFromState();
-                        TimeClock TC=null;
                     	if(TC!=null) V2.addElement(TC);
                     	if(cmd.equals("WHENHAPPENEDGROUP"))
                     	{
@@ -1414,12 +1521,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(cmd.equals("WHENHAPPENED"))
                     	{
                     		q.mysteryData.whenHappened=null;
-	                        try{ q.mysteryData.whenHappened=(TimeClock)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+	                        try{ q.mysteryData.whenHappened=(TimeClock)getObjectIfSpecified(p,args,2,0); continue;}catch(CMException ex){}
                     	}
                     	else
                     	{
                     		q.mysteryData.whenAt=null;
-	                        try{ q.mysteryData.whenAt=(TimeClock)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+	                        try{ q.mysteryData.whenAt=(TimeClock)getObjectIfSpecified(p,args,2,0); continue;}catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         TimeClock NOW=getMysteryTimeNowFromState();
@@ -1442,18 +1549,31 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     if(cmd.equals("MOTIVEGROUP")||cmd.equals("ACTIONGROUP"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	Vector V2=null;
                     	if(cmd.equals("MOTIVEGROUP"))
                     	{
 	                    	q.mysteryData.motiveGroup=null;
-	                        try{ q.mysteryData.motiveGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.motiveGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	V2=q.mysteryData.motiveGroup;
+	                        	if((V2!=null)&&(V2.size()>0))
+		                    		q.mysteryData.motive=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                     	else
                     	{
 	                    	q.mysteryData.actionGroup=null;
-	                        try{ q.mysteryData.actionGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.actionGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	V2=q.mysteryData.actionGroup;
+	                        	if((V2!=null)&&(V2.size()>0))
+		                    		q.mysteryData.action=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
-                        Vector V2=new Vector();
+                        V2=new Vector();
                         String Mstr=null;
                     	if(cmd.equals("MOTIVEGROUP"))
                     	{
@@ -1482,7 +1602,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	q.mysteryData.motive=null;
                         if(p.size()<3) continue;
-                        try{ q.mysteryData.motive=(String)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                        try{ q.mysteryData.motive=(String)getObjectIfSpecified(p,args,2,0); continue;}catch(CMException ex){}
                         q.mysteryData.motive=CMParms.combine(p,2);
                     }
                     else
@@ -1491,7 +1611,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	q.mysteryData.action=null;
                         if(p.size()<3) continue;
-                        try{ q.mysteryData.action=(String)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                        try{ q.mysteryData.action=(String)getObjectIfSpecified(p,args,2,0); continue;}catch(CMException ex){}
                         q.mysteryData.action=CMParms.combine(p,2);
                     }
                     else
@@ -1501,11 +1621,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	if(cmd.equals("WHEREHAPPENED"))
                     	{
-                            try{ q.mysteryData.whereHappened=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                            try{ 
+                            	q.mysteryData.whereHappened=(Room)getObjectIfSpecified(p,args,2,0); 
+                                q.room=q.mysteryData.whereHappened;
+                                q.envObject=q.room;
+                            	continue;
+                            }catch(CMException ex){}
                     	}
                     	else
                     	{
-                            try{ q.mysteryData.whereAt=(Room)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                            try{ 
+                            	q.mysteryData.whereAt=(Room)getObjectIfSpecified(p,args,2,0); 
+                                q.room=q.mysteryData.whereAt;
+                                q.envObject=q.room;
+                            	continue;
+                            }catch(CMException ex){}
                     	}
                     	if(p.size()>2)
                         {
@@ -1530,15 +1660,57 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     ||cmd.equals("TOOLGROUP"))
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
+                    	Vector V2=null;
                     	if(cmd.equals("TARGETGROUP"))
                     	{
 	                    	q.mysteryData.targetGroup=null;
-	                        try{ q.mysteryData.targetGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.targetGroup=(Vector)getObjectIfSpecified(p,args,2,1);
+	                        	V2=q.mysteryData.targetGroup;
+	                        	if((V2!=null)&&(V2.size()>0))
+	                        	{
+	                        		if(V2.firstElement() instanceof MOB)
+	                        		{
+	                        			q.mobGroup=V2;
+	                                    q.mob=(MOB)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                                    q.envObject=q.mob;
+	                        			
+	                        		}
+	                        		if(V2.firstElement() instanceof Item)
+	                        		{
+	                        			q.itemGroup=V2;
+	                                    q.item=(Item)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                                    q.envObject=q.item;
+	                        		}
+	                        		q.mysteryData.target=q.envObject;
+	                        	}
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                     	else
                     	{
 	                    	q.mysteryData.toolGroup=null;
-	                        try{ q.mysteryData.toolGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(Exception e){}
+	                        try{ 
+	                        	q.mysteryData.toolGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	V2=q.mysteryData.toolGroup;
+	                        	if((V2!=null)&&(V2.size()>0))
+	                        	{
+	                        		if(V2.firstElement() instanceof MOB)
+	                        		{
+	                        			q.mobGroup=V2;
+	                                    q.mob=(MOB)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                                    q.envObject=q.mob;
+	                        		}
+	                        		if(V2.firstElement() instanceof Item)
+	                        		{
+	                        			q.itemGroup=V2;
+	                                    q.item=(Item)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
+	                                    q.envObject=q.item;
+	                        		}
+	                        		q.mysteryData.tool=q.envObject;
+	                        	}
+	                        	continue;
+	                        }catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2).toUpperCase();
@@ -1560,7 +1732,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	V=(Vector)q.mobGroup.clone();
                         else
                         	V=(Vector)q.itemGroup.clone();
-                        Vector V2=new Vector();
+                        V2=new Vector();
                         Environmental finalE=null;
                     	if(cmd.equals("TARGETGROUP"))
                     	{
@@ -1611,11 +1783,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	if(cmd.equals("TARGET"))
                     	{
-                            try{ q.mysteryData.target=(Environmental)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                            try{ 
+                            	q.mysteryData.target=(Environmental)getObjectIfSpecified(p,args,2,0);
+                            	if(q.mysteryData.target instanceof MOB)
+                            		q.mob=(MOB)q.mysteryData.target;
+                            	if(q.mysteryData.target instanceof Item)
+                            		q.item=(Item)q.mysteryData.target;
+                            	q.envObject=q.mysteryData.target;
+                            	continue;
+                            }catch(CMException ex){}
                     	}
                     	else
                     	{
-                            try{ q.mysteryData.tool=(Environmental)getObjectIfSpecified(p,args,2,0); continue;}catch(Exception e){}
+                            try{ 
+                            	q.mysteryData.tool=(Environmental)getObjectIfSpecified(p,args,2,0); 
+                            	if(q.mysteryData.tool instanceof MOB)
+                            		q.mob=(MOB)q.mysteryData.tool;
+                            	if(q.mysteryData.tool instanceof Item)
+                            		q.item=(Item)q.mysteryData.tool;
+                            	q.envObject=q.mysteryData.tool;
+                            	continue;
+                            }catch(CMException ex){}
                     	}
                     	if(p.size()>2)
                         {
@@ -1748,7 +1936,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                 	boolean error=q.error;
                 	Vector args2=new Vector();
-                	parseQuestScriptWArgs(parseScripts(s,args2),args2);
+                	parseQuestScriptWArgs(parseScripts(s,args,args2),args2);
                 	if((!error)&&(q.error)) 
                 		break;
                 }
@@ -2190,7 +2378,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running()) stopQuest();
         Vector args=new Vector();
         questState=new QuestState();
-        Vector script=parseScripts(script(),args);
+        Vector script=parseScripts(script(),new Vector(),args);
         parseQuestScript(script,args);
         if(questState.error)
         {
@@ -2696,14 +2884,32 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return false;
     }
     
-    private Vector parseScripts(String text, Vector args)
+    private Vector parseScripts(String text, Vector oldArgs, Vector args)
     {
         if(text.trim().toUpperCase().startsWith("LOAD="))
         {
-            StringBuffer buf=new CMFile("resources/"+text.trim().substring(5),null,true).text();
-            if(buf!=null) text=buf.toString();
+        	String filename=null;
+        	Vector V=CMParms.parse(text.trim().substring(5).trim());
+        	if(V.size()>0)
+        	{
+        		filename=(String)V.firstElement();
+        		Vector parms=null;
+        		try{
+	        		for(int v=1;v<V.size();v++)
+	        		{
+	        			parms=CMParms.parse((String)V.elementAt(v));
+	        			Object O=getObjectIfSpecified(parms,oldArgs,0,1);
+        				args.addElement((O==null)?"":O);
+	        		}
+		            StringBuffer buf=new CMFile("resources/"+filename,null,true).text();
+		            if(buf!=null) text=buf.toString();
+        		}catch(CMException ex){
+        			Log.errOut("DefaultQuest","'"+text+"' either has a space in the filename, or unknown parms.");
+        		}
+        	}
         }
         Vector script=new Vector();
+        Vector V=script;
         while(text.length()>0)
         {
             int y=-1;
@@ -2727,9 +2933,42 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 text=text.substring(y+1).trim();
             }
             if((cmd.length()>0)&&(!cmd.startsWith("#")))
-                script.addElement(CMStrings.replaceAll(cmd,"\\;",";"));
+            {
+            	if(cmd.toUpperCase().startsWith("<OPTION>"))
+            	{
+            		V=new Vector();
+            		script.addElement(V);
+            	}
+            	else
+            	if(cmd.toUpperCase().startsWith("</OPTION>"))
+            		V=script;
+            	else
+	                V.addElement(CMStrings.replaceAll(cmd,"\\;",";"));
+            }
         }
         return script;
+    }
+    
+    private String modifyStringFromArgs(String s, Vector args)
+    {
+    	int x=s.toUpperCase().indexOf("$");
+    	while((x>=0)&&(x<s.length()-1))
+    	{
+    		int y=x+1;
+    		while((x<s.length())&&(Character.isLetterOrDigit(s.charAt(x)))) x++;
+    		try{
+    			Object O=getObjectIfSpecified(CMParms.paramParse(s.substring(y,x)),args,0,0);
+    			String replace=(O==null)?"null":O.toString();
+    			if(O instanceof Room) 
+    				replace=((Room)O).roomTitle();
+    			else
+    			if(O instanceof Environmental) 
+    				replace=((Environmental)O).Name();
+    			s=s.substring(0,y-1)+replace+s.substring(x);
+    		}catch(CMException ex){}
+	    	x=s.toUpperCase().indexOf("$",x+1);
+    	}
+    	return s;
     }
     
     private Object getObjectIfSpecified(Vector parms, Vector args, int startp, int object0vector1)
