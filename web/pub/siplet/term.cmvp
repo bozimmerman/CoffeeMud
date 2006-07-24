@@ -8,7 +8,7 @@
 var myname='dwindow'+top.term.currentWindow;
 var gauges=new Array();
 
-var limit=10000;
+var limit=100000;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 
@@ -35,17 +35,33 @@ function addToWindow(s)
         {
             var x=thespan.innerHTML;
             var xcess=x.length-limit;
-            var y=x.indexOf('<BR>',xcess);
+            var br='<BR>';
+            var y=x.indexOf(br,xcess);
+            if(y<0) 
+            {
+            	br='<BR >';
+	            y=x.indexOf(br,xcess);
+            }
+            if(y<0) 
+            {
+            	br='<br>';
+	            y=x.indexOf(br,xcess);
+            }
+            if(y<0) 
+            {
+            	br='<br >';
+	            y=x.indexOf(br,xcess);
+            }
             if((y<0)||(y>xcess+tenthlimit))
-                y=x.indexOf('<BR>',xcess/2);
+                y=x.indexOf(br,xcess/2);
             if(y>=0)
-                x=x.substring(y+4);
+                x=x.substring(y+br.length);
             else
             while(x.length>limit)
             {
-                var y=x.indexOf('<BR>');
+                var y=x.indexOf(br);
                 if(y<0) break;
-                x=x.substring(y+4);
+                x=x.substring(y+br.length);
             }
             thespan.innerHTML=x;
         }
