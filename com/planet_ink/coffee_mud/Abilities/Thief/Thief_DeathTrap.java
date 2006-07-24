@@ -75,9 +75,11 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==affected)
 		&&(msg.source()!=invoker())
+		&&(!msg.source().equals(text()))
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
+		&&((canBeUninvoked())||(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),(Room)affected)))
 		&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),msg.source(),msg);
 		super.executeMsg(myHost,msg);
@@ -181,6 +183,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			{
 				mob.tell("You have set the trap.");
 				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1);
+				Thief_DeathTrap T=(Thief_DeathTrap)trapThis.fetchEffect(ID());
+				if(T!=null) T.setMiscText(mob.Name());
 			}
 			else
 			{

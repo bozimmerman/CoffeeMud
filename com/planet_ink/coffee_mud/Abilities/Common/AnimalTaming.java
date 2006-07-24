@@ -113,6 +113,7 @@ public class AnimalTaming extends CommonSkill
 								animal.recoverEnvStats();
 								animal.recoverMaxState();
 							}
+							animal.resetToMaxState();
 							if(taming instanceof CagedAnimal)
 							{
 								animal.text();

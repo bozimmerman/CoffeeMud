@@ -44,6 +44,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public int classificationCode(){return Ability.ACODE_DISEASE;}
+	protected boolean DISEASE_MALICIOUS(){return true;}
 
 	protected int DISEASE_TICKS(){return 48;}
 	protected int DISEASE_DELAY(){return 5;}
@@ -231,11 +232,20 @@ public class Disease extends StdAbility implements DiseaseAffect
 				else
 				    spreadImmunity(target);
 			}
+			if(!DISEASE_MALICIOUS())
+			{
+				if((mvictim==null)&&(mob.getVictim()==target))
+					mob.setVictim(null);
+				if((tvictim==null)&&(target.getVictim()==mob))
+					target.setVictim(null);
+			}
+			else
 			if(auto)
 			{
 				if(mob.getVictim()!=mvictim) mob.setVictim(mvictim);
 				if(target.getVictim()!=tvictim) target.setVictim(tvictim);
 			}
+			
 		}
         return success;
 	}

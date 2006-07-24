@@ -47,6 +47,7 @@ public class Disease_Yawning extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) really tired.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
 	protected boolean DISEASE_REQSEE(){return true;}
+	protected boolean DISEASE_MALICIOUS(){return false;}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	public int difficultyLevel(){return 0;}
 
