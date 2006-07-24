@@ -68,6 +68,11 @@ public class Frog extends StdRace
 		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+	}
 	public String arriveStr()
 	{
 		return "hops in";

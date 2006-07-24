@@ -219,7 +219,7 @@ public class Score extends Affect
 		if(CMLib.flags().isSitting(mob))
 			msg.append("^!You are resting.^?\n\r");
 		else
-		if(CMLib.flags().isSwimming(mob))
+		if(CMLib.flags().isSwimmingInWater(mob))
 			msg.append("^!You are swimming.^?\n\r");
 		else
 		if(CMLib.flags().isClimbing(mob))

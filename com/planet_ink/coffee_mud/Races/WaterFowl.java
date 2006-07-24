@@ -67,6 +67,11 @@ public class WaterFowl extends StdRace
 		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+	}
 	public String arriveStr()
 	{
 		return "waddles in";

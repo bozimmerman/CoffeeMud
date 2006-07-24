@@ -74,6 +74,7 @@ public class WaterElemental extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 	public Weapon myNaturalWeapon()
 	{

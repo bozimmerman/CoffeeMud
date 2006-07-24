@@ -316,6 +316,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isBusy(Environmental E)
 	{ return (E instanceof MOB)&&(((MOB)E).session()!=null)&&((System.currentTimeMillis()-((MOB)E).session().lastLoopTime())>30000);}
 
+	public boolean isSwimmingInWater(Environmental E)
+	{ 
+		if(!isSwimming(E)) return false;
+		Room R=CMLib.map().roomLocation(E);
+		if(R==null) return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_INDOORS_UNDERWATER:
+		case Room.DOMAIN_INDOORS_WATERSURFACE:
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return true;
+		}
+		return false;
+	}
 	public boolean canBeHeardBy(Environmental heard , MOB hearer)
 	{
 		if(hearer==heard) return true;
@@ -685,7 +700,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((isClimbing(seen))&&(flag_msgType!=flag_is))
 			type="climbs";
 		else
-		if(isSwimming(seen))
+		if(isSwimmingInWater(seen))
 			type="swims";
 		else
 		if((flag_msgType==flag_arrives)||(flag_msgType==flag_leaves))

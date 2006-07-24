@@ -95,6 +95,7 @@ public class GreatAmphibian extends StdRace
 			{
 				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
 					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 			}
 		}
 	}

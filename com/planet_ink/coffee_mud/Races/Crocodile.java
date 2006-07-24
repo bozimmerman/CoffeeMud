@@ -40,4 +40,10 @@ public class Crocodile extends GreatLizard
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+	}
 }

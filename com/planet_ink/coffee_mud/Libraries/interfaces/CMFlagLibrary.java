@@ -84,6 +84,7 @@ public interface CMFlagLibrary extends CMObject
     public boolean isFlying(Environmental E);
     public boolean isClimbing(Environmental E);
     public boolean isSwimming(Environmental E);
+    public boolean isSwimmingInWater(Environmental E);
     public boolean isFalling(Environmental E);
 	public boolean isBusy(Environmental E);
 	public boolean canBeHeardBy(Environmental heard , MOB hearer);

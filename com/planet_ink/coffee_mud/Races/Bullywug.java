@@ -69,6 +69,7 @@ public class Bullywug extends StdRace
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
