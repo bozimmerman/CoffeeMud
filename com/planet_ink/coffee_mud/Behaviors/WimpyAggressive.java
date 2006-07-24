@@ -37,7 +37,6 @@ public class WimpyAggressive extends Aggressive
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
-	protected boolean mobKiller=false;
 
 
 	public boolean grantsAggressivenessTo(MOB M)
@@ -52,7 +51,7 @@ public class WimpyAggressive extends Aggressive
 		tickDown=tickWait;
 	}
 
-	public static void pickAWimpyFight(MOB observer, boolean mobKiller)
+	public static void pickAWimpyFight(MOB observer, boolean mobKiller, boolean misBehave)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
 		Room R=observer.location();
@@ -62,19 +61,19 @@ public class WimpyAggressive extends Aggressive
 			MOB mob=R.fetchInhabitant(i);
 			if((mob!=null)&&(mob!=observer)&&(CMLib.flags().isSleeping(mob)))
 			{
-				startFight(observer,mob,mobKiller);
+				startFight(observer,mob,mobKiller,misBehave);
 				if(observer.isInCombat()) break;
 			}
 		}
 	}
 
-	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, int tickID)
+	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, boolean misBehave, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
 
-		pickAWimpyFight((MOB)ticking,mobKiller);
+		pickAWimpyFight((MOB)ticking,mobKiller,misBehave);
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -82,7 +81,7 @@ public class WimpyAggressive extends Aggressive
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickWimpyAggressively(ticking,(getParms().toUpperCase().indexOf("MOBKILL")>=0),tickID);
+			tickWimpyAggressively(ticking,mobkill,misbehave,tickID);
 		}
 		return true;
 	}

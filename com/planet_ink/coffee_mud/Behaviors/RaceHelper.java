@@ -38,19 +38,15 @@ public class RaceHelper extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
+		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
 		MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting))
-			return;
 		MOB observer=(MOB)affecting;
-		if(msg.target()==null)
-			return;
-		if(!(msg.target() instanceof MOB))
-			return;
 		MOB target=(MOB)msg.target();
 
 		if((target==null)||(observer==null)) return;
 		if((source!=observer)
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(!observer.isInCombat())
 		&&(target!=observer)
 		&&(source!=target)
 		&&(CMLib.flags().canBeSeenBy(source,observer))
@@ -59,7 +55,7 @@ public class RaceHelper extends StdBehavior
 		{
 			if(observer.charStats().getMyRace().ID().equalsIgnoreCase(target.charStats().getMyRace().ID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,true);
+				boolean yep=Aggressive.startFight(observer,source,true,false);
 				String reason="THAT`S MY FRIEND!! CHARGE!!";
 				if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 				&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))

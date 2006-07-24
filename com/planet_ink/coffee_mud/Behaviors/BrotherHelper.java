@@ -53,23 +53,19 @@ public class BrotherHelper extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
+		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
 		MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting))
-			return;
 		MOB observer=(MOB)affecting;
-		if(msg.target()==null)
-			return;
-		if(!(msg.target() instanceof MOB))
-			return;
 		MOB target=(MOB)msg.target();
 
 		Room R=source.location();
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(isBrother(target,observer))
 		&&(!isBrother(source,observer))
 		&&(R!=null))
@@ -84,7 +80,7 @@ public class BrotherHelper extends StdBehavior
 			int numAllowed=CMath.s_int(getParms());
 			boolean yep=true;
 			if((numAllowed==0)||(numInFray<numAllowed))
-				yep=Aggressive.startFight(observer,source,true);
+				yep=Aggressive.startFight(observer,source,true,false);
 			if(yep)	CMLib.commands().postSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
 		}
 	}

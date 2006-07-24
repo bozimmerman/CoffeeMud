@@ -38,6 +38,9 @@ public class Aggressive extends StdBehavior
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
+	protected boolean wander=false;
+	protected boolean mobkill=false;
+	protected boolean misbehave=false;
 
 
 	public boolean grantsAggressivenessTo(MOB M)
@@ -49,12 +52,17 @@ public class Aggressive extends StdBehavior
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
+		Vector V=CMParms.parse(newParms.toUpperCase());
+		wander=V.contains("WANDER");
+		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
+		misbehave=V.contains("MISBEHAVE");
 		tickDown=tickWait;
 	}
 
 	public static boolean startFight(MOB monster,
 									 MOB mob,
-									 boolean fightMOBs)
+									 boolean fightMOBs,
+									 boolean misBehave)
 	{
 		if((mob!=null)&&(monster!=null)&&(mob!=monster))
 		{
@@ -63,9 +71,9 @@ public class Aggressive extends StdBehavior
 			&&((!mob.isMonster())||(fightMOBs))
 			&&(R.isInhabitant(mob))
 			&&(R.getArea().getMobility())
+			&&((misBehave&&(!monster.isInCombat()))||canFreelyBehaveNormal(monster))
 			&&(!CMLib.flags().isATrackingMonster(mob))
 			&&(!CMLib.flags().isATrackingMonster(monster))
-			&&(canFreelyBehaveNormal(monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
 			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
@@ -87,7 +95,7 @@ public class Aggressive extends StdBehavior
 		}
 		return false;
 	}
-	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller)
+	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller, boolean misBehave)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		Room R=observer.location();
@@ -99,7 +107,7 @@ public class Aggressive extends StdBehavior
 			if((mob!=null)
             &&(mob!=observer)
             &&(CMLib.masking().maskCheck(zapStr,mob))
-            &&(startFight(observer,mob,mobKiller)))			
+            &&(startFight(observer,mob,mobKiller,misBehave)))			
                 return true;
 		}
 		return false;
@@ -108,12 +116,13 @@ public class Aggressive extends StdBehavior
 	public static void tickAggressively(Tickable ticking,
 										int tickID,
 										boolean mobKiller,
+										boolean misBehave,
 										String zapStr)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
-		pickAFight((MOB)ticking,zapStr,mobKiller);
+		pickAFight((MOB)ticking,zapStr,mobKiller,misBehave);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -123,7 +132,11 @@ public class Aggressive extends StdBehavior
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickAggressively(ticking,tickID,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
+			tickAggressively(ticking,
+							 tickID,
+							 mobkill,
+							 misbehave,
+							 getParms());
 		}
 		return true;
 	}

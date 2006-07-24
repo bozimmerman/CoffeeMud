@@ -53,14 +53,9 @@ public class ClanHelper extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
+		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
 		MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting))
-			return;
 		MOB observer=(MOB)affecting;
-		if(msg.target()==null)
-			return;
-		if(!(msg.target() instanceof MOB))
-			return;
 		MOB target=(MOB)msg.target();
 
 		if((target==null)||(observer==null)) return;
@@ -68,19 +63,23 @@ public class ClanHelper extends StdBehavior
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(target!=observer)
 		&&(source!=target)
+		&&(observer.getClanID().length()>0)
+		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(observer.getClanID().length()>0)
 		&&(!BrotherHelper.isBrother(source,observer)))
 		{
 			if(observer.getClanID().equalsIgnoreCase(target.getClanID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,true);
-				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
-				if((observer.getClanID().equals(target.getClanID()))
-				&&(!observer.getClanID().equals(source.getClanID())))
-					reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
-				if(yep)	CMLib.commands().postSay(observer,null,reason,false,false);
+				boolean yep=Aggressive.startFight(observer,source,true,false);
+				if(yep)
+				{
+					String reason="WE ARE UNDER ATTACK!! CHARGE!!";
+					if((observer.getClanID().equals(target.getClanID()))
+					&&(!observer.getClanID().equals(source.getClanID())))
+						reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
+					CMLib.commands().postSay(observer,null,reason,false,false);
+				}
 			}
 		}
 	}

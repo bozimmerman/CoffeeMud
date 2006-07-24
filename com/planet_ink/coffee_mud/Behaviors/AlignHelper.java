@@ -39,26 +39,22 @@ public class AlignHelper extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
+		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
 		MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting))
-			return;
 		MOB observer=(MOB)affecting;
-		if(msg.target()==null)
-			return;
-		if(!(msg.target() instanceof MOB))
-			return;
 		MOB target=(MOB)msg.target();
 
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 	    &&( (CMLib.flags().isEvil(target)&&CMLib.flags().isEvil(observer))||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
 		{
-			boolean yep=Aggressive.startFight(observer,source,true);
+			boolean yep=Aggressive.startFight(observer,source,true,false);
 			if(yep)	CMLib.commands().postSay(observer,null,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!",false,false);
 		}
 	}

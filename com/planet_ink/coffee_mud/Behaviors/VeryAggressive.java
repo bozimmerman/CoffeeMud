@@ -38,7 +38,6 @@ public class VeryAggressive extends Aggressive
 	protected int tickWait=0;
 	protected int tickDown=0;
 
-
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -54,6 +53,7 @@ public class VeryAggressive extends Aggressive
 											int tickID,
 											boolean wander,
 											boolean mobKiller,
+											boolean misBehave,
 											String zapStr)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
@@ -117,7 +117,7 @@ public class VeryAggressive extends Aggressive
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
 			CMLib.tracking().move(mob,dirCode,false,false);
-			pickAFight(mob,zapStr,mobKiller);
+			pickAFight(mob,zapStr,mobKiller,misBehave);
 		}
 	}
 
@@ -128,8 +128,9 @@ public class VeryAggressive extends Aggressive
 		{
 			tickDown=tickWait;
 			tickVeryAggressively(ticking,tickID,
-								 (getParms().toUpperCase().indexOf("WANDER")>=0),
-								 (getParms().toUpperCase().indexOf("MOBKILL")>=0),
+								 wander,
+								 mobkill,
+								 misbehave,
 								 getParms());
 		}
 		return true;

@@ -37,6 +37,8 @@ public class MobileAggressive extends Mobile
 	protected int tickWait=0;
 	protected int tickDown=0;
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
+	protected boolean mobkill=false;
+	protected boolean misbehave=false;
 
 
 	public void setParms(String newParms)
@@ -44,6 +46,9 @@ public class MobileAggressive extends Mobile
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
+		Vector V=CMParms.parse(newParms.toUpperCase());
+		mobkill=V.contains("MOBKILL");
+		misbehave=V.contains("MISBEHAVE");
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
@@ -64,9 +69,9 @@ public class MobileAggressive extends Mobile
 		{
 			tickDown=tickWait;
             tickStatus=Tickable.STATUS_MISC+2;
-			Aggressive.tickAggressively(ticking,tickID,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
+			Aggressive.tickAggressively(ticking,tickID,mobkill,misbehave,getParms());
             tickStatus=Tickable.STATUS_MISC+3;
-			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
+			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,getParms());
 		}
         tickStatus=Tickable.STATUS_NOT;
 		return true;
