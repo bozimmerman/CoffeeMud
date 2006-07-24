@@ -54,6 +54,15 @@ public interface Behavior extends Tickable, MsgListener, CMObject
 	public void startBehavior(Environmental forMe);
 	
 	/**
+	 * Called after a behavior is added to an Environmental object.
+	 * The point is to register a quest objet, should it be needed or
+	 * be useful to the quest.
+	 * @see com.planet_ink.coffee_mud.common.interfaces.Quest
+	 * @param Quest Q the Quest object
+	 */
+    public void registerDefaultQuest(Quest Q);
+    
+	/**
 	 * Returns the raw parameter string for this behavior.  
 	 * Parameters are meant to modify or specify specific behavior of this
 	 * Behavior.

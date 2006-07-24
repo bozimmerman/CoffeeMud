@@ -93,9 +93,8 @@ public class MudChat extends StdBehavior
 		return null;
 	}
 
-	protected static Vector loadChatData(String resourceName, Vector chatGroups)
+	protected static Vector parseChatData(StringBuffer rsc, Vector chatGroups)
 	{
-		StringBuffer rsc=new CMFile("resources/"+resourceName,null,true).text();
 		Vector currentChatGroup=new Vector();
 		Vector otherChatGroup;
 		currentChatGroup.addElement("");
@@ -137,7 +136,7 @@ public class MudChat extends StdBehavior
 			case '%':
 				{
 	  				StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
-	  				if(rsc2.length()<1) { Log.sysOut("MudChat","Error reading resource "+resourceName); }
+	  				if(rsc2.length()<1) { Log.sysOut("MudChat","Error reading resource "+str.substring(1).trim()); }
 	  				rsc.insert(0,rsc2.toString());
 				}
 				break;
@@ -157,6 +156,13 @@ public class MudChat extends StdBehavior
 			}
 			str=nextLine(rsc);
 		}
+		return chatGroups;
+	}
+	
+	protected static Vector loadChatData(String resourceName, Vector chatGroups)
+	{
+		StringBuffer rsc=new CMFile("resources/"+resourceName,null,true).text();
+		chatGroups=parseChatData(rsc,chatGroups);
 		return chatGroups;
 	}
 
@@ -312,7 +318,7 @@ public class MudChat extends StdBehavior
 	}
 
 
-	protected boolean match(String expression, String message, String[] rest)
+	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
 		int l=expression.length();
 		if(l==0) return true;
@@ -378,19 +384,19 @@ public class MudChat extends StdBehavior
 					}
 				if(expEnd<expression.length()&&(parenCount<=0))
 				{
-					return response&match(expression.substring(1,expEnd),message,rest);
+					return response&match(speaker,expression.substring(1,expEnd),message,rest);
 				}
 				return response;
 			}
 			else
 			if(expression.startsWith("&"))
-				return response&&match(expression.substring(1),message,rest);
+				return response&&match(speaker,expression.substring(1),message,rest);
 			else
 			if(expression.startsWith("|"))
-				return response||match(expression.substring(1),message,rest);
+				return response||match(speaker,expression.substring(1),message,rest);
 			else
 			if(expression.startsWith("~"))
-				return response&&(!match(expression.substring(1),message,rest));
+				return response&&(!match(speaker,expression.substring(1),message,rest));
 
 		}
 		return response;
@@ -451,7 +457,7 @@ public class MudChat extends StdBehavior
 						&&(expression.charAt(0)=='(')
 						&&(expression.charAt(l-1)==')'))
 						{
-							if(match(expression.substring(1,expression.length()-1),str,rest))
+							if(match(mob,expression.substring(1,expression.length()-1),str,rest))
 							{
 								if(myResponses==null) myResponses=new Vector();
 								myResponses.addAll(possResponses);
@@ -507,7 +513,7 @@ public class MudChat extends StdBehavior
 						&&(expression.charAt(0)==c1)
 						&&(expression.charAt(l-1)==c2))
 						{
-							if(match(expression.substring(1,expression.length()-1),str,rest))
+							if(match(mob,expression.substring(1,expression.length()-1),str,rest))
 							{
 								if(myResponses==null) myResponses=new Vector();
 								myResponses.addAll(possResponses);

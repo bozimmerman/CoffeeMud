@@ -53,7 +53,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
     private boolean stoppingQuest=false;
-    QuestState questState=new QuestState();
+    private QuestState questState=new QuestState();
 
     protected Vector addons=new Vector();
     // contains a set of vectors, vectors are formatted as such:
@@ -390,14 +390,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     if(q.room!=null)
                         CMLib.map().resetRoom(q.room);
                     else
-                    if(q.area!=null)
-                        CMLib.map().resetArea(q.area);
-                    else
                     if(q.roomGroup!=null)
                     {
 	                    for(int r=0;r<q.roomGroup.size();r++)
 	                        CMLib.map().resetRoom((Room)q.roomGroup.elementAt(r));
                     }
+                    else
+                    if(q.area!=null)
+                        CMLib.map().resetArea(q.area);
                     else
                     {
                         Log.errOut("Quest","Quest '"+name()+"', no resettable room, roomgroup, or area set.");
@@ -879,7 +879,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 }
                             }catch(NoSuchElementException e){}
                         }
-                        if(cmd.equalsIgnoreCase("LOCALEGROUP"))
+                        if(cmd.equalsIgnoreCase("LOCALEGROUP")||cmd.equalsIgnoreCase("LOCALEGROUPAROUND"))
                         {
                         	if((choices!=null)&&(choices.size()>0))
 	                        	q.roomGroup=(Vector)choices.clone();
@@ -2384,6 +2384,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             if(!questState.beQuiet)
                 Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
+            stopQuest();
         }
         else
         if(!questState.done)
@@ -2758,8 +2759,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             B.setParms(parms);
             behaving.addBehavior(B);
         }
-        if(B instanceof ScriptingEngine) 
-        	((ScriptingEngine)B).registerDefaultQuest(this);
+        if(B!=null) B.registerDefaultQuest(this);
         addons.addElement(V);
     }
     

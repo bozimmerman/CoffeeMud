@@ -51,7 +51,6 @@ public interface ScriptingEngine extends Behavior
                         String msg,
                         Object[] tmp,
                         String evaluable);
-    public void registerDefaultQuest(Quest Q);
     public boolean endQuest(Environmental hostObj, MOB mob, String quest);
     public static class ScriptableResponse
     {
