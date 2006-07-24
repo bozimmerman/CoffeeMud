@@ -8,7 +8,7 @@
 var myname='dwindow'+top.term.currentWindow;
 var gauges=new Array();
 
-var limit=100000;
+var limit=10000;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 
