@@ -206,6 +206,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
     public boolean putUpForSale(MOB source, MOB merchantM, Environmental tool)
     {
         if((tool!=null)
+        &&(!tool.ID().endsWith("ClanApron"))
         &&(merchantM.isMonster())
         &&((CMSecurity.isAllowed(source,merchantM.location(),"ORDER")
             ||(CMLib.utensils().doesHavePriviledgesHere(source,merchantM.getStartRoom()))

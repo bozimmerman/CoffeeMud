@@ -873,6 +873,10 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Light)
 		 ||(E instanceof Container)
 		 ||(E instanceof Ammunition)
+		 ||((E instanceof ClanItem)
+			 &&((((ClanItem)E).ciType()==ClanItem.CI_GATHERITEM)
+				 ||(((ClanItem)E).ciType()==ClanItem.CI_CRAFTITEM)
+				 ||(((ClanItem)E).ciType()==ClanItem.CI_SPECIALAPRON)))
 		 ||(E instanceof Key))
 			CMLib.flags().setReadable(E,false);
 		else
@@ -898,6 +902,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Recipe)
 		 ||(E instanceof Exit)
 		 ||(E instanceof Wand)
+		 ||(E instanceof ClanItem)
 		 ||(E instanceof Light)
 		 ||(E instanceof Key))
 		{
