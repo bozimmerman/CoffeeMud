@@ -436,6 +436,7 @@ public class JournalLoader
 		}
 		else
 		{
+			if(subject.length()>255) subject=subject.substring(0,255);
 			DBConnector.update(
 			"INSERT INTO CMJRNL ("
 			+"CMJKEY, "

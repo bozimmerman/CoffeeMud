@@ -6239,12 +6239,22 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String p2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3));
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,3));
 				Ability A=null;
-				if(cast!=null) A=CMClass.getAbility(cast);
+				if(cast!=null)
+				{
+					if(newTarget instanceof MOB) A=((MOB)newTarget).fetchAbility(cast);
+					if(A==null) A=CMClass.getAbility(cast);
+				}
 				if((newTarget!=null)&&(A!=null)&&(newTarget instanceof MOB))
 				{
+					if(p2.trim().startsWith("++"))
+						p2=""+(CMath.s_int(p2.trim().substring(2))+A.proficiency());
+					else
+					if(p2.trim().startsWith("--"))
+						p2=""+(A.proficiency()-CMath.s_int(p2.trim().substring(2)));
 					A.setProficiency(CMath.s_int(p2.trim()));
 					A.setMiscText(m2);
-					((MOB)newTarget).addAbility(A);
+					if(((MOB)newTarget).fetchAbility(A.ID())==null)
+						((MOB)newTarget).addAbility(A);
 				}
 				break;
 			}

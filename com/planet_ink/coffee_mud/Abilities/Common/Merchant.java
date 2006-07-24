@@ -479,4 +479,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		mob.recoverEnvStats();
 		return true;
 	}
+	
+	public boolean autoInvocation(MOB mob)
+	{
+		if(mob instanceof ShopKeeper) return false;
+		return super.autoInvocation(mob);
+	}
 }

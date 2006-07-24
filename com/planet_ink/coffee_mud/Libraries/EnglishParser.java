@@ -495,6 +495,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		
 		if(exactOnly)
 		{
+			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			try
 			{
 				for(int i=0;i<list.size();i++)
@@ -556,6 +558,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return (Environmental)list.get(srchStr);
 		if(exactOnly)
 		{
+			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
@@ -601,6 +605,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		
 		if(exactOnly)
 		{
+			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			for(int i=0;i<list.length;i++)
 			{
 				Environmental thisThang=list[i];
@@ -651,6 +657,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
+				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 				for(int i=0;i<list.size();i++)
 				{
 					Item thisThang=(Item)list.elementAt(i);
@@ -721,6 +729,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
+				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 				for(int i=0;i<list.size();i++)
 				{
 				    E=(Environmental)list.elementAt(i);
