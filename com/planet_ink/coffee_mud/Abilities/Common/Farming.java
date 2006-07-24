@@ -116,6 +116,20 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 
+	private boolean plantable(MOB mob, Item I2)
+	{
+		if((I2!=null)
+		&&(I2 instanceof RawMaterial)
+		&&(CMLib.flags().canBeSeenBy(I2,mob))
+		&&(I2.container()==null)
+		&&(((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			||(I2.material()==RawMaterial.RESOURCE_COTTON)
+			||(I2.material()==RawMaterial.RESOURCE_HEMP)
+			||((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+			return true;
+		return false;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         bundling=false;
@@ -150,26 +164,34 @@ public class Farming extends GatheringSkill
 		&&(!CMLib.flags().isAnimalIntelligence(mob))
 		&&(commands.size()==0))
 		{
-			for(int i=0;i<mob.inventorySize();i++)
+			Item mine=null;
+			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I2=mob.fetchInventory(i);
-				if((I2!=null)
-				&&(I2 instanceof RawMaterial)
-				&&(CMLib.flags().canBeSeenBy(I2,mob))
-				&&(I2.container()==null)
-				&&(((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-					||(I2.material()==RawMaterial.RESOURCE_COTTON)
-					||(I2.material()==RawMaterial.RESOURCE_HEMP)
-					||((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
-				{
+				Item I2=mob.location().fetchItem(i);
+				if(plantable(mob,I2))
+				{ 
+					mine=I2; 
 					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
 					break;
 				}
-				if(commands.size()==0)
+			}
+			if(mine==null)
+			for(int i=0;i<mob.inventorySize();i++)
+			{
+				Item I2=mob.fetchInventory(i);
+				if(plantable(mob,I2))
 				{
-					commonTell(mob,"You don't have anything you can plant.");
-					return false;
+					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
+					mine=(Item)I2.copyOf();
+					if(mob.location().fetchItem(null,"$"+I2.Name()+"$")==null)
+						mob.location().addItemRefuse(mine,Item.REFUSE_RESOURCE);
+					break;
 				}
+			}
+			if(mine==null)
+			{
+				commonTell(mob,"You don't have anything you can plant.");
+				return false;
 			}
 		}
 		else
@@ -203,7 +225,7 @@ public class Farming extends GatheringSkill
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I instanceof RawMaterial)&&(I.material()==code))
+			if(plantable(mob,I)&&(I.material()==code))
 			{ mine=I; break;}
 		}
 		if(mine==null)
