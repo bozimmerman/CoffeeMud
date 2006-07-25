@@ -586,7 +586,7 @@ public class Shell extends StdCommand
                 }
                 else
                 {
-                    String option=mob.session().choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIESQ?","?");
+                    String option=mob.session().choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIERSQ?","?");
                     switch(option.charAt(0))
                     {
                     case 'S':

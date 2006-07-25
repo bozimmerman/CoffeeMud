@@ -62,6 +62,7 @@ public class MudChat extends StdBehavior
     {
         super.setParms(newParms);
         responseQue=new Vector();
+    	myChatGroup=null;
     }
 
 	protected static synchronized Vector getChatGroups(String parms)
@@ -156,6 +157,9 @@ public class MudChat extends StdBehavior
 			}
 			str=nextLine(rsc);
 		}
+		for(int v=0;v<chatGroups.size();v++)
+			((Vector)chatGroups.elementAt(v)).trimToSize();
+		chatGroups.trimToSize();
 		return chatGroups;
 	}
 	
@@ -556,6 +560,9 @@ public class MudChat extends StdBehavior
 					myChatGroup=getMyChatGroup((MOB)ticking,getChatGroups(getParms()));
 				}
 			}
+			if(responseQue.size()==0)
+				lastReactedTo=null;
+			else
 			for(int t=responseQue.size()-1;t>=0;t--)
 			{
 				Vector que=(Vector)responseQue.elementAt(t);

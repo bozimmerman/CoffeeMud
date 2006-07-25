@@ -44,7 +44,7 @@ public class QuestChat extends MudChat
     {
     	if(newParms.startsWith("+"))
     	{
-    		Vector V=CMParms.parseSemicolons(newParms,false);
+    		Vector V=CMParms.parseSemicolons(newParms.substring(1),false);
     		StringBuffer rsc=new StringBuffer("");
     		for(int v=0;v<V.size();v++)
     			rsc.append(((String)V.elementAt(v))+"\n\r");
@@ -55,6 +55,7 @@ public class QuestChat extends MudChat
     			for(int v2=1;v2<V2.size();v2++)
     				addedChatData.addElement(V2.elementAt(v2));
     		}
+    		myChatGroup=null;
     	}
     	else
     		super.setParms(newParms);
@@ -62,43 +63,50 @@ public class QuestChat extends MudChat
     
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
-		 int x=expression.length()-1;
-		 char c=' ';
-		 StringBuffer code=new StringBuffer("");
-		 while(x>=0)
-		 {
-			 c=expression.charAt(x);
-			 if(c==':')
+		if(expression.indexOf(":")>=0)
+		{
+			 int x=expression.length()-1;
+			 char c=' ';
+			 boolean coded=false;
+			 while(x>=0)
 			 {
-				 if(code.toString().trim().length()>0)
+				 c=expression.charAt(x);
+				 if(c==':')
 				 {
-					 expression=expression.substring(0,x);
-					 String codeStr=code.toString().toUpperCase().trim();
-					 Vector V=(Vector)alreadySaid.get(speaker.Name().toUpperCase());
-					 if(V==null)
+					 if(coded)
 					 {
-						 V=new Vector();
-						 alreadySaid.put(speaker.Name().toUpperCase(),V);
+						 String codeStr=expression.substring(x+1).toUpperCase().trim();
+						 expression=expression.substring(0,x);
+						 Vector V=(Vector)alreadySaid.get(speaker.Name().toUpperCase());
+						 if(V==null)
+						 {
+							 V=new Vector();
+							 alreadySaid.put(speaker.Name().toUpperCase(),V);
+						 }
+						 else
+					     if(V.contains(codeStr))
+					    	 return false;
+						 if(super.match(speaker,expression,message,rest))
+						 {
+							 V.addElement(codeStr);
+							 if(myQuest!=null)
+							 {
+								 String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
+								 if(stat.length()>0) stat+=" ";
+								 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
+							 }
+							 return true;
+						 }
+						 return false;
 					 }
-					 else
-				     if(V.contains(codeStr))
-				    	 return false;
-					 V.addElement(codeStr);
-					 if(myQuest!=null)
-					 {
-						 String stat=speaker.Name().toUpperCase();
-						 if(stat.length()>0) stat+=",";
-						 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
-					 }
-					 return super.match(speaker,expression,message,rest);
+					 break;
 				 }
-				 break;
+				 if(!Character.isLetter(c)&&(c!='-')) break;
+				 coded=true;
+				 x--;
 			 }
-			 if(!Character.isLetter(c)&&(c!='-')) break;
-			 code.append(c);
-			 x--;
-		 }
-		 return super.match(speaker,expression,message,rest);
+		}
+		return super.match(speaker,expression,message,rest);
 	}
     
 	protected Vector getMyChatGroup(MOB forMe, Vector chatGroups)
@@ -106,9 +114,14 @@ public class QuestChat extends MudChat
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
 		Vector chatGrp=super.getMyChatGroup(forMe,chatGroups);
+		if((addedChatData==null)||(addedChatData.size()==0)) return chatGrp;
 		chatGrp=(Vector)chatGrp.clone();
 		for(int v=0;v<addedChatData.size();v++)
-			chatGrp.addElement(addedChatData.elementAt(v));
+			if(chatGrp.size()==(v+1))
+				chatGrp.addElement(addedChatData.elementAt(v));
+			else
+				chatGrp.insertElementAt(addedChatData.elementAt(v),v+1);
+		chatGrp.trimToSize();
 		return chatGrp;
 	}
 	
