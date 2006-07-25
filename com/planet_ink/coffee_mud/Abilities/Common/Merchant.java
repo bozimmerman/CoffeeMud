@@ -211,7 +211,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
         &&((CMSecurity.isAllowed(source,merchantM.location(),"ORDER")
             ||(CMLib.utensils().doesHavePriviledgesHere(source,merchantM.getStartRoom()))
             ||(CMSecurity.isAllowed(source,merchantM.location(),"CMDMOBS")&&(merchantM.isMonster()))
-            ||(CMSecurity.isAllowed(source,merchantM.location(),"CMDROOMS")&&(merchantM.isMonster()))))
+            ||(CMSecurity.isAllowed(source,merchantM.location(),"CMDROOMS")&&(merchantM.isMonster())))
+            ||((source.getClanID().length()>0)
+            	&&(CMLib.utensils().getLegalBehavior(merchantM.getStartRoom())!=null)
+            	&&(CMLib.utensils().getLegalBehavior(merchantM.getStartRoom()).rulingClan().equals(source.getClanID()))))
         &&((doISellThis(tool))||(whatIsSold()==DEAL_INVENTORYONLY)))
         {
             CMLib.commands().postSay(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
