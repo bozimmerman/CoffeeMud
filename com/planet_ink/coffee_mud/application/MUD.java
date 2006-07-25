@@ -46,7 +46,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)5.1;
-	public static final long  HOST_VERSION_MINOR=4;
+	public static final long  HOST_VERSION_MINOR=5;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;

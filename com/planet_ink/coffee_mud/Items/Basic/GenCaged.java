@@ -109,9 +109,8 @@ public class GenCaged extends GenItem implements CagedAnimal
 		M=(MOB)newOne;
 		M.baseEnvStats().setRejuv(0);
 		M.setStartRoom(null);
-		M.recoverCharStats();
-		M.recoverEnvStats();
-		M.resetToMaxState();
+		if(M.isGeneric())
+			CMLib.coffeeMaker().resetGenMOB(M,M.text());
 		return M;
 	}
 	public String cageText(){ return CMLib.coffeeMaker().restoreAngleBrackets(readableText());}
