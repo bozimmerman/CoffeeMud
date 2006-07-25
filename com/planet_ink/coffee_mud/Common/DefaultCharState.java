@@ -283,8 +283,10 @@ public class DefaultCharState implements CharState
 			{
 				int factor=mob.baseWeight()/500;
 				if(factor<1) factor=1;
-				adjThirst(-(mob.location().thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
-				adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));
+				if(!CMSecurity.isDisabled("THIRST"))
+					adjThirst(-(mob.location().thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
+				if(!CMSecurity.isDisabled("HUNGER"))
+					adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));
 			}
 			boolean thirsty=(getThirst()<=0);
 			boolean hungry=(getHunger()<=0);
