@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,7 +75,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==affected)
 		&&(msg.source()!=invoker())
-		&&(!msg.source().equals(text()))
+		&&(!msg.source().Name().equals(text()))
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
