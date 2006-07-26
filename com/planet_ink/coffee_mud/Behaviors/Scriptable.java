@@ -4649,7 +4649,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				String varStr=(String)CMParms.getBit(s,1);
+				String varStr=CMParms.getBit(s,1);
 				if((varStr.length()!=2)||(varStr.charAt(0)!='$')||(!Character.isDigit(varStr.charAt(1))))
 				{
 					scriptableError(scripted,"FOR","Syntax","'"+varStr+"' is not a tmp var $1, $2..");
@@ -5443,11 +5443,16 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
 				Behavior A=null;
-				if(cast!=null) A=CMClass.getBehavior(cast);
+				if((cast!=null)&&(newTarget!=null))
+				{
+					A=newTarget.fetchBehavior(cast);
+					if(A==null) A=CMClass.getBehavior(cast);
+				}
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setParms(m2);
-					newTarget.addBehavior(A);
+					if(newTarget.fetchBehavior(A.ID())==null)
+						newTarget.addBehavior(A);
 				}
 				break;
 			}
@@ -6955,7 +6960,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				break;
 			case 8: // entry_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(8)
-				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB)))
+				&&(msg.amISource(eventMob)
+					||(msg.target()==affecting)
+					||(msg.tool()==affecting)
+					||(affecting instanceof Item))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());

@@ -2444,7 +2444,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         if(addons.size()>0)
         {
-            for(int i=0;i<addons.size();i++)
+            for(int i=addons.size()-1;i>=0;i--)
             {
                 Vector V=(Vector)addons.elementAt(i);
                 if(V.size()<2) continue;

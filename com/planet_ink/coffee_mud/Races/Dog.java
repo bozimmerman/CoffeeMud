@@ -64,6 +64,7 @@ public class Dog extends StdRace
 		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,10);
 		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
 		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING)+50);
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
