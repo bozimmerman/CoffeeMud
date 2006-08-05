@@ -47,6 +47,26 @@ public class NoFollow extends Follow
 				unfollow(mob,((commands.size()>1)&&(commands.elementAt(1) instanceof String)&&(((String)commands.elementAt(1)).equalsIgnoreCase("QUIETLY"))));
 				return false;
 			}
+			else
+			{
+				MOB M=mob.fetchFollower(CMParms.combine(commands,1));
+				if((M==null)&&(mob.location()!=null))
+				{
+					M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+					if(M!=null)
+						mob.tell(M.name()+" is not following you!");
+					else
+						mob.tell("There is noone called '"+CMParms.combine(commands,1)+"' following you!");
+					return false;
+				}
+				if((mob.location()!=null)&&(M.amFollowing()==mob))
+				{
+					unfollow(M,false);
+					return true;
+				}
+				mob.tell("There is noone called '"+CMParms.combine(commands,1)+"' following you!");
+				return false;
+			}
 		}
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
 		{

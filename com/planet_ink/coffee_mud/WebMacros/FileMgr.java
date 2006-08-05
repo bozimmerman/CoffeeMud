@@ -58,9 +58,11 @@ public class FileMgr extends StdWebMacro
     {
         if((!F.canRead())||(!F.isDirectory())) return;
         String[] list=F.list();
+        String path=F.getAbsolutePath();
+        if(!path.endsWith("/")) path+="/";
         for(int l=0;l<list.length;l++)
         {
-            CMFile F2=new CMFile(F.getAbsolutePath()+"/"+list[l],null,true);
+            CMFile F2=new CMFile(path+list[l],null,true);
             if(F2.isDirectory())
                 compileFilenamesList(F2,regex,V);
             else
@@ -76,10 +78,7 @@ public class FileMgr extends StdWebMacro
         {
             StringBuffer buf=new CMFile((String)files.elementAt(f),null,false).text();
             if(P.matcher(buf).find())
-            {
                 V.addElement(files.elementAt(f));
-                break;
-            }
         }
     }
     

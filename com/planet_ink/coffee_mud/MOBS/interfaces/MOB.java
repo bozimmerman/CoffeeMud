@@ -248,6 +248,7 @@ public interface MOB
 	public int fetchFollowerOrder(MOB thisOne);
 	public boolean isFollowedBy(MOB thisOne);
 	public MOB fetchFollower(int index);
+	public MOB fetchFollower(String named);
 	public MOB amFollowing();
 	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);

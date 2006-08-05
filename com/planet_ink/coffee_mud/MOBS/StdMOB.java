@@ -2786,6 +2786,14 @@ public class StdMOB implements MOB
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return -1;
 	}
+	public MOB fetchFollower(String named)
+	{
+		if(followers==null) return null;
+		MOB mob=(MOB)CMLib.english().fetchEnvironmental(followers.getDimensionVector(1),named,true);
+		if(mob==null)
+			mob=(MOB)CMLib.english().fetchEnvironmental(followers.getDimensionVector(1),named, false);
+		return mob;
+	}
 	public MOB fetchFollower(int index)
 	{
 		try

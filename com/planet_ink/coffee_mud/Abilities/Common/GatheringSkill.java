@@ -117,12 +117,13 @@ public class GatheringSkill extends CommonSkill
 	        Item I=R.fetchItem(i);
 			if(CMLib.english().containsString(I.Name(),name))
 			{
-			    foundAnyway=I;
+			    if(foundAnyway==null) foundAnyway=I;
 				if((I instanceof RawMaterial)
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==null)
-				&&((I.material()==foundResource)||(maskV.contains(new Integer(I.material())))))
+				&&((I.material()==foundResource)
+					||((foundResource<0)&&maskV.contains(new Integer(I.material())))))
 				{
 				    if((I instanceof Food)
 				    &&(((Food)I).decayTime()>0)

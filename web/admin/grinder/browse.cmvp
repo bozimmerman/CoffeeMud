@@ -15,7 +15,10 @@
 		}
 		function NewDir(named)
 		{
-			document.BROWSE.PATH.value=document.BROWSE.PATH.value+named+"/";
+			var path=document.BROWSE.PATH.value;
+			if((path.length>0)&&(path.lastIndexOf('/')!=path.length-1))
+				path=path+'/';
+			document.BROWSE.PATH.value=path+named+"/";
 			document.BROWSE.submit();
 		}
 		function CreateDir(named)
@@ -23,7 +26,10 @@
 			var named=prompt('Enter new directory name:','');
 			if(named=='') return;
 			document.BROWSE.FUNCTION.value="NEWDIR";
-			document.BROWSE.PATH.value=document.BROWSE.PATH.value+named+"/";
+			var path=document.BROWSE.PATH.value;
+			if((path.length>0)&&(path.lastIndexOf('/')!=path.length-1))
+				path=path+'/';
+			document.BROWSE.PATH.value=path+named+"/";
 			document.BROWSE.submit();
 		}
 		function NewFile(action)
@@ -84,30 +90,30 @@
 <a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=AQUA>*create new file*</FONT></a><BR>
 </FORM>
 <HR>
-<FONT COLOR=WHITE>*search for filenames*</FONT>
 <FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
+<FONT COLOR=CYAN>*search for filenames (reg. exp.)*</FONT>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="NAMESEARCH">
-<INPUT TYPE=TEXT NAME=SEARCHSTR VALUE="" SIZE=20>
+<INPUT TYPE=TEXT NAME=SEARCHSTR VALUE="" SIZE=30><BR>
 <INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 <HR>
-<FONT COLOR=WHITE>*search inside files*</FONT>
 <FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
+<FONT COLOR=CYAN>*search inside files (reg. exp.)*</FONT>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="SEARCH">
-<INPUT TYPE=TEXT NAME=SEARCHSTR VALUE="" SIZE=20>
+<INPUT TYPE=TEXT NAME=SEARCHSTR VALUE="" SIZE=30><BR>
 <INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 <HR>
-<FONT COLOR=WHITE>*upload a file*</FONT>
 <FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
+<FONT COLOR=CYAN>*upload a file*</FONT>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="UPLOAD">
-<INPUT TYPE=FILE NAME=FILE>
+<INPUT TYPE=FILE NAME=FILE><BR>
 <INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 </BODY>
