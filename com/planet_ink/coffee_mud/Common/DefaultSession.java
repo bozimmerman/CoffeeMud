@@ -1387,7 +1387,8 @@ public class DefaultSession extends Thread implements Session
 							{
 								waiting=false;
                                 String firstWord=(String)CMDS.firstElement();
-                                String alias=(mob.playerStats()!=null)?mob.playerStats().getAlias(firstWord):"";
+                                PlayerStats pstats=mob.playerStats();
+                                String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
                                 Vector ALL_CMDS=new Vector();
                                 boolean echoOn=false;
                                 if(alias.length()>0)

@@ -54,6 +54,17 @@ public class DVector implements Cloneable, java.io.Serializable
 				stuff[i].clear();
 		}
 	}
+
+	public void trimToSize()
+	{
+		if(stuff==null) return;
+		
+		synchronized(stuff)
+		{
+			for(int i=0;i<stuff.length;i++)
+				stuff[i].trimToSize();
+		}
+	}
 	
 	public int indexOf(Object O)
 	{

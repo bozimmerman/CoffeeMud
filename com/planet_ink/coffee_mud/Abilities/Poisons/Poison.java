@@ -71,7 +71,8 @@ public class Poison extends StdAbility
 			if(POISON_START_TARGETONLY().length()>0)
 			    targetMOB.tell(POISON_START_TARGETONLY());
 			if((POISON_START_TARGETONLY().length()>0)
-			||targetMOB.location().show(targetMOB,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
+			||((targetMOB.location()!=null)
+					&&(targetMOB.location().show(targetMOB,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))))
 			{
 			    if(POISON_AFFECTTARGET())
 			    {

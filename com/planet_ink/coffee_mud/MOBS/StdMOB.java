@@ -2541,6 +2541,10 @@ public class StdMOB implements MOB
                     if(((++tickCounter)*Tickable.TIME_TICK)>60000)
                     {
                         tickCounter=0;
+                        if(inventory!=null) inventory.trimToSize();
+                        if(affects!=null) affects.trimToSize();
+                        if(abilities!=null) abilities.trimToSize();
+                        if(followers!=null) followers.trimToSize();
                         CMLib.commands().tickAging(this);
                     }
 				}

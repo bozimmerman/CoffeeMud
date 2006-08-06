@@ -1167,12 +1167,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			if(val.equals("++"))
 			{
 				String num=(String)H.get(key);
+				if(num==null) num="0";
 				val=new Integer(CMath.s_int(num.trim())+1).toString();
 			}
 			else
 			if(val.equals("--"))
 			{
 				String num=(String)H.get(key);
+				if(num==null) num="0";
 				val=new Integer(CMath.s_int(num.trim())-1).toString();
 			}
 			else
