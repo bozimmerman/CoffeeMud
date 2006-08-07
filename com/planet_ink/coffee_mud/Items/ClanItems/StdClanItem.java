@@ -83,6 +83,21 @@ public class StdClanItem extends StdItem implements ClanItem
 		return super.tick(ticking,tickID);
 	}
 
+	public static boolean wearingAClanItem(MOB mob)
+	{
+		if(mob==null) return false;
+		Item I=null;
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			I=mob.fetchInventory(i);
+			if((I!=null)
+			&&(I instanceof ClanItem)
+			&&(!I.amWearingAt(Item.IN_INVENTORY)))
+				return true;
+		}
+		return false;
+	}
+	
 	public static boolean standardTick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLANITEM)
@@ -108,9 +123,14 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		else
 		if((I.amWearingAt(Item.IN_INVENTORY))
-		&&(M.isMonster()))
+		&&(M.isMonster())
+		&&(M.playerStats()==null)
+		&&(M.session()==null)
+		&&(!wearingAClanItem(M)))
+		{
+			I.setContainer(null);
 			I.wearAt(I.rawProperLocationBitmap());
-
+		}
 		return true;
 	}
 
