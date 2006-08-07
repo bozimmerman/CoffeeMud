@@ -540,6 +540,8 @@ public class StdRoom implements Room
 					recoverRoomStats();
                 if(msg.source().playerStats()!=null)
                     msg.source().playerStats().addRoomVisit(this);
+                if(inhabitants!=null) inhabitants.trimToSize();
+                if(contents!=null) contents.trimToSize();
 				break;
 			}
 			case CMMsg.TYP_LOOK:
