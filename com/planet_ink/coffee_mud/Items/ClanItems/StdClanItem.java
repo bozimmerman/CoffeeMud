@@ -124,9 +124,8 @@ public class StdClanItem extends StdItem implements ClanItem
 		else
 		if((I.amWearingAt(Item.IN_INVENTORY))
 		&&(M.isMonster())
-		&&(M.playerStats()==null)
-		&&(M.session()==null)
-		&&(!wearingAClanItem(M)))
+		&&(!wearingAClanItem(M))
+		&&(CMLib.flags().isInTheGame(M,true)))
 		{
 			I.setContainer(null);
 			I.wearAt(I.rawProperLocationBitmap());
