@@ -62,7 +62,14 @@ public class Quit extends StdCommand
                 mob.tell("You must wait a few more minutes before you are allowed to quit.");
                 return false;
             }
-            
+            if((mob.session()!=null)&&(mob.getAgeHours()<=0))
+            {
+        		String reason=mob.session().prompt("Since your character is brand new, please leave a short"
+        				 						  +" message as to why you are leaving so soon."
+												  +" Your answers will be kept confidential,"
+												  +" and are for administrative purposes only.\n\r: ","",120000);
+        		Log.sysOut("Quit",mob.Name()+" L.W.O.: "+reason);
+            }
 			try
 			{
 				mob.session().cmdExit(mob,commands);

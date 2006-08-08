@@ -39,27 +39,24 @@ public class Retire extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		Session session=mob.session();
 		if(mob.isMonster()) return false;
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 
 		mob.tell("^HThis will delete your player from the system FOREVER!");
-		String pwd=mob.session().prompt("If that's what you want, re-enter your password:","");
+		String pwd=session.prompt("If that's what you want, re-enter your password:","",30000);
 		if(pwd.length()==0) return false;
 		if(!pwd.equalsIgnoreCase(pstats.password()))
 		{
 			mob.tell("Password incorrect.");
 			return false;
 		}
-		mob.tell("^HThis will delete your player from the system FOREVER!");
-		pwd=mob.session().prompt("Are you absolutely SURE (y/N)?","N").trim();
-		if(pwd.equalsIgnoreCase("Y")||pwd.equalsIgnoreCase("YES"))
-		{
-			mob.tell("Fine!  Goodbye then!");
-			CMLib.map().obliteratePlayer(mob,false);
-		}
-		else
-			mob.tell("Whew.  Close one.");
+		String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
+										  +" character.  Your answers will be kept confidential, "
+										  +"and are for administrative purposes only.\n\r: ","",120000);
+		Log.sysOut("Retire",mob.Name()+" retiring: "+reason);
+		CMLib.map().obliteratePlayer(mob,false);
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

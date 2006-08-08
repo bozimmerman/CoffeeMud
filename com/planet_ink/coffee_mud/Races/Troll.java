@@ -63,7 +63,64 @@ public class Troll extends StdRace
 		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,16);
 		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,12);
 		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,8);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-100);
 	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(myHost instanceof MOB)
+		{
+			MOB mob=(MOB)myHost;
+			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			   &&(msg.sourceMinor()==CMMsg.TYP_FIRE))
+			{
+				int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
+				msg.setValue(msg.value()+recovery);
+			}
+		}
+		return true;
+	}
+
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID)) return false;
+		if(tickID!=Tickable.TICKID_MOB) return false;
+		if(ticking instanceof MOB)
+		{
+			MOB M=(MOB)ticking;
+			Room room=M.location();
+			if(room!=null)
+			{
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
+				{
+					int damage=CMLib.dice().roll(1,8,0);
+					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+				}
+				else
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DUSTSTORM)
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
+				{
+					int damage=CMLib.dice().roll(1,16,0);
+					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
+				}
+				else
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DROUGHT)
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
+				{
+					int damage=CMLib.dice().roll(1,8,0);
+					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
+				}
+                else
+                    return true;
+			}
+		}
+		return true;
+	}
+
+
+	
 	public String arriveStr()
 	{
 		return "thunders in";
