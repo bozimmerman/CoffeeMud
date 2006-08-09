@@ -586,7 +586,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return items;
 	}
 
-	protected Environmental findSomethingCalledThis(String thisName, Room imHere, Vector OBJS, boolean mob)
+	protected Environmental findSomethingCalledThis(String thisName, MOB meMOB, Room imHere, Vector OBJS, boolean mob)
 	{
 		if(thisName.length()==0) return null;
 		Environmental thing=null;
@@ -623,8 +623,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		else
 		{
+	    	if(!mob) areaThing=meMOB.fetchInventory(thisName); 
 		    try
 		    {
+		    	if(areaThing==null)
 				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -5105,7 +5107,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(lastKnownLocation!=null)
 				{
 					if(Ms.size()==0)
-						findSomethingCalledThis(s,lastKnownLocation,Ms,true);
+						findSomethingCalledThis(s,monster,lastKnownLocation,Ms,true);
 					for(int i=0;i<Ms.size();i++)
 					{
 						if(Ms.elementAt(i) instanceof MOB)
@@ -5143,7 +5145,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(m!=null) 
 							Is.addElement(m);
 						else
-							findSomethingCalledThis(s,lastKnownLocation,Is,false);
+							findSomethingCalledThis(s,(MOB)scripted,lastKnownLocation,Is,false);
 						for(int i=0;i<Is.size();i++)
 						{
 							if(Is.elementAt(i) instanceof Item)
@@ -5184,7 +5186,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(I!=null) 
 							Is.addElement(I);
 						else
-							findSomethingCalledThis(s,lastKnownLocation,Is,false);
+							findSomethingCalledThis(s,monster,lastKnownLocation,Is,false);
 					}
 					for(int i=0;i<Is.size();i++)
 					{

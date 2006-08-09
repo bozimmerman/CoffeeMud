@@ -98,6 +98,19 @@ public class Prayer_Bless extends Prayer
 		return target;
 	}
 
+	public static void endAllOtherBlessings(MOB from, Environmental target, int level)
+	{
+		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
+		for(int v=0;v<V.size();v++)
+		{
+			Ability A=(Ability)V.elementAt(v);
+			if((CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
+			||(from==A.invoker())
+			||(target==from)
+			||(target==A.invoker()))
+				A.unInvoke();
+		}
+	}
 	public static void endLowerBlessings(Environmental target, int level)
 	{
 		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
@@ -160,6 +173,7 @@ public class Prayer_Bless extends Prayer
 					I.recoverEnvStats();
 					I=getSomething(target,true);
 				}
+				Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 				endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();

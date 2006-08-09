@@ -56,7 +56,8 @@ public class Prop_CombatAdjuster extends Property
 		super.affectCharState(mob,maxState);
 		if(alladj[3]!=1.0)
 		{
-			maxState.setHitPoints(CMLib.dice().rollHP((int)Math.round(CMath.mul(mob.baseEnvStats().level(),alladj[3])),mob.baseEnvStats().ability()));
+			// used to have this as rollhp( but that made hp change every damn time!
+			maxState.setHitPoints((int)Math.round(CMath.mul(maxState.getHitPoints(),alladj[3])));
 			if(mob.curState().getHitPoints()>maxState.getHitPoints()) mob.curState().setHitPoints(mob.maxState().getHitPoints());
 		}
 		if(alladj[4]!=1.0)

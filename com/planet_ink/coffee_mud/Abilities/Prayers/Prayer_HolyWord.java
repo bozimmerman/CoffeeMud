@@ -124,7 +124,7 @@ public class Prayer_HolyWord extends Prayer
 								I.recoverEnvStats();
 								I=Prayer_Bless.getSomething(target,true);
 							}
-							Prayer_Bless.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+							Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 							Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 							beneficialAffect(mob,target,asLevel,0);
 							target.recoverEnvStats();
