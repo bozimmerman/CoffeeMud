@@ -1,4 +1,4 @@
-t up#set the quest name
+#set the quest name
 set name gobwar
 
 # this one runs once per day
