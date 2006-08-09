@@ -101,8 +101,11 @@ public class QuestLoader
 		DBConnection D=null;
 		try
 		{
+			DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
+			try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
+			if(DBConnector.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0) 
+				Log.errOut("Failed to delete quest typed '"+quType+"'.");
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'",0);
 			for(int m=0;m<quests.size();m++)
 			{
 				Quest Q=(Quest)quests.elementAt(m);
