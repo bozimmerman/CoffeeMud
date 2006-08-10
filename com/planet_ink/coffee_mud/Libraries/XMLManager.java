@@ -280,6 +280,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				break;
 			}
 		}
+		if((curVal!=null)
+		&&(curVal.length()>0)
+		&&(key.length()>0)
+		&&(!H.containsKey(key.toString().toUpperCase().trim())))
+			H.put(key.toString().toUpperCase().trim(),curVal.toString());
 		return H;
 	}
 
