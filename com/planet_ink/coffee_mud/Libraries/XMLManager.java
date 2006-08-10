@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
     public String ID(){return "XMLManager";}
 	/**
 	 * Returns the double value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param DOUBLE String to convert
 	 * @return double Double value of the string
@@ -51,7 +51,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	/**
 	 * Returns the integer value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
@@ -63,10 +63,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		catch(java.lang.NumberFormatException e){ return 0;}
 		return sint;
 	}
-	
+
 	/**
 	 * Returns the short value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> int num=s_short(CMD.substring(14));
 	 * @param SHORT Short value of string
 	 * @return short Short value of the string
@@ -78,10 +78,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		catch(java.lang.NumberFormatException e){ return 0;}
 		return sint;
 	}
-	
+
 	/**
 	 * Returns the long value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> int num=s_long(CMD.substring(14));
 	 * @param LONG Long value of string
 	 * @return long Long value of the string
@@ -93,10 +93,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		catch(java.lang.NumberFormatException e){ return 0;}
 		return slong;
 	}
-	
+
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
@@ -108,10 +108,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return "<"+TName+" />";
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
-	
+
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
@@ -121,10 +121,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
-	
+
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
@@ -134,10 +134,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
-	
+
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
@@ -147,10 +147,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
-	
+
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
@@ -160,10 +160,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
-	
+
 	/**
 	 * Return the contents of an XML tag, given the tag to search for
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String XML=returnXMLBlock(Response,"PDIModelErrors");
 	 * @param Blob String to searh
 	 * @param Tag Tag name to search for
@@ -175,7 +175,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		if(foundb<0) foundb=Blob.indexOf("<"+Tag+" ");
 		if(foundb<0) foundb=Blob.indexOf("<"+Tag+"/");
 		if(foundb<0) return "";
-		
+
 		int founde=Blob.indexOf("/"+Tag+">",foundb)-1;
 		if(founde<0) founde=Blob.indexOf("/"+Tag+" ",foundb)-1;
 		if(founde<0)
@@ -188,7 +188,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		Blob=Blob.substring(foundb,founde).trim();
 		return Blob;
 	}
-	
+
 	public String parseOutParms(String blk, Vector parmList)
 	{
 		blk=blk.trim();
@@ -198,14 +198,91 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			    if(!blk.substring(x).trim().startsWith("/"))
 			    {
 					parmList.addElement(blk.substring(x).trim());
-					return blk.substring(0,x).trim();
+			    	if(blk.endsWith("/"))
+				    	return blk.substring(0,x).trim()+" /";
+			    	else
+				    	return blk.substring(0,x).trim();
 			    }
 		        break;
 			}
 		return blk;
 	}
-	
-	
+
+
+	/**
+	 * Parse parameter values
+	 * <TAG Parameter="VALUE">
+	 *
+  	 * <br><br><b>Usage:</b> Hashtable parms=parseParms(ThisRow);
+	 * @param Blob String to search
+	 * @return Hashtable Parameter keys/values
+	 */
+	protected Hashtable parseParms(String Blob)
+	{
+		Hashtable H=new Hashtable();
+		StringBuffer curVal=null;
+		StringBuffer key=new StringBuffer("");
+		boolean quoteMode=false;
+		char c=' ';
+		char[] cs=Blob.toCharArray();
+		for(int i=0;i<cs.length;i++)
+		{
+			c=cs[i];
+			switch(c)
+			{
+			case '\"':
+				if((curVal!=null)&&(!quoteMode)&&(curVal.length()==0))
+					quoteMode=true;
+				else
+				if((curVal!=null)&&(quoteMode))
+				{
+					if((curVal.length()==0)||(curVal.charAt(curVal.length()-1)!='\\'))
+					{
+						quoteMode=false;
+						H.put(key.toString().toUpperCase().trim(),curVal.toString());
+						key=new StringBuffer("");
+						curVal=null;
+					}
+					else
+						curVal.setCharAt(curVal.length()-1,c);
+				}
+				else
+				if(curVal!=null)
+					curVal.append(c);
+				else
+				if(key!=null)
+					key.append(c);
+				break;
+			case ' ':
+			case '\t':
+				if((curVal!=null)&&(curVal.length()>0)&&(!quoteMode))
+				{
+					quoteMode=false;
+					H.put(key.toString().toUpperCase().trim(),curVal.toString());
+					key=new StringBuffer("");
+					curVal=null;
+				}
+				else
+				if((curVal!=null)&&((curVal.length()>0)||(quoteMode)))
+					curVal.append(c);
+				break;
+			case '=':
+				if(curVal==null)
+					curVal=new StringBuffer("");
+				else
+					curVal.append(c);
+				break;
+			default:
+				if(curVal!=null)
+					curVal.append(c);
+				else
+					key.append(c);
+				break;
+			}
+		}
+		return H;
+	}
+
 	public String getValFromPieces(Vector V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
@@ -213,7 +290,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return x.value;
 		return "";
 	}
-	
+
 	public Vector getContentsFromPieces(Vector V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
@@ -221,14 +298,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return x.contents;
 		return new Vector();
 	}
-	
+
 	public Vector getRealContentsFromPieces(Vector V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if(x!=null)	return x.contents;
 		return null;
 	}
-	
+
 	public XMLpiece getPieceFromPieces(Vector V, String tag)
 	{
 		if(V==null) return null;
@@ -237,11 +314,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				return (XMLpiece)V.elementAt(v);
 		return null;
 	}
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
 	 * @param V Vector of pieces
 	 * @param tag Tag to search for
@@ -256,11 +333,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
 	 * @param V Vector of pieces
 	 * @param tag Tag to search for
@@ -270,11 +347,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return s_int(getValFromPieces(V,tag));
 	}
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
 	 * @param V Vector of pieces
 	 * @param tag Tag to search for
@@ -284,11 +361,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return s_short(getValFromPieces(V,tag));
 	}
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
 	 * @param V Vector of pieces
 	 * @param tag Tag to search for
@@ -298,11 +375,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return s_long(getValFromPieces(V,tag));
 	}
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
 	 * @param V Vector of pieces
 	 * @param tag Tag to search for
@@ -312,7 +389,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
-	
+
     public boolean acceptableTag(StringBuffer str, int start, int end)
     {
         while(Character.isWhitespace(str.charAt(start)))
@@ -328,7 +405,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
             return false;
         return true;
     }
-    
+
     public XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
     {
         int end=-1;
@@ -393,11 +470,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		}
 		return null;
 	}
-	
-	
+
+
 	public Vector parseAllXML(String buf)
 	{  return parseAllXML(new StringBuffer(buf));}
-		
+
 	public Vector parseAllXML(StringBuffer buf)
 	{
 		Vector V=new Vector();
@@ -411,12 +488,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		}
 		return V;
 	}
-	
-	
+
+
 	/**
 	 * Return the data value within the first XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow);
 	 * @param Blob String to searh
 	 * @return String Information from first XML block
@@ -424,7 +501,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String returnXMLValue(String Blob)
 	{
 		int start=0;
-		
+
 		try{
 			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
 			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
@@ -432,12 +509,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		} catch (Throwable t){return "";}
 		return Blob.substring(start+1).trim();
 	}
-	
-	
+
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
@@ -454,11 +531,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		} catch (Throwable t){return "";}
 		return Blob.substring(start+1).trim();
 	}
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
@@ -478,7 +555,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	/**
 	 * Return a parameter value within an XML tag
 	 * <TAG Parameter="VALUE">
-	 * 
+	 *
   	 * <br><br><b>Usage:</b> String ThisColHead=ReturnXMLParm(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
@@ -496,5 +573,5 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		if(founde<foundb)return"";
 		return Blob.substring(foundb,founde);
 	}
-    
+
 }
