@@ -182,7 +182,7 @@ public class Copy extends StdCommand
 						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","sm",number+"",newItem.name(),end));
 					else
 						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","sw",newItem.name(),end));
-					Log.sysOut("SysopUtils",mob.Name(),getScr("Copy","ya",number+"",newItem.ID()));
+					Log.sysOut("SysopUtils",mob.Name()+" "+getScr("Copy","ya",number+"",newItem.ID()));
 				}
 			}
 			else
