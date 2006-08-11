@@ -449,17 +449,14 @@ public class Log
 	{
 		synchronized(Type.intern())
 		{
-			synchronized(Type.intern())
+			PrintWriter outWriter=getWriter(Type);
+			if(outWriter!=null)
 			{
-				PrintWriter outWriter=getWriter(Type);
-				if(outWriter!=null)
-				{
-					outWriter.println(getLogHeader(Type,Module, Message));
-					outWriter.flush();
-					if(prop(Type).equalsIgnoreCase("BOTH"))
-						System.out.println(getLogHeader(Type,Module, Message));
-					close(outWriter);
-				}
+				outWriter.println(getLogHeader(Type,Module, Message));
+				outWriter.flush();
+				if(prop(Type).equalsIgnoreCase("BOTH"))
+					System.out.println(getLogHeader(Type,Module, Message));
+				close(outWriter);
 			}
 		}
 	}
