@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Archon;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -37,7 +38,7 @@ public class Archon_Banish extends ArchonSkill
 	boolean doneTicking=false;
 	public String ID() { return "Archon_Banish"; }
 	public String name(){ return "Banish";}
-	public String displayText(){ return "(Banished)";}
+	public String displayText(){ return "(Banished "+timeRemaining()+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -46,7 +47,67 @@ public class Archon_Banish extends ArchonSkill
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int maxRange(){return 1;}
 	public int usageType(){return USAGE_MOVEMENT;}
-	protected Room prison=null;
+	protected Room prisonRoom=null;
+	protected long releaseTime=0;
+	
+	protected String timeRemaining(){
+		if(releaseTime<=0) return "indefinitely";
+		if(releaseTime<System.currentTimeMillis()) return "until any second now.";
+		return "for another "+CMLib.english().returnTime(releaseTime-System.currentTimeMillis(),0);
+	}
+	
+	public Room prison(){
+		if((prisonRoom!=null)&&(!prisonRoom.amDestroyed()))
+			return prisonRoom;
+		
+		Room myPrison=null;
+		int x=0;
+		if((text().length()>0)&&((x=text().indexOf("<P>"))>0)) 
+			myPrison=CMLib.map().getRoom(text().substring(0,x));
+		if(myPrison != null)
+		{
+			prisonRoom = (Room) myPrison.copyOf();
+		}
+		else
+		{
+			prisonRoom=CMClass.getLocale("StoneRoom");
+			prisonRoom.addNonUninvokableEffect((Ability)copyOf());
+			prisonRoom.setArea(CMLib.map().getFirstArea());
+			prisonRoom.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
+			prisonRoom.setDisplayText("The Hall of Lost Souls");
+			prisonRoom.setRoomID("");
+            Ability A2=CMClass.getAbility("Prop_HereSpellCast");
+            if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
+            if(A2!=null) prisonRoom.addNonUninvokableEffect(A2);
+		}
+		for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
+		{
+			prisonRoom.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
+			prisonRoom.rawDoors()[Directions.DIRECTIONS_BASE[d]]=prisonRoom;
+		}
+		return prisonRoom;
+	}
+	
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		int x=newText.indexOf("<P>");
+		if(x>=0)
+			releaseTime=CMath.s_long(newText.substring(x+3));
+		prisonRoom=null;
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID)) return false;
+		Room room=prison();
+		if((ticking instanceof MOB)&&(!room.isInhabitant((MOB)ticking)))
+			room.bringMobHere((MOB)ticking,false);
+		if(releaseTime<=0) return true;
+		if(releaseTime>System.currentTimeMillis()) return true;
+		unInvoke();
+		return false;
+	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -118,20 +179,51 @@ public class Archon_Banish extends ArchonSkill
 
 		super.unInvoke();
 
-		if(canBeUninvoked())
-			mob.tell("You are released from banishment!");
+		mob.tell("You are released from banishment!");
 		mob.getStartRoom().bringMobHere(mob,true);
-		if(prison!=null){ prison.destroy(); prison=null;}
+		if(prisonRoom!=null){ prisonRoom.destroy(); prisonRoom=null;}
+		mob.delEffect(this);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-	        Room myPrison = CMLib.map().getRoom(CMParms.combine(commands,1));
-		if(myPrison != null && !"".equals(myPrison.roomID()))
-			while(commands.size() > 1)
+		long time=0;
+		if(commands.size()>2)
+		{
+			String last=((String)commands.lastElement()).toUpperCase();
+			String num=(String)commands.elementAt(commands.size()-2);
+			if((CMath.isInteger(num))&&(CMath.s_int(num)>0))
 			{
-				commands.removeElementAt(1);
+				if("DAYS".startsWith(last))
+					time=System.currentTimeMillis()+(TimeManager.MILI_DAY*CMath.s_int(num));
+				else
+				if("MONTHS".startsWith(last))
+					time=System.currentTimeMillis()+(TimeManager.MILI_MONTH*CMath.s_int(num));
+				else
+				if("HOURS".startsWith(last))
+					time=System.currentTimeMillis()+(TimeManager.MILI_HOUR*CMath.s_int(num));
+				else
+				if("MINUTES".startsWith(last))
+					time=System.currentTimeMillis()+(TimeManager.MILI_MINUTE*CMath.s_int(num));
+				else
+				if("SECONDS".startsWith(last))
+					time=System.currentTimeMillis()+(TimeManager.MILI_SECOND*CMath.s_int(num));
+				else
+				if("TICKS".startsWith(last))
+					time=System.currentTimeMillis()+(Tickable.TIME_TICK*CMath.s_int(num));
+				if(time>System.currentTimeMillis())
+				{
+					commands.removeElementAt(commands.size()-1);
+					commands.removeElementAt(commands.size()-1);
+				}
 			}
+		}
+        Room myPrison = CMLib.map().getRoom(CMParms.combine(commands,1));
+		if(myPrison != null && CMLib.map().getExtendedRoomID(myPrison).length()>0)
+		{
+			while(commands.size() > 1)
+				commands.removeElementAt(1);
+		}
 		else
 			myPrison = null;
 		
@@ -157,42 +249,18 @@ public class Archon_Banish extends ArchonSkill
             CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
-				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
+				A=(Archon_Banish)copyOf();
+				String prisonID="";
+				if(myPrison!=null) prisonID=CMLib.map().getExtendedRoomID(myPrison);
+				A.setMiscText(prisonID+"<P>"+time);
+				target.addNonUninvokableEffect(A);
 				A=(Archon_Banish)target.fetchEffect(ID());
-				if(A!=null)
+				if((A!=null)&&(A.prison()!=null)&&(!A.prison().isInhabitant(target)))
 				{
-					if(myPrison != null)
-					{
-						A.prison = (Room) myPrison.copyOf();
-					}
-					else
-					{
-							
-						A.prison=CMClass.getLocale("StoneRoom");
-						A.prison.addNonUninvokableEffect((Ability)copyOf());
-						A.prison.setArea(mob.location().getArea());
-						A.prison.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
-						A.prison.setDisplayText("The Hall of Lost Souls");
-						A.prison.setRoomID("");
-						for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
-						{
-							A.prison.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
-							A.prison.rawDoors()[Directions.DIRECTIONS_BASE[d]]=A.prison;
-						}
-                        Ability A2=CMClass.getAbility("Prop_HereSpellCast");
-                        if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
-                        if(A2!=null) A.addNonUninvokableEffect(A2);
-					}
-					CMLib.commands().postLook(target,true);
-					for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
-					{
-						A.prison.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
-						A.prison.rawDoors()[Directions.DIRECTIONS_BASE[d]]=A.prison;
-					}
-					A.prison.bringMobHere(target,false);
+					A.prison().bringMobHere(target,false);
 					mob.location().send(mob,msg);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished to " + A.prison.displayText() + "!");
-                    Log.sysOut("Banish",mob.name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison)+".");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished to " + A.prison().displayText() + "!");
+                    Log.sysOut("Banish",mob.name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison())+".");
 				}
 				
 			}

@@ -95,6 +95,7 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
+		mob.location().showOthers(mob,modItem,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 
 		Item copyItem=(Item)modItem.copyOf();
 		if(command.equals("LEVEL"))
@@ -195,6 +196,7 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the room.");
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
@@ -389,6 +391,7 @@ public class Modify extends BaseGenerics
 		for(Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
 			allMyDamnRooms.addElement(e.nextElement());
 
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around wildly.");
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
 		{
@@ -609,6 +612,7 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+Directions.getInDirectionName(direction)+".");
 
 		if(thisExit.isGeneric())
 		{
@@ -685,6 +689,7 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+R.name()+"s.");
 		modifyGenRace(mob,R);
 		CMLib.database().DBDeleteRace(R.ID());
 		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
@@ -716,6 +721,7 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+C.name()+"s.");
 		modifyGenClass(mob,C);
 		CMLib.database().DBDeleteClass(C.ID());
 		CMLib.database().DBCreateClass(C.ID(),C.classParms());
@@ -746,12 +752,14 @@ public class Modify extends BaseGenerics
         String oldStuff=stuff;
         if(stuff.equals("NONE")) 
             stuff="";
-        if(CMLib.socials().FetchSocial((name+" "+stuff).trim(),false)==null)
+        Social S=CMLib.socials().FetchSocial((name+" "+stuff).trim(),false);
+        if(S==null)
         {
             mob.tell("The social '"+stuff+"' does not exist.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             return;
         }
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+S.name()+"s.");
 		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
 	}
@@ -794,11 +802,13 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 		MOB copyMOB=(MOB)M.copyOf();
 		modifyPlayer(mob,M);
 		if(!copyMOB.sameAs(M))
 			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
 	}
+	
 	public void mobs(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -831,7 +841,7 @@ public class Modify extends BaseGenerics
 			return;
 		}
 		MOB copyMOB=(MOB)modMOB.copyOf();
-
+		mob.location().showOthers(mob,modMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 		if(command.equals("LEVEL"))
 		{
 			int newLevel=CMath.s_int(restStr);
@@ -902,56 +912,48 @@ public class Modify extends BaseGenerics
 		if(commandType.equals("ITEM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms(mob,commands);
 		}
 		else
 		if(commandType.equals("RACE"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			areas(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
 		else
@@ -990,7 +992,6 @@ public class Modify extends BaseGenerics
 		if(commandType.equals("USER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			players(mob,commands);
 		}
 		else
@@ -1010,7 +1011,7 @@ public class Modify extends BaseGenerics
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
                 return false;
             }
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms around the idea of "+P.getSubject()+".^?");
             P.modifyVote(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world's uncertainty has changed.^?");
             Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
@@ -1019,7 +1020,6 @@ public class Modify extends BaseGenerics
 		if(commandType.equals("QUEST"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Start/Stop which quest?  Use list quests.");
 			else
@@ -1037,6 +1037,7 @@ public class Modify extends BaseGenerics
 				else
 				if(!mob.isMonster())
 				{
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+Q.name()+".");
 					if((Q.running())&&(mob.session().confirm("Stop quest '"+Q.name()+"' (y/N)?","N")))
 					{
 						Q.stopQuest();
@@ -1058,7 +1059,6 @@ public class Modify extends BaseGenerics
         if(commandType.equals("FACTION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
             if(commands.size()<3)
                 mob.tell("Modify which faction?  Use list factions.");
             else
@@ -1071,6 +1071,7 @@ public class Modify extends BaseGenerics
                 else
                 if(!mob.isMonster())
                 {
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+F.name()+".");
                     modifyFaction(mob,F);
                     Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name()+" ("+F.factionID()+").");
                 }
@@ -1091,6 +1092,7 @@ public class Modify extends BaseGenerics
 				else
                 if(!mob.isMonster())
                 {
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+C.name()+".");
                     modifyClan(mob,C);
                     Log.sysOut("CreateEdit",mob.Name()+" modified Clan "+C.name()+".");
                 }
@@ -1136,6 +1138,7 @@ public class Modify extends BaseGenerics
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 
                     return errorOut(mob);
 				Item copyItem=(Item)thang.copyOf();
+				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
@@ -1175,6 +1178,7 @@ public class Modify extends BaseGenerics
 				MOB copyMOB=(MOB)thang.copyOf();
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
+					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					int showFlag=-1;
 					if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 						showFlag=-999;
@@ -1206,6 +1210,7 @@ public class Modify extends BaseGenerics
 				}
 				else
                 {
+					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					genMiscSet(mob,thang);
 					if(!copyMOB.sameAs(thang))
 	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
@@ -1222,6 +1227,7 @@ public class Modify extends BaseGenerics
 				if(thang!=null)
 				{
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
+					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
 					genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
