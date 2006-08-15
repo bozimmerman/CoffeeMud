@@ -40,7 +40,8 @@ public class Prop_Hidden extends Property
 										 |Ability.CAN_EXITS
 										 |Ability.CAN_AREAS;}
 	protected int ticksSinceLoss=100;
-
+	protected boolean unLocatable=false;
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -68,6 +69,16 @@ public class Prop_Hidden extends Property
 		return;
 	}
 
+	public void setMiscText(String text)
+	{
+		super.setMiscText(text);
+		if(!(affected instanceof MOB))
+		{
+			Vector parms=CMParms.parse(text.toUpperCase());
+			unLocatable=parms.contains("UNLOCATABLE");
+		}
+	}
+	
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
@@ -91,14 +102,17 @@ public class Prop_Hidden extends Property
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 		}
 		else
-		if(affected instanceof Item)
 		{
-			if((((Item)affected).owner()!=null)
-			&&(((Item)affected).owner() instanceof Room))
+			if(unLocatable)
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
+			if(affected instanceof Item)
+			{
+				if((((Item)affected).owner()!=null)
+				&&(((Item)affected).owner() instanceof Room))
+					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+			}
+			else
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 		}
-		else
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-
 	}
 }

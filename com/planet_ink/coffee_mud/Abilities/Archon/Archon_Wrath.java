@@ -47,6 +47,12 @@ public class Archon_Wrath extends ArchonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		boolean announce=false;
+		if(((String)commands.lastElement()).equals("!"))
+		{
+			commands.removeElementAt(commands.size()-1);
+			announce=true;
+		}
 		MOB target=getTargetAnywhere(mob,commands,givenTarget,true);
 		if(target==null) return false;
 
@@ -78,6 +84,13 @@ public class Archon_Wrath extends ArchonSkill
 					target.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 				}
                 Log.sysOut("Banish",mob.name()+" wrathed "+target.name()+".");
+                if(announce)
+                {
+                	Command C=CMClass.getCommand("Announce");
+                	try{
+	            		C.execute(mob,CMParms.makeVector("ANNOUNCE",target.name()+"is knocked out of "+target.charStats().hisher()+" shoes!!!"));
+                	}catch(Exception e){}
+                }
 			}
 		}
 		else

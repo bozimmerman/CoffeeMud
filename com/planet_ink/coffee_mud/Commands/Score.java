@@ -190,8 +190,8 @@ public class Score extends Affect
 		}
 		msg.append("Your ^<HELP^>armored defense^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(adjustedAttack)+"^?.\n\r");
-		if(CMLib.flags().canSeeHidden(mob))
-			msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
+		//if(CMLib.flags().canSeeHidden(mob))
+		//	msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 	    if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {
@@ -232,11 +232,14 @@ public class Score extends Affect
 
 		if(mob.riding()!=null)
 			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
+		
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+			msg.append("^!Your playerkill flag is on.^?\n\r");
 
 		if(CMLib.flags().isInvisible(mob))
 			msg.append("^!You are invisible.^?\n\r");
 		if(CMLib.flags().isHidden(mob))
-			msg.append("^!You are hidden ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
+			msg.append("^!You are hidden.^?\n\r");// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
 		if(CMLib.flags().isSneaking(mob))
 			msg.append("^!You are sneaking.^?\n\r");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))

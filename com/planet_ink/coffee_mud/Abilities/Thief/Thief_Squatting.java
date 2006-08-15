@@ -130,6 +130,33 @@ public class Thief_Squatting extends ThiefSkill
 			mob.tell("This property is not available for sale, and cannot be squatted upon.");
 			return false;
 		}
+		MOB warnMOB=null;
+		if(T.landOwner().length()>0)
+		{
+			Clan C=CMLib.clans().getClan(T.landOwner());
+			if(C==null)
+			{
+				MOB M=CMLib.map().getLoadPlayer(T.landOwner());
+				if(M!=null)
+					warnMOB=M;
+			}
+			else
+			{
+				for(int s=0;s<CMLib.sessions().size();s++)
+				{
+					Session S=CMLib.sessions().elementAt(s);
+					if((S.mob()!=null)
+					&&(S.mob()!=mob)
+					&&(S.mob().getClanID().equals(C.clanID())))
+						warnMOB=S.mob();
+				}
+			}
+			if((warnMOB==null)||(!CMLib.flags().isInTheGame(warnMOB,true)))
+			{
+				mob.tell("The owners must be in the game for you to begin squatting.");
+				return false;
+			}
+		}
 		if(!confirmed)
 		{
 			mob.tell("You cannot squat on an area for sale.");
@@ -154,6 +181,8 @@ public class Thief_Squatting extends ThiefSkill
 			room=mob.location();
 			title=T;
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
+			if(warnMOB!=null)
+				warnMOB.tell("You've heard a rumor that someone is squatting on "+T.landOwner()+"'s property.");
 		}
 		return success;
 	}

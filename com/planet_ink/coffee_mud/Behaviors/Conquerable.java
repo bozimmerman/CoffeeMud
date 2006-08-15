@@ -48,6 +48,7 @@ public class Conquerable extends Arrest
     protected Area myArea=null;
     protected String journalName="";
     protected boolean allowLaw=false;
+    protected boolean REVOLTNOW=false;
     protected long waitToReload=0;
 
     protected int revoltDown=REVOLTFREQ;
@@ -66,6 +67,8 @@ public class Conquerable extends Arrest
     public String conquestInfo(Area myArea)
     {
         StringBuffer str=new StringBuffer("");
+        if((totalControlPoints<0)&&(myArea!=null))
+			recalculateControlPoints(myArea);
         if((holdingClan.length()==0)||(totalControlPoints<0))
             str.append("Area '"+myArea.name()+"' is not currently controlled by any clan.\n\r");
         else
@@ -86,7 +89,12 @@ public class Conquerable extends Arrest
                 str.append("This area is laid waste by "+holdingClan+".\n\r");
             }
         }
-        str.append("This area requires "+totalControlPoints+" points to control.\n\r");
+        if((totalControlPoints<0)&&(myArea!=null))
+			recalculateControlPoints(myArea);
+        if(totalControlPoints<0)
+            str.append("This area has not yet calculated its required control points.\n\r");
+        else
+	        str.append("This area requires "+totalControlPoints+" points to control.\n\r");
         if(clanControlPoints.size()==0)
             str.append("There are no control points won at present by any clan.\n\r");
         synchronized(clanControlPoints)
@@ -245,8 +253,9 @@ public class Conquerable extends Arrest
                 if((!I.amDestroyed())
                 &&(I.owner() instanceof MOB)
                 &&(((MOB)I.owner()).isMonster())
-                &&(CMLib.flags().isInTheGame(I,true))
+                &&(CMLib.flags().isInTheGame((MOB)I.owner(),true))
                 &&(A.inMetroArea(((MOB)I.owner()).getStartRoom().getArea()))
+                &&((holdingClan.length()==0)||(I.clanID().equals(holdingClan)))
                 &&(I.ciType()!=ClanItem.CI_PROPAGANDA))
                     itemControlPoints+=((MOB)((Item)I).owner()).envStats().level();
             }
@@ -390,26 +399,7 @@ public class Conquerable extends Arrest
 					}
 				}
 			}
-			totalControlPoints=0;
-			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
-			{
-				Room R=(Room)e.nextElement();
-				for(int i=0;i<R.numInhabitants();i++)
-				{
-					MOB M=R.fetchInhabitant(i);
-					if((M!=null)
-			        &&(M.isMonster())
-					&&(M.getStartRoom()!=null)
-					&&(A.inMetroArea(M.getStartRoom().getArea()))
-					&&(!CMLib.flags().isAnimalIntelligence(M)))
-					{
-						if((M.getClanID().length()==0)
-						&&(holdingClan.length()>0))
-							M.setClanID(holdingClan);
-						totalControlPoints+=M.envStats().level();
-					}
-				}
-			}
+			recalculateControlPoints(A);
 		}
 		else
 		{
@@ -456,8 +446,9 @@ public class Conquerable extends Arrest
                 if(holdingClan.length()>0)
                 {
                     int chance=calcRevoltChance(A);
-                    if(CMLib.dice().rollPercentage()<chance)
-                    {
+                	if((REVOLTNOW)&&(chance<100))
+                	{
+                    	Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
                         if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
                         Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
                         for(int i=0;i<channels.size();i++)
@@ -465,7 +456,16 @@ public class Conquerable extends Arrest
                         if(journalName.length()>0)
                             CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.",-1);
                         endClanRule();
-                    }
+                	}
+                	else
+                	{
+	                    if(CMLib.dice().rollPercentage()<chance)
+	                    {
+	                        Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+	                        for(int i=0;i<channels.size();i++)
+	                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","There are the rumblings of revolt in "+myArea.name()+".",false);
+	                    }
+                	}
                 }
             }
             
@@ -515,6 +515,30 @@ public class Conquerable extends Arrest
 		return true;
 	}
 
+	public void recalculateControlPoints(Area A)
+	{
+		totalControlPoints=0;
+		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		{
+			Room R=(Room)e.nextElement();
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				MOB M=R.fetchInhabitant(i);
+				if((M!=null)
+		        &&(M.isMonster())
+				&&(M.getStartRoom()!=null)
+				&&(A.inMetroArea(M.getStartRoom().getArea()))
+				&&(!CMLib.flags().isAnimalIntelligence(M)))
+				{
+					if((M.getClanID().length()==0)
+					&&(holdingClan.length()>0))
+						M.setClanID(holdingClan);
+					totalControlPoints+=M.envStats().level();
+				}
+			}
+		}
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
         boolean debugging=CMSecurity.isDebugging("CONQUEST");

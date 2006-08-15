@@ -200,8 +200,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 					parmList.addElement(blk.substring(x).trim());
 			    	if(blk.endsWith("/"))
 				    	return blk.substring(0,x).trim()+" /";
-			    	else
-				    	return blk.substring(0,x).trim();
+			    	return blk.substring(0,x).trim();
 			    }
 		        break;
 			}

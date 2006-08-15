@@ -122,12 +122,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
         
 		// second, inexacting pass
-		C=CMClass.findCommandByTrigger(firstWord,false);
-        if((C!=null)
-        &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.className(C).toUpperCase()))) 
-            return C;
-
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			A=mob.fetchAbility(a);
@@ -147,6 +141,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                         }
                     }
 		}
+		//commands comes inexactly after ables
+		//because of CA, PR, etc..
+		C=CMClass.findCommandByTrigger(firstWord,false);
+        if((C!=null)
+        &&(C.securityCheck(mob))
+        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.className(C).toUpperCase()))) 
+            return C;
+
 
 		social=CMLib.socials().FetchSocial(commands,false);
 		if(social!=null)
@@ -193,13 +195,22 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return false;
 	}
 
+	private String collapsedName(Ability thisAbility)
+	{
+		int x=thisAbility.name().indexOf(" ");
+		if(x>=0)
+			return CMStrings.replaceAll(thisAbility.name()," ","");
+		return thisAbility.Name();
+	}
+	
 	public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
 			if(thisAbility.triggerStrings()[i].equalsIgnoreCase(thisWord))
 			{
-				if((thisAbility.name().toUpperCase().startsWith(secondWord)))
+				if(((thisAbility.name().toUpperCase().startsWith(secondWord)))
+				||(collapsedName(thisAbility).toUpperCase().startsWith(secondWord)))
 					return true;
 			}
 		}
@@ -259,7 +270,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if((thisAbility!=null)
 				&&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
 				{
-					if(thisAbility.name().equalsIgnoreCase(secondWord))
+					if((thisAbility.name().equalsIgnoreCase(secondWord))
+					||(collapsedName(thisAbility).equalsIgnoreCase(secondWord)))
 					{
 						evokableAbility=thisAbility;
 						foundMoreThanOne=false;

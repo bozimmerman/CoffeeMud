@@ -53,7 +53,8 @@ public class Flee extends Go
 		}
         
         boolean XPloss=true;
-        if(mob.getVictim()!=null)
+        MOB fighting=mob.getVictim();
+        if(fighting!=null)
         {
             HashSet H=CMLib.combat().allCombatants(mob);
             for(Iterator i=H.iterator();i.hasNext();)
@@ -105,9 +106,8 @@ public class Flee extends Go
 			}
 		}
 		int lostExperience=10;
-		if(XPloss&&(mob.getVictim()!=null))
+		if(XPloss&&(fighting!=null))
 		{
-			MOB victim=mob.getVictim();
 			String whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERFLEE);
 			if(whatToDo==null) return false;
 			if(whatToDo.startsWith("UNL"))
@@ -153,7 +153,7 @@ public class Flee extends Go
 				lostExperience=CMath.s_int(whatToDo);
 			else
 			{
-				lostExperience=10+((mob.envStats().level()-victim.envStats().level()))*5;
+				lostExperience=10+((mob.envStats().level()-fighting.envStats().level()))*5;
 				if(lostExperience<10) lostExperience=10;
 			}
 		}
@@ -162,8 +162,16 @@ public class Flee extends Go
 			mob.makePeace();
 			if(XPloss&&(lostExperience>0))
 			{
+				double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
 				mob.tell(getScr("Movement","fleeexp",""+lostExperience));
 				CMLib.leveler().postExperience(mob,null,null,-lostExperience,false);
+				
+				int gainedExperience=(int)Math.round(CMath.mul(lostExperience,1.0-pctHPremaining));
+				if((fighting!=null)&&(fighting!=mob)&&(gainedExperience>0))
+				{
+					mob.tell(getScr("Movement","fleeexp2",""+gainedExperience));
+					CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
+				}
 			}
 		}
 		return false;

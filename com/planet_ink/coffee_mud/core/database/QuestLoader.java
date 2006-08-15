@@ -99,16 +99,15 @@ public class QuestLoader
 		String quType="DefaultQuest";
 		if(quests.size()>0) quType=CMClass.className(quests.firstElement());
 		DBConnection D=null;
-		try
+		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
+		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
+		if(DBConnector.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0) 
+			Log.errOut("Failed to delete quest typed '"+quType+"'.");
+		D=DBConnector.DBFetch();
+		for(int m=0;m<quests.size();m++)
 		{
-			DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
-			try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
-			if(DBConnector.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0) 
-				Log.errOut("Failed to delete quest typed '"+quType+"'.");
-			D=DBConnector.DBFetch();
-			for(int m=0;m<quests.size();m++)
-			{
-				Quest Q=(Quest)quests.elementAt(m);
+			Quest Q=(Quest)quests.elementAt(m);
+			try{
 				D.update(
 				"INSERT INTO CMQUESTS ("
 				+"CMQUESID, "
@@ -122,10 +121,10 @@ public class QuestLoader
 				+"'"+Q.getWinnerStr()+" '"
 				+")",0);
 			}
-		}
-		catch(java.sql.SQLException sqle)
-		{
-			Log.errOut("Quest",sqle);
+			catch(java.sql.SQLException sqle)
+			{
+				Log.errOut("Quest",sqle);
+			}
 		}
 		if(D!=null) DBConnector.DBDone(D);
 	}

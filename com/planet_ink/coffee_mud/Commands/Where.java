@@ -421,7 +421,9 @@ public class Where extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				if((CMLib.flags().canAccess(mob,A))&&(A.getAreaIStats()!=null))
+				if((CMLib.flags().canAccess(mob,A))
+				&&(CMLib.flags().canBeLocated(A))
+				&&(A.getAreaIStats()!=null))
 				{
 					int median=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
 					int medianDiff=0;

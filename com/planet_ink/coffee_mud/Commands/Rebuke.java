@@ -52,6 +52,8 @@ public class Rebuke extends StdCommand
 		if((target==null)&&(mob.getLiegeID().length()>0)
 		&&(CMLib.english().containsString(mob.getLiegeID(),str)))
 			target=CMLib.map().getLoadPlayer(mob.getLiegeID());
+		if((target==null)&&(mob.numFollowers()>0))
+			target=mob.fetchFollower(str);
 		
 		if(target==null)
 		{
@@ -66,6 +68,14 @@ public class Rebuke extends StdCommand
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLiegeID()+".");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
+		if((target.amFollowing()==mob)&&(target.location()!=null))
+		{
+			Room R=target.location();
+			msg=CMClass.getMsg(target,target.amFollowing(),null,CMMsg.MSG_NOFOLLOW,"<S-NAME> stop(s) following <T-NAMESELF>.");
+			// no room OKaffects, since the damn leader may not be here.
+			if(target.okMessage(mob,msg))
+				R.send(mob,msg);
+		}
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

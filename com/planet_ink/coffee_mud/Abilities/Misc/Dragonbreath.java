@@ -169,10 +169,9 @@ public class Dragonbreath extends StdAbility
 					invoker=mob;
 
 					int damage = 0;
-					int maxDie =  mob.envStats().level();
-					if (maxDie > 10)
-						maxDie = 10;
-					damage += CMLib.dice().roll(maxDie,6,1);
+					int levelBy=mob.envStats().level()/4;
+					if(levelBy<1) levelBy=1;
+					damage += CMLib.dice().roll(levelBy,6,levelBy);
 					if(msg.value()>0)
 						damage = (int)Math.round(CMath.div(damage,2.0));
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|strikeType,WeaponType,"^F^<FIGHT^>The "+stuffWord+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");

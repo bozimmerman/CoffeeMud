@@ -142,8 +142,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
         }
-
+		
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
+		int oldClassLevel=mob.baseCharStats().getClassLevel(curClass);
 		baseLevelAdjuster(mob,-1);
 		int prac2Stat=mob.charStats().getStat(curClass.getAttackAttribute());
 		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
@@ -160,8 +161,27 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^N.\n\r");
-		
         curClass.unLevel(mob);
+		Ability A=null;
+		Vector lose=new Vector();
+		for(int a=0;a<mob.numLearnedAbilities();a++)
+		{
+			A=mob.fetchAbility(a);
+			if(CMLib.ableMapper().getQualifyingLevel(curClass.ID(),false,A.ID())==oldClassLevel)
+				lose.addElement(A);
+		}
+		for(int l=0;l<lose.size();l++)
+		{
+			A=(Ability)lose.elementAt(l);
+			mob.delAbility(A);
+			mob.tell("^HYou have forgotten "+A.name()+".^N.\n\r");
+			A=mob.fetchEffect(A.ID());
+			if((A!=null)&&(A.isNowAnAutoEffect()))
+			{
+				A.unInvoke();
+				mob.delEffect(A);
+			}
+		}
 	}
 
 	public void loseExperience(MOB mob, int amount)
@@ -252,7 +272,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append(baseLevelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
-            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level());
+            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level(),mob.location());
             Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDLEVELS");
             Vector channels2=CMLib.channels().getFlaggedChannelNames("LEVELS");
             if(!CMLib.flags().isCloaked(mob))

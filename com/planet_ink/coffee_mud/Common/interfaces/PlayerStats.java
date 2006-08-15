@@ -40,7 +40,7 @@ public interface PlayerStats extends CMObject
     public long leveledDateTime(int level);
 	public void setLastDateTime(long C);
 	public void setUpdated(long time);
-    public void setLeveledDateTime(int level);
+    public void setLeveledDateTime(int level, Room R);
 	/** User PASSWORD */
 	public String password();
 	public void setPassword(String newPassword);

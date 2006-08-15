@@ -63,6 +63,20 @@ public class Report extends BaseAbleLister
 			if("SPELLS".startsWith(s))
 				CMLib.commands().postSay(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,-1,false,level)),false,false);
 			else
+			if("STATS".startsWith(s))
+			{
+				StringBuffer stats=new StringBuffer("");
+		        int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		        CharStats CT=mob.charStats();
+		        stats.append("^cStr: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+", ");
+		        stats.append("^cInt: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+", ");
+		        stats.append("^cDex: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ))+", ");
+		        stats.append("^cWis: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+", ");
+		        stats.append("^cCon: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+", ");
+		        stats.append("^cCha: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)));
+				CMLib.commands().postSay(mob,null,"^NMy stats:^? "+stats.toString(),false,false);
+			}
+			else
 			if("SKILLS".startsWith(s))
 			{
 				Vector V=new Vector();

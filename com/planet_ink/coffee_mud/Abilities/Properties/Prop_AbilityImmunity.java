@@ -64,7 +64,7 @@ public class Prop_AbilityImmunity extends Property
 		if ( (msg.source() != null)
 	    && (msg.target() != null)
 	    && (msg.tool() != null)
-	    && (msg.amITarget(affected))
+	    && ((msg.amITarget(affected))||((affected instanceof Item)&&(msg.target()==((Item)affected).owner())))
 	    && (msg.tool() instanceof Ability ))
 		{
 			Ability d = (Ability)msg.tool();

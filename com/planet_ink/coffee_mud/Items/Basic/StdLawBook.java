@@ -231,6 +231,7 @@ public class StdLawBook extends StdItem
 		{"A crime ONLY if perpetrator is NOT in combat.","!combat"}
 	};
 
+	//	@SupressWarnings
 	public String[] modifyLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, String[] oldLaw)
 		throws IOException
 	{
@@ -264,7 +265,7 @@ public class StdLawBook extends StdItem
 			String s=mob.session().choose("Enter a number to modify or RETURN: ","123456\n","\n");
 			int x=CMath.s_int(s);
 			if(x==0) return oldLaw;
-			oldLaw=(String[])oldLaw.clone();
+			oldLaw=(String[])oldLaw.clone(); 
 			switch(x)
 			{
 			case 1:

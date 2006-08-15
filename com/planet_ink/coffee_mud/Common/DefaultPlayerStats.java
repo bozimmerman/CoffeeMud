@@ -64,7 +64,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Vector securityGroups=new Vector();
     protected long accountExpiration=0;
     protected RoomnumberSet visitedRoomSet=null;
-    protected DVector levelDateTimes=new DVector(2);
+    protected DVector levelInfo=new DVector(3);
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
     public CMObject copyOf()
@@ -72,7 +72,7 @@ public class DefaultPlayerStats implements PlayerStats
         try
         {
             DefaultPlayerStats O=(DefaultPlayerStats)this.clone();
-            O.levelDateTimes=levelDateTimes.copyOf();
+            O.levelInfo=levelInfo.copyOf();
             if(visitedRoomSet!=null)
                 O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
             else
@@ -375,7 +375,7 @@ public class DefaultPlayerStats implements PlayerStats
         if(dates==null) dates="";
         // now parse all the level date/times
         int lastNum=Integer.MIN_VALUE;
-        levelDateTimes.clear();
+        levelInfo.clear();
         if(dates.length()>0)
         {
             Vector sets=CMParms.parseSemicolons(dates,true);
@@ -383,29 +383,31 @@ public class DefaultPlayerStats implements PlayerStats
             {
                 String sStr=(String)sets.elementAt(ss);
                 Vector twin=CMParms.parseCommas(sStr,true);
-                if(twin.size()!=2) continue;
+                if((twin.size()!=2)&&(twin.size()!=3))  continue;
                 if(CMath.s_int((String)twin.firstElement())>=lastNum)
                 {
-                    levelDateTimes.addElement(new Integer(CMath.s_int((String)twin.firstElement())),
-                                              new Long(CMath.s_long((String)twin.lastElement())));
+                	levelInfo.addElement(new Integer(CMath.s_int((String)twin.firstElement())),
+                                              new Long(CMath.s_long((String)twin.elementAt(1))),
+                                              (twin.size()>2)?(String)twin.elementAt(2):"");
                     lastNum=CMath.s_int((String)twin.firstElement());
                 }
             }
         }
-        if(levelDateTimes.size()==0)
-            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        if(levelInfo.size()==0)
+        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
         roomSet().parseXML(str);
 	}
 
     private String getLevelDateTimesStr()
     {
-        if(levelDateTimes.size()==0)
-            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        if(levelInfo.size()==0)
+        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
         StringBuffer buf=new StringBuffer("");
-        for(int ss=0;ss<levelDateTimes.size();ss++)
+        for(int ss=0;ss<levelInfo.size();ss++)
         {
-            buf.append(((Integer)levelDateTimes.elementAt(ss,1)).intValue()+",");
-            buf.append(((Long)levelDateTimes.elementAt(ss,2)).longValue()+";");
+            buf.append(((Integer)levelInfo.elementAt(ss,1)).intValue()+",");
+            buf.append(((Long)levelInfo.elementAt(ss,2)).longValue()+",");
+            buf.append((String)levelInfo.elementAt(ss,3)+",");
         }
         return buf.toString();
     }
@@ -505,44 +507,45 @@ public class DefaultPlayerStats implements PlayerStats
     
     public long leveledDateTime(int level)
     {
-        if(levelDateTimes.size()==0)
-            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
-        long lowest=((Long)levelDateTimes.elementAt(0,2)).longValue();
-        for(int l=1;l<levelDateTimes.size();l++)
+        if(levelInfo.size()==0)
+        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
+        long lowest=((Long)levelInfo.elementAt(0,2)).longValue();
+        for(int l=1;l<levelInfo.size();l++)
         {
-            if(level<((Integer)levelDateTimes.elementAt(l,1)).intValue())
+            if(level<((Integer)levelInfo.elementAt(l,1)).intValue())
                 return lowest;
-            lowest=((Long)levelDateTimes.elementAt(l,2)).longValue();
+            lowest=((Long)levelInfo.elementAt(l,2)).longValue();
         }
         return lowest;
     }
     
-    public void setLeveledDateTime(int level)
+    public void setLeveledDateTime(int level, Room R)
     {
-        if(levelDateTimes.size()==0)
-            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        if(levelInfo.size()==0)
+        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()));
         long lastTime=0;
-        for(int l=0;l<levelDateTimes.size();l++)
+        for(int l=0;l<levelInfo.size();l++)
         {
-            if(level==((Integer)levelDateTimes.elementAt(l,1)).intValue())
+            if(level==((Integer)levelInfo.elementAt(l,1)).intValue())
             {
-                levelDateTimes.setElementAt(l,2,new Long(System.currentTimeMillis()));
+            	levelInfo.setElementAt(l,2,new Long(System.currentTimeMillis()));
+            	levelInfo.setElementAt(l,3,CMLib.map().getExtendedRoomID(R));
                 return;
             }
             else
             if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_HOUR)
                 return;
             else
-            if(level<((Integer)levelDateTimes.elementAt(l,1)).intValue())
+            if(level<((Integer)levelInfo.elementAt(l,1)).intValue())
             {
-                levelDateTimes.insertElementAt(l,new Integer(level),new Long(System.currentTimeMillis()));
+            	levelInfo.insertElementAt(l,new Integer(level),new Long(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
                 return;
             }
-            lastTime=((Long)levelDateTimes.elementAt(l,2)).longValue();
+            lastTime=((Long)levelInfo.elementAt(l,2)).longValue();
         }
         if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_HOUR)
             return;
-        levelDateTimes.addElement(new Integer(level),new Long(System.currentTimeMillis()));
+        levelInfo.addElement(new Integer(level),new Long(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
     }
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

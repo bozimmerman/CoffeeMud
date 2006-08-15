@@ -160,7 +160,7 @@ public class Put extends BaseItemParser
 		for(int i=0;i<V.size();i++)
 		{
 			putThis=(Item)V.elementAt(i);
-			String putWord=(putThis instanceof Rideable)?((Rideable)putThis).putString(mob):"in";
+			String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
 			CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
 			if(mob.location().okMessage(mob,putMsg))
 				mob.location().send(mob,putMsg);

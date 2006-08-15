@@ -35,7 +35,7 @@ public interface CMFlagLibrary extends CMObject
     public final static int flag_is=2;
     
     public boolean canSee(MOB E);
-    public boolean canBeLocated(Item E);
+    public boolean canBeLocated(Environmental E);
     public boolean canBeSaved(Item E);
     public boolean canSeeHidden(MOB E);
     public boolean canSeeInvisible(MOB E);

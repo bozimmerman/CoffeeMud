@@ -38,7 +38,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public String ID(){return "Sense";}
 	public boolean canSee(MOB E)
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
-	public boolean canBeLocated(Item E)
+	public boolean canBeLocated(Environmental E)
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)==0); }
     public boolean canBeSaved(Item E)
     { return (E==null)||((E.envStats().sensesMask()&EnvStats.SENSE_ITEMNEVERSAVED)==0); }
@@ -492,8 +492,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         {
             if((!canSeeHidden(seer))||(seer==null))
     		   return false;
-            if(this.getHideScore(seen)>getDetectScore(seer))
-                return false;
+            //if(this.getHideScore(seen)>getDetectScore(seer))
+            //    return false;
         }
 
 		if((seer!=null)&&(!(seen instanceof Room)))

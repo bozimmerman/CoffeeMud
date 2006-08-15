@@ -59,9 +59,6 @@ public class Spell_EnchantWand extends Spell
 			return false;
 		}
 		
-		//TODO: bug here -- stone wands cant be enchanted, or glass or bone.
-		//You can't enchant an obsidian wand.
-
 		commands.removeElementAt(commands.size()-1);
 		Wand wand=(Wand)target;
 

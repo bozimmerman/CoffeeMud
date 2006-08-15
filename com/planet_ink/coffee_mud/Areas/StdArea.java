@@ -735,6 +735,11 @@ public class StdArea implements Area
 			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
+			String currName=CMLib.beanCounter().getCurrency(this);
+			if(currName.length()>0)
+				s.append("Currency       : "+CMStrings.capitalizeAndLower(currName)+"\n\r");
+			else
+				s.append("Currency       : Gold coins (default)\n\r");
             LegalBehavior B=CMLib.utensils().getLegalBehavior(this);
 			if(B!=null)
 			{

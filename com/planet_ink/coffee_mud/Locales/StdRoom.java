@@ -945,7 +945,8 @@ public class StdRoom implements Room
 		Rideable RI=mob.riding();
 		if((RI!=null)&&(CMLib.map().roomLocation(RI)==oldRoom))
 		{
-			if(RI.isMobileRideBasis())
+			if((RI.isMobileRideBasis())
+			&&((!(RI instanceof Item))||(!CMLib.flags().isMobile(RI))))
 			{
 				if(RI instanceof MOB)
 					bringMobHere((MOB)RI,andFollowers);
@@ -1010,15 +1011,17 @@ public class StdRoom implements Room
 		}
 		item.setContainer(null);
 		
-		if((item.riding()!=null)&&(o instanceof Room)&&(CMLib.map().roomLocation(item.riding())==o))
+		Rideable RI=item.riding();
+		if((RI!=null)&&(o instanceof Room)&&(CMLib.map().roomLocation(RI)==o))
 		{
-			if(item.riding().isMobileRideBasis())
+			if((RI.isMobileRideBasis())
+			&&((!(RI instanceof Item))||(!CMLib.flags().isMobile(RI))))
 			{
-				if(item.riding() instanceof MOB)
-					bringMobHere((MOB)item.riding(),true);
+				if(RI instanceof MOB)
+					bringMobHere((MOB)RI,true);
 				else
-				if(item.riding() instanceof Item)
-					bringItemHere((Item)item.riding(),-1,true);
+				if(RI instanceof Item)
+					bringItemHere((Item)RI,-1,true);
 			}
 			else
 				item.setRiding(null);
@@ -1031,7 +1034,8 @@ public class StdRoom implements Room
 				RR=((Rideable)item).fetchRider(r);
 				if(CMLib.map().roomLocation(RR)==o)
 				{
-					if(((Rideable)item).isMobileRideBasis())
+					if((((Rideable)item).isMobileRideBasis())
+					&&(!CMLib.flags().isMobile(item)))
 					{
 						if(RR instanceof MOB)
 							bringMobHere((MOB)RR,true);

@@ -199,9 +199,11 @@ public class Prop_SpellAdder extends Property
 				A.invoke(qualMOB,V2,target,true,(affected!=null)?affected.envStats().level():0);
 				EA=target.fetchEffect(A.ID());
                 lastMOB=target;
+                // this needs to go here because otherwise it makes non-item-invoked spells long lasting,
+                // which means they dont go away when item is removed.
+    			if(EA!=null)
+    				EA.makeLongLasting();
 			}
-			if(EA!=null)
-				EA.makeLongLasting();
 		}
         return true;
 	}
