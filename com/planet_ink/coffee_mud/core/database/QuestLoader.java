@@ -38,13 +38,13 @@ public class QuestLoader
 	{
 		DB=newDB;
 	}
-	public static void DBRead(MudHost myHost)
+	public void DBRead(MudHost myHost)
 	{
 		CMLib.quests().shutdown();
 		DBConnection D=null;
 		try
 		{
-			D=DBConnector.DBFetch();
+			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMQUESTS");
 			while(R.next())
 			{
@@ -72,15 +72,15 @@ public class QuestLoader
 		{
 			Log.errOut("Quest",sqle);
 		}
-		if(D!=null) DBConnector.DBDone(D);
+		if(D!=null) DB.DBDone(D);
 	}
 	
 	
-	public static void DBUpdateQuest(Quest Q)
+	public void DBUpdateQuest(Quest Q)
 	{
 		if(Q==null) return;
-		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'");
-		DBConnector.update(
+		DB.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'");
+		DB.update(
 		"INSERT INTO CMQUESTS ("
 		+"CMQUESID, "
 		+"CMQUTYPE, "
@@ -93,17 +93,21 @@ public class QuestLoader
 		+"'"+Q.getWinnerStr()+" '"
 		+")");
 	}
-	public static void DBUpdateQuests(Vector quests)
+	public void DBUpdateQuests(Vector quests)
 	{
 		if(quests==null) quests=new Vector();
 		String quType="DefaultQuest";
 		if(quests.size()>0) quType=CMClass.className(quests.firstElement());
 		DBConnection D=null;
-		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
+		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
 		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
-		if(DBConnector.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0) 
+		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0) 
 			Log.errOut("Failed to delete quest typed '"+quType+"'.");
-		D=DBConnector.DBFetch();
+		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
+		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
+		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='Quests'")>0) 
+			Log.errOut("Failed to delete quest typed 'Quests'.");
+		D=DB.DBFetch();
 		for(int m=0;m<quests.size();m++)
 		{
 			Quest Q=(Quest)quests.elementAt(m);
@@ -126,7 +130,7 @@ public class QuestLoader
 				Log.errOut("Quest",sqle);
 			}
 		}
-		if(D!=null) DBConnector.DBDone(D);
+		if(D!=null) DB.DBDone(D);
 	}
 
 }

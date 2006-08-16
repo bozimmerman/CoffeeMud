@@ -46,7 +46,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)5.1;
-	public static final long  HOST_VERSION_MINOR=5;
+	public static final long  HOST_VERSION_MINOR=6;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
@@ -59,6 +59,7 @@ public class MUD extends Thread implements MudHost
 	public static Vector mudThreads=new Vector();
 	public static DVector accessed=new DVector(2);
 	public static Vector autoblocked=new Vector();
+	public static Vector databases=new Vector();
 
 	public static boolean serverIsRunning = false;
 	public static boolean isOK = false;
@@ -142,15 +143,20 @@ public class MUD extends Thread implements MudHost
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 		
+		DBConnector currentDBconnector=new DBConnector(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),page.getBoolean("DBREUSE"),true);
+		currentDBconnector.reconnect();
+        CMLib.registerLibrary(new DBInterface(currentDBconnector));
 		
-		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),page.getBoolean("DBREUSE"),true);
-		DBConnection DBTEST=DBConnector.DBFetch();
-		if(DBTEST!=null) DBConnector.DBDone(DBTEST);
-		if((DBConnector.amIOk())&&(CMLib.database().isConnected()))
+		DBConnection DBTEST=currentDBconnector.DBFetch();
+		if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
+		if((currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
+		{
 			Log.sysOut("MUD","Database connection successful.");
+			databases.addElement(currentDBconnector);
+		}
 		else
 		{
-			String DBerrors=DBConnector.errorStatus().toString();
+			String DBerrors=currentDBconnector.errorStatus().toString();
 			Log.errOut("MUD","Fatal database error: "+DBerrors);
 			System.exit(-1);
 		}
@@ -215,7 +221,7 @@ public class MUD extends Thread implements MudHost
 		else
 			Log.sysOut("MUD","Socials loaded    : "+CMLib.socials().num());
 
-		ClanLoader.DBRead();
+		CMLib.database().DBReadAllClans();
 		Log.sysOut("MUD","Clans loaded      : "+CMLib.clans().size());
 		
 		CMLib.threads().startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
@@ -245,7 +251,7 @@ public class MUD extends Thread implements MudHost
 			room.setArea(newArea);
 			room.setDisplayText("New Room");
 			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
-			RoomLoader.DBCreate(room,"StdRoom");
+			CMLib.database().DBCreateRoom(room,"StdRoom");
 			Item I=CMClass.getMiscMagic("ManualArchon");
 			room.addItem(I);
 			CMLib.database().DBUpdateItems(room);
@@ -669,7 +675,8 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","Map Threads Stopped.");
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
-		DBConnector.killConnections();
+		for(int d=0;d<databases.size();d++)
+			((DBConnector)databases.elementAt(d)).killConnections();
 		if(S!=null)S.println("Database connections closed");
 		Log.sysOut("MUD","Database connections closed.");
 
@@ -820,7 +827,8 @@ public class MUD extends Thread implements MudHost
 	{
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
 		CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
-        CMLib.registerLibrary(new DBInterface());
+		DBConnector currentDBconnector=new DBConnector();
+        CMLib.registerLibrary(new DBInterface(currentDBconnector));
         CMLib.registerLibrary(new ServiceEngine());
         CMLib.registerLibrary(new IMudClient());
 		CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));

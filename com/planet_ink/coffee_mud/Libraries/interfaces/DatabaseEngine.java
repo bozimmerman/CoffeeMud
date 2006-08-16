@@ -76,6 +76,7 @@ public interface DatabaseEngine extends CMObject
 	public void DBReadPlayer(MOB mob);
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates);
 	public void DBUpdateClanMembership(String name, String clan, int role);
+	public void DBReadAllClans();
 	public void DBUpdateClan(Clan C);
 	public void DBDeleteClan(Clan C);
 	public void DBCreateClan(Clan C);
@@ -99,6 +100,7 @@ public interface DatabaseEngine extends CMObject
 	public void DBDeleteJournal(String oldkey);
     public String DBGetRealJournalName(String possibleName);
 	public long DBReadNewJournalDate(String Journal, String name);
+	public void DBDeletePlayerJournals(String name);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);
@@ -110,6 +112,7 @@ public interface DatabaseEngine extends CMObject
 	public Vector DBReadDataKey(String key);
 	public Vector DBReadData(String section);
     public Vector DBReadData(String player, Vector sections);
+	public void DBDeletePlayerData(String name);
 	public void DBDeleteData(String playerID, String section);
 	public void DBDeleteData(String playerID, String section, String key);
     public void DBUpdateData(String key, String xml);

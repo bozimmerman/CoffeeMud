@@ -39,13 +39,13 @@ public class JournalLoader
 	{
 		DB=newDB;
 	}
-	public static synchronized int DBCount(String Journal, String from, String to)
+	public synchronized int DBCount(String Journal, String from, String to)
 	{
 		int ct=0;
 		DBConnection D=null;
 		try
 		{
-			D=DBConnector.DBFetch();
+			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 			while(R.next())
 			{
@@ -55,24 +55,24 @@ public class JournalLoader
 				   continue;
 				ct++;
 			}
-			DBConnector.DBDone(D);
+			DB.DBDone(D);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
-			if(D!=null) DBConnector.DBDone(D);
+			if(D!=null) DB.DBDone(D);
 			return ct;
 		}
 		return ct;
 	}
     
-    public static String DBGetRealName(String possibleName)
+    public String DBGetRealName(String possibleName)
     {
         DBConnection D=null;
         String realName=null;
         try
         {
-            D=DBConnector.DBFetch();
+            D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+possibleName+"'");
             if(R.next())
             {
@@ -80,17 +80,17 @@ public class JournalLoader
                 if(realName.length()==0) 
                     return realName=null;
             }
-            DBConnector.DBDone(D);
+            DB.DBDone(D);
         }
         catch(Exception sqle)
         {
             Log.errOut("Journal",sqle);
-            if(D!=null) DBConnector.DBDone(D);
+            if(D!=null) DB.DBDone(D);
         }
         return realName;
     }
 	
-	public static long DBReadNewJournalDate(String Journal, String name)
+	public long DBReadNewJournalDate(String Journal, String name)
 	{
 		Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
 		if(TABLE==null)
@@ -150,7 +150,7 @@ public class JournalLoader
 		}
 	}
 	
-	public static synchronized Vector DBRead(String Journal)
+	public synchronized Vector DBRead(String Journal)
 	{
 		Vector journal=new Vector();
 		if(Journal==null)
@@ -158,7 +158,7 @@ public class JournalLoader
 			DBConnection D=null;
 			try
 			{
-				D=DBConnector.DBFetch();
+				D=DB.DBFetch();
 				ResultSet R=D.query("SELECT * FROM CMJRNL");
 				while(R.next())
 				{
@@ -166,12 +166,12 @@ public class JournalLoader
 					if(!journal.contains(which))
 						journal.addElement(which);
 				}
-				DBConnector.DBDone(D);
+				DB.DBDone(D);
 			}
 			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
-				if(D!=null) DBConnector.DBDone(D);
+				if(D!=null) DB.DBDone(D);
 				return null;
 			}
 		}
@@ -181,7 +181,7 @@ public class JournalLoader
 			DBConnection D=null;
 			try
 			{
-				D=DBConnector.DBFetch();
+				D=DB.DBFetch();
 				String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
 				ResultSet R=D.query(str);
 				while(R.next())
@@ -223,12 +223,12 @@ public class JournalLoader
 					
 					journal.addElement(entry);
 				}
-				DBConnector.DBDone(D);
+				DB.DBDone(D);
 			}
 			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
-				if(D!=null) DBConnector.DBDone(D);
+				if(D!=null) DB.DBDone(D);
 				return null;
 			}
 				
@@ -268,7 +268,7 @@ public class JournalLoader
 		}
 		return journal;
 	}
-	public static synchronized Vector DBReadCached(String Journal)
+	public synchronized Vector DBReadCached(String Journal)
 	{
 		if(Journal==null) return DBRead(Journal);
 		Vector journal=(Vector)Resources.getResource("JOURNAL_"+Journal);
@@ -281,7 +281,7 @@ public class JournalLoader
 		return journal;
 	}
 
-	public static int getFirstMsgIndex(Vector journal, 
+	public int getFirstMsgIndex(Vector journal, 
 									   String from, 
 									   String to, 
 									   String subj)
@@ -301,17 +301,17 @@ public class JournalLoader
 		return -1;
 	}
 	
-	public static synchronized void DBDelete(String oldkey)
+	public synchronized void DBDelete(String oldkey)
 	{
-		DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
+		DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
 	}
 	
-	public static synchronized void DBDeletePlayerData(String name)
+	public synchronized void DBDeletePlayerData(String name)
 	{
 		DBConnection D=null;
 		try
 		{
-			D=DBConnector.DBFetch();
+			D=DB.DBFetch();
 			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
 			{
 				Vector keys=new Vector();
@@ -325,8 +325,8 @@ public class JournalLoader
 				}
 				for(int i=0;i<keys.size();i++)
 				{
-					DBConnector.DBDone(D);
-					D=DBConnector.DBFetch();
+					DB.DBDone(D);
+					D=DB.DBFetch();
 					D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+((String)keys.elementAt(i))+"'",0);
 				}
 			}
@@ -337,22 +337,22 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-		if(D!=null) DBConnector.DBDone(D);
+		if(D!=null) DB.DBDone(D);
 		
 	}
 	
-	public static synchronized void DBDelete(String Journal, int which)
+	public synchronized void DBDelete(String Journal, int which)
 	{
 		if(which<0)
 		{
 			Vector journal=DBRead(Journal);
 			if(journal==null) return;
-			DBConnector.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
+			DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 		}
 		else
 		if(which==Integer.MAX_VALUE)
 		{
-			DBConnector.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
+			DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 		}
 		else
 		{
@@ -361,11 +361,11 @@ public class JournalLoader
 			if(which>=journal.size()) return;
 			Vector entry=(Vector)journal.elementAt(which);
 			String oldkey=(String)entry.elementAt(0);
-			DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
+			DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
 		}
 	}
 	
-	public static void updateJournalDateCacheIfNecessary(Hashtable H, 
+	public void updateJournalDateCacheIfNecessary(Hashtable H, 
 														 String to, 
 														 String from,
 														 long date)
@@ -396,7 +396,7 @@ public class JournalLoader
 		}
 	}
 	
-	public static synchronized void DBWrite(String Journal, 
+	public synchronized void DBWrite(String Journal, 
 											String from, 
 											String to, 
 											String subject, 
@@ -419,7 +419,7 @@ public class JournalLoader
                           +"Reply from: "+from+"%0D"
                           +"Date/Time : "+CMLib.time().date2String(System.currentTimeMillis())+"%0D"
                           +message;
-			DBConnector.update("UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
+			DB.update("UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
 			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
 			if(TABLE!=null)
 			{
@@ -437,7 +437,7 @@ public class JournalLoader
 		else
 		{
 			if(subject.length()>255) subject=subject.substring(0,255);
-			DBConnector.update(
+			DB.update(
 			"INSERT INTO CMJRNL ("
 			+"CMJKEY, "
 			+"CMJRNL, "

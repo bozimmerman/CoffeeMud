@@ -39,13 +39,13 @@ public class PollLoader
 	{
 		DB=newDB;
 	}
-    public static Vector DBRead(String name)
+    public Vector DBRead(String name)
     {
         DBConnection D=null;
         Vector V=new Vector();
         try
         {
-            D=DBConnector.DBFetch();
+            D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'");
             while(R.next())
             {
@@ -64,19 +64,19 @@ public class PollLoader
         {
             Log.errOut("PollLoader",sqle);
         }
-        if(D!=null) DBConnector.DBDone(D);
+        if(D!=null) DB.DBDone(D);
         // log comment
         return V;
     }
 
     
-    public static Vector DBReadList()
+    public Vector DBReadList()
     {
         DBConnection D=null;
         Vector rows=new Vector();
         try
         {
-            D=DBConnector.DBFetch();
+            D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMPOLL");
             while(R.next())
             {
@@ -92,12 +92,12 @@ public class PollLoader
         {
             Log.errOut("PollLoader",sqle);
         }
-        if(D!=null) DBConnector.DBDone(D);
+        if(D!=null) DB.DBDone(D);
         // log comment
         return rows;
     }
     
-    public static void DBUpdate(String OldName,
+    public void DBUpdate(String OldName,
                                 String name,
                                 String player, 
                                 String subject, 
@@ -108,12 +108,12 @@ public class PollLoader
                                 String results,
                                 long expiration)
     {
-        DBConnector.update(
+        DB.update(
                 "UPDATE CMPOLL SET"
                 +" CMRESL='"+results+" '"
                 +" WHERE CMNAME='"+OldName+"'");
         
-        DBConnector.update(
+        DB.update(
             "UPDATE CMPOLL SET"
             +"  CMNAME='"+name+"'"
             +", CMBYNM='"+player+"'"
@@ -127,23 +127,23 @@ public class PollLoader
 
     }
     
-    public static void DBUpdate(String name,  String results)
+    public void DBUpdate(String name,  String results)
     {
-        DBConnector.update(
+        DB.update(
         "UPDATE CMPOLL SET"
         +" CMRESL='"+results+" '"
         +" WHERE CMNAME='"+name+"'");
     }
     
-    public static void DBDelete(String name)
+    public void DBDelete(String name)
     {
-        DBConnector.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
+        DB.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
         try{Thread.sleep(500);}catch(Exception e){}
-        if(DBConnector.queryRows("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'")>0)
+        if(DB.queryRows("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'")>0)
             Log.errOut("Failed to delete data from poll "+name+".");
     }
     
-    public static void DBCreate(String name, 
+    public void DBCreate(String name, 
                                 String player, 
                                 String subject, 
                                 String description,
@@ -153,7 +153,7 @@ public class PollLoader
                                 String results,
                                 long expiration)
     {
-        DBConnector.update(
+        DB.update(
          "INSERT INTO CMPOLL ("
          +"CMNAME, "
          +"CMBYNM, "

@@ -40,13 +40,13 @@ public class VFSLoader
 		DB=newDB;
 	}
     
-    public static Vector DBReadDirectory()
+    public Vector DBReadDirectory()
     {
         DBConnection D=null;
         Vector rows=new Vector();
         try
         {
-            D=DBConnector.DBFetch();
+            D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMVFS");
             while(R.next())
             {
@@ -63,18 +63,18 @@ public class VFSLoader
             Log.errOut("VFSLoader",sqle);
             return null;
         }
-        if(D!=null) DBConnector.DBDone(D);
+        if(D!=null) DB.DBDone(D);
         // log comment
         return rows;
     }
     
-    public static Vector DBRead(String filename)
+    public Vector DBRead(String filename)
     {
         DBConnection D=null;
         Vector row=new Vector();
         try
         {
-            D=DBConnector.DBFetch();
+            D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'");
             if(R.next())
             {
@@ -95,12 +95,12 @@ public class VFSLoader
         {
             Log.errOut("VFSLoader",sqle);
         }
-        if(D!=null) DBConnector.DBDone(D);
+        if(D!=null) DB.DBDone(D);
         // log comment
         return row;
     }
 
-    public static void DBCreate(String filename, int bits, String creator, Object data)
+    public void DBCreate(String filename, int bits, String creator, Object data)
     {
         String buf=null;
         if(data==null)
@@ -119,7 +119,7 @@ public class VFSLoader
             Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());
             return;
         }
-        DBConnector.update(
+        DB.update(
          "INSERT INTO CMVFS ("
          +"CMFNAM, "
          +"CMDTYP, "
@@ -136,22 +136,22 @@ public class VFSLoader
     }
     
     
-    public static void DBDelete(String filename)
+    public void DBDelete(String filename)
     {
         DBConnection D=null;
         try
         {
-            D=DBConnector.DBFetch();
+            D=DB.DBFetch();
             D.update("DELETE FROM CMVFS WHERE CMFNAM='"+filename+"'",0);
             try{Thread.sleep(500);}catch(Exception e){}
-            if(DBConnector.queryRows("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'")>0)
+            if(DB.queryRows("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'")>0)
                 Log.errOut("Failed to delete virtual file "+filename+".");
         }
         catch(Exception sqle)
         {
             Log.errOut("VFSLoader",sqle);
         }
-        if(D!=null) DBConnector.DBDone(D);
+        if(D!=null) DB.DBDone(D);
     }
     
     

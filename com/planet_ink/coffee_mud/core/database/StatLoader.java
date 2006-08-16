@@ -39,7 +39,7 @@ public class StatLoader
 	{
 		DB=newDB;
 	}
-	public static CoffeeTableRow DBRead(long startTime)
+	public CoffeeTableRow DBRead(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Reading content of Stat  "+CMLib.time().date2String(startTime));
@@ -47,7 +47,7 @@ public class StatLoader
         CoffeeTableRow T=null;
 		try
 		{
-			D=DBConnector.DBFetch();
+			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT="+startTime);
 			T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 			if(R.next())
@@ -61,12 +61,12 @@ public class StatLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DBConnector.DBDone(D);
+		if(D!=null) DB.DBDone(D);
 		// log comment 
 		return T;
 	}
 	
-	public static Vector DBReadAfter(long startTime)
+	public Vector DBReadAfter(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
@@ -75,7 +75,7 @@ public class StatLoader
 		Vector rows=new Vector();
 		try
 		{
-			D=DBConnector.DBFetch();
+			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT>"+startTime);
 			while(R.next())
 			{
@@ -91,42 +91,42 @@ public class StatLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DBConnector.DBDone(D);
+		if(D!=null) DB.DBDone(D);
 		// log comment 
 		return rows;
 	}
 	
-	public static void DBDelete(long startTime)
+	public void DBDelete(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Deleting Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
-			DBConnector.update("DELETE FROM CMSTAT WHERE CMSTRT="+startTime);
+			DB.update("DELETE FROM CMSTAT WHERE CMSTRT="+startTime);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
 	}
-	public static void DBUpdate(long startTime, String data)
+	public void DBUpdate(long startTime, String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Updating Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
-			DBConnector.update("UPDATE CMSTAT SET CMDATA='"+data+"' WHERE CMSTRT="+startTime);
+			DB.update("UPDATE CMSTAT SET CMDATA='"+data+"' WHERE CMSTRT="+startTime);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
 	}
-	public static void DBCreate(long startTime, long endTime, String data)
+	public void DBCreate(long startTime, long endTime, String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Creating Stat  "+CMLib.time().date2String(startTime));
-		DBConnector.update(
+		DB.update(
 		 "INSERT INTO CMSTAT ("
 		 +"CMSTRT, "
 		 +"CMENDT, "

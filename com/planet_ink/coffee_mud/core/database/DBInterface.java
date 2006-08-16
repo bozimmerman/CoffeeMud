@@ -35,7 +35,30 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class DBInterface implements DatabaseEngine
 {
     public String ID(){return "DBInterface";}
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DBInterface();}}
+    MOBloader MOBloader=null;
+    RoomLoader RoomLoader=null;
+    DataLoader DataLoader=null;
+    StatLoader StatLoader=null;
+    PollLoader PollLoader=null;
+    VFSLoader VFSLoader=null;
+    JournalLoader JournalLoader=null;
+    QuestLoader QuestLoader=null;
+    ClanLoader ClanLoader=null;
+    DBConnector DB=null;
+    public DBInterface(DBConnector DB)
+    {
+    	this.DB=DB;
+    	this.MOBloader=new MOBloader(DB);
+    	this.RoomLoader=new RoomLoader(DB);
+    	this.DataLoader=new DataLoader(DB);
+    	this.StatLoader=new StatLoader(DB);
+    	this.PollLoader=new PollLoader(DB);
+    	this.VFSLoader=new VFSLoader(DB);
+    	this.JournalLoader=new JournalLoader(DB);
+    	this.QuestLoader=new QuestLoader(DB);
+    	this.ClanLoader=new ClanLoader(DB);
+    }
+    public CMObject newInstance(){return new DBInterface(DB);}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     
@@ -45,7 +68,11 @@ public class DBInterface implements DatabaseEngine
 	public Vector userList()
 	{return MOBloader.userList();}
 
-    public boolean isConnected(){return DBConnector.amIOk();}
+    public boolean isConnected(){return DB.amIOk();}
+
+	public void DBReadAllClans()
+	{ ClanLoader.DBRead();}
+	
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
 	
@@ -123,6 +150,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateMOBs(Room room)
 	{RoomLoader.DBUpdateMOBs(room);}
 	
+	public void DBDeletePlayerJournals(String name)
+	{JournalLoader.DBDeletePlayerData(name);}
+	
 	public void DBDeleteJournal(String oldkey)
 	{JournalLoader.DBDelete(oldkey);}
     
@@ -198,6 +228,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateCharacter(MOB mob)
 	{MOBloader.DBCreateCharacter(mob);}
 
+	public void DBDeletePlayerData(String name)
+	{DataLoader.DBDeletePlayer(name);}
+	
 	public Vector DBReadAllPlayerData(String playerID)
 	{ return DataLoader.DBReadAllPlayerData(playerID);}
 	
@@ -271,10 +304,10 @@ public class DBInterface implements DatabaseEngine
 	{ return StatLoader.DBReadAfter(startTime);}
 	
 	public String errorStatus()
-	{return DBConnector.errorStatus().toString();}
+	{return DB.errorStatus().toString();}
 	
 	public void resetconnections()
-	{DBConnector.reconnect();}
+	{DB.reconnect();}
     
     public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration)
     {PollLoader.DBCreate(name,player,subject,description,optionXML,flag,qualZapper,results,expiration);}

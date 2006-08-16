@@ -39,23 +39,23 @@ public class ClanLoader
 	{
 		DB=newDB;
 	}
-    protected static int currentRecordPos=1;
-    protected static int recordCount=0;
+    protected int currentRecordPos=1;
+    protected int recordCount=0;
 
-	public static void updateBootStatus(String loading)
+	public void updateBootStatus(String loading)
 	{
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
-	public static void DBRead()
+	public void DBRead()
 	{
 		DBConnection D=null;
 	    Clan C=null;
 		try
 		{
-			D=DBConnector.DBFetch();
+			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCLAN");
-			recordCount=DBConnector.getRecordCount(D,R);
+			recordCount=DB.getRecordCount(D,R);
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
@@ -78,11 +78,11 @@ public class ClanLoader
 		{
 			Log.errOut("Clan",sqle);
 		}
-		if(D!=null) DBConnector.DBDone(D);
+		if(D!=null) DB.DBDone(D);
 		// log comment
 	}
 
-	public static void DBUpdate(Clan C)
+	public void DBUpdate(Clan C)
 	{
 		String str="UPDATE CMCLAN SET "
 				+"CMDESC='"+C.getPremise()+"',"
@@ -94,10 +94,10 @@ public class ClanLoader
 				+"CMMORG='"+C.getMorgue()+"',"
 				+"CMTROP="+C.getTrophies()+""
 				+" WHERE CMCLID='"+C.clanID()+"'";
-		DBConnector.update(str);
+		DB.update(str);
 	}
 
-	public static void DBCreate(Clan C)
+	public void DBCreate(Clan C)
 	{
 		if(C.clanID().length()==0) return;
 		String str="INSERT INTO CMCLAN ("
@@ -123,12 +123,12 @@ public class ClanLoader
 			+"'"+C.getMorgue()+"',"
 			+""+C.getTrophies()
 			+")";
-			DBConnector.update(str);
+			DB.update(str);
 	}
 
-	public static void DBDelete(Clan C)
+	public void DBDelete(Clan C)
 	{
-		DBConnector.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.clanID()+"'");
+		DB.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.clanID()+"'");
 	}
 
 }

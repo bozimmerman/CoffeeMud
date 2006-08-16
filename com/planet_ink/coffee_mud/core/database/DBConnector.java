@@ -33,23 +33,26 @@ import java.sql.SQLException;
 */
 public class DBConnector
 {
-	private static DBConnections DBs=null;
-	private static String DBClass="";
-	private static String DBService="";
-	private static String DBUser="";
-	private static String DBPass="";
-	private static boolean DBReuse=false;
-	private static int numConnections=0;
-	private static boolean DoErrorQueueing=false;
+	private DBConnections DBs=null;
+	private String DBClass="";
+	private String DBService="";
+	private String DBUser="";
+	private String DBPass="";
+	private boolean DBReuse=false;
+	private int numConnections=0;
+	private boolean DoErrorQueueing=false;
 	
-	public static void connect (String NEWDBClass,
-					  		    String NEWDBService, 
-								String NEWDBUser, 
-								String NEWDBPass, 
-								int NEWnumConnections,
-								boolean NEWReuse,
-								boolean NEWDoErrorQueueing)
+	public DBConnector (){super();}
+	
+	public DBConnector (String NEWDBClass,
+					    String NEWDBService, 
+						String NEWDBUser, 
+						String NEWDBPass, 
+						int NEWnumConnections,
+						boolean NEWReuse,
+						boolean NEWDoErrorQueueing)
 	{
+		super();
 		DBClass=NEWDBClass;
 		DBService=NEWDBService;
 		DBUser=NEWDBUser;
@@ -57,16 +60,15 @@ public class DBConnector
 		numConnections=NEWnumConnections;
 		DoErrorQueueing=NEWDoErrorQueueing;
 		DBReuse=NEWReuse;
-		reconnect();
 	}
-	public static void reconnect()
+	public void reconnect()
 	{
 		if(DBs!=null){ DBs.deregisterDriver(); DBs.killConnections();}
 		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DBReuse,DoErrorQueueing);
 		if(DBs.amIOk()) DBs.retryQueuedErrors();
 	}
 	
-	public static int getRecordCount(DBConnection D, ResultSet R)
+	public int getRecordCount(DBConnection D, ResultSet R)
 	{
 		int recordCount=0;
 		try
@@ -81,15 +83,15 @@ public class DBConnector
 		return recordCount;
 	}
 	
-	public static boolean deregisterDriver()
+	public boolean deregisterDriver()
     { 
 		if(DBs!=null) return DBs.deregisterDriver();
 		return false;
 	}
 	
-	public static int update(String updateString){ return (DBs!=null)?DBs.update(updateString):0;}
+	public int update(String updateString){ return (DBs!=null)?DBs.update(updateString):0;}
 	
-	public static int queryRows(String queryString){ return (DBs!=null)?DBs.queryRows(queryString):0;}
+	public int queryRows(String queryString){ return (DBs!=null)?DBs.queryRows(queryString):0;}
 
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
@@ -99,10 +101,10 @@ public class DBConnector
 	 * <br><br><b>Usage: DB=DBFetch();</b> 
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public static DBConnection DBFetch(){return (DBs!=null)?DBs.DBFetch():null;}
+	public DBConnection DBFetch(){return (DBs!=null)?DBs.DBFetch():null;}
 	
-    public static int numConnectionsMade(){return (DBs!=null)?DBs.numConnectionsMade():0;}
-	public static int numDBConnectionsInUse(){ return (DBs!=null)?DBs.numInUse():0;}
+    public int numConnectionsMade(){return (DBs!=null)?DBs.numConnectionsMade():0;}
+	public int numDBConnectionsInUse(){ return (DBs!=null)?DBs.numInUse():0;}
 	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
@@ -113,14 +115,14 @@ public class DBConnector
 	 * @param SQL	The prepared statement SQL
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public static DBConnection DBFetchPrepared(String SQL){ return (DBs!=null)?DBs.DBFetchPrepared(SQL):null;}
+	public DBConnection DBFetchPrepared(String SQL){ return (DBs!=null)?DBs.DBFetchPrepared(SQL):null;}
 	/** 
 	 * Return a DBConnection object fetched with DBFetch()
 	 * 
 	 * <br><br><b>Usage:</b> 
 	 * @param D	The Database connection to return to the pool
 	 */
-	public static void DBDone(DBConnection D){ if(DBs!=null) DBs.DBDone(D);}
+	public void DBDone(DBConnection D){ if(DBs!=null) DBs.DBDone(D);}
 
 	/** 
 	 * When reading a database table, this routine will read in
@@ -132,10 +134,10 @@ public class DBConnector
 	 * @param Field		Field name to return
 	 * @return String	The value of the field being returned
 	 */
-	public static String getRes(ResultSet Results, String Field)
+	public String getRes(ResultSet Results, String Field)
 	{ return DBConnections.getRes(Results,Field);}
 
-	public static String getResQuietly(ResultSet Results, String Field)
+	public String getResQuietly(ResultSet Results, String Field)
 	{ return DBConnections.getResQuietly(Results, Field);}
 
 	/** 
@@ -148,7 +150,7 @@ public class DBConnector
 	 * @param Field		Field name to return
 	 * @return String	The value of the field being returned
 	 */
-	public static long getLongRes(ResultSet Results, String Field)
+	public long getLongRes(ResultSet Results, String Field)
 	{ return DBConnections.getLongRes(Results,Field);}
 	
 	/** 
@@ -161,7 +163,7 @@ public class DBConnector
 	 * @param One		Field number to return
 	 * @return String	The value of the field being returned
 	 */
-	public static String getRes(ResultSet Results, int One)
+	public String getRes(ResultSet Results, int One)
 	{ return DBConnections.getRes(Results,One);}
 	
 	/** 
@@ -170,14 +172,14 @@ public class DBConnector
 	 * 
 	 * <br><br><b>Usage:</b> killConnections();
 	 */
-	public static void killConnections(){ if(DBs!=null) DBs.killConnections();}
+	public void killConnections(){ if(DBs!=null) DBs.killConnections();}
 	
 	/** 
 	 * Return the happiness level of the connections
 	 * <br><br><b>Usage:</b> amIOk()
 	 * @return boolean	true if ok, false if not ok
 	 */
-	public static boolean amIOk(){ return (DBs!=null)?DBs.amIOk():false;}
+	public boolean amIOk(){ return (DBs!=null)?DBs.amIOk():false;}
 	
 	/** 
 	 * Queue up a failed write/update for later processing.
@@ -187,7 +189,7 @@ public class DBConnector
 	 * @param SQLError	The error message being reported
 	 * @param count	The number of tries so far
 	 */
-	public static void enQueueError(String SQLString, String SQLError, String count)
+	public void enQueueError(String SQLString, String SQLError, String count)
 	{ if(DBs!=null)DBs.enQueueError(SQLString, SQLError,count);}
 	
 	
@@ -196,7 +198,7 @@ public class DBConnector
 	 * 
 	 * <br><br><b>Usage:</b> RetryQueuedErrors();
 	 */
-	public static void retryQueuedErrors()
+	public void retryQueuedErrors()
 	{ if(DBs!=null)DBs.retryQueuedErrors();}
 	
 	/** list the connections 
@@ -204,7 +206,7 @@ public class DBConnector
 	 * <br><br><b>Usage:</b> listConnections(out);
 	 * @param out	place to send the list out to
 	 */
-	public static void listConnections(PrintStream out)
+	public void listConnections(PrintStream out)
 	{ if(DBs!=null)DBs.listConnections(out);}
 	
 	/** return a status string, or "" if everything is ok.
@@ -212,7 +214,7 @@ public class DBConnector
 	 * <br><br><b>Usage:</b> errorStatus();
 	 * @return StringBuffer	complete error status
 	 */
-	public static StringBuffer errorStatus()
+	public StringBuffer errorStatus()
 	{ 
         if(DBs==null) return new StringBuffer("Not connected.");
 		StringBuffer status=DBs.errorStatus();
