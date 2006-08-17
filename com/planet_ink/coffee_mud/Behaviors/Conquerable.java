@@ -837,6 +837,7 @@ public class Conquerable extends Arrest
 			&&(msg.source().isMonster())
 			&&(msg.source().getStartRoom()!=null))
 			{
+				Room R=msg.source().location();
 				MOB killer=null;
 				if(msg.sourceMinor()==CMMsg.TYP_FOLLOW)
 				{
@@ -849,8 +850,14 @@ public class Conquerable extends Arrest
 				else
 				if(msg.tool() instanceof MOB)
 					killer=(MOB)msg.tool();
-				if(killer!=null)
+				if((killer!=null)&&(R!=null))
 				{
+					// make sure followers are picked up
+					while((killer.getClanID().length()==0)
+					&&(killer.amFollowing()!=null)
+					&&(R.isInhabitant(killer.amFollowing())))
+						killer=killer.amFollowing();
+						
 					if(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))
 					{ // a native was killed
 						if((!killer.getClanID().equals(holdingClan))

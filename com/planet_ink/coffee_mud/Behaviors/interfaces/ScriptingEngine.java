@@ -129,6 +129,8 @@ public interface ScriptingEngine extends Behavior
         "SOCIAL_PROG", // 38
         "LOOK_PROG", // 39
         "LLOOK_PROG", // 40
+        "EXECMSG_PROG", // 41
+        "CNCLMSG_PROG", // 42
     };
     
     public static final String[] funcs={

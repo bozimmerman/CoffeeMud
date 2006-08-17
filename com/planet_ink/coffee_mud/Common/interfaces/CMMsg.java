@@ -243,7 +243,7 @@ public interface CMMsg extends CMObject
         "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "BORROW"
     };
     public static final String[] MASK_DESCS={
-        "HANDS","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"
+        "TOUCH","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"
     };
 
 	// helpful message groupings
