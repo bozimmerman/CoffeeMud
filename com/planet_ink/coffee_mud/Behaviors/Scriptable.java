@@ -7066,22 +7066,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     }
                 }
                 break;
-			case 12: // mask prog
-			case 18: // act prog
-				if(!msg.amISource(monster)&&canTrigger(12)&&canTrigger(18))
+			case 12: // mask_prog
+				if(!canTrigger(12)) break;
+			case 18: // act_prog
+				if(!msg.amISource(monster)&&canTrigger(18))
 				{
 					boolean doIt=false;
 					String str=msg.othersMessage();
 					if(str==null) str=msg.targetMessage();
 					if(str==null) str=msg.sourceMessage();
 					if(str==null) break;
-					str=" "+CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
+					str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
                     str=CMStrings.removeColors(str);
-                    str=CMStrings.replaceAll(str,"\n\r"," ");
-					trigger=CMParms.getPastBit(trigger.trim(),0);
+                    str=CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim();
+					trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
-						trigger=trigger.substring(1).trim().toUpperCase();
+						trigger=trigger.substring(1).trim();
 						if(match(str.trim(),trigger))
 							doIt=true;
 					}
