@@ -633,8 +633,11 @@ public class DefaultFaction implements Faction, MsgListener
         case FactionChangeEvent.FACTION_OPPOSITE:
 	        if(source!=target)
 	        {
-	            changeDir=targetFaction>=0?-1:1;
-	            baseChangeAmount=CMath.div(baseChangeAmount,2.0)+(int)Math.round(CMath.div(baseChangeAmount,2.0)*Math.abs(new Integer(sourceFaction-targetFaction).doubleValue()/Math.abs(new Integer(difference).doubleValue())));
+	            changeDir=sourceFaction>=targetFaction?-1:1;
+	            baseChangeAmount=CMath.div(baseChangeAmount,2.0)
+	            			    +(int)Math.round(CMath.div(baseChangeAmount,2.0)
+	            			    		*Math.abs(new Integer(sourceFaction-targetFaction).doubleValue()
+	            			    				/Math.abs(new Integer(difference).doubleValue())));
 	        }
 	        else
 	            factionAdj=0;

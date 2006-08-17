@@ -178,7 +178,7 @@ public class Factions extends StdLibrary implements FactionManager
     { 
         Faction F=getFaction(factionID); 
         if(F==null) return 0.0;
-        return (CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 100.0);
+        return CMath.div((int)Math.round(CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 10000.0),100.0);
     }
 	public double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier(); return 0; }
 	public int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
