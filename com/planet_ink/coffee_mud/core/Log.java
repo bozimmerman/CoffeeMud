@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /*
@@ -36,7 +37,8 @@ public class Log
     private Log(){super();}
     private static Log inst=new Log();
     public static Log instance(){return inst;}
-
+    public static SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ssSS");
+    
 	/**	always to "log" */
 	private static PrintWriter fileOutWriter=null;
 	/** always to systemout */
@@ -103,33 +105,38 @@ public class Log
 	 * @param name code string
 	 * @return PrintWriter the writer
 	 */
-	private static PrintWriter getWriter(String name)
+	private static PrintWriter getWriter(String name, int priority)
 	{
 		String flag=prop(name);
 		if(flag==null)
 			return systemOutWriter;
 		else
-		if(flag.equalsIgnoreCase("ON"))
-			return systemOutWriter;
-		else
-		if(flag.equalsIgnoreCase("OFF"))
-			return null;
-		else
-		if((flag.equalsIgnoreCase("FILE"))||(flag.equalsIgnoreCase("BOTH")))
-			return fileOutWriter;
-		else
-		if(flag.equalsIgnoreCase("OWNFILE"))
+		if(flag.length()>0)
 		{
-			File fileOut=new File(logName+"_"+name.toLowerCase()+".log");
-			try
+			int x=flag.length();
+			while(Character.isDigit(flag.charAt(--x)));
+			if((priority>s_int(flag.substring(x+1)))
+			||(flag.startsWith("OFF")))
+				return null;
+			if(flag.startsWith("ON"))
+				return systemOutWriter;
+			else
+			if((flag.startsWith("FILE"))||(flag.startsWith("BOTH")))
+				return fileOutWriter;
+			else
+			if(flag.startsWith("OWNFILE"))
 			{
-				filePath = fileOut.getAbsolutePath();
-				FileOutputStream fileStream=new FileOutputStream(fileOut,true);
-				return new PrintWriter(fileStream,true);
-			}
-			catch(IOException e)
-			{
-				Log.errOut("Log",e);
+				File fileOut=new File(logName+"_"+name.toLowerCase()+".log");
+				try
+				{
+					filePath = fileOut.getAbsolutePath();
+					FileOutputStream fileStream=new FileOutputStream(fileOut,true);
+					return new PrintWriter(fileStream,true);
+				}
+				catch(IOException e)
+				{
+					Log.errOut("Log",e);
+				}
 			}
 		}
 		return null;
@@ -300,25 +307,7 @@ public class Log
 	*/
     private static String getLogHeader(String Type, String Module, String Message)
     {
-        Calendar C=Calendar.getInstance();
-        String MINUTE=Integer.toString(C.get(Calendar.MINUTE)).trim();
-        if(MINUTE.length()==1) MINUTE="0"+MINUTE;
-        String AMPM="AM";
-        if(C.get(Calendar.AM_PM)==Calendar.PM) AMPM="PM";
-        int Hour=C.get(Calendar.HOUR);
-        if(Hour==0) Hour=12;
-        String Year=Integer.toString(C.get(Calendar.YEAR));
-        if(Year.length()<4)
-        {
-            if(Year.length()<2)
-                Year=("0"+Year);
-            if(Year.length()<2)
-                Year=("0"+Year);
-            int Yr=s_int(Year);
-            if(Yr<50)Year="20"+Year;
-            else Year="19"+Year;
-        }
-        String date=(C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+Year+" "+Hour+":"+MINUTE+" "+AMPM;
+        String date=dateFormat.format(Calendar.getInstance().getTime());
         StringBuffer Header=new StringBuffer((date+SPACES).substring(0,20));
         Header.append((Type+SPACES).substring(0,6));
         Header.append((Module+SPACES).substring(0,13));
@@ -332,16 +321,32 @@ public class Log
 	public static void errOut(String Out){ errOut("UNKN",Out); }
 	public static void warnOut(String Out){ warnOut("UNKN",Out); }
 	public static void helpOut(String Out) { helpOut("UNKN",Out); }
-	public static void infoOut(String Module, String Message){ standardOut("Info",Module,Message);}
+	public static void infoOut(String Module, String Message){ standardOut("Info",Module,Message,Integer.MIN_VALUE);}
 	public static void sysOut(String Out, String Message){ infoOut(Out,Message);}
-	public static void errOut(String Module, String Message){ standardOut("Error",Module,Message);}
-	public static void warnOut(String Module, String Message){ standardOut("Warn",Module,Message);}
-	public static void debugOut(String Module, String Message){ standardOut("Debug",Module,Message);}
-	public static void helpOut(String Module, String Message){ standardOut("Help",Module,Message);}
-	public static void debugOut(String Module, Exception e){ shortExOut("Debug",Module,e);}
-	public static void errOut(String Module, Throwable e){ standardExOut("Error",Module,e);}
-	public static void warnOut(String Module, Throwable e){ standardExOut("Error",Module,e);}
-	public static void rawSysOut(String Message){rawStandardOut("Info",Message);}
+	public static void errOut(String Module, String Message){ standardOut("Error",Module,Message,Integer.MIN_VALUE);}
+	public static void warnOut(String Module, String Message){ standardOut("Warn",Module,Message,Integer.MIN_VALUE);}
+	public static void debugOut(String Module, String Message){ standardOut("Debug",Module,Message,Integer.MIN_VALUE);}
+	public static void helpOut(String Module, String Message){ standardOut("Help",Module,Message,Integer.MIN_VALUE);}
+	public static void debugOut(String Module, Exception e){ shortExOut("Debug",Module,Integer.MIN_VALUE,e);}
+	public static void errOut(String Module, Throwable e){ standardExOut("Error",Module,Integer.MIN_VALUE,e);}
+	public static void warnOut(String Module, Throwable e){ standardExOut("Error",Module,Integer.MIN_VALUE,e);}
+	public static void rawSysOut(String Message){rawStandardOut("Info",Message,Integer.MIN_VALUE);}
+	public static void infoOut(String Out, int priority) { infoOut("UNKN",Out,priority); }
+	public static void sysOut(String Out, int priority){ infoOut(Out,priority); }
+	public static void debugOut(String Out, int priority){ debugOut("UNKN",Out,priority); }
+	public static void errOut(String Out, int priority){ errOut("UNKN",Out,priority); }
+	public static void warnOut(String Out, int priority){ warnOut("UNKN",Out,priority); }
+	public static void helpOut(String Out, int priority) { helpOut("UNKN",Out,priority); }
+	public static void infoOut(String Module, String Message, int priority){ standardOut("Info",Module,Message,priority);}
+	public static void sysOut(String Out, String Message, int priority){ infoOut(Out,Message);}
+	public static void errOut(String Module, String Message, int priority){ standardOut("Error",Module,Message,priority);}
+	public static void warnOut(String Module, String Message, int priority){ standardOut("Warn",Module,Message,priority);}
+	public static void debugOut(String Module, String Message, int priority){ standardOut("Debug",Module,Message,priority);}
+	public static void helpOut(String Module, String Message, int priority){ standardOut("Help",Module,Message,priority);}
+	public static void debugOut(String Module, int priority, Exception e){ shortExOut("Debug",Module,priority,e);}
+	public static void errOut(String Module, int priority, Throwable e){ standardExOut("Error",Module,priority,e);}
+	public static void warnOut(String Module, int priority, Throwable e){ standardExOut("Error",Module,priority,e);}
+	public static void rawSysOut(String Message, int priority){rawStandardOut("Info",Message,priority);}
 
 	/**
 	* Handles long exception logging entries.  Sends them to System.out,
@@ -352,11 +357,11 @@ public class Log
 	* @param Module The module to print
 	* @param e	The exception whose string one wishes to print
 	*/
-	public static void standardExOut(String Type, String Module, Throwable e)
+	public static void standardExOut(String Type, String Module, int priority, Throwable e)
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type);
+			PrintWriter outWriter=getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 			    if(e!=null)
@@ -367,7 +372,7 @@ public class Log
 			    }
 			    else
 			    	outWriter.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
-				if(prop(Type).equalsIgnoreCase("BOTH"))
+				if(prop(Type).startsWith("BOTH"))
 				{
 				    if(e!=null)
 				    {
@@ -392,17 +397,17 @@ public class Log
 	* @param Module The message to print
 	* @param e	The exception whose string one wishes to print
 	*/
-	public static void shortExOut(String Type, String Module, Exception e)
+	public static void shortExOut(String Type, String Module, int priority, Exception e)
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type);
+			PrintWriter outWriter=getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				outWriter.println(getLogHeader(Type,Module, e.getMessage()));
 				e.printStackTrace(outWriter);
 				outWriter.flush();
-				if(prop(Type).equalsIgnoreCase("BOTH"))
+				if(prop(Type).startsWith("BOTH"))
 				{
 					System.out.println(getLogHeader(Type,Module, e.getMessage()));
 					e.printStackTrace(System.out);
@@ -418,18 +423,20 @@ public class Log
 	* the log file, or nowhere.
  	* 
 	* <br><br><b>Usage:</b> rawStandardOut("Info","REQ-OUT:"+REQ);
+	* @param Type The type of message
 	* @param Message The message to print
+	* @param priority The priority of the message, high is less priority, 0=always
 	*/
-	public static void rawStandardOut(String Type, String Message)
+	public static void rawStandardOut(String Type, String Message, int priority)
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type);
+			PrintWriter outWriter=getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				outWriter.println(Message);
 				outWriter.flush();
-				if(prop(Type).equalsIgnoreCase("BOTH"))
+				if(prop(Type).startsWith("BOTH"))
 					System.out.println(Message);
 				close(outWriter);
 			}
@@ -444,17 +451,18 @@ public class Log
 	* @param Type The type of writer
 	* @param Module The file name
 	* @param Message The message to print
+	* @param priority The priority of the message, high is less priority, 0=always
 	*/
-	private static void standardOut(String Type, String Module, String Message)
+	private static void standardOut(String Type, String Module, String Message, int priority)
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type);
+			PrintWriter outWriter=getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				outWriter.println(getLogHeader(Type,Module, Message));
 				outWriter.flush();
-				if(prop(Type).equalsIgnoreCase("BOTH"))
+				if(prop(Type).startsWith("BOTH"))
 					System.out.println(getLogHeader(Type,Module, Message));
 				close(outWriter);
 			}
@@ -469,19 +477,20 @@ public class Log
 	* @param Type Channel name
 	* @param Module The file name
 	* @param Message The message to print
+	* @param priority The priority of the message, high is less priority, 0=always
 	*/
-	public static void timeOut(String Type, String Module, String Message)
+	public static void timeOut(String Type, String Module, String Message, int priority)
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type);
+			PrintWriter outWriter=getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				Calendar C=Calendar.getInstance();
 				Message=C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+Message;
 				outWriter.println(getLogHeader("-time-",Module, Message));
 				outWriter.flush();
-				if(prop(Type).equalsIgnoreCase("BOTH"))
+				if(prop(Type).startsWith("BOTH"))
 					System.out.println(getLogHeader("-time-",Module, Message));
 				close(outWriter);
 			}
@@ -509,9 +518,14 @@ public class Log
 		fileOutWriter=null;
 	}
 
-	public static boolean errorChannelOn() { return getWriter("error")!=null;}
-	public static boolean helpChannelOn() { return getWriter("help")!=null;}
-	public static boolean debugChannelOn() { return getWriter("debug")!=null;}
-	public static boolean infoChannelOn() { return getWriter("info")!=null;}
-	public static boolean warnChannelOn() { return getWriter("warning")!=null;}
+	public static boolean errorChannelOn() { return getWriter("error",Integer.MIN_VALUE)!=null;}
+	public static boolean helpChannelOn() { return getWriter("help",Integer.MIN_VALUE)!=null;}
+	public static boolean debugChannelOn() { return getWriter("debug",Integer.MIN_VALUE)!=null;}
+	public static boolean infoChannelOn() { return getWriter("info",Integer.MIN_VALUE)!=null;}
+	public static boolean warnChannelOn() { return getWriter("warning",Integer.MIN_VALUE)!=null;}
+	public static boolean errorChannelAt(int priority) { return getWriter("error",priority)!=null;}
+	public static boolean helpChannelAt(int priority) { return getWriter("help",priority)!=null;}
+	public static boolean debugChannelAt(int priority) { return getWriter("debug",priority)!=null;}
+	public static boolean infoChannelAt(int priority) { return getWriter("info",priority)!=null;}
+	public static boolean warnChannelAt(int priority) { return getWriter("warning",priority)!=null;}
 }
