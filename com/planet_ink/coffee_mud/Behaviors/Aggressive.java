@@ -76,7 +76,8 @@ public class Aggressive extends StdBehavior
 			&&(!CMLib.flags().isATrackingMonster(monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
-			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
+			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS"))
+			&&(!monster.getGroupMembers(new HashSet()).contains(mob)))
 			{
 				// special backstab sneak attack!
 				if(CMLib.flags().isHidden(monster))
@@ -99,16 +100,19 @@ public class Aggressive extends StdBehavior
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		Room R=observer.location();
-		if((R!=null)
-		&&(R.getArea().getMobility()))
-		for(int i=0;i<R.numInhabitants();i++)
+		if((R!=null)&&(R.getArea().getMobility()))
 		{
-			MOB mob=R.fetchInhabitant(i);
-			if((mob!=null)
-            &&(mob!=observer)
-            &&(CMLib.masking().maskCheck(zapStr,mob))
-            &&(startFight(observer,mob,mobKiller,misBehave)))			
-                return true;
+			HashSet groupMembers=observer.getGroupMembers(new HashSet());
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				MOB mob=R.fetchInhabitant(i);
+				if((mob!=null)
+	            &&(mob!=observer)
+	            &&(CMLib.masking().maskCheck(zapStr,mob))
+	            &&(!groupMembers.contains(mob))
+	            &&(startFight(observer,mob,mobKiller,misBehave)))			
+	                return true;
+			}
 		}
 		return false;
 	}

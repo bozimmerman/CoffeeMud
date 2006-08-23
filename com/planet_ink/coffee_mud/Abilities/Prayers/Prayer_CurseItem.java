@@ -141,8 +141,8 @@ public class Prayer_CurseItem extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,somanticCastCode(mob,mobTarget,auto),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

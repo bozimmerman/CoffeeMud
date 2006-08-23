@@ -60,7 +60,7 @@ public class Prayer_Anger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

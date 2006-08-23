@@ -110,7 +110,7 @@ public class Spell_Boomerang extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Spell_Boomerang extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and whisper(s), but fail(s) to cast a spell.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to cast a spell.");
 
 
 		// return whether it worked

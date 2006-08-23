@@ -82,7 +82,7 @@ public class Prayer_Fertilize extends Prayer
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,somanticCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to make the land fruitful.^?");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to make the land fruitful.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

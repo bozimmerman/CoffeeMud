@@ -106,7 +106,7 @@ public class Prayer_GodLight extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			if(target instanceof Room) mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_DARK);
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":((target instanceof MOB)?"^S<S-NAME> point(s) to <T-NAMESELF> and "+prayWord(mob)+". A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":((target instanceof MOB)?"^S<S-NAME> point(s) to <T-NAMESELF> and "+prayWord(mob)+". A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.recoverEnvStats();

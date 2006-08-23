@@ -62,7 +62,7 @@ public class Prayer_Drain extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
-			CMMsg msg2=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, "+prayingWord(mob)+"!^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, "+prayingWord(mob)+"!^?");
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg2);

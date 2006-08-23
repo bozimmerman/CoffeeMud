@@ -51,7 +51,7 @@ public class Prayer_Weather extends Prayer
 		boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				int switcher=CMLib.dice().roll(1,3,0);

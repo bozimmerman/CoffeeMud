@@ -116,7 +116,7 @@ public class Prayer_DivineFavor extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> become(s) divinely favored.":"^S<S-NAME> "+prayWord(mob)+" for divine favor.^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) divinely favored.":"^S<S-NAME> "+prayWord(mob)+" for divine favor.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);

@@ -59,7 +59,7 @@ public class Spell_MagicMissile extends Spell
 			int numMissiles=((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5)))+1);
 			for(int i=0;i<numMissiles;i++)
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(i==0)?((auto?"A magic missile appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CMProps.msp("spelldam2.wav",40)):null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?((auto?"A magic missile appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CMProps.msp("spelldam2.wav",40)):null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

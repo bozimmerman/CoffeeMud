@@ -247,7 +247,7 @@ public class Prancer extends StdCharClass
 		mob.recoverMaxState();
 	}
 
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level.";}
+	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.";}
 
 	public void level(MOB mob, Vector newAbilityIDs)
 	{

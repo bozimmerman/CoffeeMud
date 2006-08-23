@@ -133,7 +133,7 @@ public class Paladin_Defend extends StdAbility
 
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell("You don't feel worthy of a good defense.");
+			mob.tell("You don't feel worthy of a good defence.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,mob,auto,asLevel))

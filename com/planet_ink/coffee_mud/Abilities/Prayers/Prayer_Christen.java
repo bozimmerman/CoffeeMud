@@ -88,7 +88,7 @@ public class Prayer_Christen extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> becomes "+name+".":"^S<S-NAME> christen(s) <T-NAMESELF> '"+name+"'.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> becomes "+name+".":"^S<S-NAME> christen(s) <T-NAMESELF> '"+name+"'.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

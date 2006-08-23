@@ -59,7 +59,7 @@ public class Prayer_MassHarm extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) surrounded by a dark cloud.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
+					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) surrounded by a dark cloud.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

@@ -88,9 +88,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor());
     }
     
-    public boolean rollToHit(int attack, int defense)
+    public boolean rollToHit(int attack, int defence)
     {
-        double myArmor=new Integer(-(defense-100)).doubleValue();
+        double myArmor=new Integer(-(defence-100)).doubleValue();
         if(myArmor==0) myArmor=1.0;
         else
         if(myArmor<0.0) myArmor=-CMath.div(1.0,myArmor);

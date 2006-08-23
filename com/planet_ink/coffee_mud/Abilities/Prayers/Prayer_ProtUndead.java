@@ -110,7 +110,7 @@ public class Prayer_ProtUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from the undead.":"^S<S-NAME> "+prayWord(mob)+" for protection from the undead.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from the undead.":"^S<S-NAME> "+prayWord(mob)+" for protection from the undead.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

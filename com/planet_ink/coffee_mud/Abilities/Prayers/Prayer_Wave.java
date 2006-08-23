@@ -74,7 +74,7 @@ public class Prayer_Wave extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					if(mob.location().okMessage(mob,msg))
+					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						int harming=CMLib.dice().roll(4,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);

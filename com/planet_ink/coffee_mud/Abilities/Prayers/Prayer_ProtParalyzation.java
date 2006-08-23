@@ -52,7 +52,7 @@ public class Prayer_ProtParalyzation extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your natural defenses against paralyzation take over.");
+			mob.tell("Your natural defences against paralyzation take over.");
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
@@ -107,7 +107,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a free mind and body.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a free mind and body.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

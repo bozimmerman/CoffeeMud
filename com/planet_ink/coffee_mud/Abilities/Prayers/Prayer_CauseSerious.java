@@ -56,7 +56,7 @@ public class Prayer_CauseSerious extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|somanticCastCode(mob,target,auto),(auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a serious burst of pain at <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a serious burst of pain at <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

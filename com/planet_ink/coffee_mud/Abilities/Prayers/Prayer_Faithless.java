@@ -64,7 +64,7 @@ public class Prayer_Faithless extends Prayer
 		Deity D=null;
 		if(target.getWorshipCharID().length()>0)
 			D=CMLib.map().getDeity(target.getWorshipCharID());
-		int type=somanticCastCode(mob,target,auto);
+		int type=verbalCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;
 		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
 		if((success)&&(D!=null))

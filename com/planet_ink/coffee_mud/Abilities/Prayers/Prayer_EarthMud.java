@@ -91,7 +91,7 @@ public class Prayer_EarthMud extends Prayer
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,somanticCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

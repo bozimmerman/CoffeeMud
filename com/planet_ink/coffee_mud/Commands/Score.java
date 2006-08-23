@@ -188,7 +188,7 @@ public class Score extends Affect
 		    if((FR!=null)&&(FR.myFaction().showinscore()))
 	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+FR.myFaction().name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
 		}
-		msg.append("Your ^<HELP^>armored defense^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
+		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		//if(CMLib.flags().canSeeHidden(mob))
 		//	msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");

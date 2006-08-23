@@ -40,7 +40,7 @@ public interface CombatLibrary extends CMObject
     public HashSet allPossibleCombatants(MOB mob, boolean beRuthless);
     public HashSet properTargets(Ability A, MOB caster, boolean beRuthless);
     public boolean rollToHit(MOB attacker, MOB defender);
-    public boolean rollToHit(int attack, int defense);
+    public boolean rollToHit(int attack, int defence);
     public HashSet allCombatants(MOB mob);
     public void makePeaceInGroup(MOB mob);
     public void postPanic(MOB mob, CMMsg addHere);

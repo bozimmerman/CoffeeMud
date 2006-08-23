@@ -61,7 +61,7 @@ public class Prayer_Calm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"A feeling of calmness descends.":"^S<S-NAME> "+prayWord(mob)+" for calmness.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of calmness descends.":"^S<S-NAME> "+prayWord(mob)+" for calmness.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

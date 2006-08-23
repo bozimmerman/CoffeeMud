@@ -121,7 +121,7 @@ public class Prayer_Tremor extends Prayer
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CMProps.msp("earthquake.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CMProps.msp("earthquake.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -130,7 +130,7 @@ public class Prayer_Tremor extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if(CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else

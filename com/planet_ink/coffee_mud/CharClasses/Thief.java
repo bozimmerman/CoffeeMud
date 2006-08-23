@@ -248,7 +248,7 @@ public class Thief extends StdCharClass
 		mob.recoverMaxState();
 	}
 
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level after 1st.  Bonus experience for using certain skills.";}
+	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level after 1st.  Bonus experience for using certain skills.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -77,7 +77,7 @@ public class Prayer_Demonshield extends Prayer
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3))
 				   &&(!CMLib.flags().isEvil(source)))
 				{
-					CMMsg msg2=CMClass.getMsg(source,mob,this,somanticCastCode(source,mob,true),null);
+					CMMsg msg2=CMClass.getMsg(source,mob,this,verbalCastCode(source,mob,true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(source,msg2);
@@ -121,7 +121,7 @@ public class Prayer_Demonshield extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),((auto?"":"^S<S-NAME> "+prayWord(mob)+".  ")+"A field of unholy flames erupt(s) around <T-NAME>!^?")+CMProps.msp("fireball.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> "+prayWord(mob)+".  ")+"A field of unholy flames erupt(s) around <T-NAME>!^?")+CMProps.msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

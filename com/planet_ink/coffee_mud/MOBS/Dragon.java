@@ -122,7 +122,7 @@ public class Dragon extends StdMOB
 			addInventory(ClawTwo);
 		}
 
-		// ===== Set his defenses based upon his age as well
+		// ===== Set his defences based upon his age as well
 		baseEnvStats().setArmor(20 - (DragonAge()*15));
 
 		// ===== hitpoints are muxed by 10 To beef them up
