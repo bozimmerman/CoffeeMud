@@ -69,6 +69,21 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if((!sprung)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),M,null);
 	}
+	
+	public MOB invoker()
+	{
+		if(super.miscText.length()==0)
+			return super.invoker();
+		MOB M=super.invoker();
+		if((M!=null)&&(M.Name().equals(miscText))) return M;
+		M=CMLib.map().getLoadPlayer(miscText);
+		if(M==null) 
+			miscText="";
+		else
+			invoker=M;
+		return super.invoker();
+	}
+	
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
