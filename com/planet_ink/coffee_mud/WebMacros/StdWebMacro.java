@@ -101,7 +101,6 @@ public class StdWebMacro implements WebMacro
     {
         if(s==null) return null;
         int i=0;
-        String[] lookup=CMLib.color().standardHTMLlookups();
         while(i<s.length())
         {
             switch(s.charAt(i))

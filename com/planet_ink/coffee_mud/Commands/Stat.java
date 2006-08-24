@@ -281,6 +281,12 @@ public class Stat extends BaseAbleLister
 				commands.removeElementAt(0);
 			}
 			else
+			if("COMBAT".startsWith(s))
+			{
+				ableTypes=-6;
+				commands.removeElementAt(0);
+			}
+			else
 			if("INVENTORY".startsWith(s))
 			{
 				ableTypes=-3;
@@ -366,10 +372,132 @@ public class Stat extends BaseAbleLister
 			str.append("\n\r");
 		}
 		else
+		if(ableTypes==-6)
+		{
+			str.append("Combat summary:\n\r\n\r");
+			MOB M=CMClass.getMOB("StdMOB");
+			M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
+			M.setBaseEnvStats((EnvStats)target.baseEnvStats().copyOf());
+			M.setBaseState((CharState)target.baseState().copyOf());
+			recoverMOB(target);
+			recoverMOB(M);
+			int base=M.adjustedAttackBonus(null);
+			str.append("^c"+CMStrings.padRight("Base Attack",20)+": ^W"+base+"\n\r");
+			for(int i=0;i<target.inventorySize();i++)
+			{
+				Item I=target.fetchInventory(i);
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.adjustedAttackBonus(null)-base; reportOnDiffMOB(I,diff,str);}
+			}
+			recoverMOB(M);
+			for(int i=0;i<target.numAllEffects();i++)
+			{
+				Ability A=target.fetchEffect(i);
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.adjustedAttackBonus(null)-base; reportOnDiffMOB(A,diff,str);}
+			}
+			recoverMOB(target);
+			recoverMOB(M);
+			str.append("^W-------------------------\n\r");
+			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.adjustedAttackBonus(null)+"\n\r");
+			str.append("\n\r");
+			base=M.adjustedArmor();
+			str.append("^C"+CMStrings.padRight("Base Armor",20)+": ^W"+base+"\n\r");
+			for(int i=0;i<target.inventorySize();i++)
+			{
+				Item I=target.fetchInventory(i);
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.adjustedArmor()-base; reportOnDiffMOB(I,diff,str);}
+			}
+			recoverMOB(M);
+			for(int i=0;i<target.numAllEffects();i++)
+			{
+				Ability A=target.fetchEffect(i);
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.adjustedArmor()-base; reportOnDiffMOB(A,diff,str);}
+			}
+			recoverMOB(target);
+			recoverMOB(M);
+			str.append("^W-------------------------\n\r");
+			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.adjustedArmor()+"\n\r");
+			str.append("\n\r");
+			base=M.adjustedDamage(null,null);
+			str.append("^C"+CMStrings.padRight("Base Damage",20)+": ^W"+base+"\n\r");
+			for(int i=0;i<target.inventorySize();i++)
+			{
+				Item I=target.fetchInventory(i);
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.adjustedDamage(null,null)-base; reportOnDiffMOB(I,diff,str);}
+			}
+			recoverMOB(M);
+			for(int i=0;i<target.numAllEffects();i++)
+			{
+				Ability A=target.fetchEffect(i);
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.adjustedDamage(null,null)-base; reportOnDiffMOB(A,diff,str);}
+			}
+			recoverMOB(target);
+			recoverMOB(M);
+			str.append("^W-------------------------\n\r");
+			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.adjustedDamage(null,null)+"\n\r");
+			str.append("\n\r");
+			base=(int)Math.round(M.envStats().speed()*100);
+			str.append("^C"+CMStrings.padRight("Base Attacks%",20)+": ^W"+base+"\n\r");
+			for(int i=0;i<target.inventorySize();i++)
+			{
+				Item I=target.fetchInventory(i);
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=(int)Math.round(M.envStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
+			}
+			recoverMOB(M);
+			for(int i=0;i<target.numAllEffects();i++)
+			{
+				Ability A=target.fetchEffect(i);
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=(int)Math.round(M.envStats().speed()*100)-base; reportOnDiffMOB(A,diff,str);}
+			}
+			recoverMOB(target);
+			recoverMOB(M);
+			str.append("^W-------------------------\n\r");
+			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+(int)Math.round(target.envStats().speed()*100)+"\n\r");
+			str.append("\n\r");
+			base=M.maxState().getHitPoints();
+			str.append("^C"+CMStrings.padRight("Base Hit Points",20)+": ^W"+base+"\n\r");
+			for(int i=0;i<target.inventorySize();i++)
+			{
+				Item I=target.fetchInventory(i);
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(I,diff,str);}
+			}
+			recoverMOB(M);
+			for(int i=0;i<target.numAllEffects();i++)
+			{
+				Ability A=target.fetchEffect(i);
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(A,diff,str);}
+			}
+			recoverMOB(M);
+			str.append("^W-------------------------\n\r");
+			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.maxState().getHitPoints()+"\n\r");
+			recoverMOB(target);
+		}
+		else
 			str=CMLib.commands().getScore(target);
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(str.toString());
 		return false;
+	}
+
+	public void recoverMOB(MOB M)
+	{
+		M.recoverCharStats();
+		M.recoverEnvStats();
+		M.recoverMaxState();
+		M.resetToMaxState();
+	}
+	public void testMOB(MOB target,MOB M, Environmental test)
+	{
+		test.affectCharStats(target,M.charStats());
+		test.affectEnvStats(target,M.envStats());
+		test.affectCharState(target,M.maxState());
+	}
+	public void reportOnDiffMOB(Environmental test, int diff, StringBuffer str)
+	{
+		if(diff>0)
+			str.append("^C"+CMStrings.padRight(test.Name(),20)+": ^W+"+diff+"\n\r");
+		else
+		if(diff<0)
+			str.append("^C"+CMStrings.padRight(test.Name(),20)+": ^W"+diff+"\n\r");
 	}
 	
 	public boolean canBeOrdered(){return true;}

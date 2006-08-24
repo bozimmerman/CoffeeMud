@@ -51,7 +51,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		Item w=((MOB)affected).fetchFirstWornItem(Item.WORN_HELD);
 		if((w==null)||(!(w instanceof Shield))) return;
 		gettingBonus=true;
-		affectableStats.setArmor(affectableStats.armor()+((int)Math.round(CMath.mul(w.envStats().armor(),(CMath.div(proficiency(),100.0))))));
+		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.envStats().armor(),(CMath.div(proficiency(),100.0))))));
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
