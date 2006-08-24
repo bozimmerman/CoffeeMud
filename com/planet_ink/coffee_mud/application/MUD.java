@@ -915,6 +915,12 @@ public class MUD extends Thread implements MudHost
 				}
 				CMProps.setVar(CMProps.SYSTEM_MUDPORTS,str.toString());
 				
+		        Runtime.getRuntime().addShutdownHook(new Thread() {
+		            public void run() {
+		            	MUD.globalShutdown(null,true,null);
+		            }
+		        });
+		        
 				if(initHost(Thread.currentThread(),page))
 					((MUD)mudThreads.firstElement()).join();
 
