@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -123,11 +124,12 @@ public class Thief_Robbery extends ThiefSkill
 		Environmental stolen=shop.getShop().getStock(itemToSteal,mob,shop.whatIsSold(),target.getStartRoom());
 		if(stolen!=null)
 		{
+			ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,false);
 			if((stolen instanceof Ability)
 			||(stolen instanceof MOB)
 			||(stolen instanceof Room)
 			||(stolen instanceof LandTitle)
-			||(shop.getShop().stockPrice(stolen)<0))
+			||((price.experiencePrice>0)||(price.questPointPrice>0)))
 			{
 				mob.tell(mob,target,stolen,"You cannot rob '<O-NAME>' from <T-NAME>.");
 				return false;

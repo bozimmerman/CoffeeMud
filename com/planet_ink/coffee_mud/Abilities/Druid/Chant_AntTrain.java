@@ -134,7 +134,7 @@ public class Chant_AntTrain extends Chant
 				target.delEffect(this);
 				target.recoverEnvStats();
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> chants(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> chant(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

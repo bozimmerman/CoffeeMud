@@ -61,7 +61,8 @@ public class Prayer_GuardianHearth extends Prayer
 		if(((msg.tool() instanceof Trap)
 		||(prots.contains(new Integer(msg.sourceMinor())))
 		||(prots.contains(new Integer(msg.targetMinor()))))
-		   &&(msg.target() instanceof MOB))
+		   &&(msg.target() instanceof MOB)
+		   &&((msg.source()!=msg.target())||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))))
 		{
 			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
