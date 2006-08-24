@@ -44,9 +44,8 @@ public class Chant_ManicMoon extends Chant
 
 	public void unInvoke()
 	{
-		if(canBeUninvoked())
-			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The manic moon sets.");
+		if((affected instanceof Room)&&(canBeUninvoked()))
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The manic moon sets.");
 
 		super.unInvoke();
 

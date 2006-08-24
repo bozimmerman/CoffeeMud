@@ -47,7 +47,7 @@ public class Chant_PeaceMoon extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			if(affected instanceof Room)
+			if((affected instanceof Room)&&(canBeUninvoked()))
 				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The peace moon sets.");
 			super.unInvoke();
 			return;

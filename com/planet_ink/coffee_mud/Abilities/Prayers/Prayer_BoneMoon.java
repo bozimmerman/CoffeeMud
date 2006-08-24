@@ -46,17 +46,14 @@ public class Prayer_BoneMoon extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof Room)))
+		if(affected==null) return;
+		if(canBeUninvoked())
 		{
-			super.unInvoke();
-			return;
+			Room R=CMLib.map().roomLocation(affected);
+			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"The bone moon over you fades.");
 		}
-		Room  R=(Room)affected;
-
 		super.unInvoke();
-
-		if((canBeUninvoked())&&(R!=null))
-		   R.showHappens(CMMsg.MSG_OK_VISUAL,"The bone moon over you fades.");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

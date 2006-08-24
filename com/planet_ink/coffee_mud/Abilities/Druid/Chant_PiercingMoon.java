@@ -45,12 +45,13 @@ public class Chant_PiercingMoon extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
+		if(affected==null) return;
 		if(canBeUninvoked())
-			mob.tell("The piercing moon sets.");
-
+		{
+			Room R=CMLib.map().roomLocation(affected);
+			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"The piercing moon sets.");
+		}
 		super.unInvoke();
 
 	}

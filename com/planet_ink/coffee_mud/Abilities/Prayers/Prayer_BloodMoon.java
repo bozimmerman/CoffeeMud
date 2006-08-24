@@ -46,14 +46,14 @@ public class Prayer_BloodMoon extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
+		if(affected==null) return;
 		if(canBeUninvoked())
-			mob.tell("The blood moon over you fades.");
+		{
+			Room R=CMLib.map().roomLocation(affected);
+			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"The blood moon over you fades.");
+		}
+		super.unInvoke();
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
