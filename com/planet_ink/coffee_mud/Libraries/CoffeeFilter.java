@@ -110,7 +110,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 		if(msg.length()==0) return msg;
 		StringBuffer buf=new StringBuffer(msg);
-
+		Session CS=S;
+		//if(CS==null) CS=(Session)CMClass.getCommon("DefaultSession");
 		int loop=0;
 
 		while(buf.length()>loop)
@@ -164,12 +165,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				    break;
 				case '^':
 				{
-					if((loop<buf.length()-1)&&(S!=null))
+					if((loop<buf.length()-1)&&(CS!=null))
 					{
-						int colorID = S.getColor( buf.charAt(loop+1) );
+						int colorID = CS.getColor( buf.charAt(loop+1) );
 						if (colorID != -1)
 						{
-							String colorEscStr = S.makeEscape(colorID);
+							String colorEscStr = CS.makeEscape(colorID);
 							int csl=0;
 							if (colorEscStr != null)
 							{

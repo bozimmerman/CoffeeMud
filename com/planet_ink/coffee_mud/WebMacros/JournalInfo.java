@@ -84,9 +84,25 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("MESSAGE"))
 			{
 				String s=((String)((Vector)info.elementAt(num)).elementAt(5));
-				s=CMStrings.replaceAll(s,"%0D","<BR>");
-                s=CMStrings.replaceAll(s,"\n","<BR>");
-                return clearWebMacros(s);
+				if(parms.containsKey("NOREPLIES"))
+				{
+					int x=s.indexOf(DatabaseEngine.JOURNAL_BOUNDARY);
+					if(x>=0) s=s.substring(0,x);
+				}
+				if(parms.containsKey("PLAIN"))
+				{
+					s=CMStrings.replaceAll(s,"%0D","\n");
+	                s=CMStrings.replaceAll(s,"<BR>","\n");
+	                s=CMStrings.removeColors(s);
+				}
+				else
+				{
+					s=CMStrings.replaceAll(s,DatabaseEngine.JOURNAL_BOUNDARY,"<HR>");
+					s=CMStrings.replaceAll(s,"%0D","<BR>");
+	                s=CMStrings.replaceAll(s,"\n","<BR>");
+	                s=colorwebifyOnly(new StringBuffer(s)).toString();
+				}
+                return s;
 			}
             if(parms.containsKey("EMAILALLOWED"))
                 return ""+((((String)((Vector)info.elementAt(num)).elementAt(1)).length()>0)

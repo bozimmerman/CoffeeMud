@@ -61,13 +61,49 @@ public class StdWebMacro implements WebMacro
         return filename;
     }
     
+    protected StringBuffer colorwebifyOnly(StringBuffer s)
+    {
+        if(s==null) return null;
+        int i=0;
+        String[] lookup=CMLib.color().standardHTMLlookups();
+        while(i<s.length())
+        {
+        	switch(s.charAt(i))
+	        {
+            case '^':
+                if(i<(s.length()-1))
+                {
+                    char c=s.charAt(i+1);
+                    String code=lookup[c];
+                    if(code!=null)
+                    {
+                        s.delete(i,i+2);
+                        if(code.startsWith("<"))
+                        {
+	                        s.insert(i,code+">");
+	                        i+=code.length();
+                        }
+                        else
+                        {
+                            s.insert(i,code);
+                            i+=code.length()-1;
+                        }
+                    }
+                }
+                break;
+	        }
+        	i++;
+        }
+        return s;
+    }
+    
     protected StringBuffer webify(StringBuffer s)
     {
         if(s==null) return null;
         int i=0;
+        String[] lookup=CMLib.color().standardHTMLlookups();
         while(i<s.length())
         {
-            String[] lookup=CMLib.color().standardHTMLlookups();
             switch(s.charAt(i))
             {
             case '\n':
@@ -102,30 +138,10 @@ public class StdWebMacro implements WebMacro
                 s.insert(i+1,"lt;");
                 i+=3;
                 break;
-            case '^':
-                if(i<(s.length()-1))
-                {
-                    char c=s.charAt(i+1);
-                    String code=lookup[c];
-                    if(code!=null)
-                    {
-                        s.delete(i,i+2);
-                        if(code.startsWith("<"))
-                        {
-	                        s.insert(i,code+">");
-	                        i+=code.length();
-                        }
-                        else
-                        {
-                            s.insert(i,code);
-                            i+=code.length()-1;
-                        }
-                    }
-                }
-                break;
             }
             i++;
         }
+        s=colorwebifyOnly(s);
         return s;
     }
     

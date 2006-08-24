@@ -415,9 +415,9 @@ public class JournalLoader
 			if(olddatedex>=0) olddate=olddate.substring(0,olddatedex);
 			String oldkey=(String)entry.elementAt(0);
 			String oldmsg=(String)entry.elementAt(5);
-			message=oldmsg+"%0D---------------------------------------------%0D"
-                          +"Reply from: "+from+"%0D"
-                          +"Date/Time : "+CMLib.time().date2String(System.currentTimeMillis())+"%0D"
+			message=oldmsg+DatabaseEngine.JOURNAL_BOUNDARY
+                          +"^yReply from^N: "+from+"%0D"
+                          +"^yDate/Time ^N: "+CMLib.time().date2String(System.currentTimeMillis())+"%0D"
                           +message;
 			DB.update("UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
 			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");

@@ -42,6 +42,7 @@ public interface DatabaseEngine extends CMObject
 	public static final int JOURNAL_SUBJ=4;
 	public static final int JOURNAL_MSG=5;
 	public static final int JOURNAL_DATE2=6;
+	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 	
 	public static final int PDAT_WHO=0;
 	public static final int PDAT_SECTION=1;
