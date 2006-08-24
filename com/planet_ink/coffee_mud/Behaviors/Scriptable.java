@@ -3600,7 +3600,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 15: // isfollow
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).amFollowing()!=null)
 				&&(((MOB)E).amFollowing().location()==lastKnownLocation))
 					results.append(((MOB)E).amFollowing().name());
@@ -3609,7 +3609,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 73: // isservant
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E!=null)&&(E instanceof MOB)&&(((MOB)E).getLiegeID()!=null)&&(((MOB)E).getLiegeID().length()>0))
                     results.append(((MOB)E).getLiegeID());
                 break;
@@ -5674,6 +5674,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									((MOB)E).getStartRoom().bringMobHere((MOB)E,false);
 								((MOB)E).session().setKillFlag(true);
 							}
+							else
+							if(((MOB)E).getStartRoom()!=null)
+								((MOB)E).killMeDead(false);
 							else
 								((MOB)E).destroy();
 						}

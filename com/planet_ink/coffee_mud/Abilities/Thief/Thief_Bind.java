@@ -180,7 +180,7 @@ public class Thief_Bind extends ThiefSkill
 						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 				}
 				if((mob.getVictim()==target)&&(!auto))
-					mob.setVictim(null);
+					mob.makePeace();
 			}
 		}
 		else

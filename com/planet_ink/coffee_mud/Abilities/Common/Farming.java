@@ -149,12 +149,20 @@ public class Farming extends GatheringSkill
 			commonTell(mob,"You can't plant anything indoors!");
 			return false;
 		}
+		if((!auto)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
+		{
+			commonTell(mob,"The land is not suitable for farming here.");
+			return false;
+		}
         if((!auto)&&(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DROUGHT))
         {
             commonTell(mob,"The current drought conditions make planting useless.");
             return false;
         }
-		if(mob.location().fetchEffect("Farming")!=null)
+		if(mob.location().fetchEffect(ID())!=null)
 		{
 			commonTell(mob,"It looks like a crop is already growing here.");
 			return false;
@@ -201,10 +209,26 @@ public class Farming extends GatheringSkill
 			return false;
 		}
 		int code=-1;
+		String what=CMParms.combine(commands,0).toUpperCase();
 		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
-			String str=RawMaterial.RESOURCE_DESCS[i];
-			if((str.toUpperCase().equalsIgnoreCase(CMParms.combine(commands,0)))
+			String str=RawMaterial.RESOURCE_DESCS[i].toUpperCase();
+			if((str.equals(what))
+			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
+			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
+			  ||((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+			{
+				code=RawMaterial.RESOURCE_DATA[i][0];
+				foundShortName=CMStrings.capitalizeAndLower(str);
+				break;
+			}
+		}
+		if(code<0)
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		{
+			String str=RawMaterial.RESOURCE_DESCS[i].toUpperCase();
+			if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
 			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
 			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
@@ -217,7 +241,7 @@ public class Farming extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTell(mob,"You don't know how to plant "+CMParms.combine(commands,0));
+			commonTell(mob,"You've never heard of '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 
