@@ -110,6 +110,7 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			sock.setSoTimeout(SOTIMEOUT);
+			sock.setSendBufferSize(0);
             rawout=sock.getOutputStream();
             InputStream rawin=sock.getInputStream();
             setServerTelnetMode(TELNET_ANSI,true);
@@ -129,7 +130,7 @@ public class DefaultSession extends Thread implements Session
             preliminaryRead(250);
             if((!terminalType.equalsIgnoreCase("ANSI"))&&(clientTelnetMode(TELNET_ECHO)))
                 changeTelnetModeBackwards(TELNET_ECHO,false);
-            rawout.flush();
+            //rawout.flush();
             preliminaryRead(250);
 
             //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
@@ -141,8 +142,8 @@ public class DefaultSession extends Thread implements Session
                 changeTelnetMode(rawout,TELNET_ECHO,true);
         	if(clientTelnetMode(TELNET_COMPRESS2))
         	{
-                out.flush();
-                rawout.flush();
+                //out.flush();
+                //rawout.flush();
 				try{Thread.sleep(50);}catch(Exception e){}
                 requestSubOption(rawout,TELNET_COMPRESS2);
                 ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
@@ -205,7 +206,7 @@ public class DefaultSession extends Thread implements Session
 	        byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)TELNET_IAC,(byte)TELNET_SE};
 	        out.write(stream);
         }
-        out.flush();
+        //out.flush();
     }
     
     private static boolean mightSupportTelnetMode(int telnetCode)
@@ -238,7 +239,7 @@ public class DefaultSession extends Thread implements Session
     {
     	byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
     	out.write(command);
-        out.flush();
+        //out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
@@ -246,7 +247,7 @@ public class DefaultSession extends Thread implements Session
     {
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
     	out.write(command);
-        out.flush();
+        //out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
@@ -254,7 +255,7 @@ public class DefaultSession extends Thread implements Session
     {
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
     	out.write(command);
-        out.flush();
+        //out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
@@ -842,7 +843,7 @@ public class DefaultSession extends Thread implements Session
             	if(connectionComplete)
             	{
 	                requestSubOption(rawout,TELNET_COMPRESS2);
-	                out.flush();
+	                //out.flush();
 	                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 	                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 					out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
@@ -1301,7 +1302,7 @@ public class DefaultSession extends Thread implements Session
 			if(sock!=null)
 			{
 				status=Session.STATUS_LOGOUT6;
-				if(out!=null) out.flush();
+				//if(out!=null) out.flush();
 				status=Session.STATUS_LOGOUT7;
                 if(sock!=null) sock.shutdownInput();
 				status=Session.STATUS_LOGOUT8;
