@@ -142,9 +142,10 @@ public class UtiliThread extends Thread
 
     public void debugDumpStack(Thread theThread)
     {
-		java.lang.StackTraceElement[] s=(java.lang.StackTraceElement[])Thread.getAllStackTraces().get(theThread);
-		for(int i=0;i<s.length;i++)
-			Log.debugOut("UtiliDump","   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
+    	// I wish Java had compiler directives.  Would be great to un-comment this for 1.5 JVMs
+		//java.lang.StackTraceElement[] s=(java.lang.StackTraceElement[])Thread.getAllStackTraces().get(theThread);
+		//for(int i=0;i<s.length;i++)
+		//	Log.debugOut("UtiliDump","   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
     }
     
 	public void checkHealth()
