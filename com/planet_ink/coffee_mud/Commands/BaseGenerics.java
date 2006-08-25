@@ -1486,7 +1486,8 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)){
 			mob.tell(showNumber+getScr("BaseGenerics","cancontaini")+" "+makeContainerTypes(E)
 					+getScr("BaseGenerics","hasalid")+" "+E.hasALid()
-					+getScr("BaseGenerics","hasalock")+" "+E.hasALock());
+					+getScr("BaseGenerics","hasalock")+" "+E.hasALock()
+					+getScr("BaseGenerics","keycode")+" "+E.keyName());
 			return;
 		}
 		String change="NO";

@@ -315,6 +315,16 @@ public class StdContainer extends StdItem implements Container
 		return true;
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(tickID==Tickable.TICKID_EXIT_REOPEN)
+		{
+			setLidsNLocks(hasALid,!hasALid,hasALock,hasALock);
+			return false;
+		}
+		return super.tick(ticking,tickID);
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -338,6 +348,10 @@ public class StdContainer extends StdItem implements Container
 				break;
 			case CMMsg.TYP_OPEN:
 				if((!hasALid)||(isOpen)||(isLocked)) return;
+				if((owner() instanceof Room)
+				&&(!CMLib.flags().isGettable(this))
+				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN)))
+					CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,30);
 				isLocked=false;
 				isOpen=true;
 				break;
@@ -349,6 +363,10 @@ public class StdContainer extends StdItem implements Container
 			case CMMsg.TYP_UNLOCK:
 				if((!hasALid)||(!hasALock)||(isOpen)||(!isLocked))
 					return;
+				if((owner() instanceof Room)
+				&&(!CMLib.flags().isGettable(this))
+				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN)))
+					CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,30);
 				isLocked=false;
 				break;
 			default:
