@@ -2330,8 +2330,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					scriptableError(scripted,"INROOM","Syntax",evaluable);
 					return returnable;
 				}
-					
-				Room R=getRoom(arg2,lastKnownLocation);
+				Room R=null;
+				if(arg2.startsWith("$"))
+					R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+				if(R==null)
+					R=getRoom(arg2,lastKnownLocation);
 				if(E==null)
 					returnable=false;
 				else
@@ -5694,15 +5697,29 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 14: // mpgoto
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim());
-				if(lastKnownLocation!=null)
+				s=s.substring(6).trim();
+				if((s.length()>0)&&(lastKnownLocation!=null))
 				{
-					Room goHere=getRoom(s,lastKnownLocation);
+					Room goHere=null;
+					if(s.startsWith("$"))
+						goHere=CMLib.map().roomLocation(this.getArgumentItem(s,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+					if(goHere==null)
+						goHere=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s),lastKnownLocation);
 					if(goHere!=null)
 					{
-						goHere.bringMobHere(monster,true);
-						if(!(scripted instanceof MOB))
-							goHere.delInhabitant(monster);
+						if(scripted instanceof MOB)
+							goHere.bringMobHere((MOB)scripted,true);
+						else
+						if(scripted instanceof Item)
+							goHere.bringItemHere((Item)scripted,Item.REFUSE_PLAYER_DROP,true);
+						else
+						{
+							goHere.bringMobHere(monster,true);
+							if(!(scripted instanceof MOB))
+								goHere.delInhabitant(monster);
+						}
+						if(CMLib.map().roomLocation(scripted)==goHere)
+							lastKnownLocation=goHere;
 					}
 				}
 				break;
@@ -5711,11 +5728,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			if(lastKnownLocation!=null)
 			{
 				Room lastPlace=lastKnownLocation;
-				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String roomName=CMParms.getCleanBit(s,1);
 				if(roomName.length()>0)
 				{
 					s=CMParms.getPastBit(s,1).trim();
-					Room goHere=getRoom(roomName,lastKnownLocation);
+					Room goHere=null;
+					if(roomName.startsWith("$"))
+						goHere=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+					if(goHere==null)
+						goHere=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(goHere!=null)
 					{
 						goHere.bringMobHere(monster,true);
@@ -5739,87 +5760,113 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String mobName=CMParms.getCleanBit(s,1);
                 String roomName="";
+				Room newRoom=null;
                 if(CMParms.numBits(s)>2)
-                    roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
+                {
+                    roomName=CMParms.getPastBit(s,1);
+					if(roomName.startsWith("$"))
+						newRoom=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+                }
 				if((roomName.length()==0)&&(lastKnownLocation!=null))
 					roomName=lastKnownLocation.roomID();
 				if(roomName.length()>0)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,mobName);
-					Room newRoom=getRoom(roomName,lastKnownLocation);
+					if(newRoom==null)
+						newRoom=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(newRoom!=null)
 					{
 						Vector V=new Vector();
-						if(s.equalsIgnoreCase("all"))
+						if(mobName.startsWith("$"))
 						{
-							if(lastKnownLocation!=null)
+							Environmental E=getArgumentItem(mobName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+							if(E!=null) V.addElement(E);
+						}
+						if(V.size()==0)
+						{
+							mobName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,mobName);
+							if(mobName.equalsIgnoreCase("all"))
 							{
-								for(int x=0;x<lastKnownLocation.numInhabitants();x++)
+								if(lastKnownLocation!=null)
 								{
-									MOB m=lastKnownLocation.fetchInhabitant(x);
-									if((m!=null)&&(m!=monster)&&(!V.contains(m)))
-										V.addElement(m);
+									for(int x=0;x<lastKnownLocation.numInhabitants();x++)
+									{
+										MOB m=lastKnownLocation.fetchInhabitant(x);
+										if((m!=null)&&(m!=monster)&&(!V.contains(m)))
+											V.addElement(m);
+									}
 								}
 							}
-						}
-						else
-						{
-							MOB findOne=null;
-							Area A=null;
-							if(lastKnownLocation!=null)
+							else
 							{
-								findOne=lastKnownLocation.fetchInhabitant(s);
-								A=lastKnownLocation.getArea();
-                                if((findOne!=null)&&(findOne!=monster))
-                                    V.addElement(findOne);
-							}
-                            if(findOne==null)
-                            {
-                                findOne=CMLib.map().getPlayer(s);
-                                if((findOne!=null)&&(!CMLib.flags().isInTheGame(findOne,true)))
-                                    findOne=null;
-                                if((findOne!=null)&&(findOne!=monster))
-                                    V.addElement(findOne);
-                            }
-							if((findOne==null)&&(A!=null))
-								for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+								MOB findOne=null;
+								Area A=null;
+								if(lastKnownLocation!=null)
 								{
-									Room R=(Room)r.nextElement();
-									findOne=R.fetchInhabitant(s);
-                                    if((findOne!=null)&&(findOne!=monster))
-                                        V.addElement(findOne);
+									findOne=lastKnownLocation.fetchInhabitant(mobName);
+									A=lastKnownLocation.getArea();
+	                                if((findOne!=null)&&(findOne!=monster))
+	                                    V.addElement(findOne);
 								}
-						}
-						for(int v=0;v<V.size();v++)
-						{
-							MOB mob=(MOB)V.elementAt(v);
-							HashSet H=mob.getGroupMembers(new HashSet());
-							for(Iterator e=H.iterator();e.hasNext();)
-							{
-								MOB M=(MOB)e.next();
-								if((!V.contains(M))&&(M.location()==mob.location()))
-								   V.addElement(M);
+	                            if(findOne==null)
+	                            {
+	                                findOne=CMLib.map().getPlayer(mobName);
+	                                if((findOne!=null)&&(!CMLib.flags().isInTheGame(findOne,true)))
+	                                    findOne=null;
+	                                if((findOne!=null)&&(findOne!=monster))
+	                                    V.addElement(findOne);
+	                            }
+								if((findOne==null)&&(A!=null))
+									for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+									{
+										Room R=(Room)r.nextElement();
+										findOne=R.fetchInhabitant(mobName);
+	                                    if((findOne!=null)&&(findOne!=monster))
+	                                        V.addElement(findOne);
+									}
 							}
 						}
 						for(int v=0;v<V.size();v++)
 						{
-							MOB follower=(MOB)V.elementAt(v);
-							Room thisRoom=follower.location();
-							CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMProps.msp("appear.wav",10));
-							CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE,"<S-NAME> disappear(s) in a puff of smoke.");
-							if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+							if(V.elementAt(v) instanceof MOB)
 							{
-								if(follower.isInCombat())
+								MOB mob=(MOB)V.elementAt(v);
+								HashSet H=mob.getGroupMembers(new HashSet());
+								for(Iterator e=H.iterator();e.hasNext();)
 								{
-									CMLib.commands().postFlee(follower,("NOWHERE"));
-									follower.makePeace();
+									MOB M=(MOB)e.next();
+									if((!V.contains(M))&&(M.location()==mob.location()))
+									   V.addElement(M);
 								}
-								thisRoom.send(follower,leaveMsg);
-								newRoom.bringMobHere(follower,false);
-								newRoom.send(follower,enterMsg);
-								follower.tell("\n\r\n\r");
-								CMLib.commands().postLook(follower,true);
 							}
+						}
+						for(int v=0;v<V.size();v++)
+						{
+							if(V.elementAt(v) instanceof MOB)
+							{
+								MOB follower=(MOB)V.elementAt(v);
+								Room thisRoom=follower.location();
+								CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMProps.msp("appear.wav",10));
+								CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE,"<S-NAME> disappear(s) in a puff of smoke.");
+								if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+								{
+									if(follower.isInCombat())
+									{
+										CMLib.commands().postFlee(follower,("NOWHERE"));
+										follower.makePeace();
+									}
+									thisRoom.send(follower,leaveMsg);
+									newRoom.bringMobHere(follower,false);
+									newRoom.send(follower,enterMsg);
+									follower.tell("\n\r\n\r");
+									CMLib.commands().postLook(follower,true);
+								}
+							}
+							else
+							if((V.elementAt(v) instanceof Item)
+							&&(newRoom!=CMLib.map().roomLocation((Environmental)V.elementAt(v))))
+								newRoom.bringItemHere((Item)V.elementAt(v),Item.REFUSE_PLAYER_DROP,true);
+							if(V.elementAt(v)==scripted)
+								lastKnownLocation=newRoom;
 						}
 					}
 				}
@@ -5827,11 +5874,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 25: // mpbeacon
 			{
-				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String roomName=CMParms.getCleanBit(s,1);
+				Room newRoom=null;
 				if((roomName.length()>0)&&(lastKnownLocation!=null))
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
-					Room newRoom=getRoom(roomName,lastKnownLocation);
+					if(roomName.startsWith("$"))
+						newRoom=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+					if(newRoom==null)
+						newRoom=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if((newRoom!=null)&&(lastKnownLocation!=null))
 					{
 						Vector V=new Vector();
@@ -6424,9 +6475,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[10]);
 				else
 				if(msg.target() instanceof Item)
-					resp=execute(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,str,new Object[10]);
+					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,new Object[10]);
 				else
-					resp=execute(affecting,msg.source(),null,monster,Tool,defaultItem,script,str,new Object[10]);
+					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[10]);
 				if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
 					return false;
 			}
@@ -6660,9 +6711,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
 							else
 							if(msg.target() instanceof Item)
-								que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str));
 							else
-								que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
 							return;
 						}
 					}
