@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 import java.util.*;
+import java.io.*;
 
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -178,8 +179,67 @@ public class CMath
             return true;
         return false;
     }
-    
 
+    public static boolean isMathExpression(String st){
+    	if((st==null)||(st.length()==0)) return false;
+    	try{ parseMathExpression(st);}catch(Exception e){ return false;}
+    	return true;
+    }
+    public static double s_parseMathExpression(String st){ try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
+    public static long s_parseLongExpression(String st){ try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
+    public static int s_parseIntExpression(String st){ try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
+    
+    private static double parseMathExpression(StreamTokenizer st)
+    	throws ArithmeticException
+    {
+		double finalValue=0;
+		try{
+			int c=st.nextToken();
+			char lastOperation='+';
+			while(c!=StreamTokenizer.TT_EOF)
+			{
+				double curValue=0.0;
+				if(c==StreamTokenizer.TT_NUMBER)
+					curValue=st.nval;
+				else
+				if(c=='(')
+					curValue=parseMathExpression(st);
+				else
+				if(c==')')
+					return finalValue;
+				else
+				if("+-*\\?".indexOf((char)c)>=0)
+				{
+					lastOperation=(char)c;
+					c=st.nextToken();
+					continue;
+				}
+				else
+					throw new ArithmeticException("'"+c+"' is an illegal expression.");
+				switch(lastOperation)
+				{
+				case '+': finalValue+=curValue; break;
+				case '-': finalValue-=curValue; break;
+				case '*': finalValue*=curValue; break;
+				case '\\': finalValue/=curValue; break;
+				case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue;
+				}
+				c=st.nextToken();
+			}
+		}
+		catch(IOException e){}
+		return finalValue;
+    }
+    
+    public static long parseLongExpression(String formula)
+    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes())))));}
+    
+    public static int parseIntExpression(String formula) throws ArithmeticException
+    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes())))));}
+    
+    public static double parseMathExpression(String formula) throws ArithmeticException
+    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))));}
+    
     /** Convert an integer to its Roman Numeral equivalent
      * 
      * <br><br><b>Usage:</b> Return=MiscFunc.convertToRoman(Number)+".";

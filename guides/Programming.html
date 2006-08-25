@@ -5146,7 +5146,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
     if( !loaded() )
     {
       setLoaded( true );
-      CMLib.abilityMapper().addCharAbilityMapping( ID(),
+      CMLib.ableMapper().addCharAbilityMapping( ID(),
                                                    1,
                                                    "Skill_Write",
                                                    50,
@@ -5157,7 +5157,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
                                                    ""
                                                   );
 
-      CMLib.abilityMapper().addCharAbilityMapping( ID(),
+      CMLib.ableMapper().addCharAbilityMapping( ID(),
                                                    1,
                                                    "Skill_Recall",
                                                    0,
@@ -5168,7 +5168,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
                                                    ""
                                                  );
 
-      CMLib.abilityMapper().addCharAbilityMapping( ID(),
+      CMLib.ableMapper().addCharAbilityMapping( ID(),
                                                    1,
                                                    "Skill_Climb",
                                                    0,
@@ -5179,7 +5179,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
                                                    ""
                                                  );
 
-      CMLib.abilityMapper().addCharAbilityMapping(
+      CMLib.ableMapper().addCharAbilityMapping(
         ID(),         // class/race to assign the skill to
         1,            // level the skill is qualified for
         "Skill_Swim", // the java ID of the ability to qualify for
@@ -5208,7 +5208,7 @@ public class NormalGuy extends com.planet_ink.coffee_mud.CharClasses.StdCharClas
         <p>
           The second part establishes the qualifying and bonus skills for the
           class. This is done through repeated calls to one of the several
-          <code>CMLib.abilityMapper().addCharAbilityMapping()</code> methods. The first
+          <code>CMLib.ableMapper().addCharAbilityMapping()</code> methods. The first
           parameter of the method is the <code>ID()</code> value of the Character Class
           itself, followed by the level at which this class gains or
           qualifies for the skill. Next is the <code>ID()</code> value of the Ability to

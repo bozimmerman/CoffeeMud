@@ -1281,11 +1281,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Faction F=null;
 	                    	if(q.mysteryData.faction!=null)
 	                    		q.mysteryData.factionGroup.addElement(q.mysteryData.faction);
-	                        if(CMath.isInteger(numStr)||numStr.equalsIgnoreCase("ALL"))
+	                        if(CMath.isMathExpression(numStr)||numStr.equalsIgnoreCase("ALL"))
 	                        {
 	                        	int numFactions=CMLib.factions().factionSet().size();
 	                        	if(numStr.equalsIgnoreCase("ALL")) numStr=""+numFactions;
-	                        	int num=CMath.s_int(numStr);
+	                        	int num=CMath.s_parseIntExpression(numStr);
 	                        	if(num>=numFactions) num=numFactions;
 	                        	int tries=500;
 	                        	while((q.mysteryData.factionGroup.size()<num)&&(--tries>0))
@@ -1341,7 +1341,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	                        q.mysteryData.agent=(MOB)q.mysteryData.agentGroup.elementAt(CMLib.dice().roll(1,q.mysteryData.agentGroup.size(),-1));
                         }catch(CMException ex){
 	                        String numStr=CMParms.combine(p,2).toUpperCase();
-	                        if(!CMath.isInteger(numStr))
+	                        if(!CMath.isMathExpression(numStr))
 	                        {
 	                            if(!isQuiet)
 	                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup #'"+numStr+"'.");
@@ -1357,7 +1357,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        q.mysteryData.agentGroup=new Vector();
 	                        if(q.mysteryData.agent!=null)
 	                        	q.mysteryData.agentGroup.addElement(q.mysteryData.agent);
-	                        int num=CMath.s_int(numStr);
+	                        int num=CMath.parseIntExpression(numStr);
 	                        if(num>=V.size()) num=V.size();
 	                        while((q.mysteryData.agentGroup.size()<num)&&(V.size()>0))
 	                        {
@@ -1405,7 +1405,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	}
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2).toUpperCase();
-                        if(!CMath.isInteger(numStr))
+                        if(!CMath.isMathExpression(numStr))
                         {
                             if(!isQuiet)
                                 Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
@@ -1431,7 +1431,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    	R=q.mysteryData.whereAt;
                     	}
                     	if(R!=null) V2.addElement(R);
-                        int num=CMath.s_int(numStr);
+                        int num=CMath.parseIntExpression(numStr);
                         if(num>=V.size()) num=V.size();
                         while((V2.size()<num)&&(V.size()>0))
                         {
@@ -1495,14 +1495,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	for(int pi=2;pi<p.size();pi++)
                     	{
                     		String numStr=(String)p.elementAt(pi);
-                    		if(!CMath.isInteger(numStr))
+                    		if(!CMath.isMathExpression(numStr))
                     		{
                                 if(!isQuiet)
                                     Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
                                 q.error=true; break;
                     		}
                     		TimeClock TC2=(TimeClock)NOW.copyOf();
-                    		TC2.tickTock(CMath.s_int(numStr));
+                    		TC2.tickTock(CMath.parseIntExpression(numStr));
                     		V2.addElement(TC2);
                     	}
                     	if(q.error) break;
@@ -1532,14 +1532,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         TimeClock NOW=getMysteryTimeNowFromState();
                         TimeClock TC=null;
                         String numStr=CMParms.combine(p,2);
-                		if(!CMath.isInteger(numStr))
+                		if(!CMath.isMathExpression(numStr))
                 		{
                             if(!isQuiet)
                                 Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
                             q.error=true; break;
                 		}
                 		TC=(TimeClock)NOW.copyOf();
-                		TC.tickTock(CMath.s_int(numStr));
+                		TC.tickTock(CMath.parseIntExpression(numStr));
                     	if(cmd.equals("WHENHAPPENED"))
 	                    	q.mysteryData.whenHappened=TC;
                     	else
@@ -1714,7 +1714,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	}
                         if(p.size()<3) continue;
                         String numStr=CMParms.combine(p,2).toUpperCase();
-                        if(!CMath.isInteger(numStr))
+                        if(!CMath.isMathExpression(numStr))
                         {
                             if(!isQuiet)
                                 Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
@@ -1745,7 +1745,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    	finalE=q.mysteryData.tool;
                     	}
                     	if(finalE!=null)V2.addElement(finalE);
-                        int num=CMath.s_int(numStr);
+                        int num=CMath.parseIntExpression(numStr);
                         if(num>=V.size()) num=V.size();
                         Object O;
                         while((V2.size()<num)&&(V.size()>0))
@@ -2994,9 +2994,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     		}
     		if(eval!=null)
     		{
-    			if(eval.startsWith("ARG")&&CMath.isInteger(eval.substring(3)))
+    			if(eval.startsWith("ARG")&&CMath.isMathExpression(eval.substring(3)))
     			{
-    				int num=CMath.s_int(eval.substring(3));
+    				int num=CMath.parseIntExpression(eval.substring(3));
     				if((num<=0)||(num>args.size()))  throw new CMException ("Not specified: "+eval);
     				O=args.elementAt(num);
     			}

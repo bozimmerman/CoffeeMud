@@ -1,0 +1,96 @@
+#set the quest name
+set name murdermystery1
+
+#####################################
+# Set run-requirements for this quest
+#####################################
+# this one runs every 8-12 hours (7200+(3600*rand))*4 secpertick /60 secs /60 mins.
+set wait 7200
+set interval 3600
+set runlevel 1
+set minplayers 1
+
+#####################################
+#  Select an area for our mystery
+#####################################
+# inform the quest that it occurs in Midgaard, but dont set a room just yet
+set area Midgaard
+set roomgroup
+set room
+
+#####################################
+# Select a murder victim
+#####################################
+# now, in midgaard, pick a random intelligent mob to be our victim.
+# this will specify a room also!  
+set mob ANY MASK=+INT 6
+# now designate the above set mob as our mystery "target"
+set target mob
+# now give him the deadman script, which will kill him, unfortunately.
+give behavior Scriptable LOAD=quests/murdermystery/deadman.script
+
+#####################################
+# Select a murder location and time
+#####################################
+# since a room was set above, this should work great!
+set wherehappened room
+# this is 1-10 hours ago from current hour
+set whenhappened -1?-10
+
+#####################################
+# Select a suspects meeting location
+#####################################
+set room
+set roomgroup
+set locale CityStreet 
+
+#####################################
+# Assign the murder suspects
+#####################################
+# first, make sure the mobs aren't generated anywhere
+set area
+set room
+# import the mobs
+import mobs quests/murdermystery/suspects.cmare
+# set the mystery agent to be the imported mobs
+set agentgroup loadedmobs
+# select any one of the agentgroup as THE killer!!! 
+set agent any
+set mobgroup agentgroup-agent
+set mob
+load behavior Scriptable LOAD=quests/murdermystery/suspect.script
+set mobgroup
+set mob agent
+load behavior Scriptable LOAD=quests/murdermystery/killer.script
+
+#####################################
+# Assign the suspect motives
+#####################################
+set motivegroup "angry with ARG1" "in love with ARG1's spouse" "cheated by ARG1" "owed money by ARG1" "insulted by ARG1"
+# and then pick THE motive
+set motive motivegroup
+
+#####################################
+# Assign the suspect weapons
+#####################################
+# first, make sure the items aren't generated anywhere
+set area
+set room
+# import the items
+import items quests/murdermystery/weapons.cmare
+# set the mystery "tool"group to be the imported items
+set toolgroup loadeditems
+# select any one of the toolgroup as THE tool 
+set tool any
+set mobgroup
+set mob
+set itemgroup toolgroup-tool
+set item
+load behavior Scriptable LOAD=quests/murdermystery/anyolditem.script
+set itemgroup
+set item tool
+load behavior Scriptable LOAD=quests/murdermystery/killeritem.script
+
+set duration 400
+# the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will
+# do the rest...
