@@ -110,7 +110,7 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			sock.setSoTimeout(SOTIMEOUT);
-			sock.setSendBufferSize(0);
+			sock.setSendBufferSize(1);
             rawout=sock.getOutputStream();
             InputStream rawin=sock.getInputStream();
             setServerTelnetMode(TELNET_ANSI,true);
