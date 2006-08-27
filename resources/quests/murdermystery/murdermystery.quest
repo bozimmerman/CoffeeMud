@@ -15,19 +15,18 @@ set minplayers 1
 #####################################
 # inform the quest that it occurs in Midgaard, but dont set a room just yet
 set area Midgaard
-set roomgroup
-set room
 
 #####################################
 # Select a murder victim
 #####################################
 # now, in midgaard, pick a random intelligent mob to be our victim.
 # this will specify a room also!  
-set mob ANY MASK=+INT 6
+set mob ANY MASK=+INT 6 +NAMES -HASSAN
 # now designate the above set mob as our mystery "target"
 set target mob
 # now give him the deadman script, which will kill him, unfortunately.
 give behavior Scriptable LOAD=quests/murdermystery/deadman.script
+
 
 #####################################
 # Select a murder location and time
@@ -42,54 +41,69 @@ set whenhappened -1?-10
 #####################################
 set room
 set roomgroup
-set locale CityStreet 
+set locale CityStreet
+set whereat locale
 
 #####################################
 # Assign the murder suspects
 #####################################
 # first, make sure the mobs aren't generated anywhere
-set area
 set room
-# import the mobs
+# import the mobs, and load them into the game.
 import mobs quests/murdermystery/suspects.cmare
-# set the mystery agent to be the imported mobs
-set agentgroup loadedmobs
-# select any one of the agentgroup as THE killer!!! 
-set agent any
+load mobgroup any
+# set the mystery agent to 3 of the imported mobs
+# will select one of the agentgroup as THE killer!!! 
+set agentgroup 3
+# change the mobgroup to be the agentgroup without the agent
 set mobgroup agentgroup-agent
-set mob
 load behavior Scriptable LOAD=quests/murdermystery/suspect.script
-set mobgroup
+load behavior Mobile
+load affect Prop_SafePet
+# now set just the agent back in play
 set mob agent
 load behavior Scriptable LOAD=quests/murdermystery/killer.script
+load behavior Mobile
+load affect Prop_SafePet
 
 #####################################
 # Assign the suspect motives
 #####################################
+# this should automatically select THE motive
+# probably need a way to narrow them down though...
 set motivegroup "angry with ARG1" "in love with ARG1's spouse" "cheated by ARG1" "owed money by ARG1" "insulted by ARG1"
-# and then pick THE motive
-set motive motivegroup
 
 #####################################
 # Assign the suspect weapons
 #####################################
-# first, make sure the items aren't generated anywhere
-set area
-set room
+set room wherehappened
 # import the items
 import items quests/murdermystery/weapons.cmare
-# set the mystery "tool"group to be the imported items
-set toolgroup loadeditems
-# select any one of the toolgroup as THE tool 
-set tool any
-set mobgroup
-set mob
+load itemgroup any
+# set the mystery "tool"group to 3 of the imported items
+# will select any one of the toolgroup as THE tool 
+set toolgroup 3
 set itemgroup toolgroup-tool
-set item
 load behavior Scriptable LOAD=quests/murdermystery/anyolditem.script
-set itemgroup
+# now put the regular tool back in play
 set item tool
 load behavior Scriptable LOAD=quests/murdermystery/killeritem.script
+
+#####################################
+# Now set up all the evidence
+#####################################
+# first the weapons<->suspects
+LOAD=quests/murdermystery/toolagentmap.quest wherehappened toolgroup-tool agentgroup-agent
+# now agents<->motives
+LOAD=quests/murdermystery/agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
+# lastly tools<->motives
+LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motivegroup-motive
+
+#####################################
+# Lastly, set up the announcer
+#####################################
+set mob hassan
+load behavior Scriptable LOAD=quests/murdermystery/thejudge.script
 
 set duration 400
 # the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will

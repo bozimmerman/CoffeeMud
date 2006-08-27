@@ -296,6 +296,29 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return true;
 	}
+
+	
+	public boolean classOnly(MOB mob, String classID, String abilityID)
+	{
+		if(completeAbleMap.containsKey(classID))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(classID);
+			if(!ableMap.containsKey(abilityID)) 
+				return false;
+		}
+		else
+			return false;
+		for(int c=0;c<mob.charStats().numClasses();c++)
+		{
+			CharClass C=mob.charStats().getMyClass(c);
+			if((!C.ID().equals(classID))
+			&&(completeAbleMap.containsKey(classID))
+			&&(((Hashtable)completeAbleMap.get(classID)).containsKey(abilityID)))
+				return false;
+		}
+		return true;
+	}
+	
 	
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly)
 	{

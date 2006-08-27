@@ -6,7 +6,7 @@
 
 ^xBard      :^.^? Bards are traveling singers, whose "songs" can possess powerful magic, who also qualify for many thief skills.
 
-^xCleric    :^.^? Clerics are the great vassels of the Gods, who possess great magical abilities in their numerous "prayers".  This also includes numerous specialist devotional Cleric classes.
+^xCleric    :^.^? Clerics are the great vassals of the Gods, who possess great magical abilities in their numerous "prayers".  This also includes numerous specialist devotional Cleric classes.
 
 ^xMage      :^.^? Mages are masters of magic, and wielders of the great elemental powers.  This also includes numerous Specialist Mage classes.
 

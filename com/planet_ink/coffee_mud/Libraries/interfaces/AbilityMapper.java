@@ -65,6 +65,7 @@ public interface AbilityMapper extends CMObject
     public boolean qualifiesByAnyCharClass(String abilityID);
     public int lowestQualifyingLevel(String ability);
     public boolean classOnly(String classID, String abilityID);
+	public boolean classOnly(MOB mob, String classID, String abilityID);
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
 	public Vector getAllowsList(String ID);
     public Vector getLevelListings(String ID, boolean checkAll, int level);

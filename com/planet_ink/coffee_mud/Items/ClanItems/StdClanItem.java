@@ -40,7 +40,7 @@ public class StdClanItem extends StdItem implements ClanItem
 	protected int ciType=0;
 	public int ciType(){return ciType;}
 	public void setCIType(int type){ ciType=type;}
-	private long lastClanCheck=0;
+	private long lastClanCheck=System.currentTimeMillis();
 	public StdClanItem()
 	{
 		super();
@@ -61,10 +61,21 @@ public class StdClanItem extends StdItem implements ClanItem
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
         super.executeMsg(myHost,msg);
-	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
+	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR/2)
 	    {
-		    if((clanID().length()>0)&&(CMLib.clans().getClan(clanID())==null))
-		        destroy();
+		    if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
+		    {
+		    	if((CMLib.clans().getClan(clanID())==null)
+		    	||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
+		    	{
+		    		Room R=CMLib.map().roomLocation(this);
+					if(R!=null)
+						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
+					unWear();
+					removeFromOwnerContainer();
+					if(owner()!=R) R.bringItemHere(this,Item.REFUSE_PLAYER_DROP,false);
+		    	}
+		    }
 		    lastClanCheck=System.currentTimeMillis();
 	    }
 	}
@@ -105,7 +116,8 @@ public class StdClanItem extends StdItem implements ClanItem
 		if((!(ticking instanceof Item))
 		||(!(ticking instanceof ClanItem))
 		||(((ClanItem)ticking).clanID().length()==0)
-		||(!(((Item)ticking).owner() instanceof MOB)))
+		||(!(((Item)ticking).owner() instanceof MOB))
+		||(((Item)ticking).amDestroyed()))
 			return true;
 
 		MOB M=((MOB)((Item)ticking).owner());
@@ -116,8 +128,10 @@ public class StdClanItem extends StdItem implements ClanItem
 			if(M.location()!=null)
 			{
 				I.unWear();
-				M.location().show(M,I,CMMsg.MSG_OK_VISUAL,"<T-NAME> carried by <S-NAME> disintegrates!");
-				I.destroy();
+				I.removeFromOwnerContainer();
+				M.location().show(M,I,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
+				if(I.owner()!=M.location())
+					M.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
 				return false;
 			}
 		}

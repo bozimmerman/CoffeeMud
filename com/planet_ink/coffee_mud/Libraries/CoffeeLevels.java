@@ -167,7 +167,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			A=mob.fetchAbility(a);
-			if(CMLib.ableMapper().getQualifyingLevel(curClass.ID(),false,A.ID())==oldClassLevel)
+			if((CMLib.ableMapper().getQualifyingLevel(curClass.ID(),false,A.ID())==oldClassLevel)
+			&&(CMLib.ableMapper().getDefaultGain(curClass.ID(),false,A.ID()))
+			&&(CMLib.ableMapper().classOnly(mob,curClass.ID(),A.ID())))
 				lose.addElement(A);
 		}
 		for(int l=0;l<lose.size();l++)
@@ -183,7 +185,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 	}
-
+	
 	public void loseExperience(MOB mob, int amount)
 	{
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;

@@ -5585,7 +5585,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 10: // mpkill
 			{
-				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental newTarget=getArgumentMOB(CMParms.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 					monster.setVictim((MOB)newTarget);
 				break;
