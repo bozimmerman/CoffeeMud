@@ -341,8 +341,8 @@ public class Import extends StdCommand
 	    		{
 					int direction=CMath.s_int(link.substring(s1+1,s2));
 					String destRoomID=link.substring(s2+1);
-					Room sourceRoom=CMLib.map().getRoom(hashedRoomSet,sourceRoomID,areaName);
-					Room destRoom=CMLib.map().getRoom(hashedRoomSet,destRoomID,areaName);
+					Room sourceRoom=CMLib.map().getRoom(hashedRoomSet,areaName,sourceRoomID);
+					Room destRoom=CMLib.map().getRoom(hashedRoomSet,areaName,destRoomID);
 					if((sourceRoom==null)||(destRoom==null))
 						Log.errOut("Import","Relink error: "+sourceRoomID+"="+sourceRoom+"/"+destRoomID+"="+destRoom);
 					else
@@ -3278,7 +3278,7 @@ public class Import extends StdCommand
 			case 97: I=CMClass.getBasicItem("GenPortal");
 					 if((str4.length()>0)&&(!str4.equals("0")))
 					 {
-						 Room R=CMLib.map().getRoom(doneRooms,str4,areaName);
+						 Room R=CMLib.map().getRoom(doneRooms,areaName,str4);
 						 if(R!=null) 
 							 I.setReadableText(R.roomID());
 						 else
@@ -4840,7 +4840,7 @@ public class Import extends StdCommand
 				else
 					continue;
 				String roomID=eatLine(roomV);
-				Room R=CMLib.map().getRoom(doneRooms,roomID,areaName);
+				Room R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 				if(R==null)
 				{
 					Log.errOut("Import","Unhashed room "+roomID+"! Aborting!");
@@ -4931,7 +4931,7 @@ public class Import extends StdCommand
 						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1));
 						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2));
 						Exit E=CMClass.getExit("GenExit");
-						Room linkRoom=CMLib.map().getRoom(doneRooms,""+linkRoomID,areaName);
+						Room linkRoom=CMLib.map().getRoom(doneRooms,areaName,""+linkRoomID);
 						if(linkRoomID>=0)
 						{
 							boolean hasDoor=false;
@@ -5036,6 +5036,8 @@ public class Import extends StdCommand
 								E.setTemporaryDoorLink("");
 
 						}
+						if((linkRoom==null)&&(R.rawDoors()[dirCode]!=null))
+							returnAnError(session,"Room: "+R.roomID()+" re-linked "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
 						R.rawDoors()[dirCode]=linkRoom;
 						if((linkRoom==null)&&(linkRoomID>=0))
 						{
@@ -5119,7 +5121,7 @@ public class Import extends StdCommand
 				{
 					String mobID=CMParms.getCleanBit(s,2);
 					String roomID=CMParms.getCleanBit(s,4);
-					R=CMLib.map().getRoom(doneRooms,roomID,areaName);
+					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)
 					{
 						if(multiArea)
@@ -5219,7 +5221,7 @@ public class Import extends StdCommand
 					String mobID=CMParms.getCleanBit(s,2);
 					int x=roomID.lastIndexOf("#");
 					if(x>=0) roomID=roomID.substring(x);
-					Room R2=CMLib.map().getRoom(doneRooms,roomID,areaName);
+					Room R2=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					MOB M2=null;
 					if(R2!=null)
 						M2=R2.fetchInhabitant(mobID);
@@ -5299,7 +5301,7 @@ public class Import extends StdCommand
 				{
 					String itemID=CMParms.getCleanBit(s,2);
 					String roomID=CMParms.getCleanBit(s,4);
-					R=CMLib.map().getRoom(doneRooms,roomID,areaName);
+					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -5388,7 +5390,7 @@ public class Import extends StdCommand
 				{
 					String roomID=CMParms.getCleanBit(s,2);
 					int dirCode=getBitMask(s,3);
-					R=CMLib.map().getRoom(doneRooms,roomID,areaName);
+					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -5628,7 +5630,7 @@ public class Import extends StdCommand
 				else
 					continue;
 
-				Room R1=CMLib.map().getRoom(doneRooms,roomID,"NOAREA");
+				Room R1=CMLib.map().getRoom(doneRooms,"NOAREA",roomID);
 				if(R1!=null)
 				{
 					int dir=CMath.s_int(dirID);
@@ -5639,7 +5641,7 @@ public class Import extends StdCommand
 						RR=R1.rawDoors()[dir];
 						RE=R1.rawExits()[dir];
 					}
-					Room TR=CMLib.map().getRoom(doneRooms,dcode,"NOAREA");
+					Room TR=CMLib.map().getRoom(doneRooms,"NOAREA",dcode);
 					if((RR==null)&&(TR==null))
 						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+Directions.getDirectionName(dir)+".",compileErrors,commands);
 					else

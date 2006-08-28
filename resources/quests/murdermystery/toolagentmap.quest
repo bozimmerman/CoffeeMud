@@ -1,0 +1,80 @@
+###############################################################################################################
+# This script presents several randomly choosable options for applying evidence.
+# This script will be called once for all possible tool<->agent combinations
+# and one option will be chose among them to be executed.
+# That option then will create some sort of evidence regarding that combination.
+###############################################################################################################
+# The expected arguments are ARG1= $ARG1 WHERE HAPPENED, ARG2= TOOL from TOOLGROUP, ARG3= AGENT from AGENTGROUP.
+###############################################################################################################
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9I've heard $ARG3 is scared of $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9I've heard $ARG3 is scared of $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9I've heard $ARG3 is scared of $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 thinks $ARG2 clumsy and awkward.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 never touches $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 won't use $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 doesn't like $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 wouldn't be caught dead using $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 is too proud to use $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 doesn't know how to use $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 is too dumb to figure out $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 is far too skilled for $ARG2.
+</OPTION>

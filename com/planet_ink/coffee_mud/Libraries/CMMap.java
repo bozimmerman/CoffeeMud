@@ -310,6 +310,12 @@ public class CMMap extends StdLibrary implements WorldMap
 				return (Room)hashedRoomSet.get(calledThis.substring(1));
 		}
 		else
+		if(calledThis.startsWith(areaName+"#"))
+		{
+			if(hashedRoomSet.containsKey(calledThis.substring(areaName.length()+1)))
+				return (Room)hashedRoomSet.get(calledThis.substring(areaName.length()+1));
+		}
+		else
 		{
 			if(hashedRoomSet.containsKey(calledThis))
 				return (Room)hashedRoomSet.get(calledThis);

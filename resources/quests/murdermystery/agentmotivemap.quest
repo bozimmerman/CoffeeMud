@@ -1,0 +1,80 @@
+###############################################################################################################
+# This script presents several randomly choosable options for applying evidence.
+# This script will be called once for all possible agent<->motive combinations
+# and one option will be chose among them to be executed.
+# That option then will create some sort of evidence regarding that combination.
+###############################################################################################################
+# The expected arguments are ARG1= $ARG1 WHERE HAPPENED, ARG2= TOOL from TOOLGROUP, ARG3= AGENT from AGENTGROUP.
+###############################################################################################################
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 is a dork, but $ARG2 would not kill in $ARG3.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 was not one to be in a state of $ARG3.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9I know $ARG2 well enough to know $ARG3 is not a motive.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 thinks $ARG3 is immoral, he wouldn't kill for that reason.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 never gets involved with $ARG3.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 isn't ever in $ARG3.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 hates $ARG3, and never gets involved in it.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG2 would kill for money before $ARG3.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 is too proud to kill for $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 doesn't know how to be in a state of $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 is too dumb to feel $ARG2.
+</OPTION>
+<OPTION>
+	set roomgrouparound $ARG1 10
+	# we have a witness!
+	set mob reselect any MASK=-INT +6
+	give behavior QuestChat +( $ARG2 |  $ARG3 ):$ARG2_$ARG3\;9$ARG3 is far too silly for $ARG2.
+</OPTION>

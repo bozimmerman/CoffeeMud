@@ -183,11 +183,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             si=secondaryItem;
             message=msg;
         }
-        
     }
+    
+    
 	public void setParms(String newParms)
 	{
 		newParms=CMStrings.replaceAll(newParms,"'","`");
+		if(newParms.startsWith("+"))
+			newParms=super.getParms()+";"+newParms;
         que=new Vector();
         oncesDone=new Vector();
         delayTargetTimes=new Hashtable();
