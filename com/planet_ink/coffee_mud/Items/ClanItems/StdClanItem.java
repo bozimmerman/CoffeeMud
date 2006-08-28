@@ -69,11 +69,11 @@ public class StdClanItem extends StdItem implements ClanItem
 		    	||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
 		    	{
 		    		Room R=CMLib.map().roomLocation(this);
-					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
 					unWear();
 					removeFromOwnerContainer();
 					if(owner()!=R) R.bringItemHere(this,Item.REFUSE_PLAYER_DROP,false);
+					if(R!=null)
+						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
 		    	}
 		    }
 		    lastClanCheck=System.currentTimeMillis();
@@ -129,9 +129,9 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				I.unWear();
 				I.removeFromOwnerContainer();
-				M.location().show(M,I,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
 				if(I.owner()!=M.location())
 					M.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
+				M.location().show(M,I,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
 				return false;
 			}
 		}

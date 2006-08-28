@@ -668,7 +668,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         Vector choices=null;
                         String itemName=CMParms.combine(p,2).toUpperCase();
                         try{ 
-                        	q.itemGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+                        	choices=(Vector)getObjectIfSpecified(p,args,2,1); 
                         }catch(CMException ex){
 	                        Vector choices0=new Vector();
 	                        Vector choices1=new Vector();
@@ -2011,6 +2011,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', cannot load mob, no mobs imported.");
                             q.error=true; break;
                         }
+                        int maxToLoad=Integer.MAX_VALUE;
+                        if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
+                    	{
+                    		maxToLoad=CMath.parseIntExpression((String)p.elementAt(2));
+                    		p.removeElementAt(2);
+                    	}
                         if(p.size()<3)
                         {
                             if(!isQuiet)
@@ -2055,10 +2061,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	mobsToDo=(Vector)choices.clone();
                         	q.mobGroup=mobsToDo;
                         }
+                        while((mobsToDo.size()>maxToLoad)&&(maxToLoad>0))
+                        	mobsToDo.removeElementAt(CMLib.dice().roll(1,mobsToDo.size(),-1));
                         Room choiceRoom=q.room;
                         for(int m=0;m<mobsToDo.size();m++)
                         {
-                        	q.mob=(MOB)mobsToDo.firstElement();
+                        	q.mob=(MOB)mobsToDo.elementAt(m);
                             questifyScriptableBehavs(q.mob);
 	                        q.room=choiceRoom;
 	                        if(q.room==null)
@@ -2096,6 +2104,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', cannot load item, no items imported.");
                             q.error=true; break;
                         }
+                        int maxToLoad=Integer.MAX_VALUE;
+                        if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
+                    	{
+                    		maxToLoad=CMath.parseIntExpression((String)p.elementAt(2));
+                    		p.removeElementAt(2);
+                    	}
                         if(p.size()<3)
                         {
                             if(!isQuiet)
@@ -2130,10 +2144,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	itemsToDo=(Vector)choices.clone();
                         	q.itemGroup=itemsToDo;
                         }
+                        while((itemsToDo.size()>maxToLoad)&&(maxToLoad>0))
+                        	itemsToDo.removeElementAt(CMLib.dice().roll(1,itemsToDo.size(),-1));
                         Room choiceRoom=q.room;
                         for(int m=0;m<itemsToDo.size();m++)
                         {
-                        	q.item=(Item)itemsToDo.firstElement();
+                        	q.item=(Item)itemsToDo.elementAt(m);
                             questifyScriptableBehavs(q.item);
 	                        q.room=choiceRoom;
 	                        if(q.room==null)

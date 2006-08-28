@@ -51,8 +51,7 @@ set whereat room
 set room
 # import the mobs, and load them into the game.
 import mobs quests/murdermystery/suspects.cmare
-load mobgroup any
-# set the mystery agent to 3 of the imported mobs
+load mobgroup 3 any
 # will select one of the agentgroup as THE killer!!! 
 set agentgroup 3
 # change the mobgroup to be the agentgroup without the agent
@@ -79,8 +78,7 @@ set motivegroup "drunken anger" "jealous love" "cheating" "unpaid debts" "insult
 set room wherehappened
 # import the items
 import items quests/murdermystery/weapons.cmare
-load itemgroup any
-# set the mystery "tool"group to 3 of the imported items
+load itemgroup 3 any
 # will select any one of the toolgroup as THE tool 
 set toolgroup 3
 set itemgroup toolgroup-tool
@@ -92,6 +90,8 @@ give behavior Scriptable LOAD=quests/murdermystery/killeritem.script
 #####################################
 # Set up the announcer
 #####################################
+set roomgroup
+set room
 set mob hassan
 give behavior Scriptable +SPEECH_PROG mystery murder crime solve\;say Yes, $TARGET was murdered at $WHEREHAPPENED.  Come back here and announce WHO you think did it, their MOTIVE, and what WEAPON they used.  No wrong guesses are allowed.  Questioning the people around that room will reveal the clues you need.\;~\;
 give behavior Scriptable +ONCE_PROG\;QUESTCHAT Murder most foul! $TARGET was murdered at $WHEREHAPPENED on $WHENHAPPENED.  Come and ask me about the mystery!\;~\;

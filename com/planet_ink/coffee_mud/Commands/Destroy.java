@@ -73,6 +73,7 @@ public class Destroy extends BaseItemParser
 			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
 			Log.sysOut("Mobs",mob.Name()+" destroyed mob "+deadMOB.Name()+".");
             deadMOB.destroy();
+            mob.location().delInhabitant(deadMOB);
 			deadMOB=mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
@@ -327,6 +328,7 @@ public class Destroy extends BaseItemParser
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
             deadItem.destroy();
+            mob.location().delItem(deadItem);
 			deadItem=null;
 			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
 			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
