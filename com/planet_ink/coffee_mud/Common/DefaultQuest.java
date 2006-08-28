@@ -604,13 +604,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Vector choices1=new Vector();
 	                        Vector choices2=new Vector();
 	                        Vector choices3=new Vector();
-	                        String mask="";
-	                        int x=s.lastIndexOf("MASK=");
-	                        if(x>=0)
-	                        {
-	                            mask=s.substring(x+5).trim();
-	                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
-	                        }
+	                        String mask=pickMask(s,p);
+	                        if(mask.length()>0) mobName=CMParms.combine(p,2).toUpperCase();
 	                        if(mobName.length()==0) mobName="ANY";
 	                        try
 	                        {
@@ -674,13 +669,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Vector choices1=new Vector();
 	                        Vector choices2=new Vector();
 	                        Vector choices3=new Vector();
-	                        String mask="";
-	                        int x=s.lastIndexOf("MASK=");
-	                        if(x>=0)
-	                        {
-	                            mask=s.substring(x+5).trim();
-	                            itemName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
-	                        }
+	                        String mask=pickMask(s,p);
+	                        if(mask.length()>0) itemName=CMParms.combine(p,2).toUpperCase();
 	                        if(itemName.length()==0) itemName="ANY";
 	                        try
 	                        {
@@ -703,15 +693,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                }
 	                            }
 	                        }catch(NoSuchElementException e){}
-                        }
-                        if((choices!=null)&&(choices.size()>0))
-                        {
-                            for(int c=choices.size()-1;c>=0;c--)
-                            	if(((!reselect)||(!q.reselectable.contains(choices.elementAt(c))))
-                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
-                                    choices.removeElementAt(c);
-                            if((choices.size()==0)&&(!isQuiet))
-                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        if((choices!=null)&&(choices.size()>0))
+	                        {
+	                            for(int c=choices.size()-1;c>=0;c--)
+	                            	if(((!reselect)||(!q.reselectable.contains(choices.elementAt(c))))
+	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
+	                                    choices.removeElementAt(c);
+	                            if((choices.size()==0)&&(!isQuiet))
+	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                        }
                         }
                         if((choices!=null)&&(choices.size()>0))
                             q.itemGroup=choices;
@@ -834,6 +824,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                     if(cmd.equals("LOCALE")||cmd.equals("LOCALEGROUP")||cmd.equals("LOCALEGROUPAROUND"))
                     {
+                    	//TODO: Add LOCALEGROUPAROUND flags for area, air, open, water, etc..
+                    	int range=0;
                     	if(cmd.equals("LOCALE"))
                     	{
 	                        q.room=null;
@@ -848,15 +840,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }catch(CMException ex){}
                     	}
                     	else
+                    	if(cmd.equals("LOCALEGROUPAROUND"))
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
-                    	}
-                        if(p.size()<3) continue;
-                        int range=0;
-                        if(cmd.equals("LOCALEGROUPAROUND"))
-                        {
-                        	if(p.size()<4) continue;
+                        	if(p.size()<3) continue;
                         	range=CMath.s_int((String)p.elementAt(2));
                         	if(range<=0)
                         	{
@@ -864,14 +851,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                Log.errOut("Quest","Quest '"+name()+"', !localegrouparound #'"+((String)p.elementAt(2)+"'."));
 	                            q.error=true; break;
                         	}
+                        	p.removeElementAt(2);
                         	if(q.room==null)
                         	{
 	                            if(!isQuiet)
 	                                Log.errOut("Quest","Quest '"+name()+"', localegrouparound !room.");
 	                            q.error=true; break;
                         	}
-                        	p.removeElementAt(2);
-                        }
+                    	}
+                    	else
+                    	{
+                    		q.roomGroup=null;
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
+                    	}
+                        if(p.size()<3) continue;
                         Vector names=new Vector();
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
@@ -879,13 +872,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                             names.addElement(CMParms.combine(p,2));
                         Vector choices=new Vector();
+                        Vector useThese=null;
+                        if(range>0)
+                        	useThese=CMLib.tracking().getRadiantRooms(q.room,false,true,false,false,false,range);
                         for(int n=0;n<names.size();n++)
                         {
                             String localeName=((String)names.elementAt(n)).toUpperCase();
                             try
                             {
-                                Enumeration e=CMLib.map().rooms();
-                                if(q.area!=null) e=q.area.getMetroMap();
+                                Enumeration e=null;
+                                if(useThese!=null)
+                                	e=useThese.elements();
+                                else
+                                if(q.area!=null) 
+                                	e=q.area.getMetroMap();
+                                else
+                                	e=CMLib.map().rooms();
                                 for(;e.hasMoreElements();)
                                 {
                                     Room R2=(Room)e.nextElement();
@@ -938,6 +940,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                     if(cmd.equals("ROOM")||cmd.equals("ROOMGROUP")||cmd.equals("ROOMGROUPAROUND"))
                     {
+                    	//TODO: Add ROOMGROUPAROUND flags for area, air, open, water, etc..
+                        int range=0;
                     	if(cmd.equals("ROOM"))
                     	{
 	                        q.room=null;
@@ -952,15 +956,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }catch(CMException ex){}
                     	}
                     	else
+                    	if(cmd.equals("ROOMGROUPAROUND"))
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
-                    	}
-                        if(p.size()<3) continue;
-                        int range=0;
-                        if(cmd.equals("ROOMGROUPAROUND"))
-                        {
-                        	if(p.size()<4) continue;
+                        	if(p.size()<3) continue;
                         	range=CMath.s_int((String)p.elementAt(2));
                         	if(range<=0)
                         	{
@@ -968,14 +967,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                Log.errOut("Quest","Quest '"+name()+"', !roomgrouparound #'"+((String)p.elementAt(2)+"'."));
 	                            q.error=true; break;
                         	}
+                        	p.removeElementAt(2);
                         	if(q.room==null)
                         	{
 	                            if(!isQuiet)
 	                                Log.errOut("Quest","Quest '"+name()+"', roomgrouparound !room.");
 	                            q.error=true; break;
                         	}
-                        	p.removeElementAt(2);
-                        }
+                    	}
+                    	else
+                    	{
+                    		q.roomGroup=null;
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
+                    	}
+                        if(p.size()<3) continue;
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
@@ -987,17 +992,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 names.addElement(p.elementAt(ip));
                         else
                             names.addElement(CMParms.combine(p,2));
+                        Vector useThese=null;
+                        if(range>0)
+                        	useThese=CMLib.tracking().getRadiantRooms(q.room,false,true,false,false,false,range);
                         for(int n=0;n<names.size();n++)
                         {
                             String localeName=((String)names.elementAt(n)).toUpperCase();
                             try
                             {
-                                Enumeration e=CMLib.map().rooms();
-                                if(range>0) 
-                                	e=CMLib.tracking().getRadiantRooms(q.room,false,false,false,false,false,range).elements();
+                                Enumeration e=null;
+                                if(useThese!=null)
+                                	e=useThese.elements();
                                 else
                                 if(q.area!=null) 
                                 	e=q.area.getMetroMap();
+                                else
+                                	e=CMLib.map().rooms();
                                 for(;e.hasMoreElements();)
                                 {
                                     Room R2=(Room)e.nextElement();
@@ -1083,13 +1093,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Vector choices1=new Vector();
 	                        Vector choices2=new Vector();
 	                        Vector choices3=new Vector();
-	                        String mask="";
-	                        int x=s.lastIndexOf("MASK=");
-	                        if(x>=0)
-	                        {
-	                            mask=s.substring(x+5).trim();
-	                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
-	                        }
+	                        String mask=pickMask(s,p);
+	                        if(mask.length()>0) mobName=CMParms.combine(p,2).toUpperCase();
 	                        if(mobName.length()==0) mobName="ANY";
 	                        if(q.mobGroup!=null)
 	                        {
@@ -1182,13 +1187,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Vector choices1=new Vector();
 	                        Vector choices2=new Vector();
 	                        Vector choices3=new Vector();
-	                        String mask="";
-	                        int x=s.lastIndexOf("MASK=");
-	                        if(x>=0)
-	                        {
-	                            mask=s.substring(x+5).trim();
-	                            itemName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
-	                        }
+	                        String mask=pickMask(s,p);
+	                        if(mask.length()>0) itemName=CMParms.combine(p,2).toUpperCase();
 	                        if(itemName.trim().length()==0) itemName="ANY";
 	                        try
 	                        {
@@ -2024,13 +2024,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             q.error=true; break;
                         }
                         String mobName=CMParms.combine(p,2);
-                        String mask="";
-                        int x=s.lastIndexOf("MASK=");
-                        if(x>=0)
-                        {
-                            mask=s.substring(x+5).trim();
-                            mobName=CMParms.combine(CMParms.parse(s.substring(0,x).trim()),2).toUpperCase();
-                        }
+                        String mask=pickMask(s,p);
+                        if(mask.length()>0) mobName=CMParms.combine(p,2).toUpperCase();
                         if(mobName.length()==0) mobName="ANY";
                         Vector choices=new Vector();
                         for(int i=0;i<q.loadedMobs.size();i++)
@@ -2413,7 +2408,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         Vector args=new Vector();
         questState=new QuestState();
         Vector script=parseScripts(script(),new Vector(),args);
-        parseQuestScript(script,args);
+        try{
+	        parseQuestScript(script,args);
+        }catch(Throwable t){
+        	questState.error=true;
+        	Log.errOut("DefaultQuest",t);
+        }
         if(questState.error)
         {
             if(!questState.beQuiet)
@@ -2600,6 +2600,30 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             getWinners().addElement(name);
             CMLib.database().DBUpdateQuest(this);
         }
+    }
+
+    private String pickMask(String s, Vector p)
+    {
+        String mask="";
+        int x=s.lastIndexOf("MASK=");
+        if(x>=0)
+        {
+            mask=s.substring(x+5).trim();
+            int i=0;
+            while((i<p.size())&&(((String)p.elementAt(i)).toUpperCase().indexOf("MASK=")<0))i++;
+            if(i<=p.size())
+            {
+	            String pp=(String)p.elementAt(i);
+	            x=pp.toUpperCase().indexOf("MASK=");
+	            if((x>0)&&(pp.substring(0,x).trim().length()>0))
+	            {
+	            	p.setElementAt(pp.substring(0,x).trim(),i);
+	            	i++;
+	            }
+	            while(i<p.size()) p.removeElementAt(i);
+            }
+        }
+        return mask;
     }
     
     public String getWinnerStr()
@@ -2989,16 +3013,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	while((x>=0)&&(x<s.length()-1))
     	{
     		int y=x+1;
-    		while((x<s.length())&&(Character.isLetterOrDigit(s.charAt(x)))) x++;
+    		while((y<s.length())&&(Character.isLetterOrDigit(s.charAt(y)))) y++;
     		try{
-    			Object O=getObjectIfSpecified(CMParms.paramParse(s.substring(y,x)),args,0,0);
+    			Object O=(x+1>=y)?null:getObjectIfSpecified(CMParms.paramParse(s.substring(x+1,y)),args,0,0);
     			String replace=(O==null)?"null":O.toString();
     			if(O instanceof Room) 
     				replace=((Room)O).roomTitle();
     			else
     			if(O instanceof Environmental) 
     				replace=((Environmental)O).Name();
-    			s=s.substring(0,y-1)+replace+s.substring(x);
+    			s=s.substring(0,x)+replace+s.substring(y);
     		}catch(CMException ex){}
 	    	x=s.toUpperCase().indexOf("$",x+1);
     	}

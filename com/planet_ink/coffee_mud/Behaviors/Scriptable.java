@@ -190,7 +190,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		newParms=CMStrings.replaceAll(newParms,"'","`");
 		if(newParms.startsWith("+"))
-			newParms=super.getParms()+";"+newParms;
+			newParms=super.getParms()+";"+newParms.substring(1);
         que=new Vector();
         oncesDone=new Vector();
         delayTargetTimes=new Hashtable();

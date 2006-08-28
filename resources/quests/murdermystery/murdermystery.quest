@@ -21,7 +21,7 @@ set area Midgaard
 #####################################
 # now, in midgaard, pick a random intelligent mob to be our victim.
 # this will specify a room also!  
-set mob ANY MASK=+INT 6 +NAMES -HASSAN
+set mob ANY MASK=+INT 6 +NAMES -HASSAN "-THE GUILDMASTER"
 # now designate the above set mob as our mystery "target"
 set target mob
 # now give him the deadman script, which will kill him, unfortunately.
@@ -75,6 +75,7 @@ set motivegroup "drunken anger" "jealous love" "cheating" "unpaid debts" "insult
 #####################################
 # Assign the suspect weapons
 #####################################
+set mobgroup
 set room wherehappened
 # import the items
 import items quests/murdermystery/weapons.cmare
