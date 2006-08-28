@@ -1141,7 +1141,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        if((choices!=null)&&(choices.size()>0))
 	                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
-                        if((q.mob==null)||(q.mob.location()==null))
+                        if(q.mob==null)
                         {
                             if(!isQuiet)
                                 Log.errOut("Quest","Quest '"+name()+"', !mob '"+mobName+"'.");
