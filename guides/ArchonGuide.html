@@ -38793,9 +38793,12 @@ at  the same   or LOWER run level.</p>
 
 
           
-<p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span><span style="color: rgb(102, 51, 102);"> [XML FILE PATH]</span> - this will import a list of  custom mobs
-from a .CMARE file generated using the EXPORT ROOM MOBS command. The  parameter 
-       must be the path and file name of the file. &nbsp;This list can then be accessed with the LOAD MOB command. </p>
+<p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span><span style="color: rgb(102, 51, 102);"> [XML FILE PATH]</span>
+- this will import a list of custom mobs
+from a .CMARE file generated using the EXPORT ROOM MOBS command. The
+parameter must be the path and file name of the file, using the same
+format as the LOAD= command mentioned above. &nbsp;This list can then
+be accessed with the LOAD MOB, or LOAD MOBGROUP command. </p>
 
 
 
@@ -38803,7 +38806,7 @@ from a .CMARE file generated using the EXPORT ROOM MOBS command. The  parameter
           
 <p><span style="color: rgb(51, 102, 102);">IMPORT ITEMS</span><span style="color: rgb(102, 51, 102);"> [XML FILE PATH] </span>- this will import a list  of custom items 
        from a .CMARE file generated using the EXPORT ROOM ITEMS  command. 
-The    parameter   must be the path and file name of the file. &nbsp;This list can then be accessed with the LOAD ITEM command. </p>
+The    parameter   must be the path and file name of the file, using the same format as the LOAD= command mentioned above. &nbsp;This list can then be accessed with the LOAD ITEM or LOAD ITEMGROUP command. </p>
 
 
 
@@ -38817,7 +38820,12 @@ names   may be  specified     as choices by setting the first area name as
 ANY, followed  by your  other     area name&nbsp;choices, separated by spaces.&nbsp;If 
  no  area name is  given,    this will CLEAR the area designation. This can 
  have  a profound impact on    how subsequent mob or item loading, or room 
- setting  commands work. </p>
+ setting  commands work.</p>
+<p><span style="color: rgb(51, 102, 102);">SET AREA</span>&nbsp;<span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing. &nbsp;If the object resolves to a group of objects, a
+random one from the group will be chosen. </p>
 
 
 
@@ -38837,8 +38845,12 @@ as
 ANY, followed by your other room name&nbsp;choices, separated by
 spaces.&nbsp; If no room name is given, this will effectly clear the
 ROOMGROUP designation (but it will not clear the area designation!).
-&nbsp; &nbsp; Valid room names include map room IDs such as MyArea#123,
-or key words from the titles or descriptions of rooms. </p>
+&nbsp;Valid room names include map room IDs such as MyArea#123,
+or key words from the titles or descriptions of rooms.</p>
+<p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">ROOMGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing.<span style="color: rgb(102, 51, 102);"></span> </p>
 
 
 
@@ -38861,10 +38873,17 @@ spaces.&nbsp; If no room name is given, this will effectly clear the
 room designation (but it will not clear the area designation!). &nbsp;
 Valid room names include map room IDs such as MyArea#123, or key words
 from the titles or descriptions of rooms.</p>
+<p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing.&nbsp; &nbsp;If the object resolves to a group of objects, a random one from the group will be chosen.</p>
 
 
-<p><span style="color: rgb(51, 102, 102);">SET ROOMGROUPAROUND</span> <span style="color: rgb(102, 51, 102);">[#RADIUS] ([ROOM NAME])</span>- will set
-the&nbsp;ROOMGROUP to the set of the size specified. The rooms will be selected from the set of rooms which are up
+<p><span style="color: rgb(51, 102, 102);">SET ROOMGROUPAROUND</span> <span style="color: rgb(102, 51, 102);">[#RADIUS] ([ROOM NAME])</span>-
+will set
+the&nbsp;ROOMGROUP to the set of rooms up to RADIUS rooms from the
+previously set ROOM. The rooms will be selected from the set of rooms
+which are up
 to&nbsp;RADIUS rooms away from the currently set ROOM (see SET ROOM/SET
 LOCALE). The radius must then be greater than 0.&nbsp; If the following
 room name of ANY is given, then all rooms in the radius are
@@ -38874,7 +38893,8 @@ as
 ANY, followed by your other room name&nbsp;choices, separated by
 spaces.&nbsp; If no room name is given, this will effectly clear the
 ROOMGROUP designation (but it will not clear the area designation!).
-&nbsp; &nbsp; Valid room names include map room IDs such as MyArea#123, or key words from the titles or descriptions of rooms.</p>
+&nbsp; &nbsp; Valid room names include map room IDs such as MyArea#123,
+or key words from the titles or descriptions of rooms.</p>
 
 
 
@@ -38893,7 +38913,11 @@ will effectly clear the ROOMGROUP designation (but it will not clear
 the area
 designation!). &nbsp;Valid locale names may be Locale class names such
 as MountainSurface, StdRoom, etc, or they may be locale types such as
-stone, wooden, underwater, mountains, etc. </p>
+stone, wooden, underwater, mountains, etc.</p>
+<p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">LOCALEGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing. </p>
 
 
 
@@ -38937,93 +38961,147 @@ underwater, mountains, etc.</p>
 will effectly  clear the room designation (but    it will not clear the area
 designation!). &nbsp;&nbsp;Valid locale names may be Locale class names such as MountainSurface,
 StdRoom, etc, or they may be locale types such as stone, wooden,
-underwater, mountains, etc. </p>
+underwater, mountains, etc.</p>
+<p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing.&nbsp; &nbsp;If the object resolves to a group of objects, a random one from the group will be chosen. </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span> <span style="color: rgb(102, 51, 102);">([MOB NAME]) </span>- will designate a set of mobs  with the given 
+<p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);">(RESELECT) ([MOB NAME]) </span>- will designate a set of mobs  with the given 
        name. If the name ends with MASK=..., then a mask similar in  functionality 
        to the one described in the Prop_HaveZapper will apply in addition 
- to   the   name mask entered. The mobs chosen will be selected from those
-  in the   designated   ROOMGROUP (if one was designated). area (if one was designated) or the world. The mobs
-  must exist    somewhere   in the map for this command to work. </p>
+ to   the   name mask entered before the MASK= string. &nbsp;The mobs chosen will be selected from those
+  in the   designated   ROOMGROUP (if one&nbsp;is
+designated),&nbsp; AREA (if one is designated) or the world. The mobs
+must exist somewhere in the map for this command to work.
+&nbsp;Normally a mob will not be placed in the mobgroup if the mob has
+been previously set with SET MOB, or SET MOBTYPE.&nbsp; The RESELECT
+flag is an optional first flag which, if specified, designates that
+&nbsp;mobs may be placed in the mobgroup even if previously set, so
+long as the RESELECT flag was also used in the previous SET MOB or SET
+MOBTYPE command.</p>
+<p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">MOBGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing </p>
 
 
 
-<p><span style="color: rgb(51, 102, 102);">SET MOB</span><span style="color: rgb(102, 51, 102);"> ([MOB NAME])</span> - will set the current mob to one  with the given 
-       name. If the name ends with MASK=..., then a mask similar in  functionality 
+<p><span style="color: rgb(51, 102, 102);">SET MOB</span><span style="color: rgb(102, 51, 102);"> </span>&nbsp;<span style="color: rgb(102, 51, 102);">(RESELECT) &nbsp;</span><span style="color: rgb(102, 51, 102);">([MOB NAME])</span> - will set the current mob to one  with the given 
+       mob name. If the name ends with MASK=..., then a mask similar in  functionality 
        to the one described in the Prop_HaveZapper will apply in addition 
- to   the   name mask entered. Ths mob chosen will be selected from a MOBGROUP 
+ to   the   mob name&nbsp;entered before the MASK= string. Ths mob chosen will be selected from a MOBGROUP 
    if one    has been set. Otherwise, the mob chosen will be selected from
-  those   in the   designated ROOMGROUP (if one was designated), the area (if one was designated) or the world.
-The   mob must   exist   somewhere in the map for this command to work. If
+  those   in the   designated ROOMGROUP (if one is designated), or the AREA (if one is designated) or finally the world.
+The   mob must   exist   somewhere one of those groups for this command to work. If
 a room   has been   previously   designated, then this command will bring
-the mob  to that room.   If a room  or area  has not been designated (or
-was cleared),   then this command  will  designate a new  room and area.
+the chosen mob  to that room.   If a room  or area has not been designated (or
+was cleared),   then this command  will  designate a new  room and area. &nbsp;Normally a mob will not be chosen by this command if the mob has been previously set with SET MOB, or SET MOBTYPE. &nbsp;The RESELECT flag is an optional first flag which, if specified,
+designates that a mob may be chosen if previously chosen, so long as the RESELECT flag was also used in the previous SET MOB or
+SET MOBTYPE command.</p>
+<p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing.&nbsp; &nbsp;If the object resolves to a group of objects, a random one from the group will be chosen.
 </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span><span style="color: rgb(102, 51, 102);"> ([CLASS])</span> - will set the current mob to one  with the given 
+<p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span><span style="color: rgb(102, 51, 102);"> (RESELECT) ([CLASS])</span> - will set the current mob to one  with the given 
        class name. Ths mob chosen will be selected from a MOBGROUP if  one
   has    been  set. Otherwise, the mob chosen will be selected from those
-in  the   designated  ROOMGROUP (if one was designated), area (if one was designated) or the world. The mob
+in  the   designated  ROOMGROUP (if one&nbsp;is  designated), AREA (if one is designated) or the world. The mob
 must  exist    somewhere in the map for this command to work. If a room has
 been  previously    designated,  then this command will bring the mob to
 that room.  If a room   or area  has  not been designated (or was cleared),
-then this  command will   designate a new  room and area. </p>
+then this  command will   designate a new  room and area. &nbsp;Normally
+a mob will not be chosen by this command if the mob has been previously
+set with SET MOB, or SET MOBTYPE. &nbsp;The RESELECT flag is an
+optional first flag which, if specified,
+designates that a mob may be chosen if previously chosen, so long as
+the RESELECT flag was also used in the previous SET MOB or
+SET MOBTYPE command.</p>
+<p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing.&nbsp; &nbsp;If the object resolves to a group of objects, a random one from the group will be chosen. </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">([ITEM NAME]) </span>- will designate a set of items  with the given 
+<p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);">(RESELECT) &nbsp;</span><span style="color: rgb(102, 51, 102);">([ITEM NAME]) </span>- will designate a set of items  with the given 
        name. If the name ends with MASK=..., then a mask similar in  functionality 
        to the one described in the Prop_HaveZapper will apply in addition 
- to   the   name mask entered. The items chosen will be selected from those
-  in the   designated   ROOMGROUP (if one was designated). area (if one was designated) or the world. The items
-  must exist    somewhere   in the map for this command to work.</p>
+ to   the   item name&nbsp;entered before the MASK= string. The items chosen will be selected from those
+  in the   designated   ROOMGROUP (if one&nbsp;is  designated), the AREA (if one&nbsp;is  designated) or the world. The items
+  must exist    somewhere   in the map for this command to work. &nbsp;Normally an item will not be placed in the itemgroup if the item has been
+previously set with SET ITEM, or SET ITEMTYPE.&nbsp; The RESELECT flag is an
+optional first flag which, if specified, designates that items may be
+placed in the itemgroup even if previously set, so long as the RESELECT
+flag was also used in the previous SET ITEM or SET ITEMTYPE command.</p>
+<p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">ITEMGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing</p>
 
 
 
-<p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">([ITEM NAME])</span> - will set the current item to  one with the given 
+<p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">(RESELECT) </span><span style="color: rgb(102, 51, 102);">([ITEM NAME])</span> - will set the current item to  one with the given 
        name. The item chosen will be selected from those in the  designated 
-  ROOMGROUP (if one was designated), area     (if one was designated) or the world. The item must exist  somewhere 
+  ROOMGROUP (if one&nbsp;is  designated), AREA     (if one&nbsp;is  designated) or the world. The item must exist  somewhere 
   in   a  room on the map for this command to work. If a room has been  previously 
       designated, then this command will bring the item to that room. If a
  room    or area has not been designated (or was cleared), then this command 
- will    designate a new room and area. </p>
+ will    designate a new room and area. &nbsp;Normally
+an item&nbsp;will not be chosen by this command if the item has been
+previously set with SET ITEM, or SET ITEMTYPE. &nbsp;The RESELECT flag
+is an optional first flag which, if specified,
+designates that an item may be chosen if previously chosen, so long as
+the RESELECT flag was also used in the previous SET&nbsp;ITEM or
+SET&nbsp;ITEMTYPE command.</p>
+<p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>-
+serves the same purpose as the above command of the same name, but the
+argument is an object specifier. &nbsp;See Object Specifiers below this
+command listing.&nbsp; &nbsp;If the object resolves to a group of objects, a random one from the group will be chosen. </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span> <span style="color: rgb(102, 51, 102);">([CLASS])</span> - will set the current item to  one with the given 
+<p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span> <span style="color: rgb(102, 51, 102);">(RESELECT) </span><span style="color: rgb(102, 51, 102);">([CLASS])</span> - will set the current item to  one with the given 
        class name. The item chosen will be selected from those in  the designated 
-       ROOMGROUP (if one was designated), area (if one was designated) or the world. The item must exist  somewhere 
+       ROOMGROUP (if one&nbsp;is  designated), AREA (if one&nbsp;is  designated) or the world. The item must exist  somewhere 
        in a room on the map for this command to work. If a room has been 
 previously       designated, then this command will bring the item to that 
 room. If a   room    or area has not been designated (or was cleared), then 
-this command   will    designate a new room and area. </p>
+this command   will    designate a new room and area. &nbsp;Normally an item&nbsp;will not be chosen by this command if the item has
+been previously set with SET ITEM, or SET ITEMTYPE. &nbsp;The RESELECT flag
+is an optional first flag which, if specified,
+designates that an item may be chosen if previously chosen, so long as
+the RESELECT flag was also used in the previous SET&nbsp;ITEM or
+SET&nbsp;ITEMTYPE command. </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span> <span style="color: rgb(102, 51, 102);">[MOB NAME] </span>- will instantiate all mobs of the given
-name from the list of mobs imported using the IMPORT MOBS command
-above. If the name ends with MASK=..., then a mask similar in
+<p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);">([#NUMBER]) [MOB NAME] </span>- will instantiate all (or optionally, the given number) mobs of the given
+name&nbsp;from the set of mobs imported using the IMPORT MOBS command
+above. If the mob name ends with MASK=..., then a mask similar in
 functionality to the one described in the Prop_HaveZapper will apply in
-addition to the name
-mask entered. This selected mobs will be set as the current MOBGROUP.
+addition to the mob name
+entered before MASK= string. This selected mobs will be set as the current MOBGROUP.
 If a
 room, roomgroup, or area has been previously designated, then this
-command will create the
-mob in that room. If a room or area has not been designated (or was
+command will create each
+mob in that room or random room in the area. If a room or area has not been designated (or was
 cleared),
 then this command will designate a random room and area. &nbsp;This
 command will also designate the current mob to the last one loaded. </p>
@@ -39045,7 +39123,7 @@ then this command will    designate a random room and area. </p>
 
 
           
-<p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">[ITEM NAME] </span>- will instantiate&nbsp;items of the
+<p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span><span style="color: rgb(51, 102, 102);"></span>&nbsp;<span style="color: rgb(102, 51, 102);">([#NUMBER])</span> <span style="color: rgb(102, 51, 102);">[ITEM NAME] </span>- will instantiate all&nbsp;(or optionally, the given number)&nbsp;items of the
 given name from the list of items imported using the IMPORT ITEMS
 command above. This items will be set as the current ITEMGROUP. If a
 room, roomgroup, or area has been previously designated, then this
@@ -39067,54 +39145,73 @@ command  will designate     a  random room and area.&nbsp;</p>
 
 <p><span style="color: rgb(51, 102, 102);">GIVE ITEM</span> - will give
 the currently  designated   item   (designated using the SET ITEM, or LOAD
-ITEM command)  to the currently    designated mob (designated using the SET
-MOB, or LOAD  MOB command). </p>
+ITEM command)  to the last    designated mob or mobs (designated using the SET
+MOB, SET MOBGROUP, LOAD MOBGROUP, or LOAD  MOB commands). </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR ID] [PARAMETERS] </span>- The behavior  ID must be a
-valid behavior class name. The parameters are any parameters you  wish to
-pass to the behavior. This command will give the currently designated  mob,
-item,&nbsp;or mobgroup (designated using the set or load commands), itemgroup, or roomgroup the above 
-behavior.</p>
+<p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR ID] ([PARAMETERS]) </span>-
+The behavior ID must be a
+valid behavior class name. The parameters are any parameters you wish
+to
+pass to the behavior. This command will give the most recently
+designated mob,
+item, area, room or mobgroup (designated using the set or load
+commands), itemgroup, or roomgroup the above behavior. &nbsp;The
+parameters above are optional, and include any text that would be valid
+for the behavior id specified. &nbsp;The text may also optionally
+include embedded references to other quest objects. &nbsp;See below
+Object Specifiers in Parameters below for more information on using
+this feature.</p>
 
 
 
-<p><span style="color: rgb(51, 102, 102);">  GIVE ABILITY</span><span style="color: rgb(102, 51, 102);"> [ABILITY ID] [PARAMETERS] </span>- The ability ID must be
+<p><span style="color: rgb(51, 102, 102);">  GIVE ABILITY</span><span style="color: rgb(102, 51, 102);"> [ABILITY ID] ([PARAMETERS]) </span>- The ability ID must be
 a  valid ability class name. The parameters are any parameters you wish to
 pass to  the ability. This command will give the currently designated mob,
-or mobgroup  (designated using the set or load commands) the above ability.
+or mobgroup  (designated using the set or load commands) the above ability.&nbsp;The parameters above are optional, and include any text that would be
+valid for the ability id specified. &nbsp;The text may also optionally
+include embedded references to other quest objects. &nbsp;See below Object
+Specifiers in Parameters below for more information on using this
+feature.
 </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span> <span style="color: rgb(102, 51, 102);">[ABILITY ID] [PARAMETERS]</span> - The ability ID  must be a valid 
+<p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span> <span style="color: rgb(102, 51, 102);">[ABILITY ID] ([PARAMETERS]</span>) - The ability ID  must be a valid 
        ability class name. The parameters are any parameters you wish  to 
 pass     to  the ability. This command will give the currently designated 
-mob, item,&nbsp;or mobgroup (designated using the set or load commands), itemgroup, or roomgroup the 
-above affect.     </p>
+mob, item, room, area, or mobgroup (designated using the set or load commands), itemgroup, or roomgroup the 
+above affect.&nbsp;The parameters above are optional, and include any text that would be
+valid for the ability id specified. &nbsp;The text may also optionally
+include embedded references to other quest objects. &nbsp;See below Object
+Specifiers in Parameters below for more information on using this
+feature.     </p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span> <span style="color: rgb(102, 51, 102);">[MOB NAME]</span> - The mob name is a mob which  will be selected 
-       from the list of previously designated mobs (designated using  the 
-load     or  set mob commands). This mob will be made into a follower of the
- CURRENTLY       designated mob. This command does not change the current 
-mob  designation,       nor does it change the location of either mob.</p>
+<p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span> <span style="color: rgb(102, 51, 102);">[MOB NAME]</span>
+- The mob name is a mob which will be selected from the list of
+previously designated mobs (designated using the LOAD MOB, SET MOB, or
+SET MOBTYPE commands). This mob will be made into a follower of the mob
+most recently designated using the SET MOB, SET MOBTYPE, or LOAD MOB
+command. This command does not change the current mob designation, nor
+does it change the location of either mob.</p>
 
 
 
 
           
-<p><span style="color: rgb(51, 102, 102);">RESET</span><span style="color: rgb(102, 51, 102);"></span>- If a room has been set, this command will  cause that&nbsp;room 
-       to reset, or re-load from the database.&nbsp; If a room has NOT  been 
-   set,    but a roomgroup or an area has been set, this command will cause all rooms in 
+<p><span style="color: rgb(51, 102, 102);">RESET</span><span style="color: rgb(102, 51, 102);"></span>-
+If a ROOM has been designated using SET ROOM, or by any other
+previously described method, this command will cause that&nbsp;room to
+reset, or re-load from the database.&nbsp; If a&nbsp;ROOM is not currently set (or has been unset),    but a ROOMGROUP or an AREA has been set, this command will cause all rooms in 
 that set    (respectively) to reload from the database.&nbsp; Doing either can be somewhat 
   time  consuming,    and may disrupt any players in the rooms affected, as
   it will cause  items    to vanish from the floor, and make players and mobs
@@ -39128,10 +39225,69 @@ that set    (respectively) to reload from the database.&nbsp; Doing either can b
        in your quest script.&nbsp; The end is designated by a  corresponding 
    &lt;/SCRIPT&gt;    tag on its own line.&nbsp; See the next section  for
   more  details.</p>
-<p>* Note About #. &nbsp;In a quest script, anywhere the # sign is used
-above (such as [#TICKS] or [#PLAYERS], you may enter a normal old every
-day number (34) or you may enter a valid arithmetic expression using
-real or integer numbers and any of the following operators: + - * \ () ?</p>
+<p><span style="color: rgb(51, 102, 102);">LOAD= <span style="color: rgb(102, 51, 102);">([QUEST FILE]) ([ARGUMENT] ... [ARGUMENT]) &nbsp;</span></span>-
+This command will cause the specified external quest script file to be
+loaded and executed as if it were &nbsp;embedded at the current
+point&nbsp;in the script. &nbsp;The &nbsp;quest &nbsp;filename is of
+the same format mentioned above. &nbsp;When LOAD= is used as a command
+inside a script, you can also specify one or more space-delimited
+arguments which will be accessible inside the target quest script as
+Object Specifiers. &nbsp;The first argument given, whether it is itself
+an Object Specifier, or a simple string, will be accessible inside the
+target quest script as ARG1, the second as ARG2, and so forth. &nbsp;A
+special case exists, however, if one of the arguments evaluates to an
+Object Specifier which represents a group of objects (such as MOBGROUP
+or ITEMGROUP). &nbsp;If that case occurs, the LOAD= command will
+execute once for every object inside the group! See the discussion of
+Object Specifiers and Object Spcifiers in Parameters for more
+information.</p>
+<p><span style="color: rgb(51, 102, 102);">&lt;OPTION&gt; <span style="color: rgb(102, 51, 102);">([QUEST SCRIPT COMMANDS]) <span style="color: rgb(51, 102, 102);">&lt;/OPTION&gt;</span></span></span><span style="color: rgb(51, 102, 102);"><span style="color: rgb(102, 51, 102);">&nbsp;</span></span>-
+Putting quest script commands inside of &lt;OPTION&gt; tags means that,
+for every execution of the quest script, only ONE&nbsp;of the
+&lt;OPTION&gt; tags will be have their script commands executed.&nbsp;
+The one chosen will be selected at random. &nbsp;If only one
+&lt;OPTION&gt; tag exists, it will be chosen every time, of course. <span style="color: rgb(102, 51, 102);"></span></p>
+<p><span style="color: rgb(102, 0, 0); font-weight: bold;">* Note About #</span><span style="font-weight: bold;">. </span>&nbsp;In
+a quest script, anywhere the # sign is used above (such as [#TICKS] or
+[#PLAYERS], you may enter a normal old every day number (34) or you may
+enter a valid arithmetic expression using real or integer numbers and
+any of the following operators: + - * \ () ?</p>
+<p><span style="color: rgb(102, 0, 0); font-weight: bold;">* Object Specifiers</span><span style="font-weight: bold;">. </span>&nbsp;Many
+of the SET ... commands, such as SET MOBGROUP, SET MOB, SET ITEMGROUP,
+SET ROOM, etc, have forms which allow you to designate their value
+using an [OBJECT] string. &nbsp;An [OBJECT] string is one of the
+following basic quest-script values: "LOADEDMOBS", "LOADEDITEMS",
+"AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP", "ITEM", "ENVOBJ", "STUFF", "MOB",
+or one of the following mystery quest-script values: &nbsp;"FACTION",
+"FACTIONGROUP", "AGENT", "AGENTGROUP", "ACTION", "ACTIONGROUP",
+"TARGET", "TARGETGROUP", "MOTIVE", "MOTIVEGROUP", "WHEREHAPPENED",
+"WHEREHAPPENEDGROUP", "WHEREAT", "WHEREATGROUP", "WHENHAPPENED",
+"WHENHAPPENEDGROUP", "WHENAT", "WHENATGROUP", "TOOL", "TOOLGROUP".
+&nbsp;Using the SET command in this way allows you to either COPY an
+objects value, or re-designate it for the purposes of one of the GIVE
+... commands. &nbsp;If the quest script was executed from inside of
+another using the LOAD= script command, and arguments were specified
+from the above objects, you may also have access to argument object
+specifiers, such as ARG1, ARG2, ... ARGN. &nbsp;There will be one such
+object specifier available for each argument passed to the script.
+&nbsp;Please note that some object specifiers return single objects
+(such as MOB, ITEM, ROOM) and some return collections of objects (such
+as ROOMGROUP, MOBGROUP, ITEMGROUP).</p>
+<p><span style="color: rgb(102, 0, 0); font-weight: bold;">* Object Specifiers in Parameters</span><span style="font-weight: bold;">.&nbsp;</span>When
+specifing parameters for the GIVE BEHAVIOR, GIVE ABILITY, or GIVE
+AFFECT command, you may embed the names of one or more of the Object
+Specifiers by prefixing the Object Specifier code string with a $
+character, and concluding it with a space or other non-alphanumeric
+character. &nbsp;For instance, the command:&nbsp;"GIVE BEHAVIOR
+Scriptable GREET_PROG 100\; say I love $MOB!!!\;~\;" would embed the
+name string for the MOB object specifier inside the in-line script.
+&nbsp; In addition to this capability, you may also put a special
+character after the $ and before the object specifier to manipulate how
+the name of the object is generated. &nbsp;Special characters are: '_'
+(to make the name in uppercase), '&amp;' to remove any prefixed english
+article words from the name, or '|' to replace all spaces in the name
+with | characters (which is very useful for QuestChat parameters).</p>
+<p></p>
 
 
 

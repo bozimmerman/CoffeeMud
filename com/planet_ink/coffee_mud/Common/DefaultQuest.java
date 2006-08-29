@@ -415,7 +415,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.area=null;
                         if(p.size()<3) continue;
-                        try{ q.area=(Area)getObjectIfSpecified(p,args,2,0); continue;}catch(CMException ex){}
+                        try{ q.area=(Area)getObjectIfSpecified(p,args,2,0); q.envObject=q.area; continue;}catch(CMException ex){}
                         Vector names=new Vector();
                         Vector areas=new Vector();
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
@@ -858,7 +858,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	else
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); q.envObject=q.roomGroup; continue;}catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         Vector names=new Vector();
@@ -974,7 +974,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	else
                     	{
                     		q.roomGroup=null;
-	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); continue;}catch(CMException ex){}
+	                        try{ q.roomGroup=(Vector)getObjectIfSpecified(p,args,2,1); q.envObject=q.roomGroup; continue;}catch(CMException ex){}
                     	}
                         if(p.size()<3) continue;
                         Vector choices=null;
