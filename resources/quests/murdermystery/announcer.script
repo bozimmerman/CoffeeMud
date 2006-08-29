@@ -1,0 +1,32 @@
+FUNCTION_PROG winner
+	if VAR($n MM1_CORRECT > 3)
+		if !QUESTWINNER($n murdermystery)
+			questchat We have a winner! $n successfully solved this brutal murder mystery!
+			mpexp $n 1000
+			mpoload QuestPoint
+			give "a quest point" "$n"
+			mpoload 100
+			give 100 "$n"
+			mpquestwin '$n' murdermystery
+			mpendquest murdermystery
+		else
+			whisper $n You are correct, but since you've already done this before, KEEP QUIET!
+		endif
+	else
+		if VAR($n MM1_TOOL != '') AND VAR($n MM1_AGENT != '') AND VAR($n MM1_MOTIVE != '')
+			if VAR($n MM1_LOST == '')
+				sayto $n I'm sorry $n, your guesses were incorrect.  Thanks for trying.
+				MPSETVAR $n MM1_LOST 'YEP'
+			else
+				sayto $n Listen buddy, you lost.  Get over it.
+			endif
+		endif
+	endif
+~
+
+QUEST_TIME_PROG murdermystery -1
+	mpsetvar * MM1_TOOL ''
+	mpsetvar * MM1_LOST ''
+	mpsetvar * MM1_AGENT ''
+	mpsetvar * MM1_MOTIVE ''
+~

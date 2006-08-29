@@ -1,6 +1,6 @@
-CNCLMSG_PROG GET any
+CNCLMSG_PROG GET all
 if EVAL($i == $t)
 	mpechoat $n That's EVIDENCE -- you can't do that!
-	return false
+	return CANCEL
 endif
 ~

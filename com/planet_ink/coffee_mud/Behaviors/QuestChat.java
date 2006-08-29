@@ -76,7 +76,7 @@ public class QuestChat extends MudChat
 					 if(coded)
 					 {
 						 String codeStr=expression.substring(x+2).toUpperCase().trim();
-						 expression=expression.substring(0,x);
+						 expression=expression.substring(0,x-1).trim();
 						 Vector V=(Vector)alreadySaid.get(speaker.Name().toUpperCase());
 						 if(V==null)
 						 {

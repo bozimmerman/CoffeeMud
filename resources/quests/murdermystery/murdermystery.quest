@@ -94,12 +94,13 @@ give behavior Scriptable LOAD=quests/murdermystery/killeritem.script
 set roomgroup
 set room
 set mob hassan
+give behavior Scriptable LOAD=quests/murdermystery/announcer.script~
 give behavior Scriptable +SPEECH_PROG mystery murder crime solve\;say Yes, $TARGET was murdered at $WHEREHAPPENED.  Come back here and announce WHO you think did it, their MOTIVE, and what WEAPON they used.  No wrong guesses are allowed.  Questioning the people around that room will reveal the clues you need.\;~\;
 give behavior Scriptable +ONCE_PROG\;QUESTCHAT Murder most foul! $TARGET was murdered at $WHEREHAPPENED on $WHENHAPPENED.  Come and ask me about the mystery!\;~\;
-give behavior Scriptable +SPEECH_PROG p $&TOOL\;if VAR($n MM1_TOOL != '')\;say You have already made a guess on the weapon.\;return\;endif\;MPSETVAR $n MM1_TOOL '$TOOL'\;say Ok, so you think the weapon used was $TOOL.\;MPSETVAR $n MM1_CORRECT ++\;~\;
-give behavior Scriptable +SPEECH_PROG p $&AGENT\;if VAR($n MM1_AGENT != '')\;say You have already made a guess on the killer.\;return\;endif\;MPSETVAR $n MM1_AGENT '$AGENT'\;say Ok, so you think the killer was $AGENT.\;MPSETVAR $n MM1_CORRECT ++\;~\;
-give behavior Scriptable +SPEECH_PROG p $&MOTIVE\;if VAR($n MM1_MOTIVE != '')\;say You have already made a guess on the motive.\;return\;endif\;MPSETVAR $n MM1_MOTIVE '$MOTIVE'\;say Ok, so you think the motive was $MOTIVE.\;MPSETVAR $n MM1_CORRECT ++\;~\;
-give behavior Scriptable +GREET_PROG 100\;if VAR($n MM1_CORRECT > 0)\;say You have $<$n MM1_CORRECT> correct guessed.\;endif\;~\;
+give behavior Scriptable +SPEECH_PROG $&TOOL\;if VAR($n MM1_TOOL != '')\;say You have already made a guess on the weapon.\;return\;endif\;MPSETVAR $n MM1_TOOL '$TOOL'\;say Ok, so you think the weapon used was $TOOL.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
+give behavior Scriptable +SPEECH_PROG $&AGENT\;if VAR($n MM1_AGENT != '')\;say You have already made a guess on the killer.\;return\;endif\;MPSETVAR $n MM1_AGENT '$AGENT'\;say Ok, so you think the killer was $AGENT.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
+give behavior Scriptable +SPEECH_PROG $&MOTIVE\;if VAR($n MM1_MOTIVE != '')\;say You have already made a guess on the motive.\;return\;endif\;MPSETVAR $n MM1_MOTIVE '$MOTIVE'\;say Ok, so you think the motive was $MOTIVE.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
+#give behavior Scriptable +GREET_PROG 100\;if VAR($n MM1_CORRECT > 0)\;say You have $<$n MM1_CORRECT> correct guessed.\;endif\;~\;
 LOAD=quests/murdermystery/badagentguess.quest mob agentgroup-agent
 LOAD=quests/murdermystery/badtoolguess.quest mob toolgroup-tool
 LOAD=quests/murdermystery/badmotiveguess.quest mob motivegroup-motive

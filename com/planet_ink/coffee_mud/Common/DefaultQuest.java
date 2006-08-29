@@ -3003,7 +3003,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return script;
     }
 
-    private static final String VALID_ASTR_CODES="_&";
+    private static final String VALID_ASTR_CODES="_&|";
     private String modifyStringFromArgs(String s, Vector args)
     {
     	int x=s.toUpperCase().indexOf("$");
@@ -3035,6 +3035,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     					break;
     				case '&':
     					replace=CMLib.english().cleanArticles(replace); 
+    					break;
+    				case '|':
+    					replace=CMLib.english().cleanArticles(replace).trim().replace(' ','|'); 
     					break;
     				}
 	    			s=s.substring(0,x)+replace+s.substring(y);

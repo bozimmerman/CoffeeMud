@@ -1,2 +1,2 @@
 set mob ARG1
-give behavior scriptable +SPEECH_PROG p $&ARG2\;if VAR($n MM1_AGENT != '')\;say You have already made a guess on the killer.\;return\;endif\;MPSETVAR $n MM1_AGENT '$ARG2'\;say Ok, so you think the killer is $ARG2.\;~\;
+give behavior scriptable +SPEECH_PROG $&ARG2\;if VAR($n MM1_AGENT != '')\;say You have already made a guess on the killer.\;return\;endif\;MPSETVAR $n MM1_AGENT '$ARG2'\;say Ok, so you think the killer is $ARG2.\;MPCALLFUNC winner\;~\;

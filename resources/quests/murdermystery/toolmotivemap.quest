@@ -13,54 +13,54 @@
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is hardly the right tool for $ARG3.
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is hardly the right tool for $ARG3.
 </OPTION>
 <OPTION>
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is never used when one is in a state of $ARG3
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is never used when one is in a state of $ARG3
 </OPTION>
 <OPTION>
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9I know the killer would not use $ARG2 if $ARG3 was involved.
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I know the killer would not use $ARG2 if $ARG3 was involved.
 </OPTION>
 <OPTION>
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9Everyone knows $ARG2 isn't used for muders of $ARG3.
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9Everyone knows $ARG2 isn't used for muders of $ARG3.
 </OPTION>
 <OPTION>
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is not going to make one reach for $ARG2.
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is not going to make one reach for $ARG2.
 </OPTION>
 <OPTION>
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is no state for using a $ARG2.
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is no state for using a $ARG2.
 </OPTION>
 <OPTION>
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
-	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9If $ARG3 was involved, you canbe sure $ARG2 was not.
+	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9If $ARG3 was involved, you canbe sure $ARG2 was not.
 </OPTION>

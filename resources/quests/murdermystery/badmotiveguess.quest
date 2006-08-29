@@ -1,2 +1,2 @@
 set mob ARG1
-give behavior scriptable +SPEECH_PROG p $&ARG2\;if VAR($n MM1_MOTIVE != '')\;say You have already made a guess on the motive.\;return\;endif\;MPSETVAR $n MM1_MOTIVE '$ARG2'\;say Ok, so you think the motive is $ARG2.\;~\;
+give behavior scriptable +SPEECH_PROG $&ARG2\;if VAR($n MM1_MOTIVE != '')\;say You have already made a guess on the motive.\;return\;endif\;MPSETVAR $n MM1_MOTIVE '$ARG2'\;say Ok, so you think the motive is $ARG2.\;MPCALLFUNC winner\;~\;

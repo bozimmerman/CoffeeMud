@@ -190,7 +190,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		newParms=CMStrings.replaceAll(newParms,"'","`");
 		if(newParms.startsWith("+"))
+		{
+			String superParms=super.getParms();
+			if(superParms.length()>100)
+				Resources.removeResource("PARSEDPRG: "+superParms.substring(0,100)+superParms.length()+superParms.hashCode());
+			else
+				Resources.removeResource("PARSEDPRG: "+superParms);
 			newParms=super.getParms()+";"+newParms.substring(1);
+		}
         que=new Vector();
         oncesDone=new Vector();
         delayTargetTimes=new Hashtable();
@@ -200,7 +207,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         registeredSpecialEvents=new HashSet();
         noTrigger=new Hashtable();
 		super.setParms(newParms);
-		oncesDone.clear();
+		if(oncesDone.size()>0) 
+			oncesDone.clear();
 	}
 
 	protected void parseParmFilenames(String parse, Vector filenames, int depth)
