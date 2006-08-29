@@ -116,12 +116,14 @@ public class MudChat extends StdBehavior
 			case '(':
 			case '[':
 			case '{':
+				if(currentChatPattern!=null)currentChatPattern.trimToSize();
 				currentChatPattern=new Vector();
 				currentChatPattern.addElement(str);
 				if(currentChatGroup!=null)
 					currentChatGroup.addElement(currentChatPattern);
 				break;
 			case '>':
+				if(currentChatGroup!=null)currentChatGroup.trimToSize();
 				currentChatGroup=new Vector();
 				currentChatGroup.addElement(str.substring(1).trim());
 				chatGroups.addElement(currentChatGroup);
@@ -157,6 +159,8 @@ public class MudChat extends StdBehavior
 			}
 			str=nextLine(rsc);
 		}
+		if(currentChatGroup!=null)currentChatGroup.trimToSize();
+		if(currentChatPattern!=null)currentChatPattern.trimToSize();
 		for(int v=0;v<chatGroups.size();v++)
 			((Vector)chatGroups.elementAt(v)).trimToSize();
 		chatGroups.trimToSize();

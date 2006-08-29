@@ -63,7 +63,7 @@ public class QuestChat extends MudChat
     
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
-		if(expression.indexOf(":")>=0)
+		if(expression.indexOf("::")>=0)
 		{
 			 int x=expression.length()-1;
 			 char c=' ';
@@ -71,11 +71,11 @@ public class QuestChat extends MudChat
 			 while(x>=0)
 			 {
 				 c=expression.charAt(x);
-				 if(c==':')
+				 if((c==':')&&(x>0)&&(expression.charAt(x-1)==':'))
 				 {
 					 if(coded)
 					 {
-						 String codeStr=expression.substring(x+1).toUpperCase().trim();
+						 String codeStr=expression.substring(x+2).toUpperCase().trim();
 						 expression=expression.substring(0,x);
 						 Vector V=(Vector)alreadySaid.get(speaker.Name().toUpperCase());
 						 if(V==null)
@@ -101,7 +101,6 @@ public class QuestChat extends MudChat
 					 }
 					 break;
 				 }
-				 if(!Character.isLetter(c)&&(c!='-')) break;
 				 coded=true;
 				 x--;
 			 }

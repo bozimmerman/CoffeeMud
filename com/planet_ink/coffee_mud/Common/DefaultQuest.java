@@ -253,50 +253,46 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public void parseQuestScriptWArgs(Vector script, Vector args)
     {
     	if(args==null) args=new Vector();
-    	Vector theseArgs=new Vector();
-        boolean moreToDo=true;
-    	while(moreToDo)
+    	if(args.size()==0)
+	        parseQuestScript(script, args);
+    	else
     	{
-	    	boolean bumped=false;
-    		moreToDo=false;
-	    	if(args.size()>0)
-	    	{
-		    	int[] indexes=new int[args.size()];
-		    	for(int i=0;i<args.size();i++)
-		    		if((args.elementAt(i) instanceof Vector)
-		    		&&(((Vector)args.elementAt(i)).size()>0))
-		    			indexes[i]=0;
-		    		else
-		    			indexes[i]=-1;
-		    	theseArgs.clear();
-		    	Vector V=null;
-		    	for(int i=0;i<args.size();i++)
-		    	{
-		    		if(indexes[i]<0)
-		    			theseArgs.addElement(args.elementAt(i));
+	        Vector allArgs=new Vector();
+	        for(int i=0;i<args.size();i++)
+	        {
+	        	Object O=args.elementAt(i);
+	        	if(O instanceof Vector)
+	        	{
+	        		Vector V=(Vector)O;
+		    		if(allArgs.size()==0)
+		        		for(int v=0;v<V.size();v++)
+		        			allArgs.addElement(CMParms.makeVector(V.elementAt(v)));
 		    		else
 		    		{
-		    			V=(Vector)args.elementAt(i);
-		    			theseArgs.addElement(V.elementAt(indexes[i]));
-			    		if(!bumped)
-			    		{
-			    			bumped=true;
-			    			indexes[i]++;
-			    			if(indexes[i]>=V.size())
-			    			{
-			    				indexes[i]=0;
-			    				bumped=false;
-			    			}
-			    		}
-		    		}
-		    	}
-		        for(int i=0;i<indexes[i];i++)
-		        	if(indexes[i]>=0){ moreToDo=true; break;}
-	    	}
-	        parseQuestScript(script, theseArgs);
-	        if((moreToDo)&&(!bumped))
-	        	break;
-    	}
+		    			Vector allArgsCopy=(Vector)allArgs.clone();
+		    			allArgs.clear();
+		        		for(int aa=0;aa<allArgsCopy.size();aa++)
+		        		{
+		        			Vector argSet=(Vector)allArgsCopy.elementAt(aa);
+			        		for(int v=0;v<V.size();v++)
+				        	{
+				        		Vector V2=(Vector)argSet.clone();
+				        		V2.addElement(V.elementAt(v));
+				        		allArgs.addElement(V2);
+			        		}
+			        	}
+		        	}
+	        	}
+	    		else
+	    		if(allArgs.size()==0)
+        			allArgs.addElement(CMParms.makeVector(O));
+	    		else
+        		for(int aa=0;aa<allArgs.size();aa++)
+	        		((Vector)allArgs.elementAt(aa)).addElement(O);
+	        }
+	        for(int a=0;a<allArgs.size();a++)
+		        parseQuestScript(script, (Vector)allArgs.elementAt(a));
+        }
     }
     
     public void parseQuestScript(Vector script, Vector args)
@@ -3006,23 +3002,43 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         return script;
     }
-    
+
+    private static final String VALID_ASTR_CODES="_&";
     private String modifyStringFromArgs(String s, Vector args)
     {
     	int x=s.toUpperCase().indexOf("$");
     	while((x>=0)&&(x<s.length()-1))
     	{
     		int y=x+1;
+    		if((y<s.length())&&(VALID_ASTR_CODES.indexOf(s.charAt(y))>=0)) y++;
     		while((y<s.length())&&(Character.isLetterOrDigit(s.charAt(y)))) y++;
     		try{
-    			Object O=(x+1>=y)?null:getObjectIfSpecified(CMParms.paramParse(s.substring(x+1,y)),args,0,0);
-    			String replace=(O==null)?"null":O.toString();
-    			if(O instanceof Room) 
-    				replace=((Room)O).roomTitle();
-    			else
-    			if(O instanceof Environmental) 
-    				replace=((Environmental)O).Name();
-    			s=s.substring(0,x)+replace+s.substring(y);
+    			String possObjName=(x+1>=y)?null:s.substring(x+1,y);
+    			if((possObjName!=null)&&(possObjName.length()>0))
+    			{
+    				char firstCode=possObjName.charAt(0);
+    	    		if(VALID_ASTR_CODES.indexOf(firstCode)>=0)
+    					possObjName=possObjName.substring(1); 
+	    			Object O=getObjectIfSpecified(CMParms.paramParse(possObjName),args,0,0);
+	    			String replace=(O==null)?"null":O.toString();
+	    			if(O instanceof Room) 
+	    				replace=((Room)O).roomTitle();
+	    			else
+	    			if(O instanceof Environmental) 
+	    				replace=((Environmental)O).Name();
+	    			else
+	    			if(O instanceof TimeClock)
+	    				replace=((TimeClock)O).getShortTimeDescription();
+    				switch(firstCode){
+    				case '_':
+    					replace=CMStrings.capitalizeAndLower(replace); 
+    					break;
+    				case '&':
+    					replace=CMLib.english().cleanArticles(replace); 
+    					break;
+    				}
+	    			s=s.substring(0,x)+replace+s.substring(y);
+    			}
     		}catch(CMException ex){}
 	    	x=s.toUpperCase().indexOf("$",x+1);
     	}
