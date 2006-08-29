@@ -62,6 +62,7 @@ public class Spell_Boomerang extends Spell
 		{
 			setMiscText(msg.source().Name());
 			msg.source().tell(affected.name()+" will now return back to you.");
+			makeNonUninvokable();
 		}
 		if((affected instanceof Item)&&(text().length()>0))
 		{

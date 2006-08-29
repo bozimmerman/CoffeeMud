@@ -4,6 +4,8 @@
 
 ^XElf     :^.^? Elves are slightly shorter and more slender than humans, but are quick and agile.
 
+^XDrow    :^.^? These dark skinned cousins of the elves hate the sunlight, and are quick, but frail.
+
 ^XGnome   :^.^? Gnomes are curious and quick-witted folk, resembling small dwarves.
 
 ^XHalf Elf:^.^? Half Elves are a mixture of humans and elves, possessing human drive and elven grace.

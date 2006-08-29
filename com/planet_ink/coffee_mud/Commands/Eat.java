@@ -55,7 +55,7 @@ public class Eat extends StdCommand
 			return false;
 		}
 		boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
-		if((!mob.isMine(thisThang))&&(hasHands))
+		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
 			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
 			return false;
