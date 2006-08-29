@@ -108,8 +108,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public void setStartDate(String newDate){
         int x=newDate.indexOf("-");
         if((x>0)
-        &&(CMath.isInteger(newDate.substring(0,x)))
-        &&(CMath.isInteger(newDate.substring(x+1))))
+        &&(CMath.isMathExpression(newDate.substring(0,x)))
+        &&(CMath.isMathExpression(newDate.substring(x+1))))
 	    	startDate=newDate;
     }
     
@@ -840,7 +840,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	{
                     		q.roomGroup=null;
                         	if(p.size()<3) continue;
-                        	range=CMath.s_int((String)p.elementAt(2));
+                        	range=CMath.parseIntExpression((String)p.elementAt(2));
                         	if(range<=0)
                         	{
 	                            if(!isQuiet)
@@ -956,7 +956,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	{
                     		q.roomGroup=null;
                         	if(p.size()<3) continue;
-                        	range=CMath.s_int((String)p.elementAt(2));
+                        	range=CMath.s_parseIntExpression((String)p.elementAt(2));
                         	if(range<=0)
                         	{
 	                            if(!isQuiet)
@@ -2546,8 +2546,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 String sd2=startDate().substring("MUDDAY".length()).trim();
                 int x=sd2.indexOf("-");
                 if(x<0) return false;
-                int mudmonth=CMath.s_int(sd2.substring(0,x));
-                int mudday=CMath.s_int(sd2.substring(x+1));
+                int mudmonth=CMath.s_parseIntExpression(sd2.substring(0,x));
+                int mudday=CMath.s_parseIntExpression(sd2.substring(x+1));
                 TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
                 TimeClock NOW=CMClass.globalClock();
                 C.setMonth(mudmonth);
@@ -2565,8 +2565,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             {
                 int x=startDate.indexOf("-");
                 if(x<0) return false;
-                int month=CMath.s_int(startDate.substring(0,x));
-                int day=CMath.s_int(startDate.substring(x+1));
+                int month=CMath.s_parseIntExpression(startDate.substring(0,x));
+                int day=CMath.s_parseIntExpression(startDate.substring(x+1));
                 int year=Calendar.getInstance().get(Calendar.YEAR);
                 long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
                 while(distance<System.currentTimeMillis())
@@ -3166,7 +3166,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     		int whichNum=-1;
     		if(x>=0){
     			whichStr=statName.substring(x+1);
-    			if(whichStr.length()>0) whichNum=CMath.s_int(whichStr);
+    			if(whichStr.length()>0) whichNum=CMath.s_parseIntExpression(whichStr);
     			statName=statName.substring(0,x);
     		}
     		Object O=null;
@@ -3287,14 +3287,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		switch(getCodeNum(code)){
 		case 0: break;
 		case 1: setName(val); break;
-		case 2: setDuration(CMath.s_int(val)); break;
-		case 3: setMinWait(CMath.s_int(val)); break;
-		case 4: setMinPlayers(CMath.s_int(val)); break;
+		case 2: setDuration(CMath.s_parseIntExpression(val)); break;
+		case 3: setMinWait(CMath.s_parseIntExpression(val)); break;
+		case 4: setMinPlayers(CMath.s_parseIntExpression(val)); break;
 		case 5: setPlayerMask(val); break;
-		case 6: setRunLevel(CMath.s_int(val)); break;
+		case 6: setRunLevel(CMath.s_parseIntExpression(val)); break;
 		case 7: setStartDate(val); break;
 		case 8: setStartDate(val); break;
-		case 9: setWaitInterval(CMath.s_int(val)); break;
+		case 9: setWaitInterval(CMath.s_parseIntExpression(val)); break;
 		default:
 			int x=questState.vars.indexOf(code.toUpperCase().trim());
 			if(x>=0) 
