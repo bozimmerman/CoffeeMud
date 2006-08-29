@@ -4,11 +4,13 @@
 # and one option will be chose among them to be executed.
 # That option then will create some sort of evidence regarding that combination.
 ###############################################################################################################
-# The expected arguments are ARG1= $ARG1 WHERE HAPPENED, ARG2= TOOL from TOOLGROUP, ARG3= AGENT from AGENTGROUP.
+# The expected arguments are ARG1= $ARG1 WHERE HAPPENED, 
+#                            ARG2= TOOL from TOOLGROUP, 
+#                            ARG3= MOTIVE from MOTIVEGROUP.
 ###############################################################################################################
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -16,7 +18,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -24,7 +26,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -32,7 +34,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -40,23 +42,23 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG3 is not going to make one reach for $ARG2.
+	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is not going to make one reach for $ARG2.
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG3 is no state for using a $ARG2.
+	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is no state for using a $ARG2.
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6

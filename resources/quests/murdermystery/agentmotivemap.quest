@@ -4,19 +4,21 @@
 # and one option will be chose among them to be executed.
 # That option then will create some sort of evidence regarding that combination.
 ###############################################################################################################
-# The expected arguments are ARG1= $ARG1 WHERE HAPPENED, ARG2= TOOL from TOOLGROUP, ARG3= AGENT from AGENTGROUP.
+# The expected arguments are ARG1= $ARG1 WHERE HAPPENED, 
+#                            ARG3= AGENT from AGENTGROUP.
+#                            ARG2= MOTIVE from MOTIVEGROUP, 
 ###############################################################################################################
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is a dork, but $ARG2 would not kill in $ARG3.
+	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is a dork, but $ARG2 would not kill for $ARG3.
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -24,7 +26,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -32,7 +34,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -40,7 +42,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -48,7 +50,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -56,7 +58,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -64,7 +66,7 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
@@ -72,31 +74,31 @@
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG3 is too proud to kill for $ARG2.
+	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG32 is too proud to kill for $ARG3.
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG3 doesn't know how to be in a state of $ARG2.
+	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG2 doesn't know how to be in a state of $ARG3.
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
-	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG3 is too dumb to feel $ARG2.
+	give behavior QuestChat +( $&ARG2 |  $&ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too dumb to feel $ARG3.
 </OPTION>
 <OPTION>
 	set room ARG1
-	set roomgrouparound 10 ANY
+	set roomgrouparound 5 ANY
 	# we have a witness!
 	#set room
 	set mob reselect any MASK=+INT 6
