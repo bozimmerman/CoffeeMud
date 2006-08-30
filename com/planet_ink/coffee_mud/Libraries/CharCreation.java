@@ -237,7 +237,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             return;
 
         C=CMClass.getCommand("MOTD");
-        try{ C.execute(mob,CMParms.parse("MOTD NEW"));}catch(Exception e){}
+        try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"));}catch(Exception e){}
     }
 
     public boolean checkExpiration(MOB mob)

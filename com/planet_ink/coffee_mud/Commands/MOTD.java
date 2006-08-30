@@ -40,6 +40,9 @@ public class MOTD extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		boolean pause=((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("PAUSE")));
+		if(pause) commands.removeElementAt(commands.size()-1);
+		
 		if((commands!=null)
 		&&(commands.size()>1)
 		&&(mob.playerStats()!=null)
@@ -170,7 +173,10 @@ public class MOTD extends StdCommand
                 
 				if(mob.session()!=null)
                     if(buf.length()>0)
+                    {
                         mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
+                        if(pause){ mob.session().prompt("\n\rPress ENTER: ",10000); mob.session().println("\n\r");}
+                    }
                     else
                     if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
                         mob.session().println("No MOTD to re-read.");

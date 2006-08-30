@@ -83,8 +83,13 @@ public class Chant_GrowClub extends Chant
 				newItem.setDescription("It looks like the limb of a tree.");
 				newItem.setMaterial(material);
 				newItem.baseEnvStats().setWeight(10);
+				int level=mob.envStats().level();
+				newItem.baseEnvStats().setLevel(level);
 				newItem.baseEnvStats().setAttackAdjustment(0);
-				newItem.baseEnvStats().setDamage(6);
+				int damage=6;
+				try{ damage=((level-1)/2)+2;}catch(Throwable t){}
+				if(damage<6) damage=6;
+				newItem.baseEnvStats().setDamage(damage);
 				newItem.recoverEnvStats();
 				newItem.setBaseValue(0);
 				newItem.setWeaponClassification(Weapon.CLASS_BLUNT);

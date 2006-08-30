@@ -324,7 +324,7 @@ public class Mage extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_SpellTurning",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Disintegrate",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_DemonGate",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_PolymorphSelf",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_MassFly",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Geas",false);
 
 			// level 30

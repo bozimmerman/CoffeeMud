@@ -111,6 +111,7 @@ public class Spell_Gate extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
+		String addOn=".";
 		if(!success)
 		{
 			Room room=null;
@@ -119,10 +120,11 @@ public class Spell_Gate extends Spell
 				room=CMLib.map().getRandomRoom();
 			if(room==null)
 				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
+			addOn=", but the spell goes AWRY!!";
 			newRoom=room;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell"+addOn+"^?");
 		if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);

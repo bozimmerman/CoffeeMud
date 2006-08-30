@@ -72,7 +72,7 @@ public class Druid_ShapeShift extends StdAbility
 	private static double[]   attadj=
 	{.7	      ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2      ,.7          ,1.0        ,.7};
 	private static double[]   dmgadj=
-	{.2		  ,.3         ,.4        ,.5	   ,.2			  ,.3       ,.3           ,.4         ,.5};
+	{.4		  ,.6         ,.8        ,1.0	   ,.4			  ,.6       ,.6           ,.8         ,1.0};
 	private static double[]   armadj=
 	{1.0	  ,.5         ,.4        ,.5	   ,1.0			  ,.3       ,1.0          ,.2         ,.2};
 

@@ -95,17 +95,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         if(((!offlineOK))
         &&((M.amDead())||(R==null)))
 		    return false;
-		if(getChannelFlags(i).contains("CLANONLY"))
+		if(getChannelFlags(i).contains("CLANONLY")||getChannelFlags(i).contains("CLANALLYONLY"))
         {
             // only way to fail an all-clan send is to have NO clan.
-            if((M.getClanID().length()==0)
-            ||(M.getClanRole()==Clan.POS_APPLICANT))
+            if((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT))
                 return false;
-            
-            // now either clans must be same, or must be for all
             if((!sender.getClanID().equalsIgnoreCase("ALL"))
-    		&&(!M.getClanID().equalsIgnoreCase(sender.getClanID())))
-    			return false;
+            &&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
+            &&((!getChannelFlags(i).contains("CLANALLYONLY"))
+        		||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
+            	return false;
         }
 		
 		if((!M.playerStats().getIgnored().contains(sender.Name()))
@@ -137,16 +136,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		int x=senderName.indexOf("@");
 		if(x>0) senderName=senderName.substring(0,x);
 		
-        if(getChannelFlags(i).contains("CLANONLY"))
+		if(getChannelFlags(i).contains("CLANONLY")||getChannelFlags(i).contains("CLANALLYONLY"))
         {
             // only way to fail an all-clan send is to have NO clan.
-            if((M.getClanID().length()==0)
-            ||(M.getClanRole()==Clan.POS_APPLICANT))
+            if((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT))
                 return false;
-            // now either clans must be same, or must be for all
             if((!sender.getClanID().equalsIgnoreCase("ALL"))
-            &&(!M.getClanID().equalsIgnoreCase(sender.getClanID())))
-                return false;
+            &&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
+            &&((!getChannelFlags(i).contains("CLANALLYONLY"))
+        		||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
+            	return false;
         }
 		
 		Room R=M.location();
@@ -169,7 +168,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	    if(i>=getNumChannels())
 	        return false;
 	    
-		if(getChannelFlags(i).contains("CLANONLY")
+		if((getChannelFlags(i).contains("CLANONLY")||getChannelFlags(i).contains("CLANALLYONLY"))
 		&&((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT)))
 		    return false;
 

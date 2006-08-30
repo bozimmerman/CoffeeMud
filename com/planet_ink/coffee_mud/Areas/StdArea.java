@@ -651,13 +651,77 @@ public class StdArea implements Area
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return new int[Area.AREASTAT_NUMBER];
-		int[] s=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
-		if(s!=null) return s;
-		Resources.removeResource("HELP_"+Name().toUpperCase());
-		getAreaStats();
-		s=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
-		if(s==null) return new int[Area.AREASTAT_NUMBER];
-		return s;
+		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
+		if(statData!=null) return statData;
+		synchronized(("STATS_"+Name()).intern())
+		{
+			Resources.removeResource("HELP_"+Name().toUpperCase());
+			Vector levelRanges=new Vector();
+			Vector alignRanges=new Vector();
+			Faction theFaction=null;
+			for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+			{
+			    Faction F=(Faction)e.nextElement();
+			    if(F.showinspecialreported())
+			        theFaction=F;
+			}
+			statData=new int[Area.AREASTAT_NUMBER];
+			statData[Area.AREASTAT_POPULATION]=0;
+			statData[Area.AREASTAT_MINLEVEL]=Integer.MAX_VALUE;
+			statData[Area.AREASTAT_MAXLEVEL]=Integer.MIN_VALUE;
+			statData[Area.AREASTAT_AVGLEVEL]=0;
+			statData[Area.AREASTAT_MEDLEVEL]=0;
+			statData[Area.AREASTAT_AVGALIGN]=0;
+			statData[Area.AREASTAT_TOTLEVEL]=0;
+			statData[Area.AREASTAT_INTLEVEL]=0;
+	        statData[Area.AREASTAT_VISITABLEROOMS]=getProperRoomnumbers().roomCountAllAreas();
+			long totalAlignments=0;
+	        Room R=null;
+	        MOB mob=null;
+			for(Enumeration r=getProperMap();r.hasMoreElements();)
+			{
+				R=(Room)r.nextElement();
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					mob=R.fetchInhabitant(i);
+					if((mob!=null)&&(mob.isMonster()))
+					{
+						int lvl=mob.baseEnvStats().level();
+						levelRanges.addElement(new Integer(lvl));
+						if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
+						{
+						    alignRanges.addElement(new Integer(mob.fetchFaction(theFaction.factionID())));
+						    totalAlignments+=mob.fetchFaction(theFaction.factionID());
+						}
+						statData[Area.AREASTAT_POPULATION]++;
+						statData[Area.AREASTAT_TOTLEVEL]+=lvl;
+						if(!CMLib.flags().isAnimalIntelligence(mob))
+							statData[Area.AREASTAT_INTLEVEL]+=lvl;
+						if(lvl<statData[Area.AREASTAT_MINLEVEL])
+							statData[Area.AREASTAT_MINLEVEL]=lvl;
+						if(lvl>statData[Area.AREASTAT_MAXLEVEL])
+							statData[Area.AREASTAT_MAXLEVEL]=lvl;
+					}
+				}
+			}
+			if((statData[Area.AREASTAT_POPULATION]==0)||(levelRanges.size()==0))
+			{
+				statData[Area.AREASTAT_MINLEVEL]=0;
+				statData[Area.AREASTAT_MAXLEVEL]=0;
+			}
+			else
+			{
+				Collections.sort(levelRanges);
+				Collections.sort(alignRanges);
+				statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
+				statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
+				statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
+				statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
+			}
+	        
+			Resources.submitResource("STATS_"+Name().toUpperCase(),statData);
+		}
+		return statData;
 	}
 	public synchronized StringBuffer getAreaStats()
 	{
@@ -666,12 +730,11 @@ public class StdArea implements Area
 		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
 		if(s!=null) return s;
 		s=new StringBuffer("");
+		int[] statData=getAreaIStats();
 		s.append(description()+"\n\r");
 		if(author.length()>0)
 			s.append("Author         : "+author+"\n\r");
-
-		Vector levelRanges=new Vector();
-		Vector alignRanges=new Vector();
+        s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
 		Faction theFaction=null;
 		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
@@ -679,61 +742,13 @@ public class StdArea implements Area
 		    if(F.showinspecialreported())
 		        theFaction=F;
 		}
-		int[] statData=new int[Area.AREASTAT_NUMBER];
-		statData[Area.AREASTAT_POPULATION]=0;
-		statData[Area.AREASTAT_MINLEVEL]=Integer.MAX_VALUE;
-		statData[Area.AREASTAT_MAXLEVEL]=Integer.MIN_VALUE;
-		statData[Area.AREASTAT_AVGLEVEL]=0;
-		statData[Area.AREASTAT_MEDLEVEL]=0;
-		statData[Area.AREASTAT_AVGALIGN]=0;
-		statData[Area.AREASTAT_TOTLEVEL]=0;
-		statData[Area.AREASTAT_INTLEVEL]=0;
-        statData[Area.AREASTAT_VISITABLEROOMS]=getProperRoomnumbers().roomCountAllAreas();
-        s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
-		long totalAlignments=0;
-        Room R=null;
-        MOB mob=null;
-		for(Enumeration r=getProperMap();r.hasMoreElements();)
+		if(statData[Area.AREASTAT_POPULATION]==0)
 		{
-			R=(Room)r.nextElement();
-			for(int i=0;i<R.numInhabitants();i++)
-			{
-				mob=R.fetchInhabitant(i);
-				if((mob!=null)&&(mob.isMonster()))
-				{
-					int lvl=mob.baseEnvStats().level();
-					levelRanges.addElement(new Integer(lvl));
-					if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
-					{
-					    alignRanges.addElement(new Integer(mob.fetchFaction(theFaction.factionID())));
-					    totalAlignments+=mob.fetchFaction(theFaction.factionID());
-					}
-					statData[Area.AREASTAT_POPULATION]++;
-					statData[Area.AREASTAT_TOTLEVEL]+=lvl;
-					if(!CMLib.flags().isAnimalIntelligence(mob))
-						statData[Area.AREASTAT_INTLEVEL]+=lvl;
-					if(lvl<statData[Area.AREASTAT_MINLEVEL])
-						statData[Area.AREASTAT_MINLEVEL]=lvl;
-					if(lvl>statData[Area.AREASTAT_MAXLEVEL])
-						statData[Area.AREASTAT_MAXLEVEL]=lvl;
-				}
-			}
-		}
-		if((statData[Area.AREASTAT_POPULATION]==0)||(levelRanges.size()==0))
-		{
-			statData[Area.AREASTAT_MINLEVEL]=0;
-			statData[Area.AREASTAT_MAXLEVEL]=0;
 			if(getProperRoomnumbers().roomCountAllAreas()/2<properRooms.size())
 				s.append("Population     : 0\n\r");
 		}
 		else
 		{
-			Collections.sort(levelRanges);
-			Collections.sort(alignRanges);
-			statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
-			statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
-			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
-			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
 			String currName=CMLib.beanCounter().getCurrency(this);
 			if(currName.length()>0)
@@ -757,8 +772,7 @@ public class StdArea implements Area
 			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
 			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
 		}
-		Resources.submitResource("STATS_"+Name().toUpperCase(),statData);
-		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
+		//Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;
 	}
 
