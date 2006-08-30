@@ -180,10 +180,21 @@ public class MudChat extends StdBehavior
 		if((tsc!=null)&&(tsc.length()>0))
 		{
 			int y=tsc.toString().indexOf("\n\r");
+			if(y<0) y=tsc.toString().indexOf("\r\n");
 			if(y<0)
 			{
-				tsc.setLength(0);
-				ret="";
+				y=tsc.toString().indexOf("\n");
+				if(y<0) y=tsc.toString().indexOf("\r");
+				if(y<0)
+				{
+					tsc.setLength(0);
+					ret="";
+				}
+				else
+				{
+					ret=tsc.substring(0,y).trim();
+					tsc.delete(0,y+1);
+				}
 			}
 			else
 			{

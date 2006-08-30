@@ -95,6 +95,7 @@ public class StdCharClass implements CharClass
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Digging",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",10,"Distilling",false,CMParms.parseSemicolons("Cooking",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Drilling",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Shearing",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Dyeing",false,"+CHA 8");
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Embroidering",false,CMParms.parseSemicolons("Skill_Write",true),"+CHA 10");
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Engraving",false,CMParms.parseSemicolons("Skill_Write",true),"+CHA 10");

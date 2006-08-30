@@ -141,6 +141,5 @@ public class Channel extends BaseChanneler
 
 	
 	public boolean canBeOrdered(){return true;}
-
-	
+    public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
 }

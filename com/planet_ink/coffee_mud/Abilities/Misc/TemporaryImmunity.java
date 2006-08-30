@@ -109,7 +109,6 @@ public class TemporaryImmunity extends StdAbility
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
 		&&(msg.tool() instanceof Ability)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(set.contains(msg.tool().ID())))
 		{
             if(msg.source()!=msg.target())

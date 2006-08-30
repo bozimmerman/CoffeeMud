@@ -137,8 +137,8 @@ public class Tell extends StdCommand
 			mob.tell(target.session().afkMessage());
 		return false;
 	}
+	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return false;}
 
 	
