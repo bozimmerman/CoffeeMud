@@ -349,6 +349,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			V.setElementAt(script,v);
 		}
+		V.trimToSize();
 		return V;
 	}
 
