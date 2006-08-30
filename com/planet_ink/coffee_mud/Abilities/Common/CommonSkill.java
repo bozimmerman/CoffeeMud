@@ -198,6 +198,17 @@ public class CommonSkill extends StdAbility
 		return fire;
 	}
 
+	protected void quickDestroy(Item I)
+	{
+		if(I.owner() instanceof MOB)
+			((MOB)I.owner()).delInventory(I);
+		else
+		if(I.owner() instanceof Room)
+			((Room)I.owner()).delItem(I);
+		I.setOwner(null);
+		I.destroy();
+	}
+	
 	protected int destroyResources(Room room,
 	        					   int howMuch,
 	        					   int finalMaterial,
@@ -218,10 +229,10 @@ public class CommonSkill extends StdAbility
 
 			if((otherMaterial>0)
 			&&(I instanceof RawMaterial)
+			&&(I.material()==otherMaterial)
 			&&(I.container()==null)
 			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().enchanted(I))
-			&&(I.material()==otherMaterial))
+			&&(!CMLib.flags().enchanted(I)))
 			{
                 if(I.baseEnvStats().weight()>1)
                 {
@@ -235,21 +246,23 @@ public class CommonSkill extends StdAbility
                     }
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
-                    I.destroy();
+                    quickDestroy(I);
                 }
                 else
                 {
                     lostValue+=I.value();
-                    I.destroy();
+                    quickDestroy(I);
                 }
                 otherMaterial=-1;
+                if((finalMaterial<0)||(howMuch<=0)) break;
 			}
 			else
 			if((I instanceof RawMaterial)
+			&&(I.material()==finalMaterial)
 			&&(I.container()==null)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))
-			&&(I.material()==finalMaterial))
+			&&(howMuch>0))
 			{
 				if(I.baseEnvStats().weight()>howMuch)
 				{
@@ -263,17 +276,20 @@ public class CommonSkill extends StdAbility
 					}
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
-                    I.destroy();
+                    quickDestroy(I);
                     howMuch=0;
 				}
 				else
 				{
 					howMuch-=I.baseEnvStats().weight();
-					I.destroy();
 					lostValue+=I.value();
+                    quickDestroy(I);
 				}
                 if(howMuch<=0)
+                {
                     finalMaterial=-1;
+                    if(otherMaterial<0) break;
+                }
 			}
 		}
 		return lostValue;
