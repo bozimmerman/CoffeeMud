@@ -55,9 +55,6 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
 		int multiPlier=5+target.envStats().weight();
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
@@ -65,6 +62,14 @@ public class Spell_Duplicate extends Spell
 		multiPlier+=(target instanceof Wand)?5:0;
 
 		int expLoss=(target.envStats().level()*multiPlier);
+		if((mob.getExperience()-expLoss)<0)
+		{
+			mob.tell("You don't have enough experience to cast this spell.");
+			return false;
+		}
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
 		mob.tell("You lose "+expLoss+" experience points.");
 		CMLib.leveler().postExperience(mob,null,null,-expLoss,false);
 

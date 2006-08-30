@@ -96,17 +96,22 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 
+		int experienceToLose=1000;
+		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID()));
+		if((mob.getExperience()-experienceToLose)<0)
+		{
+			mob.tell("You don't have enough experience to cast this spell.");
+			return false;
+		}
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int experienceToLose=1000;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID()));
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			setMiscText(wandThis.ID());

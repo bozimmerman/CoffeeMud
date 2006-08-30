@@ -52,10 +52,13 @@ public class Retire extends StdCommand
 			mob.tell("Password incorrect.");
 			return false;
 		}
-		String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
-										  +" character.  Your answers will be kept confidential, "
-										  +"and are for administrative purposes only.\n\r: ","",120000);
-		Log.sysOut("Retire",mob.Name()+" retiring: "+reason);
+		if(!CMSecurity.isDisabled("RETIREREASON"))
+		{
+			String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
+											  +" character.  Your answers will be kept confidential, "
+											  +"and are for administrative purposes only.\n\r: ","",120000);
+			Log.sysOut("Retire",mob.Name()+" retiring: "+reason);
+		}
 		CMLib.map().obliteratePlayer(mob,false);
 		return false;
 	}

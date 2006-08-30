@@ -165,6 +165,8 @@ public class CMProps extends Properties
     private static Vector channelFilter=new Vector();
     private static Vector emoteFilter=new Vector();
     private static DVector newusersByIP=new DVector(2);
+    private static DVector skillMaxManaExceptions=new DVector(2);
+    private static DVector skillMinManaExceptions=new DVector(2);
 
     public static int pkillLevelDiff=26;
 
@@ -263,6 +265,38 @@ public class CMProps extends Properties
         }
     }
     
+    public static int getMinManaException(String skillID)
+    {
+    	int x=CMProps.skillMinManaExceptions.indexOf(skillID.toUpperCase());
+    	if(x<0) return Integer.MIN_VALUE;
+    	return ((Integer)CMProps.skillMinManaExceptions.elementAt(x,2)).intValue();
+    }
+    public static int getMaxManaException(String skillID)
+    {
+    	int x=CMProps.skillMaxManaExceptions.indexOf(skillID.toUpperCase());
+    	if(x<0) return Integer.MIN_VALUE;
+    	return ((Integer)CMProps.skillMaxManaExceptions.elementAt(x,2)).intValue();
+    }
+
+    private static int setExceptionSkillCosts(String val, DVector set)
+    {
+    	if(val==null) return 0;
+    	set.clear();
+    	Vector V=CMParms.parseCommas(val,true);
+    	String s=null;
+    	int endVal=0;
+    	for(int v=0;v<V.size();v++)
+    	{
+    		s=(String)V.elementAt(v);
+    		if(CMath.isInteger(s)){ endVal=CMath.s_int(s); continue;}
+    		int x=s.indexOf(" ");
+    		if(CMath.isInteger(s.substring(x+1).trim()))
+    			set.addElement(s.substring(0,x).trim().toUpperCase(),new Integer(CMath.s_int(s.substring(x+1).trim())));
+    	}
+    	return endVal;
+    }
+    
+    
     public static void loadCommonINISettings(CMProps page)
     {
         setVar(SYSTEM_BADNAMES,page.getStr("BADNAMES"));
@@ -350,8 +384,8 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_BASEMAXSTAT,18);
         else
             setIntVar(SYSTEMI_BASEMAXSTAT,page.getStr("BASEMAXSTAT"));
-        setIntVar(SYSTEMI_MANACOST,page.getStr("MANACOST"));
-        setIntVar(SYSTEMI_MANAMINCOST,page.getStr("MANAMINCOST"));
+        setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(page.getStr("MANACOST"),CMProps.skillMaxManaExceptions));
+        setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(page.getStr("MANAMINCOST"),CMProps.skillMinManaExceptions));
         setIntVar(SYSTEMI_EDITORTYPE,0);
         if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
         setIntVar(SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));

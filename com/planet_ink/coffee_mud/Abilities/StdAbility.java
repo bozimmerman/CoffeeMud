@@ -689,9 +689,11 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(lowest<0) lowest=0;
 		}
 
-		int consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
+		int consumed=CMProps.getMaxManaException(ID());
+		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
-		int minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
+		int minimum=CMProps.getMinManaException(ID());
+		if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
 		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
 		if(consumed<minimum) consumed=minimum;

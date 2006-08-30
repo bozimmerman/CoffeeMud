@@ -100,11 +100,16 @@ public class Spell_Scribe extends Spell
 				return false;
 			}
 
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
+		if((mob.getExperience()-experienceToLose)<0)
+		{
+			mob.tell("You don't have enough experience to cast this spell.");
+			return false;
+		}
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
