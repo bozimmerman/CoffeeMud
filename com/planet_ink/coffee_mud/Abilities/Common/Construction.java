@@ -161,7 +161,9 @@ public class Construction extends CraftingSkill
 								R.setRoomID(room.roomID());
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
-								R.setArea(room.getArea());
+								Area area=room.getArea();
+								if(area!=null) area.delProperRoom(room);
+								R.setArea(area);
 								for(int a=room.numEffects()-1;a>=0;a--)
 								{
 									Ability A=room.fetchEffect(a);
@@ -403,6 +405,8 @@ public class Construction extends CraftingSkill
 									R.setRoomID(room.roomID());
 									R.setDisplayText(room.displayText());
 									R.setDescription(room.description());
+									Area area=room.getArea();
+									if(area!=null) area.delProperRoom(room);
 									R.setArea(room.getArea());
 									for(int a=room.numEffects()-1;a>=0;a--)
 									{

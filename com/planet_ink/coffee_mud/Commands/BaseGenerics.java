@@ -396,7 +396,9 @@ public class BaseGenerics extends StdCommand
 	        }
 			CMLib.threads().deleteTick(oldR,-1);
 			R.setRoomID(oldR.roomID());
-			R.setArea(oldR.getArea());
+			Area A=oldR.getArea();
+			if(A!=null) A.delProperRoom(oldR);
+			R.setArea(A);
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=0;d<R.rawExits().length;d++)

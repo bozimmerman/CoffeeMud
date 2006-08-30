@@ -169,6 +169,8 @@ public class Masonry extends CraftingSkill
 								R.setRoomID(room.roomID());
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
+								Area area=room.getArea();
+								if(area!=null) area.delProperRoom(room);
 								R.setArea(room.getArea());
 								for(int a=room.numEffects()-1;a>=0;a--)
 								{
@@ -441,6 +443,8 @@ public class Masonry extends CraftingSkill
 								R.setRoomID(room.roomID());
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
+								Area area=room.getArea();
+								if(area!=null) area.delProperRoom(room);
 								R.setArea(room.getArea());
 								for(int a=room.numEffects()-1;a>=0;a--)
 								{

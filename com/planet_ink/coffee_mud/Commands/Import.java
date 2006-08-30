@@ -678,6 +678,8 @@ public class Import extends StdCommand
 			Log.errOut("Import","Cannot find room class "+newClass+".");
 			return R;
 		}
+		Area area=R.getArea();
+		if(area!=null) area.delProperRoom(R);
 		R2.setRoomID(R.roomID());
 		R2.setArea(R.getArea());
 		if(R2.expirationDate()!=0) R2.setExpirationDate(R2.expirationDate()+(360000));

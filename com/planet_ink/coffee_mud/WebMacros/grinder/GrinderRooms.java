@@ -89,7 +89,9 @@ public class GrinderRooms
 				}
 				CMLib.threads().deleteTick(oldR,-1);
 				R.setRoomID(oldR.roomID());
-				R.setArea(oldR.getArea());
+				Area area=oldR.getArea();
+				if(area!=null) area.delProperRoom(oldR);
+				R.setArea(area);
 				for(int d=0;d<R.rawDoors().length;d++)
 					R.rawDoors()[d]=oldR.rawDoors()[d];
 				for(int d=0;d<R.rawExits().length;d++)
