@@ -25,7 +25,7 @@ GREET_PROG 200
 			mpsetvar $n VENGEANCE ''
 			say "$n" Thank you.  I will mount his head on my wall.  Here is your reward:
 			IF !QUESTWINNER($n vengeance)
-				mpexp $n 1000
+				mpexp $n 50%
 				mpoload QuestPoint
 				give "a quest point" "$n"
 			endif

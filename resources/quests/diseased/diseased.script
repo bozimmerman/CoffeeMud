@@ -34,7 +34,7 @@ RAND_PROG 90
 		wake
 		say "$<$i DISEASED>" You saved me!
 		if !QUESTWINNER('$<$i DISEASED>' diseased)
-			mpexp '$<$i DISEASED>' 1000
+			mpexp '$<$i DISEASED>' 50%
 			mpoload QuestPoint
 			give "a quest point" "$<$i DISEASED>"
 		endif

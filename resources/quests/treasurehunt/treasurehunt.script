@@ -30,7 +30,7 @@ GIVE_PROG all
 			say "$n" Congratulations!
 			shake $n
 			IF !QUESTWINNER($n treasurehunt)
-				mpexp $n 1000
+				mpexp $n 50%
 				mpoload QuestPoint
 				give "a quest point" "$n"
 			endif

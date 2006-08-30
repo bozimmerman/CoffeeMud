@@ -5039,9 +5039,16 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 11: // mpexp
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				int t=CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1)).trim());
-				if((t!=0)&&(newTarget!=null)&&(newTarget instanceof MOB))
-					CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
+				String amtStr=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1)).trim();
+				int t=CMath.s_int(amtStr);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+				{
+					if((amtStr.endsWith("%"))
+					&&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
+						t=(int)Math.round(CMath.mul(((MOB)newTarget).getExpNeededLevel(),
+											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
+					if(t!=0) CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
+				}
 				break;
 			}
 			case 59: // mpquestpoints

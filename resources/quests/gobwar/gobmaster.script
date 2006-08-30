@@ -28,7 +28,7 @@ QUEST_TIME_PROG gobwar 1
 	VAR ($i GOBMASTER != '')
 		if ISHERE('$<$i GOBWINNER>')
 			sayto "$<$i GOBWINNER>" Congratulations to "$<$i GOBWINNER>" - our goblin killing hero!
-			mpexp '$<$i GOBWINNER>' 1000
+			mpexp '$<$i GOBWINNER>' 50%
 			mpoload QuestPoint
 			give "a quest point" "$<$i GOBWINNER>"
 			mpquestwin '$<$i GOBWINNER>' gobwar

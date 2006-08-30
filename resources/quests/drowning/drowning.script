@@ -28,7 +28,7 @@ RAND_PROG 90
 			say "$f" You saved me!
 			follow self
 			if !QUESTWINNER($f drowning)
-				mpexp $f 100
+				mpexp $f 20%
 				mpoload QuestPoint
 				give "a quest point" "$f"
 			endif
@@ -54,7 +54,7 @@ EXIT_PROG 99
 			say "$f" You saved me!
 			follow self
 			if !QUESTWINNER($f drowning)
-				mpexp $f 100
+				mpexp $f 20%
 				mpoload QuestPoint
 				give "a quest point" "$f"
 			endif

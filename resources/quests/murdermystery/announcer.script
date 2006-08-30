@@ -2,7 +2,7 @@ FUNCTION_PROG winner
 	if VAR($n MM1_CORRECT > 3)
 		if !QUESTWINNER($n murdermystery)
 			questchat We have a winner! $n successfully solved this brutal murder mystery!
-			mpexp $n 1000
+			mpexp $n 50%
 			mpoload QuestPoint
 			give "a quest point" "$n"
 			mpoload 100
