@@ -370,50 +370,53 @@ public class MOBloader {
 			CharClass C = null;
 			ResultSet R = D.query("SELECT * FROM CMCHAR");
 			if (R != null)
-				while (R.next()) {
-					Vector thisUser = new Vector();
-					try {
-						thisUser
-								.addElement(DBConnections.getRes(R, "CMUSERID"));
-						String cclass = DBConnections.getRes(R, "CMCLAS");
-						int x = cclass.lastIndexOf(";");
-						if ((x > 0) && (x < cclass.length() - 2)) {
-							C = CMClass.getCharClass(cclass.substring(x + 1));
-							if (C != null)
-								cclass = C.name();
-						}
-						thisUser.addElement(cclass);
-						String rrace = DBConnections.getRes(R, "CMRACE");
-						Race R2 = CMClass.getRace(rrace);
-						if (R2 != null)
-							thisUser.addElement(R2.name());
-						else
-							thisUser.addElement(rrace);
-						String lvl = DBConnections.getRes(R, "CMLEVL");
-						x = lvl.indexOf(";");
-						int level = 0;
-						while (x >= 0) {
-							level += CMath.s_int(lvl.substring(0, x));
-							lvl = lvl.substring(x + 1);
-							x = lvl.indexOf(";");
-						}
-						if (lvl.length() > 0)
-							level += CMath.s_int(lvl);
-						thisUser.addElement(new Integer(level).toString());
-						thisUser.addElement(DBConnections.getRes(R, "CMAGEH"));
-						MOB M = CMLib.map().getPlayer(
-								(String) thisUser.firstElement());
-						if ((M != null) && (M.lastTickedDateTime() > 0))
-							thisUser.addElement("" + M.lastTickedDateTime());
-						else
-							thisUser.addElement(DBConnections.getRes(R,
-									"CMDATE"));
-						thisUser.addElement(DBConnections.getRes(R, "CMEMAL"));
-						allUsers.addElement(thisUser);
-					} catch (Exception e) {
-						Log.errOut("MOBloader", e);
+			while (R.next()) 
+			{
+				Vector thisUser = new Vector();
+				try {
+					thisUser.addElement(DBConnections.getRes(R, "CMUSERID"));
+					String cclass = DBConnections.getRes(R, "CMCLAS");
+					int x = cclass.lastIndexOf(";");
+					if ((x > 0) && (x < cclass.length() - 2)) 
+					{
+						C = CMClass.getCharClass(cclass.substring(x + 1));
+						if (C != null)
+							cclass = C.name();
 					}
+					thisUser.addElement(cclass);
+					String rrace = DBConnections.getRes(R, "CMRACE");
+					Race R2 = CMClass.getRace(rrace);
+					if (R2 != null)
+						thisUser.addElement(R2.name());
+					else
+						thisUser.addElement(rrace);
+					String lvl = DBConnections.getRes(R, "CMLEVL");
+					x = lvl.indexOf(";");
+					int level = 0;
+					while (x >= 0) 
+					{
+						level += CMath.s_int(lvl.substring(0, x));
+						lvl = lvl.substring(x + 1);
+						x = lvl.indexOf(";");
+					}
+					if (lvl.length() > 0)
+						level += CMath.s_int(lvl);
+					thisUser.addElement(new Integer(level).toString());
+					thisUser.addElement(DBConnections.getRes(R, "CMAGEH"));
+					MOB M = CMLib.map().getPlayer(
+							(String) thisUser.firstElement());
+					if ((M != null) && (M.lastTickedDateTime() > 0))
+						thisUser.addElement("" + M.lastTickedDateTime());
+					else
+						thisUser.addElement(DBConnections.getRes(R,"CMDATE"));
+					String lsIP=DBConnections.getRes(R, "CMLSIP");
+					thisUser.addElement(DBConnections.getRes(R, "CMEMAL"));
+					thisUser.addElement(lsIP);
+					allUsers.addElement(thisUser);
+				} catch (Exception e) {
+					Log.errOut("MOBloader", e);
 				}
+			}
 		} catch (Exception sqle) {
 			Log.errOut("MOB", sqle);
 		}

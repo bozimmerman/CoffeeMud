@@ -593,6 +593,48 @@ public class List extends StdCommand
 		mob.tell(head.toString());
 	}
 
+	public void listAlts(MOB mob, Vector commands)
+	{
+		if(commands.size()==0) return;
+		commands.removeElementAt(0);
+		StringBuffer head=new StringBuffer("");
+		head.append("[");
+		head.append(CMStrings.padRight("E-Mail",25)+" ");
+		head.append(CMStrings.padRight("IP",25)+" ");
+		head.append("] Character name\n\r");
+		Vector allUsers=CMLib.database().getUserList();
+		Vector oldSet=allUsers;
+		while(oldSet.size()>0)
+		{
+			if(oldSet==allUsers) allUsers=new Vector();
+			Vector selected=(Vector)oldSet.firstElement();
+			for(int u=1;u<oldSet.size();u++)
+			{
+				Vector V=(Vector)oldSet.elementAt(u);
+				if((((String)selected.elementAt(6)).equalsIgnoreCase((String)V.elementAt(6)))
+				||(((String)selected.elementAt(7)).equalsIgnoreCase((String)V.elementAt(7))))
+				   selected=V;
+			}
+			if(selected!=null)
+			{
+				oldSet.removeElement(selected);
+				allUsers.addElement(selected);
+			}
+		}
+
+		for(int u=0;u<allUsers.size();u++)
+		{
+			Vector U=(Vector)allUsers.elementAt(u);
+
+			head.append("[");
+			head.append(CMStrings.padRight((String)U.elementAt(6),25)+" ");
+			head.append(CMStrings.padRight((String)U.elementAt(7),25)+" ");
+			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
+			head.append("\n\r");
+		}
+		mob.tell(head.toString());
+	}
+
 	public StringBuffer listRaces(Enumeration these, boolean shortList)
 	{
 		StringBuffer lines=new StringBuffer("");
@@ -973,7 +1015,7 @@ public class List extends StdCommand
 		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*44*/{"",""},
+		/*44*/{"ALTS","CMDPLAYERS","STAT"},
 		/*45*/{"",""},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
@@ -1170,7 +1212,7 @@ public class List extends StdCommand
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
 		case 42:
 		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
-		case 44: break;
+		case 44: listAlts(mob,commands); break;
 		case 45: break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
