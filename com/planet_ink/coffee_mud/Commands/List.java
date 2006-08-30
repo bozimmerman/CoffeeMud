@@ -499,6 +499,9 @@ public class List extends StdCommand
 			if("RACE".startsWith(rest))
 				sortBy=2;
 			else
+			if("IP".startsWith(rest))
+				sortBy=7;
+			else
 			if("CLASS".startsWith(rest))
 				sortBy=1;
 			else
@@ -528,21 +531,21 @@ public class List extends StdCommand
 		head.append(CMStrings.padRight("Class",10)+" ");
 		head.append(CMStrings.padRight("Lvl",4)+" ");
 		head.append(CMStrings.padRight("Hours",5)+" ");
-		if(sortBy!=6)
-			head.append(CMStrings.padRight("Last",18)+" ");
-		else
-			head.append(CMStrings.padRight("E-Mail",23)+" ");
+		switch(sortBy){
+		case 6: head.append(CMStrings.padRight("E-Mail",23)+" "); break; 
+		case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break; 
+		default: head.append(CMStrings.padRight("Last",18)+" "); break;
+		}
+			
 		head.append("] Character name\n\r");
 		Vector allUsers=CMLib.database().getUserList();
 		Vector oldSet=allUsers;
 		int showBy=sortBy;
-		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=6))
+		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
 		{
 			if(oldSet==allUsers) allUsers=new Vector();
-
 			if((sortBy<3)||(sortBy>4))
 			{
-				if(sortBy==6) sortBy=0;
 				Vector selected=(Vector)oldSet.firstElement();
 				for(int u=1;u<oldSet.size();u++)
 				{
@@ -583,52 +586,11 @@ public class List extends StdCommand
 			head.append(CMStrings.padRight((String)U.elementAt(3),4)+" ");
 			long age=Math.round(CMath.div(CMath.s_long((String)U.elementAt(4)),60.0));
 			head.append(CMStrings.padRight(""+age,5)+" ");
-			if(showBy!=6)
-				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" ");
-			else
-				head.append(CMStrings.padRight((String)U.elementAt(6),23)+" ");
-			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
-			head.append("\n\r");
-		}
-		mob.tell(head.toString());
-	}
-
-	public void listAlts(MOB mob, Vector commands)
-	{
-		if(commands.size()==0) return;
-		commands.removeElementAt(0);
-		StringBuffer head=new StringBuffer("");
-		head.append("[");
-		head.append(CMStrings.padRight("E-Mail",25)+" ");
-		head.append(CMStrings.padRight("IP",25)+" ");
-		head.append("] Character name\n\r");
-		Vector allUsers=CMLib.database().getUserList();
-		Vector oldSet=allUsers;
-		while(oldSet.size()>0)
-		{
-			if(oldSet==allUsers) allUsers=new Vector();
-			Vector selected=(Vector)oldSet.firstElement();
-			for(int u=1;u<oldSet.size();u++)
-			{
-				Vector V=(Vector)oldSet.elementAt(u);
-				if((((String)selected.elementAt(6)).equalsIgnoreCase((String)V.elementAt(6)))
-				||(((String)selected.elementAt(7)).equalsIgnoreCase((String)V.elementAt(7))))
-				   selected=V;
+			switch(showBy){
+			case 6: head.append(CMStrings.padRight((String)U.elementAt(6),23)+" "); break; 
+			case 7: head.append(CMStrings.padRight((String)U.elementAt(7),23)+" "); break; 
+			default: head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" "); break;
 			}
-			if(selected!=null)
-			{
-				oldSet.removeElement(selected);
-				allUsers.addElement(selected);
-			}
-		}
-
-		for(int u=0;u<allUsers.size();u++)
-		{
-			Vector U=(Vector)allUsers.elementAt(u);
-
-			head.append("[");
-			head.append(CMStrings.padRight((String)U.elementAt(6),25)+" ");
-			head.append(CMStrings.padRight((String)U.elementAt(7),25)+" ");
 			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
 			head.append("\n\r");
 		}
@@ -1015,7 +977,7 @@ public class List extends StdCommand
 		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*44*/{"ALTS","CMDPLAYERS","STAT"},
+		/*44*/{"",""},
 		/*45*/{"",""},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
@@ -1212,7 +1174,7 @@ public class List extends StdCommand
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
 		case 42:
 		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
-		case 44: listAlts(mob,commands); break;
+		case 44: break;
 		case 45: break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
