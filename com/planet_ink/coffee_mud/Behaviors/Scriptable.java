@@ -5139,9 +5139,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 6: // mpoload
 			{
+				// if not mob
 				if(scripted instanceof MOB)
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(7).trim());
+					int containerIndex=s.toUpperCase().indexOf(" INTO ");
+					Container container=null;
+					if(containerIndex>=0)
+					{
+						Vector containers=new Vector();
+						findSomethingCalledThis(s.substring(containerIndex+6).trim(),monster,lastKnownLocation,containers,false);
+						for(int c=0;c<containers.size();c++)
+							if((containers.elementAt(c) instanceof Container)
+							&&(((Container)containers.elementAt(c)).capacity()>0))
+							{
+								container=(Container)containers.elementAt(c);
+								s=s.substring(0,containerIndex).trim();
+								break;
+							}
+					}
 					long coins=CMLib.english().numPossibleGold(null,s);
 					if(coins>0)
 					{
@@ -5169,10 +5185,18 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								{
 									m=(Item)m.copyOf();
 									m.recoverEnvStats();
-									monster.addInventory(m);
+									m.setContainer(container);
+									if(container instanceof MOB)
+										((MOB)container.owner()).addInventory(m);
+									else
+									if(container instanceof Room)
+										((Room)container.owner()).addItemRefuse(m,Item.REFUSE_PLAYER_DROP);
+									else
+										monster.addInventory(m);
 								}
 							}
 						}
+						lastKnownLocation.recoverRoomStats();
 						monster.recoverCharStats();
 						monster.recoverEnvStats();
 						monster.recoverMaxState();
@@ -5186,6 +5210,21 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(lastKnownLocation!=null)
 				{
 					Vector Is=new Vector();
+					int containerIndex=s.toUpperCase().indexOf(" INTO ");
+					Container container=null;
+					if(containerIndex>=0)
+					{
+						Vector containers=new Vector();
+						findSomethingCalledThis(s.substring(containerIndex+6).trim(),null,lastKnownLocation,containers,false);
+						for(int c=0;c<containers.size();c++)
+							if((containers.elementAt(c) instanceof Container)
+							&&(((Container)containers.elementAt(c)).capacity()>0))
+							{
+								container=(Container)containers.elementAt(c);
+								s=s.substring(0,containerIndex).trim();
+								break;
+							}
+					}
 					long coins=CMLib.english().numPossibleGold(null,s);
 					if(coins>0)
 					{
@@ -5212,6 +5251,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								I=(Item)I.copyOf();
 								I.recoverEnvStats();
 								lastKnownLocation.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+								I.setContainer(container);
 								if(I instanceof Coins)
 								    ((Coins)I).putCoinsBack();
 							}
