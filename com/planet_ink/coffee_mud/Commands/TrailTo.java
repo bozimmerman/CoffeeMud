@@ -75,10 +75,16 @@ public class TrailTo extends StdCommand
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
         boolean areaNames=false;
+        boolean justTheFacts=false;
         if(where.toUpperCase().endsWith(" AREANAMES"))
         {
             where=where.substring(0,where.length()-10).trim();
             areaNames=true;
+        }
+        if(where.toUpperCase().endsWith(" JUSTTHEFACTS"))
+        {
+            where=where.substring(0,where.length()-13).trim();
+            justTheFacts=true;
         }
 		if(where.toUpperCase().endsWith(" CONFIRM!"))
 		{
@@ -116,7 +122,8 @@ public class TrailTo extends StdCommand
 		}
 		else
 		{
-			String str=CMStrings.padRightPreserve(where,30)+": "+trailTo(R1,set,where,areaNames,confirm,radius,ignoreRooms);
+			String str=trailTo(R1,set,where,areaNames,confirm,radius,ignoreRooms);
+			if(!justTheFacts)str=CMStrings.padRightPreserve(where,30)+": "+str;
 			if(confirm) Log.rawSysOut(str);
 			return str;
 		}
@@ -273,6 +280,12 @@ public class TrailTo extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
+		{
+			commands.removeElementAt(commands.size()-1);
+			commands.setElementAt(trailTo(mob.location(),commands),0);
+		}
+		else
 		if(!mob.isMonster())
 			mob.session().rawPrintln(trailTo(mob.location(),commands));
 		return false;

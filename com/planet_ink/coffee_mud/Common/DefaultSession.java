@@ -352,15 +352,7 @@ public class DefaultSession extends Thread implements Session
 		killFlag=true;
 	}
 
-	public void out(char[] c)
-	{
-		if((out!=null)&&(!out.checkError()))
-		{
-		    out.write(c);
-		    out.checkError();
-		}
-	}
-    
+	public void out(char[] c){ if(out!=null) out.write(c);}
     public void out(String c){ if(c!=null) out(c.toCharArray());}
     public void out(char c){ char[] cs={c}; out(cs);}
 	public void onlyPrint(String msg){onlyPrint(msg,-1,false);}
