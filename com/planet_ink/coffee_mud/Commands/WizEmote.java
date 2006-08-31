@@ -43,31 +43,10 @@ public class WizEmote extends StdCommand
 		{
 			String who=(String)commands.elementAt(1);
 			String msg=CMParms.combine(commands,2);
-            if(who.toUpperCase().equals("HERE"))
-            {
-                for(int s=0;s<CMLib.sessions().size();s++)
-                {
-                    Session S=CMLib.sessions().elementAt(s);
-                    if((S.mob()!=null)
-                    &&(S.mob().location()==mob.location())
-                    &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
-                        S.stdPrintln("^w"+msg+"^?");
-                }
-            }
-            else
-            if(CMLib.map().getRoom(who)!=null)
-            {
-                Room R=CMLib.map().getRoom(who);
-                for(int s=0;s<CMLib.sessions().size();s++)
-                {
-                    Session S=CMLib.sessions().elementAt(s);
-                    if((S.mob()!=null)
-                    &&(S.mob().location()==R)
-                    &&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
-                        S.stdPrintln("^w"+msg+"^?");
-                }
-            }
-            else
+			Room R=CMLib.map().getRoom(who);
+			if(who.toUpperCase().equals("HERE")) R=mob.location();
+			Area A=CMLib.map().findArea(who);
+			Clan C=CMLib.clans().findClan(who);
 			if(who.toUpperCase().equals("ALL"))
 			{
 				for(int s=0;s<CMLib.sessions().size();s++)
@@ -80,6 +59,43 @@ public class WizEmote extends StdCommand
 				}
 			}
 			else
+            if(R!=null)
+            {
+                for(int s=0;s<CMLib.sessions().size();s++)
+                {
+                    Session S=CMLib.sessions().elementAt(s);
+                    if((S.mob()!=null)
+                    &&(S.mob().location()==R)
+                    &&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
+                        S.stdPrintln("^w"+msg+"^?");
+                }
+            }
+            else
+            if(A!=null)
+            {
+                for(int s=0;s<CMLib.sessions().size();s++)
+                {
+                    Session S=CMLib.sessions().elementAt(s);
+                    if((S.mob()!=null)
+                    &&(S.mob().location()!=null)
+                    &&(A.inMetroArea(S.mob().location().getArea()))
+                    &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+                        S.stdPrintln("^w"+msg+"^?");
+                }
+            }
+            else
+            if(C!=null)
+            {
+                for(int s=0;s<CMLib.sessions().size();s++)
+                {
+                    Session S=CMLib.sessions().elementAt(s);
+                    if((S.mob()!=null)
+                    &&(S.mob().getClanID().equals(C.clanID()))
+                    &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+                        S.stdPrintln("^w"+msg+"^?");
+                }
+            }
+            else
 			{
 				boolean found=false;
 				for(int s=0;s<CMLib.sessions().size();s++)
