@@ -48,6 +48,7 @@ public class Get extends BaseItemParser
 							  String getWord,
 							  boolean optimize)
 	{
+		Room R=mob.location();
 		String theWhat="<T-NAME>";
 		Item target=getThis;
 		Item tool=null;
@@ -60,22 +61,22 @@ public class Get extends BaseItemParser
 		if(!getThis.amWearingAt(Item.IN_INVENTORY))
 		{
 			CMMsg msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_REMOVE,null);
-			if(!mob.location().okMessage(mob,msg))
+			if(!R.okMessage(mob,msg))
 				return false;
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 		}
 		CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
-		if(!mob.location().okMessage(mob,msg))
+		if(!R.okMessage(mob,msg))
 			return false;
-		mob.location().send(mob,msg);
+		R.send(mob,msg);
 		// we do this next step because, when a container is involved,
 		// the item deserves to be the target of the GET.
 		if(!mob.isMine(target))
 		{
 			msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
-			if(!mob.location().okMessage(mob,msg))
+			if(!R.okMessage(mob,msg))
 				return false;
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 		}
 		return true;
 	}
@@ -83,6 +84,7 @@ public class Get extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		Room R=mob.location();
 		if((commands.size()>1)&&(commands.firstElement() instanceof Item))
 		{
 			Item item=(Item)commands.firstElement();
@@ -141,7 +143,7 @@ public class Get extends BaseItemParser
 				    String fromWhatName=CMParms.combine(commands,fromDex+1);
 				    while(commands.size()>fromDex)
 				        commands.removeElementAt(fromDex);
-				    Environmental fromWhat=mob.location().fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORNREQ_UNWORNONLY);
+				    Environmental fromWhat=R.fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORNREQ_UNWORNONLY);
 				    if(fromWhat==null)
 				    {
 				        mob.tell("You don't see '"+fromWhatName+"' here.");
@@ -186,13 +188,13 @@ public class Get extends BaseItemParser
 			{
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
+				   getThis=R.fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
 				else
 				{
 					if(!allFlag)
-						getThis=CMLib.english().possibleRoomGold(mob,mob.location(),container,whatToGet);
+						getThis=CMLib.english().possibleRoomGold(mob,R,container,whatToGet);
 					if(getThis==null)
-						getThis=mob.location().fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
+						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)
@@ -212,8 +214,8 @@ public class Get extends BaseItemParser
 					((Coins)getThis).putCoinsBack();
 				doneSomething=true;
 			}
-			mob.location().recoverRoomStats();
-			mob.location().recoverRoomStats();
+			R.recoverRoomStats();
+			R.recoverRoomStats();
 
 			if(containers.size()==0) break;
 		}

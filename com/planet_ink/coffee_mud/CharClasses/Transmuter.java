@@ -53,6 +53,7 @@ public class Transmuter extends SpecialistMage
 			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Misstep",0,"",false,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Sonar",25,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_Grow",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_LedFoot",25,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Toadstool",25,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_AddLimb",25,true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Transformation",25,true);
