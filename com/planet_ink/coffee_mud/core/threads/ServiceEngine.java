@@ -503,13 +503,16 @@ public class ServiceEngine implements ThreadEngine
 
 	public void shutdownAll()
 	{
-		Log.sysOut("ServiceEngine","Shutting down all ticks...");
+		int numTicks=tickGroup.size();
+		int which=0;
 		while(tickGroup.size()>0)
 		{
+			Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
 			Tick tock=null;
 			synchronized(tickGroup){tock=(Tick)tickGroup.elementAt(0);}
 			if(tock!=null) tock.shutdown();
 			try{Thread.sleep(100);}catch(Exception e){}
+			which++;
 		}
 		Log.sysOut("ServiceEngine","Shutdown complete.");
 	}
