@@ -169,6 +169,7 @@ public class Get extends BaseItemParser
 		}
 
 		String whatToGet=CMParms.combine(commands,0);
+		String unmodifiedWhatToGet=whatToGet;
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
@@ -222,7 +223,7 @@ public class Get extends BaseItemParser
 			{
 				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
-                    mob.tell(mob,container,null,"You don't see that in <T-NAME>.");
+                    mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
 				else
 					mob.tell(container.name()+" is closed.");
 			}
@@ -236,9 +237,9 @@ public class Get extends BaseItemParser
 					mob.tell("You don't see '"+containerName+"' here.");
 				else
 			    if(V.size()==1)
-					mob.tell("You don't see that in "+((Item)V.firstElement()).name()+" here.");
+					mob.tell(mob,(Item)V.firstElement(),null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME> here.");
 			    else
-					mob.tell("You don't see that in any '"+containerName+"'.");
+					mob.tell("You don't see '"+unmodifiedWhatToGet+"' in any '"+containerName+"'.");
 			}
 		}
 		return false;

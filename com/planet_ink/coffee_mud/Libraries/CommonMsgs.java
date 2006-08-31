@@ -499,6 +499,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                         A.invoke(mob,mob,true,0);
                 }
                 else
+                if((mob.baseCharStats().ageCategory()>=Race.AGE_ANCIENT)
+                &&(CMLib.dice().rollPercentage()==1))
+                {
+                    Ability A=CMClass.getAbility("Disease_Alzheimers");
+                    if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+                        A.invoke(mob,mob,true,0);
+                }
+                else
                 if(CMLib.dice().rollPercentage()<10)
                 {
                     int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
