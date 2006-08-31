@@ -173,6 +173,13 @@ public class CMath
             return true;
         return false;
     }
+    public static double s_pct(String s)
+    {
+    	if(s==null) return 0.0;
+    	if(s.endsWith("%")) s=s.substring(0,s.length()-1);
+    	return div(s_int(s),100.0);
+    }
+    
     public static boolean isSet(long number, int bitnumber)
     {
         if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))

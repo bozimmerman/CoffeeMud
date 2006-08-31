@@ -305,6 +305,34 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return fixRejuvItem(I);
 	}
+
+	public void balanceItemByLevel(Item I)
+	{
+		int hands=0;
+		int weaponClass=0;
+		if(I instanceof Weapon)
+		{
+			hands=I.rawLogicalAnd()?2:1;
+			weaponClass=((Weapon)I).weaponClassification();
+		}
+		Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),
+										I.baseEnvStats().weight(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		if(I instanceof Weapon)
+		{
+			I.baseEnvStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
+			I.baseEnvStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
+			I.setBaseValue(CMath.s_int((String)H.get("VALUE")));
+			I.recoverEnvStats();
+		}
+		else
+		if(I instanceof Armor)
+		{
+			I.baseEnvStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
+			I.setBaseValue(CMath.s_int((String)H.get("VALUE")));
+			I.baseEnvStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
+			I.recoverEnvStats();
+		}
+	}
 	
 	public Hashtable timsItemAdjustments(Item I, 
 										 int level, 

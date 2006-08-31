@@ -35,10 +35,11 @@ public class Prop_Doppleganger extends Property
 {
 	public String ID() { return "Prop_Doppleganger"; }
 	public String name(){ return "Doppleganger";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected boolean lastLevelChangers=true;
     private int maxLevel=Integer.MAX_VALUE;
     private int minLevel=Integer.MIN_VALUE;
+    protected Environmental lastOwner=null;
     
 	public String accountForYourself()
 	{ return "Level Changer";	}
@@ -49,10 +50,35 @@ public class Prop_Doppleganger extends Property
         maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
         minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
     }
+
+    public void executeMsg(Environmental myHost, CMMsg msg)
+    {
+    	if((affected instanceof Item)
+    	&&(((Item)affected).owner()!=lastOwner)
+    	&&(((Item)affected).owner() instanceof MOB))
+    	{
+    		lastOwner=((Item)affected).owner();
+			int level=((MOB)lastOwner).envStats().level()+CMath.s_int(text());
+			if(text().endsWith("%")) level=(int)Math.round(CMath.mul(level,CMath.s_pct(text())));
+			if(level<minLevel) level=minLevel;
+            if(level>maxLevel) level=maxLevel;
+			((Item)affected).baseEnvStats().setLevel(level);
+			((Item)affected).envStats().setLevel(level);
+			CMLib.itemBuilder().balanceItemByLevel((Item)affected);
+			((Item)affected).baseEnvStats().setLevel(((MOB)lastOwner).envStats().level());
+			((Item)affected).envStats().setLevel(((MOB)lastOwner).envStats().level());
+			lastOwner.recoverEnvStats();
+			Room R=((MOB)lastOwner).location();
+			if(R!=null) R.recoverRoomStats();
+    	}
+    	super.executeMsg(myHost,msg);
+    }
     
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
+		&&(msg.target() instanceof Room)
+		&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(lastLevelChangers))
 		{
 			lastLevelChangers=false;
@@ -76,17 +102,18 @@ public class Prop_Doppleganger extends Property
 					MOB M=mob.location().fetchInhabitant(i);
 					if((M!=mob)
 					&&((M.getVictim()==mob)||(victim==null))
-					&&(M.fetchEffect(ID())==null))
+					&&(M.fetchEffect(ID())==null)
+			        &&(!CMSecurity.isAllowed(M,mob.location(),"CMDMOBS"))
+			        &&(!CMSecurity.isAllowed(M,mob.location(),"CMDROOMS")))
 					{
-				        if(CMSecurity.isAllowed(M,mob.location(),"CMDMOBS")||CMSecurity.isAllowed(M,mob.location(),"CMDROOMS"))
-				            return super.okMessage(myHost,msg);
 						total+=M.envStats().level();
 						num++;
 					}
 				}
 				if(num>0)
 				{
-					int level=(total/num)+CMath.s_int(text());
+					int level=(int)Math.round(CMath.div(total,num))+CMath.s_int(text());
+					if(text().endsWith("%")) level=(int)Math.round(CMath.mul(CMath.div(total,num),CMath.s_pct(text())));
 					if(level<minLevel) level=minLevel;
                     if(level>maxLevel) level=maxLevel;
 					if(level!=mob.baseEnvStats().level())

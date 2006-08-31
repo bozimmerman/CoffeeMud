@@ -40,6 +40,7 @@ public interface ItemBuilderLibrary
 	public void toneDownArmor(Armor A, Ability ADJ);
 	public void toneDownAdjuster(Item I, Ability ADJ);
 	public int timsBaseLevel(Item I);
+	public void balanceItemByLevel(Item I);
 	public int levelsFromCaster(Item savedI, Ability CAST);
 	public int levelsFromAdjuster(Item savedI, Ability ADJ);
 	public boolean itemFix(Item I);

@@ -109,7 +109,6 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
 		verb="crafting "+building.name();
-		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-5;
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
@@ -117,18 +116,16 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		building.setMaterial(data[0][FOUND_CODE]);
 		building.baseEnvStats().setLevel(mob.envStats().level());
 		building.baseEnvStats().setAbility(5);
-
-		int highestAttack=(CMLib.ableMapper().qualifyingClassLevel(mob,this)/2);
-		int highestDamage=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		Weapon w=(Weapon)building;
 		w.setWeaponClassification(Weapon.CLASS_SWORD);
 		w.setWeaponType(Weapon.TYPE_SLASHING);
 		w.setRanges(w.minRange(),1);
 		building.setRawLogicalAnd(true);
-		building.baseEnvStats().setAttackAdjustment(highestAttack+(hardness*5));
-		building.baseEnvStats().setDamage(highestDamage+(hardness*2));
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
 		A.setMiscText("-CLASS +Paladin -ALIGNMENT +Good");
+		building.addNonUninvokableEffect(A);
+		A=CMClass.getAbility("Prop_Doppleganger");
+		A.setMiscText("120%");
 		building.addNonUninvokableEffect(A);
 
 		building.recoverEnvStats();
