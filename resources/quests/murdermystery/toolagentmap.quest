@@ -12,7 +12,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I've heard $ARG3 is scared of $ARG2.
 </OPTION>
@@ -20,7 +20,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I've heard $ARG3 hates $ARG2.
 </OPTION>
@@ -28,7 +28,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I've heard $ARG3 thinks $ARG2 is creepy.
 </OPTION>
@@ -36,7 +36,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 thinks $ARG2 clumsy and awkward.
 </OPTION>
@@ -44,7 +44,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector" +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 never touches $ARG2.
 </OPTION>
@@ -52,7 +52,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 won't use $ARG2.
 </OPTION>
@@ -60,7 +60,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 doesn't like $ARG2.
 </OPTION>
@@ -68,7 +68,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 wouldn't be caught dead using $ARG2.
 </OPTION>
@@ -76,7 +76,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is too proud to use $ARG2.
 </OPTION>
@@ -84,7 +84,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 doesn't know how to use $ARG2.
 </OPTION>
@@ -92,7 +92,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is too dumb to figure out $ARG2.
 </OPTION>
@@ -100,7 +100,7 @@
 	set room ARG1
 	set roomgrouparound 5 ANY
 	# we have a witness!
-	#set room
+	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is far too skilled for $ARG2.
 </OPTION>

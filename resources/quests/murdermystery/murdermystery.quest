@@ -70,7 +70,7 @@ give affect Prop_SafePet
 #####################################
 # this should automatically select THE motive
 # probably need a way to narrow them down though...dammit, just make the list shorter!!
-set motivegroup "drunken anger" "jealous love" "cheating" "unpaid debts" "insulted honor" 
+set motivegroup "drunken anger" "jealous love" "insulted honor" 
 
 #####################################
 # Assign the suspect weapons
@@ -121,6 +121,6 @@ LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motiv
 LOAD=quests/murdermystery/toolmotivemap.quest wherehappened tool motivegroup-motive
 LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motive
 
-set duration 400
+set duration 800
 # the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will
 # do the rest...

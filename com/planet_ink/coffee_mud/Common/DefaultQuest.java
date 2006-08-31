@@ -820,7 +820,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                     if(cmd.equals("LOCALE")||cmd.equals("LOCALEGROUP")||cmd.equals("LOCALEGROUPAROUND"))
                     {
-                    	//TODO: Add LOCALEGROUPAROUND flags for area, air, open, water, etc..
                     	int range=0;
                     	if(cmd.equals("LOCALE"))
                     	{
@@ -936,7 +935,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                     if(cmd.equals("ROOM")||cmd.equals("ROOMGROUP")||cmd.equals("ROOMGROUPAROUND"))
                     {
-                    	//TODO: Add ROOMGROUPAROUND flags for area, air, open, water, etc..
                         int range=0;
                     	if(cmd.equals("ROOM"))
                     	{
