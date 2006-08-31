@@ -145,6 +145,8 @@ public class Resources
 
 	public static Object prepareObject(Object obj)
 	{
+        if(obj instanceof Vector) ((Vector)obj).trimToSize();
+        if(obj instanceof DVector) ((DVector)obj).trimToSize();
 		if(!compress) return obj;
 		if(obj instanceof StringBuffer)
 			return CMLib.encoder().compressString(((StringBuffer)obj).toString());
@@ -218,6 +220,7 @@ public class Resources
 		}
 		if(str.length()>0)
 			V.addElement(str.toString());
+		V.trimToSize();
 		return V;
 	}
 	

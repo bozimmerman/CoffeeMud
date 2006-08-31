@@ -39,6 +39,8 @@ public class CombatAbilities extends StdBehavior
 	public int combatMode=0;
 	public DVector aggro=null;
 	public short rounds=0;
+	public Vector skillsNever=null;
+	public Vector skillsAlways=null;
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -234,6 +236,33 @@ public class CombatAbilities extends StdBehavior
 		}
 		super.executeMsg(host,msg);
 	}
+	
+	public void startBehavior(Environmental forMe)
+	{
+		super.startBehavior(forMe);
+		skillsNever=null;
+		Vector V=CMParms.parse(getParms());
+		String s=null;
+		Ability A=null;
+		for(int v=0;v<V.size();v++)
+		{
+			s=(String)V.elementAt(v);
+			if((s.startsWith("-"))
+			&&((A=CMClass.getAbility(s.substring(1)))!=null))
+			{
+				if(skillsNever==null) skillsNever=new Vector();
+				skillsNever.addElement(A.ID());
+			}
+			else
+			if((s.startsWith("+"))
+			&&((A=CMClass.getAbility(s.substring(1)))!=null))
+			{
+				if(skillsAlways==null) skillsAlways=new Vector();
+				skillsAlways.addElement(A.ID());
+			}
+		}
+		if(skillsNever!=null) skillsNever.trimToSize();
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -307,11 +336,15 @@ public class CombatAbilities extends StdBehavior
 			if((tryThisOne==null)
 			||(tryThisOne.isAutoInvoked())
 			||(tryThisOne.triggerStrings()==null)
-			||(tryThisOne.triggerStrings().length==0)
-			||((tryThisOne.castingQuality(mob,victim)!=Ability.QUALITY_MALICIOUS)
+			||(tryThisOne.triggerStrings().length==0))
+				tryThisOne=null;
+			else
+		    if(((skillsAlways==null)||(!skillsAlways.contains(tryThisOne.ID())))
+			&&(((tryThisOne.castingQuality(mob,victim)!=Ability.QUALITY_MALICIOUS)
 				&&(tryThisOne.castingQuality(mob,mob)!=Ability.QUALITY_BENEFICIAL_SELF)
 				&&(tryThisOne.castingQuality(mob,leader)!=Ability.QUALITY_BENEFICIAL_OTHERS))
-			||(victim.fetchEffect(tryThisOne.ID())!=null))
+			||((skillsNever!=null)&&(skillsNever.contains(tryThisOne.ID())))
+			||(victim.fetchEffect(tryThisOne.ID())!=null)))
 				tryThisOne=null;
 			else
 			if(tryThisOne.castingQuality(mob,victim)==Ability.QUALITY_MALICIOUS)

@@ -829,6 +829,13 @@ public class List extends StdCommand
 		return str.toString();
 	}
 
+	public String listResources(MOB mob, String parm)
+	{
+		Enumeration keys=Resources.findResourceKeys(parm).elements();
+		
+		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
+	}
+	
     public String listMaterials()
     {
         return CMParms.toStringList(RawMaterial.MATERIAL_DESCS);
@@ -1169,7 +1176,7 @@ public class List extends StdCommand
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;
 		case 38: s.println(listThreads(mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
-		case 39: s.wraplessPrintln(CMLib.lister().reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
+		case 39: s.println(listResources(mob,CMParms.combine(commands,1))); break;
 		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
 		case 42:
