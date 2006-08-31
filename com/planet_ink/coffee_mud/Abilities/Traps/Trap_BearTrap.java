@@ -112,6 +112,7 @@ public class Trap_BearTrap extends StdTrap
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalNPCMobWLocalTrap(target))
+			||(CMLib.flags().isInFlight(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) a bear trap!");

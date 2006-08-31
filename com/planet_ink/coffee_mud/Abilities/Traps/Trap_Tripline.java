@@ -69,7 +69,9 @@ public class Trap_Tripline extends StdTrap
 
 	public void spring(MOB target)
 	{
-		if((target!=invoker())&&(target.location()!=null))
+		if((target!=invoker())
+		&&(!CMLib.flags().isInFlight(target))
+		&&(target.location()!=null))
 		{
 			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) tripping on a taut rope!");

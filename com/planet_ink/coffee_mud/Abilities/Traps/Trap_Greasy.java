@@ -82,7 +82,8 @@ public class Trap_Greasy extends StdTrap
 	}
 	public void spring(MOB target)
 	{
-		if((target!=invoker())&&(target.location()!=null))
+		if((target!=invoker())
+		&&(target.location()!=null))
 		{
 			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
