@@ -15,6 +15,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is a dork, but $ARG2 would not kill for $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -23,6 +24,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 was not one to be in a state of $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -31,6 +33,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I know $ARG2 well enough to know $ARG3 is not a motive.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -39,6 +42,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 thinks $ARG3 is immoral, he wouldn't kill for that reason.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -47,6 +51,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 never gets involved with $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -55,6 +60,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 isn't ever in $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -63,6 +69,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 hates $ARG3, and never gets involved in it.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -71,6 +78,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 would kill for money before $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -79,6 +87,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG32 is too proud to kill for $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -87,6 +96,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 doesn't know how to be in a state of $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -95,6 +105,7 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too dumb to feel $ARG3.
+	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
 	set room ARG1
@@ -103,4 +114,5 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is far too silly for $ARG2.
+	give affect Spell_LedFoot
 </OPTION>
