@@ -496,6 +496,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     beneficiaries.add(mob);
             }
         }
+        if((killer!=null)&&(!beneficiaries.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
+        	beneficiaries.add(killer);
         return beneficiaries;
     }
     
