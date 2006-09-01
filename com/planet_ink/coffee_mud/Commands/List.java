@@ -939,6 +939,20 @@ public class List extends StdCommand
                 return 29;
 		return -1;
 	}
+	
+	public String listComponents(){
+		StringBuffer buf=new StringBuffer("^xAll Defined Spells and required components: ^N\n\r");
+		for(Enumeration e=CMLib.ableMapper().getAbilityComponentMap().keys();e.hasMoreElements();)
+		{
+			String ID=(String)e.nextElement();
+			DVector DV=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID);
+			if(DV!=null)
+				buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableMapper().getAbilityComponentDesc(null,ID)+"\n\r");
+		}
+		if(buf.length()==0) return "None defined.";
+		return buf.toString();
+	}
+	
 	public final static String[][] SECURITY_LISTMAP={
 		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
 		/*01*/{"ITEMS","CMDITEMS"},
@@ -984,7 +998,7 @@ public class List extends StdCommand
 		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*44*/{"",""},
+		/*44*/{"COMPONENTS","LISTADMIN","COMPONENTS"},
 		/*45*/{"",""},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
@@ -1181,7 +1195,7 @@ public class List extends StdCommand
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
 		case 42:
 		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
-		case 44: break;
+		case 44: s.wraplessPrintln(listComponents()); break;
 		case 45: break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;

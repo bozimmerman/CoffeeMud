@@ -945,6 +945,13 @@ public class Modify extends BaseGenerics
 			exits(mob,commands);
 		}
 		else
+		if(commandType.equals("COMPONENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
+			mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
+			return false;
+		}
+		else
 		if(commandType.equals("SOCIAL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);

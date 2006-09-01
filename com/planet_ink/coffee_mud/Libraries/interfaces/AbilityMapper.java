@@ -93,4 +93,8 @@ public interface AbilityMapper extends CMObject
     public boolean getSecretSkill(String ability);
     public String getDefaultParm(String ID, boolean checkAll, String ability);
     public int getDefaultProficiency(String ID, boolean checkAll, String ability);
+	public Vector componentCheck(MOB mob, DVector req);
+	public String getAbilityComponentDesc(MOB mob, String AID);
+	public Hashtable getAbilityComponentMap();
+	public String addAbilityComponent(String s);
 }

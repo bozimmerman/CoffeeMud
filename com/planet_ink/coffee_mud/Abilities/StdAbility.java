@@ -765,7 +765,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 				mob.tell("You are bound!");
 				return false;
 			}
-
+			
 			int[] consumed=usageCost(mob);
 			if(mob.curState().getMana()<consumed[0])
 			{
@@ -808,6 +808,39 @@ public class StdAbility extends ForeignScriptable implements Ability
                         mob.tell("You need awhile to recover before doing that again.");
                     return false;
                 }
+            }
+            if((mob.session()!=null)
+            &&(mob.soulMate()==null)
+            &&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
+            {
+	            DVector componentsRequirements=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID());
+	            if(componentsRequirements!=null)
+	            {
+		            Vector components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+		            if(components==null)
+		            {
+		            	mob.tell("You lack the necessary materials to use this "
+		            			+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase()
+		            			+", the requirements are: "
+		            			+CMLib.ableMapper().getAbilityComponentDesc(mob,ID())+".");
+		            	return false;
+		            }
+		            while(components.size()>0)
+		            {
+		            	int i=0;
+		            	boolean destroy=false;
+		            	for(;i<components.size();i++)
+		            		if(components.elementAt(i) instanceof Boolean)
+		            		{ destroy=((Boolean)components.elementAt(i)).booleanValue(); break;}
+		            	while(i>=0)
+		            	{
+		            		if((destroy)&&(components.elementAt(0) instanceof Item))
+		            			((Item)components.elementAt(0)).destroy();
+		            		components.removeElementAt(0);
+		            		i--;
+		            	}
+		            }
+	            }
             }
             
 			helpProficiency(mob);

@@ -411,6 +411,51 @@ public class Create extends BaseGenerics
         CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 	}
 
+	public void components(MOB mob, Vector commands)
+	{
+		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf("=")<0))
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]=[PARAMETERS] as follows: \n\r");
+			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true).text();
+			Vector V=new Vector();
+			if(buf!=null) V=Resources.getFileLineVector(buf);
+			for(int v=0;v<V.size();v++)
+				if(((String)V.elementAt(v)).startsWith("#"))
+					buf.append(((String)V.elementAt(v)).substring(1)+"\n\r");
+				else
+				if(((String)V.elementAt(v)).length()>0) 
+					break;
+			mob.tell(buf.toString());
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String parms=CMParms.combine(commands,2);
+		String skillID=parms.substring(0,parms.indexOf("="));
+		Ability A=CMClass.getAbility(skillID);
+		if(A==null)
+		{
+			mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())!=null)
+		{
+			mob.tell("'"+A.ID()+"' already exists, you'll need to destroy it first.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		parms=A.ID()+parms.substring(parms.indexOf("="));
+		String error=CMLib.ableMapper().addAbilityComponent(parms);
+		if(error!=null)
+		{
+			mob.tell(error);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
+		F.saveText("\n"+parms,true);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
+	}
 	public void classes(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -496,6 +541,13 @@ public class Create extends BaseGenerics
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
+		}
+		else
+		if(commandType.equals("COMPONENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			components(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
@@ -706,10 +758,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, CLAN, MOB, RACE, CLASS, POLL, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, CLAN, MOB, RACE, CLASS, POLL, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, CLAN, RACE, CLASS, POLL, USER, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, CLAN, RACE, CLASS, POLL, USER, or ROOM.");
 			}
 		}
 		return false;

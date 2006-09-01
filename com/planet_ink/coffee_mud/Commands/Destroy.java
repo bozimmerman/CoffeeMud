@@ -443,6 +443,57 @@ public class Destroy extends BaseItemParser
 		return true;
 	}
 
+	public boolean components(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY COMPONENT [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+
+		String classID=CMParms.combine(commands,2);
+		if(CMLib.ableMapper().getAbilityComponentMap().get(classID.toUpperCase())==null)
+		{
+			mob.tell("'"+classID+"' does not exist, try LIST COMPONENTS.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
+		if(F!=null)
+		{
+			StringBuffer text=F.textUnformatted();
+			int x=text.toString().toUpperCase().indexOf(classID.toUpperCase());
+			while(x>=0)
+			{
+				if(((x==0)||(!Character.isLetterOrDigit(text.charAt(x-1))))
+				&&(text.substring(x+classID.length()).trim().startsWith("=")))
+				{
+					int zb1=text.lastIndexOf("\n",x);
+					int zb2=text.lastIndexOf("\r",x);
+					int zb=(zb2>zb1)?zb2:zb1;
+					if(zb<0) zb=0; else zb++;
+					int ze1=text.indexOf("\n",x);
+					int ze2=text.indexOf("\r",x);
+					int ze=ze2+1;
+					if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1; 
+					else
+					if((ze2<0)&&(ze1>0)) ze=ze1+1;
+					if(ze<0) ze=text.length();
+					if(!text.substring(zb).trim().startsWith("#"))
+					{
+						text.delete(zb,ze);
+						x=-1;
+					}
+				}
+				x=text.toString().toUpperCase().indexOf(classID.toUpperCase(),x+1);
+			}
+		}
+		
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
+		return true;
+	}
 	public boolean classes(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -713,6 +764,13 @@ public class Destroy extends BaseItemParser
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
+		}
+		else
+		if(commandType.equals("COMPONENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			components(mob,commands);
 		}
 		else
 		if(commandType.equals("USER"))
@@ -1007,7 +1065,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SESSION, JOURNAL, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SESSION, JOURNAL, SOCIAL, COMPONENT, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}
