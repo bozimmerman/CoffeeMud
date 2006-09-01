@@ -123,10 +123,10 @@ public class Prop_CommonTwister extends Property
 					newMatCode=randomResource;
 				else
 				{
-					newMatCode=CMLib.utensils().getResourceCode(newmat);
+					newMatCode=CMLib.utensils().getResourceCode(newmat,false);
 					if(newMatCode<0)
 					{
-						newMatCode=CMLib.utensils().getMaterialCode(newmat);
+						newMatCode=CMLib.utensils().getMaterialCode(newmat,false);
 						if(newMatCode>0) newMatCode=CMLib.utensils().getRandomResourceOfMaterial(newMatCode);
 					}
 					if(newMatCode>=0)

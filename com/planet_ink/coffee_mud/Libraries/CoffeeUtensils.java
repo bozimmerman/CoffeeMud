@@ -128,17 +128,29 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				return i;
 		return -1;
 	}
-    public int getMaterialCode(String s)
+    public int getMaterialCode(String s, boolean exact)
     {
         for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
             if(s.equalsIgnoreCase(RawMaterial.MATERIAL_DESCS[i]))
                 return i<<8;
+    	if(exact) return -1;
+		s=s.toUpperCase();
+		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+			if(RawMaterial.MATERIAL_DESCS[i].startsWith(s)||s.startsWith(RawMaterial.MATERIAL_DESCS[i]))
+				return i<<8;
         return -1;
     }
-	public int getResourceCode(String s)
+    public int getResourceCode(String s, boolean exact)
 	{
 		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		{
 			if(s.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
+				return RawMaterial.RESOURCE_DATA[i][0];
+		}
+    	if(exact) return -1;
+		s=s.toUpperCase();
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+			if(RawMaterial.RESOURCE_DESCS[i].startsWith(s)||s.startsWith(RawMaterial.RESOURCE_DESCS[i]))
 				return RawMaterial.RESOURCE_DATA[i][0];
 		return -1;
 	}

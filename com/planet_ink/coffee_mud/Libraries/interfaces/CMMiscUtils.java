@@ -41,8 +41,8 @@ public interface CMMiscUtils extends CMObject
     
     public Environmental unbundle(Item I, int number);
     public int getMaterialRelativeInt(String s);
-    public int getMaterialCode(String s);
-    public int getResourceCode(String s);
+    public int getMaterialCode(String s, boolean exact);
+    public int getResourceCode(String s, boolean exact);
     public String wornList(long wornCode);
     public int getWornCode(String name);
     public Item makeItemResource(int type);

@@ -10,7 +10,7 @@
 # [COMPONENT ID] is one of the following:
 #   a material name for a raw resource (like cloth, metal, mithril, leather, liquid, etc..)
 #   a resource name for a raw resource (like cotton, iron, spidersteel, leather, oil, etc..)
-#   an item name for a string match (like "a long crooked stick" or "*stick" or "*crooked*"
+#   an item name for a string match (like "a long crooked stick" or "stick" or "crooked"
 # * NOTE! If you use && or || conjunctions, the same item may be found multiple times!
 # [AMOUNT] is the number of amount of the component required (default 1)
 # [MASK] is the zapper mask for which players in which conditions require this component.

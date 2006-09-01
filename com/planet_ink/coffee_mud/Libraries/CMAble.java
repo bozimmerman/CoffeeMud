@@ -34,11 +34,10 @@ import java.util.*;
 public class CMAble extends StdLibrary implements AbilityMapper
 {
     public String ID(){return "CMAble";}
-								
 	public Hashtable completeAbleMap=new Hashtable();
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
 	public Hashtable allows=new Hashtable();
-	
+								
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 
@@ -1018,4 +1017,191 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return 0;
 	}
+	
+	// returns Vector of components found if all good, returns Integer of bad row if not.
+	public Object componentCheck(MOB mob, DVector req)
+	{
+		if((mob==null)||(req==null)||(req.size()==0)) 
+			return null;
+		boolean previousAND=false;
+		boolean value=true;
+		Vector passes=new Vector();
+		int amt=0;
+		Object O=null;
+		Item I=null;
+		Item container=null;
+		Integer disp=null;
+		Vector thisSet=new Vector();
+		for(int i=0;i<req.size();i++)
+		{
+			// if they fail the zappermask, its like the req is NOT even there...
+			if((((String)req.elementAt(i,6)).length()>0)
+			&&(!CMLib.masking().maskCheck((String)req.elementAt(i,6),mob)))
+				continue;
+			amt=((Integer)req.elementAt(i,4)).intValue();
+			O=req.elementAt(i,5);
+			disp=(Integer)req.elementAt(i,2);
+			thisSet.clear();
+			for(int ii=0;ii<mob.inventorySize();ii++)
+			{
+				I=mob.fetchInventory(ii);
+				if(I==null) continue;
+				if((O instanceof String)&&(!CMLib.english().containsString(I.name(),(String)O)))
+					continue;
+				else
+				if((O instanceof Integer)&&((!(I instanceof RawMaterial))||(I.material()!=((Integer)O).intValue())))
+					continue;
+				else
+				if((O instanceof Long)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=((Long)O).intValue())))
+					continue;
+				container=I.ultimateContainer();
+				if(container==null) container=I;
+				switch(disp.intValue())
+				{
+				case 0: if(!container.amWearingAt(Item.IN_INVENTORY))continue; break;
+				case 1: if(!container.amWearingAt(Item.WORN_HELD))continue; break;
+				case 2: if(container.amWearingAt(Item.IN_INVENTORY))continue; break;
+				}
+				thisSet.addElement(I);
+				if((--amt)<=0) break;
+			}
+			if((amt>0)&&  ((previousAND)||(!value)))
+				return new Integer(i);
+			else
+			{
+				value=amt>0;
+				if(value) CMParms.addToVector(thisSet,passes);
+			}
+			previousAND=((Boolean)req.elementAt(i,1)).booleanValue();
+			if(value&&(!previousAND)) return passes;
+		}
+		if(passes.size()==0) return new Integer(0);
+		return passes;
+	}
+	
+	public String getAbilityComponentDesc(String AID)
+	{
+		DVector req=(DVector)getAbilityComponentMap().get(AID.toUpperCase().trim());
+		if(req==null) return null;
+		StringBuffer buf=new StringBuffer("");
+		return buf.toString();
+	}
+	
+	// format of each data entry is 1=ANDOR(B), 2=DISPO(I), 3=CONSUMED(B), 4=AMT(I), 5=MATERIAL(L)RESOURCE(I)NAME(S), 6=MASK(S) 
+	public Hashtable getAbilityComponentMap()
+	{
+		Hashtable H=(Hashtable)Resources.getResource("COMPONENT_MAP");
+		if(H==null)
+		{
+			H=new Hashtable();
+			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true).text();
+			Vector V=new Vector();
+			if(buf!=null)
+				V=Resources.getFileLineVector(buf);
+			String s=null;
+			String id=null;
+			String parms=null;
+			Vector parmSets=null;
+			String parmS=null;
+			String rsc=null;
+			DVector parm=null;
+			Object[] build=null;
+			int x=0;
+			int depth=0;
+			if(V!=null)
+			for(int v=0;v<V.size();v++)
+			{
+				s=((String)V.elementAt(v)).trim();
+				if(s.startsWith("#")||(s.length()==0)||s.startsWith(";")||s.startsWith(":")) continue;
+				x=s.indexOf("=");
+				if(x<0){ Log.errOut("CMable","Malformed component line (code 0): "+s); continue;}
+				id=s.substring(0,x).toUpperCase().trim();
+				parms=s.substring(x+1);
+				parm=new DVector(6);
+				while(parms.length()>0)
+				{
+					build=new Object[6];
+					build[0]=new Boolean(true);
+					if(parms.startsWith("||"))
+					{ build[0]=new Boolean(false); parms=parms.substring(2).trim();}
+					else
+					if(parms.startsWith("&&"))
+					{ parms=parms.substring(2).trim();}
+					
+					if(!parms.startsWith("("))
+					{Log.errOut("CMable","Malformed component line (code 1): "+s); break;}
+					
+					depth=0;
+					x=1;
+					for(;x<parms.length();x++)
+						if((parms.charAt(x)==')')&&(depth==0))
+							break;
+						else
+						if(parms.charAt(x)=='(')
+							depth++;
+						else
+						if(parms.charAt(x)==')')
+							depth--;
+					if(x==parms.length()){Log.errOut("CMable","Malformed component line (code 2): "+s); break;}
+					parmS=parms.substring(1,x).trim();
+					parms=parms.substring(x+1).trim();
+					
+					build[1]=new Integer(0);
+					x=parmS.indexOf(":");
+					if(x<0){Log.errOut("CMable","Malformed component line (code 0-1): "+parmS); continue;}
+					if(parmS.substring(0,x).equalsIgnoreCase("held")) build[1]=new Integer(1);
+					else
+					if(parmS.substring(0,x).equalsIgnoreCase("worn")) build[1]=new Integer(2);
+					else
+					if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("inventory")))
+					{Log.errOut("CMable","Malformed component line (code 0-2): "+parmS); continue;}
+					parmS=parmS.substring(x+1);
+					
+					build[2]=new Boolean(true);
+					x=parmS.indexOf(":");
+					if(x<0){Log.errOut("CMable","Malformed component line (code 1-1): "+parmS); continue;}
+					if(parmS.substring(0,x).equalsIgnoreCase("kept")) build[2]=new Boolean(false);
+					if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
+					{Log.errOut("CMable","Malformed component line (code 1-2): "+parmS); continue;}
+					parmS=parmS.substring(x+1);
+					
+					build[3]=new Integer(1);
+					x=parmS.indexOf(":");
+					if(x<0){Log.errOut("CMable","Malformed component line (code 2-1): "+parmS); continue;}
+					if((x>0)&&(!CMath.isInteger(parmS.substring(0,x))))
+					{Log.errOut("CMable","Malformed component line (code 2-2): "+parmS); continue;}
+					if(x>0) build[3]=new Integer(CMath.s_int(parmS.substring(0,x)));
+					parmS=parmS.substring(x+1);
+					
+					build[4]=new String("");
+					x=parmS.indexOf(":");
+					if(x<=0){Log.errOut("CMable","Malformed component line (code 3-1): "+parmS); continue;}
+					rsc=parmS.substring(0,x);
+					depth=CMLib.utensils().getResourceCode(rsc,false);
+					if(depth>=0) 
+						build[4]=new Integer(depth);
+					else
+					{
+						depth=CMLib.utensils().getMaterialCode(rsc,false);
+						if(depth>=0) 
+							build[4]=new Long(depth);
+						else
+							build[4]=rsc.toUpperCase().trim();
+					}
+					parmS=parmS.substring(x+1);
+					
+					build[5]=parmS;
+					
+					parm.addElement(build[0],build[1],build[2],build[3],build[4],build[5]);
+					parmSets.addElement(parm);
+				}
+				parmSets.trimToSize();
+				parm.trimToSize();
+				H.put(id,parm);
+			}
+			Resources.submitResource("COMPONENT_MAP",H);
+		}
+		return H;
+	}
+	
 }

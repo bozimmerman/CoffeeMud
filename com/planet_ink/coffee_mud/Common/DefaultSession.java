@@ -352,7 +352,7 @@ public class DefaultSession extends Thread implements Session
 		killFlag=true;
 	}
 
-	public void out(char[] c){ 
+	public synchronized void out(char[] c){ 
 		if(out!=null)
 		{
 			out.write(c);
