@@ -136,6 +136,7 @@ public class Archon_Record extends ArchonSkill
         public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
         public long getTickStatus(){return 0;}
 	    public void initializeSession(Socket s, String introTextStr){}
+	    public boolean isLockedUpWriting(){return false;}
 	    public void start(){}
 	    
 		public String[] clookup(){return new String[255];}

@@ -82,6 +82,7 @@ public class DefaultSession extends Thread implements Session
     protected String terminalType="UNKNOWN";
     protected int terminalWidth = 80;
     protected int terminalHeight = 25;
+    protected long writeStartTime=0;
 
     private static final HashSet telnetSupportSet=new HashSet();
     private static final HashSet mxpSupportSet=new HashSet();
@@ -352,11 +353,23 @@ public class DefaultSession extends Thread implements Session
 		killFlag=true;
 	}
 
-	public synchronized void out(char[] c){ 
-		if(out!=null)
-		{
-			out.write(c);
-			if(out.checkError()) killFlag=true;
+	public long getWriteStartTime(){return writeStartTime;}
+	public boolean isLockedUpWriting(){
+		long time=writeStartTime;
+		if(time==0) return false;
+		return ((System.currentTimeMillis()-time)>5000);
+	}
+	public synchronized void out(char[] c){
+		try{
+			if(out!=null)
+			{
+				writeStartTime=System.currentTimeMillis();
+				out.write(c);
+				if(out.checkError()) killFlag=true;
+			}
+		}
+		finally{
+			writeStartTime=0;
 		}
 	}
     public void out(String c){ if(c!=null) out(c.toCharArray());}

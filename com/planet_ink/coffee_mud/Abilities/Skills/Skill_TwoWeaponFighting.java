@@ -109,7 +109,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(mob.isInCombat())
+			if((mob!=null)&&(mob.isInCombat()))
 			{
 				if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 					CMLib.commands().postDraw(mob,true,true);

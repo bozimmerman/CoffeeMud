@@ -57,6 +57,7 @@ public interface Session extends CMObject
 						   String msg);
 	
 	public void out(char[] c);
+	public boolean isLockedUpWriting();
 	
 	public void print(String msg);
 	public void print(Environmental Source,

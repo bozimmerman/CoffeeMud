@@ -2471,6 +2471,13 @@ public class StdMOB implements MOB
 			else
 			if(location()!=null)
 			{
+				try{
+					if((mySession!=null)&&(mySession.isLockedUpWriting()))
+					{
+						mySession.logoff();
+						Log.errOut("StdMOB","Kicked out "+name()+" due to write-lock.");
+					}
+				}catch(Throwable t){}
 				// handle variable equipment!
 				if((lastTickedDateTime<0)
 				&&isMonster()&&location().getMobility()&&location().getArea().getMobility())
