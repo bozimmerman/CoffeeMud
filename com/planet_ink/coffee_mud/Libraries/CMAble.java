@@ -44,10 +44,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID, 
-			  int qualLevel,
-			  String ability, 
-			  boolean autoGain,
-			  String extraMasks)
+									  int qualLevel,
+									  String ability, 
+									  boolean autoGain,
+									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),extraMasks); }
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
@@ -1023,7 +1023,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		if((mob==null)||(req==null)||(req.size()==0)) 
 			return new Vector();
-		boolean previousAND=false;
+		boolean currentAND=false;
 		boolean previousValue=true;
 		int amt=0;
 		Object O=null;
@@ -1034,6 +1034,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Vector thisSet=new Vector();
 		for(int i=0;i<req.size();i++)
 		{
+			currentAND=((Boolean)req.elementAt(i,1)).booleanValue();
+			if(previousValue&&(!currentAND)) return passes;
+			
 			// if they fail the zappermask, its like the req is NOT even there...
 			if((((String)req.elementAt(i,6)).length()>0)
 			&&(!CMLib.masking().maskCheck((String)req.elementAt(i,6),mob)))
@@ -1067,14 +1070,15 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					amt-=I.numberOfItems();
 				else
 					amt=amt-I.envStats().weight();
-				if(thisSet.size()>0) thisSet.addElement(req.elementAt(i,3));
-				if(amt<=0) break;
+				if(amt<=0)
+				{
+					if(thisSet.size()>0) thisSet.addElement(req.elementAt(i,3));
+					break;
+				}
 			}
-			if((amt>0)&&  ((previousAND)||(!previousValue))) return null;
-			previousValue=amt>0;
+			if((amt>0)&&(currentAND)&&(i>0)) return null;
+			previousValue=amt<=0;
 			if(previousValue) CMParms.addToVector(thisSet,passes);
-			previousAND=((Boolean)req.elementAt(i,1)).booleanValue();
-			if(previousValue&&(!previousAND)) return passes;
 		}
 		if(passes.size()==0) return null;
 		return passes;
@@ -1091,8 +1095,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		String itemDesc=null;
 		for(int r=0;r<req.size();r++)
 		{
+			if(r>0) buf.append((((Boolean)req.elementAt(r,1)).booleanValue()?", and ":", or "));
 			if(mob==null)
-				buf.append("MASK: "+(String)req.elementAt(r,6)+": ");
+			{
+				if(((String)req.elementAt(r,6)).length()>0)
+					buf.append("MASK: "+(String)req.elementAt(r,6)+": ");
+			}
 			else
 			if((((String)req.elementAt(r,6)).length()>0)
 			&&(!CMLib.masking().maskCheck((String)req.elementAt(r,6),mob)))
@@ -1101,26 +1109,24 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			O=req.elementAt(r,5);
 			disp=(Integer)req.elementAt(r,2);
 			if(O instanceof String)
-				itemDesc=((amt>1)?(amt+((String)O)+"s"):CMStrings.startWithAorAn((String)O));
+				itemDesc=((amt>1)?(amt+" "+((String)O)+"s"):CMStrings.startWithAorAn((String)O));
 			else
 			if(O instanceof Long)
-				itemDesc=amt+((amt>1)?"pounds":"pound")+" of "+RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toLowerCase();
+				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toLowerCase();
 			else
 			if(O instanceof Integer)
-				itemDesc=amt+((amt>1)?"pounds":"pound")+" of "+RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase();
-			switch(disp)
+				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase();
+			switch(disp.intValue())
 			{
 			case 0: buf.append(itemDesc); break;
 			case 1: buf.append(itemDesc+" held"); break;
 			case 2: buf.append(itemDesc+" worn or wielded"); break;
 			}
-			if(r<(req.size()-1))
-				buf.append((((Boolean)req.elementAt(r,1)).booleanValue()?", and ":", or "));
 		}
 		return buf.toString();
 	}
 
-	public String addAbilityComponent(String s)
+	public String addAbilityComponent(String s, Hashtable H)
 	{
 		int x=s.indexOf("=");
 		if(x<0) return "Malformed component line (code 0): "+s;
@@ -1177,6 +1183,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 1-1): "+parmS; continue;}
 			if(parmS.substring(0,x).equalsIgnoreCase("kept")) build[2]=new Boolean(false);
+			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
 			{error="Malformed component line (code 1-2): "+parmS; continue;}
 			parmS=parmS.substring(x+1);
@@ -1212,7 +1219,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		parm.trimToSize();
 		if(error!=null) return error;
-		if(parm.size()>0) getAbilityComponentMap().put(id.toUpperCase(),parm);
+		if(parm.size()>0) H.put(id.toUpperCase(),parm);
 		return null;
 	}
 	
@@ -1234,7 +1241,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 				s=((String)V.elementAt(v)).trim();
 				if(s.startsWith("#")||(s.length()==0)||s.startsWith(";")||s.startsWith(":")) continue;
-				error=addAbilityComponent(s);
+				error=addAbilityComponent(s,H);
 				if(error!=null) Log.errOut("CMAble",error);
 			}
 			Resources.submitResource("COMPONENT_MAP",H);

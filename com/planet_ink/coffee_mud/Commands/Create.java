@@ -417,19 +417,20 @@ public class Create extends BaseGenerics
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]=[PARAMETERS] as follows: \n\r");
 			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true).text();
+			StringBuffer inst=new StringBuffer("");
 			Vector V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
 				if(((String)V.elementAt(v)).startsWith("#"))
-					buf.append(((String)V.elementAt(v)).substring(1)+"\n\r");
+					inst.append(((String)V.elementAt(v)).substring(1)+"\n\r");
 				else
 				if(((String)V.elementAt(v)).length()>0) 
 					break;
-			mob.tell(buf.toString());
+			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String parms=CMParms.combine(commands,2);
+		String parms=CMParms.combineWithQuotes(commands,2);
 		String skillID=parms.substring(0,parms.indexOf("="));
 		Ability A=CMClass.getAbility(skillID);
 		if(A==null)
@@ -445,7 +446,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 		parms=A.ID()+parms.substring(parms.indexOf("="));
-		String error=CMLib.ableMapper().addAbilityComponent(parms);
+		String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
 		if(error!=null)
 		{
 			mob.tell(error);

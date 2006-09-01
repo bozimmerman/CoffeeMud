@@ -459,7 +459,7 @@ public class Destroy extends BaseItemParser
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
+		boolean removed=false;
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
 		if(F!=null)
 		{
@@ -480,18 +480,23 @@ public class Destroy extends BaseItemParser
 					if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1; 
 					else
 					if((ze2<0)&&(ze1>0)) ze=ze1+1;
-					if(ze<0) ze=text.length();
+					if(ze<=0) ze=text.length();
 					if(!text.substring(zb).trim().startsWith("#"))
 					{
 						text.delete(zb,ze);
 						x=-1;
+						removed=true;
 					}
 				}
 				x=text.toString().toUpperCase().indexOf(classID.toUpperCase(),x+1);
 			}
+			if(removed)
+			{
+				CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
+				F.saveRaw(text);
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
+			}
 		}
-		
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
 		return true;
 	}
 	public boolean classes(MOB mob, Vector commands)
