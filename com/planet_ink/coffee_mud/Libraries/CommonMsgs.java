@@ -41,8 +41,19 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     protected final static int LOOK_LONG=0;
     protected final static int LOOK_NORMAL=1;
     protected final static int LOOK_BRIEFOK=2;
+    protected String unknownCommand(){return "Huh?";}
 
-
+	public boolean handleUnknownCommand(MOB mob, Vector command)
+	{
+		if(mob==null) return false;
+		Room R=mob.location();
+		if(R==null){ mob.tell(unknownCommand()); return false;}
+		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,unknownCommand(),CMParms.combine(command,0),null);
+		if(!R.okMessage(mob,msg)) return false;
+		R.send(mob,msg);
+		return true;
+	}
+	
 	public boolean doStandardCommand(MOB mob, String command, Vector parms)
 	{
 		try

@@ -1275,7 +1275,10 @@ public class StdMOB implements MOB
 	public void doCommand(Vector commands)
 	{
 		Object O=CMLib.english().findCommand(this,commands);
-		if(O!=null) doCommand(O,commands);
+		if(O!=null) 
+			doCommand(O,commands);
+		else
+			CMLib.commands().handleUnknownCommand(this,commands);
 	}
 
     protected void doCommand(Object O, Vector commands)
@@ -1291,7 +1294,7 @@ public class StdMOB implements MOB
 			if(O instanceof Ability)
 				CMLib.english().evoke(this,commands);
 			else
-				tell("Wha? Huh?");
+				CMLib.commands().handleUnknownCommand(this,commands);
 		}
 		catch(java.io.IOException io)
 		{
@@ -1330,7 +1333,7 @@ public class StdMOB implements MOB
     {
         if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
-        if(O==null){ tell("Huh?"); return;}
+        if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
         tickDelay=calculateTickDelay(O,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
@@ -1351,7 +1354,7 @@ public class StdMOB implements MOB
 	{
 		if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
-        if(O==null){ tell("Huh?"); return;}
+        if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
         tickDelay=calculateTickDelay(O,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0) 
