@@ -96,6 +96,7 @@ public class TaxCollector extends StdBehavior
 		else
 			owed[OWE_CITIZENTAX]=CMath.div(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),10.0);
 		owed[OWE_TOTAL]=owed[OWE_CITIZENTAX]+owed[OWE_BACKTAXES]+owed[OWE_FINES];
+		owed[OWE_TOTAL]=new Long(Math.round(owed[OWE_TOTAL])).doubleValue();
 		return owed;
 	}
 

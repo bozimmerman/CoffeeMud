@@ -367,6 +367,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
+				((Armor)building).baseEnvStats().setArmor(0);
 				if(armordmg!=0)
 					((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);

@@ -95,7 +95,7 @@ set roomgroup
 set room
 set mob hassan
 give behavior Scriptable LOAD=quests/murdermystery/announcer.script~
-give behavior Scriptable +SPEECH_PROG mystery murder crime solve\;say Yes, $TARGET was murdered at $WHEREHAPPENED.  Come back here and announce WHO you think did it, their MOTIVE, and what WEAPON they used.  No wrong guesses are allowed.  Questioning the people around that room will reveal the clues you need.\;~\;
+give behavior Scriptable +SPEECH_PROG mystery murder crime solve\;say Yes, $TARGET was murdered at $WHEREHAPPENED.  The murder weapons were left behind. You should go there and starting asking the folks in nearby rooms about those weapons, and any other clues you gather.  Then come back here and announce WHO you think did it, their MOTIVE, and what WEAPON they used.  No wrong guesses are allowed.  Questioning the people around that room will reveal all the clues you need.\;~\;
 give behavior Scriptable +ONCE_PROG\;QUESTCHAT Murder most foul! $TARGET was murdered at $WHEREHAPPENED on $WHENHAPPENED.  Come and ask me about the mystery!\;~\;
 give behavior Scriptable +SPEECH_PROG $&TOOL\;if VAR($n MM1_TOOL != '')\;say You have already made a guess on the weapon.\;return\;endif\;MPSETVAR $n MM1_TOOL '$TOOL'\;say Ok, so you think the weapon used was $TOOL.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
 give behavior Scriptable +SPEECH_PROG $&AGENT\;if VAR($n MM1_AGENT != '')\;say You have already made a guess on the killer.\;return\;endif\;MPSETVAR $n MM1_AGENT '$AGENT'\;say Ok, so you think the killer was $AGENT.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
@@ -121,6 +121,22 @@ LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motiv
 LOAD=quests/murdermystery/toolmotivemap.quest wherehappened tool motivegroup-motive
 LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motive
 
+#####################################
+# Now install a second set to make things easier.
+#####################################
+# first the weapons<->suspects
+LOAD=quests/murdermystery/toolagentmap.quest wherehappened toolgroup-tool agentgroup-agent
+LOAD=quests/murdermystery/toolagentmap.quest wherehappened tool agentgroup-agent 
+LOAD=quests/murdermystery/toolagentmap.quest wherehappened toolgroup-tool agent
+# now agents<->motives
+LOAD=quests/murdermystery/agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
+LOAD=quests/murdermystery/agentmotivemap.quest wherehappened agent motivegroup-motive
+LOAD=quests/murdermystery/agentmotivemap.quest wherehappened agentgroup-agent motive
+# lastly tools<->motives
+LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motivegroup-motive
+LOAD=quests/murdermystery/toolmotivemap.quest wherehappened tool motivegroup-motive
+LOAD=quests/murdermystery/toolmotivemap.quest wherehappened toolgroup-tool motive
+
 set duration 800
-# the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will
+# the duration of the quest is 52 minutes (800 ticks).  The scripts on the mobs will
 # do the rest...

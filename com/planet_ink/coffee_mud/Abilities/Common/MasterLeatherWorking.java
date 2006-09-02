@@ -468,6 +468,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			if(building instanceof Armor)
 			{
 				misctype=applyLayers((Armor)building,misctype);
+				((Armor)building).baseEnvStats().setArmor(0);
 				if(armordmg!=0)
 					((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);

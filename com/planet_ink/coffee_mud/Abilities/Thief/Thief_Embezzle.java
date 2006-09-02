@@ -44,6 +44,46 @@ public class Thief_Embezzle extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
+	private DVector lastOnes=new DVector(2);
+
+	protected int timesPicked(MOB target)
+	{
+		int times=0;
+		for(int x=0;x<lastOnes.size();x++)
+		{
+			MOB M=(MOB)lastOnes.elementAt(x,1);
+			Integer I=(Integer)lastOnes.elementAt(x,2);
+			if(M==target)
+			{
+				times=I.intValue();
+				lastOnes.removeElement(M);
+				break;
+			}
+		}
+		if(lastOnes.size()>=50)
+			lastOnes.removeElementAt(0);
+		lastOnes.addElement(target,new Integer(times+1));
+		return times+1;
+	}
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if((msg.amITarget(affected))
+		   &&(mobs.contains(msg.source())))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_BUY)
+			   ||(msg.targetMinor()==CMMsg.TYP_SELL)
+			   ||(msg.targetMinor()==CMMsg.TYP_LIST)
+			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
+			   ||(msg.targetMinor()==CMMsg.TYP_VIEW))
+			{
+				msg.source().tell(affected.name()+" looks unwilling to do business with you.");
+				return false;
+			}
+		}
+		return super.okMessage(myHost,msg);
+	}
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -125,7 +165,7 @@ public class Thief_Embezzle extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-(levelDiff),auto);
+		boolean success=proficiencyCheck(mob,(-(levelDiff+(timesPicked(mob)*50))),auto);
 		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
 		    String str="<S-NAME> embezzle(s) "+CMLib.beanCounter().nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
@@ -135,7 +175,7 @@ public class Thief_Embezzle extends ThiefSkill
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj().getDaysInMonth())/Tickable.TIME_TICK)).intValue());
 				bank.delDepositInventory(victim,hisCoins);
-				hisCoins=CMLib.beanCounter().makeBestCurrency(target,hisCoins.getTotalValue()-hisAmount);
+				hisCoins=CMLib.beanCounter().makeBestCurrency(target,hisCoins.getTotalValue()-(hisAmount/3.0));
 				if(hisCoins.getNumberOfCoins()>0)
 					bank.addDepositInventory(victim,hisCoins);
 				bank.delDepositInventory(myAcct,myCoins);

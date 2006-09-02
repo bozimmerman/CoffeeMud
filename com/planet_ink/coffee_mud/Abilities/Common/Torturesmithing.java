@@ -271,6 +271,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				}
 			}
 			int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardness));
+			((Armor)building).baseEnvStats().setArmor(0);
 			if(armordmg!=0)
 				((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 		}

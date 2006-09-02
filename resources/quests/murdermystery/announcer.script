@@ -9,6 +9,7 @@ FUNCTION_PROG winner
 			give 100 "$n"
 			mpquestwin '$n' murdermystery
 			mpendquest murdermystery
+			MPSETVAR $i MM1_WINNER $n
 		else
 			whisper $n You are correct, but since you've already done this before, KEEP QUIET!
 		endif
@@ -24,7 +25,17 @@ FUNCTION_PROG winner
 	endif
 ~
 
+QUEST_TIME_PROG murdermystery 5
+	if VAR($i MM1_WINNER != '')
+		questchat Five minutes to go on our murder mystery.  Better get back here and give me your guesses!
+	endif
+~
+
 QUEST_TIME_PROG murdermystery -1
+	if VAR($i MM1_WINNER != '')
+		questchat Well, it looks like the local cityguards solved this one.  It was $%QVAR(murdermystery AGENT)% who did the killing with $%QVAR(murdermystery TOOL)% for $%QVAR(murdermystery MOTIVE)%
+		mpsetvar * MM1_WINNER ''
+	endif
 	mpsetvar * MM1_TOOL ''
 	mpsetvar * MM1_LOST ''
 	mpsetvar * MM1_AGENT ''

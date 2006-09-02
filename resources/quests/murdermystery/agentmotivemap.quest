@@ -86,7 +86,7 @@
 	# we have a witness!
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG32 is too proud to kill for $ARG3.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too proud to kill for $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
