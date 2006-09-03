@@ -102,7 +102,9 @@ public interface CharStats extends CMObject
     /** stat constant for save vs overlooking hidden things */
     public static final int STAT_SAVE_OVERLOOKING=30;
     /** constant for total number of stat codes */
-	public final static int NUM_STATS=31;
+    public static final int STAT_SAVE_CONVERSION=31;
+    /** constant for total number of stat codes */
+	public final static int NUM_STATS=32;
 
     /**
      * Get the value of one of the STAT_ constants, representing attributes,
@@ -510,7 +512,8 @@ public interface CharStats extends CMObject
         "mW",
         "A",
         "vH",
-        "vO"
+        "vO",
+        "vC"
     };
 
     /** string array of descriptions of each stat code, ordered by numeric value */
@@ -546,7 +549,8 @@ public interface CharStats extends CMObject
         "MAX WISDOM ADJ.",
         "AGE",
         "SAVE VS DETECTION",
-        "SAVE VS OVERLOOKING"
+        "SAVE VS OVERLOOKING",
+        "SAVE VS CONVERSIONS"
     };
 
     /** string array of descriptions of each stat code, ordered by numeric value */
@@ -582,7 +586,8 @@ public interface CharStats extends CMObject
         "MAXWISDOM",
         "AGE",
         "DETECTION",
-        "OVERLOOKING"
+        "OVERLOOKING",
+        "CONVERSION"
     };
 
     /** string array of attributable descriptions of each stat code, ordered by numeric value */
@@ -618,7 +623,8 @@ public interface CharStats extends CMObject
         "POTENTIALLY WISE",
         "OLD",
         "CONCEALED",
-        "WATCHFUL"
+        "WATCHFUL",
+        "DOUBTFUL"
     };
 
     /** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
@@ -652,6 +658,9 @@ public interface CharStats extends CMObject
             -1, // max cha
             -1, // max wis
             -1, // age
+            -1, // save conceilment
+            -1, // save overlooking
+            -1, // save conversion
            };
 
 }

@@ -476,6 +476,8 @@ public class DefaultCharStats implements CharStats
 			return getStat(STAT_SAVE_OVERLOOKING);
 		case STAT_SAVE_DETECTION: 
 			return getStat(STAT_SAVE_DETECTION);
+        case STAT_SAVE_CONVERSION: 
+            return getStat(STAT_SAVE_CONVERSION)+getStat(STAT_WISDOM);
 		}
 		return getStat(which);
 	}

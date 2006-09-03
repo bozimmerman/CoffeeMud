@@ -336,6 +336,7 @@ public class UtiliThread extends Thread
 	{
 		shutDown=true;
 		this.interrupt();
+        started=false;
 	}
 
 	public void run()

@@ -382,7 +382,7 @@ public class Stat extends BaseAbleLister
 			recoverMOB(target);
 			recoverMOB(M);
 			int base=M.adjustedAttackBonus(null);
-			str.append("^c"+CMStrings.padRight("Base Attack",20)+": ^W"+base+"\n\r");
+			str.append("^c"+CMStrings.padRight("Base Attack",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
@@ -397,10 +397,10 @@ public class Stat extends BaseAbleLister
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.adjustedAttackBonus(null)+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.adjustedAttackBonus(null)+"\n\r");
 			str.append("\n\r");
 			base=M.adjustedArmor();
-			str.append("^C"+CMStrings.padRight("Base Armor",20)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight("Base Armor",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
@@ -415,10 +415,10 @@ public class Stat extends BaseAbleLister
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.adjustedArmor()+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.adjustedArmor()+"\n\r");
 			str.append("\n\r");
 			base=M.adjustedDamage(null,null);
-			str.append("^C"+CMStrings.padRight("Base Damage",20)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight("Base Damage",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
@@ -433,10 +433,10 @@ public class Stat extends BaseAbleLister
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.adjustedDamage(null,null)+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.adjustedDamage(null,null)+"\n\r");
 			str.append("\n\r");
 			base=(int)Math.round(M.envStats().speed()*100);
-			str.append("^C"+CMStrings.padRight("Base Attacks%",20)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight("Base Attacks%",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
@@ -451,10 +451,10 @@ public class Stat extends BaseAbleLister
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+(int)Math.round(target.envStats().speed()*100)+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+(int)Math.round(target.envStats().speed()*100)+"\n\r");
 			str.append("\n\r");
 			base=M.maxState().getHitPoints();
-			str.append("^C"+CMStrings.padRight("Base Hit Points",20)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight("Base Hit Points",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
@@ -468,7 +468,7 @@ public class Stat extends BaseAbleLister
 			}
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",20)+": ^W"+target.maxState().getHitPoints()+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.maxState().getHitPoints()+"\n\r");
 			recoverMOB(target);
 		}
 		else
@@ -494,10 +494,10 @@ public class Stat extends BaseAbleLister
 	public void reportOnDiffMOB(Environmental test, int diff, StringBuffer str)
 	{
 		if(diff>0)
-			str.append("^C"+CMStrings.padRight(test.Name(),20)+": ^W+"+diff+"\n\r");
+			str.append("^C"+CMStrings.padRight(test.Name(),40)+": ^W+"+diff+"\n\r");
 		else
 		if(diff<0)
-			str.append("^C"+CMStrings.padRight(test.Name(),20)+": ^W"+diff+"\n\r");
+			str.append("^C"+CMStrings.padRight(test.Name(),40)+": ^W"+diff+"\n\r");
 	}
 	
 	public boolean canBeOrdered(){return true;}
