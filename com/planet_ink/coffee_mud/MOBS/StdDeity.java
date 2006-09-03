@@ -56,6 +56,9 @@ public class StdDeity extends StdMOB implements Deity
 	protected Hashtable trigCurseTimes=new Hashtable();
 	protected int checkDown=0;
 	protected boolean norecurse=false;
+    protected MOB blacklist=null;
+    protected int blackmarks=0;
+    protected long lastBlackmark=0;
 
 	public StdDeity()
 	{
@@ -802,25 +805,65 @@ public class StdDeity extends StdMOB implements Deity
 			for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
 			{
 				MOB M=(MOB)p.nextElement();
+                if((lastBlackmark>0)
+                &&(blacklist!=null)
+                &&(blacklist!=M)
+                &&((System.currentTimeMillis()-lastBlackmark)<120000))
+                    continue;
 				if((!M.isMonster())&&(M.getWorshipCharID().equals(name())))
 				{
-					if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
-					{
-						if(!CMLib.masking().maskCheck(getClericRequirements(),M))
-						{
-							CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
-							if((M.location()!=null)&&(M.okMessage(M,msg)))
-								M.location().send(M,msg);
-						}
-					}
-					else
-					if(!CMLib.masking().maskCheck(getWorshipRequirements(),M))
-					{
-						CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
-						if((M.location()!=null)&&(M.okMessage(M,msg)))
-							M.location().send(M,msg);
-					}
+                    if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
+                    {
+                        if(!CMLib.masking().maskCheck(getClericRequirements(),M))
+                        {
+                            if((blacklist==M)&&((++blackmarks)>30))
+                            {
+                                CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+                                if((M.location()!=null)&&(M.okMessage(M,msg)))
+                                    M.location().send(M,msg);
+                                blackmarks=0; 
+                                blacklist=null; 
+                                lastBlackmark=0;
+                            }
+                            else
+                            {
+                                if(blacklist!=M) 
+                                    blackmarks=0;
+                                blacklist=M;
+                                blackmarks++;
+                                lastBlackmark=System.currentTimeMillis();
+                                if((blackmarks%5)==0)
+                                    M.tell("You feel dirtied by the disappointment of "+name()+".");
+                            }
+                        }
+                        else
+                            if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
+                    }
+                    else
+                    if(!CMLib.masking().maskCheck(getWorshipRequirements(),M))
+                    {
+                        if((blacklist==M)&&((++blackmarks)>30))
+                        {
+                            CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+                            if((M.location()!=null)&&(M.okMessage(M,msg)))
+                                M.location().send(M,msg);
+                        }
+                        else
+                        {
+                            if(blacklist!=M) 
+                                blackmarks=0;
+                            blacklist=M;
+                            blackmarks++;
+                            lastBlackmark=System.currentTimeMillis();
+                            if(blackmarks==1)
+                                M.tell("You have disappointed "+name()+".");
+                        }
+                    }
+                    else
+                        if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
 				}
+                else
+                    if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
 			}
 			long curTime=System.currentTimeMillis()-60000;
             Long L=null;
