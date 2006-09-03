@@ -310,9 +310,9 @@ public class StdRace implements Race
 
 	public Vector outfit(MOB myChar){return outfitChoices;}
 
-	public String healthText(MOB mob)
+	public String healthText(MOB viewer, MOB mob)
 	{
-		return CMLib.combat().standardMobCondition(mob);
+		return CMLib.combat().standardMobCondition(viewer,mob);
 	}
 
 	public Weapon funHumanoidWeapon()

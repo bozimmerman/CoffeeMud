@@ -91,41 +91,41 @@ public class Spirit extends Undead
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 
-	public String healthText(MOB mob)
+	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is near banishment!^N";
+			return "^r" + mob.displayName(viewer) + "^r is near banishment!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is massively weak and faded.^N";
+			return "^r" + mob.displayName(viewer) + "^r is massively weak and faded.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is very faded.^N";
+			return "^r" + mob.displayName(viewer) + "^r is very faded.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is somewhat faded.^N";
+			return "^y" + mob.displayName(viewer) + "^y is somewhat faded.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y is very weak and slightly faded.^N";
+			return "^y" + mob.displayName(viewer) + "^y is very weak and slightly faded.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has lost stability and is weak.^N";
+			return "^p" + mob.displayName(viewer) + "^p has lost stability and is weak.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is unstable and slightly weak.^N";
+			return "^p" + mob.displayName(viewer) + "^p is unstable and slightly weak.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is unbalanced and unstable.^N";
+			return "^g" + mob.displayName(viewer) + "^g is unbalanced and unstable.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is somewhat unbalanced.^N";
+			return "^g" + mob.displayName(viewer) + "^g is somewhat unbalanced.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
 	
 	public Vector myResources()

@@ -107,13 +107,13 @@ public class Prop_Auction extends Property
 						M.doCommand(V);
 						if(!CMLib.flags().canMove(highBidder))
 						{
-							highBidder.tell("You have won the auction, but are unable to pay or collect.  Please contact "+M.name()+" about this matter immediately.");
+							highBidder.tell("You have won the auction, but are unable to pay or collect.  Please contact "+M.displayName(highBidder)+" about this matter immediately.");
 							M.tell(highBidder.name()+" is unable to pay or collect at this time. Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
 						if(CMLib.beanCounter().getTotalAbsoluteValue(highBidder,currency)<bid)
 						{
-							highBidder.tell("You can no longer cover your bid.  Please contact "+M.name()+" about this matter immediately.");
+							highBidder.tell("You can no longer cover your bid.  Please contact "+M.displayName(highBidder)+" about this matter immediately.");
 							M.tell(highBidder.name()+" can not cover the bid any longer! Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
@@ -130,7 +130,7 @@ public class Prop_Auction extends Property
                                     CMLib.beanCounter().subtractMoney(highBidder,currency,bid);
                                     CMLib.beanCounter().addMoney(M,currency,bid);
     								M.tell(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
-    								highBidder.tell(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
+    								highBidder.tell(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" has been transferred to "+M.displayName(highBidder)+".  You should have received the auctioned goods.  This auction is complete.");
                                     if(auctioning instanceof LandTitle)
                                     {
                                         CMMsg msg=CMClass.getMsg(M,highBidder,auctioning,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
@@ -141,13 +141,13 @@ public class Prop_Auction extends Property
                                 {
                                     M.giveItem((Item)auctioning);
                                     M.tell("Your transaction could not be completed because "+highBidder.name()+" was unable to collect the item.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
-                                    highBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
+                                    highBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.displayName(highBidder)+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
                                 }
 							}
 							else
 							{
 								M.tell("Your transaction could not be completed.  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
-								highBidder.tell("Your transaction could not be completed.  Please contact "+M.name()+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
+								highBidder.tell("Your transaction could not be completed.  Please contact "+M.displayName(highBidder)+" about receipt of "+auctioning.name()+" for "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
 							}
 						}
 					}

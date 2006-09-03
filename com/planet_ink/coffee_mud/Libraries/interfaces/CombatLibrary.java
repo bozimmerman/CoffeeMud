@@ -71,7 +71,7 @@ public interface CombatLibrary extends CMObject
     public String fightingProwessStr(int prowess);
     public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString);
     public String standardHitString(int weaponClass, int damageAmount,  String weaponName);
-    public String standardMobCondition(MOB mob);
+    public String standardMobCondition(MOB viewer, MOB mob);
     public void resistanceMsgs(CMMsg msg, MOB source, MOB target);
     public void establishRange(MOB source, MOB target, Environmental tool);
     public void makeFollowersFight(MOB observer, MOB target, MOB source);

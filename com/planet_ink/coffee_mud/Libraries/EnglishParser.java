@@ -547,9 +547,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					Environmental thisThang=(Environmental)list.elementAt(i);
 					if((!(thisThang instanceof Ability))
 					&&(thisThang.displayText().length()>0)
-					&&(containsString(thisThang.displayText(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
+					&&(containsString(thisThang.displayText(),srchStr)
+                        ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
+    						if((--myOccurrance)<=0)
+    							return thisThang;
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException x){}
@@ -598,7 +599,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
-				if((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+				if(((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+                ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
 					if((--myOccurrance)<=0)
 						return thisThang;
 			}
@@ -647,8 +649,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(int i=0;i<list.length;i++)
 			{
 				Environmental thisThang=list[i];
-				if((thisThang!=null)&&(thisThang.displayText().length()>0))
-					if(containsString(thisThang.displayText(),srchStr))
+                if(thisThang==null) continue;
+                if(((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+                ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return thisThang;
 			}
@@ -817,8 +820,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 								return thisThang;
 					}
 					else
-					if((E.displayText().length()>0)
-					&&(containsString(E.displayText(),srchStr)))
+					if(((E.displayText().length()>0)&&(containsString(E.displayText(),srchStr)))
+                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return E;
 				}

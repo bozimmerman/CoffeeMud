@@ -304,18 +304,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             int x=(int)(sniffedmob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
             if(x<=1) 
-                sniffingmob.tell(sniffedmob.name()+" has a slight aroma about "+sniffedmob.charStats().himher()+"."); 
+                sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" has a slight aroma about "+sniffedmob.charStats().himher()+"."); 
             else
             if(x<=3) 
-                sniffingmob.tell(sniffedmob.name()+" smells pretty sweaty."); 
+                sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" smells pretty sweaty."); 
             else
             if(x<=7) 
-                sniffingmob.tell(sniffedmob.name()+" stinks pretty bad.");
+                sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" stinks pretty bad.");
             else
             if(x<15) 
-                sniffingmob.tell(sniffedmob.name()+" smells most foul.");
+                sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" smells most foul.");
             else 
-                sniffingmob.tell(sniffedmob.name()+" reeks of noxious odors.");
+                sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" reeks of noxious odors.");
         }
     }
     
@@ -542,8 +542,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         double d=CMath.div(C.getStat(stat),mob.charStats().getStat(stat));
         String prepend="";
         if((d<=0.5)||(d>=3.0)) prepend="much ";
-        if(d>=1.6) return mob.name()+" appears "+prepend+weakword+" than the average "+mob.charStats().raceName()+".\n\r";
-        if(d<=0.67) return mob.name()+" appears "+prepend+strongword+" than the average "+mob.charStats().raceName()+".\n\r";
+        if(d>=1.6) return mob.charStats().HeShe()+" appears "+prepend+weakword+" than the average "+mob.charStats().raceName()+".\n\r";
+        if(d<=0.67) return mob.charStats().HeShe()+" appears "+prepend+strongword+" than the average "+mob.charStats().raceName()+".\n\r";
         return "";
     }
     
@@ -745,6 +745,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             s=RawMaterial.RESOURCE_SMELLS[item.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
         if((s!=null)&&(s.length()>0))
             msg.source().tell(msg.source(),item,null,"<T-NAME> has a "+s+" smell.");
+    }
+    
+    public void handleIntroductions(MOB speaker, MOB me, String msg)
+    {
+        if((me.playerStats()!=null)
+        &&(speaker!=me)
+        &&(speaker.playerStats()!=null)
+        &&(msg!=null)
+        &&(!me.playerStats().isIntroducedTo(speaker.Name()))
+        &&(CMLib.english().containsString(msg,speaker.Name())))
+            me.playerStats().introduceTo(speaker.Name());
     }
     
     protected void handleBeingRoomSniffed(CMMsg msg)
@@ -1115,13 +1126,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if((!CMSecurity.isDisabled("RACES"))
                 &&(!viewedmob.charStats().getCurrentClass().raceless()))
                 {
-                    myDescription.append(viewedmob.name()+" the ");
+                    myDescription.append(viewedmob.displayName(viewermob)+" the ");
                     if(viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)
                         myDescription.append(viewedmob.charStats().ageName().toLowerCase()+" ");
                     myDescription.append(viewedmob.charStats().raceName());
                 }
                 else
-                    myDescription.append(viewedmob.name()+" ");
+                    myDescription.append(viewedmob.displayName(viewermob)+" ");
                 if(levelStr!=null)
                     myDescription.append(" is "+levelStr+".\n\r");
                 else
@@ -1144,7 +1155,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             }
             if(!viewermob.isMonster())
                 myDescription.append(CMProps.mxpImage(viewedmob," ALIGN=RIGHT H=70 W=70"));
-            myDescription.append(viewedmob.healthText()+"\n\r\n\r");
+            myDescription.append(viewedmob.healthText(viewermob)+"\n\r\n\r");
             myDescription.append(viewedmob.description()+"\n\r\n\r");
             
             StringBuffer eq=CMLib.commands().getEquipment(viewermob,viewedmob);

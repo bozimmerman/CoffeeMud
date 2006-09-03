@@ -156,7 +156,8 @@ public class CMProps extends Properties
     public static final int SYSTEMB_ROOMDNOCACHE=7;
     public static final int SYSTEMB_MUDSHUTTINGDOWN=8;
     public static final int SYSTEMB_ACCOUNTEXPIRATION=9;
-    public static final int NUMB_SYSTEM=10;
+    public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
+    public static final int NUMB_SYSTEM=11;
 
     private static String[] sysVars=new String[NUM_SYSTEM];
     private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
@@ -346,6 +347,7 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_AUTOAREAPROPS,page.getStr("AUTOAREAPROPS"));
         setUpLowVar(SYSTEM_MXPIMAGEPATH,page.getStr("MXPIMAGEPATH"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
+        setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,page.getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
         setUpLowVar(SYSTEM_PREFACTIONS,page.getStr("FACTIONS"));
         
         if(CMLib.color()!=null) CMLib.color().clearLookups();

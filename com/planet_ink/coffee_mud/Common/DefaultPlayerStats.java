@@ -65,6 +65,7 @@ public class DefaultPlayerStats implements PlayerStats
     protected long accountExpiration=0;
     protected RoomnumberSet visitedRoomSet=null;
     protected DVector levelInfo=new DVector(3);
+    protected HashSet introductions=new HashSet();
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
     public CMObject copyOf()
@@ -121,12 +122,20 @@ public class DefaultPlayerStats implements PlayerStats
 		return prompt;
 	}
 
+    public boolean isIntroducedTo(String name){return introductions.contains(name.toUpperCase().trim());}
+    public void introduceTo(String name){
+        if((!isIntroducedTo(name))&&(name.trim().length()>0))
+            introductions.add(name.toUpperCase().trim());
+    }
+    
 	public HashSet getHashFrom(String str)
 	{
 		HashSet h=new HashSet();
 		if((str==null)||(str.length()==0)) return h;
 		str=CMStrings.replaceAll(str,"<FRIENDS>","");
 		str=CMStrings.replaceAll(str,"<IGNORED>","");
+        str=CMStrings.replaceAll(str,"<INTROS>","");
+        str=CMStrings.replaceAll(str,"</INTROS>","");
 		str=CMStrings.replaceAll(str,"</FRIENDS>","");
 		str=CMStrings.replaceAll(str,"</IGNORED>","");
 		int x=str.indexOf(";");
@@ -286,8 +295,10 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		String f=getPrivateList(getFriends());
 		String i=getPrivateList(getIgnored());
+        String t=getPrivateList(introductions);
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
+            +((t.length()>0)?"<INTROS>"+i+"</INTROS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+getTitleXML()
             +getAliasXML()
@@ -307,6 +318,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		friends=getHashFrom(CMLib.xml().returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(CMLib.xml().returnXMLValue(str,"IGNORED"));
+        introductions=getHashFrom(CMLib.xml().returnXMLValue(str,"INTROS"));
         if(CMLib.xml().returnXMLValue(str,"ACCTEXP").length()>0)
             setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(str,"ACCTEXP")));
         else

@@ -101,7 +101,7 @@ public class Spell_FeignDeath extends Spell
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
 		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 		{
-			mob.tell(mob.name()+" doesn't seem to be here.");
+			msg.source().tell(mob.name()+" doesn't seem to be here.");
 			return false;
 		}
 		return true;

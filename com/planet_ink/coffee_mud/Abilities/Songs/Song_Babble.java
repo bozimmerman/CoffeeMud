@@ -79,25 +79,6 @@ public class Song_Babble extends Song
 		return w.toString();
 	}
 
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end).trim();
-		return null;
-	}
-	protected String subStitute(String affmsg, String msg)
-	{
-		if(affmsg==null) return null;
-		int start=affmsg.indexOf("'");
-		int end=affmsg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
-		return affmsg;
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -111,10 +92,10 @@ public class Song_Babble extends Song
 		{
 			String str=msg.othersMessage();
 			if(str==null) str=msg.targetMessage();
-			if(str!=null) str=getMsgFromAffect(str);
+			if(str!=null) str=CMStrings.getSayFromMessage(str);
 			if(str!=null)
 			{
-				String smsg=getMsgFromAffect(msg.sourceMessage());
+				String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 				int numToMess=numChars(str);
 				if(numToMess>0)
 					smsg=messChars(smsg,numChars(str));
@@ -122,11 +103,11 @@ public class Song_Babble extends Song
 							  msg.target(),
 							  null,
 							  msg.sourceCode(),
-							  subStitute(msg.sourceMessage(),smsg),
+                              CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
 							  msg.targetCode(),
-							  subStitute(msg.targetMessage(),smsg),
+                              CMStrings.substituteSayInMessage(msg.targetMessage(),smsg),
 							  msg.othersCode(),
-							  subStitute(msg.othersMessage(),smsg));
+                              CMStrings.substituteSayInMessage(msg.othersMessage(),smsg));
 				helpProficiency((MOB)affected);
 			}
 		}

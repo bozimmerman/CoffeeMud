@@ -80,10 +80,9 @@ public class Spell_Geas extends Spell
 		&&((msg.target()==null)||(msg.target() instanceof MOB))
 		&&(msg.sourceMessage().length()>0))
 		{
-			int start=msg.sourceMessage().indexOf("'");
-			int end=msg.sourceMessage().lastIndexOf("'");
-			if((start>0)&&(end>(start+1)))
-			    STEPS.sayResponse(msg.source(),(MOB)msg.target(),msg.sourceMessage().substring(start+1,end));
+            String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+            if(str!=null)
+			    STEPS.sayResponse(msg.source(),(MOB)msg.target(),str);
 		}
 	}
 

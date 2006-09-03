@@ -67,6 +67,7 @@ public interface CommonCommands extends CMObject
     public void lookAtExits(Room room, MOB mob);
     public void lookAtExitsShort(Room room, MOB mob);
 	public boolean handleUnknownCommand(MOB mob, Vector command);
+    public void handleIntroductions(MOB speaker, MOB me, String said);
     public void tickAging(MOB mob);
     public int tickManaConsumption(MOB mob, int manaConsumeCounter);
 }

@@ -119,7 +119,7 @@ public class Chant_SummonPlants extends Chant
 		if(CMLib.utensils().doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
-			newChant.setMiscText(mob.name());
+			newChant.setMiscText(mob.Name());
 			newItem.addNonUninvokableEffect(newChant);
 		}
 		else

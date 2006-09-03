@@ -178,25 +178,18 @@ public class Spell_Cogniportive extends Spell
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null))
 			{
-				String msgStr=msg.sourceMessage();
-				int x=msgStr.indexOf("'");
-				if(x>=0)
+				String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if(msgStr!=null)
 				{
-					msgStr=msgStr.substring(x+1);
-					x=msgStr.lastIndexOf("'");
-					if(x>=0)
+					Vector V=CMParms.parse(msgStr);
+					if((V.size()>=2)
+					&&(((String)V.firstElement()).equalsIgnoreCase("HOME")))
 					{
-						msgStr=msgStr.substring(0,x);
-						Vector V=CMParms.parse(msgStr);
-						if((V.size()>=2)
-						&&(((String)V.firstElement()).equalsIgnoreCase("HOME")))
-						{
-							String str=CMParms.combine(V,1);
-							if((str.length()>0)
-							&&((CMLib.english().containsString(affected.name(),str)
-									||CMLib.english().containsString(affected.displayText(),str))))
-								msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
-						}
+						String str=CMParms.combine(V,1);
+						if((str.length()>0)
+						&&((CMLib.english().containsString(affected.name(),str)
+								||CMLib.english().containsString(affected.displayText(),str))))
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
 					}
 				}
 			}

@@ -106,16 +106,6 @@ public class Spell_Spellbinding extends Spell
 		}
 	}
 
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end);
-		return null;
-	}
-
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -123,7 +113,7 @@ public class Spell_Spellbinding extends Spell
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			String s=getMsgFromAffect(msg.sourceMessage());
+			String s=CMStrings.getSayFromMessage(msg.sourceMessage());
 			for(int v=0;v<spellbindings.size();v++)
 				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,"The magic of '"+s+"' swells within you!",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
@@ -135,7 +125,7 @@ public class Spell_Spellbinding extends Spell
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			String s=getMsgFromAffect(msg.sourceMessage());
+			String s=CMStrings.getSayFromMessage(msg.sourceMessage());
 			for(int v=spellbindings.size()-1;v>=0;v--)
 				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
 				{

@@ -379,7 +379,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
-				CMLib.leveler().postExperience(sire,null," from "+mob.name(),sireShare,quiet);
+				CMLib.leveler().postExperience(sire,null," from "+mob.displayName(sire),sireShare,quiet);
 			}
 		}
 		if((mob.getClanID().length()>0)&&(amount>2))

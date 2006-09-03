@@ -96,6 +96,9 @@ public interface PlayerStats extends CMObject
     public void delAliasName(String named);
     public void setAlias(String named, String value);
     
+    public boolean isIntroducedTo(String name);
+    public void introduceTo(String name);
+    
     // Acct Exp
     public long getAccountExpiration();
     public void setAccountExpiration(long newVal);

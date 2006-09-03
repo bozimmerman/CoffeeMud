@@ -564,13 +564,9 @@ public class PokerDealer extends StdBehavior
         &&(msg.othersMessage()!=null)
         &&(msg.othersMessage().length()>0))
         {
-            String textOfSay=null;
-            int start=msg.othersMessage().indexOf("'");
-            int end=msg.othersMessage().lastIndexOf("'");
-            if((start>0)&&(end>start))
+            String textOfSay=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
+            if(textOfSay!=null)
             {
-                textOfSay=msg.othersMessage().substring(start+1,end).trim().toUpperCase();
-                
                 // check for a request of a new game type
                 for(int i=0;i<GAME_DESCS.length;i++)
                    if(textOfSay.indexOf(GAME_DESCS[i].toUpperCase())>=0)
@@ -634,12 +630,9 @@ public class PokerDealer extends StdBehavior
         {
             // the proper person SPEAKS!
             // we should parse out their words..
-            String textOfSay=null;
-            int start=msg.othersMessage().indexOf("'");
-            int end=msg.othersMessage().lastIndexOf("'");
-            if((start>0)&&(end>start))
+            String textOfSay=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
+            if(textOfSay!=null)
             {
-                textOfSay=msg.othersMessage().substring(start+1,end).trim().toUpperCase();
                 // now determine if they've said one
                 // of the magic words (pass, fold, call, etc..
                 // If they do, we can stop looping through
@@ -730,12 +723,9 @@ public class PokerDealer extends StdBehavior
         {
             // the proper person SPEAKS!
             // we should parse out their words..
-            String textOfSay=null;
-            int start=msg.othersMessage().indexOf("'");
-            int end=msg.othersMessage().lastIndexOf("'");
-            if((start>0)&&(end>start))
+            String textOfSay=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
+            if(textOfSay!=null)
             {
-                textOfSay=msg.othersMessage().substring(start+1,end).trim().toUpperCase();
                 // now determine if they've said one
                 // of the magic words (pass, stand, numbers, etc..
                 // If they do, we can stop looping through

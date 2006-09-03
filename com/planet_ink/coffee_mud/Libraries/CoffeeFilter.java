@@ -524,7 +524,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									else
 									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone":"something");
-									else
+                                    else
+                                    if(regarding instanceof MOB)
+                                        replacement=((MOB)regarding).displayName(mob);
+                                    else
 										replacement=regarding.name();
 								}
 								break;
@@ -541,6 +544,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                                     else
                                     if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
                                         replacement=((regarding instanceof MOB)?"someone":"something");
+                                    else
+                                    if(regarding instanceof MOB)
+                                        replacement=CMLib.english().cleanArticles(((MOB)regarding).displayName(mob));
                                     else
                                         replacement=CMLib.english().cleanArticles(regarding.name());
                                 }
@@ -564,6 +570,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									else
 									if(source==target)
 										replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himher()+"self"):"itself");
+                                    else
+                                    if(regarding instanceof MOB)
+                                        replacement=((MOB)regarding).displayName(mob);
 									else
 										replacement=regarding.name();
 								}
@@ -579,6 +588,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone's":"something's");
 									else
+                                    if(regarding instanceof MOB)
+                                        replacement=((MOB)regarding).displayName(mob)+"'s";
+                                    else
 										replacement=regarding.name()+"'s";
 								}
 								break;

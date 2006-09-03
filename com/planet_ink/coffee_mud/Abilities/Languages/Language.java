@@ -96,25 +96,6 @@ public class Language extends StdAbility
 		return word;
 	}
 
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end);
-		return null;
-	}
-	protected String subStitute(String affmsg, String msg)
-	{
-		if(affmsg==null) return null;
-		int start=affmsg.indexOf("'");
-		int end=affmsg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
-		return affmsg;
-	}
-
 	protected int numChars(String words)
 	{
 		int num=0;
@@ -199,11 +180,11 @@ public class Language extends StdAbility
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 			{
-				String str=getMsgFromAffect(msg.othersMessage());
-				if(str==null) str=getMsgFromAffect(msg.targetMessage());
+                String str=CMStrings.getSayFromMessage(msg.othersMessage());
+				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-	                String smsg=getMsgFromAffect(msg.sourceMessage());
+	                String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 	                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-proficiency(),100)));
 	                if(numToMess>0) smsg=messChars(smsg,numToMess);
 	                str=scrambleAll(str,numToMess);
@@ -211,11 +192,11 @@ public class Language extends StdAbility
 								  msg.target(),
 								  this,
 								  msg.sourceCode(),
-								  subStitute(msg.sourceMessage(),smsg),
+								  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
 								  msg.targetCode(),
-								  subStitute(msg.targetMessage(),str),
+                                  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
 								  msg.othersCode(),
-								  subStitute(msg.othersMessage(),str));
+                                  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
 	                if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
 	    				helpProficiency((MOB)affected);
 				}
@@ -316,21 +297,21 @@ public class Language extends StdAbility
 		&&(msg.tool() instanceof Language)
 		&&(msg.tool().ID().equals(ID())))
 		{
-			String str=this.getMsgFromAffect(msg.sourceMessage());
+			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
 			{
 				int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-proficiency(),100)));
 				if(numToMess>0)
 					str=messChars(str,numToMess);
 				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 				{
 					String otherMes=msg.targetMessage();
 					if(msg.target()!=null)
 						otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),this.subStitute(otherMes,str)+" (translated from "+ID()+")",CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+ID()+")",CMMsg.NO_EFFECT,null));
 				}
 				else
 				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
@@ -338,7 +319,7 @@ public class Language extends StdAbility
 					String otherMes=msg.othersMessage();
 					if(msg.target()!=null)
 						otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),subStitute(otherMes,str)+" (translated from "+ID()+")",CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+ID()+")",CMMsg.NO_EFFECT,null));
 				}
 			}
 		}

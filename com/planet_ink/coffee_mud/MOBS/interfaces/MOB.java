@@ -112,6 +112,8 @@ public interface MOB
 	public int getBitmap();
 	public void setBitmap(int bitmap);
 	public String titledName();
+    public String displayName(MOB mob);
+    public String genericName();
 
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
@@ -125,7 +127,7 @@ public interface MOB
 	public int maxCarry();
     public int maxItems();
 	public int baseWeight();
-	public String healthText();
+	public String healthText(MOB viewer);
 
 	/** Combat and death */
 	public boolean amDead();

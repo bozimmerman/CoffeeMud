@@ -378,7 +378,7 @@ public class Pregnancy extends StdAbility
 							desc+=".";
 							mob.curState().setMovement(0);
 							mob.curState().setHitPoints(mob.curState().getHitPoints()/2);
-							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
+							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** <S-NAME> !!!GIVE(S) BIRTH!!! ******");
 							if(CMLib.dice().rollPercentage()>5)
 							{
 								Ability A=mob.fetchEffect(ID());

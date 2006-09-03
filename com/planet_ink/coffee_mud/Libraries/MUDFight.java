@@ -777,12 +777,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     }
 
     public String[] healthDescs(){return DEFAULT_HEALTH_CHART;}
-    public String standardMobCondition(MOB mob)
+    public String standardMobCondition(MOB viewer,MOB mob)
     {
         int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
         if(pct<0) pct=0;
         if(pct>=healthDescs().length) pct=healthDescs().length-1;
-        return CMStrings.replaceAll(healthDescs()[pct],"<MOB>",mob.name());
+        return CMStrings.replaceAll(healthDescs()[pct],"<MOB>",mob.displayName(viewer));
     }
 
     public void resistanceMsgs(CMMsg msg, MOB source, MOB target)

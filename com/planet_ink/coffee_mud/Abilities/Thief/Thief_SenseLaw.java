@@ -77,7 +77,7 @@ public class Thief_SenseLaw extends ThiefSkill
 				{
 					MOB M=(MOB)V.elementAt(l);
 					if(CMLib.flags().canBeSeenBy(M,mob))
-						buf.append(M.name()+" is an officer of the law.  ");
+						buf.append(M.displayName(mob)+" is an officer of the law.  ");
 					else
 						buf.append("There is an officer of the law here.  ");
 				}

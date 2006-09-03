@@ -85,7 +85,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		if(CMLib.utensils().doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
-			newChant.setMiscText(mob.name());
+			newChant.setMiscText(mob.Name());
 			newItem.addNonUninvokableEffect(newChant);
 		}
 		else

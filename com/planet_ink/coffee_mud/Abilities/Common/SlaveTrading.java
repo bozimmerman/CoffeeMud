@@ -62,17 +62,17 @@ public class SlaveTrading extends CommonSkill
 			}
 			if(!M.isMonster())
 			{
-				commonTell(mob,"You can't sell "+M.name()+" as a slave.");
+				commonTell(mob,M,null,"You can't sell <T-NAME> as a slave.");
 				return false;
 			}
 			if(CMLib.flags().isAnimalIntelligence(M))
 			{
-				commonTell(mob,"You can't sell "+M.name()+" as a slave.  Animals are not slaves.");
+				commonTell(mob,M,null,"You can't sell <T-NAME> as a slave.  Animals are not slaves.");
 				return false;
 			}
 			if((M.fetchEffect("Skill_Enslave")==null)||(!M.fetchEffect("Skill_Enslave").text().equals(mob.Name())))
 			{
-				commonTell(mob,M.name()+" doesn't seem to be your slave.");
+				commonTell(mob,M,null,"<T-NAME> doesn't seem to be your slave.");
 				return false;
 			}
 		}

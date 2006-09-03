@@ -111,17 +111,17 @@ public class Domesticating extends CommonSkill
 		if(!M.isMonster())
 		{
 			if(newName!=null)
-				commonTell(mob,"You can't name "+M.name()+".");
+				commonTell(mob,M,null,"You can't name <T-NAME>.");
 			else
-				commonTell(mob,"You can't domesticate "+M.name()+".");
+				commonTell(mob,M,null,"You can't domesticate <T-NAME>.");
 			return false;
 		}
 		if(!CMLib.flags().isAnimalIntelligence(M))
 		{
 			if(newName!=null)
-				commonTell(mob,"You can't name "+M.name()+".");
+				commonTell(mob,M,null,"You can't name <T-NAME>.");
 			else
-				commonTell(mob,"You don't know how to domesticate "+M.name()+".");
+				commonTell(mob,M,null,"You don't know how to domesticate <T-NAME>.");
 			return false;
 		}
 		String theName=newName;

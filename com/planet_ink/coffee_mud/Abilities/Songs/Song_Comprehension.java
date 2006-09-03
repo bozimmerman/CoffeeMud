@@ -38,24 +38,6 @@ public class Song_Comprehension extends Song
 	public String name(){ return "Comprehension";}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end).trim();
-		return null;
-	}
-	protected String subStitute(String affmsg, String msg)
-	{
-		if(affmsg==null) return null;
-		int start=affmsg.indexOf("'");
-		int end=affmsg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
-		return affmsg;
-	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -70,21 +52,21 @@ public class Song_Comprehension extends Song
 		&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
 		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
-			String str=this.getMsgFromAffect(msg.sourceMessage());
+			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
 			{
 				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				else
 				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
 				{
 					String otherMes=msg.othersMessage();
 					if(msg.target()!=null)
 						otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(otherMes,str)+" (translated from "+ID()+")"));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+ID()+")"));
 				}
 			}
 		}

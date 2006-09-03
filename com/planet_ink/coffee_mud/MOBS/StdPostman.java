@@ -542,16 +542,6 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         location().send(this,msg2);
     }
     
-    protected String getMsgFromAffect(String msg)
-    {
-        if(msg==null) return null;
-        int start=msg.indexOf("'");
-        int end=msg.lastIndexOf("'");
-        if((start>0)&&(end>start))
-            return msg.substring(start+1,end);
-        return "";
-    }
-    
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
@@ -694,7 +684,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             case CMMsg.TYP_SPEAK:
             {
                 super.executeMsg(myHost,msg);
-                String str=getMsgFromAffect(msg.targetMessage());
+                String str=CMStrings.getSayFromMessage(msg.targetMessage());
                 String theName=msg.source().Name();
                 if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                     theName=msg.source().getClanID();

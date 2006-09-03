@@ -139,41 +139,41 @@ public class Stone extends StdRace
 		return super.okMessage(myHost,msg);
 	}
 
-	public String healthText(MOB mob)
+	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is almost broken!^N";
+			return "^r" + mob.displayName(viewer) + "^r is almost broken!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is massively cracked and damaged.^N";
+			return "^r" + mob.displayName(viewer) + "^r is massively cracked and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is extremely cracked and damaged.^N";
+			return "^r" + mob.displayName(viewer) + "^r is extremely cracked and damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is very cracked and damaged.^N";
+			return "^y" + mob.displayName(viewer) + "^y is very cracked and damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y is cracked and damaged.^N";
+			return "^y" + mob.displayName(viewer) + "^y is cracked and damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p is cracked and slightly damaged.^N";
+			return "^p" + mob.displayName(viewer) + "^p is cracked and slightly damaged.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is showing numerous cracks.^N";
+			return "^p" + mob.displayName(viewer) + "^p is showing numerous cracks.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is showing some crachs.^N";
+			return "^g" + mob.displayName(viewer) + "^g is showing some crachs.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is showing small cracks.^N";
+			return "^g" + mob.displayName(viewer) + "^g is showing small cracks.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

@@ -68,7 +68,7 @@ public class Spell_DetectUndead extends Spell
 			{
 				MOB mob=lastRoom.fetchInhabitant(i);
 				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-					mob.tell(mob.name()+" gives off a cold dark vibe.");
+					((MOB)affected).tell(mob,null,null,"<S-NAME> gives off a cold dark vibe.");
 			}
 		}
 		return true;

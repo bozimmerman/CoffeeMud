@@ -243,7 +243,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public boolean checkExpiration(MOB mob)
     {
         if(!CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)) return true;
-        MOB newMob=CMLib.map().getLoadPlayer(mob.name());
+        MOB newMob=CMLib.map().getLoadPlayer(mob.Name());
         if(CMSecurity.isASysOp(newMob)) return true;
         if((newMob.playerStats()!=null)
         &&(newMob.playerStats().getAccountExpiration()<=System.currentTimeMillis()))

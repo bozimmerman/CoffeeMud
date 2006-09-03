@@ -77,41 +77,41 @@ public class AirElemental extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public String healthText(MOB mob)
+	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is almost blown away!^N";
+			return "^r" + mob.displayName(viewer) + "^r is almost blown away!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is swirling alot and is massively dissipated.^N";
+			return "^r" + mob.displayName(viewer) + "^r is swirling alot and is massively dissipated.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is swirling alot and is heavily dissipated.^N";
+			return "^r" + mob.displayName(viewer) + "^r is swirling alot and is heavily dissipated.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is swirling alot and dissipating more and more.^N";
+			return "^y" + mob.displayName(viewer) + "^y is swirling alot and dissipating more and more.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y is swirling and starting to dissipate.^N";
+			return "^y" + mob.displayName(viewer) + "^y is swirling and starting to dissipate.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p is swirling!.^N";
+			return "^p" + mob.displayName(viewer) + "^p is swirling!.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is starting to swirl.^N";
+			return "^p" + mob.displayName(viewer) + "^p is starting to swirl.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is showing some swirls.^N";
+			return "^g" + mob.displayName(viewer) + "^g is showing some swirls.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is showing small swirls.^N";
+			return "^g" + mob.displayName(viewer) + "^g is showing small swirls.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

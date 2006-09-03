@@ -3470,7 +3470,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
-					results.append(((MOB)E).healthText());
+					results.append(((MOB)E).healthText(null));
 				else
 					results.append(E.name()+" is dead.");
 				break;

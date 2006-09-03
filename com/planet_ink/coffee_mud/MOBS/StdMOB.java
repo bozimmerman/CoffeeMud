@@ -210,6 +210,13 @@ public class StdMOB implements MOB
 	    return CMStrings.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
 	}
 
+    public String genericName()
+    {
+        if(charStats().getStat(CharStats.STAT_AGE)>0)
+            return charStats().ageName().toLowerCase()+" "+charStats().raceName().toLowerCase();
+        return charStats().raceName().toLowerCase();
+    }
+    
 	public String image()
     {
         if(imageName==null)
@@ -1016,21 +1023,32 @@ public class StdMOB implements MOB
 		return CMClass.getWeapon("Natural");
 	}
 
+    public String displayName(MOB viewer)
+    {
+        if((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM))
+        &&(playerStats()!=null)
+        &&(viewer!=null)
+        &&(viewer.playerStats()!=null)
+        &&(!viewer.playerStats().isIntroducedTo(Name())))
+            return CMStrings.startWithAorAn(genericName()).toLowerCase();
+        return name();
+    }
+
 	public String displayText(MOB viewer)
 	{
 		if((displayText.length()==0)
-		   ||(!name().equals(Name()))
-		   ||(!titledName().equals(Name()))
-		   ||(CMLib.flags().isSleeping(this))
-		   ||(CMLib.flags().isSitting(this))
-		   ||(riding()!=null)
-		   ||((amFollowing()!=null)&&(amFollowing().fetchFollowerOrder(this)>0))
-		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0)&&CMLib.flags().hasSeenContents(this))
-		   ||(isInCombat()))
+	    ||(!name().equals(Name()))
+	    ||(!titledName().equals(Name()))
+	    ||(CMLib.flags().isSleeping(this))
+	    ||(CMLib.flags().isSitting(this))
+	    ||(riding()!=null)
+	    ||((amFollowing()!=null)&&(amFollowing().fetchFollowerOrder(this)>0))
+	    ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0)&&CMLib.flags().hasSeenContents(this))
+	    ||(isInCombat()))
 		{
 			StringBuffer sendBack=null;
-			if(!name().equals(Name()))
-				sendBack=new StringBuffer(name());
+			if(!displayName(viewer).equals(Name()))
+				sendBack=new StringBuffer(displayName(viewer));
 			else
 				sendBack=new StringBuffer(titledName());
 			sendBack.append(" ");
@@ -1179,12 +1197,12 @@ public class StdMOB implements MOB
 	}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
-	public String healthText()
+	public String healthText(MOB viewer)
 	{
 	    String mxp="^<!ENTITY vicmaxhp \""+maxState().getHitPoints()+"\"^>^<!ENTITY vichp \""+curState().getHitPoints()+"\"^>^<Health^>^<HealthText \""+name()+"\"^>";
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
-			return mxp+charStats().getMyRace().healthText(this)+"^</HealthText^>";
-		return mxp+CMLib.combat().standardMobCondition(this)+"^</HealthText^>";
+			return mxp+charStats().getMyRace().healthText(viewer,this)+"^</HealthText^>";
+		return mxp+CMLib.combat().standardMobCondition(viewer,this)+"^</HealthText^>";
 	}
 
     public double actions(){return freeActions;}
@@ -2231,6 +2249,11 @@ public class StdMOB implements MOB
                 if((msg.source().Name().equals(getLiegeID())&&(!isMarriedToLiege())))
                     setLiegeID("");
                 break;
+            case CMMsg.TYP_SPEAK:
+                if((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM))
+                &&(!asleep)&&(canhearsrc))
+                    CMLib.commands().handleIntroductions(msg.source(),this,msg.targetMessage());
+                break;
             default:
                 if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(!amDead))
                     CMLib.combat().handleBeingAssaulted(msg);
@@ -2312,6 +2335,9 @@ public class StdMOB implements MOB
 			&&(!asleep)
 			&&(canhearsrc))
 			{
+                if((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM))
+                &&(msg.othersMinor()==CMMsg.TYP_SPEAK))
+                    CMLib.commands().handleIntroductions(msg.source(),this,msg.othersMessage());
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}
 			else

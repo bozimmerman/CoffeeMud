@@ -172,7 +172,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	 * @param mob the mob whose health to check
 	 * @return a string describing his health
 	 */
-	public String healthText(MOB mob);
+	public String healthText(MOB viewer, MOB mob);
 	/**
 	 * Returns a Weapon object representing what a member of this
 	 * race fights with when unarmed.  This method may change what it

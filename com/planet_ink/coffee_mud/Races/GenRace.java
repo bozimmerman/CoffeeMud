@@ -132,11 +132,11 @@ public class GenRace extends StdRace
 	{
 		return leaveStr;
 	}
-	public String healthText(MOB mob)
+	public String healthText(MOB viewer, MOB mob)
 	{
 		if((healthBuddy!=null)&&(healthBuddy!=this))
-			return healthBuddy.healthText(mob);
-		return CMLib.combat().standardMobCondition(mob);
+			return healthBuddy.healthText(viewer,mob);
+		return CMLib.combat().standardMobCondition(viewer,mob);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

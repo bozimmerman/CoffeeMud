@@ -132,6 +132,26 @@ public class CMStrings
         return thisStr;
     }
     
+    public static String getSayFromMessage(String msg)
+    {
+        if(msg==null) return null;
+        int start=msg.indexOf("'");
+        int end=msg.lastIndexOf("'");
+        if((start>0)&&(end>start))
+            return msg.substring(start+1,end);
+        return null;
+    }
+    public static String substituteSayInMessage(String affmsg, String msg)
+    {
+        if(affmsg==null) return null;
+        int start=affmsg.indexOf("'");
+        int end=affmsg.lastIndexOf("'");
+        if((start>0)&&(end>start))
+            return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
+        return affmsg;
+    }
+
+    
     public static String removeColors(String s)
     {
         StringBuffer str=new StringBuffer(s);

@@ -88,11 +88,9 @@ public class Skill_Enslave extends StdSkill
 			{
 				if((msg.target()==null)||(msg.target() instanceof MOB))
 				{
-					int start=msg.sourceMessage().indexOf("'");
-					int end=msg.sourceMessage().lastIndexOf("'");
-					if((start>0)&&(end>(start+1)))
+                    String response=CMStrings.getSayFromMessage(msg.sourceMessage());
+                    if(response!=null)
 					{
-					    String response=msg.sourceMessage().substring(start+1,end);
 					    if((msg.target()==mob)
 					    &&(msg.source().Name().equals(mob.getLiegeID())))
 					    {
@@ -117,11 +115,9 @@ public class Skill_Enslave extends StdSkill
 		    	{
 				    if(!msg.source().Name().equals(mob.getLiegeID()))
 				    {
-						int start=msg.sourceMessage().indexOf("'");
-						int end=msg.sourceMessage().lastIndexOf("'");
-						if((start>0)&&(end>(start+1)))
+                        String response=CMStrings.getSayFromMessage(msg.sourceMessage());
+                        if(response!=null)
 						{
-						    String response=msg.sourceMessage().substring(start+1,end);
 						    if((response.toUpperCase().startsWith("I COMMAND YOU TO "))
 						    ||(response.toUpperCase().startsWith("I ORDER YOU TO ")))
 					            CMLib.commands().postSay(mob,msg.source(),"I don't take orders from you. ",false,false);
@@ -129,11 +125,9 @@ public class Skill_Enslave extends StdSkill
 				    }
 				    else
 				    {
-						int start=msg.sourceMessage().indexOf("'");
-						int end=msg.sourceMessage().lastIndexOf("'");
-						if((start>0)&&(end>(start+1)))
+                        String response=CMStrings.getSayFromMessage(msg.sourceMessage());
+                        if(response!=null)
 						{
-						    String response=msg.sourceMessage().substring(start+1,end);
 						    if(response.toUpperCase().startsWith("I COMMAND YOU TO "))
 						        response=response.substring(("I COMMAND YOU TO ").length());
 						    else

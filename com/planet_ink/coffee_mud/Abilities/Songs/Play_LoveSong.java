@@ -68,26 +68,26 @@ public class Play_LoveSong extends Play
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.WORN_LEGS);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
-					mob.doCommand(CMParms.parse("MATE "+M.name()));
+					mob.doCommand(CMParms.parse("MATE "+M.Name()));
 				}
 				else
 				if(CMLib.dice().rollPercentage()>10)
 					switch(CMLib.dice().roll(1,5,0))
 					{
 					case 1:
-						mob.tell("You feel strange urgings towards "+M.name()+".");
+						mob.tell("You feel strange urgings towards "+M.displayName(mob)+".");
 						break;
 					case 2:
-						mob.tell("You have strong happy feelings towards "+M.name()+".");
+						mob.tell("You have strong happy feelings towards "+M.displayName(mob)+".");
 						break;
 					case 3:
-						mob.tell("You feel very appreciative of "+M.name()+".");
+						mob.tell("You feel very appreciative of "+M.displayName(mob)+".");
 						break;
 					case 4:
-						mob.tell("You feel very close to "+M.name()+".");
+						mob.tell("You feel very close to "+M.displayName(mob)+".");
 						break;
 					case 5:
-						mob.tell("You feel lovingly towards "+M.name()+".");
+						mob.tell("You feel lovingly towards "+M.displayName(mob)+".");
 						break;
 					}
 				}catch(Exception e){}

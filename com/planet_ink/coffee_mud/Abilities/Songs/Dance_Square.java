@@ -48,11 +48,9 @@ public class Dance_Square extends Dance
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			int start=msg.sourceMessage().indexOf("'");
-			int end=msg.sourceMessage().lastIndexOf("'");
-			if((start>0)&&(end>start))
+            String cmd=CMStrings.getSayFromMessage(msg.sourceMessage());
+			if(cmd!=null)
 			{
-				String cmd=msg.sourceMessage().substring(start+1,end);
 				MOB M=(MOB)affected;
 				if(!cmd.toUpperCase().startsWith("FOL"))
 				{

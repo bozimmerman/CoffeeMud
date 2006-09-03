@@ -42,25 +42,6 @@ public class Spell_Brainwash extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public Vector limbsToRemove=new Vector();
 	
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end);
-		return null;
-	}
-	protected String subStitute(String affmsg, String msg)
-	{
-		if(affmsg==null) return null;
-		int start=affmsg.indexOf("'");
-		int end=affmsg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
-		return affmsg;
-	}
-	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.amISource((MOB)affected))
@@ -70,11 +51,11 @@ public class Spell_Brainwash extends Spell
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
-			String str=getMsgFromAffect(msg.othersMessage());
-			if(str==null) str=getMsgFromAffect(msg.targetMessage());
+			String str=CMStrings.getSayFromMessage(msg.othersMessage());
+			if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 			if(str!=null)
 			{
-				String smsg=getMsgFromAffect(msg.sourceMessage());
+				String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 				String lead=" ";
 				switch(CMLib.dice().roll(1,6,0))
 				{
@@ -91,11 +72,11 @@ public class Spell_Brainwash extends Spell
 						  msg.target(),
 						  this,
 						  msg.sourceCode(),
-						  subStitute(msg.sourceMessage(),smsg),
+                          CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
 						  msg.targetCode(),
-						  subStitute(msg.targetMessage(),str),
+                          CMStrings.substituteSayInMessage(msg.targetMessage(),str),
 						  msg.othersCode(),
-						  subStitute(msg.othersMessage(),str));
+                          CMStrings.substituteSayInMessage(msg.othersMessage(),str));
 				helpProficiency((MOB)affected);
 			}
 		}

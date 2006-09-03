@@ -130,7 +130,7 @@ public class Skill_Disguise extends BardSkill
 			if(!mob.isMonster())
 			{
 				String levelStr=mob.charStats().displayClassLevel(mob,false);
-				myDescription.append(mob.name()+" the "+mob.charStats().raceName()+" is a "+levelStr+".\n\r");
+				myDescription.append(mob.displayName(msg.source())+" the "+mob.charStats().raceName()+" is a "+levelStr+".\n\r");
 			}
 			int height=mob.envStats().height();
 			int weight=mob.baseEnvStats().weight();
@@ -138,7 +138,7 @@ public class Skill_Disguise extends BardSkill
 			if(values[4]!=null) height=CMath.s_int(values[4]);
 			if(height>0)
 				myDescription.append(mob.charStats().HeShe()+" is "+height+" inches tall and weighs "+weight+" pounds.\n\r");
-			myDescription.append(mob.healthText()+"\n\r\n\r");
+			myDescription.append(mob.healthText(msg.source())+"\n\r\n\r");
 			myDescription.append(mob.description()+"\n\r\n\r");
 			myDescription.append(mob.charStats().HeShe()+" is wearing:\n\r"+CMLib.commands().getEquipment(msg.source(),mob));
 			msg.source().tell(myDescription.toString());

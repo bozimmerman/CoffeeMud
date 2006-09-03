@@ -162,12 +162,12 @@ public class Undead extends StdRace
 		DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(mob!=null))
 		{
-			if((mob.Name().toUpperCase().indexOf("DRACULA")>=0)
-			||(mob.Name().toUpperCase().indexOf("VAMPIRE")>=0))
+			if((mob.name().toUpperCase().indexOf("DRACULA")>=0)
+			||(mob.name().toUpperCase().indexOf("VAMPIRE")>=0))
 				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
 			else
-			if((mob.Name().toUpperCase().indexOf("GHOUL")>=0)
-			||(mob.Name().toUpperCase().indexOf("GHAST")>=0))
+			if((mob.name().toUpperCase().indexOf("GHOUL")>=0)
+			||(mob.name().toUpperCase().indexOf("GHAST")>=0))
 				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
 	        if(ID().equals("Undead"))
 	        {
@@ -178,41 +178,41 @@ public class Undead extends StdRace
 		}
 		return body;
 	}
-	public String healthText(MOB mob)
+	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is near destruction!^N";
+			return "^r" + mob.displayName(viewer) + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is massively broken and damaged.^N";
+			return "^r" + mob.displayName(viewer) + "^r is massively broken and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is very damaged.^N";
+			return "^r" + mob.displayName(viewer) + "^r is very damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is somewhat damaged.^N";
+			return "^y" + mob.displayName(viewer) + "^y is somewhat damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y is very weak and slightly damaged.^N";
+			return "^y" + mob.displayName(viewer) + "^y is very weak and slightly damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has lost stability and is weak.^N";
+			return "^p" + mob.displayName(viewer) + "^p has lost stability and is weak.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is unstable and slightly weak.^N";
+			return "^p" + mob.displayName(viewer) + "^p is unstable and slightly weak.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is unbalanced and unstable.^N";
+			return "^g" + mob.displayName(viewer) + "^g is unbalanced and unstable.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is somewhat unbalanced.^N";
+			return "^g" + mob.displayName(viewer) + "^g is somewhat unbalanced.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

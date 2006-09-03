@@ -167,16 +167,6 @@ public class Concierge extends StdBehavior
 		return true;
 	}
 	
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end);
-		return null;
-	}
-	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
@@ -284,7 +274,7 @@ public class Concierge extends StdBehavior
         &&((msg.target()==observer)||(observer.location().numPCInhabitants()==1))
         &&(msg.sourceMessage()!=null))
         {
-        	String say=getMsgFromAffect(msg.sourceMessage());
+        	String say=CMStrings.getSayFromMessage(msg.sourceMessage());
         	if((say!=null)&&(say.length()>0))
         	{
         		Environmental E=findDestination(observer,msg.source(),say);

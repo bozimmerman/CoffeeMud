@@ -453,11 +453,10 @@ public class MudChat extends StdBehavior
 			&&(msg.sourceMessage()!=null)
 			&&(msg.targetMessage()!=null))
 			{
-				int x=msg.sourceMessage().indexOf("'");
-				int y=msg.sourceMessage().lastIndexOf("'");
-				if((x>=0)&&(y>x))
+                String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if(str!=null)
 				{
-					String str=" "+msg.sourceMessage().substring(x+1,y)+" ";
+					str=" "+str+" ";
 					int l=0;
 					for(int i=1;i<myChatGroup.size();i++)
 					{

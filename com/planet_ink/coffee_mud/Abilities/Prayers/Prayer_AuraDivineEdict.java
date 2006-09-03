@@ -59,16 +59,6 @@ public class Prayer_AuraDivineEdict extends Prayer
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The divine edict aura around <S-NAME> fades.");
 	}
 
-	protected String getMsgFromAffect(String msg)
-	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
-		if((start>0)&&(end>start))
-			return msg.substring(start+1,end);
-		return null;
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -89,9 +79,9 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.target() instanceof MOB)
 		&&(msg.target().envStats().level()<invoker().envStats().level())
-		&&(getMsgFromAffect(msg.sourceMessage().toUpperCase()).equals(getMsgFromAffect(msg.sourceMessage()))))
+		&&(CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase()).equals(CMStrings.getSayFromMessage(msg.sourceMessage()))))
 		{
-			Vector V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage()));
+			Vector V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
 			Object O=CMLib.english().findCommand((MOB)msg.target(),(Vector)V.clone());
 			if((!((MOB)msg.target()).isMonster())
 			&&(CMClass.className(O).equalsIgnoreCase("DROP")
