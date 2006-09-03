@@ -77,10 +77,10 @@ public interface Quest extends Tickable
     // they are called when you want the quest engine to be aware of a
     // a quest-specific object thats being added to the map, so that it
     // can be cleaned up later.  Ditto for abilities, affects, and behaviors.
-    public void runtimeRegisterAbility(MOB mob, String abilityID, String parms);
+    public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give);
     public void runtimeRegisterObject(Environmental object);
-    public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms);
-    public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms);
+    public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms, boolean give);
+    public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give);
     
 	// if the quest has a winner, this is him.
 	public void declareWinner(String mobName);

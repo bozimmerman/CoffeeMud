@@ -1,0 +1,17 @@
+GREET_PROG 100
+    yell HERESY! YOU MAY NOT ENTER THIS TEMPLE!!!
+	<SCRIPT>
+	    var CMLib=Packages.com.planet_ink.coffee_mud.core.CMLib;
+	    var crime=toJavaString("heresy against the gods");
+	    var desc=toJavaString("Angering the gods will bring doom upon us all!");
+	    var crimeLocs=toJavaString("");
+	    var crimeFlags=toJavaString("!witness");
+	    var sentence=toJavaString("JAIL1");
+	    var legalBehavior=CMLib.utensils().getLegalBehavior(monster().location());
+	    if(legalBehavior!=null)
+	    {
+	    	var legalObject=CMLib.utensils().getLegalObject(source().location());
+			legalBehavior.addWarrant(legalObject,source(),monster(),crimeLocs,crimeFlags,crime,sentence,desc);
+		}
+	</SCRIPT>
+~

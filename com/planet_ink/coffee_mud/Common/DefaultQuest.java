@@ -58,12 +58,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected Vector addons=new Vector();
     // contains a set of vectors, vectors are formatted as such:
     // 0=environmental item/mob/etc
-    // 1=Ability, 2=Ability (for an ability added)
-    // 1=Ability, 2=Ability, 3=String (for an ability modified)
-    // 1=Effect(for an Effect added)
-    // 1=Effect, 2=String (for an Effect modified)
-    // 1=Behavior (for an Behavior added)
-    // 1=Behavior, 2=String (for an Behavior modified)
+    //  1=Ability, 2=Ability (for an ability added)
+    //  1=Ability, 2=Ability, 3=String (for an ability modified)
+    //  1=Effect(for an Effect added)
+    //  1=Effect, 2=String (for an Effect modified)
+    //  1=Behavior (for an Behavior added)
+    //  1=Behavior, 2=String (for an Behavior modified)
 
     // the unique name of the quest
     public String name(){return name;}
@@ -2304,7 +2304,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             MOB M2=(MOB)toSet.elementAt(i);
-                            runtimeRegisterAbility(M2,A3.ID(),CMParms.combineWithQuotes(p,3));
+                            runtimeRegisterAbility(M2,A3.ID(),CMParms.combineWithQuotes(p,3),true);
                         }
                     }
                     else
@@ -2338,7 +2338,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            runtimeRegisterBehavior(E2,B.ID(),CMParms.combineWithQuotes(p,3));
+                            runtimeRegisterBehavior(E2,B.ID(),CMParms.combineWithQuotes(p,3),true);
                         }
                     }
                     else
@@ -2372,13 +2372,131 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            runtimeRegisterEffect(E2,A3.ID(),CMParms.combineWithQuotes(p,3));
+                            runtimeRegisterEffect(E2,A3.ID(),CMParms.combineWithQuotes(p,3),true);
                         }
                     }
                     else
                     {
                         if(!isQuiet)
                             Log.errOut("Quest","Quest '"+name()+"', unknown give type '"+cmd+"'.");
+                        q.error=true; break;
+                    }
+                }
+                else
+                if(cmd.equals("TAKE"))
+                {
+                    if(p.size()<2)
+                    {
+                        if(!isQuiet)
+                            Log.errOut("Quest","Quest '"+name()+"', unfound type on take.");
+                        q.error=true; break;
+                    }
+                    cmd=((String)p.elementAt(1)).toUpperCase();
+                    if(cmd.equals("ABILITY"))
+                    {
+                        if((q.mob==null)&&(q.mobGroup==null))
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take ability, no mob set.");
+                            q.error=true; break;
+                        }
+                        if(p.size()<3)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take ability, ability name not given.");
+                            q.error=true; break;
+                        }
+                        Ability A3=CMClass.findAbility((String)p.elementAt(2));
+                        if(A3==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take ability, ability name unknown '"+((String)p.elementAt(2))+".");
+                            q.error=true; break;
+                        }
+                        Vector toSet=new Vector();
+                        if(q.mob!=null) 
+                            toSet.addElement(q.mob);
+                        else
+                        if(q.mobGroup!=null) 
+                            toSet=q.mobGroup;
+                        for(int i=0;i<toSet.size();i++)
+                        {
+                            MOB M2=(MOB)toSet.elementAt(i);
+                            runtimeRegisterAbility(M2,A3.ID(),CMParms.combineWithQuotes(p,3),false);
+                        }
+                    }
+                    else
+                    if(cmd.equals("BEHAVIOR"))
+                    {
+                        if(q.envObject==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take behavior, no mob or item set.");
+                            q.error=true; break;
+                        }
+                        if(p.size()<3)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take behavior, behavior name not given.");
+                            q.error=true; break;
+                        }
+                        Behavior B=CMClass.getBehavior((String)p.elementAt(2));
+                        if(B==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
+                            q.error=true; break;
+                        }
+                        Vector toSet=new Vector();
+                        if(q.envObject instanceof Vector)
+                            toSet=(Vector)q.envObject;
+                        else
+                        if(q.envObject!=null) 
+                            toSet.addElement(q.envObject);
+                        for(int i=0;i<toSet.size();i++)
+                        {
+                            Environmental E2=(Environmental)toSet.elementAt(i);
+                            runtimeRegisterBehavior(E2,B.ID(),CMParms.combineWithQuotes(p,3),false);
+                        }
+                    }
+                    else
+                    if(cmd.equals("AFFECT"))
+                    {
+                        if(q.envObject==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take Effect, no mob, room or item set.");
+                            q.error=true; break;
+                        }
+                        if(p.size()<3)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take Effect, ability name not given.");
+                            q.error=true; break;
+                        }
+                        Ability A3=CMClass.findAbility((String)p.elementAt(2));
+                        if(A3==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot take Effect, ability name unknown '"+((String)p.elementAt(2))+".");
+                            q.error=true; break;
+                        }
+                        Vector toSet=new Vector();
+                        if(q.envObject instanceof Vector)
+                            toSet=(Vector)q.envObject;
+                        else
+                        if(q.envObject!=null) 
+                            toSet.addElement(q.envObject);
+                        for(int i=0;i<toSet.size();i++)
+                        {
+                            Environmental E2=(Environmental)toSet.elementAt(i);
+                            runtimeRegisterEffect(E2,A3.ID(),CMParms.combineWithQuotes(p,3),false);
+                        }
+                    }
+                    else
+                    {
+                        if(!isQuiet)
+                            Log.errOut("Quest","Quest '"+name()+"', unknown take type '"+cmd+"'.");
                         q.error=true; break;
                     }
                 }
@@ -2481,12 +2599,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 if(O instanceof Behavior)
                 {
                     Behavior B=E.fetchBehavior(((Behavior)O).ID());
-                    if(B==null) continue;
                     if((E instanceof MOB)&&(B instanceof ScriptingEngine))
                         ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
                     if((V.size()>2)&&(V.elementAt(2) instanceof String))
+                    {
+                        if(B==null){ B=(Behavior)O; E.addBehavior(B);}
                         B.setParms((String)V.elementAt(2));
+                    }
                     else
+                    if(B!=null)
                         E.delBehavior(B);
                 }
                 else
@@ -2497,19 +2618,25 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     &&(E instanceof MOB))
                     {
                         Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
-                        if(A==null) continue;
                         if((V.size()>3)&&(V.elementAt(3) instanceof String))
+                        {
+                            if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
                             A.setMiscText((String)V.elementAt(3));
+                        }
                         else
+                        if(A!=null)
                             ((MOB)E).delAbility(A);
                     }
                     else
                     {
                         Ability A=E.fetchEffect(((Ability)O).ID());
-                        if(A==null) continue;
                         if((V.size()>2)&&(V.elementAt(2) instanceof String))
+                        {
+                            if(A==null){A=(Ability)O; E.addEffect(A);}
                             A.setMiscText((String)V.elementAt(2));
+                        }
                         else
+                        if(A!=null)
                         {
                             A.unInvoke();
                             E.delEffect(A);
@@ -2727,7 +2854,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return true;
     }
 
-    public void runtimeRegisterAbility(MOB mob, String abilityID, String parms)
+    public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give)
     {
         if(mob==null) return;
         runtimeRegisterObject(mob);
@@ -2739,9 +2866,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             V.addElement(A4);
             V.addElement(A4);
             V.addElement(A4.text());
-            A4.setMiscText(parms);
-            A4.setProficiency(100);
+            if(give)
+            {
+                A4.setMiscText(parms);
+                A4.setProficiency(100);
+            }
+            else
+                mob.delAbility(A4);
         }
+        else
+        if(!give) return;
         else
         {
             A4=CMClass.getAbility(abilityID);
@@ -2761,7 +2895,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	questState.stuff.addElement(object);
     }
     
-    public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms)
+    public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms, boolean give)
     {
         if(affected==null) return;
         runtimeRegisterObject(affected);
@@ -2772,9 +2906,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             V.addElement(A4);
             V.addElement(A4.text());
-            A4.makeLongLasting();
-            A4.setMiscText(parms);
+            if(give)
+            {
+                A4.makeLongLasting();
+                A4.setMiscText(parms);
+            }
+            else
+                affected.delEffect(A4);
         }
+        else
+        if(!give) return;
         else
         {
             A4=CMClass.getAbility(abilityID);
@@ -2790,7 +2931,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         addons.addElement(V);
     }
     
-    public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms)
+    public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give)
     {
         if(behaving==null) return;
         runtimeRegisterObject(behaving);
@@ -2801,8 +2942,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             V.addElement(B);
             V.addElement(B.getParms());
-            B.setParms(parms);
+            if(give)
+                B.setParms(parms);
+            else
+                behaving.delBehavior(B);
         }
+        else
+        if(!give) return;
         else
         {
             B=CMClass.getBehavior(behaviorID);

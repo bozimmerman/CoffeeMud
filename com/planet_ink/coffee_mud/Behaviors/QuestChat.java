@@ -43,8 +43,8 @@ public class QuestChat extends MudChat
     public void startBehavior(Environmental E)
     {
     	super.startBehavior(E);
-    	Behavior B=E.fetchBehavior("MudChat");
-    	if(B!=null)E.delBehavior(B);
+    	//Behavior B=E.fetchBehavior("MudChat");
+    	//if(B!=null)E.delBehavior(B);
     }
     
     public void setParms(String newParms)
