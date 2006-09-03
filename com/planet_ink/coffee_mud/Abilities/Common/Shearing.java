@@ -68,7 +68,7 @@ public class Shearing extends CommonSkill
 			Vector V=M.charStats().getMyRace().myResources();
 			for(int v=0;v<V.size();v++)
 				if((V.elementAt(v) instanceof RawMaterial)
-				&&((((RawMaterial)V.elementAt(v)).material()&RawMaterial.RESOURCE_MASK)==RawMaterial.RESOURCE_WOOL))
+				&&(((RawMaterial)V.elementAt(v)).material()==RawMaterial.RESOURCE_WOOL))
 					wool.addElement(V.elementAt(v));
 		}
 		return wool;
@@ -107,7 +107,6 @@ public class Shearing extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=null;
-		if(target==null) return false;
 		Room R=mob.location();
 		if(R==null) return false;
 		sheep=null;
@@ -138,7 +137,7 @@ public class Shearing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scalping <T-NAME>.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) shearing <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

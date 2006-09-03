@@ -25,7 +25,7 @@ baked lamb chops	FOOD		16	mutton	1	herbs	1
 % baked fillet	FOOD		17	fish	1	herbs	1	butter	herbs	1		
 peanut butter cookies	FOOD		18	peanut butter	2	dough	1					
 cheese pizza	FOOD		19	dough	2	tomatoes	1	cheese	1			
-focacia	FOOD		20	bread	1	olives	1	cheese	1			
+focaccia	FOOD		20	bread	1	olives	1	cheese	1			
 cheese enchiladas	FOOD		21	corn tortilla	1	cheese	1	tomatoes	1			
 % pie	FOOD		22	apples	1	cinnamon	1	pie crust	1			
 meatloaf	FOOD		23	meat	1	tomatoes	1	bread	1	onions	1	

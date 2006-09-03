@@ -357,20 +357,19 @@ public class DefaultSession extends Thread implements Session
 	public boolean isLockedUpWriting(){
 		long time=writeStartTime;
 		if(time==0) return false;
-		return ((System.currentTimeMillis()-time)>5000);
+		return ((System.currentTimeMillis()-time)>10000);
 	}
 	public synchronized void out(char[] c){
 		try{
-			if(out!=null)
+			if((out!=null)&&(c!=null)&&(c.length>0))
 			{
-				writeStartTime=System.currentTimeMillis();
+				writeStartTime=System.currentTimeMillis()+c.length;
 				out.write(c);
-				if(out.checkError()) killFlag=true;
+				if(out.checkError()) 
+					logoff();
 			}
 		}
-		finally{
-			writeStartTime=0;
-		}
+		finally{writeStartTime=0;}
 	}
     public void out(String c){ if(c!=null) out(c.toCharArray());}
     public void out(char c){ char[] cs={c}; out(cs);}
@@ -1168,7 +1167,9 @@ public class DefaultSession extends Thread implements Session
         if(mob!=null)
         {
             if(mob.playerStats()!=null)
+            {
                 mob.playerStats().setLastDateTime(System.currentTimeMillis());
+            }
             if(CMLib.flags().isInTheGame(mob,true))
 	            CMLib.database().DBUpdateFollowers(mob);
             mob.removeFromGame(true);
@@ -1534,7 +1535,9 @@ public class DefaultSession extends Thread implements Session
             LT.initialize();
             LT.start();
 			if(mob.playerStats()!=null)
+            {
 				mob.playerStats().setLastDateTime(System.currentTimeMillis());
+            }
 			Log.sysOut("Session","logout: "+name);
 			if(mob!=null) CMLib.database().DBUpdateFollowers(mob);
 			if(mob!=null) mob.removeFromGame(true);

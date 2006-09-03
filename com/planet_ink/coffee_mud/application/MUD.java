@@ -541,6 +541,13 @@ public class MUD extends Thread implements MudHost
 		{
 			if(S!=null)S.print("Saving players...");
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
+            if(CMLib.sessions()!=null)
+                for(int s=0;s<CMLib.sessions().size();s++)
+                {
+                    Session S2=CMLib.sessions().elementAt(s);
+                    if((S2!=null)&&(S2.mob()!=null)&&(S2.mob().playerStats()!=null))
+                        S2.mob().playerStats().setLastDateTime(System.currentTimeMillis());
+                }
 			saveThread.savePlayers();
             CMLib.coffeeTables().update();
 			if(S!=null)S.println("done");
@@ -552,7 +559,7 @@ public class MUD extends Thread implements MudHost
         Log.sysOut("MUD","Stats saved.");
 		
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
-		Log.sysOut("MUD","Notifying all objects...");
+		Log.sysOut("MUD","Notifying all objects of shutdown...");
 		if(S!=null)S.print("Notifying all objects of shutdown...");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Notifying Objects");
 		MOB mob=null;
@@ -730,7 +737,8 @@ public class MUD extends Thread implements MudHost
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=mudThreads.size()-1;m>=0;m--)
 			((MUD)mudThreads.elementAt(m)).interrupt();
-		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
+		if(!keepItDown)
+			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
 	}
 
 
@@ -917,7 +925,8 @@ public class MUD extends Thread implements MudHost
 				
 		        Runtime.getRuntime().addShutdownHook(new Thread() {
 		            public void run() {
-		            	MUD.globalShutdown(null,true,null);
+		            	if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+		            		MUD.globalShutdown(null,true,null);
 		            }
 		        });
 		        

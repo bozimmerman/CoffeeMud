@@ -407,7 +407,7 @@ public class DefaultPlayerStats implements PlayerStats
         {
             buf.append(((Integer)levelInfo.elementAt(ss,1)).intValue()+",");
             buf.append(((Long)levelInfo.elementAt(ss,2)).longValue()+",");
-            buf.append((String)levelInfo.elementAt(ss,3)+",");
+            buf.append((String)levelInfo.elementAt(ss,3)+";");
         }
         return buf.toString();
     }

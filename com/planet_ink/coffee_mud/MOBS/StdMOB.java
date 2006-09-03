@@ -2076,9 +2076,22 @@ public class StdMOB implements MOB
 
 	public void tell(MOB source, Environmental target, Environmental tool, String msg)
 	{
-		if(mySession!=null)
-			mySession.stdPrintln(source,target,tool,msg);
-
+		if((mySession!=null)&&(msg!=null))
+		{
+			Session S=mySession;
+			if(S!=null)
+			{
+				try{
+					if(S.isLockedUpWriting())
+					{
+						Log.errOut("StdMOB","Kicked out "+name()+" due to write-lock.");
+						S.logoff();
+						return;
+					}
+				}catch(Throwable t){}
+				S.stdPrintln(source,target,tool,msg);
+			}
+		}
 	}
 
 	public void tell(String msg)
@@ -2131,7 +2144,8 @@ public class StdMOB implements MOB
 					||(!(msg.tool() instanceof DiseaseAffect))))
 				{
                     CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
-					setVictim((MOB)msg.target());
+    				if(CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(),true))
+						setVictim((MOB)msg.target());
 				}
 
 			switch(msg.sourceMinor())
@@ -2474,13 +2488,6 @@ public class StdMOB implements MOB
 			else
 			if(location()!=null)
 			{
-				try{
-					if((mySession!=null)&&(mySession.isLockedUpWriting()))
-					{
-						mySession.logoff();
-						Log.errOut("StdMOB","Kicked out "+name()+" due to write-lock.");
-					}
-				}catch(Throwable t){}
 				// handle variable equipment!
 				if((lastTickedDateTime<0)
 				&&isMonster()&&location().getMobility()&&location().getArea().getMobility())

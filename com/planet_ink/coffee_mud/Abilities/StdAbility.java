@@ -811,7 +811,7 @@ public class StdAbility extends ForeignScriptable implements Ability
             }
             if((mob.session()!=null)
             &&(mob.soulMate()==null)
-            )//&&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
+            &&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
             {
 	            DVector componentsRequirements=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
 	            if(componentsRequirements!=null)
