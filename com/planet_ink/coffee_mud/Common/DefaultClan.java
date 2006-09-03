@@ -717,6 +717,47 @@ public class DefaultClan implements Clan
             }
         }
         else
+        if(government==GVT_THEOCRACY)
+        {
+            switch(function)
+            {
+            case FUNC_CLANACCEPT:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANASSIGN:
+                return (role==POS_BOSS)?1:-1;
+            case FUNC_CLANEXILE:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANHOMESET:
+                return (role==POS_BOSS)?1:-1;
+            case FUNC_CLANDECLARE:
+                return (role==POS_BOSS)?1:-1;
+            case FUNC_CLANTAX:
+                return (role==POS_BOSS)?1:-1;
+            case FUNC_CLANDONATESET:
+                return (role==POS_BOSS)?1:-1;
+            case FUNC_CLANREJECT:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANPREMISE:
+                return (role==POS_BOSS)?1:-1;
+            case FUNC_CLANPROPERTYOWNER:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANENCHANT:
+                return (role==POS_ENCHANTER)?1:-1;
+            case FUNC_CLANWITHDRAW:
+                return ((role==POS_BOSS)||(role==POS_TREASURER))?1:-1;
+            case FUNC_CLANDEPOSITLIST:
+                return ((role==POS_BOSS)||(role==POS_ENCHANTER)||(role==POS_LEADER)||(role==POS_TREASURER)||(role==POS_STAFF)||(role==POS_MEMBER))?1:-1;
+            case FUNC_CLANCANORDERUNDERLINGS:
+                return ((role==POS_BOSS)||(role==POS_ENCHANTER)||(role==POS_LEADER)||(role==POS_TREASURER)||(role==POS_STAFF)||(role==POS_MEMBER))?1:-1;
+            case FUNC_CLANCANORDERCONQUERED:
+                return ((role==POS_BOSS)||(role==POS_ENCHANTER)||(role==POS_LEADER)||(role==POS_TREASURER)||(role==POS_STAFF)||(role==POS_MEMBER))?1:-1;
+            case FUNC_CLANVOTEASSIGN:
+                return -1;
+            case FUNC_CLANVOTEOTHER:
+                return -1;
+            }
+        }
+        else
         //if(government==GVT_DICTATORSHIP) or badly formed..
         {
             switch(function)
@@ -949,6 +990,83 @@ public class DefaultClan implements Clan
             }
 
             // handle any necessary promotions
+            if(getGovernment()==GVT_THEOCRACY)
+            {
+                int highestCleric=0;
+                MOB highestClericM=null;
+                int max=topRanks[getGovernment()];
+                for(int j=0;j<members.size();j++)
+                {
+                    long lastLogin=((Long)members.elementAt(j,3)).longValue();
+                    if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
+                    {
+                        String s=(String)members.elementAt(j,1);
+                        MOB M2=CMLib.map().getLoadPlayer(s);
+                        if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
+                        if((M2!=null)&&(M2.charStats().getCurrentClass().baseClass().equals("Cleric")))
+                        {
+                            if((CMLib.clans().getRoleOrder(((Integer)members.elementAt(j,2)).intValue())==max)
+                            &&(M2.envStats().level()>=highestCleric))
+                            {
+                                highestCleric=M2.envStats().level();
+                                highestClericM=M2;
+                            }
+                            else
+                            if(M2.envStats().level()>highestCleric)
+                            {
+                                highestCleric=M2.envStats().level();
+                                highestClericM=M2;
+                            }
+                            if(M2.getClanRole()<Clan.POS_LEADER)
+                            {
+                                clanAnnounce(M2.Name()+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
+                                Log.sysOut("Clans",M2.Name()+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+".");
+                                M2.setClanRole(Clan.POS_LEADER);
+                                CMLib.database().DBUpdateClanMembership(M2.Name(), name(), max);
+                            }
+                        }
+                    }
+                }
+                if(highestClericM==null)
+                {
+                    Log.sysOut("Clans","Clan '"+getName()+" deleted for lack of clerics.");
+                    destroyClan();
+                    StringBuffer buf=new StringBuffer("");
+                    for(int j=0;j<members.size();j++)
+                    {
+                        String s=(String)members.elementAt(j,1);
+                        long lastLogin=((Long)members.elementAt(j,3)).longValue();
+                        buf.append(s+" on "+CMLib.time().date2String(lastLogin)+"  ");
+                    }
+                    Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
+                    return true;
+                }
+                else
+                if(highestClericM.getClanRole()!=max)
+                {
+                    clanAnnounce(highestClericM.Name()+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
+                    Log.sysOut("Clans",highestClericM.Name()+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+".");
+                    highestClericM.setClanRole(max);
+                    CMLib.database().DBUpdateClanMembership(highestClericM.Name(), name(), max);
+                }
+                for(int j=0;j<members.size();j++)
+                {
+                    long lastLogin=((Long)members.elementAt(j,3)).longValue();
+                    if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
+                    {
+                        String s=(String)members.elementAt(j,1);
+                        MOB M2=CMLib.map().getLoadPlayer(s);
+                        if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
+                        if(!M2.getWorshipCharID().equals(highestClericM.getWorshipCharID()))
+                        {
+                            M2.setClanID("");
+                            M2.setClanRole(0);
+                            CMLib.database().DBUpdateClanMembership(M2.Name(), "", 0);
+                        }
+                    }
+                }
+            }
+            else
             if((getGovernment()==GVT_DICTATORSHIP)||(getGovernment()==GVT_OLIGARCHY))
             {
                 int highest=0;
@@ -1015,7 +1133,7 @@ public class DefaultClan implements Clan
 
 
             // now do votes
-            if((getGovernment()!=GVT_DICTATORSHIP)&&(votes()!=null))
+            if((getGovernment()!=GVT_DICTATORSHIP)&&(getGovernment()!=GVT_THEOCRACY)&&(votes()!=null))
             {
                 boolean updateVotes=false;
                 Vector votesToRemove=new Vector();

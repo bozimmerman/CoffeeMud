@@ -611,18 +611,22 @@ public interface Clan extends Cloneable, Tickable
 	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Democracy. */
 	public static final int GVT_DEMOCRACY=3;
 	/** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
+    public static final int GVT_THEOCRACY=4;
+    /** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
 	public static final String[] GVT_DESCS={
 		"CLAN",
 		"GUILD",
 		"UNION",
-		"FELLOWSHIP"
+		"FELLOWSHIP",
+        "THEOCRACY"
 	};
 	/** top ranks for each govt, ordered by the value of the Clan.GVT_* constants.  @see Clan */
 	public static final int[] topRanks={
 		POS_BOSS,
 		POS_BOSS,
 		POS_BOSS,
-		POS_LEADER
+		POS_LEADER,
+        POS_BOSS
 	};
 	
 	
@@ -631,14 +635,16 @@ public interface Clan extends Cloneable, Tickable
 		{"APPLICANT","MEMBER","STAFF","ENCHANTER","TREASURER","LEADER","BOSS"},
 		{"APPLICANT","MEMBER","CHIEF","ENCHANTER","TREASURER","SECRETARY","GUILDMASTER"},
 		{"APPLICANT","CITIZEN","SHERIFF","ENCHANTER","TREASURER","SECRETARY","SENATOR"},
-		{"APPLICANT","CITIZEN","SOLDIER","ENCHANTER","TREASURER","MANAGER","FIRST CITIZEN"}
+		{"APPLICANT","CITIZEN","SOLDIER","ENCHANTER","TREASURER","MANAGER","FIRST CITIZEN"},
+        {"APPLICANT","BELIEVER","CRUSADER","ENCHANTER","TREASURER","PRIEST","HIGH PRIEST"}
 	};
 	/** table w/x axis being Clan.POS_* constants, y axis being Clan.GVT_* constants, denotes max members of the ranks. */
 	public static final int[][] ROL_MAX={
 		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,1},
 		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,5},
 		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,1,5},
-		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1}
+		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1},
+        {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,1}
 	};
 	/** meaningless variable-- means this clan is a clan -- does not denote government, or anything else. */
 	public static final int TYPE_CLAN=1;

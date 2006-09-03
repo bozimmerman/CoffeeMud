@@ -77,10 +77,13 @@ public class Conquerable extends Arrest
             if(C!=null)
             {
                 str.append("Area '"+myArea.name()+"' is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
-                int pts=calcItemControlPoints(myArea);
-                int chance=calcRevoltChance(myArea);
-                str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
-                str.append("There is currently a "+chance+"% chance of revolt here.\n\r");
+                if(C.getGovernment()!=Clan.GVT_THEOCRACY)
+                {
+                    int pts=calcItemControlPoints(myArea);
+                    int chance=calcRevoltChance(myArea);
+                    str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
+                    str.append("There is currently a "+chance+"% chance of revolt here.\n\r");
+                }
             }
             else
             {
@@ -269,7 +272,7 @@ public class Conquerable extends Arrest
         int itemControlPoints=calcItemControlPoints(A);
         int totalNeeded=(int)Math.round(CMath.mul(0.05,totalControlPoints));
         if(totalNeeded<=0) totalNeeded=1;
-        int chance=(int)Math.round(50.0-(CMath.mul(50.0,CMath.div(itemControlPoints,totalNeeded))));
+        int chance=(int)Math.round(10.0-(CMath.mul(10.0,CMath.div(itemControlPoints,totalNeeded))));
         if(chance<=0) return 0;
         return chance;
         
@@ -445,27 +448,31 @@ public class Conquerable extends Arrest
                 revoltDown=Conquerable.REVOLTFREQ;
                 if(holdingClan.length()>0)
                 {
-                    int chance=calcRevoltChance(A);
-                	if((REVOLTNOW)&&(chance<100))
-                	{
-                    	Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
-                        if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
-                        Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
-                        for(int i=0;i<channels.size();i++)
-                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
-                        if(journalName.length()>0)
-                            CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.",-1);
-                        endClanRule();
-                	}
-                	else
-                	{
-	                    if(CMLib.dice().rollPercentage()<chance)
-	                    {
-	                        Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
-	                        for(int i=0;i<channels.size();i++)
-	                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","There are the rumblings of revolt in "+myArea.name()+".",false);
-	                    }
-                	}
+                    Clan C=CMLib.clans().getClan(holdingClan);
+                    if((C==null)||(C.getGovernment()!=Clan.GVT_THEOCRACY))
+                    {
+                        int chance=calcRevoltChance(A);
+                    	if((REVOLTNOW)&&(chance<100))
+                    	{
+                        	Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
+                            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
+                            Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+                            for(int i=0;i<channels.size();i++)
+                                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
+                            if(journalName.length()>0)
+                                CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.",-1);
+                            endClanRule();
+                    	}
+                    	else
+                    	{
+    	                    if(CMLib.dice().rollPercentage()<chance)
+    	                    {
+    	                        Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+    	                        for(int i=0;i<channels.size();i++)
+    	                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","There are the rumblings of revolt in "+myArea.name()+".",false);
+    	                    }
+                    	}
+                    }
                 }
             }
             
@@ -887,6 +894,25 @@ public class Conquerable extends Arrest
 				}
 			}
 			else
+            if(((msg.tool() instanceof Ability)
+            &&(msg.tool().ID().equals("Skill_Convert"))
+            &&(msg.target() instanceof MOB)
+            &&(msg.source().getClanID().length()>0)
+            &&(((MOB)msg.target()).isMonster())
+            &&(((MOB)msg.target()).getStartRoom()!=null)))
+            {
+                Clan C=CMLib.clans().getClan(msg.source().getClanID());
+                if((C!=null)
+                &&(C.getGovernment()==Clan.GVT_THEOCRACY)
+                &&(((Area)myHost).inMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
+                &&(!msg.source().getClanID().equals(holdingClan))
+                &&(flagFound((Area)myHost,msg.source().getClanID())))
+                {
+                    if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" gain "+(msg.source().envStats().level())+" points by killing "+msg.source().name());
+                    changeControlPoints(msg.source().getClanID(),msg.target().envStats().level());
+                }
+            }
+            else
 			if((holdingClan.length()>0)
 			&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 			&&(msg.source().isMonster())

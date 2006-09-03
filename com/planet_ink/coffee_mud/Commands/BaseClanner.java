@@ -86,6 +86,7 @@ public class BaseClanner extends StdCommand
 					clanAnnounce(mob,getScr("BaseClanner","msg2",C.typeName(),C.clanID()));
 					break;
 				case Clan.GVT_DICTATORSHIP:
+                case Clan.GVT_THEOCRACY:
 					clanAnnounce(mob,getScr("BaseClanner","msg3",C.typeName(),C.clanID()));
 					break;
 				case Clan.GVT_OLIGARCHY:
