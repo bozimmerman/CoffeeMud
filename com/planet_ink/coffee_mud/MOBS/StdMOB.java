@@ -2100,7 +2100,8 @@ public class StdMOB implements MOB
 			if(S!=null)
 			{
 				try{
-					if(S.isLockedUpWriting())
+					if((S.isLockedUpWriting())
+                    &&(CMLib.flags().isInTheGame(this,true)))
 					{
 						Log.errOut("StdMOB","Kicked out "+name()+" due to write-lock.");
 						S.logoff();

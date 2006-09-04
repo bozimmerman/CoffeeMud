@@ -283,8 +283,13 @@ public class UtiliThread extends Thread
 					if(time>(check*10))
 					{
 						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
-						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", "+"LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                        if((S.previousCMD()==null)||(S.previousCMD().size()==0))
+                            Log.errOut("UtiliThread","Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis in creation (probably).");
+                        else
+                        {
+    						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+    						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", "+"LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                        }
 						if(S instanceof Thread)
 							debugDumpStack((Thread)S);
 						status="killing session ";
@@ -303,9 +308,19 @@ public class UtiliThread extends Thread
                             CMLib.sessions().removeElement(S);
                         }
                         else
+                        if((S.previousCMD()!=null)&&(S.previousCMD().size()>0))
                         {
     						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-    						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+                            if((S.isLockedUpWriting())
+                            &&(CMLib.flags().isInTheGame(S.mob(),true)))
+                            {
+                                Log.errOut("UtiliThread","LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time+": "+S.isLockedUpWriting());
+                                S.logoff();
+                                S.logoff();
+                                CMLib.sessions().removeElement(S);
+                            }
+                            else
+        						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
     						if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
     							Log.errOut("UtiliThread","STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
     						else
