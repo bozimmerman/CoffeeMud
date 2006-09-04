@@ -53,7 +53,7 @@ public class Deities extends StdCommand
 			{
 				msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 				msg.append(D.description()+"\n\r");
-                if(CMSecurity.isASysOp(mob))
+                if((mob==null)||(CMSecurity.isASysOp(mob)))
                 {
                     msg.append(D.getClericRequirementsDesc()+"\n\r");
                     msg.append(D.getWorshipRequirementsDesc()+"\n\r");
@@ -73,7 +73,7 @@ public class Deities extends StdCommand
 							msg.append(", ");
 					}
 					msg.append("\n\r");
-                    if(CMSecurity.isASysOp(mob))
+                    if((mob==null)||(CMSecurity.isASysOp(mob)))
                     {
                         msg.append(D.getClericTriggerDesc()+"\n\r");
                         msg.append(D.getWorshipTriggerDesc()+"\n\r");
@@ -84,7 +84,7 @@ public class Deities extends StdCommand
                     else
                         msg.append(D.getWorshipTriggerDesc()+"\n\r");
 				}
-                if((mob!=null)&&(CMSecurity.isASysOp(mob)||mob.charStats().getCurrentClass().baseClass().equals("Cleric")))
+                if((mob==null)||CMSecurity.isASysOp(mob)||mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
                 {
     				if(D.numPowers()>0)
     				{

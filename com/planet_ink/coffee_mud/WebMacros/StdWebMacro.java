@@ -242,7 +242,7 @@ public class StdWebMacro implements WebMacro
                     lastSpace=x;
                     break;
                 case '<':
-                   if((x<s.length()-4)
+                   if((x<=s.length()-4)
                    &&(s.substring(x,x+4).equalsIgnoreCase("<BR>")))
                    {
                         count=0;

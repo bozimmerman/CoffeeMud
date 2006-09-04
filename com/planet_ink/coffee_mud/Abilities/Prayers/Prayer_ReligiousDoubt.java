@@ -35,7 +35,7 @@ import java.util.*;
 
 public class Prayer_ReligiousDoubt extends Prayer
 {
-    public static final long DOUBT_TIME=TimeManager.MILI_MINUTE;
+    public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
     
     public String ID() { return "Prayer_ReligiousDoubt"; }
     public String name(){ return "Religious Doubt";}
