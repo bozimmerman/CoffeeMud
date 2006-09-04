@@ -35,6 +35,8 @@ import java.util.*;
 
 public class Prayer_ReligiousDoubt extends Prayer
 {
+    public static final long DOUBT_TIME=TimeManager.MILI_MINUTE;
+    
     public String ID() { return "Prayer_ReligiousDoubt"; }
     public String name(){ return "Religious Doubt";}
     public String displayText(){
@@ -50,10 +52,10 @@ public class Prayer_ReligiousDoubt extends Prayer
         super.affectCharStats(affected,affectableStats);
         if(super.canBeUninvoked())
         {
-            if(otherSide)
-                affectableStats.setStat(CharStats.STAT_SAVE_CONVERSION,affectableStats.getStat(CharStats.STAT_SAVE_CONVERSION)-100);
+            if(!otherSide)
+                affectableStats.setStat(CharStats.STAT_FAITH,affectableStats.getStat(CharStats.STAT_FAITH)-100);
             else
-                affectableStats.setStat(CharStats.STAT_SAVE_CONVERSION,affectableStats.getStat(CharStats.STAT_SAVE_CONVERSION)+100);
+                affectableStats.setStat(CharStats.STAT_FAITH,affectableStats.getStat(CharStats.STAT_FAITH)+100);
         }
     }
 
@@ -61,7 +63,12 @@ public class Prayer_ReligiousDoubt extends Prayer
     {
         if((tickID==Tickable.TICKID_MOB)
         &&(super.canBeUninvoked()))
+        {
+            boolean oldOther=otherSide;
             otherSide=(++tickUp)>tickDown;
+            if((oldOther!=otherSide)&&(affected instanceof MOB)) 
+                ((MOB)affected).recoverCharStats();
+        }
         return super.tick(ticking,tickID);
     }
     
@@ -104,7 +111,7 @@ public class Prayer_ReligiousDoubt extends Prayer
             {
                 mob.location().send(mob,msg);
                 mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is questioning <S-HIS-HER> faith, but does not seem convinced yet.");
-                beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/Tickable.TIME_TICK));
+                beneficialAffect(mob,target,asLevel,(int)(DOUBT_TIME/Tickable.TIME_TICK));
             }
         }
         else

@@ -134,7 +134,8 @@ public class Skill_Convert extends StdSkill
 		}
 
         boolean success=proficiencyCheck(mob,0,auto);
-        boolean targetMadeSave=CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_SAVE_CONVERSION)-mob.charStats().getStat(CharStats.STAT_WISDOM));
+        boolean targetMadeSave=CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_FAITH));
+        if(CMSecurity.isASysOp(mob)) targetMadeSave=false;
         if((!target.isMonster())&&(success)&&(targetMadeSave)&&(target.getMyDeity()!=null))
         {
             mob.tell(target.name()+" is worshipping "+target.getMyDeity().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
@@ -215,4 +216,8 @@ public class Skill_Convert extends StdSkill
 		// return whether it worked
 		return success;
 	}
+    
+    public void makeLongLasting(){
+        tickDown=(int)(Tickable.TICKS_PER_RLMIN*60*24*7);
+    }
 }

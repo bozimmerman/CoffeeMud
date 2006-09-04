@@ -71,6 +71,8 @@ public interface CMMiscUtils extends CMObject
     public boolean doesOwnThisProperty(String name, Room room);
     public boolean doesOwnThisProperty(MOB mob, Room room);
     public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals);
+    public Ability getClericInfusion(Environmental room);
+    public Deity getClericInfused(Room room);
     
     public MOB getMobPossessingAnother(MOB mob);
     public void roomAffectFully(CMMsg msg, Room room, int dirCode);

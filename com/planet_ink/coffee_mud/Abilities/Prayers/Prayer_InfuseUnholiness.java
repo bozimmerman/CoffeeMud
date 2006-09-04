@@ -46,6 +46,8 @@ public class Prayer_InfuseUnholiness extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_EVIL);
+        if(CMath.bset(affectableStats.disposition(),EnvStats.IS_GOOD))
+            affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_GOOD);
 	}
 
 	public void unInvoke()
@@ -65,13 +67,49 @@ public class Prayer_InfuseUnholiness extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
-		if(target==null) return false;
+        if(target==null)
+        {
+            if((CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
+            &&(CMParms.combine(commands,0).equalsIgnoreCase("room")
+                ||CMParms.combine(commands,0).equalsIgnoreCase("here")))
+                target=mob.location();
+            else
+                return false;
+        }
 
-		if(target.fetchEffect(this.ID())!=null)
-		{
-			mob.tell("There is already a unholy aura around "+target.name()+".");
-			return false;
-		}
+        Deity D=null;
+        if(CMLib.utensils().getClericInfusion(target)!=null)
+        {
+            
+            if(target instanceof Room) D=CMLib.utensils().getClericInfused((Room)target);
+            if(D!=null)
+                mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name()+".");
+            else
+                mob.tell("There is already an infused aura around "+target.name()+".");
+            return false;
+        }
+        
+        D=mob.getMyDeity();
+        if(target instanceof Room)
+        {
+            if(D==null)
+            {
+                mob.tell("The faithless may be infuse unholiness in a room.");
+                return false;
+            }
+            Area A=mob.location().getArea();
+            Room R=null;
+            for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+            {
+                R=(Room)e.nextElement();
+                if(CMLib.utensils().getClericInfused((Room)target)==D)
+                {
+                    mob.tell("There is already an unholy place of "+D.Name()+" in this area at "+R.roomTitle()+".");
+                    return false;
+                }
+            }
+        }
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -83,7 +121,15 @@ public class Prayer_InfuseUnholiness extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
+                if(D!=null) setMiscText(D.Name());
+                if((target instanceof Room)
+                &&(CMLib.utensils().doesOwnThisProperty(mob,((Room)target))))
+                {
+                    target.addNonUninvokableEffect((Ability)this.copyOf());
+                    CMLib.database().DBUpdateRoom((Room)target);
+                }
+                else
+    				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();
 			}
 		}

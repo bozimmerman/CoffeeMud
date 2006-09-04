@@ -112,6 +112,7 @@ public class Shaman extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GuardianHearth",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseBalance",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
             CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_MajorInfusion",false);

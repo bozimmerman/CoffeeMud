@@ -638,24 +638,39 @@ public class Conquerable extends Arrest
 			changeControlPoints(msg.source().getClanID(),-msg.target().envStats().level());
 		}
 
-		if((holdingClan.length()>0)
-		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-		&&(!CMSecurity.isDisabled("CONQUEST"))
-		&&(!msg.source().isMonster())
-		&&(msg.value()>0))
-		{
-			Clan C=CMLib.clans().getClan(holdingClan);
-			if(C.getTaxes()!=0)
-			{
-				int value=(int)Math.round(CMath.mul(msg.value(),C.getTaxes()));
-				if(value>0)
-				{
-					msg.setValue(msg.value()-value);
-					C.setExp(C.getExp()+value);
-					C.update();
-				}
-			}
-		}
+        if((holdingClan.length()>0)
+        &&(!CMSecurity.isDisabled("CONQUEST")))
+        {
+            if((msg.target() instanceof Room)
+            &&(msg.tool() instanceof Ability)
+            &&(msg.tool().ID().startsWith("Prayer_Infuse")))
+            {
+                if((!msg.source().getClanID().equals(holdingClan))
+                ||(CMLib.clans().getClan(holdingClan)==null)
+                ||(CMLib.clans().getClan(holdingClan).getGovernment()!=Clan.GVT_THEOCRACY))
+                {
+                    msg.source().tell("Only a member of a conquering theocracy can pray for that here.");
+                    return false;
+                }
+            }
+        
+    		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+    		&&(!msg.source().isMonster())
+    		&&(msg.value()>0))
+    		{
+    			Clan C=CMLib.clans().getClan(holdingClan);
+    			if(C.getTaxes()!=0)
+    			{
+    				int value=(int)Math.round(CMath.mul(msg.value(),C.getTaxes()));
+    				if(value>0)
+    				{
+    					msg.setValue(msg.value()-value);
+    					C.setExp(C.getExp()+value);
+    					C.update();
+    				}
+    			}
+    		}
+        }
 
 		return super.okMessage(myHost,msg);
 	}

@@ -63,7 +63,7 @@ public class GenDeity extends StdDeity
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
-	private final static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT"};
+	private final static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT","SVCRIT"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -74,6 +74,7 @@ public class GenDeity extends StdDeity
 		case 1: return getClericRitual();
 		case 2: return getWorshipRequirements();
 		case 3: return getWorshipRitual();
+        case 4: return getServiceRitual();
 		}
 		return "";
 	}
@@ -88,6 +89,7 @@ public class GenDeity extends StdDeity
 		case 1: setClericRitual(val); break;
 		case 2: setWorshipRequirements(val); break;
 		case 3: setWorshipRitual(val); break;
+        case 4: setServiceRitual(val); break;
 		}
 	}
 	protected int getCodeNum(String code){

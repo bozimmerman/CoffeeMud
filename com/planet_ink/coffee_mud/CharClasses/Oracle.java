@@ -116,6 +116,7 @@ public class Oracle extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseHoliness",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
             CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);

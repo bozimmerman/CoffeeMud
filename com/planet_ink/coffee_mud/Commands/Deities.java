@@ -53,8 +53,16 @@ public class Deities extends StdCommand
 			{
 				msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 				msg.append(D.description()+"\n\r");
-				msg.append(D.getWorshipRequirementsDesc()+"\n\r");
-				msg.append(D.getClericRequirementsDesc()+"\n\r");
+                if(CMSecurity.isASysOp(mob))
+                {
+                    msg.append(D.getClericRequirementsDesc()+"\n\r");
+                    msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+                }
+                else
+                if((mob!=null)&&(mob.charStats().getCurrentClass().baseClass().equals("Cleric")))
+    				msg.append(D.getClericRequirementsDesc()+"\n\r");
+                else
+                    msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 				if(D.numBlessings()>0)
 				{
 					msg.append(getScr("Deities","blessings"));
@@ -65,21 +73,33 @@ public class Deities extends StdCommand
 							msg.append(", ");
 					}
 					msg.append("\n\r");
-					msg.append(D.getWorshipTriggerDesc()+"\n\r");
-					msg.append(D.getClericTriggerDesc()+"\n\r");
+                    if(CMSecurity.isASysOp(mob))
+                    {
+                        msg.append(D.getClericTriggerDesc()+"\n\r");
+                        msg.append(D.getWorshipTriggerDesc()+"\n\r");
+                    }
+                    else
+                    if((mob!=null)&&(mob.charStats().getCurrentClass().baseClass().equals("Cleric")))
+                        msg.append(D.getClericTriggerDesc()+"\n\r");
+                    else
+                        msg.append(D.getWorshipTriggerDesc()+"\n\r");
 				}
-				if(D.numPowers()>0)
-				{
-					msg.append(getScr("Deities","grpowers"));
-					for(int b=0;b<D.numPowers();b++)
-					{
-						msg.append(D.fetchPower(b).name());
-						if(b<D.numPowers()-1)
-							msg.append(", ");
-					}
-					msg.append("\n\r");
-					msg.append(D.getClericPowerupDesc()+"\n\r");
-				}
+                if((mob!=null)&&(CMSecurity.isASysOp(mob)||mob.charStats().getCurrentClass().baseClass().equals("Cleric")))
+                {
+    				if(D.numPowers()>0)
+    				{
+    					msg.append(getScr("Deities","grpowers"));
+    					for(int b=0;b<D.numPowers();b++)
+    					{
+    						msg.append(D.fetchPower(b).name());
+    						if(b<D.numPowers()-1)
+    							msg.append(", ");
+    					}
+    					msg.append("\n\r");
+    					msg.append(D.getClericPowerupDesc()+"\n\r");
+    				}
+                    msg.append(D.getServiceTriggerDesc()+"\n\r");
+                }
 			}
 			else
 			if(str.length()==0)

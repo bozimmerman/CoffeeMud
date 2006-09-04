@@ -520,6 +520,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				text.append(CMLib.xml().convertXMLtoTag("CLERSIT",((Deity)E).getClericSin()));
 				text.append(CMLib.xml().convertXMLtoTag("WORRSIT",((Deity)E).getWorshipSin()));
 				text.append(CMLib.xml().convertXMLtoTag("CLERPOW",((Deity)E).getClericPowerup()));
+                text.append(CMLib.xml().convertXMLtoTag("SVCRIT",((Deity)E).getServiceRitual()));
 
 				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numBlessings();b++)
@@ -2163,6 +2164,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				godmob.setClericSin(CMLib.xml().getValFromPieces(buf,"CLERSIT"));
 				godmob.setWorshipSin(CMLib.xml().getValFromPieces(buf,"WORRSIT"));
 				godmob.setClericPowerup(CMLib.xml().getValFromPieces(buf,"CLERPOW"));
+                godmob.setServiceRitual(CMLib.xml().getValFromPieces(buf,"SVCRIT"));
 
 				Vector V=CMLib.xml().getRealContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)

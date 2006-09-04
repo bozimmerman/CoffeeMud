@@ -310,6 +310,8 @@ public class TaxCollector extends StdBehavior
 			   ||(M.getClanID().length()==0)
 			   ||(!M.getClanID().equals(mob.getClanID())))
 			&&(!CMLib.flags().isAnimalIntelligence(M))
+            &&(!CMSecurity.isAllowed(M,R,"ORDER"))
+            &&(!CMSecurity.isAllowed(M,R,"CMDROOMS"))
 			&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				int demandDex=demanded.indexOf(M);

@@ -49,6 +49,10 @@ public interface Deity extends MOB
 	public void setClericRitual(String ritual);
 	public String getClericTriggerDesc();
 	
+    public String getServiceRitual();
+    public void setServiceRitual(String ritual);
+    public String getServiceTriggerDesc();
+    
 	public String getWorshipRitual();
 	public void setWorshipRitual(String ritual);
 	public String getWorshipTriggerDesc();

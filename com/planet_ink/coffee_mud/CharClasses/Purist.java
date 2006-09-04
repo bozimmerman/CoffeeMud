@@ -109,6 +109,7 @@ public class Purist extends Cleric
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Conviction",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseHoliness",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 

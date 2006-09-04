@@ -70,6 +70,7 @@ public class Missionary extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_InfuseBalance",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_Position",false);

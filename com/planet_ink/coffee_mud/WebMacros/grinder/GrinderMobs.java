@@ -254,7 +254,7 @@ public class GrinderMobs
 							  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
 	                          "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
 	                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-	                          "LOANINT"};
+	                          "LOANINT","SVCRIT"};
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];
@@ -467,6 +467,10 @@ public class GrinderMobs
 					if((M instanceof Banker)&&(old.length()>0))
 						((Banker)M).setLoanInterest(CMath.s_double(old));
 					break;
+                case 55: // service ritual
+                    if(M instanceof Deity)
+                        ((Deity)M).setServiceRitual(old);
+                    break;
 				}
 			}
 	

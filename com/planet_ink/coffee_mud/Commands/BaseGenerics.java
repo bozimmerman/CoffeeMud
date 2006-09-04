@@ -3641,6 +3641,18 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
+    public static void genDeity11(MOB mob, Deity E, int showNumber, int showFlag)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        mob.tell(getScr("BaseGenerics","servicerit",showNumber+"",E.getServiceRitual()));
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        String newValue=mob.session().prompt(getScr("BaseGenerics","newrit"),"");
+        if(newValue.length()>0)
+            E.setServiceRitual(newValue);
+        else
+            mob.tell(getScr("BaseGenerics","nochange"));
+    }
 	public static void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6599,6 +6611,7 @@ public class BaseGenerics extends StdCommand
 				genDeity6(mob,(Deity)me,++showNumber,showFlag);
 				genDeity0(mob,(Deity)me,++showNumber,showFlag);
 				genDeity7(mob,(Deity)me,++showNumber,showFlag);
+                genDeity11(mob,(Deity)me,++showNumber,showFlag);
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);

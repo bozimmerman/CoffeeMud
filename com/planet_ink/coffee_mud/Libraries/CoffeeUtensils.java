@@ -797,6 +797,25 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(title.landOwner().equals(name)) return true;
 		return false;
 	}
+    
+    public Ability getClericInfusion(Environmental room)
+    {
+        if(room==null) return null;
+        Ability A=null;
+        for(int e=room.numEffects()-1;e>=0;e--)
+        {
+            A=room.fetchEffect(e);
+            if((A!=null)&&(A.ID().startsWith("Prayer_Infuse")))
+                return A;
+        }
+        return null;
+    }
+    public Deity getClericInfused(Room room)
+    {
+        Ability A=getClericInfusion(room);
+        if(A==null) return null;
+        return CMLib.map().getDeity(A.text());
+    }
 	
 	public boolean doesOwnThisProperty(MOB mob, Room room)
 	{

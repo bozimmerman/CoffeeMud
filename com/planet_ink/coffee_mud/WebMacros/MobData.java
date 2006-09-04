@@ -605,7 +605,7 @@ public class MobData extends StdWebMacro
 						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
                           "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
                           "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-                          "LOANINT"};
+                          "LOANINT","SVCRIT"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -956,6 +956,11 @@ public class MobData extends StdWebMacro
 					old=""+((Banker)M).getLoanInterest();
 				str.append(old);
 				break;
+            case 53: // service ritual
+                if((firstTime)&&(M instanceof Deity))
+                    old=((Deity)M).getServiceRitual();
+                str.append(old);
+                break;
 			}
 			if(firstTime)
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);

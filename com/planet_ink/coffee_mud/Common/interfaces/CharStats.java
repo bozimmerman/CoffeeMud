@@ -102,7 +102,7 @@ public interface CharStats extends CMObject
     /** stat constant for save vs overlooking hidden things */
     public static final int STAT_SAVE_OVERLOOKING=30;
     /** constant for total number of stat codes */
-    public static final int STAT_SAVE_CONVERSION=31;
+    public static final int STAT_FAITH=31;
     /** constant for total number of stat codes */
 	public final static int NUM_STATS=32;
 

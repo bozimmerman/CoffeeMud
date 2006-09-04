@@ -109,6 +109,7 @@ public class Doomsayer extends Cleric
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
