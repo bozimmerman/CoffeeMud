@@ -747,19 +747,22 @@ public class StdMOB implements MOB
 	public boolean isInCombat()
 	{
 		if(victim==null) return false;
-		Room vicR=victim.location();
-		if((vicR==null)
-		||(location()==null)
-		||(vicR!=location())
-		||(victim.amDead()))
-		{
-			if((victim instanceof StdMOB)
-			&&(((StdMOB)victim).victim==this))
-				victim.setVictim(null);
-			setVictim(null);
-			return false;
-		}
-		return true;
+        try{
+    		Room vicR=victim.location();
+    		if((vicR==null)
+    		||(location()==null)
+    		||(vicR!=location())
+    		||(victim.amDead()))
+    		{
+    			if((victim instanceof StdMOB)
+    			&&(((StdMOB)victim).victim==this))
+                    victim.setVictim(null);
+    			setVictim(null);
+    			return false;
+    		}
+    		return true;
+        }catch(NullPointerException n){}
+        return false;
 	}
 	public boolean mayIFight(MOB mob)
 	{

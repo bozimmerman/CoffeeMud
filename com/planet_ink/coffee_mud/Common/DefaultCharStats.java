@@ -55,9 +55,14 @@ public class DefaultCharStats implements CharStats
         setAllValues(10);
 		stats[STAT_GENDER]='M';
 	}
-    public void setAllValues(int def)
+    public void setAllBaseValues(int def)
     {
         for(int i=0;i<NUM_BASE_STATS;i++)
+            stats[i]=def;
+    }
+    public void setAllValues(int def)
+    {
+        for(int i=0;i<NUM_STATS;i++)
             stats[i]=def;
     }
 

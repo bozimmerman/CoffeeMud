@@ -133,12 +133,12 @@ public class Pregnancy extends StdAbility
 		RS.setRejuv(0);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
 
-        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); S1.setAllValues(0);
-        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); S2.setAllValues(10);
-        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); S3.setAllValues(0);
-        CharStats S4=(CharStats)CMClass.getCommon("DefaultCharStats"); S4.setAllValues(10);
-        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); SETSTAT.setAllValues(0);
-        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); ADJSTAT.setAllValues(0);
+        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); S1.setAllBaseValues(0);
+        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); S2.setAllBaseValues(10);
+        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); S3.setAllBaseValues(0);
+        CharStats S4=(CharStats)CMClass.getCommon("DefaultCharStats"); S4.setAllBaseValues(10);
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); SETSTAT.setAllBaseValues(0);
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); ADJSTAT.setAllBaseValues(0);
 		race1.affectCharStats(babe,S1);
 		race1.affectCharStats(babe,S2);
 		race2.affectCharStats(babe,S3);

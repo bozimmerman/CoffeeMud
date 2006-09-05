@@ -4130,62 +4130,69 @@ public class BaseGenerics extends StdCommand
 				parts.append(CMStrings.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(getScr("BaseGenerics","Estatadj",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
-		if(newName.length()>0)
-		{
-			String partName=null;
-			for(int i=0;i<S.getCodes().length;i++)
-				if(newName.equalsIgnoreCase(S.getCodes()[i]))
-				{ partName=S.getCodes()[i]; break;}
-			if(partName==null)
-			{
-				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<S.getCodes().length;i++)
-					str.append(S.getCodes()[i]+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
-			}
-			else
-			{
-				boolean checkChange=false;
-				if(partName.equals("DISPOSITION"))
-				{
-					genDisposition(mob,S,0,0);
-					checkChange=true;
-				}
-				else
-				if(partName.equals("SENSES"))
-				{
-					genSensesMask(mob,S,0,0);
-					checkChange=true;
-				}
-				else
-				{
-					newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
-					if(newName.length()>0)
-					{
-						S.setStat(partName,newName);
-						checkChange=true;
-					}
-					else
-						mob.tell(getScr("BaseGenerics","nochange"));
-				}
-				if(checkChange)
-				{
-					boolean zereoed=true;
-					for(int i=0;i<S.getCodes().length;i++)
-					{
-						if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
-						{ zereoed=false; break;}
-					}
-					if(zereoed)
-						R.setStat("ESTATS","");
-					else
-						R.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(S));
-				}
-			}
-		}
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+        boolean done=false;
+        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+    		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
+    		if(newName.length()>0)
+    		{
+    			String partName=null;
+    			for(int i=0;i<S.getCodes().length;i++)
+    				if(newName.equalsIgnoreCase(S.getCodes()[i]))
+    				{ partName=S.getCodes()[i]; break;}
+    			if(partName==null)
+    			{
+    				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
+    				for(int i=0;i<S.getCodes().length;i++)
+    					str.append(S.getCodes()[i]+", ");
+    				mob.tell(str.toString().substring(0,str.length()-2)+".");
+    			}
+    			else
+    			{
+    				boolean checkChange=false;
+    				if(partName.equals("DISPOSITION"))
+    				{
+    					genDisposition(mob,S,0,0);
+    					checkChange=true;
+    				}
+    				else
+    				if(partName.equals("SENSES"))
+    				{
+    					genSensesMask(mob,S,0,0);
+    					checkChange=true;
+    				}
+    				else
+    				{
+    					newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
+    					if(newName.length()>0)
+    					{
+    						S.setStat(partName,newName);
+    						checkChange=true;
+    					}
+    					else
+    						mob.tell(getScr("BaseGenerics","nochange"));
+    				}
+    				if(checkChange)
+    				{
+    					boolean zereoed=true;
+    					for(int i=0;i<S.getCodes().length;i++)
+    					{
+    						if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
+    						{ zereoed=false; break;}
+    					}
+    					if(zereoed)
+    						R.setStat("ESTATS","");
+    					else
+    						R.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(S));
+    				}
+    			}
+    		}
+    		else
+            {
+                mob.tell(getScr("BaseGenerics","nochange"));
+                done=true;
+            }
+        }
 	}
 	static void genAState(MOB mob,
 	        			  Race R,
@@ -4204,43 +4211,50 @@ public class BaseGenerics extends StdCommand
 				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
-		if(newName.length()>0)
-		{
-			String partName=null;
-			for(int i=0;i<S.getStatCodes().length;i++)
-				if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
-				{ partName=S.getStatCodes()[i]; break;}
-			if(partName==null)
-			{
-				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<S.getStatCodes().length;i++)
-					str.append(S.getStatCodes()[i]+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
-			}
-			else
-			{
-				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
-				if(newName.length()>0)
-				{
-					S.setStat(partName,newName);
-					boolean zereoed=true;
-					for(int i=0;i<S.getStatCodes().length;i++)
-					{
-						if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
-						{ zereoed=false; break;}
-					}
-					if(zereoed)
-						R.setStat(field,"");
-					else
-						R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
-				}
-				else
-					mob.tell(getScr("BaseGenerics","nochange"));
-			}
-		}
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+        boolean done=false;
+        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+    		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
+    		if(newName.length()>0)
+    		{
+    			String partName=null;
+    			for(int i=0;i<S.getStatCodes().length;i++)
+    				if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
+    				{ partName=S.getStatCodes()[i]; break;}
+    			if(partName==null)
+    			{
+    				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
+    				for(int i=0;i<S.getStatCodes().length;i++)
+    					str.append(S.getStatCodes()[i]+", ");
+    				mob.tell(str.toString().substring(0,str.length()-2)+".");
+    			}
+    			else
+    			{
+    				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
+    				if(newName.length()>0)
+    				{
+    					S.setStat(partName,newName);
+    					boolean zereoed=true;
+    					for(int i=0;i<S.getStatCodes().length;i++)
+    					{
+    						if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
+    						{ zereoed=false; break;}
+    					}
+    					if(zereoed)
+    						R.setStat(field,"");
+    					else
+    						R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
+    				}
+    				else
+    					mob.tell(getScr("BaseGenerics","nochange"));
+    			}
+    		}
+    		else
+            {
+                mob.tell(getScr("BaseGenerics","nochange"));
+                done=true;
+            }
+        }
 	}
 	static void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
@@ -4254,43 +4268,53 @@ public class BaseGenerics extends StdCommand
 				parts.append(CMStrings.capitalizeAndLower(CharStats.STAT_DESCS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
-		if(newName.length()>0)
-		{
-			int partNum=-1;
-			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-				if(newName.equalsIgnoreCase(CharStats.STAT_DESCS[i]))
-				{ partNum=i; break;}
-			if(partNum<0)
-			{
-				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-					str.append(CharStats.STAT_DESCS[i]+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
-			}
-			else
-			{
-				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
-				if(newName.length()>0)
-				{
-					S.setStat(partNum,CMath.s_int(newName));
-					boolean zereoed=true;
-					for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-					{
-						if(S.getStat(i)!=0)
-						{ zereoed=false; break;}
-					}
-					if(zereoed)
-						R.setStat(Field,"");
-					else
-						R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
-				}
-				else
-					mob.tell(getScr("BaseGenerics","nochange"));
-			}
-		}
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+        boolean done=false;
+        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+    		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
+    		if(newName.length()>0)
+    		{
+    			int partNum=-1;
+    			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+    				if(newName.equalsIgnoreCase(CharStats.STAT_DESCS[i]))
+    				{ partNum=i; break;}
+    			if(partNum<0)
+    			{
+    				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
+    				for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+    					str.append(CharStats.STAT_DESCS[i]+", ");
+    				mob.tell(str.toString().substring(0,str.length()-2)+".");
+    			}
+    			else
+    			{
+    				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
+    				if(newName.length()>0)
+    				{
+                        if(partNum==CharStats.STAT_GENDER)
+                            S.setStat(partNum,(int)newName.charAt(0));
+                        else
+        					S.setStat(partNum,CMath.s_int(newName));
+    					boolean zereoed=true;
+    					for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+    					{
+    						if(S.getStat(i)!=0)
+    						{ zereoed=false; break;}
+    					}
+    					if(zereoed)
+    						R.setStat(Field,"");
+    					else
+    						R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
+    				}
+    				else
+    					mob.tell(getScr("BaseGenerics","nochange"));
+    			}
+    		}
+    		else
+            {
+    			mob.tell(getScr("BaseGenerics","nochange"));
+                done=true;
+            }
+        }
 	}
 
 	static void genEStats(MOB mob, CharClass R, int showNumber, int showFlag)
@@ -4306,62 +4330,69 @@ public class BaseGenerics extends StdCommand
 				parts.append(CMStrings.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(getScr("BaseGenerics","Estatadjline",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
-		if(newName.length()>0)
-		{
-			String partName=null;
-			for(int i=0;i<S.getCodes().length;i++)
-				if(newName.equalsIgnoreCase(S.getCodes()[i]))
-				{ partName=S.getCodes()[i]; break;}
-			if(partName==null)
-			{
-				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<S.getCodes().length;i++)
-					str.append(S.getCodes()[i]+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
-			}
-			else
-			{
-				boolean checkChange=false;
-				if(partName.equals("DISPOSITION"))
-				{
-					genDisposition(mob,S,0,0);
-					checkChange=true;
-				}
-				else
-				if(partName.equals("SENSES"))
-				{
-					genSensesMask(mob,S,0,0);
-					checkChange=true;
-				}
-				else
-				{
-					newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
-					if(newName.length()>0)
-					{
-						S.setStat(partName,newName);
-						checkChange=true;
-					}
-					else
-						mob.tell(getScr("BaseGenerics","nochange"));
-				}
-				if(checkChange)
-				{
-					boolean zereoed=true;
-					for(int i=0;i<S.getCodes().length;i++)
-					{
-						if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
-						{ zereoed=false; break;}
-					}
-					if(zereoed)
-						R.setStat("ESTATS","");
-					else
-						R.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(S));
-				}
-			}
-		}
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+        boolean done=false;
+        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+    		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
+    		if(newName.length()>0)
+    		{
+    			String partName=null;
+    			for(int i=0;i<S.getCodes().length;i++)
+    				if(newName.equalsIgnoreCase(S.getCodes()[i]))
+    				{ partName=S.getCodes()[i]; break;}
+    			if(partName==null)
+    			{
+    				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
+    				for(int i=0;i<S.getCodes().length;i++)
+    					str.append(S.getCodes()[i]+", ");
+    				mob.tell(str.toString().substring(0,str.length()-2)+".");
+    			}
+    			else
+    			{
+    				boolean checkChange=false;
+    				if(partName.equals("DISPOSITION"))
+    				{
+    					genDisposition(mob,S,0,0);
+    					checkChange=true;
+    				}
+    				else
+    				if(partName.equals("SENSES"))
+    				{
+    					genSensesMask(mob,S,0,0);
+    					checkChange=true;
+    				}
+    				else
+    				{
+    					newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
+    					if(newName.length()>0)
+    					{
+    						S.setStat(partName,newName);
+    						checkChange=true;
+    					}
+    					else
+    						mob.tell(getScr("BaseGenerics","nochange"));
+    				}
+    				if(checkChange)
+    				{
+    					boolean zereoed=true;
+    					for(int i=0;i<S.getCodes().length;i++)
+    					{
+    						if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
+    						{ zereoed=false; break;}
+    					}
+    					if(zereoed)
+    						R.setStat("ESTATS","");
+    					else
+    						R.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(S));
+    				}
+    			}
+    		}
+    		else
+            {
+    			mob.tell(getScr("BaseGenerics","nochange"));
+                done=true;
+            }
+        }
 	}
 	static void genAState(MOB mob,
 	        			  CharClass R,
@@ -4380,43 +4411,50 @@ public class BaseGenerics extends StdCommand
 				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
-		if(newName.length()>0)
-		{
-			String partName=null;
-			for(int i=0;i<S.getStatCodes().length;i++)
-				if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
-				{ partName=S.getStatCodes()[i]; break;}
-			if(partName==null)
-			{
-				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<S.getStatCodes().length;i++)
-					str.append(S.getStatCodes()[i]+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
-			}
-			else
-			{
-				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
-				if(newName.length()>0)
-				{
-					S.setStat(partName,newName);
-					boolean zereoed=true;
-					for(int i=0;i<S.getStatCodes().length;i++)
-					{
-						if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
-						{ zereoed=false; break;}
-					}
-					if(zereoed)
-						R.setStat(field,"");
-					else
-						R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
-				}
-				else
-					mob.tell(getScr("BaseGenerics","nochange"));
-			}
-		}
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+        boolean done=false;
+        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+    		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
+    		if(newName.length()>0)
+    		{
+    			String partName=null;
+    			for(int i=0;i<S.getStatCodes().length;i++)
+    				if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
+    				{ partName=S.getStatCodes()[i]; break;}
+    			if(partName==null)
+    			{
+    				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
+    				for(int i=0;i<S.getStatCodes().length;i++)
+    					str.append(S.getStatCodes()[i]+", ");
+    				mob.tell(str.toString().substring(0,str.length()-2)+".");
+    			}
+    			else
+    			{
+    				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
+    				if(newName.length()>0)
+    				{
+    					S.setStat(partName,newName);
+    					boolean zereoed=true;
+    					for(int i=0;i<S.getStatCodes().length;i++)
+    					{
+    						if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
+    						{ zereoed=false; break;}
+    					}
+    					if(zereoed)
+    						R.setStat(field,"");
+    					else
+    						R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
+    				}
+    				else
+    					mob.tell(getScr("BaseGenerics","nochange"));
+    			}
+    		}
+    		else
+            {
+    			mob.tell(getScr("BaseGenerics","nochange"));
+                done=true;
+            }
+        }
 	}
 	static void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
@@ -4430,43 +4468,50 @@ public class BaseGenerics extends StdCommand
 				parts.append(CMStrings.capitalizeAndLower(CharStats.STAT_DESCS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
-		if(newName.length()>0)
-		{
-			int partNum=-1;
-			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-				if(newName.equalsIgnoreCase(CharStats.STAT_DESCS[i]))
-				{ partNum=i; break;}
-			if(partNum<0)
-			{
-				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-					str.append(CharStats.STAT_DESCS[i]+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
-			}
-			else
-			{
-				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
-				if(newName.length()>0)
-				{
-					S.setStat(partNum,CMath.s_int(newName));
-					boolean zereoed=true;
-					for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-					{
-						if(S.getStat(i)!=0)
-						{ zereoed=false; break;}
-					}
-					if(zereoed)
-						R.setStat(Field,"");
-					else
-						R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
-				}
-				else
-					mob.tell(getScr("BaseGenerics","nochange"));
-			}
-		}
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+        boolean done=false;
+        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+    		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
+    		if(newName.length()>0)
+    		{
+    			int partNum=-1;
+    			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+    				if(newName.equalsIgnoreCase(CharStats.STAT_DESCS[i]))
+    				{ partNum=i; break;}
+    			if(partNum<0)
+    			{
+    				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
+    				for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+    					str.append(CharStats.STAT_DESCS[i]+", ");
+    				mob.tell(str.toString().substring(0,str.length()-2)+".");
+    			}
+    			else
+    			{
+    				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
+    				if(newName.length()>0)
+    				{
+    					S.setStat(partNum,CMath.s_int(newName));
+    					boolean zereoed=true;
+    					for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+    					{
+    						if(S.getStat(i)!=0)
+    						{ zereoed=false; break;}
+    					}
+    					if(zereoed)
+    						R.setStat(Field,"");
+    					else
+    						R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
+    				}
+    				else
+    					mob.tell(getScr("BaseGenerics","nochange"));
+    			}
+    		}
+    		else
+            {
+    			mob.tell(getScr("BaseGenerics","nochange"));
+                done=true;
+            }
+        }
 	}
 	static void genResources(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException

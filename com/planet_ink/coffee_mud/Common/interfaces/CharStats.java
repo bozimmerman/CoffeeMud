@@ -415,6 +415,12 @@ public interface CharStats extends CMObject
     public void setAllValues(int def);
 
     /**
+     * Resets all of the basic 1-6 stats in this object, to the same given value
+     * @param def the value to set all stats to.
+     */
+    public void setAllBaseValues(int def);
+    
+    /**
      * Sets the apparant gender of the mob. If null is used, this value is reset
      * and the mobs real gender name will be displayed through the genderName method
      * instead of the one set here.
