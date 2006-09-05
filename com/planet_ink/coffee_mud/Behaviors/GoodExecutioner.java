@@ -38,6 +38,7 @@ public class GoodExecutioner  extends StdBehavior
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
     private boolean doPlayers=false;
     private boolean norecurse=false;
+    protected long deepBreath=System.currentTimeMillis();
 
     public void setParms(String newParms)
     {
@@ -72,22 +73,30 @@ public class GoodExecutioner  extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting)) return;
-		MOB observer=(MOB)affecting;
-		// base 90% chance not to be executed
-		if((source.isMonster()||doPlayers)&&(source!=observer)&&(grantsAggressivenessTo(source)))
-		{
-			String reason="EVIL";
-			if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
-				reason="A THIEF";
-			MOB oldFollowing=source.amFollowing();
-			source.setFollowing(null);
-			boolean yep=Aggressive.startFight(observer,source,true,false);
-			if(yep)
-				CMLib.commands().postSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
-			else
-			if(oldFollowing!=null)
-				source.setFollowing(oldFollowing);
-		}
+		if(!canFreelyBehaveNormal(affecting))
+        {
+            deepBreath=System.currentTimeMillis();
+            return;
+        }
+        if((deepBreath==0)||(System.currentTimeMillis()-deepBreath)>6000)
+        {
+            deepBreath=0;
+    		MOB observer=(MOB)affecting;
+    		// base 90% chance not to be executed
+    		if((source.isMonster()||doPlayers)&&(source!=observer)&&(grantsAggressivenessTo(source)))
+    		{
+    			String reason="EVIL";
+    			if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
+    				reason="A THIEF";
+                MOB oldFollowing=source.amFollowing();
+    			source.setFollowing(null);
+    			boolean yep=Aggressive.startFight(observer,source,true,false);
+    			if(yep)
+    				CMLib.commands().postSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+                else
+                if(oldFollowing!=null)
+                    source.setFollowing(oldFollowing);
+    		}
+        }
 	}
 }

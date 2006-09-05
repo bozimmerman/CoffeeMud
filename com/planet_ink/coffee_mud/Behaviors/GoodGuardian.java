@@ -35,6 +35,7 @@ public class GoodGuardian extends StdBehavior
 {
 	public String ID(){return "GoodGuardian";}
 
+    protected long deepBreath=System.currentTimeMillis();
 
 	public static MOB anyPeaceToMake(Room room, MOB observer)
 	{
@@ -109,10 +110,18 @@ public class GoodGuardian extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!canFreelyBehaveNormal(ticking)) return true;
-		MOB mob=(MOB)ticking;
-		MOB victim=anyPeaceToMake(mob.location(),mob);
-		keepPeace(mob,victim);
+        if(!canFreelyBehaveNormal(ticking))
+        {
+            deepBreath=System.currentTimeMillis();
+            return true;
+        }
+        if((deepBreath==0)||(System.currentTimeMillis()-deepBreath)>6000)
+        {
+            deepBreath=0;
+    		MOB mob=(MOB)ticking;
+    		MOB victim=anyPeaceToMake(mob.location(),mob);
+    		keepPeace(mob,victim);
+        }
 		return true;
 	}
 }

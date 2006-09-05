@@ -943,11 +943,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             for(int r=0;r<R.numInhabitants();r++)
             {
                 MOB M=R.fetchInhabitant(r);
+                MOB vic=M.getVictim();
                 if((M!=observer)
                 &&(M!=deadmob)
                 &&(M!=null)
                 &&(hisGroupH.contains(M)
-                    ||((M.getVictim()!=null)&&(myGroupH.contains(M.getVictim()))))
+                    ||((vic!=null)&&(myGroupH.contains(vic))))
                 &&(!M.amDead())
                 &&(CMLib.flags().isInTheGame(M,true)))
                 {
@@ -955,7 +956,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     break;
                 }
             }
-            observer.setVictim(newTargetM);
+            if((newTargetM==null)||(newTargetM.isInCombat()))
+                observer.setVictim(newTargetM);
         }
     }
     
@@ -1008,25 +1010,28 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     
     public void makeFollowersFight(MOB observer, MOB target, MOB source)
     {
-        if((source==null)||(target==null)) return;
+        if((source==null)||(target==null)||observer==null) return;
         if(source==target) return;
         if((target==observer)||(source==observer)) return;
         if((target.location()!=observer.location())||(target.location()!=source.location()))
             return;
         if((CMath.bset(observer.getBitmap(),MOB.ATT_AUTOASSIST))) return;
         if(observer.isInCombat()) return;
+        MOB observerFollows=observer.amFollowing();
+        MOB targetFollows=target.amFollowing();
+        MOB sourceFollows=source.amFollowing();
 
-        if((observer.amFollowing()==target)
-        ||(target.amFollowing()==observer)
-        ||((target.amFollowing()!=null)&&(target.amFollowing()==observer.amFollowing())))
+        if((observerFollows==target)
+        ||(targetFollows==observer)
+        ||((targetFollows!=null)&&(targetFollows==observerFollows)))
         {
             observer.setVictim(source);
             establishRange(observer,source,observer.fetchWieldedItem());
         }
         else
-        if((observer.amFollowing()==source)
-        ||(source.amFollowing()==observer)
-        ||((source.amFollowing()!=null)&&(source.amFollowing()==observer.amFollowing())))
+        if((observerFollows==source)
+        ||(sourceFollows==observer)
+        ||((sourceFollows!=null)&&(sourceFollows==observerFollows)))
         {
             observer.setVictim(target);
             establishRange(observer,target,observer.fetchWieldedItem());
@@ -1187,7 +1192,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 &&((nextVictimM==null)||(M.rangeToTarget()<nextVictimM.rangeToTarget())))
                     nextVictimM=M;
             }
-            if(nextVictimM!=null)
+            if((nextVictimM!=null)&&(nextVictimM.isInCombat()))
                 fighter.setVictim(nextVictimM);
         }
     }
