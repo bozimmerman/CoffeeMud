@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import sun.security.krb5.internal.q;
-
 /*
    Copyright 2000-2006 Bo Zimmerman
 
