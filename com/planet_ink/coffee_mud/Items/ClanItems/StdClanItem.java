@@ -207,6 +207,56 @@ public class StdClanItem extends StdItem implements ClanItem
 		return V;
 	}
 
+	public static boolean stdOkMessageMOBS(MOB giver, MOB targetMOB, Item myHost)
+	{
+		if(targetMOB.isMonster())
+		{
+			Item alreadyHasOne=null;
+			for(int i=0;i<targetMOB.inventorySize();i++)
+			{
+				Item I=targetMOB.fetchInventory(i);
+				if((I!=null)
+                &&(I instanceof ClanItem)
+                &&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))
+				{ alreadyHasOne=I; break;}
+			}
+			if(alreadyHasOne!=null)
+			{
+				if(giver!=null)
+					giver.tell(targetMOB.name()+" already has "+alreadyHasOne.name()+", and cannot have another Clan Item.");
+				else
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to find the room for <O-NAME>.");
+				return false;
+			}
+			if((((ClanItem)myHost).ciType()==ClanItem.CI_BANNER)
+			&&(!CMLib.flags().isMobile(targetMOB)))
+			{
+				if(giver!=null)
+					giver.tell("This item should only be given to those who roam the area.");
+				else
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> doesn't seem mobile enough to take <O-NAME>.");
+				return false;
+			}
+			Room startRoom=targetMOB.getStartRoom();
+			if((startRoom!=null)
+			&&(startRoom.getArea()!=null)
+			&&(targetMOB.location()!=null)
+			&&(startRoom.getArea()!=targetMOB.location().getArea()))
+			{
+				LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(startRoom.getArea());
+				if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(targetMOB.getClanID())))
+				{
+					if(giver!=null)
+						giver.tell("You can only give a clan item to a conquered mob within the conquered area.");
+					else
+						targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to take <O-NAME> here.");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	public static boolean stdOkMessage(Environmental myHost, CMMsg msg)
 	{
 		if((msg.tool()==myHost)
@@ -224,42 +274,8 @@ public class StdClanItem extends StdItem implements ClanItem
 				return false;
 			}
 			else
-			if(targetMOB.isMonster())
-			{
-				Item alreadyHasOne=null;
-				for(int i=0;i<targetMOB.inventorySize();i++)
-				{
-					Item I=targetMOB.fetchInventory(i);
-					if((I!=null)
-                    &&(I instanceof ClanItem)
-                    &&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))
-					{ alreadyHasOne=I; break;}
-				}
-				if(alreadyHasOne!=null)
-				{
-					msg.source().tell(targetMOB.name()+" already has "+alreadyHasOne.name()+", and cannot have another Clan Item.");
-					return false;
-				}
-				if((((ClanItem)myHost).ciType()==ClanItem.CI_BANNER)
-				&&(!CMLib.flags().isMobile(targetMOB)))
-				{
-					msg.source().tell("This item should only be given to those who roam the area.");
-					return false;
-				}
-				Room startRoom=targetMOB.getStartRoom();
-				if((startRoom!=null)
-				&&(startRoom.getArea()!=null)
-				&&(targetMOB.location()!=null)
-				&&(startRoom.getArea()!=targetMOB.location().getArea()))
-				{
-					LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(startRoom.getArea());
-					if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(targetMOB.getClanID())))
-					{
-						msg.source().tell("You can only give a clan item to a conquered mob within the conquered area.");
-						return false;
-					}
-				}
-			}
+			if(!stdOkMessageMOBS(msg.source(),targetMOB,(Item)myHost))
+				return false;
 		}
 		else
 		if((msg.amITarget(myHost))
@@ -271,6 +287,10 @@ public class StdClanItem extends StdItem implements ClanItem
 				msg.source().tell("You must belong to a clan to take a clan item.");
 				return false;
 			}
+			else
+			if((msg.targetMinor()==CMMsg.TYP_GET)
+			&&(!stdOkMessageMOBS(null,msg.source(),(Item)myHost)))
+				return false;
 			else
 			if((!msg.source().getClanID().equals(((ClanItem)myHost).clanID()))
 			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
