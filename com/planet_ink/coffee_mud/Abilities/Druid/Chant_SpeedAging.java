@@ -77,7 +77,9 @@ public class Chant_SpeedAging extends Chant
 			{
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect("Age");
-				if((!(target instanceof MOB))&&(A==null))
+				if((!(target instanceof MOB))
+				&&(!(target instanceof CagedAnimal))
+				&&(A==null))
 				{
 					if(target instanceof Food)
 					{
@@ -110,7 +112,8 @@ public class Chant_SpeedAging extends Chant
 					success=false;
 				}
 				else
-				if((A==null)||(A.displayText().length()==0))
+				if((target instanceof MOB)
+				&&((A==null)||(A.displayText().length()==0)))
 				{
 					MOB M=(MOB)target;
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
@@ -137,6 +140,7 @@ public class Chant_SpeedAging extends Chant
 					M.recoverCharStats();
 				}
 				else
+				if(A!=null)
 				{
 					long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
@@ -150,6 +154,8 @@ public class Chant_SpeedAging extends Chant
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages a bit.");
 					target.recoverEnvStats();
 				}
+				else
+					return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
 			}
 		}
 		else

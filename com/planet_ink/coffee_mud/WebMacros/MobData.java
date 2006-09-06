@@ -350,7 +350,7 @@ public class MobData extends StdWebMacro
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=100%>");
-			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CURSE"+(theclasses.size()+1)+">");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=POWER"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Granted Power");
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{

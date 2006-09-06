@@ -59,7 +59,7 @@ public class NoFollow extends Follow
 			}
 			if((mob.location()!=null)&&(M.amFollowing()==mob))
 			{
-				unfollow(M,false);
+				nofollow(M,true,false);
 				return true;
 			}
 			mob.tell("There is noone called '"+CMParms.combine(commands,1)+"' following you!");
