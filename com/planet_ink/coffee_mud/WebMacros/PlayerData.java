@@ -40,7 +40,7 @@ public class PlayerData extends StdWebMacro
 		"DESCRIPTION",
 		"LASTDATETIME",
 		"EMAIL",
-		"RACE",
+		"RACENAME",
 		"CHARCLASS",
 		"LEVEL",
 		"LEVELSTR",
@@ -60,7 +60,7 @@ public class PlayerData extends StdWebMacro
 		"LIEGE",
 		"CLAN",
 		"CLANROLE",
-		"ALIGNMENT",
+		"ALIGNMENTNAME",
 		"ALIGNMENTSTRING",
 		"WIMP",
 		"STARTROOM",
@@ -264,6 +264,8 @@ public class PlayerData extends StdWebMacro
 			MOB M=CMLib.map().getLoadPlayer(last);
 			if(M==null) return " @break@";
 
+			boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
+							||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYMOB"));
 			StringBuffer str=new StringBuffer("");
 			for(int i=0;i<MOB.AUTODESC.length;i++)
 			{
@@ -299,6 +301,41 @@ public class PlayerData extends StdWebMacro
 				if(parms.containsKey(BASICS[i]))
 					str.append(getBasic(M,i));
 			}
+			if(parms.containsKey("RACE"))
+			{
+				String old=httpReq.getRequestParameter("RACE");
+				if((firstTime)||(old.length()==0)) 
+					old=""+M.baseCharStats().getMyRace().ID();
+				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				{
+					Race R2=(Race)r.nextElement();
+					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
+					if(R2.ID().equals(old))
+						str.append(" SELECTED");
+					str.append(">"+R2.name());
+				}
+			}
+			if(parms.containsKey("ALIGNMENT"))
+			{
+				String old=httpReq.getRequestParameter("ALIGNMENT");
+			    if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
+			    {
+					if(firstTime) old=""+M.fetchFaction(CMLib.factions().AlignID());
+					for(int v=1;v<Faction.ALIGN_NAMES.length;v++)
+					{
+					    str.append("<OPTION VALUE="+Faction.ALIGN_NAMES[v]);
+					    if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
+					        str.append(" SELECTED");
+					    str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[v].toLowerCase()));
+					}
+			    }
+			}
+			str.append(MobData.itemList(M,httpReq,parms));
+			str.append(MobData.abilities(M,httpReq,parms));
+			str.append(MobData.factions(M,httpReq,parms));
+			str.append(AreaData.affectsNBehaves(M,httpReq,parms));
+			str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
+			str.append(MobData.senses(M,firstTime,httpReq,parms));
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);

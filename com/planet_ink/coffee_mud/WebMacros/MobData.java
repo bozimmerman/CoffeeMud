@@ -519,6 +519,85 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
+	public static StringBuffer itemList(MOB M, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("ITEMLIST"))
+		{
+			Vector classes=new Vector();
+			Vector itemlist=null;
+			if(httpReq.isRequestParameter("ITEM1"))
+			{
+				itemlist=RoomData.items;
+				for(int i=1;;i++)
+				{
+					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
+					if(MATCHING==null)
+						break;
+					Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
+					if(I2!=null)
+						classes.addElement(I2);
+				}
+			}
+			else
+			{
+				for(int m=0;m<M.inventorySize();m++)
+				{
+					Item I2=M.fetchInventory(m);
+					classes.addElement(I2);
+				}
+				itemlist=RoomData.contributeItems(classes);
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<classes.size();i++)
+			{
+				Item I=(Item)classes.elementAt(i);
+				str.append("<TR>");
+				str.append("<TD WIDTH=90%>");
+				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				if(M.isMine(I))
+					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
+				else
+				if(itemlist.contains(I))
+					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+				else
+					str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
+				str.append("</SELECT>");
+				str.append("</TD>");
+				str.append("<TD WIDTH=10%>");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
+			for(int i=0;i<itemlist.size();i++)
+			{
+				Item I=(Item)itemlist.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+			}
+			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS");
+			if(mposs==null)
+			{
+				mposs=new StringBuffer("");
+				Vector sortMe=new Vector();
+				CMClass.addAllItemClassNames(sortMe,true,true);
+				Object[] sorted=(new TreeSet(sortMe)).toArray();
+				for(int i=0;i<sorted.length;i++)
+					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+				Resources.submitResource("MUDGRINDER-POSS",mposs);
+			}
+			str.append(mposs);
+			str.append("</SELECT>");
+			str.append("</TD>");
+			str.append("<TD WIDTH=10%>");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
+			str.append("</TD></TR></TABLE>");
+		}
+		return str;
+	}
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -979,79 +1058,7 @@ public class MobData extends StdWebMacro
 		if(M instanceof ShopKeeper)
 			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
 
-		if(parms.containsKey("ITEMLIST"))
-		{
-			Vector classes=new Vector();
-			Vector itemlist=null;
-			if(httpReq.isRequestParameter("ITEM1"))
-			{
-				itemlist=RoomData.items;
-				for(int i=1;;i++)
-				{
-					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-					if(MATCHING==null)
-						break;
-					Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
-					if(I2!=null)
-						classes.addElement(I2);
-				}
-			}
-			else
-			{
-				for(int m=0;m<M.inventorySize();m++)
-				{
-					Item I2=M.fetchInventory(m);
-					classes.addElement(I2);
-				}
-				itemlist=RoomData.contributeItems(classes);
-			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			for(int i=0;i<classes.size();i++)
-			{
-				Item I=(Item)classes.elementAt(i);
-				str.append("<TR>");
-				str.append("<TD WIDTH=90%>");
-				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
-				str.append("<OPTION VALUE=\"\">Delete!");
-				if(M.isMine(I))
-					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
-				else
-				if(itemlist.contains(I))
-					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-				else
-					str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
-				str.append("</SELECT>");
-				str.append("</TD>");
-				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
-				str.append("</TD></TR>");
-			}
-			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
-			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
-			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-			for(int i=0;i<itemlist.size();i++)
-			{
-				Item I=(Item)itemlist.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-			}
-			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS");
-			if(mposs==null)
-			{
-				mposs=new StringBuffer("");
-				Vector sortMe=new Vector();
-				CMClass.addAllItemClassNames(sortMe,true,true);
-				Object[] sorted=(new TreeSet(sortMe)).toArray();
-				for(int i=0;i<sorted.length;i++)
-					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
-				Resources.submitResource("MUDGRINDER-POSS",mposs);
-			}
-			str.append(mposs);
-			str.append("</SELECT>");
-			str.append("</TD>");
-			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
-			str.append("</TD></TR></TABLE>");
-		}
+		str.append(itemList(M,httpReq,parms));
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
