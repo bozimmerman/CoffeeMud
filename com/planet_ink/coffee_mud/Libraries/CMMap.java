@@ -530,6 +530,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
+		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
+		charClass.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
 		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
@@ -540,6 +542,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			roomID=(String)startRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=(String)startRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=(String)startRooms.get(charClass);
 		if(((roomID==null)||(roomID.length()==0)))
 		{
 		    Vector V=mob.fetchFactionRanges();
@@ -564,6 +568,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Room getDefaultDeathRoom(MOB mob)
 	{
+		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
+		charClass.replace(' ','_');
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
@@ -572,6 +578,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		String roomID=(String)deathRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=(String)deathRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=(String)deathRooms.get(charClass);
 		if(((roomID==null)||(roomID.length()==0)))
 		{
 		    Vector V=mob.fetchFactionRanges();
@@ -610,6 +618,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		            return room;
 		    }
 	    }
+		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
+		charClass.replace(' ','_');
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
@@ -622,6 +632,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			roomID=(String)bodyRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=(String)bodyRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=(String)bodyRooms.get(charClass);
 		if(((roomID==null)||(roomID.length()==0)))
 		{
 		    Vector V=mob.fetchFactionRanges();
