@@ -888,13 +888,23 @@ public class Conquerable extends Arrest
     						if(killer.getClanID().length()>0)
                             {
                                 if(debugging) Log.debugOut("Conquest",killer.getClanID()+" gain "+(msg.source().envStats().level())+" points by killing "+msg.source().name());
-                                changeControlPoints(killer.getClanID(),msg.source().envStats().level());
+    							Clan C=CMLib.clans().getClan(killer.getClanID());
+                                int level=msg.source().envStats().level();
+    							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
+    							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
+    								level=(level>1)?level/2:level;
+                                changeControlPoints(killer.getClanID(),level);
                             }
                             else
                             if((killer.amFollowing()!=null)&&(killer.amFollowing().getClanID().length()>0))
                             {
                                 if(debugging) Log.debugOut("Conquest",killer.amFollowing().getClanID()+" gain "+(msg.source().envStats().level())+" points by killing "+msg.source().name());
-                                changeControlPoints(killer.amFollowing().getClanID(),msg.source().envStats().level());
+    							Clan C=CMLib.clans().getClan(killer.getClanID());
+                                int level=msg.source().envStats().level();
+    							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
+    							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
+    								level=(level>1)?level/2:level;
+                                changeControlPoints(killer.amFollowing().getClanID(),level);
                             }
                         }
 					}
