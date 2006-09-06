@@ -427,10 +427,10 @@ public class StdRace implements Race
 		Body.setPlayerCorpse(!mob.isMonster());
         Body.setTimeOfDeath(System.currentTimeMillis());
 		Body.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
-		Body.setName("the body of "+mob.Name());
-		Body.setMobName(mob.Name());
-		Body.setMobDescription(mob.description());
-		Body.setDisplayText("the body of "+mob.Name()+" lies here.");
+		Body.setName("the body of "+mob.Name().replace('\'','`'));
+		Body.setMobName(mob.Name().replace('\'','`'));
+		Body.setMobDescription(mob.description().replace('\'','`'));
+		Body.setDisplayText("the body of "+mob.Name().replace('\'','`')+" lies here.");
 		if(room!=null)
 			room.addItemRefuse(Body,mob.isMonster()?Item.REFUSE_MONSTER_BODY:Item.REFUSE_PLAYER_BODY);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());

@@ -230,19 +230,20 @@ public class StdArea implements Area
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
-		Hashtable allNums=new Hashtable();
+		CMIntegerGrouper set=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			String roomID=null;
+			int newnum=0;
+			for(Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if((R.getArea().Name().equals(Name()))
-				&&(R.roomID().startsWith(Name()+"#")))
+				roomID=(String)i.nextElement();
+				if((roomID.length()>0)&&(roomID.startsWith(Name()+"#")))
 				{
-					int newnum=CMath.s_int(R.roomID().substring(Name().length()+1));
+					newnum=CMath.s_int(roomID.substring(Name().length()+1));
 					if(newnum>=highest)	highest=newnum;
 					if(newnum<=lowest) lowest=newnum;
-					allNums.put(new Integer(newnum),R);
+					set.addx(newnum);
 				}
 			}
 	    }catch(NoSuchElementException e){}
@@ -251,7 +252,7 @@ public class StdArea implements Area
 		if(lowest>highest) lowest=highest+1;
 		for(int i=lowest;i<=highest+1000;i++)
 		{
-			if((!allNums.containsKey(new Integer(i)))
+			if((!set.contains(i))
 			&&(CMLib.map().getRoom(Name()+"#"+i)==null))
 				return Name()+"#"+i;
 		}

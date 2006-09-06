@@ -53,6 +53,7 @@ public interface WorldMap extends CMObject
     /**							 ROOMS		    							*/
     /************************************************************************/
     public int numRooms();
+	public Enumeration roomIDs();
     public String getExtendedRoomID(Room R);
     public Room getRoom(Room room);
     public Room getRoom(String calledThis);
@@ -156,5 +157,25 @@ public interface WorldMap extends CMObject
     }
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
     public void unLoad();
+    
+    public class CompleteRoomIDEnumerator implements Enumeration
+    {
+    	Enumeration roomIDEnumerator=null;
+    	Enumeration areaEnumerator=null;
+    	public CompleteRoomIDEnumerator(WorldMap map){areaEnumerator=map.areas();}
+    	public boolean hasMoreElements()
+    	{
+    		if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
+	    		while(areaEnumerator.hasMoreElements())
+	    		{
+		    		Area A=(Area)areaEnumerator.nextElement();
+		    		roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
+		    		if(roomIDEnumerator.hasMoreElements()) return true;
+	    		}
+    		return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
+    	}
+    	public Object nextElement(){ return hasMoreElements()?roomIDEnumerator.nextElement():null;}
+    }
+
 	
 }

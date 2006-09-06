@@ -99,7 +99,7 @@ public class List extends StdCommand
             {
                 thisOne=thisThang.roomID();
                 if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-                    lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText()+" (price: "+t.landPrice()+", owner="+t.landOwner()+")",43)+"\n\r");
+                    lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ("+t.landOwner()+", $"+t.landPrice()+")",20)+"\n\r");
             }
         }
         lines.append("\n\r");

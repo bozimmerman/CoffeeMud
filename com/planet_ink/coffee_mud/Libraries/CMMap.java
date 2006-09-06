@@ -86,6 +86,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
 		return areasList.elements();
 	}
+	public Enumeration roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
 	public Area getFirstArea()
 	{
 		if (areas().hasMoreElements())
