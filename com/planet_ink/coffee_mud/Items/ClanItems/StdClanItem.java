@@ -246,6 +246,19 @@ public class StdClanItem extends StdItem implements ClanItem
 					msg.source().tell("This item should only be given to those who roam the area.");
 					return false;
 				}
+				Room startRoom=targetMOB.getStartRoom();
+				if((startRoom!=null)
+				&&(startRoom.getArea()!=null)
+				&&(targetMOB.location()!=null)
+				&&(startRoom.getArea()!=targetMOB.location().getArea()))
+				{
+					LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(startRoom.getArea());
+					if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(targetMOB.getClanID())))
+					{
+						msg.source().tell("You can only give a clan item to a conquered mob within the conquered area.");
+						return false;
+					}
+				}
 			}
 		}
 		else
