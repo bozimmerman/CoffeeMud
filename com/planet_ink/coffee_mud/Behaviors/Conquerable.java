@@ -899,10 +899,10 @@ public class Conquerable extends Arrest
                             if((killer.amFollowing()!=null)&&(killer.amFollowing().getClanID().length()>0))
                             {
                                 if(debugging) Log.debugOut("Conquest",killer.amFollowing().getClanID()+" gain "+(msg.source().envStats().level())+" points by killing "+msg.source().name());
-    							Clan C=CMLib.clans().getClan(killer.getClanID());
+    							Clan C=CMLib.clans().getClan(killer.amFollowing().getClanID());
                                 int level=msg.source().envStats().level();
     							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
-    							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
+    							&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
                                 changeControlPoints(killer.amFollowing().getClanID(),level);
                             }
