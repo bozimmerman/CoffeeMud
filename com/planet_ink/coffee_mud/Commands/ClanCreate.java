@@ -86,6 +86,7 @@ public class ClanCreate extends BaseClanner
 									+getScr("ClanCreate","msg3")
 									+getScr("ClanCreate","msg4")
 									+getScr("ClanCreate","msg5")
+									+getScr("ClanCreate","msg6")
 									+": ","");
 									if(govt.length()==0){ mob.tell(getScr("ClanCreate","aborted")); return false;}
 									for(int i=0;i<Clan.GVT_DESCS.length;i++)

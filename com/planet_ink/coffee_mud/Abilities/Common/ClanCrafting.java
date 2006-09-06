@@ -135,7 +135,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			mob.tell("You must be a member of a clan to use this skill.");
 			return false;
 		}
-		if(C.allowedToDoThis(mob,Clan.FUNC_CLANENCHANT)!=1)
+		if((C.allowedToDoThis(mob,Clan.FUNC_CLANENCHANT)!=1)&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
 			return false;
