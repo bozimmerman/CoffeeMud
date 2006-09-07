@@ -569,11 +569,16 @@ public class GModify extends StdCommand
 	    	{
 	    		R=CMLib.map().getRoom(R);
 	            boolean oldMobility=R.getArea().getMobility();
-	            R.getArea().toggleMobility(false);
 	            if(changes.size()==0)
+	            {
 	                R=CMLib.coffeeMaker().makeNewRoomContent(R);
+		            if(R!=null) R.getArea().toggleMobility(false);
+	            }
 	            else
+	            {
+		            R.getArea().toggleMobility(false);
 	                CMLib.map().resetRoom(R);
+	            }
 	            if(R==null) continue;
 	            boolean savemobs=false;
 	            boolean saveitems=false;
