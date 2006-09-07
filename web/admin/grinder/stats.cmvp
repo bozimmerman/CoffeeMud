@@ -12,9 +12,15 @@
 			document.CONTROL.action=action;
 			document.CONTROL.submit();
 		}
-		function ClickedBox()
+		function ClickedBox(which)
 		{
-			Clicked('/grinder/stats.cmvp');
+			var newVal='';
+			if(which=='SKILLRPT') newVal='on';
+			if(newVal!=document.CONTROL.SKILLRPT.value)
+			{
+				document.CONTROL.SKILLRPT.value=newVal;
+				Clicked('/grinder/stats.cmvp');
+			}
 		}
 	//-->
 	</script>
@@ -28,6 +34,7 @@
 <CENTER>
 <FORM NAME=CONTROL TARGET=_top METHOD=POST ACTION="stats.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=SKILLRPT VALUE="@RequestParameter?SKILLRPT@">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=15 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Statistics Report</H2></FONT></TD></TR>
 	<TR>
@@ -139,7 +146,8 @@
 		<OPTION VALUE=30>Months
 		<OPTION VALUE=365>Years
 		</SELECT>
-		<INPUT TYPE=CHECKBOX NAME=SKILLRPT ID=SKILLRPT @if?!CheckReqParm?SKILLRPT=@checked@endif@ ONCLICK="ClickedBox();"><FONT COLOR=WHITE>Skills Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?!CheckReqParm?SKILLRPT=on@checked@endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT');"><FONT COLOR=WHITE>Usage Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=on@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT');"><FONT COLOR=WHITE>Skills Report</FONT>
 		</TD>
 		<TD WIDTH=58% COLSPAN=8 ALIGN=CENTER>
 		<FONT COLOR=WHITE>Report on...</FONT>

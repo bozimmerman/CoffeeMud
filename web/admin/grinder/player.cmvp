@@ -185,6 +185,15 @@
 	</TR>
 	</TABLE>
 @endif@
+@if?PlayerData?ACCTEXPUSED@
+	<CENTER><FONT COLOR=RED>Account expires: </FONT>
+	@if?!CheckReqParm?FUNCTION=EDIT@
+		<INPUT TYPE=TEXT NAME=ACCTEXP SIZE=20 VALUE="@PlayerData?ACCTEXP@">
+	@else@
+		<FONT COLOR=BLACK>@PlayerData?ACCTEXP@</FONT>
+	@endif@
+</CENTER>
+@endif@
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
 <TR>
 	<TD WIDTH=40%>

@@ -98,6 +98,8 @@ public class PlayerData extends StdWebMacro
         "SECURITY",
         "TITLES",
         "FACTIONNAMES",
+        "ACCTEXPUSED",
+        "ACCTEXP"
 	};
 
 	public static int getBasicCode(String val)
@@ -311,6 +313,9 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
+		case 62: str.append(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)?"true":"false"); break;
+		case 63: if(M.playerStats()!=null)str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
+					break;
 		}
 		return str.toString();
 	}
