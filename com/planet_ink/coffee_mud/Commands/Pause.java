@@ -95,12 +95,12 @@ public class Pause extends StdCommand
             if(CMLib.threads().isTicking(E,-1))
             {
                 CMLib.threads().suspendTicking(E,-1);
-                mob.tell("Object"+E.name()+"' ticks have been suspended. Enter PAUSE "+cmd.toUpperCase()+" again to resume.");
+                mob.tell("Object '"+E.name()+"' ticks have been suspended. Enter PAUSE "+cmd.toUpperCase()+" again to resume.");
             }
             else
             {
                 CMLib.threads().resumeTicking(E,-1);
-                mob.tell("Object"+E.name()+"' ticks have been resumed.");
+                mob.tell("Object '"+E.name()+"' ticks have been resumed.");
             }
         }
         return false;
