@@ -64,7 +64,7 @@
 	<TR>
 	@PlayerNext@
 	<TD><a href="javascript:Player('@PlayerID@')"><FONT COLOR=WHITE><B>@PlayerID@</B></FONT></a>@if?PlayerOnline?=true@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
-	<TD><FONT COLOR=WHITE>@PlayerData?RACE@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@PlayerData?RACENAME@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@PlayerData?CHARCLASS@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@PlayerData?LEVEL@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@PlayerData?HOURS@</FONT></TD>

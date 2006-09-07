@@ -47,18 +47,18 @@ public class PlayerData extends StdWebMacro
 		"CLASSLEVEL",
 		"CLASSES",
 		"MAXCARRY",
-		"ATTACK",
-		"ARMOR",
-		"DAMAGE",
+		"ATTACKNAME",
+		"ARMORNAME",
+		"DAMAGENAME",
 		"HOURS",
 		"PRACTICES",
 		"EXPERIENCE",
 		"EXPERIENCELEVEL",
 		"TRAINS",
 		"MONEY",
-		"DEITY",
+		"DEITYNAME",
 		"LIEGE",
-		"CLAN",
+		"CLANNAME",
 		"CLANROLE",
 		"ALIGNMENTNAME",
 		"ALIGNMENTSTRING",
@@ -70,7 +70,7 @@ public class PlayerData extends StdWebMacro
 		"INVENTORY",
 		"WEIGHT",
 		"ENCUMBRANCE",
-		"GENDER",
+		"GENDERNAME",
 		"LASTDATETIMEMILLIS",
 		"HITPOINTS",
 		"MANA",
@@ -87,7 +87,17 @@ public class PlayerData extends StdWebMacro
         "IMGURL",
         "HASIMG",
         "NOTES",
-        "LEVELS"
+        "LEVELS",
+        "ATTACK",
+        "DAMAGE",
+        "ARMOR",
+        "SPEEDNAME",
+        "SPEED",
+        "EXPERTISE",
+        "TATTOOS",
+        "SECURITY",
+        "TITLES",
+        "FACTIONNAMES",
 	};
 
 	public static int getBasicCode(String val)
@@ -116,14 +126,17 @@ public class PlayerData extends StdWebMacro
 		case 6: str.append(M.baseEnvStats().level()+", "); break;
 		case 7: str.append(M.baseCharStats().displayClassLevel(M,true)+", "); break;
 		case 8: str.append(M.baseCharStats().getClassLevel(M.baseCharStats().getCurrentClass())+", "); break;
-		case 9: for(int c=M.charStats().numClasses()-1;c>=0;c--)
+		case 9: 
+		{
+				for(int c=M.charStats().numClasses()-1;c>=0;c--)
 				{
 					CharClass C=M.charStats().getMyClass(c);
 					str.append(C.name(M.baseCharStats().getCurrentClassLevel())+" ("+M.charStats().getClassLevel(C)+") ");
 				}
 				str.append(", ");
 				break;
-		case 10: if(M.maxCarry()==Integer.MAX_VALUE) str.append("N/A, "); else str.append(M.maxCarry()+", "); break;
+		}
+		case 10: if(M.maxCarry()>(Integer.MAX_VALUE/3)) str.append("NA, "); else str.append(M.maxCarry()+", "); break;
 		case 11: str.append(CMStrings.capitalizeAndLower(CMLib.combat().fightingProwessStr(M.adjustedAttackBonus(null)))+", "); break;
 		case 12: str.append(CMStrings.capitalizeAndLower(CMLib.combat().armorStr((-M.adjustedArmor())+50))+", "); break;
 		case 13: str.append(M.adjustedDamage(null,null)+", "); break;
@@ -155,7 +168,7 @@ public class PlayerData extends StdWebMacro
 		    		    str.append(FR.name()+", ");
 		    		else
 		    		    str.append(M.fetchFaction(CMLib.factions().AlignID()));
-				 break;
+		    		break;
 				}
 		case 26: str.append(M.getWimpHitPoint()+", "); break;
 		case 27: if(M.getStartRoom()!=null)
@@ -171,13 +184,15 @@ public class PlayerData extends StdWebMacro
 					 str.append(M.location().roomID()+", ");
 				 break;
 		case 31:
+		{
 				for(int inv=0;inv<M.inventorySize();inv++)
 				{
 					Item I=M.fetchInventory(inv);
 					if((I!=null)&&(I.container()==null))
 						  str.append(I.name()+", ");
 				}
-			break;
+				break;
+		}
 		case 32: str.append(M.baseEnvStats().weight()+", "); break;
 		case 33: str.append(M.envStats().weight()+", "); break;
 		case 34: str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName())+", "); break;
@@ -237,6 +252,65 @@ public class PlayerData extends StdWebMacro
 					str.append(", ");
 				 }
 				 break;
+		case 52: str.append(M.baseEnvStats().attackAdjustment()+", "); break;
+		case 53: str.append(M.baseEnvStats().damage()+", "); break;
+		case 54: str.append(M.baseEnvStats().armor()+", "); break;
+		case 55: str.append(M.envStats().speed()+", "); break;
+		case 56: str.append(M.baseEnvStats().speed()+", "); break;
+		case 57: 
+		{
+			for(int e=0;e<M.numExpertises();e++)
+			{
+				String E=M.fetchExpertise(e);
+				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E);
+				if(X==null)
+					str.append(E+", ");
+				else
+					str.append(X.name+", ");
+			}
+			break;
+		}
+		case 58: 
+		{
+			for(int t=0;t<M.numTattoos();t++)
+			{
+				String E=M.fetchTattoo(t);
+				  str.append(E+", ");
+			}
+			break;
+		}
+		case 59: 
+		{
+			if(M.playerStats()!=null)
+				for(int b=0;b<M.playerStats().getSecurityGroups().size();b++)
+				{
+					String B=(String)M.playerStats().getSecurityGroups().elementAt(b);
+					if(B!=null)	str.append(B+", ");
+				}
+				break;
+		}
+		case 60: 
+		{
+			if(M.playerStats()!=null)
+				for(int b=0;b<M.playerStats().getTitles().size();b++)
+				{
+					String B=(String)M.playerStats().getTitles().elementAt(b);
+					if(B!=null)	str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
+				}
+				str.append("<INPUT TYPE=TEXT NAME=TITLE"+M.playerStats().getTitles().size()+" SIZE=60 VALUE=\"\">");
+				break;
+		}
+		case 61: 
+		{
+			for(Enumeration e=M.fetchFactions();e.hasMoreElements();)
+			{
+				String FID=(String)e.nextElement();
+				Faction F=CMLib.factions().getFaction(FID);
+				int value=M.fetchFaction(FID);
+				if(F!=null)	str.append(F.name()+" ("+value+"), ");
+			}
+			break;
+		}
 		}
 		return str.toString();
 	}
@@ -265,7 +339,7 @@ public class PlayerData extends StdWebMacro
 			if(M==null) return " @break@";
 
 			boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
-							||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYMOB"));
+							||(httpReq.getRequestParameter("ACTION")).equals("FIRSTTIME");
 			StringBuffer str=new StringBuffer("");
 			for(int i=0;i<MOB.AUTODESC.length;i++)
 			{
@@ -315,12 +389,41 @@ public class PlayerData extends StdWebMacro
 					str.append(">"+R2.name());
 				}
 			}
+			if(parms.containsKey("DEITY"))
+			{
+				String old=httpReq.getRequestParameter("DEITY");
+				if(firstTime) old=M.getWorshipCharID();
+				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Godless");
+				for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+				{
+					Deity E=(Deity)e.nextElement();
+					str.append("<OPTION VALUE=\""+E.Name()+"\"");
+					if(E.Name().equalsIgnoreCase(old))
+						str.append(" SELECTED");
+					str.append(">"+E.Name());
+				}
+			}
+			if(parms.containsKey("CLAN"))
+			{
+				String old=httpReq.getRequestParameter("CLAN");
+				if(firstTime) old=M.getClanID();
+				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Clanless");
+				for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					str.append("<OPTION VALUE=\""+C.clanID()+"\"");
+					if(C.clanID().equalsIgnoreCase(old))
+						str.append(" SELECTED");
+					str.append(">"+C.getName());
+				}
+			}
 			if(parms.containsKey("ALIGNMENT"))
 			{
 				String old=httpReq.getRequestParameter("ALIGNMENT");
+				if((firstTime)||(old.length()==0)) 
+					old=""+M.fetchFaction(CMLib.factions().AlignID());
 			    if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 			    {
-					if(firstTime) old=""+M.fetchFaction(CMLib.factions().AlignID());
 					for(int v=1;v<Faction.ALIGN_NAMES.length;v++)
 					{
 					    str.append("<OPTION VALUE="+Faction.ALIGN_NAMES[v]);
@@ -330,10 +433,20 @@ public class PlayerData extends StdWebMacro
 					}
 			    }
 			}
-			str.append(MobData.itemList(M,httpReq,parms));
-			str.append(MobData.abilities(M,httpReq,parms));
-			str.append(MobData.factions(M,httpReq,parms));
-			str.append(AreaData.affectsNBehaves(M,httpReq,parms));
+			if(parms.containsKey("GENDER"))
+			{
+				String old=httpReq.getRequestParameter("GENDER");
+				if(firstTime) old=""+M.baseCharStats().getStat(CharStats.STAT_GENDER);
+			    str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
+			    str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
+			    str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");
+			}
+			str.append(MobData.expertiseList(M,httpReq,parms));
+			str.append(MobData.classList(M,httpReq,parms));
+			str.append(MobData.itemList(M,httpReq,parms,0));
+			str.append(MobData.abilities(M,httpReq,parms,0));
+			str.append(MobData.factions(M,httpReq,parms,0));
+			str.append(AreaData.affectsNBehaves(M,httpReq,parms,0));
 			str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 			str.append(MobData.senses(M,firstTime,httpReq,parms));
 			String strstr=str.toString();

@@ -36,7 +36,7 @@ public class AreaData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
@@ -74,7 +74,7 @@ public class AreaData extends StdWebMacro
 					theparms.addElement(t);
 				}
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -147,7 +147,7 @@ public class AreaData extends StdWebMacro
 					theparms.addElement(t);
 				}
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -340,7 +340,7 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
 
-				str.append(AreaData.affectsNBehaves(A,httpReq,parms));
+				str.append(AreaData.affectsNBehaves(A,httpReq,parms,1));
 
 				if(parms.containsKey("SUBOPS"))
 				{

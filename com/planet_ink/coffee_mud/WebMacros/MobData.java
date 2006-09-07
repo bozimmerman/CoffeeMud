@@ -64,7 +64,7 @@ public class MobData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ABILITIES"))
@@ -89,7 +89,7 @@ public class MobData extends StdWebMacro
 				if((Able!=null)&&(Able.savable()))
 					theclasses.addElement(CMClass.className(Able));
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -115,7 +115,55 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("EXPERTISELIST"))
+		{
+			Vector theclasses=new Vector();
+			if(httpReq.isRequestParameter("EXPER1"))
+			{
+				int num=1;
+				String behav=httpReq.getRequestParameter("EXPER"+num);
+				while(behav!=null)
+				{
+					if(behav.length()>0)
+						theclasses.addElement(behav);
+					num++;
+					behav=httpReq.getRequestParameter("EXPER"+num);
+				}
+			}
+			else
+			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				ExpertiseLibrary.ExpertiseDefinition X=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement(); 
+				theclasses.addElement(X.ID);
+			}
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=EXPER"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(theclass);
+				if(X==null)
+					str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+				else
+					str.append("<OPTION VALUE=\""+X.ID+"\" SELECTED>"+X.name);
+				str.append("</SELECT>,&nbsp;");
+			}
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=EXPER"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select an Expertise");
+			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				ExpertiseLibrary.ExpertiseDefinition X=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement(); 
+				str.append("<OPTION VALUE=\""+X.ID+"\">"+X.name);
+			}
+			str.append("</SELECT>");
+		}
+		return str;
+	}
+
+	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
@@ -140,7 +188,7 @@ public class MobData extends StdWebMacro
 				if(Able!=null)
 					theclasses.addElement(CMClass.className(Able));
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -165,7 +213,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
@@ -190,7 +238,7 @@ public class MobData extends StdWebMacro
 				if(Able!=null)
 					theclasses.addElement(CMClass.className(Able));
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -216,7 +264,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
@@ -253,7 +301,7 @@ public class MobData extends StdWebMacro
 					theparms.addElement(new Integer(E.fetchFaction(f.factionID())).toString());
 				}
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -313,7 +361,81 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer classList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("CLASSLIST"))
+		{
+			Vector theclasses=new Vector();
+			Vector theparms=new Vector();
+			if(httpReq.isRequestParameter("CHARCLASS1"))
+			{
+				int num=1;
+				String facti=httpReq.getRequestParameter("CHARCLASS"+num);
+				String theparm=httpReq.getRequestParameter("CHARCLASSLVL"+num);
+				while(facti!=null)
+				{
+					if(theparm==null) theparm="0";
+					if(facti.length()>0)
+					{
+						theclasses.addElement(facti);
+						String t=theparm;
+						t=CMStrings.replaceAll(t,"\"","&quot;");
+						theparms.addElement(t);
+					}
+					num++;
+					facti=httpReq.getRequestParameter("CHARCLASS"+num);
+					theparm=httpReq.getRequestParameter("CHARCLASSLVL"+num);
+				}
+			}
+			else
+			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();) 
+			{
+				CharClass C=(CharClass)e.nextElement();
+				if(C!=null)
+				{
+					int lvl=E.baseCharStats().getClassLevel(C);
+					if(lvl>=0)
+					{
+						theclasses.addElement(C.ID());
+						theparms.addElement(new Integer(lvl).toString());
+					}
+				}
+			}
+			str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				CharClass C=CMClass.getCharClass(theclass);
+				if(C==null) continue;
+				String theparm=(String)theparms.elementAt(i);
+				str.append("<TR><TD WIDTH=50%>");
+				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=CHARCLASS"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+C.name());
+				str.append("</SELECT>");
+				str.append("</TD><TD WIDTH=50%>");
+				str.append("<INPUT TYPE=TEXT SIZE=3 MAXLENGTH=3 NAME=CHARCLASSLVL"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=50%>");
+			str.append("<SELECT ONCHANGE=\"AddFaction(this);\" NAME=CHARCLASS"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a Class");
+	
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				CharClass C=(CharClass)c.nextElement();
+				str.append("<OPTION VALUE=\""+C.ID()+"\">"+C.name());
+			}
+			str.append("</SELECT>");
+			str.append("</TD><TD WIDTH=50%><BR>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+	
+	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
@@ -338,7 +460,7 @@ public class MobData extends StdWebMacro
 				if(Able!=null)
 					theclasses.addElement(CMClass.className(Able));
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -364,7 +486,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("SHOPINVENTORY"))
@@ -451,7 +573,7 @@ public class MobData extends StdWebMacro
 				RoomData.contributeItems(itemClasses);
 				RoomData.contributeMOBs(mobClasses);
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				Environmental O=(Environmental)theclasses.elementAt(i);
@@ -519,7 +641,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(MOB M, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer itemList(MOB M, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
@@ -548,7 +670,7 @@ public class MobData extends StdWebMacro
 				}
 				itemlist=RoomData.contributeItems(classes);
 			}
-			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<classes.size();i++)
 			{
 				Item I=(Item)classes.elementAt(i);
@@ -1046,19 +1168,19 @@ public class MobData extends StdWebMacro
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 		str.append(MobData.senses(M,firstTime,httpReq,parms));
-		str.append(AreaData.affectsNBehaves(M,httpReq,parms));
-		str.append(factions(M,httpReq,parms));
-		str.append(MobData.abilities(M,httpReq,parms));
+		str.append(AreaData.affectsNBehaves(M,httpReq,parms,1));
+		str.append(factions(M,httpReq,parms,1));
+		str.append(MobData.abilities(M,httpReq,parms,1));
 		if(M instanceof Deity)
 		{
-			str.append(MobData.blessings((Deity)M,httpReq,parms));
-			str.append(MobData.curses((Deity)M,httpReq,parms));
-			str.append(MobData.powers((Deity)M,httpReq,parms));
+			str.append(MobData.blessings((Deity)M,httpReq,parms,1));
+			str.append(MobData.curses((Deity)M,httpReq,parms,1));
+			str.append(MobData.powers((Deity)M,httpReq,parms,1));
 		}
 		if(M instanceof ShopKeeper)
-			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
+			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms,1));
 
-		str.append(itemList(M,httpReq,parms));
+		str.append(itemList(M,httpReq,parms,1));
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

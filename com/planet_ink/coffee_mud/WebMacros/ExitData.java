@@ -242,7 +242,7 @@ public class ExitData extends StdWebMacro
 
 		}
 		str.append(ExitData.dispositions(E,firstTime,httpReq,parms));
-		str.append(AreaData.affectsNBehaves(E,httpReq,parms));
+		str.append(AreaData.affectsNBehaves(E,httpReq,parms,1));
 		E.recoverEnvStats();
 		E.text();
 

@@ -302,7 +302,7 @@ public class RoomData extends StdWebMacro
 				}
 			}
 	
-			str.append(AreaData.affectsNBehaves(R,httpReq,parms));
+			str.append(AreaData.affectsNBehaves(R,httpReq,parms,1));
 			if(parms.containsKey("IMAGE"))
 			{
 				String name=httpReq.getRequestParameter("IMAGE");

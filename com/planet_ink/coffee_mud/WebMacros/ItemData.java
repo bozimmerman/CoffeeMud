@@ -887,7 +887,7 @@ public class ItemData extends StdWebMacro
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
-			str.append(AreaData.affectsNBehaves(I,httpReq,parms));
+			str.append(AreaData.affectsNBehaves(I,httpReq,parms,1));
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))

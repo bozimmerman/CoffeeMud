@@ -34,7 +34,7 @@
 <TR>
 <FONT COLOR=BLUE>Name: </FONT><FONT COLOR=BLACK><B>@PlayerData?NAME@</B></FONT>@if?PlayerOnline?=true@<FONT COLOR=BLUE>&nbsp;&nbsp;&nbsp; *ONLINE*</FONT>@endif@
 <BR>
-<FONT COLOR=BLUE>Race: </FONT><FONT COLOR=BLACK>@PlayerData?GENDER@ @PlayerData?RACE@</FONT>
+<FONT COLOR=BLUE>Race: </FONT><FONT COLOR=BLACK>@PlayerData?GENDERNAME@ @PlayerData?RACENAME@</FONT>
 <BR>
 <FONT COLOR=BLUE><B>Your Current Portrait:</B><BR>
 @if?PlayerData?HASIMG@

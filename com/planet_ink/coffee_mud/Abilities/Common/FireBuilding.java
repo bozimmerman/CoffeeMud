@@ -157,7 +157,9 @@ public class FireBuilding extends CommonSkill
 		{
 			lighting=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 			if(lighting==null) return false;
-			if(lighting.displayText().length()==0)
+			
+			if((lighting.displayText().length()==0)
+			||(!CMLib.flags().isGettable(lighting)))
 			{
 				commonTell(mob,"For some reason, "+lighting.name()+" just won't catch.");
 				return false;
