@@ -151,6 +151,19 @@ public class ServiceEngine implements ThreadEngine
 		}
 		return false;
 	}
+	public boolean isSuspended(Tickable E, int tickID)
+	{
+        Tick almostTock=null;
+        Iterator set=null;
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
+		{
+			almostTock=(Tick)v.nextElement();
+			set=almostTock.getTickSet(E,tickID);
+			if((set!=null)&&(set.hasNext())) return true;
+		}
+		return false;
+	}
+	
 
 	public boolean isHere(Tickable E2, Room here)
 	{

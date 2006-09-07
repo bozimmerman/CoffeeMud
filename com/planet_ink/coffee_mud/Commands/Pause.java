@@ -92,7 +92,10 @@ public class Pause extends StdCommand
             if(E==null)
                 mob.tell("'"+cmd+"' is an unknown object here.");
             else
-            if(CMLib.threads().isTicking(E,-1))
+            if(!CMLib.threads().isTicking(E,-1))
+                mob.tell("'"+cmd+"' has no thread support.");
+            else
+            if(!CMLib.threads().isSuspended(E,-1))
             {
                 CMLib.threads().suspendTicking(E,-1);
                 mob.tell("Object '"+E.name()+"' ticks have been suspended. Enter PAUSE "+cmd.toUpperCase()+" again to resume.");
