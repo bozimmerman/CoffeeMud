@@ -139,8 +139,8 @@ public class DefaultTimeClock implements TimeClock
                         CMath.s_int(page.getStr("DUSKHR")),
                         CMath.s_int(page.getStr("NIGHTHR")));
 
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/Tickable.TIME_TICK)));
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/Tickable.TIME_TICK)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/Tickable.TIME_TICK)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/Tickable.TIME_TICK)));
     }
     
 	public String timeDescription(MOB mob, Room room)
@@ -255,7 +255,7 @@ public class DefaultTimeClock implements TimeClock
         try
         {
             TimeClock C=(TimeClock)this.clone();
-            long diff=(System.currentTimeMillis()-millis)/MudHost.TIME_MILIS_PER_MUDHOUR;
+            long diff=(System.currentTimeMillis()-millis)/Tickable.TIME_MILIS_PER_MUDHOUR;
             C.tickTock((int)diff);
             return C;
         }
@@ -283,7 +283,7 @@ public class DefaultTimeClock implements TimeClock
         numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
         numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
         numMudHours+=(getTimeOfDay()-C.getTimeOfDay());
-        return numMudHours*MudHost.TIME_MILIS_PER_MUDHOUR;
+        return numMudHours*Tickable.TIME_MILIS_PER_MUDHOUR;
     }
     
 	public void raiseLowerTheSunEverywhere()
@@ -453,7 +453,7 @@ public class DefaultTimeClock implements TimeClock
 					}
 				}
 			}
-			if((System.currentTimeMillis()-lastTicked)>MudHost.TIME_MILIS_PER_MUDHOUR)
+			if((System.currentTimeMillis()-lastTicked)>Tickable.TIME_MILIS_PER_MUDHOUR)
 				tickTock(1);
 		}
 		return true;

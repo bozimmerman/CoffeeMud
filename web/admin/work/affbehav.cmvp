@@ -23,7 +23,7 @@
 			@AbilityAffectNext?reset@
 			@loop@
 			<p>
-			@AbilityAffectNext?NEXT@<a name="#@AbilityID@"><B>@AbilityID@: @AbilityName@</B></a>
+			@AbilityAffectNext?NEXT@<a name="@AbilityID@"><B>@AbilityID@: @AbilityName@</B></a>
 			<br>
 			<br>
 			<br>

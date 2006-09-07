@@ -2101,18 +2101,7 @@ public class StdMOB implements MOB
 		{
 			Session S=mySession;
 			if(S!=null)
-			{
-				try{
-					if((S.isLockedUpWriting())
-                    &&(CMLib.flags().isInTheGame(this,true)))
-					{
-						Log.errOut("StdMOB","Kicked out "+name()+" due to write-lock.");
-						S.logoff();
-						return;
-					}
-				}catch(Throwable t){}
 				S.stdPrintln(source,target,tool,msg);
-			}
 		}
 	}
 

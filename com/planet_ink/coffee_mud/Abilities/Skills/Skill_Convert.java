@@ -121,7 +121,7 @@ public class Skill_Convert extends StdSkill
 			if(convertStack.contains(target))
 			{
 				Long L=(Long)convertStack.elementAt(convertStack.getIndex(target),2);
-				if((System.currentTimeMillis()-L.longValue())>MudHost.TIME_MILIS_PER_MUDHOUR*5)
+				if((System.currentTimeMillis()-L.longValue())>Tickable.TIME_MILIS_PER_MUDHOUR*5)
 					convertStack.removeElement(target);
 			}
 			if(convertStack.contains(target))

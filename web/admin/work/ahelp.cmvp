@@ -21,7 +21,7 @@
 			@HelpTopics?reset@
 			@loop@
 			<p>
-			@HelpTopics?ARCHON&SHORT&NEXT@<a name="#@HelpTopics@"><B>@HelpTopics@</B></a>
+			@HelpTopics?ARCHON&SHORT&NEXT@<a name="@HelpTopics@"><B>@HelpTopics@</B></a>
 			<br>
 			<br>
 			<br>

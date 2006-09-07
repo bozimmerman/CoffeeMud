@@ -42,7 +42,7 @@ public class Disease_Narcolepsy extends Disease
 	public boolean putInCommandlist(){return false;}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return (int)(MudHost.TIME_MILIS_PER_MUDHOUR/Tickable.TIME_TICK);}
+	protected int DISEASE_DELAY(){return (int)(Tickable.TIME_MILIS_PER_MUDHOUR/Tickable.TIME_TICK);}
 	protected String DISEASE_DONE(){return "Your narcolepsy is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) sleepy.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sleepy...";}

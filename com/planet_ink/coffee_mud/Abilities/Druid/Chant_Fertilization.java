@@ -85,7 +85,7 @@ public class Chant_Fertilization extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),asLevel,CMLib.ableMapper().qualifyingClassLevel(mob,this)*new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/Tickable.TIME_TICK)).intValue());
+				beneficialAffect(mob,mob.location(),asLevel,CMLib.ableMapper().qualifyingClassLevel(mob,this)*new Long(((Tickable.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/Tickable.TIME_TICK)).intValue());
 			}
 
 		}

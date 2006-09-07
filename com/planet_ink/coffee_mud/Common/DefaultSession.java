@@ -359,14 +359,25 @@ public class DefaultSession extends Thread implements Session
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
-	public synchronized void out(char[] c){
+	public void out(char[] c){
 		try{
 			if((out!=null)&&(c!=null)&&(c.length>0))
 			{
-				writeStartTime=System.currentTimeMillis()+c.length;
-				out.write(c);
-				if(out.checkError()) 
-					logoff();
+                if(isLockedUpWriting())
+                {
+                    String name=(mob!=null)?mob.Name():getAddress();
+                    Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
+                    logoff();
+                    logoff();
+                    this.interrupt();
+                }
+                else
+                {
+    				writeStartTime=System.currentTimeMillis()+c.length;
+    				out.write(c);
+    				if(out.checkError()) 
+    					logoff();
+                }
 			}
 		}
 		finally{writeStartTime=0;}

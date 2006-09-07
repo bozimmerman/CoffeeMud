@@ -142,7 +142,7 @@ public class Thief_Racketeer extends ThiefSkill
             {
                 mob.location().send(mob,msg);
                 beneficialAffect(mob,target,asLevel,new Long(
-                        ((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj()
+                        ((Tickable.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj()
                                 .getDaysInMonth())/Tickable.TIME_TICK)).intValue());
                 Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
                 if(C!=null)

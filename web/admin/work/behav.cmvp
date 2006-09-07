@@ -23,7 +23,7 @@
 			@BehaviorNext?reset@
 			@loop@
 			<p>
-			@BehaviorNext?NEXT@<a name="#@BehaviorID@"><B>@BehaviorID@</B></a>
+			@BehaviorNext?NEXT@<a name="@BehaviorID@"><B>@BehaviorID@</B></a>
 			<br>
 			<br>
 			<br>

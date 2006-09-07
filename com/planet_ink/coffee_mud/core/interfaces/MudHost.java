@@ -38,10 +38,8 @@ public interface MudHost
 {
     /** the number of milliseconds between each savethread execution */
 	public final static long TIME_SAVETHREAD_SLEEP=60*60000; // 60 minutes, right now.
-    /** the number of milliseconds for each game-mud-hour */
-	public final static long TIME_MILIS_PER_MUDHOUR=10*60000; // 10 minutes, right now.
     /** the number of milliseconds between each utilithread execution */
-	public final static long TIME_UTILTHREAD_SLEEP=TIME_MILIS_PER_MUDHOUR;
+	public final static long TIME_UTILTHREAD_SLEEP=Tickable.TIME_MILIS_PER_MUDHOUR;
     /**
      * the hostname of the mud server
      * @return hostname or ip address 

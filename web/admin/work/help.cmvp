@@ -21,7 +21,7 @@
 			@HelpTopics?reset@
 			@loop@
 			<p>
-			@HelpTopics?SHORT&NEXT@<a name="#@HelpTopics@"><B>@HelpTopics@</B></a>
+			@HelpTopics?SHORT&NEXT@<a name="@HelpTopics@"><B>@HelpTopics@</B></a>
 			<br>
 			<br>
 			<br>

@@ -266,7 +266,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public long timeInterval()
 	{
 		return new Long((location().getArea().getTimeObj().getHoursInDay())
-				*MudHost.TIME_MILIS_PER_MUDHOUR
+				*Tickable.TIME_MILIS_PER_MUDHOUR
 				*location().getArea().getTimeObj().getDaysInMonth()).longValue();
 	}
 

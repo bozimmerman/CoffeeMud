@@ -69,6 +69,8 @@ public interface Tickable extends CMObject
     
     /** the number of miliseconds for each tick/round.*/
     public final static long TIME_TICK=4000;
+    /** the number of milliseconds for each game-mud-hour */
+    public final static long TIME_MILIS_PER_MUDHOUR=10*60000;
     /** the number of game/rounds for each real minute of time */
     public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/new Long(TIME_TICK).doubleValue());
     /** TIME_TICK as a double */
