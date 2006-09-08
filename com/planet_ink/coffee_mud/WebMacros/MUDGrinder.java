@@ -296,6 +296,16 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
+		if(parms.containsKey("EDITPLAYER"))
+		{
+			MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+			if(mob==null) return "@break@";
+			MOB M=CMLib.map().getLoadPlayer(httpReq.getRequestParameter("PLAYER"));
+			if(M==null) return "@break@";
+			String errMsg=GrinderPlayers.editPlayer(mob,httpReq,parms,M);
+			httpReq.addRequestParameters("ERRMSG",errMsg);
+		}
+		else
 		if(parms.containsKey("DELROOM"))
 		{
 			MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));

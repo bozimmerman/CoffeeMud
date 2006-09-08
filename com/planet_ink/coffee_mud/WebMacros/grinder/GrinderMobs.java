@@ -168,6 +168,68 @@ public class GrinderMobs
 		}
 		return "";
 	}
+	
+	public static String expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		while(E.numExpertises()>0) E.delExpertise(E.fetchExpertise(0));
+		if(httpReq.isRequestParameter("EXPER1"))
+		{
+			int num=1;
+			String aff=httpReq.getRequestParameter("EXPER"+num);
+			while(aff!=null)
+			{
+				if(aff.length()>0)
+				{
+					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
+					if(def==null) return "Unknown Expertise '"+aff+"'.";
+					E.addExpertise(def.ID);
+				}
+				num++;
+				aff=httpReq.getRequestParameter("EXPER"+num);
+			}
+		}
+		return "";
+	}
+	
+	
+	public static String items(MOB M, Vector allitems, ExternalHTTPRequests httpReq)
+	{
+		if(httpReq.isRequestParameter("ITEM1"))
+		{
+			for(int i=1;;i++)
+			{
+				String MATCHING=httpReq.getRequestParameter("ITEM"+i);
+				if(MATCHING==null)
+					break;
+				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+				if(I2!=null)
+				{
+					if(CMath.isNumber(MATCHING))
+						happilyAddItem(I2,M);
+					else
+						happilyAddItem((Item)I2.copyOf(),M);
+				}
+			}
+			for(int i=0;i<allitems.size();i++)
+			{
+				Item I=(Item)allitems.elementAt(i);
+				if(!M.isMine(I))
+				{
+					I.setOwner(M);
+					I.destroy();
+				}
+			}
+			for(int i=0;i<M.inventorySize();i++)
+			{
+				Item I=M.fetchInventory(i);
+				if((I.container()!=null)&&(!M.isMine(I.container())))
+					I.setContainer(null);
+			}
+			return "";
+		}
+		else
+			return "No Item Data!";
+	}
 
 	public static String powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
@@ -496,25 +558,8 @@ public class GrinderMobs
 					if(error.length()>0) return error;
 				}
 	
-				if(httpReq.isRequestParameter("ITEM1"))
-				{
-					for(int i=1;;i++)
-					{
-						String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-						if(MATCHING==null)
-							break;
-						Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
-						if(I2!=null)
-						{
-							if(CMath.isNumber(MATCHING))
-								happilyAddItem(I2,M);
-							else
-								happilyAddItem((Item)I2.copyOf(),M);
-						}
-					}
-				}
-				else
-					return "No Item Data!";
+				error=GrinderMobs.items(M,allitems,httpReq);
+				if(error.length()>0) return error;
 	
 				if((M instanceof ShopKeeper)
 				&&(httpReq.isRequestParameter("SHP1")))
@@ -581,21 +626,6 @@ public class GrinderMobs
 					}
 				}
 	
-				for(int i=0;i<allitems.size();i++)
-				{
-					Item I=(Item)allitems.elementAt(i);
-					if(!M.isMine(I))
-					{
-						I.setOwner(M);
-						I.destroy();
-					}
-				}
-				for(int i=0;i<M.inventorySize();i++)
-				{
-					Item I=M.fetchInventory(i);
-					if((I.container()!=null)&&(!M.isMine(I.container())))
-						I.setContainer(null);
-				}
 			}
 	
 			M.recoverEnvStats();

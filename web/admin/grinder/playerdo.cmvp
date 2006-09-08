@@ -53,6 +53,14 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
+@if?CheckReqParm?FUNCTION=EDITPLAYER@ @MUDGrinder?EDITPLAYER@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Player has been modified.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
 </BODY>
 </HTML>
 @endif@

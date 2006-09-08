@@ -297,9 +297,8 @@ public class PlayerData extends StdWebMacro
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
 					String B=(String)M.playerStats().getTitles().elementAt(b);
-					if(B!=null)	str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
+					if(B!=null)	str.append(B+", ");
 				}
-				str.append("<INPUT TYPE=TEXT NAME=TITLE"+M.playerStats().getTitles().size()+" SIZE=60 VALUE=\"\">");
 				break;
 		}
 		case 61: 
@@ -318,16 +317,6 @@ public class PlayerData extends StdWebMacro
 					break;
 		}
 		return str.toString();
-	}
-
-	public static String getBasic(MOB M, String val)
-	{
-		for(int i=0;i<BASICS.length;i++)
-		{
-			if(val.equalsIgnoreCase(BASICS[i]))
-				return getBasic(M,i);
-		}
-		return "";
 	}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
@@ -361,24 +350,44 @@ public class PlayerData extends StdWebMacro
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
 					CharStats C=M.charStats();
-					if(parms.containsKey("BASE"+stat))
-					{
-						stat=stat.substring(4);
-						C=M.baseCharStats();
-					}
 					if(parms.containsKey(stat))
 					{
-						if(i>CharStats.NUM_BASE_STATS)
-							str.append(C.getSave(i)+", ");
-						else
-							str.append(C.getStat(i)+", ");
+						String old=httpReq.getRequestParameter(stat);
+						if((firstTime)||(old.length()==0)) 
+						{
+							if(i>CharStats.NUM_BASE_STATS)
+								old=""+C.getSave(i);
+							else
+								old=""+C.getStat(i);
+						}
+						str.append(old+", ");
+					}
+				}
+			}
+			for(int i=0;i<CharStats.STAT_NAMES.length;i++)
+			{
+				String stat=CharStats.STAT_NAMES[i];
+				if(!stat.equalsIgnoreCase("GENDER"))
+				{
+					CharStats C=M.baseCharStats();
+					if(parms.containsKey("BASE"+stat))
+					{
+						String old=httpReq.getRequestParameter("BASE"+stat);
+						if((firstTime)||(old.length()==0)) 
+							old=""+C.getStat(i);
+						str.append(old+", ");
 					}
 				}
 			}
 			for(int i=0;i<BASICS.length;i++)
 			{
 				if(parms.containsKey(BASICS[i]))
-					str.append(getBasic(M,i));
+				{
+					if(httpReq.isRequestParameter(BASICS[i]))
+						str.append(httpReq.getRequestParameter(BASICS[i])+", ");
+					else
+						str.append(getBasic(M,i));
+				}
 			}
 			if(parms.containsKey("RACE"))
 			{
@@ -406,6 +415,28 @@ public class PlayerData extends StdWebMacro
 					if(E.Name().equalsIgnoreCase(old))
 						str.append(" SELECTED");
 					str.append(">"+E.Name());
+				}
+			}
+			if(parms.containsKey("TITLELIST"))
+			{
+				if(M.playerStats()!=null)
+				{
+					int b=0;
+					Vector titles=new Vector();
+					if(firstTime) CMParms.addToVector(M.playerStats().getTitles(),titles);
+					else
+					while(httpReq.isRequestParameter("TITLE"+b))
+					{
+						String B=httpReq.getRequestParameter("TITLE"+b);
+						if((B!=null)&&(B.trim().length()>0)) titles.addElement(B);
+						b++;
+					}
+					for(b=0;b<titles.size();b++)
+					{
+						String B=(String)titles.elementAt(b);
+						if(B!=null)	str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
+					}
+					str.append("<INPUT TYPE=TEXT NAME=TITLE"+titles.size()+" SIZE=60 VALUE=\"\">");
 				}
 			}
 			if(parms.containsKey("CLAN"))
@@ -438,9 +469,9 @@ public class PlayerData extends StdWebMacro
 					}
 			    }
 			}
-			if(parms.containsKey("GENDER"))
+			if(parms.containsKey("BASEGENDER"))
 			{
-				String old=httpReq.getRequestParameter("GENDER");
+				String old=httpReq.getRequestParameter("BASEGENDER");
 				if(firstTime) old=""+M.baseCharStats().getStat(CharStats.STAT_GENDER);
 			    str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
 			    str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
