@@ -81,8 +81,8 @@ public class Soiled extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	    if(((msg.source()==affected)
-	            ||((affected instanceof Item)
-	                    &&(((Item)affected).owner()==msg.source()))))
+        ||((affected instanceof Item)
+            &&(((Item)affected).owner()==msg.source()))))
 	    {
 		    if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 		    &&(msg.source().riding()==null)
