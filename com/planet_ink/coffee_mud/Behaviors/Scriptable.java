@@ -467,23 +467,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									String cmdName)
 	{
 		int x=arg1.compareToIgnoreCase(arg2);
-		if(cmp.equalsIgnoreCase("=="))
-			return (x==0);
-		else
-		if(cmp.equalsIgnoreCase(">="))
-			return (x==0)||(x>0);
-		else
-		if(cmp.equalsIgnoreCase("<="))
-			return (x==0)||(x<0);
-		else
-		if(cmp.equalsIgnoreCase(">"))
-			return (x>0);
-		else
-		if(cmp.equalsIgnoreCase("<"))
-			return (x<0);
-		else
-		if(cmp.equalsIgnoreCase("!="))
-			return (x!=0);
+		if(cmp.equalsIgnoreCase("==")) return (x==0);
+		else if(cmp.equalsIgnoreCase(">=")) return (x==0)||(x>0);
+		else if(cmp.equalsIgnoreCase("<=")) return (x==0)||(x<0);
+		else if(cmp.equalsIgnoreCase(">"))  return (x>0); 
+        else if(cmp.equalsIgnoreCase("<"))  return (x<0);
+		else if(cmp.equalsIgnoreCase("!=")) return (x!=0);
 		else
 		{
 			scriptableError(scripted,cmdName,"Syntax",arg1+" "+cmp+" "+arg2);
@@ -496,23 +485,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		long val1=CMath.s_long(arg1.trim());
 		long val2=CMath.s_long(arg2.trim());
-		if(cmp.equalsIgnoreCase("=="))
-			return (val1==val2);
-		else
-		if(cmp.equalsIgnoreCase(">="))
-			return val1>=val2;
-		else
-		if(cmp.equalsIgnoreCase("<="))
-			return val1<=val2;
-		else
-		if(cmp.equalsIgnoreCase(">"))
-			return (val1>val2);
-		else
-		if(cmp.equalsIgnoreCase("<"))
-			return (val1<val2);
-		else
-		if(cmp.equalsIgnoreCase("!="))
-			return (val1!=val2);
+		if(cmp.equalsIgnoreCase("=="))      return (val1==val2);
+		else if(cmp.equalsIgnoreCase(">=")) return val1>=val2;
+		else if(cmp.equalsIgnoreCase("<=")) return val1<=val2;
+		else if(cmp.equalsIgnoreCase(">"))  return (val1>val2); 
+        else if(cmp.equalsIgnoreCase("<"))  return (val1<val2);
+		else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
 		else
 		{
 			scriptableError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
@@ -520,6 +498,22 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 	}
 
+    protected boolean simpleExpressionEval(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
+    {
+        double val1=CMath.s_parseMathExpression(arg1.trim());
+        double val2=CMath.s_parseMathExpression(arg2.trim());
+        if(cmp.equalsIgnoreCase("=="))      return (val1==val2);
+        else if(cmp.equalsIgnoreCase(">=")) return val1>=val2;
+        else if(cmp.equalsIgnoreCase("<=")) return val1<=val2;
+        else if(cmp.equalsIgnoreCase(">"))  return (val1>val2); 
+        else if(cmp.equalsIgnoreCase("<"))  return (val1<val2);
+        else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
+        else
+        {
+            scriptableError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
+            return false;
+        }
+    }
 	protected Vector loadMobsFromFile(Environmental scripted, String filename)
 	{
 		filename=filename.trim();
@@ -1161,6 +1155,134 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		return set;
 	}
+    
+    public String getStatValue(Environmental E, String arg2)
+    {
+        boolean found=false;
+        String val="";
+        for(int i=0;i<E.getStatCodes().length;i++)
+        {
+            if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+            {
+                val=E.getStat(arg2);
+                found=true;
+                break;
+            }
+        }
+        if((!found)&&(E instanceof MOB))
+        {
+            MOB M=(MOB)E;
+            for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+                if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
+                {
+                    val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
+                    found=true;
+                    break;
+                }
+            if(!found)
+            for(int i=0;i<M.curState().getStatCodes().length;i++)
+                if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+                {
+                    val=M.curState().getStat(M.curState().getStatCodes()[i]);
+                    found=true;
+                    break;
+                }
+            if(!found)
+            for(int i=0;i<M.envStats().getCodes().length;i++)
+                if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+                {
+                    val=M.envStats().getStat(M.envStats().getCodes()[i]);
+                    found=true;
+                    break;
+                }
+            if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+                for(int i=0;i<M.baseState().getStatCodes().length;i++)
+                    if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+                    {
+                        val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
+                        found=true;
+                        break;
+                    }
+        }
+        if(!found)return null;
+        return val;
+    }
+    public String getGStatValue(Environmental E, String arg2)
+    {
+        if(E==null) return null;
+        boolean found=false;
+        String val="";
+        for(int i=0;i<E.getStatCodes().length;i++)
+        {
+            if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+            {
+                val=E.getStat(arg2);
+                found=true; break;
+            }
+        }
+        if(!found)
+        if(E instanceof MOB)
+        {
+            for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
+            {
+                if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
+                {
+                    val=CMLib.coffeeMaker().getGenMobStat((MOB)E,CMObjectBuilder.GENMOBCODES[i]);
+                    found=true; break;
+                }
+            }
+            if(!found)
+            {
+                MOB M=(MOB)E;
+                for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+                    if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
+                    {
+                        val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
+                        found=true;
+                        break;
+                    }
+                if(!found)
+                for(int i=0;i<M.curState().getStatCodes().length;i++)
+                    if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+                    {
+                        val=M.curState().getStat(M.curState().getStatCodes()[i]);
+                        found=true;
+                        break;
+                    }
+                if(!found)
+                for(int i=0;i<M.envStats().getCodes().length;i++)
+                    if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+                    {
+                        val=M.envStats().getStat(M.envStats().getCodes()[i]);
+                        found=true;
+                        break;
+                    }
+                if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+                    for(int i=0;i<M.baseState().getStatCodes().length;i++)
+                        if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+                        {
+                            val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
+                            found=true;
+                            break;
+                        }
+            }
+        }
+        else
+        if(E instanceof Item)
+        {
+            for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
+            {
+                if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
+                {
+                    val=CMLib.coffeeMaker().getGenItemStat((Item)E,CMObjectBuilder.GENITEMCODES[i]);
+                    found=true; break;
+                }
+            }
+        }
+        if(found) return val;
+        return null;
+    }
+    
 
 	public static void mpsetvar(String name, String key, String val)
 	{
@@ -2430,47 +2552,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					boolean found=false;
-					String val="";
-					for(int i=0;i<E.getStatCodes().length;i++)
-					{
-						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
-						{
-							val=E.getStat(arg2);
-							found=true;
-							break;
-						}
-					}
-					if((!found)&&(E instanceof MOB))
-					{
-						MOB M=(MOB)E;
-						for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-							if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
-							{
-								val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
-								found=true;
-								break;
-							}
-						if(!found)
-						for(int i=0;i<M.curState().getStatCodes().length;i++)
-							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-							{
-								val=M.curState().getStat(M.curState().getStatCodes()[i]);
-								found=true;
-								break;
-							}
-						if(!found)
-						for(int i=0;i<M.envStats().getCodes().length;i++)
-							if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
-							{
-								val=M.envStats().getStat(M.envStats().getCodes()[i]);
-								found=true;
-								break;
-							}
-					}
-
-
-					if(!found)
+					String val=getStatValue(E,arg2);
+                    if(val==null)
 					{
 						scriptableError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
 						break;
@@ -2502,69 +2585,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					boolean found=false;
-					String val="";
-                    for(int i=0;i<E.getStatCodes().length;i++)
-                    {
-                        if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
-                        {
-                            val=E.getStat(arg2);
-                            found=true; break;
-                        }
-                    }
-                    if(!found)
-					if(E instanceof MOB)
-					{
-						for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
-						{
-							if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
-							{
-								val=CMLib.coffeeMaker().getGenMobStat((MOB)E,CMObjectBuilder.GENMOBCODES[i]);
-								found=true; break;
-							}
-						}
-						if(!found)
-						{
-							MOB M=(MOB)E;
-							for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-								if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
-								{
-									val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
-									found=true;
-									break;
-								}
-							if(!found)
-							for(int i=0;i<M.curState().getStatCodes().length;i++)
-								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									val=M.curState().getStat(M.curState().getStatCodes()[i]);
-									found=true;
-									break;
-								}
-							if(!found)
-							for(int i=0;i<M.envStats().getCodes().length;i++)
-								if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
-								{
-									val=M.envStats().getStat(M.envStats().getCodes()[i]);
-									found=true;
-									break;
-								}
-						}
-					}
-					else
-					if(E instanceof Item)
-					{
-						for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
-						{
-							if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
-							{
-								val=CMLib.coffeeMaker().getGenItemStat((Item)E,CMObjectBuilder.GENITEMCODES[i]);
-								found=true; break;
-							}
-						}
-					}
-
-					if(!found)
+					String val=getGStatValue(E,arg2);
+					if(val==null)
 					{
 						scriptableError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
 						break;
@@ -2672,6 +2694,24 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=simpleEvalStr(scripted,Q.getStat(arg2),arg4,arg3,"QVAR");
 				break;
 			}
+            case 84: // math
+            {
+                String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+                if(!CMath.isMathExpression(arg1))
+                {
+                    scriptableError(scripted,"MATH","Syntax",evaluable);
+                    return returnable;
+                }
+                if(!CMath.isMathExpression(arg3))
+                {
+                    scriptableError(scripted,"MATH","Syntax",evaluable);
+                    return returnable;
+                }
+                returnable=simpleExpressionEval(scripted,arg1,arg3,arg2,"MATH");
+                break;
+            }
 			case 81: // trains
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4008,45 +4048,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E!=null)
 				{
-					boolean found=false;
-					String val="";
-					for(int i=0;i<E.getStatCodes().length;i++)
-					{
-						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
-						{
-							val=E.getStat(arg2);
-							found=true; break;
-						}
-					}
-					if((!found)&&(E instanceof MOB))
-					{
-						MOB M=(MOB)E;
-						for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-							if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
-							{
-								val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
-								found=true;
-								break;
-							}
-						if(!found)
-						for(int i=0;i<M.curState().getStatCodes().length;i++)
-							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-							{
-								val=M.curState().getStat(M.curState().getStatCodes()[i]);
-								found=true;
-								break;
-							}
-						if(!found)
-						for(int i=0;i<M.envStats().getCodes().length;i++)
-							if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
-							{
-								val=M.envStats().getStat(M.envStats().getCodes()[i]);
-								found=true;
-								break;
-							}
-					}
-
-					if(!found)
+                    String val=getStatValue(E,arg2);
+                    if(val==null)
 					{
 						scriptableError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
 						break;
@@ -4064,69 +4067,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E!=null)
 				{
-					boolean found=false;
-					String val="";
-                    for(int i=0;i<E.getStatCodes().length;i++)
-                    {
-                        if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
-                        {
-                            val=E.getStat(arg2);
-                            found=true; break;
-                        }
-                    }
-                    if(!found)
-					if(E instanceof MOB)
-					{
-						for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
-						{
-							if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
-							{
-								val=CMLib.coffeeMaker().getGenMobStat((MOB)E,CMObjectBuilder.GENMOBCODES[i]);
-								found=true; break;
-							}
-						}
-						if(!found)
-						{
-							MOB M=(MOB)E;
-							for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-								if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
-								{
-									val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
-									found=true;
-									break;
-								}
-							if(!found)
-							for(int i=0;i<M.curState().getStatCodes().length;i++)
-								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									val=M.curState().getStat(M.curState().getStatCodes()[i]);
-									found=true;
-									break;
-								}
-							if(!found)
-							for(int i=0;i<M.envStats().getCodes().length;i++)
-								if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
-								{
-									val=M.envStats().getStat(M.envStats().getCodes()[i]);
-									found=true;
-									break;
-								}
-						}
-					}
-					else
-					if(E instanceof Item)
-					{
-						for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
-						{
-							if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
-							{
-								val=CMLib.coffeeMaker().getGenItemStat((Item)E,CMObjectBuilder.GENITEMCODES[i]);
-								found=true; break;
-							}
-						}
-					}
-
-					if(!found)
+                    String val=getGStatValue(E,arg2);
+                    if(val==null)
 					{
 						scriptableError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
 						break;
@@ -4181,6 +4123,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+            case 84: // math
+            {
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                results.append(""+Math.round(CMath.s_parseMathExpression(arg1)));
+            }
 			case 81: // trains
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
@@ -4885,6 +4832,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								found=true;
 								break;
 							}
+                        if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+                            for(int i=0;i<M.baseState().getStatCodes().length;i++)
+                                if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+                                {
+                                    M.curState().setStat(arg2.substring(4),arg3);
+                                    found=true;
+                                    break;
+                                }
 					}
 					
 					if(!found)
@@ -4950,6 +4905,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
 				if(newTarget!=null)
 				{
+                    
 					boolean found=false;
                     for(int i=0;i<newTarget.getStatCodes().length;i++)
                     {
@@ -5007,6 +4963,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									break;
 								}
 							}
+                            if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+                                for(int i=0;i<M.baseState().getStatCodes().length;i++)
+                                    if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+                                    {
+                                        M.curState().setStat(arg2.substring(4),arg3);
+                                        found=true;
+                                        break;
+                                    }
 						}
 					}
 					else

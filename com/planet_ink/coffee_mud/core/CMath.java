@@ -173,11 +173,18 @@ public class CMath
             return true;
         return false;
     }
+    public static boolean isPct(String s)
+    {
+        if(s==null) return false;
+        s=s.trim();
+        if(!s.endsWith("%")) return false;
+        return CMath.isNumber(s.substring(0,s.length()-1));
+    }
     public static double s_pct(String s)
     {
     	if(s==null) return 0.0;
-    	if(s.endsWith("%")) s=s.substring(0,s.length()-1);
-    	return div(s_int(s),100.0);
+    	if(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
+    	return div(s_double(s),100.0);
     }
     
     public static boolean isSet(long number, int bitnumber)
