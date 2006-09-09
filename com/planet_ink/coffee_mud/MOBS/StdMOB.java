@@ -912,7 +912,6 @@ public class StdMOB implements MOB
 
 	public void setVictim(MOB mob)
 	{
-if(!isMonster()) new Exception().printStackTrace();
 		if(mob==null)
 		{
 			setAtRange(-1);
