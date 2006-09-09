@@ -1,0 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@MUDGrinder?EDITPLAYER@
+
+@if?!CheckReqParm?ERRMSG=@ 
+	@AddFile?player.cmvp@ 
+@else@ 
+<HTML>
+	<FRAMESET ROWS=90%,10% FRAMEBORDER=NO FRAMESPACING=0>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenupi.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MENU>
+	</FRAMESET>
+</HTML>
+@endif@
+@endif@
+@endif@

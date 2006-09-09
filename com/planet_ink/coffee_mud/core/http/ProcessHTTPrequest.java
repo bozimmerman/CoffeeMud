@@ -626,6 +626,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
     public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException
     {
         String redirectTo = null;
+        boolean analLogging=CMSecurity.isDebugging("HTTPERREXT");
         try
         {
             for(int i=0;i<s.length();i++)
@@ -760,7 +761,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                         }
                         else
                         if(foundMacro.equalsIgnoreCase("break"))
+                        {
+                            if(analLogging) Log.infoOut(getName(),"Encountered BREAK! at "+i);
                             return new StringBuffer("");
+                        }
                         else
                         if(foundMacro.equalsIgnoreCase("back"))
                         {
@@ -775,7 +779,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                 int l=foundMacro.length();
                                 String q=runMacro(foundMacro);
                                 if (q != null)
+                                {
+                                    if((analLogging)&&(q.toUpperCase().indexOf("@BREAK@")>=0))
+                                        Log.infoOut(getName(),"WebMacro:"+foundMacro+" generated a BREAK! at "+i);
                                     s.replace(i,i+l+2, q );
+                                }
                                 else
                                     s.replace(i,i+l+2, "[error]" );
                             }
@@ -1078,7 +1086,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		
 		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("HTTPREQ")))
 			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
-					":" + status);
+					":" + status +" ("+replyData.length+")");
 
 
 		try

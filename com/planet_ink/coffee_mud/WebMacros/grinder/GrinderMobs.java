@@ -33,6 +33,21 @@ import java.util.*;
 */
 public class GrinderMobs
 {
+    private static final String[] okparms={
+      "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+      " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
+      "RACE","GENDER","HEIGHT","WEIGHT",
+      "SPEED","ATTACK","DAMAGE","ARMOR",
+      "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
+      "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
+      "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
+      "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
+      "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
+      "CLANID","TATTOOS","EXPERTISES",
+      "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
+      "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
+      "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
+      "LOANINT","SVCRIT"};
 	public static String senses(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setSensesMask(0);
@@ -58,6 +73,7 @@ public class GrinderMobs
 
 	public static String abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
+        boolean player=E.playerStats()!=null;
 		while(E.numLearnedAbilities()>0)
 		{
 			Ability A=E.fetchAbility(0);
@@ -75,6 +91,15 @@ public class GrinderMobs
 				{
 					Ability B=CMClass.getAbility(aff);
 					if(B==null) return "Unknown Ability '"+aff+"'.";
+                    if(player)
+                    {
+                        String prof=httpReq.getRequestParameter("ABPOF"+num);
+                        if(prof==null) prof="0";
+                        String txt=httpReq.getRequestParameter("ABTXT"+num);
+                        if(txt==null) txt="";
+                        B.setProficiency(CMath.s_int(prof));
+                        B.setMiscText(txt);
+                    }
 					E.addAbility(B);
 					B.autoInvocation(E);
 				}
@@ -227,8 +252,7 @@ public class GrinderMobs
 			}
 			return "";
 		}
-		else
-			return "No Item Data!";
+		return "No Item Data!";
 	}
 
 	public static String powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
@@ -303,20 +327,6 @@ public class GrinderMobs
 			}
 			MOB copyMOB=(MOB)M.copyOf();
 	
-			String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-							  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
-							  "RACE","GENDER","HEIGHT","WEIGHT",
-							  "SPEED","ATTACK","DAMAGE","ARMOR",
-							  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-							  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-							  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-							  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-							  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
-							  "CLANID","TATTOOS","EXPERTISES",
-							  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
-	                          "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-	                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-	                          "LOANINT","SVCRIT"};
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];

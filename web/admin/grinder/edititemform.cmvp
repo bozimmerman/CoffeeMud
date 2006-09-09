@@ -1,7 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+	@AddRequestParameter?PROCEED=@
+	
+	@if?!CheckReqParm?PLAYER=@ @if?CheckAuthCode?AUTH_CMDPLAYERS=true@  @AddRequestParameter?PROCEED=TRUE@ @endif@ @endif@
+	@if?CheckReqParm?PLAYER=@ @if?CheckAuthCode?ANYMODAREAS=true@ @AddRequestParameter?PROCEED=TRUE@ @endif@ @endif@
+	
+	@if?CheckReqParm?PROCEED=@
+		@AddFile?/grinder/nopriv.cmvp@
+	@else@
 <html>
 <head>
 	<!-- tell spiders to sod off -->
@@ -60,19 +67,28 @@
 </head>
 <BODY>
 <CENTER>
-<h3>Modify Item in room '@RoomID@'.</H3>
+@if?CheckReqParm?PLAYER=@
+	<h3>Modify Item in room '@RoomID@'.</H3>
+@else@
+	<h3>Modify Item of player '@PlayerID@'.</H3>
+@endif@
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
-<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
+@if?CheckReqParm?PLAYER=@
+	<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
+	<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
+	<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
+	<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+	<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+	<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+@else@
+	<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editplayeritemdone.cmvp">
+	<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerID@">
+@endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
 <INPUT TYPE=HIDDEN NAME=CHANGEDLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=ITEM VALUE="@RequestParameter?ITEM@">
-<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
-<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
-<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYITEM">
 <TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
 <TR>

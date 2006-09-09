@@ -32,6 +32,15 @@ import java.util.*;
 */
 public class GrinderExits
 {
+    private static final String[] okparms={
+      "NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
+      "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
+      "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
+      "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
+      "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
+      "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
+      " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
+    
 	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setDisposition(0);
@@ -60,13 +69,6 @@ public class GrinderExits
 				R.rawExits()[dir]=E;
 			}
 			
-			String[] okparms={"NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
-							  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-							  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-							  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-							  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-							  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-							  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];

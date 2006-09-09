@@ -35,6 +35,20 @@ public class MobData extends StdWebMacro
 {
 	public String name() {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+    private static final String[] okparms={
+      "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+      "LEVEL","ABILITY","REJUV","MISCTEXT",
+      "RACE","GENDER","HEIGHT","WEIGHT",
+      "SPEED","ATTACK","DAMAGE","ARMOR",
+      "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
+      "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
+      "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
+      "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
+      "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EXPERTISES",
+      "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
+      "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
+      "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
+      "LOANINT","SVCRIT"};
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
 		Vector V=E.getShop().getStoreInventory();
@@ -69,7 +83,10 @@ public class MobData extends StdWebMacro
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ABILITIES"))
 		{
+            boolean player=E.playerStats()!=null;
 			Vector theclasses=new Vector();
+            Vector theprofs=new Vector();
+            Vector thetext=new Vector();
 			if(httpReq.isRequestParameter("ABLES1"))
 			{
 				int num=1;
@@ -77,7 +94,18 @@ public class MobData extends StdWebMacro
 				while(behav!=null)
 				{
 					if(behav.length()>0)
+                    {
 						theclasses.addElement(behav);
+                        if(player)
+                        {
+                            String prof=httpReq.getRequestParameter("ABPOF"+num);
+                            if(prof==null) prof="0";
+                            String text=httpReq.getRequestParameter("ABTXT"+num);
+                            if(text==null) text="";
+                            theprofs.addElement(prof);
+                            thetext.addElement(text);
+                        }
+                    }
 					num++;
 					behav=httpReq.getRequestParameter("ABLES"+num);
 				}
@@ -87,20 +115,39 @@ public class MobData extends StdWebMacro
 			{
 				Ability Able=E.fetchAbility(a);
 				if((Able!=null)&&(Able.savable()))
+                {
 					theclasses.addElement(CMClass.className(Able));
+                    if(player)
+                    {
+                        theprofs.addElement(Able.proficiency()+"");
+                        thetext.addElement(Able.text());
+                    }
+                }
 			}
 			str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
-				str.append("<TR><TD WIDTH=100%>");
+				str.append("<TR><TD WIDTH=35%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=ABLES"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
-				str.append("</TD></TR>");
+				str.append("</TD>");
+                if(player)
+                {
+                    str.append("<TD WIDTH=10%>");
+                    str.append("<INPUT TYPE=TEXT NAME=ABPOF"+(i+1)+" VALUE=\""+((String)theprofs.elementAt(i))+"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+                    str.append("</TD>");
+                    str.append("<TD WIDTH=50%>");
+                    str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(i+1)+" VALUE=\""+((String)thetext.elementAt(i))+"\" SIZE=40>");
+                    str.append("</TD>");
+                }
+                else
+                    str.append("<TD WIDTH=65% COLSPAN=2><BR></TD>");
+                str.append("</TR>");
 			}
-			str.append("<TR><TD WIDTH=100%>");
+			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
@@ -109,7 +156,19 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
-			str.append("</TD></TR>");
+			str.append("</TD>");
+            if(player)
+            {
+                str.append("<TD WIDTH=10%>");
+                str.append("<INPUT TYPE=TEXT NAME=ABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+                str.append("</TD>");
+                str.append("<TD WIDTH=50%>");
+                str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40>");
+                str.append("</TD>");
+            }
+            else
+                str.append("<TD WIDTH=65% COLSPAN=2><BR></TD>");
+            str.append("</TR>");
 			str.append("</TABLE>");
 		}
 		return str;
@@ -794,19 +853,6 @@ public class MobData extends StdWebMacro
 		}
 
 		StringBuffer str=new StringBuffer("");
-		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-						  "LEVEL","ABILITY","REJUV","MISCTEXT",
-						  "RACE","GENDER","HEIGHT","WEIGHT",
-						  "SPEED","ATTACK","DAMAGE","ARMOR",
-						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EXPERTISES",
-						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
-                          "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-                          "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-                          "LOANINT","SVCRIT"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{

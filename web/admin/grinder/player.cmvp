@@ -111,9 +111,14 @@
 		}
 		function EditItem(ME)
 		{
-			document.RESOURCES.ITEM.value=ME;
-			document.RESOURCES.action='/grinder/editplayeritem.cmvp';
-			document.RESOURCES.submit();
+			if(confirm('Submit your changes to this player and edit this item?'))
+			{
+				document.RESOURCES.FUNCTION.value='EDITPLAYER';
+				document.RESOURCES.PLAYER.value='@PlayerID@';
+				document.RESOURCES.ITEM.value=ME;
+				document.RESOURCES.action='editplayeritem.cmvp';
+				document.RESOURCES.submit();
+			}
 		}
 		function EditBehavior(ME)
 		{
@@ -211,7 +216,7 @@
 @endif@
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
 <TR>
-	<TD WIDTH=40%>
+	<TD WIDTH=25%>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=33%><FONT COLOR=YELLOW>Name: </FONT></TD>
@@ -219,7 +224,7 @@
 	</TR>
 	</TABLE>
 	</TD>
-	<TD WIDTH=40%><FONT COLOR=YELLOW>Race: </FONT>
+	<TD WIDTH=55%><FONT COLOR=YELLOW>Race: </FONT>
 		@if?CheckReqParm?FUNCTION=EDIT@
 		    <SELECT NAME=BASEGENDER>
 		    @PlayerData?BASEGENDER@
@@ -359,10 +364,9 @@
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Alignment: </FONT></TD>
 		<TD WIDTH=80% COLSPAN=8>
+			<FONT COLOR=WHITE>@PlayerData?ALIGNMENTSTRING@ (@PlayerData?ALIGNMENTNAME@)</FONT>
 			@if?CheckReqParm?FUNCTION=EDIT@
-				<SELECT NAME=ALIGNMENT>@PlayerData?ALIGNMENT@</SELECT>
-			@else@
-				<FONT COLOR=WHITE>@PlayerData?ALIGNMENTSTRING@ (@PlayerData?ALIGNMENTNAME@)</FONT>
+				<FONT SIZE=-2 COLOR=YELLOW>* See Factions</FONT>
 			@endif@
 		</TD>
 	</TR>

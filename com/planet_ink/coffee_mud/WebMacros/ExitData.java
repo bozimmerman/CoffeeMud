@@ -35,6 +35,14 @@ public class ExitData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+    private static final String[] okparms={
+        "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+        "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
+        "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
+        "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
+        "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
+        "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
+        "MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
 	public static String dispositions(Environmental E,
 									  boolean firstTime,
 									  ExternalHTTPRequests httpReq,
@@ -92,13 +100,6 @@ public class ExitData extends StdWebMacro
 		if(E==null) return "@break@";
 
 		StringBuffer str=new StringBuffer("");
-		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-						  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-						  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-						  "MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{

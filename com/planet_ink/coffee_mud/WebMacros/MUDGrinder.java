@@ -280,9 +280,11 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
+            String player=httpReq.getRequestParameter("PLAYER");
+            MOB playerM=(player!=null)?CMLib.map().getLoadPlayer(player):null;
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
-			if(R==null) return "@break@";
-			String errMsg=GrinderItems.editItem(httpReq,parms,mob,R);
+			if((R==null)&&(playerM==null)) return "@break@";
+			String errMsg=GrinderItems.editItem(httpReq,parms,mob,R,playerM);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else

@@ -280,8 +280,12 @@ public class GrinderPlayers extends GrinderMobs
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		Vector allitems=new Vector();
-		for(int i=0;i<M.inventorySize();i++)
-			allitems.addElement(M.fetchInventory(i));
+		while(M.inventorySize()>0)
+        {
+            Item I=M.fetchInventory(0);
+			allitems.addElement(I);
+            M.delInventory(I);
+        }
 		
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{

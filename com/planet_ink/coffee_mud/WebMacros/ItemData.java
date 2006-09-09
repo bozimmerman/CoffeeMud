@@ -35,6 +35,29 @@ public class ItemData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
     public static DVector sortedResources=new DVector(2);
+    
+    private static final String[] okparms={
+      "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+      "LEVEL","ABILITY","REJUV","MISCTEXT",
+      "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
+      "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
+      "CAPACITY","ISARMOR","ARMOR","WORNDATA",
+      "HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS",
+      "ATTACK","DAMAGE","MINRANGE","MAXRANGE",
+      "SECRETIDENTITY","ISGETTABLE","ISREMOVABLE","ISDROPPABLE",
+      "ISTWOHANDED","ISTRAPPED","READABLESPELLS","ISWAND",
+      "USESREMAIN","VALUE","WEIGHT","ISMAP",
+      "MAPAREAS","ISREADABLE","ISPILL","ISSUPERPILL",
+      "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
+      "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
+      "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
+      "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
+      "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
+      "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
+      "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
+      "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
+      "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
+      "LAYER","SEETHRU","MULTIWEAR"};
     public ItemData()
     {
         super();
@@ -59,8 +82,9 @@ public class ItemData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
+        String player=httpReq.getRequestParameter("PLAYER");
 		String last=httpReq.getRequestParameter("ROOM");
-		if(last==null) return " @break@";
+		if((last==null)&&(player==null)) return " @break@";
 		String itemCode=httpReq.getRequestParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
@@ -68,9 +92,13 @@ public class ItemData extends StdWebMacro
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		String mobNum=httpReq.getRequestParameter("MOB");
-
-		Room R=(Room)httpReq.getRequestObjects().get(last);
-		if(R==null)
+		MOB playerM=null;
+        Room R=null;
+        if(player!=null) 
+            playerM=CMLib.map().getLoadPlayer(player);
+        else
+            R=(Room)httpReq.getRequestObjects().get(last);
+		if((R==null)&&(player==null))
 		{
 			R=CMLib.map().getRoom(last);
 			if(R==null)
@@ -80,10 +108,26 @@ public class ItemData extends StdWebMacro
 		}
 		Item I=null;
 		MOB M=null;
-    	synchronized(("SYNC"+R.roomID()).intern())
+        String sync=("SYNC"+((R!=null)?R.roomID():player));
+    	synchronized(sync.intern())
     	{
-    		R=CMLib.map().getRoom(R);
+    		if(R!=null) R=CMLib.map().getRoom(R);
 	
+            if((playerM!=null)&&(R==null))
+            {
+                I=(Item)httpReq.getRequestObjects().get("PLAYER/"+player+"/"+itemCode);
+                if(I==null)
+                {
+                    if(itemCode.equals("NEW"))
+                        I=CMClass.getItem("GenItem");
+                    else
+                        I=RoomData.getItemFromCode(playerM,itemCode);
+                    if(I!=null)
+                        httpReq.getRequestObjects().put("PLAYER/"+player+"/"+itemCode,I);
+                }
+                M=playerM;
+            }
+            else
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
 				M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
@@ -222,27 +266,6 @@ public class ItemData extends StdWebMacro
 		if(I!=null)
 		{
 			StringBuffer str=new StringBuffer("");
-			String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-							  "LEVEL","ABILITY","REJUV","MISCTEXT",
-							  "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
-							  "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
-							  "CAPACITY","ISARMOR","ARMOR","WORNDATA",
-							  "HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS",
-							  "ATTACK","DAMAGE","MINRANGE","MAXRANGE",
-							  "SECRETIDENTITY","ISGETTABLE","ISREMOVABLE","ISDROPPABLE",
-							  "ISTWOHANDED","ISTRAPPED","READABLESPELLS","ISWAND",
-							  "USESREMAIN","VALUE","WEIGHT","ISMAP",
-							  "MAPAREAS","ISREADABLE","ISPILL","ISSUPERPILL",
-							  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
-							  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
-							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
-							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
-							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
-							  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
-							  "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
-							  "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
-							  "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
-							  "LAYER","SEETHRU","MULTIWEAR"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{

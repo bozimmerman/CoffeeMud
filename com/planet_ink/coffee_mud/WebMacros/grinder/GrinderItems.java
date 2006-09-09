@@ -33,10 +33,30 @@ import java.util.*;
 */
 public class GrinderItems
 {
+    private static final String[] okparms={
+          "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION"," LEVEL",
+          " ABILITY"," REJUV"," MISCTEXT","MATERIALS","ISGENERIC",
+          "ISREADABLE","READABLETEXT","ISDRINK","LIQUIDHELD","QUENCHED",
+          "ISCONTAINER","CAPACITY","ISARMOR","ARMOR","WORNDATA",
+          " HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK",
+          "DAMAGE","MINRANGE","MAXRANGE","SECRETIDENTITY",
+          "ISGETTABLE","ISREMOVABLE","ISDROPPABLE","ISTWOHANDED","ISTRAPPED",
+          "READABLESPELLS","ISWAND"," USESREMAIN","VALUE","WEIGHT",
+          "ISMAP","MAPAREAS","ISFOOD","ISPILL","ISSUPERPILL",
+          "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP","READABLESPELL",
+          "ISRIDEABLE","RIDEABLETYPE","MOBSHELD","HASALID","HASALOCK",
+          "KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER","ISLIGHTSOURCE",
+          "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
+          "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
+          "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
+          "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
+          "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR"
+          };
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  Hashtable parms,
 								  MOB whom,
-								  Room R)
+								  Room R,
+                                  MOB playerM)
 	{
 		String itemCode=httpReq.getRequestParameter("ITEM");
 		if(itemCode==null) return "@break@";
@@ -44,13 +64,20 @@ public class GrinderItems
 		String mobNum=httpReq.getRequestParameter("MOB");
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-    	synchronized(("SYNC"+R.roomID()).intern())
+        String sync=((R==null)?"SYNC"+playerM.Name():R.roomID());
+    	synchronized(sync.intern())
     	{
-    		R=CMLib.map().getRoom(R);
-			CMLib.map().resetRoom(R);
+    		if(R!=null)
+            {
+                R=CMLib.map().getRoom(R);
+                CMLib.map().resetRoom(R);
+            }
 	
 			Item I=null;
 			MOB M=null;
+            if(playerM!=null)
+                M=playerM;
+            else
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
 				M=RoomData.getMOBFromCode(R,mobNum);
@@ -100,24 +127,6 @@ public class GrinderItems
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 				I=CMClass.getItem(newClassID);
 	
-			String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION"," LEVEL",
-			        		  " ABILITY"," REJUV"," MISCTEXT","MATERIALS","ISGENERIC",
-			        		  "ISREADABLE","READABLETEXT","ISDRINK","LIQUIDHELD","QUENCHED",
-			        		  "ISCONTAINER","CAPACITY","ISARMOR","ARMOR","WORNDATA",
-			        		  " HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK",
-			        		  "DAMAGE","MINRANGE","MAXRANGE","SECRETIDENTITY",
-			        		  "ISGETTABLE","ISREMOVABLE","ISDROPPABLE","ISTWOHANDED","ISTRAPPED",
-			        		  "READABLESPELLS","ISWAND"," USESREMAIN","VALUE","WEIGHT",
-			        		  "ISMAP","MAPAREAS","ISFOOD","ISPILL","ISSUPERPILL",
-			        		  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP","READABLESPELL",
-			        		  "ISRIDEABLE","RIDEABLETYPE","MOBSHELD","HASALID","HASALOCK",
-			        		  "KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER","ISLIGHTSOURCE",
-			        		  "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
-			        		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
-			        		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
-							  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-							  "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR"
-							  };
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];
@@ -561,12 +570,15 @@ public class GrinderItems
 				}
 				else
 					I.wearAt(Item.IN_INVENTORY);
-				CMLib.database().DBUpdateMOBs(R);
-				httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
+                if(playerM==null)
+                {
+    				CMLib.database().DBUpdateMOBs(R);
+    				httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
+                }
 				httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
 			}
 			if(!copyItem.sameAs(I))
-				Log.sysOut("Grinder",whom.Name()+" modified item "+copyItem.Name()+((M!=null)?" on mob"+M.Name():"")+" in room "+R.roomID()+".");
+				Log.sysOut("Grinder",whom.Name()+" modified item "+copyItem.Name()+((M!=null)?" on mob "+M.Name():"")+((R!=null)?" in room "+R.roomID():"")+".");
     	}
 		return "";
 	}
