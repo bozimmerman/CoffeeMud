@@ -117,11 +117,20 @@ public class Prop_ReqCapacity extends Property
 					if(itemCap<Integer.MAX_VALUE)
 					{
 						int soFar=0;
+                        int rawResources=0;
 						for(int i=0;i<R.numItems();i++)
-						{Item I=R.fetchItem(i); if((I!=null)&&(I.container()==null)) soFar++;}
+						{
+                            Item I=R.fetchItem(i); 
+                            if(I instanceof RawMaterial) 
+                                rawResources++;
+                            if((I!=null)&&(I.container()==null)) 
+                                soFar++;
+                        }
 						if(soFar>=itemCap)
 						{
 							msg.source().tell("There is no more room in here to drop "+msg.target().Name()+".");
+                            if((rawResources>0)&&(CMath.div(rawResources,itemCap)>0.5))
+                                msg.source().tell("You should consider bundling up some of those resources.");
 							return false;
 						}
 					}

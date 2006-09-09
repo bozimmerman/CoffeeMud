@@ -39,7 +39,7 @@ public class Scavenger extends ActiveTicker
 	public Scavenger()
 	{
         super();
-		minTicks=10; maxTicks=30; chance=25;
+		minTicks=1; maxTicks=10; chance=99;
 		tickReset();
 	}
 
@@ -48,24 +48,29 @@ public class Scavenger extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
+            
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if(thisRoom.numItems()==0) return true;
+			if((thisRoom==null)||(thisRoom.numItems()==0))
+                return true;
+            if(thisRoom.numPCInhabitants()>0)
+                return true;
+            Vector choices=new Vector(thisRoom.numItems());
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
 				Item thisItem=thisRoom.fetchItem(i);
-				if((thisItem!=null)&&(thisItem instanceof DeadBody))
-					return true;
+				if((thisItem!=null)
+                &&(thisItem.container()==null)
+                &&(CMLib.flags().isGettable(thisItem))
+                &&((!(thisItem instanceof DeadBody))||(!((DeadBody)thisItem).playerCorpse())))
+					choices.addElement(thisItem);
 			}
-			if(thisRoom.numPCInhabitants()>0)
-				return true;
-
-			Vector V=new Vector();
-			V.addElement("GET");
-			V.addElement("ALL");
-			mob.doCommand(V);
+            if(choices.size()==0) return true;
+            Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+            if(I!=null)
+    			mob.doCommand(CMParms.makeVector("GET",I.Name()));
 		}
 		return true;
 	}

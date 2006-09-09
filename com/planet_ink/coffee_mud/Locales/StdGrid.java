@@ -255,7 +255,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected Room alternativeLink(Room room, Room defaultRoom, int dir)
 	{
-		if((subMap!=null)&&(room.getGridParent()==this))
+		if((subMap!=null)&&(room.getGridParent()==this)&&(gridexits!=null))
 		for(int d=0;d<gridexits.size();d++)
 		{
 			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
