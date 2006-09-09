@@ -63,6 +63,14 @@ public class GenArmor extends StdArmor
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
+    public String keyName()
+    {
+        return readableText;
+    }
+    public void setKeyName(String newKeyName)
+    {
+        readableText=newKeyName;
+    }
 
 	public void setMiscText(String newText)
 	{

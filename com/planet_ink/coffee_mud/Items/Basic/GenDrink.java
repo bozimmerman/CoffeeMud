@@ -68,6 +68,14 @@ public class GenDrink extends StdDrink
 	}
 	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
 
+    public String keyName()
+    {
+        return readableText;
+    }
+    public void setKeyName(String newKeyName)
+    {
+        readableText=newKeyName;
+    }
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)

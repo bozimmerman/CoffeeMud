@@ -508,8 +508,7 @@ public class StdContainer extends StdItem implements Container
 	public void setMiscText(String newMiscText)
 	{
 		miscText=newMiscText;
-		if(!(this instanceof GenContainer))
-			setKeyName(miscText);
+		if(!isGeneric()) setKeyName(miscText);
 	}
 	public String keyName()
 	{

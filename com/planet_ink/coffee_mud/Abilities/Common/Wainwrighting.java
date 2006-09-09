@@ -126,7 +126,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Level Capacity Wood required\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",25)+" Level Capacity Wood required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -137,7 +137,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					int capacity=CMath.s_int((String)V.elementAt(RCP_CAPACITY));
 					if(level<=mob.envStats().level())
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,5)+" "+CMStrings.padRight(""+capacity,8)+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,25)+" "+CMStrings.padRight(""+level,5)+" "+CMStrings.padRight(""+capacity,8)+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

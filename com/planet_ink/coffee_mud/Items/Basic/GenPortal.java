@@ -52,6 +52,14 @@ public class GenPortal extends StdPortal
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+    public String keyName()
+    {
+        return readableText;
+    }
+    public void setKeyName(String newKeyName)
+    {
+        readableText=newKeyName;
+    }
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
