@@ -1673,7 +1673,7 @@ public class PokerDealer extends StdBehavior
             }
         }
         else
-        // now, the last timed check is for events what are on a timer, but
+        // now, the last timed check is for events that are on a timer, but
         // the timer has NOT gone off yet.  In those cases, we might want
         // to give a time-out warning, such as we do for anti waits.
         if(timer>0)

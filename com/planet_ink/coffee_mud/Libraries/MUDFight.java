@@ -182,10 +182,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 
 		String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
-		CMMsg msg=CMClass.getMsg(deadM,null,killerM,
-			CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
-			CMMsg.MSG_OK_VISUAL,null,
-			CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
+		CMMsg msg=null;
+		if(CMLib.combat().isKnockedOutUponDeath(deadM,killerM))
+			msg=CMClass.getMsg(deadM,null,killerM,
+					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,null,
+					CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r"+msp);
+		else
+			msg=CMClass.getMsg(deadM,null,killerM,
+				CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+				CMMsg.MSG_OK_VISUAL,null,
+				CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
 		CMMsg msg2=CMClass.getMsg(deadM,null,killerM,
 			CMMsg.MSG_DEATH,null,
 			CMMsg.MSG_DEATH,null,
@@ -531,165 +538,111 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			CMLib.beanCounter().subtractMoney(target,deadMoney);
 		}
 
-		DeadBody Body=null;
-		if((target.soulMate()==null)&&(!target.isMonster()))
+		int[] expLost={100*target.envStats().level()};
+		if(expLost[0]<100) expLost[0]=100;
+		String whatToDo=null;
+		if((target.isMonster())||(target.soulMate()!=null))
+			whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH);
+		else
+			whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH);
+		CMLib.combat().handleConsequences(target,source,whatToDo,expLost,"^*You lose @x1 experience points.^?^.");
+		
+		if(!CMLib.combat().isKnockedOutUponDeath(target,source))
 		{
-			Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
-			for(int w=0;w<whatsToDo.size();w++)
+			DeadBody Body=target.killMeDead(true);
+			Room bodyRoom=deathRoom;
+			if((Body!=null)&&(Body.owner() instanceof Room)&&(((Room)Body.owner()).isContent(Body)))
+				bodyRoom=(Room)Body.owner();
+	        if((source!=null)&&(Body!=null))
+	        {
+	            Body.setKillerName(source.Name());
+	            Body.setKillerPlayer(!source.isMonster());
+	        }
+	
+			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1))
 			{
-				String whatToDo=(String)whatsToDo.elementAt(w);
-				if(whatToDo.startsWith("UNL"))
-					CMLib.leveler().unLevel(target);
-				else
-				if(whatToDo.startsWith("ASTR"))
-				{
-					Ability A=CMClass.getAbility("Prop_AstralSpirit");
-					if((A!=null)&&(target.fetchAbility(A.ID())==null))
-					{
-						target.addAbility(A);
-						A.autoInvocation(target);
-					}
-				}
-				else
-                if(whatToDo.startsWith("LOSESK"))
-                {
-                    if(target.numLearnedAbilities()>0)
-                    {
-                        Ability A=target.fetchAbility(CMLib.dice().roll(1,target.numLearnedAbilities(),-1));
-                        if(A!=null)
-                        {
-                            target.tell("You've forgotten "+A.Name()+".");
-                            target.delAbility(A);
-                            if(A.isAutoInvoked())
-                            {
-                                Ability A2=target.fetchEffect(A.ID());
-                                A2.unInvoke();
-                                target.delEffect(A2);
-                            }
-                        }
-                    }
-                }
-                else
-				if(whatToDo.startsWith("PUR"))
-				{
-					MOB deadMOB=CMLib.map().getLoadPlayer(target.Name());
-					if(deadMOB!=null)
-					{
-						Body=target.killMeDead(true);
-						CMLib.map().obliteratePlayer(deadMOB,false);
-					}
-				}
-				else
-				if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
-				{
-					int expLost=CMath.s_int(whatToDo);
-					target.tell("^*You lose "+expLost+" experience points.^?^.");
-					CMLib.leveler().postExperience(target,null,null,-expLost,false);
-				}
-				else
-				if(whatToDo.length()<3)
-					continue;
-				else
-				{
-					int expLost=100*target.envStats().level();
-					target.tell("^*You lose "+expLost+" experience points.^?^.");
-					CMLib.leveler().postExperience(target,null,null,-expLost,false);
-				}
+				Ability A=CMClass.getAbility("Disease_Amnesia");
+				if((A!=null)&&(target.fetchEffect(A.ID())==null))
+					A.invoke(target,target,true,0);
 			}
-		}
-		if(Body==null) 
-			Body=target.killMeDead(true);
-		Room bodyRoom=deathRoom;
-		if((Body!=null)&&(Body.owner() instanceof Room)&&(((Room)Body.owner()).isContent(Body)))
-			bodyRoom=(Room)Body.owner();
-        if((source!=null)&&(Body!=null))
-        {
-            Body.setKillerName(source.Name());
-            Body.setKillerPlayer(!source.isMonster());
-        }
-
-		if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1))
-		{
-			Ability A=CMClass.getAbility("Disease_Amnesia");
-			if((A!=null)&&(target.fetchEffect(A.ID())==null))
-				A.invoke(target,target,true,0);
-		}
-
-		if(target.soulMate()!=null)
-		{
-			Session s=target.session();
-			s.setMob(target.soulMate());
-			target.soulMate().setSession(s);
-			target.setSession(null);
-			target.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
-			CMLib.commands().postLook(target.soulMate(),true);
-			target.setSoulMate(null);
-		}
-
-		if((source!=null)
-        &&(bodyRoom!=null)
-		&&(source.location()==bodyRoom)
-		&&(bodyRoom.isInhabitant(source))
-		&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
-		{
-			if((source.riding()!=null)&&(source.riding() instanceof MOB))
-				source.tell("You'll need to dismount to loot the body.");
-			else
-			if((source.riding()!=null)&&(source.riding() instanceof MOB))
-				source.tell("You'll need to disembark to loot the body.");
-			else
-			for(int i=bodyRoom.numItems()-1;i>=0;i--)
+	
+			if(target.soulMate()!=null)
 			{
-				Item item=bodyRoom.fetchItem(i);
-				if((item!=null)
-				&&(item.container()==Body)
-				&&(CMLib.flags().canBeSeenBy(Body,source))
-				&&((!Body.destroyAfterLooting())||(!(item instanceof RawMaterial)))
-				&&(CMLib.flags().canBeSeenBy(item,source)))
-					CMLib.commands().postGet(source,Body,item,false);
+				Session s=target.session();
+				s.setMob(target.soulMate());
+				target.soulMate().setSession(s);
+				target.setSession(null);
+				target.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
+				CMLib.commands().postLook(target.soulMate(),true);
+				target.setSoulMate(null);
 			}
+	
+			if((source!=null)
+	        &&(bodyRoom!=null)
+			&&(source.location()==bodyRoom)
+			&&(bodyRoom.isInhabitant(source))
+			&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
+			{
+				if((source.riding()!=null)&&(source.riding() instanceof MOB))
+					source.tell("You'll need to dismount to loot the body.");
+				else
+				if((source.riding()!=null)&&(source.riding() instanceof MOB))
+					source.tell("You'll need to disembark to loot the body.");
+				else
+				for(int i=bodyRoom.numItems()-1;i>=0;i--)
+				{
+					Item item=bodyRoom.fetchItem(i);
+					if((item!=null)
+					&&(item.container()==Body)
+					&&(CMLib.flags().canBeSeenBy(Body,source))
+					&&((!Body.destroyAfterLooting())||(!(item instanceof RawMaterial)))
+					&&(CMLib.flags().canBeSeenBy(item,source)))
+						CMLib.commands().postGet(source,Body,item,false);
+				}
+				if(Body.destroyAfterLooting())
+					bodyRoom.recoverRoomStats();
+			}
+	
+			Coins C=null;
+			if((deadMoney>0)&&(myAmountOfDeadMoney>0))
+			for(int g=0;g<goldLooters.size();g++)
+			{
+			    C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,Body);
+			    if(C!=null)
+			    {
+					C.recoverEnvStats();
+					bodyRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+					bodyRoom.recoverRoomStats();
+					MOB mob=(MOB)goldLooters.elementAt(g);
+					if(mob.location()==bodyRoom)
+					{
+						if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+							mob.tell("You'll need to dismount to get "+C.name()+" off the body.");
+						else
+						if((mob.riding()!=null)&&(mob.riding() instanceof Item))
+							mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
+						else
+						if(CMLib.flags().canBeSeenBy(Body,mob))
+							CMLib.commands().postGet(mob,Body,C,false);
+					}
+			    }
+			}
+	
 			if(Body.destroyAfterLooting())
-				bodyRoom.recoverRoomStats();
-		}
-
-		Coins C=null;
-		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
-		for(int g=0;g<goldLooters.size();g++)
-		{
-		    C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,Body);
-		    if(C!=null)
-		    {
-				C.recoverEnvStats();
-				bodyRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-				bodyRoom.recoverRoomStats();
-				MOB mob=(MOB)goldLooters.elementAt(g);
-				if(mob.location()==bodyRoom)
-				{
-					if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-						mob.tell("You'll need to dismount to get "+C.name()+" off the body.");
-					else
-					if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-						mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
-					else
-					if(CMLib.flags().canBeSeenBy(Body,mob))
-						CMLib.commands().postGet(mob,Body,C,false);
-				}
-		    }
-		}
-
-		if(Body.destroyAfterLooting())
-		{
-			for(int i=bodyRoom.numItems()-1;i>=0;i--)
 			{
-				Item item=bodyRoom.fetchItem(i);
-				if((item!=null)&&(item.container()==Body))
-					item.setContainer(null);
+				for(int i=bodyRoom.numItems()-1;i>=0;i--)
+				{
+					Item item=bodyRoom.fetchItem(i);
+					if((item!=null)&&(item.container()==Body))
+						item.setContainer(null);
+				}
+				Body.destroy();
+				bodyRoom.recoverEnvStats();
+	            return null;
 			}
-			Body.destroy();
-			bodyRoom.recoverEnvStats();
-            return null;
+	        return Body;
 		}
-        return Body;
+		return null;
 	}
 
     public int[] damageThresholds(){return CombatLibrary.DEFAULT_DAMAGE_THRESHHOLDS;}
@@ -1267,5 +1220,127 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
 
         subtickAfterAttack(fighter);
+    }
+
+    public boolean isKnockedOutUponDeath(MOB mob, MOB fighting)
+    {
+    	String whatToDo=null;
+    	if(((mob.isMonster())||(mob.soulMate()!=null)))
+    		whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH).toUpperCase();
+    	else
+    		whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH).toUpperCase();
+		whatToDo=CMStrings.replaceAll(whatToDo,"@X1",""+mob.envStats().level());
+		if(fighting!=null) whatToDo=CMStrings.replaceAll(whatToDo,"@X2",""+fighting.envStats().level());
+		whatToDo=CMStrings.replaceAll(whatToDo,"@X3","1");
+		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
+		for(int w=0;w<whatsToDo.size();w++)
+		{
+			whatToDo=(String)whatsToDo.elementAt(w);
+			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim())))
+				return true;
+		}
+		return false;
+    }
+    
+    public boolean handleConsequences(MOB mob, MOB fighting, String whatToDo, int[] lostExperience, String message)
+    {
+		if(whatToDo==null) return false;
+		whatToDo=whatToDo.toUpperCase();
+		if(lostExperience==null) lostExperience=new int[1];
+		int baseExperience=lostExperience[0];
+		lostExperience[0]=0;
+		whatToDo=CMStrings.replaceAll(whatToDo,"@X1",""+mob.envStats().level());
+		if(fighting!=null) whatToDo=CMStrings.replaceAll(whatToDo,"@X2",""+fighting.envStats().level());
+		int rejuv=mob.envStats().rejuv();
+		if((rejuv==0)||(rejuv==Integer.MAX_VALUE)) rejuv=mob.envStats().level();
+		if(((!mob.isMonster())&&(mob.soulMate()==null))) rejuv=1;
+		whatToDo=CMStrings.replaceAll(whatToDo,"@X3",""+rejuv);
+		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
+		for(int w=0;w<whatsToDo.size();w++)
+		{
+			whatToDo=(String)whatsToDo.elementAt(w);
+			if(whatToDo.startsWith("UNL"))
+			{
+				Vector V=CMParms.parse(whatToDo);
+				int times=1;
+				if((V.size()>1)&&(CMath.s_int((String)V.lastElement())>1))
+					times=CMath.s_int((String)V.lastElement());
+				for(int t=0;t<times;t++)
+					CMLib.leveler().unLevel(mob);
+			}
+			else
+			if(whatToDo.startsWith("ASTR"))
+			{
+				Ability A=CMClass.getAbility("Prop_AstralSpirit");
+				if((A!=null)&&(mob.fetchAbility(A.ID())==null))
+				{
+					mob.addAbility(A);
+					A.autoInvocation(mob);
+				}
+			}
+			else
+			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim())))
+			{
+				Ability A=CMClass.getAbility("Skill_ArrestingSap");
+				int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim());
+				if((A!=null)&&(tickDown>0))
+				{
+					A.invoke(mob,CMParms.makeVector(""+tickDown,"SAFELY"),mob,true,0);
+					mob.resetToMaxState();
+				}
+			}
+			else
+			if(whatToDo.startsWith("PUR"))
+			{
+				MOB deadMOB=CMLib.map().getLoadPlayer(mob.Name());
+				if(deadMOB!=null)
+				{
+					CMLib.map().obliteratePlayer(deadMOB,false);
+					return false;
+				}
+			}
+			else
+	        if(whatToDo.startsWith("LOSESK"))
+	        {
+	            if(mob.numLearnedAbilities()>0)
+	            {
+	                Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
+	                if(A!=null)
+	                {
+	                    mob.tell("You've forgotten "+A.Name()+".");
+	                    mob.delAbility(A);
+	                    if(A.isAutoInvoked())
+	                    {
+	                        Ability A2=mob.fetchEffect(A.ID());
+	                        A2.unInvoke();
+	                        mob.delEffect(A2);
+	                    }
+	                }
+	            }
+	        }
+	        else
+			if(CMath.isMathExpression(whatToDo))
+			{
+				lostExperience[0]=CMath.s_parseIntExpression(whatToDo);
+				if(lostExperience[0]>0)
+				{
+					message=CMStrings.replaceAll(message,"@x1",""+lostExperience[0]);
+					mob.tell(message);
+					CMLib.leveler().postExperience(mob,null,null,-lostExperience[0],false);
+				}
+			}
+			else
+			if(whatToDo.startsWith("EXPER"))
+			{
+				lostExperience[0]=baseExperience;
+				if(lostExperience[0]>0)
+				{
+					message=CMStrings.replaceAll(message,"@x1",""+baseExperience);
+					mob.tell(message);
+					CMLib.leveler().postExperience(mob,null,null,-baseExperience,false);
+				}
+			}
+		}
+		return true;
     }
 }

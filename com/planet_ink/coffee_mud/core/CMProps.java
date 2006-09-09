@@ -93,7 +93,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_SIPLET=49;
     public static final int SYSTEM_PREFACTIONS=50; 
     public static final int SYSTEM_AUTOAREAPROPS=51;
-    public static final int NUM_SYSTEM=52;
+    public static final int SYSTEM_MOBDEATH=52;
+    public static final int NUM_SYSTEM=53;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -304,6 +305,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
         setVar(SYSTEM_PKILL,page.getStr("PLAYERKILL"));
         setVar(SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
+        setVar(SYSTEM_MOBDEATH,page.getStr("MOBDEATH"));
         setVar(SYSTEM_PLAYERFLEE,page.getStr("FLEE"));
         setVar(SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
         setVar(SYSTEM_EMAILREQ,page.getStr("EMAILREQ"));

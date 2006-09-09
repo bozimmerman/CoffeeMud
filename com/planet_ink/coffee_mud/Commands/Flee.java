@@ -105,72 +105,25 @@ public class Flee extends Go
 				return false;
 			}
 		}
-		int lostExperience=10;
-		if(XPloss&&(fighting!=null))
-		{
-			String whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERFLEE);
-			if(whatToDo==null) return false;
-			if(whatToDo.startsWith("UNL"))
-			{
-				Vector V=CMParms.parse(whatToDo);
-				int times=1;
-				if((V.size()>1)&&(CMath.s_int((String)V.lastElement())>1))
-					times=CMath.s_int((String)V.lastElement());
-				for(int t=0;t<times;t++)
-					CMLib.leveler().unLevel(mob);
-			}
-			else
-			if(whatToDo.startsWith("PUR"))
-			{
-				MOB deadMOB=CMLib.map().getLoadPlayer(mob.Name());
-				if(deadMOB!=null)
-				{
-					CMLib.map().obliteratePlayer(deadMOB,false);
-					return false;
-				}
-			}
-			else
-            if(whatToDo.startsWith("LOSESK"))
-            {
-                if(mob.numLearnedAbilities()>0)
-                {
-                    Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
-                    if(A!=null)
-                    {
-                        mob.tell(getScr("Movement","loseskill",A.Name()));
-                        mob.delAbility(A);
-                        if(A.isAutoInvoked())
-                        {
-                            Ability A2=mob.fetchEffect(A.ID());
-                            A2.unInvoke();
-                            mob.delEffect(A2);
-                        }
-                    }
-                }
-            }
-            else
-			if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
-				lostExperience=CMath.s_int(whatToDo);
-			else
-			{
-				lostExperience=10+((mob.envStats().level()-fighting.envStats().level()))*5;
-				if(lostExperience<10) lostExperience=10;
-			}
-		}
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace();
-			if(XPloss&&(lostExperience>0))
+			if(XPloss&&(fighting!=null))
 			{
+				String whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERFLEE);
+				if(whatToDo==null) return false;
+				int[] expLost={10+((mob.envStats().level()-fighting.envStats().level()))*5};
+				if(expLost[0]<10) expLost[0]=10;
+				CMLib.combat().handleConsequences(mob,fighting,whatToDo,expLost,getScr("Movement","fleeexp"));
 				double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
-				mob.tell(getScr("Movement","fleeexp",""+lostExperience));
-				CMLib.leveler().postExperience(mob,null,null,-lostExperience,false);
-				
-				int gainedExperience=(int)Math.round(CMath.mul(lostExperience,1.0-pctHPremaining));
-				if((fighting!=null)&&(fighting!=mob)&&(gainedExperience>0))
+				if(expLost[0]>0)
 				{
-					mob.tell(getScr("Movement","fleeexp2",""+gainedExperience));
-					CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
+					int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining));
+					if((fighting!=null)&&(fighting!=mob)&&(gainedExperience>0))
+					{
+						fighting.tell(getScr("Movement","fleeexp2",""+gainedExperience));
+						CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
+					}
 				}
 			}
 		}

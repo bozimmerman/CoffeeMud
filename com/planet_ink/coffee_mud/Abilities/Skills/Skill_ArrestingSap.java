@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.Thief.Thief_Sap;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -35,7 +36,7 @@ public class Skill_ArrestingSap extends StdSkill
 {
 	public String ID() { return "Skill_ArrestingSap"; }
 	public String name(){ return "Arresting Sap";}
-	public String displayText(){ return "(Knocked out)";}
+	public String displayText(){ return "(Knocked out: "+tickDown+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -45,6 +46,7 @@ public class Skill_ArrestingSap extends StdSkill
 	public int abilityCode(){return enhancement;}
 	public void setAbilityCode(int newCode){enhancement=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
+	protected boolean utterSafety=false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -65,6 +67,20 @@ public class Skill_ArrestingSap extends StdSkill
 			{
 				if(msg.sourceMessage()!=null)
 					mob.tell("You are way too drowsy.");
+				return false;
+			}
+		}
+		if(utterSafety)
+		{
+			if((msg.source()==affected)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+				return false;
+			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
+	        &&(msg.target()==affected)
+	        &&(affected instanceof MOB)))
+			{
+	            if((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
+	    			msg.source().tell((MOB)affected,null,null,"<S-NAME> is already out!");
+	            makeMyPeace((MOB)affected);
 				return false;
 			}
 		}
@@ -96,16 +112,50 @@ public class Skill_ArrestingSap extends StdSkill
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
 				CMLib.commands().postStand(mob,true);
+				if((utterSafety)&&(mob.isMonster()))
+					CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
 				mob.tell("You regain consciousness.");
 		}
 	}
 
-
+	public void makeMyPeace(MOB target)
+	{
+		target.makePeace();
+		Room R=target.location();
+		if(R!=null)
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				MOB M=R.fetchInhabitant(i);
+				if((M!=null)&&(M.getVictim()==target))
+					M.setVictim(null);
+			}
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		boolean safety=false;
+		int ticks=3;
+		if(auto)
+		{
+			if(commands!=null)
+			for(int c=commands.size()-1;c>=0;c--)
+			{
+				if(CMath.isInteger((String)commands.elementAt(c)))
+				{
+					ticks=CMath.s_int((String)commands.elementAt(c));
+					commands.removeElementAt(c);
+				}
+				else
+				if(((String)commands.elementAt(c)).equalsIgnoreCase("SAFELY"))
+				{
+					safety=true;
+					commands.removeElementAt(c);
+				}
+			}
+		}
+		
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -123,11 +173,11 @@ public class Skill_ArrestingSap extends StdSkill
 				mob.tell(target.name()+" is way to big to knock out!");
 				return false;
 			}
-		}
-		if(Skill_Arrest.getWarrantsOf(target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
-		{
-		    mob.tell(target.name()+" has no warrants out here.");
-		    return false;
+			if(Skill_Arrest.getWarrantsOf(target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
+			{
+			    mob.tell(target.name()+" has no warrants out here.");
+			    return false;
+			}
 		}
 		int levelDiff=target.envStats().level()-adjustedLevel(mob,asLevel);
 		if(levelDiff>0)
@@ -154,8 +204,11 @@ public class Skill_ArrestingSap extends StdSkill
 				mob.location().send(mob,msg);
                 if(target.riding()!=null) 
                     target.setRiding(null);
-				success=maliciousAffect(mob,target,asLevel,3,-1);
+				success=maliciousAffect(mob,target,asLevel,ticks,-1);
 				if(mob.getVictim()==target) mob.setVictim(null);
+				Skill_ArrestingSap A=(Skill_ArrestingSap)target.fetchEffect(ID());
+				if(A!=null) A.utterSafety=safety;
+				if(safety) makeMyPeace(target);
 			}
 		}
 		else
