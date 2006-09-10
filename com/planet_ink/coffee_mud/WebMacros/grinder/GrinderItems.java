@@ -510,7 +510,7 @@ public class GrinderItems
 					M.addInventory(I);
 					M.recoverEnvStats();
 					M.text();
-					R.recoverRoomStats();
+					if(R!=null) R.recoverRoomStats();
 				}
 			}
 			else
@@ -539,7 +539,7 @@ public class GrinderItems
 					M.addInventory(I);
 					M.recoverEnvStats();
 					M.text();
-					R.recoverRoomStats();
+                    if(R!=null) R.recoverRoomStats();
 					for(int i=0;i<M.inventorySize();i++)
 					{
 						Item I2=M.fetchInventory(i);

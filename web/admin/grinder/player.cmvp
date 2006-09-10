@@ -96,8 +96,14 @@
 		}
 		function AddNewItem()
 		{
-			document.RESOURCES.action='/grinder/addplayeritem.cmvp';
-			document.RESOURCES.submit();
+			if(confirm('Submit your changes to this player and add a new item?'))
+			{
+				document.RESOURCES.FUNCTION.value='EDITPLAYER';
+				document.RESOURCES.PLAYER.value='@PlayerID@';
+				document.RESOURCES.ITEM.value='NEW';
+				document.RESOURCES.action='addplayeritem.cmvp';
+				document.RESOURCES.submit();
+			}
 		}
 		function AddItem(ME)
 		{
@@ -720,8 +726,9 @@
 </TR>
 @else@
 <TR>
-	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Titles: </FONT><BR>
+	<TD WIDTH=66% COLSPAN=2><FONT COLOR=YELLOW>Titles: </FONT><BR>
 		<FONT COLOR=WHITE>@PlayerData?TITLELIST@</FONT>
+	<TD><INPUT TYPE=BUTTON NAME=ADDTITLE VALUE="Add Title" ONCLICK="ReShow();"></TD>
 	</TD>
 </TR>
 <TR>
