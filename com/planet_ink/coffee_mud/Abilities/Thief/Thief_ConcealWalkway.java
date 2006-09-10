@@ -30,14 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealDoor extends ThiefSkill
+public class Thief_ConcealWalkway extends ThiefSkill
 {
-    public String ID() { return "Thief_ConcealDoor"; }
-    public String name(){ return "Conceal Door";}
+    public String ID() { return "Thief_ConcealWalkway"; }
+    public String name(){ return "Conceal Walkway";}
     protected int canAffectCode(){return Ability.CAN_ITEMS;}
     protected int canTargetCode(){return Ability.CAN_ITEMS;}
     public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-    private static final String[] triggerStrings = {"DOORCONCEAL","DCONCEAL","CONCEALDOOR"};
+    private static final String[] triggerStrings = {"WALKWAYCONCEAL","WALKCONCEAL","WCONCEAL","CONCEALWALKWAY"};
     public String[] triggerStrings(){return triggerStrings;}
     public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int code=Integer.MIN_VALUE;
@@ -51,23 +51,10 @@ public class Thief_ConcealDoor extends ThiefSkill
     public void affectEnvStats(Environmental host, EnvStats stats)
     {
         super.affectEnvStats(host,stats);
-        if((host instanceof Exit)&&(!((Exit)host).isOpen()))
+        if(host instanceof Exit)
         {
             stats.setDisposition(stats.disposition()|EnvStats.IS_HIDDEN);
             stats.setLevel(stats.level()+abilityCode());
-        }
-    }
-    
-    public void executeMsg(Environmental host, CMMsg msg)
-    {
-        super.executeMsg(host,msg);
-        if((msg.target()==affected)
-        &&(msg.targetMinor()==CMMsg.TYP_OPEN)
-        &&(super.canBeUninvoked()))
-        {
-            unInvoke();
-            affected.delEffect(this);
-            affected.recoverEnvStats();
         }
     }
     
@@ -75,7 +62,7 @@ public class Thief_ConcealDoor extends ThiefSkill
     {
         if((commands.size()<1)&&(givenTarget==null))
         {
-            mob.tell("Which door would you like to conceal?");
+            mob.tell("Which way would you like to conceal?");
             return false;
         }
         Environmental chkE=null;
@@ -84,28 +71,29 @@ public class Thief_ConcealDoor extends ThiefSkill
             chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Item.WORNREQ_WORNONLY);
         else
             chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
-        if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob)))
+        int direction=-1;
+        for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+            if(mob.location().getExitInDir(e)==chkE)
+                direction=e;
+        if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob))||(direction<0))
         {
-            mob.tell("You don't see any doors called '"+typed+"' here.");
+            mob.tell("You don't see any directions called '"+typed+"' here.");
+            return false;
+        }
+        Room R2=mob.location().getRoomInDir(direction);
+        if((!CMath.bset(mob.location().domainType(),Room.INDOORS))
+        &&(R2!=null)
+        &&(!CMath.bset(R2.domainType(),Room.INDOORS)))
+        {
+            mob.tell("This only works on walkways into or within buildings.");
             return false;
         }
         Exit E=(Exit)chkE;
-        if(!E.hasADoor())
-        {
-            mob.tell(mob,E,null,"<T-NAME> is not a door!");
-            return false;
-        }
         if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10))))
         {
-            mob.tell("You aren't good enough to conceal that door.");
+            mob.tell("You aren't good enough to conceal that direction.");
             return false;
         }
-        if(E.isOpen())
-        {
-            mob.tell(mob,E,null,"You'd better close <T-NAME> first.");
-            return false;
-        }
-        
 
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;
@@ -122,10 +110,6 @@ public class Thief_ConcealDoor extends ThiefSkill
                 A.setInvoker(mob);
                 A.setAbilityCode((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10)-E.envStats().level());
                 Room R=mob.location();
-                Room R2=null;
-                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-                    if(R.getExitInDir(d)==E)
-                    { R2=R.getRoomInDir(d); break;}
                 if((CMLib.utensils().doesOwnThisProperty(mob,R))
                 ||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
                 {
