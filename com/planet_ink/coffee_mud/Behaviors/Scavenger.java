@@ -53,7 +53,7 @@ public class Scavenger extends ActiveTicker
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if((thisRoom==null)||(thisRoom.numItems()==0))
+			if((thisRoom==null)||(thisRoom.numItems()==0)||(mob.envStats().weight()>mob.maxCarry()))
                 return true;
             if(thisRoom.numPCInhabitants()>0)
                 return true;

@@ -37,7 +37,7 @@ public class Thief_ConcealItem extends ThiefSkill
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"CONCEALITEM","CONCEAL","CONC"};
+	private static final String[] triggerStrings = {"ITEMCONCEAL","ICONCEAL","CONCEALITEM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
@@ -68,7 +68,7 @@ public class Thief_ConcealItem extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("What would you like to conceal?");
+			mob.tell("What item would you like to conceal?");
 			return false;
 		}
 		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);

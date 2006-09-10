@@ -6578,13 +6578,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.othersMessage()!=null)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
-					String str=msg.othersMessage().toUpperCase();
-					if(str.indexOf("\'")>=0)
-					{
-						str=str.substring(str.indexOf("\'")+1);
-						if(str.indexOf("\'")>=0)
-							str=str.substring(0,str.indexOf("\'"));
-					}
+					String str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
 					str=(" "+str+" ").toUpperCase();
                     str=CMStrings.removeColors(str);
                     str=CMStrings.replaceAll(str,"\n\r"," ");
