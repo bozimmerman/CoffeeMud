@@ -374,7 +374,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		else
 		{
 			if(lawName.length()==0)
-				lawName="laws.ini";
+				lawName="behaviors/laws.ini";
 			laws=(Law)Resources.getResource("LEGAL-"+lawName);
 			modifiableNames=false;
 		}
