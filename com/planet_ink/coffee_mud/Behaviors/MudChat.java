@@ -68,7 +68,7 @@ public class MudChat extends StdBehavior
 	protected static synchronized Vector getChatGroups(String parms)
 	{
 		Vector rsc=null;
-		String filename="behaviors/chat.dat";
+		String filename="chat.dat";
 		int x=parms.indexOf("=");
 		if(x>0)	filename=parms.substring(0,x);
 		rsc=(Vector)Resources.getResource("MUDCHAT GROUPS-"+filename);
