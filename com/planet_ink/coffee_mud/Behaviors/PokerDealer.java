@@ -41,7 +41,7 @@ import java.util.*;
 public class PokerDealer extends StdBehavior
 {
     public String ID(){return "PokerDealer";}
-    /*
+
     // the poker dealer operates as a state machine
     // each state tells this behavior what to expect, and
     // how to react to player actions.
@@ -102,30 +102,19 @@ public class PokerDealer extends StdBehavior
         if(myDeck==null) myDeck=((DeckOfCards)CMClass.getMiscMagic("StdDeckOfCards")).createDeck(null);
         return myDeck;
     }
+    
+    // equates for the gameRules variable below
+    public static final int GAME_STRAIGHTPOKER=0;
+    public static final int GAME_5CARDSTUD=1;
+    public static final int GAME_7CARDSTUD=2;
+    public static final int GAME_DRAWPOKER=3;
+    public static final String[] GAME_DESCS={
+        "Straight Poker",
+        "Five Card Stud",
+        "Seven Card Stud",
+        "Draw Poker",
+    };
 
-	protected static synchronized DVector loadPokerGames()
-	{
-		DVector games=(DVector) Resources.getResource("POKERDEALER_GAMES");
-		if(games!=null) return games;
-        Vector V=Resources.getFileLineVector(new CMFile("resources/behaviors/pokergames.ini",null,true).text());
-        games=new DVector(2);
-        Vector game=new Vector();
-        String s=null;
-        for(int v=0;v<V.size();v++)
-        {
-        	s=((String)V.elementAt(v)).trim();
-        	if(s.startsWith("[")&&s.endsWith("]"))
-        	{
-        		if(game.size()>0) game=new Vector();
-        		games.addElement(s,game);
-        	}
-        	else
-        	if((!s.startsWith("#"))&&(!s.startsWith(";"))&&(s.trim().length()>0))
-        		game.addElement(s);
-        }
-		Resources.submitResource("POKERDEALER_GAMES",games);
-		return games;
-	}
     
     // this method allows permanent parameters
     // to be set on the behavior.  It will handle
@@ -134,17 +123,12 @@ public class PokerDealer extends StdBehavior
     {
         super.setParms(newParms);
         String str=CMParms.getParmStr(newParms,"GAME","0");
-        DVector games=loadPokerGames();
-        if(CMath.isInteger(str)&&(CMath.s_int(str)>=0)&&(CMath.s_int(str)<games.size()))
+        if(CMath.isInteger(str)&&(CMath.s_int(str)>=0)&&(CMath.s_int(str)<GAME_DESCS.length))
             gameRules=CMath.s_int(str);
         else
-        for(int i=0;i<games.size();i++)
-            if(str.equalsIgnoreCase((String)games.elementAt(i,1)))
+        for(int i=0;i<GAME_DESCS.length;i++)
+            if(str.equalsIgnoreCase(GAME_DESCS[i]))
                 gameRules=i;
-        if(gameRules<0)
-            for(int i=0;i<games.size();i++)
-                if(CMLib.english().containsString((String)games.elementAt(i,1),str))
-                    gameRules=i;
         anti=CMParms.getParmDouble(newParms,"ANTI",1.0);
         minPlayers=CMParms.getParmInt(newParms,"MINPLAYERS",2);
     }
@@ -549,10 +533,7 @@ public class PokerDealer extends StdBehavior
         &&(msg.target() instanceof Room)
         &&(msg.target()==CMLib.map().roomLocation(host))
         &&((gameState&STATE_MASK)==STATE_WAITING_FOR_ANTIS))
-        {
-        	String game=(String)loadPokerGames().elementAt(gameRules,1);
-            communicate(host,msg.source(),"Greetings "+msg.source().name()+"! The game we are playing here is "+game+".  The anti is "+antiAmount(host)+".  Just drop the proper money here to play.",msg);
-        }
+            communicate(host,msg.source(),"Greetings "+msg.source().name()+"! The game we are playing here is "+GAME_DESCS[gameRules]+".  The anti is "+antiAmount(host)+".  Just drop the proper money here to play.",msg);
         
         // if someone drops some money on the ground, we
         // know that its a legal act.  we just need to
@@ -586,12 +567,11 @@ public class PokerDealer extends StdBehavior
             String textOfSay=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
             if(textOfSay!=null)
             {
-            	DVector games=loadPokerGames();
                 // check for a request of a new game type
-                for(int i=0;i<games.size();i++)
-                   if(textOfSay.indexOf(((String)games.elementAt(i,1)).toUpperCase())>=0)
+                for(int i=0;i<GAME_DESCS.length;i++)
+                   if(textOfSay.indexOf(GAME_DESCS[i].toUpperCase())>=0)
                    {
-                       communicate(host,null,"Ok, we'll now play "+((String)games.elementAt(i,1))+".",msg);
+                       communicate(host,null,"Ok, we'll now play "+GAME_DESCS[i]+".",msg);
                        gameRules=i;
                        return;
                    }
@@ -734,11 +714,12 @@ public class PokerDealer extends StdBehavior
         // when a player speaks, we listen very carefully
         // this section only handles betting draws in draw poker
         if((msg.othersMinor()==CMMsg.TYP_SPEAK)
+        &&(gameRules==GAME_DRAWPOKER)
         &&(whoseTurn==msg.source())
-        &&(((gameState&STATE_MASK)==STATE_FIRST_DRAW)||((gameState&STATE_MASK)==STATE_NEXT_DRAW))
         &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.othersMessage()!=null)
-        &&(msg.othersMessage().length()>0))
+        &&(msg.othersMessage().length()>0)
+        &&(((gameState&STATE_MASK)==STATE_FIRST_DRAW)||((gameState&STATE_MASK)==STATE_NEXT_DRAW)))
         {
             // the proper person SPEAKS!
             // we should parse out their words..
@@ -1617,8 +1598,7 @@ public class PokerDealer extends StdBehavior
                 }
                 else
                 {
-                	String game=(String)loadPokerGames().elementAt(gameRules,1);
-                    communicate(host,null,"OK! Antis are all in! Lets play some "+game+"!",null);
+                    communicate(host,null,"OK! Antis are all in! Lets play some "+GAME_DESCS[gameRules]+"!",null);
                     
                     // lets shuffle a few times first.
                     theDeck().shuffleDeck();
@@ -1702,16 +1682,15 @@ public class PokerDealer extends StdBehavior
             {
             case STATE_WAITING_FOR_ANTIS:
             {
-            	String game=(String)loadPokerGames().elementAt(gameRules,1);
                 long started=timer-(TIME_SECONDSTOSTART*1000);
                 long time=System.currentTimeMillis();
                 long tenseconds=timer-(1000*10);
                 long remaining=((timer-System.currentTimeMillis())/1000);
                 if((time>started)&&(time<(started+Tickable.TIME_TICK)))
-                    communicate(host,null,"We've received our first anti for "+game+". We will start the game in "+remaining+" seconds.",null);
+                    communicate(host,null,"We've received our first anti for "+GAME_DESCS[gameRules]+". We will start the game in "+remaining+" seconds.",null);
                 else
                 if((time>tenseconds)&&(time<(tenseconds+Tickable.TIME_TICK)))
-                    communicate(host,null,"The "+game+" game starts in "+remaining+" seconds.",null);
+                    communicate(host,null,"The "+GAME_DESCS[gameRules]+" game starts in "+remaining+" seconds.",null);
                 break;
             }
             }
@@ -1719,5 +1698,5 @@ public class PokerDealer extends StdBehavior
         // tick methods in behaviors ALWAYS return true
         // the return is meaningless, but its as good a value as any.
         return true;
-    }*/
+    }
 }
