@@ -274,6 +274,12 @@ public class StdArea implements Area
 
 	public CMObject newInstance()
 	{
+		if(CMSecurity.isDisabled("FATAREAS")
+		&&(ID().equals("StdArea"))) 
+		{   
+			Area A=CMClass.getAreaType("StdThinArea"); 
+			if(A!=null) return A;
+		}
 		try
         {
 			return (CMObject)this.getClass().newInstance();

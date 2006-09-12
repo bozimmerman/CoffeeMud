@@ -278,6 +278,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         }
         
         CMIntegerGrouper myGrouper=getGrouper(str);
+        if((x<0)&&(myGrouper==null)) return true;
         if(myGrouper==null) return false;
         return myGrouper.contains(roomNum);
     }

@@ -38,6 +38,16 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	protected int ySize=100;
 	protected int yLength=3;
 	
+	public CMObject newInstance()
+	{
+		if(CMSecurity.isDisabled("FATAREAS")
+		&&(ID().equals("StdGridArea")))
+		{   
+			Area A=CMClass.getAreaType("StdThinGridArea"); 
+			if(A!=null) return A;
+		}
+		return super.newInstance();
+	}
 	
 	public String getNewRoomID(Room startRoom, int direction)
 	{

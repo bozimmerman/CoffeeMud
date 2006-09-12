@@ -241,7 +241,7 @@ public class MUD extends Thread implements MudHost
 		CMLib.map().initBodyRooms(page);
 		
 
-		if(CMLib.map().numRooms()==0)
+		if(!CMLib.map().roomIDs().hasMoreElements())
 		{
 			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
 			String id="START";

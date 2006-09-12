@@ -60,6 +60,21 @@ public class StdGrid extends StdRoom implements GridLocale
         }
     }
 	public String getGridChildLocaleID(){return "StdRoom";}
+	public CMObject newInstance()
+	{
+		if(CMSecurity.isDisabled("FATGRIDS"))
+		{
+			String name=ID();
+			if(!name.endsWith("Grid")) return super.newInstance(); 
+			name=name.substring(0,name.length()-4)+"ThinGrid";
+			Room R=CMClass.getLocale(name);
+			if(R==null) return super.newInstance();
+			if(R instanceof StdGrid) return super.newInstance();
+			return R.newInstance();
+		}
+		else
+			return super.newInstance();
+	}
 
 	public void destroy()
 	{
