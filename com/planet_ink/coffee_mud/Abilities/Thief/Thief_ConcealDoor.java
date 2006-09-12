@@ -54,7 +54,9 @@ public class Thief_ConcealDoor extends ThiefSkill
         if((host instanceof Exit)&&(!((Exit)host).isOpen()))
         {
             stats.setDisposition(stats.disposition()|EnvStats.IS_HIDDEN);
-            stats.setLevel(stats.level()+abilityCode());
+            // cant affect level because will make it unpickable, therefore unopenable
+            // need some other way to designate its hiddenitude.
+            //stats.setLevel(stats.level()+abilityCode());
         }
     }
     

@@ -84,10 +84,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
     { return mayReadThisChannel(sender,areaReq,M,i,false);}
 	public boolean mayReadThisChannel(MOB sender,
-											 boolean areaReq,
-											 MOB M, 
-											 int i,
-                                             boolean offlineOK)
+									  boolean areaReq,
+									  MOB M, 
+									  int i,
+                                      boolean offlineOK)
 	{
         if(sender==null) return false;
 		if((sender==null)||(M==null)||(M.playerStats()==null)) return false;
@@ -118,9 +118,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 	
 	public boolean mayReadThisChannel(MOB sender,
-											 boolean areaReq,
-											 Session ses, 
-											 int i)
+									  boolean areaReq,
+									  Session ses, 
+									  int i)
 	{
 		if(ses==null) 
 		    return false;
