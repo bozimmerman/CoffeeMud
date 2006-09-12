@@ -35,11 +35,13 @@ public class Scavenger extends ActiveTicker
 {
 	public String ID(){return "Scavenger";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-
+    int origItems=-1;
+    
 	public Scavenger()
 	{
         super();
 		minTicks=1; maxTicks=10; chance=99;
+        origItems=-1;
 		tickReset();
 	}
 
@@ -53,7 +55,50 @@ public class Scavenger extends ActiveTicker
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if((thisRoom==null)||(thisRoom.numItems()==0)||(mob.envStats().weight()>mob.maxCarry()))
+            if((mob.envStats().weight()>=mob.maxCarry())||(mob.inventorySize()>=mob.maxItems()))
+            {
+                if(CMLib.flags().isATrackingMonster(mob)) return true;
+                String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
+                if(trashRoomID.equalsIgnoreCase("NO"))
+                    return true;
+                Room R=CMLib.map().getRoom(trashRoomID);
+                if(mob.location()==R)
+                {
+                    Container C=null;
+                    int maxCapacity=0;
+                    for(int i=0;i<R.numItems();i++)
+                    {
+                        Item I=R.fetchItem(i);
+                        if((I instanceof Container)&&(I.container()==null)&&(!CMLib.flags().isGettable(I)))
+                        {
+                            if(((Container)I).capacity()>maxCapacity)
+                            {
+                                C=(Container)I;
+                                maxCapacity=((Container)I).capacity();
+                            }
+                        }
+                    }
+                    if(C!=null)
+                        mob.doCommand(CMParms.makeVector("PUT","ALL",C.Name()));
+                    else
+                        mob.doCommand(CMParms.makeVector("DROP","ALL"));
+                    CMLib.tracking().wanderAway(mob,false,true);
+                }
+                else
+                if(R!=null)
+                {
+                    Ability A=CMClass.getAbility("Skill_Track");
+                    if(A!=null)
+                        A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+                }
+                else
+                while((origItems>=0)&&(mob.inventorySize()>origItems))
+                {
+                    Item I=mob.fetchInventory(origItems);
+                    I.destroy();
+                }
+            }
+			if((thisRoom==null)||(thisRoom.numItems()==0))
                 return true;
             if(thisRoom.numPCInhabitants()>0)
                 return true;
@@ -68,6 +113,7 @@ public class Scavenger extends ActiveTicker
 					choices.addElement(thisItem);
 			}
             if(choices.size()==0) return true;
+            if(origItems<0) origItems=mob.inventorySize();
             Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
             if(I!=null)
     			mob.doCommand(CMParms.makeVector("GET",I.Name()));
