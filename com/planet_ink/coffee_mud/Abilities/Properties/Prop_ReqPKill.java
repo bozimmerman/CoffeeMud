@@ -39,11 +39,11 @@ public class Prop_ReqPKill extends Property
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(msg.target()!=null)
-		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
-			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-		   &&(!CMLib.flags().isFalling(msg.source()))
-		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+	    &&(msg.target()!=null)
+	    &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+		   ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
+	    &&(!CMLib.flags().isFalling(msg.source()))
+	    &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			if((!msg.source().isMonster())
 			   &&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
@@ -54,7 +54,10 @@ public class Prop_ReqPKill extends Property
 		}
 		if((!msg.source().isMonster())
 		&&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+        {
+            msg.source().tell("Your PLAYERKILL flag is now ON!");
 			msg.source().setBitmap(CMath.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
+        }
 		return super.okMessage(myHost,msg);
 	}
 }
