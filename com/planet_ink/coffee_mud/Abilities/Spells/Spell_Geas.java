@@ -147,7 +147,7 @@ public class Spell_Geas extends Spell
 					return false;
 				}
 				setMiscText(CMParms.combine(commands,0));
-				if(maliciousAffect(mob,target,asLevel,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0)))
+				if(maliciousAffect(mob,target,asLevel,2000,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0)))
 				{
 					target.makePeace();
 					if(mob.getVictim()==target)

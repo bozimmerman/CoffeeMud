@@ -201,7 +201,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             if(price==0.0)
-                price=25.0*product.envStats().level();
+                price=(25.0+product.envStats().level())*product.envStats().level();
         }
         else
             price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*25;
