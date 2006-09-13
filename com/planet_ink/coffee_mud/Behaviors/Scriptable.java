@@ -5392,7 +5392,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 else
                 if(parm.equalsIgnoreCase("world"))
                 {
-                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
@@ -5403,7 +5403,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 else
                 if(parm.equalsIgnoreCase("area")&&(lastKnownLocation!=null))
                 {
-                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
@@ -5413,16 +5413,16 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 }
                 else
                 if(CMLib.map().getRoom(parm)!=null)
-                    CMLib.map().getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    CMLib.map().getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                 else
                 if(CMLib.map().findArea(parm)!=null)
                 {
-                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     for(Enumeration e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     }
                 }
 				break;

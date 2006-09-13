@@ -86,7 +86,7 @@ public class Thief_Shadowpass extends ThiefSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		if(success&&kaplah)
+		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,R,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You begin the shadowpass ...",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))&&(R.okMessage(mob,msg)))
@@ -97,10 +97,19 @@ public class Thief_Shadowpass extends ThiefSkill
 				for(int i=0;i<trail.size();i++)
 				{
 					int dir=((Integer)trail.elementAt(i)).intValue();
-					R=R.getRoomInDir(dir);
-					R.bringMobHere(mob,false);
-					CMLib.commands().postLook(mob,true);
-					mob.curState().expendEnergy(mob,mob.maxState(),true);
+                    if(!kaplah)
+                    {
+                        if(!CMLib.tracking().move(mob,dir,false,true,true))
+                            return beneficialVisualFizzle(mob,null,"<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass.");
+                        mob.curState().expendEnergy(mob,mob.maxState(),true);
+                    }
+                    else
+                    {
+    					R=R.getRoomInDir(dir);
+    					R.bringMobHere(mob,false);
+    					CMLib.commands().postLook(mob,true);
+                    }
+                    mob.curState().expendEnergy(mob,mob.maxState(),true);
 				}
 			}
 		}
@@ -109,17 +118,9 @@ public class Thief_Shadowpass extends ThiefSkill
 		{
 			int dir=((Integer)trail.elementAt(i)).intValue();
 			if(!CMLib.tracking().move(mob,dir,false,true,true))
-			{
-				if(!kaplah)
-					return beneficialVisualFizzle(mob,null,"<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass.");
-				else
-					return beneficialVisualFizzle(mob,null,"<S-NAME> lose(s) <S-HIS-HER> way during the shadowpass.");
-			}
-			else
-			{
-				mob.curState().expendEnergy(mob,mob.maxState(),true);
-				mob.curState().expendEnergy(mob,mob.maxState(),true);
-			}
+				return beneficialVisualFizzle(mob,null,"<S-NAME> lose(s) <S-HIS-HER> way during the shadowpass.");
+			mob.curState().expendEnergy(mob,mob.maxState(),true);
+			mob.curState().expendEnergy(mob,mob.maxState(),true);
 		}
 		return success;
 	}

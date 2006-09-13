@@ -36,7 +36,7 @@ public class Thief_TagTurf extends ThiefSkill
 	public String ID() { return "Thief_TagTurf"; }
 	public String name(){ return "Tag Turf";}
 	public String displayText(){return "(Tagged)";}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"TURFTAG","TAGTURF"};
