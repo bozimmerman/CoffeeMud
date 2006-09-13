@@ -77,7 +77,7 @@ public class MOBloader
                 if((CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)&&(align>=0)) 
                     CMLib.factions().setAlignmentOldRange(mob,align);
                 mob.setExperience(CMath.s_int(DBConnections.getRes(R,"CMEXPE")));
-                mob.setExpNextLevel(CMath.s_int(DBConnections.getRes(R,"CMEXLV")));
+                //mob.setExpNextLevel(CMath.s_int(DBConnections.getRes(R,"CMEXLV")));
                 mob.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
                 mob.setPractices(CMath.s_int(DBConnections.getRes(R,"CMPRAC")));
                 mob.setTrains(CMath.s_int(DBConnections.getRes(R,"CMTRAI")));

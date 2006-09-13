@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface CharState extends CMObject
 {
     /** constant representing how many ticks between hunger/thirst messages*/
-	public final static int ANNOYANCE_DEFAULT_TICKS=30;
+	public final static int ANNOYANCE_DEFAULT_TICKS=60;
     /** constant representing something*/
 	public final static int ADJUST_FACTOR=5;
     /** constant representing how many ticks a MOB can  be thirsty before death */

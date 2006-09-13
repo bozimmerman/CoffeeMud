@@ -76,7 +76,6 @@ public class StdMOB implements MOB
 
 	// gained attributes
 	protected int Experience=0;
-	protected int ExpNextLevel=1000;
 	protected int Practices=0;
 	protected int Trains=0;
 	protected long AgeHours=0;
@@ -116,7 +115,7 @@ public class StdMOB implements MOB
     public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
 	public int getExperience(){return Experience;}
-	public int getExpNextLevel(){return ExpNextLevel;}
+	public int getExpNextLevel(){return CMLib.leveler().getLevelExperience(baseEnvStats().level());}
 	public int getExpNeededLevel()
 	{
 		if(!isMonster())
@@ -129,6 +128,7 @@ public class StdMOB implements MOB
 		||(charStats().getCurrentClass().expless())
 		||(charStats().getMyRace().expless()))
 		    return Integer.MAX_VALUE;
+		int ExpNextLevel=getExpNextLevel();
 		if(ExpNextLevel<=getExperience())
 			ExpNextLevel=getExperience()+1000;
 		return ExpNextLevel-getExperience();
@@ -138,7 +138,7 @@ public class StdMOB implements MOB
 	public int getBitmap(){return attributesBitmap;}
 	public void setAgeHours(long newVal){ AgeHours=newVal;}
 	public void setExperience(int newVal){ Experience=newVal; }
-	public void setExpNextLevel(int newVal){ ExpNextLevel=newVal;}
+	public void setExpNextLevel(int newVal){}
 	public void setPractices(int newVal){ Practices=newVal;}
 	public void setTrains(int newVal){ Trains=newVal;}
 	public void setMoney(int newVal){ Money=newVal;}

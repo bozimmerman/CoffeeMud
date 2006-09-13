@@ -45,12 +45,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int gained=mob.getExperience()-mob.getExpNextLevel();
 		if(gained<50) gained=50;
 
-		int neededNext=getLevelExperience(mob.baseEnvStats().level());
-		int neededLower=getLevelExperience(mob.baseEnvStats().level()-1);
-		mob.setExpNextLevel(neededNext);
-		if(mob.getExperience()>mob.getExpNextLevel())
-			mob.setExperience(neededLower+gained);
-
 		StringBuffer theNews=new StringBuffer("");
 
 		mob.recoverCharStats();
@@ -246,19 +240,29 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 	
 	private static final int breakLevel=25;
-	public int getLevelExperience(int level)
+	private static final int breakMul1=(100*(breakLevel-1));
+	private static int[] levelingCharts=new int[1000];
+	public synchronized int getLevelExperience(int level)
 	{
-		int neededLevel=1000;
-
-		if(level==0)
-			neededLevel=0;
-		else
-		for(int i=1;i<level;i++)
-			if(i<breakLevel)
-				neededLevel+=1000+(100*i);
-			else
-				neededLevel+=1000+(100*(breakLevel-1))+(25*(i-(breakLevel-1)));
-		return neededLevel;
+		if(level<=0) return 0;
+		if(level>=levelingCharts.length)
+		{
+			int[] oldCharts=(int[])levelingCharts.clone();
+			levelingCharts=new int[level+1];
+			for(int i=0;i<oldCharts.length;i++)
+				levelingCharts[i]=oldCharts[i];
+		}
+		if(levelingCharts[level]==0)
+		{
+			int neededLevel=level*1000;
+			for(int i=1;i<level;i++)
+				if(i<breakLevel)
+					neededLevel+=(100*i);
+				else
+					neededLevel+=breakMul1+(25*(i-(breakLevel-1)));
+			levelingCharts[level]=neededLevel;
+		}
+		return levelingCharts[level];
 	}
 	
 	public void level(MOB mob)

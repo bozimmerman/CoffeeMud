@@ -79,7 +79,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
 		mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
-		mob.setExpNextLevel(CMLib.leveler().getLevelExperience(mob.envStats().level()+1));
 	}
 
 	public String parseOutAngleBrackets(String s)

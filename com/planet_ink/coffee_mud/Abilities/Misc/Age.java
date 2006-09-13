@@ -233,7 +233,6 @@ public class Age extends StdAbility
 					newMan.setDescription(babe.description());
 					newMan.setDisplayText(babe.displayText());
 					newMan.setExperience(babe.getExperience());
-					newMan.setExpNextLevel(babe.getExpNextLevel());
 					newMan.setFollowing(null);
 					newMan.setLiegeID(babe.getLiegeID());
 					newMan.setLocation(babe.location());
