@@ -224,6 +224,27 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     }
     public Vector getAreaNames(){ return (Vector)root.getDimensionVector(1).clone();}
     
+    private boolean isGrouper(String areaName)
+    {
+    	areaName=areaName.toUpperCase();
+        int start=0;
+        int end=root.size()-1;
+        int comp=-1;
+        int mid=-1;
+        while(start<=end)
+        {
+            mid=(end+start)/2;
+            comp=areaName.compareTo((String)root.elementAt(mid,1));
+            if(comp==0) return true;
+            else
+            if(comp<0)
+                end=mid-1;
+            else
+                start=mid+1;
+        }
+        return false;
+    }
+    
     public CMIntegerGrouper getGrouper(String areaName)
     {
     	areaName=areaName.toUpperCase();
@@ -255,7 +276,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	if(str==null) return false;
         String theRest=null;
         long roomNum=-1;
-        int x=str.indexOf("#");
+        int origX=str.indexOf("#");
+        int x=origX;
         if(x>0)
         {
             theRest=str.substring(x+1).trim();
@@ -278,7 +300,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         }
         
         CMIntegerGrouper myGrouper=getGrouper(str);
-        if((x<0)&&(myGrouper==null)) return true;
+        if((origX<0)&&(myGrouper==null)&&(isGrouper(str)))
+        	return true;
         if(myGrouper==null) return false;
         return myGrouper.contains(roomNum);
     }
