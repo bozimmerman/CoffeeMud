@@ -98,7 +98,7 @@ public class Snoop extends StdCommand
             mob.tell(SnoopOn.mob().Name()+" is not yet fully in the game.");
         else
 		if(CMSecurity.isASysOp(SnoopOn.mob())&&(!CMSecurity.isASysOp(mob)))
-		    mob.tell("Only another Archon can snoop on "+mob.name()+".");
+		    mob.tell("Only another Archon can snoop on "+SnoopOn.mob().name()+".");
 		else
 		{
 			Vector snoop=new Vector();
