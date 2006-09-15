@@ -102,8 +102,8 @@ public class Scavenger extends ActiveTicker
                 return true;
             if(thisRoom.numPCInhabitants()>0)
                 return true;
-            Vector choices=new Vector(thisRoom.numItems());
-			for(int i=0;i<thisRoom.numItems();i++)
+            Vector choices=new Vector(thisRoom.numItems()<1000?thisRoom.numItems():1000);
+			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)
 			{
 				Item thisItem=thisRoom.fetchItem(i);
 				if((thisItem!=null)
@@ -117,6 +117,8 @@ public class Scavenger extends ActiveTicker
             Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
             if(I!=null)
     			mob.doCommand(CMParms.makeVector("GET",I.Name()));
+            choices.clear();
+            choices=null;
 		}
 		return true;
 	}

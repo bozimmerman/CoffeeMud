@@ -109,7 +109,8 @@ public class Prop_ReqCapacity extends Property
 		case CMMsg.TYP_DROP:
 			if((msg.target() instanceof Item)
 			&&(msg.source()!=null)
-			&&(msg.source().location()!=null))
+			&&(msg.source().location()!=null)
+	        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
 			{
 				Room R=msg.source().location();
 				if((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS))

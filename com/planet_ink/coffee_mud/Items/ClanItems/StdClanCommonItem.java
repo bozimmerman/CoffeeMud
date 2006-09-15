@@ -334,6 +334,20 @@ public class StdClanCommonItem extends StdClanItem
                         }
                     }
                     
+                    if((M.location()!=null)
+                    &&(CMLib.flags().aliveAwakeMobileUnbound(M,true))
+                    &&(!CMLib.flags().canBeSeenBy(M.location(),M)))
+                    	switch(CMLib.dice().roll(1,7,0))
+                    	{
+                    	case 1: CMLib.commands().postSay(M,null,"I can't see a thing."); break;
+                    	case 2: CMLib.commands().postSay(M,null,"It's too dark to work."); break;
+                    	case 3: CMLib.commands().postSay(M,null,"How am I supposed to work in these conditions?"); break;
+                    	case 4: CMLib.commands().postSay(M,null,"Too dadgum dark."); break;
+                    	case 5: CMLib.commands().postSay(M,null,"Is anyone there?  I can't see!"); break;
+                    	case 6: CMLib.commands().postSay(M,null,"Someone turn on the lights to I can work!"); break;
+                    	case 7: CMLib.commands().postSay(M,null,"I could use some light, if you expect me to work."); break;
+                    	}
+                    
 					if((M.inventorySize()>1)&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					{
 						Item I=null;
