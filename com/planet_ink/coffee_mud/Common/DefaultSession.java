@@ -84,7 +84,7 @@ public class DefaultSession extends Thread implements Session
     protected int terminalHeight = 25;
     protected long writeStartTime=0;
 
-    private static final HashSet telnetSupportSet=new HashSet();
+    private final HashSet telnetSupportSet=new HashSet();
     private static final HashSet mxpSupportSet=new HashSet();
     private static final Hashtable mxpVersionInfo=new Hashtable();
     private boolean bNextByteIs255=false;
@@ -111,50 +111,48 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			sock.setSoTimeout(SOTIMEOUT);
-			sock.setSendBufferSize(1);
             rawout=sock.getOutputStream();
             InputStream rawin=sock.getInputStream();
-            setServerTelnetMode(TELNET_ANSI,true);
-            setClientTelnetMode(TELNET_ANSI,true);
-            setClientTelnetMode(TELNET_TERMTYPE,true);
-            requestSubOption(rawout,TELNET_TERMTYPE);
-            if(!CMSecurity.isDisabled("MCCP"))
-	            changeTelnetMode(rawout,TELNET_COMPRESS2,true);
-            
-            if(!CMSecurity.isDisabled("MXP"))
-	            changeTelnetMode(rawout,TELNET_MXP,true);
-            if(!CMSecurity.isDisabled("MSP"))
-	            changeTelnetMode(rawout,TELNET_MSP,true);
-            changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
-            changeTelnetMode(rawout,TELNET_NAWS,true);
-            //changeTelnetMode(rawout,TELNET_BINARY,true);
-            preliminaryRead(250);
-            if((!terminalType.equalsIgnoreCase("ANSI"))&&(clientTelnetMode(TELNET_ECHO)))
-                changeTelnetModeBackwards(TELNET_ECHO,false);
-            //rawout.flush();
-            preliminaryRead(250);
-
+			setServerTelnetMode(TELNET_ANSI,true);
+			setClientTelnetMode(TELNET_ANSI,true);
+			setClientTelnetMode(TELNET_TERMTYPE,true);
+			requestSubOption(rawout,TELNET_TERMTYPE);
+			if(!CMSecurity.isDisabled("MCCP"))
+			    changeTelnetMode(rawout,TELNET_COMPRESS2,true);
+			
+			if(!CMSecurity.isDisabled("MXP"))
+			    changeTelnetMode(rawout,TELNET_MXP,true);
+			if(!CMSecurity.isDisabled("MSP"))
+			    changeTelnetMode(rawout,TELNET_MSP,true);
+			//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
+			changeTelnetMode(rawout,TELNET_NAWS,true);
+			//changeTelnetMode(rawout,TELNET_BINARY,true);
+			preliminaryRead(250);
+			if((!terminalType.equalsIgnoreCase("ANSI"))&&(clientTelnetMode(TELNET_ECHO)))
+			    changeTelnetModeBackwards(TELNET_ECHO,false);
+			rawout.flush();
+			preliminaryRead(250);
+			
             //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
             //in = new BufferedReader(new InputStreamReader(rawin, "UTF-8"));
 			out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
 			in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
-            preliminaryRead(250);
-            if(terminalType.equalsIgnoreCase("ANSI"))
-                changeTelnetMode(rawout,TELNET_ECHO,true);
-        	if(clientTelnetMode(TELNET_COMPRESS2))
-        	{
-                //out.flush();
-                //rawout.flush();
+			
+			preliminaryRead(250);
+			if(clientTelnetMode(TELNET_COMPRESS2))
+			{
+			    out.flush();
+			    rawout.flush();
 				try{Thread.sleep(50);}catch(Exception e){}
-                requestSubOption(rawout,TELNET_COMPRESS2);
-                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
-                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+			    requestSubOption(rawout,TELNET_COMPRESS2);
+			    ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+			    zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 				out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
 				try{Thread.sleep(50);}catch(Exception e){}
-        	}
-            if(clientTelnetMode(Session.TELNET_MXP))
-                print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
-            preliminaryRead(500);
+			}
+			if(clientTelnetMode(Session.TELNET_MXP))
+			    print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
+			preliminaryRead(500);
 			if(introTextStr!=null) 
                 print(introTextStr);
             if((clientTelnetMode(Session.TELNET_MXP))
@@ -207,10 +205,10 @@ public class DefaultSession extends Thread implements Session
 	        byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)TELNET_IAC,(byte)TELNET_SE};
 	        out.write(stream);
         }
-        //out.flush();
+        out.flush();
     }
     
-    private static boolean mightSupportTelnetMode(int telnetCode)
+    private boolean mightSupportTelnetMode(int telnetCode)
     {
         if(telnetSupportSet.size()==0)
         {
@@ -240,7 +238,7 @@ public class DefaultSession extends Thread implements Session
     {
     	byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
     	out.write(command);
-        //out.flush();
+        out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
@@ -248,7 +246,7 @@ public class DefaultSession extends Thread implements Session
     {
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
     	out.write(command);
-        //out.flush();
+        out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
@@ -256,7 +254,7 @@ public class DefaultSession extends Thread implements Session
     {
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
     	out.write(command);
-        //out.flush();
+        out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
@@ -687,6 +685,7 @@ public class DefaultSession extends Thread implements Session
 	}
 
     public void handleSubOption(int optionCode, char[] suboptionData, int dataSize)
+    	throws IOException
     {
         switch(optionCode)
         {
@@ -698,8 +697,16 @@ public class DefaultSession extends Thread implements Session
                 if(suboptionData[0] == 0)
                 {
                     terminalType = new String(suboptionData, 1, dataSize - 1);
-                    if(terminalType.equalsIgnoreCase("zmud"))
-                        setClientTelnetMode(Session.TELNET_ECHO,false);
+                    if((terminalType.equalsIgnoreCase("ZMUD"))
+        			||(terminalType.equalsIgnoreCase("XTERM")))
+        			{
+        				if(mightSupportTelnetMode(TELNET_ECHO))
+        					telnetSupportSet.remove(new Integer(TELNET_ECHO));
+        			    changeTelnetMode(rawout,TELNET_ECHO,false);
+        			}
+        			else
+    				if(terminalType.equalsIgnoreCase("ANSI"))
+        			    changeTelnetMode(rawout,TELNET_ECHO,true);
                 }
                 else 
                 if (suboptionData[0] == 1) // Request for data.
@@ -864,7 +871,7 @@ public class DefaultSession extends Thread implements Session
             	if(connectionComplete)
             	{
 	                requestSubOption(rawout,TELNET_COMPRESS2);
-	                //out.flush();
+	                out.flush();
 	                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 	                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 					out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
@@ -1325,7 +1332,7 @@ public class DefaultSession extends Thread implements Session
 			if(sock!=null)
 			{
 				status=Session.STATUS_LOGOUT6;
-				//if(out!=null) out.flush();
+				if(out!=null) out.flush();
 				status=Session.STATUS_LOGOUT7;
                 if(sock!=null) sock.shutdownInput();
 				status=Session.STATUS_LOGOUT8;

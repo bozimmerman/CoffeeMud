@@ -2148,16 +2148,17 @@ public class StdMOB implements MOB
 		// now go on to source activities
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
 		{
-			if(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-				if((msg.target() instanceof MOB)
-				&&(getVictim()!=msg.target())
-				&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
-					||(!(msg.tool() instanceof DiseaseAffect))))
-				{
-                    CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
-    				if(CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(),true))
-						setVictim((MOB)msg.target());
-				}
+			if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+			&&(msg.target() instanceof MOB)
+			&&(getVictim()!=msg.target())
+			&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+				||(!(msg.tool() instanceof DiseaseAffect))))
+			{
+                CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
+                if((msg.tool() instanceof Weapon)
+				||(!CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(),true)))
+					setVictim((MOB)msg.target());
+			}
 
 			switch(msg.sourceMinor())
 			{

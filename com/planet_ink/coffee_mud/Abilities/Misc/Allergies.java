@@ -149,7 +149,7 @@ public class Allergies extends StdAbility
 		    &&(((MOB)affected).location().isInhabitant(msg.source())))
 		    {
                 Ability A=CMClass.getAbility("Poison_Hives");
-                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+                if(A!=null) A.invoke(msg.source(),affected,true,0);
 		    }
 		}
 		super.executeMsg(myHost,msg);
