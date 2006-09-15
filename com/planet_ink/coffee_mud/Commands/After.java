@@ -57,6 +57,29 @@ public class After extends StdCommand implements Tickable
 			mob.tell("Ok.");
 			return false;
 		}
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
+		{
+			afterCmds.clear();
+			int s=0;
+			StringBuffer str=new StringBuffer("^xCurrently scheduled AFTERs: ^?^.^?\n\r");
+			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");
+			while(s<afterCmds.size())
+			{
+				Vector V=(Vector)afterCmds.elementAt(s);
+				long start=((Long)V.elementAt(0)).longValue();
+				long duration=((Long)V.elementAt(1)).longValue();
+				every=((Boolean)V.elementAt(2)).booleanValue();
+				MOB M=((MOB)V.elementAt(3));
+				Vector command=(Vector)V.elementAt(4);
+				str.append(CMStrings.padRight(CMLib.time().date2String(start+duration),20)+" ");
+				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().returnTime(duration,0),20)+" ");
+				str.append(CMStrings.padRight(M.Name(),10)+" ");
+				str.append(CMStrings.limit(CMParms.combine(command,0),25)+"\n\r");
+				s++;
+			}
+			mob.tell(str.toString());
+			return false;
+		}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("every"))
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
