@@ -28,13 +28,30 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * DiseaseAffect is an ability interface to denote those properties, 
+ * affects, or Disease objects that act as curable physical diseases.
+ */
 public interface DiseaseAffect extends Ability
 {
+	/** denotes a diseases spread by sex with someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_STD=1;
+	/** denotes a diseases spread by touching or making contact with someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_CONTACT=2;
+	/** denotes a diseases spread by being in the same room as someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_PROXIMITY=4;
+	/** denotes a diseases spread by eating the remains of someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_CONSUMPTION=8;
+	/** denotes a diseases spread by taking physical damage from someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_DAMAGE=16;
+
 	
+	/**
+	 * This method returns the level from 0-9 of how difficult it
+	 * is to cure this disease through mundane or magical means.
+	 * 9 is considered more difficult.
+	 * 
+	 * @return the curing difficulty level 0-9
+	 */
 	public int difficultyLevel();
 }

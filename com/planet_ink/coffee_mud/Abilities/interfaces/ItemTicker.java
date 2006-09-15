@@ -28,14 +28,38 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * @author Owner
+ *
+ */
 public interface ItemTicker extends Ability
 {
-	public void loadContent(ItemTicker ticker, 
-							Item item, 
-							Room room);
+	/**
+	 * @param ticker
+	 * @param item
+	 * @param room
+	 */
+	public void loadContent(ItemTicker ticker, Item item, Room room);
+	/**
+	 * @param item
+	 * @param room
+	 */
 	public void loadMeUp(Item item, Room room);
+	/**
+	 * @param item
+	 */
 	public void unloadIfNecessary(Item item);
+	/**
+	 * @param item
+	 * @param room
+	 */
 	public void verifyFixContents(Item item, Room room);
+	/**
+	 * @return
+	 */
 	public Room properLocation();
+	/**
+	 * @param room
+	 */
 	public void setProperLocation(Room room);
 }

@@ -30,22 +30,90 @@ import java.util.*;
 */
 public interface ClanManager extends CMObject
 {
+    /**
+     * @return
+     */
     public Enumeration allClans();
+    /**
+     * @return
+     */
     public int numClans();
+    /**
+     * 
+     */
     public void shutdownClans();
+    /**
+     * @param id1
+     * @param id2
+     * @param relation
+     * @return
+     */
     public boolean isCommonClanRelations(String id1, String id2, int relation);
+    /**
+     * @param id1
+     * @param id2
+     * @return
+     */
     public int getClanRelations(String id1, String id2);
+    /**
+     * @param id
+     * @return
+     */
     public Clan getClan(String id);
+    /**
+     * @param id
+     * @return
+     */
     public Clan findClan(String id);
+    /**
+     * @param type
+     * @return
+     */
     public Clan getClanType(int type);
+    /**
+     * @param role
+     * @return
+     */
     public int getRoleOrder(int role);
+    /**
+     * @param government
+     * @param role
+     * @param titleCase
+     * @param plural
+     * @return
+     */
     public String getRoleName(int government, int role, boolean titleCase, boolean plural);
+    /**
+     * @return
+     */
     public Enumeration clans();
+    /**
+     * @return
+     */
     public int size();
+    /**
+     * @param C
+     */
     public void addClan(Clan C);
+    /**
+     * @param C
+     */
     public void removeClan(Clan C);
+    /**
+     * 
+     */
     public void tickAllClans();
+    /**
+     * @param msg
+     */
     public void clanAnnounceAll(String msg);
+    /**
+     * @param trophy
+     * @return
+     */
     public String translatePrize(int trophy);
+    /**
+     * @return
+     */
     public boolean trophySystemActive();
 }

@@ -30,16 +30,58 @@ import java.util.*;
 */
 public interface CharCreationLibrary extends CMObject
 {
+    /**
+     * @param mob
+     * @param C
+     */
     public void reRollStats(MOB mob, CharStats C);
+    /**
+     * @param mob
+     * @param thisClass
+     * @param theme
+     * @return
+     */
     public boolean classOkForMe(MOB mob, CharClass thisClass, int theme);
+    /**
+     * @param mob
+     * @param theme
+     * @return
+     */
     public Vector classQualifies(MOB mob, int theme);
+    /**
+     * @param login
+     * @return
+     */
     public boolean isOkName(String login);
+    /**
+     * @param mob
+     */
     public void reloadTerminal(MOB mob);
+    /**
+     * @param mob
+     */
     public void showTheNews(MOB mob);
+    /**
+     * @param mob
+     * @return
+     */
     public boolean checkExpiration(MOB mob);
+    /**
+     * @param mob
+     * @param login
+     * @param session
+     * @return
+     * @throws java.io.IOException
+     */
     public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException;
-    // 0=no login, 1=login, 2=swap login
+    /**
+     * 0=no login, 1=login, 2=swap login
+     * @param mob
+     * @param attempt
+     * @return
+     * @throws java.io.IOException
+     */
     public int login(MOB mob, int attempt)
         throws java.io.IOException;
 

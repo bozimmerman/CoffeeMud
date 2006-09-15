@@ -31,14 +31,53 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This interface denotes an ability that also incidentally is capable
+ * of generating objects, usually items.  This is probably a common
+ * skill, but one could imagine an itemcraftor also being a spell that
+ * generates its own items.  Also the item generation is an incidental
+ * and internal aspect of the ability, these methods allow that 
+ * functionality to be exposed for archon use.
+ */
 public interface ItemCraftor extends Ability
 {
+	/**
+	 * @return
+	 */
 	public Vector fetchRecipes();
+	/**
+	 * @param recipeName
+	 * @param beLoose
+	 * @return
+	 */
 	public Vector matchingRecipeNames(String recipeName, boolean beLoose);
+	/**
+	 * @param material
+	 * @return
+	 */
 	public Vector craftAnyItem(int material);
+	/**
+	 * @param material
+	 * @return
+	 */
 	public Vector craftAllItemsVectors(int material);
+	/**
+	 * @return
+	 */
 	public Vector craftAllItemsVectors();
+	/**
+	 * @param recipe
+	 * @return
+	 */
 	public Vector craftItem(String recipe);
+	/**
+	 * @param recipe
+	 * @param material
+	 * @return
+	 */
 	public Vector craftItem(String recipe, int material);
+	/**
+	 * @return
+	 */
 	public Vector myResources();
 }
