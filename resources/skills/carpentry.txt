@@ -23,7 +23,7 @@ Small % Bed	1	25	30	15	GenBed	BED	1	 	0
 Small % Box	1	15	15	5	GenContainer		25	 	0
 % Club	2	15	10	200	GenWeapon	BLUNT	1	10	-20
 % Mace	3	20	20	528	GenWeapon	BLUNT	1	8	0
-% Bookshelf	3	30	10	15	GenContainer		10		768
+% Bookshelf	3	30	10	15	GenContainer		10		384
 % Scroll Case	3	30	10	10	GenContainer		3		256
 a Pair of % Sabots	3	20	10	15	GenShoes	2:FEET	0	2	0
 a Pair of % Clogs	3	30	10	15	GenShoes	2:FEET	0	2	0
