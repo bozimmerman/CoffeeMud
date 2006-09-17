@@ -197,6 +197,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			zapCodes.put("-CONSTITUTION",new Integer(97));
 			zapCodes.put("-CHA",new Integer(98));
 			zapCodes.put("-CHARISMA",new Integer(98));
+            zapCodes.put("+HOME",new Integer(99));
+            zapCodes.put("-HOME",new Integer(100));
 		}
 		return zapCodes;
 	}
@@ -454,13 +456,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
 	public boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E)
 	{
-        Room R=CMLib.map().roomLocation(E);
-        if(R==null) return false;
-		Area A=R.getArea();
+		Area A=CMLib.map().areaLocation(E);
 		if(A==null) return false;
 		return fromHereStartsWith(V,plusMinus,fromHere,A.name());
 	}
 
+    public boolean homeCheck(Vector V, char plusMinus, int fromHere, Environmental E)
+    {
+        Area A=CMLib.map().getStartArea(E);
+        if(A==null) return false;
+        return fromHereStartsWith(V,plusMinus,fromHere,A.name());
+    }
+    
 	public boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		if((mob==null)||(mob.location()==null)) return false;
@@ -1526,6 +1533,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+                case 99: // +Home
+                {
+                    buf.append("Disallows those whose home is the following area(s): ");
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        String str2=(String)V.elementAt(v2);
+                        if(zapCodes.containsKey(str2))
+                            break;
+                        if(str2.startsWith("-"))
+                            buf.append(str2.substring(1)+", ");
+                    }
+                    if(buf.toString().endsWith(", "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    buf.append(".  ");
+                }
+                break;
+                case 100: // -Home
+                    {
+                        buf.append((skipFirstWord?"From the":"Requires being from the")+" following area(s): ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("+"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
 				case 33: // +Item
 					{
 						buf.append((skipFirstWord?"The":"Requires the")+" following item(s): ");
@@ -1860,6 +1899,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 43: // -Effect
 				case 9: // -Names
 				case 32: // -Area
+                case 100: // -Home
                 case 54: // -JavaClass
 					{
 						Vector entry=new Vector();
@@ -1907,6 +1947,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 42: // +Effect
 				case 16: // +Names
 				case 31: // +Area
+                case 99: // +Home
                 case 53: // +JavaClass
 					{
 						Vector entry=new Vector();
@@ -2970,6 +3011,26 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{ return false;}
                 break;
             }
+            case 100: // -home
+            {
+                boolean found=false;
+                Area A=CMLib.map().getStartArea(E);
+                if(A!=null)
+                    for(int v=1;v<V.size();v++)
+                        if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
+                        { found=true; break;}
+                if(!found) return false;
+            }
+            break;
+            case 99: // +home
+            {
+                Area A=CMLib.map().getStartArea(E);
+                if(A!=null)
+                    for(int v=1;v<V.size();v++)
+                        if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
+                        { return false;}
+                break;
+            }
 			case 33: // -item
 				{
 					boolean found=false;
@@ -3419,6 +3480,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 32: // -area
 					if(!areaCheck(V,'+',v+1,E)) return false;
 					break;
+                case 99: // +home
+                    if(homeCheck(V,'-',v+1,E))
+                        return false;
+                    break;
+                case 100: // -home
+                    if(!homeCheck(V,'+',v+1,E)) return false;
+                    break;
 				case 33: // +item
 					if(!itemCheck(V,'-',v+1,mob)) return false;
                     if(!itemCheck(V,'+',v+1,mob)) return false;
