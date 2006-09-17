@@ -1999,14 +1999,28 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
+                Vector MASK=null;
+                if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
+                { 
+                    arg3=arg3.substring(4).trim(); 
+                    arg3=arg3.substring(1).trim();
+                    MASK=CMLib.masking().maskCompile(arg3);
+                }
 				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
-							num++;
+                        if(M==null) continue;
+                        if(MASK!=null)
+                        {
+                            if(CMLib.masking().maskCheck(MASK,M))
+                                num++;
+                        }
+                        else
+                        if(CMLib.english().containsString(M.name(),arg1))
+                            num++;
 					}
 				}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBSINAREA");
@@ -2018,6 +2032,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
+                Vector MASK=null;
+                if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
+                { 
+                    arg3=arg3.substring(4).trim(); 
+                    arg3=arg3.substring(1).trim();
+                    MASK=CMLib.masking().maskCompile(arg3);
+                }
 				try
 				{
 					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
@@ -2026,7 +2047,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
-							if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
+                            if(M==null) continue;
+                            if(MASK!=null)
+                            {
+                                if(CMLib.masking().maskCheck(MASK,M))
+                                    num++;
+                            }
+                            else
+                            if(CMLib.english().containsString(M.name(),arg1))
 								num++;
 						}
 					}
@@ -2202,9 +2230,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(!name.equalsIgnoreCase("*"))
                         {
                             num=0;
+                            Vector MASK=null;
+                            if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
+                            { 
+                                name=name.substring(4).trim(); 
+                                name=name.substring(1).trim();
+                                MASK=CMLib.masking().maskCompile(name);
+                            }
                             for(int i=0;i<lastKnownLocation.numInhabitants();i++)
                             {
                                 MOB M=lastKnownLocation.fetchInhabitant(i);
+                                if(M==null) continue;
+                                if(MASK!=null)
+                                {
+                                    if(CMLib.masking().maskCheck(MASK,M))
+                                        num++;
+                                }
+                                else
                                 if(CMLib.english().containsString(M.Name(),name)
                                 ||CMLib.english().containsString(M.displayText(),name))
                                     num++;
@@ -3723,14 +3765,28 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				int num=0;
+                Vector MASK=null;
+                if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
+                { 
+                    arg1=arg1.substring(4).trim(); 
+                    arg1=arg1.substring(1).trim();
+                    MASK=CMLib.masking().maskCompile(arg1);
+                }
 				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
-							num++;
+                        if(M==null) continue;
+                        if(MASK!=null)
+                        {
+                            if(CMLib.masking().maskCheck(MASK,M))
+                                num++;
+                        }
+                        else
+                        if(CMLib.english().containsString(M.name(),arg1))
+                            num++;
 					}
 				}
 				results.append(num);
@@ -3740,6 +3796,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				int num=0;
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+                Vector MASK=null;
+                if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
+                { 
+                    arg1=arg1.substring(4).trim(); 
+                    arg1=arg1.substring(1).trim();
+                    MASK=CMLib.masking().maskCompile(arg1);
+                }
 				try
 				{
 					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
@@ -3748,7 +3811,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
-							if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
+                            if(M==null) continue;
+                            if(MASK!=null)
+                            {
+                                if(CMLib.masking().maskCheck(MASK,M))
+                                    num++;
+                            }
+                            else
+							if(CMLib.english().containsString(M.name(),arg1))
 								num++;
 						}
 					}
@@ -3882,9 +3952,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     if((name.length()>0)&&(!name.equalsIgnoreCase("*")))
                     {
                         num=0;
+                        Vector MASK=null;
+                        if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
+                        { 
+                            name=name.substring(4).trim(); 
+                            name=name.substring(1).trim();
+                            MASK=CMLib.masking().maskCompile(name);
+                        }
                         for(int i=0;i<lastKnownLocation.numInhabitants();i++)
                         {
                             MOB M=lastKnownLocation.fetchInhabitant(i);
+                            if(M==null) continue;
+                            if(MASK!=null)
+                            {
+                                if(CMLib.masking().maskCheck(MASK,M))
+                                    num++;
+                            }
+                            else
                             if(CMLib.english().containsString(M.Name(),name)
                             ||CMLib.english().containsString(M.displayText(),name))
                                 num++;
