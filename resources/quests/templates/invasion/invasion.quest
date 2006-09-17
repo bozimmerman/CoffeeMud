@@ -1,0 +1,29 @@
+#set the quest name
+set name <QUESTNAME>
+
+# this one runs once per day
+set name <QUESTNAME>
+set wait <WAITTIME>
+set interval <INTERVAL>
+set runlevel <RUNLEVEL>
+
+set area GoblinMountains
+set mobgroup MASK=-PLAYER -RACE +Goblin 
+give ability Skill_Climb
+give behavior Scriptable LOAD=quests/<QUESTNAME>/goblin.script
+give behavior MobileAggressive MOBKILL
+give behavior Scavenger
+
+set mobgroup
+set room
+set area
+set mob
+
+set area <QUESTAREA1>
+set mob <QUESTMOB1>
+give behavior Scriptable LOAD=quests/<QUESTNAME>/general.script
+
+
+set duration 400
+# the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will
+# do the rest...

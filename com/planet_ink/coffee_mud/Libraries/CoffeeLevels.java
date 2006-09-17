@@ -240,7 +240,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 	
 	private static final int breakLevel=25;
-	private static final int breakMul1=(100*(breakLevel-1));
 	private static int[] levelingCharts=new int[1000];
 	public synchronized int getLevelExperience(int level)
 	{
@@ -254,13 +253,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		if(levelingCharts[level]==0)
 		{
-			int neededLevel=level*1000;
-			for(int i=1;i<level;i++)
-				if(i<breakLevel)
-					neededLevel+=(100*i);
-				else
-					neededLevel+=breakMul1+(25*(i-(breakLevel-1)));
-			levelingCharts[level]=neededLevel;
+            levelingCharts[1]=1000;
+            for(int i=2;i<=level;i++)
+                if(levelingCharts[level]==0)
+                    levelingCharts[i]=levelingCharts[i-1]+1000+((i<breakLevel)?100:25);
 		}
 		return levelingCharts[level];
 	}

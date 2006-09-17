@@ -5093,8 +5093,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					if((amtStr.endsWith("%"))
 					&&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
-						t=(int)Math.round(CMath.mul(((MOB)newTarget).getExpNeededLevel(),
+                    {
+                        int baseLevel=newTarget.baseEnvStats().level();
+                        int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience(baseLevel-1);
+                        int thisLevelExpNeeded=CMLib.leveler().getLevelExperience(baseLevel);
+						t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,
 											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
+                    }
 					if(t!=0) CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
 				}
 				break;

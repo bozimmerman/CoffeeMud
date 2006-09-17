@@ -1,0 +1,36 @@
+civilwar - certain mobs fight other mobs in area
+deputy - given cityguard privs to capture a fugitive
+killemall - kill all of certain kind of mob in area or world?
+killone -- kill a generated mob, or a single particular mob
+lostperson - find a particular mob who follows you back 
+murdermystery - solve the murder
+plague - mob or mobs in area have plague, cure them with potions, wands, whatever
+puzzlepieces - find all the items and return them someplace
+treasurehunt - find a particular item and return them someplace
+robbed - a shopkeeper is robbed, find the robber, return the money
+starvation - mob or mobs in area are starving, give them food
+stolen - just like treasurehunt?  do we need this?
+    /*
+    <SCREEN NAME=X CLASS=X URL=NAME NEXT=X>
+    <FIELDS>
+    <FIELD NAME=X TYPE=X CLASS=X LABEL="Fill this in" />
+    <FIELD NAME=X TYPE=X CLASS=X LABEL="Select of these" />
+    </FIELDS>
+    <SCRIPT>
+    .. javascript .. always executes.. 
+    </SCRIPT>
+    <SCREEN ... />
+    <SCREEN ... />
+    <FINISHED>
+     .. ant type commands here for moving files,
+     .. doing search/replaces on tags in files
+    </FINISHED>
+    */
+    
+    /*
+     * Screen classes can map to URLs, or menu types perhaps
+     * screens need next and back, with finish option.
+     * Nexts and backs just remember what their last screen was,
+     * and use caches to undo (unless undo=off?).
+     * 
+     */

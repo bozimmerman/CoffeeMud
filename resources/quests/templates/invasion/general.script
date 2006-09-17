@@ -1,0 +1,72 @@
+QUEST_TIME_PROG <QUESTNAME> 4
+	IF EVAL('$%ISHERE()%' == '<QUESTAREA1>') and EVAL($%NUMMOBSINAREA(<INVADERCRIT>)% == 0)
+		QUESTCHAT The enemy is routed! Victory is ours! Now, gather round me within the next 3 minutes and I shall reward our heroes!
+		MPSETVAR $i <QUESTNAME>general 0
+	ENDIF
+~
+
+QUEST_TIME_PROG <QUESTNAME> 3
+	IF VAR($i <QUESTNAME>general != '') and VAR($i <QUESTNAME>general != '0')
+		say We'll give everyone 2 more minutes to get here before awarding the prize.
+	ENDIF
+~
+
+QUEST_TIME_PROG <QUESTNAME> 2
+	IF VAR($i <QUESTNAME>general != '') and VAR($i <QUESTNAME>general != '0')
+		say Ok, 1 more minute before we award the prize.
+	ENDIF
+~
+
+ONCE_PROG
+	mpsetvar $i <QUESTNAME>general ''
+	mpsetvar $i <QUESTNAME>winner ''
+	mpsetvar * <QUESTNAME>kill ''
+	QUESTCHAT To arms! To arms! Goblins are invading the city!
+~
+
+QUEST_TIME_PROG gobwar 1
+	VAR ($i GOBMASTER != '')
+		if ISHERE('$<$i <QUESTNAME>winner>')
+			sayto "$<$i <QUESTNAME>winner>" Congratulations to "$<$i <QUESTNAME>winner>" - our hero defender!
+			mpexp '$<$i <QUESTNAME>winner>' 50%
+			mpoload QuestPoint
+			give "a quest point" "$<$i <QUESTNAME>winner>"
+			mpquestwin '$<$i <QUESTNAME>winner>' <QUESTNAME>
+			mpendquest <QUESTNAME>
+		endif
+	MPENDQUEST <QUESTNAME>
+~
+
+QUEST_TIME_PROG <QUESTNAME> -1
+	mpsetvar $i <QUESTNAME>general ''
+	mpsetvar $i <QUESTNAME>winner ''
+	mpsetvar * <QUESTNAME>kill ''
+~
+
+DEATH_PROG
+	if VAR($i <QUESTNAME>general == '')
+		QUESTCHAT The city is lost...goodbye cruel world.
+	else
+		QUESTCHAT At least I got to see the city safe before I died.
+	endif
+	mpendquest <QUESTNAME>
+~
+
+ALL_GREET_PROG 100
+	if RACE($n == Goblin) and VAR($i <QUESTNAME>general == '')
+		yell Goblins! Die!
+		kill $n
+	endif
+	if VAR($i <QUESTNAME>general != '') and VAR($n <QUESTNAME>kill > 0) and ISPC($n)
+		if QUESTWINNER($n <QUESTNAME>)
+			say $n You've already been a hero before! Go Away!
+		else
+			sayto $n Welcome! I heard that you killed $<$n <QUESTNAME>kill> of the enemy! Well done!
+			if VAR($n <QUESTNAME>kill > '$<$i <QUESTNAME>general>')
+				sayto $n That makes you our leader so far!  I will award the prize in just a few minutes.
+				MPSETVAR $i <QUESTNAME>winner $n
+				MPSETVAR $i <QUESTNAME>general $<$n <QUESTNAME>kill>
+			endif
+		endif
+	endif
+~
