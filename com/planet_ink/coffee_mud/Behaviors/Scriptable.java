@@ -5135,6 +5135,20 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					Q.setStat(var,val);
 				break;
 			}
+			case 66: // MPLOG
+			{
+				String type=CMParms.getCleanBit(s,1).toUpperCase();
+				String head=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,3));
+				if(type.startsWith("E")) Log.errOut(head,val);
+				else
+				if(type.startsWith("I")||type.startsWith("S")) Log.infoOut(head,val);
+				else
+				if(type.startsWith("D")) Log.debugOut(head,val);
+				else
+                    scriptableError(scripted,"MPLOG","Syntax","Unknown log type "+type+" for "+scripted.Name());
+				break;
+			}
 			case 60: // trains
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
