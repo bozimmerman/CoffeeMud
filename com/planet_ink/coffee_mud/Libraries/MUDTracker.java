@@ -681,5 +681,51 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		        return d;
 		return dir;
 	}
+
+	public Vector findAllTrails(Room from, Room to, Vector radiantTrail)
+	{
+		Vector finalSets=new Vector();
+		if((from==null)||(to==null)||(from==to)) return finalSets;
+		int index=radiantTrail.indexOf(to);
+		if(index<0) return finalSets;
+		Room R=null;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			R=to.getRoomInDir(d);
+			if(R!=null)
+			{
+				if((R==from)&&(from.getRoomInDir(Directions.getOpDirectionCode(d))==to))
+				{
+					finalSets.addElement(CMParms.makeVector(new Integer(Directions.getOpDirectionCode(d))));
+					return finalSets;
+				}
+				int dex=radiantTrail.indexOf(R);
+				if((dex>=0)&&(dex<index)&&(R.getRoomInDir(Directions.getOpDirectionCode(d))==to))
+				{
+					Vector allTrailsBack=findAllTrails(from,R,radiantTrail);
+					for(int a=0;a<allTrailsBack.size();a++)
+					{
+						Vector thisTrail=(Vector)allTrailsBack.elementAt(a);
+						thisTrail.addElement(new Integer(Directions.getOpDirectionCode(d)));
+						finalSets.addElement(thisTrail);
+					}
+				}
+			}
+		}
+		return finalSets;
+	}
+	
+	public Vector findAllTrails(Room from, Vector tos, Vector radiantTrail)
+	{
+		Vector finalSets=new Vector();
+		if(from==null) return finalSets;
+		Room to=null;
+		for(int t=0;t<tos.size();t++)
+		{
+			to=(Room)tos.elementAt(t);
+			finalSets.addAll(findAllTrails(from,to,radiantTrail));
+		}
+		return finalSets;
+	}
     
 }

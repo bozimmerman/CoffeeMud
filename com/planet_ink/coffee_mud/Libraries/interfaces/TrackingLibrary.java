@@ -80,4 +80,6 @@ public interface TrackingLibrary extends CMObject
     public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook);
     public int findExitDir(MOB mob, Room R, String desc);
     public int findRoomDir(MOB mob, Room R);
+	public Vector findAllTrails(Room from, Room to, Vector radiantTrail);
+	public Vector findAllTrails(Room from, Vector tos, Vector radiantTrail);
 }
