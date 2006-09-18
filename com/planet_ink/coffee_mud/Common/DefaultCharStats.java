@@ -52,7 +52,7 @@ public class DefaultCharStats implements CharStats
 	
 	public DefaultCharStats()
 	{
-        setAllValues(10);
+        setAllBaseValues(10);
 		stats[STAT_GENDER]='M';
 	}
     public void setAllBaseValues(int def)

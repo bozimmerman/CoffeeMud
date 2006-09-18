@@ -61,9 +61,21 @@ public class Thief_Safehouse extends ThiefSkill
 
     public boolean isLawHere(Room R)
     {
-        for(int r=0;r<R.numInhabitants();r++)
-            if(isLaw(R.fetchInhabitant(r)))
-                return true;
+        if(R!=null)
+        {
+            LegalBehavior law=CMLib.utensils().getLegalBehavior(R);
+            if(law!=null)
+            {
+                Area A=CMLib.utensils().getLegalObject(R);
+                MOB M=null;
+                for(int r=0;r<R.numInhabitants();r++)
+                {
+                    M=R.fetchInhabitant(r);
+                    if((M!=null)&&(law.isAnyOfficer(A,M)||law.isJudge(A,M)))
+                        return true;
+                }
+            }
+        }
         return false;
     }
     
@@ -76,7 +88,7 @@ public class Thief_Safehouse extends ThiefSkill
             if(law!=null)
             {
                 Area A=CMLib.utensils().getLegalObject((Room)affected);
-                if(law.isAnyOfficer(A,mob))
+                if(law.isAnyOfficer(A,mob)||law.isJudge(A,mob))
                     return true;
             }
         }
@@ -92,20 +104,15 @@ public class Thief_Safehouse extends ThiefSkill
 
     public boolean isGoodSafehouse(Room target)
     {
-        boolean possibleSafehouse=
-            ((target.domainType()==Room.DOMAIN_INDOORS_WOOD)
-            ||(target.domainType()==Room.DOMAIN_INDOORS_STONE));
-        if(possibleSafehouse)
-        {
-            possibleSafehouse=false;
+        if(target==null) return false;
+        if((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
             for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
             {
                 Room R=target.getRoomInDir(d);
                 if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
-                    possibleSafehouse=true;
+                    return true;
             }
-        }
-        return possibleSafehouse;
+        return false;
     }
     
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -127,27 +134,30 @@ public class Thief_Safehouse extends ThiefSkill
             mob.tell("There is no law here!");
             return false;
         }
-        if(isGoodSafehouse(target))
+        if(!isGoodSafehouse(target))
         {
             Vector V=CMLib.tracking().getRadiantRooms(target,true,true,true,true,true,50);
             Room R=null;
-            for(int v=0;v<V.size();v++)
+            int v=0;
+            for(;v<V.size();v++)
             {
                 R=(Room)V.elementAt(v);
                 if((isGoodSafehouse(R))&&(!isLawHere(R)))
                     break;
             }
             mob.tell("A place like this can't be a safehouse.");
-            if(isGoodSafehouse(R))
+            if((isGoodSafehouse(R))&&(!isLawHere(R)))
             {
+                V=CMLib.tracking().findBastardTheBestWay(target,CMParms.makeVector(R),true,true,true,true,true,50);
                 StringBuffer trail=new StringBuffer("");
+                int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
                 while(target!=R)
                 {
-                    int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,false);
-                    if(dir<0) break;
+                    if((dir<0)||(dir>=Directions.NUM_DIRECTIONS)||(target==null)) break;
                     trail.append(Directions.getDirectionName(dir));
                     if(target.getRoomInDir(dir)!=R) trail.append(", ");
                     target=target.getRoomInDir(dir);
+                    dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
                 }
                 if(target==R)
                     mob.tell("You happen to know of one nearby though.  Go: "+trail.toString());
