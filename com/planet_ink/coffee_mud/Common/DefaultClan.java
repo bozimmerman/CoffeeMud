@@ -525,7 +525,7 @@ public class DefaultClan implements Clan
         if(control.size()>0)
         {
             msg.append("-----------------------------------------------------------------\n\r");
-            msg.append("^xClan Controlled Areas:^.^N\n\r");
+            msg.append("^xClan Controlled Areas (% revolt):^.^N\n\r");
             Collections.sort(control);
             int col=0;
             for(int i=0;i<control.size();i++)
@@ -535,7 +535,15 @@ public class DefaultClan implements Clan
                     msg.append("\n\r");
                     col=1;
                 }
-                msg.append(CMStrings.padRight((String)control.elementAt(i),23)+"^N");
+                Area A=CMLib.map().getArea((String)control.elementAt(i));
+                if(A!=null)
+                {
+                	LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
+                	Area legalA=CMLib.utensils().getLegalObject(A);
+                	int pctRevolt=0;
+                	if((B!=null)&&(legalA!=null)) pctRevolt=B.revoltChance();
+	                msg.append("^c"+CMStrings.padRight(A.name(),15)+"^N ("+pctRevolt+"%)");
+                }
             }
             msg.append("\n\r");
         }

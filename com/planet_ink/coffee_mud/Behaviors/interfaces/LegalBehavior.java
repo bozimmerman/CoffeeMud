@@ -59,6 +59,8 @@ public interface LegalBehavior extends Behavior
     public String rulingClan();
     public String conquestInfo(Area myArea);
     public int controlPoints();
+    public int revoltChance();
+    public void setControlPoints(String clanID, int newControlPoints);
     public Vector getWarrantsOf(Area myArea, String name);
     public Vector getWarrantsOf(Area myArea, MOB accused);
     public boolean addWarrant(Area myArea, LegalWarrant W);

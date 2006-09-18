@@ -99,6 +99,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         return V;
     }
     
+    public int revoltChance(){return 0;}
     public Law legalInfo(Area myArea)
     {
         if(!theLawIsEnabled()) return null;
@@ -186,7 +187,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
     {
         return 0;
     }
-    public Vector getWarrantsOf(Area myArea, String name)
+	public void setControlPoints(String clanID, int newControlPoints){}
+	
+	public Vector getWarrantsOf(Area myArea, String name)
     {
         Vector V=new Vector();
         if(!theLawIsEnabled()) return V;

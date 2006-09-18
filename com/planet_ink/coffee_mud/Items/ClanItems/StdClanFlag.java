@@ -94,6 +94,15 @@ public class StdClanFlag extends StdItem implements ClanItem
 						msg.source().tell("This area is under the control of the Archons.");
 					return;
 				}
+				else
+			    if((msg.targetMinor()==CMMsg.TYP_SPEAK)
+			    &&(CMSecurity.isAllowed(msg.source(),R,"CMDROOMS"))
+			    &&(msg.targetMessage()!=null)
+			    &&(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()).indexOf("I HEREBY DECLARE THIS AREA")>=0))
+			    {
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                    if(B!=null) B.setControlPoints(clanID(),B.controlPoints()+1);
+			    }
 			}
 		}
 	}
