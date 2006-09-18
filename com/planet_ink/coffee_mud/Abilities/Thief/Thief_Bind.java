@@ -36,7 +36,7 @@ public class Thief_Bind extends ThiefSkill
 	public String ID() { return "Thief_Bind"; }
 	public String name(){ return "Bind";}
 	public String displayText(){ return "(Bound by "+ropeName+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BIND"};
@@ -46,10 +46,10 @@ public class Thief_Bind extends ThiefSkill
 	public int minRange(){return 0;}
 	public long flags(){return Ability.FLAG_BINDING;}
 	public int usageType(){return USAGE_MOVEMENT;}
+	public boolean bubbleAffect(){return affected instanceof Room;}
 
 	public int amountRemaining=500;
 	public String ropeName="the ropes";
-
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -58,29 +58,34 @@ public class Thief_Bind extends ThiefSkill
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
-
-		MOB mob=(MOB)affected;
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if(msg.amISource(mob))
+		if((msg.source()==affected)||(affected instanceof Room))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_SIT)
-			||(msg.sourceMinor()==CMMsg.TYP_STAND))
+			if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_STAND))
+			&&(affected instanceof MOB))
+				return true;
+			else
+			if(((msg.sourceMinor()==CMMsg.TYP_LEAVE)||(msg.sourceMinor()==CMMsg.TYP_ENTER))
+			&&(affected instanceof Room))
 				return true;
 			else
 			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName+" binding <S-HIM-HER>."))
+				if(canBeUninvoked())
 				{
-					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level());
-					if(amountRemaining<0)
-						unInvoke();
+					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName.toLowerCase()+" binding <S-HIM-HER>."))
+					{
+						amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().envStats().level());
+						if(amountRemaining<0)
+							unInvoke();
+					}
 				}
+				else
+					msg.source().tell("You are constricted by "+ropeName.toLowerCase()+" and can't move!");
 				return false;
 			}
 		}
@@ -100,7 +105,10 @@ public class Thief_Bind extends ThiefSkill
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			super.unInvoke();
 			return;
+		}
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
