@@ -207,6 +207,22 @@ public class Test extends StdCommand
         if(commands.size()>1)
         {
             String what=((String)commands.elementAt(1)).toUpperCase().trim();
+            if(what.equalsIgnoreCase("levelxptest"))
+            {
+            	for(int i=0;i<100;i++)
+            		CMLib.leveler().getLevelExperience(CMLib.dice().roll(1,100,0));
+            	MOB M=CMClass.getMOB("StdMOB");
+            	for(int i=1;i<100;i++)
+            	{
+            		M.baseEnvStats().setLevel(i);
+            		M.envStats().setLevel(1);
+            		M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
+            		M.charStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
+            		M.setExperience(CMLib.leveler().getLevelExperience(i-1));
+            		mob.tell(i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel());
+            	}
+            }
+            else
             if(what.equalsIgnoreCase("randomroompick"))
             {
             	int num=CMath.s_int(CMParms.combine(commands,2));

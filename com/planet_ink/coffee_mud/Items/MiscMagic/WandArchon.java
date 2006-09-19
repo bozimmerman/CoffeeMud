@@ -44,7 +44,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
-		secretWord="REFRESH, BLAST, LEVEL UP, LEVEL DOWN, BURN!!";
+		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
 	}
 
 
@@ -52,12 +52,12 @@ public class WandArchon extends StdWand implements ArchonOnly
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="REFRESH, BLAST, LEVEL UP, LEVEL DOWN, BURN!!";
+		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
 	}
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="REFRESH, BLAST, LEVEL UP, LEVEL DOWN, BURN!!";
+		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
 	}
 
 	public void affectCharState(MOB mob, CharState affectableState)
@@ -107,7 +107,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
 				MOB target=(MOB)afftarget;
-				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
+				message=CMStrings.getSayFromMessage(message.toUpperCase()).trim();
+				if(message.equals("LEVEL ALL UP"))
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
@@ -130,41 +131,55 @@ public class WandArchon extends StdWand implements ArchonOnly
 					}
 				}
 				else
-				if(message.toUpperCase().indexOf("LEVEL UP")>0)
+				if(message.startsWith("LEVEL ")&&message.endsWith(" UP"))
 				{
+					message=message.substring(6).trim();
+					message=message.substring(0,message.length()-2).trim();
+					int num=1;
+					if(CMath.isInteger(message)) num=CMath.s_int(message);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
-					if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-					||(target.charStats().getCurrentClass().expless())
-					||(target.charStats().getMyRace().expless()))
-						CMLib.leveler().level(target);
-					else
-						CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+					for(int i=0;i<num;i++)
+					{
+						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+						||(target.charStats().getCurrentClass().expless())
+						||(target.charStats().getMyRace().expless()))
+							CMLib.leveler().level(target);
+						else
+							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+					}
 					return;
 				}
 				else
-				if(message.toUpperCase().indexOf("LEVEL DOWN")>0)
+				if(message.startsWith("LEVEL ")&&message.endsWith(" DOWN"))
 				{
+					message=message.substring(6).trim();
+					message=message.substring(0,message.length()-4).trim();
+					int num=1;
+					if(CMath.isInteger(message)) num=CMath.s_int(message);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
-					if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-					||(target.charStats().getCurrentClass().expless())
-					||(target.charStats().getMyRace().expless()))
-						CMLib.leveler().unLevel(target);
-					else
-						CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+					for(int i=0;i<num;i++)
+					{
+						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+						||(target.charStats().getCurrentClass().expless())
+						||(target.charStats().getMyRace().expless()))
+							CMLib.leveler().unLevel(target);
+						else
+							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+					}
 					return;
 				}
 				else
-				if(message.toUpperCase().indexOf("REFRESH")>0)
+				if(message.equals("REFRESH"))
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					target.recoverMaxState();
@@ -173,7 +188,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					return;
 				}
 				else
-				if(message.toUpperCase().indexOf("BLAST")>0)
+				if(message.equals("BLAST"))
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" zaps <T-NAME> with unworldly energy.");
 					target.curState().setHitPoints(1);
@@ -182,7 +197,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					return;
 				}
 				else
-				if(message.toUpperCase().indexOf("BURN")>0)
+				if(message.equals("BURN"))
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );

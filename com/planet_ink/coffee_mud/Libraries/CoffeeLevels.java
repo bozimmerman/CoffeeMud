@@ -212,7 +212,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int neededLowest=getLevelExperience(mob.baseEnvStats().level()-2);
 		if((mob.getExperience()<neededLowest)
 		&&(mob.baseEnvStats().level()>1))
+		{
 			unLevel(mob);
+			neededLowest=getLevelExperience(mob.baseEnvStats().level()-2);
+		}
 	}
 	
 	public boolean postExperience(MOB mob,MOB victim,String homage,int amount,boolean quiet)
@@ -255,8 +258,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		{
             levelingCharts[1]=1000;
             for(int i=2;i<=level;i++)
-                if(levelingCharts[level]==0)
-                    levelingCharts[i]=levelingCharts[i-1]+1000+((i<breakLevel)?100:25);
+                if(levelingCharts[i]==0)
+                    levelingCharts[i]=levelingCharts[i-1]+1000+((i<breakLevel)?(i*100):(100*breakLevel)+((i-breakLevel)*25));
 		}
 		return levelingCharts[level];
 	}
