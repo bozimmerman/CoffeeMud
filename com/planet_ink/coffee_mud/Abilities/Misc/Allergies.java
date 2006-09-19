@@ -121,7 +121,8 @@ public class Allergies extends StdAbility
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if((affected!=null)
+		&&(affected instanceof MOB))
 		{
 		    if(msg.source()==affected)
 		    {
@@ -146,7 +147,8 @@ public class Allergies extends StdAbility
 			&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
 			   ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE)))
 		    &&(((MOB)affected).location()!=null)
-		    &&(((MOB)affected).location().isInhabitant(msg.source())))
+		    &&(((MOB)affected).location().isInhabitant(msg.source()))
+		    &&((msg.tool()==null)||((!msg.tool().ID().equals("Poison_Hives"))&&(!msg.tool().ID().equals("Poison_Heartstopper")))))
 		    {
                 Ability A=CMClass.getAbility("Poison_Hives");
                 if(A!=null) A.invoke(msg.source(),affected,true,0);
