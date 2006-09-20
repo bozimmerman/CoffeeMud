@@ -1630,7 +1630,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(!msg.target().name().equals(msg.source().name()))
 		&&(msg.target() instanceof MOB))
 		{
-
 			if(isTheJudge(laws,(MOB)msg.target()))
 			{
 				Room R=msg.source().location();
@@ -1672,7 +1671,15 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if((!targetIsOfficer)
 					&&(W.victim()==msg.source())
 					&&(W.criminal()==msg.target())
-					&&(W.crime().equals(assaultInfo[Law.BIT_CRIMENAME])||W.crime().equals(murderInfo[Law.BIT_CRIMENAME])))
+					&&(W.crime().equals(assaultInfo[Law.BIT_CRIMENAME])||W.crime().equals(murderInfo[Law.BIT_CRIMENAME]))
+					&&(isStillACrime(W,false)))
+						turnAbout=true;
+					else
+					if((!targetIsOfficer)
+					&&(W.victim()==msg.target())
+					&&(W.criminal()==msg.source())
+					&&(W.crime().equals(murderInfo[Law.BIT_CRIMENAME]))
+					&&(isStillACrime(W,false)))
 						turnAbout=true;
 				}
 				if(justResisting)

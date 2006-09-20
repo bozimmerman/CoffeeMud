@@ -216,10 +216,10 @@ public class Concierge extends StdBehavior
 			int destIndex=destinations.indexOf(source);
 			if((CMLib.flags().canBeSeenBy(source,observer))
 			&&(CMLib.flags().canBeSeenBy(observer,source))
-			&&(destIndex>0.0))
+			&&(destIndex>=0))
 			{
 				Environmental destination=(Environmental)destinations.elementAt(destIndex,2);
-				Double paid=(Double)destinations.elementAt(destinations.indexOf(source),3);
+				Double paid=(Double)destinations.elementAt(destIndex,3);
 				double owed=getPrice(destination)-paid.doubleValue();
 				owed-=((Coins)msg.tool()).getTotalValue();
 				if(owed>0.0)

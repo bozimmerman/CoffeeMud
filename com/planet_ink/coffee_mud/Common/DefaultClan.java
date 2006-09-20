@@ -542,7 +542,7 @@ public class DefaultClan implements Clan
                 	Area legalA=CMLib.utensils().getLegalObject(A);
                 	int pctRevolt=0;
                 	if((B!=null)&&(legalA!=null)) pctRevolt=B.revoltChance();
-	                msg.append("^c"+CMStrings.padRight(A.name(),15)+"^N ("+pctRevolt+"%)");
+	                msg.append("^c"+CMStrings.padRight(A.name()+"^N ("+pctRevolt+"%)",25)+"^N");
                 }
             }
             msg.append("\n\r");

@@ -120,7 +120,7 @@ public class Conquerable extends Arrest
     }
     public int revoltChance()
     {
-    	if(myArea!=null) return 100;
+    	if(myArea==null) return 100;
         Clan C=CMLib.clans().getClan(holdingClan);
         if((C==null)||(C.getGovernment()!=Clan.GVT_THEOCRACY))
 	    	return calcRevoltChance(myArea);
