@@ -69,7 +69,7 @@ public class ListSessions extends StdCommand
 				set[3]=CMStrings.padRight("NAMELESS",17)+"| ";
 			}
 			set[4]=CMStrings.padRight(thisSession.getAddress(),17)+"| ";
-			set[5]=CMStrings.padRight((thisSession.getIdleMillis()+""),17);
+			set[5]=CMStrings.padRight(CMLib.english().returnTime(thisSession.getIdleMillis(),0)+"",17);
 			broken.addElement(set);
 		}
 		Vector sorted=null;
