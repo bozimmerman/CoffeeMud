@@ -37,7 +37,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	public String name(){ return "Underground Connections";}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"UNDERGROUNDCONNECTIONS"};
 	public String[] triggerStrings(){return triggerStrings;}
