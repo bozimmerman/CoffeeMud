@@ -55,7 +55,8 @@ public class AlignHelper extends StdBehavior
 	    &&( (CMLib.flags().isEvil(target)&&CMLib.flags().isEvil(observer))||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
 		{
 			boolean yep=Aggressive.startFight(observer,source,true,false);
-			if(yep)	CMLib.commands().postSay(observer,null,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!",false,false);
+			if((yep)&&(observer.getVictim()!=null))
+				CMLib.commands().postSay(observer,null,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!",false,false);
 		}
 	}
 }
