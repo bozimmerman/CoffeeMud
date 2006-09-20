@@ -181,7 +181,7 @@ public class Qualify extends BaseAbleLister
 					msg2.append(thisLine);
 				}
 			}
-			msg.append(msg2.toString());
+			msg.append(msg2.toString()+"\n\r");
 		}
 
 		boolean edusFound=false;
