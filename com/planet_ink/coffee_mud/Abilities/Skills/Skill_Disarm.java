@@ -43,6 +43,27 @@ public class Skill_Disarm extends StdSkill
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			MOB victim=mob.getVictim();
+			if(victim==null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.fetchWieldedItem()==null)
+				return Ability.QUALITY_INDIFFERENT;
+			Item hisWeapon=victim.fetchWieldedItem();
+			if(hisWeapon==null) hisWeapon=victim.fetchFirstWornItem(Item.WORN_HELD);
+			if((hisWeapon==null)
+			||(!(hisWeapon instanceof Weapon))
+			||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB victim=mob.getVictim();

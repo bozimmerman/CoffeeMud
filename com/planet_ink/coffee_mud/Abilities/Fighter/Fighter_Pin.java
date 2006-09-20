@@ -87,6 +87,18 @@ public class Fighter_Pin extends FighterSkill
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(mob.baseWeight()<(((MOB)target).baseWeight()-200)))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

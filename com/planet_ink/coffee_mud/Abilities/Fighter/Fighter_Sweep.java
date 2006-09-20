@@ -49,6 +49,21 @@ public class Fighter_Sweep extends FighterSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()/2);
 		affectableStats.setDamage(affectableStats.damage()/3);
 	}
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			HashSet h=properTargets(mob,target,false);
+			for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
+			{
+				MOB m=(MOB)e.next();
+				if((m.rangeToTarget()<0)||(m.rangeToTarget()>0))
+					h.remove(m);
+			}
+			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

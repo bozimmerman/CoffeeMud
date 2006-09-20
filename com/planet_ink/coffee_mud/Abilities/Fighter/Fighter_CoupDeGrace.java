@@ -44,6 +44,25 @@ public class Fighter_CoupDeGrace extends FighterSkill
 	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(!mob.isInCombat()) return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0)) return Ability.QUALITY_INDIFFERENT;
+			Item w=mob.fetchWieldedItem();
+			Weapon ww=null;
+			if((w==null)||(!(w instanceof Weapon))) return Ability.QUALITY_INDIFFERENT;
+			ww=(Weapon)w;
+			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
+			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
+				 return Ability.QUALITY_INDIFFERENT;
+			if(mob.curState().getMovement()<150) return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().isSleeping(mob.getVictim())) return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())

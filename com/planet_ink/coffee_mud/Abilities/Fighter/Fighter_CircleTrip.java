@@ -91,6 +91,24 @@ public class Fighter_CircleTrip extends FighterSkill
 		}
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+	        if(CMLib.flags().isSitting(mob))
+				return Ability.QUALITY_INDIFFERENT;
+	        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         if(CMLib.flags().isSitting(mob))

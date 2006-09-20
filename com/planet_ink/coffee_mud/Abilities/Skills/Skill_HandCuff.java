@@ -157,6 +157,22 @@ public class Skill_HandCuff extends StdSkill
 		}
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target instanceof MOB))
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(Skill_Arrest.getWarrantsOf((MOB)target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isStanding((MOB)target))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(!auto))

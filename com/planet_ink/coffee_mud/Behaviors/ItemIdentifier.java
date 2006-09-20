@@ -53,6 +53,7 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
+		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
@@ -80,6 +81,7 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
+		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{

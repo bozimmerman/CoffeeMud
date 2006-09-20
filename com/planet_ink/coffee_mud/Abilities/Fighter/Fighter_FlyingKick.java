@@ -46,6 +46,18 @@ public class Fighter_FlyingKick extends FighterSkill
 	public int maxRange(){return 5;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()==0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))

@@ -114,7 +114,8 @@ public interface Law extends CMObject
 	public final static int MSG_PAROLEDISMISS=9;
 	public final static int MSG_LAWFREE=10;
 	public final static int MSG_RESIST=11;
-	public final static int MSG_TOTAL=12;
+	public final static int MSG_COPKILLER=12;
+	public final static int MSG_TOTAL=13;
 	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+
@@ -142,6 +143,7 @@ public interface Law extends CMObject
 		"NORESISTMSG=Good.  Now hold still.\n"+
 		"ACTIVATED=FALSE\n"+
 		"RESISTFIGHTMSG=Resisting arrest?! How DARE you!\n"+
+		"COPKILLERMSG=COP-KILLER!!!!! AAARRRGGGHHHH!!!!!\n"+
 		"RESISTMSG=Resisting arrest eh?  Well, have it your way.\n"+
 		"PROTECTED=+ADJINT 3\n"+
 		"ARRESTMOBS=true\n"+
@@ -211,12 +213,14 @@ public interface Law extends CMObject
 		public int paroleTimes(int which);
 		public String jailMessages(int which);
 		public int jailTimes(int which);
+	    public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob);
 		public LegalWarrant getWarrant(MOB mob, int which);
 		public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull);
 		public void resetLaw();
 		public boolean hasModifiableNames();
 		public boolean hasModifiableLaws();
 		public String getInternalStr(String msg);
+	    public boolean isInternalStr(String msg);
 		public void setInternalStr(String tag, String value);
 		public String rawLawString();
 		public boolean lawIsActivated();

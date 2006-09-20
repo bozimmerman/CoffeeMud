@@ -45,6 +45,26 @@ public class Fighter_WeaponBreak extends FighterSkill
 	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			MOB victim=mob.getVictim();
+			if((!mob.isInCombat())||(victim==null))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.fetchWieldedItem()==null)
+				return Ability.QUALITY_INDIFFERENT;
+			Item item=victim.fetchWieldedItem();
+			if((item==null)
+			||(!(item instanceof Weapon))
+			||(((Weapon)item).weaponClassification()==Weapon.CLASS_NATURAL))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB victim=mob.getVictim();

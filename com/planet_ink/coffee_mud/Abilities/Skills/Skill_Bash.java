@@ -43,12 +43,21 @@ public class Skill_Bash extends StdSkill
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public int castingQuality(MOB mob, Environmental target)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if((mob!=null)&&(target!=null))
+		{
+			Item thisSheild=getShield(mob);
+			if(thisSheild==null)
+				return Ability.QUALITY_INDIFFERENT;
+			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
-
+	public Item getShield(MOB mob)
+	{
 		Item thisSheild=null;
 		for(int i=0;i<mob.inventorySize();i++)
 		{
@@ -56,6 +65,14 @@ public class Skill_Bash extends StdSkill
 			if((I!=null)&&(I instanceof Shield)&&(!I.amWearingAt(Item.IN_INVENTORY)))
 			{ thisSheild=I; break;}
 		}
+		return thisSheild;
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	{
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+		Item thisSheild=getShield(mob);
 		if(thisSheild==null)
 		{
 			mob.tell("You must have a shield to perform a bash.");

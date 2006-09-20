@@ -84,6 +84,20 @@ public class Skill_Feint extends StdSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(!mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.rangeToTarget()>0)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())

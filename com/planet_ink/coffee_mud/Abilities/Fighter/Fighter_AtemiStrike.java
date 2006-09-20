@@ -77,6 +77,25 @@ public class Fighter_AtemiStrike extends FighterSkill
 	}
 
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(mob.baseWeight()<(((MOB)target).baseWeight()/2)))
+				return Ability.QUALITY_INDIFFERENT;
+			if(anyWeapons(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isGolem(target))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -88,7 +107,7 @@ public class Fighter_AtemiStrike extends FighterSkill
 			return false;
 		}
 
-		if((!auto)&&(mob.baseWeight()<(mob.baseWeight()/2)))
+		if((!auto)&&(mob.baseWeight()<(target.baseWeight()/2)))
 		{
 			mob.tell(target.name()+" is too big to strike!");
 			return false;

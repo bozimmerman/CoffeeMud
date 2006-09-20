@@ -58,19 +58,19 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
-	public int castingQuality(MOB invoker, Environmental target)
+	public int castingQuality(MOB mob, Environmental target)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
 			return Ability.QUALITY_INDIFFERENT;
 		switch(abstractQuality())
 		{
 		case  Ability.QUALITY_BENEFICIAL_OTHERS:
-			if(invoker==target) return  Ability.QUALITY_BENEFICIAL_SELF;
+			if(mob==target) return  Ability.QUALITY_BENEFICIAL_SELF;
 			return  Ability.QUALITY_BENEFICIAL_OTHERS;
 		case Ability.QUALITY_MALICIOUS:
 			return Ability.QUALITY_MALICIOUS;
 		case  Ability.QUALITY_BENEFICIAL_SELF:
-			if((target instanceof MOB)&&(invoker!=target)) return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;
 			return  Ability.QUALITY_BENEFICIAL_SELF;
 		default:
 			return Ability.QUALITY_INDIFFERENT;

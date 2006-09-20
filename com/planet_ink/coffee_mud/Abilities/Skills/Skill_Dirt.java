@@ -77,26 +77,55 @@ public class Skill_Dirt extends StdSkill
 			mob.tell("You can see again!");
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!hereOK(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0)
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
+				return Ability.QUALITY_INDIFFERENT;
+	        if(CMLib.flags().isSleeping(target))
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isFlying(mob))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
+	public boolean hereOK(MOB mob)
+	{
+		Room R=mob.location();
+		if(R==null) return false;
+		if((R.domainConditions()==Room.CONDITION_WET)
+		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_AIR)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_MAGIC)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_METAL)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_CAVE)
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
+			return false;
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 
-		if((mob.location().domainConditions()==Room.CONDITION_WET)
-		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_MAGIC)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_STONE)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_METAL)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_CAVE)
-		 ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WOOD))
+		if(!hereOK(mob))
 		{
             if(!auto)
     			mob.tell("There's no dirt here to kick!");

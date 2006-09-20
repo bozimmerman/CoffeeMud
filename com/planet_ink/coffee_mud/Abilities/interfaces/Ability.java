@@ -86,11 +86,11 @@ public interface Ability extends Environmental
 	 * in favor of the other Ability.QUALITY_* constants.
 	 * @see Ability
 	 * @see Ability#abstractQuality()
-	 * @param invoker the person to use the skill
+	 * @param mob the person to use the skill
 	 * @param target the potential target -- may be invoker
 	 * @return QUALITY_* constant classification
 	 */
-	public int castingQuality(MOB invoker, Environmental target);
+	public int castingQuality(MOB mob, Environmental target);
 
 	/**
 	 * Returns a bitmap giving some specific information about

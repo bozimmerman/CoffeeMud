@@ -116,6 +116,22 @@ public class Fighter_LightningStrike extends FighterSkill
 	}
 
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
+				return Ability.QUALITY_INDIFFERENT;
+			if(anyWeapons(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getBodyPart(Race.BODY_HAND)<2)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -278,7 +278,7 @@ public class WaterCurrents extends ActiveTicker
 		public boolean putInCommandlist(){return false;}
 		public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 		public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-		public int castingQuality(MOB invoker, Environmental target){return Ability.QUALITY_INDIFFERENT;}
+		public int castingQuality(MOB mob, Environmental target){return Ability.QUALITY_INDIFFERENT;}
 
 		public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 		public boolean savable(){ return savable;}

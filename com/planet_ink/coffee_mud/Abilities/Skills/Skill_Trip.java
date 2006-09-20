@@ -94,6 +94,24 @@ public class Skill_Trip extends StdSkill
 		}
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
+				return Ability.QUALITY_INDIFFERENT;
+			if((!CMLib.flags().aliveAwakeMobile(invoker,true)||(CMLib.flags().isSitting(mob))))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(((MOB)target).riding()!=null))
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isInFlight(target))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -73,6 +73,18 @@ public class Fighter_Charge extends FighterSkill
 		affectableStats.setArmor(affectableStats.armor()+(2*affected.envStats().level()));
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if((mob.isInCombat())&&(mob.rangeToTarget()<=0))
+				return Ability.QUALITY_INDIFFERENT;
+			if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		boolean notInCombat=!mob.isInCombat();

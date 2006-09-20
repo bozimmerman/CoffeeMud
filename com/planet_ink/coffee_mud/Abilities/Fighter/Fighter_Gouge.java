@@ -91,6 +91,27 @@ public class Fighter_Gouge extends FighterSkill
 		return false;
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(((mob.charStats().getBodyPart(Race.BODY_HAND)<=0))
+			||((mob.charStats().getMyRace().bodyMask()[Race.BODY_HAND]<=0)
+			   &&(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0)))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)<=0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(anyWeapons(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

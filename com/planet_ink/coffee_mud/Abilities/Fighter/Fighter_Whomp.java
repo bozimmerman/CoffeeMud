@@ -102,7 +102,22 @@ public class Fighter_Whomp extends FighterSkill
 		}
 	}
 
-
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(mob.baseWeight()<(((MOB)target).baseWeight()-250)))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

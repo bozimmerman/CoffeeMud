@@ -57,6 +57,26 @@ public class Fighter_BodyToss extends FighterSkill
 		return false;
 	}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(anyWeapons(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.rangeToTarget()>0)
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isSitting(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.baseEnvStats().weight()>(mob.baseEnvStats().weight()*2))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target.fetchEffect(ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob.getVictim();

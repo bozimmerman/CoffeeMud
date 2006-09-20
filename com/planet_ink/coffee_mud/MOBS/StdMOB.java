@@ -799,7 +799,7 @@ public class StdMOB implements MOB
 		else
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
-			if(CMSecurity.isAllowed(this,location(),"PKILL")
+			if(CMSecurity.isAllowed(mob,location(),"PKILL")
 			||(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;

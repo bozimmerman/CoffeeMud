@@ -57,6 +57,7 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
 		&&(msg.tool()!=null)
+		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Item))
 		{
 			Item tool=(Item)msg.tool();
@@ -96,6 +97,7 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
 		&&(msg.tool()!=null)
+		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Armor))
 		{
 			int cost=cost((Item)msg.tool());

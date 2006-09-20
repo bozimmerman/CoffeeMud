@@ -397,6 +397,11 @@ public class DefaultLawSet implements Law
             return (String)theLaws.get(msg);
         return "";
     }
+    public boolean isInternalStr(String msg)
+    {
+        if((theLaws!=null)&&(theLaws.get(msg)!=null)) return true;
+        return false;
+    }
     public void setInternalStr(String tag, String value)
     {
         if(theLaws!=null)
@@ -430,6 +435,7 @@ public class DefaultLawSet implements Law
         messages[Law.MSG_WARNING]=getInternalStr("WARNINGMSG");
         messages[Law.MSG_THREAT]=getInternalStr("THREATMSG");
         messages[Law.MSG_EXECUTE]=getInternalStr("EXECUTEMSG");
+        messages[Law.MSG_COPKILLER]=isInternalStr("COPKILLERMSG")?getInternalStr("COPKILLERMSG"):"COPKILLER!!!! ARGH!!!!!!";
         messages[Law.MSG_PROTECTEDMASK]=getInternalStr("PROTECTED");
         messages[Law.MSG_TRESPASSERMASK]=getInternalStr("TRESPASSERS");
         messages[Law.MSG_RESISTFIGHT]=getInternalStr("RESISTFIGHTMSG");
@@ -582,6 +588,24 @@ public class DefaultLawSet implements Law
         return W;
     }
 
+    public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob)
+    {
+		String[] copKillerInfo=(String[])basicCrimes().get("MURDER");
+        if(copKillerInfo!=null)
+        for(int i=0;i<warrants.size();i++)
+        {
+            LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+            if((W.criminal()==mob)
+            &&(W.crime().equals(copKillerInfo[Law.BIT_CRIMENAME]))
+            &&(W.victim()!=null)
+            &&((behav==null)||(behav.isStillACrime(W,false)))
+            &&(behav.isAnyOfficer(A,W.victim())))
+                return W;
+        }
+        return null;
+    }
+    
+    
     public LegalWarrant getWarrant(MOB mob, int which)
     {
         int one=0;

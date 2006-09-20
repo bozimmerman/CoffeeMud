@@ -46,6 +46,35 @@ public class Fighter_Behead extends FighterSkill
 	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	public int castingQuality(MOB mob, Environmental target)
+	{
+		if((mob!=null)&&(target!=null)&&(target instanceof MOB))
+		{
+			Race R=((MOB)target).charStats().getMyRace();
+			if(R.bodyMask()[Race.BODY_HEAD]<=0)
+				return Ability.QUALITY_INDIFFERENT;
+	        LegalBehavior B=null;
+			if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
+			Vector warrants=new Vector();
+			if(B!=null)
+	            warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),(MOB)target);
+			if(warrants.size()==0)
+				return Ability.QUALITY_INDIFFERENT;
+			Item w=mob.fetchWieldedItem();
+			Weapon ww=null;
+			if((w==null)||(!(w instanceof Weapon)))
+				return Ability.QUALITY_INDIFFERENT;
+			ww=(Weapon)w;
+			if(ww.weaponType()!=Weapon.TYPE_SLASHING)
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().isBoundOrHeld(target))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    MOB target=super.getTarget(mob,commands,givenTarget);
