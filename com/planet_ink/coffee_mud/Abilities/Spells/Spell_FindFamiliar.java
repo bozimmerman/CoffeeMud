@@ -42,11 +42,11 @@ public class Spell_FindFamiliar extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public int castingQuality(MOB invoker, MOB target)
+	public int castingQuality(MOB mob, MOB target)
 	{
-		if((target!=null)&&(invoker!=target)) return Ability.QUALITY_INDIFFERENT;
-		if(invoker.numFollowers()>0) return Ability.QUALITY_INDIFFERENT;
-		if(invoker.isMonster()) return Ability.QUALITY_INDIFFERENT;
+		if((target!=null)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;
+		if(mob.numFollowers()>0) return Ability.QUALITY_INDIFFERENT;
+		if(mob.isMonster()) return Ability.QUALITY_INDIFFERENT;
 		return abstractQuality();
 	}
 

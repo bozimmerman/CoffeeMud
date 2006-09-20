@@ -259,7 +259,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             levelingCharts[1]=1000;
             for(int i=2;i<=level;i++)
                 if(levelingCharts[i]==0)
-                    levelingCharts[i]=levelingCharts[i-1]+1000+((i<breakLevel)?(i*100):(100*breakLevel)+((i-breakLevel)*25));
+                    levelingCharts[i]=levelingCharts[i-1]+1000+((i<breakLevel)?((i-1)*100):(100*(breakLevel-1))+((i-breakLevel)*25));
 		}
 		return levelingCharts[level];
 	}

@@ -49,7 +49,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		if((mob!=null)&&(target!=null))
 		{
 			if(!mob.isInCombat()) return Ability.QUALITY_INDIFFERENT;
-			if(mob.isInCombat()&&(mob.rangeToTarget()>0)) return Ability.QUALITY_INDIFFERENT;
+			if(mob.rangeToTarget()>0) return Ability.QUALITY_INDIFFERENT;
 			Item w=mob.fetchWieldedItem();
 			Weapon ww=null;
 			if((w==null)||(!(w instanceof Weapon))) return Ability.QUALITY_INDIFFERENT;
