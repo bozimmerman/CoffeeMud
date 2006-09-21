@@ -49,8 +49,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         recoverEnvStats();
     }
     protected boolean abilityImbuesMagic(){return false;}
-    public String name(){return "a package of "+numberOfItemsInPackage()+" "+Name()+"(s)";}
-    public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name()+"(s) sit here.";}
+    public String name(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s)";}
+    public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s) sit here.";}
     public int numberOfItemsInPackage(){return baseEnvStats().ability();}
     public void setNumberOfItemsInPackage(int number){baseEnvStats().setAbility(number);envStats().setAbility(number);}
     public boolean packageMe(Item I, int number)
