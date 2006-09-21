@@ -2486,7 +2486,7 @@ public class StdMOB implements MOB
 					&&(baseEnvStats().rejuv()>0))
 					{
 						envStats().setRejuv(envStats().rejuv()-1);
-						if(envStats().rejuv()<0)
+						if((envStats().rejuv()<0)||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
 						{
 							tickStatus=Tickable.STATUS_REBIRTH;
 							bringToLife(CMLib.map().getStartRoom(this),true);

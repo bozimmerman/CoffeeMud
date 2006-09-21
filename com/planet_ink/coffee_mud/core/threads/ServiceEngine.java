@@ -404,6 +404,12 @@ public class ServiceEngine implements ThreadEngine
     			{
     				C=(TockClient)e.next();
     				E2=C.clientObject;
+    				if(here==null)
+    				{
+    					if(Tick.tickTicker(C,false))
+    						almostTock.delTicker(C);
+    				}
+    				else
     				if(isHere(E2,here))
     				{
     					if(Tick.tickTicker(C,isSuspended))

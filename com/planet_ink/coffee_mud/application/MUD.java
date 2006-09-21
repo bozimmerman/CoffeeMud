@@ -610,6 +610,8 @@ public class MUD extends Thread implements MudHost
 		||CMSecurity.isSaveFlag("ROOMSHOPS"))
 		{
 			if(S!=null)S.print("Saving room data...");
+			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Rejuving the dead");
+			CMLib.threads().tickAllTickers(null);
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
 			int roomCounter=0;
 			Room R=null;
