@@ -402,7 +402,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homageMessage+".^N");
 		}
 
-		while((mob.getExperience()>=mob.getExpNextLevel())
+		if((mob.getExperience()>=mob.getExpNextLevel())
 		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 			level(mob);
 	}	
