@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Alertness extends ThiefSkill
+public class Thief_Alertness extends AlertThiefSkill
 {
 	public String ID() { return "Thief_Alertness"; }
 	public String name(){ return "Alertness";}
@@ -71,7 +71,7 @@ public class Thief_Alertness extends ThiefSkill
 				}
 				if(choices!=null)
 				{
-					int alert=getAlertLevel(mob);
+					int alert=getXLevel(mob);
 					if(alert<=0)alert=1;
 					while((alert>0)&&(choices.size()>0))
 					{

@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealDoor extends ThiefSkill
+public class Thief_ConcealDoor extends StealthyThiefSkill
 {
     public String ID() { return "Thief_ConcealDoor"; }
     public String name(){ return "Conceal Door";}
@@ -97,7 +97,7 @@ public class Thief_ConcealDoor extends ThiefSkill
             mob.tell(mob,E,null,"<T-NAME> is not a door!");
             return false;
         }
-        if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10))))
+        if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10))))
         {
             mob.tell("You aren't good enough to conceal that door.");
             return false;
@@ -122,7 +122,7 @@ public class Thief_ConcealDoor extends ThiefSkill
                 mob.location().send(mob,msg);
                 Ability A=(Ability)super.copyOf();
                 A.setInvoker(mob);
-                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10)-E.envStats().level());
+                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10)-E.envStats().level());
                 Room R=mob.location();
                 Room R2=null;
                 for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -135,7 +135,7 @@ public class Thief_ConcealDoor extends ThiefSkill
                     CMLib.database().DBUpdateExits(mob.location());
                 }
                 else
-                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)+getStealthLevel(mob)));
+                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)+getXLevel(mob)));
                 E.recoverEnvStats();
             }
         }

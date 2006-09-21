@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,6 +60,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
     protected Hashtable oldContents=null;
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
+    protected static final HashSet expertiseDoneSkills=new HashSet(); 
     
 	public Cooking()
 	{
@@ -67,6 +69,38 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		verb=cookWord();
 	}
 
+	static
+	{
+		CMLib.expertises().addDefinition("HOMECOOKING1","Home Cooking I","","+WIS 14",0,1,0,0,0);
+		CMLib.expertises().addDefinition("HOMECOOKING2","Home Cooking II","","+WIS 18",0,1,0,0,0);
+		CMLib.expertises().addDefinition("HOMECOOKING3","Home Cooking III","","+WIS 22",0,1,0,0,0);
+	}
+	
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		if((!expertiseDoneSkills.contains(ID()))
+		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+		{
+			expertiseDoneSkills.add(ID());
+			ExpertiseLibrary.ExpertiseDefinition def=null;
+			for(int i=1;i<=3;i++)
+			{
+				def=CMLib.expertises().getDefinition("HOMECOOKING"+i);
+				if(def!=null)
+				{
+					String addToList="";
+					if((def.listRequirements()==null)||(def.listRequirements().length()==0))
+					{
+						if(i>0)
+							addToList+=" -EXPERTISES +HOMECOOKING"+(i-1);
+						addToList+=" -SKILLS";
+					}
+					def.addListMask(addToList+" +"+ID());
+				}
+			}
+		}
+	}
 	public boolean isMineForCooking(MOB mob, Container cooking)
 	{
 		if(mob.isMine(cooking)) 
@@ -359,6 +393,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return missing;
 	}
 
+	public int homeCookValue(MOB mob, int multiplyer)
+	{
+		int hc=getExpertiseLevel(mob,"HOMECOOKING");
+		return hc*hc*multiplyer;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb=cookWord();
@@ -630,7 +670,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
 					food.baseEnvStats().setWeight(food.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
 			}
-			food.setNourishment(food.nourishment()/finalAmount);
+			food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
 			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}
@@ -654,6 +694,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			if(drink.liquidRemaining()>0)
 			{
+				drink.setLiquidRemaining(drink.liquidRemaining()+homeCookValue(mob,10));
 				drink.setLiquidHeld(drink.liquidRemaining());
 				drink.setThirstQuenched(drink.liquidRemaining());
 			}

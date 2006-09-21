@@ -76,7 +76,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	
 	protected String[] supportedEnhancements(){ return ALL_CODES;}
 	
-	private final static HashSet doneSkills=new HashSet();
+	private final static HashSet expertiseDoneSkills=new HashSet();
 	static
 	{
 		for(int t=0;t<TYPES_CODES.length;t++)
@@ -172,10 +172,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	{
 		super.setMiscText(newText);
 		if((!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
-		&&(!doneSkills.contains(ID()))
+		&&(!expertiseDoneSkills.contains(ID()))
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 		{
-			doneSkills.add(ID());
+			expertiseDoneSkills.add(ID());
 			ExpertiseLibrary.ExpertiseDefinition def=null;
 			for(int t=0;t<TYPES_CODES.length;t++)
 			{

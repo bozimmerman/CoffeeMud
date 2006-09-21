@@ -336,7 +336,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             return false;
         }
         if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
-        &&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility)))
+        &&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
+        &&(!CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS")))
         {
             mob.tell(getScr("AbilityEvoker","evokeerr2"));
             return false;
@@ -352,7 +353,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return;
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
-		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility)))
+		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
+        &&(!CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS")))
 		{
 			mob.tell(getScr("AbilityEvoker","evokeerr2"));
 			return;

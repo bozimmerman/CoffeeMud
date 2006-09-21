@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealItem extends ThiefSkill
+public class Thief_ConcealItem extends StealthyThiefSkill
 {
 	public String ID() { return "Thief_ConcealItem"; }
 	public String name(){ return "Conceal Item";}
@@ -74,7 +74,7 @@ public class Thief_ConcealItem extends ThiefSkill
 		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(item==null) return false;
 		
-		if((!auto)&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10))))
+		if((!auto)&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10))))
 		{
 			mob.tell("You aren't good enough to conceal anything that large.");
 			return false;

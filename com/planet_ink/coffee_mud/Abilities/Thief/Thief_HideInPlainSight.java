@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_HideInPlainSight extends ThiefSkill
+public class Thief_HideInPlainSight extends StealthyThiefSkill
 {
     public String ID() { return "Thief_HideInPlainSight"; }
     public String name(){ return "Hide In Plain Sight";}
@@ -114,7 +114,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
             if((M!=null)&&((M!=mob))&&(highestLevel<M.envStats().level()))
                 highestLevel=mob.envStats().level();
         }
-        int levelDiff=mob.envStats().level()-highestLevel-(this.getStealthLevel(mob)*5);
+        int levelDiff=mob.envStats().level()-highestLevel-(this.getXLevel(mob)*5);
 
         String str="You step to the side and become totally inconspicuous.";
 

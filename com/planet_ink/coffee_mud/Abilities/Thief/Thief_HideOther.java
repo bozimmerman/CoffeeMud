@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_HideOther extends ThiefSkill
+public class Thief_HideOther extends StealthyThiefSkill
 {
 	public String ID() { return "Thief_HideOther"; }
 	public String name(){ return "Hide Other";}
@@ -173,7 +173,7 @@ public class Thief_HideOther extends ThiefSkill
 				Thief_HideOther newOne=(Thief_HideOther)target.fetchEffect(ID());
 				if(newOne!=null)
 				{
-					newOne.bonus=getStealthLevel(mob)*2;
+					newOne.bonus=getXLevel(mob)*2;
 					newOne.prof=proficiency();
 				}
 				mob.recoverEnvStats();

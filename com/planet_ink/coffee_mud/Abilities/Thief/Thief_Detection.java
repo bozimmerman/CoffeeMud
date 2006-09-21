@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Detection extends ThiefSkill
+public class Thief_Detection extends AlertThiefSkill
 {
 	public String ID() { return "Thief_Detection"; }
 	public String name(){ return "Detection";}
@@ -65,7 +65,7 @@ public class Thief_Detection extends ThiefSkill
             if(((MOB)affected).location()!=lastRoom)
             {
                 lastRoom=((MOB)affected).location();
-                bonusThisRoom=super.getAlertLevel((MOB)affected)*2;
+                bonusThisRoom=super.getXLevel((MOB)affected)*2;
                 ((MOB)affected).recoverCharStats();
             }
             else

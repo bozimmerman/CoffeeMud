@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Shadow extends ThiefSkill
+public class Thief_Shadow extends StealthyThiefSkill
 {
 	public String ID() { return "Thief_Shadow"; }
 	public String name(){ return "Shadow";}
@@ -227,7 +227,7 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 
 		shadowing=null;
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getStealthLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getXLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 

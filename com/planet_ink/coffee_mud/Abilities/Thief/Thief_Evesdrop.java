@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Evesdrop extends ThiefSkill
+public class Thief_Evesdrop extends AlertThiefSkill
 {
 	public String ID() { return "Thief_Evesdrop"; }
 	public String name(){ return "Evesdrop";}
@@ -119,7 +119,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getStealthLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getXLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
@@ -135,7 +135,7 @@ public class Thief_Evesdrop extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,adjustedLevel(mob,0)+(getStealthLevel(mob)*10));
+				beneficialAffect(mob,target,asLevel,adjustedLevel(mob,0)+(getXLevel(mob)*10));
 			}
 		}
 		return success;

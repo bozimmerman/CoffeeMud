@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Sneak extends ThiefSkill
+public class Thief_Sneak extends StealthyThiefSkill
 {
 	public String ID() { return "Thief_Sneak"; }
 	public String name(){ return "Sneak";}
@@ -67,7 +67,7 @@ public class Thief_Sneak extends ThiefSkill
 			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
 				highestLevel=mob.envStats().level();
 		}
-		int levelDiff=(mob.envStats().level()+(super.getStealthLevel(mob)*2))-highestLevel;
+		int levelDiff=(mob.envStats().level()+(super.getXLevel(mob)*2))-highestLevel;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

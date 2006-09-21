@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealWalkway extends ThiefSkill
+public class Thief_ConcealWalkway extends StealthyThiefSkill
 {
     public String ID() { return "Thief_ConcealWalkway"; }
     public String name(){ return "Conceal Walkway";}
@@ -89,7 +89,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
             return false;
         }
         Exit E=(Exit)chkE;
-        if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10))))
+        if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10))))
         {
             mob.tell("You aren't good enough to conceal that direction.");
             return false;
@@ -108,7 +108,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
                 mob.location().send(mob,msg);
                 Ability A=(Ability)super.copyOf();
                 A.setInvoker(mob);
-                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)+(getStealthLevel(mob)*10)-E.envStats().level());
+                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10)-E.envStats().level());
                 Room R=mob.location();
                 if((CMLib.utensils().doesOwnThisProperty(mob,R))
                 ||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
@@ -117,7 +117,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
                     CMLib.database().DBUpdateExits(mob.location());
                 }
                 else
-                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)+getStealthLevel(mob)));
+                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)+getXLevel(mob)));
                 E.recoverEnvStats();
             }
         }

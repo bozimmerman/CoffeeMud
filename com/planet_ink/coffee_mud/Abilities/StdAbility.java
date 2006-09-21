@@ -1403,6 +1403,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
     protected int getExpertiseLevel(MOB mob, String expertise)
     {
+    	if(mob==null) return 0;
     	int level=0;
     	for(int i=0;i<mob.numExpertises();i++)
     	{
