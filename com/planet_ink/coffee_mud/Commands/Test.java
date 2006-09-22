@@ -212,14 +212,22 @@ public class Test extends StdCommand
             	for(int i=0;i<100;i++)
             		CMLib.leveler().getLevelExperience(CMLib.dice().roll(1,100,0));
             	MOB M=CMClass.getMOB("StdMOB");
+                M.setExperience(0);
             	for(int i=1;i<100;i++)
             	{
             		M.baseEnvStats().setLevel(i);
-            		M.envStats().setLevel(1);
+            		M.envStats().setLevel(i);
             		M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
             		M.charStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
-            		M.setExperience(CMLib.leveler().getLevelExperience(i-1));
-            		mob.tell(i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel());
+                    int level=M.baseEnvStats().level();
+                    int xp=0;
+                    String s=i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel()+": ";
+                    while(level==M.baseEnvStats().level())
+                    {
+                        xp+=10;
+                        CMLib.leveler().gainExperience(M,null,"",10,true);
+                    }
+                    mob.tell(s+xp);
             	}
             }
             else
