@@ -1068,6 +1068,24 @@ public class CMParms
         return V2;
     }
 
+    public static boolean contains(String[] supported, String expertise)
+    {
+        if(supported==null) return true;
+        if(expertise==null) return false;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].equals(expertise))
+                return true;
+        return false;
+    }
+    public static boolean startsWith(String[] supported, String expertise)
+    {
+        if(supported==null) return true;
+        if(expertise==null) return false;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].startsWith(expertise))
+                return true;
+        return false;
+    }
 
     public static Vector denumerate(Enumeration e)
     {

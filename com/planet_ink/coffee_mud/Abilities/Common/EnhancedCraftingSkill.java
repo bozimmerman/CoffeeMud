@@ -39,8 +39,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Enhanced Crafting Skill";}
 	
 	protected int materialAdjustments=0;
-	
-	protected final static String[] STAGES={"I","II","III"};
+	protected final static int NUM_STAGES=3;
 	protected final static String[] STAGESTAT={"14","18","22"};
 	protected final static int TYPE_LITECRAFT=0;
 	protected final static int TYPE_DURACRAFT=1;
@@ -75,16 +74,15 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											 "LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};
 	
 	protected String[] supportedEnhancements(){ return ALL_CODES;}
-	
-	private final static HashSet expertiseDoneSkills=new HashSet();
 	static
 	{
 		for(int t=0;t<TYPES_CODES.length;t++)
 		{
-			for(int s=0;s<STAGES.length;s++)
+			for(int s=0;s<NUM_STAGES;s++)
 			{
 				String finalReq="+"+TYPES_STATS[t]+" "+STAGESTAT[s];
-				CMLib.expertises().addDefinition(TYPES_CODES[t]+STAGES[s],TYPES_NAMES[t]+" "+STAGES[s],"",finalReq,0,1,0,0,0);
+                String stage=CMath.convertToRoman((s+1));
+				CMLib.expertises().addDefinition(TYPES_CODES[t]+stage,TYPES_NAMES[t]+" "+stage,"",finalReq,0,1,0,0,0);
 			}
 		}
 	}
@@ -171,42 +169,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
-		&&(!expertiseDoneSkills.contains(ID()))
-		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
-		{
-			expertiseDoneSkills.add(ID());
-			ExpertiseLibrary.ExpertiseDefinition def=null;
-			for(int t=0;t<TYPES_CODES.length;t++)
-			{
-				for(int s=0;s<STAGES.length;s++)
-				if(supported().contains(TYPES_CODES[t]+STAGES[s]))
-				{
-					def=CMLib.expertises().getDefinition(TYPES_CODES[t]+STAGES[s]);
-					if(def!=null)
-					{
-						String addToList="";
-						if((def.listRequirements()==null)||(def.listRequirements().length()==0))
-						{
-							if(s>0)
-								addToList+=" -EXPERTISES +"+TYPES_CODES[t]+STAGES[s-1];
-							addToList+=" -SKILLS";
-						}
-						def.addListMask(addToList+" +"+ID());
-					}
-				}
-			}
-		}
-	}
-	protected Vector supportedV=null;
-	protected final Vector supported(){
-		if(supportedV==null)
-		{
-			supportedV=new Vector();
-			for(int s=0;s<supportedEnhancements().length;s++)
-				supportedV.addElement(supportedEnhancements()[s]);
-		}
-		return supportedV;
+		if(!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
+            registerExpertiseUsage(TYPES_CODES,NUM_STAGES,true,supportedEnhancements());
 	}
 
 	private final static int atLeast1(int value, double pct)
@@ -257,12 +221,16 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public void enhanceList(MOB mob)
 	{
 		StringBuffer extras=new StringBuffer("");
+        String stage=null;
 		for(int t=0;t<TYPES_CODES.length;t++)
 		{
-			for(int s=STAGES.length-1;s>=0;s--)
-				if((supported().contains(TYPES_CODES[t]+STAGES[s]))
-				&&(mob.fetchExpertise(TYPES_CODES[t]+STAGES[s])!=null))
+			for(int s=NUM_STAGES-1;s>=0;s--)
+            {
+                stage=CMath.convertToRoman(s+1);
+				if((CMParms.contains(supportedEnhancements(),TYPES_CODES[t]+stage))
+				&&(mob.fetchExpertise(TYPES_CODES[t]+stage)!=null))
 					extras.append(STAGE_TYPES[t][s]+", ");
+            }
 		}
 		if(extras.length()>0)
 			commonTell(mob,"You can use your expertises to enhance this skill by " +
@@ -283,14 +251,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			&&(!cmd.equalsIgnoreCase("scan")))
 			{
 				boolean foundSomething=true;
+                String stage=null;
 				while(foundSomething)
 				{
 					foundSomething=false;
 					for(int t=0;t<TYPES_CODES.length;t++)
 					{
-						for(int s=STAGES.length-1;s>=0;s--)
-							if((supported().contains(TYPES_CODES[t]+STAGES[s]))
-							&&(mob.fetchExpertise(TYPES_CODES[t]+STAGES[s])!=null)
+						for(int s=NUM_STAGES-1;s>=0;s--)
+                        {
+                            stage=CMath.convertToRoman(s+1);
+							if((CMParms.contains(supportedEnhancements(),TYPES_CODES[t]+stage))
+							&&(mob.fetchExpertise(TYPES_CODES[t]+stage)!=null)
 							&&(cmd.equalsIgnoreCase(STAGE_TYPES[t][s])))
 							{
 								commands.removeElementAt(0);
@@ -303,6 +274,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 								foundSomething=true;
 								break; // you can do any from a stage, but only 1 per stage!
 							}
+                        }
 					}
 				}
 			}

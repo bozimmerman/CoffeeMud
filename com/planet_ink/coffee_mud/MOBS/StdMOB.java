@@ -129,7 +129,7 @@ public class StdMOB implements MOB
 		||(charStats().getMyRace().expless()))
 		    return Integer.MAX_VALUE;
 		int ExpNextLevel=getExpNextLevel();
-		if(ExpNextLevel<=getExperience())
+		if(ExpNextLevel<getExperience())
 			ExpNextLevel=getExperience()+1000;
 		return ExpNextLevel-getExperience();
 	}

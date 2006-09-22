@@ -60,8 +60,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
     protected Hashtable oldContents=null;
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
-    protected static final HashSet expertiseDoneSkills=new HashSet(); 
-    
+     
 	public Cooking()
 	{
 		super();
@@ -69,37 +68,19 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		verb=cookWord();
 	}
 
-	static
-	{
-		CMLib.expertises().addDefinition("HOMECOOKING1","Home Cooking I","","+WIS 14",0,1,0,0,0);
-		CMLib.expertises().addDefinition("HOMECOOKING2","Home Cooking II","","+WIS 18",0,1,0,0,0);
-		CMLib.expertises().addDefinition("HOMECOOKING3","Home Cooking III","","+WIS 22",0,1,0,0,0);
-	}
+    private static final int EXPERTISE_STAGES=3; 
+    private static final String[] EXPERTISE={"HOMECOOKING"};
+    private static final String[] EXPERTISE_NAME={"Homecooking"};
+    static
+    {
+        for(int i=1;i<=EXPERTISE_STAGES;i++)
+            CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),"","+WIS "+(13+i),0,1,0,0,0);
+    }
 	
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((!expertiseDoneSkills.contains(ID()))
-		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
-		{
-			expertiseDoneSkills.add(ID());
-			ExpertiseLibrary.ExpertiseDefinition def=null;
-			for(int i=1;i<=3;i++)
-			{
-				def=CMLib.expertises().getDefinition("HOMECOOKING"+i);
-				if(def!=null)
-				{
-					String addToList="";
-					if((def.listRequirements()==null)||(def.listRequirements().length()==0))
-					{
-						if(i>0)
-							addToList+=" -EXPERTISES +HOMECOOKING"+(i-1);
-						addToList+=" -SKILLS";
-					}
-					def.addListMask(addToList+" +"+ID());
-				}
-			}
-		}
+        registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
 	}
 	public boolean isMineForCooking(MOB mob, Container cooking)
 	{

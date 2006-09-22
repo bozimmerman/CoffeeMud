@@ -45,6 +45,7 @@ public class Thief_Swipe extends StealingThiefSkill
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
+    protected boolean IS_CAUTIOUS_ALSO(){return true;}
 
 	private DVector lastOnes=new DVector(2);
 	protected int timesPicked(MOB target)

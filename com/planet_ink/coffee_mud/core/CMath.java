@@ -22,7 +22,46 @@ public class CMath
     private CMath(){super();}
     private static CMath inst=new CMath();
     public static CMath instance(){return inst;}
+    private static final String[] ROMAN_HUNDREDS={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
+    private static final String[] ROMAN_TENS={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
+    private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
     
+    
+    /** Convert an integer to its Roman Numeral equivalent
+     * 
+     * Usage: Return=MiscFunc.convertToRoman(Number)+".";
+     * @param i Integer to convert
+     * 
+     * @return String Converted integer
+     */
+    public static String convertToRoman(int i)
+    {
+        StringBuffer roman=new StringBuffer("");
+        if(i>1000)
+        {
+            roman.append("Y");
+            i=i%1000;
+        }
+        if(i>=100)
+        {
+            int x=i%100;
+            int y=Math.round((i-x)/100);
+            if(y>0)
+                roman.append(ROMAN_HUNDREDS[y-1]);
+            i=x;
+        }
+        if(i>=10)
+        {
+            int x=i%10;
+            int y=Math.round((i-x)/10);
+            if(y>0)
+                roman.append(ROMAN_TENS[y-1]);
+        }
+        i=i%10;
+        if(i>0)
+            roman.append(ROMAN_ONES[i-1]);
+        return roman.toString();
+    }
     
     public static long absDiff(long x, long y)
     {
@@ -254,44 +293,6 @@ public class CMath
     public static double parseMathExpression(String formula) throws ArithmeticException
     {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))));}
     
-    /** Convert an integer to its Roman Numeral equivalent
-     * 
-     * <br><br><b>Usage:</b> Return=MiscFunc.convertToRoman(Number)+".";
-     * @param i Integer to convert
-     * 
-     * @return String Converted integer
-     */
-    public static String convertToRoman(int i)
-    {
-        String Roman="";
-        String Hundreds[]={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
-        String Tens[]={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
-        String Ones[]={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
-        if(i>1000)
-        {
-            Roman="Y";
-            i=i%1000;
-        }
-        if(i>=100)
-        {
-            int x=i%100;
-            int y=Math.round((i-x)/100);
-            if(y>0)
-                Roman+=Hundreds[y-1];
-            i=x;
-        }
-        if(i>=10)
-        {
-            int x=i%10;
-            int y=Math.round((i-x)/10);
-            if(y>0)
-                Roman+=Tens[y-1];
-        }
-        i=i%10;
-        if(i>0)
-            Roman+=Ones[i-1];
-        return Roman;
-    }
     
     /**
      * Returns the long value of a string without crashing

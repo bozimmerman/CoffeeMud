@@ -1371,7 +1371,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 22: // +adjdex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at least "+val+".  ");
 					break;
 				case 23: // -adjcha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
@@ -1419,7 +1419,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 90: // +dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at least "+val+".");
+					buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at least "+val+".  ");
 					break;
 				case 91: // +con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;

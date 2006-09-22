@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,7 +59,39 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
-	public int castingQuality(MOB mob, Environmental target)
+    protected static final HashSet expertiseDoneSkills=new HashSet(); 
+    
+    protected void registerExpertiseUsage(String[] TYPES_CODES, int stages, boolean roman, String[] SUPPORT_LIST)
+    {
+        if((!expertiseDoneSkills.contains(ID()))
+        &&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+        {
+            expertiseDoneSkills.add(ID());
+            for(int t=0;t<TYPES_CODES.length;t++)
+            {
+                ExpertiseLibrary.ExpertiseDefinition def=null;
+                for(int s=0;s<stages;s++)
+                {
+                    if(CMParms.contains(SUPPORT_LIST,TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1)))))
+                    {
+                        def=CMLib.expertises().getDefinition(TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1))));
+                        if(def!=null)
+                        {
+                            String addToList="";
+                            if((def.listRequirements()==null)||(def.listRequirements().length()==0))
+                            {
+                                if(s>0)
+                                    addToList+=" -EXPERTISES +"+TYPES_CODES[t]+(roman?CMath.convertToRoman(s):(""+(s)));
+                                addToList+=" -SKILLS";
+                            }
+                            def.addListMask(addToList+" +"+ID());
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public int castingQuality(MOB mob, Environmental target)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
 			return Ability.QUALITY_INDIFFERENT;

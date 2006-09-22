@@ -246,7 +246,7 @@ public class Thief_TapRoom extends AlertThiefSkill
 							Room R=null;
 							if(p.size()>=2)  R=CMLib.map().getRoom((String)p.elementAt(1));
 							CMMsg msg2=(CMMsg)msg.copyOf();
-							msg2.setOthersMessage("From "+I.name()+" "+msg2.othersMessage());
+							msg2.setOthersMessage("^TFrom "+I.name()+" "+msg2.othersMessage());
 							if(R.okMessage(msg.source(),msg2))
 								R.sendOthers(msg.source(),msg2);
 						}

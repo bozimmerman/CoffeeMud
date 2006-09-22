@@ -198,11 +198,31 @@ public class Qualify extends BaseAbleLister
 			{
 				StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
 				ExpertiseLibrary.ExpertiseDefinition def=null;
+                String req=null;
+                Vector reqs=null;
+                String prefix=null;
 				for(int v=0;v<V.size();v++)
 				{
 					edusFound=true;
 					def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
-					msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+CMLib.masking().maskDesc(def.finalRequirements(),true)+"\n\r");
+                    req=CMLib.masking().maskDesc(def.finalRequirements(),true);
+                    prefix="^<HELP^>"+def.name+"^</HELP^>";
+                    if(req.length()<=46)
+                        msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+req+"\n\r");
+                    else
+                    while(req.length()>0)
+                    {
+                        int x=req.indexOf(".  ");
+                        if(x<0)
+                        {
+                            msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
+                            req="";
+                            break;
+                        }
+                        msg2.append(CMStrings.padRight(prefix,30)+req.substring(0,x+1)+"\n\r");
+                        prefix=" ";
+                        req=req.substring(x+1).trim();
+                    }
 				}
 				msg.append(msg2.toString());
 			}
