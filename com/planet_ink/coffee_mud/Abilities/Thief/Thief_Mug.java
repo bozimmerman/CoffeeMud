@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Mug extends ThiefSkill
+public class Thief_Mug extends StealingThiefSkill
 {
 	public String ID() { return "Thief_Mug"; }
 	public String name(){ return "Mug";}
@@ -60,7 +60,7 @@ public class Thief_Mug extends ThiefSkill
 			return false;
 		}
 		String itemToSteal=CMParms.combine(commands,0);
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -68,7 +68,7 @@ public class Thief_Mug extends ThiefSkill
 		boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug <T-NAME> and fails!");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to mug <T-NAME>!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug <T-NAME> and fails!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

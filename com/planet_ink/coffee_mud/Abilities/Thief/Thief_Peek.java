@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Peek extends ThiefSkill
+public class Thief_Peek extends StealingThiefSkill
 {
 	public String ID() { return "Thief_Peek"; }
 	public String name(){ return "Peek";}
@@ -65,10 +65,12 @@ public class Thief_Peek extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?0:10)),auto);
-		int discoverChance=(int)Math.round(CMath.div(target.charStats().getStat(CharStats.STAT_WISDOM),30.0))+(levelDiff*5);
+		int discoverChance=(int)Math.round(CMath.div(target.charStats().getStat(CharStats.STAT_WISDOM),30.0))
+							+(levelDiff*5)
+							-(getExpertiseLevel(mob,"CAUTIOUS")*5);
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance-=50;
 		if(discoverChance>95) discoverChance=95;

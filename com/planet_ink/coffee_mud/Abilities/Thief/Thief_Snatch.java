@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Snatch extends ThiefSkill
+public class Thief_Snatch extends StealingThiefSkill
 {
 	public String ID() { return "Thief_Snatch"; }
 	public String name(){ return "Weapon Snatch";}
@@ -88,7 +88,7 @@ public class Thief_Snatch extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		int levelDiff=mob.getVictim().envStats().level()-(mob.envStats().level()+(getXLevel(mob)*2));
 		if(levelDiff>0)
 			levelDiff=levelDiff*6;
 		else

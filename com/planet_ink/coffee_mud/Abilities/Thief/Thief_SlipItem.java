@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_SlipItem extends ThiefSkill
+public class Thief_SlipItem extends StealingThiefSkill
 {
 	public String ID() { return "Thief_SlipItem"; }
 	public String name(){ return "Slip Item";}
@@ -66,7 +66,7 @@ public class Thief_SlipItem extends ThiefSkill
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
@@ -88,7 +88,9 @@ public class Thief_SlipItem extends ThiefSkill
 			return false;
 		}
 
-		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)-(levelDiff*5);
+		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
+							-(levelDiff*5)
+							+(getExpertiseLevel(mob,"CAUTIOUS")*5);
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;

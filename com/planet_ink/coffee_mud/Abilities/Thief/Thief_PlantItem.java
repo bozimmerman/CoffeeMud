@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_PlantItem extends ThiefSkill
+public class Thief_PlantItem extends StealingThiefSkill
 {
 	public String ID() { return "Thief_PlantItem"; }
 	public String name(){ return "Plant Item";}
@@ -71,7 +71,7 @@ public class Thief_PlantItem extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
 		if(levelDiff>0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,levelDiff,auto);
 

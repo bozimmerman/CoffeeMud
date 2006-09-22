@@ -150,6 +150,9 @@ public class Empty extends BaseItemParser
 		if((V.size()==1)&&(V.firstElement()==target))
 			mob.tell("You can't empty something into itself!");
 		else
+		if((V.size()==1)&&(V.firstElement() instanceof Drink)&&(!((Drink)V.firstElement()).containsDrink()))
+			mob.tell(mob,(Drink)V.firstElement(),null,"<T-NAME> is already empty.");
+		else
 		for(int v=0;v<V.size();v++)
 		{
 			Container C=(Container)V.elementAt(v);

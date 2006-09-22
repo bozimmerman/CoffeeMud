@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Swipe extends ThiefSkill
+public class Thief_Swipe extends StealingThiefSkill
 {
 	public String ID() { return "Thief_Swipe"; }
 	public String name(){ return "Swipe gold";}
@@ -84,7 +84,7 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 		}
 		
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
 			mob.tell("You cannot swipe from "+target.charStats().himher()+".");
@@ -99,7 +99,9 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 
 		String currency=CMLib.beanCounter().getCurrency(target);
-		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)-(levelDiff*3);
+		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
+							-(levelDiff*3)
+							+(getExpertiseLevel(mob,"CAUTIOUS")*5);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

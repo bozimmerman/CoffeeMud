@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Robbery extends ThiefSkill
+public class Thief_Robbery extends StealingThiefSkill
 {
 	public String ID() { return "Thief_Robbery"; }
 	public String name(){ return "Robbery";}
@@ -106,7 +106,7 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(getXLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
@@ -139,7 +139,8 @@ public class Thief_Robbery extends ThiefSkill
 				stolen=null;
 		}
 
-		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-target.charStats().getStat(CharStats.STAT_WISDOM))*5;
+		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-(target.charStats().getStat(CharStats.STAT_WISDOM))*5)
+						+(getExpertiseLevel(mob,"CAUTIOUS")*5);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

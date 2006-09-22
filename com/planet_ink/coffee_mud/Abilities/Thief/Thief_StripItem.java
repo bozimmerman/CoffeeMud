@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_StripItem extends ThiefSkill
+public class Thief_StripItem extends StealingThiefSkill
 {
 	public String ID() { return "Thief_StripItem"; }
 	public String name(){ return "Strip Item";}
@@ -62,7 +62,7 @@ public class Thief_StripItem extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
 			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");
