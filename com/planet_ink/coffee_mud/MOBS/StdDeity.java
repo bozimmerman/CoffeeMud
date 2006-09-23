@@ -124,9 +124,10 @@ public class StdDeity extends StdMOB implements Deity
 		parseTriggers(worshipTriggers,ritual);
 	}
     public String getServiceRitual(){
-        if(serviceRitual.trim().length()==0) return "SAY Bless us "+name()+"&wait 10&wait 10&SAY May "+name()+" bless you all&ALLSAY Amen.&SAY Go in peace";
         return serviceRitual;}
     public void setServiceRitual(String ritual){
+        if((ritual==null)||(ritual.length()==0))
+            ritual="SAY Bless us "+name()+"&wait 10&wait 10&SAY May "+name()+" bless you all&ALLSAY Amen.&SAY Go in peace";
         serviceRitual=ritual;
         parseTriggers(serviceTriggers,ritual);
     }
