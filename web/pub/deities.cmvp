@@ -66,6 +66,7 @@
 &nbsp;</TD>
 </TR>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Cleric Power Ritual</B></TD><TD>@DeityData?powertrig@&nbsp;</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Cleric Services</B></TD><TD>@DeityData?servicetrig@&nbsp;</TD>
 </TABLE>
 <P>
 @back@

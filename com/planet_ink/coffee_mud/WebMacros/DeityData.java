@@ -55,6 +55,8 @@ public class DeityData extends StdWebMacro
 					str.append(D.getWorshipRequirementsDesc()+", ");
 				if(parms.containsKey("CLERICREQ"))
 					str.append(D.getClericRequirementsDesc()+", ");
+                if(parms.containsKey("SERVICETRIG"))
+                    str.append(D.getServiceTriggerDesc()+", ");
 				if(D.numCurses()>0)
 				{
 					if(parms.containsKey("WORSHIPSINTRIG"))
