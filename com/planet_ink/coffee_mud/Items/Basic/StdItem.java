@@ -70,6 +70,7 @@ public class StdItem implements Item
 	}
     protected boolean abilityImbuesMagic(){return true;}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_ITEM);}
+    public void initializeClass(){}
     public boolean isGeneric(){return false;}
 	public String Name(){ return name;}
 	public void setName(String newName){name=newName;}

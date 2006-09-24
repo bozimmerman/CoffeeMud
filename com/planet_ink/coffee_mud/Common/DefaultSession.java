@@ -96,6 +96,7 @@ public class DefaultSession extends Thread implements Session
     
     public String ID(){return "DefaultSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
+    public void initializeClass(){}
     public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -1587,6 +1588,7 @@ public class DefaultSession extends Thread implements Session
         public boolean tick(Tickable ticking, int tickID){return false;}
         public String ID(){return name();}
         public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new loginLogoutThread();}}
+        public void initializeClass(){}
         public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
         public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
         public long getTickStatus(){return 0;}

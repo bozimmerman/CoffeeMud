@@ -40,6 +40,7 @@ public class DefaultArrestWarrant implements LegalWarrant
     public String ID(){return "DefaultArrestWarrant";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultArrestWarrant();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public void initializeClass(){}
     public CMObject copyOf()
     {
         try

@@ -38,6 +38,7 @@ public class DefaultCharStats implements CharStats
 
     public String ID(){return "DefaultCharStats";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharStats();}}
+    public void initializeClass(){}
 	// competency characteristics
 	protected int[] stats=new int[NUM_STATS];
 	protected int[] partials=null;

@@ -48,9 +48,6 @@ public class Jester extends StdCharClass
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	protected String armorFailMessage(){return "<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
@@ -62,99 +59,99 @@ public class Jester extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_IdentifyPoison",true,CMParms.parseSemicolons("Apothecary",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Song_Inebriation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_IdentifyPoison",true,CMParms.parseSemicolons("Apothecary",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Song_Inebriation",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Hide",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Slapstick",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Song_Babble",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Slapstick",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Song_Babble",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Mimicry",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Mimicry",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_EscapeBonds",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_MinorTrap",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Song_Detection",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_EscapeBonds",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_MinorTrap",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Song_Detection",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Song_Rage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Song_Rage",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Peek",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_FireBreathing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Peek",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_FireBreathing",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Joke",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Sneak",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Song_Distraction",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Joke",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Sneak",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Song_Distraction",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Bind",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Song_Lightness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Bind",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Song_Lightness",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SlowFall",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Song_Seeing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SlowFall",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Song_Seeing",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Stop",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Clog",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_CriticalShot",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_Mercy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Stop",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Clog",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_CriticalShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_Mercy",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_DetectTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_DetectTraps",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Stability",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Song_Charm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Stability",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Song_Charm",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Tumble",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Thanks",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Tumble",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Thanks",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_AvoidTraps",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_CritStrike",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Song_Mute",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_AvoidTraps",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_CritStrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Song_Mute",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Steal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Steal",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Feint",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Song_Quickness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Feint",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Song_Quickness",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Song_SingleMindedness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Song_SingleMindedness",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Cartwheel",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Disgust",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Cartwheel",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Disgust",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Puppeteer",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_Roll",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Puppeteer",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_Roll",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Buffoonery",true);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Buffoonery",true);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}

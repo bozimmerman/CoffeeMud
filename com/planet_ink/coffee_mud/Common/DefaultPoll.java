@@ -34,6 +34,7 @@ public class DefaultPoll implements Poll
 {
     public String ID(){return "DefaultPoll";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
+    public void initializeClass(){}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {

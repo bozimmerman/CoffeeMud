@@ -51,6 +51,7 @@ public class ThinRoom implements Room {
 	protected static final Room[] rooms=new Room[Directions.NUM_DIRECTIONS];
 	public String roomID(){return roomID;}
 	public void setRoomID(String newRoomID){roomID=newRoomID;};
+    public void initializeClass(){}
 
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

@@ -66,6 +66,7 @@ public class StdRoom implements Room
 		recoverEnvStats();
 	}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_LOCALE);}
+    public void initializeClass(){}
 	public CMObject newInstance()
 	{
 		try

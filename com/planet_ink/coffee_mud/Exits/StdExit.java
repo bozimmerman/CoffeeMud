@@ -53,6 +53,7 @@ public class StdExit implements Exit
 	}
 
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_EXIT);}
+    public void initializeClass(){}
 	public String Name(){ return "a walkway";}
 	public boolean hasADoor(){return false;}
 	public boolean hasALock(){return false;}

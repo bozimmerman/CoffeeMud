@@ -36,27 +36,19 @@ public class Illusionist extends SpecialistMage
 	public int domain(){return Ability.DOMAIN_ILLUSION;}
 	public int opposed(){return Ability.DOMAIN_DIVINATION;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	private static boolean myAbilitiesLoaded=false;
 	
-	public Illusionist()
-	{
-		super();
-		if(!myAbilitiesLoaded)
-		{
-			myAbilitiesLoaded=true;
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Torture",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_FeignInvisibility",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_IllusoryDisease",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Phantasm",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GreaterInvisibility",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_DivineBeauty",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlternateReality",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_EndlessRoad",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FeelTheVoid",25,true);
-		}
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Torture",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_FeignInvisibility",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_IllusoryDisease",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Phantasm",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GreaterInvisibility",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_DivineBeauty",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlternateReality",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_EndlessRoad",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FeelTheVoid",25,true);
 	}
 }

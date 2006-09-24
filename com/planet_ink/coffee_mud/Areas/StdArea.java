@@ -61,6 +61,7 @@ public class StdArea implements Area
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
 	protected String currency="";
+    public void initializeClass(){}
 	public void setCurrency(String newCurrency)
 	{
         if(currency.length()>0)

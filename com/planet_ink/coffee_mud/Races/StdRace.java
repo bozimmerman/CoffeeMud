@@ -56,6 +56,7 @@ public class StdRace implements Race
 	public int[] bodyMask(){return parts;}
 
     public CMObject newInstance(){return this;}
+    public void initializeClass(){}
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
 	public int[] getAgingChart(){return agingChart;}
 

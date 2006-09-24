@@ -60,4 +60,11 @@ public interface CMObject extends Cloneable, Comparable
      * @return a clone of this object
      */
     public CMObject copyOf();
+    
+    /**
+     * Called ONCE after all objects are loaded, but before the map is read in
+     * during initialization.
+     */
+    public void initializeClass();
+    
 }

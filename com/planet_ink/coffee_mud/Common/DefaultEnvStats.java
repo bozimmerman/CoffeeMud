@@ -86,6 +86,7 @@ public class DefaultEnvStats implements EnvStats
 	public void setHeight(int newHeight){Height=newHeight;}
 	public void setName(String newName){ replacementName=newName;}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}
+    public void initializeClass(){}
 	public CMObject copyOf()
 	{
 		try

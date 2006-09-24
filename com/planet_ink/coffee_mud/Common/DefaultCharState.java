@@ -48,6 +48,7 @@ public class DefaultCharState implements CharState
 
 	public DefaultCharState(){}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
+    public void initializeClass(){}
     public void setAllValues(int def)
 	{
 		HitPoints=def;

@@ -72,8 +72,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(R instanceof StdGrid) return super.newInstance();
 			return R.newInstance();
 		}
-		else
-			return super.newInstance();
+		return super.newInstance();
 	}
 
 	public void destroy()

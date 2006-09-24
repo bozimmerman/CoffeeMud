@@ -40,6 +40,7 @@ public class StdBehavior implements Behavior
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
+    public void initializeClass(){}
     protected boolean isSavableBehavior=true;
 
     public StdBehavior()

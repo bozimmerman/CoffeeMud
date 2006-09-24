@@ -40,6 +40,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         }
     }
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
+    public void initializeClass(){}
     
     public Vector baseInventory=new Vector(); // for Only Inventory situations
     public DVector storeInventory=new DVector(3);

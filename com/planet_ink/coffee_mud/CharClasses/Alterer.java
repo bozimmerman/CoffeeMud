@@ -36,27 +36,18 @@ public class Alterer extends SpecialistMage
 	public int domain(){return Ability.DOMAIN_ALTERATION;}
 	public int opposed(){return Ability.DOMAIN_EVOCATION;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	private static boolean myAbilitiesLoaded=false;
-	
-	public Alterer()
-	{
-		super();
-		if(!myAbilitiesLoaded)
-		{
-			myAbilitiesLoaded=true;
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassFeatherfall",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_SlowProjectiles",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_MassSlow",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Timeport",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GravitySlam",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlterSubstance",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Duplicate",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Wish",25,true);
-		}
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassFeatherfall",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_SlowProjectiles",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_MassSlow",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Timeport",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GravitySlam",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlterSubstance",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Duplicate",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Wish",25,true);
 	}
 }

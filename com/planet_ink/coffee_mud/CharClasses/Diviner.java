@@ -36,28 +36,19 @@ public class Diviner extends SpecialistMage
 	public int domain(){return Ability.DOMAIN_DIVINATION;}
 	public int opposed(){return Ability.DOMAIN_ILLUSION;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	private static boolean myAbilitiesLoaded=false;
-		
-	public Diviner()
-	{
-		super();
-		if(!myAbilitiesLoaded)
-		{
-			myAbilitiesLoaded=true;
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_DetectTraps",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowOrigin",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_DetectScrying",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Breadcrumbs",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_KnowPain",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_KnowBliss",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_DetectAmbush",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_TrueSight",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FutureDeath",25,true);
-		}
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_DetectTraps",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowOrigin",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_DetectScrying",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Breadcrumbs",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_KnowPain",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_KnowBliss",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_DetectAmbush",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_TrueSight",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FutureDeath",25,true);
 	}
 }

@@ -161,6 +161,7 @@ public class ItemGenerator extends ActiveTicker
 		public String ID(){return "ItemGenerationTicker";}
 		public String name(){return "ItemGenerationTicker";}
 		public CMObject newInstance(){return this;}
+        public void initializeClass(){}
 		public CMObject copyOf(){return this;}
 		public int compareTo(Object O){return (O==this)?1:0;}
 		private int tickStatus=0;

@@ -68,6 +68,7 @@ public class DefaultPlayerStats implements PlayerStats
     protected HashSet introductions=new HashSet();
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
+    public void initializeClass(){}
     public CMObject copyOf()
     {
         try

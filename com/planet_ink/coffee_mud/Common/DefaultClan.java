@@ -61,6 +61,7 @@ public class DefaultClan implements Clan
 
     /** return a new instance of the object*/
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
+    public void initializeClass(){}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {

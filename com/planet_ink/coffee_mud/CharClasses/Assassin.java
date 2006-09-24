@@ -34,9 +34,6 @@ public class Assassin extends Thief
 	public String ID(){return "Assassin";}
 	public String name(){return "Assassin";}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	private static boolean abilitiesLoaded2=false;
-	public boolean loaded(){return abilitiesLoaded2;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	public String statQualifications(){return "Dexterity 9+ Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -63,95 +60,95 @@ public class Assassin extends Thief
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false,"+WIS 12");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Mark",true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_SneakAttack",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_KillLog",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Dirt",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_MarkInvisibility",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Specialization_Natural",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Shadow",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Specialization_FlailedWeapon",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_TarAndFeather",0,"",false,true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_CritStrike",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UsePoison",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Specialization_BluntWeapon",false);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false,"+WIS 12");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Mark",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_SneakAttack",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_KillLog",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Dirt",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_MarkInvisibility",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Specialization_Natural",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Shadow",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Specialization_FlailedWeapon",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_TarAndFeather",0,"",false,true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_CritStrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UsePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Specialization_BluntWeapon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_AnalyzeMark",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Observation",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Assassinate",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Attack2",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_TrueShot",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Specialization_Axe",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_DualParry",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CriticalShot",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Specialization_Hammer",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Peek",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Sap",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_HighMarks",true,CMParms.parseSemicolons("Thief_Mark",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Specialization_Polearm",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Trap",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_Stability",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_AxKick",false,CMParms.parseSemicolons("Fighter_Kick",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Stability",true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Ambush",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Flank",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_FrameMark",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Cleave",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AttackHalf",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowstrike",true);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_AnalyzeMark",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Observation",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Assassinate",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Attack2",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_TrueShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Specialization_Axe",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_DualParry",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CriticalShot",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Specialization_Hammer",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Peek",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Sap",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_HighMarks",true,CMParms.parseSemicolons("Thief_Mark",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Specialization_Polearm",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Trap",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_Stability",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_AxKick",false,CMParms.parseSemicolons("Fighter_Kick",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Stability",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Ambush",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Flank",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_FrameMark",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Cleave",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AttackHalf",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowstrike",true);
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

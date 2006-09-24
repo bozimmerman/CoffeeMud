@@ -42,6 +42,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 {
     public String ID(){return "ProcessHTTPrequest";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ProcessHTTPrequest();}}
+    public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	private CMProps page;

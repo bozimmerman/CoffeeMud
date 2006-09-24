@@ -48,9 +48,6 @@ public class Prancer extends StdCharClass
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 4;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	protected String armorFailMessage(){return "<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
@@ -62,91 +59,91 @@ public class Prancer extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_Stop",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_CanCan",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_Stop",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_CanCan",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Lore",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Dance_Foxtrot",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Lore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Dance_Foxtrot",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Fighter_Kick",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Dance_Tarantella",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Fighter_Kick",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Dance_Tarantella",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Dance_Waltz",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Dance_Waltz",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Dodge",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dance_Salsa",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dance_Grass",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dance_Salsa",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dance_Grass",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Dance_Clog",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Dance_Clog",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Distract",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Dance_Capoeira",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Distract",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Dance_Capoeira",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Dance_Tap",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Dance_Swing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Dance_Tap",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Dance_Swing",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Dance_Basse",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Dance_Basse",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Dance_Tango",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Dance_Tango",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_Spring",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Dance_Polka",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_Spring",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Dance_Polka",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Dance_RagsSharqi",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Dance_Manipuri",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Dance_RagsSharqi",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Dance_Manipuri",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Dance_Cotillon",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Dance_Cotillon",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Ballet",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Ballet",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Tumble",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Dance_Jitterbug",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Tumble",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Dance_Jitterbug",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Dance_Butoh",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Dance_Butoh",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Dance_Courante",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Dance_Courante",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Dance_Musette",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Dance_Musette",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Endurance",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Cartwheel",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Dance_Swords",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Endurance",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Cartwheel",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Dance_Swords",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Dance_Flamenco",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Dance_Flamenco",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Dance_Jingledress",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Dance_Jingledress",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Dance_Morris",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Dance_Morris",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Dance_Butterfly",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Dance_Butterfly",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Dance_Macabre",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Dance_Macabre",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CircleTrip",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Dance_War",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CircleTrip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Dance_War",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Dance_Square",true);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Dance_Square",true);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}

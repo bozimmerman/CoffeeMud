@@ -37,9 +37,6 @@ public class Oracle extends Cleric
 	public String name(){return "Oracle";}
 	public String baseClass(){return "Cleric";}
 	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
@@ -47,94 +44,95 @@ public class Oracle extends Cleric
 
 	public Oracle()
 	{
+        super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_SenseLife",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_SenseLife",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseUndead",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseUndead",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_SenseAlignment",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_SenseAlignment",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DetectMetal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DetectMetal",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true,CMParms.parseSemicolons("Prayer_CureLight",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true,CMParms.parseSemicolons("Prayer_CureLight",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CureFatigue",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Augury",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Augury",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Farsight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Farsight",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_SenseHidden",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Spellcraft",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_SenseHidden",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowValue",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowValue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_LocateObject",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_LocateObject",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseHoliness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseHoliness",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true,CMParms.parseSemicolons("Prayer_Freedom",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true,CMParms.parseSemicolons("Prayer_Freedom",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Heal",true,CMParms.parseSemicolons("Prayer_CureCritical",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Philosophy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Heal",true,CMParms.parseSemicolons("Prayer_CureCritical",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Philosophy",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true,CMParms.parseSemicolons("Prayer_Bless",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true,CMParms.parseSemicolons("Prayer_Bless",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true,CMParms.parseSemicolons("Prayer_HolyAura",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true,CMParms.parseSemicolons("Prayer_HolyAura",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivinePerspective",false);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivinePerspective",false);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}

@@ -42,6 +42,7 @@ public class StdWebMacro implements WebMacro
     public boolean preferBinary(){return false;}
 	public boolean isAdminMacro()	{return false;}
     public CMObject newInstance(){return this;}
+    public void initializeClass(){}
     public CMObject copyOf(){return this;}
     public String getSpecialContentHeader(String filename){return null;}
 	

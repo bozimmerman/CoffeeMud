@@ -36,6 +36,7 @@ public class DefaultTimeClock implements TimeClock
 	public String ID(){return "DefaultTimeClock";}
 	public String name(){return "Time Object";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
+    public void initializeClass(){}
     
 	protected long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}

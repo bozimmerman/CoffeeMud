@@ -33,6 +33,7 @@ public class DefaultMessage implements CMMsg
 {
     public String ID(){return "DefaultMessage";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultMessage();}}
+    public void initializeClass(){}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {

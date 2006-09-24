@@ -189,6 +189,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         }
     }
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeTableRow();}}
+    public void initializeClass(){}
     
     public CMObject copyOf()
     {

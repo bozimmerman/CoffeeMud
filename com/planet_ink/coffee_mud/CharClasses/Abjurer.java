@@ -36,30 +36,21 @@ public class Abjurer extends SpecialistMage
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
 	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	private static boolean myAbilitiesLoaded=false;
-	
-	public Abjurer()
-	{
-		super();
-		if(!myAbilitiesLoaded)
-		{
-			myAbilitiesLoaded=true;
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_SongShield",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ResistBludgeoning",25,true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_MinManaShield",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Counterspell",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ResistPiercing",25,true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ManaShield",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_ChantShield",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_ResistSlashing",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_PrayerShield",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_ResistIndignities",25,true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_MajManaShield",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_AchillesArmor",25,true);
-		}
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_SongShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ResistBludgeoning",25,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_MinManaShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Counterspell",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ResistPiercing",25,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ManaShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_ChantShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_ResistSlashing",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_PrayerShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_ResistIndignities",25,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_MajManaShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_AchillesArmor",25,true);
 	}
 }

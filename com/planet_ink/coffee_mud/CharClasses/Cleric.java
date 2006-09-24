@@ -58,144 +58,139 @@ public class Cleric extends StdCharClass
 		if(CMLib.flags().isGood(mob)) return disallowedWeaponsG;
 		return disallowedWeaponsN;
 	}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	protected int alwaysFlunksThisQuality(){return -1;}
 
 	public Cleric()
 	{
 		super();
-		if(!ID().equals("Cleric"))
-		    return;
-
 		maxStatAdj[CharStats.STAT_WISDOM]=7;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Divorce",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Christen",false);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+        if(!ID().equals(baseClass())) return;
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Divorce",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Christen",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Desecrate",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Desecrate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",false,CMParms.parseSemicolons("Prayer_CauseLight",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CreateWater",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",false,CMParms.parseSemicolons("Prayer_CauseLight",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CreateWater",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseAlignment",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseAlignment",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelGood",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_SenseInvisible",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelGood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_SenseInvisible",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_Silence",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_Silence",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Plague",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Plague",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CauseCritical",false,CMParms.parseSemicolons("Prayer_CauseSerious",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_SenseHidden",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CauseCritical",false,CMParms.parseSemicolons("Prayer_CauseSerious",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_SenseHidden",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemoveCurse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",false,CMParms.parseSemicolons("Prayer_Curse",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemoveCurse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",false,CMParms.parseSemicolons("Prayer_Curse",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SanctifyRoom",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SanctifyRoom",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseHoliness",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseBalance",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseHoliness",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseBalance",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Drain",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Drain",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Thunderbolt",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Thunderbolt",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false,CMParms.parseSemicolons("Prayer_Paralyze",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",false,CMParms.parseSemicolons("Prayer_ProtParalyzation",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false,CMParms.parseSemicolons("Prayer_Paralyze",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",false,CMParms.parseSemicolons("Prayer_ProtParalyzation",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Harm",false,CMParms.parseSemicolons("Prayer_CauseCritical",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stasis",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Harm",false,CMParms.parseSemicolons("Prayer_CauseCritical",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stasis",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BlessItem",false,CMParms.parseSemicolons("Prayer_Bless",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",false,CMParms.parseSemicolons("Prayer_Curse",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BlessItem",false,CMParms.parseSemicolons("Prayer_Bless",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",false,CMParms.parseSemicolons("Prayer_Curse",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHarm",false,CMParms.parseSemicolons("Prayer_Harm",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHarm",false,CMParms.parseSemicolons("Prayer_Harm",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AnimateDead",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AnimateDead",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Restoration",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Deathfinger",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Contagion",false);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Restoration",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Deathfinger",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Contagion",false);
 	}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

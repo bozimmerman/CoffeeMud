@@ -46,6 +46,7 @@ public class StdCommand extends ForeignScriptable implements Command
     
 	private String[] access=null;
 	public String[] getAccessWords(){return access;}
+    public void initializeClass(){}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{

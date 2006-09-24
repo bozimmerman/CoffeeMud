@@ -36,9 +36,6 @@ public class Archon extends StdCharClass
 	public String ID(){return "Archon";}
 	public String name(){return "Archon";}
 	public String baseClass(){return ID();}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	public boolean leveless(){return true;}
 
 	public Archon()
@@ -46,52 +43,52 @@ public class Archon extends StdCharClass
 		super();
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			maxStatAdj[i]=7;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTaming",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTrading",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTraining",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Domesticating",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"PlantLore",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Scrapping",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Common",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Resistance",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Multiwatch",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Wrath",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Freeze",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Record",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Amputation",100,"",true,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
-			
-			// temporarily here until we find a place for them
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SlaveTrading",false);
-			
-			// new thieves skills
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false,null,"+DEX 10");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false,CMParms.parseSemicolons("Thief_Sneak",true),"+CHA 14");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false,CMParms.parseSemicolons("Thief_Hide",true),"+WIS 14");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Spying",false,null,"+WIS 18");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false,CMParms.parseSemicolons("Thief_Listen",true),"+DEX 14 +WIS 16");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Safehouse",false,CMParms.parseSemicolons("Thief_Sneak;Thief_SenseLaw",true),"+WIS 18");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false,CMParms.parseSemicolons("Thief_ImprovedHiding",true),"+INT 18");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Espionage",false,null,"+CHA 18 +WIS 18");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowpass",false,CMParms.parseSemicolons("Thief_Pick;Thief_DetectTraps",true),"+WIS 18 +DEX 22");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Thief_MarkerSpying",false,CMParms.parseSemicolons("Thief_Mark;Thief_Spying",true),"+WIS 20 +INT 18");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_SlipperyMind",false,CMParms.parseSemicolons("Thief_Con",true),"+CHA 18");
-            CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false,CMParms.parseSemicolons("Thief_ConcealItem",true),"+WIS 18");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_TapRoom",false,CMParms.parseSemicolons("Thief_ConcealItem;Thief_Evesdrop",true),"+INT 14 +DEX 18");
-            CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false,CMParms.parseSemicolons("Thief_ImprovedHiding;Thief_PlantItem;Thief_Swipe;Thief_Nondetection",true),"+DEX 24");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false,null,"+DEX 18");
-            CMLib.ableMapper().addCharAbilityMapping(ID(),55,"Thief_ConcealWalkway",false,CMParms.parseSemicolons("Thief_ConcealDoor",true),"+WIS 20");
-		}
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTaming",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTrading",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTraining",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Domesticating",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"PlantLore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Scrapping",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Common",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Resistance",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Multiwatch",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Wrath",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Freeze",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Record",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Amputation",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
+		
+		// temporarily here until we find a place for them
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SlaveTrading",false);
+		
+		// new thieves skills
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false,null,"+DEX 10");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false,CMParms.parseSemicolons("Thief_Sneak",true),"+CHA 14");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false,CMParms.parseSemicolons("Thief_Hide",true),"+WIS 14");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Spying",false,null,"+WIS 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false,CMParms.parseSemicolons("Thief_Listen",true),"+DEX 14 +WIS 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Safehouse",false,CMParms.parseSemicolons("Thief_Sneak;Thief_SenseLaw",true),"+WIS 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false,CMParms.parseSemicolons("Thief_ImprovedHiding",true),"+INT 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Espionage",false,null,"+CHA 18 +WIS 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowpass",false,CMParms.parseSemicolons("Thief_Pick;Thief_DetectTraps",true),"+WIS 18 +DEX 22");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Thief_MarkerSpying",false,CMParms.parseSemicolons("Thief_Mark;Thief_Spying",true),"+WIS 20 +INT 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_SlipperyMind",false,CMParms.parseSemicolons("Thief_Con",true),"+CHA 18");
+        CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false,CMParms.parseSemicolons("Thief_ConcealItem",true),"+WIS 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_TapRoom",false,CMParms.parseSemicolons("Thief_ConcealItem;Thief_Evesdrop",true),"+INT 14 +DEX 18");
+        CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false,CMParms.parseSemicolons("Thief_ImprovedHiding;Thief_PlantItem;Thief_Swipe;Thief_Nondetection",true),"+DEX 24");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false,null,"+DEX 18");
+        CMLib.ableMapper().addCharAbilityMapping(ID(),55,"Thief_ConcealWalkway",false,CMParms.parseSemicolons("Thief_ConcealDoor",true),"+WIS 20");
 	}
 
 	public int availabilityCode(){return 0;}

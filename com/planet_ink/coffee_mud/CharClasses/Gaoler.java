@@ -47,13 +47,10 @@ public class Gaoler extends StdCharClass
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
@@ -62,93 +59,93 @@ public class Gaoler extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=6;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=6;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FireBuilding",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SmokeRings",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Cooking",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Baking",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FoodPrep",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"BodyPiercing",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Carpentry",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Tattooing",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"LockSmith",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Hide",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Brainwash",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HandCuff",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_TarAndFeather",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Flay",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_ArrestingSap",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Torturesmithing",false,CMParms.parseSemicolons("Carpentry,Blacksmithing(75)",true),"+INT 14");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Leeching",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CollectBounty",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Arrest",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Behead",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stoning",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"SlaveTrading",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Enslave",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_JailKey",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Chirgury",false,CMParms.parseSemicolons("Butchering",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Amputation",true);
-			
-			// to separate from artisam
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterArmorsmithing",0,"",false,true,CMParms.parseSemicolons("Armorsmithing",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterTailoring",0,"",false,true,CMParms.parseSemicolons("Tailoring",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterWeaponsmithing",0,"",false,true,CMParms.parseSemicolons("Weaponsmithing;Specialization_*",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterCostuming",0,"",false,true,CMParms.parseSemicolons("Costuming",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterLeatherWorking",0,"",false,true,CMParms.parseSemicolons("LeatherWorking",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chopping",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Digging",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Drilling",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fishing",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Foraging",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Herbology",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Cobbling",0,"",false,true,CMParms.parseSemicolons("LeatherWorking",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Hunting",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Mining",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Pottery",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"ScrimShaw",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"LeatherWorking",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"GlassBlowing",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Sculpting",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Tailoring",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Weaving",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"CageBuilding",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"JewelMaking",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Dyeing",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Embroidering",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Engraving",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Lacquerring",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Smelting",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Armorsmithing",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fletching",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Weaponsmithing",0,"",false,true,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Wainwrighting",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"PaperMaking",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Distilling",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Farming",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Speculate",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Painting",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Construction",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Masonry",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Taxidermy",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Merchant",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Scrapping",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Costuming",0,"",false,true);
-		}
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FireBuilding",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SmokeRings",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Cooking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Baking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FoodPrep",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"BodyPiercing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Carpentry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Tattooing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"LockSmith",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Brainwash",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HandCuff",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_TarAndFeather",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Flay",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_ArrestingSap",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Torturesmithing",false,CMParms.parseSemicolons("Carpentry,Blacksmithing(75)",true),"+INT 14");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Leeching",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CollectBounty",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Arrest",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Behead",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stoning",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"SlaveTrading",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Enslave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_JailKey",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Chirgury",false,CMParms.parseSemicolons("Butchering",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Amputation",true);
+		
+		// to separate from artisam
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterArmorsmithing",0,"",false,true,CMParms.parseSemicolons("Armorsmithing",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterTailoring",0,"",false,true,CMParms.parseSemicolons("Tailoring",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterWeaponsmithing",0,"",false,true,CMParms.parseSemicolons("Weaponsmithing;Specialization_*",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterCostuming",0,"",false,true,CMParms.parseSemicolons("Costuming",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterLeatherWorking",0,"",false,true,CMParms.parseSemicolons("LeatherWorking",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chopping",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Digging",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Drilling",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fishing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Foraging",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Herbology",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Cobbling",0,"",false,true,CMParms.parseSemicolons("LeatherWorking",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Hunting",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Mining",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Pottery",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"ScrimShaw",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"LeatherWorking",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"GlassBlowing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Sculpting",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Tailoring",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Weaving",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"CageBuilding",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"JewelMaking",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Dyeing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Embroidering",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Engraving",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Lacquerring",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Smelting",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Armorsmithing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fletching",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Weaponsmithing",0,"",false,true,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Wainwrighting",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"PaperMaking",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Distilling",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Farming",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Speculate",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Painting",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Construction",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Masonry",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Taxidermy",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Merchant",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Scrapping",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Costuming",0,"",false,true);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -42,6 +42,7 @@ public class DefaultClimate implements Climate
 	protected static int windDirection=Directions.NORTH;
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
+    public void initializeClass(){}
     public CMObject copyOf()
     {
         try

@@ -137,6 +137,7 @@ public class Archon_Record extends ArchonSkill
         public long getTickStatus(){return 0;}
 	    public void initializeSession(Socket s, String introTextStr){}
 	    public boolean isLockedUpWriting(){return false;}
+        public void initializeClass(){}
 	    public void start(){}
 	    
 		public String[] clookup(){return new String[255];}

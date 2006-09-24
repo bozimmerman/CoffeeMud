@@ -74,8 +74,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											 "LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};
 	
 	protected String[] supportedEnhancements(){ return ALL_CODES;}
-	static
+	public void initializeClass()
 	{
+        super.initializeClass();
 		for(int t=0;t<TYPES_CODES.length;t++)
 		{
 			for(int s=0;s<NUM_STAGES;s++)
@@ -85,6 +86,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				CMLib.expertises().addDefinition(TYPES_CODES[t]+stage,TYPES_NAMES[t]+" "+stage,"",finalReq,0,1,0,0,0);
 			}
 		}
+        if(!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
+            registerExpertiseUsage(TYPES_CODES,NUM_STAGES,true,supportedEnhancements());
 	}
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
@@ -166,13 +169,6 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 	
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		if(!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
-            registerExpertiseUsage(TYPES_CODES,NUM_STAGES,true,supportedEnhancements());
-	}
-
 	private final static int atLeast1(int value, double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));

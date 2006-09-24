@@ -46,9 +46,6 @@ public class SkyWatcher extends StdCharClass
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 8;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
@@ -61,116 +58,116 @@ public class SkyWatcher extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHail",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictPhase",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHail",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictPhase",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_WindColor",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_Moonbeam",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_ClearMoon",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_WindColor",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_Moonbeam",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_ClearMoon",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SnuffFlame",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_PaleMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SnuffFlame",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_PaleMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonDustdevil",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_LoveMoon",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonFire",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonDustdevil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_LoveMoon",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonFire",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Ranger_Hide",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_ColdMoon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_ControlFire",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Ranger_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_ColdMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_ControlFire",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmWind",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Sunray",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_HoneyMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmWind",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Sunray",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_HoneyMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_MuddyGrounds",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_LightningWard",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_StarGazing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_MuddyGrounds",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_LightningWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_StarGazing",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Dehydrate",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ColdWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Dehydrate",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ColdWard",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_WindGust",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_PiercingMoon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_FireWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_WindGust",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_PiercingMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_FireWard",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Whisperward",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_HeatMetal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Whisperward",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_HeatMetal",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_WarningWinds",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_HealingMoon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_AcidWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_WarningWinds",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_HealingMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_AcidWard",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Dirt",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_WindShape",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_MoonCalf",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Dirt",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_WindShape",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_MoonCalf",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_GroveWalk",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BlueMoon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_RedMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_GroveWalk",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BlueMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_RedMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_CalmWeather",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SongWard",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_WakingMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_CalmWeather",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SongWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_WakingMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Herbalism",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SummonHeat",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_PeaceMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Herbalism",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SummonHeat",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_PeaceMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Druid_RecoverVoice",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SoaringEagle",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SummonMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Druid_RecoverVoice",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SoaringEagle",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SummonMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_SummonCold",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_ChantWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_SummonCold",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_ChantWard",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Observation",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_ControlWeather",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_SummonRain",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Observation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_ControlWeather",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_SummonRain",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SummonWind",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_PrayerWard",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_AcidRain",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SummonWind",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_PrayerWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_AcidRain",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Blindfighting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_DistantWindColor",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_ChargeMetal",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Blindfighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_DistantWindColor",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_ChargeMetal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Shapelessness",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SpellWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Shapelessness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SpellWard",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Meditation",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_ManicMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Meditation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_ManicMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_WindSnatcher",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_AstralProjection",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_HowlersMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_WindSnatcher",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_AstralProjection",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_HowlersMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CloudWalk",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_DeathMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CloudWalk",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_DeathMoon",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonTornado",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_MeteorStrike",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonTornado",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_MeteorStrike",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_MoveSky",true);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_MoveSky",true);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}

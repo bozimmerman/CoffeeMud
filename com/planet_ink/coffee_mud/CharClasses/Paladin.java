@@ -51,107 +51,103 @@ public class Paladin extends StdCharClass
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
 	public Paladin()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",75,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",75,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Paladin_HealingHands",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Paladin_HealingHands",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Paladin_ImprovedResists",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Paladin_ImprovedResists",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_DiseaseImmunity",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_DiseaseImmunity",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Bless",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Bless",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Freedom",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Freedom",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Cleave",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemovePoison",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Paladin_Breakup",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Cleave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemovePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Paladin_Breakup",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureDisease",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_MountedCharge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureDisease",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_MountedCharge",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Paladin_PoisonImmunity",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Sanctuary",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Paladin_PoisonImmunity",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Sanctuary",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Trip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Trip",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Calm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Calm",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
-            CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Paladin_Goodness",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Paladin_Goodness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
-
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}

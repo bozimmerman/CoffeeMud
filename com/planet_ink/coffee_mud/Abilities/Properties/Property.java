@@ -67,6 +67,7 @@ public class Property implements Ability
 	public long flags(){return 0;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public int usageType(){return 0;}
+    public void initializeClass(){}
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}

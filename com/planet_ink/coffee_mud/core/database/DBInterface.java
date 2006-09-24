@@ -59,6 +59,7 @@ public class DBInterface implements DatabaseEngine
     	this.ClanLoader=new ClanLoader(DB);
     }
     public CMObject newInstance(){return new DBInterface(DB);}
+    public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     

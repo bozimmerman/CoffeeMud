@@ -22,6 +22,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     public String ID(){return "DefaultRoomnumberSet";}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
+    public void initializeClass(){}
     public CMObject copyOf()
     {
         DefaultRoomnumberSet R=new DefaultRoomnumberSet();

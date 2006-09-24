@@ -199,7 +199,6 @@ public class Qualify extends BaseAbleLister
 				StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
 				ExpertiseLibrary.ExpertiseDefinition def=null;
                 String req=null;
-                Vector reqs=null;
                 String prefix=null;
 				for(int v=0;v<V.size();v++)
 				{

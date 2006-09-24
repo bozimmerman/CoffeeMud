@@ -21,4 +21,5 @@ public class StdLibrary extends ForeignScriptable implements CMObject
     }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public void initializeClass(){}
 }

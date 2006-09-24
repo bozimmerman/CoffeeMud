@@ -38,27 +38,24 @@ public class SpecialistMage extends Mage
 	public String baseClass(){return "Mage";}
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
 	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
-	public void cloneFix(CharClass C)
-	{
-		super.cloneFix(C);
+    public void initializeClass()
+    {
+        super.initializeClass();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if(A!=null)
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
-				if((!CMLib.ableMapper().getDefaultGain(baseClass(),true,A.ID()))
+				if((!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 				&&(level>0)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
 					boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
-						if(CMLib.ableMapper().getDefaultGain(baseClass(),true,A.ID()))
+						if(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 							CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
 						else
 							CMLib.ableMapper().delCharAbilityMapping(ID(),A.ID());

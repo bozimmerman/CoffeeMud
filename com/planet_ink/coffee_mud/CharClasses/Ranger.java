@@ -52,123 +52,120 @@ public class Ranger extends StdCharClass
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public Ranger()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Ranger_Track",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",0,"ANTIDOTES",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Ranger_FindWater",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_PredictWeather",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_LocatePlants",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_TrueShot",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Ranger_Enemy1",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_BestowName",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_LocateAnimals",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Farsight",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CalmAnimal",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_PointBlank",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Ranger_Enemy2",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_AnimalFriendship",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_VenomWard",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Ranger_Lore",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalCommunion",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Bury",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_FarShot",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Ranger_Enemy3",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_ColdWard",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_CharmAnimal",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_LightningWard",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_WaterWalking",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_GasWard",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Sunray",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Ranger_Hide",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_SummonInsects",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_AnimalSpy",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonMount",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_NeutralizePoison",false);
-			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Ranger_AnimalFrenzy",true);
-		}
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Ranger_Track",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",0,"ANTIDOTES",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Ranger_FindWater",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_PredictWeather",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_LocatePlants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_TrueShot",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Ranger_Enemy1",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_BestowName",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_LocateAnimals",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Farsight",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CalmAnimal",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_PointBlank",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Ranger_Enemy2",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_AnimalFriendship",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_VenomWard",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Ranger_Lore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalCommunion",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Bury",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_FarShot",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Ranger_Enemy3",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_ColdWard",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_CharmAnimal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_LightningWard",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_WaterWalking",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_GasWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Sunray",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Ranger_Hide",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_SummonInsects",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_AnimalSpy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_NeutralizePoison",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Ranger_AnimalFrenzy",true);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}

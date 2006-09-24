@@ -36,28 +36,19 @@ public class Enchanter extends SpecialistMage
 	public int domain(){return Ability.DOMAIN_ENCHANTMENT;}
 	public int opposed(){return Ability.DOMAIN_ABJURATION;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	private static boolean myAbilitiesLoaded=false;
-	
-	public Enchanter()
-	{
-		super();
-		if(!myAbilitiesLoaded)
-		{
-			myAbilitiesLoaded=true;
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Fatigue",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MindLight",25,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Alarm",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_MindFog",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Enthrall",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Brainwash",0,"",false,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_LowerResists",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_RogueLimb",25,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Permanency",true);
-		}
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Fatigue",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MindLight",25,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Alarm",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_MindFog",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Enthrall",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Brainwash",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_LowerResists",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_RogueLimb",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Permanency",true);
 	}
 }

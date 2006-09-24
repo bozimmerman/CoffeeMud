@@ -52,6 +52,7 @@ public class GenWallpaper implements Item
 	public String image(){return "";}
     public String rawImage(){return "";}
 	public void setImage(String newImage){}
+    public void initializeClass(){}
 	
 
 	public String Name(){ return name;}

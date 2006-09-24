@@ -171,6 +171,7 @@ public class StdMOB implements MOB
 		return bob;
 	}
 
+    public void initializeClass(){}
 	public CMObject newInstance()
 	{
 		try

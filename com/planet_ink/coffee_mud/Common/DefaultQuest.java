@@ -81,6 +81,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
+    public void initializeClass(){}
 	public Object getQuestObject(String named)
 	{
 		int code=-1;

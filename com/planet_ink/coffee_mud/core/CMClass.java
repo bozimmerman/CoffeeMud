@@ -602,6 +602,31 @@ public class CMClass extends ClassLoader
 		webMacros=new Hashtable();
 		CommandWords=new Hashtable();
 	}
+    private static void initializeClassGroup(Vector V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
+    private static void initializeClassGroup(Hashtable H){ 
+        for(Enumeration e=H.elements();e.hasMoreElements();) ((CMObject)e.nextElement()).initializeClass();}
+    public static void intializeClasses()
+    {
+        initializeClassGroup(common);
+        initializeClassGroup(races);
+        initializeClassGroup(charClasses);
+        initializeClassGroup(MOBs);
+        initializeClassGroup(abilities);
+        initializeClassGroup(locales);
+        initializeClassGroup(exits);
+        initializeClassGroup(items);
+        initializeClassGroup(behaviors);
+        initializeClassGroup(weapons);
+        initializeClassGroup(armor);
+        initializeClassGroup(miscMagic);
+        initializeClassGroup(miscTech);
+        initializeClassGroup(areaTypes);
+        initializeClassGroup(clanItems);
+        initializeClassGroup(commands);
+        initializeClassGroup(webMacros);
+        initializeClassGroup(CommandWords);
+        initializeClassGroup(libraries);
+    }
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
 	{
@@ -1184,6 +1209,8 @@ public class CMClass extends ClassLoader
             if(loaded>0)
                 Log.sysOut("MUD","GenClasses loaded : "+loaded);
         }
+        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: initializing classes");
+        intializeClasses();
         return true;
     }
 

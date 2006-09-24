@@ -47,9 +47,6 @@ public class Gaian extends StdCharClass
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 8;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
@@ -62,112 +59,112 @@ public class Gaian extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-		if(!loaded())
-		{
-			setLoaded(true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Foraging",50,true);
+    }
+    public void initializeClass()
+    {
+        super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Foraging",50,true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFlower",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHerb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFlower",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHerb",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonFood",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonIvy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonFood",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonIvy",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonVine",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_FreeVine",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonVine",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_FreeVine",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Specialization_BluntWeapon",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Specialization_BluntWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Barkskin",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SenseSentience",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Barkskin",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SenseSentience",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_PlantSelf",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_PlantSelf",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_GrowClub",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Root",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_GrowClub",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Root",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_PlantPass",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_KillerVine",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"PlantLore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_PlantPass",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_KillerVine",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"PlantLore",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Druid_PlantForm",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Herbalism",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_SummonTree",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Druid_PlantForm",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Herbalism",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_SummonTree",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Farming",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_VineWeave",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_PlantBed",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_SummonSeed",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Farming",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_VineWeave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_PlantBed",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_SummonSeed",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_Shillelagh",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_Shillelagh",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonFlyTrap",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonFlyTrap",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_PlantMaze",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Thorns",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_PlantMaze",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Thorns",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_PoisonousVine",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_ControlPlant",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SummonHouseplant",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SensePlants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_PoisonousVine",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_ControlPlant",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SummonHouseplant",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SensePlants",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_GrowItem",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_Blight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_GrowItem",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_Blight",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_PlantSnare",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_PlantConstriction",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_FindPlant",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_PlantSnare",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_PlantConstriction",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_FindPlant",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_VampireVine",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_VampireVine",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_DistantOvergrowth",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_PlantChoke",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_DistantOvergrowth",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_PlantChoke",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_Grapevine",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_SaplingWorkers",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_Grapevine",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_SaplingWorkers",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Treehouse",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_VineMass",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Treehouse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_VineMass",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_TapGrapevine",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_GrowFood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_TapGrapevine",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_GrowFood",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_DistantIngrowth",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_PlantTrap",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_DistantIngrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_PlantTrap",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_SummonSapling",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_SummonSapling",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SweetScent",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Shamblermorph",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SweetScent",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Shamblermorph",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
-		}
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
