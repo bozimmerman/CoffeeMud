@@ -118,12 +118,14 @@ public class Flee extends Go
 				double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
 				if(expLost[0]>0)
 				{
-					int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining));
-					if((fighting!=null)&&(fighting!=mob)&&(gainedExperience>0))
-					{
-						fighting.tell(getScr("Movement","fleeexp2",""+gainedExperience));
-						CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
-					}
+					int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining))/4;
+					if((fighting!=null)
+                    &&(fighting!=mob)
+                    &&(gainedExperience>0)
+                    &&((mob.session()==null)
+                       ||(fighting.session()==null)
+                       ||(!mob.session().getAddress().equals(fighting.session().getAddress()))))
+						    CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
 				}
 			}
 		}
