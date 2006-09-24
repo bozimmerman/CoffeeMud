@@ -42,4 +42,20 @@ public class Sessions extends StdLibrary implements SessionsList
 	{
 		all.removeElement(S);
 	}
+    public void stopSessionAtAllCosts(Session S)
+    {
+        if(S==null) return;
+        S.logoff();
+        try{Thread.sleep(10);}catch(Exception e){}
+        int tries=100;
+        while((S.getStatus()!=Session.STATUS_LOGOUTFINAL)
+        &&((--tries)>=0))
+        {
+            S.logoff();
+            try{Thread.sleep(100);}catch(Exception e){}
+        }
+        if(S.getStatus()!=Session.STATUS_LOGOUTFINAL)
+            ((Thread)S).stop();
+        removeElement(S);
+    }
 }

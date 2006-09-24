@@ -27,4 +27,5 @@ public interface SessionsList extends CMObject
     public void addElement(Session S);
     public void removeElementAt(int x);
     public void removeElement(Session S);
+    public void stopSessionAtAllCosts(Session S);
 }

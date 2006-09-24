@@ -843,8 +843,11 @@ public class Destroy extends BaseItemParser
             else
             {
                 Session S=CMLib.sessions().elementAt(which);
-                S.logoff();
-                mob.tell("Ok.");
+                CMLib.sessions().stopSessionAtAllCosts(S);
+                if(S.getStatus()==Session.STATUS_LOGOUTFINAL)
+                    mob.tell("Ok.");
+                else
+                    mob.tell("Failed to gracefully shutdown, but a forcable stop was issued.");
             }
         }
         else

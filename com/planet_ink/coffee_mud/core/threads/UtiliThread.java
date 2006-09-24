@@ -293,20 +293,14 @@ public class UtiliThread extends Thread
 						if(S instanceof Thread)
 							debugDumpStack((Thread)S);
 						status="killing session ";
-						S.logoff();
-						S.logoff();
-						CMLib.sessions().removeElement(S);
+                        CMLib.sessions().stopSessionAtAllCosts(S);
 						status="checking player sessions.";
 					}
 					else
 					if(time>check)
 					{
                         if((S.mob()==null)||(S.mob().Name()==null)||(S.mob().Name().length()==0))
-                        {
-                            S.logoff();
-                            S.logoff();
-                            CMLib.sessions().removeElement(S);
-                        }
+                            CMLib.sessions().stopSessionAtAllCosts(S);
                         else
                         if((S.previousCMD()!=null)&&(S.previousCMD().size()>0))
                         {
@@ -315,9 +309,7 @@ public class UtiliThread extends Thread
                             &&(CMLib.flags().isInTheGame(S.mob(),true)))
                             {
                                 Log.errOut("UtiliThread","LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time+": "+S.isLockedUpWriting());
-                                S.logoff();
-                                S.logoff();
-                                CMLib.sessions().removeElement(S);
+                                CMLib.sessions().stopSessionAtAllCosts(S);
                             }
                             else
         						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
@@ -338,9 +330,7 @@ public class UtiliThread extends Thread
 					status="killing session ";
 					if(S instanceof Thread)
 						debugDumpStack((Thread)S);
-					S.logoff();
-					S.logoff();
-					CMLib.sessions().removeElement(S);
+                    CMLib.sessions().stopSessionAtAllCosts(S);
 					status="checking player sessions";
 				}
 			}

@@ -34,7 +34,11 @@ public class Say extends StdCommand
 {
 	public Say(){}
 
-	private String[] access={getScr("Say","saycmd1"),getScr("Say","saycmd2"),"`",getScr("Say","saycmd3"),getScr("Say","saycmd4")};
+	private String[] access={getScr("Say","saycmd1"),
+                             getScr("Say","saycmd2"),
+                             "`",
+                             getScr("Say","saycmd3"),
+                             getScr("Say","saycmd4")};
 	public String[] getAccessWords(){return access;}
 
     protected static final String[] impossibleTargets={

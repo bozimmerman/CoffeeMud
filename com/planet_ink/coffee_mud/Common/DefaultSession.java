@@ -1200,6 +1200,7 @@ public class DefaultSession extends Thread implements Session
         status=Session.STATUS_LOGOUT5;
 		this.interrupt();
 		try{Thread.sleep(1000);}catch(Exception i){}
+        
 	}
 
 	public void showPrompt()

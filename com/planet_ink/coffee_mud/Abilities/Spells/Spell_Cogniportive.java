@@ -59,7 +59,8 @@ public class Spell_Cogniportive extends Spell
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
-						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
+						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY))
+                        &&(CMLib.utensils().getLandTitle(R)==null))
 							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
 				}
@@ -79,7 +80,8 @@ public class Spell_Cogniportive extends Spell
 						if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
 						{
 							ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
-							if(S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
+							if((S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
+                            &&(CMLib.utensils().getLandTitle(R)==null))
 								return CMLib.map().getExtendedRoomID(M.getStartRoom());
 						}
 					}
@@ -101,7 +103,8 @@ public class Spell_Cogniportive extends Spell
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
-						&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
+						&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY))
+                        &&(CMLib.utensils().getLandTitle(R)==null))
 							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
 				}
@@ -113,7 +116,9 @@ public class Spell_Cogniportive extends Spell
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((CMLib.flags().canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
+				if((CMLib.flags().canAccess(mob,R))
+                &&(R.fetchItem(null,me.Name())!=null)
+                &&(CMLib.utensils().getLandTitle(R)==null))
 				   return CMLib.map().getExtendedRoomID(R);
 			}
 	    }catch(NoSuchElementException nse){}
@@ -145,7 +150,10 @@ public class Spell_Cogniportive extends Spell
 					MOB follower=(MOB)f.next();
 					CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
 					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
-					if(thisRoom.okMessage(follower,leaveMsg)&&home.okMessage(follower,enterMsg))
+					if(thisRoom.isInhabitant(follower)
+                    &&thisRoom.okMessage(follower,leaveMsg)
+                    &&(!home.isInhabitant(follower))
+                    &&home.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
