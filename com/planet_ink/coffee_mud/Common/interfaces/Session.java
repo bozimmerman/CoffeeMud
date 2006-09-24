@@ -241,7 +241,7 @@ public interface Session extends CMObject
 	public static final int STATUS_LOGOUT11=15;
 	public static final int STATUS_LOGOUT12=16;
 	public static final int STATUS_LOGOUTFINAL=17;
-	public static final String[] statusStr={"OPEN","LOGIN-S","LOGIN-1","LOGIN-2",
+	public static final String[] STATUS_STR={"OPEN","LOGIN-S","LOGIN-1","LOGIN-2",
 											"LOGOUT-S","LOGOUT-1","LOGOUT-2","LOGOUT-3",
 											"LOGOUT-4","LOGOUT-5","LOGOUT-6","LOGOUT-7",
 											"LOGOUT-8","LOGOUT-9","LOGOUT-10","LOGOUT-11",

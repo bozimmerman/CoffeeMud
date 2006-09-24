@@ -57,7 +57,7 @@ public class ListSessions extends StdCommand
 			Session thisSession=CMLib.sessions().elementAt(s);
 			String[] set=new String[6];
             set[0]=CMStrings.padRight(""+s,3)+"| ";
-			set[1]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
+			set[1]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
 			if (thisSession.mob() != null)
 			{
 				set[2]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";

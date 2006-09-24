@@ -847,7 +847,7 @@ public class Destroy extends BaseItemParser
                 if(S.getStatus()==Session.STATUS_LOGOUTFINAL)
                     mob.tell("Ok.");
                 else
-                    mob.tell("Failed to gracefully shutdown, but a forcable stop was issued.");
+                    mob.tell("Failed to gracefully shutdown: "+Session.STATUS_STR[S.getStatus()]+", but a forcable stop was issued.");
             }
         }
         else

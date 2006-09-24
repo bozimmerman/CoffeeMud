@@ -310,6 +310,16 @@ public class StdClanItem extends StdItem implements ClanItem
 					msg.source().tell("You must be at war with this clan to take one of their items.");
 					return false;
 				}
+                Room room=msg.source().location();
+                if((room!=null)&&(room.getArea()!=null))
+                {
+                    LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(room.getArea());
+                    if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(((ClanItem)myHost).clanID())))
+                    {
+                        msg.source().tell("You'll need to conquer this area to do that.");
+                        return false;
+                    }
+                }
 			}
         }
 		return true;
