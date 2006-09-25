@@ -41,6 +41,10 @@ public class StdClanItem extends StdItem implements ClanItem
 	public int ciType(){return ciType;}
 	public void setCIType(int type){ ciType=type;}
 	private long lastClanCheck=System.currentTimeMillis();
+    private Environmental riteOwner=null;
+    public Environmental rightfulOwner(){return riteOwner;}
+    public void setRightfulOwner(Environmental E){riteOwner=E;}
+    
 	public StdClanItem()
 	{
 		super();
@@ -69,6 +73,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		    	||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
 		    	{
 		    		Room R=CMLib.map().roomLocation(this);
+                    setRightfulOwner(null);
 					unWear();
 					removeFromOwnerContainer();
 					if(owner()!=R) R.bringItemHere(this,Item.REFUSE_PLAYER_DROP,false);
@@ -108,42 +113,56 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return false;
 	}
-	
+    
 	public static boolean standardTick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLANITEM)
 			return true;
-		if((!(ticking instanceof Item))
-		||(!(ticking instanceof ClanItem))
+		if((!(ticking instanceof ClanItem))
 		||(((ClanItem)ticking).clanID().length()==0)
-		||(!(((Item)ticking).owner() instanceof MOB))
 		||(((Item)ticking).amDestroyed()))
 			return true;
-
-		MOB M=((MOB)((Item)ticking).owner());
-		Item I=(Item)ticking;
-		if((!M.getClanID().equals(((ClanItem)I).clanID()))
-		&&(((ClanItem)I).ciType()!=ClanItem.CI_PROPAGANDA))
-		{
-			if(M.location()!=null)
-			{
-				I.unWear();
-				I.removeFromOwnerContainer();
-				if(I.owner()!=M.location())
-					M.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
-				M.location().show(M,I,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
-				return false;
-			}
-		}
-		else
-		if((I.amWearingAt(Item.IN_INVENTORY))
-		&&(M.isMonster())
-		&&(!wearingAClanItem(M))
-		&&(CMLib.flags().isInTheGame(M,true)))
-		{
-			I.setContainer(null);
-			I.wearAt(I.rawProperLocationBitmap());
-		}
+        ClanItem CI=(ClanItem)ticking;
+        if(CI.owner() instanceof MOB)
+        {
+    		MOB M=((MOB)((Item)ticking).owner());
+    		if((!M.getClanID().equals(CI.clanID()))
+    		&&(CI.ciType()!=ClanItem.CI_PROPAGANDA))
+    		{
+    			if(M.location()!=null)
+    			{
+                    CI.unWear();
+                    CI.removeFromOwnerContainer();
+                    CI.setRightfulOwner(null);
+    				if(CI.owner()!=M.location())
+    					M.location().bringItemHere(CI,Item.REFUSE_PLAYER_DROP,false);
+    				M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
+    				return false;
+    			}
+    		}
+    		else
+    		if((CI.amWearingAt(Item.IN_INVENTORY))
+    		&&(M.isMonster())
+    		&&(!wearingAClanItem(M))
+    		&&(CMLib.flags().isInTheGame(M,true)))
+    		{
+    			CI.setContainer(null);
+    			CI.wearAt(CI.rawProperLocationBitmap());
+    		}
+        }
+        else
+        if((CI.owner() instanceof Room)
+        &&(CI.rightfulOwner() instanceof MOB))
+        {
+            if(CI.container() instanceof DeadBody)
+                CI.setContainer(null);
+            MOB M=(MOB)CI.rightfulOwner();
+            if(M.amDestroyed())
+                CI.setRightfulOwner(null);
+            else
+            if(!M.amDead())
+                M.giveItem(CI);
+        }
 		return true;
 	}
 
@@ -244,7 +263,9 @@ public class StdClanItem extends StdItem implements ClanItem
 			&&(startRoom.getArea()!=targetMOB.location().getArea()))
 			{
 				LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(startRoom.getArea());
-				if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(targetMOB.getClanID())))
+				if((theLaw!=null)
+                &&(theLaw.rulingClan()!=null)
+                &&(theLaw.rulingClan().equals(targetMOB.getClanID())))
 				{
 					if(giver!=null)
 						giver.tell("You can only give a clan item to a conquered mob within the conquered area.");
@@ -259,7 +280,7 @@ public class StdClanItem extends StdItem implements ClanItem
 	
 	public static boolean stdOkMessage(Environmental myHost, CMMsg msg)
 	{
-		if((msg.tool()==myHost)
+		if(((msg.tool()==myHost)||(msg.tool()==((ClanItem)myHost).ultimateContainer()))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
@@ -278,7 +299,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				return false;
 		}
 		else
-		if((msg.amITarget(myHost))
+		if((msg.amITarget(myHost)||(msg.target()==((ClanItem)myHost).ultimateContainer()))
         &&(((ClanItem)myHost).clanID().length()>0)
         &&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)))
 		{
@@ -333,11 +354,16 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{
 			MOB M=msg.source();
-			if((M.getClanID().length()>0)
-			&&(!M.getClanID().equals(((ClanItem)myHost).clanID())))
+            if(M.getClanID().equals(((ClanItem)myHost).clanID()))
+            {
+                if(M.isMonster())
+                    ((ClanItem)myHost).setRightfulOwner(M);
+                else
+                    ((ClanItem)myHost).setRightfulOwner(null);
+            }
+            else
 			{
 				Clan C=CMLib.clans().getClan(M.getClanID());
-
 				if(M.location()!=null)
 					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
 				if(C!=null)

@@ -67,4 +67,7 @@ public interface ClanItem extends Item
 	
 	public int ciType();
 	public void setCIType(int type);
+    
+    public Environmental rightfulOwner();
+    public void setRightfulOwner(Environmental E);
 }

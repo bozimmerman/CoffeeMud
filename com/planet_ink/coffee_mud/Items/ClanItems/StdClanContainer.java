@@ -36,7 +36,9 @@ import java.util.*;
 public class StdClanContainer extends StdContainer implements ClanItem
 {
 	public String ID(){	return "StdClanContainer";}
-	protected String myClan="";
+    private Environmental riteOwner=null;
+    public Environmental rightfulOwner(){return riteOwner;}
+    public void setRightfulOwner(Environmental E){riteOwner=E;}	protected String myClan="";
 	protected int ciType=0;
 	private long lastClanCheck=0;
 	public int ciType(){return ciType;}
@@ -63,6 +65,20 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
 	    {
+            if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
+            {
+                if((CMLib.clans().getClan(clanID())==null)
+                ||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
+                {
+                    Room R=CMLib.map().roomLocation(this);
+                    setRightfulOwner(null);
+                    unWear();
+                    removeFromOwnerContainer();
+                    if(owner()!=R) R.bringItemHere(this,Item.REFUSE_PLAYER_DROP,false);
+                    if(R!=null)
+                        R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
+                }
+            }
             lastClanCheck=System.currentTimeMillis();
 		    if((clanID().length()>0)&&(CMLib.clans().getClan(clanID())==null))
             {

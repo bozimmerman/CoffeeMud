@@ -36,7 +36,10 @@ import java.util.*;
 public class StdClanFlag extends StdItem implements ClanItem
 {
 	public String ID(){	return "StdClanFlag";}
-	protected String myClan="";
+    private Environmental riteOwner=null;
+    public Environmental rightfulOwner(){return riteOwner;}
+    public void setRightfulOwner(Environmental E){riteOwner=E;}
+    protected String myClan="";
 	protected int ciType=0;
 	private long lastClanCheck=0;
 	public int ciType(){return ciType;}
