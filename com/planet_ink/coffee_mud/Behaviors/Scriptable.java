@@ -453,10 +453,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		{
 			Room R=CMLib.map().roomLocation(scripted);
 			Log.errOut("Scriptable",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
-			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scriptable Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
+			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scriptable Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+CMParms.toStringList(externalFiles())+"/"+ cmdName+"/"+errType+"/"+errMsg);
 		}
 		else
-			Log.errOut("Scriptable","*/*/"+cmdName+"/"+errType+"/"+errMsg);
+			Log.errOut("Scriptable","*/*/"+CMParms.toStringList(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
 
 	}
 
