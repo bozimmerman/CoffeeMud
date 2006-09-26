@@ -49,11 +49,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		 ||helpStr.startsWith("SONG_")
 		 ||helpStr.startsWith("DANCE_")
 		 ||helpStr.startsWith("BEHAVIOR_")
+         ||helpStr.startsWith("POWER_")
 		 ||helpStr.startsWith("CHANT_")
-		 ||helpStr.startsWith("PRAYER_")
+         ||helpStr.startsWith("PRAYER_")
 		 ||helpStr.startsWith("SKILL_")
-		 ||helpStr.startsWith("BEHAVIOR_")
-		 ||helpStr.startsWith("PROP_"))
+         ||helpStr.startsWith("PLAY_"))
         	return true;
 		String thisTag=getHelpFile().getProperty(helpStr);
 		if((thisTag!=null)
@@ -158,6 +158,31 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if((allows!=null)&&(allows.size()>0))
 		{
 			prepend.append("\n\rAllows   : ");
+            String test1=null;
+            String test2=null;
+            boolean roman=false;
+            for(int a=0;a<allows.size();a++)
+            {
+                test1=(String)allows.elementAt(a);
+                int x=test1.length();
+                roman=!Character.isDigit(test1.charAt(x-1));
+                while(((Character.isDigit(test1.charAt(x-1))&&(!roman))
+                    ||(CMath.isRomanDigit(test1.charAt(x-1))&&(roman)))
+                &&(x>=0))
+                    x--;
+                if((x>0)&&(x<test1.length()))
+                {
+                    test1=test1.substring(0,x);
+                    for(int a1=allows.size()-1;a1>=(a+1);a1--)
+                    {
+                        test2=(String)allows.elementAt(a1);
+                        if(test2.startsWith(test1)
+                        &&(((!roman)&&CMath.isInteger(test2.substring(x)))
+                           ||(roman&&CMath.isRomanNumeral(test2.substring(x)))))
+                            allows.removeElementAt(a1);
+                    }
+                }
+            }
 			int lastLine=11;
 			for(int a=0;a<allows.size();a++)
 			{
@@ -165,16 +190,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{
-					prepend.append(def.name+" ");
-					lastLine+=(def.name.length()+1);
+					prepend.append(def.name);
+					lastLine+=(def.name.length()+2);
 				}
 				else
 				{
 					A=CMClass.getAbility(allowStr);
 					if(A!=null)
 					{
-						prepend.append(A.Name()+" ");
-						lastLine+=(A.Name().length()+1);
+						prepend.append(A.Name());
+						lastLine+=(A.Name().length()+2);
 					}
 				}
 				if((lastLine>60)&&(a<(allows.size()-1)))
@@ -182,6 +207,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					lastLine=11;
 					prepend.append("\n\rAllows   : ");
 				}
+                else
+                if(a<allows.size()-1)
+                    prepend.append(", ");
+                    
 			}
 		}
 	}
@@ -227,6 +256,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				type=Ability.ACODE_SONG;
 				name=name.substring(6);
 			}
+            else
+            if(name.startsWith("POWER_"))
+            {
+                type=Ability.ACODE_SUPERPOWER;
+                name=name.substring(6);
+            }
 			else
 			if((name.startsWith("SONG_"))
 			||(name.startsWith("PLAY_")))
@@ -272,6 +307,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					case Ability.ACODE_CHANT:
 						prepend.append(CMStrings.padRight("Chant",9));
 						break;
+                    case Ability.ACODE_SUPERPOWER:
+                        prepend.append(CMStrings.padRight("SuperPower",9));
+                        break;
 					case Ability.ACODE_SONG:
 						prepend.append(CMStrings.padRight("Song",9));
 						break;
@@ -464,8 +502,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(thisTag==null){thisTag=rHelpFile.getProperty("DANCE_"+helpStr); if(thisTag!=null) helpStr="DANCE_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("PLAY_"+helpStr); if(thisTag!=null) helpStr="PLAY_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("CHANT_"+helpStr); if(thisTag!=null) helpStr="CHANT_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr); if(thisTag!=null) helpStr="BEHAVIOR_"+helpStr;}
+        if(thisTag==null){thisTag=rHelpFile.getProperty("POWER_"+helpStr); if(thisTag!=null) helpStr="POWER_"+helpStr;}
+        if(thisTag==null){thisTag=rHelpFile.getProperty("SKILL_"+helpStr); if(thisTag!=null) helpStr="SKILL_"+helpStr;}
+        if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
 
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)

@@ -74,8 +74,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
     public void initializeClass()
     {
         super.initializeClass();
-        for(int i=1;i<=EXPERTISE_STAGES;i++)
-            CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),"","+WIS "+(13+i),0,1,0,0,0);
+        if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
+            for(int i=1;i<=EXPERTISE_STAGES;i++)
+                CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),"","+WIS "+(13+i),0,1,0,0,0);
         registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
     }
 	

@@ -68,7 +68,8 @@ public class StdAbility extends ForeignScriptable implements Ability
             ExpertiseLibrary.ExpertiseDefinition def=null;
             for(int s=0;s<stages;s++)
             {
-                if(CMParms.contains(SUPPORT_LIST,TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1)))))
+                if((SUPPORT_LIST==null)
+                ||CMParms.contains(SUPPORT_LIST,TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1)))))
                 {
                     def=CMLib.expertises().getDefinition(TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1))));
                     if(def!=null)

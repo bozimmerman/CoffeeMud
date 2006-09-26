@@ -37,7 +37,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public Hashtable completeAbleMap=new Hashtable();
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
 	public Hashtable allows=new Hashtable();
-								
+
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
 									  String ability, 

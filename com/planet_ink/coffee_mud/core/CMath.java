@@ -25,6 +25,7 @@ public class CMath
     private static final String[] ROMAN_HUNDREDS={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
     private static final String[] ROMAN_TENS={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
     private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
+    private static final String   ROMAN_ALL="CDMPXLIV";
     
     
     /** Convert an integer to its Roman Numeral equivalent
@@ -61,6 +62,19 @@ public class CMath
         if(i>0)
             roman.append(ROMAN_ONES[i-1]);
         return roman.toString();
+    }
+
+    public static boolean isRomanDigit(char c){ return ROMAN_ALL.indexOf(c)>=0;}
+    
+    public static boolean isRomanNumeral(String s)
+    {
+        if(s==null) return false; 
+        s=s.toUpperCase().trim();
+        if(s.length()==0) return false; 
+        for(int c=0;c<s.length();c++)
+            if(!isRomanDigit(s.charAt(c)))
+                return false;
+        return true;
     }
     
     public static long absDiff(long x, long y)

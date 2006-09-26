@@ -38,7 +38,11 @@ public class Qualify extends BaseAbleLister
 	private String[] access={"QUALIFY","QUAL"};
 	public String[] getAccessWords(){return access;}
 
-	public StringBuffer getQualifiedAbilities(MOB able, int ofType, int ofDomain, String prefix)
+	public StringBuffer getQualifiedAbilities(MOB able, 
+                                              int ofType, 
+                                              int ofDomain, 
+                                              String prefix,
+                                              boolean shortOnly)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_ACODES;
@@ -48,13 +52,14 @@ public class Qualify extends BaseAbleLister
 			ofType=ofType|ofDomain;
 		}
 		V.addElement(new Integer(ofType));
-		return getQualifiedAbilities(able,V,mask,prefix);
+		return getQualifiedAbilities(able,V,mask,prefix,shortOnly);
 	}
 
 	public StringBuffer getQualifiedAbilities(MOB able,
 											  Vector ofTypes,
 											  int mask,
-											  String prefix)
+											  String prefix,
+                                              boolean shortOnly)
 	{
 		int highestLevel=0;
 		StringBuffer msg=new StringBuffer("");
@@ -111,28 +116,30 @@ public class Qualify extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		String qual=CMParms.combine(commands,1);
-		if((qual.length()==0)||(qual.equalsIgnoreCase("SKILLS"))||(qual.equalsIgnoreCase("SKILL")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SKILL,-1,"\n\r^HGeneral Skills:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("COMMON SKILLS"))||(qual.equalsIgnoreCase("COMMON")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_COMMON_SKILL,-1,"\n\r^HCommon Skills:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("THIEVES"))||(qual.equalsIgnoreCase("THIEF"))||(qual.equalsIgnoreCase("THIEF SKILLS")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_THIEF_SKILL,-1,"\n\r^HThief Skills:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("SPELLS"))||(qual.equalsIgnoreCase("SPELL"))||(qual.equalsIgnoreCase("MAGE")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SPELL,-1,"\n\r^HSpells:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("PRAYERS"))||(qual.equalsIgnoreCase("PRAYER"))||(qual.equalsIgnoreCase("CLERIC")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_PRAYER,-1,"\n\r^HPrayers:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("POWERS"))||(qual.equalsIgnoreCase("POWER"))||(qual.equalsIgnoreCase("SUPER POWERS"))||(qual.equalsIgnoreCase("SUPER POWER")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SUPERPOWER,-1,"\n\r^HSuper Powers:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("CHANTS"))||(qual.equalsIgnoreCase("CHANT"))||(qual.equalsIgnoreCase("DRUID")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("SONGS"))||(qual.equalsIgnoreCase("SONG"))||(qual.equalsIgnoreCase("BARD")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SONG,-1,"\n\r^HSongs:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("LANGS"))||(qual.equalsIgnoreCase("LANG"))||(qual.equalsIgnoreCase("LANGUAGES")))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_LANGUAGE,-1,"\n\r^HLanguages:^? "));
+		String qual=CMParms.combine(commands,1).toUpperCase();
+        boolean shortOnly=false;
+        boolean showAll=qual.length()==0;
+		if(showAll||("SKILLS".startsWith(qual)))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SKILL,-1,"\n\r^HGeneral Skills:^? ",shortOnly));
+		if(showAll||("COMMON SKILLS").startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_COMMON_SKILL,-1,"\n\r^HCommon Skills:^? ",shortOnly));
+		if(showAll||("THIEVES SKILLS".startsWith(qual))||"THIEF SKILLS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_THIEF_SKILL,-1,"\n\r^HThief Skills:^? ",shortOnly));
+		if(showAll||"SPELLS".startsWith(qual)||"MAGE SPELLS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SPELL,-1,"\n\r^HSpells:^? ",shortOnly));
+		if(showAll||"PRAYERS".startsWith(qual)||"CLERICAL PRAYERS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_PRAYER,-1,"\n\r^HPrayers:^? ",shortOnly));
+		if(showAll||"POWERS".startsWith(qual)||"SUPER POWERS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SUPERPOWER,-1,"\n\r^HSuper Powers:^? ",shortOnly));
+		if(showAll||"CHANTS".startsWith(qual)||"DRUID CHANTS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? ",shortOnly));
+		if(showAll||"SONGS".startsWith(qual)||"BARD SONGS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SONG,-1,"\n\r^HSongs:^? ",shortOnly));
+		if(showAll||"LANGUAGES".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,Ability.ACODE_LANGUAGE,-1,"\n\r^HLanguages:^? ",shortOnly));
 		int domain=-1;
 		String domainName="";
-		if(qual.length()>0)
+		if(!showAll)
 		{
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 				if(Ability.DOMAIN_DESCS[i].startsWith(qual.toUpperCase()))
@@ -144,13 +151,13 @@ public class Qualify extends BaseAbleLister
 			if(domain>0)
 			{
 				domainName=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain>>5]);
-				msg.append(getQualifiedAbilities(mob,Ability.ACODE_SPELL,domain,"\n\r^H"+domainName+" spells:^? "));
+				msg.append(getQualifiedAbilities(mob,Ability.ACODE_SPELL,domain,"\n\r^H"+domainName+" spells:^? ",shortOnly));
 			}
 		}
 		boolean classesFound=false;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(mob!=null)
-		&&((qual.length()==0)
+		&&(showAll
 			||(qual.equalsIgnoreCase("CLASS"))
 			||(qual.equalsIgnoreCase("CLASSES"))))
 		{
@@ -186,7 +193,7 @@ public class Qualify extends BaseAbleLister
 
 		boolean edusFound=false;
 		if((mob!=null)
-		&&((qual.length()==0)
+		&&(showAll
 			||(qual.equalsIgnoreCase("EXPS"))
 			||(qual.equalsIgnoreCase("EXPERTISES"))))
 		{

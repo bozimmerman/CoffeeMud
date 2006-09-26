@@ -77,6 +77,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public void initializeClass()
 	{
         super.initializeClass();
+        if(CMLib.expertises().getDefinition(TYPES_CODES[0]+STAGESTAT[0])==null)
 		for(int t=0;t<TYPES_CODES.length;t++)
 		{
 			for(int s=0;s<NUM_STAGES;s++)

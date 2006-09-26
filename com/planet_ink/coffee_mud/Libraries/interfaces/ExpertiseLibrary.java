@@ -55,7 +55,7 @@ public interface ExpertiseLibrary extends CMObject
         	else
 	        	uncompiledListMask+=mask;
         	compiledListMask=CMLib.masking().maskCompile(uncompiledListMask);
-        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),mask.trim());
+        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledListMask.trim());
         }
         public void addFinalMask(String mask){ 
         	if((mask==null)||(mask.length()==0)) return;
@@ -64,7 +64,7 @@ public interface ExpertiseLibrary extends CMObject
         	else
 	        	uncompiledFinalMask+=mask;
         	compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
-        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),mask.trim());
+        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledListMask.trim());
         }
         
         public int practiceCost=0;
