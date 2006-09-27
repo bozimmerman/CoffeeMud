@@ -105,7 +105,7 @@ public class SaveThread extends Thread
 	public void shutdown()
 	{
 		shutDown=true;
-		CMLib.killThread(this,500,1);
+		CMLib.killThread(this,500,30);
 	}
 
 	public int savePlayers()

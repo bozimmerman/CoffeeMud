@@ -38,8 +38,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 								
 	public Hashtable completeEduMap=new Hashtable();
 
-    public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost){
+    public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost)
+    {
     	if(getDefinition(ID)!=null) return;
+    	if(CMSecurity.isDisabled("EXPERTISE_"+ID.toUpperCase())) return;
+    	if(CMSecurity.isDisabled("EXPERTISE_*")) return;
+    	for(int i=1;i<ID.length();i++)
+        	if(CMSecurity.isDisabled("EXPERTISE_"+ID.substring(0,i).toUpperCase()+"*")) 
+        		return;
     	ExpertiseDefinition def=new ExpertiseDefinition();
     	def.ID=ID.toUpperCase();
     	def.name=name;
