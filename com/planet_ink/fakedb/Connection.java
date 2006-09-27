@@ -135,11 +135,11 @@ public class Connection implements java.sql.Connection
    }
    public void commit() throws java.sql.SQLException
    {
-		log("commit");
+		//log("commit");
    }
    public void rollback() throws java.sql.SQLException
    {
-		log("rollback");
+		//log("rollback");
    }
    public void close() throws java.sql.SQLException
    {

@@ -650,7 +650,10 @@ public class StdRoom implements Room
 			            {
 			                M=fetchInhabitant(m);
 			                if((M!=null)&&(M.savable()))
+			                {
 			                    M.setStartRoom(this);
+			                    M.text();
+			                }
 			            }
 			            CMLib.database().DBUpdateMOBs(this);
 			        }
@@ -685,10 +688,13 @@ public class StdRoom implements Room
 				Area A=getArea();
 				String roomID=roomID();
 				setGridParent(null);
-				CMLib.map().emptyRoom(this,null);
-	            destroy();
-	            if(roomID.length()>0)
-		            A.addProperRoomnumber(roomID);
+				if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+				{
+					CMLib.map().emptyRoom(this,null);
+		            destroy();
+		            if(roomID.length()>0)
+			            A.addProperRoomnumber(roomID);
+				}
 			}
 		}
 	}

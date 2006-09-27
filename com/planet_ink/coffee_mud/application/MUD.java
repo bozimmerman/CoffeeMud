@@ -46,7 +46,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)5.2;
-	public static final long  HOST_VERSION_MINOR=1;
+	public static final long  HOST_VERSION_MINOR=2;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
@@ -613,6 +613,8 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Rejuving the dead");
 			CMLib.threads().tickAllTickers(null);
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
+			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				((Area)e.nextElement()).toggleMobility(false);
 			int roomCounter=0;
 			Room R=null;
 			for(Enumeration e=roomSet.elements();e.hasMoreElements();)

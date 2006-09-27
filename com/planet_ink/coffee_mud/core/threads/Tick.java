@@ -48,6 +48,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	protected Vector tickers=new Vector();
 	protected int numTickers=0; 
 	protected Vector localItems=new Vector();
+	protected boolean shutdown=false;
 	
 	public Tick(ThreadEngine theEngine, long sleep)
 	{
@@ -258,6 +259,14 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		tickers.removeAllElements();
 		numTickers=tickers.size();
 		this.interrupt();
+		try{Thread.sleep(1);}catch(Exception e){}
+		if(!shutdown)
+		{
+			int x=100;
+			while((x<100)&&(!shutdown))
+				try{Thread.sleep(1);}catch(Exception e){}
+			if(!shutdown) this.stop();
+		}
 	}
 
 	public static boolean tickTicker(TockClient C, boolean allSuspended)
@@ -284,6 +293,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
+		shutdown=false;
 		while(true)
 		{
 			try
@@ -327,5 +337,6 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				break;
 			}
 		}
+		shutdown=true;
 	}
 }
