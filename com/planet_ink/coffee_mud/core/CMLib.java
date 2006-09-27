@@ -194,6 +194,19 @@ public class CMLib
             registered[code]=true;
         }
     }
+    public static void killThread(Thread t, long sleepTime, int attempts)
+    {
+		try{
+			if(t==null) return;
+			t.interrupt();
+			try{Thread.sleep(sleepTime);}catch(Exception e){}
+			int att=0;
+			while((att<attempts)&&t.isAlive())try{att++;Thread.sleep(sleepTime);}catch(Exception e){}
+			if(t.isAlive())t.stop();
+		}
+		catch(Exception e){}
+		
+    }
     
     public static void registerLibraries(Enumeration e)
     {

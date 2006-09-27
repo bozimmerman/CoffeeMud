@@ -347,9 +347,12 @@ public class SMTPserver extends Thread implements Tickable
 		if(getTickStatus()==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_READYTOSTOP);
 		else
-		while(getTickStatus()!=Tickable.STATUS_NOT)
-		{try{Thread.sleep(100);}catch(Exception e){}}
-		this.interrupt();
+		{
+			int att=0;
+			while((att<100)&&(getTickStatus()!=Tickable.STATUS_NOT))
+			{try{att++;Thread.sleep(100);}catch(Exception e){}}
+		}
+		CMLib.killThread(this,500,1);
 	}
 
 	public void shutdown()	{shutdown(null);}

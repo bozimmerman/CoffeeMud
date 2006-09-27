@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList;
+import com.planet_ink.coffee_mud.core.CMLib;
 
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -54,8 +55,6 @@ public class Sessions extends StdLibrary implements SessionsList
             S.logoff();
             try{Thread.sleep(100);}catch(Exception e){}
         }
-        if(S.getStatus()!=Session.STATUS_LOGOUTFINAL)
-            ((Thread)S).stop();
         removeElement(S);
     }
 }

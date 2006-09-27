@@ -258,15 +258,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	{
 		tickers.removeAllElements();
 		numTickers=tickers.size();
-		this.interrupt();
-		try{Thread.sleep(1);}catch(Exception e){}
-		if(!shutdown)
-		{
-			int x=100;
-			while((x<100)&&(!shutdown))
-				try{Thread.sleep(1);}catch(Exception e){}
-			if(!shutdown) this.stop();
-		}
+		CMLib.killThread(this,10,1);
 	}
 
 	public static boolean tickTicker(TockClient C, boolean allSuspended)

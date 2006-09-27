@@ -298,7 +298,7 @@ public class HTTPserver extends Thread implements MudHost
 		Log.sysOut(getName(),"Shutting down.");
 		if (S != null)
 			S.println( getName() + " shutting down.");
-		this.interrupt();
+		CMLib.killThread(this,500,1);
 	}
 
 	public void shutdown()	{shutdown(null);}

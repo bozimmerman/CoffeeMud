@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
@@ -203,9 +204,7 @@ public final class IMC2Driver extends Thread {
 		if(c_thread2!=null)
 			c_thread2.shutdown();
 		}catch(Exception e){}
-		try{
-			this.interrupt();
-		}catch(Exception e){}
+		CMLib.killThread(this,500,1);
 		
 		int i=0;
 		while (((++i)<60)&&((!c_thread.isShutdown)||(!c_thread2.isShutdown)||(!isShutdown)))

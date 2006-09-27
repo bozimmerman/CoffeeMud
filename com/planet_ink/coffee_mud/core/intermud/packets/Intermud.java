@@ -627,12 +627,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if(save_thread!=null)
 		{
 			try { save_thread.close();}catch(Exception e){}
-			try { save_thread.interrupt();}catch(Exception e){}
+			try { CMLib.killThread(save_thread,100,1);}catch(Exception e){}
 		}
 		save_thread=null;
         try { save(); }
         catch( PersistenceException e ) { }
-		try { if(input_thread!=null) input_thread.interrupt(); }catch(Exception e){}
+		try { if(input_thread!=null) CMLib.killThread(input_thread,100,1); }catch(Exception e){}
 		input_thread=null;
 		shutdown=false;
     }

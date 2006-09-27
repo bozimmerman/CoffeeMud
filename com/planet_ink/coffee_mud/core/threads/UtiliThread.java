@@ -340,7 +340,7 @@ public class UtiliThread extends Thread
 	public void shutdown()
 	{
 		shutDown=true;
-		this.interrupt();
+		CMLib.killThread(this,500,1);
         started=false;
 	}
 

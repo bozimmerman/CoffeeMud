@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
     import java.net.*;
     import java.util.*;
     import java.sql.*;
-    import java.io.*;
+import java.io.*;
     
     /* 
     Copyright 2000-2006 Bo Zimmerman
@@ -78,7 +78,7 @@ public class OffLine extends Thread implements MudHost
             break;
         }
         System.out.println(str);
-        t.interrupt();
+		CMLib.killThread(t,500,1);
     }
 
 
@@ -87,7 +87,7 @@ public class OffLine extends Thread implements MudHost
 
         if (!isOK)
         {
-            t.interrupt();
+    		CMLib.killThread(t,500,1);
             return false;
         }
 

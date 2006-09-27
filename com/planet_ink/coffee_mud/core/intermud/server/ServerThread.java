@@ -282,7 +282,7 @@ public class ServerThread extends Thread {
 		if(listen_thread!=null)
 		{
 			listen_thread.close();
-			listen_thread.interrupt();
+			CMLib.killThread(listen_thread,500,1);
 			listen_thread=null;
 		}
 		boot_time = null;

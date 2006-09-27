@@ -106,7 +106,7 @@ public class Server {
 		try{
 		thread.shutdown();
 		started=false;
-		thread.interrupt();
+		CMLib.killThread(thread,500,1);
 		}catch(Exception e){}
 	}
 	

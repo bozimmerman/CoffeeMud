@@ -101,7 +101,7 @@ public class MUD extends Thread implements MudHost
 			break;
 		}
 		Log.errOut("MUD",str);
-		t.interrupt();
+		CMLib.killThread(t,100,1);
 	}
 
 
@@ -110,7 +110,7 @@ public class MUD extends Thread implements MudHost
 
 		if (!isOK)
 		{
-			t.interrupt();
+			CMLib.killThread(t,100,1);
 			return false;
 		}
 
@@ -594,13 +594,13 @@ public class MUD extends Thread implements MudHost
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Save Thread");
 		saveThread.shutdown();
-		saveThread.interrupt();
+		CMLib.killThread(saveThread,100,1);
 		saveThread=null;
 		
 		if(S!=null)S.println("Save thread stopped");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Utility Thread");
 		utiliThread.shutdown();
-		utiliThread.interrupt();
+		CMLib.killThread(utiliThread,100,1);
 		utiliThread=null;
 		if(S!=null)S.println("Utility thread stopped");
 		Log.sysOut("MUD","Utility/Save Threads stopped.");
@@ -740,7 +740,7 @@ public class MUD extends Thread implements MudHost
 		execExternalCommand=externalCommand;
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=mudThreads.size()-1;m>=0;m--)
-			((MUD)mudThreads.elementAt(m)).interrupt();
+			CMLib.killThread((MUD)mudThreads.elementAt(m),100,1);
 		if(!keepItDown)
 			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
 	}
@@ -787,8 +787,7 @@ public class MUD extends Thread implements MudHost
 		{
 			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != thisOne))
 			{
-				tArray[i].interrupt();
-				try{Thread.sleep(500);}catch(Exception e){}
+				CMLib.killThread(tArray[i],500,1);
 				killed++;
 			}
 		}

@@ -607,7 +607,7 @@ class InputThread implements Runnable {
      * any reason.
      */
     public void stop() {
-        thread.interrupt();
+    	CMLib.killThread(thread,500,1);
         destructed = true;
     }
 

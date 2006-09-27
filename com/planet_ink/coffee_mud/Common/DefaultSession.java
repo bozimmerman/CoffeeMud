@@ -368,7 +368,7 @@ public class DefaultSession extends Thread implements Session
                     Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
                     logoff();
                     logoff();
-                    this.interrupt();
+            		CMLib.killThread(this,500,1);
                 }
                 else
                 {
@@ -1198,9 +1198,7 @@ public class DefaultSession extends Thread implements Session
         status=Session.STATUS_LOGOUT4;
         closeSocks();
         status=Session.STATUS_LOGOUT5;
-		this.interrupt();
-		try{Thread.sleep(1000);}catch(Exception i){}
-        
+		CMLib.killThread(this,1000,1);
 	}
 
 	public void showPrompt()
