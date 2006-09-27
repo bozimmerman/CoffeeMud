@@ -1,4 +1,4 @@
-SET Java_Home=C:\java\j2sdk1.4.2_10
+REM SET Java_Home=C:\java\j2sdk1.4.2_10
 set CLASSPATH=.;%Java_Home%\lib\dt.jar;%Java_Home%\lib\tools.jar;.\lib\js.jar;.\lib\jzlib.jar
 SET JAVACPATH=%Java_Home%\bin\javac -g -nowarn -deprecation
 
