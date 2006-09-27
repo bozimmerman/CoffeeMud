@@ -256,6 +256,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	
 	public boolean qualifiesByAnyCharClass(String abilityID)
 	{
+		if(completeAbleMap.containsKey("All"))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
+			if(ableMap.containsKey(abilityID)) 
+				return true;
+		}
 		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			CharClass C=(CharClass)e.nextElement();

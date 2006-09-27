@@ -77,6 +77,62 @@ public class Unload extends StdCommand
 			Resources.clearResources();
 			return false;
 		}
+        // User Unloading
+        if((((String)commands.elementAt(1)).equalsIgnoreCase("USER"))
+        &&(mob.session()!=null))
+        {
+            String which=CMParms.combine(commands,2);
+            Vector users=new Vector();
+            if(which.equalsIgnoreCase("all"))
+            	for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+            		users.addElement((MOB)e.nextElement());
+            else
+            {
+            	MOB M=CMLib.map().getPlayer(which);
+            	if(M==null)
+            	{
+            		mob.tell("No such user as '"+which+"'!");
+            		return false;
+            	}
+            	users.addElement(M);
+            }
+            boolean saveFirst=mob.session().confirm("Save first (Y/n)?","Y");
+            for(int u=0;u<users.size();u++)
+            {
+            	MOB M=(MOB)users.elementAt(u);
+            	if(M.session()!=null)
+            	{ 
+            		if(M!=mob)
+            		{
+                		M.session().setKillFlag(true);
+	            		while(M.session()!=null){try{Thread.sleep(100);}catch(Exception e){}}
+	            		if(M.session()!=null) M.session().logoff();
+            		}
+            		else
+            			mob.tell("Can't unload yourself -- a destroy is involved, which would disrupt this process.");
+            	}
+            	if(saveFirst)
+            	{
+					CMLib.database().DBUpdatePlayer(M);
+					CMLib.database().DBUpdateFollowers(M);
+            	}
+            }
+            int done=0;
+            for(int u=0;u<users.size();u++)
+            {
+            	MOB M=(MOB)users.elementAt(u);
+            	if(M!=mob)
+            	{
+            		done++;
+            		if(M.session()!=null) M.session().logoff();
+	            	CMLib.map().delPlayer(M);
+	            	M.destroy();
+            	}
+            }
+            
+            mob.tell(done+" user(s) unloaded.");
+            return true;
+        }
         // Faction Unloading
         if(((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
         {
