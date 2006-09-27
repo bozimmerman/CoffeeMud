@@ -43,6 +43,8 @@ public class Bleeding extends StdAbility
     
     public double healthPct(MOB mob){ return CMath.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints());}
     
+    // TODO: causes; long falls, taking 20% hp hit, special blades, limb loss, min level 15, FLAY gaoler skill
+    
     public void affectEnvStats(Environmental affected, EnvStats affectedStats)
     {
         super.affectEnvStats(affected,affectedStats);
