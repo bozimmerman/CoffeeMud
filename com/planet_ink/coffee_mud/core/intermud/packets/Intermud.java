@@ -176,7 +176,15 @@ public class Intermud implements Runnable, Persistent, Serializable
         muds = new MudList(-1);
         banned = new Hashtable();
         name_servers = new Vector();
-        name_servers.addElement(new NameServer("us-1.i3.intermud.org", 9000, "*gjs"));
+        String s=CMProps.getVar(CMProps.SYSTEM_I3ROUTERS);
+        Vector V=CMParms.parseCommas(s,true);
+        for(int v=0;v<V.size();v++)
+        {
+            s=(String)V.elementAt(v);
+            Vector V2=CMParms.parseAny(s,":",true);
+            if(V2.size()>=3)
+                name_servers.addElement(new NameServer((String)V2.firstElement(),CMath.s_int((String)V2.elementAt(1)), (String)V2.elementAt(2)));
+        }
         modified = Persistent.UNMODIFIED;
         try {
             restore();
@@ -233,22 +241,23 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if(shutdown) return;
         attempts++;
         try {
-            NameServer n = (NameServer)name_servers.elementAt(0);
-
-            connection = new Socket(n.ip, n.port);
-            output = new DataOutputStream(connection.getOutputStream());
-            send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
-                 n.name + "\",0," + password +
-                 "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
-                 ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
-                 "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_I3EMAIL).toLowerCase()+"\",([" +
-                 "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
-            connected = true;
-            input_thread = new Thread(this);
-            input_thread.setDaemon(true);
-            input_thread.setName("Intermud");
-            input_thread.start();
+            for(int i=0;i<name_servers.size();i++)
             {
+                NameServer n = (NameServer)name_servers.elementAt(i);
+    
+                connection = new Socket(n.ip, n.port);
+                output = new DataOutputStream(connection.getOutputStream());
+                send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
+                     n.name + "\",0," + password +
+                     "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
+                     ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
+                     "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_I3EMAIL).toLowerCase()+"\",([" +
+                     "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
+                connected = true;
+                input_thread = new Thread(this);
+                input_thread.setDaemon(true);
+                input_thread.setName("Intermud");
+                input_thread.start();
                 Enumeration e = intermud.getChannels();
 
                 while( e.hasMoreElements() ) {
@@ -257,6 +266,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 					send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
                          n.name + "\",0,\"" + chan + "\",1,})");
                 }
+                Log.sysOut("I3 router connection to "+n.ip+": "+n.port);
+                break;
             }
         }
         catch( Exception e ) {

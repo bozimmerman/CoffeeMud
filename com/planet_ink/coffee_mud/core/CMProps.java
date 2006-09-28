@@ -94,7 +94,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_PREFACTIONS=50; 
     public static final int SYSTEM_AUTOAREAPROPS=51;
     public static final int SYSTEM_MOBDEATH=52;
-    public static final int NUM_SYSTEM=53;
+    public static final int SYSTEM_I3ROUTERS=53;
+    public static final int NUM_SYSTEM=54;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -327,6 +328,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
         setUpLowVar(SYSTEM_MUDDOMAIN,page.getStr("DOMAIN"));
         setVar(SYSTEM_I3EMAIL,page.getStr("I3EMAIL"));
+        setUpLowVar(SYSTEM_I3ROUTERS,page.getStr("I3ROUTERS"));
         setVar(SYSTEM_PREJUDICE,page.getStr("PREJUDICE"));
         setVar(SYSTEM_IGNOREMASK,page.getStr("IGNOREMASK"));
         setVar(SYSTEM_BUDGET,page.getStr("BUDGET"));
