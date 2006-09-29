@@ -40,45 +40,36 @@ public class INIValue extends StdWebMacro
 	public String getHelpFor(String tag, String mask)
 	{
 		Vector help=new Vector();
-		if(mask.endsWith("*")) mask=mask.substring(0,mask.length()-1);
 		Vector page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
-		boolean found=false;
-		boolean clearNext=false;
+		boolean startOver=false;
 		for(int p=0;p<page.size();p++)
 		{
 			String s=((String)page.elementAt(p)).trim();
-			if(s.startsWith("#")||s.startsWith("!")) 
+			if(s.trim().length()==0)
+				startOver=true;
+			else
+			if(s.startsWith("#")||s.startsWith("!"))
 			{
-				if(clearNext) help.clear();
-				clearNext=false;
-				int y=s.indexOf(mask);
-				if(y==0) 
-					found=true;
-				else
-				if((y>0)&&(!Character.isLetterOrDigit(s.charAt(y-1))))
-				   found=true;
+				if(startOver) help.clear();
+				startOver=false;
 				help.addElement(s.substring(1).trim());
-				continue;
 			}
-			int x=s.indexOf("=");
-			if(x<0) x=s.indexOf(":");
 			else
 			{
-				int y=s.indexOf(mask);
-				if(y==0) 
-					found=true;
-				else
-				if((y>0)&&(!Character.isLetterOrDigit(s.charAt(y-1))))
-				   found=true;
+				int x=s.indexOf("=");
+				if((x>=0)
+				&&(help.size()>0)
+				&&((s.substring(0,x).equals(mask)
+					||(mask.endsWith("*")&&(s.substring(0,x).startsWith(mask.substring(0,mask.length()-1)))))))
+				{
+					StringBuffer str=new StringBuffer("");
+					for(int i=0;i<help.size();i++)
+						str.append(((String)help.elementAt(i))+"<BR>");
+					return str.toString();
+				}
+				help.clear();
+				startOver=false;
 			}
-			if((found)&&(help.size()>0))
-			{
-				StringBuffer str=new StringBuffer("");
-				for(int i=0;i<help.size();i++)
-					str.append(((String)help.elementAt(i))+"<BR>");
-				return str.toString();
-			}
-			clearNext=true;
 		}
 		return "";
 	}

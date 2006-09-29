@@ -496,6 +496,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
 		String thisTag=rHelpFile.getProperty(helpStr);
+		boolean areaTag=(thisTag==null)&&helpStr.startsWith("AREAHELP_");
 		if(thisTag==null){thisTag=rHelpFile.getProperty("SPELL_"+helpStr); if(thisTag!=null) helpStr="SPELL_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("PRAYER_"+helpStr); if(thisTag!=null) helpStr="PRAYER_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("SONG_"+helpStr); if(thisTag!=null) helpStr="SONG_"+helpStr;}
@@ -507,30 +508,34 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         if(thisTag==null){thisTag=rHelpFile.getProperty("SKILL_"+helpStr); if(thisTag!=null) helpStr="SKILL_"+helpStr;}
         if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
 
-		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
-		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
-		{
-			String key=((String)e.nextElement()).toUpperCase();
-			if(key.startsWith(helpStr))
+        if(!areaTag)
+        {
+			if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
 			{
-				thisTag=rHelpFile.getProperty(key);
-				helpStr=key;
-				break;
+				String key=((String)e.nextElement()).toUpperCase();
+				if(key.startsWith(helpStr))
+				{
+					thisTag=rHelpFile.getProperty(key);
+					helpStr=key;
+					break;
+				}
 			}
-		}
-		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
-		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
-		{
-			String key=((String)e.nextElement()).toUpperCase();
-			if(key.indexOf(helpStr)>=0)
+			if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
 			{
-				thisTag=rHelpFile.getProperty(key);
-				helpStr=key;
-				break;
+				String key=((String)e.nextElement()).toUpperCase();
+				if(key.indexOf(helpStr)>=0)
+				{
+					thisTag=rHelpFile.getProperty(key);
+					helpStr=key;
+					break;
+				}
 			}
-		}
+        }
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 		{
+			if(areaTag) helpStr=helpStr.substring(9);
 			String ahelpStr=helpStr.replaceAll("_"," ").trim();
 			boolean found=false;
 			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
@@ -568,20 +573,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			    }
 			}
 		}
-		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
-		{
-			String thisOtherTag=rHelpFile.getProperty(thisTag);
-			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
-				thisTag=null;
-			else
-			if(thisOtherTag!=null)
+		if(!areaTag)
+			while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 			{
-				helpStr=thisTag;
-				thisTag=thisOtherTag;
+				String thisOtherTag=rHelpFile.getProperty(thisTag);
+				if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
+					thisTag=null;
+				else
+				if(thisOtherTag!=null)
+				{
+					helpStr=thisTag;
+					thisTag=thisOtherTag;
+				}
+				else
+				    break;
 			}
-			else
-			    break;
-		}
 		// the area exception
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			if(CMLib.map().getArea(helpStr.trim())!=null)

@@ -47,12 +47,32 @@ public class Goto extends At
 		}
 		commands.removeElementAt(0);
 		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,0));
+		Vector stack=(Vector)Resources.getResource("GOTOS_FOR_"+mob.Name().toUpperCase());
+		if(stack==null)
+		{
+			stack=new Vector();
+			Resources.submitResource("GOTOS_FOR_"+mob.Name().toUpperCase(),stack);
+		}
+		else
+		if(stack.size()>10)
+			stack.removeElementAt(0);
 		Room curRoom=mob.location();
-		room=findRoomLiberally(mob,cmd);
+		if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
+		{
+			if(stack.size()==0)
+				mob.tell("Your previous room stack is empty.");
+			else
+			{
+				room=CMLib.map().getRoom((String)stack.lastElement());
+				stack.removeElementAt(stack.size()-1);
+			}
+		}
+		else
+			room=findRoomLiberally(mob,cmd);
 
 		if(room==null)
 		{
-			mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
+			mob.tell("Goto where? Try a Room ID, player name, area name, room text, or PREVIOUS!");
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,room,"GOTO"))
@@ -64,6 +84,11 @@ public class Goto extends At
 		{
 			mob.tell("Done.");
 			return false;
+		}
+		if(!"PREVIOUS".startsWith(cmd.toString().toUpperCase()))
+		{
+			if((stack.size()==0)||(stack.lastElement()!=mob.location()))
+				stack.addElement(CMLib.map().getExtendedRoomID(mob.location()));
 		}
 		if(mob.playerStats().poofOut().length()>0)
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofOut());
