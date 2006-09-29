@@ -207,7 +207,7 @@ public class StdDeity extends StdMOB implements Deity
                 buf.append("then you will say '"+DT.parm1.toLowerCase()+"'");
                 break;
             case TRIGGER_OTHERSAY:
-                buf.append("then you others will say '"+DT.parm1.toLowerCase()+"'");
+                buf.append("then all others will say '"+DT.parm1.toLowerCase()+"'");
                 break;
             case TRIGGER_ALLSAY:
                 buf.append("then all will say '"+DT.parm1.toLowerCase()+"'");
