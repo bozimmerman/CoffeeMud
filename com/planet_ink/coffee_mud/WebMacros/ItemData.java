@@ -535,7 +535,7 @@ public class ItemData extends StdWebMacro
 								break;
 					}
 					mask=mask.toUpperCase()+";";
-					for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+					for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 					{
 						Area A2=(Area)a.nextElement();
 						str.append("<OPTION VALUE=\""+A2.Name()+"\"");
@@ -646,7 +646,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 55: // is wallpaper
-					if(CMClass.className(I).indexOf("Wallpaper")>0) return "true";
+					if(CMClass.className(I).indexOf("GenWallpaper")>0) return "true";
                     return "false";
 				case 56: // readabletext
 					if(firstTime) old=""+I.readableText();

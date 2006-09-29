@@ -47,7 +47,7 @@ public class TimsItemTable extends StdWebMacro
 		StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
 		str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
 		Vector onesDone=new Vector();
-		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
 		{
 			Area A=(Area)e.nextElement();
 			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)

@@ -45,7 +45,7 @@ public class AreaNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))

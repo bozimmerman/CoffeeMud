@@ -40,7 +40,7 @@ public class Areas extends StdCommand
 		throws java.io.IOException
 	{
 		Vector areasVec=new Vector();
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(CMLib.flags().canAccess(mob,A))
@@ -49,7 +49,6 @@ public class Areas extends StdCommand
 				else
 					areasVec.addElement("("+A.name()+")");
 		}
-		Collections.sort(areasVec);
 		StringBuffer msg=new StringBuffer(getScr("Areas","cal"));
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)

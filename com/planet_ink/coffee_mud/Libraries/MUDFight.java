@@ -810,17 +810,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 &&(target.location()!=null))
                     CMLib.combat().postDeath(attacker,target,msg);
                 else
-                if((target.curState().getHitPoints()<target.getWimpHitPoint())
-                &&(target.getWimpHitPoint()>0)
-                &&(target.isInCombat()))
-                    CMLib.combat().postPanic(target,msg);
-                else
-                if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(target.curState().getHitPoints(),target.maxState().getHitPoints())*100.0))
-                &&(!CMLib.flags().isGolem(target))
-                &&(target.fetchEffect("Injury")==null))
                 {
-                    Ability A=CMClass.getAbility("Injury");
-                    if(A!=null) A.invoke(target,CMParms.makeVector(msg),target,true,0);
+            		if(Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTHP))
+    				{
+    					Ability A2=CMClass.getAbility("Bleeding");
+    					if(A2!=null) A2.invoke(((MOB)target),((MOB)target),true,0);
+    				}
+	                if((target.curState().getHitPoints()<target.getWimpHitPoint())
+	                &&(target.getWimpHitPoint()>0)
+	                &&(target.isInCombat()))
+	                    CMLib.combat().postPanic(target,msg);
+	                else
+	                if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(target.curState().getHitPoints(),target.maxState().getHitPoints())*100.0))
+	                &&(!CMLib.flags().isGolem(target))
+	                &&(target.fetchEffect("Injury")==null))
+	                {
+	                    Ability A=CMClass.getAbility("Injury");
+	                    if(A!=null) A.invoke(target,CMParms.makeVector(msg),target,true,0);
+	                }
                 }
             }
         }

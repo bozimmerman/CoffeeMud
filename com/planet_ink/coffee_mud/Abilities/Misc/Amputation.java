@@ -447,6 +447,12 @@ public class Amputation extends StdAbility implements Amputator
 		}
 		for(int i=0;i<theRest.size();i++)
 			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
+		if((target instanceof MOB)
+		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTCHANCE)))
+		{
+			Ability A2=CMClass.getAbility("Bleeding");
+			if(A2!=null) A2.invoke(((MOB)target),((MOB)target),true,0);
+		}
 		return limb;
 	}
 

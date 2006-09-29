@@ -96,7 +96,7 @@ public class TrailTo extends StdCommand
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms)+"\n\r");
@@ -141,7 +141,7 @@ public class TrailTo extends StdCommand
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(A.name().equalsIgnoreCase(where))

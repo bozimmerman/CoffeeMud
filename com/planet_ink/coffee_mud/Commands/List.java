@@ -224,7 +224,7 @@ public class List extends StdCommand
 	    }
 		StringBuffer buf=new StringBuffer("Links: \n\r");
 		Vector areaLinkGroups=new Vector();
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
@@ -770,7 +770,7 @@ public class List extends StdCommand
 	public StringBuffer listSubOps(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			msg.append(CMStrings.padRight(A.Name(),25)+": ");

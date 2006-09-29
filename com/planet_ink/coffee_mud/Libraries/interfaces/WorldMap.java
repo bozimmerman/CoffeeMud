@@ -44,6 +44,7 @@ public interface WorldMap extends CMObject
     public Area getArea(String calledThis);
     public Area findArea(String calledThis);
     public Enumeration areas();
+	public Enumeration sortedAreas();
     public Area getFirstArea();
     public Area getRandomArea();
     public void obliterateArea(String areaName);

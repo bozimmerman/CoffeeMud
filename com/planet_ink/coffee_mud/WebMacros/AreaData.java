@@ -384,7 +384,7 @@ public class AreaData extends StdWebMacro
                             parents+=";"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()));
                         else
                             break;
-                    for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+                    for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
                     {
                         String cnam=((Area)e.nextElement()).Name();
                         str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -407,7 +407,7 @@ public class AreaData extends StdWebMacro
                             children+=";"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()));
                         else
                             break;
-                    for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+                    for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
                     {
                         String cnam=((Area)e.nextElement()).Name();
                         str.append("<OPTION VALUE=\""+cnam+"\"");

@@ -128,6 +128,11 @@ public class Thief_Flay extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			maliciousAffect(mob,target,asLevel,0,-1);
+			if(target.fetchEffect(ID())!=null)
+			{
+				Ability A=CMClass.getAbility("Bleeding");
+				if(A!=null) A.invoke(mob,mob,true,asLevel);
+			}
 		}
 		else
 		    maliciousFizzle(mob,target,"<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s).");

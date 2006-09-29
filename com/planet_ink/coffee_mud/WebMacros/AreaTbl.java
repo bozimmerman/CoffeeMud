@@ -47,14 +47,12 @@ public class AreaTbl extends StdWebMacro
 
 		Vector areasVec=new Vector();
 
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(!CMLib.flags().isHidden(A))
 				areasVec.addElement(A.name());
 		}
-
-		Collections.sort(areasVec);
 		StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;

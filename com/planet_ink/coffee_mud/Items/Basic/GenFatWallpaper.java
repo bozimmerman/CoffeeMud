@@ -35,7 +35,7 @@ public class GenFatWallpaper extends GenWallpaper
 {
 	public String ID(){	return "GenFatWallpaper";}
 	protected String	displayText="";
-	public String displayText(){ return displayText();}
+	public String displayText(){ return displayText;}
 	public void setDisplayText(String newText){displayText=newText;}
 	protected long expirationDate=0;
 	public long expirationDate(){return expirationDate;}
@@ -44,8 +44,12 @@ public class GenFatWallpaper extends GenWallpaper
 	{
 		if(msg.amITarget(this)
 		&&((msg.targetMinor()==CMMsg.TYP_EXPIRE)||(msg.targetMinor()==CMMsg.TYP_DEATH)))
+		{
 			return true;
-		return super.okMessage(myHost,msg);
+		}
+		if(!super.okMessage(myHost,msg))
+			return false;
+		return true;
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -63,25 +67,26 @@ public class GenFatWallpaper extends GenWallpaper
 		codes[THINCODES.length]="DISPLAY";
 		return codes;
 	}
-	protected int getCodeNum(String code){
+	protected int getMyCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
 	public String getStat(String code){
-		if(super.getCodeNum(code)>=0) return super.getStat(code);
-		switch(getCodeNum(code))
+		if(getMyCodeNum(code)<0) return super.getStat(code);
+		switch(getMyCodeNum(code))
 		{
-		case 0: return displayText();
+		case 0: 
+			return displayText();
 		}
 		return "";
 	}
 	public void setStat(String code, String val)
 	{
-		if(super.getCodeNum(code)>=0)
+		if(getMyCodeNum(code)<0)
 			super.setStat(code,val);
 		else
-		switch(getCodeNum(code))
+		switch(getMyCodeNum(code))
 		{
 		case 0: setDisplayText(val); break;
 		}
@@ -92,7 +97,9 @@ public class GenFatWallpaper extends GenWallpaper
 		if(!super.sameAs(E)) return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+			{
 				return false;
+			}
 		return true;
 	}
 }

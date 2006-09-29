@@ -39,11 +39,11 @@ public class Bleeding extends StdAbility
     public String displayText(){ return "(Bleeding)";}
     protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
     protected int canTargetCode(){return 0;}
-    public int hpToKeep=-1;
+    protected int hpToKeep=-1;
+    protected int lastDir=-1;
+    protected Room lastRoom=null;
     
-    public double healthPct(MOB mob){ return CMath.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints());}
-    
-    // TODO: causes; long falls, taking 20% hp hit, special blades, limb loss, min level 15, FLAY gaoler skill
+    public double healthPct(MOB mob){ return CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());}
     
     public void affectEnvStats(Environmental affected, EnvStats affectedStats)
     {
@@ -60,7 +60,6 @@ public class Bleeding extends StdAbility
         &&(CMLib.flags().isInTheGame(affected,true)))
             ((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) bleeding.");
         super.unInvoke();
-        
     }
     
     public void affectCharState(MOB affected, CharState affectedState)
@@ -73,14 +72,51 @@ public class Bleeding extends StdAbility
     public void  executeMsg(Environmental myHost, CMMsg msg)
     {
         super.executeMsg(myHost,msg);
-        if((myHost!=null)
-        &&(msg.amITarget(myHost))
-        &&(msg.targetMinor()==CMMsg.TYP_HEALING)) 
-            hpToKeep=-1;
+        if((affected!=null)&&(msg.amITarget(affected))&&(affected instanceof MOB))
+		{
+	        if(msg.targetMinor()==CMMsg.TYP_HEALING)
+	        {
+	            hpToKeep=-1;
+	            if(healthPct((MOB)affected)>0.50)
+	            	unInvoke();
+	        }
+	        else
+	        if((msg.targetMinor()==CMMsg.TYP_LOOK)
+	        ||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+	        	msg.source().tell((MOB)msg.target(),null,null,"^R<S-NAME> <S-IS-ARE> still bleeding...");
+		}
+        else
+        if((msg.source()==affected)
+        &&(msg.target() instanceof Room)
+        &&(msg.tool() instanceof Exit)
+        &&(msg.targetMinor()==CMMsg.TYP_LEAVE))
+        {
+        	Room R=(Room)msg.target();
+        	int dir=-1;
+        	for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        		if(msg.tool()==R.getReverseExit(d))
+        			dir=d;
+        	if((dir>=0)&&(R.fetchItem(null,"a trail of blood")==null))
+        	{
+        		Item I=CMClass.getItem("GenFatWallpaper");
+        		I.setName("A trail of blood");
+	        	if(lastDir>=0)
+	        		I.setDisplayText("A faint trail of blood leads from "
+        				+Directions.getDirectionName(lastDir)+" to "+Directions.getDirectionName(dir)+".");
+	        	else
+	        		I.setDisplayText("A faint trail of blood leads "+Directions.getDirectionName(dir)+".");
+        		I.envStats().setDisposition(I.envStats().disposition()|EnvStats.IS_HIDDEN);
+        		I.setSecretIdentity(msg.source().Name()+"`s blood.");
+        		R.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+        	}
+        	lastDir=Directions.getOpDirectionCode(dir);
+        	lastRoom=R;
+        }
     }
     public boolean tick(Tickable ticking, int tickID)
     {
-        if(!super.tick(ticking,tickID)) return false;
+        if(!super.tick(ticking,tickID))
+        	return false;
         if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
         {
             if(hpToKeep<=0)
@@ -97,5 +133,18 @@ public class Bleeding extends StdAbility
                 ((MOB)ticking).curState().setHitPoints(hpToKeep);
         }
         return true;
+    }
+    
+    public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+    {
+    	if(target==null) target=mob;
+    	if(!(target instanceof MOB)) return false;
+    	if(CMLib.flags().isGolem((MOB)target)) return false;
+    	if(((MOB)target).envStats().level()<CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDMINLEVEL)) return false;
+    	if(((MOB)target).fetchEffect(ID())!=null) return false;
+    	if(((MOB)target).location()==null) return false;
+    	if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> start(s) BLEEDING!^?"))
+	    	beneficialAffect(mob,target,asLevel,0);
+    	return true;
     }
 }

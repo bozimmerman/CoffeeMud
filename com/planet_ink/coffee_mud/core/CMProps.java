@@ -146,7 +146,10 @@ public class CMProps extends Properties
     public static final int SYSTEMI_DEFCOMCMDTIME=46;
     public static final int SYSTEMI_DEFABLETIME=47;
     public static final int SYSTEMI_DEFCOMABLETIME=48;
-    public static final int NUMI_SYSTEM=49;
+    public static final int SYSTEMI_INJBLEEDMINLEVEL=49;
+    public static final int SYSTEMI_INJBLEEDPCTHP=50;
+    public static final int SYSTEMI_INJBLEEDPCTCHANCE=51;
+    public static final int NUMI_SYSTEM=52;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -430,6 +433,12 @@ public class CMProps extends Properties
         else setIntVar(SYSTEMI_INJMULTIPLIER,4);
         if(V.size()>5) setIntVar(SYSTEMI_INJMINLEVEL,CMath.s_int((String)V.elementAt(5)));
         else setIntVar(SYSTEMI_INJMINLEVEL,10);
+        if(V.size()>6) setIntVar(SYSTEMI_INJBLEEDMINLEVEL,CMath.s_int((String)V.elementAt(6)));
+        else setIntVar(SYSTEMI_INJBLEEDMINLEVEL,15);
+        if(V.size()>7) setIntVar(SYSTEMI_INJBLEEDPCTHP,CMath.s_int((String)V.elementAt(7)));
+        else setIntVar(SYSTEMI_INJBLEEDPCTHP,20);
+        if(V.size()>8) setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,CMath.s_int((String)V.elementAt(8)));
+        else setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,100);
         
         String stateVar=page.getStr("STARTHP");
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))

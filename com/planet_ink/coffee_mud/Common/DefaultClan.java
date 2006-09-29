@@ -186,7 +186,7 @@ public class DefaultClan implements Clan
     public Vector getControlledAreas()
     {
         Vector done=new Vector();
-        for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+        for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
         {
             Area A=(Area)e.nextElement();
             LegalBehavior B=CMLib.utensils().getLegalBehavior(A);

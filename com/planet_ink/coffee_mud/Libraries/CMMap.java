@@ -47,18 +47,44 @@ public class CMMap extends StdLibrary implements WorldMap
 	public final int QUADRANT_WIDTH=10;
 	public Vector space=new Vector();
     public Hashtable globalHandlers=new Hashtable();
+    public Vector sortedAreas=null;
 
 	// areas
 	public int numAreas() { return areasList.size(); }
 	public void addArea(Area newOne)
 	{
+		sortedAreas=null;
 		areasList.addElement(newOne);
 	}
 
 	public void delArea(Area oneToDel)
 	{
+		sortedAreas=null;
 		areasList.remove(oneToDel);
 	}
+	
+	public Enumeration sortedAreas()
+	{
+		if(sortedAreas==null)
+		{
+			Vector V=new Vector();
+			Area A=null;
+			for(Enumeration e=areas();e.hasMoreElements();)
+			{
+				A=(Area)e.nextElement();
+				String upperName=A.Name().toUpperCase();
+				for(int v=0;v<=V.size();v++)
+					if(v==V.size())
+					{ V.addElement(A); break;}
+					else
+					if(upperName.compareTo(((Area)V.elementAt(v)).Name().toUpperCase())<=0)
+					{ V.insertElementAt(A,v); break;}
+			}
+			sortedAreas=V;
+		}
+		return (sortedAreas==null)?sortedAreas():sortedAreas.elements();
+	}
+	
 	public Area getArea(String calledThis)
 	{
 		for(Enumeration a=areas();a.hasMoreElements();)
