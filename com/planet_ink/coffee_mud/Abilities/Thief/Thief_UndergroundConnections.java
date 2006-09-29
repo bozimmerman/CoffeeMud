@@ -258,7 +258,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			{
 				R=R.getRoomInDir(((Integer)thisTrail.elementAt(t)).intValue());
 				if((R==null)||(CMath.bset(R.domainType(),Room.INDOORS)))
-					allTrails.removeElementAt(t);
+				{ allTrails.removeElementAt(a); break;}
 			}
 		}
 		if(allTrails.size()==0)
