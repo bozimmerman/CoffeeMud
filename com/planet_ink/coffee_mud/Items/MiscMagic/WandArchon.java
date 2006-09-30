@@ -104,7 +104,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		if((mob.isMine(this))
 		   &&(!this.amWearingAt(Item.IN_INVENTORY)))
 		{
-			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
+			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB)&&(message!=null))
 			{
 				MOB target=(MOB)afftarget;
 				message=CMStrings.getSayFromMessage(message.toUpperCase()).trim();
