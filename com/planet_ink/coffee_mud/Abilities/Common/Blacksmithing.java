@@ -107,7 +107,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \""+triggerStrings[0].toLowerCase()+" list\" for a list.");
+			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
         if((!auto)

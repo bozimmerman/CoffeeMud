@@ -436,7 +436,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null)
         {
-            commonTell(mob,"The syntax for this skill is "+triggerStrings[0]+" [CONTAINER]");
+            commonTell(mob,"The syntax for this skill is "+triggerStrings()[0]+" [CONTAINER]");
             return false;
         }
 
