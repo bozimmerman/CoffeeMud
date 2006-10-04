@@ -50,6 +50,7 @@ public class DefaultCharStats implements CharStats
 	protected String displayClassName=null;
 	protected String displayClassLevel=null;
 	protected int[] bodyAlterations=null;
+	protected long unwearableBitmap=0;
 	
 	public DefaultCharStats()
 	{
@@ -65,6 +66,7 @@ public class DefaultCharStats implements CharStats
     {
         for(int i=0;i<NUM_STATS;i++)
             stats[i]=def;
+        unwearableBitmap=0;
     }
 
 	public void setMyClasses(String classes)
@@ -133,6 +135,9 @@ public class DefaultCharStats implements CharStats
 			levelStr=levelStr.substring(1);
 		return levelStr;
 	}
+    public long getWearableRestrictionsBitmap(){return unwearableBitmap|this.getMyRace().forbiddenWornBits();}
+    public void setWearableRestrictionsBitmap(long bitmap){ unwearableBitmap=bitmap;}
+    
 	public int numClasses()
 	{
 		if(myClasses==null) return 0;

@@ -3252,7 +3252,7 @@ public class StdMOB implements MOB
 	}
 	public int getWearPositions(long wornCode)
 	{
-		if((charStats().getMyRace().forbiddenWornBits()&wornCode)>0)
+		if((charStats().getWearableRestrictionsBitmap()&wornCode)>0)
 			return 0;
 		if(wornCode==Item.WORN_FLOATING_NEARBY)
 			return 6;

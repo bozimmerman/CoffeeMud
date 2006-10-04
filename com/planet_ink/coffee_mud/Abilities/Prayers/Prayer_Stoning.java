@@ -75,7 +75,7 @@ public class Prayer_Stoning extends Prayer
 			        {
 				        int dmg=mob.maxState().getHitPoints()/20;
 				        if(dmg<1) dmg=1;
-				        Item W=mob.fetchWieldedItem();
+				        Item W=M.fetchWieldedItem();
 				        if(W!=null)
 				        {
 				            W.baseEnvStats().setDamage(dmg);
@@ -84,7 +84,7 @@ public class Prayer_Stoning extends Prayer
 				        CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.TYP_GENERAL,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
 			        }
 			        else
-			            R.show(M,mob,null,CMMsg.TYP_SPEAK,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
+			            R.show(M,mob,null,CMMsg.MSG_NOISE,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
 			    }
 			}
 		    while(cits.size()<10)
@@ -114,13 +114,13 @@ public class Prayer_Stoning extends Prayer
 		Vector warrants=new Vector();
 		if(B!=null)
             warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),target);
-		if(warrants.size()==0)
+		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
 		{
 		    mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
 		    return false;
 		}
 		
-		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target)))
+		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(target.name()+" must be bound first.");
 			return false;

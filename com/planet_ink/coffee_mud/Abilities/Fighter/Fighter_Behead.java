@@ -91,7 +91,7 @@ public class Fighter_Behead extends FighterSkill
 		Vector warrants=new Vector();
 		if(B!=null)
             warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),target);
-		if(warrants.size()==0)
+		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
 		{
 		    mob.tell("You are not allowed to behead "+target.Name()+" at this time.");
 		    return false;
@@ -99,7 +99,7 @@ public class Fighter_Behead extends FighterSkill
 		
 		Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
-		if(!auto)
+		if((!auto)&&(!CMSecurity.isASysOp(mob)))
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{

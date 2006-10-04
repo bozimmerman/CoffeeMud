@@ -101,10 +101,9 @@ public class Thief_TarAndFeather extends ThiefSkill
 			{
 			    target.addInventory(I);
 			    long wearCode=0;
-			    Race R=target.charStats().getMyRace();
 			    for(int i=0;i<Item.WORN_ORDER.length;i++)
 			    {
-			        if((!CMath.bset(R.forbiddenWornBits(),Item.WORN_ORDER[i]))
+			        if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),Item.WORN_ORDER[i]))
 			        &&(Item.WORN_ORDER[i]!=Item.WORN_FLOATING_NEARBY)
 			        &&(Item.WORN_ORDER[i]!=Item.WORN_EYES)
 			        &&(Item.WORN_ORDER[i]!=Item.WORN_MOUTH))

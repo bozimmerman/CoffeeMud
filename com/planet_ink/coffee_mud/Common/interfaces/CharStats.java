@@ -421,6 +421,20 @@ public interface CharStats extends CMObject
     public void setAllBaseValues(int def);
     
     /**
+     * Returns the sum of local and race-based unwearability codes.
+     * @see com.planet_ink.coffee_mud.Items.interfaces.Item
+     * @return a bitmap of unwearable locations
+     */
+    public long getWearableRestrictionsBitmap();
+    
+    /**
+     * Sets the sum of local and race-based unwearability codes.
+     * @see com.planet_ink.coffee_mud.Items.interfaces.Item
+     * @param bitmap a bitmap of unwearable locations
+     */
+    public void setWearableRestrictionsBitmap(long bitmap);
+    
+    /**
      * Sets the apparant gender of the mob. If null is used, this value is reset
      * and the mobs real gender name will be displayed through the genderName method
      * instead of the one set here.
