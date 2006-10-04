@@ -43,7 +43,10 @@ public class Spell_DivineBeauty extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,30);
+		if(affectableStats.getStat(CharStats.STAT_CHARISMA)>=30)
+			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
+		else
+			affectableStats.setStat(CharStats.STAT_CHARISMA,30);
 	}
 
 
