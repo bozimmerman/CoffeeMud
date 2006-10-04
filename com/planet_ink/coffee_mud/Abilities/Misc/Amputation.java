@@ -487,33 +487,36 @@ public class Amputation extends StdAbility implements Amputator
 			Vector warrants=new Vector();
 			if(B!=null)
                 warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),target);
-			if(warrants.size()==0)
+			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
 			{
 			    mob.tell("You are not authorized by law to amputate from "+target.Name()+" at this time.");
 			    return false;
 			}
 			Item w=mob.fetchWieldedItem();
-			Weapon ww=null;
-			if((w==null)||(!(w instanceof Weapon)))
+			if(!CMSecurity.isASysOp(mob))
 			{
-				mob.tell("You cannot amputate without a weapon!");
-				return false;
-			}
-			ww=(Weapon)w;
-			if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
-			{
-				mob.tell("You cannot amputate with a "+ww.name()+"!");
-				return false;
-			}
-			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
-			{
-				mob.tell("You are too far away to try that!");
-				return false;
-			}
-			if((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target)))
-			{
-				mob.tell(target.charStats().HeShe()+" must be bound, and asleep on an operating bed before you can amputate.");
-				return false;
+				Weapon ww=null;
+				if((w==null)||(!(w instanceof Weapon)))
+				{
+					mob.tell("You cannot amputate without a weapon!");
+					return false;
+				}
+				ww=(Weapon)w;
+				if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
+				{
+					mob.tell("You cannot amputate with a "+ww.name()+"!");
+					return false;
+				}
+				if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				{
+					mob.tell("You are too far away to try that!");
+					return false;
+				}
+				if((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target)))
+				{
+					mob.tell(target.charStats().HeShe()+" must be bound, and asleep on an operating bed before you can amputate.");
+					return false;
+				}
 			}
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -552,7 +555,7 @@ public class Amputation extends StdAbility implements Amputator
 			if(gone==null)
 				gone=(String)VN.elementAt(CMLib.dice().roll(1,VN.size(),-1));
 
-			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate <T-NAMESELF>'s "+gone+"!^</FIGHT^>^?";
+			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> "+gone+"!^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
             CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
@@ -568,6 +571,7 @@ public class Amputation extends StdAbility implements Amputator
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();
+					target.location().recoverRoomStats();
 					target.confirmWearability();
 					target.setVictim(vic);
 					mob.setVictim(vic2);
