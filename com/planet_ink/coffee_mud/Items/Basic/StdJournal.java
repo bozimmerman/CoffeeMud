@@ -401,7 +401,7 @@ public class StdJournal extends StdItem
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
-			buf.append("#\n\r "+CMStrings.padRight("#",5)
+			buf.append("#\n\r "+CMStrings.padRight("#",6)
 					   +((shortFormat)?"":""
 					   +CMStrings.padRight("From",11)
 					   +CMStrings.padRight("To",11))
@@ -444,7 +444,7 @@ public class StdJournal extends StdItem
 					    continue;
 					else
 					    selection.append(" ");
-					selection.append("^<JRNL \""+name()+"\"^>"+CMStrings.padRight((j+1)+"",3)+"^</JRNL^>) "
+					selection.append("^<JRNL \""+name()+"\"^>"+CMStrings.padRight((j+1)+"",4)+"^</JRNL^>) "
 								   +((shortFormat)?"":""
 								   +CMStrings.padRight(from,10)+" "
 								   +CMStrings.padRight(to,10)+" ")
