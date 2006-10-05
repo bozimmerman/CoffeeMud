@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Caltrops extends ThiefSkill implements Trap
+public class Thief_Caltrops extends TrappingThiefSkill implements Trap
 {
 	public String ID() { return "Thief_Caltrops"; }
 	public String name(){ return "Caltrops";}
@@ -60,7 +60,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if((!invoker().mayIFight(mob))||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some caltrops on the floor.");
 		else
-			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(1,5,0),CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(1,6+getXLevel(invoker()),invoker().envStats().level()),CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 
