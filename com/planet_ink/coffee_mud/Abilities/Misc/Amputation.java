@@ -56,7 +56,10 @@ public class Amputation extends StdAbility implements Amputator
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected Vector missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
-
+	private long badWearLocations=0;
+	private static final long[] LEFT_LOCS={Item.WORN_LEFT_FINGER,Item.WORN_LEFT_WRIST};
+	private static final long[] RIGHT_LOCS={Item.WORN_RIGHT_FINGER,Item.WORN_RIGHT_WRIST};
+	
 	public final static boolean[] validamputees={true,//antenea
 												 true,//eye
 												 true,//ear
@@ -158,6 +161,7 @@ public class Amputation extends StdAbility implements Amputator
 		for(int i=0;i<amputations.length;i++)
 			if(amputations[i]!=0)
 				affectableStats.alterBodypart(i,amputations[i]);
+		affectableStats.setWearableRestrictionsBitmap(badWearLocations);
 	}
 
 
@@ -235,16 +239,27 @@ public class Amputation extends StdAbility implements Amputator
 		   return missingLimbs;
 		missingLimbs=CMParms.parseSemicolons(text(),true);
 		amputations=new int[Race.BODY_PARTS];
+		badWearLocations=0;
+		boolean right=false;
+		boolean left=false;
+		Integer code=null;
+		int l1,l2=0;
 		for(int v=0;v<missingLimbs.size();v++)
 		{
-			String s=(String)missingLimbs.elementAt(v);
-			if(s.startsWith("left ")) s=s.substring(5).trim();
-			if(s.startsWith("right ")) s=s.substring(6).trim();
-			int code=-1;
-			for(int r=0;r<Race.BODYPARTSTR.length;r++)
-				if(Race.BODYPARTSTR[r].equalsIgnoreCase(s))
-				{ code=r; break;}
-			if(code>=0)	amputations[code]--;
+			String s=((String)missingLimbs.elementAt(v)).toUpperCase();
+			left=s.startsWith("LEFT ");
+			right=s.startsWith("RIGHT ");
+			code=(Integer)Race.BODYPARTHASH.get(s.substring(right?6:left?5:0).trim());
+			if(code!=null)
+			{
+				amputations[code.intValue()]--;
+				long[] LOCS=left?LEFT_LOCS:right?RIGHT_LOCS:null;
+				long GRID=Race.BODY_WEARGRID[code.intValue()][0];
+				if(LOCS!=null)
+				for(l1=0;l1<LOCS.length;l1++)
+					if((GRID&LOCS[l1])>0)
+						badWearLocations|=LOCS[l1];
+			}
 		}
 		return missingLimbs;
 	}

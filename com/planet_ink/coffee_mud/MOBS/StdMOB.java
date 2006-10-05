@@ -2727,7 +2727,9 @@ public class StdMOB implements MOB
 			if((oldCode&Item.WORN_HELD)>0)
 				msgCode=CMMsg.MSG_HOLD;
 			CMMsg msg=CMClass.getMsg(this,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
-			if((R.okMessage(this,msg))&&(item.okMessage(item,msg)))
+			if((R.okMessage(this,msg))
+			&&(item.okMessage(item,msg))
+            &&((charStats().getWearableRestrictionsBitmap()&oldCode)==0))
 			   item.wearAt(oldCode);
 		}
 	}

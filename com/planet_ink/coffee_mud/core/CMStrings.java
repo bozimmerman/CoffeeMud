@@ -257,6 +257,14 @@ public class CMStrings
         return size;
     }
     
+    public static Hashtable makeNumericHash(Object[] obj)
+    {
+    	Hashtable H=new Hashtable();
+    	for(int i=0;i<obj.length;i++)
+    		H.put(obj[i],new Integer(i));
+    	return H;
+    }
+    
     public static String padCenter(String thisStr, int thisMuch)
     {
         int lenMinusColors=lengthMinusColors(thisStr);

@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.Vector;
+import java.util.*;
 /*
    Copyright 2000-2006 Bo Zimmerman
 
@@ -370,6 +370,8 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	public final static String[] BODYPARTSTR={
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
+	/** constant hash of BODYPARTSTR */
+	public final static Hashtable BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
 	/** constant used to set and check the classless flag on generic races */
 	public final static int GENFLAG_NOCLASS=1;
 	/** constant used to set and check the levelless flag on generic races */
