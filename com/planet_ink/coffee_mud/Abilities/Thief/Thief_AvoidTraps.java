@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_AvoidTraps extends ThiefSkill
+public class Thief_AvoidTraps extends TrapDisablingThiefSkill
 {
 	public String ID() { return "Thief_AvoidTraps"; }
 	public String name(){ return "Avoid Traps";}
@@ -45,7 +45,7 @@ public class Thief_AvoidTraps extends ThiefSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2));
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+getXLevel(affected));
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

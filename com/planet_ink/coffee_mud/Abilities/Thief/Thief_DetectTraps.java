@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_DetectTraps extends ThiefSkill
+public class Thief_DetectTraps extends AlertThiefSkill
 {
 	public String ID() { return "Thief_DetectTraps"; }
 	public String name(){ return "Detect Traps";}
@@ -63,7 +63,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
+		boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLevel(mob)*5))
 											 -unlockThis.envStats().level())*3),auto);
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		if(unlockThis instanceof Exit)

@@ -374,7 +374,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
-                        if((item instanceof Armor)&&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
+                        if((item instanceof Armor)
+                        &&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
     						addStatAdjustment(item,"CHA","+1");
 						affect.tickDown*=4;
 						break;
