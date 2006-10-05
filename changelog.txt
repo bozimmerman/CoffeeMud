@@ -1367,10 +1367,6 @@ Hands, and the several Cure prayers.
 12. An enormous cloud of millions of swarming bugs dissipated with
 the swirling winds of correction.
 # Build 4.7.5 - Released Aug 15, 2005
-
-	
-Turn ads off - $5/month
-Edit This Page
 Here ya go-- Some fun tweeks in there for your power players and
 builders. Enjoy!
 
@@ -1731,10 +1727,6 @@ It was removed from its previous place. Old players will have to update their pr
 28. The MUDGrinder main menu has been shuffled a tiny bit. A minor change to the Threads listing makes it a bit more useful.
 29. A whole circus of bugs tamed, and hopefully as few new ones introduced as possible.
 # Build 5.1.2 - Released Apr 04, 2006
-
-	
-Turn ads off - $5/month
-Edit This Page
 Hello all,
 A release of numerous important bug fixes, as a few remaining problems with thin areas are shaken out. Even if you don't use thin areas, you'll need the fixes, since they also resolved issues with Grids.
 The only real new feature is the implementation of Educations. In this case, for the common skills.
