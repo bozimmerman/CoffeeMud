@@ -151,6 +151,22 @@ public class CMStrings
         return affmsg;
     }
 
+    public static boolean containsIgnoreCase(String[] strs, String str)
+    {
+    	if((str==null)||(strs==null)) return false;
+    	for(int s=0;s<strs.length;s++)
+    		if(strs[s].equalsIgnoreCase(str))
+    			return true;
+    	return false;
+    }
+    public static boolean contains(String[] strs, String str)
+    {
+    	if((str==null)||(strs==null)) return false;
+    	for(int s=0;s<strs.length;s++)
+    		if(strs[s].equals(str))
+    			return true;
+    	return false;
+    }
     
     public static String removeColors(String s)
     {
