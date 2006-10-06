@@ -104,6 +104,7 @@ public interface EnvStats extends CMObject
 	public double speed(); // mobs
 	public int attackAdjustment(); // weapon items, mobs
 	public String newName(); // items, mobs
+	public String[] ambiances(); // everything
 	
 	public void setRejuv(int newRejuv);
 	public void setLevel(int newLevel);
@@ -117,6 +118,8 @@ public interface EnvStats extends CMObject
 	public void setSensesMask(int newMask);
 	public void setName(String newName);
 	public void setHeight(int newHeight);
+	public void addAmbiance(String ambiance);
+	public void delAmbiance(String ambiance);
 	
 	public String[] getCodes();
 	public void setStat(String code, String val);
