@@ -583,51 +583,62 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     
 	public StringBuffer colorCodes(Environmental seen , MOB seer)
 	{
-		StringBuffer Say=new StringBuffer("^N");
-
-		if((isEvil(seen))&&(canSeeEvil(seer)))
-			Say.append(" (glowing ^rred^?)");
-		if((isGood(seen))&&(canSeeGood(seer)))
-			Say.append(" (glowing ^bblue^?)");
-		if((isInvisible(seen))&&(canSeeInvisible(seer)))
-			Say.append(" (^yinvisible^?)");
-		if((isSneaking(seen))&&(canSeeSneakers(seer)))
-			Say.append(" (^ysneaking^?)");
-		if((isHidden(seen))&&(canSeeHidden(seer)))
-			Say.append(" (^yhidden^?)");
-		if((!isGolem(seen))
-		&&(canSeeInfrared(seer))
-		&&(seen instanceof MOB)
-		&&(isInDark(seer.location())))
-			Say.append(" (^rheat aura^?)");
-		if((isABonusItems(seen))&&(canSeeBonusItems(seer)))
-			Say.append(" (^wmagical aura^?)");
-		if((canSeeMetal(seer))&&(seen instanceof Item))
-			if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-				Say.append(" (^wmetallic aura^?)");
-			else
-			if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
-				Say.append(" (^wmithril aura^?)");
-
-		if(isBound(seen))
-			Say.append(" (^Wbound^?)");
-		if(isFlying(seen)&&(!(seen instanceof Exit)))
-			Say.append(" (^pflying^?)");
-		if((isFalling(seen))
-		&&((!(seen instanceof MOB))
-		   ||(((MOB)seen).location()==null)
-		   ||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-			  &&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
-			Say.append(" (^pfalling^?)");
-		if((isGlowing(seen))&&(!(seen instanceof Room)))
-			Say.append(" (^gglowing^?)");
-		if(isBusy(seen))
-			Say.append(" (^gbusy^?)");
-        if(Say.length()>1)
-        {
-            Say.append(" ");
-    		return Say;
-        }
+		String[] ambiances=seen.envStats().ambiances();
+		if(!CMStrings.containsIgnoreCase(ambiances,"-ALL"))
+		{
+			StringBuffer Say=new StringBuffer("^N");
+			if(!CMStrings.containsIgnoreCase(ambiances,"-MOST"))
+			{
+				if((isEvil(seen))&&(canSeeEvil(seer))&&(!CMStrings.contains(ambiances,"-EVIL")))
+					Say.append(" (glowing ^rred^?)");
+				if((isGood(seen))&&(canSeeGood(seer))&&(!CMStrings.contains(ambiances,"-GOOD")))
+					Say.append(" (glowing ^bblue^?)");
+				if((isInvisible(seen))&&(canSeeInvisible(seer))&&(!CMStrings.contains(ambiances,"-INVISIBLE")))
+					Say.append(" (^yinvisible^?)");
+				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!CMStrings.contains(ambiances,"-SNEAKING")))
+					Say.append(" (^ysneaking^?)");
+				if((isHidden(seen))&&(canSeeHidden(seer))&&(!CMStrings.contains(ambiances,"-HIDDEN")))
+					Say.append(" (^yhidden^?)");
+				if((!isGolem(seen))
+				&&(canSeeInfrared(seer))
+				&&(seen instanceof MOB)
+				&&(isInDark(seer.location()))
+				&&(!CMStrings.contains(ambiances,"-HEAT")))
+					Say.append(" (^rheat aura^?)");
+				if((isABonusItems(seen))&&(canSeeBonusItems(seer))&&(!CMStrings.contains(ambiances,"-MAGIC")))
+					Say.append(" (^wmagical aura^?)");
+				if((canSeeMetal(seer))&&(seen instanceof Item)&&(!CMStrings.contains(ambiances,"-METAL")))
+					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+						Say.append(" (^wmetallic aura^?)");
+					else
+					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
+						Say.append(" (^wmithril aura^?)");
+		
+				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!CMStrings.contains(ambiances,"-GLOWING")))
+					Say.append(" (^gglowing^?)");
+				if(isBusy(seen)&&(!CMStrings.contains(ambiances,"-BUSY")))
+					Say.append(" (^gbusy^?)");
+				for(int i=0;i<ambiances.length;i++)
+					if(!ambiances[i].startsWith("-"))
+						Say.append(" ("+ambiances[i]+"^?)");
+			}
+			if(isBound(seen)&&(!CMStrings.contains(ambiances,"-BOUND")))
+				Say.append(" (^Wbound^?)");
+			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!CMStrings.contains(ambiances,"-FLYING")))
+				Say.append(" (^pflying^?)");
+			if((isFalling(seen))
+			&&(!CMStrings.contains(ambiances,"-FALLING"))
+			&&((!(seen instanceof MOB))
+			   ||(((MOB)seen).location()==null)
+			   ||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+				  &&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
+				Say.append(" (^pfalling^?)");
+	        if(Say.length()>1)
+	        {
+	            Say.append(" ");
+	    		return Say;
+	        }
+		}
         return new StringBuffer("");
 	}
 
