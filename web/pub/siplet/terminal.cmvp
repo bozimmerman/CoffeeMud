@@ -39,7 +39,7 @@ function openWindow()
 	var wname='dwindow'+windowsOpen;
     var thespan=document.getElementById("DWINDOW");
     thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname);
-    loadwindow('term.cmvp',730,450,wname);
+    loadwindow('term.cmvp',730,355,wname);
 }
 
 function rotateWindow()
