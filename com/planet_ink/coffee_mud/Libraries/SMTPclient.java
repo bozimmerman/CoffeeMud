@@ -207,6 +207,55 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 	
 	
+	/** private constants for chars that are valid in email addy names */
+	private final static String EMAIL_VALID_LOCAL_CHARS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&'*+-/=?^_`{|}~.";
+	/** private constants for chars that are valid in email addy domain names */
+	private final static String EMAIL_VALID_DOMAIN_CHARS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.";
+
+	/*
+	 * Checks to see if the given string is a valid email address. 
+	 * @param addy the email address
+	 * @return true if all is good, false otherwise.
+	 */
+	public boolean isValidEmailAddress(String addy){ return getEmailAddressError(addy)<0;}
+	
+	/*
+	 * Checks to see if the given string is a valid email address. 
+	 * If it is not, it returns the location from 0-length+1 where
+	 * the problem occurs.
+	 * @param addy the email address
+	 * @return -1, or the location of the error from 0-length+1
+	 */
+	private int getEmailAddressError(String addy)
+	{
+		if(addy==null) return 0;
+		int x=addy.indexOf("@");
+		if(x<0) return addy.length();
+		String localPart=addy.substring(0,x).trim();
+		String network=addy.substring(x+1);
+		if(localPart.length()==0) return x;
+		if(network.length()==0) return addy.length();
+		if((localPart.startsWith("\"")&&localPart.endsWith("\"")))
+		{
+			int z=localPart.substring(1,localPart.length()-1).indexOf("\"");
+			if(z>=0) return 1+z;
+		}
+		else
+		for(int l=0;l<localPart.length();l++)
+			if(EMAIL_VALID_LOCAL_CHARS.indexOf(localPart.charAt(l))<0)
+				return l;
+		if(localPart.startsWith(".")) return 0;
+		if(localPart.endsWith(".")) return x-1;
+		if(localPart.length()>64) return x;
+		for(int l=0;l<network.length();l++)
+			if(EMAIL_VALID_DOMAIN_CHARS.indexOf(network.charAt(l))<0)
+				return x+1+l;
+		if(network.startsWith("-")) return x+1;
+		if(network.endsWith("-")) return addy.length();
+		if(network.startsWith(".")) return x+1;
+		if(network.length()>255) return addy.length();
+		return -1;
+	}
 	
 	/**
 	* Send a message
