@@ -100,7 +100,7 @@ public class Mood extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats stats)
 	{
 		super.affectEnvStats(affected,stats);
-		if(moodCode>=0) stats.addAmbiance(MOODS[moodCode][2]);
+		if(moodCode>=0) stats.addAmbiance(MOODS[moodCode][2].toLowerCase());
 	}
 	
 	private String changeSay(String msg, String to)
