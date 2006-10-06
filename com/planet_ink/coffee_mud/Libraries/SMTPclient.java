@@ -132,10 +132,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	public SMTPclient (String emailAddress) throws IOException, 
 												   BadEmailAddressException
 	{
-		int x=emailAddress.indexOf("@");
-		if(x<0) throw new BadEmailAddressException("Malformed email address");
+		int x=this.getEmailAddressError(emailAddress);
+		if(x>=0) throw new BadEmailAddressException("Malformed email address");
+		x=emailAddress.indexOf("@");
 		String domain=emailAddress.substring(x+1).trim();
-		if(domain.length()==0) throw new BadEmailAddressException("Malformed email address");
 		Vector addys=new Vector();
 		Attribute mx=doMXLookup(domain);
 		boolean connected=false;
