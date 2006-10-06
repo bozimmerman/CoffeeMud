@@ -15,6 +15,7 @@ public interface SMTPLibrary
     /** default timeout */
     public static final int DEFAULT_TIMEOUT=10000;
 
+	public boolean isValidEmailAddress(String addy);
     public boolean emailIfPossible(String SMTPServerName, String from, String replyTo, String to, String subject, String message)
         throws IOException;
     public SMTPClient getClient(String hostid, int port)  throws UnknownHostException, IOException;
