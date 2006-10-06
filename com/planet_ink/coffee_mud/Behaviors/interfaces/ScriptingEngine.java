@@ -285,7 +285,8 @@ public interface ScriptingEngine extends Behavior
         "MPARGSET", // 63
         "MPLOADQUESTOBJ", // 64
         "MPQSET", // 65
-        "MPLOG" // 66
+        "MPLOG", // 66
+        "MPCHANNEL" // 67
     };
 
     public final static String[] clanVars={

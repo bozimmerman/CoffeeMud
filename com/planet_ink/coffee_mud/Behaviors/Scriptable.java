@@ -5139,7 +5139,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String type=CMParms.getCleanBit(s,1).toUpperCase();
 				String head=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,3));
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				if(type.startsWith("E")) Log.errOut(head,val);
 				else
 				if(type.startsWith("I")||type.startsWith("S")) Log.infoOut(head,val);
@@ -5147,6 +5147,18 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(type.startsWith("D")) Log.debugOut(head,val);
 				else
                     scriptableError(scripted,"MPLOG","Syntax","Unknown log type "+type+" for "+scripted.Name());
+				break;
+			}
+			case 67: // MPCHANNEL
+			{
+				String channel=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				boolean sysmsg=channel.startsWith("!");
+				if(sysmsg) channel=channel.substring(1);
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+				if(CMLib.channels().getChannelCodeNumber(channel)<0)
+                    scriptableError(scripted,"MPLOG","Syntax","Unknown channel "+channel+" for "+scripted.Name());
+				else
+					CMLib.commands().postChannel(monster,channel,val,sysmsg);
 				break;
 			}
 			case 60: // trains
