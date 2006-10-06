@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
+import java.util.Vector;
 
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -44,6 +44,8 @@ public class DefaultEnvStats implements EnvStats
 	protected int Ability=0;			// object dependant
 	protected int Height=0;
 	protected String replacementName=null;
+	protected String[] ambiances=null;
+	private final static String[] empty=new String[0];
 	
 	public DefaultEnvStats(){}
 	public void setAllValues(int def)
@@ -72,6 +74,7 @@ public class DefaultEnvStats implements EnvStats
 	public double speed(){return Speed;}
 	public int attackAdjustment(){return AttackAdjustment;}
 	public String newName(){ return replacementName;}
+	public String[] ambiances(){ return (ambiances==null)?empty:ambiances;}
 
 	public void setRejuv(int newRejuv){Rejuv=newRejuv;}
 	public void setLevel(int newLevel){Level=newLevel;}
@@ -85,6 +88,36 @@ public class DefaultEnvStats implements EnvStats
 	public void setSensesMask(int newMask){SensesMask=newMask;}
 	public void setHeight(int newHeight){Height=newHeight;}
 	public void setName(String newName){ replacementName=newName;}
+	public void addAmbiance(String ambiance)
+	{
+		ambiance=ambiance.trim();
+		String[] ambis=ambiances();
+		for(int i=0;i<ambis.length;i++)
+			if(ambis[i].equalsIgnoreCase(ambiance))
+				return;
+		ambiances=CMParms.toStringArray(CMParms.parseCommas(CMParms.toStringList(ambis)+","+ambiance.toUpperCase(),true));
+	}
+	public void delAmbiance(String ambiance)
+	{
+		ambiance=ambiance.trim();
+		int i=0;
+		String[] ambis=ambiances();
+		for(i=0;i<ambis.length;i++)
+			if(ambis[i].equalsIgnoreCase(ambiance))
+			{
+				if(ambis.length==1)
+				{
+					ambiances=null;
+					return;
+				}
+				break;
+			}
+		if(i==ambis.length) return;
+		Vector V=CMParms.parseCommas(CMParms.toStringList(ambis),true);
+		V.remove(ambis[i]);
+		ambiances=CMParms.toStringArray(V);
+	}
+	
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}
     public void initializeClass(){}
 	public CMObject copyOf()
@@ -101,7 +134,7 @@ public class DefaultEnvStats implements EnvStats
 	private final static String[] CODES={
 		"SENSES","DISPOSITION","LEVEL",
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
-		"ARMOR","DAMAGE","ATTACK"};
+		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
 	public String[] getCodes(){return CODES;}
 	protected int getCodeNum(String code)
 	{
@@ -129,6 +162,7 @@ public class DefaultEnvStats implements EnvStats
 		case 7: setArmor(CMath.s_int(val)); break;
 		case 8: setDamage(CMath.s_int(val)); break;
 		case 9: setAttackAdjustment(CMath.s_int(val)); break;
+		case 10: ambiances=(val.trim().length()==0)?null:CMParms.toStringArray(CMParms.parseCommas(val,true)); break;
 		}
 	}
 	public String getStat(String code)
@@ -144,6 +178,7 @@ public class DefaultEnvStats implements EnvStats
 		case 7: return ""+armor();
 		case 8: return ""+damage();
 		case 9: return ""+attackAdjustment();
+		case 10: return CMParms.toStringList(ambiances());
 		default: return "";
 		}
 	}
