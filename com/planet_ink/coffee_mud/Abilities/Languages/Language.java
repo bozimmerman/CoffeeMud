@@ -173,7 +173,7 @@ public class Language extends StdAbility
 	{
 		if((affected instanceof MOB)&&(beingSpoken()))
 		{
-			if((msg.amISource((MOB)affected))
+			if((msg.source()==affected)
 			&&(msg.sourceMessage()!=null)
 			&&(msg.tool()==null)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)

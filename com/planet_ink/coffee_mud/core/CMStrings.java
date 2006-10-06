@@ -93,6 +93,71 @@ public class CMStrings
         }
         return str;
     }
+    
+    public static String replaceWord(String str, String thisStr, String withThisStr)
+    {
+        if((str==null)
+        ||(thisStr==null)
+        ||(withThisStr==null)
+        ||(str.length()==0)
+        ||(thisStr.length()==0))
+            return str;
+        withThisStr=withThisStr.toUpperCase();
+        for(int i=str.length()-1;i>=0;i--)
+        {
+            if((str.charAt(i)==thisStr.charAt(0))
+            &&((i==0)||(!Character.isLetter(str.charAt(i-1)))))
+                if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
+                &&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
+                {
+                	String oldWord=str.substring(i,i+thisStr.length());
+                	if(oldWord.toUpperCase().equals(oldWord)) 
+                        str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+                	else
+                	if(oldWord.toLowerCase().equals(oldWord))
+                        str=str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                	else
+                	if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
+                        str=str.substring(0,i)+withThisStr.charAt(0)+withThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
+                	else
+                        str=str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                }
+        }
+        return str;
+    }
+    
+    public static String replaceFirstWord(String str, String thisStr, String withThisStr)
+    {
+        if((str==null)
+        ||(thisStr==null)
+        ||(withThisStr==null)
+        ||(str.length()==0)
+        ||(thisStr.length()==0))
+            return str;
+        withThisStr=withThisStr.toUpperCase();
+        for(int i=str.length()-1;i>=0;i--)
+        {
+            if((str.charAt(i)==thisStr.charAt(0))
+            &&((i==0)||(!Character.isLetter(str.charAt(i-1)))))
+                if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
+                &&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
+                {
+                	String oldWord=str.substring(i,i+thisStr.length());
+                	if(oldWord.toUpperCase().equals(oldWord)) 
+                        return str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+                	else
+                	if(oldWord.toLowerCase().equals(oldWord))
+                		return str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                	else
+                	if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
+                		return str.substring(0,i)+withThisStr.charAt(0)+withThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
+                	else
+                		return str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                }
+        }
+        return str;
+    }
+    
     public static String replaceFirst(String str, String thisStr, String withThisStr)
     {
         if((str==null)
