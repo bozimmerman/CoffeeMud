@@ -46,8 +46,18 @@ public class Train extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
+        String teacherName=null;
+        if(commands.size()>1)
+        {
+            teacherName=(String)commands.lastElement();
+            if(teacherName.length()>1)
+                commands.removeElementAt(commands.size()-1);
+            else
+                teacherName=null;
+        }
+        
 
-		String abilityName=((String)commands.elementAt(0)).toUpperCase();
+		String abilityName=CMParms.combine(commands,0).toUpperCase();
         StringBuffer thingsToTrainFor=new StringBuffer("");
         for(int i=0;i<CharStats.STAT_DESCS.length;i++)
             if(i<CharStats.NUM_BASE_STATS)
@@ -156,7 +166,6 @@ public class Train extends StdCommand
 				}
 			}
 		}
-		commands.removeElementAt(0);
 
 		if(abilityCode==107)
 		{
@@ -201,11 +210,8 @@ public class Train extends StdCommand
 		}
 
 		MOB teacher=null;
-		if(commands.size()>0)
-		{
-			teacher=mob.location().fetchInhabitant((String)commands.elementAt(0));
-			if(teacher!=null) commands.removeElementAt(0);
-		}
+		if(teacherName!=null)
+			teacher=mob.location().fetchInhabitant(teacherName);
 		if(teacher==null)
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{

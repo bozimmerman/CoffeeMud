@@ -105,6 +105,8 @@ public interface CMFlagLibrary extends CMObject
     public boolean isAnimalIntelligence(MOB E);
     public boolean isVegetable(MOB E);
     public boolean isMobile(Environmental E);
+    public boolean isAggressiveTo(MOB M, MOB toM);
+    public boolean isPossiblyAggressive(MOB M);
     public Vector flaggedBehaviors(Environmental E, long flag);
     public Vector flaggedAnyAffects(Environmental E, long flag);
     public Vector flaggedAffects(Environmental E, long flag);

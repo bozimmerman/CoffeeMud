@@ -351,6 +351,11 @@ public class Pregnancy extends StdAbility
 					long divisor=Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMClass.globalClock().getDaysInMonth(); // down to months
+                    if(CMLib.dice().roll(1,200,0)==1)
+                    {
+                        Ability A=CMClass.getAbility("Mood");
+                        if(A!=null) A.invoke(mob,CMParms.makeVector("RANDOM"),mob,true,0);
+                    }
 					if(daysRemaining<7) // BIRTH!
 					{
 						if(CMLib.flags().isSleeping(mob))

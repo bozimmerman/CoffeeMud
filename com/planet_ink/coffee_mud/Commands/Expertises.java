@@ -47,7 +47,10 @@ public class Expertises extends StdCommand
 		for(int e=0;e<mob.numExpertises();e++)
 		{
 			def=CMLib.expertises().getDefinition(mob.fetchExpertise(e));
-			msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",20));
+            if(def==null)
+                msg.append(CMStrings.padRight("?"+mob.fetchExpertise(e)+"^?",20));
+            else
+    			msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",20));
 			if((++col)>=3)
 			{
 				msg.append("\n\r");

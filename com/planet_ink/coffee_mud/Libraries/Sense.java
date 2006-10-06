@@ -232,6 +232,24 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
+    public boolean isPossiblyAggressive(MOB M)
+    {
+        if(M==null) return false;
+        Vector V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+        return ((V==null)||(V.size()==0))? false:true;
+    }
+    public boolean isAggressiveTo(MOB M, MOB toM)
+    {
+        if((M==null)||(toM==null)) return false;
+        Vector V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+        if((V==null)||(V.size()==0)) return false;
+        for(int v=0;v<V.size();v++)
+            if(((Behavior)V.elementAt(v)).grantsAggressivenessTo(toM))
+                return true;
+        return false;
+    }
+
+    
 	public String getAlignmentName(Environmental E)
 	{
 		if((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
