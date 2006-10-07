@@ -46,9 +46,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	protected final static int TYPE_QUALCRAFT=2;
 	protected final static int TYPE_LTHLCRAFT=3;
 	protected final static String[] TYPES_CODES={"LITECRAFT",
-											   "DURACRAFT",
-											   "QUALCRAFT",
-											   "LTHLCRAFT",
+											     "DURACRAFT",
+											     "QUALCRAFT",
+											     "LTHLCRAFT",
 	};
 	protected final static String[] TYPES_STATS={"DEX",
 											     "STR",
@@ -56,9 +56,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											     "CON",
 	};
 	protected final static String[] TYPES_NAMES={"Light Crafting",
-											   "Durable Crafting",
-											   "Quality Crafting",
-											   "Lethal Crafting",
+											     "Durable Crafting",
+											     "Quality Crafting",
+											     "Lethal Crafting",
 	};
 	
 	protected final static String[][] STAGE_TYPES={
@@ -295,6 +295,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		if(WA!=null)
 			WA.setMiscText((WA.text()+" "+stat+adjustment).trim());
 	}
+    public void addSpellAdjustment(Item item, String spell, String parm)
+    {
+        Ability WA=item.fetchEffect("Prop_WearSpellCast");
+        if(WA==null)
+        {
+            WA=CMClass.getAbility("Prop_WearSpellCast");
+            item.addNonUninvokableEffect(WA);
+        }
+        else
+        if(CMLib.english().containsString(WA.text().toUpperCase(),spell))
+            return;
+        if(WA!=null)
+        {
+            if(WA.text().length()>0)
+                WA.setMiscText(WA.text()+";"+spell+"("+parm+")");
+            else
+                WA.setMiscText(spell+"("+parm+")");
+        }
+    }
 	
 	public void enhanceItem(MOB mob, Item item, DVector types)
 	{
@@ -376,7 +395,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
                         if((item instanceof Armor)
                         &&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
-    						addStatAdjustment(item,"CHA","+1");
+    						addSpellAdjustment(item,"Spell_WellDressed","1");
 						affect.tickDown*=4;
 						break;
 					}

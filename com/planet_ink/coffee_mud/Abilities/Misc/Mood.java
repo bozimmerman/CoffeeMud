@@ -48,14 +48,14 @@ public class Mood extends StdAbility
 	protected Object lastOne=null;
 	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","GOSSIP","OOC"};
 	public static final String[][] MOODS={
-		/*0*/{"FORMAL","+CHA 17","^bformal"},
-		/*1*/{"POLITE","+CHA 13","^bpolite"},
-		/*2*/{"HAPPY","","^yhappy"},
-		/*3*/{"SAD","","^ysad"},
+		/*0*/{"FORMAL","+ADJCHA 17","^Bformal"},
+		/*1*/{"POLITE","+ADJCHA 13","^Bpolite"},
+		/*2*/{"HAPPY","","^Yhappy"},
+		/*3*/{"SAD","","^Csad"},
 		/*4*/{"ANGRY","","^rangry"},
 		/*5*/{"RUDE","","^grude"},
 		/*6*/{"MEAN","","^rmean"},
-		/*7*/{"PROUD","","^rproud"},
+		/*7*/{"PROUD","","^bproud"},
 	};
 	
 	public final static String[] uglyPhrases={
@@ -595,6 +595,8 @@ public class Mood extends StdAbility
 						if(add) target.addNonUninvokableEffect(MOOD);
 					    MOOD.setMiscText(choice);
 					}
+                    target.recoverEnvStats();
+                    target.location().recoverRoomStats();
 				}
 			}
 		}

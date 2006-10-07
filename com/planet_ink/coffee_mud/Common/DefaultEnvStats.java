@@ -95,27 +95,36 @@ public class DefaultEnvStats implements EnvStats
 		for(int i=0;i<ambis.length;i++)
 			if(ambis[i].equalsIgnoreCase(ambiance))
 				return;
-		ambiances=CMParms.toStringArray(CMParms.parseCommas(CMParms.toStringList(ambis)+","+ambiance.toUpperCase(),true));
+		ambiances=CMParms.toStringArray(CMParms.parseCommas(CMParms.toStringList(ambis)+","+ambiance,true));
 	}
 	public void delAmbiance(String ambiance)
 	{
 		ambiance=ambiance.trim();
 		int i=0;
 		String[] ambis=ambiances();
+        Vector V=null;
 		for(i=0;i<ambis.length;i++)
 			if(ambis[i].equalsIgnoreCase(ambiance))
 			{
 				if(ambis.length==1)
-				{
 					ambiances=null;
-					return;
-				}
-				break;
+                else
+                {
+                    V=CMParms.parseCommas(CMParms.toStringList(ambis),true);
+                    if(V.size()==ambis.length)
+                        V.removeElementAt(i);
+                    ambiances=CMParms.toStringArray(V);
+                }
+				return;
 			}
 		if(i==ambis.length) return;
-		Vector V=CMParms.parseCommas(CMParms.toStringList(ambis),true);
-		V.remove(ambis[i]);
-		ambiances=CMParms.toStringArray(V);
+        for(i=0;i<V.size();i++)
+            if(((String)V.elementAt(i)).equalsIgnoreCase(ambiance))
+            {
+                V.removeElementAt(i);
+                ambiances=CMParms.toStringArray(V);
+                return;
+            }
 	}
 	
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}

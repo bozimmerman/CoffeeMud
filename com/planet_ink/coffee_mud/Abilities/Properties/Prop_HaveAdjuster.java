@@ -47,10 +47,10 @@ public class Prop_HaveAdjuster extends Property
     protected Vector mask=new Vector();
     
 	public int setAdjustments(String newText, 
-                                     EnvStats adjEnvStats, 
-                                     CharStats adjCharStats, 
-                                     CharState adjCharState,
-                                     Vector mask)
+                              EnvStats adjEnvStats, 
+                              CharStats adjCharStats, 
+                              CharState adjCharState,
+                              Vector mask)
 	{
 		boolean gotClass=false;
 		boolean gotRace=false;

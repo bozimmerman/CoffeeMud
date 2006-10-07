@@ -224,6 +224,25 @@ public class CMStrings
     			return true;
     	return false;
     }
+    
+    public static boolean compareStringArrays(String[] A1, String[] A2)
+    {
+        if(((A1==null)||(A1.length==0))
+        &&((A2==null)||(A2.length==0)))
+            return true;
+        if((A1==null)||(A2==null)) return false;
+        if(A1.length!=A2.length) return false;
+        for(int i=0;i<A1.length;i++)
+        {
+            boolean found=false;
+            for(int i2=0;i2<A2.length;i2++)
+                if(A1[i].equalsIgnoreCase(A2[i]))
+                { found=true; break;}
+            if(!found) return false;
+        }
+        return true;
+    }
+    
     public static boolean contains(String[] strs, String str)
     {
     	if((str==null)||(strs==null)) return false;
