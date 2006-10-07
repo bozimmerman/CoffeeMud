@@ -39,7 +39,7 @@ public class Trap_Snare extends StdTrap
 	protected int trapLevel(){return 5;}
 	public String requiresToSet(){return "5 pounds of cloth";}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		if(mob!=null)
@@ -48,7 +48,7 @@ public class Trap_Snare extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),5);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)

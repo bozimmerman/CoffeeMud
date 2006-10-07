@@ -55,8 +55,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
-	{beneficialAffect(mob,E,classLevel,0);return (Trap)E.fetchEffect(ID());}
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
+	{beneficialAffect(mob,E,qualifyingClassLevel+trapBonus,0);return (Trap)E.fetchEffect(ID());}
 
 	public void spring(MOB M)
 	{

@@ -39,7 +39,7 @@ public class Trap_ElectricShock extends StdTrap
 	protected int trapLevel(){return 19;}
 	public String requiresToSet(){return "10 pounds of metal";}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		if(mob!=null)
@@ -48,7 +48,7 @@ public class Trap_ElectricShock extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),10);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -80,7 +80,7 @@ public class Trap_ElectricShock extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off an shocking trap!"))
 			{
 				super.spring(target);
-				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!"+CMProps.msp("shock.wav",30));
+				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!"+CMProps.msp("shock.wav",30));
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

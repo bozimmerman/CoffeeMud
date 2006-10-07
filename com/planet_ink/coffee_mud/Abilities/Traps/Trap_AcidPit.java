@@ -52,7 +52,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 		else
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-			int damage=CMLib.dice().roll(trapLevel(),6,1);
+			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,null);
 			target.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid starts pouring into the room!");
 		}
@@ -76,7 +76,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 					MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(M!=invoker()))
 					{
-						int damage=CMLib.dice().roll(trapLevel(),6,1);
+						int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 						CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
 					}
 				}

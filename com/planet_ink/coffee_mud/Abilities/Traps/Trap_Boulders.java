@@ -39,7 +39,7 @@ public class Trap_Boulders extends StdTrap
 	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "50 pounds of boulders";}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		if(mob!=null)
@@ -48,7 +48,7 @@ public class Trap_Boulders extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),50);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -92,7 +92,7 @@ public class Trap_Boulders extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
 			{
 				super.spring(target);
-				int damage=CMLib.dice().roll(trapLevel(),20,1);
+				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
 				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
 			}
 		}

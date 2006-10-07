@@ -57,7 +57,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{return null;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

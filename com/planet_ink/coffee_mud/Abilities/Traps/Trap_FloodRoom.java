@@ -79,7 +79,7 @@ public class Trap_FloodRoom extends StdTrap
 	}
 
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Item I=null;
@@ -89,7 +89,7 @@ public class Trap_FloodRoom extends StdTrap
 			if(I!=null)	super.destroyResources(mob.location(),I.material(),100);
 			killWaterskins(mob);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 

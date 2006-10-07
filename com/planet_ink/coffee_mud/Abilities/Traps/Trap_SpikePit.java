@@ -55,7 +55,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Item I=getDagger(mob);
@@ -68,7 +68,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 			I.destroy();
 			I=getDagger(mob);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -92,7 +92,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		else
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor!");
-			int damage=CMLib.dice().roll(trapLevel(),6,1);
+			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			if((daggerDamages!=null)&&(daggerDamages.size()>0))
 			{
 				for(int i=0;i<daggerDamages.size();i++)

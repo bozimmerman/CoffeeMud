@@ -39,7 +39,11 @@ public class StdTrap extends StdAbility implements Trap
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
+	protected int ableCode=0;
 	protected int trapLevel(){return -1;}
+	public void setAbilityCode(int code){ableCode=code;}
+	public int abilityCode(int code){return super.abilityCode()+ableCode;}
+	
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
 	private String invokerName=null;
@@ -132,10 +136,20 @@ public class StdTrap extends StdAbility implements Trap
 				text=text.substring(x+2);
 			}
 		}
+		if(text.trim().startsWith(":"))
+		{
+			int x=text.indexOf(":");
+			int y=text.indexOf(":",x+1);
+			if((x>=0)&&(y>x)&&(CMath.isInteger(text.substring(x+1,y).trim())))
+			{
+				setAbilityCode(CMath.s_int(text.substring(x+1,y).trim()));
+				text=text.substring(y+1);
+			}
+		}
 		super.setMiscText(text);
 	}
 	public String text(){
-		return "`"+invokerName+"` "+super.text();
+		return "`"+invokerName+"` :"+abilityCode()+":"+super.text();
 	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -284,7 +298,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		int rejuv=baseRejuvTime(qualifyingClassLevel);

@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Trap extends ThiefSkill
+public class Thief_Trap extends TrappingThiefSkill
 {
 	public String ID() { return "Thief_Trap"; }
 	public String name(){ return "Lay Traps";}
@@ -130,7 +130,7 @@ public class Thief_Trap extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
+		boolean success=proficiencyCheck(mob,+((mob.envStats().level()+(getXLevel(mob)*3)
 											 -trapThis.envStats().level())*3),auto);
 		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
@@ -176,13 +176,13 @@ public class Thief_Trap extends ThiefSkill
 				}
 				else
 				if(theTrap!=null)
-					theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+					theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
 				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

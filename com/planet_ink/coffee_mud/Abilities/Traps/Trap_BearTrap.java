@@ -43,7 +43,7 @@ public class Trap_BearTrap extends StdTrap
 	protected int amountRemaining=250;
 	protected MOB trapped=null;
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		if(mob!=null)
@@ -53,7 +53,7 @@ public class Trap_BearTrap extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),30);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -120,9 +120,9 @@ public class Trap_BearTrap extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))
 			{
 				super.spring(target);
-				int damage=CMLib.dice().roll(trapLevel(),6,1);
+				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 				trapped=target;
-				amountRemaining=250+(trapLevel()*10);
+				amountRemaining=250+((trapLevel()+abilityCode())*10);
 				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
 			}
 		}

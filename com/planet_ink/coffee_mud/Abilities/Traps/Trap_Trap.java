@@ -64,7 +64,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		int rejuv=((30-mob.envStats().level())*30);

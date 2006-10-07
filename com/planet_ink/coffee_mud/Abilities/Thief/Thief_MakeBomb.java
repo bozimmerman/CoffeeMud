@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_MakeBomb extends ThiefSkill
+public class Thief_MakeBomb extends TrappingThiefSkill
 {
 	public String ID() { return "Thief_MakeBomb"; }
 	public String name(){ return "Make Bombs";}
@@ -46,7 +46,7 @@ public class Thief_MakeBomb extends ThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLevel(mob)*5);
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -122,13 +122,13 @@ public class Thief_MakeBomb extends ThiefSkill
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+				theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
 					T.spring(mob);
 				}

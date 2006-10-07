@@ -54,7 +54,7 @@ public class Trap_Launcher extends StdTrap
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Item I=getPoison(mob);
@@ -63,7 +63,7 @@ public class Trap_Launcher extends StdTrap
 			setMiscText(""+I.baseEnvStats().damage()+"/"+I.name());
 			I.destroy();
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -99,7 +99,7 @@ public class Trap_Launcher extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> struck by "+name+" trap!"))
 			{
 				super.spring(target);
-				int damage=CMLib.dice().roll(trapLevel(),dam,1);
+				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),dam,1);
 				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

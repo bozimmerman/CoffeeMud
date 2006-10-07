@@ -40,7 +40,7 @@ public class Trap_CaveIn extends StdTrap
 	public String requiresToSet(){return "100 pounds of wood";}
 	public int baseRejuvTime(int level){ return 6;}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		if(mob!=null)
@@ -49,7 +49,7 @@ public class Trap_CaveIn extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),100);
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -117,7 +117,7 @@ public class Trap_CaveIn extends StdTrap
 						if((M!=null)&&(M!=invoker()))
 							if(invoker().mayIFight(M))
 							{
-								int damage=CMLib.dice().roll(trapLevel(),20,1);
+								int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
 								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The cave-in <DAMAGE> <T-NAME>!");
 							}
 					}

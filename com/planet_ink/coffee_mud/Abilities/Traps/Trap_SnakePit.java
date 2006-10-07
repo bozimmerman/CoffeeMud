@@ -58,7 +58,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Item I=getCagedAnimal(mob);
@@ -72,7 +72,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		}
 		buf.append("</SNAKES>");
 		setMiscText(buf.toString());
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -113,7 +113,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		else
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-			int damage=CMLib.dice().roll(trapLevel(),6,1);
+			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
 		Vector snakes=new Vector();

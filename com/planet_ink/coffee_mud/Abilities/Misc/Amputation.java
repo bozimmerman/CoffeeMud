@@ -243,7 +243,7 @@ public class Amputation extends StdAbility implements Amputator
 		boolean right=false;
 		boolean left=false;
 		Integer code=null;
-		int l1,l2=0;
+		int l1=0;
 		for(int v=0;v<missingLimbs.size();v++)
 		{
 			String s=((String)missingLimbs.elementAt(v)).toUpperCase();

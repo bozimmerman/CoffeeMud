@@ -62,13 +62,13 @@ public class Bomb_Poison extends StdBomb
 		}
 		return true;
 	}
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Vector V=returnOffensiveAffects(E);
 		if(V.size()>0)
 			setMiscText(((Ability)V.firstElement()).ID());
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public void spring(MOB target)

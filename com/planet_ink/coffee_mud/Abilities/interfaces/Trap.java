@@ -129,11 +129,11 @@ public interface Trap extends Ability
 	 * given classlevel and qualifyingClassLevel of the trapper.
 	 * @param mob the trapper
 	 * @param E the object to set the trap on
-	 * @param classLevel the level of the trapper
+	 * @param trapBonus any bonus to the traps effectiveness (0 is normal)
 	 * @param qualifyingClassLevel the class-level at which the trapper qualified for this trap
 	 * @return the Trap object denoting the trap just added to the target object
 	 */
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel);
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel);
 	/**
 	 * A simple display string describing the conditions necesssary to get the canSetTrapOn
 	 * method to return true.

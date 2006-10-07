@@ -55,7 +55,7 @@ public class Trap_Ignition extends StdTrap
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Item I=getPoison(mob);
@@ -64,7 +64,7 @@ public class Trap_Ignition extends StdTrap
 			((Drink)I).setLiquidHeld(0);
 			I.destroy();
 		}
-		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
@@ -92,7 +92,7 @@ public class Trap_Ignition extends StdTrap
 				Ability B=CMClass.getAbility("Burning");
 				if(B!=null)
 				{
-					B.setProficiency(trapLevel()/5);
+					B.setProficiency((trapLevel()/5)+abilityCode());
 					B.invoke(invoker(),affected,true,0);
 				}
 				if(affected instanceof Item)
