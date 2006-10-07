@@ -75,6 +75,7 @@ public class Archon extends StdCharClass
 		// new thieves skills
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_EscapeBonds",false,null,"+DEX 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false,null,"+DEX 10");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+WIS 12");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false,CMParms.parseSemicolons("Thief_Sneak",true),"+CHA 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false,CMParms.parseSemicolons("Thief_Hide",true),"+WIS 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Spying",false,null,"+WIS 18");
@@ -87,6 +88,7 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_SlipperyMind",false,CMParms.parseSemicolons("Thief_Con",true),"+CHA 18");
         CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false,CMParms.parseSemicolons("Thief_ConcealItem",true),"+WIS 18");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_TapRoom",false,CMParms.parseSemicolons("Thief_ConcealItem;Thief_Evesdrop",true),"+INT 14 +DEX 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_DampenAuras",false,CMParms.parseSemicolons("Thief_SlipperyMind",true),"+CHA 18");
         CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false,CMParms.parseSemicolons("Thief_ImprovedHiding;Thief_PlantItem;Thief_Swipe;Thief_Nondetection",true),"+DEX 24");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false,null,"+DEX 18");
         CMLib.ableMapper().addCharAbilityMapping(ID(),55,"Thief_ConcealWalkway",false,CMParms.parseSemicolons("Thief_ConcealDoor",true),"+WIS 20");

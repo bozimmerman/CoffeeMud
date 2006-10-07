@@ -57,6 +57,7 @@ public interface LegalBehavior extends Behavior
     public double finesOwed(MOB mob);
     public boolean updateLaw(Area myArea);
     public String rulingClan();
+    public long rulingTimestamp();
     public String conquestInfo(Area myArea);
     public int controlPoints();
     public int revoltChance();

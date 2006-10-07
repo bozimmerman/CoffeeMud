@@ -48,8 +48,8 @@ public class Bleeding extends StdAbility
     public void affectEnvStats(Environmental affected, EnvStats affectedStats)
     {
         super.affectEnvStats(affected,affectedStats);
-        if(affected instanceof MOB)
-            affectedStats.setSpeed(affectedStats.speed()*healthPct((MOB)affected));
+        //if(affected instanceof MOB)
+        //    affectedStats.setSpeed(affectedStats.speed()*healthPct((MOB)affected));
     }
 
     public void unInvoke()
@@ -65,8 +65,8 @@ public class Bleeding extends StdAbility
     public void affectCharState(MOB affected, CharState affectedState)
     {
         super.affectCharState(affected,affectedState);
-        affectedState.setMovement((int)Math.round(affectedState.getMovement()*CMath.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())));
-        affectedState.setMana((int)Math.round(affectedState.getMana()*CMath.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())));
+        //affectedState.setMovement((int)Math.round(affectedState.getMovement()*CMath.div(affected.curState().getHitPoints(),affected.maxState().getHitPoints())));
+        //affectedState.setMana((int)Math.round(affectedState.getMana()*CMath.div(affected.curState().getHitPoints(),affected.maxState().getHitPoints())));
     }
 
     public void  executeMsg(Environmental myHost, CMMsg msg)
@@ -119,18 +119,23 @@ public class Bleeding extends StdAbility
         	return false;
         if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
         {
+        	MOB mob=(MOB)ticking;
             if(hpToKeep<=0)
             {
-                hpToKeep=((MOB)ticking).curState().getHitPoints();
-                ((MOB)ticking).recoverMaxState();
-                if(((MOB)ticking).curState().getMana()>((MOB)ticking).maxState().getMana())
-                    ((MOB)ticking).curState().setMana(((MOB)ticking).maxState().getMana());
-                if(((MOB)ticking).curState().getMovement()>((MOB)ticking).maxState().getMovement())
-                    ((MOB)ticking).curState().setMovement(((MOB)ticking).maxState().getMovement());
+                hpToKeep=mob.curState().getHitPoints();
+                mob.recoverMaxState();
             }
             else
-            if(((MOB)ticking).curState().getHitPoints()>hpToKeep)
-                ((MOB)ticking).curState().setHitPoints(hpToKeep);
+            {
+	            if(mob.curState().getHitPoints()>hpToKeep)
+	            	mob.curState().setHitPoints(hpToKeep);
+	            int maxMana=(int)Math.round(CMath.mul(mob.maxState().getMana(),healthPct(mob)));
+                if(mob.curState().getMana()>maxMana)
+                	mob.curState().setMana(maxMana);
+	            int maxMovement=(int)Math.round(CMath.mul(mob.maxState().getMovement(),healthPct(mob)));
+                if(mob.curState().getMovement()>maxMovement)
+                	mob.curState().setMovement(maxMovement);
+            }
         }
         return true;
     }

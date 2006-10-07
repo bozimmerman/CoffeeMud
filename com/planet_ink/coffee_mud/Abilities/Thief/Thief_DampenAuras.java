@@ -31,49 +31,30 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_SlipperyMind extends ThiefSkill
+public class Thief_DampenAuras extends ThiefSkill
 {
-	public String ID() { return "Thief_SlipperyMind"; }
-	public String name(){ return "Slippery Mind";}
-	public String displayText(){return "(Slippery Mind)";}
+	public String ID() { return "Thief_DampenAuras"; }
+	public String name(){ return "Dampen Auras";}
+	public String displayText(){return "(Dampened Auras)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"SLIPPERYMIND"};
+	private static final String[] triggerStrings = {"DAMPENAURAS"};
 	public String[] triggerStrings(){return triggerStrings;}
-	DVector oldFactions=null;
     
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(unInvoked) return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(ticking instanceof MOB))
-        {
-			if(!super.tick(ticking,tickID)) 
-				return false;
-			MOB mob=(MOB)affected;
-			Faction F=null;
-			if(oldFactions==null)
-			{
-				oldFactions=new DVector(2);
-		        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
-				{
-		            F=CMLib.factions().getFaction((String)e.nextElement());
-		            if(F!=null)
-		            {
-		            	oldFactions.addElement(F,new Integer(mob.fetchFaction(F.factionID())));
-		            	mob.addFaction(F.factionID(),F.middle());
-		            }
-				}
-			}
-			else
-			for(int f=0;f<oldFactions.size();f++)
-			{
-				F=(Faction)oldFactions.elementAt(f,1);
-				if(mob.fetchFaction(F.factionID())!=F.middle())
-					mob.addFaction(F.factionID(),F.middle());
-			}
-        }
-		return true;
+		return super.tick(ticking,tickID);
+	}
+	
+	public void affectEnvStats(Environmental host, EnvStats stats)
+	{
+		super.affectEnvStats(host,stats);
+		if(unInvoked) 
+			host.delEffect(this);
+		else
+			stats.addAmbiance("-MOST");
 	}
 	
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -96,14 +77,8 @@ public class Thief_SlipperyMind extends ThiefSkill
 	{
 		Environmental E=affected;
 		super.unInvoke();
-		if((E instanceof MOB)&&(oldFactions!=null))
-		{
-			if(!((MOB)E).amDead())
-				((MOB)E).tell("You've lost your slippery mind concentration.");
-			for(int f=0;f<oldFactions.size();f++)
-				((MOB)E).addFaction(((Faction)oldFactions.elementAt(f,1)).factionID(),((Integer)oldFactions.elementAt(f,2)).intValue());
-			oldFactions=null;
-		}
+		if((E instanceof MOB)&&(!((MOB)E).amDead()))
+			((MOB)E).tell("You noticed the aura dampening is wearing away.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -114,7 +89,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a slippery mind.");
+			mob.tell(target,null,null,"<S-NAME> can't dampen <S-YOUPOSS> auras again so soon.");
 			return false;
 		}
 
@@ -123,9 +98,9 @@ public class Thief_SlipperyMind extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> gain(s) a slippery mind.":"<S-NAME> wink(s) and nod(s).");
+		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<T-NAME> dampen(s) <T-HIS-HER> auras.");
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> wink(s) and nod(s), but <S-IS-ARE>n't fooling anyone.");
+			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) to dampen <S-HIS-HER> auras, but fail(s).");
 		else
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -133,7 +108,25 @@ public class Thief_SlipperyMind extends ThiefSkill
 			beneficialAffect(mob,target,asLevel,0);
 			Ability A=target.fetchEffect(ID());
 			if(A!=null)
+			{
 				A.tick(target,Tickable.TICKID_MOB);
+				Item I=null;
+				Environmental affecting=A.affecting();
+				StringBuffer items=new StringBuffer("");
+				for(int i=0;i<target.inventorySize();i++)
+				{
+					I=target.fetchInventory(i);
+					if(I!=null)
+					{
+						I.addEffect(A);
+						A.setAffectedOne(affecting);
+						items.append(", "+I.name());
+					}
+				}
+				if(items.length()>2)
+					((MOB)target).tell("You've dampened the auras on the following items: "+items.substring(2));
+				target.location().recoverRoomStats();
+			}
 		}
 		return success;
 	}
