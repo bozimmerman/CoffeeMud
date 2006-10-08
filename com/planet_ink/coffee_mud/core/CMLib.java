@@ -194,6 +194,7 @@ public class CMLib
             registered[code]=true;
         }
     }
+    @SuppressWarnings("deprecation")
     public static void killThread(Thread t, long sleepTime, int attempts)
     {
 		try{

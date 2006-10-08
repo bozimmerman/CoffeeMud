@@ -68,7 +68,7 @@ public class Order extends StdCommand
 		String addendumStr="";
 		do
 		{
-			MOB target=target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
+			MOB target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
 			if(target==null) break;
 			if((CMLib.flags().canBeSeenBy(target,mob))
 			&&(target!=mob)

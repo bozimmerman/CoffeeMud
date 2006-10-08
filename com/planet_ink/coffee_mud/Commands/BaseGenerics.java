@@ -974,8 +974,7 @@ public class BaseGenerics extends StdCommand
 						else
 						if(E instanceof Wand)
 						{
-							Ability chosenOne=chosenOne=CMClass.getAbility(newName);
-							if(chosenOne!=null)
+							if(CMClass.getAbility(newName)!=null)
 								ok=true;
 							else
 								mob.tell(getScr("BaseGenerics","namenotrec",newName));
@@ -989,8 +988,7 @@ public class BaseGenerics extends StdCommand
 							while(x>=0)
 							{
 								String spellName=newName.substring(0,x).trim();
-								Ability chosenOne=chosenOne=CMClass.getAbility(spellName);
-								if(chosenOne!=null)
+								if(CMClass.getAbility(spellName)!=null)
 									ok=true;
 								else
 								{

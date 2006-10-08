@@ -156,7 +156,7 @@ public class ItemGenerator extends ActiveTicker
 	}
 
 	
-	private class ItemGenerationTicker implements Tickable
+	protected class ItemGenerationTicker implements Tickable
 	{
 		public String ID(){return "ItemGenerationTicker";}
 		public String name(){return "ItemGenerationTicker";}
