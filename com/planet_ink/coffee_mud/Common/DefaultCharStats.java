@@ -40,8 +40,7 @@ public class DefaultCharStats implements CharStats
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharStats();}}
     public void initializeClass(){}
 	// competency characteristics
-	protected int[] stats=new int[NUM_STATS];
-	protected int[] partials=null;
+	protected short[] stats=new short[NUM_STATS];
 	protected CharClass[] myClasses=null;
 	protected Integer[] myLevels=null;
 	protected Race myRace=null;
@@ -49,7 +48,7 @@ public class DefaultCharStats implements CharStats
 	protected String genderName=null;
 	protected String displayClassName=null;
 	protected String displayClassLevel=null;
-	protected int[] bodyAlterations=null;
+	protected short[] bodyAlterations=null;
 	protected long unwearableBitmap=0;
 	
 	public DefaultCharStats()
@@ -60,12 +59,12 @@ public class DefaultCharStats implements CharStats
     public void setAllBaseValues(int def)
     {
         for(int i=0;i<NUM_BASE_STATS;i++)
-            stats[i]=def;
+            stats[i]=(short)def;
     }
     public void setAllValues(int def)
     {
         for(int i=0;i<NUM_STATS;i++)
-            stats[i]=def;
+            stats[i]=(short)def;
         unwearableBitmap=0;
     }
 
@@ -220,7 +219,7 @@ public class DefaultCharStats implements CharStats
 		{
 			int vnum=x-NUM_SAVE_START;
 			if((vnum<V.size())&&(vnum>=0))
-				stats[x]=CMath.s_int((String)V.elementAt(vnum));
+				stats[x]=CMath.s_short((String)V.elementAt(vnum));
 		}
 	}
 	public void setRaceName(String newRaceName){raceName=newRaceName;}
@@ -421,7 +420,7 @@ public class DefaultCharStats implements CharStats
 	}
 	public void alterBodypart(int racialPartNumber, int deviation)
 	{
-		if(bodyAlterations==null) bodyAlterations=new int[Race.BODY_PARTS];
+		if(bodyAlterations==null) bodyAlterations=new short[Race.BODY_PARTS];
 		bodyAlterations[racialPartNumber]+=deviation;
 	}
 	
@@ -502,7 +501,7 @@ public class DefaultCharStats implements CharStats
 		newOne.myRace=myRace;
 		if(myLevels!=null)
 			newOne.myLevels=(Integer[])myLevels.clone();
-		newOne.stats=(int[])stats.clone();
+		newOne.stats=(short[])stats.clone();
 		return newOne;
 	}
 
@@ -614,7 +613,9 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setStat(int abilityCode, int value)
 	{
-		stats[abilityCode]=value;
+        if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
+            Log.errOut("Value out of range",new Exception());
+		stats[abilityCode]=(short)value;
 	}
 
 	public int getStat(String abilityName)
