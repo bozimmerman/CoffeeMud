@@ -146,9 +146,14 @@ public class StdClanFlag extends StdItem implements ClanItem
                         if(B!=null) rulingClan=B.rulingClan();
 						if(!rulingClan.equals(msg.source().getClanID()))
 						{
-							msg.source().tell("You must conquer this area to take the clan flag.");
+							msg.source().tell("You must conquer and fully control this area to take the clan flag.");
 							return false;
 						}
+                        if((B!=null)&&(!B.isFullyControlledByClan()))
+                        {
+                            msg.source().tell("Your clan does not yet fully control the area.");
+                            return false;
+                        }
 					}
 				}
 				else

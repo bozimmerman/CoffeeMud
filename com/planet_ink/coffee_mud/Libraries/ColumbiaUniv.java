@@ -63,6 +63,29 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     }
     public Enumeration definitions(){ return ((Hashtable)completeEduMap.clone()).elements();}
     public ExpertiseDefinition getDefinition(String ID){ return (ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
+    public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
+    {
+        ExpertiseDefinition D=getDefinition(ID);
+        if(D!=null) return D;
+        for(Enumeration e=definitions();e.hasMoreElements();)
+        {
+            D=(ExpertiseDefinition)e.nextElement();
+            if(D.name.equalsIgnoreCase(ID)) return D;
+        }
+        if(exactOnly) return null;
+        for(Enumeration e=definitions();e.hasMoreElements();)
+        {
+            D=(ExpertiseDefinition)e.nextElement();
+            if(D.ID.startsWith(ID)) return D;
+        }
+        for(Enumeration e=definitions();e.hasMoreElements();)
+        {
+            D=(ExpertiseDefinition)e.nextElement();
+            if(CMLib.english().containsString(D.name,ID)) return D;
+        }
+        return null;
+    }
+    
     
     public Vector myQualifiedExpertises(MOB mob)
     {

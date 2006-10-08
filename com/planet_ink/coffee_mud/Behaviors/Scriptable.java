@@ -6444,6 +6444,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					if(newTarget instanceof MOB) A=((MOB)newTarget).fetchAbility(cast);
 					if(A==null) A=CMClass.getAbility(cast);
+                    if(A==null)
+                    {
+                        ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
+                        if(D==null)
+                            scriptableError(scripted,"MPENABLE","Syntax","Unknown skill/expertise: "+cast);
+                        else
+                        if((newTarget!=null)&&(newTarget instanceof MOB))
+                            ((MOB)newTarget).addExpertise(D.ID);
+                    }
 				}
 				if((newTarget!=null)&&(A!=null)&&(newTarget instanceof MOB))
 				{
@@ -6467,6 +6476,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					Ability A=((MOB)newTarget).findAbility(cast);
 					if(A!=null)((MOB)newTarget).delAbility(A);
+                    ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
+                    if((newTarget!=null)&&(newTarget instanceof MOB)&&(D!=null))
+                        ((MOB)newTarget).delExpertise(D.ID);
 				}
 				break;
 			}

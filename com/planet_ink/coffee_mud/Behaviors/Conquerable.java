@@ -50,6 +50,11 @@ public class Conquerable extends Arrest
     protected boolean allowLaw=false;
     protected boolean REVOLTNOW=false;
     protected long waitToReload=0;
+    protected long conquestDate=0;
+    protected static final long CONTROLTIME=1000*60*60*26;
+    public boolean isFullyControlledByClan(){
+        return ((holdingClan.length()>0)&&((System.currentTimeMillis()-conquestDate)>CONTROLTIME));
+    }
 
     protected int revoltDown=REVOLTFREQ;
     protected static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/Tickable.TIME_TICK);
@@ -76,7 +81,16 @@ public class Conquerable extends Arrest
             Clan C=CMLib.clans().getClan(holdingClan);
             if(C!=null)
             {
-                str.append("Area '"+myArea.name()+"' is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
+                if(isFullyControlledByClan())
+                    str.append("Area '"+myArea.name()+"' is controlled by "+C.typeName()+" "+C.name()+".\n\r");
+                else
+                {
+                    str.append("Area '"+myArea.name()+"' is occupied by "+C.typeName()+" "+C.name()+".\n\r");
+                    long remain=CONTROLTIME-(System.currentTimeMillis()-conquestDate);
+                    String remainStr=myArea.getTimeObj().deriveEllapsedTimeString(remain);
+                    str.append("Full control will automatically be achived in "+remainStr+".\n\r");
+                }
+                
                 if(C.getGovernment()!=Clan.GVT_THEOCRACY)
                 {
                     int pts=calcItemControlPoints(myArea);
@@ -243,6 +257,7 @@ public class Conquerable extends Arrest
 
 		}
 		holdingClan="";
+        conquestDate=0;
         synchronized(clanItems)
         {
             try{
@@ -326,6 +341,7 @@ public class Conquerable extends Arrest
 				if(xml!=null)
 				{
 					savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
+                    conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
 					Vector allData=CMLib.xml().getRealContentsFromPieces(xml,"ACITEMS");
 					if(allData!=null)
@@ -749,6 +765,7 @@ public class Conquerable extends Arrest
                 CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.",-1);
+            conquestDate=System.currentTimeMillis();
 		}
 	}
 
@@ -1032,6 +1049,7 @@ public class Conquerable extends Arrest
 				totalControlPoints=-1;
 				StringBuffer data=new StringBuffer("");
 				data.append(CMLib.xml().convertXMLtoTag("CLANID",holdingClan));
+                data.append(CMLib.xml().convertXMLtoTag("CLANDATE",conquestDate));
 				data.append("<ACITEMS>");
 				synchronized(clanItems)
 				{

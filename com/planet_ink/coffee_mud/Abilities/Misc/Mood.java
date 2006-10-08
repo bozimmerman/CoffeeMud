@@ -132,10 +132,10 @@ public class Mood extends StdAbility
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 			{
                 String str=CMStrings.getSayFromMessage(msg.othersMessage());
-                String oldStr=str.toString();
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
+                    String oldStr=str.toString();
 					switch(moodCode)
 					{
 					case 0: // formal

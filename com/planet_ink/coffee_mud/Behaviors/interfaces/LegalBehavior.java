@@ -59,6 +59,7 @@ public interface LegalBehavior extends Behavior
     public String rulingClan();
     public long rulingTimestamp();
     public String conquestInfo(Area myArea);
+    public boolean isFullyControlledByClan();
     public int controlPoints();
     public int revoltChance();
     public void setControlPoints(String clanID, int newControlPoints);

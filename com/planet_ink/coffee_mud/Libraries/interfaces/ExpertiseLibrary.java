@@ -86,6 +86,7 @@ public interface ExpertiseLibrary extends CMObject
     public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost);
     public void delDefinition(String ID);
     public ExpertiseDefinition getDefinition(String ID);
+    public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
     public Enumeration definitions();
     public Vector myQualifiedExpertises(MOB mob);
     public Vector myListableExpertises(MOB mob);

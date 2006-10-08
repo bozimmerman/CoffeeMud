@@ -267,6 +267,48 @@ public class DefaultTimeClock implements TimeClock
         return CMClass.globalClock();
     }
 
+    public String deriveEllapsedTimeString(long millis)
+    {
+        int hours=(int)(millis/Tickable.TIME_MILIS_PER_MUDHOUR);
+        int days=0;
+        int months=0;
+        int years=0;
+        if(hours>getHoursInDay())
+        {
+            days=(int)Math.round(Math.floor(CMath.div(hours,getHoursInDay())));
+            hours=hours-(days*getHoursInDay());
+        }
+        if(days>getDaysInMonth())
+        {
+            months=(int)Math.round(Math.floor(CMath.div(days,getDaysInMonth())));
+            days=days-(months*getDaysInMonth());
+        }
+        if(months>getMonthsInYear())
+        {
+            years=(int)Math.round(Math.floor(CMath.div(months,getMonthsInYear())));
+            months=months-(years*getMonthsInYear());
+        }
+        StringBuffer buf=new StringBuffer("");
+        if(years>0) buf.append(years+" years");
+        if(months>0)
+        {
+            if(buf.length()>0) buf.append(", ");
+            buf.append(months+" months");
+        }
+        if(days>0)
+        {
+            if(buf.length()>0) buf.append(", ");
+            buf.append(days+" days");
+        }
+        if(hours>0)
+        {
+            if(buf.length()>0) buf.append(", ");
+            buf.append(hours+" hours");
+        }
+        if(buf.length()==0) return "any second now";
+        return buf.toString();
+    }
+    
     public long deriveMillisAfter(TimeClock C)
     {
         long numMudHours=0;

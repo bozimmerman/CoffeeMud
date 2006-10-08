@@ -98,6 +98,15 @@ public class Log
 		return sint;
 	}
 
+    
+    private static boolean isWriterOn(String name)
+    {
+        String flag=prop(name);
+        if(flag==null) return true;
+        if(flag.length()==0) return false;
+        if(flag.startsWith("OFF")) return false;
+        return true;
+    }
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
@@ -113,11 +122,14 @@ public class Log
 		else
 		if(flag.length()>0)
 		{
-			int x=flag.length();
-			while(Character.isDigit(flag.charAt(--x)));
-			if((priority>s_int(flag.substring(x+1)))
-			||(flag.startsWith("OFF")))
-				return null;
+            if(flag.startsWith("OFF")) return null;
+            if(priority>=0)
+            {
+                int x=flag.length();
+    			while(Character.isDigit(flag.charAt(--x)));
+    			if(priority>s_int(flag.substring(x+1)))
+    				return null;
+            }
 			if(flag.startsWith("ON"))
 				return systemOutWriter;
 			else
@@ -254,6 +266,7 @@ public class Log
 			FileOutputStream fileStream=new FileOutputStream(fileOut);
 			fileOutWriter=new PrintWriter(fileStream,true);
 			System.setErr(new PrintStream(fileStream));
+            
 		}
 		catch(IOException e)
 		{
@@ -518,11 +531,11 @@ public class Log
 		fileOutWriter=null;
 	}
 
-	public static boolean errorChannelOn() { return getWriter("error",Integer.MIN_VALUE)!=null;}
-	public static boolean helpChannelOn() { return getWriter("help",Integer.MIN_VALUE)!=null;}
-	public static boolean debugChannelOn() { return getWriter("debug",Integer.MIN_VALUE)!=null;}
-	public static boolean infoChannelOn() { return getWriter("info",Integer.MIN_VALUE)!=null;}
-	public static boolean warnChannelOn() { return getWriter("warning",Integer.MIN_VALUE)!=null;}
+	public static boolean errorChannelOn() { return isWriterOn("error");}
+	public static boolean helpChannelOn() { return isWriterOn("help");}
+	public static boolean debugChannelOn() { return isWriterOn("debug");}
+	public static boolean infoChannelOn() { return isWriterOn("info");}
+	public static boolean warnChannelOn() { return isWriterOn("warning");}
 	public static boolean errorChannelAt(int priority) { return getWriter("error",priority)!=null;}
 	public static boolean helpChannelAt(int priority) { return getWriter("help",priority)!=null;}
 	public static boolean debugChannelAt(int priority) { return getWriter("debug",priority)!=null;}

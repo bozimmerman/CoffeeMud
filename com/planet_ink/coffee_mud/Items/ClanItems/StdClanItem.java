@@ -340,6 +340,11 @@ public class StdClanItem extends StdItem implements ClanItem
                         msg.source().tell("You'll need to conquer this area to do that.");
                         return false;
                     }
+                    if((theLaw!=null)&&(!theLaw.isFullyControlledByClan()))
+                    {
+                        msg.source().tell("Your clan does not yet fully control the area.");
+                        return false;
+                    }
                 }
 			}
         }

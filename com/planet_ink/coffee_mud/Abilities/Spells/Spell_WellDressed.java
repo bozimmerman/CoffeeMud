@@ -101,7 +101,7 @@ public class Spell_WellDressed extends Spell
                 mob.location().send(mob,msg);
                 if(target.location()==mob.location())
                 {
-                    target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> very well dressed.");
+                    //target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> very well dressed.");
                     beneficialAffect(mob,target,asLevel,0);
                     Ability A=target.fetchEffect(ID());
                     if(A!=null) A.setMiscText(""+newDressCode);
