@@ -21,7 +21,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMLib 
+public class CMLib
 {
     public CMLib(){super();}
     static final long serialVersionUID=42;
     public String getClassName(){return "CMLib";}
     private static CMLib inst=new CMLib();
     public static CMLib instance(){return inst;}
-    
+
     public static final int LIBRARY_DATABASE=0;
     public static final int LIBRARY_THREADS=1;
     public static final int LIBRARY_INTERMUD=2;
@@ -87,7 +87,7 @@ public class CMLib
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
-    
+
     public static CMath math(){return CMath.instance();}
     public static CMParms parms(){return CMParms.instance();}
     public static CMStrings strings(){return CMStrings.instance();}
@@ -100,7 +100,7 @@ public class CMLib
     public static CMLib libraries(){return CMLib.instance();}
     public static CMFile newFile(String currentPath, String filename, boolean pleaseLogErrors)
     { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
-    
+
     public static DatabaseEngine database(){return (DatabaseEngine)libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)libraries[LIBRARY_THREADS];}
     public static I3Interface intermud(){return (I3Interface)libraries[LIBRARY_INTERMUD];}
@@ -140,7 +140,7 @@ public class CMLib
     public static ColorLibrary color(){return (ColorLibrary)libraries[LIBRARY_COLOR];}
     public static CharCreationLibrary login(){return (CharCreationLibrary)libraries[LIBRARY_LOGIN];}
     public static ExpertiseLibrary expertises(){return (ExpertiseLibrary)libraries[LIBRARY_EXPERTISES];}
-    
+
     public static int convertToLibraryCode(Object O)
     {
         if(O instanceof DatabaseEngine) return LIBRARY_DATABASE;
@@ -184,17 +184,16 @@ public class CMLib
         if(O instanceof ExpertiseLibrary) return LIBRARY_EXPERTISES;
         return -1;
     }
-    
+
     public static void registerLibrary(CMObject O)
     {
         int code=convertToLibraryCode(O);
         if(code>=0)
-        { 
-            libraries[code]=O; 
+        {
+            libraries[code]=O;
             registered[code]=true;
         }
     }
-    @SuppressWarnings("deprecation")
     public static void killThread(Thread t, long sleepTime, int attempts)
     {
 		try{
@@ -206,9 +205,9 @@ public class CMLib
 			if(t.isAlive())t.stop();
 		}
 		catch(Exception e){}
-		
+
     }
-    
+
     public static void registerLibraries(Enumeration e)
     {
         for(;e.hasMoreElements();)
