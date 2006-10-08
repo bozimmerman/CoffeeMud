@@ -30,6 +30,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface EnvStats extends CMObject
 {
+    public final static int STAT_LEVEL=0;
+    public final static int STAT_SENSES=1;         // see Senses class
+    public final static int STAT_ARMOR=2;            // should be positive
+    public final static int STAT_DAMAGE=3;             // should be positive
+    public final static int STAT_ATTACK=4;   // should be negative
+    public final static int STAT_DISPOSITION=5;        // see Senses class
+    public final static int STAT_REJUV=6;
+    public final static int STAT_WEIGHT=7;
+    public final static int STAT_ABILITY=8;            // object dependant
+    public final static int STAT_HEIGHT=9;
+    public final static int NUM_STATS=10;
+     
 	// sensemask stuff
 	public final static int CAN_NOT_SEE=1;
 	public final static int CAN_SEE_HIDDEN=2;

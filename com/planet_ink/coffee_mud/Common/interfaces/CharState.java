@@ -35,6 +35,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface CharState extends CMObject
 {
+    public final static int STAT_HITPOINTS=0;
+    public final static int STAT_MANA=1;
+    public final static int STAT_MOVE=2;
+    public final static int STAT_HUNGER=3;
+    public final static int STAT_THIRST=4;
+    public final static int STAT_BOTHER=5;
+    public final static int STAT_TICKSHUNGRY=6;
+    public final static int STAT_TICKSTHIRSTY=7;
+    public final static int STAT_ANNOYANCETICKER=8;
+    public final static int STAT_NUMSTATS=9;
+    public final static int STAT_NUM_BASE_STATS=5;
+    
     /** constant representing how many ticks between hunger/thirst messages*/
 	public final static int ANNOYANCE_DEFAULT_TICKS=60;
     /** constant representing something*/

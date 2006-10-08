@@ -63,6 +63,7 @@ public interface TimeClock extends Tickable
 	public void setYearNames(String[] years);
     public TimeClock deriveClock(long millis);
     public long deriveMillisAfter(TimeClock C);
+    public String deriveEllapsedTimeString(long millis);
     public int determineSeason(String str);
     public void initializeINIClock(CMProps page);
 	
