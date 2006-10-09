@@ -603,45 +603,64 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
         else
             weight=""+item.envStats().weight();
-        response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
-            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
-        else
-            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
-        if((item instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
-            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)item).weaponType()])+" damage.  ");
-        else
-        if((item instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+        if(item instanceof CagedAnimal)
         {
-            if(item.envStats().height()>0)
-                response.append(" It is a size "+item.envStats().height()+", and is ");
-            else
-                response.append(" It is your size, and is ");
-            response.append(((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
-            					 ?new StringBuffer("")
-            					 :new StringBuffer("worn on the "));
-            for(int l=0;l<Item.WORN_CODES.length;l++)
-            {
-                int wornCode=1<<l;
-                if(CMath.bset(item.rawProperLocationBitmap(),wornCode))
-                {
-                	String wornString=CMLib.flags().wornLocation(wornCode);
-	                if(wornString.length()>0)
- 	                {
-	                	response.append(CMStrings.capitalizeAndLower(wornString)+" ");
-                        if(item.rawLogicalAnd())
-                        	response.append("and ");
-                        else
-                        	response.append("or ");
-                    }
-                }
-            }
-            if(response.toString().endsWith(" and "))
-                response.delete(response.length()-5,response.length());
-            else
-            if(response.toString().endsWith(" or "))
-                response.delete(response.length()-4,response.length());
-            response.append(".  ");
+	        MOB M=((CagedAnimal)item).unCageMe();
+	        if(M==null)
+	            response.append("\n\rLooks like some sort of lifeless thing.\n\r");
+	        else
+	        {
+	            if(M.envStats().height()>0)
+	            	response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is "+M.envStats().height()+" inches tall and weighs "+weight+" pounds.\n\r");
+	            if(!mob.isMonster())
+	            	response.append(CMProps.mxpImage(M," ALIGN=RIGHT H=70 W=70"));
+	            response.append(M.healthText(mob)+"\n\r\n\r");
+	            if(!M.description().equalsIgnoreCase(item.description()))
+		            response.append(M.description()+"\n\r\n\r");
+	        }
+        }
+        else
+        {
+	        response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
+	        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
+	            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
+	        else
+	            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
+	        if((item instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+	            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)item).weaponType()])+" damage.  ");
+	        else
+	        if((item instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+	        {
+	            if(item.envStats().height()>0)
+	                response.append(" It is a size "+item.envStats().height()+", and is ");
+	            else
+	                response.append(" It is your size, and is ");
+	            response.append(((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
+	            					 ?new StringBuffer("")
+	            					 :new StringBuffer("worn on the "));
+	            for(int l=0;l<Item.WORN_CODES.length;l++)
+	            {
+	                int wornCode=1<<l;
+	                if(CMath.bset(item.rawProperLocationBitmap(),wornCode))
+	                {
+	                	String wornString=CMLib.flags().wornLocation(wornCode);
+		                if(wornString.length()>0)
+	 	                {
+		                	response.append(CMStrings.capitalizeAndLower(wornString)+" ");
+	                        if(item.rawLogicalAnd())
+	                        	response.append("and ");
+	                        else
+	                        	response.append("or ");
+	                    }
+	                }
+	            }
+	            if(response.toString().endsWith(" and "))
+	                response.delete(response.length()-5,response.length());
+	            else
+	            if(response.toString().endsWith(" or "))
+	                response.delete(response.length()-4,response.length());
+	            response.append(".  ");
+	        }
         }
         return response.toString();
     }

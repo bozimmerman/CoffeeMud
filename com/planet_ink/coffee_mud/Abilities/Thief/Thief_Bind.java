@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Bind extends ThiefSkill
+public class Thief_Bind extends RopeUseThiefSkill
 {
 	public String ID() { return "Thief_Bind"; }
 	public String name(){ return "Bind";}
@@ -180,10 +180,10 @@ public class Thief_Bind extends ThiefSkill
 						double prof=0.0;
 						Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null) prof=CMath.div(A.proficiency(),20);
-						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
+						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level()+getXLevel(mob))*((int)Math.round(5.0+prof));
 					}
 					else
-						amountRemaining=adjustedLevel(mob,asLevel)*25;
+						amountRemaining=(adjustedLevel(mob,asLevel)+getXLevel(mob))*25;
 					if((target.location()==mob.location())||(auto))
 						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 				}

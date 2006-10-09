@@ -47,8 +47,7 @@ public class Age extends StdAbility
 	public String displayText()
 	{
 		long start=CMath.s_long(text());
-		if(start<Integer.MAX_VALUE)
-		    return "";
+		if(start<Short.MAX_VALUE) return "";
 		long days=((System.currentTimeMillis()-start)/Tickable.TIME_TICK)/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
 		long months=days/CMClass.globalClock().getDaysInMonth();
 		long years=months/CMClass.globalClock().getMonthsInYear();
@@ -79,7 +78,7 @@ public class Age extends StdAbility
 		long l=CMath.s_long(text());
 		if(l==0) return;
 		if(norecurse) return;
-		if(l<Integer.MAX_VALUE) return;
+		if(l<Short.MAX_VALUE) return;
 		norecurse=true;
 
 		if(divisor==0.0)
@@ -353,7 +352,7 @@ public class Age extends StdAbility
                     if(divisor==0.0)
                         divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
                     long l=CMath.s_long(text());
-                    if((l>0)&&(l<Integer.MAX_VALUE))
+                    if((l>0)&&(l<Long.MAX_VALUE))
                     {
                         int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
                         if(ellapsed<=myRace.getAgingChart()[3])
@@ -414,7 +413,7 @@ public class Age extends StdAbility
 						if(divisor==0.0)
 						    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 						long l=CMath.s_long(text());
-						if((l>0)&&(l<Integer.MAX_VALUE))
+						if((l>0)&&(l<Long.MAX_VALUE))
 						{
 							int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
 							if(ellapsed<=myRace.getAgingChart()[2])
@@ -446,7 +445,7 @@ public class Age extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		long l=CMath.s_long(text());
-		if((l<Integer.MAX_VALUE)&&(l>0))
+		if((l<Short.MAX_VALUE)&&(l>0))
 		{
 		    affected.baseCharStats().setStat(CharStats.STAT_AGE,(int)l);
 		    affectableStats.setStat(CharStats.STAT_AGE,(int)l);

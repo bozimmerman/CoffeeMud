@@ -457,7 +457,7 @@ public class Pregnancy extends StdAbility
 							Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
 							I.baseEnvStats().setAbility(1);
-							I.addNonUninvokableEffect(A3);
+							I.addNonUninvokableEffect((Ability)A3.copyOf());
 							I.recoverEnvStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");
