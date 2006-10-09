@@ -6700,7 +6700,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			case 3: // speech_prog
-				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&canTrigger(3)
+				if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
 				&&(!msg.amISource(monster))
 				&&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(((Ability)msg.tool()).classificationCode()!=Ability.ACODE_LANGUAGE)))
                    ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
