@@ -45,7 +45,7 @@ public class Thief_AvoidTraps extends TrapDisablingThiefSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+getXLevel(affected));
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+(getXLevel(affected)*5));
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
