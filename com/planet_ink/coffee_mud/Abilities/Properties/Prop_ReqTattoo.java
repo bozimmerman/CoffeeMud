@@ -37,37 +37,102 @@ public class Prop_ReqTattoo extends Property
 	public String name(){ return "Tattoo Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 
-	public boolean passesMuster(MOB mob)
+	public Vector getMask(boolean[] flags)
+	{
+		Vector V=CMParms.parse(text().toUpperCase());
+		String s=null;
+		for(int v=V.size()-1;v>=1;v--)
+		{
+			s=(String)V.elementAt(v);
+			if(s.startsWith("NOFOL"))
+			{
+				flags[0]=true;
+				V.removeElementAt(v);
+			}
+			else
+			if(s.startsWith("NOSNEAK"))
+			{
+				flags[1]=true;
+				V.removeElementAt(v);
+			}
+			else
+			if("+-".indexOf(s.charAt(0))<0)
+			{
+				V.removeElementAt(v);
+				V.setElementAt(((String)V.elementAt(v-1))+" "+s,v-1);
+			}
+		}
+		return V;
+	}
+	
+	public boolean passesMuster(Vector mask, boolean[] flags, MOB mob)
 	{
 		if(mob==null) return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
-		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+		if(CMLib.flags().isSneaking(mob)&&(flags[1]))
 			return true;
-		int x=text().toUpperCase().indexOf("ALL");
-		Vector V=new Vector();
-		for(int m=0;m<mob.numTattoos();m++)
-			V.addElement(mob.fetchTattoo(m));
-		if(V.size()==0) V.addElement("NONE");
-		for(int v=0;v<V.size();v++)
+		int allFlag=0;
+		String s=null;
+		for(int v=0;v<mask.size();v++)
 		{
-			String tattoo=(String)V.elementAt(v);
-			if((tattoo.length()>0)
-			&&(Character.isDigit(tattoo.charAt(0)))
-			&&(tattoo.indexOf(" ")>0)
-			&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
-			   tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-			int y=text().toUpperCase().indexOf(tattoo);
-			if(((x>0)
-				&&(text().charAt(x-1)=='-')
-				&&((y<=0)
-				   ||((y>0)&&(text().charAt(y-1)!='+'))))
-			 ||((y>0)&&(text().charAt(y-1)=='-')))
-				return false;
+			s=(String)mask.elementAt(v);
+			if(s.equals("+ALL"))
+				allFlag=1;
+			else
+			if(s.equals("+NONE"))
+				allFlag=0;
+			else
+			if(s.equals("-ALL"))
+				allFlag=-1;
+			else
+			if(s.startsWith("+")||s.startsWith("-"))
+			{
+				char c=s.charAt(0);
+				boolean found=((c=='+')||(c=='-'))?
+					(mob.fetchTattoo(s.substring(1))!=null)
+					:(mob.fetchTattoo(s)!=null);
+				switch(allFlag)
+				{
+				case 0: // +NONE -- HAS/LACKS ALL
+					if(c=='-')
+					{
+						if(found) 
+							return false;
+					}
+					else
+					if(!found) 
+						return false;
+					break;
+				case 1: // +ALL -- LACKS ANY
+					if(c!='+') // ----------------
+					{
+						if(!found)
+							return true;
+					}
+					else
+					if(found)
+						return true;
+					break;
+				case -1: // -ALL -- HAS ANY
+					if(c!='-') // ++++++++++++++++++++
+					{
+						if(found)
+							return true;
+					}
+					else
+					if(found)
+						return false;
+					break;
+				}
+			}
 		}
+		if(allFlag<0) return false; // if not returned, does not have any of them
+		if(allFlag==0) return true; // none were missing, so its all good.
+		if(allFlag>0) return true; // all were missing, so its all good.
 		return true;
 	}
-
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
@@ -78,8 +143,10 @@ public class Prop_ReqTattoo extends Property
 			if(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			||((msg.target() instanceof Item)&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_SIT))))
 			{
+				boolean[] flags=new boolean[2]; 
+				Vector V=getMask(flags);
 				HashSet H=new HashSet();
-				if(text().toUpperCase().indexOf("NOFOL")>=0)
+				if(flags[0])
 					H.add(msg.source());
 				else
 				{
@@ -92,7 +159,7 @@ public class Prop_ReqTattoo extends Property
 				{
 				    Environmental E=(Environmental)e.next();
 				    if((E instanceof MOB)
-					&&(passesMuster((MOB)E)))
+					&&(passesMuster(V,flags,(MOB)E)))
 						return super.okMessage(myHost,msg);
 				}
 				if(msg.target() instanceof Room)
