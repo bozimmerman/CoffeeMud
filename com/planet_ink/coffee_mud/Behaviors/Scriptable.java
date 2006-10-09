@@ -6702,10 +6702,18 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 3: // speech_prog
 				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&canTrigger(3)
 				&&(!msg.amISource(monster))
-				&&(msg.othersMessage()!=null)
+				&&((msg.othersMessage()!=null)
+                    ||((msg.target()==monster)
+                      &&(msg.targetMessage()!=null)
+                      &&(msg.tool() instanceof Ability)
+                      &&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
-					String str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
+                    String str=null;
+                    if(msg.othersMessage()!=null)
+                        str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
+                    else
+                        str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()),"`","'");
 					str=(" "+str+" ").toUpperCase();
                     str=CMStrings.removeColors(str);
                     str=CMStrings.replaceAll(str,"\n\r"," ");
