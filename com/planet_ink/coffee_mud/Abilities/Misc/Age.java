@@ -343,6 +343,29 @@ public class Age extends StdAbility
 		if((affected!=null)
 		&&(!affected.amDestroyed()))
 		{
+            if((msg.target()==affected)
+            &&(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+            {
+                if((((affected instanceof Item)&&(affected instanceof CagedAnimal))
+                    ||((affected instanceof MOB)&&(!((MOB)affected).savable())))
+                &&(affected.description().toUpperCase().indexOf(msg.source().name().toUpperCase())>=0))
+                {
+                    if(divisor==0.0)
+                        divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+                    long l=CMath.s_long(text());
+                    if((l>0)&&(l<Integer.MAX_VALUE))
+                    {
+                        int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+                        if(ellapsed<=myRace.getAgingChart()[3])
+                        {
+                            String s=displayText();
+                            if(s.startsWith("("))s=s.substring(1);
+                            if(s.endsWith(")"))s=s.substring(0,s.length()-1);
+                            msg.source().tell(Name()+" is "+s);
+                        }
+                    }
+                }
+            }
 			if((affected instanceof Item)
 			&&((msg.target()==affected)||(msg.tool()==affected)))
 			{
