@@ -3153,7 +3153,14 @@ public class StdMOB implements MOB
 		try{
 			if((of==null)||(of.length()==0)) return null;
 			int x=0;
-			while(Character.isDigit(of.charAt(x))||(of.charAt(x)==' ')) x++;
+			while(Character.isDigit(of.charAt(x))) x++;
+			if(x<of.length())
+			{
+				if(of.charAt(x)==' ')
+					x++;
+				else
+					x=0;
+			}
 			of=of.substring(x).trim().toUpperCase();
 			String s=null;
 			for(int i=0;i<numTattoos();i++)
@@ -3162,7 +3169,14 @@ public class StdMOB implements MOB
 				if(s.endsWith(of))
 				{
 					x=0;
-					while(Character.isDigit(s.charAt(x))||(s.charAt(x)==' ')) x++;
+					while(Character.isDigit(s.charAt(x))) x++;
+					if(x<s.length())
+					{
+						if(s.charAt(x)==' ')
+							x++;
+						else
+							x=0;
+					}
 					if(s.substring(x).trim().equals(of)) return s;
 				}
 			}
