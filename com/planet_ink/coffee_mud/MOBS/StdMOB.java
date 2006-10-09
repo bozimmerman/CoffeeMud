@@ -3151,26 +3151,20 @@ public class StdMOB implements MOB
 	{
 		
 		try{
-			if((of==null)||(of.length()==0)) 
-				return null;
-			if((Character.isDigit(of.charAt(0)))
-			&&(of.indexOf(" ")>0)
-			&&(CMath.isNumber(of.substring(0,of.indexOf(" ")))))
-				of=of.substring(of.indexOf(" ")+1).trim();
-			else
-				of=of.trim();
+			if((of==null)||(of.length()==0)) return null;
+			int x=0;
+			while(Character.isDigit(of.charAt(x))||(of.charAt(x)==' ')) x++;
+			of=of.substring(x).trim().toUpperCase();
 			String s=null;
 			for(int i=0;i<numTattoos();i++)
 			{
 				s=fetchTattoo(i);
-				if(s.equalsIgnoreCase(of))
-					return fetchTattoo(i);
-				else
-				if((Character.isDigit(s.charAt(0)))
-				&&(s.indexOf(" ")>0)
-				&&(CMath.isNumber(s.substring(0,s.indexOf(" "))))
-				&&(of.equalsIgnoreCase(s.substring(s.indexOf(" ")+1).trim())))
-					return fetchTattoo(i);
+				if(s.endsWith(of))
+				{
+					x=0;
+					while(Character.isDigit(s.charAt(x))||(s.charAt(x)==' ')) x++;
+					if(s.substring(x).trim().equals(of)) return s;
+				}
 			}
 		}catch(Exception e){}
 		return null;
