@@ -1195,6 +1195,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     found=true;
                     break;
                 }
+			if((!found)&&(M.playerStats()!=null))
+				for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+					if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+					{
+						val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
+						found=true;
+						break;
+					}
             if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
                 for(int i=0;i<M.baseState().getStatCodes().length;i++)
                     if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
@@ -1257,6 +1265,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         found=true;
                         break;
                     }
+    			if((!found)&&(M.playerStats()!=null))
+				for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+					if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+					{
+						val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
+						found=true;
+						break;
+					}
                 if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
                     for(int i=0;i<M.baseState().getStatCodes().length;i++)
                         if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
@@ -4916,6 +4932,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								found=true;
 								break;
 							}
+						if((!found)&&(M.playerStats()!=null))
+						for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+							if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+							{
+								M.playerStats().setStat(arg2,arg3);
+								found=true;
+								break;
+							}
                         if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
                             for(int i=0;i<M.baseState().getStatCodes().length;i++)
                                 if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
@@ -5047,6 +5071,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									break;
 								}
 							}
+							if((!found)&&(M.playerStats()!=null))
+							for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+								if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+								{
+									M.playerStats().setStat(arg2,arg3);
+									found=true;
+									break;
+								}
                             if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
                                 for(int i=0;i<M.baseState().getStatCodes().length;i++)
                                     if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))

@@ -872,6 +872,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	    return true;
 	}
 
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

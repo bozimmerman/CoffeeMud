@@ -1307,6 +1307,7 @@ public class StdArea implements Area
 
 
 
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS",
 	    								 "CLIMATE",
 	    								 "DESCRIPTION",

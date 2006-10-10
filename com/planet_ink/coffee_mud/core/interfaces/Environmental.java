@@ -226,6 +226,19 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, CM
      * @return list of the fields which may be set.
      */
 	public String[] getStatCodes();
+	
+	/**
+     * Returns the index into the stat codes array where extra savable fields begins.
+     * This number is always the same as getStatCodes().length unless there are extra
+     * fields which need to be saved in xml for generic objects.  This method is used
+     * by editors for post-build user-defined fields.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#getStatCodes()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#getStat(String)
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#setStat(String, String)
+     * @return the index into getStatCodes()
+     */
+	public int getSaveStatIndex();
+	
     /**
      * An alternative means of retreiving the values of those fields on this object which are modifiable at
      * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.

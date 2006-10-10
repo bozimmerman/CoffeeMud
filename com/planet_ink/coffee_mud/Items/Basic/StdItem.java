@@ -1314,6 +1314,7 @@ public class StdItem implements Item
 		case 4: setMiscText(val); break;
 		}
 	}
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)

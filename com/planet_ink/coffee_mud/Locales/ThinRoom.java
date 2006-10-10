@@ -222,6 +222,7 @@ public class ThinRoom implements Room {
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
 	public boolean isGeneric(){return false;}
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

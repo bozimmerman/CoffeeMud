@@ -2531,6 +2531,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 		}
 		text.append(CMLib.xml().convertXMLtoTag("AFFECS",affectstr.toString()));
+		String[] codes=E.getStatCodes();
+		for(int i=E.getSaveStatIndex();i<codes.length;i++)
+			text.append(CMLib.xml().convertXMLtoTag(codes[i].toUpperCase(),E.getStat(codes[i].toUpperCase())));
 		return text.toString();
 	}
 
@@ -2765,6 +2768,13 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			newOne.setMiscText(restoreAngleBrackets(aparms));
 			E.addNonUninvokableEffect(newOne);
+		}
+		String[] codes=E.getStatCodes();
+		for(int i=E.getSaveStatIndex();i<codes.length;i++)
+		{
+			String val=CMLib.xml().getValFromPieces(buf,codes[i].toUpperCase());
+			if(val==null) val="";
+			E.setStat(codes[i].toUpperCase(),val);
 		}
 	}
 

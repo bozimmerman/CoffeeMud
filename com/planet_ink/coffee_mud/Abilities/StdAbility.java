@@ -1459,6 +1459,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public Behavior fetchBehavior(String ID){return null;}
 	public boolean isGeneric(){return false;}
 
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

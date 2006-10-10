@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.StdMOB;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -67,6 +68,82 @@ public class DefaultPlayerStats implements PlayerStats
     protected DVector levelInfo=new DVector(3);
     protected HashSet introductions=new HashSet();
 
+	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
+									 "ALIAS","LASTIP","LASTDATETIME",
+									 "CHANNELMASK",
+									 "COLORSTR","PROMPT","POOFIN",
+									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
+									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
+									 "ACCTEXPIRATION","INTRODUCTIONS"};
+	public String getStat(String code)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return getPrivateList(getFriends());
+		case 2: return getPrivateList(getIgnored());
+		case 3: return getTitleXML();
+		case 4: return getAliasXML();
+		case 5: return lastIP;
+		case 6: return ""+LastDateTime;
+		case 7: return ""+channelMask;
+		case 8: return colorStr;
+		case 9: return prompt;
+		case 10: return poofin;
+		case 11: return poofout;
+		case 12: return tranpoofin;
+		case 13: return tranpoofout;
+		case 14: return announceMsg;
+		case 15: return notes;
+		case 16: return ""+wrap;
+		case 17: return CMParms.toStringList(birthday);
+		case 18: return ""+accountExpiration;
+		case 19: return getPrivateList(introductions);
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: break;
+		case 1: friends=getHashFrom(CMLib.xml().returnXMLValue(val,"FRIENDS")); break;
+		case 2: ignored=getHashFrom(CMLib.xml().returnXMLValue(val,"IGNORED")); break;
+		case 3: setTitleXML(val); break;
+		case 4: setAliasXML(val); break;
+		case 5: lastIP=val; break;
+		case 6: LastDateTime=CMath.s_long(val); break;
+		case 7: channelMask=CMath.s_int(val); break;
+		case 8: colorStr=val; break;
+		case 9: prompt=val; break;
+		case 10: poofin=val; break;
+		case 11: poofout=val; break;
+		case 12: tranpoofin=val; break;
+		case 13: tranpoofout=val; break;
+		case 14: announceMsg=val; break;
+		case 15: notes=val; break;
+		case 16: wrap=CMath.s_int(val); break;
+		case 17: setBirthday(val); break;
+		case 18: accountExpiration=CMath.s_long(val); break;
+		case 19: introductions=getHashFrom(CMLib.xml().returnXMLValue(val,"INTROS"));
+		}
+	}
+	public int getSaveStatIndex(){return getStatCodes().length;}
+	public String[] getStatCodes(){return CODES;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(PlayerStats E)
+	{
+		if(!(E instanceof DefaultPlayerStats)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
+    
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
     public void initializeClass(){}
     public CMObject copyOf()
@@ -297,6 +374,14 @@ public class DefaultPlayerStats implements PlayerStats
 		String f=getPrivateList(getFriends());
 		String i=getPrivateList(getIgnored());
         String t=getPrivateList(introductions);
+        StringBuffer rest=new StringBuffer("");
+        String[] codes=getStatCodes();
+        for(int x=getSaveStatIndex();x<codes.length;x++)
+        {
+        	String code=codes[x].toUpperCase();
+        	rest.append("<"+code+">"+CMLib.coffeeMaker().parseOutAngleBrackets(getStat(code))+"</"+code+">");
+        }
+        
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
             +((t.length()>0)?"<INTROS>"+i+"</INTROS>":"")
@@ -313,8 +398,49 @@ public class DefaultPlayerStats implements PlayerStats
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.coffeeMaker().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
             +"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
 			+getSecurityGroupStr()
-            +roomSet().xml();
+            +roomSet().xml()
+            +rest.toString();
 	}
+
+	private void setBirthday(String bday)
+	{
+		if((bday!=null)&&(bday.length()>0))
+		{
+		    Vector V=CMParms.parseCommas(bday,true);
+		    birthday=new int[3];
+		    for(int v=0;v<V.size();v++)
+		        birthday[v]=CMath.s_int((String)V.elementAt(v));
+		}
+	}
+	
+	private void setAliasXML(String str)
+	{
+        alias.clear();
+        int a=-1;
+        while((++a)>=0)
+        {
+            String name=CMLib.xml().returnXMLValue(str,"ALIAS"+a);
+            String value=CMLib.xml().returnXMLValue(str,"ALIASV"+a);
+            if((name.length()==0)||(value.length()==0))
+                break;
+            alias.addElement(name,value);
+        }
+	}
+	
+	private void setTitleXML(String str)
+	{
+		titles.clear();
+		int t=-1;
+		while((++t)>=0)
+		{
+			String title=CMLib.xml().returnXMLValue(str,"TITLE"+t);
+			if(title.length()==0)
+			    break;
+		    titles.addElement(title);
+		}
+		
+	}
+	
 	public void setXML(String str)
 	{
 		friends=getHashFrom(CMLib.xml().returnXMLValue(str,"FRIENDS"));
@@ -331,35 +457,11 @@ public class DefaultPlayerStats implements PlayerStats
 		String oldWrap=CMLib.xml().returnXMLValue(str,"WRAP");
 		if(CMath.isInteger(oldWrap)) wrap=CMath.s_int(oldWrap);
 		setSecurityGroupStr(CMLib.xml().returnXMLValue(str,"SECGRPS"));
+		setAliasXML(str);
+		setTitleXML(str);
 		String bday=CMLib.xml().returnXMLValue(str,"BIRTHDAY");
-		if((bday!=null)&&(bday.length()>0))
-		{
-		    Vector V=CMParms.parseCommas(bday,true);
-		    birthday=new int[3];
-		    for(int v=0;v<V.size();v++)
-		        birthday[v]=CMath.s_int((String)V.elementAt(v));
-		}
-		titles.clear();
-		int t=-1;
-		while((++t)>=0)
-		{
-			String title=CMLib.xml().returnXMLValue(str,"TITLE"+t);
-			if(title.length()==0)
-			    break;
-		    titles.addElement(title);
-		}
+		setBirthday(bday);
 		
-        alias.clear();
-        int a=-1;
-        while((++a)>=0)
-        {
-            String name=CMLib.xml().returnXMLValue(str,"ALIAS"+a);
-            String value=CMLib.xml().returnXMLValue(str,"ALIASV"+a);
-            if((name.length()==0)||(value.length()==0))
-                break;
-            alias.addElement(name,value);
-        }
-        
 		poofin=CMLib.xml().returnXMLValue(str,"POOFIN");
 		if(poofin==null) poofin="";
 		poofin=CMLib.coffeeMaker().restoreAngleBrackets(poofin);
@@ -409,6 +511,13 @@ public class DefaultPlayerStats implements PlayerStats
         if(levelInfo.size()==0)
         	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
         roomSet().parseXML(str);
+        String[] codes=getStatCodes();
+        for(int i=getSaveStatIndex();i<getStatCodes().length;i++)
+        {
+        	String val=CMLib.xml().returnXMLValue(str,codes[i].toUpperCase());
+        	if(val==null) val="";
+        	setStat(codes[i].toUpperCase(),CMLib.coffeeMaker().restoreAngleBrackets(val));
+        }
 	}
 
     private String getLevelDateTimesStr()

@@ -1745,6 +1745,7 @@ public class StdRoom implements Room
 		return null;
 	}
     
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

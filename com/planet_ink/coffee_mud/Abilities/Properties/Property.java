@@ -150,6 +150,7 @@ public class Property implements Ability
         super();
         CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
     }
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

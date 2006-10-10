@@ -717,6 +717,7 @@ public class StdExit implements Exit
 	public int openDelayTicks()	{ return 45;}
 	public void setOpenDelayTicks(int numTicks){}
 
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
