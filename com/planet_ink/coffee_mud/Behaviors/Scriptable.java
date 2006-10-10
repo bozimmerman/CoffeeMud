@@ -1724,7 +1724,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
-					returnable=((MOB)E).findAbility(arg2)!=null;
+				{
+					ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
+					if(X!=null)
+						returnable=((MOB)E).fetchExpertise(X.ID())!=null;
+					else
+						returnable=((MOB)E).findAbility(arg2)!=null;
+				}
 				else
 					returnable=false;
 				break;
