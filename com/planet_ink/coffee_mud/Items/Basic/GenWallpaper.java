@@ -289,6 +289,7 @@ public class GenWallpaper implements Item
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
 
+    public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME","DESCRIPTION","ISREADABLE","READABLETEXT"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

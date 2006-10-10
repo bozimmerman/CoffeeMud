@@ -225,6 +225,7 @@ public class DefaultSocial implements Social
     public boolean amDestroyed(){return amDestroyed;}
     public boolean savable(){return true;}
 
+    public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
