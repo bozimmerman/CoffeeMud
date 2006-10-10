@@ -3586,8 +3586,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 				{
-					Ability A=((MOB)E).findAbility(arg2);
-					if(A!=null) results.append(""+A.proficiency());
+					ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
+					if(X!=null)
+					{
+						String s=((MOB)E).fetchExpertise(X.ID());
+						if(s!=null) results.append(s);
+					}
+					else
+					{
+						Ability A=((MOB)E).findAbility(arg2);
+						if(A!=null) results.append(""+A.proficiency());
+					}
 				}
 				break;
 			}
