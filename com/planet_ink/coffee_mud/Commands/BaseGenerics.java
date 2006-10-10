@@ -6115,6 +6115,8 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof LandTitle)
 				genTitleRoom(mob,(LandTitle)me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6162,6 +6164,8 @@ public class BaseGenerics extends StdCommand
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6213,6 +6217,8 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof Perfume)
 				((Perfume)me).setSmellList(CMLib.english().promptText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,getScr("BaseGenerics","smelllist")));
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6247,6 +6253,8 @@ public class BaseGenerics extends StdCommand
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
 			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6292,6 +6300,8 @@ public class BaseGenerics extends StdCommand
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6360,6 +6370,8 @@ public class BaseGenerics extends StdCommand
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
 			}
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6423,6 +6435,8 @@ public class BaseGenerics extends StdCommand
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6478,6 +6492,8 @@ public class BaseGenerics extends StdCommand
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6525,6 +6541,8 @@ public class BaseGenerics extends StdCommand
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6572,6 +6590,8 @@ public class BaseGenerics extends StdCommand
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6660,6 +6680,8 @@ public class BaseGenerics extends StdCommand
 			genTattoos(mob,me,++showNumber,showFlag);
 			genExpertises(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6748,6 +6770,11 @@ public class BaseGenerics extends StdCommand
 			genSecurity(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			genNotes(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+            if(me.playerStats()!=null)
+            for(int x=me.playerStats().getSaveStatIndex();x<me.playerStats().getStatCodes().length;x++)
+                me.setStat(me.playerStats().getStatCodes()[x],CMLib.english().promptText(mob,me.playerStats().getStat(me.playerStats().getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.playerStats().getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -6934,9 +6961,7 @@ public class BaseGenerics extends StdCommand
 		}
 		return oldRoomID;
 	}
-	
-	
-	
+    
 	public static void modifyClan(MOB mob, Clan C)
 	throws IOException
 	{
@@ -7064,6 +7089,8 @@ public class BaseGenerics extends StdCommand
 			genTattoos(mob,(MOB)me,++showNumber,showFlag);
 			genExpertises(mob,(MOB)me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+            for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
+                me.setStat(me.getStatCodes()[x],CMLib.english().promptText(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));

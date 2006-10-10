@@ -207,17 +207,20 @@ public class Modify extends BaseGenerics
 			while(!ok)
 			{
 				int showNumber=0;
-				genRoomType(mob,mob.location(),++showNumber,showFlag);
-				genDisplayText(mob,mob.location(),++showNumber,showFlag);
-				genDescription(mob,mob.location(),++showNumber,showFlag);
+                Room R=mob.location();
+				genRoomType(mob,R,++showNumber,showFlag);
+				genDisplayText(mob,R,++showNumber,showFlag);
+				genDescription(mob,R,++showNumber,showFlag);
 				if(mob.location() instanceof GridZones)
 				{
-					genGridLocaleX(mob,(GridZones)mob.location(),++showNumber,showFlag);
-					genGridLocaleY(mob,(GridZones)mob.location(),++showNumber,showFlag);
+					genGridLocaleX(mob,(GridZones)R,++showNumber,showFlag);
+					genGridLocaleY(mob,(GridZones)R,++showNumber,showFlag);
 					//((GridLocale)mob.location()).buildGrid();
 				}
-				genBehaviors(mob,mob.location(),++showNumber,showFlag);
-				genAffects(mob,mob.location(),++showNumber,showFlag);
+				genBehaviors(mob,R,++showNumber,showFlag);
+				genAffects(mob,R,++showNumber,showFlag);
+                for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
+                    R.setStat(R.getStatCodes()[x],CMLib.english().promptText(mob,R.getStat(R.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(R.getStatCodes()[x])));
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -421,6 +424,8 @@ public class Modify extends BaseGenerics
 				genBehaviors(mob,myArea,++showNumber,showFlag);
 				genAffects(mob,myArea,++showNumber,showFlag);
 				genImage(mob,myArea,++showNumber,showFlag);
+                for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
+                    myArea.setStat(myArea.getStatCodes()[x],CMLib.english().promptText(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
