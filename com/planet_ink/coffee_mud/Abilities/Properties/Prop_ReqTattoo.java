@@ -36,10 +36,36 @@ public class Prop_ReqTattoo extends Property
 	public String ID() { return "Prop_ReqTattoo"; }
 	public String name(){ return "Tattoo Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-
+	private String themsg="";
+	
+	public String accountForYourself()
+	{
+		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
+	}
+	
+	public String text(){ return themsg+";"+super.text();}
+	public void setMiscText(String newText)
+	{
+		themsg="";
+		int x=newText.indexOf(";");
+		if(x<0) 
+			super.setMiscText(newText);
+		else
+		if(newText.substring(0,x).indexOf("+")>=0)
+			super.setMiscText(newText);
+		else
+		if(newText.substring(0,x).indexOf("-")>=0)
+			super.setMiscText(newText);
+		else
+		{
+			themsg=newText.substring(0,x).trim();
+			super.setMiscText(newText.substring(x+1));
+		}
+	}
+	
 	public Vector getMask(boolean[] flags)
 	{
-		Vector V=CMParms.parse(text().toUpperCase());
+		Vector V=CMParms.parse(miscText.toUpperCase());
 		String s=null;
 		for(int v=V.size()-1;v>=1;v--)
 		{
@@ -163,10 +189,10 @@ public class Prop_ReqTattoo extends Property
 						return super.okMessage(myHost,msg);
 				}
 				if(msg.target() instanceof Room)
-					msg.source().tell("You have not been granted authorization to go that way.");
+					msg.source().tell(themsg.length()==0?"You have not been granted authorization to go that way.":themsg);
 				else
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
+					msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,themsg.length()==0?"<O-NAME> flashes and flies out of <S-HIS-HER> hands!":themsg);
 				return false;
 			}
 		}
