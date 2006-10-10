@@ -33,9 +33,13 @@ import java.util.*;
 public class Cat extends StdMOB
 {
 	public String ID(){return "Cat";}
+    
+    
+    
 	public Cat()
 	{
 		super();
+        
 		Random randomizer = new Random(System.currentTimeMillis());
 
 		Username="a cat";
