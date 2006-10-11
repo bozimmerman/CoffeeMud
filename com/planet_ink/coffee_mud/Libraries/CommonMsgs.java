@@ -1297,6 +1297,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 mob.location().recoverRoomStats();
             if(item instanceof Coins)
                 ((Coins)item).putCoinsBack();
+    		if(item instanceof RawMaterial)
+    			((RawMaterial)item).rebundle();
         }
     }
     public void handleBeingDropped(CMMsg msg)
@@ -1321,8 +1323,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
         item.unWear();
         item.setContainer(null);
-        if((item instanceof Coins)&&((msg.targetMessage()==null)||(!msg.targetMessage().equals("GIVE"))))
-            ((Coins)item).putCoinsBack();
+        if((msg.targetMessage()==null)||(!msg.targetMessage().equals("GIVE")))
+        {
+            if(item instanceof Coins)
+            	((Coins)item).putCoinsBack();
+            if(item instanceof RawMaterial)
+            	((RawMaterial)item).rebundle();
+        }
     }
     public void handleBeingRemoved(CMMsg msg)
     {

@@ -239,7 +239,6 @@ public class Test extends StdCommand
                 Integer NULL=new Integer(0);
                 Integer I=null;
                 Object E=null;
-                int[] maxes=new int[20];
                 for(Iterator i=CMClass.OBJECT_CACHE[CMClass.OBJECT_ABILITY].keySet().iterator();i.hasNext();)
                 {
                     A=(Ability)i.next();

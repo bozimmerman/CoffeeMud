@@ -861,7 +861,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=CMLib.utensils().getMaterialCode(str2.substring(1),false);
+                                int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
                                 if(code>=0)
                                     buf.append(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[code>>8])+", ");
                             }
@@ -881,7 +881,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=CMLib.utensils().getMaterialCode(str2.substring(1),false);
+                                int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
                                 if(code>=0)
                                     buf.append(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[code>>8])+", ");
                             }
@@ -1181,7 +1181,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=CMLib.utensils().getResourceCode(str2.substring(1),false);
+                                int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
                                     buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
                             }
@@ -1201,7 +1201,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=CMLib.utensils().getResourceCode(str2.substring(1),false);
+                                int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
                                     buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
                             }
@@ -2040,7 +2040,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=CMLib.utensils().getMaterialCode(str2.substring(1),false);
+                                int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
                                 if(code>=0)
                                     entry.addElement(RawMaterial.MATERIAL_DESCS[(code&RawMaterial.MATERIAL_MASK)>>8]);
                             }
@@ -2199,7 +2199,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=CMLib.utensils().getResourceCode(str2.substring(1),false);
+                                int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
                                     entry.addElement(RawMaterial.RESOURCE_DESCS[(code&RawMaterial.RESOURCE_MASK)]);
                             }

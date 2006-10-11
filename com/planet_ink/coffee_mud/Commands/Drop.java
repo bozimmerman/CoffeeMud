@@ -46,10 +46,14 @@ public class Drop extends BaseItemParser
 			mob.location().send(mob,msg);
 			if(dropThis instanceof Coins)
 			    ((Coins)dropThis).putCoinsBack();
+			if(dropThis instanceof RawMaterial)
+				((RawMaterial)dropThis).rebundle();
 			return true;
 		}
 		if(dropThis instanceof Coins)
 		    ((Coins)dropThis).putCoinsBack();
+		if(dropThis instanceof RawMaterial)
+			((RawMaterial)dropThis).rebundle();
 		return false;
 	}
 

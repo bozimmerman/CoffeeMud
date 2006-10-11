@@ -148,6 +148,8 @@ public class Take extends BaseItemParser
 				if(!mob.isMine(giveThis)) mob.giveItem(giveThis);
 				if(giveThis instanceof Coins)
 				    ((Coins)giveThis).putCoinsBack();
+				if(giveThis instanceof RawMaterial)
+					((RawMaterial)giveThis).rebundle();
 			}
 		}
 		else

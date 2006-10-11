@@ -279,6 +279,7 @@ public class DBConnection
 				{
 					if(myParent!=null)
 						myParent.resetConnections();
+						
 				}
 				throw sqle;
 			}
@@ -332,10 +333,8 @@ public class DBConnection
 					myParent.reportError();
 				}
 				if(isProbablyDead())
-				{
 					if(myParent!=null)
 						myParent.resetConnections();
-				}
 				throw sqle;
 			}
 		}

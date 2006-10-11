@@ -83,7 +83,8 @@ public class CMLib
     public static final int LIBRARY_TIMS=36;
     public static final int LIBRARY_LEVELS=37;
     public static final int LIBRARY_EXPERTISES=38;
-    public static final int LIBRARY_TOTAL=39;
+    public static final int LIBRARY_MATERIALS=39;
+    public static final int LIBRARY_TOTAL=40;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -109,6 +110,7 @@ public class CMLib
     public static ListingLibrary lister(){return (ListingLibrary)libraries[LIBRARY_LISTER];}
     public static MoneyLibrary beanCounter(){return (MoneyLibrary)libraries[LIBRARY_MONEY];}
     public static ShoppingLibrary coffeeShops(){return (ShoppingLibrary)libraries[LIBRARY_SHOPS];}
+    public static MaterialLibrary materials(){return (MaterialLibrary)libraries[LIBRARY_MATERIALS];}
     public static CombatLibrary combat(){return (CombatLibrary)libraries[LIBRARY_COMBAT];}
     public static HelpLibrary help(){return (HelpLibrary)libraries[LIBRARY_HELP];}
     public static TrackingLibrary tracking(){return (TrackingLibrary)libraries[LIBRARY_TRACKING];}
@@ -182,6 +184,7 @@ public class CMLib
         if(O instanceof CharCreationLibrary) return LIBRARY_LOGIN;
         if(O instanceof ItemBuilderLibrary) return LIBRARY_TIMS;
         if(O instanceof ExpertiseLibrary) return LIBRARY_EXPERTISES;
+        if(O instanceof MaterialLibrary) return LIBRARY_MATERIALS;
         return -1;
     }
 

@@ -166,6 +166,8 @@ public class Put extends BaseItemParser
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)
 				((Coins)putThis).putCoinsBack();
+			if(putThis instanceof RawMaterial)
+				((RawMaterial)putThis).rebundle();
 		}
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();

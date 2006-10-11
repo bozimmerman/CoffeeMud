@@ -5388,6 +5388,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								I.setContainer(container);
 								if(I instanceof Coins)
 								    ((Coins)I).putCoinsBack();
+								if(I instanceof RawMaterial)
+									((RawMaterial)I).rebundle();
 							}
 						}
 					}

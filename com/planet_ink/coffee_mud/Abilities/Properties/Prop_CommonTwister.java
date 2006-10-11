@@ -71,7 +71,7 @@ public class Prop_CommonTwister extends Property
 			int randomResource=CMLib.dice().roll(1,RawMaterial.RESOURCE_DESCS.length-1,0);
 			if(text().length()==0)
 			{
-				Item I=CMLib.utensils().makeItemResource(randomResource);
+				Item I=CMLib.materials().makeItemResource(randomResource);
 				msg.target().setName(I.Name());
 				msg.target().setDisplayText(I.displayText());
 				if(msg.target() instanceof Item)
@@ -99,7 +99,7 @@ public class Prop_CommonTwister extends Property
 			{
 				if(newname.equals("*"))
 				{
-					Item I=CMLib.utensils().makeItemResource(randomResource);
+					Item I=CMLib.materials().makeItemResource(randomResource);
 					msg.target().setName(I.Name());
 				}
 				else
@@ -109,7 +109,7 @@ public class Prop_CommonTwister extends Property
 			{
 				if(newdisp.equals("*"))
 				{
-					Item I=CMLib.utensils().makeItemResource(randomResource);
+					Item I=CMLib.materials().makeItemResource(randomResource);
 					msg.target().setDisplayText(I.displayText());
 				}
 				else
@@ -123,11 +123,11 @@ public class Prop_CommonTwister extends Property
 					newMatCode=randomResource;
 				else
 				{
-					newMatCode=CMLib.utensils().getResourceCode(newmat,false);
+					newMatCode=CMLib.materials().getResourceCode(newmat,false);
 					if(newMatCode<0)
 					{
-						newMatCode=CMLib.utensils().getMaterialCode(newmat,false);
-						if(newMatCode>0) newMatCode=CMLib.utensils().getRandomResourceOfMaterial(newMatCode);
+						newMatCode=CMLib.materials().getMaterialCode(newmat,false);
+						if(newMatCode>0) newMatCode=CMLib.materials().getRandomResourceOfMaterial(newMatCode);
 					}
 					if(newMatCode>=0)
 					{

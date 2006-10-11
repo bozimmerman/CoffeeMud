@@ -102,6 +102,8 @@ public class Get extends BaseItemParser
 			boolean success=get(mob,container,item,quiet);
 			if(item instanceof Coins)
 			    ((Coins)item).putCoinsBack();
+			if(item instanceof RawMaterial)
+				((RawMaterial)item).rebundle();
 			return success;
 		}
 
@@ -158,7 +160,7 @@ public class Get extends BaseItemParser
                         return false;
                     }
 				    if(fromWhat instanceof Item)
-					    toWhat=CMLib.utensils().unbundle((Item)fromWhat,maxToGet);
+					    toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGet);
 				    if(toWhat==null)
 				    {
 				        mob.tell("You can't get anything from "+fromWhat.name()+".");
@@ -212,6 +214,8 @@ public class Get extends BaseItemParser
 				get(mob,container,getThis,quiet,"get",true);
 				if(getThis instanceof Coins)
 					((Coins)getThis).putCoinsBack();
+				if(getThis instanceof RawMaterial)
+					((RawMaterial)getThis).rebundle();
 				doneSomething=true;
 			}
 			R.recoverRoomStats();

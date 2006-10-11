@@ -596,8 +596,12 @@ public class Destroy extends BaseItemParser
 			return true;
 		}
 		else
-		if(dropThis instanceof Coins)
-		    ((Coins)dropThis).putCoinsBack();
+		{
+			if(dropThis instanceof Coins)
+			    ((Coins)dropThis).putCoinsBack();
+            if(dropThis instanceof RawMaterial)
+            	((RawMaterial)dropThis).rebundle();
+		}
 		return false;
 	}
 
@@ -691,6 +695,9 @@ public class Destroy extends BaseItemParser
 				else
 				if(V.elementAt(i) instanceof Coins)
 					((Coins)V.elementAt(i)).putCoinsBack();
+				else
+				if(V.elementAt(i) instanceof RawMaterial)
+					((RawMaterial)V.elementAt(i)).rebundle();
 			}
 			if(!didAnything)
 			{

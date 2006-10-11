@@ -39,18 +39,11 @@ public interface CMMiscUtils extends CMObject
     public double memoryUse ( Environmental E, int number );
     public String niceCommaList(Vector V, boolean andTOrF);
     
-    public Environmental unbundle(Item I, int number);
-    public int getMaterialRelativeInt(String s);
-    public int getMaterialCode(String s, boolean exact);
-    public int getResourceCode(String s, boolean exact);
     public String wornList(long wornCode);
     public int getWornCode(String name);
-    public Item makeItemResource(int type);
     public void outfit(MOB mob, Vector items);
     public boolean reachableItem(MOB mob, Environmental E);
     public void extinguish(MOB source, Environmental target, boolean mundane);
-    public Environmental makeResource(int myResource, int localeCode, boolean noAnimals);
-    public int getRandomResourceOfMaterial(int material);
     public boolean armorCheck(MOB mob, int allowedArmorLevel);
     public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
     

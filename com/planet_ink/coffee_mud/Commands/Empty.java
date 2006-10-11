@@ -197,6 +197,8 @@ public class Empty extends BaseItemParser
 						}
 						if(I instanceof Coins)
 							((Coins)I).putCoinsBack();
+						if(I instanceof RawMaterial)
+							((RawMaterial)I).rebundle();
 					}
 				}
 			}

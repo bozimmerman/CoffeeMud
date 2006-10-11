@@ -33,6 +33,8 @@ public interface RawMaterial extends Item
 	
 	public int domainSource();
 	public void setDomainSource(int src);
+	public boolean rebundle();
+	public void quickDestroy();
 	
 	// item materials
 	public final static int MATERIAL_UNKNOWN=0;

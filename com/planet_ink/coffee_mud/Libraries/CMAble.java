@@ -1206,12 +1206,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			x=parmS.indexOf(":");
 			if(x<=0){error="Malformed component line (code 3-1): "+parmS; continue;}
 			rsc=parmS.substring(0,x);
-			depth=CMLib.utensils().getResourceCode(rsc,false);
+			depth=CMLib.materials().getResourceCode(rsc,false);
 			if(depth>=0) 
 				build[4]=new Integer(depth);
 			else
 			{
-				depth=CMLib.utensils().getMaterialCode(rsc,false);
+				depth=CMLib.materials().getMaterialCode(rsc,false);
 				if(depth>=0) 
 					build[4]=new Long(depth);
 				else

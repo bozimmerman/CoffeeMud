@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.Basic;
+package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -9,14 +9,14 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.Sense;
+import com.planet_ink.coffee_mud.Libraries.Socials;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
+import java.io.IOException;
 import java.util.*;
-
 /* 
    Copyright 2000-2006 Bo Zimmerman
 
@@ -32,23 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenResource extends GenItem implements RawMaterial
+public interface MaterialLibrary extends CMObject
 {
-	public String ID(){	return "GenResource";}
-	public GenResource()
-	{
-		super();
-		setName("a pile of resource thing");
-		setDisplayText("a pile of resource sits here.");
-		setDescription("");
-		setMaterial(RawMaterial.RESOURCE_IRON);
-		baseEnvStats().setWeight(0);
-		recoverEnvStats();
-	}
-
-	protected int domainSource=-1;
-	public int domainSource(){return domainSource;}
-	public void setDomainSource(int src){domainSource=src;}
-	public boolean rebundle(){return CMLib.materials().rebundle(this);}
-	public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
+    public Environmental unbundle(Item I, int number);
+    public int getMaterialRelativeInt(String s);
+    public int getMaterialCode(String s, boolean exact);
+    public int getResourceCode(String s, boolean exact);
+    public Item makeItemResource(int type);
+    public Environmental makeResource(int myResource, int localeCode, boolean noAnimals);
+    public int getRandomResourceOfMaterial(int material);
+    public boolean rebundle(Item I);
+    public boolean quickDestroy(Item I);
 }

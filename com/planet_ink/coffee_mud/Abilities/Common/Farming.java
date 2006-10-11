@@ -258,7 +258,7 @@ public class Farming extends GatheringSkill
 			return false;
 		}
         String mineName=mine.name();
-        mine=(Item)CMLib.utensils().unbundle(mine,-1);
+        mine=(Item)CMLib.materials().unbundle(mine,-1);
         if(mine==null)
         {
             commonTell(mob,"'"+mineName+"' is not suitable for use as a seed crop.");
@@ -271,7 +271,7 @@ public class Farming extends GatheringSkill
 
 		if((proficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
 		{
-			found=(Item)CMLib.utensils().makeResource(code,mob.location().domainType(),false);
+			found=(Item)CMLib.materials().makeResource(code,mob.location().domainType(),false);
 			if((found!=null)
 			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&(mine!=null)

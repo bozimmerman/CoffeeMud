@@ -134,6 +134,8 @@ public class Give extends BaseItemParser
 				mob.location().send(mob,newMsg);
 			if(giveThis instanceof Coins)
 				((Coins)giveThis).putCoinsBack();
+			if(giveThis instanceof RawMaterial)
+				((RawMaterial)giveThis).rebundle();
 		}
 		return false;
 	}

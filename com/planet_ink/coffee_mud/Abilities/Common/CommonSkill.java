@@ -198,17 +198,6 @@ public class CommonSkill extends StdAbility
 		return fire;
 	}
 
-	protected void quickDestroy(Item I)
-	{
-		if(I.owner() instanceof MOB)
-			((MOB)I.owner()).delInventory(I);
-		else
-		if(I.owner() instanceof Room)
-			((Room)I.owner()).delItem(I);
-		I.setOwner(null);
-		I.destroy();
-	}
-	
 	protected int destroyResources(Room room,
 	        					   int howMuch,
 	        					   int finalMaterial,
@@ -240,18 +229,18 @@ public class CommonSkill extends StdAbility
                     Environmental E=null;
                     for(int x=0;x<I.baseEnvStats().weight();x++)
                     {
-                        E=CMLib.utensils().makeResource(otherMaterial,-1,true);
+                        E=CMLib.materials().makeResource(otherMaterial,-1,true);
                         if(E instanceof Item)
                             room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
                     }
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
-                    quickDestroy(I);
+                    ((RawMaterial)I).quickDestroy(); 
                 }
                 else
                 {
                     lostValue+=I.value();
-                    quickDestroy(I);
+                    ((RawMaterial)I).quickDestroy();
                 }
                 otherMaterial=-1;
                 if((finalMaterial<0)||(howMuch<=0)) break;
@@ -270,20 +259,20 @@ public class CommonSkill extends StdAbility
                     Environmental E=null;
 					for(int x=0;x<I.baseEnvStats().weight();x++)
 					{
-						E=CMLib.utensils().makeResource(finalMaterial,-1,true);
+						E=CMLib.materials().makeResource(finalMaterial,-1,true);
 						if(E instanceof Item)
 							room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
 					}
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
-                    quickDestroy(I);
+                    ((RawMaterial)I).quickDestroy();
                     howMuch=0;
 				}
 				else
 				{
 					howMuch-=I.baseEnvStats().weight();
 					lostValue+=I.value();
-                    quickDestroy(I);
+                    ((RawMaterial)I).quickDestroy();
 				}
                 if(howMuch<=0)
                 {

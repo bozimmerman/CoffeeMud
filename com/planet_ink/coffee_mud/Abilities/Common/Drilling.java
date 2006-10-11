@@ -177,7 +177,7 @@ public class Drilling extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
 		{
-			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
+			found=(Item)CMLib.materials().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
