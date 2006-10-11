@@ -61,6 +61,8 @@ public class DBConnections
 	protected boolean YOU_ARE_DONE=false;
 	/** whether to reuse connections */
 	protected boolean reuse=false;
+	/** last time resetconnections called (or resetconnections) */
+	private long lastReset=0;
 	
 	
 	/** 
@@ -246,7 +248,7 @@ public class DBConnections
 					{
 						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
 						if(inuse==0)
-							killConnections();
+							resetConnections();
 					}
 					else
 					if(consecutiveFailures==90)
@@ -414,6 +416,14 @@ public class DBConnections
 		return false;
 	}
 	
+	public void resetConnections()
+	{
+		if((System.currentTimeMillis()-lastReset)>20000)
+		{
+			killConnections();
+			lastReset=System.currentTimeMillis();
+		}
+	}
 	/** 
 	 * Destroy all database connections, effectively
 	 * shutting down this class.

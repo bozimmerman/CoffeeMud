@@ -278,7 +278,7 @@ public class DBConnection
 				if(isProbablyDead())
 				{
 					if(myParent!=null)
-						myParent.killConnections();
+						myParent.resetConnections();
 				}
 				throw sqle;
 			}
@@ -334,7 +334,7 @@ public class DBConnection
 				if(isProbablyDead())
 				{
 					if(myParent!=null)
-						myParent.killConnections();
+						myParent.resetConnections();
 				}
 				throw sqle;
 			}
