@@ -199,6 +199,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			zapCodes.put("-CHARISMA",new Integer(98));
             zapCodes.put("+HOME",new Integer(99));
             zapCodes.put("-HOME",new Integer(100));
+			zapCodes.put("+AND",new Integer(101));  // for compiled use ONLY
 		}
 		return zapCodes;
 	}
@@ -345,7 +346,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						case '=': found=(lvl==cmpLevel); break;
 						}
 					}
-					if(found) return true;
+					if((x<text.length())&&(text.charAt(x)=='&'))
+					{
+						lastPlace=(++x);
+						if(!found)
+						while((x<text.length())&&(text.charAt(x)!=' '))
+							lastPlace=(++x);
+						if(x==text.length()) break;
+					}
+					else
+					if(found)
+						return true;
 				}
 			}
 		}
@@ -355,6 +366,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public Vector levelCompiledHelper(String str, char c, Vector entry)
 	{
 		if(entry==null) entry=new Vector();
+		int x=str.indexOf("&");
+		if(x>=0)
+		{
+			Vector V=levelCompiledHelper(str.substring(0,x),c,entry);
+			Vector V2=levelCompiledHelper(str.substring(0,x+1),c,entry);
+			if((V.size()>0)&&(V2.size()>0))
+			{
+				entry.addAll(V);
+				entry.addElement(getMaskCodes().get("+AND"));
+				entry.addElement(new Integer(0));
+				entry.addAll(V2);
+			}
+		}
+		else
 		if(str.startsWith(c+">="))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGE"));
@@ -387,22 +412,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return entry;
 	}
 	
-	public StringBuffer levelHelp(String lvl, char c, String append)
+	public StringBuffer levelHelp(String lvl, char c, String append, boolean useLevelWord, boolean close)
 	{
+		int x=lvl.indexOf("&");
+		if(x>=0)
+		{
+			StringBuffer pt1=levelHelp(lvl.substring(0,x),c,append,true,false);
+			StringBuffer pt2=levelHelp(lvl.substring(0,x+1),c,"",false,true);
+			return pt1.append(" and "+pt2);
+		}
+		else
 		if(lvl.startsWith(c+">="))
-			return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
+			return new StringBuffer(append+(useLevelWord?"levels ":"")+"greater than or equal to "+lvl.substring(3).trim()+(close?".  ":""));
 		else
 		if(lvl.startsWith(c+"<="))
-			return new StringBuffer(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
+			return new StringBuffer(append+(useLevelWord?"levels ":"")+"less than or equal to "+lvl.substring(3).trim()+(close?".  ":""));
 		else
 		if(lvl.startsWith(c+">"))
-			return new StringBuffer(append+"levels greater than "+lvl.substring(2).trim()+".  ");
+			return new StringBuffer(append+(useLevelWord?"levels ":"")+"greater than "+lvl.substring(2).trim()+(close?".  ":""));
 		else
 		if(lvl.startsWith(c+"<"))
-			return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
+			return new StringBuffer(append+(useLevelWord?"levels ":"")+"less than "+lvl.substring(2).trim()+(close?".  ":""));
 		else
 		if(lvl.startsWith(c+"="))
-			return new StringBuffer(append+"level "+lvl.substring(2).trim()+" players.  ");
+			return new StringBuffer(append+(useLevelWord?"level ":"")+lvl.substring(2).trim()+(close?" players.  ":""));
 		return new StringBuffer("");
 	}
 	
@@ -640,13 +673,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 5: // -Levels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only ":"Allows only "));
+							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only ":"Allows only ",true,true));
 					}
 					break;
 				case 6: // -ClassLevels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class "));
+							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class ",true,true));
 					}
 					break;
 				case 7: // -Tattoos
@@ -1684,7 +1717,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.append("Disallows Females.  ");
 				if(str.startsWith("-NEUTER"))
 					buf.append((skipFirstWord?"Only ":"Allows only ")+"Males and Females.  ");
-				buf.append(levelHelp(str,'-',"Disallows "));
+				buf.append(levelHelp(str,'-',"Disallows ",true,true));
 				if((str.startsWith("-"))
 		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
@@ -2435,6 +2468,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							case 41: // +lvleq
 								if(E.baseEnvStats().level()==((Integer)V.elementAt(v+1)).intValue())
 								   found=true;
+								break;
+							case 101: // +and
+								if(!found)
+									v+=2;
+								else
+									found=false;
 								break;
 						}
 					if(!found) return false;
