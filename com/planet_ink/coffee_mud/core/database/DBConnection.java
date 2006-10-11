@@ -73,13 +73,15 @@ public class DBConnection
 	 * @param DBPass	ODBC LOGIN PASSWORD
 	 * @param DBReuse   Whether the connection can be reused.
 	 */
-	public DBConnection(String DBClass,
+	public DBConnection(DBConnections parent,
+						String DBClass,
 						String DBService, 
 						String DBUser, 
 						String DBPass,
 						boolean DBReuse)
 		throws SQLException
 	{
+		myParent=parent;
 		if((DBClass==null)||(DBClass.length()==0))
 			DBClass="sun.jdbc.odbc.JdbcOdbcDriver";
 		try
@@ -133,6 +135,7 @@ public class DBConnection
 		myConnection=null;
 		myStatement=null;
 		myPreparedStatement=null;
+		myParent=null;
 	}
 	
 	/** 
@@ -272,6 +275,11 @@ public class DBConnection
 				if(myParent!=null) 
 					myParent.reportError();
 				lastError=""+sqle;
+				if(isProbablyDead())
+				{
+					if(myParent!=null)
+						myParent.killConnections();
+				}
 				throw sqle;
 			}
 			sqlserver=false;
@@ -322,6 +330,11 @@ public class DBConnection
 				{
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 					myParent.reportError();
+				}
+				if(isProbablyDead())
+				{
+					if(myParent!=null)
+						myParent.killConnections();
 				}
 				throw sqle;
 			}

@@ -199,7 +199,7 @@ public class DBConnections
 			ThisDB=null;
 			if(Connections.size()<maxConnections)
 				try{
-					ThisDB=new DBConnection(DBClass,DBService,DBUser,DBPass,reuse);
+					ThisDB=new DBConnection(this,DBClass,DBService,DBUser,DBPass,reuse);
 					Connections.addElement(ThisDB);
 				}catch(Exception e){
 					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0)) 
@@ -242,13 +242,17 @@ public class DBConnections
 					for(int i=0;i<Connections.size();i++)
 						if(((DBConnection)Connections.elementAt(i)).inUse())
 							inuse++;
-					if(consecutiveFailures==30)
+					if(consecutiveFailures==180)
+					{
 						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
+						if(inuse==0)
+							killConnections();
+					}
 					else
-					if(consecutiveFailures==15)
+					if(consecutiveFailures==90)
 						Log.errOut("DBConnections","Moderate failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
 					else
-					if(consecutiveFailures==5)
+					if(consecutiveFailures==30)
 						Log.errOut("DBConnections","Minor failure obtaining DBConnection("+inuse+"/"+Connections.size()+" in use).");
 					try
 					{
