@@ -41,7 +41,7 @@ public interface MaskingLibrary extends CMObject
     public boolean levelCheck(String text, char prevChar, int lastPlace, int lvl);
     public Vector levelCompiledHelper(String str, char c, Vector entry);
 	public Vector getAbilityEduReqs(String text);
-    public StringBuffer levelHelp(String str, char c, String append, boolean levelWord, boolean close);
+    public StringBuffer levelHelp(String str, char c, String append);
     public boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find);
     public boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob);
     public boolean nameCheck(Vector V, char plusMinus, int fromHere, Environmental E);
@@ -96,7 +96,7 @@ public interface MaskingLibrary extends CMObject
         +"+SECURITY -cmdrooms +area cmditems, etc.. (create exceptions) <BR>"
         +"-LEVEL (<WORD> all levels)  <BR>"
         +"-LEVEL +=1 +>5 +>=7 +<13 +<=20 (create exceptions)  <BR>"
-        +"-=1 ->5 ->=7 -<13&->30 -<=20 (<WORD> only listed levels range) <BR>"
+        +"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
         +"-NAMES (<WORD> everyone) <BR>"
         +"-NAMES +bob \"+my name\" etc.. (create name exceptions) <BR>"
         +"+NAMES (do not <WORD> anyone who has a name) <BR>"
