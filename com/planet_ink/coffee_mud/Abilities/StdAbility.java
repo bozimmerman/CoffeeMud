@@ -146,9 +146,9 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public StdAbility()
 	{
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
+        CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);
 	}
-    protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
+    protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
 
 	public CMObject newInstance()
 	{
@@ -541,7 +541,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		try
 		{
 			StdAbility E=(StdAbility)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
+            CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);
 			E.cloneFix(this);
 			return E;
 

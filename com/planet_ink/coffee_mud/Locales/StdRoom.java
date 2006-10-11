@@ -61,11 +61,11 @@ public class StdRoom implements Room
 	public StdRoom()
 	{
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_LOCALE);
+        CMClass.bumpCounter(this,CMClass.OBJECT_LOCALE);
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 	}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_LOCALE);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_LOCALE);}
     public void initializeClass(){}
 	public CMObject newInstance()
 	{
@@ -182,7 +182,7 @@ public class StdRoom implements Room
 		try
 		{
 			StdRoom R=(StdRoom)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_LOCALE);
+            CMClass.bumpCounter(R,CMClass.OBJECT_LOCALE);
 			R.cloneFix(this);
 			return R;
 

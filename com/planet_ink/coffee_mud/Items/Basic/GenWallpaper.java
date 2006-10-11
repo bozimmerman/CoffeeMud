@@ -44,7 +44,7 @@ public class GenWallpaper implements Item
     public GenWallpaper()
     {
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_ITEM);
+        CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);
     }
 	public boolean isGeneric(){return true;}
 	public Rideable riding(){return null;}
@@ -71,7 +71,7 @@ public class GenWallpaper implements Item
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public boolean isAContainer(){return false;}
     public int numberOfItems(){return 1;}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_ITEM);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);}
 	public CMObject newInstance()
 	{
 		try
@@ -90,7 +90,7 @@ public class GenWallpaper implements Item
 		try
 		{
 			GenWallpaper E=(GenWallpaper)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_ITEM);
+            CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
 			E.destroyed=false;
 			return E;
 

@@ -244,13 +244,13 @@ public class StdMOB implements MOB
 	public StdMOB()
 	{
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_MOB);
+        CMClass.bumpCounter(this,CMClass.OBJECT_MOB);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseEnvStats().setLevel(1);
 	}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_MOB);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_MOB);}
     public boolean amDestroyed(){return amDestroyed;}
 	protected void cloneFix(MOB E)
 	{
@@ -317,7 +317,7 @@ public class StdMOB implements MOB
 		try
 		{
 			StdMOB E=(StdMOB)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_MOB);
+            CMClass.bumpCounter(E,CMClass.OBJECT_MOB);
 			E.cloneFix(this);
 			return E;
 

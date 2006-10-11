@@ -85,6 +85,9 @@ public class CMClass extends ClassLoader
     public static final int OBJECT_TOTAL=19;
     public static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     public static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
+    public static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
+    public static final boolean KEEP_OBJECT_CACHE=false;
+    static{ if(KEEP_OBJECT_CACHE) for(int i=0;i<OBJECT_TOTAL;i++)OBJECT_CACHE[i]=new java.util.WeakHashMap();}
     public static final String[] OBJECT_DESCS={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
@@ -112,8 +115,32 @@ public class CMClass extends ClassLoader
         "com.planet_ink.coffee_mud.core.interfaces.CMObject",
 		};
 
-    public static void bumpCounter(int which){OBJECT_CREATIONS[which]++;}
-    public static void unbumpCounter(int which){OBJECT_DESTRUCTIONS[which]++;}
+    public static void bumpCounter(Object O, int which)
+    {
+        if(KEEP_OBJECT_CACHE)
+        {
+            if(OBJECT_CACHE[which].containsKey(O))
+            {
+                Log.errOut("Duplicate!",new Exception("Duplicate Found!"));
+                return;
+            }
+            OBJECT_CACHE[which].put(O,OBJECT_CACHE);
+        }
+        OBJECT_CREATIONS[which]++;
+    }
+    public static void unbumpCounter(Object O, int which)
+    {
+        if(KEEP_OBJECT_CACHE)
+        {
+            if(OBJECT_CACHE[which].containsKey(O)) // yes, if its in there, its bad
+            {
+                OBJECT_CACHE[which].remove(O);  
+                Log.errOut("bumped!",O.getClass().getName());
+                return;
+            }
+        }
+        OBJECT_DESTRUCTIONS[which]++;
+    }
 	public static Enumeration races(){return races.elements();}
     public static Enumeration commonObjects(){return common.elements();}
 	public static Race randomRace(){return (Race)races.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(races.size()).doubleValue())));}

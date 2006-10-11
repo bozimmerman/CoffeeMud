@@ -130,9 +130,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public StdSpaceShip()
 	{
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_AREA);
+        CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
 	}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_AREA);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
@@ -226,7 +226,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		try
 		{
 			StdSpaceShip E=(StdSpaceShip)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_AREA);
+            CMClass.bumpCounter(E,CMClass.OBJECT_AREA);
 			E.cloneFix(this);
 			return E;
 

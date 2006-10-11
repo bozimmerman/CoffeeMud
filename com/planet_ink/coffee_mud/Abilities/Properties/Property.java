@@ -128,7 +128,7 @@ public class Property implements Ability
 	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
-    protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
+    protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
 
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
@@ -148,7 +148,7 @@ public class Property implements Ability
     public Property()
     {
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
+        CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);
     }
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
@@ -189,7 +189,7 @@ public class Property implements Ability
 		try
 		{
 			Property E=(Property)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
+            CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);
 			E.cloneFix(this);
 			return E;
 

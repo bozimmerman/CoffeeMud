@@ -46,7 +46,7 @@ public class StdBehavior implements Behavior
     public StdBehavior()
     {
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_BEHAVIOR);
+        CMClass.bumpCounter(this,CMClass.OBJECT_BEHAVIOR);
     }
 
 	protected String parms="";
@@ -69,7 +69,7 @@ public class StdBehavior implements Behavior
 		try
 		{
             Behavior B=(Behavior)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_BEHAVIOR);
+            CMClass.bumpCounter(B,CMClass.OBJECT_BEHAVIOR);
             B.setParms(getParms());
             return B;
 		}
@@ -80,7 +80,7 @@ public class StdBehavior implements Behavior
 	}
     public void registerDefaultQuest(Quest Q){}
 	public void startBehavior(Environmental forMe){}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_BEHAVIOR);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_BEHAVIOR);}
     public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
     public boolean isSavable(){return isSavableBehavior;}
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)

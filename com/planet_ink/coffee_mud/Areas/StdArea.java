@@ -101,9 +101,9 @@ public class StdArea implements Area
 	public StdArea()
 	{
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_AREA);
+        CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
 	}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_AREA);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
     protected boolean amDestroyed=false;
     public void destroy()
     {
@@ -324,7 +324,7 @@ public class StdArea implements Area
 		try
 		{
 			StdArea E=(StdArea)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_AREA);
+            CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
 			E.cloneFix(this);
 			return E;
 

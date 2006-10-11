@@ -64,12 +64,12 @@ public class StdItem implements Item
 	public StdItem()
 	{
         super();
-        CMClass.bumpCounter(CMClass.OBJECT_ITEM);
+        CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setArmor(0);
 	}
     protected boolean abilityImbuesMagic(){return true;}
-    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_ITEM);}
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);}
     public void initializeClass(){}
     public boolean isGeneric(){return false;}
 	public String Name(){ return name;}
@@ -170,7 +170,7 @@ public class StdItem implements Item
 		try
 		{
 			StdItem E=(StdItem)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_ITEM);
+            CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
 			E.cloneFix(this);
 			return E;
 

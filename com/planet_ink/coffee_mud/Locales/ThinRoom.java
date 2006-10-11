@@ -250,7 +250,7 @@ public class ThinRoom implements Room {
 		try
 		{
 			ThinRoom E=(ThinRoom)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_LOCALE);
+            CMClass.bumpCounter(E,CMClass.OBJECT_LOCALE);
 			return E;
 
 		}
@@ -267,7 +267,7 @@ public class ThinRoom implements Room {
 	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
-    protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
+    protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
 
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
