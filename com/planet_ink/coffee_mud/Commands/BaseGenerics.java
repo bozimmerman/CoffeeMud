@@ -4288,6 +4288,9 @@ public class BaseGenerics extends StdCommand
     				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
     				if(newName.length()>0)
     				{
+    					if(newName.trim().equalsIgnoreCase("0"))
+        					S.setStat(partNum,CMath.s_int(newName));
+    					else
                         if(partNum==CharStats.STAT_GENDER)
                             S.setStat(partNum,(int)newName.charAt(0));
                         else
