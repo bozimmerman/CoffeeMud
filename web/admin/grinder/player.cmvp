@@ -620,8 +620,10 @@
 		<TD WIDTH=40%>
 			@if?CheckReqParm?FUNCTION=EDIT@
 				<INPUT TYPE=TEXT NAME=EMAIL SIZE=30 MAXLENGTH=30 VALUE="@PlayerData?EMAIL@">
+			<!--this comment is here because email addresses contain at-signs, and we mussn't confuse the macro parser-->
 			@else@
 				<FONT COLOR=WHITE>@PlayerData?EMAIL@</FONT>
+			<!--this comment is here because email addresses contain at-signs, and we mussn't confuse the macro parser-->
 			@endif@
 		</TD>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Deity: </FONT></TD>
