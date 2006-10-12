@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -48,14 +48,14 @@ public class Mood extends StdAbility
 	protected Object lastOne=null;
 	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","GOSSIP","OOC"};
 	public static final String[][] MOODS={
-		/*0*/{"FORMAL","+ADJCHA 17","^Bformal"},
-		/*1*/{"POLITE","+ADJCHA 13","^Bpolite"},
-		/*2*/{"HAPPY","","^Yhappy"},
-		/*3*/{"SAD","","^Csad"},
-		/*4*/{"ANGRY","","^rangry"},
-		/*5*/{"RUDE","","^grude"},
-		/*6*/{"MEAN","","^rmean"},
-		/*7*/{"PROUD","","^bproud"},
+		/*0*/{"FORMAL","+ADJCHA 17","^Bformal","formally"},
+		/*1*/{"POLITE","+ADJCHA 13","^Bpolite","politely"},
+		/*2*/{"HAPPY","","^Yhappy","happily"},
+		/*3*/{"SAD","","^Csad","sadly"},
+		/*4*/{"ANGRY","","^rangry","angrily"},
+		/*5*/{"RUDE","","^grude","rudely"},
+		/*6*/{"MEAN","","^rmean","meanly"},
+		/*7*/{"PROUD","","^bproud","proudly"},
 	};
 	
 	public final static String[] uglyPhrases={
@@ -135,6 +135,22 @@ public class Mood extends StdAbility
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
+					if((CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					&&(moodCode>=0))
+					{
+						final String[] tags={"<S-NAME>","You"};
+						String tag=null;
+						for(int i=0;i<tags.length;i++)
+						{
+							tag=tags[i];
+							if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf(MOODS[moodCode][3])<0))
+								msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+MOODS[moodCode][3]));
+							if((msg.targetMessage()!=null)&&(msg.targetMessage().indexOf(MOODS[moodCode][3])<0))
+								msg.setTargetMessage(CMStrings.replaceFirst(msg.targetMessage(),tag,tag+" "+MOODS[moodCode][3]));
+							if((msg.sourceMessage()!=null)&&(msg.sourceMessage().indexOf(MOODS[moodCode][3])<0))
+								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+MOODS[moodCode][3]));
+						}
+					}
                     String oldStr=str.toString();
 					switch(moodCode)
 					{

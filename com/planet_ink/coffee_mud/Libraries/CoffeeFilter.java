@@ -38,23 +38,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	
 	public Hashtable getTagTable()
 	{
-		if(tagTable==null)
-		{
-			tagTable=new Hashtable();
-			tagTable.put("-HIS-HER",new Integer(HISHER));
-			tagTable.put("-HIM-HER",new Integer(HIMHER));
-			tagTable.put("-HIM-HERSELF",new Integer(HIMHERSELF));
-			tagTable.put("-HIS-HERSELF",new Integer(HISHERSELF));
-			tagTable.put("-NAME",new Integer(NAME));
-			tagTable.put("-NAMESELF",new Integer(NAMESELF));
-			tagTable.put("-HE-SHE",new Integer(HESHE));
-			tagTable.put("-IS-ARE",new Integer(ISARE));
-			tagTable.put("-HAS-HAVE",new Integer(HASHAVE));
-			tagTable.put("-YOUPOSS",new Integer(YOUPOSS));
-            tagTable.put("-SIRMADAM",new Integer(SIRMADAM));
-            tagTable.put("IS-ARE",new Integer(ISARE2));
-            tagTable.put("-NAMENOART",new Integer(NAMENOART));
-		}
+		if(tagTable==null) tagTable=CMStrings.makeNumericHash(TelnetFilter.FILTER_DESCS);
 		return tagTable;
 	}
 	
