@@ -86,7 +86,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==item.container()))
+				{
 					found.addElement(I);
+				}
 		    }
 		}
 		else
@@ -102,7 +104,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==item.container()))
+				{
 					found.addElement(I);
+				}
 		    }
 		}
 		else
@@ -120,7 +124,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I=(Item)found.elementAt(i);
 			int weight=I.baseEnvStats().weight();
 			totalWeight+=weight;
-			totalValue+=item.baseGoldValue();
+			totalValue+=I.baseGoldValue();
 			if(weight>maxFound)
 			{
 				maxFound=weight;
