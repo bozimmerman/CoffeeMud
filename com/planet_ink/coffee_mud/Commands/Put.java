@@ -109,15 +109,9 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		int maxToPut=Integer.MAX_VALUE;
-		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0)
-		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0))
-		{
-			maxToPut=CMath.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
-		}
-
+		int maxToPut=super.calculateMaxToGive(mob,commands,true,mob);
+        if(maxToPut<0) return false;
+        
 		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";

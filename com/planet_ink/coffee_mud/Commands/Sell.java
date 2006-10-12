@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Sell extends StdCommand
+public class Sell extends BaseItemParser
 {
 	public Sell(){}
 
@@ -47,13 +47,9 @@ public class Sell extends StdCommand
 			return false;
 		}
 
-		int maxToDo=Integer.MAX_VALUE;
-		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0))
-		{
-			maxToDo=CMath.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
-		}
+        int maxToDo=super.calculateMaxToGive(mob,commands,true,mob);
+        if(maxToDo<0) return false;
+
 
 		String whatName=CMParms.combine(commands,0);
 		Vector V=new Vector();

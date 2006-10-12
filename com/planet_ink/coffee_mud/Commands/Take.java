@@ -71,14 +71,8 @@ public class Take extends BaseItemParser
 			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("from")))
 				commands.removeElementAt(commands.size()-1);
 
-			int maxToGive=Integer.MAX_VALUE;
-			if((commands.size()>1)
-			&&(CMLib.english().numPossibleGold(victim,CMParms.combine(commands,0))==0)
-			&&(CMath.s_int((String)commands.firstElement())>0))
-			{
-				maxToGive=CMath.s_int((String)commands.firstElement());
-				commands.setElementAt("all",0);
-			}
+            int maxToTake=super.calculateMaxToGive(mob,commands,true,victim);
+            if(maxToTake<0) return false;
 
 			String thingToGive=CMParms.combine(commands,0);
 			int addendum=1;

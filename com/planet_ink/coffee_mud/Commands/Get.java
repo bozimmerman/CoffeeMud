@@ -127,50 +127,8 @@ public class Get extends BaseItemParser
 		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_ANY,true);
 		int c=0;
 
-		int maxToGet=Integer.MAX_VALUE;
-		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0)
-		&&(CMLib.english().numPossibleGold(null,CMParms.combine(commands,0))==0))
-		{
-			maxToGet=CMath.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
-			if(containers.size()==0)
-			{
-				int fromDex=-1;
-				for(int i=1;i<commands.size();i++)
-				    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
-				    {	fromDex=i; break;}
-				if(fromDex>0)
-				{
-				    String fromWhatName=CMParms.combine(commands,fromDex+1);
-				    while(commands.size()>fromDex)
-				        commands.removeElementAt(fromDex);
-				    Environmental fromWhat=R.fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORNREQ_UNWORNONLY);
-				    if(fromWhat==null)
-				    {
-				        mob.tell("You don't see '"+fromWhatName+"' here.");
-				        return false;
-				    }
-				    
-				    Environmental toWhat=null;
-                    if((fromWhat instanceof PackagedItems)
-                    &&(mob.isMine(fromWhat)))
-                    {
-                        mob.tell("You'll need to put that down first.");
-                        return false;
-                    }
-				    if(fromWhat instanceof Item)
-					    toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGet);
-				    if(toWhat==null)
-				    {
-				        mob.tell("You can't get anything from "+fromWhat.name()+".");
-				        return false;
-				    }
-				    if(commands.size()==1)
-				        commands.addElement(toWhat.name());
-				}
-			}
-		}
+		int maxToGet=calculateMaxToGive(mob,commands,containers.size()==0,R);
+        if(maxToGet<0) return false;
 
 		String whatToGet=CMParms.combine(commands,0);
 		String unmodifiedWhatToGet=whatToGet;

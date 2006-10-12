@@ -50,14 +50,9 @@ public class Package extends BaseItemParser
         String whatName="";
         if(commands.size()>0)
             whatName=(String)commands.lastElement();
-        int maxToGet=Integer.MAX_VALUE;
-        if((commands.size()>1)
-        &&(CMath.s_int((String)commands.firstElement())>0)
-        &&(CMLib.english().numPossibleGold(null,CMParms.combine(commands,0))==0))
-        {
-            maxToGet=CMath.s_int((String)commands.firstElement());
-            commands.setElementAt("all",0);
-        }
+        int maxToGet=super.calculateMaxToGive(mob,commands,true,mob);
+        if(maxToGet<0) return false;
+        
         String whatToGet=CMParms.combine(commands,0);
         boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
         if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}

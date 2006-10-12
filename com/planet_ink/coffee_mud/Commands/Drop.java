@@ -85,15 +85,9 @@ public class Drop extends BaseItemParser
 		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
 
 
-		int maxToDrop=Integer.MAX_VALUE;
-		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0)
-		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0))
-		{
-			maxToDrop=CMath.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
-		}
-
+		int maxToDrop=calculateMaxToGive(mob,commands,true,mob);
+        if(maxToDrop<0) return false;
+        
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
