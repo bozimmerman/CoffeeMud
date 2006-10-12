@@ -67,7 +67,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
 	public boolean rebundle(Item item)
 	{
-		if((item==null)||(item.amDestroyed())) return false;
+		if((item==null)||(item.amDestroyed())) 
+            return false;
 		Vector found=new Vector();
 		found.addElement(item);
 		Item I=null;
@@ -117,9 +118,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		for(int i=0;i<found.size();i++)
 		{
 			I=(Item)found.elementAt(i);
-			int weight=I.envStats().weight();
+			int weight=I.baseEnvStats().weight();
 			totalWeight+=weight;
-			totalValue+=item.value();
+			totalValue+=item.baseGoldValue();
 			if(weight>maxFound)
 			{
 				maxFound=weight;
@@ -167,11 +168,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		if(bundle instanceof Food)
 		    ((Food)bundle).setDecayTime(lowestNonZeroFoodNumber);
-		if(bundle.owner()!=owner)
-		{
-			if(owner instanceof Room)((Room)owner).bringItemHere(bundle,Item.REFUSE_PLAYER_DROP,false);
-			if(owner instanceof MOB)((MOB)owner).giveItem(bundle);
-		}
 		for(Enumeration e=foundAblesH.keys();e.hasMoreElements();)
 		{
 			A=(Ability)foundAblesH.get(e.nextElement());
@@ -180,6 +176,16 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		for(int i=0;i<found.size();i++)
 			((RawMaterial)found.elementAt(i)).quickDestroy();
+        if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).fetchItem(((Room)owner).numItems()-1)!=bundle))
+        {
+            ((Room)owner).delItem(bundle);
+            ((Room)owner).bringItemHere(bundle,Item.REFUSE_PLAYER_DROP,false);
+        }
+        if((owner instanceof MOB)&&(((MOB)owner).inventorySize()>0)&&(((MOB)owner).fetchInventory(((MOB)owner).inventorySize()-1)!=bundle))
+        {
+            ((MOB)owner).delInventory(bundle);
+            ((MOB)owner).giveItem(bundle);
+        }
 		Room R=CMLib.map().roomLocation(bundle);
 		if(R!=null) R.recoverRoomStats();
 		return true;
@@ -187,12 +193,16 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
     public Environmental unbundle(Item I, int number)
     {
+        if((I==null)||(I.amDestroyed())) 
+            return null;
         if((I instanceof PackagedItems)
         &&(I.container()==null)
         &&(!CMLib.flags().isOnFire(I)))
         {
             if(number<=0) number=((PackagedItems)I).numberOfItemsInPackage();
             if(number<=0) number=1;
+            if(number>((PackagedItems)I).numberOfItemsInPackage())
+                number=((PackagedItems)I).numberOfItemsInPackage();
             Environmental owner=I.owner();
             Vector parts=((PackagedItems)I).unPackage(number);
             if(parts.size()==0) return I;
@@ -217,15 +227,32 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             if(I.baseEnvStats().weight()>1)
             {
                 Environmental owner=I.owner();
+                if(number<=0) number=I.baseEnvStats().weight();
+                if(number<=0) number=1;
+                if(number>=(I.baseEnvStats().weight()-1))
+                    number=I.baseEnvStats().weight();
                 I.baseEnvStats().setWeight(I.baseEnvStats().weight());
+                int loseValue=0;
+                int loseNourishment=0;
+                int loseThirstHeld=0;
+                int loseThirstRemain=0;
                 Environmental E=null;
-                for(int x=0;x<I.baseEnvStats().weight();x++)
+                for(int x=0;x<number;x++)
                 {
                     E=makeResource(I.material(),-1,true);
                     if(E instanceof Item)
                     {
+                        loseValue+=I.baseGoldValue();
                         if((E instanceof Food)&&(I instanceof Food))
+                        {
                             ((Food)E).setDecayTime(((Food)I).decayTime());
+                            loseNourishment+=((Food)E).nourishment();
+                        }
+                        if((E instanceof Drink)&&(I instanceof Drink))
+                        {
+                            loseThirstHeld+=((Drink)E).liquidHeld();
+                            loseThirstRemain+=((Drink)E).liquidRemaining();
+                        }
                         if(rott!=null)
                             E.addNonUninvokableEffect((Ability)rott.copyOf());
                         if(owner instanceof Room)
@@ -237,7 +264,45 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     else
                         E=null;
                 }
-                I.destroy();
+                if((I.baseEnvStats().weight()-number)>1)
+                {
+                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-number);
+                    I.setBaseValue(I.baseGoldValue()-loseValue);
+                    I.setName("a "+I.baseEnvStats().weight()+"# "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+" bundle");
+                    I.setDisplayText(I.name()+" is here.");
+                    if(I instanceof Food)
+                    {
+                        ((Food)I).setNourishment(((Food)I).nourishment()-loseNourishment);
+                        if(((Food)I).nourishment()<=0)
+                            ((Food)I).setNourishment(0);
+                    }
+                    if(I instanceof Drink)
+                    {
+                        ((Drink)I).setLiquidHeld(((Drink)I).liquidHeld()-loseThirstHeld);
+                        if(((Drink)I).liquidHeld()<=0)
+                            ((Drink)I).setLiquidHeld(0);
+                        ((Drink)I).setLiquidRemaining(((Drink)I).liquidRemaining()-loseThirstRemain);
+                        if(((Drink)I).liquidRemaining()<=0)
+                            ((Drink)I).setLiquidRemaining(0);
+                    }
+                    I.recoverEnvStats();
+                    // now move it to the end!
+                    if(owner instanceof Room)
+                    {
+                        ((Room)owner).delItem(I);
+                        ((Room)owner).addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+                    }
+                    else
+                    if(owner instanceof MOB)
+                    {
+                        ((MOB)owner).delInventory(I);
+                        ((MOB)owner).addInventory(I);
+                    }
+                    else
+                        I.destroy();
+                }
+                else
+                    I.destroy();
                 return E;
             }
             return I;

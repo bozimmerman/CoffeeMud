@@ -595,13 +595,10 @@ public class Destroy extends BaseItemParser
 			mob.location().send(mob,msg);
 			return true;
 		}
-		else
-		{
-			if(dropThis instanceof Coins)
-			    ((Coins)dropThis).putCoinsBack();
-            if(dropThis instanceof RawMaterial)
-            	((RawMaterial)dropThis).rebundle();
-		}
+		if(dropThis instanceof Coins)
+		    ((Coins)dropThis).putCoinsBack();
+        if(dropThis instanceof RawMaterial)
+        	((RawMaterial)dropThis).rebundle();
 		return false;
 	}
 
