@@ -272,8 +272,6 @@ public class DBConnection
 			{
 				sqlserver=false;
 				failuresInARow++;
-				if(myParent!=null) 
-					myParent.reportError();
 				lastError=""+sqle;
 				if(isProbablyDead())
 				{
@@ -328,10 +326,7 @@ public class DBConnection
 					failuresInARow++;
 				lastError=""+sqle;
 				if(myParent!=null)
-				{
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
-					myParent.reportError();
-				}
 				if(isProbablyDead())
 					if(myParent!=null)
 						myParent.resetConnections();

@@ -277,7 +277,7 @@ public class RoomLoader
             		}
             				
                     if((newExit==null)&&(newRoom==null))
-                        Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
+                        Log.errOut("Room",roomID+":no room/exit to '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
                     else
                     if((direction>255)&&(!(thisRoom instanceof GridLocale)))
                         Log.errOut("Room","Not GridLocale, tried "+direction+" exit for room '"+roomID+"'");
