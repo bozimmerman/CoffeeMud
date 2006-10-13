@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -780,6 +781,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     return 0;
                 }
                 if(!checkExpiration(mob)) return 0;
+                if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
+                {
+					StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
+					if((rejectText!=null)&&(rejectText.length()>0))
+						mob.session().println(rejectText.toString());
+                    mob.session().setKillFlag(true);
+                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+                       pendingLogins.remove(mob.Name().toUpperCase());
+                    return 0;
+                }
 
                 Long L=(Long)pendingLogins.get(mob.Name().toUpperCase());
                 if((L!=null)&&((System.currentTimeMillis()-L.longValue())<(10*60*1000)))
@@ -964,7 +975,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 mob.setPlayerStats(null);
             }
             else
-            if(CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
+            if((CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
+            ||(CMSecurity.isDisabled("LOGINS")))
             {
                 mob.session().print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
                 mob.setName("");
