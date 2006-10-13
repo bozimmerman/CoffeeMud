@@ -781,17 +781,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     return 0;
                 }
                 if(!checkExpiration(mob)) return 0;
-                if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
-                {
-					StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
-					if((rejectText!=null)&&(rejectText.length()>0))
-						mob.session().println(rejectText.toString());
-                    mob.session().setKillFlag(true);
-                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
-                       pendingLogins.remove(mob.Name().toUpperCase());
-                    return 0;
-                }
-
                 Long L=(Long)pendingLogins.get(mob.Name().toUpperCase());
                 if((L!=null)&&((System.currentTimeMillis()-L.longValue())<(10*60*1000)))
                 {
@@ -838,6 +827,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
                 }catch(Exception e){}
                 
+                if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
+                {
+					StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
+					if((rejectText!=null)&&(rejectText.length()>0))
+						mob.session().println(rejectText.toString());
+					try{Thread.sleep(1000);}catch(Exception e){}
+                    mob.session().setKillFlag(true);
+                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+                       pendingLogins.remove(mob.Name().toUpperCase());
+                    return 0;
+                }
+
                 if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)
                 &&(numAtAddress>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP))
                 &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
