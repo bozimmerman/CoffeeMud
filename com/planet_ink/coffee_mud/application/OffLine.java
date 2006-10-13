@@ -189,7 +189,7 @@ public class OffLine extends Thread implements MudHost
                 {
                     String address="unknown";
                     try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-                    System.out.println("Got a connection from "+address+" on port "+port);
+                    System.out.println("Connection from "+address+": "+port);
                     // now see if they are banned!
                     int proceed=0;
 

@@ -391,7 +391,7 @@ public class MUD extends Thread implements MudHost
 				{
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-					Log.sysOut("MUD","Got a connection from "+address+" on port "+port);
+					Log.sysOut("MUD","Connection from "+address+": "+port);
                     int proceed=0;
                     if(CMSecurity.isBanned(address))
                         proceed=1;
