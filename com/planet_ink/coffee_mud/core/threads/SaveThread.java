@@ -408,11 +408,6 @@ public class SaveThread extends Thread
 						Log.errOut("Save Thread","DB: "+ok);
 					else
 					{
-						titleSweep();
-                        commandJournalSweep();
-						autoPurge();
-						CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
-						CMLib.coffeeTables().update();
 						lastStop=System.currentTimeMillis();
 						milliTotal+=(lastStop-lastStart);
 						tickTotal++;
@@ -422,6 +417,11 @@ public class SaveThread extends Thread
 						if(!CMSecurity.isSaveFlag("NOPLAYERS"))
 							savePlayers();
 						status("not saving players");
+						titleSweep();
+                        commandJournalSweep();
+						autoPurge();
+						CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
+						CMLib.coffeeTables().update();
 						//if(processed>0)
 						//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
 					}
