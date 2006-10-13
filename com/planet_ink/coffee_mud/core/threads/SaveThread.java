@@ -380,6 +380,15 @@ public class SaveThread extends Thread
 		}
 	}
 
+	public void forceTick()
+	{
+		if(status.equalsIgnoreCase("sleeping"))
+		{
+			interrupt();
+			return;
+		}
+	}
+	
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();

@@ -35,14 +35,15 @@ import java.util.*;
 */
 public class UtiliThread extends Thread
 {
-	public static boolean started=false;
-	private static boolean shutDown=false;
+	public boolean started=false;
+	private boolean shutDown=false;
 	public long lastStart=0;
 	public long lastStop=0;
-	public static long milliTotal=0;
-	public static long tickTotal=0;
-	public static String status="";
-
+	public long milliTotal=0;
+	public long tickTotal=0;
+	public String status="";
+	private boolean debugging=false;
+	
 	public UtiliThread()
 	{
 		super("UtiliThread");
@@ -50,11 +51,17 @@ public class UtiliThread extends Thread
         setDaemon(true);
 	}
 
+	private void status(String s)
+	{
+		status=s;
+		if(debugging) Log.debugOut("SaveThread",s);
+	}
+	
 	public void vacuum()
 	{
 		boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
 		boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
-		status="expiration sweep";
+		status("expiration sweep");
 		long currentTime=System.currentTimeMillis();
 		boolean debug=CMSecurity.isDebugging("VACUUM");
 		try
@@ -102,7 +109,7 @@ public class UtiliThread extends Thread
 				    for(int s=0;s<stuffToGo.size();s++)
 				    {
 				    	Environmental E=(Environmental)stuffToGo.elementAt(s);
-						status="expiring "+E.Name();
+						status("expiring "+E.Name());
 				    	success=R.showOthers(god,E,CMMsg.MSG_EXPIRE,null);
 				    	if(debug) Log.sysOut("UTILITHREAD","Expired "+E.Name()+" in "+CMLib.map().getExtendedRoomID(R)+": "+success);
 				    }
@@ -113,7 +120,7 @@ public class UtiliThread extends Thread
 			{
 				R=(Room)roomsToGo.elementAt(r);
 		    	MOB god=CMLib.map().god(R);
-				status="expirating room "+CMLib.map().getExtendedRoomID(R);
+				status("expirating room "+CMLib.map().getExtendedRoomID(R));
 				if(debug)
 				{
 					String roomID=CMLib.map().getExtendedRoomID(R);
@@ -152,7 +159,7 @@ public class UtiliThread extends Thread
 	{
 		long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
 		long longerDateTime=System.currentTimeMillis()-(120*TimeManager.MILI_MINUTE);
-		status="checking";
+		status("checking");
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -172,10 +179,10 @@ public class UtiliThread extends Thread
                                 Log.errOut("UtiliThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
                             else
                                 Log.errOut("UtiliThread","Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
-							status="destroying unticked mob "+mob.name();
+							status("destroying unticked mob "+mob.name());
 							if(CMLib.map().getPlayer(mob.Name())==null) mob.destroy();
 							R.delInhabitant(mob);
-							status="checking";
+							status("checking");
 						}
 					}
 				}
@@ -183,7 +190,7 @@ public class UtiliThread extends Thread
 	    }
 	    catch(java.util.NoSuchElementException e){}
 
-		status="checking tick groups.";
+		status("checking tick groups.");
         DVector orderedDeaths=new DVector(3);
 		try
 		{
@@ -209,9 +216,9 @@ public class UtiliThread extends Thread
 							String codeWord=CMLib.threads().getTickStatusSummary(client.clientObject);
                             String msg=null;
 							if(obj instanceof Environmental)
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+" : "+obj.name()+" ("+((Environmental)obj).ID()+") @"+CMLib.time().date2String(client.lastStart)+", Status="+code+" ("+codeWord+"), tickID "+client.tickID);
+								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+" : "+obj.name()+" ("+((Environmental)obj).ID()+") @"+CMLib.time().date2String(client.lastStart)+", status("+code+" ("+codeWord+"), tickID "+client.tickID);
 							else
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+": "+obj.name()+", Status="+code+" ("+codeWord+") @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID);
+								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+": "+obj.name()+", status("+code+" ("+codeWord+") @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID);
 	
 							if((obj instanceof MOB)&&(((MOB)obj).location()!=null))
 								msg=str.toString()+" in "+((MOB)obj).location().roomID();
@@ -237,7 +244,7 @@ public class UtiliThread extends Thread
         for(int i=0;i<orderedDeaths.size();i++)
             Log.errOut("UtiliThread",(String)orderedDeaths.elementAt(i,2));
 			
-		status="killing tick groups.";
+		status("killing tick groups.");
 		for(int x=0;x<orderedDeaths.size();x++)
 		{
 			Tick almostTock=(Tick)orderedDeaths.elementAt(x,3);
@@ -256,7 +263,7 @@ public class UtiliThread extends Thread
 			}
 		}
 
-		status="checking player sessions.";
+		status("checking player sessions.");
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session S=CMLib.sessions().elementAt(s);
@@ -292,9 +299,9 @@ public class UtiliThread extends Thread
                         }
 						if(S instanceof Thread)
 							debugDumpStack((Thread)S);
-						status="killing session ";
+						status("killing session ");
                         CMLib.sessions().stopSessionAtAllCosts(S);
-						status="checking player sessions.";
+						status("checking player sessions.");
 					}
 					else
 					if(time>check)
@@ -327,11 +334,11 @@ public class UtiliThread extends Thread
 					Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
 					Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
-					status="killing session ";
+					status("killing session ");
 					if(S instanceof Thread)
 						debugDumpStack((Thread)S);
                     CMLib.sessions().stopSessionAtAllCosts(S);
-					status="checking player sessions";
+					status("checking player sessions");
 				}
 			}
 		}
@@ -344,6 +351,15 @@ public class UtiliThread extends Thread
         started=false;
 	}
 
+	public void forceTick()
+	{
+		if(status.equalsIgnoreCase("sleeping"))
+		{
+			interrupt();
+			return;
+		}
+	}
+	
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
@@ -371,18 +387,22 @@ public class UtiliThread extends Thread
                     try{Thread.sleep(2000);}catch(Exception e){}
 				if(!CMSecurity.isDisabled("UTILITHREAD"))
 				{
-					vacuum();
-					checkHealth();
 					lastStop=System.currentTimeMillis();
-					milliTotal+=(lastStop-lastStart);
-					tickTotal++;
-					status="sleeping";
+					if(lastStart>0)
+					{
+						milliTotal+=(lastStop-lastStart);
+						tickTotal++;
+					}
+					status("sleeping");
 					Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
 					lastStart=System.currentTimeMillis();
+					debugging=CMSecurity.isDebugging("UTILITHREAD");
+					vacuum();
+					checkHealth();
 				}
 				else
 				{
-					status="sleeping";
+					status("sleeping");
 					Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
 				}
 			}
