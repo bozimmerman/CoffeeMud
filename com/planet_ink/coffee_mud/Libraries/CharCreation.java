@@ -722,6 +722,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
          return false;
     }
     
+    private boolean loginsDisabled(MOB mob)
+    {
+        if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
+        {
+			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
+			if((rejectText!=null)&&(rejectText.length()>0))
+				mob.session().println(rejectText.toString());
+			try{Thread.sleep(1000);}catch(Exception e){}
+            mob.session().setKillFlag(true);
+            if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+               pendingLogins.remove(mob.Name().toUpperCase());
+            return true;
+        }
+        return false;
+    }
+    
+    
     // 0=no login, 1=normal login, 2=swap
     public int login(MOB mob, int attempt)
         throws java.io.IOException
@@ -827,18 +844,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
                 }catch(Exception e){}
                 
-                if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
-                {
-					StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
-					if((rejectText!=null)&&(rejectText.length()>0))
-						mob.session().println(rejectText.toString());
-					try{Thread.sleep(1000);}catch(Exception e){}
-                    mob.session().setKillFlag(true);
-                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
-                       pendingLogins.remove(mob.Name().toUpperCase());
-                    return 0;
-                }
-
                 if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)
                 &&(numAtAddress>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP))
                 &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
@@ -857,6 +862,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     mob.setSession(oldMOB.session());
                     if(mob!=oldMOB)
                         oldMOB.setSession(null);
+                    if(loginsDisabled(mob)) 
+                    	return 0;
                     if(wizi)
                     {
                         Command C=CMClass.getCommand("WizInv");
@@ -888,6 +895,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 else
                 {
                     CMLib.database().DBReadPlayer(mob);
+                    if(loginsDisabled(mob)) 
+                    	return 0;
                     if(wizi)
                     {
                         Command C=CMClass.getCommand("WizInv");

@@ -43,7 +43,8 @@ public class SaveThread extends Thread
 	public static long milliTotal=0;
 	public static long tickTotal=0;
 	public static String status="";
-
+	private static boolean debugging=false;
+	
 	public SaveThread()
 	{
 		super("SaveThread");
@@ -51,9 +52,15 @@ public class SaveThread extends Thread
         setDaemon(true);
 	}
 
+	private void status(String s)
+	{
+		status=s;
+		if(debugging) Log.debugOut("SaveThread",s);
+	}
+	
 	public void titleSweep()
 	{
-		status="title sweeping";
+		status("title sweeping");
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -62,9 +69,9 @@ public class SaveThread extends Thread
 				LandTitle T=CMLib.utensils().getLandTitle(R);
 				if(T!=null)
 				{
-					status="updating title in "+R.roomID();
+					status("updating title in "+R.roomID());
 					T.updateLot();
-					status="title sweeping";
+					status("title sweeping");
 				}
 			}
 	    }catch(NoSuchElementException nse){}
@@ -72,7 +79,7 @@ public class SaveThread extends Thread
     
     public void commandJournalSweep()
     {
-        status="command journal sweeping";
+        status("command journal sweeping");
         try
         {
             for(int j=0;j<CMLib.journals().getNumCommandJournals();j++)
@@ -80,7 +87,7 @@ public class SaveThread extends Thread
                 String num=(String)CMLib.journals().getCommandJournalFlags(j).get("EXPIRE=");
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
-                    status="updating journal "+CMLib.journals().getCommandJournalName(j);
+                    status("updating journal "+CMLib.journals().getCommandJournalName(j));
                     Vector items=CMLib.database().DBReadJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(j)+"S");
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
@@ -96,7 +103,7 @@ public class SaveThread extends Thread
                             CMLib.database().DBDeleteJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(j)+"S",i);
                         }
                     }
-                    status="command journal sweeping";
+                    status("command journal sweeping");
                 }
             }
         }catch(NoSuchElementException nse){}
@@ -116,15 +123,15 @@ public class SaveThread extends Thread
 			MOB mob=(MOB)p.nextElement();
 			if(!mob.isMonster())
 			{
-				status="just saving "+mob.Name();
+				status("just saving "+mob.Name());
 				CMLib.database().DBUpdatePlayerStatsOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
-				status="saving "+mob.Name()+", "+mob.inventorySize()+"items";
+				status("saving "+mob.Name()+", "+mob.inventorySize()+"items");
                 CMLib.database().DBUpdatePlayerItems(mob);
-				status="saving "+mob.Name()+", "+mob.numLearnedAbilities()+"abilities";
+				status("saving "+mob.Name()+", "+mob.numLearnedAbilities()+"abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);
-				status="saving "+mob.numFollowers()+" followers of "+mob.Name();
+				status("saving "+mob.numFollowers()+" followers of "+mob.Name());
                 CMLib.database().DBUpdateFollowers(mob);
 				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
@@ -134,13 +141,13 @@ public class SaveThread extends Thread
 			&&((mob.playerStats().lastUpdated()==0)
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
-				status="just saving "+mob.Name();
+				status("just saving "+mob.Name());
                 CMLib.database().DBUpdatePlayerStatsOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
-				status="just saving "+mob.Name()+", "+mob.inventorySize()+" items";
+				status("just saving "+mob.Name()+", "+mob.inventorySize()+" items");
                 CMLib.database().DBUpdatePlayerItems(mob);
-				status="just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities";
+				status("just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);
 				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
@@ -205,7 +212,7 @@ public class SaveThread extends Thread
 				}
 			}
 		}
-		status="autopurge process";
+		status("autopurge process");
 		Vector allUsers=CMLib.database().getUserList();
 		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector();
@@ -394,7 +401,8 @@ public class SaveThread extends Thread
                     try{Thread.sleep(2000);}catch(Exception e){}
 				if(!CMSecurity.isDisabled("SAVETHREAD"))
 				{
-					status="checking database health";
+					debugging=CMSecurity.isDebugging("SAVETHREAD");
+					status("checking database health");
 					String ok=CMLib.database().errorStatus();
 					if((ok.length()!=0)&&(!ok.startsWith("OK")))
 						Log.errOut("Save Thread","DB: "+ok);
@@ -408,19 +416,19 @@ public class SaveThread extends Thread
 						lastStop=System.currentTimeMillis();
 						milliTotal+=(lastStop-lastStart);
 						tickTotal++;
-						status="sleeping";
+						status("sleeping");
 						Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
 						lastStart=System.currentTimeMillis();
 						if(!CMSecurity.isSaveFlag("NOPLAYERS"))
 							savePlayers();
-						status="not saving players";
+						status("not saving players");
 						//if(processed>0)
 						//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
 					}
 				}
 				else
 				{
-					status="sleeping";
+					status("sleeping");
 					Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
 				}
 			}
