@@ -237,7 +237,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
 			if(amount>woodRequired) woodRequired=amount;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
+			int lostValue=autoGenerate>0?0:
+                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{

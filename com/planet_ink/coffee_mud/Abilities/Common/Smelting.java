@@ -199,8 +199,8 @@ public class Smelting extends CraftingSkill
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
-		destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null,0);
-		destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null,0);
+		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null);
+		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null);
 		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_DATA[doneResourceCode][0],-1,false);

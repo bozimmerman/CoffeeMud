@@ -170,7 +170,7 @@ public class GatheringSkill extends CommonSkill
 		I.baseEnvStats().setWeight(amount);
 		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))
 		{
-		    int lostValue=destroyResources(R,amount,foundResource,-1,null,0);
+		    int lostValue=CMLib.materials().destroyResources(R,amount,foundResource,-1,null);
 			I.setBaseValue(lostValue);
 			if(I instanceof Food)
 			    ((Food)I).setNourishment(((Food)I).nourishment()*amount);

@@ -694,7 +694,7 @@ public class Construction extends CraftingSkill
 
 		room=mob.location();
 		if(woodRequired>0)
-			destroyResources(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null,0);
+			CMLib.materials().destroyResources(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
 
 		switch(doingCode)
 		{

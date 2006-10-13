@@ -172,7 +172,7 @@ public class Taxidermy extends CraftingSkill
 		building=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
+		CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 		messedUp=!proficiencyCheck(mob,0,auto);
 		if(building!=null)	foundShortName=I.Name();
 		int duration=15+(woodRequired/3)-mob.envStats().level();

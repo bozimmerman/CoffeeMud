@@ -395,7 +395,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);
+			int lostValue=autoGenerate>0?0:
+                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{

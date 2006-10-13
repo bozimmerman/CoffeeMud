@@ -101,7 +101,8 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,auto?1:0);
+        if(!auto)
+            CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 		building=CMClass.getWeapon("GenWeapon");
 		completion=50-CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		String itemName="the Holy Avenger";

@@ -43,4 +43,5 @@ public interface MaterialLibrary extends CMObject
     public int getRandomResourceOfMaterial(int material);
     public boolean rebundle(Item I);
     public boolean quickDestroy(Item I);
+    public int destroyResources(Room room, int howMuch, int finalMaterial, int otherMaterial, Item never);
 }

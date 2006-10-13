@@ -541,5 +541,97 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		I.recoverEnvStats();
 		return I;
 	}
+    
+    
+    public int destroyResources(Room room,
+                                int howMuch,
+                                int finalMaterial,
+                                int otherMaterial,
+                                Item never)
+    {
+        int lostValue=0;
+        if(room==null) return 0;
+        
+        Environmental lastE1=null;
+        Environmental lastE2=null;
+        if((howMuch>0)||(otherMaterial>0))
+        for(int i=room.numItems()-1;i>=0;i--)
+        {
+            Item I=room.fetchItem(i);
+            if(I==null) break;
+            if(I==never) continue;
 
+            if((otherMaterial>0)
+            &&(I instanceof RawMaterial)
+            &&(I.material()==otherMaterial)
+            &&(I.container()==null)
+            &&(!CMLib.flags().isOnFire(I))
+            &&(!CMLib.flags().enchanted(I)))
+            {
+                if(I.baseEnvStats().weight()>1)
+                {
+                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
+                    Environmental E=null;
+                    for(int x=0;x<I.baseEnvStats().weight();x++)
+                    {
+                        E=CMLib.materials().makeResource(otherMaterial,-1,true);
+                        if(E instanceof Item)
+                            room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                    }
+                    if(E instanceof Item)
+                        lostValue+=((Item)E).value();
+                    if(E!=null) lastE1=E;
+                    ((RawMaterial)I).quickDestroy(); 
+                }
+                else
+                {
+                    lostValue+=I.value();
+                    ((RawMaterial)I).quickDestroy();
+                }
+                otherMaterial=-1;
+                if((finalMaterial<0)||(howMuch<=0)) break;
+            }
+            else
+            if((I instanceof RawMaterial)
+            &&(I.material()==finalMaterial)
+            &&(I.container()==null)
+            &&(!CMLib.flags().isOnFire(I))
+            &&(!CMLib.flags().enchanted(I))
+            &&(howMuch>0))
+            {
+                if(I.baseEnvStats().weight()>howMuch)
+                {
+                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
+                    Environmental E=null;
+                    for(int x=0;x<I.baseEnvStats().weight();x++)
+                    {
+                        E=CMLib.materials().makeResource(finalMaterial,-1,true);
+                        if(E instanceof Item)
+                            room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                    }
+                    if(E instanceof Item)
+                        lostValue+=(((Item)E).value()*howMuch);
+                    if(E!=null) lastE2=E;
+                    ((RawMaterial)I).quickDestroy();
+                    howMuch=0;
+                }
+                else
+                {
+                    howMuch-=I.baseEnvStats().weight();
+                    lostValue+=I.value();
+                    ((RawMaterial)I).quickDestroy();
+                }
+                if(howMuch<=0)
+                {
+                    finalMaterial=-1;
+                    if(otherMaterial<0) break;
+                }
+            }
+        }
+        if((lastE1 instanceof Item)&&(!((Item)lastE1).amDestroyed()))
+            CMLib.materials().rebundle((Item)lastE1);
+        if((lastE2 instanceof Item)&&(!((Item)lastE2).amDestroyed()))
+            CMLib.materials().rebundle((Item)lastE2);
+        return lostValue;
+    }
 }

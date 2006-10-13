@@ -241,7 +241,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int woodDestroyed=woodRequired;
-			int lostValue=destroyResources(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null,autoGenerate);
+			int lostValue=autoGenerate>0?0:
+                CMLib.materials().destroyResources(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
