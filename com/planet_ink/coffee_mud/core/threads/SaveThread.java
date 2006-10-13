@@ -409,8 +409,10 @@ public class SaveThread extends Thread
 					else
 					{
 						lastStop=System.currentTimeMillis();
-						milliTotal+=(lastStop-lastStart);
-						tickTotal++;
+						if(lastStart>0){
+							milliTotal+=(lastStop-lastStart);
+							tickTotal++;
+						}
 						status("sleeping");
 						Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
 						lastStart=System.currentTimeMillis();
