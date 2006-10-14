@@ -71,7 +71,7 @@ public class SaveThread extends Thread
 				LandTitle T=CMLib.utensils().getLandTitle(R);
 				if(T!=null)
 				{
-					status("updating title in "+R.roomID());
+					status("updating title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
 					T.updateLot();
 					status("title sweeping");
 				}
