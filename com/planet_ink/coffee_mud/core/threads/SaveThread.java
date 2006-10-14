@@ -408,40 +408,38 @@ public class SaveThread extends Thread
 			{
                 while(CMLib.threads().isAllSuspended())
                     try{Thread.sleep(2000);}catch(Exception e){}
-				if(!CMSecurity.isDisabled("SAVETHREAD"))
-				{
-					debugging=CMSecurity.isDebugging("SAVETHREAD");
-					status("checking database health");
-					String ok=CMLib.database().errorStatus();
-					if((ok.length()!=0)&&(!ok.startsWith("OK")))
-						Log.errOut("Save Thread","DB: "+ok);
-					else
-					{
-						lastStop=System.currentTimeMillis();
-						if(lastStart>0){
-							milliTotal+=(lastStop-lastStart);
-							tickTotal++;
-						}
-						status("sleeping");
-						Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
-						lastStart=System.currentTimeMillis();
-						if(!CMSecurity.isSaveFlag("NOPLAYERS"))
-							savePlayers();
-						status("not saving players");
-						titleSweep();
+                if(!CMSecurity.isDisabled("SAVETHREAD"))
+                {
+                    debugging=CMSecurity.isDebugging("SAVETHREAD");
+                    status("checking database health");
+                    String ok=CMLib.database().errorStatus();
+                    if((ok.length()!=0)&&(!ok.startsWith("OK")))
+                        Log.errOut("Save Thread","DB: "+ok);
+                    else
+                    {
+                        titleSweep();
                         commandJournalSweep();
-						autoPurge();
-						CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
-						CMLib.coffeeTables().update();
-						//if(processed>0)
-						//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
-					}
-				}
-				else
-				{
-					status("sleeping");
-					Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
-				}
+                        autoPurge();
+                        CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
+                        CMLib.coffeeTables().update();
+                        lastStop=System.currentTimeMillis();
+                        milliTotal+=(lastStop-lastStart);
+                        tickTotal++;
+                        status("sleeping");
+                        Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
+                        lastStart=System.currentTimeMillis();
+                        if(!CMSecurity.isSaveFlag("NOPLAYERS"))
+                            savePlayers();
+                        status("not saving players");
+                        //if(processed>0)
+                        //  Log.sysOut("SaveThread","Saved "+processed+" mobs.");
+                    }
+                }
+                else
+                {
+                    status="sleeping";
+                    Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
+                }
 			}
 			catch(InterruptedException ioe)
 			{
