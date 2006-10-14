@@ -273,7 +273,6 @@ public class DBConnection
 				sqlserver=false;
 				failuresInARow++;
 				lastError=""+sqle;
-                Log.errOut("DBConnection",queryString+": "+sqle);
 				if(isProbablyDead())
 				{
 					if(myParent!=null)

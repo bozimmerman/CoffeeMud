@@ -370,7 +370,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				colorForSale(R,T.rentalProperty(),resetRoomName);
 				return -1;
 			}
-			if(lastNumItems<0)
+			if((lastNumItems<0)
+            &&(!CMSecurity.isDisabled("PROPERTYOWNERCHECKS")))
 			{
 				if((!CMLib.database().DBUserSearch(null,T.landOwner()))
 				&&(CMLib.clans().getClan(T.landOwner())==null))
