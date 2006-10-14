@@ -385,26 +385,23 @@ public class UtiliThread extends Thread
 			{
                 while(CMLib.threads().isAllSuspended())
                     try{Thread.sleep(2000);}catch(Exception e){}
-				if(!CMSecurity.isDisabled("UTILITHREAD"))
-				{
-					lastStop=System.currentTimeMillis();
-					if(lastStart>0)
-					{
-						milliTotal+=(lastStop-lastStart);
-						tickTotal++;
-					}
-					status("sleeping");
-					Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
-					lastStart=System.currentTimeMillis();
-					debugging=CMSecurity.isDebugging("UTILITHREAD");
-					vacuum();
-					checkHealth();
-				}
-				else
-				{
-					status("sleeping");
-					Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
-				}
+                if(!CMSecurity.isDisabled("UTILITHREAD"))
+                {
+                    debugging=CMSecurity.isDebugging("UTILITHREAD");
+                    vacuum();
+                    checkHealth();
+                    lastStop=System.currentTimeMillis();
+                    milliTotal+=(lastStop-lastStart);
+                    tickTotal++;
+                    status("sleeping");
+                    Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
+                    lastStart=System.currentTimeMillis();
+                }
+                else
+                {
+                    status("sleeping");
+                    Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
+                }
 			}
 			catch(InterruptedException ioe)
 			{
