@@ -273,6 +273,7 @@ public class DBConnection
 				sqlserver=false;
 				failuresInARow++;
 				lastError=""+sqle;
+                Log.errOut("DBConnection",queryString+": "+sqle);
 				if(isProbablyDead())
 				{
 					if(myParent!=null)
@@ -325,6 +326,7 @@ public class DBConnection
 				||(sqle.getMessage().toUpperCase().indexOf("PRIMARY KEY")<0))
 					failuresInARow++;
 				lastError=""+sqle;
+                Log.errOut("DBConnection",updateString+": "+sqle);
 				if(myParent!=null)
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 				if(isProbablyDead())
