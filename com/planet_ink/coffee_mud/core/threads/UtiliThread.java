@@ -39,10 +39,13 @@ public class UtiliThread extends Thread
 	private boolean shutDown=false;
 	public long lastStart=0;
 	public long lastStop=0;
-	public long milliTotal=0;
-	public long tickTotal=0;
-	public String status="";
-	private boolean debugging=false;
+	public static long milliTotal=0;
+	public static long tickTotal=0;
+	public static String status="";
+	private static boolean debugging=false;
+    private static UtiliThread inst=new UtiliThread();
+    public static UtiliThread instance(){return inst;}
+    
 	
 	public UtiliThread()
 	{
@@ -50,7 +53,8 @@ public class UtiliThread extends Thread
 		setName("UtiliThread");
         setDaemon(true);
 	}
-
+    
+    
 	private void status(String s)
 	{
 		status=s;

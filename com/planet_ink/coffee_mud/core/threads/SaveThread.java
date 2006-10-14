@@ -44,6 +44,8 @@ public class SaveThread extends Thread
 	public static long tickTotal=0;
 	public static String status="";
 	private static boolean debugging=false;
+    private static SaveThread inst=new SaveThread();
+    public static SaveThread instance(){return inst;}
 	
 	public SaveThread()
 	{
