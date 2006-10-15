@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.database.*;
 import com.planet_ink.coffee_mud.core.http.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -50,13 +51,12 @@ public class MUD extends Thread implements MudHost
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
-	public static SaveThread saveThread=null;
-	public static UtiliThread utiliThread=null;
 	public static Server imserver=null;
 	public static IMC2Driver imc2server=null;
+    public static SaveThread saveThread=null;
+    public static UtiliThread utiliThread=null;
 	public static Vector webServers=new Vector();
 	public static SMTPserver smtpServerThread=null;
-	public static Vector mudThreads=new Vector();
 	public static DVector accessed=new DVector(2);
 	public static Vector autoblocked=new Vector();
 	public static Vector databases=new Vector();
@@ -163,23 +163,23 @@ public class MUD extends Thread implements MudHost
         
 		if(page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
 		{
-			HTTPserver webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub",0);
+			HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),"pub",0);
 			webServerThread.start();
 			webServers.addElement(webServerThread);
 			int numToDo=webServerThread.totalPorts();
 			while((--numToDo)>0)
 			{
-				webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub",numToDo);
+				webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
 				webServerThread.start();
 				webServers.addElement(webServerThread);
 			}
-			webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin",0);
+			webServerThread = new HTTPserver(CMLib.mud(0),"admin",0);
 			webServerThread.start();
 			webServers.addElement(webServerThread);
 			numToDo=webServerThread.totalPorts();
 			while((--numToDo)>0)
 			{
-				webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin",numToDo);
+				webServerThread = new HTTPserver(CMLib.mud(0),"admin",numToDo);
 				webServerThread.start();
 				webServers.addElement(webServerThread);
 			}
@@ -191,7 +191,7 @@ public class MUD extends Thread implements MudHost
 		
 		if(page.getStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
 		{
-			smtpServerThread = new SMTPserver((MudHost)mudThreads.firstElement());
+			smtpServerThread = new SMTPserver(CMLib.mud(0));
 			smtpServerThread.start();
 			CMLib.threads().startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,60);
 		}
@@ -257,7 +257,7 @@ public class MUD extends Thread implements MudHost
 			CMLib.database().DBUpdateItems(room);
 		}
 
-		CMLib.database().DBReadQuests((MudHost)mudThreads.firstElement());
+		CMLib.database().DBReadQuests(CMLib.mud(0));
 		if(CMLib.quests().numQuests()>0)
 			Log.sysOut("MUD","Quests loaded     : "+CMLib.quests().numQuests());
 
@@ -288,7 +288,7 @@ public class MUD extends Thread implements MudHost
 					playstate="Open to the public";
 				IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.SYSTEM_MUDNAME),
 													 "CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER),
-													 ((MUD)mudThreads.firstElement()).getPort(),
+                                                     CMLib.mud(0).getPort(),
 													 playstate,
 													 CMLib.channels().iChannelsArray());
 				imserver=new Server();
@@ -335,8 +335,8 @@ public class MUD extends Thread implements MudHost
 			Log.errOut("IMC2",e.getMessage());
 		}
 
-		for(int i=0;i<mudThreads.size();i++)
-			((MUD)mudThreads.elementAt(i)).acceptConnections=true;
+        for(int i=0;i<CMLib.hosts().size();i++)
+            ((MudHost)CMLib.hosts().elementAt(i)).setAcceptConnections(true);
 		Log.sysOut("MUD","Initialization complete.");
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,true);
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"OK");
@@ -531,8 +531,8 @@ public class MUD extends Thread implements MudHost
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,true);
         CMLib.threads().suspendAll();
 		if(S!=null)S.print("Closing MUD listeners to new connections...");
-		for(int i=0;i<mudThreads.size();i++)
-			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
+		for(int i=0;i<CMLib.hosts().size();i++)
+            ((MudHost)CMLib.hosts().elementAt(i)).setAcceptConnections(false);
 		Log.sysOut("MUD","New Connections are now closed");
 		if(S!=null)S.println("Done.");
 		
@@ -739,8 +739,9 @@ public class MUD extends Thread implements MudHost
 		keepDown=keepItDown;
 		execExternalCommand=externalCommand;
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
-		for(int m=mudThreads.size()-1;m>=0;m--)
-			CMLib.killThread((MUD)mudThreads.elementAt(m),100,1);
+		for(int m=CMLib.hosts().size()-1;m>=0;m--)
+            if(CMLib.hosts().elementAt(m) instanceof Thread)
+    			CMLib.killThread((Thread)CMLib.hosts().elementAt(m),100,1);
 		if(!keepItDown)
 			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
 	}
@@ -898,7 +899,7 @@ public class MUD extends Thread implements MudHost
 				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));
 				if(MUD.isOK)
 				{
-					mudThreads=new Vector();
+					CMLib.hosts().clear();
 					String ports=page.getProperty("PORT");
 					int pdex=ports.indexOf(",");
 					while(pdex>0)
@@ -908,20 +909,20 @@ public class MUD extends Thread implements MudHost
 						mud.port=CMath.s_int(ports.substring(0,pdex));
 						ports=ports.substring(pdex+1);
 						mud.start();
-						mudThreads.addElement(mud);
+                        CMLib.hosts().addElement(mud);
 						pdex=ports.indexOf(",");
 					}
 					MUD mud=new MUD();
 					mud.acceptConnections=false;
 					mud.port=CMath.s_int(ports);
 					mud.start();
-					mudThreads.addElement(mud);
+                    CMLib.hosts().addElement(mud);
 				}
 
 				StringBuffer str=new StringBuffer("");
-				for(int m=0;m<mudThreads.size();m++)
+				for(int m=0;m<CMLib.hosts().size();m++)
 				{
-					MudHost mud=(MudHost)mudThreads.elementAt(m);
+					MudHost mud=(MudHost)CMLib.hosts().elementAt(m);
 					str.append(" "+mud.getPort());
 				}
 				CMProps.setVar(CMProps.SYSTEM_MUDPORTS,str.toString());
@@ -934,7 +935,19 @@ public class MUD extends Thread implements MudHost
 		        });
 		        
 				if(initHost(Thread.currentThread(),page))
-					((MUD)mudThreads.firstElement()).join();
+                {
+                    Thread joinable=null;
+                    for(int i=0;i<CMLib.hosts().size();i++)
+                        if(CMLib.hosts().elementAt(i) instanceof Thread)
+                        {
+                            joinable=(Thread)CMLib.hosts().elementAt(i);
+                            break;
+                        }
+                    if(joinable!=null)
+                        joinable.join();
+                    else
+                        System.exit(-1);
+                }
 
 				System.gc();
                 try{Thread.sleep(1000);}catch(Exception e){}
@@ -968,4 +981,28 @@ public class MUD extends Thread implements MudHost
 			Log.errOut("MUD",e);
 		}
 	}
+    
+    public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+    
+    public String executeCommand(String cmd)
+        throws Exception
+    {
+        Vector V=CMParms.parse(cmd);
+        if(V.size()==0) throw new CMException("Unknown command!");
+        String word=(String)V.firstElement();
+        if(word.equalsIgnoreCase("FORCE"))
+        {
+            String rest=CMParms.combine(V,1);
+            if(rest.equalsIgnoreCase("SAVETHREAD"))
+                saveThread.forceTick();
+            else
+            if(rest.equalsIgnoreCase("UTILITHREAD"))
+                utiliThread.forceTick();
+            else
+                throw new CMException("Unknown parm: "+rest);
+        }
+        else
+            throw new CMException("Unknown command: "+word);
+        return "OK";
+    }
 }

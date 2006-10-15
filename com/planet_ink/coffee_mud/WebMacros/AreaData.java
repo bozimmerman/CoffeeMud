@@ -353,7 +353,7 @@ public class AreaData extends StdWebMacro
 							subOps+=";"+httpReq.getRequestParameter("SUBOPS"+(new Integer(i).toString()));
 						else
 							break;
-					Vector V=CMLib.database().userList();
+					Vector V=CMLib.database().getUserList();
 					for(int v=0;v<V.size();v++)
 					{
 						String cnam=(String)V.elementAt(v);

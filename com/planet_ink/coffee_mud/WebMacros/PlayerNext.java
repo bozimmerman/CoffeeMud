@@ -53,7 +53,7 @@ public class PlayerNext extends StdWebMacro
 		Vector V=(Vector)httpReq.getRequestObjects().get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
 		{
-			V=CMLib.database().userList();
+			V=CMLib.database().getUserList();
 			int code=PlayerData.getBasicCode(sort);
 			if((sort.length()>0)
 			&&(code>=0)

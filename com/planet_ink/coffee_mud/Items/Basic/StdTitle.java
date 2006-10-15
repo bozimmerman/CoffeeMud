@@ -147,14 +147,14 @@ public class StdTitle extends StdItem implements LandTitle
 		updateTitleName();
 	}
 
-	public void updateLot()
+	public void updateLot(Vector optPlayerList)
 	{
 		Vector V=getPropertyRooms();
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
 			LandTitle T=CMLib.utensils().getLandTitle(R);
-			if(T!=null) T.updateLot();
+			if(T!=null) T.updateLot(optPlayerList);
 		}
 	}
 
@@ -303,7 +303,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			A.setLandOwner("");
 			updateTitle();
-			updateLot();
+			updateLot(null);
 			recoverEnvStats();
 		}
 		else
@@ -336,7 +336,7 @@ public class StdTitle extends StdItem implements LandTitle
     			A.setLandOwner(msg.target().Name());
 			A.setBackTaxes(0);
 			updateTitle();
-			updateLot();
+			updateLot(null);
 			recoverEnvStats();
 			msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
 			if(A.rentalProperty())
@@ -462,7 +462,7 @@ public class StdTitle extends StdItem implements LandTitle
 					A.setLandOwner(msg.source().Name());
 				setBackTaxes(0);
 				updateTitle();
-				updateLot();
+				updateLot(null);
 				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
 			}
 			recoverEnvStats();

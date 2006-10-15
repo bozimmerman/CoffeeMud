@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.threads.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -44,6 +43,7 @@ public class CMLib
     public String getClassName(){return "CMLib";}
     private static CMLib inst=new CMLib();
     public static CMLib instance(){return inst;}
+    public static Vector mudThreads=new Vector();
 
     public static final int LIBRARY_DATABASE=0;
     public static final int LIBRARY_THREADS=1;
@@ -97,6 +97,19 @@ public class CMLib
     public static CMSecurity security(){return CMSecurity.instance();}
     public static Directions directions(){return Directions.instance();}
     public static Log log(){return Log.instance();}
+    public static Vector hosts(){return mudThreads;}
+    public static MudHost mud(int port){
+        if(mudThreads.size()==0)
+            return null;
+        else
+        if(port<=0)
+            return (MudHost)mudThreads.firstElement();
+        else
+        for(int i=0;i<mudThreads.size();i++)
+            if(((MudHost)mudThreads.elementAt(i)).getPort()==port)
+                return (MudHost)mudThreads.elementAt(i);
+        return null;
+    }
     public static Resources resources(){return Resources.instance();}
     public static CMProps props(){return CMProps.instance();}
     public static CMLib libraries(){return CMLib.instance();}

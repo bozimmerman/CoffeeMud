@@ -125,7 +125,7 @@ public class Prop_LimitedItems extends Property
 				Vector V=CMLib.database().getUserList();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=CMLib.map().getLoadPlayer((String)((Vector)V.elementAt(v)).firstElement());
+					MOB M=CMLib.map().getLoadPlayer((String)V.elementAt(v));
 					if((M!=null)&&(M.location()!=null)&&(M.location().isInhabitant(M)))
 						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
 				}

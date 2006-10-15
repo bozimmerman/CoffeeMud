@@ -46,7 +46,7 @@ public class WizList extends StdCommand
 		head.append(CMStrings.padRight("Last",18)+" ");
 		head.append("] Archon Character Name^.^?\n\r");
 		mob.tell("^x["+CMStrings.centerPreserve("The Archons of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
-		Vector allUsers=CMLib.database().getUserList();
+		Vector allUsers=CMLib.database().getExtendedUserList();
         CharClass C=CMClass.getCharClass("Archon");
 		for(int u=0;u<allUsers.size();u++)
 		{

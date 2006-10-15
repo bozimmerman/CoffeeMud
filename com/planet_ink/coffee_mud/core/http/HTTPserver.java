@@ -57,6 +57,7 @@ public class HTTPserver extends Thread implements MudHost
     private int state=0;
     private int myPort=27744;
     private int myServerNumber=0;
+    private boolean acceptConnections=true;
 
 	String serverDir = null;
 	String serverTemplateDir = null;
@@ -252,13 +253,16 @@ public class HTTPserver extends Thread implements MudHost
 			{
                 state=0;
 				sock=servsock.accept();
-                while(CMLib.threads().isAllSuspended())
-                    Thread.sleep(1000);
-                state=1;
-				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
-				W.equals(W); // this prevents an initialized by never used error
-				// nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
-				//  if succeeds - no need to .start() it here
+                if(acceptConnections)
+                {
+                    while(CMLib.threads().isAllSuspended())
+                        Thread.sleep(1000);
+                    state=1;
+    				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
+    				W.equals(W); // this prevents an initialized by never used error
+    				// nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
+    				//  if succeeds - no need to .start() it here
+                }
 				sock = null;
 			}
 		}
@@ -345,5 +349,12 @@ public class HTTPserver extends Thread implements MudHost
     public String getStatus()
     {
         return STATUS_STRINGS[state];
+    }
+    public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+    
+    public String executeCommand(String cmd)
+        throws Exception
+    {
+        throw new Exception("Not implemented");
     }
 }

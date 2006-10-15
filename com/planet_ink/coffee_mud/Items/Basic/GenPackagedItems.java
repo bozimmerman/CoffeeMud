@@ -35,7 +35,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenPackagedItems extends GenItem implements PackagedItems
 {
     public String ID(){ return "GenPackagedItems";}
-    protected String    readableText="";
     public GenPackagedItems()
     {
         super();
@@ -53,6 +52,9 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s) sit here.";}
     public int numberOfItemsInPackage(){return baseEnvStats().ability();}
     public void setNumberOfItemsInPackage(int number){baseEnvStats().setAbility(number);envStats().setAbility(number);}
+    protected byte[]    readableText=null;
+    public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
+    public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
     public boolean packageMe(Item I, int number)
     {
         if(I==null) return false;
@@ -141,7 +143,10 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         recoverEnvStats();
         return V;
     }
-    public String packageText(){ return CMLib.coffeeMaker().restoreAngleBrackets(readableText());}
+    public String packageText()
+    { 
+        return CMLib.coffeeMaker().restoreAngleBrackets(readableText());
+    }
     public void setPackageText(String text)
     {
         setReadableText(CMLib.coffeeMaker().parseOutAngleBrackets(text));

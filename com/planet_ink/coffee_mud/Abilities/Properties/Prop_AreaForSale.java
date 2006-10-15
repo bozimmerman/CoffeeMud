@@ -190,7 +190,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
-	public void updateLot()
+	public void updateLot(Vector optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
@@ -201,7 +201,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				Room R=(Room)V.elementAt(v);
 				lastCall=System.currentTimeMillis();
 				Integer lastItemNum=(Integer)lastItemNums.get(R);
-				lastItemNums.put(R,new Integer(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,(lastItemNum==null)?-1:lastItemNum.intValue())));
+				lastItemNums.put(R,new Integer(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));
 			}
 			lastCall=System.currentTimeMillis();
 			Area A=null;

@@ -398,7 +398,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 								{
 									((LandTitle)I).setLandOwner("");
 									((LandTitle)I).updateTitle();
-									((LandTitle)I).updateLot();
+									((LandTitle)I).updateLot(null);
 								}
 								if(!(I instanceof Coins))
                                     getShop().addStoreInventory(I,this);

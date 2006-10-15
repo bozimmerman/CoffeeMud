@@ -59,6 +59,7 @@ public class PollLoader
                 V.addElement(DBConnections.getRes(R,"CMRESL"));
                 V.addElement(new Long(DBConnections.getLongRes(R,"CMEXPI")));
             }
+            if(R!=null)R.close();
         }
         catch(Exception sqle)
         {
@@ -87,6 +88,7 @@ public class PollLoader
                 V.addElement(new Long(DBConnections.getLongRes(R,"CMEXPI")));
                 rows.addElement(V);
             }
+            if(R!=null)R.close();
         }
         catch(Exception sqle)
         {

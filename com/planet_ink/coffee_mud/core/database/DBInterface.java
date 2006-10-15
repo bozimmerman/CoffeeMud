@@ -66,8 +66,8 @@ public class DBInterface implements DatabaseEngine
 	public void vassals(MOB mob, String liegeID)
 	{MOBloader.vassals(mob,liegeID);}
 	
-	public Vector userList()
-	{return MOBloader.userList();}
+	public Vector getUserList()
+	{return MOBloader.getUserList();}
 
     public boolean isConnected(){return DB.amIOk();}
 
@@ -217,8 +217,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadPlayer(MOB mob)
 	{MOBloader.DBRead(mob);}
 	
-	public Vector getUserList()
-	{return MOBloader.getUserList();}
+	public Vector getExtendedUserList()
+	{return MOBloader.getExtendedUserList();}
 	
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{MOBloader.DBReadFollowers(mob, bringToLife);}

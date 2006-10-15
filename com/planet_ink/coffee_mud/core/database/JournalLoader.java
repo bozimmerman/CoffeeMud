@@ -55,6 +55,7 @@ public class JournalLoader
 				   continue;
 				ct++;
 			}
+            if(R!=null)R.close();
 			DB.DBDone(D);
 		}
 		catch(Exception sqle)
@@ -77,9 +78,14 @@ public class JournalLoader
             if(R.next())
             {
                 realName=DBConnections.getRes(R,"CMJRNL");
-                if(realName.length()==0) 
+                if(realName.length()==0)
+                {
+                    if(R!=null)R.close();
+                    DB.DBDone(D);
                     return realName=null;
+                }
             }
+            if(R!=null)R.close();
             DB.DBDone(D);
         }
         catch(Exception sqle)
@@ -166,6 +172,7 @@ public class JournalLoader
 					if(!journal.contains(which))
 						journal.addElement(which);
 				}
+                if(R!=null)R.close();
 				DB.DBDone(D);
 			}
 			catch(Exception sqle)
@@ -223,6 +230,7 @@ public class JournalLoader
 					
 					journal.addElement(entry);
 				}
+                if(R!=null)R.close();
 				DB.DBDone(D);
 			}
 			catch(Exception sqle)
@@ -323,6 +331,7 @@ public class JournalLoader
 					if(section2.equalsIgnoreCase(name))
 						keys.addElement(playerID2);
 				}
+                if(R!=null)R.close();
 				for(int i=0;i<keys.size();i++)
 				{
 					DB.DBDone(D);

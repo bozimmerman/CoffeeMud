@@ -40,22 +40,32 @@ public class TickTock extends StdCommand
 		throws java.io.IOException
 	{
 		String s=CMParms.combine(commands,1).toLowerCase();
-		if(CMath.isInteger(s))
-		{
-			int h=CMath.s_int(s);
-			if(h==0) h=1;
-			mob.tell("..tick..tock..");
-			mob.location().getArea().getTimeObj().tickTock(h);
-			mob.location().getArea().getTimeObj().save();
-		}
-		else
-		if(s.startsWith("clantick"))
-			CMLib.clans().tickAllClans();
-		//else
-		//if(s.startsWith("savethread"))
-		//	CMLib.
-		else
-			mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, savethread, or utilithread.");
+        try
+        {
+    		if(CMath.isInteger(s))
+    		{
+    			int h=CMath.s_int(s);
+    			if(h==0) h=1;
+    			mob.tell("..tick..tock..");
+    			mob.location().getArea().getTimeObj().tickTock(h);
+    			mob.location().getArea().getTimeObj().save();
+    		}
+    		else
+    		if(s.startsWith("clantick"))
+    			CMLib.clans().tickAllClans();
+    		else
+    		if(s.startsWith("savethread"))
+    			CMLib.mud(-1).executeCommand("FORCE savethread");
+            else
+            if(s.startsWith("utilithread"))
+                CMLib.mud(-1).executeCommand("FORCE utilithread");
+    		else
+    			mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, savethread, or utilithread.");
+        }
+        catch(Exception e)
+        {
+            mob.tell("Ticktock failed: "+e.getMessage());
+        }
 		
 		return false;
 	}

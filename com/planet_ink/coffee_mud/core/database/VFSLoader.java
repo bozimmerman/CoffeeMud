@@ -57,6 +57,7 @@ public class VFSLoader
                 V.addElement(DBConnections.getRes(R,"CMWHOM"));
                 rows.addElement(V);
             }
+            if(R!=null)R.close();
         }
         catch(Exception sqle)
         {
@@ -90,6 +91,7 @@ public class VFSLoader
                     row.addElement(B64Encoder.B64decode(data));
                 }
             }
+            if(R!=null)R.close();
         }
         catch(Exception sqle)
         {

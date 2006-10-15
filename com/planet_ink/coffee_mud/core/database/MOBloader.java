@@ -131,6 +131,7 @@ public class MOBloader
                 CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
                 found=true;
             }
+            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
@@ -289,7 +290,7 @@ public class MOBloader
         CMLib.map().addPlayer(mob);
     }
 
-    public Vector userList()
+    public Vector getUserList()
     {
         DBConnection D=null;
         Vector V=new Vector();
@@ -310,7 +311,7 @@ public class MOBloader
         return V;
     }
 
-    public Vector getUserList()
+    public Vector getExtendedUserList()
     {
         DBConnection D=null;
         Vector allUsers=new Vector();
@@ -821,6 +822,7 @@ public class MOBloader
                     break;
                 }
             }
+            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
@@ -858,6 +860,7 @@ public class MOBloader
                 data[1]=""+((btmp&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
                 return data;
             }
+            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
@@ -889,6 +892,7 @@ public class MOBloader
                     return username;
                 }
             }
+            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);

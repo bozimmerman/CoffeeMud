@@ -62,4 +62,20 @@ public interface MudHost
      * @return status of mud startup or shutdown
      */
     public String getStatus();
+    
+    /**
+     * Flexible interface for tinkering with mud-host settings.
+     * Commands to be defined later, or now, or whatever.
+     * @param cmd space-delimited (parsable) command/parm list
+     * @return any return variables
+     * @throws any exceptions
+     */
+    public String executeCommand(String cmd)
+        throws Exception;
+    
+    /**
+     * Sets whether this mud is accepting connections
+     * @param truefalse whether it is accepting connections
+     */
+    public void setAcceptConnections(boolean truefalse);
 }

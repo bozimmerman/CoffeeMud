@@ -538,7 +538,7 @@ public class List extends StdCommand
 		}
 			
 		head.append("] Character name\n\r");
-		Vector allUsers=CMLib.database().getUserList();
+		Vector allUsers=CMLib.database().getExtendedUserList();
 		Vector oldSet=allUsers;
 		int showBy=sortBy;
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))

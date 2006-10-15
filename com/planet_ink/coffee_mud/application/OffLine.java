@@ -444,4 +444,11 @@ public class OffLine extends Thread implements MudHost
             e.printStackTrace();
         }
     }
+    public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+    
+    public String executeCommand(String cmd)
+        throws Exception
+    {
+        throw new Exception("Not implemented");
+    }
 }

@@ -73,6 +73,7 @@ public class ClanLoader
 				CMLib.clans().addClan(C);
 		        updateBootStatus("Clans");
 			}
+            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{

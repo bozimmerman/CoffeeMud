@@ -63,6 +63,7 @@ public class SaveThread extends Thread
 	public void titleSweep()
 	{
 		status("title sweeping");
+        Vector playerList=CMLib.database().getUserList();
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -71,8 +72,8 @@ public class SaveThread extends Thread
 				LandTitle T=CMLib.utensils().getLandTitle(R);
 				if(T!=null)
 				{
-					status("updating title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
-					T.updateLot();
+					status("checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
+					T.updateLot(playerList);
 					status("title sweeping");
 				}
 			}
@@ -215,7 +216,7 @@ public class SaveThread extends Thread
 			}
 		}
 		status("autopurge process");
-		Vector allUsers=CMLib.database().getUserList();
+		Vector allUsers=CMLib.database().getExtendedUserList();
 		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector();
 
@@ -393,7 +394,7 @@ public class SaveThread extends Thread
 	
 	public void run()
 	{
-		lastStart=System.currentTimeMillis();
+        lastStart=System.currentTimeMillis();
 		if(started)
 		{
             Log.errOut("SaveThread","DUPLICATE SAVETHREAD RUNNING!!");
@@ -404,6 +405,7 @@ public class SaveThread extends Thread
 
 		while(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			try{Thread.sleep(1000);}catch(Exception e){}
+        lastStart=System.currentTimeMillis();
 		while(true)
 		{
 			try
@@ -427,9 +429,11 @@ public class SaveThread extends Thread
                         lastStop=System.currentTimeMillis();
                         milliTotal+=(lastStop-lastStart);
                         tickTotal++;
-                        status("sleeping");
+                        status("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
+                        status("sleeping)");
                         Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
                         lastStart=System.currentTimeMillis();
+                        status("starting run at: "+lastStart);
                         if(!CMSecurity.isSaveFlag("NOPLAYERS"))
                             savePlayers();
                         status("not saving players");

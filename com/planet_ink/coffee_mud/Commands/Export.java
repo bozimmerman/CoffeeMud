@@ -214,8 +214,7 @@ public class Export extends StdCommand
 				Vector V=CMLib.database().getUserList();
 				for(int v=0;v<V.size();v++)
 				{
-					Vector V2=(Vector)V.elementAt(v);
-					String name=(String)V2.elementAt(0);
+					String name=(String)V.elementAt(v);
 					if(S!=null) S.rawPrint(".");
 					MOB M=CMLib.map().getLoadPlayer(name);
 					if(M!=null)

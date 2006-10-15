@@ -100,11 +100,11 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 	// update lot, since its called by the savethread, ONLY worries about itself
-	public void updateLot()
+	public void updateLot(Vector optPlayerList)
 	{
 		if(affected instanceof Room)
 		{
-			lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,lastItemNums);
+			lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,optPlayerList,lastItemNums);
 			if((lastDayDone!=((Room)affected).getArea().getTimeObj().getDayOfMonth())
 			&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 			{
@@ -123,7 +123,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			        {
 			            setLandOwner("");
 			            updateTitle();
-						lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,lastItemNums);
+						lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,optPlayerList,lastItemNums);
 			        }
 			}
             scheduleReset=false;

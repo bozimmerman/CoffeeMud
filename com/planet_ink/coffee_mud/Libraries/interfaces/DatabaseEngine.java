@@ -86,8 +86,8 @@ public interface DatabaseEngine extends CMObject
     public boolean isConnected();
 	public String[] DBFetchEmailData(String name);
 	public String DBEmailSearch(String email);
+	public Vector getExtendedUserList();
 	public Vector getUserList();
-	public Vector userList();
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);
 	public void DBCreateCharacter(MOB mob);

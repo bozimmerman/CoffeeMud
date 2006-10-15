@@ -59,7 +59,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
-	public void updateLot()
+	public void updateLot(Vector optPlayerList)
 	{
 		Environmental EV=affected;
 		if(!(EV instanceof Room)) return;
@@ -67,7 +67,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,lastItemNums);
+			lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums);
 	
 			if(landOwner().length()==0)
 			{

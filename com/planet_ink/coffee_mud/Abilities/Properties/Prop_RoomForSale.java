@@ -202,7 +202,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))
 		{
-			updateLot();
+			updateLot(null);
 			Vector mobs=new Vector();
 			Room R=(Room)affected;
 			if(R!=null)
@@ -288,6 +288,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 											LandTitle T,
 											boolean resetRoomName,
                                             boolean clearAllItems,
+                                            Vector optPlayerList,
 											int lastNumItems)
 	{
         boolean updateItems=false;
@@ -371,13 +372,20 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				return -1;
 			}
 			if((lastNumItems<0)
-            &&(!CMSecurity.isDisabled("PROPERTYOWNERCHECKS")))
+            &&(!CMSecurity.isDisabled("PROPERTYOWNERCHECKS"))
+            &&(optPlayerList!=null))
 			{
-				if((!CMLib.database().DBUserSearch(null,T.landOwner()))
-				&&(CMLib.clans().getClan(T.landOwner())==null))
+                boolean playerExists=(CMLib.map().getPlayer(T.landOwner())!=null);
+                if(!playerExists) playerExists=(CMLib.clans().getClan(T.landOwner())!=null);
+                if(!playerExists) playerExists=optPlayerList.contains(T.landOwner());
+                if(!playerExists)
+                for(int i=0;i<optPlayerList.size();i++)
+                    if(((String)optPlayerList.elementAt(i)).equalsIgnoreCase(T.landOwner()))
+                    { playerExists=true; break;}
+                if(!playerExists)
 				{
 					T.setLandOwner("");
-					T.updateLot();
+					T.updateLot(null);
 					return -1;
 				}
 			}
@@ -539,7 +547,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 	
 	// update lot, since its called by the savethread, ONLY worries about itself
-	public void updateLot()
+	public void updateLot(Vector optPlayerList)
 	{
 		if(affected instanceof Room)
 		{
@@ -547,7 +555,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
     		synchronized(("SYNC"+R.roomID()).intern())
     		{
     			R=CMLib.map().getRoom(R);
-				lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
+				lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
 				if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
 				&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 				{
@@ -557,7 +565,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				        {
 				            setLandOwner("");
 							CMLib.database().DBUpdateRoom(R);
-							lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
+							lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
 				        }
 				}
 	            scheduleReset=false;

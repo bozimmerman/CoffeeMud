@@ -35,7 +35,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenCaged extends GenItem implements CagedAnimal
 {
 	public String ID(){	return "GenCaged";}
-	protected String	readableText="";
 	public GenCaged()
 	{
 		super();
@@ -48,6 +47,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 		setMaterial(RawMaterial.RESOURCE_MEAT);
 		recoverEnvStats();
 	}
+    protected byte[]    readableText=null;
+    public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
+    public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
 	public boolean cageMe(MOB M)
 	{
 		if(M==null) return false;

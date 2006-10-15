@@ -71,14 +71,15 @@ public interface LandTitle extends Environmental
     /**
      * Checks for changes in the content or condition of the rooms represented
      * by this title and saves the changes to the database, if necessary.
+     * @param optPlayerList - null, or a vector of player names for quick confirms
      * @see LandTitle#updateTitle()
      */
-	public void updateLot();
+	public void updateLot(Vector optPlayerList);
     /**
      * Simply resaves the rooms represented by this title to reflect change
      * in ownership or price.  The state of the rooms is not inspected or
      * updated as in updateLot.
-     * @see LandTitle#updateLot()
+     * @see LandTitle#updateLot(Vector)
      */
 	public void updateTitle();
     
