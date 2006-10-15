@@ -77,17 +77,29 @@ public class Spell_ClanDonate extends Spell
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
-			if((mob.location().okMessage(mob,msg))
-            &&((target instanceof Coins)||(CMLib.commands().postDrop(mob,target,true,false))))
+			if(mob.location().okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-                msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
-                if(clanDonateRoom.okMessage(mob,msg))
+                if((target instanceof Coins)
+                ||(CMLib.commands().postDrop(mob,target,clanDonateRoom,true,false)))
                 {
-                    mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
-                    clanDonateRoom.bringItemHere(target,Item.REFUSE_PLAYER_DROP,false);
-                    clanDonateRoom.recoverRoomStats();
-                    clanDonateRoom.sendOthers(mob,msg);
+    				mob.location().send(mob,msg);
+                    msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
+                    if(clanDonateRoom.okMessage(mob,msg))
+                    {
+                        mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
+                        if(!clanDonateRoom.isContent(target))
+                            clanDonateRoom.bringItemHere(target,Item.REFUSE_PLAYER_DROP,false);
+                        if(!(target.amDestroyed()))
+                        {
+                            if(target instanceof Coins)
+                                ((Coins)target).putCoinsBack();
+                            else
+                            if(target instanceof RawMaterial)
+                                ((RawMaterial)target).rebundle();
+                        }
+                        clanDonateRoom.recoverRoomStats();
+                        clanDonateRoom.sendOthers(mob,msg);
+                    }
                 }
 			}
 

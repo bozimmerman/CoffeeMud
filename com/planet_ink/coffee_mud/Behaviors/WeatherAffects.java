@@ -426,7 +426,12 @@ public class WeatherAffects extends PuddleMaker
                     case Climate.WEATHER_THUNDERSTORM:
                     {
                         if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
-                            S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard.^?"+CMProps.msp("thunder.wav",40));
+                        {
+                            if((R.domainType()&Room.INDOORS)>0)
+                                S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard outside.^?"+CMProps.msp("thunder.wav",40));
+                            else
+                                S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard.^?"+CMProps.msp("thunder.wav",40));
+                        }
                         else
                         if(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.^?"+CMProps.msp("thunderandrain.wav",40));
@@ -505,7 +510,12 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA thunderous rumble and crack of lightning can be heard.^?"+CMProps.msp("thunder2.wav",40));
+                            {
+                                if((R2.domainType()&Room.INDOORS)>0)
+                                    R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA thunderous rumble and crack of lightning can be heard outside.^?"+CMProps.msp("thunder2.wav",40));
+                                else
+                                    R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA thunderous rumble and crack of lightning can be heard.^?"+CMProps.msp("thunder2.wav",40));
+                            }
                             else
                                 R2.showHappens(CMMsg.MSG_OK_ACTION,"^JYou hear a thunderous rumble as a bolt of lightning streaks across the sky!^?"+CMProps.msp("thunder3.wav",40));
                     }
@@ -554,7 +564,12 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JThe terrible rumble of a tornado can be heard.^?"+CMProps.msp("tornado.wav",40));
+                            {
+                                if((R2.domainType()&Room.INDOORS)>0)
+                                    R2.showHappens(CMMsg.MSG_OK_ACTION,"^JThe terrible rumble of a tornado can be heard outside.^?"+CMProps.msp("tornado.wav",40));
+                                else
+                                    R2.showHappens(CMMsg.MSG_OK_ACTION,"^JThe terrible rumble of a tornado can be heard.^?"+CMProps.msp("tornado.wav",40));
+                            }
                             else
                                 R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA huge and terrible tornado touches down somewhere near by.^?"+CMProps.msp("tornado.wav",40));
                     }

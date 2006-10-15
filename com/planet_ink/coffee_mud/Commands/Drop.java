@@ -38,12 +38,12 @@ public class Drop extends BaseItemParser
 	private String[] access={"DROP","DRO"};
 	public String[] getAccessWords(){return access;}
 
-	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
+	public static boolean drop(MOB mob, Room R, Environmental dropThis, boolean quiet, boolean optimize)
 	{
 		CMMsg msg=CMClass.getMsg(mob,dropThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
-		if(mob.location().okMessage(mob,msg))
+		if(R.okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 			if(dropThis instanceof Coins)
 			    ((Coins)dropThis).putCoinsBack();
 			if(dropThis instanceof RawMaterial)
@@ -64,13 +64,16 @@ public class Drop extends BaseItemParser
 		Item container=null;
 		Vector V=new Vector();
 
-		if((commands.size()==3)
+		if((commands.size()>=3)
 		&&(commands.firstElement() instanceof Item)
 		&&(commands.elementAt(1) instanceof Boolean)
 		&&(commands.elementAt(2) instanceof Boolean))
-			return drop(mob,(Item)commands.firstElement(),
+        {
+            Room R=((commands.size()>3)&&(commands.elementAt(3) instanceof Room))?((Room)commands.elementAt(3)):mob.location();
+			return drop(mob,R,(Item)commands.firstElement(),
 						((Boolean)commands.elementAt(1)).booleanValue(),
 						((Boolean)commands.elementAt(2)).booleanValue());
+        }
 
 		if(commands.size()<2)
 		{
@@ -141,11 +144,12 @@ public class Drop extends BaseItemParser
 		}
 		while((allFlag)&&(addendum<=maxToDrop));
 
+        Room R=mob.location();
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<V.size();i++)
-			drop(mob,(Item)V.elementAt(i),false,true);
+			drop(mob,R,(Item)V.elementAt(i),false,true);
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;

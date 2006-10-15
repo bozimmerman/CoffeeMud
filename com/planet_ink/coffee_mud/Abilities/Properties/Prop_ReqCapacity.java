@@ -112,7 +112,14 @@ public class Prop_ReqCapacity extends Property
 			&&(msg.source().location()!=null)
 	        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
 			{
-				Room R=msg.source().location();
+                Room R=null;
+                if(affected instanceof Room)
+                    R=(Room)affected;
+                else
+                if(myHost instanceof Room)
+                    R=(Room)myHost;
+                else
+                    R=msg.source().location();
 				if((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					if(itemCap<Integer.MAX_VALUE)

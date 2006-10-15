@@ -170,9 +170,10 @@ public class Empty extends BaseItemParser
                 }
             }
 			CMMsg msg=CMClass.getMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
-			if(skipMessage||(mob.location().okMessage(mob,msg)))
+            Room R=mob.location();
+			if(skipMessage||(R.okMessage(mob,msg)))
 			{
-                if(!skipMessage) mob.location().send(mob,msg);
+                if(!skipMessage) R.send(mob,msg);
 				for(int v2=0;v2<V2.size();v2++)
 				{
 					Item I=(Item)V2.elementAt(v2);
@@ -181,13 +182,13 @@ public class Empty extends BaseItemParser
 					&&(I.container()==null))
 					{
 						if(target instanceof Room)
-							Drop.drop(mob,I,true,true);
+							Drop.drop(mob,R,I,true,true);
 						else
 						if(target instanceof Container)
 						{
 							CMMsg putMsg=CMClass.getMsg(mob,target,I,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,null);
-							if(mob.location().okMessage(mob,putMsg))
-								mob.location().send(mob,putMsg);
+							if(R.okMessage(mob,putMsg))
+								R.send(mob,putMsg);
 						}
 						if(I instanceof Coins)
 							((Coins)I).putCoinsBack();
