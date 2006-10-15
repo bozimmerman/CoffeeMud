@@ -38,7 +38,8 @@ public class Score extends Affect
 	private String[] access={"SCORE","SC"};
 	public String[] getAccessWords(){return access;}
 
-	public StringBuffer getScore(MOB mob)
+    public StringBuffer getScore(MOB mob){return getScore(mob,"");}
+	public StringBuffer getScore(MOB mob, String parm)
 	{
 		int adjustedAttack=mob.adjustedAttackBonus(null);
 		int adjustedArmor=(-mob.adjustedArmor())+50;
@@ -138,6 +139,7 @@ public class Score extends Affect
         msg.append("\n\r^NYour stats are: \n\r^!");
         int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
         CharStats CT=mob.charStats();
+        if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
         msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
         msg.append("^N^!");
         msg.append(CMStrings.padRight("^<HELP^>Strength^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+"\n\r");

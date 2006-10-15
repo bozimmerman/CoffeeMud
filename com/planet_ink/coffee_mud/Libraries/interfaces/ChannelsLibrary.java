@@ -161,6 +161,6 @@ public interface ChannelsLibrary extends CMObject
             "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 
             "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
             "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO",
-            "WARRANTS"};
+            "WARRANTS", "PLAYERREADONLY"};
         
 }

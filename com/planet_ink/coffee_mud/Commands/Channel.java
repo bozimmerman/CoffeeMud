@@ -135,6 +135,12 @@ public class Channel extends BaseChanneler
             return false;
         }
         else
+        if(flags.contains("PLAYERREADONLY")&&(!mob.isMonster()))
+        {
+            mob.tell(getScr("Channel","readonly"));
+            return false;
+        }
+        else
 			reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
 	}
