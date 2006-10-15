@@ -39,6 +39,7 @@ public class Conquerable extends Arrest
 	protected String getLawParms(){ return "custom";}
 
     protected String savedHoldingClan="";
+    protected String prevHoldingClan="";
     protected String holdingClan="";
     protected Vector clanItems=new Vector();
     protected DVector clanControlPoints=new DVector(2);
@@ -51,7 +52,6 @@ public class Conquerable extends Arrest
     protected boolean REVOLTNOW=false;
     protected long waitToReload=0;
     protected long conquestDate=0;
-    protected static final long CONTROLTIME=1000*60*60*26;
     public boolean isFullyControlledByClan(){
         return ((holdingClan.length()>0)&&((System.currentTimeMillis()-conquestDate)>CONTROLTIME));
     }
@@ -201,7 +201,7 @@ public class Conquerable extends Arrest
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		||(CMSecurity.isDisabled("CONQUEST")))
 			return;
-
+        prevHoldingClan=holdingClan;
 		for(int v=0;v<clanItems.size();v++)
 		{
 			Item I=(Item)clanItems.elementAt(v);
@@ -341,6 +341,7 @@ public class Conquerable extends Arrest
 				if(xml!=null)
 				{
 					savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
+                    prevHoldingClan=CMLib.xml().getValFromPieces(xml,"OLDCLANID");
                     conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
 					Vector allData=CMLib.xml().getRealContentsFromPieces(xml,"ACITEMS");
@@ -463,7 +464,13 @@ public class Conquerable extends Arrest
 				&&(!flagFound(A,holdingClan)))
                 {
                     if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(A,holdingClan));
-					endClanRule();
+                    if((prevHoldingClan.length()>0)
+                    &&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
+                    &&(CMLib.clans().getClan(prevHoldingClan)!=null)
+                    &&(flagFound(A,prevHoldingClan)))
+                        declareWinner(prevHoldingClan);
+                    else
+    					endClanRule();
                 }
 			}
 
@@ -485,7 +492,13 @@ public class Conquerable extends Arrest
                                 CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
                             if(journalName.length()>0)
                                 CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.",-1);
-                            endClanRule();
+                            if((prevHoldingClan.length()>0)
+                            &&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
+                            &&(CMLib.clans().getClan(prevHoldingClan)!=null)
+                            &&(flagFound(A,prevHoldingClan)))
+                                declareWinner(prevHoldingClan);
+                            else
+                                endClanRule();
                     	}
                     	else
                     	{
@@ -1049,6 +1062,7 @@ public class Conquerable extends Arrest
 				totalControlPoints=-1;
 				StringBuffer data=new StringBuffer("");
 				data.append(CMLib.xml().convertXMLtoTag("CLANID",holdingClan));
+                data.append(CMLib.xml().convertXMLtoTag("OLDCLANID",prevHoldingClan));
                 data.append(CMLib.xml().convertXMLtoTag("CLANDATE",conquestDate));
 				data.append("<ACITEMS>");
 				synchronized(clanItems)
@@ -1090,6 +1104,7 @@ public class Conquerable extends Arrest
 				}
 				savedHoldingClan="";
 				holdingClan="";
+                prevHoldingClan="";
 				clanControlPoints=new DVector(2);
 				data.append("</ACITEMS>");
 				CMLib.database().DBReCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());

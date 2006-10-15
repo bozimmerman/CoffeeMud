@@ -128,6 +128,16 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		}
 		return true;
 	}
+    
+    protected Room getDestinationRoom()
+    {
+        Room R=null;
+        Vector V=CMParms.parseSemicolons(readableText(),true);
+        if(V.size()>0)
+            R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
+        return R;
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -141,10 +151,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
 					Room thisRoom=msg.source().location();
-					Vector V=CMParms.parseSemicolons(readableText(),true);
-					Room R=null;
-					if(V.size()>0)
-						R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
+                    Room R=getDestinationRoom();
 					if(R==null) R=thisRoom;
                     Exit E=CMClass.getExit("OpenNameable");
                     E.setMiscText(name());

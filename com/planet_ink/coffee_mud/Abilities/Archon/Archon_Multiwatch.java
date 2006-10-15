@@ -225,7 +225,14 @@ public class Archon_Multiwatch extends ArchonSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("stop"))
 		{
-			if((DATA.size()==0)&&(IPS.size()==0))
+            boolean foundLegacy=false;
+            for(int s=0;s<CMLib.sessions().size();s++)
+            {
+                Session S=CMLib.sessions().elementAt(s);
+                if((S!=null)&&(S.mob()!=null)&&(S.mob().fetchEffect(ID())!=null))
+                { foundLegacy=true; break;}
+            }
+			if((DATA.size()==0)&&(IPS.size()==0)&&(!foundLegacy))
 			{
 				mob.tell("Multiwatch is already off.");
 				return false;
@@ -240,6 +247,16 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(A!=null) M.delEffect(A);
 				}
 			}
+            for(int s=0;s<CMLib.sessions().size();s++)
+            {
+                Session S=CMLib.sessions().elementAt(s);
+                if((S!=null)&&(S.mob()!=null))
+                {
+                    MOB M=S.mob();
+                    Ability A=M.fetchEffect(ID());
+                    if(A!=null) M.delEffect(A);
+                }
+            }
 			mob.tell("Multiplay watcher is now turned off.");
 			DATA.clear();
 			IPS.clear();

@@ -34,6 +34,8 @@ public interface LegalBehavior extends Behavior
 {
     public static final long ONE_REAL_DAY=(long)1000*60*60*24;
     public static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
+    public static final long CONTROLTIME=ONE_REAL_DAY*3;
+
     public boolean isStillACrime(LegalWarrant W, boolean debugging);
     public boolean fillOutWarrant(MOB mob,
                                   Law laws,
