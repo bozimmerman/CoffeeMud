@@ -148,7 +148,7 @@ public class Dyeing extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb="dyeing "+target.name()+" "+writing;
+		verb="dyeing "+target.name()+" "+(darkFlag?"dark ":"")+writing;
 		displayText="You are "+verb;
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
