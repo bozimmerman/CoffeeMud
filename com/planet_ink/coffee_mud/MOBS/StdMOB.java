@@ -2595,11 +2595,11 @@ public class StdMOB implements MOB
 				if(A!=null)
 				{
 					tickStatus=Tickable.STATUS_AFFECT+a;
-					int s=affects.size();
+					int s=numAllEffects();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 
-					if(affects.size()==s)
+					if(numAllEffects()==s)
 						a++;
 				}
 				else

@@ -388,72 +388,71 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
     public int tickManaConsumption(MOB mob, int manaConsumeCounter)
     {
-        Vector expenseAffects=null;
         if((CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)>0)
         &&(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT)>0)
         &&((--manaConsumeCounter)<=0))
         {
-            expenseAffects=new Vector();
+            Vector expenseAffects=new Vector();
             manaConsumeCounter=CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME);
-        }
-
-        for(int a=0;a<mob.numAllEffects();a++)
-        {
-            Ability A=mob.fetchEffect(a);
-            if(A!=null)
+            for(int a=0;a<mob.numAllEffects();a++)
             {
-                if((expenseAffects!=null)
-                &&(!A.isAutoInvoked())
-                &&(A.canBeUninvoked())
-                &&(A.displayText().length()>0)
-                &&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-                    ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-                    ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-                    ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
-                &&(A.usageCost(mob)[0]>0))
-                    expenseAffects.addElement(A);
-            }
-        }
-
-        if((expenseAffects!=null)&&(expenseAffects.size()>0))
-        {
-            int basePrice=1;
-            switch(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT))
-            {
-            case -100: basePrice=basePrice*mob.envStats().level(); break;
-            case -200:
+                Ability A=mob.fetchEffect(a);
+                if(A!=null)
                 {
-                    int total=0;
-                    for(int a1=0;a1<expenseAffects.size();a1++)
-                    {
-                        int lql=CMLib.ableMapper().lowestQualifyingLevel(((Ability)expenseAffects.elementAt(a1)).ID());
-                        if(lql>0)
-                            total+=lql;
-                        else
-                            total+=1;
-                    }
-                    basePrice=basePrice*(total/expenseAffects.size());
+                    if((!A.isAutoInvoked())
+                    &&(A.canBeUninvoked())
+                    &&(A.displayText().length()>0)
+                    &&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+                        ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+                        ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+                        ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
+                    &&(A.usageCost(mob)[0]>0))
+                        expenseAffects.addElement(A);
                 }
-                break;
-            default:
-                basePrice=basePrice*CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT);
-                break;
             }
-
-            // 1 per tick per level per msg.  +1 to the affects so that way it's about
-            // 3 cost = 1 regen... :)
-            int reallyEat=basePrice*(expenseAffects.size()+1);
-            while(mob.curState().getMana()<reallyEat)
+            if((expenseAffects!=null)&&(expenseAffects.size()>0))
             {
-                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
-                //pick one and kill it
-                Ability A=(Ability)expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
-                A.unInvoke();
-                expenseAffects.remove(A);
-                reallyEat=basePrice*expenseAffects.size();
+                int basePrice=1;
+                switch(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT))
+                {
+                case -100: basePrice=basePrice*mob.envStats().level(); break;
+                case -200:
+                    {
+                        int total=0;
+                        for(int a1=0;a1<expenseAffects.size();a1++)
+                        {
+                            int lql=CMLib.ableMapper().lowestQualifyingLevel(((Ability)expenseAffects.elementAt(a1)).ID());
+                            if(lql>0)
+                                total+=lql;
+                            else
+                                total+=1;
+                        }
+                        basePrice=basePrice*(total/expenseAffects.size());
+                    }
+                    break;
+                default:
+                    basePrice=basePrice*CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT);
+                    break;
+                }
+
+                if(expenseAffects!=null)
+                {
+                    // 1 per tick per level per msg.  +1 to the affects so that way it's about
+                    // 3 cost = 1 regen... :)
+                    int reallyEat=basePrice*(expenseAffects.size()+1);
+                    while(mob.curState().getMana()<reallyEat)
+                    {
+                        mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
+                        //pick one and kill it
+                        Ability A=(Ability)expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
+                        A.unInvoke();
+                        expenseAffects.remove(A);
+                        reallyEat=basePrice*expenseAffects.size();
+                    }
+                    if(reallyEat>0)
+                        mob.curState().adjMana( -reallyEat, mob.maxState());
+                }
             }
-            if(reallyEat>0)
-                mob.curState().adjMana( -reallyEat, mob.maxState());
         }
         return manaConsumeCounter;
     }
