@@ -366,8 +366,8 @@ public class DefaultSession extends Thread implements Session
                 {
                     String name=(mob!=null)?mob.Name():getAddress();
                     Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
-                    logoff();
-                    logoff();
+                    logoff(true);
+                    logoff(true);
             		CMLib.killThread(this,500,1);
                 }
                 else
@@ -375,7 +375,7 @@ public class DefaultSession extends Thread implements Session
     				writeStartTime=System.currentTimeMillis()+c.length;
     				out.write(c);
     				if(out.checkError()) 
-    					logoff();
+    					logoff(true);
                 }
 			}
 		}
@@ -1180,7 +1180,7 @@ public class DefaultSession extends Thread implements Session
 		return YN;
 	}
 
-	public void logoff()
+	public void logoff(boolean killThread)
 	{
 		killFlag=true;
         if(mob!=null)
@@ -1198,7 +1198,7 @@ public class DefaultSession extends Thread implements Session
         status=Session.STATUS_LOGOUT4;
         closeSocks();
         status=Session.STATUS_LOGOUT5;
-		CMLib.killThread(this,1000,1);
+		if(killThread) CMLib.killThread(this,1000,1);
 	}
 
 	public void showPrompt()

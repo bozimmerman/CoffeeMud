@@ -106,7 +106,7 @@ public class Unload extends StdCommand
             		{
                 		M.session().setKillFlag(true);
 	            		while(M.session()!=null){try{Thread.sleep(100);}catch(Exception e){}}
-	            		if(M.session()!=null) M.session().logoff();
+	            		if(M.session()!=null) M.session().logoff(true);
             		}
             		else
             			mob.tell("Can't unload yourself -- a destroy is involved, which would disrupt this process.");
@@ -124,7 +124,7 @@ public class Unload extends StdCommand
             	if(M!=mob)
             	{
             		done++;
-            		if(M.session()!=null) M.session().logoff();
+            		if(M.session()!=null) M.session().logoff(true);
 	            	CMLib.map().delPlayer(M);
 	            	M.destroy();
             	}

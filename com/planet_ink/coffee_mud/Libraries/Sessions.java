@@ -46,13 +46,13 @@ public class Sessions extends StdLibrary implements SessionsList
     public void stopSessionAtAllCosts(Session S)
     {
         if(S==null) return;
-        S.logoff();
+        S.logoff(true);
         try{Thread.sleep(10);}catch(Exception e){}
         int tries=100;
         while((S.getStatus()!=Session.STATUS_LOGOUTFINAL)
         &&((--tries)>=0))
         {
-            S.logoff();
+            S.logoff(true);
             try{Thread.sleep(100);}catch(Exception e){}
         }
         removeElement(S);

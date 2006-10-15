@@ -105,7 +105,7 @@ public interface Session extends CMObject
 	
 	public void cmdExit(MOB mob, Vector commands)
 		throws Exception;
-	public void logoff();
+	public void logoff(boolean killThread);
 	public boolean killFlag();
 	public void setKillFlag(boolean truefalse);
 	
