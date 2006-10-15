@@ -46,7 +46,7 @@ public class Mood extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	protected int moodCode=-1;
 	protected Object lastOne=null;
-	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","GOSSIP","OOC"};
+	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"};
 	public static final String[][] MOODS={
 		/*0*/{"FORMAL","+ADJCHA 17","^Bformal","formally"},
 		/*1*/{"POLITE","+ADJCHA 13","^Bpolite","politely"},
