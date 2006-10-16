@@ -79,7 +79,8 @@ public class Unload extends StdCommand
 		}
         // User Unloading
         if((((String)commands.elementAt(1)).equalsIgnoreCase("USER"))
-        &&(mob.session()!=null))
+        &&(mob.session()!=null)
+        &&(CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")))
         {
             String which=CMParms.combine(commands,2);
             Vector users=new Vector();
