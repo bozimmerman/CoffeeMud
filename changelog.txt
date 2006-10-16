@@ -1866,3 +1866,29 @@ other two, but I only mention OUT and DEATH.
 base-state entries.
 7. A few bugs dutifully informed of their transgression, judged by a
 ruthless programmer, and sentenced to a quick death.
+# Build 5.2.3 - Release Oct 15, 2006
+1. Internal: all environmental classes can now more easily support extra-saved fields.  Still requires some programming work, but most is done for you.  See Programmer's Guide under STAT.
+2. Manipulating non-edible/drinkable raw resources will now auto-bundle, and unbundle them using normal GET [NUM] [TARGET} syntax.
+3. Channels now support new PLAYERREADONLY flag, so that mobs can talk on them, but players can not.
+4. AFTER command now supports LIST parameter.
+5. UNLOAD command now supports USER parameter (for decaching users)
+6. TICKTOCK now supports SAVETHREAD and UTILITHREAD parms to force those background tasks to go.
+7. GOTO command now supports PREVIOUS parameter
+8. *new* command: MOOD .. a cute roleplaying thing we thought up.
+9. Conquest changes: if an area is taken from one clan by another, the conquering clan can not raze the previous clans items for 3 days, giving the previous clan time to challenge the conquest.  During this period, if the new clan loses the area, it will revert to the previous clan.
+10. Archons can now conquer areas for their own clans by proclamation to the flag: I HEREBY DECLARE THIS AREA
+11. New item type: GenFatWallpaper (wallpaper with a display text)
+12. New item type: GenMobilePortal (a GenPortal that redirects a paired portal at its destination room back to itself)
+13. Wand of the Archon can now level or delevel a particular number (level x up, level x down)
+14. Two new scriptable commands: MPLOG, MPCHANNEL
+15. Legal change: if a cityguard is killed, the cityguards will follow a diff. procedure in arresting the killer.
+16. Scavenger behavior now supports a place for them to dump their trash loads.
+17. Other scriptable changes: playerstats now included in the mpstat commands, mpable commands now include expertises.
+18. New disable flags: fatgrids, fatareas, logins
+19. LOTS of skills now have their castingquality implemented, and so will be used more intelligently by mobs in combat.
+20. Several thief skills now have their expertises implemented.
+21. New common skill: bandaging, to cure bleeding and limb damage (but not limb loss, of course).
+22. New combat sub-system: Bleeding.  INI file support added 
+23. New zapper mask: +HOME
+24. More stuff added to mudgrinder control panel.
+25. Bugs detonated underground, mysteriously.  Wild claims about bug strength forthcoming.
