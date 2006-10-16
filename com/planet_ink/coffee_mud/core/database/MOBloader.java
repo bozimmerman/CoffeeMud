@@ -131,7 +131,6 @@ public class MOBloader
                 CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
                 found=true;
             }
-            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
@@ -822,7 +821,6 @@ public class MOBloader
                     break;
                 }
             }
-            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
@@ -854,13 +852,11 @@ public class MOBloader
                 // String username=DB.getRes(R,"CMUSERID");
                 int btmp=CMath.s_int(DB.getRes(R,"CMBTMP"));
                 String temail=DB.getRes(R,"CMEMAL");
-                R.close();
                 DB.DBDone(D);
                 data[0]=temail;
                 data[1]=""+((btmp&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
                 return data;
             }
-            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
@@ -887,12 +883,10 @@ public class MOBloader
                 String temail=DB.getRes(R,"CMEMAL");
                 if(temail.equalsIgnoreCase(email))
                 {
-                    R.close();
                     DB.DBDone(D);
                     return username;
                 }
             }
-            if(R!=null)R.close();
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);

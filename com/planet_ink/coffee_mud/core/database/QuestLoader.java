@@ -67,7 +67,6 @@ public class QuestLoader
                 else
 					CMLib.quests().addQuest(Q);
 			}
-            if(R!=null)R.close();
 		}
 		catch(SQLException sqle)
 		{

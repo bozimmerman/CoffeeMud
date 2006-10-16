@@ -78,7 +78,6 @@ public class RoomLoader
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
                 areas.addElement(A);
             }
-            if(R!=null)R.close();
             DB.DBDone(D);
         }
         catch(SQLException sqle)
@@ -141,7 +140,6 @@ public class RoomLoader
             ResultSet R=D.query("SELECT * FROM CMROOM"+((areaName==null)?"":" WHERE CMAREA='"+areaName+"'"));
             while(R.next())
             	roomSet.add(DBConnections.getRes(R,"CMROID"));
-            if(R!=null)R.close();
 		    DB.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -219,7 +217,6 @@ public class RoomLoader
                 if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
             }
-            if(R!=null)R.close();
         }
         catch(SQLException sqle)
         {
@@ -326,7 +323,6 @@ public class RoomLoader
                 if(reportStatus&&((currentRecordPos%updateBreak)==0))
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
             }
-            if(R!=null)R.close();
         }
         catch(SQLException sqle)
         {
@@ -400,11 +396,9 @@ public class RoomLoader
 			if(R.next())
 			{
 				String txt=DBConnections.getRes(R,"CMDESC2");
-				R.close();
 				DB.DBDone(D);
 				return txt;
 			}
-            if(R!=null)R.close();
 			DB.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -429,7 +423,6 @@ public class RoomLoader
 				if(NUMID.equalsIgnoreCase(mobID))
 				{
 					String txt=DBConnections.getRes(R,"CMCHTX");
-					R.close();
 					DB.DBDone(D);
 					return txt;
 				}
@@ -545,7 +538,6 @@ public class RoomLoader
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
 			}
-            if(R!=null)R.close();
 		}
 		catch(SQLException sqle)
 		{
@@ -614,7 +606,6 @@ public class RoomLoader
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
 			}
-            if(R!=null)R.close();
 		}
 		catch(SQLException sqle)
 		{

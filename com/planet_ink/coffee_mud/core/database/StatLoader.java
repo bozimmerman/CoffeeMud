@@ -56,7 +56,6 @@ public class StatLoader
 				String data=DBConnections.getRes(R,"CMDATA");
 				T.populate(startTime,endTime,data);
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -87,7 +86,6 @@ public class StatLoader
 				T.populate(strTime,endTime,data);
 				rows.addElement(T);
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{

@@ -56,7 +56,6 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMRDAT"));
 				rows.addElement(V);
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -81,7 +80,6 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMCDAT"));
 				rows.addElement(V);
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -117,7 +115,6 @@ public class DataLoader
 					rows.addElement(V);
 				}
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -148,7 +145,6 @@ public class DataLoader
 					rows.addElement(V);
 				}
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -177,7 +173,6 @@ public class DataLoader
 				if(section2.equalsIgnoreCase(section))
 					rows++;
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -212,7 +207,6 @@ public class DataLoader
 					rows.addElement(V);
 			    }
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -243,7 +237,6 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(V);
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -281,7 +274,6 @@ public class DataLoader
 					rows.addElement(V);
 				}
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -308,7 +300,6 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(V);
 			}
-            if(R!=null)R.close();
 		}
 		catch(Exception sqle)
 		{
@@ -344,7 +335,6 @@ public class DataLoader
                         rows.addElement(V);
                     }
                 }
-                if(R!=null)R.close();
             }
             else
             {
@@ -362,7 +352,6 @@ public class DataLoader
                     V.addElement(DBConnections.getRes(R,"CMPDAT"));
                     rows.addElement(V);
                 }
-                if(R!=null)R.close();
             }
         }
         catch(Exception sqle)
@@ -384,7 +373,6 @@ public class DataLoader
 				D=DB.DBFetch();
 				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
 				boolean exists=R.next();
-                if(R!=null)R.close();
 				DB.DBDone(D);
 				if(exists)
 					DBUpdate(key,xml);
@@ -421,7 +409,6 @@ public class DataLoader
 					if(section.equalsIgnoreCase(section2))
 						keys.addElement(DBConnections.getRes(R,"CMPKEY"));
 				}
-                if(R!=null)R.close();
 				for(int i=0;i<keys.size();i++)
 				{
 					DB.DBDone(D);
@@ -456,7 +443,6 @@ public class DataLoader
 				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
 				while(R.next())
 					keys.addElement(DBConnections.getRes(R,"CMPKEY"));
-                if(R!=null)R.close();
 				for(int i=0;i<keys.size();i++)
 				{
 					DB.DBDone(D);
