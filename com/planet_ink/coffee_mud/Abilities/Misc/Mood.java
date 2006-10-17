@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -119,7 +120,41 @@ public class Mood extends StdAbility
 		msg.setTargetMessage(changeSay(msg.targetMessage(),to));
 		msg.setOthersMessage(changeSay(msg.othersMessage(),to));
 	}
-	
+
+    public MOB target(MOB mob, Environmental target)
+    {
+        if(target instanceof MOB) return (MOB)target;
+        if(mob==null) return null;
+        Room R=mob.location();
+        if(R==null) return null;
+        if(R.numInhabitants()==1) return null;
+        if(R.numInhabitants()==2)
+        for(int r=0;r<R.numInhabitants();r++)
+            if(R.fetchInhabitant(r)!=mob)
+                return R.fetchInhabitant(r);
+        if((lastOne instanceof MOB)&&(R.isInhabitant((MOB)lastOne)))
+            return (MOB)lastOne;
+        Vector players=new Vector();
+        Vector mobs=new Vector();
+        MOB M=null;
+        for(int r=0;r<R.numInhabitants();r++)
+        {
+            M=R.fetchInhabitant(r);
+            if((M!=mob)&&(M!=null))
+            {
+                if(M.isMonster())
+                    mobs.addElement(M);
+                else
+                if(!M.isMonster())
+                    players.addElement(M);
+            }
+        }
+        if(players.size()==1) return (MOB)players.firstElement();
+        if(players.size()>1) return null;
+        if(mobs.size()==1) return (MOB)mobs.firstElement();
+        return null;
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -129,14 +164,15 @@ public class Mood extends StdAbility
 			&&(msg.tool()==null)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+            &&(moodCode>=0))
 			{
                 String str=CMStrings.getSayFromMessage(msg.othersMessage());
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-					if((CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					&&(moodCode>=0))
+                    MOB M=target(msg.source(),msg.target());
+					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 					{
 						final String[] tags={"<S-NAME>","You"};
 						String tag=null;
@@ -285,20 +321,24 @@ public class Mood extends StdAbility
 					}
 					case 1: // polite
 					{
-						if((msg.target()!=null)
-						&&(lastOne!=msg.target()))
+						if((M!=null)
+						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("HANDSHAKE",msg.target().Name()));
-							lastOne=msg.target();
+							msg.source().doCommand(CMParms.makeVector("HANDSHAKE",M.Name()));
+							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
 						case 1: str="If you please, "+str; break;
 						case 2: str=CMStrings.endWithAPeriod(str)+" Thank you."; break;
 						case 3: str=CMStrings.endWithAPeriod(str)+" If you please."; break;
+                        case 4: str="Forgive me but, "+str; break;
+                        case 5: str="If I may, "+str; break;
+                        case 6: str="Please, "+str; break;
+                        case 7: str="Humbly speaking, "+str; break;
 						default:
-							if(msg.target() instanceof MOB)
-								msg.source().doCommand(CMParms.makeVector("BOW",msg.target().Name()));
+							if(M!=null)
+								msg.source().doCommand(CMParms.makeVector("BOW",M.Name()));
 							else
 								msg.source().doCommand(CMParms.makeVector("BOW"));
 							break;
@@ -308,6 +348,7 @@ public class Mood extends StdAbility
 						case 1: changeAllSays(msg,"politely say(s)"); break;
 						case 2: changeAllSays(msg,"humbly say(s)"); break;
 						case 3: changeAllSays(msg,"meekly say(s)"); break;
+                        case 4: changeAllSays(msg,"politely say(s)"); break;
 						default:
 							break;
 						}
@@ -315,11 +356,11 @@ public class Mood extends StdAbility
 					}
 					case 2: // happy
 					{
-						if((msg.target()!=null)
-						&&(lastOne!=msg.target()))
+						if((M!=null)
+						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("SMILE",msg.target().Name()));
-							lastOne=msg.target();
+							msg.source().doCommand(CMParms.makeVector("SMILE",M.Name()));
+							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,6,0))
 						{
@@ -334,11 +375,11 @@ public class Mood extends StdAbility
 					}
 					case 3: // sad
 					{
-						if((msg.target()!=null)
-						&&(lastOne!=msg.target()))
+						if((M!=null)
+						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("CRY",msg.target().Name()));
-							lastOne=msg.target();
+							msg.source().doCommand(CMParms.makeVector("CRY",M.Name()));
+							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,10,0))
 						{
@@ -366,8 +407,8 @@ public class Mood extends StdAbility
 						case 6: changeAllSays(msg,"yell(s)"); break;
 						case 7: changeAllSays(msg,"angrily say(s)"); break;
 						case 8:
-							if(msg.target() instanceof MOB)
-								msg.source().doCommand(CMParms.makeVector("GRUMBLE",msg.target().Name()));
+                            if(M!=null)
+								msg.source().doCommand(CMParms.makeVector("GRUMBLE",M.Name()));
 							else
 								msg.source().doCommand(CMParms.makeVector("GRUMBLE"));
 							break;
@@ -421,26 +462,26 @@ public class Mood extends StdAbility
 							str=CMStrings.endWithAPeriod(str)+"..you "+uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]+".";
 						else
 						{
-							if(msg.target() instanceof MOB)
-								msg.source().doCommand(CMParms.makeVector("WHAP",msg.target().Name()));
+                            if(M!=null)
+								msg.source().doCommand(CMParms.makeVector("WHAP",M.Name()));
 							else
 								msg.source().doCommand(CMParms.makeVector("WHAP"));
 						}
-						if((msg.target() instanceof MOB)
+						if((M!=null)
 						&&(CMLib.dice().roll(1,10,0)==1)
 						&&(!msg.source().isInCombat())
-						&&(!((MOB)msg.target()).isInCombat())
-						&&(((MOB)msg.target()).mayPhysicallyAttack(msg.source())))
-							((MOB)msg.target()).setVictim(msg.source());
+						&&(!((MOB)M).isInCombat())
+						&&(((MOB)M).mayPhysicallyAttack(msg.source())))
+							((MOB)M).setVictim(msg.source());
 						break;
 					}
 					case 7: // proud
 					{
-						if((msg.target()!=null)
-						&&(lastOne!=msg.target()))
+						if((M!=null)
+						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("FLEX",msg.target().Name()));
-							lastOne=msg.target();
+							msg.source().doCommand(CMParms.makeVector("FLEX",M.Name()));
+							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
