@@ -135,6 +135,7 @@ public class Bandaging extends CommonSkill
 		if(duration<3) duration=3;
 		verb="bandaging "+target.name();
 		bandaging=target;
+		bandage=(Item)CMLib.materials().unbundle(bandage,1);
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds with "+bandage.Name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
