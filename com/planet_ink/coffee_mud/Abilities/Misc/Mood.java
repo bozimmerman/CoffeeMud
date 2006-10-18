@@ -77,6 +77,17 @@ public class Mood extends StdAbility
 	"brainless goop",
 	"stupid noodle",
 	"stupid ugly-bottom",	
+	"pig-dog",
+	"son of a silly person",
+	"silly K...kanigget",
+	"empty-headed animal",
+	"food trough wiper",
+	"perfidious mousedropping hoarder",
+	"son of a window-dresser",
+	"brightly-colored, mealy-templed, cranberry-smeller",
+	"electric donkey-bottom biter",
+	"bed-wetting type",
+	"tiny-brained wiper of other people`s bottoms"
 	};
 	
 	public void setMiscText(String newText)
@@ -431,7 +442,7 @@ public class Mood extends StdAbility
 						case 7: changeAllSays(msg,"rudely say(s)"); break;
 						case 8: changeAllSays(msg,"gibe(s)"); break;
 						case 9: changeAllSays(msg,"mockingly say(s)"); break;
-						case 10: changeAllSays(msg,"tauntingly say(s)"); break;
+						case 10: changeAllSays(msg,"interrupt(s)"); break;
 						default:
 							break;
 						}
