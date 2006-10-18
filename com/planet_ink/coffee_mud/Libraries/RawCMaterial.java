@@ -543,21 +543,26 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
     
     
-    public int destroyResources(Room room,
+    public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never)
+    { return destroyResources(getAllItems(E),E,howMuch,finalMaterial,otherMaterial,never);}
+    public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never)
+    { return destroyResources(getAllItems(E),E,howMuch,finalMaterial,otherMaterial,never);}
+    public int destroyResources(Vector V,
+    						    Environmental addTo,
                                 int howMuch,
                                 int finalMaterial,
                                 int otherMaterial,
                                 Item never)
     {
         int lostValue=0;
-        if(room==null) return 0;
+        if((V==null)||(V.size()==0)) return 0;
         
         Environmental lastE1=null;
         Environmental lastE2=null;
         if((howMuch>0)||(otherMaterial>0))
-        for(int i=room.numItems()-1;i>=0;i--)
+        for(int i=V.size()-1;i>=0;i--)
         {
-            Item I=room.fetchItem(i);
+            Item I=(Item)V.elementAt(i);
             if(I==null) break;
             if(I==never) continue;
 
@@ -576,7 +581,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     {
                         E=CMLib.materials().makeResource(otherMaterial,-1,true);
                         if(E instanceof Item)
-                            room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                        {
+                        	if(addTo instanceof Room)
+                        		((Room)addTo).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                        	else
+                        	if(addTo instanceof MOB)
+                        		((MOB)addTo).addInventory((Item)E);
+                        }
                     }
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
@@ -607,7 +618,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     {
                         E=CMLib.materials().makeResource(finalMaterial,-1,true);
                         if(E instanceof Item)
-                            room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                        {
+                        	if(addTo instanceof Room)
+                        		((Room)addTo).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+                        	else
+                        	if(addTo instanceof MOB)
+                        		((MOB)addTo).addInventory((Item)E);
+                        }
                     }
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
@@ -634,4 +651,133 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             CMLib.materials().rebundle((Item)lastE2);
         return lostValue;
     }
+    
+	public Item findFirstResource(Room E, String other){return findFirstResource(getAllItems(E),other);}
+	public Item findFirstResource(MOB E, String other){return findFirstResource(getAllItems(E),other);}
+    public Item findFirstResource(Vector V, String other)
+	{
+		if((other==null)||(other.length()==0))
+			return null;
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
+				return findFirstResource(V,RawMaterial.RESOURCE_DATA[i][0]);
+		return null;
+	}
+	public Item findFirstResource(Room E, int resource){return findFirstResource(getAllItems(E),resource);}
+	public Item findFirstResource(MOB E, int resource){return findFirstResource(getAllItems(E),resource);}
+	protected Item findFirstResource(Vector V, int resource)
+	{
+		for(int i=0;i<V.size();i++)
+		{
+			Item I=(Item)V.elementAt(i);
+			if((I instanceof RawMaterial)
+			&&(I.material()==resource)
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
+			&&(I.container()==null))
+				return I;
+		}
+		return null;
+	}
+	
+	public Item findMostOfMaterial(Room E, String other){return findMostOfMaterial(getAllItems(E),other);}
+	public Item findMostOfMaterial(MOB E, String other){return findMostOfMaterial(getAllItems(E),other);}
+	protected Item findMostOfMaterial(Vector V, String other)
+	{
+		if((other==null)||(other.length()==0))
+			return null;
+		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(other))
+				return findMostOfMaterial(V,(i<<8));
+		return null;
+	}
+
+	public int findNumberOfResource(Room E, int resource){return findNumberOfResource(getAllItems(E),resource);}
+	public int findNumberOfResource(MOB E, int resource){return findNumberOfResource(getAllItems(E),resource);}
+	protected int findNumberOfResource(Vector V, int resource)
+	{
+		int foundWood=0;
+		for(int i=0;i<V.size();i++)
+		{
+			Item I=(Item)V.elementAt(i);
+			if((I instanceof RawMaterial)
+			&&(I.material()==resource)
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
+			&&(I.container()==null))
+				foundWood+=I.envStats().weight();
+		}
+		return foundWood;
+	}
+
+	public Item findMostOfMaterial(Room E, int material){return findMostOfMaterial(getAllItems(E),material);}
+	public Item findMostOfMaterial(MOB E, int material){return findMostOfMaterial(getAllItems(E),material);}
+	protected Item findMostOfMaterial(Vector V, int material)
+	{
+		int most=0;
+		int mostMaterial=-1;
+		Item mostItem=null;
+		for(int i=0;i<V.size();i++)
+		{
+			Item I=(Item)V.elementAt(i);
+			if((I instanceof RawMaterial)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
+			&&(I.material()!=mostMaterial)
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
+			&&(I.container()==null))
+			{
+				int num=findNumberOfResource(V,I.material());
+				if(num>most)
+				{
+					mostItem=I;
+					most=num;
+					mostMaterial=I.material();
+				}
+			}
+		}
+		return mostItem;
+	}
+
+	protected Vector getAllItems(Room R)
+	{
+		Vector V=new Vector();
+		Item I=null;
+		if(R!=null)
+		for(int r=0;r<R.numItems();r++)
+		{
+			I=R.fetchItem(r);
+			if(I!=null)V.addElement(I);
+		}
+		return V;
+	}
+	protected Vector getAllItems(MOB M)
+	{
+		Vector V=new Vector();
+		Item I=null;
+		if(M!=null)
+		for(int i=0;i<M.inventorySize();i++)
+		{
+			I=M.fetchInventory(i);
+			if(I!=null)V.addElement(I);
+		}
+		return V;
+	}
+	
+	public Item fetchFoundOtherEncoded(Room E, String otherRequired){return fetchFoundOtherEncoded(getAllItems(E),otherRequired);}
+	public Item fetchFoundOtherEncoded(MOB E, String otherRequired){return fetchFoundOtherEncoded(getAllItems(E),otherRequired);}
+	protected Item fetchFoundOtherEncoded(Vector V, String otherRequired)
+	{
+		if((otherRequired==null)||(otherRequired.trim().length()==0))
+			return null;
+		Item firstOther=null;
+		boolean resourceOther=otherRequired.startsWith("!");
+		if(resourceOther) otherRequired=otherRequired.substring(1);
+		if((otherRequired.length()>0)&&(!resourceOther))
+			firstOther=findMostOfMaterial(V,otherRequired);
+		if((firstOther==null)&&(otherRequired.length()>0))
+			firstOther=findFirstResource(V,otherRequired);
+		return firstOther;
+	}
+
 }

@@ -178,8 +178,11 @@ public class Fighter_Pin extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				success=maliciousAffect(mob,target,asLevel,5,-1);
-				success=maliciousAffect(mob,mob,asLevel,5,-1);
+				if(msg.value()<=0)
+				{
+					success=maliciousAffect(mob,target,asLevel,5,-1);
+					success=maliciousAffect(mob,mob,asLevel,5,-1);
+				}
 			}
 		}
 		else

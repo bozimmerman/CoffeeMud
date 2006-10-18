@@ -94,7 +94,8 @@ public class Spell_WeaknessAcid extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				success=maliciousAffect(mob,target,asLevel,0,-1);
+				if(msg.value()<=0)
+					success=maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else

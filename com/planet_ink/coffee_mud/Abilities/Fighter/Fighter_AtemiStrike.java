@@ -158,8 +158,11 @@ public class Fighter_AtemiStrike extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");
-				success=maliciousAffect(mob,target,asLevel,mob.envStats().level()/3,-1);
+				if(msg.value()<=0)
+				{
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");
+					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()/3,-1);
+				}
 			}
 		}
 		else

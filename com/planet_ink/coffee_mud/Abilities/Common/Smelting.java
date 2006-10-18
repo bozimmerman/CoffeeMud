@@ -182,8 +182,8 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
 			return false;
 		}
-		int amountResource1=findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode1][0]);
-		int amountResource2=findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode2][0]);
+		int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode1][0]);
+		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode2][0]);
 		if(amountResource1==0)
 		{
 			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");

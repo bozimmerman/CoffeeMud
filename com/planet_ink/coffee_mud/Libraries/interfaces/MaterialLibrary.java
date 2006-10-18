@@ -43,5 +43,18 @@ public interface MaterialLibrary extends CMObject
     public int getRandomResourceOfMaterial(int material);
     public boolean rebundle(Item I);
     public boolean quickDestroy(Item I);
-    public int destroyResources(Room room, int howMuch, int finalMaterial, int otherMaterial, Item never);
+    public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+    public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+	public Item fetchFoundOtherEncoded(Room E, String otherRequired);
+	public Item fetchFoundOtherEncoded(MOB E, String otherRequired);
+	public Item findMostOfMaterial(Room E, int material);
+	public Item findMostOfMaterial(MOB E, int material);
+	public int findNumberOfResource(Room E, int resource);
+	public int findNumberOfResource(MOB E, int resource);
+	public Item findMostOfMaterial(Room E, String other);
+	public Item findMostOfMaterial(MOB E, String other);
+	public Item findFirstResource(Room E, int resource);
+	public Item findFirstResource(MOB E, int resource);
+	public Item findFirstResource(Room E, String other);
+	public Item findFirstResource(MOB E, String other);
 }

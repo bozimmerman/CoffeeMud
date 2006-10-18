@@ -189,7 +189,7 @@ public class Fighter_LightningStrike extends FighterSkill
 				for(int i=0;i<CMLib.ableMapper().qualifyingClassLevel(mob,this);i++)
 					if((!target.amDead())&&(!anyWeapons(mob)))
 						CMLib.combat().postAttack(mob,target,null);
-				if(!anyWeapons(mob))
+				if((!anyWeapons(mob))&&(msg.value()<=0))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
 					success=maliciousAffect(mob,mob,asLevel,7,-1);

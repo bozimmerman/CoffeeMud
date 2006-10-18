@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_RemoveTraps extends ThiefSkill
+public class Thief_RemoveTraps extends TrapDisablingThiefSkill
 {
 	public String ID() { return "Thief_RemoveTraps"; }
 	public String name(){ return "Remove Traps";}
@@ -65,7 +65,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
+		boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLevel(mob)*2))
 											 -unlockThis.envStats().level())*3),auto);
 		Vector permSetV=new Vector();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);

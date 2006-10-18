@@ -168,7 +168,8 @@ public class Fighter_Whomp extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				success=maliciousAffect(mob,target,asLevel,2,-1);
+				if(msg.value()<=0)
+					success=maliciousAffect(mob,target,asLevel,2,-1);
 			}
 		}
 		else

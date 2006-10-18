@@ -189,81 +189,6 @@ public class CraftingSkill extends GatheringSkill
         return V;
     }
     
-	protected Item findFirstResource(Room room, String other)
-	{
-		if((other==null)||(other.length()==0))
-			return null;
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
-				return findFirstResource(room,RawMaterial.RESOURCE_DATA[i][0]);
-		return null;
-	}
-	protected Item findFirstResource(Room room, int resource)
-	{
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.material()==resource)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().enchanted(I))
-			&&(I.container()==null))
-				return I;
-		}
-		return null;
-	}
-	protected Item findMostOfMaterial(Room room, String other)
-	{
-		if((other==null)||(other.length()==0))
-			return null;
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(other))
-				return findMostOfMaterial(room,(i<<8));
-		return null;
-	}
-
-	protected Item findMostOfMaterial(Room room, int material)
-	{
-		int most=0;
-		int mostMaterial=-1;
-		Item mostItem=null;
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
-			&&(I.material()!=mostMaterial)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().enchanted(I))
-			&&(I.container()==null))
-			{
-				int num=findNumberOfResource(room,I.material());
-				if(num>most)
-				{
-					mostItem=I;
-					most=num;
-					mostMaterial=I.material();
-				}
-			}
-		}
-		return mostItem;
-	}
-
-
-	protected Item fetchFoundOtherEncoded(MOB mob, String otherRequired)
-	{
-		if((otherRequired==null)||(otherRequired.trim().length()==0))
-			return null;
-		Item firstOther=null;
-		boolean resourceOther=otherRequired.startsWith("!");
-		if(resourceOther) otherRequired=otherRequired.substring(1);
-		if((otherRequired.length()>0)&&(!resourceOther))
-			firstOther=findMostOfMaterial(mob.location(),otherRequired);
-		if((firstOther==null)&&(otherRequired.length()>0))
-			firstOther=findFirstResource(mob.location(),otherRequired);
-		return firstOther;
-	}
-
 	protected static final int FOUND_CODE=0;
 	protected static final int FOUND_AMT=1;
 	protected int fixResourceRequirement(int resource, int amt)
@@ -321,20 +246,20 @@ public class CraftingSkill extends GatheringSkill
 			for(int i=0;i<req1.length;i++)
 			{
 				if((req1[i]&RawMaterial.RESOURCE_MASK)==0)
-					firstWood=findMostOfMaterial(mob.location(),req1[i]);
+					firstWood=CMLib.materials().findMostOfMaterial(mob.location(),req1[i]);
 				else
-					firstWood=findFirstResource(mob.location(),req1[i]);
+					firstWood=CMLib.materials().findFirstResource(mob.location(),req1[i]);
 				
 				if(firstWood!=null) break;
 			}
 		}
 		else
 		if(req1Desc!=null)
-			firstWood=fetchFoundOtherEncoded(mob,req1Desc);
+			firstWood=CMLib.materials().fetchFoundOtherEncoded(mob,req1Desc);
 		data[0][FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
-			data[0][FOUND_AMT]=findNumberOfResource(mob.location(),firstWood.material());
+			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood.material());
 			data[0][FOUND_CODE]=firstWood.material();
 		}
 
@@ -343,19 +268,19 @@ public class CraftingSkill extends GatheringSkill
 			for(int i=0;i<req2.length;i++)
 			{
 				if((req2[i]&RawMaterial.RESOURCE_MASK)==0)
-					firstOther=findMostOfMaterial(mob.location(),req2[i]);
+					firstOther=CMLib.materials().findMostOfMaterial(mob.location(),req2[i]);
 				else
-					firstOther=findFirstResource(mob.location(),req2[i]);
+					firstOther=CMLib.materials().findFirstResource(mob.location(),req2[i]);
 				if(firstOther!=null) break;
 			}
 		}
 		else
 		if(req2Desc!=null)
-			firstOther=fetchFoundOtherEncoded(mob,req2Desc);
+			firstOther=CMLib.materials().fetchFoundOtherEncoded(mob,req2Desc);
 		data[1][FOUND_AMT]=0;
 		if(firstOther!=null)
 		{
-			data[1][FOUND_AMT]=findNumberOfResource(mob.location(),firstOther.material());
+			data[1][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstOther.material());
 			data[1][FOUND_CODE]=firstOther.material();
 		}
 		if(req1Required>0)
@@ -602,22 +527,6 @@ public class CraftingSkill extends GatheringSkill
 			}
 		}
 		return matches;
-	}
-
-	protected int findNumberOfResource(Room room, int resource)
-	{
-		int foundWood=0;
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.material()==resource)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().enchanted(I))
-			&&(I.container()==null))
-				foundWood+=I.envStats().weight();
-		}
-		return foundWood;
 	}
 
 	protected Vector getAllMendable(MOB mob, Environmental from, Item contained)
