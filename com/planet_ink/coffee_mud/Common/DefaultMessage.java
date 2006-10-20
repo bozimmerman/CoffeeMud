@@ -32,6 +32,7 @@ import java.util.*;
 public class DefaultMessage implements CMMsg
 {
     public String ID(){return "DefaultMessage";}
+    protected static final Hashtable MSGTYPE_DESCS=new Hashtable();
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultMessage();}}
     public void initializeClass(){}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -58,7 +59,6 @@ public class DefaultMessage implements CMMsg
 	protected Environmental myTool=null;
 	protected int value=0;
 	protected Vector trailMsgs=null;
-    protected static final Hashtable MSGTYPE_DESCS=new Hashtable();
 
 	public void modify(MOB source, Environmental target, int newAllCode, String allMessage)
 	{
