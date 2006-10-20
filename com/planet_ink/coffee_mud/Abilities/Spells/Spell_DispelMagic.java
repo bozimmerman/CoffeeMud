@@ -50,16 +50,16 @@ public class Spell_DispelMagic extends Spell
 		for(int a=0;a<target.numEffects();a++)
 		{
 			Ability A=target.fetchEffect(a);
-			if((A!=null)&&(A.canBeUninvoked())
-			&&(((A.classificationCode()&Ability.ACODE_SPELL)>0)||((A.classificationCode()&Ability.ACODE_CHANT)>0)))
+			if((A!=null)
+			&&(A.canBeUninvoked())
+			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
-				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT))
 				&&((A.invoker()==mob)
     				||(A.invoker().envStats().level()<=mob.envStats().level()+5)
                     ||admin))
