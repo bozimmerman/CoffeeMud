@@ -46,8 +46,8 @@ public class UnderWater extends StdRoom implements Drink
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
-
-
+	public long decayTime(){return 0;}
+	public void setDecayTime(long time){}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

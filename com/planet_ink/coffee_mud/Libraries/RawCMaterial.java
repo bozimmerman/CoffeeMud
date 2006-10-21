@@ -130,10 +130,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				maxFound=weight;
 				bundle=(Item)found.elementAt(i);
 			}
-		    if((I instanceof Food)
-		    &&(((Food)I).decayTime()>0)
-		    &&(((Food)I).decayTime()<lowestNonZeroFoodNumber))
-		        lowestNonZeroFoodNumber=((Food)I).decayTime();
+		    if((I instanceof Decayable)
+		    &&(((Decayable)I).decayTime()>0)
+		    &&(((Decayable)I).decayTime()<lowestNonZeroFoodNumber))
+		        lowestNonZeroFoodNumber=((Decayable)I).decayTime();
 		    if(I instanceof Food)
 		    	totalNourishment+=((Food)I).nourishment();
 		    if(I instanceof Drink)
@@ -170,8 +170,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		    ((Drink)bundle).setLiquidHeld(totalThirstHeld);
 		    ((Drink)bundle).setLiquidRemaining(totalThirstRemain);
 		}
-		if(bundle instanceof Food)
-		    ((Food)bundle).setDecayTime(lowestNonZeroFoodNumber);
+		if(bundle instanceof Decayable)
+		    ((Decayable)bundle).setDecayTime(lowestNonZeroFoodNumber);
 		for(Enumeration e=foundAblesH.keys();e.hasMoreElements();)
 		{
 			A=(Ability)foundAblesH.get(e.nextElement());
@@ -247,11 +247,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     if(E instanceof Item)
                     {
                         loseValue+=I.baseGoldValue();
+                        if((E instanceof Decayable)&&(I instanceof Decayable))
+                            ((Decayable)E).setDecayTime(((Decayable)I).decayTime());
                         if((E instanceof Food)&&(I instanceof Food))
-                        {
-                            ((Food)E).setDecayTime(((Food)I).decayTime());
                             loseNourishment+=((Food)E).nourishment();
-                        }
                         if((E instanceof Drink)&&(I instanceof Drink))
                         {
                             loseThirstHeld+=((Drink)E).liquidHeld();

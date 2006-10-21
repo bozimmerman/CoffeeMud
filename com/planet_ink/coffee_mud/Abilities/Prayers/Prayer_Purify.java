@@ -36,11 +36,19 @@ public class Prayer_Purify extends Prayer
 	public String ID() { return "Prayer_Purify"; }
 	public String name(){ return "Purify";}
 	public String displayText(){ return "";}
-	protected int canAffectCode(){return 0;}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
+	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER;}
 
+	public void affectEnvStats(Environmental affecting, EnvStats stats)
+	{
+		if((affecting instanceof Decayable)&&(((Decayable)affecting).decayTime()>0))
+			((Decayable)affecting).setDecayTime(0);
+		super.affectEnvStats(affecting,stats);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);

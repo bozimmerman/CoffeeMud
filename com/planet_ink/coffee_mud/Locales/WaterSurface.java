@@ -42,6 +42,8 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}
+	public long decayTime(){return 0;}
+	public void setDecayTime(long time){}
 
 	protected String UnderWaterLocaleID(){return "UnderWaterGrid";}
 

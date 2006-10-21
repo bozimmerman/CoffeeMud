@@ -795,6 +795,29 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(amt>0) target.curState().adjHitPoints(amt,target.maxState());
     }
 
+    protected boolean bleedableWeapon(Environmental E)
+    {
+    	if(E==null) return false;
+    	if(E instanceof Weapon)
+    	{
+    		return true;
+    	}
+    	else
+    	if(E instanceof Ability)
+    	{
+    		int code=((Ability)E).classificationCode()&Ability.ALL_ACODES;
+    		switch(code)
+    		{
+    		case Ability.ACODE_DISEASE:
+    		case Ability.ACODE_POISON:
+    			return false;
+    		}
+    		return true;
+    	}
+    	else
+    		return true;
+    }
+    
     public void handleBeingDamaged(CMMsg msg)
     {
         if(!(msg.target() instanceof MOB)) return;
@@ -811,7 +834,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     CMLib.combat().postDeath(attacker,target,msg);
                 else
                 {
-            		if(Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTHP))
+            		if((Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTHP))
+            		&&bleedableWeapon(msg.tool()))
     				{
     					Ability A2=CMClass.getAbility("Bleeding");
     					if(A2!=null) A2.invoke(((MOB)target),((MOB)target),true,0);

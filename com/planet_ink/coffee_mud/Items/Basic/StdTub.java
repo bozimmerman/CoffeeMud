@@ -40,6 +40,7 @@ public class StdTub extends StdRideable implements Drink
 	protected int amountOfLiquidRemaining=2000;
 	protected boolean disappearsAfterDrinking=false;
 	protected int liquidType=RawMaterial.RESOURCE_FRESHWATER;
+	protected long decayTime=0;
 
 	public StdTub()
 	{
@@ -57,7 +58,8 @@ public class StdTub extends StdRideable implements Drink
 		recoverEnvStats();
 	}
 
-
+	public long decayTime(){return decayTime;}
+	public void setDecayTime(long time){decayTime=time;}
     public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}

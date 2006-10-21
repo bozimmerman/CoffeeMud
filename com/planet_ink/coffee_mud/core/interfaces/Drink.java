@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Drink extends Environmental
+public interface Drink extends Environmental, Decayable
 {
     /**
      * The amount of thirst points quenched every time this item is drank from.

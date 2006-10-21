@@ -47,6 +47,35 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		setCapacity(0);
 		recoverEnvStats();
 	}
+	protected static Ability rot=null;
+	
+	public void setMaterial(int newValue)
+	{
+	    super.setMaterial(newValue);
+	    decayTime=0;
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+        super.executeMsg(host,msg);
+        if(rot==null){
+        	rot=CMClass.getAbility("Prayer_Rot");
+        	if(rot==null) return;
+        	rot.setAffectedOne(null);
+        }
+        rot.executeMsg(this,msg);
+	}
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+        if(rot==null){
+        	rot=CMClass.getAbility("Prayer_Rot");
+        	if(rot==null) return true;
+        	rot.setAffectedOne(null);
+        }
+        if(!rot.okMessage(this,msg))
+        	return false;
+        return super.okMessage(host,msg);
+	}
 	protected int domainSource=-1;
 	public int domainSource(){return domainSource;}
 	public void setDomainSource(int src){domainSource=src;}

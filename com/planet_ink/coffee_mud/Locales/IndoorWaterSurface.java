@@ -42,6 +42,8 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}
+	public long decayTime(){return 0;}
+	public void setDecayTime(long time){}
 
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

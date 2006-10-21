@@ -39,6 +39,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	protected int amountOfLiquidRemaining=2000;
 	protected boolean disappearsAfterDrinking=false;
 	protected int liquidType=RawMaterial.RESOURCE_FRESHWATER;
+	protected long decayTime=0;
 
 	public StdDrink()
 	{
@@ -56,6 +57,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 
 
 
+	public long decayTime(){return decayTime;}
+	public void setDecayTime(long time){decayTime=time;}
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}

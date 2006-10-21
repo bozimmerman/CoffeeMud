@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.interfaces;
+package com.planet_ink.coffee_mud.core.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -28,8 +28,23 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Food extends Item, Decayable
+/**
+ * A Drinkable object containing its own liquid material type, and liquid capacity management.
+ * @author Bo Zimmerman
+ *
+ */
+public interface Decayable extends Environmental
 {
-	public int nourishment();
-	public void setNourishment(int amount);
+    /**
+     * The time, in milliseconds, when this will rot.  0=never
+	 * @see Decayable#setDecayTime(long)
+     * @return the time in milliseconds when this will rot. 0=never
+     */
+	public long decayTime();
+	/**
+	 * Sets the time, in milliseconds, when this will rot.  0=never
+	 * @param time in milliseconds, when this will rot.  0=never
+	 * @see Decayable#decayTime()
+	 */
+	public void setDecayTime(long time);
 }

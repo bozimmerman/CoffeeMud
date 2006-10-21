@@ -58,6 +58,8 @@ public class Cow extends StdMOB implements Drink
 		recoverEnvStats();
 		recoverCharStats();
 	}
+	public long decayTime(){return 0;}
+	public void setDecayTime(long time){}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

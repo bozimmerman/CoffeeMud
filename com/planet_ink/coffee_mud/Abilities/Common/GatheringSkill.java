@@ -126,10 +126,10 @@ public class GatheringSkill extends CommonSkill
 				&&((I.material()==foundResource)
 					||((foundResource<0)&&maskV.contains(new Integer(I.material())))))
 				{
-				    if((I instanceof Food)
-				    &&(((Food)I).decayTime()>0)
-				    &&(((Food)I).decayTime()<lowestNonZeroFoodNumber))
-				        lowestNonZeroFoodNumber=((Food)I).decayTime();
+				    if((I instanceof Decayable)
+				    &&(((Decayable)I).decayTime()>0)
+				    &&(((Decayable)I).decayTime()<lowestNonZeroFoodNumber))
+				        lowestNonZeroFoodNumber=((Decayable)I).decayTime();
 				    for(int a=0;a<I.numEffects();a++)
 				    {
 				        A=I.fetchEffect(a);
@@ -178,8 +178,8 @@ public class GatheringSkill extends CommonSkill
 			    ((Drink)I).setLiquidHeld(((Drink)I).liquidHeld()*amount);
 			R.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 		}
-		if(I instanceof Food)
-		    ((Food)I).setDecayTime(lowestNonZeroFoodNumber);
+		if(I instanceof Decayable)
+		    ((Decayable)I).setDecayTime(lowestNonZeroFoodNumber);
 		for(Enumeration e=foundAblesH.keys();e.hasMoreElements();)
 		    I.addNonUninvokableEffect((Ability)((Environmental)foundAblesH.get(e.nextElement())).copyOf());
 		R.recoverRoomStats();

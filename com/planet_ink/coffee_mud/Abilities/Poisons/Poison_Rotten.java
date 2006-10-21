@@ -43,19 +43,27 @@ public class Poison_Rotten extends Poison
 	protected int POISON_DELAY(){return 5;}
 	protected boolean POISON_AFFECTTARGET()
 	{
-	    if((affected instanceof Food)&&((((Food)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH))
-		    return false;
+	    if(((affected instanceof Food)&&((((Food)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH))
+	    ||((affected instanceof Drink)
+	    	&&(affected instanceof Item)
+    		&&(((Item)affected).material()!=RawMaterial.RESOURCE_MILK)
+    		&&(((Item)affected).material()!=RawMaterial.RESOURCE_BLOOD)))
+			    return false;
         return true;
 	}
 	protected String POISON_START_TARGETONLY()
 	{
-	    if((affected instanceof Food)&&((((Food)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH))
-		    return "^G"+affected.name()+" was rotten! Blech!^?";
+	    if(((affected instanceof Food)&&((((Food)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH))
+	    ||((affected instanceof Drink)
+	    	&&(affected instanceof Item)
+    		&&(((Item)affected).material()!=RawMaterial.RESOURCE_MILK)
+    		&&(((Item)affected).material()!=RawMaterial.RESOURCE_BLOOD)))
+			    return "^G"+affected.name()+" was rotten! Blech!^?";
 	    return "";
 	}
 	protected String POISON_START()
 	{
-	    if(affected instanceof Food)
+	    if((affected instanceof Food)||(affected instanceof Drink))
 		    return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
 	    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
 	}
