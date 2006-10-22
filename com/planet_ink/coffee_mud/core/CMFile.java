@@ -910,15 +910,15 @@ public class CMFile
         return starter+filename;
     }
 
-    public static CMFile[] getFileList(String currentPath, String filename, MOB user, boolean recurse)
-    { return getFileList(incorporateBaseDir(currentPath,filename),user,recurse);}
-    public static CMFile[] getFileList(String parse, MOB user, boolean recurse)
+    public static CMFile[] getFileList(String currentPath, String filename, MOB user, boolean recurse, boolean expandDirs)
+    { return getFileList(incorporateBaseDir(currentPath,filename),user,recurse,expandDirs);}
+    public static CMFile[] getFileList(String parse, MOB user, boolean recurse, boolean expandDirs)
     {
         boolean demandLocal=parse.trim().startsWith("//");
         boolean demandVFS=parse.trim().startsWith("::");
         CMFile dirTest=new CMFile(parse,user,false);
         if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
-            return dirTest.listFiles();
+        { return expandDirs?dirTest.listFiles():new CMFile[]{dirTest};}
         String vsPath=vfsifyFilename(parse);
         String fixedName=vsPath;
         int x=vsPath.lastIndexOf('/');
@@ -938,7 +938,7 @@ public class CMFile
         {
             if((recurse)&&(cset[c].isDirectory())&&(cset[c].canRead()))
             {
-                CMFile[] CF2=getFileList(cset[c].getVFSPathAndName()+"/"+fixedName,user,true);
+                CMFile[] CF2=getFileList(cset[c].getVFSPathAndName()+"/"+fixedName,user,true,expandDirs);
                 for(int cf2=0;cf2<CF2.length;cf2++)
                     set.addElement(CF2[cf2]);
             }
@@ -973,7 +973,7 @@ public class CMFile
         {
             dirTest=(CMFile)set.firstElement();
             if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
-                return dirTest.listFiles();
+            { return expandDirs?dirTest.listFiles():new CMFile[]{dirTest};}
         }
         cset=new CMFile[set.size()];
         for(int s=0;s<set.size();s++)

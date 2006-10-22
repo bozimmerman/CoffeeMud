@@ -203,10 +203,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         &&(I.container()==null)
         &&(!CMLib.flags().isOnFire(I)))
         {
-            if(number<=0) number=((PackagedItems)I).numberOfItemsInPackage();
+            PackagedItems pkg=(PackagedItems)I;
+            if(number<=0) number=pkg.numberOfItemsInPackage();
             if(number<=0) number=1;
-            if(number>((PackagedItems)I).numberOfItemsInPackage())
-                number=((PackagedItems)I).numberOfItemsInPackage();
+            if(number>pkg.numberOfItemsInPackage())
+                number=pkg.numberOfItemsInPackage();
             Environmental owner=I.owner();
             Vector parts=((PackagedItems)I).unPackage(number);
             if(parts.size()==0) return I;
@@ -218,6 +219,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 else
                 if(owner instanceof MOB)
                     ((MOB)owner).addInventory(I);
+            }
+            if(!pkg.amDestroyed())
+            {
+            	if(owner instanceof Room)
+            	{
+            		((Room)owner).delItem(pkg);
+            		((Room)owner).addItemRefuse(pkg,Item.REFUSE_PLAYER_DROP);
+            	}
+            	else
+	            if(owner instanceof MOB)
+	            {
+	            	((MOB)owner).delInventory(pkg);
+	                ((MOB)owner).addInventory(pkg);
+	            }
+	            else
+	            	pkg.destroy();
             }
             return I;
         }

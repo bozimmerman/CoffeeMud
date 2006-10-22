@@ -61,7 +61,9 @@ public class Spell_Duplicate extends Spell
 		multiPlier+=(target instanceof Pill)?10:0;
 		multiPlier+=(target instanceof Wand)?5:0;
 
-		int expLoss=(target.envStats().level()*multiPlier);
+		int level=target.envStats().level();
+		if(level<=0) level=1;
+		int expLoss=(level*multiPlier);
 		if((mob.getExperience()-expLoss)<0)
 		{
 			mob.tell("You don't have enough experience to cast this spell.");

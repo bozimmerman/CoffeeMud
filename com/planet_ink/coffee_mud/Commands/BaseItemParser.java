@@ -73,14 +73,32 @@ public class BaseItemParser extends StdCommand
                     fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Item.WORNREQ_UNWORNONLY);
                 if(fromWhat instanceof Item)
                 {
+                	int max=mob.maxCarry();
+                	if(max>3000) max=3000;
+                	if(maxToGive>max)
+                	{
+                		mob.tell("You can only handle "+max+" at a time.");
+                		return -1;
+                	}
                     Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive);
-                    if((toWhat==null)&&(throwError))
+                    if(toWhat==null)
                     {
-                        mob.tell("You can't get anything from "+fromWhat.name()+".");
-                        return -1;
+                    	if(throwError)
+                    	{
+	                        mob.tell("You can't get anything from "+fromWhat.name()+".");
+	                        return -1;
+                    	}
                     }
+                    else
                     if(commands.size()==1)
                         commands.addElement(toWhat.name());
+                    else
+                    {
+                    	Object o=commands.firstElement();
+                    	commands.clear();
+                    	commands.addElement(o);
+                    	commands.addElement(toWhat.name());
+                    }
                 }
                 else
                 if(throwError)
