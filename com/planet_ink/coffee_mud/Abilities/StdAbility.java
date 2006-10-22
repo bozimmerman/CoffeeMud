@@ -808,7 +808,6 @@ public class StdAbility extends ForeignScriptable implements Ability
 					mob.tell("You don't have enough mana to do that.");
 				return false;
 			}
-			mob.curState().adjMana(-consumed[0],mob.maxState());
 			if(mob.curState().getMovement()<consumed[1])
 			{
 				if(mob.maxState().getMovement()==consumed[1])
@@ -817,7 +816,6 @@ public class StdAbility extends ForeignScriptable implements Ability
 					mob.tell("You don't have enough movement to do that.  You are too tired.");
 				return false;
 			}
-			mob.curState().adjMovement(-consumed[1],mob.maxState());
 			if(mob.curState().getHitPoints()<consumed[2])
 			{
 				if(mob.maxState().getHitPoints()==consumed[2])
@@ -826,7 +824,6 @@ public class StdAbility extends ForeignScriptable implements Ability
 					mob.tell("You don't have enough hit points to do that.");
 				return false;
 			}
-			mob.curState().adjHitPoints(-consumed[2],mob.maxState());
             
             if((minCastWaitTime()>0)&&(lastCastHelp>0))
             {
@@ -842,46 +839,56 @@ public class StdAbility extends ForeignScriptable implements Ability
                     return false;
                 }
             }
-            if((mob.session()!=null)
-            &&(mob.soulMate()==null)
-            &&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
-            {
-	            DVector componentsRequirements=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
-	            if(componentsRequirements!=null)
-	            {
-		            Vector components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
-		            if(components==null)
-		            {
-		            	mob.tell("You lack the necessary materials to use this "
-		            			+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase()
-		            			+", the requirements are: "
-		            			+CMLib.ableMapper().getAbilityComponentDesc(mob,ID())+".");
-		            	return false;
-		            }
-		            while(components.size()>0)
-		            {
-		            	int i=0;
-		            	boolean destroy=false;
-		            	for(;i<components.size();i++)
-		            		if(components.elementAt(i) instanceof Boolean)
-		            		{ destroy=((Boolean)components.elementAt(i)).booleanValue(); break;}
-		            	while(i>=0)
-		            	{
-		            		if((destroy)&&(components.elementAt(0) instanceof Item))
-		            			((Item)components.elementAt(0)).destroy();
-		            		components.removeElementAt(0);
-		            		i--;
-		            	}
-		            }
-	            }
-            }
-            
+            if(!checkComponents(mob))
+                return false;
+            mob.curState().adjMana(-consumed[0],mob.maxState());
+            mob.curState().adjMovement(-consumed[1],mob.maxState());
+            mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 			helpProficiency(mob);
 		}
 		else
 			isAnAutoEffect=true;
 		return true;
 	}
+    
+    public boolean checkComponents(MOB mob)
+    {
+        if((mob!=null)
+        &&(mob.session()!=null)
+        &&(mob.soulMate()==null)
+        &&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
+        {
+            DVector componentsRequirements=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
+            if(componentsRequirements!=null)
+            {
+                Vector components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+                if(components==null)
+                {
+                    mob.tell("You lack the necessary materials to use this "
+                            +Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase()
+                            +", the requirements are: "
+                            +CMLib.ableMapper().getAbilityComponentDesc(mob,ID())+".");
+                    return false;
+                }
+                while(components.size()>0)
+                {
+                    int i=0;
+                    boolean destroy=false;
+                    for(;i<components.size();i++)
+                        if(components.elementAt(i) instanceof Boolean)
+                        { destroy=((Boolean)components.elementAt(i)).booleanValue(); break;}
+                    while(i>=0)
+                    {
+                        if((destroy)&&(components.elementAt(0) instanceof Item))
+                            ((Item)components.elementAt(0)).destroy();
+                        components.removeElementAt(0);
+                        i--;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 	public HashSet properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
@@ -925,7 +932,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(tickAdjustmentFromStandard<=0)
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*2)+25;
-				if((target!=null)&&(asLevel<=0)&&(mob!=null))
+				if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
 					tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
 
 				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))

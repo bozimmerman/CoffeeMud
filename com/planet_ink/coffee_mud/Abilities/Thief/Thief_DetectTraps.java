@@ -45,14 +45,18 @@ public class Thief_DetectTraps extends AlertThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatTounlock=CMParms.combine(commands,0);
-		Environmental unlockThis=null;
-		Room nextRoom=null;
-		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
-		if(dirCode>=0)
-		{
-			unlockThis=mob.location().getExitInDir(dirCode);
-			nextRoom=mob.location().getRoomInDir(dirCode);
-		}
+		Environmental unlockThis=givenTarget;
+        Room nextRoom=null;
+        int dirCode=-1;
+        if(unlockThis==null)
+        {
+    		dirCode=Directions.getGoodDirectionCode(whatTounlock);
+    		if(dirCode>=0)
+    		{
+    			unlockThis=mob.location().getExitInDir(dirCode);
+    			nextRoom=mob.location().getRoomInDir(dirCode);
+    		}
+        }
 		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
 			unlockThis=mob.location();
 		if(unlockThis==null)
@@ -94,14 +98,18 @@ public class Thief_DetectTraps extends AlertThiefSkill
 				}
 			}
 		}
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
+		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProficiency(oldProficiency);
 			if((!success)||(theTrap==null))
-				mob.tell("You don't find any traps on "+unlockThis.name()+".");
+            {
+                if(!auto)
+    				mob.tell("You don't find any traps on "+unlockThis.name()+".");
+                success=false;
+            }
 			else
 			{
 				if(theTrap.disabled())
@@ -114,6 +122,8 @@ public class Thief_DetectTraps extends AlertThiefSkill
 			}
 			lastChecked=unlockThis;
 		}
+        else
+            success=false;
 
 		return success;
 	}

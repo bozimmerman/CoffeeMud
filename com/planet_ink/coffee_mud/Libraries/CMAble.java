@@ -1071,14 +1071,29 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				case 1: if(!container.amWearingAt(Item.WORN_HELD))continue; break;
 				case 2: if(container.amWearingAt(Item.IN_INVENTORY))continue; break;
 				}
-				thisSet.addElement(I);
+                if((!(O instanceof String))
+                &&(CMLib.flags().isOnFire(I)||CMLib.flags().enchanted(I)))
+                    continue;
 				if(O instanceof String)
+                {
+                    if(I instanceof PackagedItems)
+                        I=(Item)CMLib.materials().unbundle(I,amt);
 					amt-=I.numberOfItems();
+                }
 				else
+                if(I.envStats().weight()>amt)
+                {
+                    I=(Item)CMLib.materials().unbundle(I,amt);
 					amt=amt-I.envStats().weight();
+                }
+                else
+                    amt=amt-I.envStats().weight();
+                thisSet.addElement(I);
+                
 				if(amt<=0)
 				{
-					if(thisSet.size()>0) thisSet.addElement(req.elementAt(i,3));
+					if(thisSet.size()>0) 
+                        thisSet.addElement(req.elementAt(i,3));
 					break;
 				}
 			}

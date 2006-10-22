@@ -284,7 +284,6 @@ public class CommonSkill extends StdAbility
 		// if you can't move, you can't do anything!
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
-
 		int[] consumed=usageCost(mob);
 		if(mob.curState().getMana()<consumed[0])
 		{
@@ -294,7 +293,6 @@ public class CommonSkill extends StdAbility
 				mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
-		mob.curState().adjMana(-consumed[0],mob.maxState());
 		if(mob.curState().getMovement()<consumed[1])
 		{
 			if(mob.maxState().getMovement()==consumed[1])
@@ -303,7 +301,6 @@ public class CommonSkill extends StdAbility
 				mob.tell("You don't have enough movement to do that.  You are too tired.");
 			return false;
 		}
-		mob.curState().adjMovement(-consumed[1],mob.maxState());
 		if(mob.curState().getHitPoints()<consumed[2])
 		{
 			if(mob.maxState().getHitPoints()==consumed[2])
@@ -312,9 +309,12 @@ public class CommonSkill extends StdAbility
 				mob.tell("You don't have enough hit points to do that.");
 			return false;
 		}
+        if(!checkComponents(mob))
+            return false;
+        mob.curState().adjMana(-consumed[0],mob.maxState());
+        mob.curState().adjMovement(-consumed[1],mob.maxState());
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		activityRoom=mob.location();
-		
         if(!bundling)
     		helpProficiency(mob);
 

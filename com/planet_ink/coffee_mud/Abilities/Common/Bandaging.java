@@ -107,27 +107,6 @@ public class Bandaging extends CommonSkill
 			super.commonTell(mob,target,null,"<T-NAME> is not bleeding or injured!");
 			return false;
 		}
-		Item bandage=null;
-		for(int i=0;i<mob.inventorySize();i++)
-		{
-			Item I=mob.fetchInventory(i);
-			if((I instanceof RawMaterial)
-			&&(I.container()==null)
-			&&(I.amWearingAt(Item.IN_INVENTORY))
-			&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().enchanted(I)))
-			{
-				bandage=I;
-				break;
-			}
-		}
-		if(bandage==null)
-		{
-			super.commonTell(mob,"You'll need some cloth first.");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -135,12 +114,10 @@ public class Bandaging extends CommonSkill
 		if(duration<3) duration=3;
 		verb="bandaging "+target.name();
 		bandaging=target;
-		bandage=(Item)CMLib.materials().unbundle(bandage,1);
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds with "+bandage.Name()+".");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			bandage.destroy();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

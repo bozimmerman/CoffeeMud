@@ -71,10 +71,10 @@ public class Skill_Recall extends StdSkill
 					&&(!follower.isPossessing())
 					&&(follower.location()==recalledRoom)
 					&&(recalledRoom.isInhabitant(follower))
-					&&(recalledRoom.okMessage(follower,msg)))
+					&&(recalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
 					{
 						msg2=CMClass.getMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-						if(recallRoom.okMessage(follower,msg2))
+						if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
 						{
 							if(follower.isInCombat())
 								CMLib.commands().postFlee(follower,("NOWHERE"));

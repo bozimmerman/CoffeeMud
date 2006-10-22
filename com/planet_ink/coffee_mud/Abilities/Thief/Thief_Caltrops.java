@@ -83,8 +83,8 @@ public class Thief_Caltrops extends TrappingThiefSkill implements Trap
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.location()==null) return false;
-		if(mob.location().fetchEffect(ID())!=null)
+        Environmental target=(givenTarget!=null)?givenTarget:mob.location();
+		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("Caltrops have already been tossed down here.");
 			return false;
@@ -93,7 +93,6 @@ public class Thief_Caltrops extends TrappingThiefSkill implements Trap
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Environmental target=mob.location();
 		if(success)
 		{
 			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> throw(s) down caltrops!"))
