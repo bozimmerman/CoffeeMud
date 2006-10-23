@@ -34,6 +34,25 @@ public class QuestMaker extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
+        Hashtable parms=parseParms(parm);
+        if((parms==null)||(parms.size()==0)) return "";
+        if(parms.containsKey("QMSTATE"))
+        {
+            String s=httpReq.getRequestParameter("QMSTATE");
+            if((s==null)||(s.length()==0))
+                return "<QUEST />";
+            return s;
+        }
+        else
+        if(parms.containsKey("NEXT"))
+        {
+            
+        }
+        else
+        if(parms.containsKey("BACK"))
+        {
+            
+        }
         return "";
     }
 }
