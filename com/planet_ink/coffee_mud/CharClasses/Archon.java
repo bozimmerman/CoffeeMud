@@ -79,6 +79,8 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+WIS 12");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false,CMParms.parseSemicolons("Thief_Sneak",true),"+CHA 14");
         CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false,CMParms.parseSemicolons("Thief_Caltrops",true),"+CON 12 +DEX 14");
+        CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+INT 14");
+        CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+INT 12 +WIS 12");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false,CMParms.parseSemicolons("Thief_Hide",true),"+WIS 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Spying",false,null,"+WIS 18");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false,CMParms.parseSemicolons("Thief_Listen",true),"+DEX 14 +WIS 16");

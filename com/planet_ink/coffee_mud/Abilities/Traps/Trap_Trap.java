@@ -73,6 +73,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setInvoker(mob);
 		E.addEffect(T);
 		T.setSavable(false);
+        T.setAbilityCode(trapBonus);
 		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,mob.envStats().level()*30);
 		return T;
 	}

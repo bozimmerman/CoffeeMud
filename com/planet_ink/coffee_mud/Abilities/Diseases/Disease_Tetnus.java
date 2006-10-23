@@ -34,8 +34,8 @@ import java.util.*;
 public class Disease_Tetnus extends Disease
 {
 	public String ID() { return "Disease_Tetnus"; }
-	public String name(){ return "Tetnus";}
-	public String displayText(){ return "(Tetnus)";}
+	public String name(){ return "Tetanus";}
+	public String displayText(){ return "(Tetanus)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

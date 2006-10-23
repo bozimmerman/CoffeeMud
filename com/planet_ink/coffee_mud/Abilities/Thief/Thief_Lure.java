@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Lure extends ThiefSkill implements Trap
+public class Thief_Lure extends DeceptiveThiefSkill implements Trap
 {
 	public String ID() { return "Thief_Lure"; }
 	public String name(){ return "Lure";}
@@ -88,11 +88,11 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*3));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?5:10)),auto);
-		success=success&&(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_TRAPS));
-		success=success&&(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_MIND));
+		success=success&&(CMLib.dice().rollPercentage()+(getXLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_TRAPS));
+		success=success&&(CMLib.dice().rollPercentage()+(getXLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_MIND));
 
 		str="<S-NAME> attempt(s) to lure <T-NAME> "+direction+".";
 		CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_SPEAK,str);

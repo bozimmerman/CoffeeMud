@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.core.*;
 
 public class AlertThiefSkill extends ThiefSkill {
 	public String ID() { return "AlertThiefSkill"; }
-	public String name(){ return "an alert Thief Skill";}
+	public String name(){ return "a vigilant Thief Skill";}
     private static final int EXPERTISE_STAGES=10;
     private static final String[] EXPERTISE={"ALERT"};
-    private static final String[] EXPERTISE_NAME={"Alertness"};
+    private static final String[] EXPERTISE_NAME={"Vigilance"};
     public void initializeClass()
     {
         super.initializeClass();

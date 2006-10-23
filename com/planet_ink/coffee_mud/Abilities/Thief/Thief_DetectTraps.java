@@ -98,7 +98,8 @@ public class Thief_DetectTraps extends AlertThiefSkill
 				}
 			}
 		}
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
+        String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
+		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+unlockThis.name()+add+" over very carefully.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -107,18 +108,18 @@ public class Thief_DetectTraps extends AlertThiefSkill
 			if((!success)||(theTrap==null))
             {
                 if(!auto)
-    				mob.tell("You don't find any traps on "+unlockThis.name()+".");
+    				mob.tell("You don't find any traps on "+unlockThis.name()+add+".");
                 success=false;
             }
 			else
 			{
 				if(theTrap.disabled())
-					mob.tell(unlockThis.name()+" is trapped, but the trap looks disabled for the moment.");
+					mob.tell(unlockThis.name()+add+" is trapped, but the trap looks disabled for the moment.");
 				else
 				if(theTrap.sprung())
-					mob.tell(unlockThis.name()+" is trapped, and the trap looks sprung.");
+					mob.tell(unlockThis.name()+add+" is trapped, and the trap looks sprung.");
 				else
-					mob.tell(unlockThis.name()+" definitely looks trapped.");
+					mob.tell(unlockThis.name()+add+" definitely looks trapped.");
 			}
 			lastChecked=unlockThis;
 		}
