@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?SYSOP=true&AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Questmaker</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		function Clicked(val)
+		{
+			document.QUESTS.FUNCTION.value=val;
+			document.QUESTS.FUNCTION.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="window.close();"></TD></TR>
+	</TABLE>
+<CENTER>
+<FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
+@RequestParameter?QMSTATE@
+@QuestMaker?@@RequestParameter?FUNCTION@@ @
+	<TABLE WIDTH=100% BORDER=0><TR>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Back" ONCLICK="Clicked('BACK');"></TD>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	</TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="Clicked('NEXT');"></TD></TR>
+	</TABLE>
+</FORM>
+</CENTER>
+</BODY>
+</HTML>
