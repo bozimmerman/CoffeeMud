@@ -34,7 +34,7 @@ public class ClanReject extends BaseClanner
 {
 	public ClanReject(){}
 
-	private String[] access={"CLANREJECT"};
+	private String[] access={getScr("ClanReject","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -49,13 +49,13 @@ public class ClanReject extends BaseClanner
 		if(qual.length()>0)
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
-				msg.append("You aren't even a member of a clan.");
+				msg.append(getScr("ClanReject","nomember"));
 			else
 			{
 				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
-					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					mob.tell(getScr("ClanReject","noclan",mob.getClanID()));
 					return false;
 				}
 				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,false))
@@ -63,7 +63,7 @@ public class ClanReject extends BaseClanner
 					DVector apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
 					{
-						mob.tell("There are no applicants to your "+C.typeName()+".");
+						mob.tell(getScr("ClanReject","noapps",C.typeName()));
 						return false;
 					}
 					qual=CMStrings.capitalizeAndLower(qual);
@@ -79,7 +79,7 @@ public class ClanReject extends BaseClanner
 						MOB M=CMLib.map().getLoadPlayer(qual);
 						if(M==null)
 						{
-							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
+							mob.tell(getScr("ClanReject","notfound",qual,C.typeName()));
 							return false;
 						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,true))
@@ -87,25 +87,25 @@ public class ClanReject extends BaseClanner
 							M.setClanID("");
 							M.setClanRole(0);
 							CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
-							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.clanID()+"'.");
-							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.clanID()+"'.");
+							mob.tell(getScr("ClanReject","denied",M.Name(),C.typeName(),C.clanID()));
+							M.tell(getScr("ClanReject","rejected",C.typeName(),C.clanID()));
 							return false;
 						}
 					}
 					else
 					{
-						msg.append(qual+" isn't a member of your "+C.typeName()+".");
+						msg.append(getScr("ClanReject","notmemberofyour",qual,C.typeName()));
 					}
 				}
 				else
 				{
-				  msg.append("You aren't in the right position to reject applicants to your "+C.typeName()+".");
+				  msg.append(getScr("ClanReject","nopos",C.typeName()));
 				}
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which applicant you are rejecting.");
+			msg.append(getScr("ClanReject","whichappli"));
 		}
 		mob.tell(msg.toString());
 		return false;

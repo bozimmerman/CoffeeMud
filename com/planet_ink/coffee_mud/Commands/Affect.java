@@ -32,7 +32,7 @@ import java.util.*;
 */
 public class Affect extends StdCommand
 {
-	private String[] access={"AFFECT","AFF","AF"};
+	private String[] access={getScr("Affect","cmd"),getScr("Affect","cmd1"),getScr("Affect","cmd2")};
 	public String[] getAccessWords(){return access;}
 
 	public String getAffects(MOB mob)

@@ -34,7 +34,7 @@ public class Borrow extends StdCommand
 {
 	public Borrow(){}
 
-	private String[] access={"BORROW"};
+	private String[] access={getScr("Borrow","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,12 +44,12 @@ public class Borrow extends StdCommand
         ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(!(SHOP instanceof Banker))
 		{
-			mob.tell("You can not borrow from "+shopkeeper.name()+".");
+			mob.tell(getScr("Borrow","noborrowfrom",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Borrow how much?");
+			mob.tell(getScr("Borrow","howmuch"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -60,14 +60,14 @@ public class Borrow extends StdCommand
 		Item thisThang=null;
 		if((numCoins==0)||(denomination==0.0))
 	    {
-			mob.tell("Borrow how much?");
+			mob.tell(getScr("Borrow","howmuch"));
 			return false;
 	    }
 	    thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell("That doesn't appear to be available.  Try LIST.");
+			mob.tell(getScr("Borrow","notavail"));
 			return false;
 		}
         String str2="<S-NAME> borrow(s) <O-NAME> from "+shopkeeper.name()+".";
@@ -82,4 +82,3 @@ public class Borrow extends StdCommand
 	public boolean canBeOrdered(){return false;}
 
 	
-}

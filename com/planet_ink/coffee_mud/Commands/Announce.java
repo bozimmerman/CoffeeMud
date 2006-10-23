@@ -95,7 +95,7 @@ public class Announce extends StdCommand
                 String s=CMParms.combine(commands,1);
                 if(mob.playerStats()!=null)
                     mob.playerStats().setAnnounceMessage(s);
-                mob.tell("Your announce message has been changed.");
+                mob.tell(getScr("Announce","changed"));
             }
             else
             if((!cmd.equalsIgnoreCase(getScr("Announce","cmdt")))

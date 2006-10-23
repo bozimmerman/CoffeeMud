@@ -3979,7 +3979,7 @@ public class BaseGenerics extends StdCommand
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[CMath.s_int(E.getStat("PLAYER"))]+"'.");
+        mob.tell(getScr("BaseGenerics","availabilityprompt",showNumber,Area.THEME_DESCS_EXT[CMath.s_int(E.getStat(,))]));
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
@@ -6812,18 +6812,18 @@ public class BaseGenerics extends StdCommand
 		{
 		case Clan.CLANSTATUS_ACTIVE:
 			C.setStatus(Clan.CLANSTATUS_PENDING);
-			mob.tell("Clan '"+C.name()+"' has been changed from active to pending!");
+			mob.tell(getScr("BaseGenerics","clanacttopend",C.name()));
 			break;
 		case Clan.CLANSTATUS_PENDING:
 			C.setStatus(Clan.CLANSTATUS_ACTIVE);
-			mob.tell("Clan '"+C.name()+"' has been changed from pending to active!");
+			mob.tell(getScr("BaseGenerics","clanpendtoact",C.name()));
 			break;
 		case Clan.CLANSTATUS_FADING:
 			C.setStatus(Clan.CLANSTATUS_ACTIVE);
-			mob.tell("Clan '"+C.name()+"' has been changed from fading to active!");
+			mob.tell(getScr("BaseGenerics","clanfadetoact",C.name()));
 			break;
 		default:
-			mob.tell("Clan '"+C.name()+"' has not been changed!");
+			mob.tell(getScr("BaseGenerics","clannochange",C.name()));
 			break;
 		}
 	}

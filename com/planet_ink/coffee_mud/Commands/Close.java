@@ -34,7 +34,7 @@ public class Close extends StdCommand
 {
 	public Close(){}
 
-	private String[] access={"CLOSE","CLOS","CLO","CL"};
+	private String[] access={getScr("Close","cmd"),getScr("Close","cmd1"),getScr("Close","cmd2"),getScr("Close","cmd3")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

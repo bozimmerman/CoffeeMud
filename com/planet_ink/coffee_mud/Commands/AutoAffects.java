@@ -32,7 +32,7 @@ import java.util.*;
 */
 public class AutoAffects extends StdCommand
 {
-    private String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
+    private String[] access={getScr("AutoAffects","cmd"),getScr("AutoAffects","cmd1"),getScr("AutoAffects","cmd2")};
     public String[] getAccessWords(){return access;}
 
     public String getAutoAffects(MOB mob)
@@ -101,4 +101,3 @@ public class AutoAffects extends StdCommand
     public boolean canBeOrdered(){return true;}
 
     
-}

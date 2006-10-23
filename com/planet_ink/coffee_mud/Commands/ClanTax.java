@@ -34,7 +34,7 @@ public class ClanTax extends BaseClanner
 {
 	public ClanTax(){}
 
-	private String[] access={"CLANTAX"};
+	private String[] access={getScr("ClanTax","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -47,14 +47,14 @@ public class ClanTax extends BaseClanner
 		||(mob.getClanID().equalsIgnoreCase(""))
 		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
-			msg.append("You aren't even a member of a clan.");
+			msg.append(getScr("ClanTax","nomember"));
 		}
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANTAX,false)))
 			{
-				msg.append("You aren't in the right position to set the experience tax rate for your "+C.typeName()+".");
+				msg.append(getScr("ClanTax","nopos",C.typeName()));
 			}
 			else
 			{
