@@ -3979,7 +3979,7 @@ public class BaseGenerics extends StdCommand
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(getScr("BaseGenerics","availabilityprompt",showNumber,Area.THEME_DESCS_EXT[CMath.s_int(E.getStat(,))]));
+        mob.tell(getScr("BaseGenerics","availabilityprompt",""+showNumber+"",Area.THEME_DESCS_EXT[CMath.s_int(E.getStat("PLAYER"))]));
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))

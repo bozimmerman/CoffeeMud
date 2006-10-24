@@ -104,7 +104,7 @@ public class ClanVote extends BaseClanner
 							else
 								nays++;
 						}
-					msg.append(getScr("ClanVote","vote",(which+1)));
+					msg.append(getScr("ClanVote","vote",""+(which+1)));
 					msg.append(getScr("ClanVote","started",CV.voteStarter));
 					if(CV.voteStatus==Clan.VSTAT_STARTED)
 						msg.append(getScr("ClanVote","startedon",CMLib.time().date2String(CV.voteStarted)));
@@ -117,11 +117,11 @@ public class ClanVote extends BaseClanner
 						msg.append(getScr("ClanVote","ifpassed"));
 						break;
 					case Clan.VSTAT_PASSED:
-						msg.append(getScr("ClanVote","yeasnays",yeas,nays));
+						msg.append(getScr("ClanVote","yeasnays",""+yeas,""+nays));
 						msg.append(getScr("ClanVote","executed"));
 						break;
 					case Clan.VSTAT_FAILED:
-						msg.append(getScr("ClanVote","resultsyeasnays",yeas,nays));
+						msg.append(getScr("ClanVote","resultsyeasnays",""+yeas,""+nays));
 						msg.append(getScr("ClanVote","executed2"));
 						break;
 					}

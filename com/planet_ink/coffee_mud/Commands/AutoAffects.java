@@ -99,5 +99,5 @@ public class AutoAffects extends StdCommand
     }
     
     public boolean canBeOrdered(){return true;}
-
+}
     

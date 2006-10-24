@@ -77,7 +77,7 @@ public class BaseItemParser extends StdCommand
                 	if(max>3000) max=3000;
                 	if(maxToGive>max)
                 	{
-                		mob.tell(getScr("BaseItemParser","onlyhandle",max));
+                		mob.tell(getScr("BaseItemParser","onlyhandle",""+max));
                 		return -1;
                 	}
                     Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive);

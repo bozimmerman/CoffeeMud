@@ -46,7 +46,7 @@ public class Alias extends StdCommand
             String[] aliasNames=ps.getAliasNames();
             for(int i=0;i<aliasNames.length;i++)
                 menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
-            menu.append(getScr("Alias","new",(aliasNames.length+1)));
+            menu.append(getScr("Alias","new",""+(aliasNames.length+1)));
             mob.tell(menu.toString());
             String which=mob.session().prompt("Enter a selection: ","");
             if(which.length()==0)
