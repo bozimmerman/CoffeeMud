@@ -351,7 +351,7 @@ The only new features are the addition of the Amputation Ability, a few new Cler
   12. Climb now requires standing
   13. Dozens of new traps.
 # Build 3.8.7.2 - Released May 22, 2003
-   1.  Tweek to weight of items imported from .ARE files.
+   1. Tweek to weight of items imported from .ARE files.
    2. Thief TRAPS debugged
    3. Thief BOMBS created, along with Bomb Making skill
    4. Lots of bugs fixed, including some with followers, and with Deity Blessings.
@@ -365,6 +365,37 @@ The only new features are the addition of the Amputation Ability, a few new Cler
   12. TicketTaker property added
   13. BaseCharClass* web macros added
   14. PUT OUT (lightsource) will now work
+# Summary of all bug msgs for all builds
+   1. And, as always, numerous bugs fixed.
+   2. LOTS and LOTS and LOTS and LOTS of bug fixes.
+   3. and LOTS and LOTS and LOTS and LOTS of bug fixes. :)
+   4. More bug fixes than you can shake a stick at.
+   5. Enough bug fixes and java optomizations to frighten small children.
+   6. A few minor bugs fixed in some of last builds features. :)
+   7. As always, several bugs were fixes. And hopefully not many new ones added. :/
+   8. More bugs fixed, introduced, fixed again, reintroduced and made worse, and finally fixed than could possibly be imagined.
+   9. A heaping sloppy glob of bugs fixed.
+   10. And, as always, a ton of fixed bugs
+   11. More bug fixes than digits in pi.
+   12. A huge hot steaming smelly pile of bugs carted away.
+   13. Several creepy little bugs turned to jelly beneath my thumb.
+   14. Drippling globs of bugs siphoned from the code.
+   15. An enormous cloud of millions of swarming bugs dissipated with the swirling winds of correction.
+   16. Lots of dead bugs, including the QUEEN!
+   17. A few assorted bugs were crushed up against the windshield of circumstance.
+   18. A snow-capped goat playground MOUNTAIN of bugs fixed.
+   19. sumbugzfixt
+   20. A horde of marauding bugs beaten back with the ingenious use of banana peels and cat droppings.
+   21. A growth of malignant bugs was eradiated.
+   22. 1/2 cup of debug labor sprikled within 1 foot radius of entire bug mound. Approx 1 qt of water per cup of debugging.
+   23. Somewhere, there are fixed bugs.
+   24. A whole circus of bugs tamed, and hopefully as few new ones introduced as possible.
+   25. A tall helping of bugs gobbled up.
+   26. So many bugs were fixed, it would hurt us both to list them.
+   27. More bugs fixed than stars in the sky.
+   28. All the bugs thats fit to squish!
+   29. A few bugs dutifully informed of their transgression, judged by a ruthless programmer, and sentenced to a quick death.
+   30. Bugs detonated underground, mysteriously.  Wild claims about bug strength forthcoming.
 # Build 3.8.7.3 - Released May 30, 2003
    1.  Upgrade to the Emoter behavior
    2. Journal text fixed so that SQL statements won't be offended.
