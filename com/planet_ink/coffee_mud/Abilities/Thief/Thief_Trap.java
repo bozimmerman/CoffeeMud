@@ -48,7 +48,7 @@ public class Thief_Trap extends TrappingThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
 		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{

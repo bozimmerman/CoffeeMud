@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_SetAlarm extends ThiefSkill implements Trap
+public class Thief_SetAlarm extends TrappingThiefSkill implements Trap
 {
 	public String ID() { return "Thief_SetAlarm"; }
 	public String name(){ return "Set Alarm";}
@@ -85,8 +85,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(sprung)
 		{
 			Vector rooms=new Vector();
-			CMLib.tracking().getRadiantRooms(room1,rooms,true,true,false,false,false,null,10,null);
-			CMLib.tracking().getRadiantRooms(room2,rooms,true,true,false,false,false,null,10,null);
+			CMLib.tracking().getRadiantRooms(room1,rooms,true,true,false,false,false,null,10+(getXLevel(invoker())*2),null);
+			CMLib.tracking().getRadiantRooms(room2,rooms,true,true,false,false,false,null,10+(getXLevel(invoker())*2),null);
 			Vector mobsDone=new Vector();
 			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");

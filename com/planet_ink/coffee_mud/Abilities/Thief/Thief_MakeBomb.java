@@ -46,7 +46,7 @@ public class Thief_MakeBomb extends TrappingThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLevel(mob)*5);
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLevel(mob));
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -101,7 +101,7 @@ public class Thief_MakeBomb extends TrappingThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+((mob.envStats().level()
+		boolean success=proficiencyCheck(mob,+((mob.envStats().level()+(getXLevel(mob)*3)
 											 -trapThis.envStats().level())*3),auto);
 		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)

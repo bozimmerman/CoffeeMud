@@ -931,7 +931,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			((StdAbility)newOne).canBeUninvoked=true;
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*2)+25;
+				tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25;
 				if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
 					tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
 
@@ -1002,7 +1002,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*7)+60;
+				tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),5)))+60;
 				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
 					tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 				if(tickAdjustmentFromStandard<5)

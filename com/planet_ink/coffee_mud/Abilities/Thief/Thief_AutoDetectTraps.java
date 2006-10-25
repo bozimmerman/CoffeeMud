@@ -35,13 +35,14 @@ public class Thief_AutoDetectTraps extends AlertThiefSkill
 {
     public String ID() { return "Thief_AutoDetectTraps"; }
     public String displayText() {return "(Autodetecting traps)";}
-    public String name(){ return "AutoDetectTraps";}
+    public String name(){ return "AutoDetect Traps";}
     protected int canAffectCode(){return CAN_MOBS;}
     protected int canTargetCode(){return 0;}
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
     private static final String[] triggerStrings = {"AUTODETECTTRAPS"};
     public String[] triggerStrings(){return triggerStrings;}
     protected boolean noRepeat=false;
+    protected String skillName(){return "detect";}
 
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
@@ -99,7 +100,7 @@ public class Thief_AutoDetectTraps extends AlertThiefSkill
         MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
         if(target.fetchEffect(ID())!=null)
         {
-            target.tell("You are no longer automatically automatically detecting traps.");
+            target.tell("You are no longer automatically automatically "+skillName()+"ing traps.");
             target.delEffect(mob.fetchEffect(ID()));
             return false;
         }
@@ -115,14 +116,14 @@ public class Thief_AutoDetectTraps extends AlertThiefSkill
 
         if(success)
         {
-            target.tell("You will now automatically detect traps when you enter a room.");
+            target.tell("You will now automatically "+skillName()+" traps when you enter a room.");
             beneficialAffect(mob,target,asLevel,0);
             Ability A=mob.fetchEffect(ID());
             if(A!=null) A.makeLongLasting();
             dropem(target,target.location());
         }
         else
-            beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up.");
+            beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to "+skillName()+" traps, but can't seem to concentrate.");
         return success;
     }
 }
