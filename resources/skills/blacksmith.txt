@@ -15,7 +15,7 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,spell
 % Statue	12	120	450	100	GenItem	STATUE	0	
 % Chain	12	20	20	5	GenRideable	LADDER	1	
 % Trashcan	6	20	20	5	GenContainer		250	Prop_Trashcan
-% Drum	3	10	20	1	GenContainer		250	
+% Drum	3	10	20	1	GenDrink		250	
 % Can	1	5	5	1	GenContainer		10	
 % Lamp Post	15	150	250	1	GenItem		0	Spell_ContinualLight
 % Colossus	75	4000	8000	10000	GenItem	STATUE	0	Spell_EnlargeObject
