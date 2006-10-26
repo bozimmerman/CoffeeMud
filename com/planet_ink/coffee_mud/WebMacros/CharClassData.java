@@ -70,7 +70,8 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("MAXSTATS"))
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-						str.append(CharStats.STAT_DESCS[i]+"("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
+						if(C.maxStatAdjustments()[i]!=0)
+							str.append(CMStrings.capitalizeAndLower(CharStats.STAT_DESCS[i])+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
 				if(parms.containsKey("PRACS"))
 				{
 					str.append(C.getPracsFirstLevel()+" plus (Wisdom/4)");
