@@ -111,7 +111,7 @@ public class StdItem implements Item
 
 	public void recoverEnvStats()
 	{
-		envStats=(EnvStats)baseEnvStats.copyOf();
+		baseEnvStats.copyInto(envStats);
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);

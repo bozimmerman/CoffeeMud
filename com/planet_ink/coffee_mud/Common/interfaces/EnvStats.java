@@ -137,6 +137,11 @@ public interface EnvStats extends CMObject
 	public void setStat(String code, String val);
 	public String getStat(String code);
 	public boolean sameAs(EnvStats E);
+	/**
+     * Copies the internal data of this object into another of kind.
+     * @param intoStats another EnvStats object.
+	 */
+    public void copyInto(EnvStats intoStats);
 
     public void setAllValues(int def);
 	

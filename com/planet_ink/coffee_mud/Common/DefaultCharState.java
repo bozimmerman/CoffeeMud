@@ -33,11 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class DefaultCharState implements CharState
 {
     public String ID(){return "DefaultCharState";}
-	protected int HitPoints=10;
-	protected int Mana=100;
-	protected int Movement=50;
-	protected int Hunger=1000;
-	protected int Thirst=500;
+    protected int[] states={10,100,50,1000,500};
 	protected long Fatigue=0;
 
 	protected int botherCycle=0;
@@ -51,29 +47,37 @@ public class DefaultCharState implements CharState
     public void initializeClass(){}
     public void setAllValues(int def)
 	{
-		HitPoints=def;
-		Mana=def;
-		Movement=def;
-		Hunger=def;
-		Thirst=def;
+    	for(int i=0;i<states.length;i++)
+    		states[i]=def;
 		Fatigue=def;
 	}
     
+    public void copyInto(CharState intoState)
+    {
+    	if(intoState instanceof DefaultCharState)
+    	{
+    		for(int i=0;i<states.length;i++)
+    			((DefaultCharState)intoState).states[i]=states[i];
+    		((DefaultCharState)intoState).Fatigue=Fatigue;
+    	}
+    	else
+    	for(int i=0;i<getStatCodes().length;i++)
+    		intoState.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
+    }
 
-
-	public int getHitPoints(){return HitPoints;}
-	public void setHitPoints(int newVal){HitPoints=newVal;}
+	public int getHitPoints(){return states[STAT_HITPOINTS];}
+	public void setHitPoints(int newVal){states[STAT_HITPOINTS]=newVal;}
 	public boolean adjHitPoints(int byThisMuch, CharState max)
 	{
-		HitPoints+=byThisMuch;
-		if(HitPoints<1)
+		states[STAT_HITPOINTS]+=byThisMuch;
+		if(states[STAT_HITPOINTS]<1)
 		{
-			HitPoints=0;
+			states[STAT_HITPOINTS]=0;
 			return false;
 		}
-		if(HitPoints>max.getHitPoints())
+		if(states[STAT_HITPOINTS]>max.getHitPoints())
 		{
-			HitPoints=max.getHitPoints();
+			states[STAT_HITPOINTS]=max.getHitPoints();
 			return false;
 		}
 		return true;
@@ -90,22 +94,22 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	public int getHunger(){return Hunger;}
-	public void setHunger(int newVal){Hunger=newVal; if(Hunger>0)ticksHungry=0;}
+	public int getHunger(){return states[STAT_HUNGER];}
+	public void setHunger(int newVal){states[STAT_HUNGER]=newVal; if(states[STAT_HUNGER]>0)ticksHungry=0;}
 	public boolean adjHunger(int byThisMuch, int max)
 	{
-	    if((byThisMuch>0)&&(Hunger==Integer.MAX_VALUE))
+	    if((byThisMuch>0)&&(states[STAT_HUNGER]==Integer.MAX_VALUE))
 	        return false;
-		Hunger+=byThisMuch;
-		if(Hunger<0)
+	    states[STAT_HUNGER]+=byThisMuch;
+		if(states[STAT_HUNGER]<0)
 		{
-			Hunger=0;
+			states[STAT_HUNGER]=0;
 			return false;
 		}
-		if(Hunger>0) ticksHungry=0;
-		if(Hunger>max)
+		if(states[STAT_HUNGER]>0) ticksHungry=0;
+		if(states[STAT_HUNGER]>max)
 		{
-			Hunger=max;
+			states[STAT_HUNGER]=max;
 			return false;
 		}
 		return true;
@@ -119,22 +123,22 @@ public class DefaultCharState implements CharState
 	        return Integer.MAX_VALUE;
         return (int)factor;
 	}
-	public int getThirst(){return Thirst;}
-	public void setThirst(int newVal){Thirst=newVal; if(Thirst>0) ticksThirsty=0;}
+	public int getThirst(){return states[STAT_THIRST];}
+	public void setThirst(int newVal){states[STAT_THIRST]=newVal; if(states[STAT_THIRST]>0) ticksThirsty=0;}
 	public boolean adjThirst(int byThisMuch, int max)
 	{
-	    if((byThisMuch>0)&&(Thirst==Integer.MAX_VALUE))
+	    if((byThisMuch>0)&&(states[STAT_THIRST]==Integer.MAX_VALUE))
 	        return false;
-		Thirst+=byThisMuch;
-		if(Thirst<0)
+	    states[STAT_THIRST]+=byThisMuch;
+		if(states[STAT_THIRST]<0)
 		{
-			Thirst=0;
+			states[STAT_THIRST]=0;
 			return false;
 		}
-		if(Thirst>0) ticksThirsty=0;
-		if(Thirst>max)
+		if(states[STAT_THIRST]>0) ticksThirsty=0;
+		if(states[STAT_THIRST]>max)
 		{
-			Thirst=max;
+			states[STAT_THIRST]=max;
 			return false;
 		}
 		return true;
@@ -149,36 +153,36 @@ public class DefaultCharState implements CharState
         return (int)factor;
 	}
 	
-	public int getMana(){return Mana;}
-	public void setMana(int newVal){ Mana=newVal;}
+	public int getMana(){return states[STAT_MANA];}
+	public void setMana(int newVal){ states[STAT_MANA]=newVal;}
 	public boolean adjMana(int byThisMuch, CharState max)
 	{
-		Mana+=byThisMuch;
-		if(Mana<0)
+		states[STAT_MANA]+=byThisMuch;
+		if(states[STAT_MANA]<0)
 		{
-			Mana=0;
+			states[STAT_MANA]=0;
 			return false;
 		}
-		if(Mana>max.getMana())
+		if(states[STAT_MANA]>max.getMana())
 		{
-			Mana=max.getMana();
+			states[STAT_MANA]=max.getMana();
 			return false;
 		}
 		return true;
 	}
-	public int getMovement(){return Movement;}
-	public void setMovement(int newVal){ Movement=newVal;}
+	public int getMovement(){return states[STAT_MOVE];}
+	public void setMovement(int newVal){ states[STAT_MOVE]=newVal;}
 	public boolean adjMovement(int byThisMuch, CharState max)
 	{
-		Movement+=byThisMuch;
-		if(Movement<0)
+		states[STAT_MOVE]+=byThisMuch;
+		if(states[STAT_MOVE]<0)
 		{
-			Movement=0;
+			states[STAT_MOVE]=0;
 			return false;
 		}
-		if(Movement>max.getMovement())
+		if(states[STAT_MOVE]>max.getMovement())
 		{
-			Movement=max.getMovement();
+			states[STAT_MOVE]=max.getMovement();
 			return false;
 		}
 		return true;

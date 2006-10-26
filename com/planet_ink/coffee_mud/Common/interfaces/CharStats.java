@@ -106,7 +106,13 @@ public interface CharStats extends CMObject
     /** constant for total number of stat codes */
 	public final static int NUM_STATS=32;
 
-    /**
+	/**
+     * Copies the internal data of this object into another of kind.
+     * @param intoStats another CharStats object.
+	 */
+    public void copyInto(CharStats intoStats);
+    
+   /**
      * Get the value of one of the STAT_ constants, representing attributes,
      * saving throws, and max attributes, from the CharStats interface.
      * @see CharStats

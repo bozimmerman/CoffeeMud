@@ -40,11 +40,7 @@ public interface CharState extends CMObject
     public final static int STAT_MOVE=2;
     public final static int STAT_HUNGER=3;
     public final static int STAT_THIRST=4;
-    public final static int STAT_BOTHER=5;
-    public final static int STAT_TICKSHUNGRY=6;
-    public final static int STAT_TICKSTHIRSTY=7;
-    public final static int STAT_ANNOYANCETICKER=8;
-    public final static int STAT_NUMSTATS=9;
+    public final static int STAT_NUMSTATS=5;
     public final static int STAT_NUM_BASE_STATS=5;
     
     /** constant representing how many ticks between hunger/thirst messages*/
@@ -207,6 +203,12 @@ public interface CharState extends CMObject
      * @param def the value to give to all
 	 */
     public void setAllValues(int def);
+    
+	/**
+     * Copies the internal data of this object into another of kind.
+     * @param intoState another CharState object.
+	 */
+    public void copyInto(CharState intoState);
     
     /** 
      * Returns an array of the string names of those fields which are modifiable on this object at run-time by

@@ -761,7 +761,7 @@ public class StdRoom implements Room
 	}
 	public void recoverEnvStats()
 	{
-		envStats=(EnvStats)baseEnvStats.copyOf();
+		baseEnvStats.copyInto(envStats);
 		Area myArea=getArea();
 		if(myArea!=null)
 			myArea.affectEnvStats(this,envStats());

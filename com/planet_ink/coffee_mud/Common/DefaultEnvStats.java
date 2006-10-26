@@ -32,17 +32,8 @@ import java.util.Vector;
 public class DefaultEnvStats implements EnvStats
 {
     public String ID(){return "DefaultEnvStats";}
-	protected int Level=0;
-	protected int SensesMask=0;			// see Senses class
-	protected int Armor=100;			// should be positive
+    protected int[] stats={0,0,100,0,0,0,0,0,0,0};
 	protected double Speed=1.0;			// should be positive
-	protected int Damage=0;				// should be positive
-	protected int AttackAdjustment=0;	// should be negative
-	protected int Disposition=0;		// see Senses class
-	protected int Rejuv=Integer.MAX_VALUE;
-	protected int Weight=0;
-	protected int Ability=0;			// object dependant
-	protected int Height=0;
 	protected String replacementName=null;
 	protected String[] ambiances=null;
 	private final static String[] empty=new String[0];
@@ -50,43 +41,36 @@ public class DefaultEnvStats implements EnvStats
 	public DefaultEnvStats(){}
 	public void setAllValues(int def)
 	{
-		Level=def;
-		SensesMask=def;
-		Armor=def;
+		for(int i=0;i<NUM_STATS;i++)
+			stats[i]=def;
 		Speed=new Integer(def).doubleValue();
-		Damage=def;
-		AttackAdjustment=def;
-		Disposition=def;
-		Weight=def;
-		Ability=def;
-		Height=def;
 	}
 
-	public int sensesMask(){return SensesMask;}
-	public int disposition(){return Disposition;}
-	public int level(){return Level;}
-	public int ability(){return Ability;}
-	public int rejuv(){return Rejuv;}
-	public int weight(){return Weight;}
-	public int height(){return Height;}
-	public int armor(){return Armor;}
-	public int damage(){return Damage;}
+	public int sensesMask(){return stats[STAT_SENSES];}
+	public int disposition(){return stats[STAT_DISPOSITION];}
+	public int level(){return stats[STAT_LEVEL];}
+	public int ability(){return stats[STAT_ABILITY];}
+	public int rejuv(){return stats[STAT_REJUV];}
+	public int weight(){return stats[STAT_WEIGHT];}
+	public int height(){return stats[STAT_HEIGHT];}
+	public int armor(){return stats[STAT_ARMOR];}
+	public int damage(){return stats[STAT_DAMAGE];}
 	public double speed(){return Speed;}
-	public int attackAdjustment(){return AttackAdjustment;}
+	public int attackAdjustment(){return stats[STAT_ATTACK];}
 	public String newName(){ return replacementName;}
 	public String[] ambiances(){ return (ambiances==null)?empty:ambiances;}
 
-	public void setRejuv(int newRejuv){Rejuv=newRejuv;}
-	public void setLevel(int newLevel){Level=newLevel;}
-	public void setArmor(int newArmor){Armor=newArmor;}
-	public void setDamage(int newDamage){Damage=newDamage;}
-	public void setWeight(int newWeight){Weight=newWeight;}
+	public void setRejuv(int newRejuv){stats[STAT_REJUV]=newRejuv;}
+	public void setLevel(int newLevel){stats[STAT_LEVEL]=newLevel;}
+	public void setArmor(int newArmor){stats[STAT_ARMOR]=newArmor;}
+	public void setDamage(int newDamage){stats[STAT_DAMAGE]=newDamage;}
+	public void setWeight(int newWeight){stats[STAT_WEIGHT]=newWeight;}
 	public void setSpeed(double newSpeed){Speed=newSpeed;}
-	public void setAttackAdjustment(int newAdjustment){AttackAdjustment=newAdjustment;}
-	public void setAbility(int newAdjustment){Ability=newAdjustment;}
-	public void setDisposition(int newDisposition){Disposition=newDisposition;}
-	public void setSensesMask(int newMask){SensesMask=newMask;}
-	public void setHeight(int newHeight){Height=newHeight;}
+	public void setAttackAdjustment(int newAdjustment){stats[STAT_ATTACK]=newAdjustment;}
+	public void setAbility(int newAdjustment){stats[STAT_ABILITY]=newAdjustment;}
+	public void setDisposition(int newDisposition){stats[STAT_DISPOSITION]=newDisposition;}
+	public void setSensesMask(int newMask){stats[STAT_SENSES]=newMask;}
+	public void setHeight(int newHeight){stats[STAT_HEIGHT]=newHeight;}
 	public void setName(String newName){ replacementName=newName;}
 	public void addAmbiance(String ambiance)
 	{
@@ -129,6 +113,20 @@ public class DefaultEnvStats implements EnvStats
 	
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}
     public void initializeClass(){}
+    public void copyInto(EnvStats intoStats)
+    {
+    	if(intoStats instanceof DefaultEnvStats)
+    	{
+    		for(int i=0;i<NUM_STATS;i++)
+    			((DefaultEnvStats)intoStats).stats[i]=stats[i];
+    		((DefaultEnvStats)intoStats).Speed=Speed;
+    		((DefaultEnvStats)intoStats).ambiances=ambiances;
+    		((DefaultEnvStats)intoStats).replacementName=replacementName;
+    	}
+    	else
+    	for(int i=0;i<getCodes().length;i++)
+    		intoStats.setStat(getCodes()[i],getStat(getCodes()[i]));
+    }
 	public CMObject copyOf()
 	{
 		try

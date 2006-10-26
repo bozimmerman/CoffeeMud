@@ -231,6 +231,40 @@ public class Test extends StdCommand
             	}
             }
             else
+            if(what.equalsIgnoreCase("statcreationspeed"))
+            {
+            	int times=CMath.s_int(CMParms.combine(commands,2));
+            	if(times<=0) times=9999999;
+            	mob.tell("times="+times);
+            	Object newStats=null;
+            	long time=System.currentTimeMillis();
+            	for(int i=0;i<times;i++)
+            		newStats=(EnvStats)mob.baseEnvStats().copyOf();
+            	mob.tell("EnvStats CopyOf took :"+(System.currentTimeMillis()-time));
+            	time=System.currentTimeMillis();
+            	for(int i=0;i<times;i++)
+            		mob.baseEnvStats().copyInto((EnvStats)newStats);
+            	mob.tell("EnvStats CopyInto took :"+(System.currentTimeMillis()-time));
+            	
+            	time=System.currentTimeMillis();
+            	for(int i=0;i<times;i++)
+            		newStats=(CharStats)mob.baseCharStats().copyOf();
+            	mob.tell("CharStats CopyOf took :"+(System.currentTimeMillis()-time));
+            	time=System.currentTimeMillis();
+            	for(int i=0;i<times;i++)
+            		mob.baseCharStats().copyInto((CharStats)newStats);
+            	mob.tell("CharStats CopyInto took :"+(System.currentTimeMillis()-time));
+            	
+            	time=System.currentTimeMillis();
+            	for(int i=0;i<times;i++)
+            		newStats=(CharState)mob.maxState().copyOf();
+            	mob.tell("CharState CopyOf took :"+(System.currentTimeMillis()-time));
+            	time=System.currentTimeMillis();
+            	for(int i=0;i<times;i++)
+            		mob.maxState().copyInto((CharState)newStats);
+            	mob.tell("CharState CopyInto took :"+(System.currentTimeMillis()-time));
+            }
+            else
             if(what.equalsIgnoreCase("abilityobjectcache"))
             {
                 HashMap H=new HashMap();

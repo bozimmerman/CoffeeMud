@@ -67,6 +67,61 @@ public class DefaultCharStats implements CharStats
             stats[i]=(short)def;
         unwearableBitmap=0;
     }
+    
+    public void copyInto(CharStats intoStats)
+    {
+    	if(intoStats instanceof DefaultCharStats)
+    	{
+    		if(myClasses==null)
+	    		((DefaultCharStats)intoStats).myClasses=null;
+    		else
+    		if((((DefaultCharStats)intoStats).myClasses!=null)
+    		&&(((DefaultCharStats)intoStats).myClasses.length==myClasses.length))
+    			for(int i=0;i<myClasses.length;i++)
+    				((DefaultCharStats)intoStats).myClasses[i]=myClasses[i];
+    		else
+	    		((DefaultCharStats)intoStats).myClasses=(CharClass[])myClasses.clone();
+    		if(myLevels==null)
+	    		((DefaultCharStats)intoStats).myLevels=null;
+    		else
+    		if((((DefaultCharStats)intoStats).myLevels!=null)
+    		&&(((DefaultCharStats)intoStats).myLevels.length==myLevels.length))
+    			for(int i=0;i<myLevels.length;i++)
+    				((DefaultCharStats)intoStats).myLevels[i]=myLevels[i];
+    		else
+	    		((DefaultCharStats)intoStats).myLevels=(Integer[])myLevels.clone();
+    		((DefaultCharStats)intoStats).myRace=myRace;
+    		((DefaultCharStats)intoStats).raceName=raceName;
+    		((DefaultCharStats)intoStats).genderName=genderName;
+    		((DefaultCharStats)intoStats).displayClassName=displayClassName;
+    		((DefaultCharStats)intoStats).displayClassLevel=displayClassLevel;
+    		if(bodyAlterations==null)
+	    		((DefaultCharStats)intoStats).bodyAlterations=null;
+    		else
+    		if((((DefaultCharStats)intoStats).bodyAlterations!=null)
+    		&&(((DefaultCharStats)intoStats).bodyAlterations.length==bodyAlterations.length))
+    			for(int i=0;i<bodyAlterations.length;i++)
+    				((DefaultCharStats)intoStats).bodyAlterations[i]=bodyAlterations[i];
+    		else
+	    		((DefaultCharStats)intoStats).bodyAlterations=(short[])bodyAlterations.clone();
+    		for(int i=0;i<stats.length;i++)
+    			((DefaultCharStats)intoStats).stats[i]=stats[i];
+			((DefaultCharStats)intoStats).unwearableBitmap=unwearableBitmap;
+    	}
+    	else
+    	{
+    		intoStats.setMyClasses(getMyClassesStr());
+    		intoStats.setMyLevels(getMyLevelsStr());
+    		intoStats.setMyRace(getMyRace());
+    		intoStats.setRaceName(raceName);
+    		intoStats.setRaceName(raceName);
+    		intoStats.setGenderName(genderName);
+    		intoStats.setDisplayClassName(displayClassName);
+    		intoStats.setDisplayClassLevel(displayClassLevel);
+    		intoStats.setBodyPartsFromStringAfterRace(getBodyPartsAsString());
+    		intoStats.setWearableRestrictionsBitmap(unwearableBitmap);
+    	}
+    }
 
 	public void setMyClasses(String classes)
 	{

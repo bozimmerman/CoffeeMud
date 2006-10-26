@@ -339,7 +339,7 @@ public class StdMOB implements MOB
 	}
 	public void recoverEnvStats()
 	{
-		envStats=(EnvStats)baseEnvStats.copyOf();
+		baseEnvStats.copyInto(envStats);
 		if(location()!=null)
 			location().affectEnvStats(this,envStats);
 		envStats().setWeight(envStats().weight()+(int)Math.round(CMath.div(getMoney(),100.0)));
@@ -420,7 +420,7 @@ public class StdMOB implements MOB
 	public void recoverCharStats()
 	{
 		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(),baseEnvStats().level()-baseCharStats().combinedSubLevels());
-		charStats=(CharStats)baseCharStats().copyOf();
+		baseCharStats().copyInto(charStats);
 
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
@@ -502,11 +502,11 @@ public class StdMOB implements MOB
 	public void resetToMaxState()
 	{
 		recoverMaxState();
-		curState=(CharState)maxState.copyOf();
+		maxState.copyInto(curState);
 	}
 	public void recoverMaxState()
 	{
-		maxState=(CharState)baseState.copyOf();
+		baseState.copyInto(maxState);
 		if(charStats.getMyRace()!=null)	charStats.getMyRace().affectCharState(this,maxState);
 		if(riding()!=null) riding().affectCharState(this,maxState);
 		for(int a=0;a<numAllEffects();a++)
