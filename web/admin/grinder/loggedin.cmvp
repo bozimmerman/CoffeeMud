@@ -77,7 +77,7 @@
 <br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckAuthCode?SYSOP=true&AUTH_LOADUNLOAD=true&AUTH_LISTADMIN=true&AUTH_CMDPLAYERS&AUTH_STAT=true&AUTH_JOURNALS=true&AUTH_CMDQUESTS=true&AUTH_BAN=true@
+@if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
@@ -105,7 +105,7 @@
 	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckAuthCode?SYSOP=true&AUTH_LISTADMIN=true@
+	@if?CheckAuthCode?AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>
 	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
@@ -117,6 +117,8 @@
 	@endif@
 </TD></TR>
 </TABLE>
+@else@
+<FONT COLOR=RED>You suck, go away.</FONT>
 @endif@
 @if?CheckAuthCode?ANYMODAREAS=true@
 	<P>
@@ -133,7 +135,7 @@
 	</SCRIPT>
 	</TD></TR>
 	<TR><TD ALIGN=CENTER>
-	@if?CheckAuthCode?SYSOP=true&ALLMODAREAS=true@
+	@if?CheckAuthCode?ALLMODAREAS=true@
 	<TABLE BORDER=0><TR><TD ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
 	</TD><TD ALIGN=CENTER>
