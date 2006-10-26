@@ -884,13 +884,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 MOB killer=(MOB)msg.tool();
                 CMLib.combat().justDie(killer,deadmob);
                 if((!deadmob.isMonster())&&(deadmob.soulMate()==null)&&(killer!=deadmob)&&(!killer.isMonster()))
-                    CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
-                if((deadmob.getClanID().length()>0)
-                &&(killer.getClanID().length()>0)
-                &&(!deadmob.getClanID().equals(killer.getClanID())))
                 {
-                    Clan C=CMLib.clans().getClan(killer.getClanID());
-                    if(C!=null) C.recordClanKill();
+                    CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
+	                if((deadmob.getClanID().length()>0)
+	                &&(killer.getClanID().length()>0)
+	                &&(!deadmob.getClanID().equals(killer.getClanID()))
+	                &&(deadmob.session()!=null)
+	                &&(killer.session()!=null)
+	                &&(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
+	                {
+	                    Clan C=CMLib.clans().getClan(killer.getClanID());
+	                    if(C!=null) C.recordClanKill();
+	                }
                 }
             }
             else
