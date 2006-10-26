@@ -621,12 +621,15 @@ public class Mood extends StdAbility
 				mask=MOODS[i][1];
 			}
 		}
-		if(choice==null)
+		if((choice==null)||(entered.equalsIgnoreCase("list")))
 		{
 			String choices=", NORMAL";
 			for(int i=0;i<MOODS.length;i++)
 				choices+=", "+MOODS[i][0];
-			mob.tell("'"+entered+"' is not a known mood. Choices include: "+choices.substring(2));
+            if(entered.equalsIgnoreCase("LIST"))
+                mob.tell("Mood choices include: "+choices.substring(2));
+            else
+    			mob.tell("'"+entered+"' is not a known mood. Choices include: "+choices.substring(2));
 			return false;
 		}
         if(MOOD.text().equalsIgnoreCase(choice))

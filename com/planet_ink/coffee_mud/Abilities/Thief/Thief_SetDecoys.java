@@ -94,40 +94,37 @@ public class Thief_SetDecoys extends DeceptiveThiefSkill implements Trap
 				unInvoke();
 				return false;
 			}
-			else
+			Room R=(Room)affected;
+			boolean combat=false;
+			int numWhoCanSee=0;
+			for(int m=0;m<R.numInhabitants();m++)
 			{
-				Room R=(Room)affected;
-				boolean combat=false;
-				int numWhoCanSee=0;
-				for(int m=0;m<R.numInhabitants();m++)
+				MOB M=R.fetchInhabitant(m);
+				if(M!=null)
 				{
-					MOB M=R.fetchInhabitant(m);
-					if(M!=null)
+					if(CMLib.flags().canBeSeenBy(R,M))
 					{
-						if(CMLib.flags().canBeSeenBy(R,M))
-						{
-							numWhoCanSee++;
-							combat=combat||((M!=mob)&&(M.getVictim()==mob));
-						}
+						numWhoCanSee++;
+						combat=combat||((M!=mob)&&(M.getVictim()==mob));
 					}
 				}
-				MOB target=null;
-				int tries=20;
-				while(combat&&(R.numInhabitants()>1)&&(target==null)&&((--tries)>=0))
-				{
-					target=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
-					if((target==mob)||(target.getVictim()!=mob)||(!CMLib.flags().canBeSeenBy(R,target)))
-						target=null;
-				}
-				if(target!=null)
-					spring(target);
-				else
-				if(numWhoCanSee>1)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"A decoy pops up, causing everyone's gaze to be momentarily distracted towards it.");
-				else
-				if(numWhoCanSee==1)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"A decoy pops up, causing your gaze to be momentarily distracted towards it.");
 			}
+			MOB target=null;
+			int tries=20;
+			while(combat&&(R.numInhabitants()>1)&&(target==null)&&((--tries)>=0))
+			{
+				target=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+				if((target==mob)||(target.getVictim()!=mob)||(!CMLib.flags().canBeSeenBy(R,target)))
+					target=null;
+			}
+			if(target!=null)
+				spring(target);
+			else
+			if(numWhoCanSee>1)
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"A decoy pops up, causing everyone's gaze to be momentarily distracted towards it.");
+			else
+			if(numWhoCanSee==1)
+				R.showHappens(CMMsg.MSG_OK_VISUAL,"A decoy pops up, causing your gaze to be momentarily distracted towards it.");
 		}
 		return true;
 	}
