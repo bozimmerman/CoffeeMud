@@ -246,12 +246,15 @@ public class StdAbility extends ForeignScriptable implements Ability
 	{
 		if(caster==null) return 1;
 		int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
-		int adjLevel=lowestQualifyingLevel;
-		int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
-		if((caster.isMonster())||(qualifyingLevel>=0))
-			adjLevel+=(CMLib.ableMapper().qualifyingClassLevel(caster,this)-qualifyingLevel);
-		else
-			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
+        int adjLevel=lowestQualifyingLevel;
+        if(asLevel<=0)
+        {
+    		int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
+    		if((caster.isMonster())||(qualifyingLevel>=0))
+    			adjLevel+=(CMLib.ableMapper().qualifyingClassLevel(caster,this)-qualifyingLevel);
+    		else
+    			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
+        }
 		if(asLevel>0) adjLevel=asLevel;
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;

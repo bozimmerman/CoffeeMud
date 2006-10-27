@@ -43,6 +43,86 @@ public class Spell extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SPELL;}
 
+    private static final int EXPERTISE_STAGES=10;
+    private static final String[] EXPERTISE={"RANGED","REDUCED","POWER","EXTENDED"};
+    private static final String[] EXPERTISE_NAME={"Ranged","Reduced","Power","Extended"};
+    private static final String[][] EXPERTISE_STATS={{"DEX","CON"},
+                                                     {"WIS","STR"},
+                                                     {"CHA","STR"},
+                                                     {"CON","STR"},
+    };
+    private static final int[] EXPERTISE_LEVELS={19,16,17,18};
+    public void initializeClass()
+    {
+        super.initializeClass();
+        for(int e=0;e<EXPERTISE.length;e++)
+        {
+            if(CMLib.expertises().getDefinition(EXPERTISE[e]+domainName()+EXPERTISE_STAGES)==null)
+                for(int i=1;i<=EXPERTISE_STAGES;i++)
+                    CMLib.expertises().addDefinition(EXPERTISE[e]+domainName()+i,EXPERTISE_NAME[e]+" "+CMStrings.capitalizeAndLower(domainName())+" "+CMath.convertToRoman(i),
+                            "","+"+EXPERTISE_STATS[e][0]+" "+(9+i)
+                              +"+"+EXPERTISE_STATS[e][1]+" "+(9+i)
+                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i)),0,1,0,0,0);
+            if(!ID().equals("Spell"))
+            {
+                String[] EXPERTISESES=(String[])EXPERTISE.clone();
+                for(int x=0;x<EXPERTISESES.length;x++)
+                    EXPERTISESES[x]+=domainName();
+                registerExpertiseUsage(EXPERTISESES,EXPERTISE_STAGES,false,null);
+            }
+        }
+    }
+    protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]);}
+    
+    protected final String domainName(){
+        return Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>>5];
+    }
+    
+    public int maxRange()
+    {
+        int max=super.maxRange();
+        if(invoker==null) return max;
+        int level=super.getExpertiseLevel(invoker,"RANGED"+domainName());
+        if(level<=0) return max;
+        return max+(int)Math.round(CMath.mul(max,CMath.mul(level,0.2)));
+    }
+    
+    
+    protected int[] buildCostArray(MOB mob, int consumed)
+    {
+        int[] cost=super.buildCostArray(mob,consumed);
+        if((cost[USAGE_MANA]>0)&&(cost[USAGE_MANA]<mob.maxState().getMana()))
+        {
+            int minimum=CMProps.getMinManaException(ID());
+            if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
+            if(minimum<0) minimum=5;
+            int level=super.getExpertiseLevel(mob,"REDUCED"+domainName());
+            if(level>0)
+            {
+                cost[USAGE_MANA]-=level;
+                if(cost[USAGE_MANA]<minimum) cost[USAGE_MANA]=minimum;
+            }
+        }
+        return cost;
+    }
+    
+    public int adjustedLevel(MOB caster, int asLevel)
+    {
+        if(caster==null) return 1;
+        if(asLevel<=0)
+            return(super.adjustedLevel(caster,asLevel)+super.getExpertiseLevel(caster,"POWER"+domainName()));
+        return super.adjustedLevel(caster,asLevel);
+    }
+    
+    public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
+    {
+        int level=super.getExpertiseLevel(invokerMOB,"EXTENDED"+domainName());
+        if(level<=0) 
+            super.startTickDown(invokerMOB,affected,tickTime);
+        else
+            super.startTickDown(invokerMOB,affected,tickTime+(int)Math.round(CMath.mul(tickTime,CMath.mul(level,0.20))));
+    }
+    
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
 								   int asLevel,
@@ -84,18 +164,19 @@ public class Spell extends StdAbility
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
-		if((!auto)
-		&&(!mob.isMonster())
-		&&(!disregardsArmorCheck(mob))
-		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
-		&&(mob.isMine(this))
-		&&(mob.location()!=null)
-		&&(CMLib.dice().rollPercentage()<50))
-		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
-			return false;
-		}
-		return true;
+        if((!auto)&&(mob.isMine(this))&&(mob.location()!=null))
+        {
+            if(super.getExpertiseLevel(invoker,"RANGED"+domainName())>0) 
+                invoker=mob;
+    		if((!mob.isMonster())
+    		&&(!disregardsArmorCheck(mob))
+    		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
+    		&&(CMLib.dice().rollPercentage()<50))
+    		{
+    			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+    			return false;
+    		}
+        }
+        return true;
 	}
 }

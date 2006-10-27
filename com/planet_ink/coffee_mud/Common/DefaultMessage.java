@@ -73,7 +73,8 @@ public class DefaultMessage implements CMMsg
         myTool=null;
         trailMsgs=null;
         value=0;
-        CMClass.returnMsg(this);
+        if(!CMClass.returnMsg(this))
+            super.finalize();
     }
     
 	public void modify(MOB source, Environmental target, int newAllCode, String allMessage)

@@ -485,6 +485,8 @@ public class CMProps extends Properties
         StringBuffer newMsg=null;
         String upp=msg.toUpperCase();
         String filterStr=null;
+        final char[] filterPattern={'%','#','@','*','!','$','&','?'};
+        int fpIndex=0;
         for(int f=0;f<filter.size();f++)
         {
         	filterStr=(String)filter.elementAt(f);
@@ -505,9 +507,12 @@ public class CMProps extends Properties
                         if(!Character.isWhitespace(msg.charAt(fdex)))
                         {
                             if(newMsg==null) newMsg=new StringBuffer(msg);
-                            newMsg.setCharAt(fdex,'*');
+                            newMsg.setCharAt(fdex,filterPattern[fpIndex]);
+                            if((++fpIndex)>=filterPattern.length) fpIndex=0;
                             upp=newMsg.toString().toUpperCase();
                         }
+                        else
+                            fpIndex=0;
                     fdex=upp.indexOf(filterStr);
                 }
                 else

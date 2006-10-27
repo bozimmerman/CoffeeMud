@@ -595,10 +595,17 @@ public class CMClass extends ClassLoader
 		return addMe.size();
 	}
 
-    public static void returnMsg(CMMsg msg)
+    public static boolean returnMsg(CMMsg msg)
     {
-        if(MSGS_CACHE.size()<10000)
-            MSGS_CACHE.addElement(msg);
+        synchronized(CMClass.MSGS_CACHE)
+        {
+            if(MSGS_CACHE.size()<10000)
+            {
+                MSGS_CACHE.addElement(msg);
+                return true;
+            }
+        }
+        return false;
     }
     
     public static CMMsg MsgFactory()
