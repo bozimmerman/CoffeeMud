@@ -42,27 +42,6 @@ public class CMClass extends ClassLoader
     protected static CMClass inst=new CMClass();
     public static CMClass instance(){ return inst;}
     
-    protected static TimeClock globalClock=null;
-    protected static Hashtable common=new Hashtable();
-    protected static Vector races=new Vector();
-    protected static Vector charClasses=new Vector();
-    protected static Vector MOBs=new Vector();
-    protected static Vector abilities=new Vector();
-    protected static Vector locales=new Vector();
-    protected static Vector exits=new Vector();
-    protected static Vector items=new Vector();
-    protected static Vector behaviors=new Vector();
-    protected static Vector weapons=new Vector();
-    protected static Vector armor=new Vector();
-    protected static Vector miscMagic=new Vector();
-    protected static Vector miscTech=new Vector();
-    protected static Vector clanItems=new Vector();
-    protected static Vector areaTypes=new Vector();
-    protected static Vector commands=new Vector();
-    protected static Vector libraries=new Vector();
-    protected static Hashtable webMacros=new Hashtable();
-    public static int longestWebMacro=-1;
-    protected static Hashtable CommandWords=new Hashtable();
     public static final int OBJECT_RACE=0;
     public static final int OBJECT_CHARCLASS=1;
     public static final int OBJECT_MOB=2;
@@ -83,12 +62,36 @@ public class CMClass extends ClassLoader
     public static final int OBJECT_COMMON=17;
     public static final int OBJECT_LIBRARY=18;
     public static final int OBJECT_TOTAL=19;
-    public static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
-    public static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
-    public static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
-    public static final boolean KEEP_OBJECT_CACHE=false;
+    
+    public static int longestWebMacro=-1;
+    protected static TimeClock globalClock=null;
+    protected static Hashtable common=new Hashtable();
+    protected static Vector races=new Vector();
+    protected static Vector charClasses=new Vector();
+    protected static Vector MOBs=new Vector();
+    protected static Vector abilities=new Vector();
+    protected static Vector locales=new Vector();
+    protected static Vector exits=new Vector();
+    protected static Vector items=new Vector();
+    protected static Vector behaviors=new Vector();
+    protected static Vector weapons=new Vector();
+    protected static Vector armor=new Vector();
+    protected static Vector miscMagic=new Vector();
+    protected static Vector miscTech=new Vector();
+    protected static Vector clanItems=new Vector();
+    protected static Vector areaTypes=new Vector();
+    protected static Vector commands=new Vector();
+    protected static Vector libraries=new Vector();
+    protected static Hashtable webMacros=new Hashtable();
+    protected static Hashtable CommandWords=new Hashtable();
+    protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
+    protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
+    protected static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
+    protected static final java.util.WeakHashMap MSGS_IN_USE=new java.util.WeakHashMap();
+    protected static final Vector MSGS_CACHE=new Vector();
+    protected static final boolean KEEP_OBJECT_CACHE=false;
     static{ if(KEEP_OBJECT_CACHE) for(int i=0;i<OBJECT_TOTAL;i++)OBJECT_CACHE[i]=new java.util.WeakHashMap();}
-    public static final String[] OBJECT_DESCS={
+    protected static final String[] OBJECT_DESCS={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
 		"MISCTECH","WEBMACROS","COMMON","LIBRARY"
@@ -591,21 +594,46 @@ public class CMClass extends ClassLoader
 		}
 		return addMe.size();
 	}
+
+    public static void returnMsg(CMMsg msg)
+    {
+        if(MSGS_CACHE.size()<10000)
+            MSGS_CACHE.addElement(msg);
+    }
+    
+    public static CMMsg MsgFactory()
+    {
+        CMMsg msg=null;
+        synchronized(CMClass.MSGS_CACHE)
+        {
+            if(MSGS_CACHE.size()==0)
+            {
+                if(MSGS_CACHE.size()==0)
+                {
+                    msg=(CMMsg)getCommon("DefaultMessage");
+                    MSGS_CACHE.addElement(msg);
+                }
+            }
+            msg=(CMMsg)MSGS_CACHE.firstElement();
+            MSGS_CACHE.removeElementAt(0);
+        }
+        return msg;
+    }
     
     public static CMMsg getMsg(MOB source, int newAllCode, String allMessage)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,newAllCode,allMessage); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,newAllCode,allMessage); return M;}
     public static CMMsg getMsg(MOB source, int newAllCode, String allMessage, int newValue)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,newAllCode,allMessage,newValue); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,newAllCode,allMessage,newValue); return M;}
     public static CMMsg getMsg(MOB source, Environmental target, int newAllCode, String allMessage)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,target,newAllCode,allMessage); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,target,newAllCode,allMessage); return M;}
     public static CMMsg getMsg(MOB source, Environmental target, Environmental tool, int newAllCode, String allMessage)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,target,tool,newAllCode,allMessage); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,target,tool,newAllCode,allMessage); return M;}
     public static CMMsg getMsg(MOB source, Environmental target, Environmental tool, int newSourceCode, int newTargetCode, int newOthersCode, String Message)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,target,tool,newSourceCode,newTargetCode,newOthersCode,Message); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,target,tool,newSourceCode,newTargetCode,newOthersCode,Message); return M;}
     public static CMMsg getMsg(MOB source, Environmental target, Environmental tool, int newSourceCode, String sourceMessage, String targetMessage, String othersMessage)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,target,tool,newSourceCode,sourceMessage,newSourceCode,targetMessage,newSourceCode,othersMessage); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,target,tool,newSourceCode,sourceMessage,newSourceCode,targetMessage,newSourceCode,othersMessage); return M;}
     public static CMMsg getMsg(MOB source, Environmental target, Environmental tool, int newSourceCode, String sourceMessage, int newTargetCode, String targetMessage, int newOthersCode, String othersMessage)
-    { CMMsg M=(CMMsg)getCommon("DefaultMessage"); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
+    { CMMsg M=MsgFactory(); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
     
 
 	public static void unload()

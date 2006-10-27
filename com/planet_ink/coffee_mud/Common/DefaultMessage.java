@@ -60,6 +60,22 @@ public class DefaultMessage implements CMMsg
 	protected int value=0;
 	protected Vector trailMsgs=null;
 
+    public void finalize() throws Throwable
+    {
+        targetCode=0;
+        sourceCode=0;
+        othersCode=0;
+        targetMsg=null;
+        othersMsg=null;
+        sourceMsg=null;
+        myAgent=null;
+        myTarget=null;
+        myTool=null;
+        trailMsgs=null;
+        value=0;
+        CMClass.returnMsg(this);
+    }
+    
 	public void modify(MOB source, Environmental target, int newAllCode, String allMessage)
 	{
 		myAgent=source;
