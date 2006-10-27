@@ -316,14 +316,17 @@ public class Go extends StdCommand
 				if((follower.amFollowing()==mob)
 				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
-					if((follower.location()==thisRoom)
-					&&(CMLib.flags().aliveAwakeMobile(follower,true))
-					&&(!CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
+					if((follower.location()==thisRoom)&&(CMLib.flags().aliveAwakeMobile(follower,true)))
 					{
-						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
-						if(!move(follower,directionCode,false,false,false,false))
+						if(CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD))
+							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> remain(s) on guard here.");
+						else
 						{
-							//follower.setFollowing(null);
+							follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
+							if(!move(follower,directionCode,false,false,false,false))
+							{
+								//follower.setFollowing(null);
+							}
 						}
 					}
 				}

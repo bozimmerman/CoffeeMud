@@ -62,8 +62,10 @@ public class Prayer_CureSerious extends Prayer
 			{
 				mob.location().send(mob,msg);
 				int healing=CMLib.dice().roll(3,adjustedLevel(mob,asLevel),5);
+				int oldHP=mob.curState().getHitPoints();
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
-				target.tell("You feel better!");
+				if(mob.curState().getHitPoints()>oldHP)
+					target.tell("You feel better!");
                 lastCastHelp=System.currentTimeMillis();
 			}
 		}

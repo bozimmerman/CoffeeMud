@@ -80,6 +80,7 @@ public class Prayer_AuraHeal extends Prayer
 				||(M.getVictim()==null)
 				||(!H.contains(M.getVictim()))))
 			{
+				int oldHP=M.curState().getHitPoints();
 				if(invoker()!=null)
 				{
 					int healing=CMLib.dice().roll(2,adjustedLevel(invoker(),0),4);
@@ -90,7 +91,8 @@ public class Prayer_AuraHeal extends Prayer
 					int healing=CMLib.dice().roll(2,CMLib.ableMapper().lowestQualifyingLevel(ID()),4);
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				}
-				M.tell("You feel a little better!");
+				if(M.curState().getHitPoints()>oldHP)
+					M.tell("You feel a little better!");
 			}
 		}
 		return super.tick(ticking,tickID);

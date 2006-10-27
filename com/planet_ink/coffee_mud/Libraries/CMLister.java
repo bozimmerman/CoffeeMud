@@ -38,33 +38,34 @@ public class CMLister extends StdLibrary implements ListingLibrary
     public String itemSeenString(MOB viewer, 
                                  Environmental item, 
                                  boolean useName, 
-                                 boolean longLook)
+                                 boolean longLook,
+                                 boolean sysmsgs)
     {
         if(useName)
-            return CMStrings.capitalizeFirstLetter(item.name());
+            return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ("+item.ID()+")":"");
         else
         if((longLook)&&(item instanceof Item)&&(((Item)item).container()!=null))
-            return CMStrings.capitalizeFirstLetter("     "+item.name());
+            return CMStrings.capitalizeFirstLetter("     "+item.name())+(sysmsgs?" ("+item.ID()+")":"");
         else
         if(!item.name().equals(item.Name()))
-            return CMStrings.capitalizeFirstLetter(item.name()+" is here.");
+            return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ("+item.ID()+")":"");
         else
         if(item instanceof MOB)
-            return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewer));
+            return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewer))+(sysmsgs?" ("+item.ID()+")":"");
         else
         if(item.displayText().length()>0)
-            return CMStrings.capitalizeFirstLetter(item.displayText());
+            return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ("+item.ID()+")":"");
         else
-            return CMStrings.capitalizeFirstLetter(item.name());
+            return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ("+item.ID()+")":"");
     }
     
     public int getReps(Environmental item, 
-                              Vector theRest, 
-                              MOB mob, 
-                              boolean useName, 
-                              boolean longLook)
+                       Vector theRest, 
+                       MOB mob, 
+                       boolean useName, 
+                       boolean longLook)
     {
-        String str=itemSeenString(mob,item,useName,longLook);
+        String str=itemSeenString(mob,item,useName,longLook,false);
         String str2=null;
         int reps=0;
         int here=0;
@@ -72,7 +73,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
         while(here<theRest.size())
         {
             item2=(Environmental)theRest.elementAt(here);
-            str2=itemSeenString(mob,item2,useName,longLook);
+            str2=itemSeenString(mob,item2,useName,longLook,false);
             if(str2.length()==0)
                 theRest.removeElement(item2);
             else
@@ -106,16 +107,17 @@ public class CMLister extends StdLibrary implements ListingLibrary
     }
     
     public StringBuffer lister(MOB mob, 
-                                      Vector things,
-                                      boolean useName, 
-                                      String tag,
-                                      String tagParm,
-                                      boolean longLook,
-                                      boolean compress)
+                               Vector things,
+                               boolean useName, 
+                               String tag,
+                               String tagParm,
+                               boolean longLook,
+                               boolean compress)
 	{
 	    boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf("*")>=0));
 		StringBuffer say=new StringBuffer("");
         Environmental item=null;
+        boolean sysmsgs=(mob!=null)?CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS):false;
 		while(things.size()>0)
 		{
 			item=(Environmental)things.elementAt(0);
@@ -141,7 +143,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				        say.append("^<"+tag+tagParm+"^>");
 				}
                 if(compress) say.append(CMLib.flags().colorCodes(item,mob)+"^I");
-                say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item,useName,longLook)));
+                say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item,useName,longLook,sysmsgs)));
 				if(tag!=null)
 				    say.append("^</"+tag+"^>");
 				if(!compress) 
@@ -174,7 +176,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                                 say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
                             say.append("^I");
                             if(compress)say.append(CMLib.flags().colorCodes(item2,mob)+"^I");
-                            say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item2,useName,longLook)));
+                            say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item2,useName,longLook,sysmsgs)));
                             if(!compress) 
                                 say.append(CMLib.flags().colorCodes(item2,mob)+"^N\n\r");
                             else

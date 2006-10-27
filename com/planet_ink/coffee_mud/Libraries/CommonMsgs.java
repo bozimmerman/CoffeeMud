@@ -689,6 +689,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         StringBuffer buf=new StringBuffer("");
         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
             buf.append(item.ID()+"\n\rRejuv :"+item.baseEnvStats().rejuv()
+		                    +"\n\rType  :"+item.ID()
                             +"\n\rUses  :"+item.usesRemaining()
                             +"\n\rHeight:"+item.baseEnvStats().height()
                             +"\n\rAbilty:"+item.baseEnvStats().ability()
@@ -1102,7 +1103,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             else
                 mob.tell("You don't see anything special.");
             if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+            {
+                mob.tell("Type  : "+exit.ID());
                 mob.tell("Misc   : "+exit.text());
+            }
             String image=CMProps.mxpImage(exit," ALIGN=RIGHT H=70 W=70");
             if((image!=null)&&(image.length()>0)) mob.tell(image);
         }
@@ -1119,7 +1123,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(CMLib.flags().canBeSeenBy(viewedmob,viewermob))
         {
             if(CMath.bset(viewermob.getBitmap(),MOB.ATT_SYSOPMSGS))
-                myDescription.append(viewedmob.ID()
+                myDescription.append("\n\rType :"+viewedmob.ID()
                                     +"\n\rRejuv:"+viewedmob.baseEnvStats().rejuv()
                                     +"\n\rAbile:"+viewedmob.baseEnvStats().ability()
                                     +"\n\rLevel:"+viewedmob.baseEnvStats().level()

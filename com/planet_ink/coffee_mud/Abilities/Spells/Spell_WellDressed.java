@@ -34,7 +34,7 @@ import java.util.*;
 public class Spell_WellDressed extends Spell
 {
     public String ID() { return "Spell_WellDressed"; }
-    public String name(){return "Wedd Dressed";}
+    public String name(){return "Well Dressed";}
     public String displayText(){return "(Well Dressed)";}
     public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
     protected int canAffectCode(){return CAN_MOBS;}
