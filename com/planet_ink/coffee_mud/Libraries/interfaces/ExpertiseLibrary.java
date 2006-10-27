@@ -36,9 +36,27 @@ public interface ExpertiseLibrary extends CMObject
         public String ID="";
         public String name="";
         private String uncompiledListMask="";
-        public Vector compiledListMask=null;
+        private Vector compiledListMask=null;
         private String uncompiledFinalMask="";
-        public Vector compiledFinalMask=null;
+        private Vector compiledFinalMask=null;
+        public Vector compiledListMask()
+        {
+            if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
+            {
+                compiledListMask=CMLib.masking().maskCompile(uncompiledListMask);
+                CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledListMask.trim());
+            }
+            return this.compiledListMask;
+        }
+        public Vector compiledFinalMask()
+        {
+            if((this.compiledFinalMask==null)&&(uncompiledFinalMask.length()>0))
+            {
+                this.compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
+                CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledFinalMask.trim());
+            }
+            return this.compiledFinalMask;
+        }
         public String allRequirements(){
 			String req=uncompiledListMask;
 			if(req==null) req=""; else req=req.trim();
@@ -54,8 +72,7 @@ public interface ExpertiseLibrary extends CMObject
 	        	uncompiledListMask=mask;
         	else
 	        	uncompiledListMask+=mask;
-        	compiledListMask=CMLib.masking().maskCompile(uncompiledListMask);
-        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledListMask.trim());
+            compiledListMask=null;
         }
         public void addFinalMask(String mask){ 
         	if((mask==null)||(mask.length()==0)) return;
@@ -90,4 +107,6 @@ public interface ExpertiseLibrary extends CMObject
     public Enumeration definitions();
     public Vector myQualifiedExpertises(MOB mob);
     public Vector myListableExpertises(MOB mob);
+    public int numExpertises();
+    public void recompileExpertises();
 }

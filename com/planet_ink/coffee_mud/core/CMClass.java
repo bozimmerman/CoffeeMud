@@ -193,6 +193,7 @@ public class CMClass extends ClassLoader
                 str.append(CMStrings.padRight(OBJECT_DESCS[i],12)+": Created: "+OBJECT_CREATIONS[i]+", Destroyed: "+OBJECT_DESTRUCTIONS[i]+", Remaining: "+(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])+"\n");
         return str.toString();
     }
+    
 	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric)
 	{
 		for(Enumeration i=basicItems();i.hasMoreElements();)
@@ -286,6 +287,13 @@ public class CMClass extends ClassLoader
 		return null;
 	}
 
+    public static int totalClasses(){
+        return races.size()+charClasses.size()+MOBs.size()+abilities.size()+locales.size()+exits.size()
+              +items.size()+behaviors.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size()
+              +miscTech.size()+areaTypes.size()+common.size()+libraries.size()+commands.size()
+              +webMacros.size();
+    }
+    
 	public static boolean delClass(Object O)
 	{
         if(classes.containsKey(O.getClass().getName()))
@@ -1273,6 +1281,8 @@ public class CMClass extends ClassLoader
         }
         CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: initializing classes");
         intializeClasses();
+        CMLib.expertises().recompileExpertises();
+        Log.sysOut("MUD","Expertises defined: "+CMLib.expertises().numExpertises());
         return true;
     }
 

@@ -44,13 +44,29 @@ public class Expertises extends StdCommand
 		msg.append("\n\r^HYour expertises:^? \n\r");
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		int col=0;
+        int colWidth=25;
 		for(int e=0;e<mob.numExpertises();e++)
 		{
 			def=CMLib.expertises().getDefinition(mob.fetchExpertise(e));
             if(def==null)
-                msg.append(CMStrings.padRight("?"+mob.fetchExpertise(e)+"^?",20));
+                msg.append(CMStrings.padRight("?"+mob.fetchExpertise(e)+"^?",colWidth));
             else
-    			msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",20));
+            if((col>=2)&&(def.name.length()>=colWidth))
+            {
+                msg.append("\n\r");
+                msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
+                col=0;
+            }
+            else
+            if(def.name.length()+1>=colWidth)
+            {
+    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
+                int spaces=(colWidth*2)-def.name.length();
+                for(int i=0;i<spaces;i++) msg.append(" ");
+                col++;
+            }
+            else
+                msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",colWidth));
 			if((++col)>=3)
 			{
 				msg.append("\n\r");

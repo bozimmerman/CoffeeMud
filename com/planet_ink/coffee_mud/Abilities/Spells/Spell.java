@@ -55,34 +55,44 @@ public class Spell extends StdAbility
     public void initializeClass()
     {
         super.initializeClass();
-        for(int e=0;e<EXPERTISE.length;e++)
+        if(!ID().equals("Spell"))
         {
-            if(CMLib.expertises().getDefinition(EXPERTISE[e]+domainName()+EXPERTISE_STAGES)==null)
-                for(int i=1;i<=EXPERTISE_STAGES;i++)
-                    CMLib.expertises().addDefinition(EXPERTISE[e]+domainName()+i,EXPERTISE_NAME[e]+" "+CMStrings.capitalizeAndLower(domainName())+" "+CMath.convertToRoman(i),
-                            "","+"+EXPERTISE_STATS[e][0]+" "+(9+i)
-                              +"+"+EXPERTISE_STATS[e][1]+" "+(9+i)
-                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i)),0,1,0,0,0);
-            if(!ID().equals("Spell"))
+            String domain=shortDomainName();
+            if(CMLib.expertises().getDefinition(EXPERTISE[0]+domain+EXPERTISE_STAGES)==null)
+            for(int e=0;e<EXPERTISE.length;e++)
             {
-                String[] EXPERTISESES=(String[])EXPERTISE.clone();
-                for(int x=0;x<EXPERTISESES.length;x++)
-                    EXPERTISESES[x]+=domainName();
-                registerExpertiseUsage(EXPERTISESES,EXPERTISE_STAGES,false,null);
+                if(CMLib.expertises().getDefinition(EXPERTISE[e]+domain+EXPERTISE_STAGES)==null)
+                    for(int i=1;i<=EXPERTISE_STAGES;i++)
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+domain+i,EXPERTISE_NAME[e]+" "+CMStrings.capitalizeAndLower(domain)+" "+CMath.convertToRoman(i),
+                                "","+"+EXPERTISE_STATS[e][0]+" "+(9+i)
+                                  +"+"+EXPERTISE_STATS[e][1]+" "+(9+i)
+                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i)),0,1,0,0,0);
             }
+            String[] EXPERTISESES=(String[])EXPERTISE.clone();
+            for(int x=0;x<EXPERTISESES.length;x++)
+                EXPERTISESES[x]+=domain;
+            registerExpertiseUsage(EXPERTISESES,EXPERTISE_STAGES,false,null);
         }
     }
     protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]);}
     
-    protected final String domainName(){
+    protected final String fullDomainName()
+    {
         return Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>>5];
+    }
+    protected final String shortDomainName()
+    {
+        String s=fullDomainName();
+        int x=s.indexOf("/");
+        if(x<0) return s;
+        return s.substring(0,x);
     }
     
     public int maxRange()
     {
         int max=super.maxRange();
         if(invoker==null) return max;
-        int level=super.getExpertiseLevel(invoker,"RANGED"+domainName());
+        int level=super.getExpertiseLevel(invoker,"RANGED"+shortDomainName());
         if(level<=0) return max;
         return max+(int)Math.round(CMath.mul(max,CMath.mul(level,0.2)));
     }
@@ -96,7 +106,7 @@ public class Spell extends StdAbility
             int minimum=CMProps.getMinManaException(ID());
             if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
             if(minimum<0) minimum=5;
-            int level=super.getExpertiseLevel(mob,"REDUCED"+domainName());
+            int level=super.getExpertiseLevel(mob,"REDUCED"+shortDomainName());
             if(level>0)
             {
                 cost[USAGE_MANA]-=level;
@@ -110,13 +120,13 @@ public class Spell extends StdAbility
     {
         if(caster==null) return 1;
         if(asLevel<=0)
-            return(super.adjustedLevel(caster,asLevel)+super.getExpertiseLevel(caster,"POWER"+domainName()));
+            return(super.adjustedLevel(caster,asLevel)+super.getExpertiseLevel(caster,"POWER"+shortDomainName()));
         return super.adjustedLevel(caster,asLevel);
     }
     
     public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
     {
-        int level=super.getExpertiseLevel(invokerMOB,"EXTENDED"+domainName());
+        int level=super.getExpertiseLevel(invokerMOB,"EXTENDED"+shortDomainName());
         if(level<=0) 
             super.startTickDown(invokerMOB,affected,tickTime);
         else
@@ -166,7 +176,7 @@ public class Spell extends StdAbility
 			return false;
         if((!auto)&&(mob.isMine(this))&&(mob.location()!=null))
         {
-            if(super.getExpertiseLevel(invoker,"RANGED"+domainName())>0) 
+            if(super.getExpertiseLevel(invoker,"RANGED"+shortDomainName())>0) 
                 invoker=mob;
     		if((!mob.isMonster())
     		&&(!disregardsArmorCheck(mob))

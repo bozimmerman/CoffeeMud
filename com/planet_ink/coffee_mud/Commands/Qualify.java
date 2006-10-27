@@ -214,7 +214,7 @@ public class Qualify extends BaseAbleLister
                     req=CMLib.masking().maskDesc(def.finalRequirements(),true);
                     prefix="^<HELP^>"+def.name+"^</HELP^>";
                     if(req.length()<=46)
-                        msg2.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",30)+req+"\n\r");
+                        msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
                     else
                     while(req.length()>0)
                     {
