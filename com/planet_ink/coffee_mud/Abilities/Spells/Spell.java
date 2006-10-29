@@ -57,28 +57,27 @@ public class Spell extends StdAbility
         super.initializeClass();
         if(!ID().equals("Spell"))
         {
-            String domain=shortDomainName();
-            if(CMLib.expertises().getDefinition(EXPERTISE[0]+domain+EXPERTISE_STAGES)==null)
+            String sdomain=shortDomainName();
+            String fdomain=fullDomainName();
+            if(CMLib.expertises().getDefinition(EXPERTISE[0]+sdomain+EXPERTISE_STAGES)==null)
             for(int e=0;e<EXPERTISE.length;e++)
             {
-                if(CMLib.expertises().getDefinition(EXPERTISE[e]+domain+EXPERTISE_STAGES)==null)
+                if(CMLib.expertises().getDefinition(EXPERTISE[e]+sdomain+EXPERTISE_STAGES)==null)
                     for(int i=1;i<=EXPERTISE_STAGES;i++)
-                        CMLib.expertises().addDefinition(EXPERTISE[e]+domain+i,EXPERTISE_NAME[e]+" "+CMStrings.capitalizeAndLower(domain)+" "+CMath.convertToRoman(i),
-                                "","+"+EXPERTISE_STATS[e][0]+" "+(9+i)
-                                  +"+"+EXPERTISE_STATS[e][1]+" "+(9+i)
-                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i)),0,1,0,0,0);
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+sdomain+i,EXPERTISE_NAME[e]+" "+CMStrings.capitalizeAndLower(sdomain)+" "+CMath.convertToRoman(i),
+                                ((i==1)?"":"-EXPERTISE \""+EXPERTISE[e]+sdomain+(i-1)+"\"")+" -SKILLFLAG \"+"+fdomain+"\" ",
+                                    " +"+EXPERTISE_STATS[e][0]+" "+(9+i)
+                                   +" +"+EXPERTISE_STATS[e][1]+" "+(9+i)
+                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                                   ,0,1,0,0,0);
             }
-            String[] EXPERTISESES=(String[])EXPERTISE.clone();
-            for(int x=0;x<EXPERTISESES.length;x++)
-                EXPERTISESES[x]+=domain;
-            registerExpertiseUsage(EXPERTISESES,EXPERTISE_STAGES,false,null);
         }
     }
-    protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]);}
+    protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]+shortDomainName());}
     
     protected final String fullDomainName()
     {
-        return Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>>5];
+        return Ability.DOMAIN_DESCS[((classificationCode()&Ability.ALL_DOMAINS)>>5)];
     }
     protected final String shortDomainName()
     {

@@ -175,6 +175,9 @@ public interface MaskingLibrary extends CMObject
         +"-SEASON +FALL (<WORD> those only when season is FALL)  <BR>"
         +"+SEASON -SPRING (<WORD> those whenever the season is SPRING) <BR>"
         +"-MONTH +X (<WORD> those only when month number is X)  <BR>"
-        +"+MONTH -X (<WORD> those whenever the month number is X)";
-
+        +"+MONTH -X (<WORD> those whenever the month number is X)"
+        +"-SKILLFLAG (<WORD> anyone, even those with no skills) <BR>"
+        +"-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag) <BR>"
+        +"+SKILLFLAG (do not <WORD> anyone, even non skilled people) <BR>"
+        +"+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag) <BR>";
 }

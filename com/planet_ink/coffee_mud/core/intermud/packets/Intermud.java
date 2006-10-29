@@ -241,33 +241,52 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if(shutdown) return;
         attempts++;
         try {
-            for(int i=0;i<name_servers.size();i++)
+            if(name_servers.size()==0)
+                Log.sysOut("No I3 routers defined in coffeemud.ini file.");
+            else
             {
-                NameServer n = (NameServer)name_servers.elementAt(i);
+                Vector connectionStatuses=new Vector(name_servers.size());
+                for(int i=0;i<name_servers.size();i++)
+                {
+                    NameServer n = (NameServer)name_servers.elementAt(i);
+                    try
+                    {
+                        connection = new Socket(n.ip, n.port);
+                        output = new DataOutputStream(connection.getOutputStream());
+                        send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
+                             n.name + "\",0," + password +
+                             "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
+                             ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
+                             "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_I3EMAIL).toLowerCase()+"\",([" +
+                             "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
+                    }
+                    catch(java.io.IOException e)
+                    {
+                        if(e==null)
+                            connectionStatuses.addElement(n.ip+": "+n.port+": "+"Unknown error\n");
+                        else
+                            connectionStatuses.addElement(n.ip+": "+n.port+": "+e.getMessage());
+                        continue;
+                    }
+                    connected = true;
+                    input_thread = new Thread(this);
+                    input_thread.setDaemon(true);
+                    input_thread.setName("Intermud");
+                    input_thread.start();
+                    Enumeration e = intermud.getChannels();
     
-                connection = new Socket(n.ip, n.port);
-                output = new DataOutputStream(connection.getOutputStream());
-                send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
-                     n.name + "\",0," + password +
-                     "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
-                     ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
-                     "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_I3EMAIL).toLowerCase()+"\",([" +
-                     "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
-                connected = true;
-                input_thread = new Thread(this);
-                input_thread.setDaemon(true);
-                input_thread.setName("Intermud");
-                input_thread.start();
-                Enumeration e = intermud.getChannels();
-
-                while( e.hasMoreElements() ) {
-                    String chan = (String)e.nextElement();
-
-					send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
-                         n.name + "\",0,\"" + chan + "\",1,})");
+                    while( e.hasMoreElements() ) {
+                        String chan = (String)e.nextElement();
+    
+    					send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
+                             n.name + "\",0,\"" + chan + "\",1,})");
+                    }
+                    Log.sysOut("I3 router connection to "+n.ip+": "+n.port);
+                    break;
                 }
-                Log.sysOut("I3 router connection to "+n.ip+": "+n.port);
-                break;
+                if(!connected)
+                    for(int e=0;e<connectionStatuses.size();e++)
+                        Log.errOut((String)connectionStatuses.elementAt(e));
             }
         }
         catch( Exception e ) {
