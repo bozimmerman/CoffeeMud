@@ -40,6 +40,7 @@ public class Prop_SpellAdder extends Property
     protected Environmental lastMOB=null;
     protected MOB invokerMOB=null;
     protected boolean processing=false;
+    protected boolean uninvocable=true;
 	protected Vector spellV=null;
     protected Vector compiledMask=null;
     
@@ -80,6 +81,11 @@ public class Prop_SpellAdder extends Property
 		for(int s=0;s<set.size();s++)
 		{
 			thisOne=(String)set.elementAt(s);
+			if(thisOne.equalsIgnoreCase("NOUNINVOKE"))
+			{
+				this.uninvocable=false;
+				continue;
+			}
 			String parm="";
 			if(thisOne.endsWith(")"))
 			{
@@ -202,7 +208,13 @@ public class Prop_SpellAdder extends Property
                 // this needs to go here because otherwise it makes non-item-invoked spells long lasting,
                 // which means they dont go away when item is removed.
     			if(EA!=null)
+    			{
     				EA.makeLongLasting();
+    				if(!this.uninvocable)
+    					EA.makeNonUninvokable();
+    			}
+    				
+    			
 			}
 		}
         return true;

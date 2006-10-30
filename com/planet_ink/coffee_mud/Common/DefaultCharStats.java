@@ -557,7 +557,7 @@ public class DefaultCharStats implements CharStats
 		if(myLevels!=null)
 			newOne.myLevels=(Integer[])myLevels.clone();
         if(bodyAlterations!=null)
-            newOne.bodyAlterations=bodyAlterations.clone();
+            newOne.bodyAlterations=(short[])bodyAlterations.clone();
 		newOne.stats=(short[])stats.clone();
 		return newOne;
 	}
