@@ -38,104 +38,123 @@ public class Prop_HaveAdjuster extends Property
 	public String name(){ return "Adjustments to stats when owned";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public boolean bubbleAffect(){return true;}
-	protected CharStats adjCharStats=null;
-    protected CharState adjCharState=null;
-    protected EnvStats adjEnvStats=null;
-    protected boolean gotClass=false;
-    protected boolean gotRace=false;
-    protected boolean gotSex=false;
-    protected Vector mask=new Vector();
+    protected Object[] charStatsChanges=null;
+    protected Object[] charStateChanges=null;
+    protected Object[] envStatsChanges=null;
+    protected Vector mask=null;
+
     
-	public int setAdjustments(String newText, 
-                              EnvStats adjEnvStats, 
-                              CharStats adjCharStats, 
-                              CharState adjCharState,
-                              Vector mask)
-	{
-		boolean gotClass=false;
-		boolean gotRace=false;
-		boolean gotSex=false;
-        
-        newText=buildMask(newText,mask);
-        
-		adjEnvStats.setAbility(CMParms.getParmPlus(newText,"abi"));
-		adjEnvStats.setArmor(CMParms.getParmPlus(newText,"arm"));
-		adjEnvStats.setAttackAdjustment(CMParms.getParmPlus(newText,"att"));
-		adjEnvStats.setDamage(CMParms.getParmPlus(newText,"dam"));
-		adjEnvStats.setDisposition(CMParms.getParmPlus(newText,"dis"));
-		adjEnvStats.setLevel(CMParms.getParmPlus(newText,"lev"));
-		adjEnvStats.setRejuv(CMParms.getParmPlus(newText,"rej"));
-		adjEnvStats.setSensesMask(CMParms.getParmPlus(newText,"sen"));
-		adjEnvStats.setSpeed(CMParms.getParmDoublePlus(newText,"spe"));
-		adjEnvStats.setWeight(CMParms.getParmPlus(newText,"wei"));
-		adjEnvStats.setHeight(CMParms.getParmPlus(newText,"hei"));
+    public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
+    {
+        int val=CMParms.getParmPlus(newText,parm);
+        if(val==0) return false;
+        addTo.addElement(new Integer(parmCode));
+        addTo.addElement(new Integer(val));
+        return true;
+    }
 
-		String val=CMParms.getParmStr(newText,"gen","").toUpperCase();
-		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
-		{
-            adjCharStats.setStat(CharStats.STAT_GENDER,val.charAt(0));
-			gotSex=true;
-		}
-
-		val=CMParms.getParmStr(newText,"cla","").toUpperCase();
-		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
-		{
-			gotClass=true;
-			adjCharStats.setCurrentClass(CMClass.findCharClass(val));
-		}
-		val=CMParms.getParmStr(newText,"rac","").toUpperCase();
-		if((val.length()>0)&&(CMClass.getRace(val)!=null))
-		{
-			gotRace=true;
-			adjCharStats.setMyRace(CMClass.getRace(val));
-		}
-		adjCharStats.setStat(CharStats.STAT_STRENGTH,CMParms.getParmPlus(newText,"str"));
-		adjCharStats.setStat(CharStats.STAT_WISDOM,CMParms.getParmPlus(newText,"wis"));
-		adjCharStats.setStat(CharStats.STAT_CHARISMA,CMParms.getParmPlus(newText,"cha"));
-		adjCharStats.setStat(CharStats.STAT_CONSTITUTION,CMParms.getParmPlus(newText,"con"));
-		adjCharStats.setStat(CharStats.STAT_DEXTERITY,CMParms.getParmPlus(newText,"dex"));
-		adjCharStats.setStat(CharStats.STAT_INTELLIGENCE,CMParms.getParmPlus(newText,"int"));
-		adjCharStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,CMParms.getParmPlus(newText,"maxstr"));
-		adjCharStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,CMParms.getParmPlus(newText,"maxwis"));
-		adjCharStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,CMParms.getParmPlus(newText,"maxcha"));
-		adjCharStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,CMParms.getParmPlus(newText,"maxcon"));
-		adjCharStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,CMParms.getParmPlus(newText,"maxdex"));
-		adjCharStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,CMParms.getParmPlus(newText,"maxint"));
-
-		adjCharState.setHitPoints(CMParms.getParmPlus(newText,"hit"));
-		adjCharState.setHunger(CMParms.getParmPlus(newText,"hun"));
-		adjCharState.setMana(CMParms.getParmPlus(newText,"man"));
-		adjCharState.setMovement(CMParms.getParmPlus(newText,"mov"));
-		adjCharState.setThirst(CMParms.getParmPlus(newText,"thi"));
-		return ((gotClass?1:0)+(gotRace?2:0)+(gotSex?4:0));
-	}
-
+    public Object[] makeObjectArray(Vector V)
+    {
+        if(V==null) return null;
+        if(V.size()==0) return null;
+        Object[] O=new Object[V.size()];
+        for(int i=0;i<V.size();i++)
+            O[i]=V.elementAt(i);
+        return O;
+    }   
+    
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		this.adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-		this.adjCharState=(CharState)CMClass.getCommon("DefaultCharState");
-		this.adjEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        this.charStateChanges=null;
+        this.envStatsChanges=null;
+        this.charStatsChanges=null;
         this.mask=new Vector();
-		int gotit=setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState,mask);
-		gotClass=((gotit&1)==1);
-		gotRace=((gotit&2)==2);
-		gotSex=((gotit&4)==4);
+        newText=buildMask(newText,mask);
+        Vector envStatsV=new Vector();
+        addIfPlussed(newText,"abi",EnvStats.STAT_ABILITY,envStatsV);
+        addIfPlussed(newText,"arm",EnvStats.STAT_ARMOR,envStatsV);
+        addIfPlussed(newText,"att",EnvStats.STAT_ATTACK,envStatsV);
+        addIfPlussed(newText,"dam",EnvStats.STAT_DAMAGE,envStatsV);
+        addIfPlussed(newText,"dis",EnvStats.STAT_DISPOSITION,envStatsV);
+        addIfPlussed(newText,"lev",EnvStats.STAT_LEVEL,envStatsV);
+        addIfPlussed(newText,"rej",EnvStats.STAT_REJUV,envStatsV);
+        addIfPlussed(newText,"sen",EnvStats.STAT_SENSES,envStatsV);
+        double dval=CMParms.getParmDoublePlus(newText,"spe");
+        if(dval!=0)
+        {
+            envStatsV.addElement(new Integer(EnvStats.NUM_STATS));
+            envStatsV.addElement(new Double(dval));
+        }
+        addIfPlussed(newText,"wei",EnvStats.STAT_WEIGHT,envStatsV);
+        addIfPlussed(newText,"hei",EnvStats.STAT_HEIGHT,envStatsV);
+
+        Vector charStatsV=new Vector();
+        String val=CMParms.getParmStr(newText,"gen","").toUpperCase();
+        if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
+        {
+            charStatsV.addElement(new Character('G'));
+            charStatsV.addElement(new Character(val.charAt(0)));
+        }
+        val=CMParms.getParmStr(newText,"cla","").toUpperCase();
+        if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
+        {
+            charStatsV.addElement(new Character('C'));
+            charStatsV.addElement(CMClass.findCharClass(val));
+        }
+        val=CMParms.getParmStr(newText,"rac","").toUpperCase();
+        if((val.length()>0)&&(CMClass.getRace(val)!=null))
+        {
+            charStatsV.addElement(new Character('R'));
+            charStatsV.addElement(CMClass.getRace(val));
+        }
+        addIfPlussed(newText,"str",CharStats.STAT_STRENGTH,charStatsV);
+        addIfPlussed(newText,"wis",CharStats.STAT_WISDOM,charStatsV);
+        addIfPlussed(newText,"cha",CharStats.STAT_CHARISMA,charStatsV);
+        addIfPlussed(newText,"con",CharStats.STAT_CONSTITUTION,charStatsV);
+        addIfPlussed(newText,"dex",CharStats.STAT_DEXTERITY,charStatsV);
+        addIfPlussed(newText,"int",CharStats.STAT_INTELLIGENCE,charStatsV);
+        addIfPlussed(newText,"maxstr",CharStats.STAT_MAX_STRENGTH_ADJ,charStatsV);
+        addIfPlussed(newText,"maxwis",CharStats.STAT_MAX_WISDOM_ADJ,charStatsV);
+        addIfPlussed(newText,"maxcha",CharStats.STAT_MAX_CHARISMA_ADJ,charStatsV);
+        addIfPlussed(newText,"maxcon",CharStats.STAT_MAX_CONSTITUTION_ADJ,charStatsV);
+        addIfPlussed(newText,"maxdex",CharStats.STAT_MAX_DEXTERITY_ADJ,charStatsV);
+        addIfPlussed(newText,"maxint",CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStatsV);
+        for(int c=0;c<CharStats.STAT_MSG_MAP.length;c++)
+            if(CharStats.STAT_MSG_MAP[c]!=-1)
+                addIfPlussed(newText,"save"+CharStats.STAT_NAMES[c].toLowerCase().substring(0,3),c,charStatsV);
+
+        Vector charStateV=new Vector();
+        addIfPlussed(newText,"hit",CharState.STAT_HITPOINTS,charStateV);
+        addIfPlussed(newText,"hun",CharState.STAT_HUNGER,charStateV);
+        addIfPlussed(newText,"man",CharState.STAT_MANA,charStateV);
+        addIfPlussed(newText,"mov",CharState.STAT_MOVE,charStateV);
+        addIfPlussed(newText,"thi",CharState.STAT_THIRST,charStateV);
+        
+        this.charStateChanges=makeObjectArray(charStateV);
+        this.envStatsChanges=makeObjectArray(envStatsV);
+        this.charStatsChanges=makeObjectArray(charStatsV);
 	}
 
-	public void envStuff(EnvStats affectableStats, EnvStats adjEnvStats)
+	public void envStuff(Object[] changes, EnvStats envStats)
 	{
-		affectableStats.setAbility(affectableStats.ability()+adjEnvStats.ability());
-		affectableStats.setArmor(affectableStats.armor()+adjEnvStats.armor());
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjEnvStats.attackAdjustment());
-		affectableStats.setDamage(affectableStats.damage()+adjEnvStats.damage());
-		affectableStats.setDisposition(affectableStats.disposition()|adjEnvStats.disposition());
-		affectableStats.setLevel(affectableStats.level()+adjEnvStats.level());
-		affectableStats.setRejuv(affectableStats.rejuv()+adjEnvStats.rejuv());
-		affectableStats.setSensesMask(affectableStats.sensesMask()|adjEnvStats.sensesMask());
-		affectableStats.setSpeed(affectableStats.speed()+adjEnvStats.speed());
-		affectableStats.setWeight(affectableStats.weight()+adjEnvStats.weight());
-		affectableStats.setHeight(affectableStats.height()+adjEnvStats.height());
+        if(charStatsChanges==null) return;
+        if(changes==null) return;
+        for(int c=0;c<changes.length;c+=2)
+        switch(((Integer)changes[c]).intValue())
+        {
+        case EnvStats.STAT_ABILITY: envStats.setAbility(envStats.ability()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_ARMOR: envStats.setArmor(envStats.armor()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_ATTACK: envStats.setAttackAdjustment(envStats.attackAdjustment()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_DAMAGE: envStats.setDamage(envStats.damage()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_DISPOSITION: envStats.setDisposition(envStats.disposition()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_LEVEL: envStats.setLevel(envStats.level()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_REJUV: envStats.setRejuv(envStats.rejuv()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_SENSES: envStats.setSensesMask(envStats.sensesMask()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_WEIGHT: envStats.setWeight(envStats.weight()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.STAT_HEIGHT: envStats.setHeight(envStats.height()+((Integer)changes[c+1]).intValue()); break;
+        case EnvStats.NUM_STATS: envStats.setSpeed(envStats.speed()+((Double)changes[c+1]).doubleValue()); break;
+        }
 	}
 
     public boolean canApply(MOB mob)
@@ -157,60 +176,59 @@ public class Prop_HaveAdjuster extends Property
     
     protected void ensureStarted()
 	{
-		if(adjCharStats==null)
+		if(mask==null)
 			setMiscText(text());
 	}
 
 	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		ensureStarted();
-        if(canApply(host))
-			envStuff(affectableStats,adjEnvStats);
+        if(canApply(host)) envStuff(envStatsChanges,affectableStats);
 		super.affectEnvStats(host,affectableStats);
 	}
 
-	public void adjCharStats(CharStats affectedStats,
-									boolean gotClass,
-									boolean gotRace,
-									boolean gotSex,
-									CharStats adjCharStats)
+	public void adjCharStats(Object[] changes, CharStats charStats)
 	{
-		affectedStats.setStat(CharStats.STAT_CHARISMA,affectedStats.getStat(CharStats.STAT_CHARISMA)+adjCharStats.getStat(CharStats.STAT_CHARISMA));
-		affectedStats.setStat(CharStats.STAT_CONSTITUTION,affectedStats.getStat(CharStats.STAT_CONSTITUTION)+adjCharStats.getStat(CharStats.STAT_CONSTITUTION));
-		affectedStats.setStat(CharStats.STAT_DEXTERITY,affectedStats.getStat(CharStats.STAT_DEXTERITY)+adjCharStats.getStat(CharStats.STAT_DEXTERITY));
-		if(gotSex)
-			affectedStats.setStat(CharStats.STAT_GENDER,adjCharStats.getStat(CharStats.STAT_GENDER));
-		affectedStats.setStat(CharStats.STAT_INTELLIGENCE,affectedStats.getStat(CharStats.STAT_INTELLIGENCE)+adjCharStats.getStat(CharStats.STAT_INTELLIGENCE));
-		if(gotClass)
-			affectedStats.setCurrentClass(adjCharStats.getCurrentClass());
-		if(gotRace)
-			affectedStats.setMyRace(adjCharStats.getMyRace());
-		affectedStats.setStat(CharStats.STAT_STRENGTH,affectedStats.getStat(CharStats.STAT_STRENGTH)+adjCharStats.getStat(CharStats.STAT_STRENGTH));
-		affectedStats.setStat(CharStats.STAT_WISDOM,affectedStats.getStat(CharStats.STAT_WISDOM)+adjCharStats.getStat(CharStats.STAT_WISDOM));
+        if(changes==null) return;
+        for(int i=0;i<charStatsChanges.length;i+=2)
+        {
+            if(changes[i] instanceof Integer)
+                charStats.setStat(((Integer)changes[i]).intValue(),charStats.getStat(((Integer)changes[i]).intValue())+((Integer)changes[i+1]).intValue());
+            else
+            if(changes[i] instanceof Character)
+            switch(((Character)changes[i]).charValue())
+            {
+            case 'G': charStats.setStat(CharStats.STAT_GENDER,(int)((Character)changes[i+1]).charValue()); break;
+            case 'C': charStats.setCurrentClass((CharClass)changes[i+1]); break;
+            case 'R': charStats.setMyRace((Race)changes[i+1]); break;
+            }
+        }
 	}
 
-	public void adjCharState(CharState affectedState,
-									CharState adjCharState)
+	public void adjCharState(Object[] changes, CharState charState)
 	{
-		affectedState.setHitPoints(affectedState.getHitPoints()+adjCharState.getHitPoints());
-		affectedState.setHunger(affectedState.getHunger()+adjCharState.getHunger());
-		affectedState.setMana(affectedState.getMana()+adjCharState.getMana());
-		affectedState.setMovement(affectedState.getMovement()+adjCharState.getMovement());
-		affectedState.setThirst(affectedState.getThirst()+adjCharState.getThirst());
+        if(changes==null) return;
+        for(int c=0;c<changes.length;c+=2)
+        switch(((Integer)changes[c]).intValue())
+        {
+        case CharState.STAT_HITPOINTS: charState.setHitPoints(charState.getHitPoints()+((Integer)changes[c+1]).intValue()); break;
+        case CharState.STAT_HUNGER: charState.setHunger(charState.getHunger()+((Integer)changes[c+1]).intValue()); break;
+        case CharState.STAT_THIRST: charState.setThirst(charState.getThirst()+((Integer)changes[c+1]).intValue()); break;
+        case CharState.STAT_MANA: charState.setMana(charState.getMana()+((Integer)changes[c+1]).intValue()); break;
+        case CharState.STAT_MOVE: charState.setMovement(charState.getMovement()+((Integer)changes[c+1]).intValue()); break;
+        }
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-        if(canApply(affectedMOB))
-    		adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
+        if(canApply(affectedMOB)) adjCharStats(charStatsChanges,affectedStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-        if(canApply(affectedMOB))
-    		adjCharState(affectedState,adjCharState);
+        if(canApply(affectedMOB)) adjCharState(charStateChanges,affectedState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
 

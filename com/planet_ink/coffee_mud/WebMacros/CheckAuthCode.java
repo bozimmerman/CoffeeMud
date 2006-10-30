@@ -65,6 +65,7 @@ public class CheckAuthCode extends StdWebMacro
         auths.put("ANYFILEBROWSE",""+CMSecurity.hasAccessibleDir(mob,mob.location()));
 		auths.put("SYSOP",""+sysop);
 		auths.put("SUBOP",""+(sysop||subOp));
+        
 		Vector V=CMSecurity.getSecurityCodes(mob,R);
 		for(int v=0;v<V.size();v++)
 			auths.put("AUTH_"+((String)V.elementAt(v)),"true");
@@ -91,7 +92,7 @@ public class CheckAuthCode extends StdWebMacro
 				if(check==null) 
 					thisCondition=true;
 				else
-				if(!check.equalsIgnoreCase(equals))
+				if((!check.equalsIgnoreCase(equals))&&(!sysop))
 					thisCondition=true;
 				else
 					thisCondition=false;
@@ -104,7 +105,7 @@ public class CheckAuthCode extends StdWebMacro
 				if(check==null) 
 					thisCondition=false;
 				else
-				if(!check.equalsIgnoreCase(equals))
+				if((!check.equalsIgnoreCase(equals))&&(!sysop))
 					thisCondition=false;
 				else
 					thisCondition=true;
