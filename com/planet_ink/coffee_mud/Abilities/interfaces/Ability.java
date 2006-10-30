@@ -678,6 +678,9 @@ public interface Ability extends Environmental
 	public static final int FLAG_GATHERING=524288;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see Ability#flags() */
 	public static final int FLAG_NOORDERING=1048576;
+	/** constant mask for the flags() method designating that this ability is clan magic @see Ability#flags() */
+	public static final int FLAG_CLANMAGIC=2097152;
+	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
@@ -700,7 +703,8 @@ public interface Ability extends Environmental
 	    "CRAFTING",
 	    "MOONCHANGING",
 	    "GATHERING",
-	    "NOORDERING"
+	    "NOORDERING",
+	    "CLANMAGIC"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see Ability#abstractQuality()*/

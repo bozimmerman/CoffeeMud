@@ -41,6 +41,7 @@ public class Spell_BaseClanEq extends Spell
 	public String name(){return "Enchant Clan Equipment Base Model";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public long flags(){return Ability.FLAG_CLANMAGIC;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	protected String type="";
 	protected boolean disregardsArmorCheck(MOB mob){return true;}

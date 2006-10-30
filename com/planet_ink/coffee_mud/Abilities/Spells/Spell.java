@@ -55,7 +55,7 @@ public class Spell extends StdAbility
     public void initializeClass()
     {
         super.initializeClass();
-        if(!ID().equals("Spell"))
+        if((!ID().equals("Spell"))&&(!CMath.bset(flags(),Ability.FLAG_CLANMAGIC)))
         {
             String sdomain=shortDomainName();
             String fdomain=fullDomainName();
