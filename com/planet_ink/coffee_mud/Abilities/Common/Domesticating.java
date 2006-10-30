@@ -82,7 +82,7 @@ public class Domesticating extends CommonSkill
 						{
 							CMLib.commands().postFollow(taming,mob,true);
 							if(taming.amFollowing()==mob)
-                                mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT," manage(s) to domesticate "+taming.name()+".");
+                                mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.name()+".");
 						}
 					}
 				}
