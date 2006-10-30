@@ -53,6 +53,7 @@ public class Spell_Blur extends Spell
 		&&(!msg.source().amDead())
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(invoker!=null)
 		&&(msg.tool() instanceof Ability))
 		{
 			int pctDodge=invoker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
