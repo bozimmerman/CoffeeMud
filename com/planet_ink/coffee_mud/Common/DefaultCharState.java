@@ -391,7 +391,9 @@ public class DefaultCharState implements CharState
 	{
 		try
 		{
-			return (CharState) this.clone();
+            DefaultCharState E=(DefaultCharState)this.clone();
+            E.states=E.states.clone();
+            return E;
 		}
 		catch(CloneNotSupportedException e)
 		{

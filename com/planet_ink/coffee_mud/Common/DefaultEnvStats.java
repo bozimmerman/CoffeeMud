@@ -131,7 +131,9 @@ public class DefaultEnvStats implements EnvStats
 	{
 		try
 		{
-			return (EnvStats)this.clone();
+			DefaultEnvStats E=(DefaultEnvStats)this.clone();
+            E.stats=E.stats.clone();
+            return E;
 		}
 		catch(java.lang.CloneNotSupportedException e)
 		{

@@ -86,9 +86,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==item.container()))
-				{
 					found.addElement(I);
-				}
 		    }
 		}
 		else
@@ -104,9 +102,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==item.container()))
-				{
 					found.addElement(I);
-				}
 		    }
 		}
 		else
