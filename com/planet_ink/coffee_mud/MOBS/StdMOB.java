@@ -34,6 +34,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class StdMOB implements MOB
 {
+	private static final Vector empty=new Vector();
+	
 	public String ID(){return "StdMOB";}
 	public String Username="";
 
@@ -3129,6 +3131,49 @@ public class StdMOB implements MOB
 		if(of!=null) expertises.removeElement(of);
 	}
 	public int numExpertises(){return (expertises==null)?0:expertises.size();}
+	public Enumeration uniqueExpertises()
+	{
+		try{
+			if((expertises==null)||(expertises.size()==0)) return empty.elements();
+			Vector exCopy=(Vector)expertises.clone();
+			String exper=null, experRoot=null, expTest=null;
+			int num=-1,end=-1,num2=-1;
+			HashSet remove=new HashSet();
+			for(int i1=exCopy.size()-1;i1>=0;i1--)
+			{
+				exper=(String)exCopy.elementAt(i1);
+				if((exper.length()==0)||(remove.contains(exper))) continue;
+				end=exper.length();
+				while(Character.isDigit(exper.charAt(end-1))) end--;
+				if(end<exper.length())
+				{
+					num=CMath.s_int(exper.substring(end));
+					experRoot=exper.substring(0,end);
+					for(int i2=i1-1;i2>=0;i2--)
+					{
+						expTest=(String)exCopy.elementAt(i2);
+						if((!remove.contains(expTest))
+						&&(expTest.startsWith(experRoot))
+						&&(CMath.isInteger(expTest.substring(experRoot.length()))))
+						{
+							num2=CMath.s_int(expTest.substring(experRoot.length()));
+							if(num<num2)
+							{
+								remove.add(exper);
+								exper=expTest;
+								num=num2;
+							}
+							else
+								remove.add(expTest);
+						}
+					}
+				}
+			}
+			exCopy.removeAll(remove);
+			return exCopy.elements();
+		}catch(Exception e){}
+		return expertises.elements();
+	}
 	public String fetchExpertise(int x){try{return (String)expertises.elementAt(x);}catch(Exception e){} return null;}
 	public String fetchExpertise(String of){
 		try{

@@ -53,7 +53,7 @@ public class Pregnancy extends StdAbility
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			long months=days/CMClass.globalClock().getDaysInMonth();
 			if(days<1)
-				return "(<1 day pregnant)";
+				return "(less than 1 day pregnant)";
 			else
 			if(months<1)
 				return "("+days+" day(s) pregnant)";

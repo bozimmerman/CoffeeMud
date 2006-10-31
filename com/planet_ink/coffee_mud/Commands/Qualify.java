@@ -157,9 +157,7 @@ public class Qualify extends BaseAbleLister
 		boolean classesFound=false;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(mob!=null)
-		&&(showAll
-			||(qual.equalsIgnoreCase("CLASS"))
-			||(qual.equalsIgnoreCase("CLASSES"))))
+		&&(showAll||("CLASSES".startsWith(qual))))
 		{
 			int col=0;
 			StringBuffer msg2=new StringBuffer("");
@@ -195,7 +193,7 @@ public class Qualify extends BaseAbleLister
 		if((mob!=null)
 		&&(showAll
 			||(qual.equalsIgnoreCase("EXPS"))
-			||(qual.equalsIgnoreCase("EXPERTISES"))))
+			||("EXPERTISES".startsWith(qual))))
 		{
 			Vector V=CMLib.expertises().myListableExpertises(mob);
 			for(int v=V.size()-1;v>=0;v--)
@@ -203,43 +201,78 @@ public class Qualify extends BaseAbleLister
 					V.removeElementAt(v);
 			if(V.size()>0)
 			{
-				StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
-				ExpertiseLibrary.ExpertiseDefinition def=null;
-                String req=null;
-                String prefix=null;
-				for(int v=0;v<V.size();v++)
+				if(showAll)
 				{
-					edusFound=true;
-					def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
-                    req=CMLib.masking().maskDesc(def.finalRequirements(),true);
-                    prefix="^<HELP^>"+def.name+"^</HELP^>";
-                    if(req.length()<=46)
-                        msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
-                    else
-                    while(req.length()>0)
-                    {
-                        int x=req.indexOf(".  ");
-                        if(x<0)
-                        {
-                            msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
-                            req="";
-                            break;
-                        }
-                        msg2.append(CMStrings.padRight(prefix,30)+req.substring(0,x+1)+"\n\r");
-                        prefix=" ";
-                        req=req.substring(x+1).trim();
-                    }
+					msg.append("\n\r^HExpertises:^?\n\r");
+					ExpertiseLibrary.ExpertiseDefinition def=null;
+					int col=0;
+			        int colWidth=25;
+					for(int e=0;e<V.size();e++)
+					{
+						edusFound=true;
+						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(e);
+			            if(def.name.length()>=colWidth)
+			            {
+			            	if(col>=2)
+			            	{
+				                msg.append("\n\r");
+				                col=0;
+			            	}
+			    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
+			                int spaces=(colWidth*2)-def.name.length();
+			                for(int i=0;i<spaces;i++) msg.append(" ");
+			                col++;
+			            }
+			            else
+			                msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",colWidth));
+						if((++col)>=3)
+						{
+							msg.append("\n\r");
+							col=0;
+						}
+					}
+					if(!msg.toString().endsWith("\n\r")) msg.append("\n\r");
 				}
-				msg.append(msg2.toString());
+				else
+				{
+					StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
+					ExpertiseLibrary.ExpertiseDefinition def=null;
+	                String req=null;
+	                String prefix=null;
+					for(int v=0;v<V.size();v++)
+					{
+						edusFound=true;
+						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+	                    req=CMLib.masking().maskDesc(def.finalRequirements(),true);
+	                    prefix="^<HELP^>"+def.name+"^</HELP^>";
+	                    if(req.length()<=46)
+	                        msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
+	                    else
+	                    while(req.length()>0)
+	                    {
+	                        int x=req.indexOf(".  ");
+	                        if(x<0)
+	                        {
+	                            msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
+	                            req="";
+	                            break;
+	                        }
+	                        msg2.append(CMStrings.padRight(prefix,30)+req.substring(0,x+1)+"\n\r");
+	                        prefix=" ";
+	                        req=req.substring(x+1).trim();
+	                    }
+					}
+					msg.append(msg2.toString());
+				}
 			}
 		}
 		
 		if(msg.length()==0)
 		{
 			if(qual.length()>0)
-				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPS, or LANGS.");
+				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGS.");
 			else
-				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPS, or LANGS.");
+				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGS.");
 		}
 		else
 		if(!mob.isMonster())

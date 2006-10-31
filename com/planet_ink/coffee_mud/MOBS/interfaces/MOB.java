@@ -273,6 +273,7 @@ public interface MOB
 	public void addExpertise(String of);
 	public void delExpertise(String of);
 	public int numExpertises();
+	public Enumeration uniqueExpertises();
 	public String fetchExpertise(int x);
 	public String fetchExpertise(String of);
 

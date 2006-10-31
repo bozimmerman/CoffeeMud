@@ -45,21 +45,21 @@ public class Expertises extends StdCommand
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		int col=0;
         int colWidth=25;
-		for(int e=0;e<mob.numExpertises();e++)
+        String exper=null;
+		for(Enumeration e=mob.uniqueExpertises();e.hasMoreElements();)
 		{
-			def=CMLib.expertises().getDefinition(mob.fetchExpertise(e));
+			exper=(String)e.nextElement();
+			def=CMLib.expertises().getDefinition(exper);
             if(def==null)
-                msg.append(CMStrings.padRight("?"+mob.fetchExpertise(e)+"^?",colWidth));
+                msg.append(CMStrings.padRight("?"+exper+"^?",colWidth));
             else
-            if((col>=2)&&(def.name.length()>=colWidth))
+            if(def.name.length()>=colWidth)
             {
-                msg.append("\n\r");
-                msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
-                col=0;
-            }
-            else
-            if(def.name.length()+1>=colWidth)
-            {
+            	if(col>=2)
+            	{
+	                msg.append("\n\r");
+	                col=0;
+            	}
     			msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
                 int spaces=(colWidth*2)-def.name.length();
                 for(int i=0;i<spaces;i++) msg.append(" ");
@@ -73,7 +73,7 @@ public class Expertises extends StdCommand
 				col=0;
 			}
 		}
-		msg.append("\n\r");
+		if(!msg.toString().endsWith("\n\r")) msg.append("\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
