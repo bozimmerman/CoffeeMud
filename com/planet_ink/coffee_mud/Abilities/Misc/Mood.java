@@ -49,14 +49,18 @@ public class Mood extends StdAbility
 	protected Object lastOne=null;
 	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"};
 	public static final String[][] MOODS={
-		/*0*/{"FORMAL","+ADJCHA 17","^Bformal","formally"},
-		/*1*/{"POLITE","+ADJCHA 13","^Bpolite","politely"},
-		/*2*/{"HAPPY","","^Yhappy","happily"},
-		/*3*/{"SAD","","^Csad","sadly"},
-		/*4*/{"ANGRY","","^rangry","angrily"},
-		/*5*/{"RUDE","","^grude","rudely"},
-		/*6*/{"MEAN","","^rmean","meanly"},
-		/*7*/{"PROUD","","^bproud","proudly"},
+		/*0 */{"FORMAL","+ADJCHA 17","^Bformal","formally"},
+		/*1 */{"POLITE","+ADJCHA 13","^Bpolite","politely"},
+		/*2 */{"HAPPY","","^Yhappy","happily"},
+		/*3 */{"SAD","","^Csad","sadly"},
+		/*4 */{"ANGRY","","^rangry","angrily"},
+		/*5 */{"RUDE","","^grude","rudely"},
+		/*6 */{"MEAN","","^rmean","meanly"},
+		/*7 */{"PROUD","","^bproud","proudly"},
+		/*8 */{"GRUMPY","","^Ggrumpy","grumpily"},
+		/*9 */{"EXCITED","","^Wexcited","excitedly"},
+		/*10*/{"SCARED","","^yscared","scaredly"},
+		/*11*/{"LONELY","","^Clonely","lonely"},
 	};
 	
 	public final static String[] uglyPhrases={
@@ -348,6 +352,14 @@ public class Mood extends StdAbility
                         case 6: str="Please, "+str; break;
                         case 7: str="Humbly speaking, "+str; break;
 						default:
+							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
+							{
+								if(M!=null)
+									msg.source().doCommand(CMParms.makeVector("CURTSEY",M.Name()));
+								else
+									msg.source().doCommand(CMParms.makeVector("CURTSEY"));
+							}
+							else
 							if(M!=null)
 								msg.source().doCommand(CMParms.makeVector("BOW",M.Name()));
 							else
@@ -373,7 +385,7 @@ public class Mood extends StdAbility
 							msg.source().doCommand(CMParms.makeVector("SMILE",M.Name()));
 							lastOne=M;
 						}
-						switch(CMLib.dice().roll(1,6,0))
+						switch(CMLib.dice().roll(1,7,0))
 						{
 						case 1: changeAllSays(msg,"laugh(s)"); break;
 						case 2: changeAllSays(msg,"smile(s)"); break;
@@ -381,6 +393,7 @@ public class Mood extends StdAbility
 						case 4: changeAllSays(msg,"cheerfully say(s)"); break;
 						case 5: changeAllSays(msg,"happily say(s)"); break;
 						case 6: changeAllSays(msg,"playfully say(s)"); break;
+						case 7: changeAllSays(msg,"sweetly say(s)"); break;
 						}
 						break;
 					}
@@ -499,6 +512,99 @@ public class Mood extends StdAbility
 						case 1: changeAllSays(msg,"boast(s)"); break;
 						case 2: changeAllSays(msg,"announce(s)"); break;
 						case 3: changeAllSays(msg,"proudly say(s)"); break;
+						default:
+							break;
+						}
+						break;
+					}
+					case 8: // grumpy
+					{
+						if((M!=null)
+						&&(lastOne!=M))
+						{
+							msg.source().doCommand(CMParms.makeVector("GRUMBLE"));
+							lastOne=M;
+						}
+						switch(CMLib.dice().roll(1,2,0))
+						{
+						case 1: changeAllSays(msg,"mutter(s)"); break;
+						case 2: changeAllSays(msg,"grumble(s)"); break;
+						default:
+							break;
+						}
+						break;
+					}
+					case 9: // excited
+					{
+						if((M!=null)
+						&&(lastOne!=M))
+						{
+							msg.source().doCommand(CMParms.makeVector("EXCITED",M.Name()));
+							lastOne=M;
+						}
+						switch(CMLib.dice().roll(1,5,0))
+						{
+						case 1: changeAllSays(msg,"shout(s)"); break;
+						case 2: changeAllSays(msg,"blurt(s)"); break;
+						case 3: changeAllSays(msg,"screech(es)"); break;
+						case 4: changeAllSays(msg,"excitedly say(s)"); break;
+						case 5:
+							if(M!=null)
+								msg.source().doCommand(CMParms.makeVector("FIDGET",M.Name()));
+							else
+								msg.source().doCommand(CMParms.makeVector("FIDGET"));
+							break;
+						default:
+							break;
+						}
+						while(str.endsWith(".")) str=str.substring(0,str.length()-1);
+						int num=CMLib.dice().roll(1,10,3);
+						for(int i=0;i<num;i++)
+							str+="!";
+						str=str.toUpperCase();
+						break;
+					}
+					case 10: // scared
+					{
+						if((M!=null)
+						&&(lastOne!=M))
+						{
+							msg.source().doCommand(CMParms.makeVector("COWER",M.Name()));
+							lastOne=M;
+						}
+						switch(CMLib.dice().roll(1,6,0))
+						{
+						case 1: changeAllSays(msg,"meekly say(s)"); break;
+						case 2: changeAllSays(msg,"stutter(s)"); break;
+						case 3: changeAllSays(msg,", shivering, say(s)"); break;
+						case 4: changeAllSays(msg,"squeek(s)"); break;
+						case 5: changeAllSays(msg,"barely say(s)"); break;
+						case 6:
+							if(M!=null)
+								msg.source().doCommand(CMParms.makeVector("WINCE",M.Name()));
+							else
+								msg.source().doCommand(CMParms.makeVector("WINCE"));
+							break;
+						default:
+							break;
+						}
+						break;
+					}
+					case 11: // lonely
+					{
+						if((M!=null)
+						&&(lastOne!=M))
+						{
+							msg.source().doCommand(CMParms.makeVector("SIGH",M.Name()));
+							lastOne=M;
+						}
+						switch(CMLib.dice().roll(1,5,0))
+						{
+						case 1: changeAllSays(msg,"sigh(s)"); break;
+						case 2: changeAllSays(msg,"whisper(s)"); break;
+						case 3: changeAllSays(msg,", alone, say(s)"); break;
+						case 4: changeAllSays(msg,"mutter(s)"); break;
+						case 5: changeAllSays(msg,"whine(s)"); break;
 						default:
 							break;
 						}
