@@ -67,14 +67,18 @@ public class Trap_Trap extends StdAbility implements Trap
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		int rejuv=((30-mob.envStats().level())*30);
+		int level=mob.envStats().level();
+		if(level<qualifyingClassLevel) level=qualifyingClassLevel;
+		level+=trapBonus;
+		if(level>=100) level=99;
+		int rejuv=((100-level)*30);
 		Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		E.addEffect(T);
 		T.setSavable(false);
         T.setAbilityCode(trapBonus);
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,mob.envStats().level()*30);
+		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,level*30);
 		return T;
 	}
 	public void gas(MOB mob)

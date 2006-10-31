@@ -42,7 +42,7 @@ public class StdTrap extends StdAbility implements Trap
 	protected int ableCode=0;
 	protected int trapLevel(){return -1;}
 	public void setAbilityCode(int code){ableCode=code;}
-	public int abilityCode(int code){return super.abilityCode()+ableCode;}
+	public int abilityCode(){return ableCode;}
 	
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
@@ -50,6 +50,7 @@ public class StdTrap extends StdAbility implements Trap
 
 	public int baseRejuvTime(int level)
 	{
+		if(level>=30) level=29;
 		int time=((30-level)*30);
 		if(time<1) time=1;
 		return time;
@@ -301,14 +302,15 @@ public class StdTrap extends StdAbility implements Trap
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		int rejuv=baseRejuvTime(qualifyingClassLevel);
+		int rejuv=baseRejuvTime(qualifyingClassLevel+trapBonus);
 		Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		T.setSavable(false);
+		T.setAbilityCode(trapBonus);
 		E.addEffect(T);
 		if(!isABomb())
-			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
+			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel+trapBonus));
 		return T;
 	}
 	
