@@ -37,7 +37,8 @@ public class Spell_ClanHome extends Spell
 	public String name(){return "Clan Home";}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
+	public long flags(){return Ability.FLAG_TRANSPORTING;}
+	protected long spellFlags(){return SFLAG_CLANMAGIC;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

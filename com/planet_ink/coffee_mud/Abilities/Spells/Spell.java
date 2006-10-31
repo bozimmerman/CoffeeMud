@@ -42,6 +42,9 @@ public class Spell extends StdAbility
 	private static final String[] triggerStrings = {"CAST","CA","C"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SPELL;}
+	
+	protected final static long SFLAG_CLANMAGIC=1;
+	protected long spellFlags(){return 0;}
 
     private static final int EXPERTISE_STAGES=10;
     private static final String[] EXPERTISE={"RANGED","REDUCED","POWER","EXTENDED"};
@@ -55,7 +58,7 @@ public class Spell extends StdAbility
     public void initializeClass()
     {
         super.initializeClass();
-        if((!ID().equals("Spell"))&&(!CMath.bset(flags(),Ability.FLAG_CLANMAGIC)))
+        if((!ID().equals("Spell"))&&(!CMath.bset(spellFlags(),SFLAG_CLANMAGIC)))
         {
             String sdomain=shortDomainName();
             String fdomain=fullDomainName();
