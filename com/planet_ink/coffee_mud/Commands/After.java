@@ -59,7 +59,7 @@ public class After extends StdCommand implements Tickable
 		}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
 		{
-			afterCmds.clear();
+			//afterCmds.clear();
 			int s=0;
 			StringBuffer str=new StringBuffer("^xCurrently scheduled AFTERs: ^?^.^?\n\r");
 			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");

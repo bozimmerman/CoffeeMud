@@ -51,8 +51,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_CLASSTYPE=5;
 	protected static final int RCP_MISCTYPE=6;
 	protected static final int RCP_CAPACITY=7;
-	//protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_SPELL=9;
+	protected static final int RCP_SPELL=8;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -255,7 +255,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		else
 		if(req1Desc!=null)
-			firstWood=CMLib.materials().fetchFoundOtherEncoded(mob,req1Desc);
+			firstWood=CMLib.materials().fetchFoundOtherEncoded(mob.location(),req1Desc);
 		data[0][FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
@@ -276,7 +276,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		else
 		if(req2Desc!=null)
-			firstOther=CMLib.materials().fetchFoundOtherEncoded(mob,req2Desc);
+			firstOther=CMLib.materials().fetchFoundOtherEncoded(mob.location(),req2Desc);
 		data[1][FOUND_AMT]=0;
 		if(firstOther!=null)
 		{
