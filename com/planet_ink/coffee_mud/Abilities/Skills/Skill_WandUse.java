@@ -40,4 +40,19 @@ public class Skill_WandUse extends StdSkill
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int abilityCode(){return (invoker==null)?0:getXLevel(invoker);}
+	
+    private static final int EXPERTISE_STAGES=10;
+    private static final String[] EXPERTISE={"WANDUSE"};
+    private static final String[] EXPERTISE_NAME={"Wand Using"};
+    public void initializeClass()
+    {
+        super.initializeClass();
+        if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
+            for(int i=1;i<=EXPERTISE_STAGES;i++)
+                CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),
+                        "","+CHA "+(17+i)+" -LEVEL +>="+(26+(5*i)),0,1,0,0,0);
+        registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
+    }
+    protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]);}
 }

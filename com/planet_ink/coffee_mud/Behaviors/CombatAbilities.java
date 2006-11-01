@@ -446,7 +446,7 @@ public class CombatAbilities extends StdBehavior
 		&&(mob.fetchAbility("Skill_WandUse")!=null))
 		{
 			Ability A=mob.fetchAbility("Skill_WandUse");
-			if(A!=null) A.setProficiency(100);
+			if(A!=null){ A.setProficiency(100); A.setInvoker(mob);}
 			Item myWand=null;
 			Item backupWand=null;
 			for(int i=0;i<mob.inventorySize();i++)

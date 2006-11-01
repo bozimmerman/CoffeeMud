@@ -202,11 +202,14 @@ public class Prop_ClanEquipment extends Property
                                                         }
     }
 
-    public boolean useAsWand(MOB mob)
+    public boolean useAsWand(MOB mob, int level)
     {
         int manaRequired=50;
         // For simplicity, there's no charges BUT use costs a flat 10% mana
         manaRequired=(int)CMath.div(mob.maxState().getMana(),10);
+        manaRequired-=(5*level);
+        if(manaRequired<5) manaRequired=5;
+        
         if(manaRequired>mob.curState().getMana())
         {
             mob.tell("You don't have enough mana.");
@@ -254,7 +257,8 @@ public class Prop_ClanEquipment extends Property
                     mob.tell(me.name()+" glows faintly for a moment, then fades.");
                 }else
                 {
-                    if(useAsWand(mob))
+					wandUse.setInvoker(mob);
+                    if(useAsWand(mob,wandUse.abilityCode()))
                     {
                         mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
                         int flameDamage=CMLib.dice().roll(1,6,0);

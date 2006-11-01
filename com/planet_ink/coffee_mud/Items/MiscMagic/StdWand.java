@@ -55,7 +55,7 @@ public class StdWand extends StdItem implements Wand
 	public int maxUses(){return Integer.MAX_VALUE;}
 	public void setMaxUses(int newMaxUses){}
 	
-	public static boolean useTheWand(Ability A, MOB mob)
+	public static boolean useTheWand(Ability A, MOB mob, int level)
 	{
 		int manaRequired=5;
 		int q=CMLib.ableMapper().qualifyingLevel(mob,A);
@@ -68,6 +68,8 @@ public class StdWand extends StdItem implements Wand
 		}
 		else
 			manaRequired=25;
+        manaRequired-=(5*level);
+        if(manaRequired<5) manaRequired=5;
 		if(manaRequired>mob.curState().getMana())
 		{
 			mob.tell("You don't have enough mana.");
@@ -146,8 +148,9 @@ public class StdWand extends StdItem implements Wand
 						mob.tell(this.name()+" seems spent.");
 					else
 					{
+						wandUse.setInvoker(mob);
 						A=(Ability)A.newInstance();
-						if(useTheWand(A,mob))
+						if(useTheWand(A,mob,wandUse.abilityCode()))
 						{
 							Vector V=new Vector();
 							if(target!=null)
@@ -197,8 +200,9 @@ public class StdWand extends StdItem implements Wand
 						mob.tell(me.name()+" seems spent.");
 					else
 					{
+						wandUse.setInvoker(mob);
 						A=(Ability)A.newInstance();
-						if(useTheWand(A,mob))
+						if(useTheWand(A,mob,wandUse.abilityCode()))
 						{
 							Vector V=new Vector();
 							if(target!=null)
