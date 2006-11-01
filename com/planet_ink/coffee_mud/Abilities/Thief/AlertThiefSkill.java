@@ -8,7 +8,7 @@ public class AlertThiefSkill extends ThiefSkill {
 	public String name(){ return "a vigilant Thief Skill";}
     private static final int EXPERTISE_STAGES=10;
     private static final String[] EXPERTISE={"ALERT"};
-    private static final String[] EXPERTISE_NAME={"Vigilance"};
+    private static final String[] EXPERTISE_NAME={"Vigilant"};
     public void initializeClass()
     {
         super.initializeClass();

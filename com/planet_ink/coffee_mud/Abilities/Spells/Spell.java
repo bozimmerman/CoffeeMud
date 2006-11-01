@@ -60,15 +60,13 @@ public class Spell extends StdAbility
         super.initializeClass();
         if((!ID().equals("Spell"))&&(!CMath.bset(spellFlags(),SFLAG_CLANMAGIC)))
         {
-            String sdomain=shortDomainName();
-            String fdomain=fullDomainName();
-            if(CMLib.expertises().getDefinition(EXPERTISE[0]+sdomain+EXPERTISE_STAGES)==null)
+            if(CMLib.expertises().getDefinition(EXPERTISE[0]+shortDomainName()+EXPERTISE_STAGES)==null)
             for(int e=0;e<EXPERTISE.length;e++)
             {
-                if(CMLib.expertises().getDefinition(EXPERTISE[e]+sdomain+EXPERTISE_STAGES)==null)
+                if(CMLib.expertises().getDefinition(EXPERTISE[e]+shortDomainName()+EXPERTISE_STAGES)==null)
                     for(int i=1;i<=EXPERTISE_STAGES;i++)
-                        CMLib.expertises().addDefinition(EXPERTISE[e]+sdomain+i,EXPERTISE_NAME[e]+" "+CMStrings.capitalizeAndLower(sdomain)+" "+CMath.convertToRoman(i),
-                                ((i==1)?"":"-EXPERTISE \""+EXPERTISE[e]+sdomain+(i-1)+"\"")+" -SKILLFLAG \"+"+fdomain+"\" ",
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+shortDomainName()+i,EXPERTISE_NAME[e]+" "+domainVerb()+" "+CMath.convertToRoman(i),
+                                ((i==1)?"":"-EXPERTISE \""+EXPERTISE[e]+shortDomainName()+(i-1)+"\"")+" -SKILLFLAG \"+"+fullDomainName()+"\" ",
                                     " +"+EXPERTISE_STATS[e][0]+" "+(9+i)
                                    +" +"+EXPERTISE_STATS[e][1]+" "+(9+i)
                                    +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
@@ -81,6 +79,10 @@ public class Spell extends StdAbility
     protected final String fullDomainName()
     {
         return Ability.DOMAIN_DESCS[((classificationCode()&Ability.ALL_DOMAINS)>>5)];
+    }
+    protected final String domainVerb()
+    {
+        return Ability.DOMAIN_VERBS[((classificationCode()&Ability.ALL_DOMAINS)>>5)];
     }
     protected final String shortDomainName()
     {

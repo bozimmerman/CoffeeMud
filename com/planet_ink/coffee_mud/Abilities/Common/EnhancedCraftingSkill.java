@@ -45,20 +45,24 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	protected final static int TYPE_DURACRAFT=1;
 	protected final static int TYPE_QUALCRAFT=2;
 	protected final static int TYPE_LTHLCRAFT=3;
+	protected final static int TYPE_CNTRCRAFT=4;
 	protected final static String[] TYPES_CODES={"LITECRAFT",
 											     "DURACRAFT",
 											     "QUALCRAFT",
 											     "LTHLCRAFT",
+											     "CNTRCRAFT"
 	};
 	protected final static String[] TYPES_STATS={"DEX",
 											     "STR",
 											     "CHA",
 											     "CON",
+											     "INT"
 	};
 	protected final static String[] TYPES_NAMES={"Light Crafting",
 											     "Durable Crafting",
 											     "Quality Crafting",
 											     "Lethal Crafting",
+											     "Counterbalance Crafting"
 	};
 	
 	protected final static String[][] STAGE_TYPES={
@@ -66,12 +70,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{"Strong","Reinforced","Fortified"},
 		{"Fine","Beautiful","Exquisite"},
 		{"Damaging","Brutal","Lethal"},
+		{"Even","Balanced","Counterbalanced"},
 	};
 	
 	protected final static String[] ALL_CODES={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
 											 "DURACRAFTI","DURACRAFTII","DURACRAFTIII",
 											 "QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
-											 "LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};
+											 "LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII",
+											 "CNTRCRAFTI","CNTRCRAFTII","CNTRCRAFTIII"};
 	
 	protected String[] supportedEnhancements(){ return ALL_CODES;}
 	public void initializeClass()
@@ -159,6 +165,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case 1:
 					break;
 				case 2:
+					break;
+				}
+				break;
+			case TYPE_CNTRCRAFT:
+				switch(stage)
+				{
+				case 0:
+					break;
+				case 1:
+					if(req1Required>0) req1Required=atLeast1(req1Required,0.05);
+					if(req2Required>0) req2Required=atLeast1(req2Required,0.05);
+					break;
+				case 2:
+					if(req1Required>0) req1Required=atLeast1(req1Required,0.10);
+					if(req2Required>0) req2Required=atLeast1(req2Required,0.10);
 					break;
 				}
 				break;
@@ -423,6 +444,34 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.15)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),4.0));
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						affect.tickDown*=5;
+						break;
+					}
+					break;
+				case TYPE_CNTRCRAFT:
+					if(!(item instanceof Weapon))
+						commonTell(mob,STAGE_TYPES[type][stage]+" only applies to weapons.");
+					else
+					switch(stage)
+					{
+					case 0:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+5);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
+						affect.tickDown*=2;
+						break;
+					case 1:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+10);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
+						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.05));
+						affect.tickDown*=3;
+						break;
+					case 2:
+						applyName(item,STAGE_TYPES[type][stage]);
+						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+20);
+						item.setBaseValue(atLeast1(item.baseGoldValue(),5.0));
 						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
 						affect.tickDown*=5;
 						break;

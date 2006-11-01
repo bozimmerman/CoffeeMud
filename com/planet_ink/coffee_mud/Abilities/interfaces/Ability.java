@@ -637,6 +637,12 @@ public interface Ability extends Environmental
 		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION",
 		"ENCHANTMENT/CHARM","CONJURATION", "ARCHON"
 	};
+	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
+	public static final String[] DOMAIN_VERBS={
+		"","Divining","Abjuring","Illusing",
+		"In/Evoking","Altering","Transmuting",
+		"Enchanting","Conjuring", "Creating"
+	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */
 	public static final int FLAG_BINDING=1;
