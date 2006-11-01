@@ -45,7 +45,11 @@ public class Thief_Robbery extends StealingThiefSkill
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    protected boolean IS_CAUTIOUS_ALSO(){return true;}
+    public void initializeClass()
+    {
+        super.initializeClass();
+        super.initializeCautiousClass(this);
+    }
 	
 	protected int timesPicked(MOB target)
 	{

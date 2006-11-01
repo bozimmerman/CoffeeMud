@@ -39,6 +39,11 @@ public class Spell_EnchantArmor extends Spell
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+    public void initializeClass()
+    {
+    	super.initializeClass();
+    	super.initializeWiseCraftingClass(this);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -59,7 +64,8 @@ public class Spell_EnchantArmor extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMLib.leveler().postExperience(mob,null,null,-50,false);
+        int experienceToLose=applyWiseCrafting(mob,50);
+		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

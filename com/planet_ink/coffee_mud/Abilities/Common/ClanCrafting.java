@@ -40,6 +40,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"CLANCRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+    public void initializeClass()
+    {
+    	super.initializeClass();
+    	super.initializeWiseCraftingClass(this);
+    }
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_MATERIAL1=1;
@@ -260,6 +265,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			CMLib.materials().destroyResources(mob.location(),amt1,data[0][FOUND_CODE],0,null);
 		if((amt2>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null);
+		expRequired=applyWiseCrafting(mob,expRequired);
 		C.setExp(C.getExp()-expRequired);
 		C.update();
 

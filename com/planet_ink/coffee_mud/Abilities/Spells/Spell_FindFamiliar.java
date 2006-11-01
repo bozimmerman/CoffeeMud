@@ -49,6 +49,11 @@ public class Spell_FindFamiliar extends Spell
 		if(mob.isMonster()) return Ability.QUALITY_INDIFFERENT;
 		return abstractQuality();
 	}
+    public void initializeClass()
+    {
+    	super.initializeClass();
+    	super.initializeWiseCraftingClass(this);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -61,7 +66,8 @@ public class Spell_FindFamiliar extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMLib.leveler().postExperience(mob,null,null,-100,false);
+        int experienceToLose=applyWiseCrafting(mob,100);
+		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

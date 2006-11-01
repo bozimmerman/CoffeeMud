@@ -9,7 +9,6 @@ public class StealingThiefSkill extends ThiefSkill {
 	public String name(){ return "a stealing Thief Skill";}
     private static final int EXPERTISE_STAGES=10;
     private static final String[] EXPERTISE={"STEALING"};
-    private static final String[] EXPERTISES={"STEALING","CAUTIOUS"};
     private static final String[] EXPERTISE_NAME={"Theft Mastery"};
     protected boolean IS_CAUTIOUS_ALSO(){return false;}
     public void initializeClass()
@@ -20,12 +19,7 @@ public class StealingThiefSkill extends ThiefSkill {
                 CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),
                         "","+DEX "+(9+i)+" -LEVEL +>="+(1+(5*i)),0,1,0,0,0);
         if(!ID().equals("StealingThiefSkill"))
-        {
-            if(IS_CAUTIOUS_ALSO())
-                registerExpertiseUsage(EXPERTISES,EXPERTISE_STAGES,false,null);
-            else
-                registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
-        }
+            registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
     }
     protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]);}
 }

@@ -40,6 +40,11 @@ public class Spell_Wish extends Spell
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+    public void initializeClass()
+    {
+    	super.initializeClass();
+    	super.initializeWiseCraftingClass(this);
+    }
 
 	protected Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
 	{
@@ -76,6 +81,7 @@ public class Spell_Wish extends Spell
 	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
 	{
 		if(mob==null) return;
+        expLoss=applyWiseCrafting(mob,expLoss);
 		CMLib.leveler().postExperience(mob,null,null,-expLoss,false);
 		if(conLoss)
 		{
@@ -126,6 +132,7 @@ public class Spell_Wish extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
+			baseLoss=applyWiseCrafting(mob,baseLoss);
 			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 			beneficialWordsFizzle(mob,null,"<S-NAME> wish(es) for '"+myWish+"', but the spell fizzles.");
 			return false;
@@ -150,6 +157,7 @@ public class Spell_Wish extends Spell
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
+				baseLoss=applyWiseCrafting(mob,baseLoss);
 				CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 				beneficialWordsFizzle(mob,null,"<S-NAME> make(s) a wish comes true! Nothing happens!");
 				return false;
@@ -888,12 +896,14 @@ public class Spell_Wish extends Spell
 					{
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{
+							baseLoss=applyWiseCrafting(mob,baseLoss);
 							CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points, but that is beyond your wishing ability.");
 							return false;
 						}
 						if(tm.fetchAbility(A.ID())!=null)
 						{
+							baseLoss=applyWiseCrafting(mob,baseLoss);
 							A=tm.fetchAbility(A.ID());
 							CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
@@ -1062,6 +1072,7 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
+			baseLoss=applyWiseCrafting(mob,baseLoss);
 			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+CMParms.combine(commands,0)+"'");
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");

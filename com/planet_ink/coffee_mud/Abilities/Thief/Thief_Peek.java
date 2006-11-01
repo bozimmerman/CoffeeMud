@@ -45,7 +45,11 @@ public class Thief_Peek extends StealingThiefSkill
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
-    protected boolean IS_CAUTIOUS_ALSO(){return true;}
+    public void initializeClass()
+    {
+        super.initializeClass();
+        super.initializeCautiousClass(this);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

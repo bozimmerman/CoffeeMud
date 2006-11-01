@@ -41,6 +41,18 @@ public class ThiefSkill extends StdAbility
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
     
+    protected void initializeCautiousClass(StdAbility A){
+    	initializeXExpertiseClass(A,"CAUTIOUS","Cautiously","WIS",11,9);
+    }
+    
+    protected void initializeFatiguerClass(StdAbility A){
+    	initializeXExpertiseClass(A,"FATIGUER","Fatiguing","CON",13,19);
+    }
+    
+    protected void initializeMagekillerClass(StdAbility A){ 
+    	initializeXExpertiseClass(A,"MAGEKILLER","Mana Sapping","INT",13,25);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

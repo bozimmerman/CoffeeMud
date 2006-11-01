@@ -62,16 +62,13 @@ public class Spell extends StdAbility
         {
             if(CMLib.expertises().getDefinition(EXPERTISE[0]+shortDomainName()+EXPERTISE_STAGES)==null)
             for(int e=0;e<EXPERTISE.length;e++)
-            {
-                if(CMLib.expertises().getDefinition(EXPERTISE[e]+shortDomainName()+EXPERTISE_STAGES)==null)
-                    for(int i=1;i<=EXPERTISE_STAGES;i++)
-                        CMLib.expertises().addDefinition(EXPERTISE[e]+shortDomainName()+i,EXPERTISE_NAME[e]+" "+domainVerb()+" "+CMath.convertToRoman(i),
-                                ((i==1)?"":"-EXPERTISE \""+EXPERTISE[e]+shortDomainName()+(i-1)+"\"")+" -SKILLFLAG \"+"+fullDomainName()+"\" ",
-                                    " +"+EXPERTISE_STATS[e][0]+" "+(9+i)
-                                   +" +"+EXPERTISE_STATS[e][1]+" "+(9+i)
-                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
-                                   ,0,1,0,0,0);
-            }
+                for(int i=1;i<=EXPERTISE_STAGES;i++)
+                    CMLib.expertises().addDefinition(EXPERTISE[e]+shortDomainName()+i,EXPERTISE_NAME[e]+" "+domainVerb()+" "+CMath.convertToRoman(i),
+                            ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+shortDomainName()+(i-1)+"\"")+" -SKILLFLAG \"+"+fullDomainName()+"\" ",
+                                " +"+EXPERTISE_STATS[e][0]+" "+(9+i)
+                               +" +"+EXPERTISE_STATS[e][1]+" "+(9+i)
+                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                               ,0,1,0,0,0);
         }
     }
     protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]+shortDomainName());}

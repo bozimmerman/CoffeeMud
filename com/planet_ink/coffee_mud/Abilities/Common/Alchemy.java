@@ -44,6 +44,11 @@ public class Alchemy extends CraftingSkill
 
 	String oldName="";
     protected Ability theSpell=null;
+    public void initializeClass()
+    {
+    	super.initializeClass();
+    	super.initializeWiseCraftingClass(this);
+    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -277,6 +282,7 @@ public class Alchemy extends CraftingSkill
 				return false;
 
             playSound=null;
+            experienceToLose=applyWiseCrafting(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();

@@ -37,6 +37,11 @@ public class Thief_DisablingCaltrops extends Thief_Caltrops
 	private static final String[] triggerStrings = {"DISABLINGCALTROPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String caltropTypeName(){return "disabling ";}
+    public void initializeClass()
+    {
+        super.initializeClass();
+        super.initializeFatiguerClass(this);
+    }
 
 	public void spring(MOB mob)
 	{

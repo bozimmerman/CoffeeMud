@@ -61,7 +61,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public int enchantQuality(){return abstractQuality();}
     public void initializeClass(){}
     
-    protected void registerExpertiseUsage(String[] TYPES_CODES, int stages, boolean roman, String[] SUPPORT_LIST)
+    public void registerExpertiseUsage(String[] TYPES_CODES, int stages, boolean roman, String[] SUPPORT_LIST)
     {
         for(int t=0;t<TYPES_CODES.length;t++)
         {
@@ -109,6 +109,28 @@ public class StdAbility extends ForeignScriptable implements Ability
 			return Ability.QUALITY_INDIFFERENT;
 		}
 	}
+    
+    protected void initializeXExpertiseClass(StdAbility A, String expertise, String expertiseName, String stat, int statBase, int lvlBase)
+    {
+        final int EXPERTISE_STAGES=10;
+        final String[] EXPERTISE={expertise};
+        final String[] EXPERTISE_NAME={expertiseName};
+        if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
+            for(int i=1;i<=EXPERTISE_STAGES;i++)
+                CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),
+                        "","+"+stat+" "+(statBase+i)+" -LEVEL +>="+(lvlBase+(5*i)),0,1,0,0,0);
+        A.registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
+    }
+    protected void initializeWiseCraftingClass(StdAbility A){
+    	initializeXExpertiseClass(A,"EXPCRAFT","Wise Crafting","CHA",16,26);
+    }
+    protected int applyWiseCrafting(MOB mob, int xpLoss){
+    	if(mob==null) return xpLoss;
+    	int xLevel=getExpertiseLevel(mob,"EXPCRAFT");
+    	if(xLevel<=0) return xpLoss;
+    	return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
+    }
+    
 	/**
 	 * Designates whether, when used as a property/effect, what sort of objects this 
 	 * ability can affect. Uses the Ability.CAN_* constants.
