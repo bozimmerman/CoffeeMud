@@ -52,6 +52,8 @@ public class Specialization_Weapon extends StdAbility
 	protected String[] EXPERTISE_STATS(){return EMPTYSTR;}
 	protected int[] EXPERTISE_LEVELS(){return EMPTYINT;}
 	protected int[] EXPERTISE_DAMAGE_TYPE(){return EMPTYINT;}
+	protected short[] bonuses=null;
+	protected int numExpertises=-1;
 
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	
@@ -72,6 +74,17 @@ public class Specialization_Weapon extends StdAbility
     }
     protected int getXLevel(MOB mob){ return EXPERTISES().length==0?0:getExpertiseLevel(mob,EXPERTISES()[0]);}
 
+    protected int getXLevel(MOB mob, int index)
+    {
+    	if((mob==null)||(EXPERTISES().length==0)) return 0;
+    	if((numExpertises==mob.numExpertises())&&(bonuses!=null)) return bonuses[index];
+    	bonuses=new short[EXPERTISES().length];
+    	for(int i=0;i<EXPERTISES().length;i++)
+    		bonuses[i]=(short)super.getExpertiseLevel(mob,EXPERTISES()[i]);
+    	numExpertises=mob.numExpertises();
+    	return bonuses[index];
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((activated)
@@ -94,7 +107,7 @@ public class Specialization_Weapon extends StdAbility
 				for(int i=1;i<EXPERTISE_DAMAGE_TYPE().length;i++)
 					if((EXPERTISE_DAMAGE_TYPE()[i]==((Weapon)msg.tool()).weaponType()))
 					{
-						msg.setValue(msg.value()+(2*super.getExpertiseLevel(msg.source(),EXPERTISES()[i])));
+						msg.setValue(msg.value()+(2*getXLevel(msg.source(),i)));
 						break;
 					}
 			}
@@ -116,12 +129,9 @@ public class Specialization_Weapon extends StdAbility
 			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponType)))
 			{
 				activated=true;
-				int plusMore=0;
-				if(EXPERTISES().length>0)
-					plusMore=super.getExpertiseLevel((MOB)affected,EXPERTISES()[0])*2;
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 						+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
-						+plusMore);
+						+(10*(getXLevel((MOB)affected,0))));
 					
 			}
 		}
