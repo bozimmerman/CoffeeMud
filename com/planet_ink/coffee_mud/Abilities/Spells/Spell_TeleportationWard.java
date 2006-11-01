@@ -36,7 +36,7 @@ public class Spell_TeleportationWard extends Spell
 	public String ID() { return "Spell_TeleportationWard"; }
 	public String name(){return "Teleportation Ward";}
 	public String displayText(){return "(Teleportation Ward)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
