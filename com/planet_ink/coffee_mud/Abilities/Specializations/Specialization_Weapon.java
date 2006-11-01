@@ -78,7 +78,7 @@ public class Specialization_Weapon extends StdAbility
     {
     	if((mob==null)||(EXPERTISES().length==0)) return 0;
     	if((numExpertises==mob.numExpertises())&&(bonuses!=null)) return bonuses[index];
-    	bonuses=new short[EXPERTISES().length];
+    	if(bonuses==null) bonuses=new short[EXPERTISES().length];
     	for(int i=0;i<EXPERTISES().length;i++)
     		bonuses[i]=(short)super.getExpertiseLevel(mob,EXPERTISES()[i]);
     	numExpertises=mob.numExpertises();
