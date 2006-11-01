@@ -45,22 +45,60 @@ public class Specialization_Weapon extends StdAbility
 	protected boolean activated=false;
 	protected int weaponType=-1;
 	protected int secondWeaponType=-1;
+	protected String[] EMPTYSTR=new String[0];
+	protected int[] EMPTYINT=new int[0];
+	protected String[] EXPERTISES(){return EMPTYSTR;}
+	protected String[] EXPERTISES_NAMES(){return EMPTYSTR;}
+	protected String[] EXPERTISE_STATS(){return EMPTYSTR;}
+	protected int[] EXPERTISE_LEVELS(){return EMPTYINT;}
+	protected int[] EXPERTISE_DAMAGE_TYPE(){return EMPTYINT;}
 
 	public int classificationCode(){return Ability.ACODE_SKILL;}
+	
+    private static final int EXPERTISE_STAGES=10;
+    public void initializeClass()
+    {
+        super.initializeClass();
+        if(EXPERTISES().length==0) return;
+        
+        if(CMLib.expertises().getDefinition(EXPERTISES()[0]+EXPERTISE_STAGES)==null)
+        	for(int e=0;e<EXPERTISES().length;e++)
+        	{
+	            for(int i=1;i<=EXPERTISE_STAGES;i++)
+	                CMLib.expertises().addDefinition(EXPERTISES()[e]+i,EXPERTISES_NAMES()[e]+" "+CMath.convertToRoman(i),
+	                        "","+"+EXPERTISE_STATS()[e]+" "+(15+i)+" -LEVEL +>="+(EXPERTISE_LEVELS()[e]+(5*i)),0,1,0,0,0);
+        	}
+        registerExpertiseUsage(EXPERTISES(),EXPERTISE_STAGES,false,null);
+    }
+    protected int getXLevel(MOB mob){ return EXPERTISES().length==0?0:getExpertiseLevel(mob,EXPERTISES()[0]);}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((activated)
-		&&(CMLib.dice().rollPercentage()<25)
-		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&((msg.tool()!=null)
+		&&(msg.source()==affected)
 		&&(msg.tool() instanceof Weapon)
+		&&(msg.target() instanceof MOB)
 		&&((((Weapon)msg.tool()).weaponClassification()==weaponType)
  		 ||(weaponType<0)
-		 ||(((Weapon)msg.tool()).weaponClassification()==secondWeaponType))))
-			helpProficiency((MOB)affected);
+		 ||(((Weapon)msg.tool()).weaponClassification()==secondWeaponType)))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<25))
+				helpProficiency((MOB)affected);
+			else
+			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			&&(msg.tool() instanceof Weapon)
+			&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
+			&&(msg.value()>0)
+			&&(EXPERTISE_DAMAGE_TYPE().length>0))
+			{
+				for(int i=1;i<EXPERTISE_DAMAGE_TYPE().length;i++)
+					if((EXPERTISE_DAMAGE_TYPE()[i]==((Weapon)msg.tool()).weaponType()))
+					{
+						msg.setValue(msg.value()+(2*super.getExpertiseLevel(msg.source(),EXPERTISES()[i])));
+						break;
+					}
+			}
+		}
 	}
 
 
@@ -78,7 +116,13 @@ public class Specialization_Weapon extends StdAbility
 			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponType)))
 			{
 				activated=true;
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
+				int plusMore=0;
+				if(EXPERTISES().length>0)
+					plusMore=super.getExpertiseLevel((MOB)affected,EXPERTISES()[0])*2;
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+						+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
+						+plusMore);
+					
 			}
 		}
 	}

@@ -41,5 +41,15 @@ public class Specialization_Hammer extends Specialization_Weapon
 		super();
 		weaponType=Weapon.CLASS_HAMMER;
 	}
+	private final static String[] EXPERTISES={"HAMMERSTRIKE","HAMMERBASH"};
+	private final static String[] EXPERTISE_NAMES={"Hammer Striking","Hammer Bashing"};
+	private final static String[] EXPERTISE_STATS={"DEX","STR"};
+	private final static int[] EXPERTISE_LEVELS={24,27};
+	private final int[] EXPERTISE_DAMAGE_TYPE={0,Weapon.TYPE_BASHING};
+	protected String[] EXPERTISES(){return EXPERTISES;}
+	protected String[] EXPERTISES_NAMES(){return EXPERTISE_NAMES;}
+	protected String[] EXPERTISE_STATS(){return EXPERTISE_STATS;}
+	protected int[] EXPERTISE_LEVELS(){return EXPERTISE_LEVELS;}
+	protected int[] EXPERTISE_DAMAGE_TYPE(){return EXPERTISE_DAMAGE_TYPE;}
 
 }

@@ -41,5 +41,15 @@ public class Specialization_FlailedWeapon extends Specialization_Weapon
 		super();
 		weaponType=Weapon.CLASS_FLAILED;
 	}
+	private final static String[] EXPERTISES={"FLAILEDSTRIKE","FLAILEDBASH","FLAILEDSLASH"};
+	private final static String[] EXPERTISE_NAMES={"Flailed Striking","Flailed Bashing","Flailed Slashing"};
+	private final static String[] EXPERTISE_STATS={"DEX","STR","STR"};
+	private final static int[] EXPERTISE_LEVELS={24,27,27};
+	private final int[] EXPERTISE_DAMAGE_TYPE={0,Weapon.TYPE_BASHING,Weapon.TYPE_SLASHING};
+	protected String[] EXPERTISES(){return EXPERTISES;}
+	protected String[] EXPERTISES_NAMES(){return EXPERTISE_NAMES;}
+	protected String[] EXPERTISE_STATS(){return EXPERTISE_STATS;}
+	protected int[] EXPERTISE_LEVELS(){return EXPERTISE_LEVELS;}
+	protected int[] EXPERTISE_DAMAGE_TYPE(){return EXPERTISE_DAMAGE_TYPE;}
 
 }
