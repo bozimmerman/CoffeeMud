@@ -78,7 +78,7 @@ public class Wand_Fire extends StdWand
 				if(x>=0)
 				{
 					Ability spell = CMClass.getAbility("Spell_BurningHands");
-					if((usesRemaining()>0)&&(spell!=null)&&(useTheWand(spell,mob)))
+					if((usesRemaining()>0)&&(spell!=null)&&(useTheWand(spell,mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
 						spell.invoke(mob, target, true,envStats().level());
@@ -89,7 +89,7 @@ public class Wand_Fire extends StdWand
 				if(x>=0)
 				{
 					Ability spell = CMClass.getAbility("Spell_Fireball");
-					if((usesRemaining()>4)&&(spell!=null)&&(useTheWand(spell,mob)))
+					if((usesRemaining()>4)&&(spell!=null)&&(useTheWand(spell,mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
 						spell.invoke(mob, target, true,envStats().level());

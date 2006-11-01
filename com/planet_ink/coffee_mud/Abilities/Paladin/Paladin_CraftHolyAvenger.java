@@ -40,9 +40,11 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	public String name(){ return "Craft Holy Avenger";}
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
-																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
-																	"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};}
+	private final static String[] SUPPORTED_ENHANCEMENTS={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+														"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
+														"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII",
+														"CNTRCRAFTI","CNTRCRAFTII","CNTRCRAFTIII"};
+	protected String[] supportedEnhancements(){return SUPPORTED_ENHANCEMENTS;} 
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

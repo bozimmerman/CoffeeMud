@@ -41,8 +41,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "ROCK|STONE";}
-	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
-																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};}
+	private final static String[] SUPPORTED_ENHANCEMENTS={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};
+	protected String[] supportedEnhancements(){return SUPPORTED_ENHANCEMENTS;} 
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

@@ -41,9 +41,11 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
-	protected String[] supportedEnhancements(){ return new String[]{"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
-																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
-																	"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII"};}
+	private final static String[] SUPPORTED_ENHANCEMENTS={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
+														"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
+														"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII",
+														"CNTRCRAFTI","CNTRCRAFTII","CNTRCRAFTIII"};
+	protected String[] supportedEnhancements(){return SUPPORTED_ENHANCEMENTS;} 
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

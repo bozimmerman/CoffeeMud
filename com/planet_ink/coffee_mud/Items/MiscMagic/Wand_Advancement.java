@@ -76,7 +76,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 				int x=msg.targetMessage().toUpperCase().indexOf("LEVEL UP");
 				if(x>=0)
 				{
-					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
+					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
 						CMMsg msg2=CMClass.getMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
