@@ -122,8 +122,7 @@ public class Specialization_Weapon extends StdAbility
 		if(affected instanceof MOB)
 		{
 			Item myWeapon=((MOB)affected).fetchWieldedItem();
-			if((myWeapon!=null)
-			&&(myWeapon instanceof Weapon)
+			if((myWeapon instanceof Weapon)
 			&&((((Weapon)myWeapon).weaponClassification()==weaponType)
  			 ||(weaponType<0)
 			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponType)))

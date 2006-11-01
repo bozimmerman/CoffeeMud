@@ -72,7 +72,9 @@ public class Specialization_Natural extends Specialization_Weapon
 		if((affected instanceof MOB)&&(((MOB)affected).fetchWieldedItem()==null))
 		{
 			activated=true;
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+					+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
+					+(10*(getXLevel((MOB)affected,0))));
 		}
 	}
 }
