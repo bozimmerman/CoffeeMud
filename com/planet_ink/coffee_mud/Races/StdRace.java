@@ -435,6 +435,8 @@ public class StdRace implements Race
 		Body.setMobName(mob.Name().replace('\'','`'));
 		Body.setMobDescription(mob.description().replace('\'','`'));
 		Body.setDisplayText("the body of "+mob.Name().replace('\'','`')+" lies here.");
+		Ability AGE=mob.fetchEffect("Age");
+		if(AGE!=null) Body.addNonUninvokableEffect(AGE);
 		if(room!=null)
 			room.addItemRefuse(Body,mob.isMonster()?Item.REFUSE_MONSTER_BODY:Item.REFUSE_PLAYER_BODY);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());

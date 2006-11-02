@@ -479,7 +479,7 @@ public class Pregnancy extends StdAbility
                             Vector channels=CMLib.channels().getFlaggedChannelNames("BIRTHS");
                             for(int i=0;i<channels.size();i++)
                                 CMLib.commands().postChannel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
-                            CMLib.database().DBCreateData("BABY","HEAVEN","BABY/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
+                            CMLib.database().DBCreateData(mob.Name(),"HEAVEN",mob.Name()+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
 						}
 						else
 							mob.tell("You are in labor!!");

@@ -44,11 +44,43 @@ public class Prayer_Resurrect extends Prayer
 		Item body=this.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(body==null) return false;
 		if((!(body instanceof DeadBody))
-		||(!((DeadBody)body).playerCorpse())
 		||(((DeadBody)body).mobName().length()==0))
 		{
 			mob.tell("You can't resurrect that.");
 			return false;
+		}
+		boolean playerCorpse=((DeadBody)body).playerCorpse();
+		Vector nonPlayerData=null;
+		if(!playerCorpse)
+		{
+			Ability AGE=body.fetchEffect("Age");
+			if((AGE!=null)&&(CMath.isLong(AGE.text()))&&(CMath.s_long(AGE.text())>Short.MAX_VALUE))
+			{
+				MOB M=null;
+				for(int i=0;i<mob.location().numInhabitants();i++)
+				{
+					M=mob.location().fetchInhabitant(i);
+					if((M!=null)&&(!M.isMonster()))
+					{
+						Vector V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
+						if((V!=null)&&(V.size()>0))
+						{
+							nonPlayerData=V;
+							break;
+						}
+					}
+				}
+				if(nonPlayerData==null)
+				{
+					mob.tell("You can't seem to focus on "+body.Name()+"'s spirit.  Perhaps if loved ones were here?");
+					return false;
+				}
+			}
+			else
+			{
+				mob.tell("You can't resurrect "+((DeadBody)body).charStats().himher()+".");
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -66,70 +98,118 @@ public class Prayer_Resurrect extends Prayer
 			{
 				invoker=mob;
 				mob.location().send(mob,msg);
-				MOB rejuvedMOB=CMLib.map().getPlayer(((DeadBody)body).mobName());
-				if(rejuvedMOB!=null)
+				if(playerCorpse)
 				{
-					rejuvedMOB.tell("You are being resurrected.");
-					if(rejuvedMOB.location()!=mob.location())
+					MOB rejuvedMOB=CMLib.map().getPlayer(((DeadBody)body).mobName());
+					if(rejuvedMOB!=null)
 					{
-						rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappears!");
-						mob.location().bringMobHere(rejuvedMOB,false);
-					}
-					Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
-					if(A!=null) rejuvedMOB.delAbility(A);
-					A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
-					if(A!=null) rejuvedMOB.delEffect(A);
-
-					int it=0;
-					while(it<rejuvedMOB.location().numItems())
-					{
-						Item item=rejuvedMOB.location().fetchItem(it);
-						if((item!=null)&&(item.container()==body))
+						rejuvedMOB.tell("You are being resurrected.");
+						if(rejuvedMOB.location()!=mob.location())
 						{
-							CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
-							rejuvedMOB.location().send(rejuvedMOB,msg2);
-							CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
-							rejuvedMOB.location().send(rejuvedMOB,msg3);
-							it=0;
+							rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappears!");
+							mob.location().bringMobHere(rejuvedMOB,false);
 						}
-						else
-							it++;
-					}
-					body.destroy();
-					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
-					mob.location().recoverRoomStats();
-					Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
-					for(int w=0;w<whatsToDo.size();w++)
-					{
-						String whatToDo=(String)whatsToDo.elementAt(w);
-						if(whatToDo.startsWith("UNL"))
-							CMLib.leveler().level(rejuvedMOB);
-						else
-						if(whatToDo.startsWith("ASTR"))
-						{}
-						else
-						if(whatToDo.startsWith("PUR"))
-						{}
-						else
-						if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
+						Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
+						if(A!=null) rejuvedMOB.delAbility(A);
+						A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
+						if(A!=null) rejuvedMOB.delEffect(A);
+	
+						int it=0;
+						while(it<rejuvedMOB.location().numItems())
 						{
-							int expLost=CMath.s_int(whatToDo)/2;
-							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-							CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+							Item item=rejuvedMOB.location().fetchItem(it);
+							if((item!=null)&&(item.container()==body))
+							{
+								CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
+								rejuvedMOB.location().send(rejuvedMOB,msg2);
+								CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
+								rejuvedMOB.location().send(rejuvedMOB,msg3);
+								it=0;
+							}
+							else
+								it++;
 						}
-						else
-						if(whatToDo.length()<3)
-							continue;
-						else
+						body.destroy();
+						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+						mob.location().recoverRoomStats();
+						Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+						for(int w=0;w<whatsToDo.size();w++)
 						{
-							int expLost=(100*rejuvedMOB.envStats().level())/2;
-							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-							CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+							String whatToDo=(String)whatsToDo.elementAt(w);
+							if(whatToDo.startsWith("UNL"))
+								CMLib.leveler().level(rejuvedMOB);
+							else
+							if(whatToDo.startsWith("ASTR"))
+							{}
+							else
+							if(whatToDo.startsWith("PUR"))
+							{}
+							else
+							if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
+							{
+								int expLost=CMath.s_int(whatToDo)/2;
+								rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
+								CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+							}
+							else
+							if(whatToDo.length()<3)
+								continue;
+							else
+							{
+								int expLost=(100*rejuvedMOB.envStats().level())/2;
+								rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
+								CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+							}
 						}
 					}
+					else
+						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
 				}
 				else
-					mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
+				{
+					String data=(String)nonPlayerData.lastElement();
+					String classID=null;
+					int ability=0;
+					int x=data.indexOf("/");
+					if(x>=0)
+					{
+						classID=data.substring(0,x);
+						data=data.substring(x+1);
+					}
+					x=data.indexOf("/");
+					if(x>=0)
+					{
+						ability=CMath.s_int(data.substring(0,x));
+						data=data.substring(x+1);
+					}
+					Environmental object=CMClass.getItem(classID);
+					if(object==null) object=CMClass.getMOB(classID);
+					if(object==null)
+						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
+					else
+					if(object instanceof Item)
+					{
+						object.setMiscText(data);
+						object.baseEnvStats().setAbility(ability);
+						object.recoverEnvStats();
+						body.destroy();
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,object.Name()+" comes back to life!");
+						mob.location().addItem((Item)object);
+					}
+					else
+					{
+						MOB rejuvedMOB=(MOB)object;
+						rejuvedMOB.setMiscText(data);
+						rejuvedMOB.baseEnvStats().setAbility(ability);
+						rejuvedMOB.recoverCharStats();
+						rejuvedMOB.recoverEnvStats();
+						rejuvedMOB.recoverMaxState();
+						body.destroy();
+						rejuvedMOB.bringToLife(mob.location(),true);
+						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+					}
+					mob.location().recoverRoomStats();
+				}
 			}
 		}
 		else

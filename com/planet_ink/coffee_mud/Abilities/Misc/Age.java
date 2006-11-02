@@ -156,7 +156,7 @@ public class Age extends StdAbility
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
-                        CMLib.database().DBReCreateData("BABY","HEAVEN","BABY/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
+                        CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
 					}
 				}
 			}
@@ -208,7 +208,7 @@ public class Age extends StdAbility
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
 					babe.text();
-                    CMLib.database().DBReCreateData("BABY","HEAVEN","BABY/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
+                    CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
 				}
 			}
 			else
@@ -218,7 +218,7 @@ public class Age extends StdAbility
 			{
 				Ability A=babe.fetchEffect("Prop_SafePet");
 				if(A!=null)babe.delEffect(A);
-                CMLib.database().DBDeleteData("BABY","HEAVEN","BABY/HEAVEN/"+text());
+                CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
                 
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
@@ -326,7 +326,7 @@ public class Age extends StdAbility
 						babe.setName(CMStrings.replaceAll(babe.Name(),"baby girl ","female "));
 						babe.setDisplayText(babe.Name()+" stands here.");
 					}
-                    CMLib.database().DBDeleteData("BABY","HEAVEN","BABY/HEAVEN/"+text());
+                    CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(babe.Name()+" has just grown up to be a mob.");
 					liege.tell(babe.Name()+" has just grown up to be a mob.");
