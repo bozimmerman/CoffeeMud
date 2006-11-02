@@ -156,6 +156,7 @@ public class Age extends StdAbility
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
+                        CMLib.database().DBReCreateData("BABY","HEAVEN","BABY/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
 					}
 				}
 			}
@@ -168,17 +169,18 @@ public class Age extends StdAbility
 		&&(((MOB)affected).location().isInhabitant((MOB)affected))
 		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
 		{
-		    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
-			if((((MOB)affected).getLiegeID().length()==0)&&(!((MOB)affected).amFollowing().getLiegeID().equals(affected.Name())))
-				((MOB)affected).setLiegeID(((MOB)affected).amFollowing().Name());
-			((MOB)affected).setBitmap(CMath.unsetb(((MOB)affected).getBitmap(),MOB.ATT_AUTOASSIST));
+			MOB babe=(MOB)affected;
+			MOB following=babe.amFollowing();
+		    if(myRace==null) myRace=babe.charStats().getMyRace();
+			if((babe.getLiegeID().length()==0)&&(!following.getLiegeID().equals(affected.Name())))
+				babe.setLiegeID(following.Name());
+			babe.setBitmap(CMath.unsetb(babe.getBitmap(),MOB.ATT_AUTOASSIST));
 			if((ellapsed>=myRace.getAgingChart()[2])
-			&&(((MOB)affected).fetchBehavior("MudChat")==null))
+			&&(babe.fetchBehavior("MudChat")==null))
 			{
 				Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
 				{
-					MOB babe=(MOB)affected;
 					if(babe.Name().indexOf(" ")>0)
 					{
 						babe.setName(CMStrings.replaceAll(babe.Name()," baby "," young "));
@@ -206,17 +208,21 @@ public class Age extends StdAbility
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
 					babe.text();
+                    CMLib.database().DBReCreateData("BABY","HEAVEN","BABY/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
 				}
 			}
 			else
 			if((ellapsed>=myRace.getAgingChart()[3])
-			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
-			&&(((MOB)affected).charStats().getStat(CharStats.STAT_INTELLIGENCE)>1))
+			&&(babe.fetchBehavior("MudChat")!=null)
+			&&(babe.charStats().getStat(CharStats.STAT_INTELLIGENCE)>1))
 			{
+				Ability A=babe.fetchEffect("Prop_SafePet");
+				if(A!=null)babe.delEffect(A);
+                CMLib.database().DBDeleteData("BABY","HEAVEN","BABY/HEAVEN/"+text());
+                
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
 				{
-					MOB babe=(MOB)affected;
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
 						liege=CMLib.map().getLoadPlayer(babe.getLiegeID());
@@ -308,7 +314,6 @@ public class Age extends StdAbility
 				}
 				else
 				{
-					MOB babe=(MOB)affected;
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
 						liege=CMLib.map().getLoadPlayer(babe.getLiegeID());
@@ -321,10 +326,11 @@ public class Age extends StdAbility
 						babe.setName(CMStrings.replaceAll(babe.Name(),"baby girl ","female "));
 						babe.setDisplayText(babe.Name()+" stands here.");
 					}
+                    CMLib.database().DBDeleteData("BABY","HEAVEN","BABY/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(babe.Name()+" has just grown up to be a mob.");
 					liege.tell(babe.Name()+" has just grown up to be a mob.");
-					Ability A=babe.fetchEffect(ID());
+					A=babe.fetchEffect(ID());
 					A.setMiscText(""+ellapsed);
 					babe.recoverCharStats();
 					babe.recoverEnvStats();

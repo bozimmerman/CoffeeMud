@@ -444,11 +444,14 @@ public class Pregnancy extends StdAbility
 								STAT.setMiscText("CHA=10 CON=6 DEX=2 INT=2 STR=1 WIS=1");
 								babe.addNonUninvokableEffect(STAT);
 							}
-							Ability A3=CMClass.getAbility("Age");
-							if(A3!=null)
+							Ability SAFE=CMClass.getAbility("Prop_SafePet");
+							if(SAFE!=null)
+								babe.addNonUninvokableEffect(SAFE);
+							Ability AGE=CMClass.getAbility("Age");
+							if(AGE!=null)
 							{
-								A3.setMiscText(""+System.currentTimeMillis());
-								babe.addNonUninvokableEffect(A3);
+								AGE.setMiscText(""+System.currentTimeMillis());
+								babe.addNonUninvokableEffect(AGE);
 							}
 							babe.recoverCharStats();
 							babe.recoverEnvStats();
@@ -457,7 +460,7 @@ public class Pregnancy extends StdAbility
 							Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
 							I.baseEnvStats().setAbility(1);
-							I.addNonUninvokableEffect((Ability)A3.copyOf());
+							I.addNonUninvokableEffect((Ability)AGE.copyOf());
 							I.recoverEnvStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");
@@ -469,13 +472,14 @@ public class Pregnancy extends StdAbility
 								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
 								if((CMLib.dice().rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
 								{
-								    Ability A=CMClass.getAbility("Diease_Depression");
+								    Ability A=CMClass.getAbility("Disease_Depression");
 								    if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
                             Vector channels=CMLib.channels().getFlaggedChannelNames("BIRTHS");
                             for(int i=0;i<channels.size();i++)
                                 CMLib.commands().postChannel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+                            CMLib.database().DBCreateData("BABY","HEAVEN","BABY/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
 						}
 						else
 							mob.tell("You are in labor!!");
