@@ -558,8 +558,6 @@ public class StdAbility extends ForeignScriptable implements Ability
 	}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-
-
 	protected void cloneFix(Ability E){}
 	public CMObject copyOf()
 	{
@@ -579,7 +577,6 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto)
 	{
-		
 		if(auto)
 		{
 			isAnAutoEffect=true;
