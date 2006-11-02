@@ -167,7 +167,7 @@ public class Prayer_Resurrect extends Prayer
 				}
 				else
 				{
-					String data=(String)nonPlayerData.lastElement();
+					String data=(String)((Vector)nonPlayerData.firstElement()).lastElement();
 					String classID=null;
 					int ability=0;
 					int x=data.indexOf("/");
