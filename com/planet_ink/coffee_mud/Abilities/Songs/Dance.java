@@ -40,7 +40,7 @@ public class Dance extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"DANCE","DA"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SONG;}
+	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int maxRange(){return 2;}
 	protected int invokerManaCost=-1;
@@ -50,15 +50,46 @@ public class Dance extends StdAbility
 	protected boolean skipStandardDanceTick(){return false;}
 	protected String danceOf(){return name();}
 
-	public int prancerLevel()
+    private static final int EXPERTISE_STAGES=10;
+    private static final String[] EXPERTISE={"FASTDANCE","SLOWDANCE","LONGDANCE"};
+    private static final String[] EXPERTISE_NAME={"Fast Dancing","Slow Dancing","Long Dancing"};
+    private static final String[][] EXPERTISE_STATS={{"STR","CHA"},
+                                                     {"STR","CHA"},
+                                                     {"STR","CHA"}
+    };
+    private static final int[] EXPERTISE_LEVELS={14,16,18};
+    public void initializeClass()
+    {
+        super.initializeClass();
+        if(!ID().equals("Dance"))
+        {
+            if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
+            for(int e=0;e<EXPERTISE.length;e++)
+                for(int i=1;i<=EXPERTISE_STAGES;i++)
+                    CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
+                            ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
+                                " +"+EXPERTISE_STATS[e][0]+" "+(16+i)+" -SKILLFLAG \"+DANCING\" "
+                               +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
+                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                               ,0,1,0,0,0);
+        }
+    }
+    protected int getXLevel(MOB mob){
+    	if(super.abstractQuality()==Ability.QUALITY_MALICIOUS)
+	    	return getExpertiseLevel(mob,EXPERTISE[0]);
+    	else
+	    	return getExpertiseLevel(mob,EXPERTISE[1]);
+    }
+    
+	public int prancerQClassLevel()
 	{
 		if(invoker()==null) return CMLib.ableMapper().lowestQualifyingLevel(ID());
 		int x=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
 		if(x<=0) x=CMLib.ableMapper().lowestQualifyingLevel(ID());
 		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
 		if(charisma>10)
-			return x+((charisma-10)/3);
-		return x;
+			return x+((charisma-10)/3)+(getXLevel(invoker())*2);
+		return x+(getXLevel(invoker())*2);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

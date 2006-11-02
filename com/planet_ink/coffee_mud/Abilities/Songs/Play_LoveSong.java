@@ -62,7 +62,7 @@ public class Play_LoveSong extends Play
 			{
 				MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 				try{
-				if(CMLib.dice().rollPercentage()==1)
+				if(CMLib.dice().rollPercentage()<=1)
 				{
 					Item I=mob.fetchFirstWornItem(Item.WORN_WAIST);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);

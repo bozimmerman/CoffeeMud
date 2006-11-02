@@ -627,21 +627,29 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_ENCHANTMENT=7<<5;
 	/** constant mask returned by classificationCode() designating this ability as being Conjuration @see Ability#classificationCode() */
 	public static final int DOMAIN_CONJURATION=8<<5;
-	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
+	/** constant mask returned by classificationCode() designating this ability as being Archon @see Ability#classificationCode() */
 	public static final int DOMAIN_ARCHON=9<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Singing @see Ability#classificationCode() */
+	public static final int DOMAIN_SINGING=10<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Singing @see Ability#classificationCode() */
+	public static final int DOMAIN_DANCING=11<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Singing @see Ability#classificationCode() */
+	public static final int DOMAIN_PLAYING=12<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_DESCS={
 		"NOTHING","DIVINATION","ABJURATION","ILLUSION",
 		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION",
-		"ENCHANTMENT/CHARM","CONJURATION", "ARCHON"
+		"ENCHANTMENT/CHARM","CONJURATION", "ARCHON",
+		"SINGING","DANCING","PLAYING"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
 		"","Divining","Abjuring","Illusing",
 		"In/Evoking","Altering","Transmuting",
-		"Enchanting","Conjuring", "Creating"
+		"Enchanting","Conjuring", "Creating",
+		"Singing", "Dancing","Playing"
 	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */

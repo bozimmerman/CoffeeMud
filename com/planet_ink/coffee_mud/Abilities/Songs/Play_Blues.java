@@ -78,7 +78,9 @@ public class Play_Blues extends Play
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)+(invokerLevel()/2)));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)
+													+(invokerLevel()/2)));
 	}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{

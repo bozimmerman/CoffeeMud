@@ -50,8 +50,8 @@ public class Dance_Tap extends Dance
 
 		if(mob!=invoker())
 		{
-			mob.curState().adjMovement(-(prancerLevel()/3),mob.maxState());
-			mob.curState().adjMana(-prancerLevel(),mob.maxState());
+			mob.curState().adjMovement(-(prancerQClassLevel()/3),mob.maxState());
+			mob.curState().adjMana(-prancerQClassLevel(),mob.maxState());
 		}
 		return true;
 	}

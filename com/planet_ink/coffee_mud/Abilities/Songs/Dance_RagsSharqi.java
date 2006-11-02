@@ -42,7 +42,7 @@ public class Dance_RagsSharqi extends Dance
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		if(invoker!=null)
-			affectedState.setHitPoints(affectedState.getHitPoints()+((prancerLevel()+10)*5));
+			affectedState.setHitPoints(affectedState.getHitPoints()+((prancerQClassLevel()+10)*5));
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{

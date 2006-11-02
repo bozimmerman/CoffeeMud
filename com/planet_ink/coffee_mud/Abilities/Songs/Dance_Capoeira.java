@@ -45,8 +45,10 @@ public class Dance_Capoeira extends Dance
 		if(affected==null) return;
 		if((affected instanceof MOB)&&(((MOB)affected).fetchWieldedItem()==null))
 		{
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+invoker().charStats().getStat(CharStats.STAT_CHARISMA)+(prancerLevel()));
-			affectableStats.setDamage(affectableStats.damage()+(prancerLevel()/3));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+												+invoker().charStats().getStat(CharStats.STAT_CHARISMA)
+												+(prancerQClassLevel()));
+			affectableStats.setDamage(affectableStats.damage()+(prancerQClassLevel()/3));
 		}
 	}
 }

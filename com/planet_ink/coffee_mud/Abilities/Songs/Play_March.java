@@ -39,11 +39,20 @@ public class Play_March extends Play
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
+	public void affectEnvStats(Environmental affected, EnvStats stats)
+	{
+		super.affectEnvStats(affected,stats);
+		if((affected instanceof MOB)&&(!((MOB)affected).isMonster()))
+		{
+			
+		}
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(invoker()!=null))
+		if((affected instanceof MOB)&&(invoker()!=null))
 		{
 			MOB mob=(MOB)affected;
 			mob.curState().adjMovement(invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4,mob.maxState());

@@ -42,7 +42,8 @@ public class Dance_Tango extends Dance
 	{
 		super.affectCharStats(affectedMob,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+10);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)
+														+10);
 	}
 
 

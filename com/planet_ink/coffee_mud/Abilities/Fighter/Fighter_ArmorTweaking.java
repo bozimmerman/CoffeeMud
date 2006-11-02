@@ -118,7 +118,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,armor,asLevel,0);
 				Ability A=armor.fetchEffect(ID());
-				if(A!=null) A.setMiscText(""+bonus);
+				if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
 				armor.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

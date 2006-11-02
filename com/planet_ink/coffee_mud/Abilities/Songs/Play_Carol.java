@@ -42,6 +42,8 @@ public class Play_Carol extends Play
 	{
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
-			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+(invokerLevel()*2)+invoker().charStats().getStat(CharStats.STAT_CHARISMA));
+			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)
+								+(invokerLevel()*2)
+								+invoker().charStats().getStat(CharStats.STAT_CHARISMA));
 	}
 }

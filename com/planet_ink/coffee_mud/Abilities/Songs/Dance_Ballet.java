@@ -42,6 +42,7 @@ public class Dance_Ballet extends Dance
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+10));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,
+				Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+10));
 	}
 }

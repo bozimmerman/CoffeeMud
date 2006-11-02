@@ -54,19 +54,28 @@ public class Dance_War extends Dance
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(prancerLevel()));
-		affectableStats.setArmor(affectableStats.armor()-(prancerLevel()));
-		affectableStats.setDamage(affectableStats.damage()+(prancerLevel()/3));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+											+(prancerQClassLevel()));
+		affectableStats.setArmor(affectableStats.armor()
+											-(prancerQClassLevel()));
+		affectableStats.setDamage(affectableStats.damage()
+											+(prancerQClassLevel()/3));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,Math.round(affectableStats.getStat(CharStats.STAT_CONSTITUTION)+2));
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+2));
-		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,Math.round(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2));
-		affectableStats.setStat(CharStats.STAT_WISDOM,Math.round(affectableStats.getStat(CharStats.STAT_WISDOM)+2));
-		affectableStats.setStat(CharStats.STAT_STRENGTH,Math.round(affectableStats.getStat(CharStats.STAT_STRENGTH)+2));
-		affectableStats.setStat(CharStats.STAT_CHARISMA,Math.round(affectableStats.getStat(CharStats.STAT_CHARISMA)+2));
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,
+										Math.round(affectableStats.getStat(CharStats.STAT_CONSTITUTION)+2));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,
+										Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+2));
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,
+										Math.round(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2));
+		affectableStats.setStat(CharStats.STAT_WISDOM,
+										Math.round(affectableStats.getStat(CharStats.STAT_WISDOM)+2));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,
+										Math.round(affectableStats.getStat(CharStats.STAT_STRENGTH)+2));
+		affectableStats.setStat(CharStats.STAT_CHARISMA,
+										Math.round(affectableStats.getStat(CharStats.STAT_CHARISMA)+2));
 	}
 }

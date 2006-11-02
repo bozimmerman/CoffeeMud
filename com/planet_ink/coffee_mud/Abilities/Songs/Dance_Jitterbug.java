@@ -51,10 +51,15 @@ public class Dance_Jitterbug extends Dance
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),3.0)));
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)
+														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)
+														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)
+														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)
+														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)
+														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
 	}
 }
