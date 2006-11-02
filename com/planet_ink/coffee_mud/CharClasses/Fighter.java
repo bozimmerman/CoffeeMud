@@ -74,6 +74,7 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_ArmorTweaking",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);

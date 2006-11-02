@@ -43,6 +43,12 @@ public class Fighter_ShieldBlock extends FighterSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){ return Ability.ACODE_SKILL; }
+	private boolean enabledFlag=true;
+    public void initializeClass()
+    {
+    	super.initializeClass();
+    	super.initializeXExpertiseClass(this,"SHIELDUSE","Shield Using","STR",18,26);
+    }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -52,12 +58,12 @@ public class Fighter_ShieldBlock extends FighterSkill
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
+		&&(enabledFlag)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
-		&&(mob.fetchFirstWornItem(Item.WORN_HELD) instanceof Shield)
 		&&(msg.source().getVictim()==mob))
 		{
 			CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchFirstWornItem(Item.WORN_HELD),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
@@ -69,5 +75,22 @@ public class Fighter_ShieldBlock extends FighterSkill
 			}
 		}
 		return true;
+	}
+	
+	public void affectEnvStats(Environmental affected, EnvStats stats)
+	{
+		super.affectEnvStats(affected,stats);
+		if(affected instanceof MOB)
+		{
+			Item shield=((MOB)affected).fetchFirstWornItem(Item.WORN_HELD);
+			enabledFlag=(shield instanceof Shield);
+			if(enabledFlag)
+			{
+				stats.setArmor(stats.armor()+(int)Math.round(
+					CMath.mul(shield.envStats().armor(),
+						CMath.mul(super.getExpertiseLevel((MOB)affected,"SHIELDUSE"),0.5))));
+			}
+		}
+
 	}
 }
