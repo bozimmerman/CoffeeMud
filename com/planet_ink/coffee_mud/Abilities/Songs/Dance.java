@@ -53,6 +53,7 @@ public class Dance extends StdAbility
     private static final int EXPERTISE_STAGES=10;
     private static final String[] EXPERTISE={"FASTDANCE","SLOWDANCE","LONGDANCE"};
     private static final String[] EXPERTISE_NAME={"Fast Dancing","Slow Dancing","Long Dancing"};
+    private static final String[] EXPERTISE_QUAL={"MALICIOUS","BENEFICIAL",""};
     private static final String[][] EXPERTISE_STATS={{"STR","CHA"},
                                                      {"STR","CHA"},
                                                      {"STR","CHA"}

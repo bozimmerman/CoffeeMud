@@ -51,6 +51,7 @@ public class Song extends StdAbility
     private static final int EXPERTISE_STAGES=10;
     private static final String[] EXPERTISE={"SHARPSING","REJOICESING","RESOUNDSING"};
     private static final String[] EXPERTISE_NAME={"Sharp Singing","Rejoicing Singing","Resounding Singing"};
+    private static final String[] EXPERTISE_QUAL={"MALICIOUS","BENEFICIAL",""};
     private static final String[][] EXPERTISE_STATS={{"CHA",""},
                                                      {"CHA",""},
                                                      {"CHA",""}

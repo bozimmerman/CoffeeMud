@@ -44,7 +44,7 @@ public class Play_Instrument extends Play
 		{
 			Vector chcommands=new Vector();
 			chcommands.addElement(mob.name());
-			((Ability)getSpell().copyOf()).invoke(invoker(),chcommands,null,true,0);
+			((Ability)getSpell().copyOf()).invoke(invoker(),chcommands,null,true,super.playerQClassLevel());
 		}
 	}
 
