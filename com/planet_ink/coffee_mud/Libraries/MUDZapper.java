@@ -267,56 +267,88 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
+	protected Object makeSkillFlagObject(String str)
+	{
+        Object o=null;
+        if(o==null)
+        for(int d=0;d<Ability.ACODE_DESCS.length;d++)
+            if(Ability.ACODE_DESCS[d].equals(str))
+            {
+                o=new Integer(d);
+                break;
+            }
+        if(o==null)
+        for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+            if(Ability.DOMAIN_DESCS[d].startsWith(str)||Ability.DOMAIN_DESCS[d].endsWith(str))
+            {
+                o=new Integer(d<<5);
+                break;
+            }
+        if(o==null)
+        for(int d=0;d<Ability.FLAG_DESCS.length;d++)
+            if(Ability.FLAG_DESCS[d].startsWith(str))
+            {
+                o=new Long(2<<d);
+                break;
+            }
+        if(o==null)
+        for(short d=0;d<Ability.QUALITY_DESCS.length;d++)
+            if(Ability.QUALITY_DESCS[d].startsWith(str))
+            {
+                o=new Short(d);
+                break;
+            }
+        return o;
+	}
+	
+	protected boolean evaluateSkillFlagObject(Object o, Ability A)
+	{
+        if(A!=null) 
+        {
+	        if(o instanceof Integer)
+	        {
+	            int val=((Integer)o).intValue();
+	            if(((A.classificationCode()&Ability.ALL_ACODES)==val)
+	            ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
+	                return true;
+	        }
+	        else
+	        if(o instanceof Short)
+	        {
+	            int val=((Short)o).intValue();
+	            if(A.abstractQuality()==val)
+	                return true;
+	        }
+	        else
+	        if(o instanceof Long)
+	        {
+	            long val=((Long)o).longValue();
+	            if((A.flags()&val)==val)
+	                return true;
+	        }
+        }
+        return false;
+	}
+	
+	
     public boolean skillFlagCheck(Vector V, char plusMinus, int fromHere, MOB mob)
     {
         Ability A=null;
+        Object o=null;
+        String str=null;
         for(int v=fromHere;v<V.size();v++)
         {
-            String str=(String)V.elementAt(v);
+            str=(String)V.elementAt(v);
             if(str.length()==0) continue;
             if(getMaskCodes().containsKey(str))
                 return false;
-            Object o=null;
-            for(int d=0;d<Ability.ACODE_DESCS.length;d++)
-                if(Ability.ACODE_DESCS[d].equals(str))
-                {
-                    o=new Integer(d);
-                    break;
-                }
-            for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
-                if(Ability.DOMAIN_DESCS[d].startsWith(str)||Ability.DOMAIN_DESCS[d].endsWith(str))
-                {
-                    o=new Integer(d<<5);
-                    break;
-                }
-            for(int d=0;d<Ability.FLAG_DESCS[d].length();d++)
-                if(Ability.FLAG_DESCS[d].startsWith(str))
-                {
-                    o=new Long(2<<d);
-                    break;
-                }
+            o=makeSkillFlagObject(str); 
             if(o==null) continue;
-            if(o instanceof Integer)
+            for(int a=0;a<mob.numAbilities();a++)
             {
-                int val=((Integer)o).intValue();
-                for(int a=0;a<mob.numAbilities();a++)
-                {
-                    A=mob.fetchAbility(a);
-                    if(((A.classificationCode()&Ability.ALL_ACODES)==val)
-                    ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
-                        return true;
-                }
-            }
-            else
-            if(o instanceof Long)
-            {
-                long val=((Long)o).longValue();
-                for(int a=0;a<mob.numAbilities();a++)
-                {
-                    A=mob.fetchAbility(a);
-                    if((A.flags()&val)==val)
-                        return true;
-                }
+                A=mob.fetchAbility(a);
+                if(evaluateSkillFlagObject(o,A))
+                	return true;
             }
         }
         return false;
@@ -812,14 +844,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 101: // -skillflags
 					{
-						buf.append((skipFirstWord?"":"Requires ")+"a skill of type: ");
+						buf.append((skipFirstWord?"A":"Requires a")+" skill of type: ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
 	                        if(zapCodes.containsKey(str2))
 	                            break;
 	                        if(str2.startsWith("+"))
-                    			buf.append(str2.substring(1)+", ");
+                    			buf.append(CMStrings.capitalizeAndLower(str2.substring(1))+", ");
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -903,7 +935,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-                                buf.append(str2.substring(1)+", ");
+                                buf.append(CMStrings.capitalizeAndLower(str2.substring(1))+", ");
                         }
                         if(buf.toString().endsWith(", "))
                             buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -1818,7 +1850,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        }
 						}
 					}
-				break;
+					break;
 				case 83: // -skills
 					{
 						for(int v2=v+1;v2<V.size();v2++)
@@ -1832,11 +1864,41 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        	int x=str2.indexOf("(");
 	                        	if(x>0) str2=str2.substring(0,x);
 	                        	Ability A=CMClass.getAbility(str2);
-	                        	if(A!=null)
+	                        	if((A!=null)&&(!preReqs.contains(A.ID())))
 	                        		preReqs.addElement(A.ID());
 	                        }
 						}
 					}
+					break;
+				case 101: // -skillflag
+				{
+					Vector objs=new Vector();
+					Object o=null;
+					for(int v2=v+1;v2<V.size();v2++)
+					{
+						str2=(String)V.elementAt(v2);
+                        if(zapCodes.containsKey(str2))
+                            break;
+                        if(str2.startsWith("+"))
+                        {
+                        	str2=str2.substring(1);
+                        	o=this.makeSkillFlagObject(str2);
+                        	if(o!=null) 
+                        		objs.addElement(o);
+                        }
+					}
+					Ability A=null;
+					for(int v2=0;v2<objs.size();v2++)
+                    	for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    	{
+                        	A=(Ability)e.nextElement();
+                        	if((evaluateSkillFlagObject(objs.elementAt(v2),A))
+                        	&&(!preReqs.contains(A.ID())))
+                        	{
+                        		preReqs.addElement(A.ID());
+                        	}
+                    	}
+				}
 				break;
 				}
 		}
@@ -2094,8 +2156,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         }
                     }
                     break;
-                case 101: // +skillflag
-                case 102: // -skillflag
+                case 101: // -skillflag
+                case 102: // +skillflag
                     {
                         Vector entry=new Vector();
                         buf.addElement(entry);
@@ -2112,27 +2174,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 str2=str2.substring(1).toUpperCase();
-                                Object o=null;
-                                for(int d=0;d<Ability.ACODE_DESCS.length;d++)
-                                    if(Ability.ACODE_DESCS[d].equals(str2))
-                                    {
-                                        o=new Integer(d);
-                                        break;
-                                    }
-                                for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
-                                    if(Ability.DOMAIN_DESCS[d].startsWith(str2)||Ability.DOMAIN_DESCS[d].endsWith(str2))
-                                    {
-                                        o=new Integer(d<<5);
-                                        break;
-                                    }
-                                for(int d=0;d<Ability.FLAG_DESCS[d].length();d++)
-                                    if(Ability.FLAG_DESCS[d].startsWith(str2))
-                                    {
-                                        o=new Long(2<<d);
-                                        break;
-                                    }
-                                if(o!=null)
-                                    entry.addElement(o);
+                                Object o=makeSkillFlagObject(str2);
+                                if(o!=null) entry.addElement(o);
                             }
                         }
                     }
@@ -2651,7 +2694,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(!found) return false;
 				}
 				break;
-            case 101: // +skillflag
+            case 101: // -skillflag
                 {
                     Ability A=null;
                     Object o=null;
@@ -2659,28 +2702,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                     {
                         o=V.elementAt(v);
-                        if(o instanceof Integer)
+                        for(int a=0;a<mob.numAbilities();a++)
                         {
-                            int val=((Integer)o).intValue();
-                            for(int a=0;a<mob.numAbilities();a++)
-                            {
-                                A=mob.fetchAbility(a);
-                                if(((A.classificationCode()&Ability.ALL_ACODES)==val)
-                                ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
-                                { found=true; break;}
-                            }
+                            A=mob.fetchAbility(a);
+                            if(evaluateSkillFlagObject(o,A))
+                            { found=true; break;}
                         }
-                        else
-                        if(o instanceof Long)
-                        {
-                            long val=((Long)o).longValue();
-                            for(int a=0;a<mob.numAbilities();a++)
-                            {
-                                A=mob.fetchAbility(a);
-                                if((A.flags()&val)==val)
-                                { found=true; break;}
-                            }
-                        }
+                        if(found) break;
                     }
                     if(!found) return false;
                 }
@@ -2703,27 +2731,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                     {
                         o=V.elementAt(v);
-                        if(o instanceof Integer)
+                        for(int a=0;a<mob.numAbilities();a++)
                         {
-                            int val=((Integer)o).intValue();
-                            for(int a=0;a<mob.numAbilities();a++)
-                            {
-                                A=mob.fetchAbility(a);
-                                if(((A.classificationCode()&Ability.ALL_ACODES)==val)
-                                ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
-                                    return false;
-                            }
-                        }
-                        else
-                        if(o instanceof Long)
-                        {
-                            long val=((Long)o).longValue();
-                            for(int a=0;a<mob.numAbilities();a++)
-                            {
-                                A=mob.fetchAbility(a);
-                                if((A.flags()&val)==val)
-                                    return false;
-                            }
+                            A=mob.fetchAbility(a);
+                            if(evaluateSkillFlagObject(o,A))
+                            	return false;
                         }
                     }
                 }

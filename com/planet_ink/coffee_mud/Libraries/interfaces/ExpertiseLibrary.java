@@ -81,7 +81,7 @@ public interface ExpertiseLibrary extends CMObject
         	else
 	        	uncompiledFinalMask+=mask;
         	compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
-        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledListMask.trim());
+        	CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledFinalMask.trim());
         }
         
         public int practiceCost=0;
