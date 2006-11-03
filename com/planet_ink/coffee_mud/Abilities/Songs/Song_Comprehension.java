@@ -37,6 +37,7 @@ public class Song_Comprehension extends Song
 	public String ID() { return "Song_Comprehension"; }
 	public String name(){ return "Comprehension";}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

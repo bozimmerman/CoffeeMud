@@ -37,6 +37,7 @@ public class Song_Strength extends Song
 	public String ID() { return "Song_Strength"; }
 	public String name(){ return "Strength";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	protected int amount=0;
 
@@ -47,7 +48,7 @@ public class Song_Strength extends Song
 		if(affected==invoker)
 			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-amount);
 		else
-			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+amount);
+			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+amount+super.getXLevel(invoker()));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

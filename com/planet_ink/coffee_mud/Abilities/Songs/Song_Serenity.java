@@ -37,6 +37,7 @@ public class Song_Serenity extends Song
 	public String ID() { return "Song_Serenity"; }
 	public String name(){ return "Serenity";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

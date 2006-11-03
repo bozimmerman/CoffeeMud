@@ -37,6 +37,7 @@ public class Song_Lightness extends Song
 	public String ID() { return "Song_Lightness"; }
 	public String name(){ return "Lightness";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

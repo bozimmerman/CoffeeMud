@@ -43,6 +43,6 @@ public class Song_Lethargy extends Song
 		if(invoker==null) return;
 		if(invoker==affected) return;
 
-		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0));
+		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0+CMath.mul(0.25,getXLevel(invoker()))));
 	}
 }

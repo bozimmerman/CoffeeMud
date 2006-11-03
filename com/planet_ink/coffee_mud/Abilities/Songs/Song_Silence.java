@@ -38,6 +38,7 @@ public class Song_Silence extends Song
 	public String name(){ return "Silencing";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongTick(){return true;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

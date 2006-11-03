@@ -37,6 +37,7 @@ public class Song_Disgust extends Song
 	public String ID() { return "Song_Disgust"; }
 	public String name(){ return "Disgust";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -38,6 +38,7 @@ public class Song_Rebirth extends Song
 	public String name(){ return "Rebirth";}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

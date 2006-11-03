@@ -38,6 +38,7 @@ public class Song_SingleMindedness extends Song
 	public String name(){ return "Single Mindedness";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected CMMsg themsg=null;
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void executeMsg(Environmental ticking, CMMsg msg)
 	{

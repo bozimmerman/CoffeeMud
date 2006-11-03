@@ -38,6 +38,7 @@ public class Song_Flight extends Song
 	public String name(){ return "Flight";}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

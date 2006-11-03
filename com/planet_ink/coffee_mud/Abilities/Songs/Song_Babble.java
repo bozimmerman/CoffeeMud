@@ -40,6 +40,7 @@ public class Song_Babble extends Song
     protected final static String consonants="bcdfghjklmnpqrstvwxz";
     protected final static String vowels="aeiouy";
 	protected boolean skipStandardSongInvoke(){return true;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	protected int numChars(String words)
 	{

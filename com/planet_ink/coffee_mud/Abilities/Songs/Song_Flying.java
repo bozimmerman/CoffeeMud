@@ -38,6 +38,7 @@ public class Song_Flying extends Song
 	public String name(){ return "Flying";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_MOVING;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

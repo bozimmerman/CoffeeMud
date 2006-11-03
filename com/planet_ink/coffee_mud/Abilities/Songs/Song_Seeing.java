@@ -42,7 +42,7 @@ public class Song_Seeing extends Song
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.envStats().level()+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,super.singerQClassLevel()+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

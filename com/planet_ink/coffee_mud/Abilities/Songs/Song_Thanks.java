@@ -91,10 +91,10 @@ public class Song_Thanks extends Song
 				CMLib.commands().postSay(mob,invoker,"You're the best, "+invoker.name()+"! Thanks!",false,false);
 				break;
 			}
-			Coins C=CMLib.beanCounter().makeBestCurrency(mob,1.0);
+			Coins C=CMLib.beanCounter().makeBestCurrency(mob,CMath.mul(1.0,super.getXLevel(invoker())));
 			if(C!=null)
 			{
-				CMLib.beanCounter().subtractMoney(mob,1.0);
+				CMLib.beanCounter().subtractMoney(mob,CMath.mul(1.0,super.getXLevel(invoker())));
 				mob.addInventory(C);
 				mob.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""));
 				if(!C.amDestroyed()) C.putCoinsBack();

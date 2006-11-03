@@ -41,6 +41,6 @@ public class Song_Quickness extends Song
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setSpeed(affectableStats.speed()+1.0);
+		affectableStats.setSpeed(affectableStats.speed()+1.0+CMath.mul(0.3,super.getXLevel(invoker())));
 	}
 }
