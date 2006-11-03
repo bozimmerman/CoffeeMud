@@ -730,6 +730,8 @@ public interface Ability extends Environmental
 	public static final int QUALITY_BENEFICIAL_SELF=4;
 	/* constant for the abstractQuality and other methods.  Means that this skill targets the invoker or others, and is always beneficial. @see Ability#abstractQuality()*/
 	public static final int QUALITY_BENEFICIAL_OTHERS=5;
+	/* descriptive list of the QUALITY_ flags. @see Ability#abstractQuality() */
+	public static final String[] QUALITY_DESCS={"MALICIOUS","INDIFFERENT","OK_SELF","OK_OTHERS","BENEFICIAL_SELF","BENEFICIAL_OTHERS"};
 	
 	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect mobs @see Ability#canAffectCode() */
 	public static final int CAN_MOBS=1;
