@@ -38,12 +38,13 @@ public class Dance_Morris extends Dance
 	public String name(){ return "Morris";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected String danceOf(){return name()+" Dance";}
-
+	private boolean missedLastOne=false;
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/2));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
+		affectableStats.setArmor(affectableStats.armor()+(2*prancerQClassLevel()));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(2*prancerQClassLevel()));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -54,12 +55,15 @@ public class Dance_Morris extends Dance
 		MOB mob=(MOB)affected;
 		// preventing distracting player from doin anything else
 		if(msg.amISource(mob)
-		&&(CMLib.dice().rollPercentage()>(100-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)*2)))
-		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
+        &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+        &&(!missedLastOne)
+        &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND)))
 		{
+            missedLastOne=true;
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> become(s) distracted.");
 			return false;
 		}
+        missedLastOne=false;
 		return super.okMessage(myHost,msg);
 	}
 

@@ -120,13 +120,13 @@ public class Spell_GustOfWind extends Spell
 					{
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))
-							target.setAtRange(target.rangeToTarget()+1+(mob.envStats().level()/10));
+							target.setAtRange(target.rangeToTarget()+1+(adjustedLevel(mob,asLevel)/10));
 						if(target.rangeToTarget()>target.location().maxRange())
 							target.setAtRange(target.location().maxRange());
 
 						mob.location().send(mob,msg);
 						if((!CMLib.flags().isInFlight(target))
-						&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.envStats().level()))
+						&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.envStats().level()-(adjustedLevel(mob,asLevel)/2)))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");

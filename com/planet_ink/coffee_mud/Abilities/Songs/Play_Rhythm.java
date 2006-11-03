@@ -44,7 +44,7 @@ public class Play_Rhythm extends Play
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MAGIC,stats.getStat(CharStats.STAT_SAVE_MAGIC)
 									-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)
-											+(invokerLevel()*2)));
+											+(playerQClassLevel()*2)));
 	}
 }
 

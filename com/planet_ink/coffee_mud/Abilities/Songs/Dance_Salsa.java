@@ -36,7 +36,7 @@ public class Dance_Salsa extends Dance
 {
 	public String ID() { return "Dance_Salsa"; }
 	public String name(){ return "Salsa";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -98,7 +98,7 @@ public class Dance_Salsa extends Dance
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+4+getXLevel(invoker()));
 	}
 
 }

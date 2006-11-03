@@ -36,7 +36,7 @@ public class Dance_Basse extends Dance
 {
 	public String ID() { return "Dance_Basse"; }
 	public String name(){ return "Basse";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -49,7 +49,7 @@ public class Dance_Basse extends Dance
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
             &&(msg.source().location()==target.location())
-			&&(CMLib.dice().rollPercentage()>((msg.source().envStats().level()-target.envStats().level())*10)))
+			&&(CMLib.dice().rollPercentage()>((msg.source().envStats().level()-(target.envStats().level()+getXLevel(invoker()))*10))))
 			{
 				msg.source().tell("You are too much in awe of "+target.name());
 				if(target.getVictim()==msg.source())

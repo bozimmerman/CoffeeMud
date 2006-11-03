@@ -44,7 +44,11 @@ public class Play_Charge extends Play
 	protected void inpersistantAffect(MOB mob)
 	{
 		Ability A=CMClass.getAbility("Fighter_Charge");
-		if(A!=null) A.invoke(mob,chcommands,null,true,0);
+		if(A!=null)
+        {
+            A.setAbilityCode(4*getXLevel(invoker()));
+            A.invoke(mob,chcommands,null,true,playerQClassLevel());
+        }
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

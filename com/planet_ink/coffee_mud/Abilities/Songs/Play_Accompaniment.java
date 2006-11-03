@@ -43,7 +43,7 @@ public class Play_Accompaniment extends Play
 		super.affectEnvStats(E,stats);
 		if((E instanceof MOB)&&(E!=invoker())&&(((MOB)E).charStats().getCurrentClass().baseClass().equals("Bard")))
 		{
-			int lvl=invokerLevel()/10;
+			int lvl=playerQClassLevel()/10;
 			if(lvl<1) lvl=1;
 			stats.setLevel(stats.level()+lvl);
 		}

@@ -36,13 +36,13 @@ public class Dance_Ballet extends Dance
 {
 	public String ID() { return "Dance_Ballet"; }
 	public String name(){ return "Ballet";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,
-				Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+10));
+				Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+(super.prancerQClassLevel()/3)));
 	}
 }

@@ -42,7 +42,7 @@ public class Play extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return 2+(10*super.getExpertiseLevel(invoker(),"RYTHMICTUNE"));}
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
@@ -50,8 +50,10 @@ public class Play extends StdAbility
 	protected boolean skipStandardSongTick(){return false;}
 	protected boolean persistantSong(){return true;}
 	protected String songOf(){return name();}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 
 	protected MusicalInstrument instrument=null;
+    protected int steadyDown=-1;
 
 	public String instrumentName(){
 		if(instrument!=null) return instrument.name();
@@ -59,35 +61,82 @@ public class Play extends StdAbility
 	}
 
     private static final int EXPERTISE_STAGES=10;
-    private static final String[] EXPERTISE={"SHARPTUNE","BOLDTUNE","RESOUNDINGTUNE"};
-    private static final String[] EXPERTISE_NAME={"Sharp Playing","Bold Playing","Resounding Playing"};
-    private static final String[] EXPERTISE_QUAL={"MALICIOUS","BENEFICIAL",""};
+    private static final String[] EXPERTISE={"SHARPTUNE","BOLDTUNE","RESOUNDINGTUNE","RYTHMICTUNE"};
+    private static final int[] EXPERTISE_SET_NADA={2,3};
+    private static final int[] EXPERTISE_SET_MALICIOUS={0,2,3};
+    private static final int[] EXPERTISE_SET_BENEFICIAL={1,2,3};
+    private static String[] EXPERTISE_NAMES_NADA=null;
+    private static String[] EXPERTISE_NAMES_MALICIOUS=null;
+    private static String[] EXPERTISE_NAMES_BENEFICIAL=null;
+    private static final String[] EXPERTISE_NAME={"Sharp Playing","Bold Playing","Resounding Playing","Rythmic Playing"};
     private static final String[][] EXPERTISE_STATS={{"INT","CHA"},
+                                                     {"INT","CHA"},
                                                      {"INT","CHA"},
                                                      {"INT","CHA"}
     };
-    private static final int[] EXPERTISE_LEVELS={14,16,18};
+    private static final int[] EXPERTISE_LEVELS={14,16,18,19};
     public void initializeClass()
     {
         super.initializeClass();
         if(!ID().equals("Play"))
         {
-            if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
-            for(int e=0;e<EXPERTISE.length;e++)
-                for(int i=1;i<=EXPERTISE_STAGES;i++)
-                    CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
-                            ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
-                                " +"+EXPERTISE_STATS[e][0]+" "+(16+i)+" -SKILLFLAG \"+PLAYING\" "
-                               +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
-                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
-                               ,0,1,0,0,0);
+            int[] MY_INDEX=get_EXPERTISE_SET();
+            for(int i=0;i<MY_INDEX.length;i++)
+            {
+                int e=MY_INDEX[i];
+                if(CMLib.expertises().getDefinition(EXPERTISE[e]+EXPERTISE_STAGES)==null)
+                    for(int s=1;s<=EXPERTISE_STAGES;s++)
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
+                                ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
+                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+i)
+                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
+                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                                   ,0,1,0,0,0);
+            }
+            super.registerExpertiseUsage(get_EXPERTISE_NAMES(),EXPERTISE_STAGES,false,null);
         }
     }
     protected int getXLevel(MOB mob){
     	if(super.abstractQuality()==Ability.QUALITY_MALICIOUS)
 	    	return getExpertiseLevel(mob,EXPERTISE[0]);
-    	else
-	    	return getExpertiseLevel(mob,EXPERTISE[1]);
+    	return getExpertiseLevel(mob,EXPERTISE[1]);
+    }
+    
+    protected int[] get_EXPERTISE_SET(){
+        if(!HAS_QUANTITATIVE_ASPECT())
+            return EXPERTISE_SET_NADA;
+        switch(super.abstractQuality())
+        {
+        case Ability.QUALITY_MALICIOUS:
+            return EXPERTISE_SET_MALICIOUS;     
+        default:
+            return EXPERTISE_SET_BENEFICIAL;     
+        }
+    }
+    protected String[] get_EXPERTISE_NAMES(){
+        String[] MINE=null;
+        int[] MY_SET=get_EXPERTISE_SET();
+        if(!HAS_QUANTITATIVE_ASPECT())
+        {
+            if(EXPERTISE_NAMES_NADA==null) EXPERTISE_NAMES_NADA=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_NADA;
+        }
+        else
+        switch(super.abstractQuality())
+        {
+        case Ability.QUALITY_MALICIOUS:
+            if(EXPERTISE_NAMES_MALICIOUS==null) EXPERTISE_NAMES_MALICIOUS=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_MALICIOUS;
+            break;
+        default:
+            if(EXPERTISE_NAMES_BENEFICIAL==null) EXPERTISE_NAMES_BENEFICIAL=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_BENEFICIAL;
+            break;
+        }
+        if(MINE[0]!=null) return MINE;
+        for(int i=0;i<MY_SET.length;i++)
+            MINE[i]=EXPERTISE[MY_SET[i]];
+        return MINE;
     }
     
 	public int playerQClassLevel()
@@ -95,10 +144,10 @@ public class Play extends StdAbility
 		if(invoker()==null) return CMLib.ableMapper().lowestQualifyingLevel(ID());
 		int x=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
 		if(x<=0) x=CMLib.ableMapper().lowestQualifyingLevel(ID());
-		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
-		if(charisma>10)
-			return x+((charisma-10)/3)+(getXLevel(invoker())*2);
-		return x+(getXLevel(invoker())*2);
+        if(instrument!=null)
+            x+=instrument.envStats().ability();
+        x+=(getXLevel(invoker())*2);
+		return x;
 	}
 	
 	public int invokerLevel()
@@ -149,8 +198,13 @@ public class Play extends StdAbility
 		||(!CMLib.flags().aliveAwakeMobileUnbound(invoker,true))
 		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
 		{
-			unplay(mob,null,false);
-			return false;
+            if(steadyDown<0) steadyDown=(invoker()!=null)?super.getExpertiseLevel(invoker(),"RYTHMICTUNE"):0;
+            if(steadyDown==0)
+            {
+                unplay(mob,null,false);
+                return false;
+            }
+            steadyDown--;
 		}
 		return true;
 	}
@@ -185,7 +239,10 @@ public class Play extends StdAbility
 			&&(A instanceof Play)
 			&&((!notMe)||(!A.ID().equals(ID())))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-				A.unInvoke();
+            {
+                if((!(A instanceof Play))||(((Play)A).steadyDown<=0))
+    				A.unInvoke();
+            }
 		}
 	}
 
@@ -229,6 +286,7 @@ public class Play extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(!auto)
 		{
 			instrument=getInstrument(mob,requiredInstrumentType(),true);

@@ -43,7 +43,7 @@ public class Play_Background extends Play
 		if(invoker()!=null)
 		{
 			int cha=invoker().charStats().getStat(CharStats.STAT_CHARISMA)/2;
-			int lvl=invokerLevel()/3;
+			int lvl=playerQClassLevel()/3;
 			stats.setStat(CharStats.STAT_SAVE_ACID,stats.getStat(CharStats.STAT_SAVE_ACID)+lvl+cha);
 			stats.setStat(CharStats.STAT_SAVE_COLD,stats.getStat(CharStats.STAT_SAVE_COLD)+lvl+cha);
 			stats.setStat(CharStats.STAT_SAVE_DISEASE,stats.getStat(CharStats.STAT_SAVE_DISEASE)+lvl+cha);

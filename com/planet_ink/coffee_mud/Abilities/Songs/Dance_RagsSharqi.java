@@ -36,17 +36,16 @@ public class Dance_RagsSharqi extends Dance
 {
 	public String ID() { return "Dance_RagsSharqi"; }
 	public String name(){ return "Rags Sharqi";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
-		if(invoker!=null)
-			affectedState.setHitPoints(affectedState.getHitPoints()+((prancerQClassLevel()+10)*5));
+		affectedState.setHitPoints(affectedState.getHitPoints()+((prancerQClassLevel()+10)*5));
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+10);
+		affectedStats.setStat(CharStats.STAT_SAVE_DISEASE,affectedStats.getStat(CharStats.STAT_SAVE_DISEASE)+(prancerQClassLevel()*2));
 	}
 }

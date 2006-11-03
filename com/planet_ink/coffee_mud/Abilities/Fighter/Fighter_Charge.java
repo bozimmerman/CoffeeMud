@@ -46,6 +46,10 @@ public class Fighter_Charge extends FighterSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
 	public int maxRange(){return 2;}
+    protected int code=0;
+    public int abilityCode(){return code;}
+    public void setAbilityCode(int c){code=c;};
+    
 	public boolean done=false;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -69,7 +73,7 @@ public class Fighter_Charge extends FighterSkill
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*affected.envStats().level()));
-		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level()));
+		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level())+abilityCode());
 		affectableStats.setArmor(affectableStats.armor()+(2*affected.envStats().level()));
 	}
 

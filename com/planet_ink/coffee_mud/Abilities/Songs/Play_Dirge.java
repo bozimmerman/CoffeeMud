@@ -41,6 +41,7 @@ public class Play_Dirge extends Play
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -37,6 +37,7 @@ public class Dance_Butterfly extends Dance
 	public String ID() { return "Dance_Butterfly"; }
 	public String name(){ return "Butterfly";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

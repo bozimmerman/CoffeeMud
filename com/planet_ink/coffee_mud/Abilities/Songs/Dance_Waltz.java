@@ -36,7 +36,7 @@ public class Dance_Waltz extends Dance
 {
 	public String ID() { return "Dance_Waltz"; }
 	public String name(){ return "Waltz";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	private int[] statadd=null;
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
@@ -45,7 +45,7 @@ public class Dance_Waltz extends Dance
 		if(statadd==null)
 		{
 			statadd=new int[CharStats.NUM_BASE_STATS];
-			int classLevel=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
+			int classLevel=CMLib.ableMapper().qualifyingClassLevel(invoker(),this)+(3*getXLevel(invoker()));
 			classLevel=(classLevel+1)/9;
 			classLevel++;
 
@@ -55,5 +55,11 @@ public class Dance_Waltz extends Dance
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			affectedStats.setStat(i,affectedStats.getStat(i)+statadd[i]);
 	}
+    
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        statadd=null;
+        return super.invoke(mob,commands,givenTarget,auto,asLevel);
+    }
 
 }

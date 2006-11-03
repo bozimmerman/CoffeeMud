@@ -36,14 +36,14 @@ public class Dance_Tarantella extends Dance
 {
 	public String ID() { return "Dance_Tarantella"; }
 	public String name(){ return "Tarantella";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+(CMLib.ableMapper().qualifyingClassLevel(invoker(),this)*2));
+		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+(prancerQClassLevel()*2));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -55,18 +55,9 @@ public class Dance_Tarantella extends Dance
 		if(mob==null)
 			return false;
 
-		if((++ticks)>=15)
+		if((++ticks)>=(15-getXLevel(invoker())))
 		{
-			Vector offenders=null;
-			for(int a=0;a<mob.numEffects();a++)
-			{
-				Ability A=mob.fetchEffect(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
-				{
-					if(offenders==null) offenders=new Vector();
-					offenders.addElement(A);
-				}
-			}
+			Vector offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
 			if(offenders!=null)
 				for(int a=0;a<offenders.size();a++)
 					((Ability)offenders.elementAt(a)).unInvoke();

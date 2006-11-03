@@ -39,6 +39,7 @@ public class Play_Harmony extends Play
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected boolean persistantSong(){return false;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	protected void inpersistantAffect(MOB mob)
 	{

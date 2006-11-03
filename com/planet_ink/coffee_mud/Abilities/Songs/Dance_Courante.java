@@ -44,6 +44,6 @@ public class Dance_Courante extends Dance
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setSpeed(affectableStats.speed()+1.0);
+		affectableStats.setSpeed(affectableStats.speed()+1.0+(CMath.div(getXLevel(invoker()),0.25)));
 	}
 }

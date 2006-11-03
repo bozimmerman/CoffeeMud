@@ -36,9 +36,10 @@ public class Dance_Square extends Dance
 {
 	public String ID() { return "Dance_Square"; }
 	public String name(){ return "Square";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardDanceInvoke(){return true;}
 	protected String danceOf(){return name()+" Dance";}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -52,13 +53,14 @@ public class Dance_Square extends Dance
 			if(cmd!=null)
 			{
 				MOB M=(MOB)affected;
-				if(!cmd.toUpperCase().startsWith("FOL"))
-				{
-					if(CMLib.flags().canBeHeardBy(invoker(),M)
-					&&CMLib.flags().canBeSeenBy(invoker(),M)
-					&&(M.location()==invoker().location()))
+                if(CMLib.flags().canBeHeardBy(invoker(),M)
+                &&CMLib.flags().canBeSeenBy(invoker(),M)
+                &&(M.location()==invoker().location()))
+                {
+                    Object O=CMLib.english().findCommand(M,CMParms.parse(cmd));
+                    if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
 						M.enqueCommand(CMParms.parse(cmd),0);
-				}
+                }
 			}
 		}
 		super.executeMsg(myHost,msg);

@@ -71,6 +71,11 @@ public class Play_Blues extends Play
 		{
 			MOB mob=(MOB)affected;
 			mob.curState().adjHunger(-2,mob.maxState().maxHunger(mob.baseWeight()));
+            if(CMLib.dice().rollPercentage()>(playerQClassLevel()/4))
+            {
+                Ability A=CMClass.getAbility("Disease_Depression");
+                if(A!=null) A.invoke(invoker(),affected,true,0);
+            }
 		}
 		return true;
 	}
@@ -80,13 +85,13 @@ public class Play_Blues extends Play
 		if(invoker==null) return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)
-													+(invokerLevel()/2)));
+													+(playerQClassLevel())));
 	}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
-			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)));
+			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+getXLevel(invoker())));
 	}
 }
 

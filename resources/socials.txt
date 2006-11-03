@@ -88,6 +88,7 @@ ov	BRICK	You throw a brick at someone, but miss.	<S-NAME> throws a brick wildly 
 ov	BRICK <T-NAME>	You throw a brick at <T-NAME>.	<S-NAME> throws a brick at <T-NAME>!	<S-NAME> throws a brick at you!  Now what did you do?	Brick who?	
 ov	BRICK ALL	You start throwing bricks at everyone!	<S-NAME> has gone mad, and starts throwing bricks at everyone!		You start throwing bricks madly at everyone, but no one is there!	
 ov	BRICK SELF	You dodge an incoming brick!	<S-NAME> ducks underneath an incoming brick.			
+ov	BSCRATCH <T-NAME>	You bscratch <T-NAME>.	<S-NAME> bscratchs <T-NAMESELF>.	<S-NAME> bscratchs you.	Bscratch who?	
 mo	BUFF	DAMN I`m good!!!	<S-NAME> buffs <S-HIS-HER> nails on <S-HIS-HER> cloak.			
 ss	BURP	Burp.	<S-NAME> burps.	<S-NAME> burps in your general direction.		burp.wav
 ss	BURP <T-NAME>	You burp loudly to <T-HIM-HER> in response.	<S-NAME> burps loudly in response to <T-NAMESELF>'s remark.	<S-NAME> burps loudly in response to your remark.	You can't find your victim.	burp.wav
@@ -514,6 +515,7 @@ ov	ROFLMAO SELF	You roll on the floor hysterically laughing your ass off.	<S-NAM
 mo	ROLL	You roll your eyes in disgust.	<S-NAME> rolls <S-HIS-HER> eyes, disgusted.			
 mo	ROLL <T-NAME>	You look at <T-NAMESELF> and roll your eyes in disgust.	<S-NAME> rolls <S-HIS-HER> eyes in disgust at <T-NAMESELF>.	<S-NAME> rolls <S-HIS-HER> eyes at you.	You should be disgusted with yourself because you look so foolish.	
 mo	ROLL SELF	At whom do you wish to roll your eyes?				
+mo	ROLLOVER	You roll over onto your back waiting for someone to scratch your belly.	<s-name> rolls over onto <s-his-her> back waiting for you to scratch <s-his-her> belly.			
 oo	ROSE	Who would you like to give it to?				
 ot	ROSE <T-NAME>	You give <T-HIM-HER> a pretty rose.	<S-NAME> hands <T-NAMESELF> a beautiful rose.	<S-NAME> hands you a beautiful ---'---,--{@	They seem to have left.	
 oo	ROSE SELF	You give yourself a rose and feel a little sad...	<S-NAME> gives <S-HIM-HERSELF> a rose, dont you feel sorry for <S-HIM-HER>?			
@@ -531,6 +533,7 @@ oo	SALUTE	You click your heels together and salute sharply.	<S-NAME> clicks <S-H
 oo	SALUTE <T-NAME>	You click your heels together and salute <T-NAME>. Yes, sir!!	<S-NAME> clicks <S-HIS-HER> heels together and salutes <T-NAME>.	<S-NAME> salutes you obediently.	Salute who?	
 mo	SALUTE SELF	You salute yourself, how pathetic.	<S-NAME> smartly salutes <S-him-herself>.			
 mo	SCRATCH	You scratch yourself contentedly.	<S-NAME> reaches down and scratches <S-HIM-HERSELF>...  Now <S-HE-SHE> looks VERY happy.			
+ov	SCRATCH <T-NAME>	You scratch <t-name> on <t-his-her> belly.	<s-name> scratches <t-name> on <t-his-her> belly.	<s-name> scratches your belly, causing you to shake your leg wildly. WOOF!	Scratch who?	
 ww	SCREAM	ARRRRRRRRRRGH!!!!!	<S-NAME> screams loudly!			
 ww	SCREAM <T-NAME>	ARRRRRRRRRRGH!!!!!  Yes, it MUST have been <T-HIS-HER> fault!!!	<S-NAME> screams loudly at <T-NAMESELF>.  Better leave before <S-NAME> blames you, too!!!	<S-NAME> screams at you!  That's not nice!  *sniff*	Your lungs can't reach that far!	
 ss	SCREAM SELF	You scream at yourself.  Yes, that's ONE way of relieving tension!	<S-NAME> screams loudly at <S-HIM-HERSELF>!  Is there a full moon up?			

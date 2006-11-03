@@ -37,7 +37,7 @@ public class Dance_Manipuri extends Dance
 {
 	public String ID() { return "Dance_Manipuri"; }
 	public String name(){ return "Manipuri";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
 
 	protected Room lastRoom=null;
@@ -52,7 +52,7 @@ public class Dance_Manipuri extends Dance
 		MOB mob=(MOB)affected;
 		if(mob.location()!=lastRoom)
 		{
-			count=3;
+			count=3+getXLevel(invoker());
 			lastRoom=mob.location();
 		}
 		else

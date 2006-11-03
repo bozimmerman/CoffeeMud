@@ -36,7 +36,7 @@ public class Dance_Grass extends Dance
 {
 	public String ID() { return "Dance_Grass"; }
 	public String name(){ return "Grass";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public static Ability kick=null;
 	protected String danceOf(){return name()+" Dance";}
 
@@ -46,7 +46,7 @@ public class Dance_Grass extends Dance
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 		affectableStats.setArmor(affectableStats.armor()
-								-invoker().charStats().getStat(CharStats.STAT_CHARISMA));
+								-(2*prancerQClassLevel()));
 	}
 
 }

@@ -36,13 +36,13 @@ public class Dance_Jitterbug extends Dance
 {
 	public String ID() { return "Dance_Jitterbug"; }
 	public String name(){ return "Jitterbug";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-5);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-prancerQClassLevel());
 	}
 
 
@@ -51,15 +51,11 @@ public class Dance_Jitterbug extends Dance
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),3.0)));
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)
-														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)
-														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)
-														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)
-														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
-		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)
-														+(invoker.charStats().getStat(CharStats.STAT_CHARISMA)*4));
+        int bonus=prancerQClassLevel()*2;
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+bonus);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+bonus);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+bonus);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+bonus);
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+bonus);
 	}
 }

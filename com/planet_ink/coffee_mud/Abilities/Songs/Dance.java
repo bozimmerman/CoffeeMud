@@ -42,44 +42,109 @@ public class Dance extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
 	public int usageType(){return USAGE_MOVEMENT;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return 2+(10*super.getExpertiseLevel(invoker(),"LONGDANCE"));}
 	protected int invokerManaCost=-1;
+    protected int steadyDown=-1;
 
 	protected boolean skipStandardDanceInvoke(){return false;}
 	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardDanceTick(){return false;}
 	protected String danceOf(){return name();}
 
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+    
     private static final int EXPERTISE_STAGES=10;
-    private static final String[] EXPERTISE={"FASTDANCE","SLOWDANCE","LONGDANCE"};
-    private static final String[] EXPERTISE_NAME={"Fast Dancing","Slow Dancing","Long Dancing"};
-    private static final String[] EXPERTISE_QUAL={"MALICIOUS","BENEFICIAL",""};
+    private static final String[] EXPERTISE={"FASTDANCE","SLOWDANCE","BEATDANCE","LONGDANCE","STEADYDANCE"};
+    private static final int[] EXPERTISE_SET_NADA={3,4};
+    private static final int[] EXPERTISE_SET_MALICIOUS={0,3,4};
+    private static final int[] EXPERTISE_SET_BENEFICIAL_SELF={1,3,4};
+    private static final int[] EXPERTISE_SET_BENEFICIAL_OTHERS={2,3,4};
+    private static String[] EXPERTISE_NAMES_NADA=null;
+    private static String[] EXPERTISE_NAMES_MALICIOUS=null;
+    private static String[] EXPERTISE_NAMES_BENEFICIAL_SELF=null;
+    private static String[] EXPERTISE_NAMES_BENEFICIAL_OTHERS=null;
+    private static final String[] EXPERTISE_NAME={"Fast Dancing","Slow Dancing","Beat Dancing","Distant Dancing","Steady Dancing"};
     private static final String[][] EXPERTISE_STATS={{"STR","CHA"},
+                                                     {"STR","CHA"},
                                                      {"STR","CHA"},
                                                      {"STR","CHA"}
     };
-    private static final int[] EXPERTISE_LEVELS={14,16,18};
+    private static final int[] EXPERTISE_LEVELS={14,16,17,18,19};
     public void initializeClass()
     {
         super.initializeClass();
         if(!ID().equals("Dance"))
         {
-            if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
-            for(int e=0;e<EXPERTISE.length;e++)
-                for(int i=1;i<=EXPERTISE_STAGES;i++)
-                    CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
-                            ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
-                                " +"+EXPERTISE_STATS[e][0]+" "+(16+i)+" -SKILLFLAG \"+DANCING\" "
-                               +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
-                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
-                               ,0,1,0,0,0);
+            int[] MY_INDEX=get_EXPERTISE_SET();
+            for(int i=0;i<MY_INDEX.length;i++)
+            {
+                int e=MY_INDEX[i];
+                if(CMLib.expertises().getDefinition(EXPERTISE[e]+EXPERTISE_STAGES)==null)
+                    for(int s=1;s<=EXPERTISE_STAGES;s++)
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
+                                ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
+                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+i)
+                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
+                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                                   ,0,1,0,0,0);
+            }
+            super.registerExpertiseUsage(get_EXPERTISE_NAMES(),EXPERTISE_STAGES,false,null);
         }
     }
+    
+    protected int[] get_EXPERTISE_SET(){
+        if(!HAS_QUANTITATIVE_ASPECT())
+            return EXPERTISE_SET_NADA;
+        switch(super.abstractQuality())
+        {
+        case Ability.QUALITY_MALICIOUS:
+            return EXPERTISE_SET_MALICIOUS;     
+        case Ability.QUALITY_BENEFICIAL_SELF:
+            return EXPERTISE_SET_BENEFICIAL_SELF;     
+        default:
+            return EXPERTISE_SET_BENEFICIAL_OTHERS;     
+        }
+    }
+    protected String[] get_EXPERTISE_NAMES(){
+        String[] MINE=null;
+        int[] MY_SET=get_EXPERTISE_SET();
+        if(!HAS_QUANTITATIVE_ASPECT())
+        {
+            if(EXPERTISE_NAMES_NADA==null) EXPERTISE_NAMES_NADA=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_NADA;
+        }
+        else
+        switch(super.abstractQuality())
+        {
+        case Ability.QUALITY_MALICIOUS:
+            if(EXPERTISE_NAMES_MALICIOUS==null) EXPERTISE_NAMES_MALICIOUS=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_MALICIOUS;
+            break;
+        case Ability.QUALITY_BENEFICIAL_SELF:
+            if(EXPERTISE_NAMES_BENEFICIAL_SELF==null) EXPERTISE_NAMES_BENEFICIAL_SELF=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_BENEFICIAL_SELF;
+            break;
+        default:
+            if(EXPERTISE_NAMES_BENEFICIAL_OTHERS==null) EXPERTISE_NAMES_BENEFICIAL_OTHERS=new String[MY_SET.length];
+            MINE=EXPERTISE_NAMES_BENEFICIAL_OTHERS;
+            break;
+        }
+        if(MINE[0]!=null) return MINE;
+        for(int i=0;i<MY_SET.length;i++)
+            MINE[i]=EXPERTISE[MY_SET[i]];
+        return MINE;
+    }
+    
     protected int getXLevel(MOB mob){
-    	if(super.abstractQuality()==Ability.QUALITY_MALICIOUS)
-	    	return getExpertiseLevel(mob,EXPERTISE[0]);
-    	else
-	    	return getExpertiseLevel(mob,EXPERTISE[1]);
+        switch(super.abstractQuality())
+        {
+        case Ability.QUALITY_MALICIOUS:
+            return getExpertiseLevel(mob,EXPERTISE[0]);     
+        case Ability.QUALITY_BENEFICIAL_SELF:
+            return getExpertiseLevel(mob,EXPERTISE[1]);     
+        default:
+            return getExpertiseLevel(mob,EXPERTISE[2]);     
+        }
     }
     
 	public int prancerQClassLevel()
@@ -88,8 +153,8 @@ public class Dance extends StdAbility
 		int x=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
 		if(x<=0) x=CMLib.ableMapper().lowestQualifyingLevel(ID());
 		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
-		if(charisma>10)
-			return x+((charisma-10)/3)+(getXLevel(invoker())*2);
+		if(charisma>0)
+			return x+(charisma/3)+(getXLevel(invoker())*2);
 		return x+(getXLevel(invoker())*2);
 	}
 
@@ -113,8 +178,14 @@ public class Dance extends StdAbility
 			||(invoker.fetchEffect(ID())==null)
 			||(!CMLib.flags().canBeSeenBy(invoker,mob)))
 			{
-				undance(mob,null,false);
-				return false;
+                if(steadyDown<0) steadyDown=(invoker()!=null)?super.getExpertiseLevel(invoker(),"STEADYDANCE"):0;
+                if(steadyDown==0)
+                {
+    				undance(mob,null,false);
+    				return false;
+                }
+                steadyDown--;
+                return true;
 			}
 			if(invokerManaCost<0) invokerManaCost=usageCost(invoker())[1];
 			if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
@@ -137,7 +208,10 @@ public class Dance extends StdAbility
 			&&(A instanceof Dance)
 			&&((!notMe)||(!A.ID().equals(ID())))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-				A.unInvoke();
+            {
+                if((!(A instanceof Dance))||(((Dance)A).steadyDown<=0))
+    				A.unInvoke();
+            }
 		}
 	}
 
@@ -155,6 +229,7 @@ public class Dance extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

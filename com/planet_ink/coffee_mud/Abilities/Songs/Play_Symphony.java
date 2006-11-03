@@ -592,7 +592,7 @@ public class Play_Symphony extends Play
 		if((msg.sourceMinor()==toDoVal)
 		&&(msg.target()==affected))
 		{
-			int dmg=(invokerLevel()/5);
+			int dmg=(playerQClassLevel()/5);
 			msg.setValue(msg.value()-dmg);
 			break;
 		}
@@ -606,9 +606,9 @@ public class Play_Symphony extends Play
 		{
 			int dmg=0;
 			if(toDoCode==CODE_UPDAMAGEPER3)
-				dmg=dmg+(invokerLevel()/3);
+				dmg=dmg+(playerQClassLevel()/3);
 			else
-				dmg=dmg+(invokerLevel()/5);
+				dmg=dmg+(playerQClassLevel()/5);
 			msg.setValue(msg.value()+dmg);
 			break;
 		}
@@ -623,16 +623,16 @@ public class Play_Symphony extends Play
 		switch(toDoCode)
 		{
 		case CODE_UPSAVE:
-			stats.setStat(toDoVal,stats.getStat(toDoVal)+invokerLevel());
+			stats.setStat(toDoVal,stats.getStat(toDoVal)+playerQClassLevel());
 			break;
 		case CODE_UPSTAT:
-			int lvl=invokerLevel()/10;
+			int lvl=playerQClassLevel()/10;
 			if(lvl<1) lvl=1;
 			stats.setStat(toDoVal,stats.getStat(toDoVal)+(lvl));
 			break;
 		case CODE_DOWNSAVE:
 			if(mob!=invoker())
-				stats.setStat(toDoVal,stats.getStat(toDoVal)-invokerLevel());
+				stats.setStat(toDoVal,stats.getStat(toDoVal)-playerQClassLevel());
 			break;
 		}
 	}
@@ -643,7 +643,7 @@ public class Play_Symphony extends Play
 		&&(toDoString.length()>0)
 		&&(invoker()!=null))
 		{
-			int lvl=invokerLevel();
+			int lvl=playerQClassLevel();
 			if(toDoCode==CODE_UPENVPER2)
 				lvl=lvl/2;
 			else
@@ -712,7 +712,7 @@ public class Play_Symphony extends Play
 			return true;
 		}
 		if((per>0)
-		&&(CMLib.dice().rollPercentage()<(invokerLevel()/per)))
+		&&(CMLib.dice().rollPercentage()<(playerQClassLevel()/per)))
 		switch(toDoCode)
 		{
 		case CODE_CASTMALICIOUSSPELLPER10:

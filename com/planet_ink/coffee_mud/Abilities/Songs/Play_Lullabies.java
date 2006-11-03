@@ -58,7 +58,7 @@ public class Play_Lullabies extends Song
 		if(mob==null) return true;
 		if(mob==invoker) return true;
 		boolean oldasleep=asleep;
-		if(CMLib.dice().rollPercentage()>50)
+		if(CMLib.dice().rollPercentage()>(50-(2*getXLevel(invoker()))))
 			asleep=true;
 		else
 			asleep=false;

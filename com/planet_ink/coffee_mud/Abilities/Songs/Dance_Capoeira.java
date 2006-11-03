@@ -47,7 +47,7 @@ public class Dance_Capoeira extends Dance
 		{
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 												+invoker().charStats().getStat(CharStats.STAT_CHARISMA)
-												+(prancerQClassLevel()));
+												+(2*prancerQClassLevel()));
 			affectableStats.setDamage(affectableStats.damage()+(prancerQClassLevel()/3));
 		}
 	}

@@ -95,15 +95,14 @@ public class Play_Ballad extends Play
 	{
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
-			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)
-													+(invokerLevel()*1));
+			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+playerQClassLevel());
 	}
 	public void affectEnvStats(Environmental mob, EnvStats stats)
 	{
 		super.affectEnvStats(mob,stats);
 		if(invoker()!=null)
 			stats.setAttackAdjustment(stats.attackAdjustment()
-									+invoker().charStats().getStat(CharStats.STAT_CHARISMA)
-									+(invokerLevel()/2));
+									 +invoker().charStats().getStat(CharStats.STAT_CHARISMA)
+									 +playerQClassLevel());
 	}
 }

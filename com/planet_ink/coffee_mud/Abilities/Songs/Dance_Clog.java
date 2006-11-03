@@ -47,7 +47,7 @@ public class Dance_Clog extends Dance
 
 		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()
 											-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
-											-(Math.round(invoker.envStats().level())*2));
+											-(prancerQClassLevel()*2));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

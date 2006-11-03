@@ -40,6 +40,7 @@ public class Play_Retreat extends Play
 	protected int canAffectCode(){return 0;}
 	protected boolean persistantSong(){return false;}
 	protected String songOf(){return "a "+name();}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 	int directionCode=-1;
 
 	protected void inpersistantAffect(MOB mob)

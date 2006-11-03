@@ -131,7 +131,7 @@ public class Dance_Swords extends Dance
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
-											CMLib.dice().roll(1,affected.envStats().damage(),5),
+											CMLib.dice().roll(1,affected.envStats().damage(),5+getXLevel(invoker())),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}

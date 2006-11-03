@@ -37,6 +37,7 @@ public class Play_Tempo extends Play
 	public String ID() { return "Play_Tempo"; }
 	public String name(){ return "Tempo";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

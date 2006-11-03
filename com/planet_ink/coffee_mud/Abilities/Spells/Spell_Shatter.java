@@ -92,7 +92,7 @@ public class Spell_Shatter extends Spell
 					mob.location().send(mob,msg2);
 				if(msg.value()<=0)
 				{
-					int damage=100+mob.envStats().level()-target.envStats().level();
+					int damage=100+adjustedLevel(mob,asLevel)-target.envStats().level();
 					if(CMLib.flags().isABonusItems(target))
 						damage=(int)Math.round(CMath.div(damage,2.0));
 					switch(target.material()&RawMaterial.MATERIAL_MASK)
