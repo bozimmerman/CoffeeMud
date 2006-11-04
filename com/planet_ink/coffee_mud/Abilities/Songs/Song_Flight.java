@@ -55,6 +55,7 @@ public class Song_Flight extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -68,60 +69,62 @@ public class Song_Flight extends Song
 		unsing(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				
-				HashSet h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-
-				// malicious songs must not affect the invoker!
-				if(!h.contains(mob)) h.add(mob);
-
-				for(Iterator f=h.iterator();f.hasNext();)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					MOB follower=(MOB)f.next();
-					// malicious songs must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
-						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-
-					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					HashSet h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					if(h==null) continue;
+	
+					for(Iterator f=h.iterator();f.hasNext();)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						if(mob.location().okMessage(mob,msg2))
+						MOB follower=(MOB)f.next();
+						// malicious songs must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
+							affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+	
+						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							mob.location().send(mob,msg2);
-							if(msg2.value()<=0)
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							if(R.okMessage(mob,msg2))
 							{
-								int directionCode=-1;
-								String direction="";
-								for(int d=0;d<7;d++)
+								follower.location().send(mob,msg2);
+								if(msg2.value()<=0)
 								{
-									Exit thisExit=mob.location().getExitInDir(d);
-									if(thisExit!=null)
+									int directionCode=-1;
+									String direction="";
+									for(int d=0;d<7;d++)
 									{
-										if(thisExit.isOpen())
+										Exit thisExit=follower.location().getExitInDir(d);
+										if(thisExit!=null)
 										{
-											direction=Directions.getDirectionName(d);
-											break;
+											if(thisExit.isOpen())
+											{
+												direction=Directions.getDirectionName(d);
+												break;
+											}
 										}
 									}
+									directionCode=Directions.getDirectionCode(direction);
+									if(directionCode<0)
+									{
+										mob.tell("Flee where?!");
+										return false;
+									}
+									CMLib.tracking().move(follower,directionCode,true,false);
 								}
-								directionCode=Directions.getDirectionCode(direction);
-								if(directionCode<0)
-								{
-									mob.tell("Flee where?!");
-									return false;
-								}
-								CMLib.tracking().move(follower,directionCode,true,false);
 							}
 						}
 					}

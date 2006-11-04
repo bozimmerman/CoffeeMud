@@ -57,8 +57,11 @@ public class Play_Solo extends Play
 				if(((otherBard.envStats().level()+CMLib.dice().roll(1,30,0)+getXLevel(otherBard))>(myChar.envStats().level()+CMLib.dice().roll(1,20,0)+getXLevel(myChar)))
 				&&(otherBard.location()!=null))
 				{
-					if(otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
-						unplay(myChar,null,false);
+					if((otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
+					&&((otherBard.location()==originRoom)
+							||(originRoom==null)
+							||originRoom.showOthers(otherBard, myChar, null, CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!")))
+								unplay(myChar,null,false);
 				}
 				else
 				if(otherBard.location()!=null)
@@ -75,6 +78,7 @@ public class Play_Solo extends Play
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -82,58 +86,69 @@ public class Play_Solo extends Play
 		unplay(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Play newOne=(Play)this.copyOf();
-
-				Vector songsToCancel=new Vector();
-				for(int i=0;i<mob.location().numInhabitants();i++)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					MOB M=mob.location().fetchInhabitant(i);
-					if(M!=null)
-					for(int a=0;a<M.numEffects();a++)
+					if(originRoom==R)
+						R.send(mob,msg);
+					else
+						R.sendOthers(mob,msg);
+					invoker=mob;
+					Play newOne=(Play)this.copyOf();
+	
+					Vector songsToCancel=new Vector();
+					for(int i=0;i<R.numInhabitants();i++)
 					{
-						Ability A=M.fetchEffect(a);
-						if((A!=null)
-						&&(A.invoker()!=mob)
-						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-							songsToCancel.addElement(A);
+						MOB M=R.fetchInhabitant(i);
+						if(M!=null)
+						for(int a=0;a<M.numEffects();a++)
+						{
+							Ability A=M.fetchEffect(a);
+							if((A!=null)
+							&&(A.invoker()!=mob)
+							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+								songsToCancel.addElement(A);
+						}
 					}
-				}
-				int reqMana=songsToCancel.size()*10;
-				if(mob.curState().getMana()<reqMana)
-				{
-					mob.tell("You needed "+reqMana+" mana to play this solo!");
-					return false;
-				}
-				mob.curState().adjMana(-reqMana,mob.maxState());
-				for(int i=0;i<songsToCancel.size();i++)
-				{
-					Ability A=(Ability)songsToCancel.elementAt(i);
-					if((A.affecting()!=null)
-					&&(A.affecting() instanceof MOB))
+					int reqMana=songsToCancel.size()*10;
+					if(mob.curState().getMana()<reqMana)
 					{
-						MOB M=(MOB)A.affecting();
-						if(A instanceof Song) ((Song)A).unsing(M,null,false);
-						else
-						if(A instanceof Dance) ((Dance)A).undance(M,null,false);
-						else
-						if(A instanceof Play) ((Play)A).unplay(M,null,false);
+						mob.tell("You needed "+reqMana+" mana to play this solo!");
+						return false;
+					}
+					mob.curState().adjMana(-reqMana,mob.maxState());
+					for(int i=0;i<songsToCancel.size();i++)
+					{
+						Ability A=(Ability)songsToCancel.elementAt(i);
+						if((A.affecting()!=null)
+						&&(A.affecting() instanceof MOB))
+						{
+							MOB M=(MOB)A.affecting();
+							if(A instanceof Song) ((Song)A).unsing(M,null,false);
+							else
+							if(A instanceof Dance) ((Dance)A).undance(M,null,false);
+							else
+							if(A instanceof Play) ((Play)A).unplay(M,null,false);
+							else
+								A.unInvoke();
+						}
 						else
 							A.unInvoke();
 					}
-					else
-						A.unInvoke();
+					mob.addEffect(newOne);
+					R.recoverRoomStats();
 				}
-				mob.addEffect(newOne);
-				mob.location().recoverRoomStats();
 			}
 		}
 		else

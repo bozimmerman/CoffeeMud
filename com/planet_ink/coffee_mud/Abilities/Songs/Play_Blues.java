@@ -37,6 +37,7 @@ public class Play_Blues extends Play
 	public String ID() { return "Play_Blues"; }
 	public String name(){ return "Blues";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	protected boolean maliciousButNotAggressiveFlag(){return true;}
 	protected String songOf(){return "the "+name();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

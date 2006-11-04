@@ -42,6 +42,7 @@ public class Song_Rebirth extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -55,68 +56,79 @@ public class Song_Rebirth extends Song
 		unsing(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"The "+songOf()+" begins to play!":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				boolean foundOne=false;
-				int i=0;
-				while(i<mob.location().numItems())
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					Item body=mob.location().fetchItem(i);
-					if((body!=null)
-					&&(body instanceof DeadBody)
-					&&(((DeadBody)body).playerCorpse())
-					&&(((DeadBody)body).mobName().length()>0))
+					if(R==originRoom)
+						R.send(mob,msg);
+					else
+						R.sendOthers(mob, msg);
+					boolean foundOne=false;
+					int i=0;
+					while(i<R.numItems())
 					{
-						MOB rejuvedMOB=CMLib.map().getPlayer(((DeadBody)body).mobName());
-						if(rejuvedMOB!=null)
+						Item body=R.fetchItem(i);
+						if((body!=null)
+						&&(body instanceof DeadBody)
+						&&(((DeadBody)body).playerCorpse())
+						&&(((DeadBody)body).mobName().length()>0))
 						{
-							rejuvedMOB.tell("You are being resusitated.");
-							if(rejuvedMOB.location()!=mob.location())
+							MOB rejuvedMOB=CMLib.map().getPlayer(((DeadBody)body).mobName());
+							if(rejuvedMOB!=null)
 							{
-								rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappear(s)!");
-								mob.location().bringMobHere(rejuvedMOB,false);
-							}
-
-							Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
-							if(A!=null) rejuvedMOB.delAbility(A);
-							A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
-							if(A!=null) rejuvedMOB.delEffect(A);
-
-							int it=0;
-							while(it<rejuvedMOB.location().numItems())
-							{
-								Item item=rejuvedMOB.location().fetchItem(it);
-								if((item!=null)&&(item.container()==body))
+								rejuvedMOB.tell("You are being resusitated.");
+								if(rejuvedMOB.location()!=R)
 								{
-									CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
-									rejuvedMOB.location().send(rejuvedMOB,msg2);
-									CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
-									rejuvedMOB.location().send(rejuvedMOB,msg3);
-									it=0;
+									rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappear(s)!");
+									R.bringMobHere(rejuvedMOB,false);
 								}
-								else
-									it++;
+	
+								Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
+								if(A!=null) rejuvedMOB.delAbility(A);
+								A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
+								if(A!=null) rejuvedMOB.delEffect(A);
+	
+								int it=0;
+								while(it<rejuvedMOB.location().numItems())
+								{
+									Item item=rejuvedMOB.location().fetchItem(it);
+									if((item!=null)&&(item.container()==body))
+									{
+										CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
+										rejuvedMOB.location().send(rejuvedMOB,msg2);
+										CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
+										rejuvedMOB.location().send(rejuvedMOB,msg3);
+										it=0;
+									}
+									else
+										it++;
+								}
+								body.destroy();
+								R.recoverRoomStats();
+								foundOne=true;
+								rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+								i=0;
 							}
-							body.destroy();
-							mob.location().recoverRoomStats();
-							foundOne=true;
-							rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
-							i=0;
+							else
+								i++;
 						}
 						else
 							i++;
 					}
-					else
-						i++;
+					if(!foundOne)
+						mob.tell("Nothing seems to happen.");
 				}
-				if(!foundOne)
-					mob.tell("Nothing seems to happen.");
 			}
 		}
 		else

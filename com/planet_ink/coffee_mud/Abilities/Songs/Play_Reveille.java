@@ -42,59 +42,72 @@ public class Play_Reveille extends Play
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		unplay(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Hashtable h=new Hashtable();
-				for(int i=0;i<mob.location().numInhabitants();i++)
-				{ MOB M=mob.location().fetchInhabitant(i); h.put(M,M);}
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					Room R=mob.location().getRoomInDir(d);
-					if(R!=null)
-						for(int i=0;i<R.numInhabitants();i++)
-						{ MOB M=R.fetchInhabitant(i); h.put(M,M);}
-				}
-
-				for(Enumeration f=h.elements();f.hasMoreElements();)
-				{
-					MOB follower=(MOB)f.nextElement();
-					Room R=follower.location();
-
-					// malicious songs must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					if(originRoom==R)
+						R.send(mob,msg);
+					else
+						R.sendOthers(mob,msg);
+					invoker=mob;
+					Hashtable h=new Hashtable();
+					for(int i=0;i<R.numInhabitants();i++)
+					{ MOB M=R.fetchInhabitant(i); h.put(M,M);}
+					
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						if(R.okMessage(mob,msg2))
+						Room R3=R.getRoomInDir(d);
+						if((R3!=null)&&(!commonRoomSet.contains(R3)))
+							for(int i=0;i<R3.numInhabitants();i++)
+							{ MOB M=R3.fetchInhabitant(i); h.put(M,M);}
+					}
+	
+					for(Enumeration f=h.elements();f.hasMoreElements();)
+					{
+						MOB follower=(MOB)f.nextElement();
+						Room R2=follower.location();
+	
+						// malicious songs must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							follower.location().send(follower,msg2);
-							if(CMLib.flags().isSleeping(follower))
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							if(R2.okMessage(mob,msg2))
 							{
-								follower.doCommand(CMParms.parse("WAKE"));
-								if(!CMLib.flags().isSleeping(follower))
+								R2.send(follower,msg2);
+								if(CMLib.flags().isSleeping(follower))
 								{
-									Ability A=CMClass.getAbility("Searching");
-									if(A!=null)	A.invoke(follower,null,true,asLevel);
+									follower.doCommand(CMParms.parse("WAKE"));
+									if(!CMLib.flags().isSleeping(follower))
+									{
+										Ability A=CMClass.getAbility("Searching");
+										if(A!=null)	A.invoke(follower,null,true,asLevel);
+									}
 								}
 							}
 						}
 					}
+					R.recoverRoomStats();
 				}
-				mob.location().recoverRoomStats();
 			}
 		}
 		else

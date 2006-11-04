@@ -39,6 +39,7 @@ public class Song_Thanks extends Song
 	public String name(){ return "Thanks";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
+	protected boolean maliciousButNotAggressiveFlag(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -56,7 +57,7 @@ public class Song_Thanks extends Song
 		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC))
 		   &&(CMLib.flags().canMove(mob))
 		   &&(CMLib.flags().canBeSeenBy(invoker,mob))
-		   &&(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)>1.0))
+		   &&(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)>(1.0+super.getXLevel(invoker()))))
 		{
 			switch(CMLib.dice().roll(1,10,0))
 			{
@@ -104,6 +105,7 @@ public class Song_Thanks extends Song
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -117,51 +119,55 @@ public class Song_Thanks extends Song
 		unsing(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Song newOne=(Song)this.copyOf();
-
-				HashSet h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-				if(!h.contains(mob)) h.add(mob);
-
-				for(Iterator f=h.iterator();f.hasNext();)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				if(mob.location().okMessage(mob,msg))
 				{
-					MOB follower=(MOB)f.next();
-
-					// malicious songs must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-
-					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					HashSet h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					if(h==null) continue;
+					Song newOne=(Song)this.copyOf();
+	
+					for(Iterator f=h.iterator();f.hasNext();)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						CMMsg msg3=msg2;
-						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
+						MOB follower=(MOB)f.next();
+	
+						// malicious songs must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+	
+						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							follower.location().send(follower,msg2);
-							if(msg2.value()<=0)
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg3=msg2;
+							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
-								follower.location().send(follower,msg3);
-								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+								follower.location().send(follower,msg2);
+								if(msg2.value()<=0)
 								{
-									if(follower!=mob)
-										follower.addEffect((Ability)newOne.copyOf());
-									else
-										follower.addEffect(newOne);
+									follower.location().send(follower,msg3);
+									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+									{
+										if(follower!=mob)
+											follower.addEffect((Ability)newOne.copyOf());
+										else
+											follower.addEffect(newOne);
+									}
 								}
 							}
 						}
 					}
+					R.recoverRoomStats();
 				}
-				mob.location().recoverRoomStats();
 			}
 		}
 		else

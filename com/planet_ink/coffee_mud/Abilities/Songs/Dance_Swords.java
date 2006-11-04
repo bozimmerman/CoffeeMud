@@ -169,6 +169,7 @@ public class Dance_Swords extends Dance
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -179,35 +180,46 @@ public class Dance_Swords extends Dance
 		undance(mob,null,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Dance newOne=(Dance)this.copyOf();
-				newOne.invokerManaCost=-1;
-
-				MOB follower=mob;
-
-				// malicious dances must not affect the invoker!
-				int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-				if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-
-				if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-					if(mob.location().okMessage(mob,msg2))
+					if(originRoom==R)
+						R.send(mob,msg);
+					else
+						R.sendOthers(mob,msg);
+					invoker=mob;
+					Dance newOne=(Dance)this.copyOf();
+					newOne.invokerManaCost=-1;
+	
+					MOB follower=mob;
+	
+					// malicious dances must not affect the invoker!
+					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+	
+					if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
-						follower.location().send(follower,msg2);
-						if((msg2.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
-							follower.addEffect(newOne);
+						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+						if(R.okMessage(mob,msg2))
+						{
+							follower.location().send(follower,msg2);
+							if((msg2.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+								follower.addEffect(newOne);
+						}
 					}
+					R.recoverRoomStats();
 				}
-				mob.location().recoverRoomStats();
 			}
 		}
 		else

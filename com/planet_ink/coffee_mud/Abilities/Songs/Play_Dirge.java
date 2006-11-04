@@ -45,6 +45,7 @@ public class Play_Dirge extends Play
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		steadyDown=-1;
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 
@@ -61,36 +62,41 @@ public class Play_Dirge extends Play
 		unplay(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				HashSet h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-				if(!h.contains(mob)) h.add(mob);
-
-				for(Iterator f=h.iterator();f.hasNext();)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					MOB follower=(MOB)f.next();
-
-					double exp=10.0;
-					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-					int levelDiff=follower.envStats().level()-target.envStats().level();
-					if(levelDiff>levelLimit) exp=0.0;
-					int expGained=(int)Math.round(exp);
-
-					// malicious songs must not affect the invoker!
-					if(CMLib.flags().canBeHeardBy(invoker,follower)&&(expGained>0))
-						CMLib.leveler().postExperience(follower,null,null,expGained,false);
+					HashSet h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					if(h==null) continue;
+	
+					for(Iterator f=h.iterator();f.hasNext();)
+					{
+						MOB follower=(MOB)f.next();
+	
+						double exp=10.0;
+						int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+						int levelDiff=follower.envStats().level()-target.envStats().level();
+						if(levelDiff>levelLimit) exp=0.0;
+						int expGained=(int)Math.round(exp);
+	
+						// malicious songs must not affect the invoker!
+						if(CMLib.flags().canBeHeardBy(invoker,follower)&&(expGained>0))
+							CMLib.leveler().postExperience(follower,null,null,expGained,false);
+					}
+					R.recoverRoomStats();
+					R.showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");
+					target.destroy();
 				}
-				mob.location().recoverRoomStats();
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");
-				target.destroy();
 			}
 		}
 		else

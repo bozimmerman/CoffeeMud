@@ -45,6 +45,7 @@ public class Song_Ode extends Song
 	protected StringBuffer trail=null;
 	protected String songOf(){ return "Ode"+((whom==null)?"":" to "+whom.name())+"";}
 	protected boolean skipStandardSongTick(){return (song==null);}
+	protected boolean skipSimpleStandardSongTickToo(){return (song==null);}
 	protected static final Hashtable cmds=new Hashtable();
 	protected static final String[][] stuff={
 		{""+CMMsg.TYP_EAT,"s","h","<O-NAME> knows our hunger pains!"},
@@ -250,13 +251,11 @@ public class Song_Ode extends Song
 		if(song==null)
 		{
 			if((whom==null)
-			   ||(whom.location()!=invoker.location())
+			   ||(commonRoomSet==null)
+			   ||(!commonRoomSet.contains(whom.location()))
 			   ||(CMLib.flags().isSleeping(invoker))
 			   ||(!CMLib.flags().canBeSeenBy(whom,invoker)))
-			{
-				unsing(mob,null,false);
-				return false;
-			}
+					return possiblyUnsing(mob,null,false);
 		}
 
 		if((whom!=null)&&(song!=null)&&(affected==invoker())
@@ -339,6 +338,7 @@ public class Song_Ode extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(auto) return false;
 
 		Hashtable H=getSongs();

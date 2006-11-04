@@ -69,6 +69,7 @@ public class Dance_Square extends Dance
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -79,55 +80,63 @@ public class Dance_Square extends Dance
 		undance(mob,null,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			HashSet friends=mob.getGroupMembers(new HashSet());
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Dance newOne=(Dance)this.copyOf();
-				newOne.invokerManaCost=-1;
-
-				HashSet friends=mob.getGroupMembers(new HashSet());
-
-				for(int i=0;i<mob.location().numInhabitants();i++)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					MOB follower=mob.location().fetchInhabitant(i);
-
-					// malicious dances must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if((!friends.contains(follower))&&(follower!=mob))
-						affectType=affectType|CMMsg.MASK_MALICIOUS;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-
-					if((CMLib.flags().canBeSeenBy(invoker,follower)
-						&&(follower.fetchEffect(this.ID())==null)))
+					R.send(mob,msg);
+					invoker=mob;
+					Dance newOne=(Dance)this.copyOf();
+					newOne.invokerManaCost=-1;
+	
+					for(int i=0;i<R.numInhabitants();i++)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						CMMsg msg3=msg2;
+						MOB follower=R.fetchInhabitant(i);
+						Room R2=follower.location();
+	
+						// malicious dances must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if((!friends.contains(follower))&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
+							affectType=affectType|CMMsg.MASK_MALICIOUS;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+	
+						if((CMLib.flags().canBeSeenBy(invoker,follower)
+							&&(follower.fetchEffect(this.ID())==null)))
 						{
-							follower.location().send(follower,msg2);
-							if(msg2.value()<=0)
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg3=msg2;
+							if((!friends.contains(follower))&&(follower!=mob))
+								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
-								follower.location().send(follower,msg3);
-								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+								R2.send(follower,msg2);
+								if(msg2.value()<=0)
 								{
-									if(follower!=mob)
-										follower.addEffect((Ability)newOne.copyOf());
-									else
-										follower.addEffect(newOne);
+									R2.send(follower,msg3);
+									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+									{
+										if(follower!=mob)
+											follower.addEffect((Ability)newOne.copyOf());
+										else
+											follower.addEffect(newOne);
+									}
 								}
 							}
 						}
 					}
+					mob.location().recoverRoomStats();
 				}
-				mob.location().recoverRoomStats();
 			}
 		}
 		else

@@ -40,25 +40,6 @@ public class Song_Silence extends Song
 	protected boolean skipStandardSongTick(){return true;}
 	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-
-		MOB mob=(MOB)affected;
-		if(mob==null)
-			return false;
-
-		if((invoker==null)
-		||(invoker.fetchEffect(ID())==null)
-		||(invoker.location()!=mob.location()))
-		{
-			unsing(mob,null,false);
-			return false;
-		}
-		return true;
-	}
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

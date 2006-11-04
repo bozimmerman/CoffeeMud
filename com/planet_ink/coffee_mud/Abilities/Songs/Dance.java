@@ -45,10 +45,13 @@ public class Dance extends StdAbility
 	public int maxRange(){return 2+(10*super.getExpertiseLevel(invoker(),"LONGDANCE"));}
 	protected int invokerManaCost=-1;
     protected int steadyDown=-1;
+    protected Vector commonRoomSet=null;
+    protected Room originRoom=null;
 
 	protected boolean skipStandardDanceInvoke(){return false;}
 	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardDanceTick(){return false;}
+	protected boolean maliciousButNotAggressiveFlag(){return false;}
 	protected String danceOf(){return name();}
 
     protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
@@ -67,6 +70,7 @@ public class Dance extends StdAbility
     private static final String[][] EXPERTISE_STATS={{"STR","CHA"},
                                                      {"STR","CHA"},
                                                      {"STR","CHA"},
+                                                     {"STR","CHA"},
                                                      {"STR","CHA"}
     };
     private static final int[] EXPERTISE_LEVELS={14,16,17,18,19};
@@ -76,16 +80,16 @@ public class Dance extends StdAbility
         if(!ID().equals("Dance"))
         {
             int[] MY_INDEX=get_EXPERTISE_SET();
-            for(int i=0;i<MY_INDEX.length;i++)
+            for(int ii=0;ii<MY_INDEX.length;ii++)
             {
-                int e=MY_INDEX[i];
+                int e=MY_INDEX[ii];
                 if(CMLib.expertises().getDefinition(EXPERTISE[e]+EXPERTISE_STAGES)==null)
                     for(int s=1;s<=EXPERTISE_STAGES;s++)
-                        CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
-                                ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
-                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+i)
-                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
-                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+s,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(s),
+                                ((s==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(s-1)+"\""),
+                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+s)
+                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+s):"")
+                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*s))
                                    ,0,1,0,0,0);
             }
             super.registerExpertiseUsage(get_EXPERTISE_NAMES(),EXPERTISE_STAGES,false,null);
@@ -160,40 +164,59 @@ public class Dance extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))
+		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
 			return false;
 
+		MOB mob=(MOB)affected;
+		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
+		{
+			Vector V=getInvokerScopeRoomSet(null);
+			commonRoomSet.clear();
+			commonRoomSet.addAll(V);
+			originRoom=invoker().location();
+		}
+		else
+		if((abstractQuality()==Ability.QUALITY_MALICIOUS)
+		&&(!maliciousButNotAggressiveFlag())
+		&&(!mob.amDead())
+		&&(mob.isMonster())
+		&&(!mob.isInCombat())
+		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
+		{
+			if((mob.location()!=originRoom)
+			&&(CMLib.flags().isMobile(mob)))
+			{
+				int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
+				if(dir>=0)
+					CMLib.tracking().move(mob,dir,false,false);
+			}
+			else
+			if((mob.location().isInhabitant(invoker()))
+			&&(CMLib.flags().canBeSeenBy(invoker(),mob)))
+				CMLib.combat().postAttack(mob,invoker(),mob.fetchWieldedItem());
+		}
+		
+		if((invoker==null)
+		||(invoker.fetchEffect(ID())==null)
+		||(commonRoomSet==null)
+		||(!commonRoomSet.contains(mob.location())))
+			return possiblyUndance(mob,null,false);
+		
 		if(skipStandardDanceTick())
 			return true;
 
-		if(affected==null) return false;
-		if(affected instanceof MOB)
+		if((invoker==null)
+		||(CMLib.flags().isSitting(invoker()))
+		||(!CMLib.flags().aliveAwakeMobile(mob,true))
+		||(!CMLib.flags().aliveAwakeMobile(invoker(),true))
+		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
+			return possiblyUndance(mob,null,false);
+		if(invokerManaCost<0) invokerManaCost=usageCost(invoker())[1];
+		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
-			MOB mob=(MOB)affected;
-			if((invoker==null)
-			||(invoker.location()!=mob.location())
-			||(CMLib.flags().isSitting(invoker()))
-			||(!CMLib.flags().aliveAwakeMobile(mob,true))
-			||(!CMLib.flags().aliveAwakeMobile(invoker(),true))
-			||(invoker.fetchEffect(ID())==null)
-			||(!CMLib.flags().canBeSeenBy(invoker,mob)))
-			{
-                if(steadyDown<0) steadyDown=(invoker()!=null)?super.getExpertiseLevel(invoker(),"STEADYDANCE"):0;
-                if(steadyDown==0)
-                {
-    				undance(mob,null,false);
-    				return false;
-                }
-                steadyDown--;
-                return true;
-			}
-			if(invokerManaCost<0) invokerManaCost=usageCost(invoker())[1];
-			if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
-			{
-				mob.tell("The dancing exhausts you.");
-				undance(mob,null,false);
-				return false;
-			}
+			mob.tell("The dancing exhausts you.");
+			undance(mob,null,false);
+			return false;
 		}
 		return true;
 	}
@@ -215,6 +238,101 @@ public class Dance extends StdAbility
 		}
 	}
 
+    protected Vector getInvokerScopeRoomSet(MOB backupMob)
+    {
+    	if((invoker()==null)
+    	||(invoker().location()==null))
+    		if((backupMob!=null)&&(backupMob.location()!=null))
+	    		 return CMParms.makeVector(backupMob.location());
+    		else
+    			return new Vector();
+    	int depth=super.getExpertiseLevel(invoker(),"LONGDANCE");
+    	if(depth==0) return CMParms.makeVector(invoker().location());
+    	Vector rooms=new Vector();
+    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, true, false, false, true, false, null, depth, null);
+    	if(!rooms.contains(invoker().location()))
+    		rooms.addElement(invoker().location());
+    	return rooms;
+    }
+    
+	protected boolean possiblyUndance(MOB mob, MOB invoker, boolean notMe)
+	{
+        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getExpertiseLevel(invoker(),"STEADYDANCE"):0;
+        if(steadyDown==0)
+        {
+            undance(mob,invoker,notMe);
+            return false;
+        }
+        mob.tell("The "+danceOf()+" lingers in your head ("+steadyDown+").");
+        steadyDown--;
+        return true;
+	}
+
+	protected int getCorrectDirToOriginRoom(Room R, int v)
+	{
+		if(v<0) return -1;
+		int dir=-1;
+		Room R2=null;
+		Exit E2=null;
+		int lowest=v;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			R2=R.getRoomInDir(d);
+			E2=R.getExitInDir(d);
+			if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
+			{
+				int dx=commonRoomSet.indexOf(R2);
+				if((dx>=0)&&(dx<lowest))
+				{
+					lowest=dx;
+					dir=d;
+				}
+			}
+		}
+		return dir;
+	}
+	
+	protected String getCorrectMsgString(Room R, String str, int v)
+	{
+		String msgStr=null;
+		if(R==originRoom)
+			msgStr=str;
+		else
+		{
+			int dir=this.getCorrectDirToOriginRoom(R,v);
+			if(dir>=0)
+				msgStr="^SYou see the "+danceOf()+" being performed "+Directions.getInDirectionName(dir)+"!^?";
+			else
+				msgStr="^SYou see the "+danceOf()+" being performed nearby!^?";
+		}
+		return msgStr;
+	}
+	
+	public HashSet sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
+	{
+		if(originRoom==R)
+			R.send(mob,msg);
+		else
+			R.sendOthers(mob,msg);
+		if(R!=originRoom)
+			mob.setLocation(R);
+		HashSet h=properTargets(mob,givenTarget,auto);
+		if(R!=originRoom)
+		{
+			R.delInhabitant(mob);
+			mob.setLocation(originRoom);
+		}
+		if(h==null) return null;
+		if(R==originRoom)
+		{
+			if(!h.contains(mob)) 
+				h.add(mob);
+		}
+		else
+			h.remove(mob);
+		return h;
+	}
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((invoker()!=null)
@@ -257,61 +375,65 @@ public class Dance extends StdAbility
 
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Dance newOne=(Dance)this.copyOf();
-				newOne.invoker=mob;
-				newOne.invokerManaCost=-1;
-
-				HashSet h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-				if(!h.contains(mob)) h.add(mob);
-
-				Room R=mob.location();
-				for(Iterator f=h.iterator();f.hasNext();)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					MOB follower=(MOB)f.next();
-					Room R2=follower.location();
-
-					// malicious dances must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
-						affectType=affectType|CMMsg.MASK_MALICIOUS;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-
-					if((R!=null)&&(R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					HashSet h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					if(h==null) continue;
+					invoker=mob;
+					Dance newOne=(Dance)this.copyOf();
+					newOne.invoker=mob;
+					newOne.invokerManaCost=-1;
+	
+					for(Iterator f=h.iterator();f.hasNext();)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						CMMsg msg3=msg2;
-						if((mindAttack())&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-						if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
+						MOB follower=(MOB)f.next();
+						Room R2=follower.location();
+	
+						// malicious dances must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
+							affectType=affectType|CMMsg.MASK_MALICIOUS;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+	
+						if((R!=null)&&(R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							R2.send(follower,msg2);
-							if(msg2.value()<=0)
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg3=msg2;
+							if((mindAttack())&&(follower!=mob))
+								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
-								R2.send(follower,msg3);
-								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+								R2.send(follower,msg2);
+								if(msg2.value()<=0)
 								{
-									undance(follower,null,false);
-									newOne.setSavable(false);
-									if(follower!=mob)
-										follower.addEffect((Ability)newOne.copyOf());
-									else
-										follower.addEffect(newOne);
+									R2.send(follower,msg3);
+									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+									{
+										undance(follower,null,false);
+										newOne.setSavable(false);
+										if(follower!=mob)
+											follower.addEffect((Ability)newOne.copyOf());
+										else
+											follower.addEffect(newOne);
+									}
 								}
 							}
 						}
 					}
+					R.recoverRoomStats();
 				}
-				R.recoverRoomStats();
 			}
 		}
 		else

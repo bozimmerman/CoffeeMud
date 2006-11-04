@@ -38,6 +38,7 @@ public class Song_Friendship extends Song
 	public String name(){ return "Friendship";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
+	protected boolean maliciousButNotAggressiveFlag(){return true;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -143,6 +144,7 @@ public class Song_Friendship extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -156,62 +158,64 @@ public class Song_Friendship extends Song
 		unsing(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Song newOne=(Song)this.copyOf();
-
-				HashSet h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-
-				// malicious songs must not affect the invoker!
-				if(!h.contains(mob)) h.add(mob);
-
-				for(Iterator f=h.iterator();f.hasNext();)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				if(mob.location().okMessage(mob,msg))
 				{
-					MOB follower=(MOB)f.next();
-					// malicious songs must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
-						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-
-					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					Song newOne=(Song)this.copyOf();
+					HashSet h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					if(h==null) continue;
+	
+					for(Iterator f=h.iterator();f.hasNext();)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						CMMsg msg3=msg2;
-						if((mindAttack())&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-						int levelDiff=follower.envStats().level()-(mob.envStats().level()+(getXLevel(mob)*2));
-						if(levelDiff<0) levelDiff=0;
-
-						if((levelDiff>(3+((mob.envStats().level()+(getXLevel(mob)*2))/10)))&&(mindAttack()))
-							mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
-						else
-						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
+						MOB follower=(MOB)f.next();
+						// malicious songs must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
+							affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+	
+						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							mob.location().send(mob,msg2);
-							if(msg2.value()<=0)
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg3=msg2;
+							if((mindAttack())&&(follower!=mob))
+								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+							int levelDiff=follower.envStats().level()-(mob.envStats().level()+(getXLevel(mob)*2));
+							if(levelDiff<0) levelDiff=0;
+	
+							if((levelDiff>(3+((mob.envStats().level()+(getXLevel(mob)*2))/10)))&&(mindAttack()))
+								mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
+							else
+							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
-								mob.location().send(mob,msg3);
-								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+								follower.location().send(mob,msg2);
+								if(msg2.value()<=0)
 								{
-									if((follower.amFollowing()!=mob)&&(follower!=mob))
+									follower.location().send(mob,msg3);
+									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 									{
-										CMLib.commands().postFollow(follower,mob,false);
-										if(follower.amFollowing()==mob)
+										if((follower.amFollowing()!=mob)&&(follower!=mob))
 										{
-											if(follower!=mob)
-												follower.addEffect((Ability)newOne.copyOf());
-											else
-												follower.addEffect(newOne);
-											CMLib.combat().makePeaceInGroup(mob);
+											CMLib.commands().postFollow(follower,mob,false);
+											if(follower.amFollowing()==mob)
+											{
+												if(follower!=mob)
+													follower.addEffect((Ability)newOne.copyOf());
+												else
+													follower.addEffect(newOne);
+												CMLib.combat().makePeaceInGroup(mob);
+											}
 										}
 									}
 								}

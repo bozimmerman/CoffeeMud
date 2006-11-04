@@ -43,6 +43,7 @@ public class Play extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int maxRange(){return 2+(10*super.getExpertiseLevel(invoker(),"RYTHMICTUNE"));}
+	protected boolean maliciousButNotAggressiveFlag(){return false;}
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
@@ -54,6 +55,8 @@ public class Play extends StdAbility
 
 	protected MusicalInstrument instrument=null;
     protected int steadyDown=-1;
+    protected Vector commonRoomSet=null;
+    protected Room originRoom=null;
 
 	public String instrumentName(){
 		if(instrument!=null) return instrument.name();
@@ -81,16 +84,16 @@ public class Play extends StdAbility
         if(!ID().equals("Play"))
         {
             int[] MY_INDEX=get_EXPERTISE_SET();
-            for(int i=0;i<MY_INDEX.length;i++)
+            for(int ii=0;ii<MY_INDEX.length;ii++)
             {
-                int e=MY_INDEX[i];
+                int e=MY_INDEX[ii];
                 if(CMLib.expertises().getDefinition(EXPERTISE[e]+EXPERTISE_STAGES)==null)
                     for(int s=1;s<=EXPERTISE_STAGES;s++)
-                        CMLib.expertises().addDefinition(EXPERTISE[e]+i,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(i),
-                                ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(i-1)+"\""),
-                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+i)
-                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+i):"")
-                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
+                        CMLib.expertises().addDefinition(EXPERTISE[e]+s,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(s),
+                                ((s==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(s-1)+"\""),
+                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+s)
+                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+s):"")
+                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*s))
                                    ,0,1,0,0,0);
             }
             super.registerExpertiseUsage(get_EXPERTISE_NAMES(),EXPERTISE_STAGES,false,null);
@@ -181,31 +184,52 @@ public class Play extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))
+		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
 			return false;
 
+		MOB mob=(MOB)affected;
+		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
+		{
+			Vector V=getInvokerScopeRoomSet(null);
+			commonRoomSet.clear();
+			commonRoomSet.addAll(V);
+			originRoom=invoker().location();
+		}
+		else
+		if((abstractQuality()==Ability.QUALITY_MALICIOUS)
+		&&(!maliciousButNotAggressiveFlag())
+		&&(!mob.amDead())
+		&&(mob.isMonster())
+		&&(!mob.isInCombat())
+		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
+		{
+			if((mob.location()!=originRoom)
+			&&(CMLib.flags().isMobile(mob)))
+			{
+				int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
+				if(dir>=0)
+					CMLib.tracking().move(mob,dir,false,false);
+			}
+			else
+			if((mob.location().isInhabitant(invoker()))
+			&&(CMLib.flags().canBeSeenBy(invoker(),mob)))
+				CMLib.combat().postAttack(mob,invoker(),mob.fetchWieldedItem());
+		}
+		
+		if((invoker==null)
+		||(invoker.fetchEffect(ID())==null)
+		||(commonRoomSet==null)
+		||(!commonRoomSet.contains(mob.location())))
+			return possiblyUnplay(mob,null,false);
+		
 		if(skipStandardSongTick())
 			return true;
 
-		MOB mob=(MOB)affected;
-		if(mob==null)
-			return false;
-
 		if((invoker==null)
-		||(invoker.fetchEffect(ID())==null)
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
-		||(invoker.location()!=mob.location())
 		||(!CMLib.flags().aliveAwakeMobileUnbound(invoker,true))
 		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
-		{
-            if(steadyDown<0) steadyDown=(invoker()!=null)?super.getExpertiseLevel(invoker(),"RYTHMICTUNE"):0;
-            if(steadyDown==0)
-            {
-                unplay(mob,null,false);
-                return false;
-            }
-            steadyDown--;
-		}
+			return possiblyUnplay(mob,null,false);
 		return true;
 	}
 
@@ -284,6 +308,101 @@ public class Play extends StdAbility
 		return instrument;
 	}
 
+    protected Vector getInvokerScopeRoomSet(MOB backupMob)
+    {
+    	if((invoker()==null)
+    	||(invoker().location()==null))
+    		if((backupMob!=null)&&(backupMob.location()!=null))
+	    		 return CMParms.makeVector(backupMob.location());
+    		else
+    			return new Vector();
+    	int depth=super.getExpertiseLevel(invoker(),"RESOUNDINGTUNE");
+    	if(depth==0) return CMParms.makeVector(invoker().location());
+    	Vector rooms=new Vector();
+    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, true, false, false, true, false, null, depth, null);
+    	if(!rooms.contains(invoker().location()))
+    		rooms.addElement(invoker().location());
+    	return rooms;
+    }
+    
+	protected boolean possiblyUnplay(MOB mob, MOB invoker, boolean notMe)
+	{
+        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getExpertiseLevel(invoker(),"RYTHMICTUNE"):0;
+        if(steadyDown==0)
+        {
+            unplay(mob,invoker,notMe);
+            return false;
+        }
+        mob.tell("The "+songOf()+" lingers in your head ("+steadyDown+").");
+        steadyDown--;
+        return true;
+	}
+
+	protected int getCorrectDirToOriginRoom(Room R, int v)
+	{
+		if(v<0) return -1;
+		int dir=-1;
+		Room R2=null;
+		Exit E2=null;
+		int lowest=v;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			R2=R.getRoomInDir(d);
+			E2=R.getExitInDir(d);
+			if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
+			{
+				int dx=commonRoomSet.indexOf(R2);
+				if((dx>=0)&&(dx<lowest))
+				{
+					lowest=dx;
+					dir=d;
+				}
+			}
+		}
+		return dir;
+	}
+	
+	protected String getCorrectMsgString(Room R, String str, int v)
+	{
+		String msgStr=null;
+		if(R==originRoom)
+			msgStr=str;
+		else
+		{
+			int dir=this.getCorrectDirToOriginRoom(R,v);
+			if(dir>=0)
+				msgStr="^SYou hear the "+songOf()+" being played "+Directions.getInDirectionName(dir)+"!^?";
+			else
+				msgStr="^SYou hear the "+songOf()+" being played nearby!^?";
+		}
+		return msgStr;
+	}
+	
+	public HashSet sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
+	{
+		if(originRoom==R)
+			R.send(mob,msg);
+		else
+			R.sendOthers(mob,msg);
+		if(R!=originRoom)
+			mob.setLocation(R);
+		HashSet h=properTargets(mob,givenTarget,auto);
+		if(R!=originRoom)
+		{
+			R.delInhabitant(mob);
+			mob.setLocation(originRoom);
+		}
+		if(h==null) return null;
+		if(R==originRoom)
+		{
+			if(!h.contains(mob)) 
+				h.add(mob);
+		}
+		else
+			h.remove(mob);
+		return h;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;
@@ -347,61 +466,66 @@ public class Play extends StdAbility
 		unplay(mob,mob,true);
 		if(success)
 		{
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
-
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				mob.location().send(mob,msg);
-				invoker=mob;
-				Play newOne=(Play)this.copyOf();
-
-				HashSet h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-				if(!h.contains(mob)) h.add(mob);
-
-				for(Iterator f=h.iterator();f.hasNext();)
+				Room R=(Room)commonRoomSet.elementAt(v);
+				String msgStr=getCorrectMsgString(R,str,v);
+				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				if(R.okMessage(mob,msg))
 				{
-					MOB follower=(MOB)f.next();
-
-					// malicious songs must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-					if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
-						affectType=affectType|CMMsg.MASK_MALICIOUS;
-
-					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					Play newOne=(Play)this.copyOf();
+	
+					HashSet h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					if(h==null) continue;
+	
+					for(Iterator f=h.iterator();f.hasNext();)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						CMMsg msg3=msg2;
-						if((mindAttack())&&(follower!=mob))
-							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
+						MOB follower=(MOB)f.next();
+						Room R2=follower.location();
+	
+						// malicious songs must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
+							affectType=affectType|CMMsg.MASK_MALICIOUS;
+	
+						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							follower.location().send(follower,msg2);
-							if(msg2.value()<=0)
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg3=msg2;
+							if((mindAttack())&&(follower!=mob))
+								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
-								follower.location().send(follower,msg3);
-								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+								R2.send(follower,msg2);
+								if(msg2.value()<=0)
 								{
-									if(persistantSong())
+									R2.send(follower,msg3);
+									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 									{
-										newOne.setSavable(false);
-										if(follower!=mob)
-											follower.addEffect((Ability)newOne.copyOf());
+										if(persistantSong())
+										{
+											newOne.setSavable(false);
+											if(follower!=mob)
+												follower.addEffect((Ability)newOne.copyOf());
+											else
+												follower.addEffect(newOne);
+										}
 										else
-											follower.addEffect(newOne);
+											inpersistantAffect(follower);
 									}
-									else
-										inpersistantAffect(follower);
 								}
 							}
 						}
 					}
+					R.recoverRoomStats();
 				}
-				mob.location().recoverRoomStats();
 			}
 		}
 		else
