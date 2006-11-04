@@ -155,10 +155,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		            foundAblesH.put(A.ID(),A);
 		    }
 		}
-		bundle.setName("a "+totalWeight+"# "+RawMaterial.RESOURCE_DESCS[bundle.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+" bundle");
-		bundle.setDisplayText(bundle.name()+" is here.");
 		bundle.baseEnvStats().setWeight(totalWeight);
 		bundle.setBaseValue(totalValue);
+        adjustResourceName(bundle);
 		if(bundle instanceof Food)
 		    ((Food)bundle).setNourishment(totalNourishment);
 		if(bundle instanceof Drink)
@@ -284,8 +283,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 {
                     I.baseEnvStats().setWeight(I.baseEnvStats().weight()-number);
                     I.setBaseValue(I.baseGoldValue()-loseValue);
-                    I.setName("a "+I.baseEnvStats().weight()+"# "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+" bundle");
-                    I.setDisplayText(I.name()+" is here.");
+                    this.adjustResourceName(I);
                     if(I instanceof Food)
                     {
                         ((Food)I).setNourishment(((Food)I).nourishment()-loseNourishment);
@@ -367,7 +365,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int material=(myResource&RawMaterial.MATERIAL_MASK);
         
 		Item I=null;
-		String name=RawMaterial.RESOURCE_DESCS[myResource&RawMaterial.RESOURCE_MASK].toLowerCase();
 		if(!noAnimals)
 		{
 			if((myResource==RawMaterial.RESOURCE_WOOL)
@@ -500,11 +497,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		case RawMaterial.MATERIAL_MITHRIL:
 		{
 			I=CMClass.getItem("GenResource");
-			if((myResource!=RawMaterial.RESOURCE_ADAMANTITE)
-			&&(myResource!=RawMaterial.RESOURCE_BRASS)
-			&&(myResource!=RawMaterial.RESOURCE_BRONZE)
-			&&(myResource!=RawMaterial.RESOURCE_STEEL))
-				name=name+" ore";
 			break;
 		}
 		}
@@ -517,11 +509,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I.baseEnvStats().setWeight(1);
 			if(I instanceof RawMaterial)
 				((RawMaterial)I).setDomainSource(localeCode);
-			if(I instanceof Drink)
-				I.setName("some "+name);
-			else
-				I.setName("a pound of "+name);
-			I.setDisplayText("some "+name+" sits here.");
+            adjustResourceName(I);
 			I.setDescription("");
 			I.recoverEnvStats();
 			return I;
@@ -529,10 +517,41 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return null;
 	}
 	
+    
+    protected void adjustResourceName(Item I)
+    {
+        String name=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+        if((I.material()==RawMaterial.MATERIAL_MITHRIL)
+        ||(I.material()==RawMaterial.MATERIAL_METAL))
+        {
+            if((I.material()!=RawMaterial.RESOURCE_ADAMANTITE)
+            &&(I.material()!=RawMaterial.RESOURCE_BRASS)
+            &&(I.material()!=RawMaterial.RESOURCE_BRONZE)
+            &&(I.material()!=RawMaterial.RESOURCE_STEEL))
+                name=name+" ore";
+        }
+        
+        if(I.baseEnvStats().weight()==1)
+        {
+            if(I instanceof Drink)
+                I.setName("some "+name);
+            else
+                I.setName("a pound of "+name);
+            I.setDisplayText("some "+name+" sits here.");
+        }
+        else
+        {
+            if(I instanceof Drink)
+                I.setName("a "+I.baseEnvStats().weight()+"# pool of "+name);
+            else
+                I.setName("a "+I.baseEnvStats().weight()+"# "+name+" bundle");
+            I.setDisplayText(I.name()+" is here.");
+        }
+    }
+    
 	public Item makeItemResource(int type)
 	{
 		Item I=null;
-		String name=RawMaterial.RESOURCE_DESCS[type&RawMaterial.RESOURCE_MASK].toLowerCase();
 		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 		||((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 			I=CMClass.getItem("GenFoodResource");
@@ -541,15 +560,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I=CMClass.getItem("GenLiquidResource");
 		else
 			I=CMClass.getItem("GenResource");
-		if(I instanceof Drink)
-			I.setName("some "+name);
-		else
-			I.setName("a pound of "+name);
-		I.setDisplayText("some "+name+" sits here.");
+        I.baseEnvStats().setWeight(1);
+        adjustResourceName(I);
 		I.setDescription("");
 		I.setMaterial(type);
 		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
-		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
 		return I;
 	}
@@ -569,8 +584,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         int lostValue=0;
         if((V==null)||(V.size()==0)) return 0;
         
-        Environmental lastE1=null;
-        Environmental lastE2=null;
         if((howMuch>0)||(otherMaterial>0))
         for(int i=V.size()-1;i>=0;i--)
         {
@@ -588,23 +601,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 if(I.baseEnvStats().weight()>1)
                 {
                     I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
-                    Environmental E=null;
-                    for(int x=0;x<I.baseEnvStats().weight();x++)
-                    {
-                        E=CMLib.materials().makeResource(otherMaterial,-1,true);
-                        if(E instanceof Item)
-                        {
-                        	if(addTo instanceof Room)
-                        		((Room)addTo).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
-                        	else
-                        	if(addTo instanceof MOB)
-                        		((MOB)addTo).addInventory((Item)E);
-                        }
-                    }
+                    Environmental E=CMLib.materials().makeResource(otherMaterial,-1,true);
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
-                    if(E!=null) lastE1=E;
-                    ((RawMaterial)I).quickDestroy(); 
+                    adjustResourceName(I);
                 }
                 else
                 {
@@ -625,23 +625,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 if(I.baseEnvStats().weight()>howMuch)
                 {
                     I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
-                    Environmental E=null;
-                    for(int x=0;x<I.baseEnvStats().weight();x++)
-                    {
-                        E=CMLib.materials().makeResource(finalMaterial,-1,true);
-                        if(E instanceof Item)
-                        {
-                        	if(addTo instanceof Room)
-                        		((Room)addTo).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
-                        	else
-                        	if(addTo instanceof MOB)
-                        		((MOB)addTo).addInventory((Item)E);
-                        }
-                    }
+                    Environmental E=CMLib.materials().makeResource(finalMaterial,-1,true);
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
-                    if(E!=null) lastE2=E;
-                    ((RawMaterial)I).quickDestroy();
+                    adjustResourceName(I);
                     howMuch=0;
                 }
                 else
@@ -657,10 +644,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 }
             }
         }
-        if((lastE1 instanceof Item)&&(!((Item)lastE1).amDestroyed()))
-            CMLib.materials().rebundle((Item)lastE1);
-        if((lastE2 instanceof Item)&&(!((Item)lastE2).amDestroyed()))
-            CMLib.materials().rebundle((Item)lastE2);
         return lostValue;
     }
     

@@ -45,7 +45,6 @@ public class Song_Ode extends Song
 	protected StringBuffer trail=null;
 	protected String songOf(){ return "Ode"+((whom==null)?"":" to "+whom.name())+"";}
 	protected boolean skipStandardSongTick(){return (song==null);}
-	protected boolean skipSimpleStandardSongTickToo(){return (song==null);}
 	protected static final Hashtable cmds=new Hashtable();
 	protected static final String[][] stuff={
 		{""+CMMsg.TYP_EAT,"s","h","<O-NAME> knows our hunger pains!"},
@@ -374,6 +373,9 @@ public class Song_Ode extends Song
 			String key=(String)e.nextElement();
 			if(CMLib.english().containsString(key,name))
 			{
+                invoker=mob;
+                originRoom=mob.location();
+                commonRoomSet=getInvokerScopeRoomSet(null);
 				name=key;
 				song=(String)H.get(name);
 				benefits=null;
@@ -402,6 +404,9 @@ public class Song_Ode extends Song
 		if(success)
 		{
 			unsing(mob,mob,false);
+            invoker=mob;
+            originRoom=mob.location();
+            commonRoomSet=getInvokerScopeRoomSet(null);
 			whom=target;
 			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
 			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
