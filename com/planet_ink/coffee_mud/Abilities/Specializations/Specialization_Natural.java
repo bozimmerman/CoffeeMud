@@ -41,18 +41,6 @@ public class Specialization_Natural extends Specialization_Weapon
 		super();
 		weaponType=Weapon.CLASS_NATURAL;
 	}
-	private final static String[] EXPERTISES={"UNARMEDSTRIKE","UNARMEDSLICE","UNARMEDPIERCE","UNARMEDBASH"};
-	private final static String[] EXPERTISE_NAMES={"Unarmed Striking","Unarmed Slicing","Unarmed Piercing","Unarmed Bashing"};
-	private final static String[] EXPERTISE_STATS={"DEX","STR","STR","STR"};
-	private final static int[] EXPERTISE_LEVELS={24,27,27,27};
-	private final int[] EXPERTISE_DAMAGE_TYPE={0,Weapon.TYPE_SLASHING,Weapon.TYPE_PIERCING,Weapon.TYPE_BASHING};
-	protected String[] EXPERTISES(){return EXPERTISES;}
-	protected String[] EXPERTISES_NAMES(){return EXPERTISE_NAMES;}
-	protected String[] EXPERTISE_STATS(){return EXPERTISE_STATS;}
-	protected int[] EXPERTISE_LEVELS(){return EXPERTISE_LEVELS;}
-	protected int[] EXPERTISE_DAMAGE_TYPE(){return EXPERTISE_DAMAGE_TYPE;}
-
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((activated)
@@ -74,7 +62,7 @@ public class Specialization_Natural extends Specialization_Weapon
 			activated=true;
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 					+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
-					+(10*(getXLevel((MOB)affected,0))));
+					+(10*(getXLEVELLevel((MOB)affected))));
 		}
 	}
 }

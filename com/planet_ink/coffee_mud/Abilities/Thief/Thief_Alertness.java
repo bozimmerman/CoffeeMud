@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Alertness extends AlertThiefSkill
+public class Thief_Alertness extends ThiefSkill
 {
 	public String ID() { return "Thief_Alertness"; }
 	public String name(){ return "Alertness";}
@@ -41,6 +41,7 @@ public class Thief_Alertness extends AlertThiefSkill
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ALERTNESS"};
+    public int classificationCode(){    return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
 	Room room=null;
@@ -71,7 +72,7 @@ public class Thief_Alertness extends AlertThiefSkill
 				}
 				if(choices!=null)
 				{
-					int alert=getXLevel(mob);
+					int alert=getXLEVELLevel(mob);
 					if(alert<=0)alert=1;
 					while((alert>0)&&(choices.size()>0))
 					{

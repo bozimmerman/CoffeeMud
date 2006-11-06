@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -44,11 +45,6 @@ public class Fighter_ShieldBlock extends FighterSkill
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){ return Ability.ACODE_SKILL; }
 	private boolean enabledFlag=true;
-    public void initializeClass()
-    {
-    	super.initializeClass();
-    	super.initializeXExpertiseClass(this,"SHIELDUSE","Shield Using","STR",18,26);
-    }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -88,7 +84,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 			{
 				stats.setArmor(stats.armor()+(int)Math.round(
 					CMath.mul(shield.envStats().armor(),
-						CMath.mul(super.getExpertiseLevel((MOB)affected,"SHIELDUSE"),0.5))));
+						CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
 			}
 		}
 

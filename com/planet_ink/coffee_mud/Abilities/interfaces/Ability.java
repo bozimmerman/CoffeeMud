@@ -631,10 +631,24 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_ARCHON=9<<5;
 	/** constant mask returned by classificationCode() designating this ability as being Singing @see Ability#classificationCode() */
 	public static final int DOMAIN_SINGING=10<<5;
-	/** constant mask returned by classificationCode() designating this ability as being Singing @see Ability#classificationCode() */
+	/** constant mask returned by classificationCode() designating this ability as being Dancing @see Ability#classificationCode() */
 	public static final int DOMAIN_DANCING=11<<5;
-	/** constant mask returned by classificationCode() designating this ability as being Singing @see Ability#classificationCode() */
+	/** constant mask returned by classificationCode() designating this ability as being Playing @see Ability#classificationCode() */
 	public static final int DOMAIN_PLAYING=12<<5;
+    /** constant mask returned by classificationCode() designating this ability as being Deceptive @see Ability#classificationCode() */
+    public static final int DOMAIN_DECEPTIVE=13<<5;
+    /** constant mask returned by classificationCode() designating this ability as being Detrapping @see Ability#classificationCode() */
+    public static final int DOMAIN_DETRAP=14<<5;
+    /** constant mask returned by classificationCode() designating this ability as being RopeUsing @see Ability#classificationCode() */
+    public static final int DOMAIN_ROPEUSE=15<<5;
+    /** constant mask returned by classificationCode() designating this ability as being Stealing @see Ability#classificationCode() */
+    public static final int DOMAIN_STEALING=16<<5;
+    /** constant mask returned by classificationCode() designating this ability as being Stealthy @see Ability#classificationCode() */
+    public static final int DOMAIN_STEALTHY=17<<5;
+    /** constant mask returned by classificationCode() designating this ability as being Trapping @see Ability#classificationCode() */
+    public static final int DOMAIN_TRAPPING=18<<5;
+    /** constant mask returned by classificationCode() designating this ability as being Alert @see Ability#classificationCode() */
+    public static final int DOMAIN_ALERT=19<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -642,14 +656,18 @@ public interface Ability extends Environmental
 		"NOTHING","DIVINATION","ABJURATION","ILLUSION",
 		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION",
 		"ENCHANTMENT/CHARM","CONJURATION", "ARCHON",
-		"SINGING","DANCING","PLAYING"
+		"SINGING","DANCING","PLAYING","DECEPTIVE",
+        "DETRAPPING","ROPEUSING","STEALING","STEALTHY",
+        "TRAPPING","ALERT"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
 		"","Divining","Abjuring","Illusing",
 		"In/Evoking","Altering","Transmuting",
 		"Enchanting","Conjuring", "Creating",
-		"Singing", "Dancing","Playing"
+		"Singing", "Dancing","Playing","Deceptive",
+        "DeTrapping","Rope Using","Stealing","Stealthing",
+        "Trapping","Watching"
 	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */
@@ -692,6 +710,8 @@ public interface Ability extends Environmental
 	public static final int FLAG_GATHERING=524288;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see Ability#flags() */
 	public static final int FLAG_NOORDERING=1048576;
+    /** constant mask for the flags() method designating that this ability is a clan magic @see Ability#flags() */
+    public static final int FLAG_CLANMAGIC=1048576*2;
 	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
@@ -715,7 +735,8 @@ public interface Ability extends Environmental
 	    "CRAFTING",
 	    "MOONCHANGING",
 	    "GATHERING",
-	    "NOORDERING"
+	    "NOORDERING",
+        "CLANMAGIC"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see Ability#abstractQuality()*/

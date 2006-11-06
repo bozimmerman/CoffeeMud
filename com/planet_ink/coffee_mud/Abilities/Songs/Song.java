@@ -41,7 +41,6 @@ public class Song extends StdAbility
 	private static final String[] triggerStrings = {"SING","SI"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_SINGING;}
-	public int maxRange(){return 2+(10*super.getExpertiseLevel(invoker(),"RESOUNDSING"));}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 
 	protected boolean skipStandardSongInvoke(){return false;}
@@ -54,97 +53,16 @@ public class Song extends StdAbility
     protected Vector commonRoomSet=null;
     protected Room originRoom=null;
 
-    private static final int EXPERTISE_STAGES=10;
-    private static final String[] EXPERTISE={"SHARPSING","REJOICESING","RESOUNDSING","ECHOSING"};
-    private static final int[] EXPERTISE_SET_NADA={2,3};
-    private static final int[] EXPERTISE_SET_MALICIOUS={0,2,3};
-    private static final int[] EXPERTISE_SET_BENEFICIAL={1,2,3};
-    private static String[] EXPERTISE_NAMES_NADA=null;
-    private static String[] EXPERTISE_NAMES_MALICIOUS=null;
-    private static String[] EXPERTISE_NAMES_BENEFICIAL=null;
-    private static final String[] EXPERTISE_NAME={"Sharp Singing","Rejoicing Singing","Resounding Singing","Echoed Singing"};
-    private static final String[][] EXPERTISE_STATS={{"CHA",""},
-                                                     {"CHA",""},
-                                                     {"CHA",""},
-                                                     {"CHA",""}
-    };
-    private static final int[] EXPERTISE_LEVELS={14,16,18,19};
-    public void initializeClass()
-    {
-        super.initializeClass();
-        if(!ID().equals("Song"))
-        {
-            int[] MY_INDEX=get_EXPERTISE_SET();
-            for(int ii=0;ii<MY_INDEX.length;ii++)
-            {
-                int e=MY_INDEX[ii];
-                if(CMLib.expertises().getDefinition(EXPERTISE[e]+EXPERTISE_STAGES)==null)
-                    for(int s=1;s<=EXPERTISE_STAGES;s++)
-                        CMLib.expertises().addDefinition(EXPERTISE[e]+s,EXPERTISE_NAME[e]+" "+CMath.convertToRoman(s),
-                                ((s==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+(s-1)+"\""),
-                                    " +"+EXPERTISE_STATS[e][0]+" "+(16+s)
-                                   +((EXPERTISE_STATS[e][1].length()>0)?" +"+EXPERTISE_STATS[e][1]+" "+(16+s):"")
-                                   +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*s))
-                                   ,0,1,0,0,0);
-            }
-            super.registerExpertiseUsage(get_EXPERTISE_NAMES(),EXPERTISE_STAGES,false,null);
-        }
-    }
-    protected int getXLevel(MOB mob){
-    	if(super.abstractQuality()==Ability.QUALITY_MALICIOUS)
-	    	return getExpertiseLevel(mob,EXPERTISE[0]);
-    	return getExpertiseLevel(mob,EXPERTISE[1]);
-    }
     
-	public int singerQClassLevel()
+	public int adjustedLevel(MOB mob, int asLevel)
 	{
-		if(invoker()==null) return CMLib.ableMapper().lowestQualifyingLevel(ID());
-		int x=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
-		if(x<=0) x=CMLib.ableMapper().lowestQualifyingLevel(ID());
+        int level=super.adjustedLevel(mob,asLevel);
 		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
 		if(charisma>10)
-			return x+(charisma/3)+(getXLevel(invoker())*2);
-		return x+(getXLevel(invoker())*2);
+			return level+(charisma/3);
+		return level;
 	}
 
-    protected int[] get_EXPERTISE_SET(){
-        if(!HAS_QUANTITATIVE_ASPECT())
-            return EXPERTISE_SET_NADA;
-        switch(super.abstractQuality())
-        {
-        case Ability.QUALITY_MALICIOUS:
-            return EXPERTISE_SET_MALICIOUS;     
-        default:
-            return EXPERTISE_SET_BENEFICIAL;     
-        }
-    }
-    
-    protected String[] get_EXPERTISE_NAMES(){
-        String[] MINE=null;
-        int[] MY_SET=get_EXPERTISE_SET();
-        if(!HAS_QUANTITATIVE_ASPECT())
-        {
-            if(EXPERTISE_NAMES_NADA==null) EXPERTISE_NAMES_NADA=new String[MY_SET.length];
-            MINE=EXPERTISE_NAMES_NADA;
-        }
-        else
-        switch(super.abstractQuality())
-        {
-        case Ability.QUALITY_MALICIOUS:
-            if(EXPERTISE_NAMES_MALICIOUS==null) EXPERTISE_NAMES_MALICIOUS=new String[MY_SET.length];
-            MINE=EXPERTISE_NAMES_MALICIOUS;
-            break;
-        default:
-            if(EXPERTISE_NAMES_BENEFICIAL==null) EXPERTISE_NAMES_BENEFICIAL=new String[MY_SET.length];
-            MINE=EXPERTISE_NAMES_BENEFICIAL;
-            break;
-        }
-        if(MINE[0]!=null) return MINE;
-        for(int i=0;i<MY_SET.length;i++)
-            MINE[i]=EXPERTISE[MY_SET[i]];
-        return MINE;
-    }
-    
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -179,7 +97,7 @@ public class Song extends StdAbility
 		}
 		else
 		if((abstractQuality()==Ability.QUALITY_MALICIOUS)
-		&&(!this.maliciousButNotAggressiveFlag())
+		&&(!maliciousButNotAggressiveFlag())
 		&&(!mob.amDead())
 		&&(mob.isMonster())
 		&&(!mob.isInCombat())
@@ -235,11 +153,12 @@ public class Song extends StdAbility
     {
     	if((invoker()==null)
     	||(invoker().location()==null))
+        {
     		if((backupMob!=null)&&(backupMob.location()!=null))
 	    		 return CMParms.makeVector(backupMob.location());
-    		else
-    			return new Vector();
-    	int depth=super.getExpertiseLevel(invoker(),"RESOUNDSING");
+			return new Vector();
+        }
+    	int depth=super.getXMAXRANGELevel(invoker());
     	if(depth==0) return CMParms.makeVector(invoker().location());
     	Vector rooms=new Vector();
     	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, true, false, false, true, false, null, depth, null);
@@ -250,7 +169,7 @@ public class Song extends StdAbility
     
 	protected boolean possiblyUnsing(MOB mob, MOB invoker, boolean notMe)
 	{
-        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getExpertiseLevel(invoker(),"ECHOSING"):0;
+        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0;
         if(steadyDown==0)
         {
             unsing(mob,invoker,notMe);

@@ -30,12 +30,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Footlocks extends RopeUseThiefSkill
+public class Thief_Footlocks extends ThiefSkill
 {
 	public String ID() { return "Thief_Footlocks"; }
 	public String name(){ return "Footlocks";}
 	public String displayText(){ return "(Footlocked)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ROPEUSE;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"FOOTLOCK"};
@@ -54,7 +55,7 @@ public class Thief_Footlocks extends RopeUseThiefSkill
 
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-(getXLevel(invoker())*3)))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-(getXLEVELLevel(mob)*3)))
 		&&((msg.sourceMinor()==CMMsg.TYP_ADVANCE)||(msg.sourceMinor()==CMMsg.TYP_RETREAT)||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stumble(s) in the footlocks.");
@@ -116,7 +117,7 @@ public class Thief_Footlocks extends RopeUseThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+getXLevel(mob));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+getXLEVELLevel(mob)+abilityCode());
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
@@ -141,7 +142,7 @@ public class Thief_Footlocks extends RopeUseThiefSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				maliciousAffect(mob,target,asLevel,20+(getXLevel(mob)*3),-1);
+				maliciousAffect(mob,target,asLevel,20+(getXLEVELLevel(mob)*3),-1);
 				Ability A=(Thief_Footlocks)target.fetchEffect(ID());
 				if((A!=null)&&(msg.value()<=0))
 				{

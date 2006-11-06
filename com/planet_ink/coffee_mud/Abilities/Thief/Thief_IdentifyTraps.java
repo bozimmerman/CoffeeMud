@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_IdentifyTraps extends AlertThiefSkill
+public class Thief_IdentifyTraps extends ThiefSkill
 {
     public String ID() { return "Thief_IdentifyTraps"; }
     public String name(){ return "Identify Traps";}
@@ -39,6 +39,7 @@ public class Thief_IdentifyTraps extends AlertThiefSkill
     protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
     public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
     private static final String[] triggerStrings = {"IDENTIFYTRAPS","IDTRAP"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
     public String[] triggerStrings(){return triggerStrings;}
     protected Environmental lastChecked=null;
 
@@ -90,7 +91,7 @@ public class Thief_IdentifyTraps extends AlertThiefSkill
         mob.curState().setMovement(savedState.getMovement());
         if(!detected)return false;
         
-        boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLevel(mob)*5))
+        boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLEVELLevel(mob)*5))
                                              -unlockThis.envStats().level())*3),auto);
         Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
         if(unlockThis instanceof Exit)

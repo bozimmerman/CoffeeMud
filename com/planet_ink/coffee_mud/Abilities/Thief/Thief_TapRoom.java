@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_TapRoom extends AlertThiefSkill
+public class Thief_TapRoom extends ThiefSkill
 {
 	public String ID() { return "Thief_TapRoom"; }
 	public String name(){ return "Tap Room";}
@@ -40,6 +40,7 @@ public class Thief_TapRoom extends AlertThiefSkill
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"TAPROOM"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public boolean norecurse=false;
@@ -352,7 +353,7 @@ public class Thief_TapRoom extends AlertThiefSkill
 			
 			String code=""+System.currentTimeMillis()+Math.random();
 			Thief_TapRoom TR=(Thief_TapRoom)copyOf();
-			int level=1+(adjustedLevel(mob,asLevel)/5)+(getXLevel(mob)*5);
+			int level=1+(adjustedLevel(mob,asLevel)/5)+(getXLEVELLevel(mob)*5);
 			TR.setInvoker(mob);
 			TR.setMiscText("SRC;"+CMLib.map().getExtendedRoomID(target)+";"+mob.Name()+";"+level+";"+code);
 			cups[0].addNonUninvokableEffect(TR);

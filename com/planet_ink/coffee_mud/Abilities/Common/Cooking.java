@@ -68,18 +68,6 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		verb=cookWord();
 	}
 
-    private static final int EXPERTISE_STAGES=3; 
-    private static final String[] EXPERTISE={"HOMECOOKING"};
-    private static final String[] EXPERTISE_NAME={"Home Cooking"};
-    public void initializeClass()
-    {
-        super.initializeClass();
-        if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
-            for(int i=1;i<=EXPERTISE_STAGES;i++)
-                CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),"","+WIS "+(13+i),0,1,0,0,0);
-        registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
-    }
-	
 	public boolean isMineForCooking(MOB mob, Container cooking)
 	{
 		if(mob.isMine(cooking)) 
@@ -374,7 +362,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 	public int homeCookValue(MOB mob, int multiplyer)
 	{
-		int hc=getExpertiseLevel(mob,"HOMECOOKING");
+		int hc=getX1Level(mob);
 		return hc*hc*multiplyer;
 	}
 	

@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_RemoveTraps extends TrapDisablingThiefSkill
+public class Thief_RemoveTraps extends ThiefSkill
 {
 	public String ID() { return "Thief_RemoveTraps"; }
 	public String name(){ return "Remove Traps";}
@@ -41,6 +41,7 @@ public class Thief_RemoveTraps extends TrapDisablingThiefSkill
 	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental lastChecked=null;
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -65,7 +66,7 @@ public class Thief_RemoveTraps extends TrapDisablingThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLevel(mob)*2))
+		boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLEVELLevel(mob)*2))
 											 -unlockThis.envStats().level())*3),auto);
 		Vector permSetV=new Vector();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);

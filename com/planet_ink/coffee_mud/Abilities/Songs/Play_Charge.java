@@ -46,8 +46,8 @@ public class Play_Charge extends Play
 		Ability A=CMClass.getAbility("Fighter_Charge");
 		if(A!=null)
         {
-            A.setAbilityCode(4*getXLevel(invoker()));
-            A.invoke(mob,chcommands,null,true,playerQClassLevel());
+            A.setAbilityCode(4*getXLEVELLevel(invoker()));
+            A.invoke(mob,chcommands,null,true,adjustedLevel(invoker(),0));
         }
 	}
 

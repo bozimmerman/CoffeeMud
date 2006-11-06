@@ -31,12 +31,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_MakeBomb extends TrappingThiefSkill
+public class Thief_MakeBomb extends ThiefSkill
 {
 	public String ID() { return "Thief_MakeBomb"; }
 	public String name(){ return "Make Bombs";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"BOMB"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -46,7 +47,7 @@ public class Thief_MakeBomb extends TrappingThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLevel(mob));
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -101,7 +102,7 @@ public class Thief_MakeBomb extends TrappingThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+((mob.envStats().level()+(getXLevel(mob)*3)
+		boolean success=proficiencyCheck(mob,+((mob.envStats().level()+(getXLEVELLevel(mob)*3)
 											 -trapThis.envStats().level())*3),auto);
 		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
@@ -122,13 +123,13 @@ public class Thief_MakeBomb extends TrappingThiefSkill
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
+				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
 					T.spring(mob);
 				}

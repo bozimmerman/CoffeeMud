@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Evesdrop extends AlertThiefSkill
+public class Thief_Evesdrop extends ThiefSkill
 {
 	public String ID() { return "Thief_Evesdrop"; }
 	public String name(){ return "Evesdrop";}
@@ -40,6 +40,7 @@ public class Thief_Evesdrop extends AlertThiefSkill
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"EVESDROP"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -119,7 +120,7 @@ public class Thief_Evesdrop extends AlertThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getXLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
@@ -135,7 +136,7 @@ public class Thief_Evesdrop extends AlertThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,adjustedLevel(mob,0)+(getXLevel(mob)*10));
+				beneficialAffect(mob,target,asLevel,adjustedLevel(mob,0));
 			}
 		}
 		return success;

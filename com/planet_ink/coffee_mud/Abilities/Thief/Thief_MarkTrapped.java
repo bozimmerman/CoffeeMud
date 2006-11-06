@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_MarkTrapped extends TrapDisablingThiefSkill
+public class Thief_MarkTrapped extends ThiefSkill
 {
 	public String ID() { return "Thief_MarkTrapped"; }
 	public String name(){ return "Mark Trapped";}
@@ -39,6 +39,7 @@ public class Thief_MarkTrapped extends TrapDisablingThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MARKTRAPPED"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 
@@ -83,7 +84,7 @@ public class Thief_MarkTrapped extends TrapDisablingThiefSkill
 		if(item instanceof Item)
 		{
 			if((!auto)
-			&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10))))
+			&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLEVELLevel(mob)*10))))
 			{
 				mob.tell("You aren't good enough to effectively mark anything that large.");
 				return false;

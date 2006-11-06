@@ -55,7 +55,7 @@ public class Play_March extends Play
 		if((affected instanceof MOB)&&(invoker()!=null))
 		{
 			MOB mob=(MOB)affected;
-			mob.curState().adjMovement(playerQClassLevel()/4,mob.maxState());
+			mob.curState().adjMovement(adjustedLevel(invoker(),0)/4,mob.maxState());
 		}
 		return true;
 	}

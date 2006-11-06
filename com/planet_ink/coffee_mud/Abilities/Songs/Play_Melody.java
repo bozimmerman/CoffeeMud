@@ -44,7 +44,7 @@ public class Play_Melody extends Play
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)
-										-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+(playerQClassLevel()*2)));
+										-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+(adjustedLevel(invoker(),0)*2)));
 	}
 }
 

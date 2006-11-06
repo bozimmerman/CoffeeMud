@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Autocaltrops extends TrappingThiefSkill
+public class Thief_Autocaltrops extends ThiefSkill
 {
     public String ID() { return "Thief_Autocaltrops"; }
     public String displayText() {return "(Autocaltropping)";}
     public String name(){ return "AutoCaltrops";}
     protected int canAffectCode(){return CAN_MOBS;}
     protected int canTargetCode(){return 0;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
     private static final String[] triggerStrings = {"AUTOCALTROPS"};
     public String[] triggerStrings(){return triggerStrings;}
@@ -100,7 +101,7 @@ public class Thief_Autocaltrops extends TrappingThiefSkill
         if(success)
         {
             target.tell("You will now automatically drop caltrops around when you enter a room.");
-            beneficialAffect(mob,target,asLevel,5+(3*getXLevel(mob)));
+            beneficialAffect(mob,target,asLevel,5+(3*getXLEVELLevel(mob)));
             dropem(target,target.location());
         }
         else

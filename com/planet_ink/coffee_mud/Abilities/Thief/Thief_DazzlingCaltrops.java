@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,11 +38,6 @@ public class Thief_DazzlingCaltrops extends Thief_Caltrops
     private static final String[] triggerStrings = {"DAZZLINGCALTROPS"};
     public String[] triggerStrings(){return triggerStrings;}
     public String caltropTypeName(){return "dazzling ";}
-    public void initializeClass()
-    {
-        super.initializeClass();
-        super.initializeMagekillerClass(this);
-    }
 
     public void spring(MOB mob)
     {
@@ -50,7 +46,7 @@ public class Thief_DazzlingCaltrops extends Thief_Caltrops
         else
         if(mob.curState().getMovement()>6)
         {
-            mob.curState().adjMana(CMLib.dice().roll(3+super.getExpertiseLevel(invoker(),"MAGEKILLER"),6,3),mob.maxState());
+            mob.curState().adjMana(CMLib.dice().roll(3+getX1Level(mob),6,3),mob.maxState());
             mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground sparkle and confuse <T-NAME>");
         }
         // does not set sprung flag -- as this trap never goes out of use

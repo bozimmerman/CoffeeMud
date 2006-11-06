@@ -45,7 +45,7 @@ public class Dance_Waltz extends Dance
 		if(statadd==null)
 		{
 			statadd=new int[CharStats.NUM_BASE_STATS];
-			int classLevel=CMLib.ableMapper().qualifyingClassLevel(invoker(),this)+(3*getXLevel(invoker()));
+			int classLevel=CMLib.ableMapper().qualifyingClassLevel(invoker(),this)+(3*getXLEVELLevel(invoker()));
 			classLevel=(classLevel+1)/9;
 			classLevel++;
 

@@ -46,8 +46,8 @@ public class Dance_Macabre extends Dance
 		super.affectEnvStats(affected,affectableStats);
 		if(activated)
 		{
-			affectableStats.setDamage(affectableStats.damage()+(prancerQClassLevel()/2));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(prancerQClassLevel()*3));
+			affectableStats.setDamage(affectableStats.damage()+(adjustedLevel(invoker(),0)/2));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(adjustedLevel(invoker(),0)*3));
 		}
 		else
 		if((affected instanceof MOB)
@@ -55,8 +55,8 @@ public class Dance_Macabre extends Dance
 		&&(((MOB)affected).getVictim().isInCombat())
 		&&(((MOB)affected).getVictim()!=affected))
 		{
-			affectableStats.setDamage(affectableStats.damage()+(prancerQClassLevel()/4));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+prancerQClassLevel());
+			affectableStats.setDamage(affectableStats.damage()+(adjustedLevel(invoker(),0)/4));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjustedLevel(invoker(),0));
 		}
 	}
 

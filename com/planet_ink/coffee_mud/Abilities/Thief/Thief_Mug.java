@@ -31,11 +31,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Mug extends StealingThiefSkill
+public class Thief_Mug extends ThiefSkill
 {
 	public String ID() { return "Thief_Mug"; }
 	public String name(){ return "Mug";}
 	protected int canAffectCode(){return 0;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"MUG"};
@@ -60,7 +61,7 @@ public class Thief_Mug extends StealingThiefSkill
 			return false;
 		}
 		String itemToSteal=CMParms.combine(commands,0);
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

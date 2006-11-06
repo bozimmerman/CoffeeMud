@@ -426,15 +426,17 @@ public class StdMOB implements MOB
 
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
+        Ability effect=null;
 		for(int a=0;a<numAllEffects();a++)
 		{
-			Ability effect=fetchEffect(a);
+			effect=fetchEffect(a);
 			if(effect!=null)
 				effect.affectCharStats(this,charStats);
 		}
+        Item item=null;
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item item=fetchInventory(i);
+			item=fetchInventory(i);
 			if(item!=null)
 				item.affectCharStats(this,charStats);
 		}

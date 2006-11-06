@@ -37,7 +37,7 @@ public class Spell_ClanDonate extends Spell
 	public String name(){return "Clan Donate";}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	protected long spellFlags(){return SFLAG_CLANMAGIC;}
+    public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
 	protected int overrideMana(){return 5;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 

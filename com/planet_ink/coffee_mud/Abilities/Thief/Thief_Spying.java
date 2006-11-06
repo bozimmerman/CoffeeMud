@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Spying extends StealthyThiefSkill
+public class Thief_Spying extends ThiefSkill
 {
 	public String ID() { return "Thief_Spying"; }
 	public String name(){ return "Spying";}
@@ -40,6 +40,7 @@ public class Thief_Spying extends StealthyThiefSkill
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"SPYING","SPY"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -114,7 +115,7 @@ public class Thief_Spying extends StealthyThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getXLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 

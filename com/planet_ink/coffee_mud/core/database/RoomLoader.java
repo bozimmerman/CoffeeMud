@@ -585,8 +585,11 @@ public class RoomLoader
 				else
 				{
 					itemNums.put(NUMID,newMOB);
-					newMOB.setStartRoom(thisRoom);
-					newMOB.setLocation(thisRoom);
+                    if(thisRoom!=null)
+                    {
+                        newMOB.setStartRoom(thisRoom);
+                        newMOB.setLocation(thisRoom);
+                    }
 					if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))
 					&&(NUMID.indexOf(MOBID+"@")>=0))
 						newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
@@ -636,11 +639,15 @@ public class RoomLoader
 				for(Enumeration i=itemNums.elements();i.hasMoreElements();)
 				{
 					Environmental E=(Environmental)i.nextElement();
-					if((debug)&&(!lastName.equals(E.Name()))){lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
+					if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
+                    {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
 					if(E instanceof Item)
 						room.addItem((Item)E);
 					else
+                    {
+                        ((MOB)E).setStartRoom(room);
 						((MOB)E).bringToLife(room,true);
+                    }
 				}
 				itemLocs=(Hashtable)stuff.get("LOCSFOR"+room.roomID());
 				mobRides=(Hashtable)stuff.get("RIDESFOR"+room.roomID());

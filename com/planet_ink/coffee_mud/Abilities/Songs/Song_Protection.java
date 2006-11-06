@@ -40,7 +40,7 @@ public class Song_Protection extends Song
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-super.singerQClassLevel());
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-super.adjustedLevel(invoker(),0));
 	}
 
 
@@ -48,7 +48,7 @@ public class Song_Protection extends Song
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-        int bonus=singerQClassLevel()*2;
+        int bonus=adjustedLevel(invoker(),0)*2;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),3.0)));
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+bonus);

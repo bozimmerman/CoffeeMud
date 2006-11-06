@@ -36,7 +36,7 @@ public class Song_Rebirth extends Song
 {
 	public String ID() { return "Song_Rebirth"; }
 	public String name(){ return "Rebirth";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 

@@ -48,7 +48,7 @@ public class Song_Mana extends Song
 		if(invoker==null) return true;
 		//int level=invoker.envStats().level();
 		//int mana=(int)Math.round(new Integer(level).doubleValue()/2.0);
-		mob.curState().adjMana((singerQClassLevel()*3),mob.maxState());
+		mob.curState().adjMana((adjustedLevel(invoker(),0)*3),mob.maxState());
 		return true;
 	}
 }

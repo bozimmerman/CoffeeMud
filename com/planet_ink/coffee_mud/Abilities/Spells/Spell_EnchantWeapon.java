@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -39,11 +40,6 @@ public class Spell_EnchantWeapon extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-    public void initializeClass()
-    {
-    	super.initializeClass();
-    	super.initializeWiseCraftingClass(this);
-    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -64,7 +60,7 @@ public class Spell_EnchantWeapon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        int experienceToLose=applyWiseCrafting(mob,50);
+        int experienceToLose=getXPCOSTAdjustment(mob,50);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 
 		boolean success=proficiencyCheck(mob,0,auto);

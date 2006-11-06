@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealWalkway extends StealthyThiefSkill
+public class Thief_ConcealWalkway extends ThiefSkill
 {
     public String ID() { return "Thief_ConcealWalkway"; }
     public String name(){ return "Conceal Walkway";}
@@ -38,6 +38,7 @@ public class Thief_ConcealWalkway extends StealthyThiefSkill
     protected int canTargetCode(){return Ability.CAN_ITEMS;}
     public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
     private static final String[] triggerStrings = {"WALKWAYCONCEAL","WALKCONCEAL","WCONCEAL","CONCEALWALKWAY"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
     public String[] triggerStrings(){return triggerStrings;}
     public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int code=Integer.MIN_VALUE;
@@ -89,7 +90,7 @@ public class Thief_ConcealWalkway extends StealthyThiefSkill
             return false;
         }
         Exit E=(Exit)chkE;
-        if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10))))
+        if((!auto)&&(E.envStats().level()>(adjustedLevel(mob,asLevel)*2)))
         {
             mob.tell("You aren't good enough to conceal that direction.");
             return false;
@@ -108,7 +109,7 @@ public class Thief_ConcealWalkway extends StealthyThiefSkill
                 mob.location().send(mob,msg);
                 Ability A=(Ability)super.copyOf();
                 A.setInvoker(mob);
-                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10)-E.envStats().level());
+                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.envStats().level());
                 Room R=mob.location();
                 if((CMLib.utensils().doesOwnThisProperty(mob,R))
                 ||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
@@ -117,7 +118,7 @@ public class Thief_ConcealWalkway extends StealthyThiefSkill
                     CMLib.database().DBUpdateExits(mob.location());
                 }
                 else
-                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)+getXLevel(mob)));
+                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)));
                 E.recoverEnvStats();
             }
         }

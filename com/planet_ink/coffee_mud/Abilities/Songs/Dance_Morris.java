@@ -43,8 +43,8 @@ public class Dance_Morris extends Dance
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()+(2*prancerQClassLevel()));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(2*prancerQClassLevel()));
+		affectableStats.setArmor(affectableStats.armor()+(2*adjustedLevel(invoker(),0)));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(2*adjustedLevel(invoker(),0)));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

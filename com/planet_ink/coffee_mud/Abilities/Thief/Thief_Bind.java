@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Bind extends RopeUseThiefSkill
+public class Thief_Bind extends ThiefSkill
 {
 	public String ID() { return "Thief_Bind"; }
 	public String name(){ return "Bind";}
@@ -39,6 +39,7 @@ public class Thief_Bind extends RopeUseThiefSkill
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ROPEUSE;}
 	private static final String[] triggerStrings = {"BIND"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int maxRange=0;
@@ -180,10 +181,10 @@ public class Thief_Bind extends RopeUseThiefSkill
 						double prof=0.0;
 						Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null) prof=CMath.div(A.proficiency(),20);
-						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level()+getXLevel(mob))*((int)Math.round(5.0+prof));
+						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level()+getXLEVELLevel(mob))*((int)Math.round(5.0+prof));
 					}
 					else
-						amountRemaining=(adjustedLevel(mob,asLevel)+getXLevel(mob))*25;
+						amountRemaining=(adjustedLevel(mob,asLevel)+getXLEVELLevel(mob))*25;
 					if((target.location()==mob.location())||(auto))
 						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 				}

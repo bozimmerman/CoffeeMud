@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -38,11 +39,6 @@ public class Spell_Duplicate extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-    public void initializeClass()
-    {
-    	super.initializeClass();
-    	super.initializeWiseCraftingClass(this);
-    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -78,7 +74,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 
 		mob.tell("You lose "+expLoss+" experience points.");
-        expLoss=applyWiseCrafting(mob,expLoss);
+        expLoss=getXPCOSTAdjustment(mob,expLoss);
 		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 
 		boolean success=proficiencyCheck(mob,0,auto);

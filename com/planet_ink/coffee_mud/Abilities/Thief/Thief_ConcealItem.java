@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealItem extends StealthyThiefSkill
+public class Thief_ConcealItem extends ThiefSkill
 {
 	public String ID() { return "Thief_ConcealItem"; }
 	public String name(){ return "Conceal Item";}
@@ -38,6 +38,7 @@ public class Thief_ConcealItem extends StealthyThiefSkill
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ITEMCONCEAL","ICONCEAL","CONCEALITEM"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
@@ -74,7 +75,7 @@ public class Thief_ConcealItem extends StealthyThiefSkill
 		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(item==null) return false;
 		
-		if((!auto)&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLevel(mob)*10))))
+		if((!auto)&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2))))
 		{
 			mob.tell("You aren't good enough to conceal anything that large.");
 			return false;

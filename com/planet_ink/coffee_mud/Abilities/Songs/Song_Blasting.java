@@ -42,6 +42,6 @@ public class Song_Blasting extends Song
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setDamage(affectableStats.damage()+1+(singerQClassLevel()/2));
+		affectableStats.setDamage(affectableStats.damage()+1+(adjustedLevel(invoker(),0)/2));
 	}
 }

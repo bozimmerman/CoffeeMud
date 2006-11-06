@@ -150,7 +150,7 @@ public class Song_Ode extends Song
 					{
 					case 'a':
 						if(ticks>25) ticks=25;
-						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+ticks+getXLevel(invoker()));
+						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+ticks+getXLEVELLevel(invoker()));
 						break;
 					default:
 						break;
@@ -177,7 +177,7 @@ public class Song_Ode extends Song
 					int stat=CMath.s_int(chk[2]);
 					if(stat<CharStats.NUM_BASE_STATS)
 						if(ticks>5) ticks=5;
-					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLevel(invoker()));
+					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLEVELLevel(invoker()));
 				}
 			}
 		}
@@ -199,15 +199,15 @@ public class Song_Ode extends Song
 					if(ticks<=0) ticks=1;
 					switch(chk[2].charAt(0))
 					{
-					case 'h': affectableStats.setHunger(affectableStats.getHunger()+ticks+getXLevel(invoker()));
+					case 'h': affectableStats.setHunger(affectableStats.getHunger()+ticks+getXLEVELLevel(invoker()));
 							  break;
-					case 't': affectableStats.setThirst(affectableStats.getThirst()+ticks+getXLevel(invoker()));
+					case 't': affectableStats.setThirst(affectableStats.getThirst()+ticks+getXLEVELLevel(invoker()));
 							  break;
-					case 'v': affectableStats.setMovement(affectableStats.getMovement()+ticks+getXLevel(invoker()));
+					case 'v': affectableStats.setMovement(affectableStats.getMovement()+ticks+getXLEVELLevel(invoker()));
 							  break;
-					case 'm': affectableStats.setMana(affectableStats.getMana()+ticks+getXLevel(invoker()));
+					case 'm': affectableStats.setMana(affectableStats.getMana()+ticks+getXLEVELLevel(invoker()));
 							  break;
-					case 'i': affectableStats.setHitPoints(affectableStats.getHitPoints()+ticks+getXLevel(invoker()));
+					case 'i': affectableStats.setHitPoints(affectableStats.getHitPoints()+ticks+getXLEVELLevel(invoker()));
 							  break;
 					}
 				}

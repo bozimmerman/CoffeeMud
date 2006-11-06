@@ -36,7 +36,7 @@ public class Dance_Swords extends Dance
 {
 	public String ID() { return "Dance_Swords"; }
 	public String name(){ return "Swords";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected String danceOf(){return name()+" Dance";}
 	protected boolean skipStandardDanceInvoke(){return true;}
@@ -131,7 +131,7 @@ public class Dance_Swords extends Dance
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
-											CMLib.dice().roll(1,affected.envStats().damage(),5+getXLevel(invoker())),
+											CMLib.dice().roll(1,affected.envStats().damage(),5+getXLEVELLevel(invoker())),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}

@@ -42,7 +42,7 @@ public class Unload extends StdCommand
 		String str=CMParms.combine(commands,1);
 		if(str.length()==0)
 		{
-			mob.tell("UNLOAD what?");
+			mob.tell("UNLOAD what? try CLASS <>, HELP, EXPERTISES, FACTION <>, ALL, <filename>");
 			return false;
 		}
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("CLASS"))
@@ -151,6 +151,13 @@ public class Unload extends StdCommand
                 mob.tell("Unknown Faction '"+which+"'.  Use LIST FACTIONS.");
                 return false;
             }
+        }
+        if("EXPERTISE".startsWith(((String)commands.elementAt(1)).toUpperCase()))
+        {
+            Resources.removeResource("skills/expertises.txt");
+            CMLib.expertises().recompileExpertises();
+            mob.tell("Expertise list unloaded and reloaded.");
+            return false;
         }
 		Vector V=Resources.findResourceKeys(str);
 		if(V.size()==0)

@@ -43,7 +43,7 @@ public class Dance_Tarantella extends Dance
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+(prancerQClassLevel()*2));
+		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+(adjustedLevel(invoker(),0)*2));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -55,7 +55,7 @@ public class Dance_Tarantella extends Dance
 		if(mob==null)
 			return false;
 
-		if((++ticks)>=(15-getXLevel(invoker())))
+		if((++ticks)>=(15-getXLEVELLevel(invoker())))
 		{
 			Vector offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
 			if(offenders!=null)

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -40,24 +41,11 @@ public class Skill_TuneInstrument extends BardSkill
 	private static final String[] triggerStrings = {"TUNEINSTRUMENT","TUNE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
-    private static final int EXPERTISE_STAGES=10;
-    private static final String[] EXPERTISE={"TUNING"};
-    private static final String[] EXPERTISE_NAME={"Tuning"};
-    public void initializeClass()
-    {
-        super.initializeClass();
-        if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
-            for(int i=1;i<=EXPERTISE_STAGES;i++)
-                CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),
-                        "","+CHA "+(16+i)+" -LEVEL +>="+(27+(5*i)),0,1,0,0,0);
-        registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
-    }
-    protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]);}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setAbility(affectableStats.ability()+2+getXLevel(invoker));
+		affectableStats.setAbility(affectableStats.ability()+2+getXLEVELLevel(invoker));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

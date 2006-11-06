@@ -54,7 +54,7 @@ public class Dance_War extends Dance
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
-        int bonus=prancerQClassLevel();
+        int bonus=adjustedLevel(invoker(),0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+bonus);
 		affectableStats.setArmor(affectableStats.armor()-bonus);
 		affectableStats.setDamage(affectableStats.damage()+(bonus/3));

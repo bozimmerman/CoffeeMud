@@ -42,7 +42,7 @@ public class Dance_Jitterbug extends Dance
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-prancerQClassLevel());
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-adjustedLevel(invoker(),0));
 	}
 
 
@@ -51,7 +51,7 @@ public class Dance_Jitterbug extends Dance
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),3.0)));
-        int bonus=prancerQClassLevel()*2;
+        int bonus=adjustedLevel(invoker(),0)*2;
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+bonus);

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -45,11 +46,6 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	String oldName="";
 	private Ability theSpell=null;
 	private static final Hashtable usage=new Hashtable();
-    public void initializeClass()
-    {
-    	super.initializeClass();
-    	super.initializeWiseCraftingClass(this);
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -273,7 +269,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
-            experienceToLose=applyWiseCrafting(mob,experienceToLose);
+            experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();

@@ -44,7 +44,7 @@ public class Song_Inebriation extends Song
 
 		if(affected==invoker) return;
 
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-singerQClassLevel());
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-adjustedLevel(invoker(),0));
 	}
 
 
@@ -54,7 +54,7 @@ public class Song_Inebriation extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)-(3+getXLevel(invoker()))));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)-(3+getXLEVELLevel(invoker()))));
 	}
 
 	public void show(MOB mob, int code, String text)

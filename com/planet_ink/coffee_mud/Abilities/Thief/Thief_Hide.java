@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Hide extends StealthyThiefSkill
+public class Thief_Hide extends ThiefSkill
 {
 	public String ID() { return "Thief_Hide"; }
 	public String name(){ return "Hide";}
@@ -39,6 +39,7 @@ public class Thief_Hide extends StealthyThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"HIDE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -165,7 +166,7 @@ public class Thief_Hide extends StealthyThiefSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
-				((Thief_Hide)newOne).bonus=getXLevel(mob)*2;
+				((Thief_Hide)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();

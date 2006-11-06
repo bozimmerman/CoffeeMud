@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Robbery extends StealingThiefSkill
+public class Thief_Robbery extends ThiefSkill
 {
 	public String ID() { return "Thief_Robbery"; }
 	public String name(){ return "Robbery";}
@@ -40,16 +40,12 @@ public class Thief_Robbery extends StealingThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public void initializeClass()
-    {
-        super.initializeClass();
-        super.initializeCautiousClass(this);
-    }
 	
 	protected int timesPicked(MOB target)
 	{
@@ -111,7 +107,7 @@ public class Thief_Robbery extends StealingThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(getXLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(getX1Level(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
@@ -145,7 +141,7 @@ public class Thief_Robbery extends StealingThiefSkill
 		}
 
 		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-(target.charStats().getStat(CharStats.STAT_WISDOM))*5)
-						+(getExpertiseLevel(mob,"CAUTIOUS")*5);
+						+(getX1Level(mob)*5);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

@@ -2634,6 +2634,8 @@ public class BaseGenerics extends StdCommand
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
+            if((behaviorstr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
+                behaviorstr=behaviorstr.substring(0,60)+"...";
 			mob.tell(getScr("BaseGenerics","expertises",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt(getScr("BaseGenerics","lessonent"),"");

@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Trap extends TrappingThiefSkill
+public class Thief_Trap extends ThiefSkill
 {
 	public String ID() { return "Thief_Trap"; }
 	public String name(){ return "Lay Traps";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
 	private static final String[] triggerStrings = {"TRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -48,7 +49,7 @@ public class Thief_Trap extends TrappingThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
 		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
@@ -130,7 +131,7 @@ public class Thief_Trap extends TrappingThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+((mob.envStats().level()+(getXLevel(mob)*3)
+		boolean success=proficiencyCheck(mob,+((mob.envStats().level()+(getXLEVELLevel(mob)*3)
 											 -trapThis.envStats().level())*3),auto);
 		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
@@ -176,13 +177,13 @@ public class Thief_Trap extends TrappingThiefSkill
 				}
 				else
 				if(theTrap!=null)
-					theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
+					theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
 				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,getXLevel(mob),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

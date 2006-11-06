@@ -46,7 +46,7 @@ public class Dance_Grass extends Dance
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 		affectableStats.setArmor(affectableStats.armor()
-								-(2*prancerQClassLevel()));
+								-(2*adjustedLevel(invoker(),0)));
 	}
 
 }

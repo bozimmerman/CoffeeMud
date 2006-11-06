@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -31,6 +32,22 @@ import java.util.*;
 */
 public interface ExpertiseLibrary extends CMObject
 {
+    public static final int XFLAG_X1=0;
+    public static final int XFLAG_X2=1;
+    public static final int XFLAG_X3=2;
+    public static final int XFLAG_X4=3;
+    public static final int XFLAG_X5=4;
+    public static final int XFLAG_LEVEL=5;
+    public static final int XFLAG_TIME=6;
+    public static final int XFLAG_MAXRANGE=7;
+    public static final int XFLAG_LOWCOST=8;
+    public static final int XFLAG_XPCOST=9;
+    public static final int NUM_XFLAGS=10;
+    public static final String[] XFLAG_CODES={
+        "X1","X2","X3","X4","X5",
+        "LEVEL","TIME","MAXRANGE","LOWCOST",
+        "XPCOST"
+    };
     public static class ExpertiseDefinition
     {
         public String ID="";
@@ -100,7 +117,7 @@ public interface ExpertiseLibrary extends CMObject
         }
     }
     
-    public void addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost);
+    public ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost);
     public void delDefinition(String ID);
     public ExpertiseDefinition getDefinition(String ID);
     public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
@@ -109,4 +126,9 @@ public interface ExpertiseLibrary extends CMObject
     public Vector myListableExpertises(MOB mob);
     public int numExpertises();
     public void recompileExpertises();
+    public String getApplicableExpertise(String ID, int code);
+    public int getApplicableExpertiseLevel(String ID, int code, MOB mob);
+    public int getExpertiseLevel(MOB mob, String expertise);
+    public int getStages(String expertiseCode);
+    public Vector getStageCodes(String expertiseCode);
 }

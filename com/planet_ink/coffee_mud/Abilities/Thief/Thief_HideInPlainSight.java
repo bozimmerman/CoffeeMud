@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_HideInPlainSight extends StealthyThiefSkill
+public class Thief_HideInPlainSight extends ThiefSkill
 {
     public String ID() { return "Thief_HideInPlainSight"; }
     public String name(){ return "Hide In Plain Sight";}
@@ -40,6 +40,7 @@ public class Thief_HideInPlainSight extends StealthyThiefSkill
     protected int canTargetCode(){return 0;}
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
     private static final String[] triggerStrings = {"HIDEINPLAINSITE","HIPS"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
     public String[] triggerStrings(){return triggerStrings;}
     public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int code=0;
@@ -114,7 +115,7 @@ public class Thief_HideInPlainSight extends StealthyThiefSkill
             if((M!=null)&&((M!=mob))&&(highestLevel<M.envStats().level()))
                 highestLevel=mob.envStats().level();
         }
-        int levelDiff=mob.envStats().level()-highestLevel-(this.getXLevel(mob)*5);
+        int levelDiff=mob.envStats().level()-highestLevel-(this.getXLEVELLevel(mob)*5);
 
         String str="You step to the side and become totally inconspicuous.";
 

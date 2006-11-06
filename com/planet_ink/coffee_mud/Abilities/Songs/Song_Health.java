@@ -41,11 +41,11 @@ public class Song_Health extends Song
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		if(invoker!=null)
-			affectedState.setHitPoints(affectedState.getHitPoints()+(singerQClassLevel()*5));
+			affectedState.setHitPoints(affectedState.getHitPoints()+(adjustedLevel(invoker(),0)*5));
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+singerQClassLevel());
+		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+adjustedLevel(invoker(),0));
 	}
 }

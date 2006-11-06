@@ -39,63 +39,19 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Enhanced Crafting Skill";}
 	
 	protected int materialAdjustments=0;
-	protected final static int NUM_STAGES=3;
-	protected final static String[] STAGESTAT={"14","18","22"};
-	protected final static int TYPE_LITECRAFT=0;
-	protected final static int TYPE_DURACRAFT=1;
-	protected final static int TYPE_QUALCRAFT=2;
-	protected final static int TYPE_LTHLCRAFT=3;
-	protected final static int TYPE_CNTRCRAFT=4;
-	protected final static String[] TYPES_CODES={"LITECRAFT",
-											     "DURACRAFT",
-											     "QUALCRAFT",
-											     "LTHLCRAFT",
-											     "CNTRCRAFT"
-	};
-	protected final static String[] TYPES_STATS={"DEX",
-											     "STR",
-											     "CHA",
-											     "CON",
-											     "INT"
-	};
-	protected final static String[] TYPES_NAMES={"Light Crafting",
-											     "Durable Crafting",
-											     "Quality Crafting",
-											     "Lethal Crafting",
-											     "Counterbalance Crafting"
-	};
-	
-	protected final static String[][] STAGE_TYPES={
-		{"Light","Supple","Agile"},
-		{"Strong","Reinforced","Fortified"},
-		{"Fine","Beautiful","Exquisite"},
-		{"Damaging","Brutal","Lethal"},
-		{"Even","Balanced","Counterbalanced"},
-	};
-	
-	protected final static String[] ALL_CODES={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
-											 "DURACRAFTI","DURACRAFTII","DURACRAFTIII",
-											 "QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
-											 "LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII",
-											 "CNTRCRAFTI","CNTRCRAFTII","CNTRCRAFTIII"};
-	
-	protected String[] supportedEnhancements(){ return ALL_CODES;}
-	public void initializeClass()
-	{
-        super.initializeClass();
-        if(CMLib.expertises().getDefinition(TYPES_CODES[0]+STAGESTAT[0])==null)
-		for(int t=0;t<TYPES_CODES.length;t++)
-		{
-			for(int s=0;s<NUM_STAGES;s++)
-			{
-				String finalReq="+"+TYPES_STATS[t]+" "+STAGESTAT[s];
-                String stage=CMath.convertToRoman((s+1));
-				CMLib.expertises().addDefinition(TYPES_CODES[t]+stage,TYPES_NAMES[t]+" "+stage,"",finalReq,0,1,0,0,0);
-			}
-		}
-        if(!ID().equalsIgnoreCase("EnhancedCraftingSkill"))
-            registerExpertiseUsage(TYPES_CODES,NUM_STAGES,true,supportedEnhancements());
-	}
+    protected static final int TYPE_LITECRAFT=0;
+    protected static final int TYPE_DURACRAFT=1;
+    protected static final int TYPE_QUALCRAFT=2;
+    protected static final int TYPE_LTHLCRAFT=3;
+    protected static final int TYPE_CNTRCRAFT=4;
+    protected final static String[][] STAGE_TYPES={
+        {"Light","Supple","Agile"},
+        {"Strong","Reinforced","Fortified"},
+        {"Fine","Beautiful","Exquisite"},
+        {"Damaging","Brutal","Lethal"},
+        {"Even","Balanced","Counterbalanced"},
+    };
+    
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,
@@ -236,17 +192,31 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		//startStr=CMStrings.replaceAll(startStr,oldName,item.Name());
 	}
 	
+    public Vector getThisSkillsExpertises()
+    {
+        Vector V=new Vector();
+        for(int x=ExpertiseLibrary.XFLAG_X1;x<=ExpertiseLibrary.XFLAG_X5;x++)
+        {
+            String s=CMLib.expertises().getApplicableExpertise(ID(),x);
+            if(s!=null) V.addElement(s);
+        }
+        return V;
+    }
+    
 	public void enhanceList(MOB mob)
 	{
 		StringBuffer extras=new StringBuffer("");
         String stage=null;
-		for(int t=0;t<TYPES_CODES.length;t++)
+        String key=null;
+        Vector types=getThisSkillsExpertises();
+		for(int t=0;t<types.size();t++)
 		{
-			for(int s=NUM_STAGES-1;s>=0;s--)
+            key=(String)types.elementAt(t);
+            int stages=CMLib.expertises().getStages(key);
+			for(int s=stages-1;s>=0;s--)
             {
                 stage=CMath.convertToRoman(s+1);
-				if((CMParms.contains(supportedEnhancements(),TYPES_CODES[t]+stage))
-				&&(mob.fetchExpertise(TYPES_CODES[t]+stage)!=null))
+				if((mob.fetchExpertise(key+stage)!=null)||(mob.fetchExpertise(key+(s+1))!=null))
 					extras.append(STAGE_TYPES[t][s]+", ");
             }
 		}
@@ -270,16 +240,19 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			{
 				boolean foundSomething=true;
                 String stage=null;
+                Vector experTypes=getThisSkillsExpertises();
 				while(foundSomething)
 				{
 					foundSomething=false;
-					for(int t=0;t<TYPES_CODES.length;t++)
-					{
-						for(int s=NUM_STAGES-1;s>=0;s--)
+                    String key=null;
+                    for(int t=0;t<experTypes.size();t++)
+                    {
+                        key=(String)experTypes.elementAt(t);
+                        int stages=CMLib.expertises().getStages(key);
+						for(int s=stages-1;s>=0;s--)
                         {
                             stage=CMath.convertToRoman(s+1);
-							if((CMParms.contains(supportedEnhancements(),TYPES_CODES[t]+stage))
-							&&(mob.fetchExpertise(TYPES_CODES[t]+stage)!=null)
+							if(((mob.fetchExpertise(key+stage)!=null)||(mob.fetchExpertise(key+(s+1))!=null))
 							&&(cmd.equalsIgnoreCase(STAGE_TYPES[t][s])))
 							{
 								commands.removeElementAt(0);

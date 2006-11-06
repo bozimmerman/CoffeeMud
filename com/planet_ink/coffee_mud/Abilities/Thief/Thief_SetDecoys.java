@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_SetDecoys extends DeceptiveThiefSkill implements Trap
+public class Thief_SetDecoys extends ThiefSkill implements Trap
 {
 	public String ID() { return "Thief_SetDecoys"; }
 	public String name(){ return "Set Decoys";}
@@ -39,6 +39,7 @@ public class Thief_SetDecoys extends DeceptiveThiefSkill implements Trap
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"SETDECOYS","DECOYS"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
@@ -61,13 +62,13 @@ public class Thief_SetDecoys extends DeceptiveThiefSkill implements Trap
 		if((mob==null)||(invoker()==null)) return;
 		Room R=mob.location();
 		if(R==null) return;
-		if((!invoker().mayIFight(mob))||(!mob.isInCombat())||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)-(getXLevel(invoker())*5)))
+		if((!invoker().mayIFight(mob))||(!mob.isInCombat())||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)-(getXLEVELLevel(invoker())*5)))
 			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,"A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled.");
 		else
 		if(R.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"A decoy pops up, confusing <S-NAME>!"))
 		{
 			int max=R.maxRange();
-			int level=getXLevel(invoker())+2;
+			int level=getXLEVELLevel(invoker())+2;
 			if(level<max) max=level;
 			while((mob.isInCombat())&&(mob.rangeToTarget()<max))
 			{

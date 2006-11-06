@@ -45,7 +45,7 @@ public class Play_Battlehymn extends Play
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.mul(affectableStats.damage(),CMath.div(playerQClassLevel(),100))));
+		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.mul(affectableStats.damage(),CMath.div(adjustedLevel(invoker(),0),100))));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -54,7 +54,7 @@ public class Play_Battlehymn extends Play
 			return false;
 		if((affected==null)||(invoker==null)||(!(affected instanceof MOB)))
 			return false;
-		if((!((MOB)affected).isInCombat())&&(++timesTicking>(5+super.getExpertiseLevel(invoker(),"RYTHMICTUNE"))))
+		if((!((MOB)affected).isInCombat())&&(++timesTicking>(5+super.getXTIMELevel(invoker()))))
 			unInvoke();
 		return true;
 	}

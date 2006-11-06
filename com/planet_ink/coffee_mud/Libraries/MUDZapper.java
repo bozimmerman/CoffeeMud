@@ -270,6 +270,31 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	protected Object makeSkillFlagObject(String str)
 	{
         Object o=null;
+        int x=str.indexOf("&");
+        if((x>=0)&&(o==null))
+        {
+            Vector V=CMParms.parseAny(str,"&",true);
+            String s=null;
+            for(int v=0;v<V.size();v++)
+            {
+                s=(String)V.elementAt(v);
+                if(s.startsWith("!"))
+                {
+                    V.setElementAt(s.substring(1),v);
+                    V.insertElementAt(new Boolean(false),v);
+                    v++;
+                }
+            }
+            Object[] o2=new Object[V.size()];
+            for(int v=0;v<V.size();v++)
+                if(V.elementAt(v) instanceof String)
+                    o2[v]=makeSkillFlagObject((String)V.elementAt(v));
+                else
+                    o2[v]=V.elementAt(v);
+            for(int i=0;i<o2.length;i++)
+                if((o2[i]!=null)&&(!(o2[i] instanceof Boolean))) 
+                { o=o2; break;}
+        }
         if(o==null)
         for(int d=0;d<Ability.ACODE_DESCS.length;d++)
             if(Ability.ACODE_DESCS[d].equals(str))
@@ -293,7 +318,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             }
         if(o==null)
         for(short d=0;d<Ability.QUALITY_DESCS.length;d++)
-            if(Ability.QUALITY_DESCS[d].startsWith(str))
+            if(Ability.QUALITY_DESCS[d].startsWith(str)||Ability.QUALITY_DESCS[d].endsWith(str))
             {
                 o=new Short(d);
                 break;
@@ -305,6 +330,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
         if(A!=null) 
         {
+            if(o instanceof Object[])
+            {
+                Object[] set=(Object[])o;
+                boolean matches=true;
+                for(int i=0;i<set.length;i++)
+                    if(set[i] instanceof Boolean)
+                    {
+                        if(evaluateSkillFlagObject(set[i+1],A))
+                        { matches=false; break;}
+                        i++;
+                    }
+                    else
+                    if(!evaluateSkillFlagObject(set[i],A))
+                    { matches=false; break;}
+                if(matches) return true;
+            }
+            else
 	        if(o instanceof Integer)
 	        {
 	            int val=((Integer)o).intValue();
@@ -851,7 +893,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        if(zapCodes.containsKey(str2))
 	                            break;
 	                        if(str2.startsWith("+"))
-                    			buf.append(CMStrings.capitalizeAndLower(str2.substring(1))+", ");
+                            {
+                                Vector V3=CMParms.parseAny(str2.substring(1),"&",true);
+                                String str3=null;
+                                for(int v3=0;v3<V3.size();v3++)
+                                {
+                                    str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower((String)V3.elementAt(v3)),"_"," ");
+                                    if(str3.startsWith("!"))
+                            			buf.append("not "+str3.substring(1));
+                                    else
+                                        buf.append(str3);
+                                    if(v3<(V3.size()-1)) 
+                                        buf.append(" and ");
+                                    else
+                                        buf.append(", ");
+                                }
+                            }
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -935,7 +992,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-                                buf.append(CMStrings.capitalizeAndLower(str2.substring(1))+", ");
+                            {
+                                Vector V3=CMParms.parseAny(str2.substring(1),"&",true);
+                                String str3=null;
+                                for(int v3=0;v3<V3.size();v3++)
+                                {
+                                    str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower((String)V3.elementAt(v3)),"_"," ");
+                                    if(str3.startsWith("!"))
+                                        buf.append("not "+str3.substring(1));
+                                    else
+                                        buf.append(str3);
+                                    if(v3<(V3.size()-1)) 
+                                        buf.append(" and ");
+                                    else
+                                        buf.append(", ");
+                                }
+                            }
                         }
                         if(buf.toString().endsWith(", "))
                             buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -1834,6 +1906,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		{
 			str=(String)V.elementAt(v);
 			if(zapCodes.containsKey(str))
+            {
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
 				case 81: // -expertises
@@ -1901,6 +1974,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 				}
+            }
 		}
 		return preReqs;
 	}

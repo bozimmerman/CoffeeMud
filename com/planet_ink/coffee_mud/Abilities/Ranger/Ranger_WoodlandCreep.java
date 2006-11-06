@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -43,7 +44,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"WCREEP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int bonus=0;
 	
@@ -125,7 +126,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
-				((Ranger_WoodlandCreep)newOne).bonus=super.getExpertiseLevel(mob,"STEALTH")*2;
+				((Ranger_WoodlandCreep)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();

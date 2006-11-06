@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_AvoidTraps extends TrapDisablingThiefSkill
+public class Thief_AvoidTraps extends ThiefSkill
 {
 	public String ID() { return "Thief_AvoidTraps"; }
 	public String name(){ return "Avoid Traps";}
@@ -41,11 +41,12 @@ public class Thief_AvoidTraps extends TrapDisablingThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+(getXLevel(affected)*5));
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+(getXLEVELLevel(affected)*5));
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

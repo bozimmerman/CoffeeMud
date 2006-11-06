@@ -52,7 +52,7 @@ public class Dance_Manipuri extends Dance
 		MOB mob=(MOB)affected;
 		if(mob.location()!=lastRoom)
 		{
-			count=3+getXLevel(invoker());
+			count=3+getXLEVELLevel(invoker());
 			lastRoom=mob.location();
 		}
 		else

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -44,12 +45,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	public int maxRange(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MANA;}
-    public void initializeClass()
-    {
-    	super.initializeClass();
-    	super.initializeXExpertiseClass(this,"ARMOROPT","Armor Optomizing","CON",18,28);
-    }
-
+    
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -98,7 +94,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			mob.tell(armor.name()+" can not be tweaked to provide any more benefit.");
 			return false;
 		}
-		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*super.getExpertiseLevel(mob,"ARMOROPT")),armor.envStats().armor()));
+		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.envStats().armor()));
 		if(bonus<1)
 		{
 			mob.tell(armor.name()+" is too weak of an armor to provide any more benefit from tweaking.");

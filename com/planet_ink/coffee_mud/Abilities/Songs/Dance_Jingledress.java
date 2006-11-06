@@ -51,7 +51,7 @@ public class Dance_Jingledress extends Dance
 
 		if(invoker()!=null)
 		{
-			int healing=CMLib.dice().roll(2,prancerQClassLevel(),4);
+			int healing=CMLib.dice().roll(2,adjustedLevel(invoker(),0),4);
 			CMLib.combat().postHealing(invoker(),mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -31,13 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Steal extends StealingThiefSkill
+public class Thief_Steal extends ThiefSkill
 {
 	public String ID() { return "Thief_Steal"; }
 	public String name(){ return "Steal";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"STEAL"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -45,11 +47,6 @@ public class Thief_Steal extends StealingThiefSkill
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
-    public void initializeClass()
-    {
-        super.initializeClass();
-        super.initializeCautiousClass(this);
-    }
 
     protected DVector lastOnes=new DVector(2);
 	protected int timesPicked(MOB target)
@@ -93,7 +90,7 @@ public class Thief_Steal extends StealingThiefSkill
 			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLevel(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
@@ -117,7 +114,7 @@ public class Thief_Steal extends StealingThiefSkill
 
 		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
 							-(levelDiff*5)
-							+(getExpertiseLevel(mob,"CAUTIOUS")*5);
+							+(getX1Level(mob)*5);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

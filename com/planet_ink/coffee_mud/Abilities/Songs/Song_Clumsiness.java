@@ -45,7 +45,7 @@ public class Song_Clumsiness extends Song
 
 		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()
 										-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
-										-(singerQClassLevel()*2));
+										-(adjustedLevel(invoker(),0)*2));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

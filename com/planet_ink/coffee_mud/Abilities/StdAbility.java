@@ -61,32 +61,6 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public int enchantQuality(){return abstractQuality();}
     public void initializeClass(){}
     
-    public void registerExpertiseUsage(String[] TYPES_CODES, int stages, boolean roman, String[] SUPPORT_LIST)
-    {
-        for(int t=0;t<TYPES_CODES.length;t++)
-        {
-            ExpertiseLibrary.ExpertiseDefinition def=null;
-            for(int s=0;s<stages;s++)
-            {
-                if((SUPPORT_LIST==null)
-                ||CMParms.contains(SUPPORT_LIST,TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1)))))
-                {
-                    def=CMLib.expertises().getDefinition(TYPES_CODES[t]+(roman?CMath.convertToRoman(s+1):(""+(s+1))));
-                    if(def!=null)
-                    {
-                        String addToList="";
-                        if((def.listRequirements()==null)||(def.listRequirements().length()==0))
-                        {
-                            if(s>0)
-                                addToList+=" -EXPERTISES +"+TYPES_CODES[t]+(roman?CMath.convertToRoman(s):(""+(s)));
-                            addToList+=" -SKILLS";
-                        }
-                        def.addListMask(addToList+" +"+ID());
-                    }
-                }
-            }
-        }
-    }
     public int castingQuality(MOB mob, Environmental target)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
@@ -110,26 +84,32 @@ public class StdAbility extends ForeignScriptable implements Ability
 		}
 	}
     
-    protected void initializeXExpertiseClass(StdAbility A, String expertise, String expertiseName, String stat, int statBase, int lvlBase)
-    {
-        final int EXPERTISE_STAGES=10;
-        final String[] EXPERTISE={expertise};
-        final String[] EXPERTISE_NAME={expertiseName};
-        if(CMLib.expertises().getDefinition(EXPERTISE[0]+EXPERTISE_STAGES)==null)
-            for(int i=1;i<=EXPERTISE_STAGES;i++)
-                CMLib.expertises().addDefinition(EXPERTISE[0]+i,EXPERTISE_NAME[0]+" "+CMath.convertToRoman(i),
-                        "","+"+stat+" "+(statBase+i)+" -LEVEL +>="+(lvlBase+(5*i)),0,1,0,0,0);
-        A.registerExpertiseUsage(EXPERTISE,EXPERTISE_STAGES,false,null);
-    }
-    protected void initializeWiseCraftingClass(StdAbility A){
-    	initializeXExpertiseClass(A,"EXPCRAFT","Wise Crafting","CHA",16,26);
-    }
-    protected int applyWiseCrafting(MOB mob, int xpLoss){
-    	if(mob==null) return xpLoss;
-    	int xLevel=getExpertiseLevel(mob,"EXPCRAFT");
+    protected int getX1Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X1,mob);}
+    protected int getX2Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X2,mob);}
+    protected int getX3Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X3,mob);}
+    protected int getX4Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X4,mob);}
+    protected int getX5Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X5,mob);}
+    protected int getXLEVELLevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LEVEL,mob);}
+    protected int getXLOWCOSTLevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LOWCOST,mob);}
+    protected int getXMAXRANGELevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_MAXRANGE,mob);}
+    protected int getXTIMELevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_TIME,mob);}
+    protected int getXPCOSTLevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_XPCOST,mob);}
+    
+    protected int getXPCOSTAdjustment(MOB mob, int xpLoss){
+    	int xLevel=getXPCOSTLevel(mob);
     	if(xLevel<=0) return xpLoss;
     	return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
     }
+    
+    public int asjudtedMaxInvokerRange()
+    {
+        if(invoker==null) return maxRange();
+        int level=getXMAXRANGELevel(invoker);
+        if(level<=0) return  maxRange();
+        return maxRange()+(int)Math.round(Math.ceil(CMath.mul(maxRange(),CMath.mul(level,0.2))));
+    }
+    
+    
     
 	/**
 	 * Designates whether, when used as a property/effect, what sort of objects this 
@@ -228,6 +208,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 		savable=false; // makes it so that the effect does not save!
 
+        tickTime+=(int)Math.round(CMath.mul(tickTime,CMath.mul(getXTIMELevel(invokerMOB),0.20)));
 		if(invoker()!=null)
 			for(int c=0;c<invoker().charStats().numClasses();c++)
 				tickTime=invoker().charStats().getMyClass(c).classDurationModifier(invoker(),this,tickTime);
@@ -281,7 +262,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;
 		if(adjLevel<1) return 1;
-		return adjLevel;
+		return adjLevel+getXLEVELLevel(caster);
 	}
 
 	public int experienceLevels(MOB caster, int asLevel)
@@ -307,7 +288,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			adjLevel=(caster.envStats().level()-lowestQualifyingLevel)+1;
 		if(asLevel>0) adjLevel=asLevel;
 		if(adjLevel<1) return 1;
-		return adjLevel;
+		return adjLevel+getXLEVELLevel(caster);
 	}
 
 	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
@@ -695,7 +676,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[1]=(int)Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		if(useHits){
 			usageCosts[2]=consumed/divider;
@@ -708,7 +689,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[2]=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		return usageCosts;
 	}
@@ -751,6 +732,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
 		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
+        consumed-=getXLOWCOSTLevel(mob);
 		if(consumed<minimum) consumed=minimum;
 		if(overrideMana()>=0) consumed=overrideMana();
 		return buildCostArray(mob,consumed);
@@ -806,6 +788,8 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
+        if((mob!=null)&&(getXMAXRANGELevel(mob)>0)) 
+            invoker=mob;
 		if(!auto)
 		{
 			isAnAutoEffect=false;
@@ -1457,22 +1441,6 @@ public class StdAbility extends ForeignScriptable implements Ability
                 return F.canUse(mob,this);
         }
         return true;
-    }
-
-    protected int getExpertiseLevel(MOB mob, String expertise)
-    {
-    	if(mob==null) return 0;
-    	int level=0;
-    	for(int i=0;i<mob.numExpertises();i++)
-    	{
-    		String X=mob.fetchExpertise(i);
-    		if(X.toUpperCase().startsWith(expertise))
-    		{
-    			int x=CMath.s_int(X.substring(expertise.length()));
-    			if(x>level) level=x;
-    		}
-    	}
-    	return level;
     }
 
 	public void addEffect(Ability to){}

@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Sneak extends StealthyThiefSkill
+public class Thief_Sneak extends ThiefSkill
 {
 	public String ID() { return "Thief_Sneak"; }
 	public String name(){ return "Sneak";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"SNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
@@ -67,7 +68,7 @@ public class Thief_Sneak extends StealthyThiefSkill
 			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
 				highestLevel=mob.envStats().level();
 		}
-		int levelDiff=(mob.envStats().level()+(super.getXLevel(mob)*2))-highestLevel;
+		int levelDiff=(mob.envStats().level()+(super.getXLEVELLevel(mob)*2))-highestLevel;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

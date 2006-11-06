@@ -43,6 +43,6 @@ public class Song_Valor extends Song
 		if(invoker!=null)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 											+invoker().charStats().getStat(CharStats.STAT_CHARISMA)
-											+super.singerQClassLevel());
+											+super.adjustedLevel(invoker(),0));
 	}
 }

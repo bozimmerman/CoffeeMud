@@ -36,12 +36,12 @@ public class Song_Charm extends Song
 {
 	public String ID() { return "Song_Charm"; }
 	public String name(){ return "Suave";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)
-														+4+super.getXLevel(invoker()));
+														+4+super.getXLEVELLevel(invoker()));
 	}
 }

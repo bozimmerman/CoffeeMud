@@ -32,13 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_EscapeBonds extends AlertThiefSkill
+public class Thief_EscapeBonds extends ThiefSkill
 {
 	public String ID() { return "Thief_EscapeBonds"; }
 	public String name(){ return "Escape Bonds";}
 	public String displayText(){return "(Slipping from your bonds)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
 	public String[] triggerStrings(){return triggerStrings;}

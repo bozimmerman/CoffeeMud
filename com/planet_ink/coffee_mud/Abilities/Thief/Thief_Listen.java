@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Listen extends AlertThiefSkill
+public class Thief_Listen extends ThiefSkill
 {
 	public String ID() { return "Thief_Listen"; }
 	public String name(){ return "Listen";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	private static final String[] triggerStrings = {"LISTEN"};
 	public String[] triggerStrings(){return triggerStrings;}
 
@@ -67,7 +68,7 @@ public class Thief_Listen extends AlertThiefSkill
 				&&(!lastSaid.equals(msg.sourceMessage())))
 				{
 					lastSaid=msg.sourceMessage();
-					if((invoker().envStats().level()+(getXLevel(invoker())*10))>msg.source().envStats().level())
+					if((invoker().envStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().envStats().level())
 						invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 					else
 						invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
@@ -81,7 +82,7 @@ public class Thief_Listen extends AlertThiefSkill
 			&&(!lastSaid.equals(msg.sourceMessage())))
 			{
 				lastSaid=msg.sourceMessage();
-				if((invoker().envStats().level()+(getXLevel(invoker())*10))>msg.source().envStats().level())
+				if((invoker().envStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().envStats().level())
 					invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				else
 					invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
@@ -150,7 +151,7 @@ public class Thief_Listen extends AlertThiefSkill
 			}
 			if((success)&&(numberHeard>0))
 			{
-				if(((proficiency()+(super.getXLevel(mob)*10))>(50+levelsHeard))||(room==mob.location()))
+				if(((proficiency()+(getXLEVELLevel(mob)*10))>(50+levelsHeard))||(room==mob.location()))
 				{
 					mob.tell("You definitely hear "+numberHeard+" creature(s).");
 					if(proficiency()>((room==mob.location())?50:75))

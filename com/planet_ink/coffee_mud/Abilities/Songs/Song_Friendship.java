@@ -191,10 +191,10 @@ public class Song_Friendship extends Song
 							CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-							int levelDiff=follower.envStats().level()-(mob.envStats().level()+(getXLevel(mob)*2));
+							int levelDiff=follower.envStats().level()-(mob.envStats().level()+(getXLEVELLevel(mob)*2));
 							if(levelDiff<0) levelDiff=0;
 	
-							if((levelDiff>(3+((mob.envStats().level()+(getXLevel(mob)*2))/10)))&&(mindAttack()))
+							if((levelDiff>(3+((mob.envStats().level()+(getXLEVELLevel(mob)*2))/10)))&&(mindAttack()))
 								mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
 							else
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))

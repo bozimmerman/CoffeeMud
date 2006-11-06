@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,12 +38,6 @@ public class Thief_DisablingCaltrops extends Thief_Caltrops
 	private static final String[] triggerStrings = {"DISABLINGCALTROPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String caltropTypeName(){return "disabling ";}
-    public void initializeClass()
-    {
-        super.initializeClass();
-        super.initializeFatiguerClass(this);
-    }
-
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
@@ -50,7 +45,7 @@ public class Thief_DisablingCaltrops extends Thief_Caltrops
 		else
 		if(mob.curState().getMovement()>6)
 		{
-			mob.curState().adjMovement(CMLib.dice().roll(3+super.getExpertiseLevel(invoker(),"FATIGUER"),4,3),mob.maxState());
+			mob.curState().adjMovement(CMLib.dice().roll(3+getX1Level(mob),4,3),mob.maxState());
 			mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground disable <T-NAME>");
 		}
 		// does not set sprung flag -- as this trap never goes out of use

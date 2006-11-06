@@ -51,7 +51,7 @@ public class Dance_Foxtrot extends Dance
 
 		mob.curState().adjMovement((invokerManaCost/15)+increment,mob.maxState());
         mob.curState().adjMana(increment,mob.maxState());
-        if(increment<=1+(int)Math.round(CMath.div(prancerQClassLevel(),3)))
+        if(increment<=1+(int)Math.round(CMath.div(adjustedLevel(invoker(),0),3)))
         {
     		if((++ticks)>2)
     		{

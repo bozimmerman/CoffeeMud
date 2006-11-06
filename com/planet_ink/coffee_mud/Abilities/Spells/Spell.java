@@ -43,97 +43,6 @@ public class Spell extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SPELL;}
 	
-	protected final static long SFLAG_CLANMAGIC=1;
-	protected long spellFlags(){return 0;}
-
-    private static final int EXPERTISE_STAGES=10;
-    private static final String[] EXPERTISE={"RANGED","REDUCED","POWER","EXTENDED"};
-    private static final String[] EXPERTISE_NAME={"Ranged","Reduced","Power","Extended"};
-    private static final String[][] EXPERTISE_STATS={{"DEX","CON"},
-                                                     {"WIS","STR"},
-                                                     {"CHA","STR"},
-                                                     {"CON","STR"},
-    };
-    private static final int[] EXPERTISE_LEVELS={19,16,17,18};
-    public void initializeClass()
-    {
-        super.initializeClass();
-        if((!ID().equals("Spell"))&&(!CMath.bset(spellFlags(),SFLAG_CLANMAGIC)))
-        {
-            if(CMLib.expertises().getDefinition(EXPERTISE[0]+shortDomainName()+EXPERTISE_STAGES)==null)
-            for(int e=0;e<EXPERTISE.length;e++)
-                for(int i=1;i<=EXPERTISE_STAGES;i++)
-                    CMLib.expertises().addDefinition(EXPERTISE[e]+shortDomainName()+i,EXPERTISE_NAME[e]+" "+domainVerb()+" "+CMath.convertToRoman(i),
-                            ((i==1)?"":"-EXPERTISE \"+"+EXPERTISE[e]+shortDomainName()+(i-1)+"\"")+" -SKILLFLAG \"+"+fullDomainName()+"\" ",
-                                " +"+EXPERTISE_STATS[e][0]+" "+(9+i)
-                               +" +"+EXPERTISE_STATS[e][1]+" "+(9+i)
-                               +" -LEVEL +>="+(EXPERTISE_LEVELS[e]+(5*i))
-                               ,0,1,0,0,0);
-        }
-    }
-    protected int getXLevel(MOB mob){ return getExpertiseLevel(mob,EXPERTISE[0]+shortDomainName());}
-    
-    protected final String fullDomainName()
-    {
-        return Ability.DOMAIN_DESCS[((classificationCode()&Ability.ALL_DOMAINS)>>5)];
-    }
-    protected final String domainVerb()
-    {
-        return Ability.DOMAIN_VERBS[((classificationCode()&Ability.ALL_DOMAINS)>>5)];
-    }
-    protected final String shortDomainName()
-    {
-        String s=fullDomainName();
-        int x=s.indexOf("/");
-        if(x<0) return s;
-        return s.substring(0,x);
-    }
-    
-    public int maxRange()
-    {
-        int max=super.maxRange();
-        if(invoker==null) return max;
-        int level=super.getExpertiseLevel(invoker,"RANGED"+shortDomainName());
-        if(level<=0) return max;
-        return max+(int)Math.round(CMath.mul(max,CMath.mul(level,0.2)));
-    }
-    
-    
-    protected int[] buildCostArray(MOB mob, int consumed)
-    {
-        int[] cost=super.buildCostArray(mob,consumed);
-        if((cost[USAGE_MANA]>0)&&(cost[USAGE_MANA]<mob.maxState().getMana()))
-        {
-            int minimum=CMProps.getMinManaException(ID());
-            if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
-            if(minimum<0) minimum=5;
-            int level=super.getExpertiseLevel(mob,"REDUCED"+shortDomainName());
-            if(level>0)
-            {
-                cost[USAGE_MANA]-=level;
-                if(cost[USAGE_MANA]<minimum) cost[USAGE_MANA]=minimum;
-            }
-        }
-        return cost;
-    }
-    
-    public int adjustedLevel(MOB caster, int asLevel)
-    {
-        if(caster==null) return 1;
-        if(asLevel<=0)
-            return(super.adjustedLevel(caster,asLevel)+super.getExpertiseLevel(caster,"POWER"+shortDomainName()));
-        return super.adjustedLevel(caster,asLevel);
-    }
-    
-    public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
-    {
-        int level=super.getExpertiseLevel(invokerMOB,"EXTENDED"+shortDomainName());
-        if(level<=0) 
-            super.startTickDown(invokerMOB,affected,tickTime);
-        else
-            super.startTickDown(invokerMOB,affected,tickTime+(int)Math.round(CMath.mul(tickTime,CMath.mul(level,0.20))));
-    }
-    
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
 								   int asLevel,
@@ -177,8 +86,6 @@ public class Spell extends StdAbility
 			return false;
         if((!auto)&&(mob.isMine(this))&&(mob.location()!=null))
         {
-            if(super.getExpertiseLevel(invoker,"RANGED"+shortDomainName())>0) 
-                invoker=mob;
     		if((!mob.isMonster())
     		&&(!disregardsArmorCheck(mob))
     		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
