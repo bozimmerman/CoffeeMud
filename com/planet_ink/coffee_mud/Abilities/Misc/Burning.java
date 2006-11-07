@@ -40,7 +40,7 @@ public class Burning extends StdAbility
 	public String displayText(){ return "(Burning)";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -38,6 +38,7 @@ public class Chant_MoonCalf extends Chant
 	public String name(){ return "Moon Calf";}
 	public String displayText(){return "(Moon Calf)";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 

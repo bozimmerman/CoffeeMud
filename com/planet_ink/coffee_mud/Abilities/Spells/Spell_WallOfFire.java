@@ -43,7 +43,7 @@ public class Spell_WallOfFire extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 
 	protected Item theWall=null;
 	protected String deathNotice="";

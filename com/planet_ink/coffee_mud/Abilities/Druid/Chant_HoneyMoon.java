@@ -48,7 +48,7 @@ public class Chant_HoneyMoon extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The pale moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The honey moon sets.");
 			super.unInvoke();
 			return;
 		}

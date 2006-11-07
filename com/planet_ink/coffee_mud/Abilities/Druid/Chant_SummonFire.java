@@ -40,7 +40,7 @@ public class Chant_SummonFire extends Chant
 	protected int canTargetCode(){return 0;}
 	protected Room FireLocation=null;
 	protected Item littleFire=null;
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 
 	public void unInvoke()
 	{

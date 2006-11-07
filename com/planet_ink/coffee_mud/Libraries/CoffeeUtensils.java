@@ -338,7 +338,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if((A!=null)&&((!mundane)||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)))
 			{
 				if((CMath.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
-				||(CMath.bset(A.flags(),Ability.FLAG_BURNING))
+				||(CMath.bset(A.flags(),Ability.FLAG_FIREBASED))
 				||((A.ID().equalsIgnoreCase("Spell_SummonElemental")&&A.text().toUpperCase().indexOf("FIRE")>=0)))
 					A.unInvoke();
 			}
