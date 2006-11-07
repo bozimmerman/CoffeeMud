@@ -40,7 +40,7 @@ public class Chant_ManicMoon extends Chant
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public long flags(){return FLAG_MOONCHANGING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 
 	public void unInvoke()
 	{
@@ -127,7 +127,7 @@ public class Chant_ManicMoon extends Chant
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

@@ -99,7 +99,7 @@ public class Prop_LangTranslator extends Property
 			   ||(msg.sourceMinor()==CMMsg.TYP_ORDER)
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
-			&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 			{
 				String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)

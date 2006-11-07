@@ -38,6 +38,7 @@ public class Prayer_Gateway extends Prayer
 	public String name(){return "Gateway";}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 
 	Room newRoom=null;
 	Room oldRoom=null;

@@ -40,7 +40,7 @@ public class Skill_Convert extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CONVERT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVANGELISM;}
     protected static DVector convertStack=new DVector(2);
     public int overrideMana(){return 50;}
     public String displayText(){return "";}

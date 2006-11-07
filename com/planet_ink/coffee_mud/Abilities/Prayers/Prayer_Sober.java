@@ -35,6 +35,7 @@ public class Prayer_Sober extends Prayer
 {
 	public String ID() { return "Prayer_Sober"; }
 	public String name(){ return "Sober";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

@@ -37,6 +37,7 @@ public class Prayer_ProtCold extends Prayer
 	public String ID() { return "Prayer_ProtCold"; }
 	public String name(){ return "Protection Cold";}
 	public String displayText(){return "(Protection from Cold)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}

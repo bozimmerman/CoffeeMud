@@ -36,6 +36,7 @@ public class Prayer_Godstrike extends Prayer
 {
 	public String ID() { return "Prayer_Godstrike"; }
 	public String name(){ return "Godstrike";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

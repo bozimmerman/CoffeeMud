@@ -37,6 +37,7 @@ public class Prayer_FlameWeapon extends Prayer
 	public String ID() { return "Prayer_FlameWeapon"; }
 	public String name(){ return "Flame Weapon";}
 	public String displayText(){return "(Enflamed)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}

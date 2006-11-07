@@ -40,7 +40,8 @@ public class Prayer_Cannibalism extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public void unInvoke()
 	{

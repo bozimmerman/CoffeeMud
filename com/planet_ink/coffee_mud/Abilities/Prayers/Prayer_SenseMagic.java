@@ -36,6 +36,7 @@ public class Prayer_SenseMagic extends Prayer
 	public String ID() { return "Prayer_SenseMagic"; }
 	public String name(){ return "Sense Magic";}
 	public String displayText(){ return "(Sense Magic)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

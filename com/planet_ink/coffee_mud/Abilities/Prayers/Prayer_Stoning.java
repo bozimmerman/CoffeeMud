@@ -37,6 +37,7 @@ public class Prayer_Stoning extends Prayer
 {
 	public String ID() { return "Prayer_Stoning"; }
 	public String name(){ return "Stoning";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}

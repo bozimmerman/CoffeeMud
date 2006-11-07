@@ -111,6 +111,9 @@ public interface CMFlagLibrary extends CMObject
     public Vector flaggedAnyAffects(Environmental E, long flag);
     public Vector flaggedAffects(Environmental E, long flag);
     public Vector flaggedAbilities(MOB E, long flag);
+    public Vector domainAnyAffects(Environmental E, int domain);
+    public Vector domainAffects(Environmental E, int domain);
+    public Vector domainAbilities(MOB E, int domain);
     public boolean canAccess(MOB mob, Area A);
     public boolean canAccess(MOB mob, Room R);
     public boolean isMetal(Environmental E);

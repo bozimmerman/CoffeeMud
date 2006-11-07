@@ -39,7 +39,6 @@ public class Chant_Hippieness extends Chant
 	public String displayText(){return "(Feeling Groovy)";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_CURSE;}
 	protected String oldClan="";
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -63,7 +62,7 @@ public class Chant_Hippieness extends Chant
 		&&(msg.tool() instanceof Ability)
 		&&(!msg.tool().ID().equals("FoodPrep"))
 		&&(!msg.tool().ID().equals("Cooking"))
-		&&((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING))
+		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 		   ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)))
 		{
 			msg.source().tell("No, man... work is so bourgeois...");

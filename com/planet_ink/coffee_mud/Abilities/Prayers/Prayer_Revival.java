@@ -37,6 +37,7 @@ public class Prayer_Revival extends Prayer
 	public String ID() { return "Prayer_Revival"; }
 	public String name(){ return "Revival";}
 	public String displayText(){return "(Revival)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
@@ -842,6 +843,42 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	
+    public Vector domainAnyAffects(Environmental E, int domain)
+	{
+		Vector V=new Vector();
+		if(E!=null)
+			for(int a=0;a<E.numEffects();a++)
+			{
+				Ability A=E.fetchEffect(a);
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
+				{ V.addElement(A);}
+			}
+		return V;
+	}
+    public Vector domainAffects(Environmental E, int domain)
+	{
+		Vector V=new Vector();
+		if(E!=null)
+			for(int a=0;a<E.numEffects();a++)
+			{
+				Ability A=E.fetchEffect(a);
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
+				{ V.addElement(A);}
+			}
+		return V;
+	}
+    public Vector domainAbilities(MOB E, int domain)
+	{
+		Vector V=new Vector();
+		if(E!=null)
+			for(int a=0;a<E.numAbilities();a++)
+			{
+				Ability A=E.fetchAbility(a);
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
+				{ V.addElement(A);}
+			}
+		return V;
+	}
 	public Vector flaggedAnyAffects(Environmental E, long flag)
 	{
 		Vector V=new Vector();

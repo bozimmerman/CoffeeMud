@@ -39,6 +39,7 @@ public class Prayer_Gills extends Prayer
 	public String name(){ return "Gills";}
 	public String displayText(){return "(Gills)";}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 
 	public void unInvoke()
 	{

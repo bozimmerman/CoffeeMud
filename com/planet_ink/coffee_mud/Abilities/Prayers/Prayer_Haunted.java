@@ -40,6 +40,7 @@ public class Prayer_Haunted extends Prayer
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int level=14;
 	protected int numDone=0;

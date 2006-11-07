@@ -37,7 +37,7 @@ public class CraftingSkill extends GatheringSkill
 {
 	public String ID() { return "CraftingSkill"; }
 	public String name(){ return "Crafting Skill";}
-	public long flags(){return FLAG_CRAFTING;}
+	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
     public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
 	protected Item building=null;
 	protected boolean fireRequired=true;

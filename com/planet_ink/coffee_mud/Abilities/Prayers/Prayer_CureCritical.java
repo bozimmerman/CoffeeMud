@@ -37,7 +37,8 @@ public class Prayer_CureCritical extends Prayer
 	public String ID() { return "Prayer_CureCritical"; }
 	public String name(){ return "Cure Critical Wounds";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

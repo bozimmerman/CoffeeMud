@@ -37,7 +37,7 @@ public class Digging extends GatheringSkill
 	public String name(){ return "Gem Digging";}
 	private static final String[] triggerStrings = {"DIG","DIGGING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_GATHERING;}
+	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|STONE";}
 

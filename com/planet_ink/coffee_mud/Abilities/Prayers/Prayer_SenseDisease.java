@@ -36,6 +36,7 @@ public class Prayer_SenseDisease extends Prayer
 	public String ID() { return "Prayer_SenseDisease"; }
 	public String name(){ return "Sense Disease";}
 	public String displayText(){ return "(Sense Disease)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

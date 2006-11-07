@@ -35,6 +35,7 @@ public class Prayer_Resurrect extends Prayer
 {
 	public String ID() { return "Prayer_Resurrect"; }
 	public String name(){ return "Resurrect";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}

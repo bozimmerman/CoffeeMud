@@ -36,6 +36,7 @@ public class Prayer_MinorInfusion extends Prayer
 {
     public String ID() { return "Prayer_MinorInfusion"; }
     public String name(){ return "Minor Infusion";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
     public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}

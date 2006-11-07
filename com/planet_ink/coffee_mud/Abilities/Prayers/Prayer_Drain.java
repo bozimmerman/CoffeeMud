@@ -37,6 +37,7 @@ public class Prayer_Drain extends Prayer
 	public String ID() { return "Prayer_Drain"; }
 	public String name(){ return "Drain";}
 	public String displayText(){ return "(Drain)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

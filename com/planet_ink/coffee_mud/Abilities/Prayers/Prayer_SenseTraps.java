@@ -37,6 +37,7 @@ public class Prayer_SenseTraps extends Prayer
 	public String ID() { return "Prayer_SenseTraps"; }
 	public String name(){return "Sense Traps";}
 	public String displayText(){return "(Sensing Traps)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}

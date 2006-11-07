@@ -40,7 +40,8 @@ public class Chant_HealingMoon extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public long flags(){return FLAG_MOONCHANGING|Ability.FLAG_HEALING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
 
 	public void unInvoke()
 	{
@@ -91,7 +92,7 @@ public class Chant_HealingMoon extends Chant
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

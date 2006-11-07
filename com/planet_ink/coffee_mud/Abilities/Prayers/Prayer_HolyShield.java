@@ -37,6 +37,7 @@ public class Prayer_HolyShield extends Prayer
 	public String ID() { return "Prayer_HolyShield"; }
 	public String name(){ return "Holy Shield";}
 	public String displayText(){ return "(Holy Shield)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}

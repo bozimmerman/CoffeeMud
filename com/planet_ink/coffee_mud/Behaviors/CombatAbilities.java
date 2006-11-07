@@ -222,7 +222,7 @@ public class CombatAbilities extends StdBehavior
 			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			&&(msg.source()!=host)
 			&&(msg.tool() instanceof Ability)
-			&&(((Ability)msg.tool()).classificationCode()!=Ability.ACODE_SONG)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SONG)
 			&&(msg.source().isInCombat()))
 			{
 				if((msg.source()==victim)

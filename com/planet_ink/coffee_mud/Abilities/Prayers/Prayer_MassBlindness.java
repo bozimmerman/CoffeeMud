@@ -35,6 +35,7 @@ public class Prayer_MassBlindness extends Prayer
 {
 	public String ID() { return "Prayer_MassBlindness"; }
 	public String name(){ return "Mass Blindness";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Blindness)";}

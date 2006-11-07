@@ -38,6 +38,7 @@ public class Prayer_HuntGood extends Prayer_HuntEvil
 	public String ID() { return "Prayer_HuntGood"; }
 	public String name(){ return "Hunt Good";}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRACKING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public String displayText(){return "(Hunting Good)";}
 	protected String word(){return "good";}
 

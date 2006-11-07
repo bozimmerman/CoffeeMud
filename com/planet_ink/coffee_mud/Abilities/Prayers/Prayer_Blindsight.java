@@ -39,6 +39,7 @@ public class Prayer_Blindsight extends Prayer
 	public String displayText(){ return "(Blindsight)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 

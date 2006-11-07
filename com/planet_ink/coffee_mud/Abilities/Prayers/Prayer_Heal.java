@@ -37,7 +37,8 @@ public class Prayer_Heal extends Prayer
 	public String ID() { return "Prayer_Heal"; }
 	public String name(){ return "Heal";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -38,6 +38,7 @@ public class Prayer_Annul extends Prayer
 {
 	public String ID() { return "Prayer_Annul"; }
 	public String name(){ return "Annul";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 

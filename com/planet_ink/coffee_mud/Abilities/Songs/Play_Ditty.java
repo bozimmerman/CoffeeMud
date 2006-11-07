@@ -38,7 +38,7 @@ public class Play_Ditty extends Play
 	public String name(){ return "Ditty";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
-	public long flags(){return Ability.FLAG_HEALING;}
+	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

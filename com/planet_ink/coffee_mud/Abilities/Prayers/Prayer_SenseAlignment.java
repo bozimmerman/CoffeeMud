@@ -35,6 +35,7 @@ public class Prayer_SenseAlignment extends Prayer
 {
 	public String ID() { return "Prayer_SenseAlignment"; }
 	public String name(){ return "Sense Alignment";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

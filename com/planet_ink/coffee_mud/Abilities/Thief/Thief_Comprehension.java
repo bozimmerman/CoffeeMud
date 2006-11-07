@@ -82,7 +82,7 @@ public class Thief_Comprehension extends ThiefSkill
 		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
 			String str=CMStrings.getSayFromMessage(msg.sourceMessage());

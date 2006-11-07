@@ -35,6 +35,7 @@ public class Prayer_ChainStrike extends Prayer
 {
 	public String ID() { return "Prayer_ChainStrike"; }
 	public String name(){return "Chain Strike";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int maxRange(){return 2;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};

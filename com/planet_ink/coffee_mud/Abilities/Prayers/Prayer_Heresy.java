@@ -39,6 +39,7 @@ public class Prayer_Heresy extends Prayer
 	public String name(){return "Heresy";}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected int canAffectCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return 100;}

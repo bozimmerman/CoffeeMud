@@ -37,6 +37,7 @@ public class Prayer_DivineResistance extends Prayer
 	public String ID() { return "Prayer_DivineResistance"; }
 	public String name(){ return "Divine Resistance";}
 	public String displayText(){ return "(Divine Resistance)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}

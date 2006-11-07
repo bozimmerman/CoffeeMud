@@ -37,6 +37,7 @@ public class Prayer_SenseUndead extends Prayer
 	public String ID() { return "Prayer_SenseUndead"; }
 	public String name(){return "Sense Undead";}
 	public String displayText(){return "(Sensing Undead)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

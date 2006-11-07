@@ -37,6 +37,7 @@ public class Prayer_Fidelity extends Prayer
 	public String ID() { return "Prayer_Fidelity"; }
 	public String name(){ return "Fidelity";}
 	public String displayText(){return "(Fidelity)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

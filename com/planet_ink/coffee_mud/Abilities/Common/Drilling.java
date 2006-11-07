@@ -37,7 +37,7 @@ public class Drilling extends GatheringSkill
 	public String name(){ return "Drilling";}
 	private static final String[] triggerStrings = {"DRILL","DRILLING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_GATHERING;}
+	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "LIQUID";}
 

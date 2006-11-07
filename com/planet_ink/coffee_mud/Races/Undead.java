@@ -92,7 +92,7 @@ public class Undead extends StdRace
 				if((amount>0)
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Ability)
-				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
+				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
 				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 				{
 					CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> <DAMAGE> <T-NAMESELF>.");

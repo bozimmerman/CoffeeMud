@@ -36,6 +36,7 @@ public class Prayer_FeedTheDead extends Prayer
 {
 	public String ID() { return "Prayer_FeedTheDead"; }
 	public String name(){ return "Feed The Dead";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}

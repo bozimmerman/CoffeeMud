@@ -37,6 +37,7 @@ public class Prayer_Conviction extends Prayer
 	public String ID() { return "Prayer_Conviction"; }
 	public String name(){ return "Conviction";}
 	public String displayText(){ return "(Conviction)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

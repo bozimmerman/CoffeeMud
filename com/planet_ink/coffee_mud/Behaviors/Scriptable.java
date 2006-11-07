@@ -6751,7 +6751,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 3: // speech_prog
 				if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
 				&&(!msg.amISource(monster))
-				&&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(((Ability)msg.tool()).classificationCode()!=Ability.ACODE_LANGUAGE)))
+				&&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
                    ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{

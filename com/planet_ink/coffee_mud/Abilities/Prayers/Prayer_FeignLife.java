@@ -37,6 +37,7 @@ public class Prayer_FeignLife extends Prayer
 	public String ID() { return "Prayer_FeignLife"; }
 	public String name(){ return "Feign Life";}
 	public String displayText(){ return "(Feign Life)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}

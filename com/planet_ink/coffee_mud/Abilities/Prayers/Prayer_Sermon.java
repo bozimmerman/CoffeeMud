@@ -36,6 +36,7 @@ public class Prayer_Sermon extends Prayer
 	public String ID() { return "Prayer_Sermon"; }
 	public String name(){return "Sermon";}
 	public String displayText(){return "(Sermon)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){return QUALITY_OK_OTHERS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

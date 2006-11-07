@@ -37,7 +37,7 @@ public class Farming extends GatheringSkill
 	public String name(){ return "Farming";}
 	private static final String[] triggerStrings = {"PLANT","FARM","FARMING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_GATHERING;}
+	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "VEGETATION|COTTON|HEMP|WOODEN";}
 

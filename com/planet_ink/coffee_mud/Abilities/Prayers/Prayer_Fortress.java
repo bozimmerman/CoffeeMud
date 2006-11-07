@@ -38,6 +38,7 @@ public class Prayer_Fortress extends Prayer
 	public String displayText(){ return "(Fortress)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

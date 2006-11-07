@@ -36,6 +36,7 @@ public class Prayer_Ember extends Prayer
 {
 	public String ID() { return "Prayer_Ember"; }
 	public String name(){ return "Ember";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

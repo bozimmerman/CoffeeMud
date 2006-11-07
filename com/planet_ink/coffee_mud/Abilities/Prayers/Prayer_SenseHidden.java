@@ -36,6 +36,7 @@ public class Prayer_SenseHidden extends Prayer
 	public String ID() { return "Prayer_SenseHidden"; }
 	public String name(){ return "Sense Hidden";}
 	public String displayText(){ return "(Sense Hidden)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canTargetCode(){return CAN_MOBS;}

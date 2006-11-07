@@ -226,7 +226,8 @@ public class StdClanCommonItem extends StdClanItem
 				{
 					A.setProficiency(100);
                     boolean success=false;
-                    if((!CMath.bset(A.flags(),Ability.FLAG_CRAFTING))&&(CMLib.flags().isMobile(M)))
+                    if(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)
+                    &&(CMLib.flags().isMobile(M)))
                     {
                         DVector DV=(DVector)needChart.get(M.location().getArea());
                         if(DV!=null)
@@ -348,7 +349,7 @@ public class StdClanCommonItem extends StdClanItem
                     	case 7: CMLib.commands().postSay(M,null,"I could use some light, if you expect me to work."); break;
                     	}
                     
-					if((M.inventorySize()>1)&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
+					if((M.inventorySize()>1)&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
 					{
 						Item I=null;
 						int tries=0;
@@ -367,7 +368,7 @@ public class StdClanCommonItem extends StdClanItem
 					}
 					else
 						success=A.invoke(M,new Vector(),null,false,envStats().level());
-                    if(CMath.bset(A.flags(),Ability.FLAG_CRAFTING))
+                    if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
                     {
                         DVector DV=(DVector)needChart.get(M.location().getArea());
                         if(!success)

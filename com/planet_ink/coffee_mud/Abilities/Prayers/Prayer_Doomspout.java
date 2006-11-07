@@ -36,6 +36,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
 	public String ID() { return "Prayer_Doomspout"; }
 	public String name(){ return "Doomspout";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Doomspout)";}

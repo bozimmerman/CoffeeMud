@@ -37,6 +37,7 @@ public class Prayer_Forgive extends Prayer
 {
 	public String ID() { return "Prayer_Forgive"; }
 	public String name(){return "Forgive";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected int canAffectCode(){return 0;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}

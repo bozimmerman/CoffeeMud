@@ -38,6 +38,7 @@ public class Chant_SummonFlyTrap extends Chant
 	public String ID() { return "Chant_SummonFlyTrap"; }
 	public String name(){ return "Summon FlyTrap";}
 	public String displayText(){return "(Summon FlyTrap)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}

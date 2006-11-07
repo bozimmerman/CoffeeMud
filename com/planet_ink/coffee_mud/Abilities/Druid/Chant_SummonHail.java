@@ -41,6 +41,7 @@ public class Chant_SummonHail extends Chant
     public int maxRange(){return 10;}
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
     public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

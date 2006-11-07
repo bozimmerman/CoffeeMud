@@ -36,6 +36,7 @@ public class Prayer_Wave extends Prayer
 	public String ID() { return "Prayer_Wave"; }
 	public String name(){ return "Wave";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Waved)";}
 	protected int canAffectCode(){return 0;}

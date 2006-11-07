@@ -38,7 +38,8 @@ public class Prayer_Curse extends Prayer
 	public String name(){ return "Curse";}
 	public String displayText(){ return "(Cursed)";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 
@@ -95,7 +96,7 @@ public class Prayer_Curse extends Prayer
 
 	public static void endLowerBlessings(Environmental target, int level)
 	{
-		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
+		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -105,12 +106,12 @@ public class Prayer_Curse extends Prayer
 	}
 	public static boolean isBlessed(Item item)
 	{
-		return CMLib.flags().flaggedAffects(item,Ability.FLAG_BLESSING).size()>0;
+		return CMLib.flags().domainAffects(item,Ability.DOMAIN_BLESSING).size()>0;
 	}
 
 	public static void endLowerCurses(Environmental target, int level)
 	{
-		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_CURSE);
+		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);

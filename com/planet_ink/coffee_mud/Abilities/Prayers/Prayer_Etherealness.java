@@ -37,6 +37,7 @@ public class Prayer_Etherealness extends Prayer
 	public String ID() { return "Prayer_Etherealness"; }
 	public String name(){ return "Etherealness";}
 	public String displayText(){ return "(Etherealness)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}

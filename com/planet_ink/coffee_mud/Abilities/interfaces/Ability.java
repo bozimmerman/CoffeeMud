@@ -649,25 +649,77 @@ public interface Ability extends Environmental
     public static final int DOMAIN_TRAPPING=18<<5;
     /** constant mask returned by classificationCode() designating this ability as being Alert @see Ability#classificationCode() */
     public static final int DOMAIN_ALERT=19<<5;
+    /** constant mask returned by classificationCode() designating this ability as being holy protection @see Ability#classificationCode() */
+    public static final int DOMAIN_HOLYPROTECTION=20<<5;
+    /** constant mask returned by classificationCode() designating this ability as being healing @see Ability#classificationCode() */
+    public static final int DOMAIN_HEALING=21<<5;
+    /** constant mask returned by classificationCode() designating this ability as being vexing @see Ability#classificationCode() */
+    public static final int DOMAIN_VEXING=22<<5;
+    /** constant mask returned by classificationCode() designating this ability as being blessing @see Ability#classificationCode() */
+    public static final int DOMAIN_BLESSING=23<<5;
+    /** constant mask returned by classificationCode() designating this ability as being cursing @see Ability#classificationCode() */
+    public static final int DOMAIN_CURSING=24<<5;
+    /** constant mask returned by classificationCode() designating this ability as being evangelistic @see Ability#classificationCode() */
+    public static final int DOMAIN_EVANGELISM=25<<5;
+    /** constant mask returned by classificationCode() designating this ability as being moon summoning @see Ability#classificationCode() */
+    public static final int DOMAIN_MOONSUMMONING=26<<5;
+    /** constant mask returned by classificationCode() designating this ability as being moon altering @see Ability#classificationCode() */
+    public static final int DOMAIN_MOONALTERING=27<<5;
+    /** constant mask returned by classificationCode() designating this ability as being gathering skill @see Ability#classificationCode() */
+    public static final int DOMAIN_GATHERINGSKILL=28<<5;
+    /** constant mask returned by classificationCode() designating this ability as being crafting skill @see Ability#classificationCode() */
+    public static final int DOMAIN_CRAFTINGSKILL=29<<5;
+	/** constant used to mask classificationCode() designating this ability as being plant growth skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_PLANTGROWTH=30<<5;
+	/** constant used to mask classificationCode() designating this ability as being shape shifting skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_SHAPE_SHIFTING=31<<5;
+	/** constant used to mask classificationCode() designating this ability as being foolish skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_FOOLISHNESS=32<<5;
+	/** constant used to mask classificationCode() designating this ability as being room ward skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_WARDING=33<<5;
+	/** constant used to mask classificationCode() designating this ability as being death lore skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_DEATHLORE=34<<5;
+	/** constant used to mask classificationCode() designating this ability as being weather skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_WEATHER=35<<5;
+	/** constant used to mask classificationCode() designating this ability as being corrupting skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_CORRUPTION=36<<5;
+	/** constant used to mask classificationCode() designating this ability as being restoring skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_RESTORATION=37<<5;
+	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_NEUTRALIZATION=38<<5;
+	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_CREATION=39<<5;
+	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_COMMUNING=40<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_DESCS={
 		"NOTHING","DIVINATION","ABJURATION","ILLUSION",
-		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION",
-		"ENCHANTMENT/CHARM","CONJURATION", "ARCHON",
-		"SINGING","DANCING","PLAYING","DECEPTIVE",
-        "DETRAPPING","ROPEUSING","STEALING","STEALTHY",
-        "TRAPPING","ALERT"
+		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION","ENCHANTMENT/CHARM",
+		"CONJURATION", "ARCHON","SINGING","DANCING",
+		"PLAYING","DECEPTIVE","DETRAPPING","ROPEUSING",
+        "STEALING","STEALTHY","TRAPPING","ALERT",
+        "HOLY_PROTECTION","HEALING","VEXING","BLESSING",
+        "CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
+        "GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
+        "FOOLISHNESS","WARDING","DEATH_LORE","WEATHER",
+        "CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
+        "COMMUNING"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
 		"","Divining","Abjuring","Illusing",
-		"In/Evoking","Altering","Transmuting",
-		"Enchanting","Conjuring", "Creating",
-		"Singing", "Dancing","Playing","Deceptive",
-        "DeTrapping","Rope Using","Stealing","Stealthing",
-        "Trapping","Watching"
+		"In/Evoking","Altering","Transmuting","Enchanting",
+		"Conjuring", "ArChreating","Singing", "Dancing",
+		"Playing","Deceptive","DeTrapping","Rope Using",
+        "Stealing","Stealthing","Trapping","Watching",
+        "Divinely Protecting","Healing","Vexing","Blessing",
+        "Cursing","Evangelising","Moon Summoning","Moon Altering",
+        "Gathering","Crafting","Plant Growing","Shape Shifting",
+        "Fool-Making","Warding","Death Animating","Weather Mastering",
+        "Corrupting","Restoring","Neutralizing","Creating",
+        "Communing"
 	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */
@@ -694,24 +746,12 @@ public interface Ability extends Environmental
 	public static final int FLAG_UNHOLY=1024;
 	/** constant mask for the flags() method designating that this ability is a paralyzing effect @see Ability#flags() */
 	public static final int FLAG_PARALYZING=2048;
-	/** constant mask for the flags() method designating that this ability is a moon-substituting effect @see Ability#flags() */
-	public static final int FLAG_MOONSUMMONING=4096;
-	/** constant mask for the flags() method designating that this ability is a healing effect @see Ability#flags() */
-	public static final int FLAG_HEALING=16384;
-	/** constant mask for the flags() method designating that this ability is a cursing effect @see Ability#flags() */
-	public static final int FLAG_CURSE=32768;
-	/** constant mask for the flags() method designating that this ability is a blessing effect @see Ability#flags() */
-	public static final int FLAG_BLESSING=65536;
-	/** constant mask for the flags() method designating that this ability is a crafting skill @see Ability#flags() */
-	public static final int FLAG_CRAFTING=131072;
-	/** constant mask for the flags() method designating that this ability is a moon changing skill @see Ability#flags() */
-	public static final int FLAG_MOONCHANGING=262144;
-	/** constant mask for the flags() method designating that this ability is a gathering skill @see Ability#flags() */
-	public static final int FLAG_GATHERING=524288;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see Ability#flags() */
-	public static final int FLAG_NOORDERING=1048576;
+	public static final int FLAG_NOORDERING=65536;
     /** constant mask for the flags() method designating that this ability is a clan magic @see Ability#flags() */
-    public static final int FLAG_CLANMAGIC=1048576*2;
+    public static final int FLAG_CLANMAGIC=131072;
+    /** constant mask for the flags() method designating that this ability is healing magic @see Ability#flags() */
+    public static final int FLAG_HEALINGMAGIC=131072*2;
 	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
@@ -728,15 +768,9 @@ public interface Ability extends Environmental
 	    "HOLY",
 	    "UNHOLY",
 	    "PARALYZING",
-	    "MOONSUMMONING",
-	    "HEALING",
-	    "CURSE",
-	    "BLESSING",
-	    "CRAFTING",
-	    "MOONCHANGING",
-	    "GATHERING",
 	    "NOORDERING",
-        "CLANMAGIC"
+        "CLANMAGIC",
+	    "HEALING_MAGIC"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see Ability#abstractQuality()*/

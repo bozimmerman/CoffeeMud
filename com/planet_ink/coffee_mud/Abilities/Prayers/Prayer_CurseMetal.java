@@ -41,7 +41,8 @@ public class Prayer_CurseMetal extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_CURSE;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
 
     protected Vector affectedItems=new Vector();
 

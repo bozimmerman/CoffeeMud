@@ -36,6 +36,7 @@ public class Prayer_FountainLife extends Prayer
 {
 	public String ID() { return "Prayer_FountainLife"; }
 	public String name(){ return "Fountain of Life";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}

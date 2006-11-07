@@ -37,6 +37,7 @@ public class Prayer_RemoveDeathMark extends Prayer
 	public String name(){ return "Remove Death Mark";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

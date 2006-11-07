@@ -39,6 +39,7 @@ public class Prayer_AuraStrife extends Prayer
 	public String displayText(){ return "(Aura of Strife)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

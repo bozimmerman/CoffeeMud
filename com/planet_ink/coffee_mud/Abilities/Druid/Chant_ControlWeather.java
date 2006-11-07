@@ -39,6 +39,7 @@ public class Chant_ControlWeather extends Chant
 	public String name(){ return "Control Weather";}
 	protected int canAffectCode(){return Ability.CAN_AREAS;}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

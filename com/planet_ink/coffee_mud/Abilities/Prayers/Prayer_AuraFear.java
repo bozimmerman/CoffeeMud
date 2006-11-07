@@ -37,6 +37,7 @@ public class Prayer_AuraFear extends Prayer
 	public String ID() { return "Prayer_AuraFear"; }
 	public String name(){ return "Aura of Fear";}
 	public String displayText(){ return "(Fear Aura)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

@@ -36,6 +36,7 @@ public class Prayer_SenseLife extends Prayer
 	public String ID() { return "Prayer_SenseLife"; }
 	public String name(){ return "Sense Life";}
 	public String displayText(){ return "(Sense Life)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

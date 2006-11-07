@@ -36,6 +36,7 @@ public class Prayer_ProtGood extends Prayer
 	public String ID() { return "Prayer_ProtGood"; }
 	public String name(){ return "Protection Good";}
 	public String displayText(){ return "(Protection from Good)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

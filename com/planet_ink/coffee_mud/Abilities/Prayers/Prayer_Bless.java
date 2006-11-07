@@ -40,7 +40,8 @@ public class Prayer_Bless extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	public long flags(){return Ability.FLAG_HOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -100,7 +101,7 @@ public class Prayer_Bless extends Prayer
 
 	public static void endAllOtherBlessings(MOB from, Environmental target, int level)
 	{
-		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
+		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -113,7 +114,7 @@ public class Prayer_Bless extends Prayer
 	}
 	public static void endLowerBlessings(Environmental target, int level)
 	{
-		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
+		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -123,7 +124,7 @@ public class Prayer_Bless extends Prayer
 	}
 	public static void endLowerCurses(Environmental target, int level)
 	{
-		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_CURSE);
+		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -141,7 +142,7 @@ public class Prayer_Bless extends Prayer
 			if(!CMLib.flags().isDroppable(item))
 				return true;
 	    }
-		return CMLib.flags().flaggedAffects(item,Ability.FLAG_CURSE).size()>0;
+		return CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

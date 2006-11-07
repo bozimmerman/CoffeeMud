@@ -265,8 +265,8 @@ public class StdCharClass implements CharClass
 		&&(isQualifyingAuthority(mob,(Ability)E))
 		&&(mob.isMine(E))
 		&&(!E.ID().equals("Skill_Recall"))
-		&&(((Ability)E).classificationCode()!=Ability.ACODE_COMMON_SKILL)
-		&&(((Ability)E).classificationCode()!=Ability.ACODE_LANGUAGE)
+		&&((((Ability)E).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
+		&&((((Ability)E).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)
 		&&(!CMLib.utensils().armorCheck(mob,allowedArmorLevel()))
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2)))
 			return false;

@@ -37,6 +37,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public String ID() { return "Prayer_Contagion"; }
 	public String displayText(){ return "(Contagion)";}
 	public String name(){ return "Contagion";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}

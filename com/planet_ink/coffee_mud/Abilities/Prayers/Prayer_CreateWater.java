@@ -36,6 +36,7 @@ public class Prayer_CreateWater extends Prayer
 {
 	public String ID() { return "Prayer_CreateWater"; }
 	public String name(){ return "Create Water";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}

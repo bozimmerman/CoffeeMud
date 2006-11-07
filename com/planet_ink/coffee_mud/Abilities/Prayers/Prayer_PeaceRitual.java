@@ -36,6 +36,7 @@ public class Prayer_PeaceRitual extends Prayer
 	public String ID() { return "Prayer_PeaceRitual"; }
 	public String name(){ return "Peace Ritual";}
 	public String displayText(){ return "(Peace Ritual)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return 0;}

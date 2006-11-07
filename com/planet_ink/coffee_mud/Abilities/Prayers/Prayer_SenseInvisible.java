@@ -36,6 +36,7 @@ public class Prayer_SenseInvisible extends Prayer
 	public String ID() { return "Prayer_SenseInvisible"; }
 	public String name(){ return "Sense Invisible";}
 	public String displayText(){ return "(Sense Invisible)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

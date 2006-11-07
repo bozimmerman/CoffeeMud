@@ -35,6 +35,7 @@ public class Prayer_MoralBalance extends Prayer
 {
 	public String ID() { return "Prayer_MoralBalance"; }
 	public String name(){ return "Moral Balance";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;}
 

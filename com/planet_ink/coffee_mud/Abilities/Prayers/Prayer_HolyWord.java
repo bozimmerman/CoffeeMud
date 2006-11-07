@@ -40,7 +40,8 @@ public class Prayer_HolyWord extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	public long flags(){return Ability.FLAG_HOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

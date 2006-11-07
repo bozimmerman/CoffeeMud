@@ -40,7 +40,7 @@ public class Prayer_Rot extends Prayer
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER;}
+	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	private long nextTry=System.currentTimeMillis();
 	
 	public void executeMsg(Environmental host, CMMsg msg)

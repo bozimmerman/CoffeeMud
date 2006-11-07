@@ -37,6 +37,7 @@ public class Prayer_Deafness extends Prayer
 	public String ID() { return "Prayer_Deafness"; }
 	public String name(){ return "Deafness";}
 	public String displayText(){ return "(Deafness)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

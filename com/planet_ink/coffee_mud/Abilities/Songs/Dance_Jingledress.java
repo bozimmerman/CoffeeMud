@@ -38,7 +38,7 @@ public class Dance_Jingledress extends Dance
 	public String name(){ return "Jingledress";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
-	public long flags(){return Ability.FLAG_HEALING;}
+	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

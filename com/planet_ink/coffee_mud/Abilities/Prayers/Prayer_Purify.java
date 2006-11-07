@@ -40,7 +40,7 @@ public class Prayer_Purify extends Prayer
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER;}
+	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 
 	public void affectEnvStats(Environmental affecting, EnvStats stats)
 	{

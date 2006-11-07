@@ -39,6 +39,7 @@ public class Prayer_AiryForm extends Prayer
 	public String displayText(){ return "(Airyform)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 

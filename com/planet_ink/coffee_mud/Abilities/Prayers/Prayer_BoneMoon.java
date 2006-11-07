@@ -40,7 +40,8 @@ public class Prayer_BoneMoon extends Prayer
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_MOONCHANGING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int level=1;
 
 	public void unInvoke()
@@ -99,7 +100,7 @@ public class Prayer_BoneMoon extends Prayer
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

@@ -260,7 +260,7 @@ public class Delver extends StdCharClass
 									 int duration)
 	{
 		if(myChar==null) return duration;
-		if(CMath.bset(skill.flags(),Ability.FLAG_CRAFTING)
+		if(((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 		&&(!skill.ID().equals("FoodPrep"))
 		&&(!skill.ID().equals("Cooking"))
 		&&(!skill.ID().equals("Sculpting"))

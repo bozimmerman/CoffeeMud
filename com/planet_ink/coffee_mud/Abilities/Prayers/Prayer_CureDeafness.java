@@ -36,6 +36,7 @@ public class Prayer_CureDeafness extends Prayer
 {
 	public String ID() { return "Prayer_CureDeafness"; }
 	public String name(){ return "Cure Deafness";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

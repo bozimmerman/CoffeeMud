@@ -38,7 +38,8 @@ public class Prayer_CurseLuck extends Prayer
 	public String name(){return "Curse Luck";}
 	public String displayText(){return "(Cursed Luck)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
     protected HashSet permProts=new HashSet();
     protected int prots=4;

@@ -36,6 +36,7 @@ public class Prayer_DispelUndead extends Prayer
 {
 	public String ID() { return "Prayer_DispelUndead"; }
 	public String name(){ return "Dispel Undead";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

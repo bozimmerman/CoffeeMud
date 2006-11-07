@@ -37,6 +37,7 @@ public class Prayer_Absorption extends Prayer
 	public String ID() { return "Prayer_Absorption"; }
 	public String name(){ return "Absorption";}
 	public String displayText(){ return "(Absorption)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}

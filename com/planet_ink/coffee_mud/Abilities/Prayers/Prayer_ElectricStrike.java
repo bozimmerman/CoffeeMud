@@ -36,6 +36,7 @@ public class Prayer_ElectricStrike extends Prayer
 {
 	public String ID() { return "Prayer_ElectricStrike"; }
 	public String name(){ return "Electric Strike";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 

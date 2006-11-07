@@ -36,6 +36,7 @@ public class Prayer_RestoreSmell extends Prayer
 	public String ID() { return "Prayer_RestoreSmell"; }
 	public String name(){ return "Restore Smell";}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)

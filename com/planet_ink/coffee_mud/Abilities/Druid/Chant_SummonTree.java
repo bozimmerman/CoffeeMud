@@ -36,6 +36,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 {
 	public String ID() { return "Chant_SummonTree"; }
 	public String name(){ return "Summon Tree";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int material=0;

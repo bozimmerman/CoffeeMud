@@ -36,6 +36,7 @@ public class Prayer_DrunkenStupor extends Prayer
 {
 	public String ID() { return "Prayer_DrunkenStupor"; }
 	public String name(){ return "Drunken Stupor";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Drunken Stupor)";}

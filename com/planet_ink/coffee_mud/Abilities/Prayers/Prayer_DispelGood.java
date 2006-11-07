@@ -36,6 +36,7 @@ public class Prayer_DispelGood extends Prayer
 {
 	public String ID() { return "Prayer_DispelGood"; }
 	public String name(){ return "Dispel Good";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

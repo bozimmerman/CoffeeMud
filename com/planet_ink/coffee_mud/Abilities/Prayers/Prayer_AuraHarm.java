@@ -39,6 +39,7 @@ public class Prayer_AuraHarm extends Prayer
 	public String displayText(){ return "(Harm Aura)";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
     protected int tickDown=4;

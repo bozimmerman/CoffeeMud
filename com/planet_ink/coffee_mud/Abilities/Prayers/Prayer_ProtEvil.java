@@ -35,6 +35,7 @@ public class Prayer_ProtEvil extends Prayer
 {
 	public String ID() { return "Prayer_ProtEvil"; }
 	public String name(){ return "Protection Evil";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public String displayText(){ return "(Protection from Evil)";}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}

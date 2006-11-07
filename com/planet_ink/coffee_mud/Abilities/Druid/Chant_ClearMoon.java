@@ -39,7 +39,7 @@ public class Chant_ClearMoon extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 
 	public void clearMoons(Environmental E)
 	{
@@ -48,8 +48,8 @@ public class Chant_ClearMoon extends Chant
 		{
 			Ability A=E.fetchEffect(a);
 			if((A!=null)
-			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)
-			   ||CMath.bset(A.flags(),Ability.FLAG_MOONSUMMONING)))
+			&&(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING)
+			   ||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONSUMMONING)))
 				A.unInvoke();
 		}
 	}

@@ -36,6 +36,7 @@ public class Prayer_Bury extends Prayer
 {
 	public String ID() { return "Prayer_Bury"; }
 	public String name(){ return "Bury";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

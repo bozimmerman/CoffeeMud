@@ -37,7 +37,8 @@ public class Prayer_CurseMinds extends Prayer
 	public String ID() { return "Prayer_CurseMinds"; }
 	public String name(){ return "Curse Minds";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Cursed Mind)";}
 
 	boolean notAgain=false;

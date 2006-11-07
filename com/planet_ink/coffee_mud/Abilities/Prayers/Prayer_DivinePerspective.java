@@ -36,6 +36,7 @@ public class Prayer_DivinePerspective extends Prayer
 	public String ID() { return "Prayer_DivinePerspective"; }
 	public String name(){return "Divine Perspective";}
 	public String displayText(){return "(Perspective)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public String mobName="";

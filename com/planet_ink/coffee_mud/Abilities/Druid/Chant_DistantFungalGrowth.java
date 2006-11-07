@@ -36,6 +36,7 @@ public class Chant_DistantFungalGrowth extends Chant
 {
 	public String ID() { return "Chant_DistantFungalGrowth"; }
 	public String name(){ return "Distant Fungal Growth";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}

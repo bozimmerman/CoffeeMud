@@ -155,7 +155,7 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
 	{
 		if(canSeeTheStars(room)) return true;
-		Vector V=CMLib.flags().flaggedAffects(room,Ability.FLAG_MOONSUMMONING);
+		Vector V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
 		for(int v=0;v<V.size();v++)
 			if(V.elementAt(v)!=butNotA)
 				return true;

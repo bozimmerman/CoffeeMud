@@ -38,6 +38,7 @@ public class Prayer_Christen extends Prayer
 	public String ID() { return "Prayer_Christen"; }
 	public String name(){ return "Christen";}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

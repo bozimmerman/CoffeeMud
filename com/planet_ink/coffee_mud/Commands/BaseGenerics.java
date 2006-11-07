@@ -1071,7 +1071,7 @@ public class BaseGenerics extends StdCommand
 				{
 				 	A=(Ability)e.nextElement();
 				 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-				 	&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
+				 	&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
 				 	    str.append(A.ID()+"\n\r");
 				}
 				mob.tell(getScr("BaseGenerics","comskill",str.toString()));
@@ -1079,7 +1079,7 @@ public class BaseGenerics extends StdCommand
 			else
 			if((newName.length()>0)
 			&&(CMClass.getAbility(newName)!=null)
-			&&(CMClass.getAbility(newName).classificationCode()==Ability.ACODE_COMMON_SKILL))
+			&&((CMClass.getAbility(newName).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 			{
 			    E.setCommonSkillID(CMClass.getAbility(newName).ID());
 			    break;

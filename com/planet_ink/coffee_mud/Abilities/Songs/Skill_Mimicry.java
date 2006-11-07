@@ -40,7 +40,7 @@ public class Skill_Mimicry extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
     protected CMMsg lastMsg=null;
 	protected boolean disabled=false;
 

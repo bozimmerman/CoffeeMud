@@ -35,6 +35,7 @@ public class Prayer_MassHarm extends Prayer
 {
 	public String ID() { return "Prayer_MassHarm"; }
 	public String name(){ return "Mass Harm";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

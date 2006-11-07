@@ -37,6 +37,7 @@ public class Prayer_BirdsEye extends Prayer
 {
 	public String ID() { return "Prayer_BirdsEye"; }
 	public String name(){ return "Birds Eye";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 

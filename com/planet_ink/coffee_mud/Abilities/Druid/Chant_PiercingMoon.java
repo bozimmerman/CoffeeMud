@@ -40,7 +40,8 @@ public class Chant_PiercingMoon extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public long flags(){return FLAG_MOONSUMMONING|FLAG_WEATHERAFFECTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
+	public long flags(){return FLAG_WEATHERAFFECTING;}
 
 	public void unInvoke()
 	{

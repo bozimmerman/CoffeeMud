@@ -38,6 +38,7 @@ public class Prayer_CauseFatigue extends Prayer
     public String ID() { return "Prayer_CauseFatigue"; }
     public String name(){ return "Cause Fatigue";}
     public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
     public long flags(){return Ability.FLAG_UNHOLY;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

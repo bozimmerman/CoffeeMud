@@ -39,6 +39,7 @@ public class Prayer_Marry extends Prayer
 	public String name(){ return "Marry";}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

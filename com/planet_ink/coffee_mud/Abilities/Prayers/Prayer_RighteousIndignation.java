@@ -36,6 +36,7 @@ public class Prayer_RighteousIndignation extends Prayer
 	public String ID() { return "Prayer_RighteousIndignation"; }
 	public String name(){ return "Righteous Indignation";}
 	public String displayText(){ return "(Righteous Indignation)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

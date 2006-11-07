@@ -35,6 +35,7 @@ public class Prayer_MassFreedom extends Prayer
 {
 	public String ID() { return "Prayer_MassFreedom"; }
 	public String name(){ return "Mass Freedom";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 

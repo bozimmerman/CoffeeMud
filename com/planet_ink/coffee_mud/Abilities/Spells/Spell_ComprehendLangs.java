@@ -70,7 +70,7 @@ public class Spell_ComprehendLangs extends Spell
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
-			&&(((Ability)msg.tool()).classificationCode()==Ability.ACODE_LANGUAGE)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 			{
 				String str=CMStrings.getSayFromMessage(msg.sourceMessage());

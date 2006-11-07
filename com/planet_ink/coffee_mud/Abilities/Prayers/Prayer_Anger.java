@@ -36,6 +36,7 @@ public class Prayer_Anger extends Prayer
 {
 	public String ID() { return "Prayer_Anger"; }
 	public String name(){ return "Anger";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

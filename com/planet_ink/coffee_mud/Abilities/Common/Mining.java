@@ -37,7 +37,7 @@ public class Mining extends GatheringSkill
 	public String name(){ return "Mining";}
 	private static final String[] triggerStrings = {"MINE","MINING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_GATHERING;}
+	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|ROCK|METAL|MITHRIL";}
 

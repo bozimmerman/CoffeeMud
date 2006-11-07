@@ -39,6 +39,7 @@ public class Prayer_ReligiousDoubt extends Prayer
     
     public String ID() { return "Prayer_ReligiousDoubt"; }
     public String name(){ return "Religious Doubt";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
     public String displayText(){
         if(otherSide) return "";
         return "(Religious Doubt)";

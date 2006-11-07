@@ -37,6 +37,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 {
 	public String ID() { return "Chant_SummonHouseplant"; }
 	public String name(){ return "Summon Houseplant";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected boolean processing=false;

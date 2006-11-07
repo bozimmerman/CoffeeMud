@@ -36,6 +36,7 @@ public class Prayer_Faithless extends Prayer
 {
 	public String ID() { return "Prayer_Faithless"; }
 	public String name(){ return "Faithless";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return 100;}

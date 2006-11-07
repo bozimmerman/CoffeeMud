@@ -38,6 +38,7 @@ public class Prayer_Divorce extends Prayer
 {
 	public String ID() { return "Prayer_Divorce"; }
 	public String name(){ return "Divorce";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 

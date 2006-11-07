@@ -37,7 +37,7 @@ public class Fishing extends GatheringSkill
 	public String name(){ return "Fishing";}
 	private static final String[] triggerStrings = {"FISH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_GATHERING;}
+	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	public String supportedResourceString(){return "FLESH";}
 
 	protected Item found=null;

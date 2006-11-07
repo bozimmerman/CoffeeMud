@@ -36,6 +36,7 @@ public class Prayer_Hellfire extends Prayer
 {
 	public String ID() { return "Prayer_Hellfire"; }
 	public String name(){ return "Hellfire";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 

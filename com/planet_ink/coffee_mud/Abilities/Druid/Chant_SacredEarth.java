@@ -60,7 +60,7 @@ public class Chant_SacredEarth extends Chant
 			return false;
 
 		if((msg.tool() instanceof Ability)
-		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_GATHERING)))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_GATHERINGSKILL))
 		{
 			msg.source().tell("The sacred earth will not allow you to violate it.");
 			return false;

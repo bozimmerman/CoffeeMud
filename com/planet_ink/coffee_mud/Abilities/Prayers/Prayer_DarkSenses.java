@@ -37,6 +37,7 @@ public class Prayer_DarkSenses extends Prayer
 	public String ID() { return "Prayer_DarkSenses"; }
 	public String name(){return "Dark Senses";}
 	public String displayText(){return "(Dark Senses)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}

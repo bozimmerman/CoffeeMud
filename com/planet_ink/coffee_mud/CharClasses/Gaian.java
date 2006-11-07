@@ -347,7 +347,7 @@ public class Gaian extends StdCharClass
 									 int duration)
 	{
 		if(myChar==null) return duration;
-		if(CMath.bset(skill.flags(),Ability.FLAG_CRAFTING)
+		if(((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 		&&(myChar.charStats().getCurrentClass()==this)
 		&&(!skill.ID().equals("FoodPrep"))
 		&&(!skill.ID().equals("Cooking"))

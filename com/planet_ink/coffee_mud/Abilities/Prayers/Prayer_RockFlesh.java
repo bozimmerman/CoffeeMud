@@ -35,6 +35,7 @@ public class Prayer_RockFlesh extends Prayer
 {
 	public String ID() { return "Prayer_RockFlesh"; }
 	public String name(){return "Rock Flesh";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
