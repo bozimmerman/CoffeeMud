@@ -49,6 +49,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private Socket sock;
 
 	private static long instanceCnt = 0;
+	private long processStartTime=System.currentTimeMillis();
 
 	protected String command = null;
 	protected String request = null;
@@ -628,6 +629,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
     {
         String redirectTo = null;
         boolean analLogging=CMSecurity.isDebugging("HTTPERREXT");
+        if((webServer!=null)
+        &&(!webServer.isAdminServer)
+        &&(System.currentTimeMillis()-processStartTime)>(120*1000))
+        {
+	        if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
+	        return new StringBuffer("");
+        }
         try
         {
             for(int i=0;i<s.length();i++)
@@ -757,6 +765,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                     s.insert(ldex,s3);
                                     ldex+=s3.length();
                                 }
+                                if((webServer!=null)
+                                &&(!webServer.isAdminServer)
+                                &&(System.currentTimeMillis()-processStartTime)>(120*1000))
+                                {
+                        	        if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
+                        	        return new StringBuffer("");
+                                }
                             }
                             continue;
                         }
@@ -844,7 +859,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public void run()
 	{
 		String hdrRedirectTo = null;
-
+		processStartTime=System.currentTimeMillis();
+		
 		BufferedReader sin = null;
 		DataOutputStream sout = null;
 		ByteArrayOutputStream bout=null;
