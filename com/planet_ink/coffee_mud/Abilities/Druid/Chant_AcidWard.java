@@ -39,6 +39,7 @@ public class Chant_AcidWard extends Chant
 	public String name(){ return "Acid Ward";}
 	public String displayText(){return "(Acid Ward)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public void unInvoke()
 	{

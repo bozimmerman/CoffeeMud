@@ -161,7 +161,7 @@ public class AbilityData extends StdWebMacro
 					{
 						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
 						domain=domain>>5;
-						thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase());
+						thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase().replace('_',' '));
 					}
 					else
 						thang.append(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].toLowerCase());

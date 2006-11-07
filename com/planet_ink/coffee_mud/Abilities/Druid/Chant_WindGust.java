@@ -43,6 +43,7 @@ public class Chant_WindGust extends Chant
 	public int maxRange(){return 4;}
 	public boolean doneTicking=false;
 	public long flags(){return Ability.FLAG_MOVING;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

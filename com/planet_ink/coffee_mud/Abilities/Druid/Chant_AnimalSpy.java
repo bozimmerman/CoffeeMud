@@ -38,6 +38,7 @@ public class Chant_AnimalSpy extends Chant
 	public String name(){ return "Animal Spy";}
 	public String displayText(){return "(Animal Spy)";}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected MOB spy=null;
 	protected boolean disable=false;
 

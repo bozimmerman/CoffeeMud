@@ -130,7 +130,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         boolean destroymob=false;
 		if(forMOB==null)
         {
-            destroymob=true;
 			forMOB=CMClass.getMOB("StdMOB");
 			forMOB.maxState().setMana(Integer.MAX_VALUE/2);
 			forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
@@ -318,12 +317,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						break;
 					}
 					prepend.append(": "+A.name());
-					if(type==Ability.ACODE_SPELL)
-					{
-						prepend.append("\n\rSchool   : ");
-						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
-						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school]));
-					}
+                    if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
+                    {
+    					prepend.append("\n\rDomain   : ");
+    					int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
+    					prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
+                    }
 					Vector avail=new Vector();
 					Hashtable sortedByLevel=new Hashtable();
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)

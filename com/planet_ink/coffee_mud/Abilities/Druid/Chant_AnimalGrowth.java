@@ -40,6 +40,7 @@ public class Chant_AnimalGrowth extends Chant
 	public String displayText(){return "(Animal Growth)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 
 
 	public void unInvoke()

@@ -689,9 +689,21 @@ public interface Ability extends Environmental
     public static final int DOMAIN_NEUTRALIZATION=38<<5;
 	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see Ability#classificationCode() */
     public static final int DOMAIN_CREATION=39<<5;
-	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see Ability#classificationCode() */
+	/** constant used to mask classificationCode() designating this ability as being communing skil. @see Ability#classificationCode() */
     public static final int DOMAIN_COMMUNING=40<<5;
+    /** constant used to mask classificationCode() designating this ability as being preserving skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_PRESERVING=41<<5;
+    /** constant used to mask classificationCode() designating this ability as being enduring skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_ENDURING=42<<5;
+    /** constant used to mask classificationCode() designating this ability as being plant control skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_PLANTCONTROL=43<<5;
+    /** constant used to mask classificationCode() designating this ability as being animal affinity skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_ANIMALAFFINITY=44<<5;
+    /** constant used to mask classificationCode() designating this ability as being deep magic skil. @see Ability#classificationCode() */
+    public static final int DOMAIN_DEEPMAGIC=45<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
+    public static final int DOMAIN_BREEDING=46<<5;
+    /** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_DESCS={
@@ -705,7 +717,8 @@ public interface Ability extends Environmental
         "GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
         "FOOLISHNESS","WARDING","DEATH_LORE","WEATHER",
         "CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
-        "COMMUNING"
+        "COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
+        "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
@@ -719,7 +732,8 @@ public interface Ability extends Environmental
         "Gathering","Crafting","Plant Growing","Shape Shifting",
         "Fool-Making","Warding","Death Animating","Weather Mastering",
         "Corrupting","Restoring","Neutralizing","Creating",
-        "Communing"
+        "Communing","Preserving","Enduring","Plant Controling",
+        "Animal Befriending","Deep Enchanting","Breeding"
 	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */
@@ -739,7 +753,7 @@ public interface Ability extends Environmental
 	/** constant mask for the flags() method designating that this ability is a heating effect @see Ability#flags() */
 	public static final int FLAG_HEATING=128;
 	/** constant mask for the flags() method designating that this ability is a burning effect @see Ability#flags() */
-	public static final int FLAG_BURNING=256;
+	public static final int FLAG_FIREBASED=256;
 	/** constant mask for the flags() method designating that this ability is a holy or neutral effect @see Ability#flags() */
 	public static final int FLAG_HOLY=512;
 	/** constant mask for the flags() method designating that this ability is a unholy or neutral effect @see Ability#flags() */
@@ -752,6 +766,12 @@ public interface Ability extends Environmental
     public static final int FLAG_CLANMAGIC=131072;
     /** constant mask for the flags() method designating that this ability is healing magic @see Ability#flags() */
     public static final int FLAG_HEALINGMAGIC=131072*2;
+    /** constant mask for the flags() method designating that this ability is a freezing effect @see Ability#flags() */
+    public static final int FLAG_WATERBASED=131072*4;
+    /** constant mask for the flags() method designating that this ability is a washing effect @see Ability#flags() */
+    public static final int FLAG_AIRBASED=131072*8;
+    /** constant mask for the flags() method designating that this ability is a grounded effect @see Ability#flags() */
+    public static final int FLAG_EARTHBASED=131072*16;
 	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
@@ -770,7 +790,10 @@ public interface Ability extends Environmental
 	    "PARALYZING",
 	    "NOORDERING",
         "CLANMAGIC",
-	    "HEALING_MAGIC"
+	    "HEALING",
+        "FREEZING",
+        "ELECTROCUTING",
+        "ACIDIZING"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see Ability#abstractQuality()*/

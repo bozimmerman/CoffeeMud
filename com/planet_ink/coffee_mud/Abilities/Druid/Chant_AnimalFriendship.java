@@ -38,6 +38,7 @@ public class Chant_AnimalFriendship extends Chant
 	public String ID() { return "Chant_AnimalFriendship"; }
 	public String name(){ return "Animal Friendship";}
 	public String displayText(){return "(Animal Friendship)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

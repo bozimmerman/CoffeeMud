@@ -40,6 +40,8 @@ public class Chant_AcidRain extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
+    public long flags(){return Ability.FLAG_EARTHBASED;}
 
 	public boolean isRaining(Room R)
 	{

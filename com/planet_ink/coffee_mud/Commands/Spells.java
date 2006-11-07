@@ -58,11 +58,11 @@ public class Spells extends BaseAbleLister
 		{
 			spells.append("\n\rValid schools are: ");
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
-				spells.append(Ability.DOMAIN_DESCS[i]+" ");
+				spells.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+" ");
 
 		}
 		else
-			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,domain,true,lvl));
+			spells.append("\n\r^HYour "+domainName.replace('_',' ')+" spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,domain,true,lvl));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(spells.toString()+"\n\r");
 		return false;
