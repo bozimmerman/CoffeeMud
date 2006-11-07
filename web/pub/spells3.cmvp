@@ -19,23 +19,14 @@
 <body BGCOLOR=#00FF99>
 <h3>CoffeeMud @MudServerVersion@ Player Spell Information</h3><P>
 (<a href="spells2.cmvp">View the spells by school/domain</a>)&nbsp;&nbsp;&nbsp;&nbsp;
-(<a href="spells3.cmvp">View the spells alphabetically</a>)<P>
+(<a href="spells.cmvp">View the spells by level</a>)<P>
 <BR>
-	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
-	@loop@ @LevelNext@
-	<TR><TD WIDTH=10% ALIGN=TOP BGCOLOR=GREEN><H1><FONT COLOR=WHITE>@LevelNumber@</FONT></H1></TD>
-	<TD WIDTH=90%>@AbilityNext?reset@
-	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
-		@loop@ @AbilityNext?spell@ 
-		<TR><TD WIDTH=35%><B>(@AbilityData?domain@)</B></TD>
-		<TD WIDTH=65%>&nbsp;
+	<TABLE WIDTH=100% BORDER=1>	@AbilityNext?reset@	@loop@ @AbilityNext?spell@ 
+		<TR><TD WIDTH=35% BGCOLOR=GREEN><B><FONT COLOR=WHITE>(@AbilityData?domain@)</FONT></B></TD>
+		<TD WIDTH=5% BGCOLOR=WHITE ALIGN=CENTER><B><FONT COLOR=BLACK>(@AbilityData?qlevel@)</FONT></B></TD>
+		<TD WIDTH=60%>&nbsp;
 		<a href="javascript:openUp('@AbilityID@');"><B>@AbilityName@</B></a> 
-		</TD></TR>
-		@back@
-		</TABLE>
-	</TD>
-	</TR>
-	@back@
+		</TD></TR> @back@
 	</TABLE>
 </BODY>
 </HTML>

@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>Spells</title>
+	<title>Skills</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
 	function openUp(named)
@@ -17,9 +17,9 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud @MudServerVersion@ Player Spell Information</h3><P>
-(<a href="spells.cmvp">View the spells by level</a>)&nbsp;&nbsp;&nbsp;&nbsp;
-(<a href="spells3.cmvp">View the spells alphabetically</a>)<P>
+<h3>CoffeeMud @MudServerVersion@ Player Skill Information</h3><P>
+(<a href="skills2.cmvp">View the skills by school/domain</a>)&nbsp;&nbsp;&nbsp;&nbsp;
+(<a href="skills.cmvp">View the skills by level</a>)<P>
 <BR>
 	<TABLE WIDTH=100% BORDER=1>	
 		@AbilityDomainNext?reset@ 
@@ -30,7 +30,7 @@
 			@loop@ 
 				@LevelNext@ 
 				@AbilityNext?reset@	
-				@loop@ @AbilityNext?spell@ 
+				@loop@ @AbilityNext?skill&common skill&thief skill@ 
 					@AddRequestParameter?SHOWN=TRUE@
 					<TR><TD WIDTH=35% BGCOLOR=GREEN><B><FONT COLOR=WHITE>(@AbilityData?domain@)</FONT></B></TD>
 					<TD WIDTH=5% BGCOLOR=WHITE ALIGN=CENTER><B><FONT COLOR=BLACK>@LevelNumber@</FONT></B></TD>

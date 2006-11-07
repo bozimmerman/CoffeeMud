@@ -157,7 +157,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("DOMAIN"))
 				{
 					StringBuffer thang=new StringBuffer("");
-					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+					if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
 					{
 						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
 						domain=domain>>5;
@@ -173,6 +173,16 @@ public class AbilityData extends StdWebMacro
 						if(x>0) thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
 						str.append(thang.toString()+", ");
 					}
+				}
+				if(parms.containsKey("QLEVEL"))
+				{
+					String className=httpReq.getRequestParameter("CLASS");
+					int level=0;
+					if((className!=null)&&(className.length()>0))
+						level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
+					else
+						level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
+					str.append(level+", ");
 				}
 				if(parms.containsKey("QUALIFYQ")&&(httpReq.isRequestParameter("CLASS")))
 				{

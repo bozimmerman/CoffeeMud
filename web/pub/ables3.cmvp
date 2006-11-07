@@ -18,24 +18,16 @@
 
 <body BGCOLOR=#00FF99>
 <h3>CoffeeMud @MudServerVersion@ Player Ability Information</h3><P>
-(<a href="ables2.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities by school/domain</a>)&nbsp;&nbsp;&nbsp;&nbsp;
-(<a href="ables3.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities alphabetically</a>)<P>
+(<a href="ables.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities by level</a>)&nbsp;&nbsp;&nbsp;&nbsp;
+(<a href="ables2.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities school/domain</a>)<P>
 
-	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
-	@loop@ @LevelNext@
-	<TR><TD WIDTH=10% ALIGN=TOP BGCOLOR=GREEN><H1><FONT COLOR=WHITE>@LevelNumber@</FONT></H1></TD>
-	<TD WIDTH=90%>@AbilityNext?reset@
-	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+	<TABLE WIDTH=100% BORDER=1>	@AbilityNext?reset@	
 		@loop@ @AbilityNext@ 
-		<TR><TD WIDTH=35%><B>(@AbilityData?domain@)</B></TD>
-		<TD WIDTH=65%>&nbsp;
+		<TR><TD WIDTH=35% BGCOLOR=GREEN><B><FONT COLOR=WHITE>(@AbilityData?domain@)</FONT></B></TD>
+		<TD WIDTH=5% BGCOLOR=WHITE ALIGN=CENTER><B><FONT COLOR=BLACK>(@AbilityData?qlevel@)</FONT></B></TD>
+		<TD WIDTH=60%>&nbsp;
 		<a href="javascript:openUp('@AbilityID@');"><B>@AbilityName@</B></a> 
-		</TD></TR>
-		@back@
-		</TABLE>
-	</TD>
-	</TR>
-	@back@
+		</TD></TR> @back@
 	</TABLE>
 </BODY>
 </HTML>

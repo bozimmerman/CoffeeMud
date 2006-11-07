@@ -106,21 +106,18 @@ public class AbilityNext extends StdWebMacro
 			}
 			if(okToShow)
 			{
-				if(parms.containsKey("DOMAIN")&&(classType==Ability.ACODE_SPELL))
+				if(parms.containsKey("DOMAIN"))
 				{
 					String domain=(String)parms.get("DOMAIN");
 					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))
 					   okToShow=false;
 				}
-				else
-				{
-					boolean containsOne=false;
-					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-						if(parms.containsKey(Ability.ACODE_DESCS[i]))
-						{ containsOne=true; break;}
-					if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
-						okToShow=false;
-				}
+				boolean containsOne=false;
+				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+					if(parms.containsKey(Ability.ACODE_DESCS[i]))
+					{ containsOne=true; break;}
+				if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
+					okToShow=false;
 			}
 			if(parms.containsKey("NOT")) okToShow=!okToShow;
 			if(okToShow)

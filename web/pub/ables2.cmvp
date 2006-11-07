@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>Spells</title>
+	<title>Skills/Songs/Prayers/Spells/Chants</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
 	function openUp(named)
@@ -17,27 +17,23 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud @MudServerVersion@ Player Spell Information</h3><P>
-(<a href="spells.cmvp">View the spells by level</a>)&nbsp;&nbsp;&nbsp;&nbsp;
-(<a href="spells3.cmvp">View the spells alphabetically</a>)<P>
-<BR>
-	<TABLE WIDTH=100% BORDER=1>	
-		@AbilityDomainNext?reset@ 
-		@loop@ 
-			@AbilityDomainNext@ 
+<h3>CoffeeMud @MudServerVersion@ Player Ability Information</h3><P>
+(<a href="ables.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities by level</a>)&nbsp;&nbsp;&nbsp;&nbsp;
+(<a href="ables3.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities alphabetically</a>)<P>
+
+	<TABLE WIDTH=100% BORDER=1>	@AbilityDomainNext?reset@ 
+		@loop@ @AbilityDomainNext@ @LevelNext?reset@ 
 			@AddRequestParameter?SHOWN=FALSE@
-			@LevelNext?reset@ 
-			@loop@ 
-				@LevelNext@ 
+			@loop@ @LevelNext@ 
 				@AbilityNext?reset@	
-				@loop@ @AbilityNext?spell@ 
+				@loop@ @AbilityNext@ 
 					@AddRequestParameter?SHOWN=TRUE@
 					<TR><TD WIDTH=35% BGCOLOR=GREEN><B><FONT COLOR=WHITE>(@AbilityData?domain@)</FONT></B></TD>
 					<TD WIDTH=5% BGCOLOR=WHITE ALIGN=CENTER><B><FONT COLOR=BLACK>@LevelNumber@</FONT></B></TD>
 					<TD WIDTH=60%>&nbsp;
 					<a href="javascript:openUp('@AbilityID@');"><B>@AbilityName@</B></a> 
 					</TD></TR> 
-				@back@ 
+				@back@
 			@back@ 
 			@if?CheckReqParm?SHOWN=TRUE@
 				<TR><TD COLSPAN=3 BGCOLOR=BLACK><BR></TD></TR>
