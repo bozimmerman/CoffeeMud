@@ -37,6 +37,7 @@ public class Chant_Shapelessness extends Chant
 	public String ID() { return "Chant_Shapelessness"; }
 	public String name(){ return "Shapelessness";}
 	public String displayText(){ return "(Shapelessness)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}

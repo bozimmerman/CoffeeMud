@@ -37,6 +37,7 @@ public class Chant_Thorns extends Chant
 	public String ID() { return "Chant_Thorns"; }
 	public String name(){return "Thorns";}
 	public String displayText(){return "(Thorns)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 

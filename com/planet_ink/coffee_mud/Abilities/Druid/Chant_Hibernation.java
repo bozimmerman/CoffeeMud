@@ -36,6 +36,7 @@ public class Chant_Hibernation extends Chant
 	public String ID() { return "Chant_Hibernation"; }
 	public String name(){ return "Hibernation";}
 	public String displayText(){return "(Hibernating)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;

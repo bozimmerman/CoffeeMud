@@ -40,7 +40,7 @@ public class Prayer_HuntEvil extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
 	public String displayText(){return "(Hunting Evil)";}
 	protected String word(){return "evil";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 
 	protected Vector theTrail=null;
 	public int nextDirection=-2;

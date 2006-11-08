@@ -37,6 +37,7 @@ public class Chant_Rockfeet extends Chant
 	public String ID() { return "Chant_Rockfeet"; }
 	public String name(){return "Rockfeet";}
 	public String displayText(){return "(Rockfeet)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int maxRange(){return 10;}
 	public int minRange(){return 0;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

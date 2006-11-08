@@ -37,6 +37,7 @@ public class Chant_Crossbreed extends Chant
 	public String ID() { return "Chant_Crossbreed"; }
 	public String name(){ return "Crossbreed";}
 	public String displayText(){return "(Crossbreed)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
 	public void unInvoke()

@@ -40,6 +40,7 @@ public class Chant_SummonDustdevil extends Chant
 	public String displayText(){return "(Summon Dustdevil)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_SUMMONING;}

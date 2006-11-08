@@ -36,6 +36,7 @@ public class Chant_Grapevine extends Chant
 {
 	public String ID() { return "Chant_Grapevine"; }
 	public String name(){ return "Grapevine";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}

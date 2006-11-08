@@ -40,6 +40,7 @@ public class Chant_AstralProjection extends Chant
 	public String name(){return "Astral Projection";}
 	public String displayText(){return "(Astral Projection)";}
 	protected int canAffectCode(){return CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 
 	public void unInvoke()
 	{

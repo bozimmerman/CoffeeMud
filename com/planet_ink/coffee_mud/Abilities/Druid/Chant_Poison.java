@@ -38,6 +38,7 @@ public class Chant_Poison extends Chant
 	public String name(){ return "Venomous Bite";}
 	public String displayText(){return "";}
 	public int canAffectCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 

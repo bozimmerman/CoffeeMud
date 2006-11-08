@@ -38,6 +38,7 @@ public class Chant_Feralness extends Chant
 	public String ID() { return "Chant_Feralness"; }
 	public String name(){ return "Feralness";}
 	public String displayText(){return "(Feralness)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	int hpAdjustment=0;
 

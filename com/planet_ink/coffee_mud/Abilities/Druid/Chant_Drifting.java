@@ -37,6 +37,7 @@ public class Chant_Drifting extends Chant
 	public String ID() { return "Chant_Drifting"; }
 	public String name(){return "Drifting";}
 	public String displayText(){return "(Drifting)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_MOVING;}

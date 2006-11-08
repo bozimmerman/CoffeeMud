@@ -41,6 +41,7 @@ public class Chant_EndureRust extends Chant
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
     protected HashSet dontbother=new HashSet();
 
 	public void unInvoke()

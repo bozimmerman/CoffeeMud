@@ -36,6 +36,7 @@ public class Chant_Reabsorb extends Chant
 {
 	public String ID() { return "Chant_Reabsorb"; }
 	public String name(){return "Reabsorb";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

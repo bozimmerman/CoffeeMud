@@ -37,6 +37,7 @@ public class Chant_LocatePlants extends Chant
 {
 	public String ID() { return "Chant_LocatePlants"; }
 	public String name(){ return "Locate Plants";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public String displayText(){return "(Locating Plants)";}
 	public long flags(){return Ability.FLAG_TRACKING;}
 

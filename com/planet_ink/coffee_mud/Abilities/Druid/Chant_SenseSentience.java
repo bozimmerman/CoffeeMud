@@ -37,6 +37,7 @@ public class Chant_SenseSentience extends Chant
 {
 	public String ID() { return "Chant_SenseSentience"; }
 	public String name(){return "Sense Sentience";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return 0;}

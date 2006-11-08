@@ -36,6 +36,7 @@ public class Chant_SummonWater extends Chant
 {
 	public String ID() { return "Chant_SummonWater"; }
 	public String name(){ return "Summon Water";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected Room SpringLocation=null;

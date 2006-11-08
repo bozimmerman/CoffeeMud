@@ -36,6 +36,7 @@ public class Chant_PlantConstriction extends Chant
 {
 	public String ID() { return "Chant_PlantConstriction"; }
 	public String name(){return "Plant Constriction";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public String displayText(){return "(Plant Constriction)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 0;}

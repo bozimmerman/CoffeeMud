@@ -38,6 +38,7 @@ public class Chant_SummonSeed extends Chant
 	public String name(){ return "Summon Seeds";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

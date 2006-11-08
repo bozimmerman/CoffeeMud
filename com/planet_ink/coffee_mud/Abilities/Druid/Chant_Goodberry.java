@@ -36,6 +36,7 @@ public class Chant_Goodberry extends Chant
 {
 	public String ID() { return "Chant_Goodberry"; }
 	public String name(){ return "Goodberry";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}

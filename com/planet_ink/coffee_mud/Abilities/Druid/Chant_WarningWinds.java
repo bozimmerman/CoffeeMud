@@ -38,6 +38,7 @@ public class Chant_WarningWinds extends Chant
 	public String ID() { return "Chant_WarningWinds"; }
 	public String name(){ return "Warning Winds";}
 	public String displayText(){return "(Warning Winds)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 	Room lastRoom=null;
 
 	public void unInvoke()

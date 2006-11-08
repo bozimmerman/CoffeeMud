@@ -39,6 +39,7 @@ public class Chant_Barkskin extends Chant
 	public String name(){ return "Barkskin";}
 	public String displayText(){return "(Barkskin)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

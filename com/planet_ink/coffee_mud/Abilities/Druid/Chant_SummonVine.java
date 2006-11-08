@@ -38,6 +38,7 @@ public class Chant_SummonVine extends Chant
 	public String ID() { return "Chant_SummonVine"; }
 	public String name(){ return "Summon Vine";}
 	public String displayText(){return "(Summon Vine)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}

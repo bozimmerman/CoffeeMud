@@ -37,6 +37,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 {
 	public String ID() { return "Chant_MassFungalGrowth"; }
 	public String name(){ return "Mass Fungal Growth";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

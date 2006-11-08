@@ -38,6 +38,7 @@ public class Chant_WindColor extends Chant
 	public String ID() { return "Chant_WindColor"; }
 	public String name(){ return "Wind Color";}
 	public String displayText(){return "(Wind Color)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 	Room lastRoom=null;
 
 	public void unInvoke()

@@ -38,6 +38,7 @@ public class Chant_SummonSapling extends Chant
 	public String ID() { return "Chant_SummonSapling"; }
 	public String name(){ return "Summon Sapling";}
 	public String displayText(){return "(Summon Sapling)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}

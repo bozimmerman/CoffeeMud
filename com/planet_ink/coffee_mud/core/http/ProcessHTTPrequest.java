@@ -49,7 +49,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private Socket sock;
 
 	private static long instanceCnt = 0;
-	private long processStartTime=System.currentTimeMillis();
+	private long processStartTime=0;
 
 	protected String command = null;
 	protected String request = null;
@@ -631,6 +631,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         boolean analLogging=CMSecurity.isDebugging("HTTPERREXT");
         if((webServer!=null)
         &&(!webServer.isAdminServer)
+        &&(processStartTime>0)
         &&(System.currentTimeMillis()-processStartTime)>(120*1000))
         {
 	        if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
@@ -767,6 +768,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                 }
                                 if((webServer!=null)
                                 &&(!webServer.isAdminServer)
+						        &&(processStartTime>0)
                                 &&(System.currentTimeMillis()-processStartTime)>(120*1000))
                                 {
                         	        if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");

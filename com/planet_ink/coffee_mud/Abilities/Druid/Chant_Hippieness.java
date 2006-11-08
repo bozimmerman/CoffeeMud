@@ -37,6 +37,7 @@ public class Chant_Hippieness extends Chant
 	public String ID() { return "Chant_Hippieness"; }
 	public String name(){return "Hippieness";}
 	public String displayText(){return "(Feeling Groovy)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected String oldClan="";

@@ -37,6 +37,7 @@ public class Chant_PlantMaze extends Chant
 	public String ID() { return "Chant_PlantMaze"; }
 	public String name(){ return "Plant Maze";}
 	public String displayText(){return "(Plant Maze)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}

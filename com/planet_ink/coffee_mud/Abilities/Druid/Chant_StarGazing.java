@@ -37,6 +37,7 @@ public class Chant_StarGazing extends Chant
 	public String ID() { return "Chant_StarGazing"; }
 	public String name(){ return "Star Gazing";}
 	public String displayText(){return "(Gazing at the Stars)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	long lastTime=0;

@@ -37,6 +37,7 @@ public class Chant_Rockthought extends Chant
 	public String ID() { return "Chant_Rockthought"; }
 	public String name(){ return "Rockthought";}
 	public String displayText(){ return "(Rockthought)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

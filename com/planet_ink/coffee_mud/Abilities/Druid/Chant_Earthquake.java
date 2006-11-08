@@ -36,6 +36,7 @@ public class Chant_Earthquake extends Chant
 	public String ID() { return "Chant_Earthquake"; }
 	public String name(){ return "Quake";}
 	public String displayText(){return "(Quaking)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}

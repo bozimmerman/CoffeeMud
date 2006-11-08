@@ -36,6 +36,7 @@ public class Chant_GrowItem extends Chant
 {
 	public String ID() { return "Chant_GrowItem"; }
 	public String name(){ return "Grow Item";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}

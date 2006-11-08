@@ -37,6 +37,7 @@ public class Chant_Treemind extends Chant
 	public String ID() { return "Chant_Treemind"; }
 	public String name(){ return "Treemind";}
 	public String displayText(){return "(Treemind)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	int amountAbsorbed=0;
 

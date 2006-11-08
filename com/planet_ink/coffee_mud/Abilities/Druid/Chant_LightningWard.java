@@ -39,6 +39,7 @@ public class Chant_LightningWard extends Chant
 	public String name(){ return "Lightning Ward";}
 	public String displayText(){return "(Lightning Ward)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public void unInvoke()
 	{

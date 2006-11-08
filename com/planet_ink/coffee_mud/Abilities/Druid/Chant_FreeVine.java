@@ -37,6 +37,7 @@ public class Chant_FreeVine extends Chant
 	public String ID() { return "Chant_FreeVine"; }
 	public String name(){ return "Free Vine";}
 	public String displayText(){return "";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

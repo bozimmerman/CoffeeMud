@@ -37,6 +37,7 @@ public class Chant_Bloodhound extends Chant
 	public String ID() { return "Chant_Bloodhound"; }
 	public String name(){return "Bloodhound";}
 	public String displayText(){return "(Bloodhound)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 

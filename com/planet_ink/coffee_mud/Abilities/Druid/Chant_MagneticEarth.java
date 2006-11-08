@@ -36,6 +36,7 @@ public class Chant_MagneticEarth extends Chant
 {
 	public String ID() { return "Chant_MagneticEarth"; }
 	public String name(){ return "Magnetic Earth";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}

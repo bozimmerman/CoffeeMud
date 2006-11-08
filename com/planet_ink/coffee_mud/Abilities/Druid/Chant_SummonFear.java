@@ -36,6 +36,7 @@ public class Chant_SummonFear extends Chant
 	public String ID() { return "Chant_SummonFear"; }
 	public String name(){ return "Summon Fear";}
 	public String displayText(){return "(Afraid)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int maxRange(){return 1;}
 

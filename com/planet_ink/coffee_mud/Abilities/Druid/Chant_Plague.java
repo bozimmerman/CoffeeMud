@@ -36,6 +36,7 @@ public class Chant_Plague extends Chant
 {
 	public String ID() { return "Chant_Plague"; }
 	public String name(){ return "Summon Plague";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

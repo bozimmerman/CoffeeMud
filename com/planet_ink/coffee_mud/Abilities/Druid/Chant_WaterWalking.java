@@ -37,6 +37,7 @@ public class Chant_WaterWalking extends Chant
 	public String ID() { return "Chant_WaterWalking"; }
 	public String name(){ return "Water Walking";}
 	public String displayText(){return "(Water Walking)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	protected boolean triggerNow=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

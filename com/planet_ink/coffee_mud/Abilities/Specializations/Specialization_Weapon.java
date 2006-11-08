@@ -49,7 +49,7 @@ public class Specialization_Weapon extends StdAbility
 	protected short[] bonuses=null;
 	protected int numExpertises=-1;
 
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 
     protected int getDamageBonus(int dmgType)
     {

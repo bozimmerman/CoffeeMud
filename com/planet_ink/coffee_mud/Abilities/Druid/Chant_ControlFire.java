@@ -36,6 +36,7 @@ public class Chant_ControlFire extends Chant
 {
 	public String ID() { return "Chant_ControlFire"; }
 	public String name(){ return "Control Fire";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}

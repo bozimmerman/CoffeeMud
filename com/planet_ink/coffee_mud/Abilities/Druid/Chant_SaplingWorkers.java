@@ -38,6 +38,7 @@ public class Chant_SaplingWorkers extends Chant
 	public String ID() { return "Chant_SaplingWorkers"; }
 	public String name(){ return "Sapling Workers";}
 	public String displayText(){return "(Sapling Workers)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}

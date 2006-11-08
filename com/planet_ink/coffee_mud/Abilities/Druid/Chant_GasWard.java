@@ -39,6 +39,7 @@ public class Chant_GasWard extends Chant
 	public String name(){ return "Gas Ward";}
 	public String displayText(){return "(Gas Ward)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public void unInvoke()
 	{

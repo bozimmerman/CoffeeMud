@@ -37,6 +37,7 @@ public class Chant_Unbreakable extends Chant
 	public String ID() { return "Chant_Unbreakable"; }
 	public String name(){ return "Unbreakable";}
 	public String displayText(){return "(Unbreakable)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}

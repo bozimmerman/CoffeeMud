@@ -36,6 +36,7 @@ public class Chant_Bury extends Chant
 {
 	public String ID() { return "Chant_Bury"; }
 	public String name(){ return "Earthfeed";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}

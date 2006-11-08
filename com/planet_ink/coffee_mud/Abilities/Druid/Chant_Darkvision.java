@@ -37,6 +37,7 @@ public class Chant_Darkvision extends Chant
 	public String ID() { return "Chant_Darkvision"; }
 	public String name(){return "Darkvision";}
 	public String displayText(){return "(Darkvision)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 

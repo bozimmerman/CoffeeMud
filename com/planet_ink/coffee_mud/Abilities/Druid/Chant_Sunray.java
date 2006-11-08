@@ -38,6 +38,7 @@ public class Chant_Sunray extends Chant
 	public String name(){ return "Sunray";}
 	public String displayText(){return "(Sunray)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

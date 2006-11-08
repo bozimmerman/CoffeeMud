@@ -37,6 +37,7 @@ public class Chant_FindPlant extends Chant
 {
 	public String ID() { return "Chant_FindPlant"; }
 	public String name(){ return "Find Plant";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public String displayText(){return "(Finding "+lookingFor+")";}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="plants";

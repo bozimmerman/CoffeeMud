@@ -38,6 +38,7 @@ public class Chant_SenseFluids extends Chant_SensePlants
 	public String ID() { return "Chant_SenseFluids"; }
 	public String name(){ return "Sense Fluids";}
 	public String displayText(){return "(Sensing Fluids)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String word(){return "fluids";};
 

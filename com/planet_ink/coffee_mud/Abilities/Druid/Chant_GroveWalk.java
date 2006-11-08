@@ -36,6 +36,7 @@ public class Chant_GroveWalk extends Chant
 {
 	public String ID() { return "Chant_GroveWalk"; }
 	public String name(){ return "Grove Walk";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

@@ -39,6 +39,7 @@ public class Chant_NeutralizePoison extends Chant
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

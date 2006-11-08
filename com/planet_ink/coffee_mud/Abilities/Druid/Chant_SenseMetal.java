@@ -38,6 +38,7 @@ public class Chant_SenseMetal extends Chant
 	public String ID() { return "Chant_SenseMetal"; }
 	public String name(){return "Sense Metal";}
 	public String displayText(){return "(Sensing Metal)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 

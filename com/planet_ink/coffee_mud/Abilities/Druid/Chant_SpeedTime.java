@@ -38,6 +38,7 @@ public class Chant_SpeedTime extends Chant
 	public String ID() { return "Chant_SpeedTime"; }
 	public String name(){ return "Speed Time";}
 	public String displayText(){return "(Speed Time)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}

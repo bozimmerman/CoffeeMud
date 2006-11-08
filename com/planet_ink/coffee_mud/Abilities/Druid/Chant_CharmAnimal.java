@@ -37,6 +37,7 @@ public class Chant_CharmAnimal extends Chant
 	public String ID() { return "Chant_CharmAnimal"; }
 	public String name(){ return "Charm Animal";}
 	public String displayText(){return "(Charmed)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}

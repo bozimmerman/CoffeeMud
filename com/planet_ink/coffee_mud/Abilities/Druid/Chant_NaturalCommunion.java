@@ -37,6 +37,7 @@ public class Chant_NaturalCommunion extends Chant
 	public String ID() { return "Chant_NaturalCommunion"; }
 	public String name(){ return "Natural Communion";}
 	public String displayText(){return "(Communing with Nature)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	long lastTime=0;

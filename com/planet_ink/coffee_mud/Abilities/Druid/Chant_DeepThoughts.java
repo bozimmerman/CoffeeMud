@@ -37,6 +37,7 @@ public class Chant_DeepThoughts extends Chant
 	public String ID() { return "Chant_DeepThoughts"; }
 	public String name(){ return "Deep Thoughts";}
 	public String displayText(){return "(Thinking deep thoughts)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	long lastTime=0;

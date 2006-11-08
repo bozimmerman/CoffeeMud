@@ -37,6 +37,7 @@ public class Chant_SummonMount extends Chant
 	public String ID() { return "Chant_SummonMount"; }
 	public String name(){ return "Summon Mount";}
 	public String displayText(){return "(Mount)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

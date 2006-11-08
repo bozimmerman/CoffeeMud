@@ -36,6 +36,7 @@ public class Chant_Farsight extends Chant
 {
 	public String ID() { return "Chant_Farsight"; }
 	public String name(){ return "Eaglesight";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

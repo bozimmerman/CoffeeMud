@@ -37,6 +37,7 @@ public class Chant_SpeedAging extends Chant
 	public String ID() { return "Chant_SpeedAging"; }
 	public String name(){ return "Speed Aging";}
 	protected int canAffectCode(){return 0;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

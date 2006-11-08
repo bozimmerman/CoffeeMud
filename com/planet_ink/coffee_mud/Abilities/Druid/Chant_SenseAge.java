@@ -37,6 +37,7 @@ public class Chant_SenseAge extends Chant
 	public String ID() { return "Chant_SenseAge"; }
 	public String name(){ return "Sense Age";}
 	protected int canAffectCode(){return 0;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int manaOverride(){return 5;}
 

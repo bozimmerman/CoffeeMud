@@ -37,6 +37,7 @@ public class Chant_Shamblermorph extends Chant
 	public String ID() { return "Chant_Shamblermorph"; }
 	public String name(){ return "Shamblermorph";}
 	public String displayText(){return "(Shamblermorph)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected static Race treeForm=null;
 

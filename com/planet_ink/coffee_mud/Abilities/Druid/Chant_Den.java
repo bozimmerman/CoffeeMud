@@ -37,6 +37,7 @@ public class Chant_Den extends Chant
 	public String ID() { return "Chant_Den"; }
 	public String name(){ return "Den";}
 	public String displayText(){return "(Den)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}

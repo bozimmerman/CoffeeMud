@@ -38,6 +38,7 @@ public class Chant_Moonbeam extends Chant
 	public String ID() { return "Chant_Moonbeam"; }
 	public String name(){ return "Moonbeam";}
 	public String displayText(){return "(Moonbeam)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

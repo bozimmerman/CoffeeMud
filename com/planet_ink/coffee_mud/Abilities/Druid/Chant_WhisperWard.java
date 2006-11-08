@@ -37,6 +37,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public String ID() { return "Chant_WhisperWard"; }
 	public String name(){ return "Whisperward";}
 	public String displayText(){return "(Whisperward)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}

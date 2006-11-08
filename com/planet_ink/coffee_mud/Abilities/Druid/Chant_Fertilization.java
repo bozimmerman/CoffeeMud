@@ -37,6 +37,7 @@ public class Chant_Fertilization extends Chant
 	public String ID() { return "Chant_Fertilization"; }
 	public String name(){return "Fertilization";}
 	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 
 	public boolean tick(Tickable ticking, int tickID)

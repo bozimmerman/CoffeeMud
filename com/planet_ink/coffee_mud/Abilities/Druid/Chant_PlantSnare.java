@@ -37,6 +37,7 @@ public class Chant_PlantSnare extends Chant
 	public String ID() { return "Chant_PlantSnare"; }
 	public String name(){ return "Plant Snare";}
 	public String displayText(){return "(Snared)";}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int maxRange(){return 2;}
 	protected int canAffectCode(){return 0;}

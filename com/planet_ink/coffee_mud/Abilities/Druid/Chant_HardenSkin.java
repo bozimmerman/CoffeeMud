@@ -38,6 +38,7 @@ public class Chant_HardenSkin extends Chant
 	public String ID() { return "Chant_HardenSkin"; }
 	public String name(){ return "Harden Skin";}
 	public String displayText(){return "(Harden Skin)";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

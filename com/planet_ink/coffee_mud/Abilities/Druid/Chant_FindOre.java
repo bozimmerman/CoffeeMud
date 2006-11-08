@@ -37,6 +37,7 @@ public class Chant_FindOre extends Chant_FindPlant
 {
 	public String ID() { return "Chant_FindOre"; }
 	public String name(){ return "Find Ore";}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public String displayText(){return "(Finding "+lookingFor+")";}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="ore";

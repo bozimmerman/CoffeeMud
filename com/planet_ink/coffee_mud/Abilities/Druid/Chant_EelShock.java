@@ -41,6 +41,7 @@ public class Chant_EelShock extends Chant
 	public int maxRange() {return 3;}
 	public int minRange() {return 0;}
 	protected int canAffectCode(){return CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
 
 	public void unInvoke()
 	{
