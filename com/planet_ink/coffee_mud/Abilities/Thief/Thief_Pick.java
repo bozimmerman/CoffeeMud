@@ -76,7 +76,7 @@ public class Thief_Pick extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=((mob.envStats().level()+abilityCode())-unlockThis.envStats().level())*5;
+		int adjustment=((mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)))-unlockThis.envStats().level())*5;
 		if(adjustment>0) adjustment=0;
 		boolean success=proficiencyCheck(mob,adjustment,auto);
 

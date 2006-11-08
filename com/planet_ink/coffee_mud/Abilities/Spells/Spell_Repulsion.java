@@ -123,7 +123,7 @@ public class Spell_Repulsion extends Spell
 						amountRemaining=130;
 						if(target.location()==mob.location())
 						{
-							success=maliciousAffect(mob,target,asLevel,(mob.envStats().level()*10),-1);
+							success=maliciousAffect(mob,target,asLevel,((mob.envStats().level()+(2*getXLEVELLevel(mob)))*10),-1);
 							int level=2;
 							if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
 								level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;

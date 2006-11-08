@@ -49,7 +49,7 @@ public class Chant_VineMass extends Chant_SummonVine
 	{
 		MOB victim=caster.getVictim();
 		MOB newMOB=null;
-		int limit=(caster.envStats().level()/4);
+		int limit=((caster.envStats().level()+(2*super.getXLEVELLevel(caster)))/4);
 		for(int i=0;i<limit;i++)
 		{
 			newMOB=CMClass.getMOB("GenMOB");

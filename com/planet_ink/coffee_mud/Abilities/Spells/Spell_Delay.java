@@ -58,7 +58,7 @@ public class Spell_Delay extends Spell
 			newCaster.setName("the thin air");
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
-			newCaster.baseEnvStats().setLevel(invoker.envStats().level());
+			newCaster.baseEnvStats().setLevel(invoker.envStats().level()+(2*getXLEVELLevel(invoker)));
 			newCaster.recoverEnvStats();
 			newCaster.recoverCharStats();
 			newCaster.setLocation((Room)affected);

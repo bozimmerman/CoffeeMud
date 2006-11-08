@@ -39,6 +39,7 @@ public class Spell_IceLance extends Spell
 	public int maxRange(){return 5;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_WATERBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -69,7 +70,7 @@ public class Spell_IceLance extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob,asLevel)/2;
+				int maxDie =  (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/2;
 				damage += CMLib.dice().roll(maxDie,6,15);
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))

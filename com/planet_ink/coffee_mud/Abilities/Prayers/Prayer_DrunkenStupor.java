@@ -60,7 +60,9 @@ public class Prayer_DrunkenStupor extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-Math.round(((MOB)affected).envStats().level()));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+                                                    -((MOB)affected).envStats().level()
+                                                    -(2*super.getXLEVELLevel(invoker())));
 	}
 
 

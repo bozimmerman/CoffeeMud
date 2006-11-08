@@ -115,7 +115,7 @@ public class Spell_SummonSteed extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level());
+				MOB target = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
                 MOB squabble = checkPack(target, mob);
                 target.addNonUninvokableEffect( (Ability) copyOf());
                 if(squabble==null)

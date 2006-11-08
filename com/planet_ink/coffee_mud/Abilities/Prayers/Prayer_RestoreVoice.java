@@ -39,7 +39,7 @@ public class Prayer_RestoreVoice extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
@@ -54,7 +54,7 @@ public class Prayer_RestoreVoice extends Prayer
 				if((!CMLib.flags().canSpeak(newMOB))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+10))))
+					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+10+(2*super.getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

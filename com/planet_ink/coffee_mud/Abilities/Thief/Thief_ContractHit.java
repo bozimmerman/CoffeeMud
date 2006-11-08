@@ -77,7 +77,7 @@ public class Thief_ContractHit extends ThiefSkill
 				hitting=true;
 				int num=CMLib.dice().roll(1,3,3);
 				int level=mob.envStats().level();
-				if(level>invoker.envStats().level()) level=invoker.envStats().level();
+				if(level>(invoker.envStats().level()+(2*super.getXLEVELLevel(invoker)))) level=(invoker.envStats().level()+(2*super.getXLEVELLevel(invoker)));
 				CharClass C=CMClass.getCharClass("StdCharClass");
 				if(C==null) C=mob.charStats().getCurrentClass();
 				for(int i=0;i<num;i++)
@@ -208,7 +208,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 
 		int level=target.envStats().level();
-		if(level>mob.envStats().level()) level=mob.envStats().level();
+		if(level>(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))) level=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		double goldRequired=new Integer(100*level).doubleValue();
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
@@ -221,7 +221,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,levelDiff,auto);
 

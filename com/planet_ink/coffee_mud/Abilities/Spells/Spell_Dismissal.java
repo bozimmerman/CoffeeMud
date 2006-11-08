@@ -50,7 +50,7 @@ public class Spell_Dismissal extends Spell
 		boolean success=false;
 		if(target.getStartRoom()==null)
 		{
-			int levelDiff=target.envStats().level()-mob.envStats().level();
+			int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 			if(levelDiff<0) levelDiff=0;
 			success=proficiencyCheck(mob,-(levelDiff*5),auto);
 		}

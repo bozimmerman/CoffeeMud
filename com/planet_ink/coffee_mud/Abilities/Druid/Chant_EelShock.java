@@ -42,7 +42,8 @@ public class Chant_EelShock extends Chant
 	public int minRange() {return 0;}
 	protected int canAffectCode(){return CAN_MOBS;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
-
+    public long flags(){return Ability.FLAG_AIRBASED;}
+    
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -143,7 +144,7 @@ public class Chant_EelShock extends Chant
 				{
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
-						maliciousAffect(mob,target,asLevel,3,-1);
+						maliciousAffect(mob,target,asLevel,3+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)),-1);
 				}
 			}
 		}

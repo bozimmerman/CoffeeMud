@@ -83,7 +83,7 @@ public class Prayer_CallUndead extends Prayer
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;
 
-        int adjustment=(target.envStats().level()-mob.envStats().level())*3;
+        int adjustment=(target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob))))*3;
         boolean success=proficiencyCheck(mob,-adjustment,auto);
         
         if(success)

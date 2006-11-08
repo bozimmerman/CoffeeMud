@@ -39,6 +39,7 @@ public class Spell_IceStorm extends Spell
 	public int minRange(){return 1;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_WATERBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -77,7 +78,7 @@ public class Spell_IceStorm extends Spell
 					mob.location().send(mob,msg2);
 					invoker=mob;
 
-					int numDice = adjustedLevel(mob,asLevel)/4;
+					int numDice = (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/4;
 					int damage = CMLib.dice().roll(numDice, 15, 10);
 					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(CMath.div(damage,2.0));

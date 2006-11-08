@@ -51,7 +51,7 @@ public class Spell_Reinforce extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,((mob.envStats().level()-target.envStats().level())*5),auto);
+		boolean success=proficiencyCheck(mob,(((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level())*5),auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),

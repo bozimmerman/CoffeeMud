@@ -107,7 +107,7 @@ public class Spell_WardArea extends Spell implements Trap
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
 			if(invoker()!=null)
-				newCaster.baseEnvStats().setLevel(invoker.envStats().level());
+				newCaster.baseEnvStats().setLevel(invoker.envStats().level()+super.getXLEVELLevel(invoker()));
 			else
 				newCaster.baseEnvStats().setLevel(10);
 			newCaster.recoverEnvStats();

@@ -125,7 +125,7 @@ public class Thief_Racketeer extends ThiefSkill
             }
             return false;
         }
-        int levelDiff=target.envStats().level()-mob.envStats().level();
+        int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
         if(!target.mayIFight(mob))
         {
             mob.tell("You cannot racketeer "+target.charStats().himher()+".");

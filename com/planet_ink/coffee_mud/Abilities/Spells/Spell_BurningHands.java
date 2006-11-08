@@ -38,6 +38,7 @@ public class Spell_BurningHands extends Spell
 	public String displayText(){return "(Burning Hands spell)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+    public long flags(){return Ability.FLAG_FIREBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -68,7 +69,7 @@ public class Spell_BurningHands extends Spell
 				invoker=mob;
 				mob.location().send(mob,msg2);
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob,asLevel);
+				int maxDie =  adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
 				damage += CMLib.dice().roll(1,maxDie,15);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

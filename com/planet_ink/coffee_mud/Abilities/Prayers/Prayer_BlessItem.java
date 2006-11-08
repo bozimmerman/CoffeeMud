@@ -50,10 +50,7 @@ public class Prayer_BlessItem extends Prayer
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOOD);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
-			affectableStats.setArmor((affectableStats.armor()-10)-mob.envStats().level());
-		}
+			affectableStats.setArmor((affectableStats.armor()-10)-(affected.envStats().level()+(2*super.getXLEVELLevel(invoker()))));
 		else
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+1);

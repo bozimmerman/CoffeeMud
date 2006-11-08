@@ -41,7 +41,7 @@ public class Chant_SummonLightning extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
-	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
+	public long flags(){return Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_AIRBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -80,7 +80,7 @@ public class Chant_SummonLightning extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue());
+				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob))).doubleValue());
 				int damage = CMLib.dice().roll(maxDie,8,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

@@ -92,37 +92,34 @@ DURACRAFT@x2=Durable Crafting @x2,3,X2,-SKILL +Carpentry +Armorsmithing +MasterA
 QUALCRAFT@x2=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+CHA {10+(4*@x1)},0,1,0,0,0
 LTHLCRAFT@x2=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 CNTRCRAFT@x2=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+INT {10+(4*@x1)},0,1,0,0,0
-AIRELIST@x1=Airelist @x2,10,LEVEL,-SKILLFLAG +ELECTROCUTING,-LEVEL +>={26+(5*@x1)},+DEX {15+@x1} ,0,1,0,0,0
-TERRALIST@x1=Terranalist @x2,10,LEVEL,-SKILLFLAG +ELECTROCUTING,-LEVEL +>={26+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
-IGNALIST@x1=Ignalist @x2,10,LEVEL,-SKILLFLAG +BURNING,-LEVEL +>={26+(5*@x1)},+STR {15+@x1} ,0,1,0,0,0
-AQUALIST@x1=Aqualist @x2,10,LEVEL,-SKILLFLAG +FREEZING,-LEVEL +>={26+(5*@x1)},+WIS {15+@x1} ,0,1,0,0,0
-MOONLORE@x1=Moon Enchanting @x2,10,LEVEL,-SKILLFLAG +MOON_SUMMONING +MOON_ALTERING,-LEVEL +>={16+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
-FOOLISH@x1=Foolmaking @x2,10,LEVEL,-SKILLFLAG +FOOLISHNESS,-LEVEL +>={12+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
-SHAPING@x1=Shapeshifting @x2,10,LEVEL|X1|X2,-SKILLFLAG +SHAPE_SHIFTING,-LEVEL +>={13+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
-PRESERVING@x1=Preserving @x2,10,LEVEL,-SKILLFLAG +PRESERVING,-LEVEL +>={24+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
-ENDURING@x1=Enduring @x2,10,LEVEL,-SKILLFLAG +ENDURING,-LEVEL +>={22+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
-WEATHER@x1=Weather Mastering @x2,10,LEVEL,-SKILLFLAG +WEATHER,-LEVEL +>={25+(5*@x1)},+INT {11+@x1},0,1,0,0,0
-BREEDER@x1=Breeding @x2,10,LEVEL,-SKILLFLAG +BREEDING,-LEVEL +>={25+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
-DEEPER@x1=Deep Lore @x1,10,LEVEL,-SKILLFLAG +DEEP_MAGIC,-LEVEL +>={25+(5*@x1)},+STR {11+@x1},0,1,0,0,0
-PLANTMASTER@x1=Plant Mastering @x2,10,LEVEL,-SKILLFLAG +PLANT_CONTROL +PLANT_GROWTH,-LEVEL +>={26+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
+AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-LEVEL +>={26+(5*@x1)},+DEX {15+@x1} ,0,1,0,0,0
+TERRALIST@x1=Terranalist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-LEVEL +>={26+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
+IGNALIST@x1=Ignalist @x2,10,X1,-SKILLFLAG +BURNING,-LEVEL +>={26+(5*@x1)},+STR {15+@x1} ,0,1,0,0,0
+AQUALIST@x1=Aqualist @x2,10,X1,-SKILLFLAG +FREEZING,-LEVEL +>={26+(5*@x1)},+WIS {15+@x1} ,0,1,0,0,0
+MOONLORE@x1=Moon Enchanting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +MOON_SUMMONING +MOON_ALTERING,-LEVEL +>={16+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
+FOOLISH@x1=Foolmaking @x2,10,LEVEL|LOWCOST,-SKILLFLAG +FOOLISHNESS,-LEVEL +>={12+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
+SHAPING@x1=Shapeshifting @x2,10,LEVEL|X1|X2|LOWCOST,-SKILLFLAG +SHAPE_SHIFTING,-LEVEL +>={13+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
+PRESERVING@x1=Preserving @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PRESERVING,-LEVEL +>={24+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
+ENDURING@x1=Enduring @x2,10,LEVEL|LOWCOST,-SKILLFLAG +ENDURING,-LEVEL +>={22+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
+WEATHER@x1=Weather Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WEATHER,-LEVEL +>={25+(5*@x1)},+INT {11+@x1},0,1,0,0,0
+BREEDER@x1=Breeding @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BREEDING,-LEVEL +>={25+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
+DEEPER@x1=Deep Lore @x1,10,LEVEL|LOWCOST,-SKILLFLAG +DEEP_MAGIC,-LEVEL +>={25+(5*@x1)},+STR {11+@x1},0,1,0,0,0
+PLANTMASTER@x1=Plant Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PLANT_CONTROL +PLANT_GROWTH,-LEVEL +>={26+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
 BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-LEVEL +>={12+(5*@x1)},+STR {11+@x1},0,1,0,0,0
 GHOULLORE@x1=Ghoul Lore @x2,10,X1,-SKILL +Prayer_AnimateGhoul +Prayer_AnimateGhast,-LEVEL +>={16+(5*@x1)},+CON {11+@x1},0,1,0,0,0
 SPIRITLORE@x1=Spirit Lore @x2,10,X1,-SKILL +Prayer_AnimateSpectre +Prayer_AnimateGhost,-LEVEL +>={23+(5*@x1)},+INT {11+@x1},0,1,0,0,0
 VAMPIRELORE@x1=Vampire Lore @x2,10,X1,-SKILL +Prayer_AnimateVampire,-LEVEL +>={29+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
 DEATHLORE@x1=Death Lore @x2,10,LEVEL|XPCOST,-SKILLFLAG +DEATH_LORE,-LEVEL +>={7+(5*@x1)},+CON {11+@x1},0,1,0,0,0
-WARDING@x1=Divine Warding @x2,10,LEVEL,-SKILLFLAG +WARDING,-LEVEL +>={29+(5*@x1)},+CON {11+@x1},0,1,0,0,0
-HEALING@x1=Healing @x2,10,LEVEL,-SKILLFLAG +HEALING,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
-VEXING@x1=Vexing @x2,10,LEVEL,-SKILLFLAG +VEXING,-LEVEL +>={27+(5*@x1)},+STR {11+@x1},0,1,0,0,0
-HOLYPROT@x1=Divine Protecting @x2,10,LEVEL,-SKILLFLAG +HOLY_PROTECTION,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
-CORRUPTION@x1=Corrupting @x2,10,LEVEL,-SKILLFLAG +CORRUPTION,-LEVEL +>={27+(5*@x1)},+CON {11+@x1},0,1,0,0,0
-RESTORE@x1=Restoring @x2,10,LEVEL,-SKILLFLAG +RESTORATION,-LEVEL +>={28+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
-BLESSING@x1=Blessing @x2,10,LEVEL,-SKILLFLAG +BLESSING,-LEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
-CURSING@x1=Cursing @x2,10,LEVEL,-SKILLFLAG +BLESSING,-LEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
-EVANGELIST@x1=Evangelising @x2,10,LEVEL,-SKILLFLAG +EVANGELISM,-LEVEL +>={7+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
-NEUTRALIZING@x1=Neutralizing @x2,10,LEVEL,-SKILLFLAG +NEUTRALIZATION,-LEVEL +>={25+(5*@x1)},+INT {11+@x1},0,1,0,0,0
-CREATION@x1=Creating @x2,10,LEVEL,-SKILLFLAG +CREATION,-LEVEL +>={25+(5*@x1)},+WIS {14+@x1},0,1,0,0,0
-COMMUNE@x1=Communing @x2,10,LEVEL,-SKILLFLAG +COMMUNING,-LEVEL +>={25+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
-SUMMON@x1=Summoning Mastery @x2,10,LEVEL,-SKILLFLAG +SUMMONING,-LEVEL +>={14+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
-
-
-
+WARDING@x1=Divine Warding @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WARDING,-LEVEL +>={29+(5*@x1)},+CON {11+@x1},0,1,0,0,0
+HEALING@x1=Healing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +HEALING,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+VEXING@x1=Vexing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +VEXING,-LEVEL +>={27+(5*@x1)},+STR {11+@x1},0,1,0,0,0
+HOLYPROT@x1=Divine Protecting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +HOLY_PROTECTION,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+CORRUPTION@x1=Corrupting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +CORRUPTION,-LEVEL +>={27+(5*@x1)},+CON {11+@x1},0,1,0,0,0
+RESTORE@x1=Restoring @x2,10,LEVEL|LOWCOST,-SKILLFLAG +RESTORATION,-LEVEL +>={28+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+BLESSING@x1=Blessing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-LEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
+CURSING@x1=Cursing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-LEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
+EVANGELIST@x1=Evangelising @x2,10,LEVEL|LOWCOST,-SKILLFLAG +EVANGELISM,-LEVEL +>={7+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+NEUTRALIZING@x1=Neutralizing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +NEUTRALIZATION,-LEVEL +>={25+(5*@x1)},+INT {11+@x1},0,1,0,0,0
+CREATION@x1=Creating @x2,10,LEVEL|LOWCOST,-SKILLFLAG +CREATION,-LEVEL +>={25+(5*@x1)},+WIS {14+@x1},0,1,0,0,0
+COMMUNE@x1=Communing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +COMMUNING,-LEVEL +>={25+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
+SUMMON@x1=Summoning Mastery @x2,10,X1,-SKILLFLAG +SUMMONING,-LEVEL +>={14+(5*@x1)},+CHA {11+@x1},0,1,0,0,0

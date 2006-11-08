@@ -95,7 +95,7 @@ public class Spell_Sleep extends Spell
 		if(target==null) return false;
 
 		// sleep has a 3 level difference for PCs, so check for this.
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		if(levelDiff>2) levelDiff=2;
 

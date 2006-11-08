@@ -46,7 +46,7 @@ public class Spell_Grow extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			double aff=1.0 + CMath.mul(0.1,(invoker().envStats().level()));
+			double aff=1.0 + CMath.mul(0.1,(invoker().envStats().level()+(2*getXLEVELLevel(invoker()))));
 			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
@@ -54,7 +54,7 @@ public class Spell_Grow extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)/2);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+(invoker().envStats().level()/5));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+((invoker().envStats().level()+(2*getXLEVELLevel(invoker())))/5));
 	}
 
 	public void unInvoke()

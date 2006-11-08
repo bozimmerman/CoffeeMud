@@ -39,6 +39,7 @@ public class Spell_Lightning extends Spell
 	public int maxRange(){return 5;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_AIRBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -67,7 +68,7 @@ public class Spell_Lightning extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue()/3.0);
+				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob))).doubleValue()/3.0);
 				int damage = CMLib.dice().roll(maxDie,10,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

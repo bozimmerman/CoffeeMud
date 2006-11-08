@@ -45,7 +45,7 @@ public class Druid_RecoverVoice extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 
 
-	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
@@ -60,7 +60,7 @@ public class Druid_RecoverVoice extends StdAbility
 				if((!CMLib.flags().canSpeak(newMOB))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+10))))
+					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+10+(2*super.getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

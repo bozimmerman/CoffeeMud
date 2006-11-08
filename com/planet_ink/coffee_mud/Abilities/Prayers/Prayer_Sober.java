@@ -39,7 +39,7 @@ public class Prayer_Sober extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -57,7 +57,7 @@ public class Prayer_Sober extends Prayer
 				   ||(A.ID().toUpperCase().indexOf("FIREBREATHER")>=0))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+20))))
+					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+20+(2*super.getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

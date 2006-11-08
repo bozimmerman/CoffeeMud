@@ -86,7 +86,7 @@ public class Prayer_MassParalyze extends Prayer
 				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
-					int levelDiff=target.envStats().level()-mob.envStats().level();
+					int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 					if(levelDiff<0) levelDiff=0;
 					if(levelDiff>6) levelDiff=6;
 					mob.location().send(mob,msg);

@@ -49,10 +49,7 @@ public class Prayer_CurseItem extends Prayer
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_EVIL);
 		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
-			affectableStats.setArmor(affectableStats.armor()+10+mob.envStats().level());
-		}
+			affectableStats.setArmor(affectableStats.armor()+(affected.envStats().level()+(2*super.getXLEVELLevel(invoker()))));
 		else
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()-1);

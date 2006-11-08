@@ -44,7 +44,7 @@ public class Chant_Dragonsight extends Chant
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.envStats().level()+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.envStats().level()+(2*super.getXLEVELLevel(invoker()))+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

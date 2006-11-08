@@ -132,7 +132,7 @@ public class Spell_ImprovedPolymorph extends Spell
 
 		int statDiff=targetStatTotal-fakeStatTotal;
 		if(statDiff<0) statDiff=statDiff*-1;
-		int levelDiff=mob.envStats().level()-target.envStats().level();
+		int levelDiff=(mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level();
 		boolean success=proficiencyCheck(mob,(levelDiff*5)-(statDiff*5),auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{

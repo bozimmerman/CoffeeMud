@@ -87,7 +87,7 @@ public class Skill_FireBreathing extends BardSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0))+1;
+                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
 				int damage = CMLib.dice().roll(3, numDice, 0);
 				if(msg2.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));

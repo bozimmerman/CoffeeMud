@@ -92,7 +92,7 @@ public class Chant_SummonElemental extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level());
+				MOB target = determineMonster(mob, mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);

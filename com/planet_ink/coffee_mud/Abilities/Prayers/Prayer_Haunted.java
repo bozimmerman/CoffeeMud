@@ -83,7 +83,7 @@ public class Prayer_Haunted extends Prayer
 			}
 			if(B!=null)
 			{
-				Prayer_AnimateGhost.makeGhostFrom(R,B,null,level);
+				new Prayer_AnimateGhost().makeGhostFrom(R,B,null,level);
 				B.destroy();
 				level+=5;
 				numDone++;
@@ -120,7 +120,7 @@ public class Prayer_Haunted extends Prayer
 				mob.location().send(mob,msg);
 				level=14;
 				numDone=0;
-				numMax=mob.envStats().level()/8;
+				numMax=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))/8;
 				if(CMLib.utensils().doesOwnThisProperty(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());

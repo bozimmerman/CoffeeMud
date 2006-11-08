@@ -79,7 +79,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		if((msg.source()==invoker())
 		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.target() instanceof MOB)
-		&&(msg.target().envStats().level()<invoker().envStats().level())
+		&&(msg.target().envStats().level()<invoker().envStats().level()+(super.getXLEVELLevel(invoker())*2))
 		&&(CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase()).equals(CMStrings.getSayFromMessage(msg.sourceMessage()))))
 		{
 			Vector V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));

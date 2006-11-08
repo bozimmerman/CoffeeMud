@@ -107,7 +107,7 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(getX1Level(mob)*2));
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{

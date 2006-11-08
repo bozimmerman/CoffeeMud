@@ -39,6 +39,7 @@ public class Spell_Shockshield extends Spell
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_AIRBASED;}
 
 
 	public void unInvoke()
@@ -83,7 +84,7 @@ public class Spell_Shockshield extends Spell
 						if(invoker==null) invoker=source;
 						if(msg2.value()<=0)
 						{
-							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
+							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(invoker.envStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()))).doubleValue()/3.0),1);
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock shield around <S-NAME> sparks and <DAMAGE> <T-NAME>!");
 						}
 					}

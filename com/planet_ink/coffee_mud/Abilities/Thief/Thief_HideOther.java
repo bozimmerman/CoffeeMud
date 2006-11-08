@@ -154,9 +154,9 @@ public class Thief_HideOther extends ThiefSkill
 		{
 			MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
-				highestLevel=mob.envStats().level();
+				highestLevel=M.envStats().level();
 		}
-		int levelDiff=mob.envStats().level()-highestLevel;
+		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-highestLevel;
 
 		String str="You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.";
 

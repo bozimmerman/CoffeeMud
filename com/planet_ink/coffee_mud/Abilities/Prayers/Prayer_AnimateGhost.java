@@ -42,7 +42,7 @@ public class Prayer_AnimateGhost extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 
-	public static void makeGhostFrom(Room R, DeadBody body, MOB mob, int level)
+	public void makeGhostFrom(Room R, DeadBody body, MOB mob, int level)
 	{
 		String description=body.mobDescription();
 		if(description.trim().length()==0)
@@ -54,7 +54,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.setName((mob==null)?"a poltergeist":"a ghost");
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(newMOB.Name()+" is here");
-		newMOB.baseEnvStats().setLevel(level);
+		newMOB.baseEnvStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
         newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());

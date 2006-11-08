@@ -68,7 +68,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+(((mob.envStats().level())
+		boolean success=proficiencyCheck(mob,+((((mob.envStats().level()+(2*super.getXLEVELLevel(mob))))
 											 -unlockThis.envStats().level())*3),auto);
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		if(unlockThis instanceof Exit)

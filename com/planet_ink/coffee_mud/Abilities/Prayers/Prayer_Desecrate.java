@@ -81,9 +81,10 @@ public class Prayer_Desecrate extends Prayer
 				{
 					double exp=5.0;
 					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-					int levelDiff=mob.envStats().level()-target.envStats().level();
+					int levelDiff=(mob.envStats().level())-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
-					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp),false);
+                    if(exp>0.0)
+    					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob),false);
 				}
                 target.destroy();
 				mob.location().recoverRoomStats();

@@ -83,7 +83,7 @@ public class Spell_Forget extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 
 		// the invoke method for spells receives as

@@ -53,7 +53,7 @@ public class Chant_SummonRain extends Chant
 			return false;
 
 		int size=mob.location().getArea().numberOfProperIDedRooms();
-		size=size/mob.envStats().level();
+		size=size/(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(size<0) size=0;
 		boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)

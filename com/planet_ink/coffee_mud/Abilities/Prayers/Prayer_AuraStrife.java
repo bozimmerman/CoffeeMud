@@ -48,9 +48,7 @@ public class Prayer_AuraStrife extends Prayer
 		super.affectCharStats(affected,affectableStats);
 		if((invoker()!=null)&&(affected!=invoker())&&(CMLib.flags().isEvil(invoker())))
 		{
-			int levels=invoker().charStats().getClassLevel("Templar");
-			if(levels<0) levels=invoker().envStats().level();
-			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-(levels/5));
+			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-(adjustedLevel(invoker(),0)/5));
 			if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
 				affectableStats.setStat(CharStats.STAT_CHARISMA,1);
 		}

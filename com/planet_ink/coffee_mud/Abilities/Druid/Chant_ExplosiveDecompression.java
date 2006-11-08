@@ -93,7 +93,7 @@ public class Chant_ExplosiveDecompression extends Chant
 							{
 								mob.location().send(mob,msg2);
 								invoker=mob;
-							    int numDice = adjustedLevel(mob,asLevel);
+							    int numDice = adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
 								int damage = CMLib.dice().roll(numDice, 10, 50);
 								if(msg2.value()>0)
 									damage = (int)Math.round(CMath.div(damage,2.0));

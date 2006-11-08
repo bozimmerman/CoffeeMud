@@ -66,6 +66,7 @@ public class Prayer_Revival extends Prayer
 			int levels=0;
 			Vector inhabs=new Vector();
 			Vector clerics=new Vector();
+            int bonus=(2*super.getXLEVELLevel(invoker()));
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
@@ -75,7 +76,7 @@ public class Prayer_Revival extends Prayer
 					{
 						if(M.fetchEffect(ID())!=null)
 						{
-							levels+=M.envStats().level();
+							levels+=(M.envStats().level()+bonus);
 							clerics.addElement(M);
 						}
 					}
@@ -117,7 +118,7 @@ public class Prayer_Revival extends Prayer
 				levels=levels/clerics.size();
 				levels=levels+((clerics.size()-3)*5);
 				MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-				if((M!=null)&&(levels>=M.envStats().level()))
+				if((M!=null)&&(levels>=(M.envStats().level()+bonus)))
 				{
 					MOB vic1=mob.getVictim();
 					MOB vic2=M.getVictim();

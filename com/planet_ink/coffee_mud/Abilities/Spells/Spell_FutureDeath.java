@@ -46,8 +46,8 @@ public class Spell_FutureDeath extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if((!target.mayIFight(mob))||(levelDiff>=(3+(mob.envStats().level()/10))))
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+		if((!target.mayIFight(mob))||(levelDiff>=(3+((mob.envStats().level()+(2*getXLEVELLevel(mob)))/10))))
 		{
 			mob.tell(target.charStats().HeShe()+" looks too powerful.");
 			return false;

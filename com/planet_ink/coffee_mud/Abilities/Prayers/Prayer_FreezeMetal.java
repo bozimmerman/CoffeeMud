@@ -42,7 +42,7 @@ public class Prayer_FreezeMetal extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_WATERBASED;}
 
     protected Vector affectedItems=new Vector();
     public void setMiscText(String newText)
@@ -99,7 +99,7 @@ public class Prayer_FreezeMetal extends Prayer
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
-				int damage=CMLib.dice().roll(1,3,1);
+				int damage=CMLib.dice().roll(1,3+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
 				if(item.subjectToWearAndTear())
 					item.setUsesRemaining(item.usesRemaining()-1);
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");

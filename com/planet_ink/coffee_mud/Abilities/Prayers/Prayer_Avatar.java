@@ -70,9 +70,9 @@ public class Prayer_Avatar extends Prayer
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affected,affectedStats);
-		affectedStats.setArmor(affectedStats.armor()-50);
-		affectedStats.setSpeed(affectedStats.speed()+3.0);
-		affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+50);
+		affectedStats.setArmor(affectedStats.armor()-(adjustedLevel(invoker(),0)*2));
+		affectedStats.setSpeed(affectedStats.speed()+2.0+CMath.mul(0.25,super.getXLEVELLevel(invoker())));
+		affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+adjustedLevel(invoker(),0));
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
@@ -80,8 +80,6 @@ public class Prayer_Avatar extends Prayer
 				affectedStats.setName(mob.name()+" the Avatar of "+mob.getMyDeity().name());
 			else
 				affectedStats.setName(mob.name()+" the Avatar");
-			//int levels=mob.charStats().getClassLevel("Avatar");
-			//if(levels<0) levels=mob.envStats().level();
 		}
 	}
 
@@ -154,13 +152,16 @@ public class Prayer_Avatar extends Prayer
 		}
 
 		int levels=mob.charStats().getClassLevel("Avatar");
-		if(levels<0) levels=mob.envStats().level();
+		if(levels<0) 
+            levels=mob.envStats().level();
 		else
 		if(!mob.charStats().getCurrentClass().ID().equals("Avatar"))
 		{
 			mob.tell("You have lost this ability for all time.");
 			return false;
 		}
+        else
+            levels=adjustedLevel(mob,asLevel);
 
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

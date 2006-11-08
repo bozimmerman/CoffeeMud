@@ -47,8 +47,8 @@ public class Chant_EnhanceBody extends Chant
 		if((affected instanceof MOB)
 		&&(((MOB)affected).fetchWieldedItem()==null))
 		{
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (5*(affected.envStats().level()/10)));
-			affectableStats.setDamage(affectableStats.damage() + 1+(affected.envStats().level()/10));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (5*((affected.envStats().level()+(2*super.getXLEVELLevel(invoker())))/10)));
+			affectableStats.setDamage(affectableStats.damage() + 1+((affected.envStats().level()+(2*super.getXLEVELLevel(invoker())))/10));
 		}
 	}
 

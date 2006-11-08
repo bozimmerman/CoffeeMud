@@ -38,7 +38,7 @@ public class Prayer_Ember extends Prayer
 	public String name(){ return "Ember";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -62,7 +62,7 @@ public class Prayer_Ember extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+3,3);
+					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+3+(2*super.getX1Level(mob)),3);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy ember <DAMAGE> <T-NAME>!");
 				}
 			}

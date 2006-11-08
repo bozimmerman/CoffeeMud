@@ -69,7 +69,7 @@ public class Spell_WallOfFire extends Spell
 					&&(mob.getVictim()==invoker)
 					&&(mob.rangeToTarget()==1))
 					{
-						int damage = CMLib.dice().roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
+						int damage = CMLib.dice().roll((int)Math.round(new Integer(invoker.envStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()))).doubleValue()/4.0),6,1);
 						CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The wall of fire flares and <DAMAGE> <T-NAME>!");
 					}
 				}

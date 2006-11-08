@@ -78,7 +78,7 @@ public class Prayer_BoneMoon extends Prayer
 			}
 			if(B!=null)
 			{
-				Prayer_AnimateSkeleton.makeSkeletonFrom(R,B,null,level);
+				new Prayer_AnimateSkeleton().makeSkeletonFrom(R,B,null,level);
 				B.destroy();
 				level+=3;
 			}

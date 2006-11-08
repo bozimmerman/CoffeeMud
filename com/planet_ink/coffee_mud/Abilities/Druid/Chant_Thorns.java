@@ -84,7 +84,7 @@ public class Chant_Thorns extends Chant
 						if(invoker==null) invoker=source;
 						if(msg2.value()<=0)
 						{
-							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
+							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(adjustedLevel(invoker(),0)).doubleValue()/3.0),1);
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 						}
 					}
@@ -102,7 +102,7 @@ public class Chant_Thorns extends Chant
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
 
-		affectableStats.setArmor(affectableStats.armor()-mob.envStats().level());
+		affectableStats.setArmor(affectableStats.armor()-mob.envStats().level()-(2*super.getXLEVELLevel(invoker())));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

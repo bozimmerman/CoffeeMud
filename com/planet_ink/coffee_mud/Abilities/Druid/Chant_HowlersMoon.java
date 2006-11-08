@@ -89,7 +89,7 @@ public class Chant_HowlersMoon extends Chant
 				&&(M.fetchEffect(ID())!=null))
 					numWolfs++;
 			}
-			if((numWolfs>5)||((invoker()!=null)&&(numWolfs>invoker().envStats().level()/10)))
+			if((numWolfs>5)||((invoker()!=null)&&(numWolfs>(invoker().envStats().level()+(2*super.getXLEVELLevel(invoker())))/10)))
 				 return true;
 			if(fromDir<0)
 			{
@@ -102,7 +102,7 @@ public class Chant_HowlersMoon extends Chant
 			{
 				ticksTicked=0;
 				int level=CMLib.ableMapper().lowestQualifyingLevel(ID())+5;
-				if(invoker()!=null) level=invoker().envStats().level()+5;
+				if(invoker()!=null) level=invoker().envStats().level()+5+(2*super.getXLEVELLevel(invoker()));
 				MOB target = determineMonster(invoker(),level);
 				Room newRoom=room.getRoomInDir(fromDir);
 				int opDir=Directions.getOpDirectionCode(fromDir);

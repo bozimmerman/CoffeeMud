@@ -91,7 +91,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.setName("a spectre");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a spectre is here");
-				newMOB.baseEnvStats().setLevel(9);
+				newMOB.baseEnvStats().setLevel(9+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
                 newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());

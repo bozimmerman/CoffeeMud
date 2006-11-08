@@ -88,7 +88,7 @@ public class Chant_GrowClub extends Chant
 				newItem.baseEnvStats().setLevel(level);
 				newItem.baseEnvStats().setAttackAdjustment(0);
 				int damage=6;
-				try{ damage=((level-1)/2)+2;}catch(Throwable t){}
+				try{ damage=(((level+(2*super.getXLEVELLevel(mob)))-1)/2)+2;}catch(Throwable t){}
 				if(damage<6) damage=6;
 				newItem.baseEnvStats().setDamage(damage);
 				newItem.recoverEnvStats();

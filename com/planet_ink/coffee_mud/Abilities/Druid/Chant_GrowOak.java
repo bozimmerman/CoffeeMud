@@ -63,7 +63,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		room.recoverEnvStats();
 		Chant_GrowOak newChant=new Chant_GrowOak();
 		newChant.PlantsLocation=room;
-		newChant.hpRemaining=100*mob.envStats().level();
+		newChant.hpRemaining=100*(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		newChant.littlePlants=newItem;
 		newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
 		room.recoverEnvStats();

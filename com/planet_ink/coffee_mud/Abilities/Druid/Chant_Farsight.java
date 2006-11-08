@@ -63,7 +63,7 @@ public class Chant_Farsight extends Chant
 			{
 				mob.location().send(mob,msg);
 				Room thatRoom=mob.location();
-				int limit=mob.envStats().level()/3;
+				int limit=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))/3;
 				if(limit<0) limit=1;
 				if(commands.size()==0)
 				{

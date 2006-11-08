@@ -71,7 +71,7 @@ public class Spell_SpellTurning extends Spell
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 		&&(!mob.amDead())
 		&&(mob!=msg.source())
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,mob.envStats().level()-(msg.source().envStats().level()*3),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(mob.envStats().level()+(2*getXLEVELLevel(mob)))-(msg.source().envStats().level()*3),false)))
 		{
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");

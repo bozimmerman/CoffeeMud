@@ -112,7 +112,7 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell(target.name()+" is watching "+target.charStats().hisher()+" books too closely.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 
 		if(!target.mayIFight(mob))
 		{

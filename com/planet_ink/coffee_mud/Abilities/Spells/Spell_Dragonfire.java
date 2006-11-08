@@ -39,6 +39,7 @@ public class Spell_Dragonfire extends Spell
 	public int maxRange(){return 3;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_FIREBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -84,7 +85,7 @@ public class Spell_Dragonfire extends Spell
 					mob.location().send(mob,msg2);
 					invoker=mob;
 
-					int maxDie =  adjustedLevel(mob,asLevel);
+					int maxDie =  adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
 					int damage = CMLib.dice().roll(maxDie,6,maxDie);
 					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(CMath.div(damage,2.0));

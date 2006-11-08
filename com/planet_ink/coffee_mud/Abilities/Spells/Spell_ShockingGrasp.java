@@ -37,6 +37,7 @@ public class Spell_ShockingGrasp extends Spell
 	public String name(){return "Shocking Grasp";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_AIRBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -69,7 +70,7 @@ public class Spell_ShockingGrasp extends Spell
 					if(msg2.value()<=0)
 					{
 						invoker=mob;
-						int damage = CMLib.dice().roll(1,8,adjustedLevel(mob,asLevel));
+						int damage = CMLib.dice().roll(1,8,adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)));
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,auto?"<T-NAME> gasp(s) in shock and pain!":"The shocking grasp <DAMAGE> <T-NAME>!");
 					}
 				}

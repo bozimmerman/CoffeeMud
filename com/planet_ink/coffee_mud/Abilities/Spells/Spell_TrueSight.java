@@ -69,7 +69,7 @@ public class Spell_TrueSight extends Spell
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.envStats().level()+200+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.envStats().level()+(2*getXLEVELLevel(invoker()))+200+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

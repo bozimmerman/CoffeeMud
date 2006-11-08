@@ -172,7 +172,7 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				offensiveAffects=Prayer_CureBlindness.returnOffensiveAffects(mob,target);
+				offensiveAffects=new Prayer_CureBlindness().returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)

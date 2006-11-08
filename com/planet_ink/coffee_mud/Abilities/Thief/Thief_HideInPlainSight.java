@@ -113,9 +113,9 @@ public class Thief_HideInPlainSight extends ThiefSkill
         {
             MOB M=mob.location().fetchInhabitant(i);
             if((M!=null)&&((M!=mob))&&(highestLevel<M.envStats().level()))
-                highestLevel=mob.envStats().level();
+                highestLevel=M.envStats().level();
         }
-        int levelDiff=mob.envStats().level()-highestLevel-(this.getXLEVELLevel(mob)*5);
+        int levelDiff=mob.envStats().level()-highestLevel-(this.getXLEVELLevel(mob)*2);
 
         String str="You step to the side and become totally inconspicuous.";
 

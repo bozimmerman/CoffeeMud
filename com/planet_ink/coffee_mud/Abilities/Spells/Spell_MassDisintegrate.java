@@ -70,7 +70,7 @@ public class Spell_MassDisintegrate extends Spell
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
 		
-		int levelDiff=avgLevel-mob.envStats().level();
+		int levelDiff=avgLevel-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		
 		boolean success=false;

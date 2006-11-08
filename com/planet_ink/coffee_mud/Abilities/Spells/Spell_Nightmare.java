@@ -134,7 +134,7 @@ public class Spell_Nightmare extends Spell
 						"<S-NAME> shake(s) in anticipation of horror!"); break;
 					}
 					amountRemaining-=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE*2);
-					amountRemaining-=mob.envStats().level();
+					amountRemaining-=(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 					if(amountRemaining<0)
 						unInvoke();
 				}

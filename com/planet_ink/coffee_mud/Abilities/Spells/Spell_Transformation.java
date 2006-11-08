@@ -52,7 +52,7 @@ public class Spell_Transformation extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDamage(affectableStats.damage()+affected.envStats().level());
+		affectableStats.setDamage(affectableStats.damage()+affected.envStats().level()+getXLEVELLevel(invoker()));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

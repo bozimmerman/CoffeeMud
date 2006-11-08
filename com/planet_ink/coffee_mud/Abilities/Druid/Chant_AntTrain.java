@@ -147,7 +147,7 @@ public class Chant_AntTrain extends Chant
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverEnvStats();
-				beneficialAffect(mob,target,asLevel,mob.envStats().level()*10);
+				beneficialAffect(mob,target,asLevel,(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*10);
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();

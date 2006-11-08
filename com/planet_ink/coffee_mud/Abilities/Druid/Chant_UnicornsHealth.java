@@ -44,7 +44,7 @@ public class Chant_UnicornsHealth extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+(affected.envStats().level()/6));
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+((affected.envStats().level()+(2*super.getXLEVELLevel(invoker())))/6));
 	}
 
 

@@ -217,8 +217,8 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setAbility(25);
-		newMOB.baseEnvStats().setWeight(caster.envStats().level()*caster.envStats().level());
-		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,caster.envStats().level());
+		newMOB.baseEnvStats().setWeight(caster.envStats().level()*(caster.envStats().level()+(2*super.getXLEVELLevel(caster))));
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,caster.envStats().level()+(2*super.getXLEVELLevel(caster)));
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);

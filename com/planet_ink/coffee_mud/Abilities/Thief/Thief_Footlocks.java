@@ -117,7 +117,7 @@ public class Thief_Footlocks extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+getXLEVELLevel(mob)+abilityCode());
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob))+abilityCode());
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

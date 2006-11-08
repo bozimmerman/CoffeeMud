@@ -223,7 +223,7 @@ public class Prayer_Monolith extends Prayer
 						&&(mob.getVictim()==invoker)
 						&&(mob.rangeToTarget()==1))
 						{
-							int damage = CMLib.dice().roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
+							int damage = CMLib.dice().roll((int)Math.round(new Integer(adjustedLevel(invoker,0)+(2*super.getX1Level(invoker()))).doubleValue()/4.0),6,1);
 							CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
 						}
 					}

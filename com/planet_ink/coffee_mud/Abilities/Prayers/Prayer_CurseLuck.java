@@ -59,21 +59,22 @@ public class Prayer_CurseLuck extends Prayer
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_SAVE_WATER,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_POISON,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_MIND,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_GENERAL,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_GAS,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,-100);
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,-100);
+        int amt=100+(10*super.getXLEVELLevel(invoker()));
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_GENERAL,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,-amt);
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,-amt);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)

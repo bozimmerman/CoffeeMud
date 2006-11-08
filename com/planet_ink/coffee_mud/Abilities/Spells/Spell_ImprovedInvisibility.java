@@ -91,7 +91,7 @@ public class Spell_ImprovedInvisibility extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
-				beneficialAffect(mob,target,asLevel,mob.envStats().level()*3);
+				beneficialAffect(mob,target,asLevel,(mob.envStats().level()+(2*getXLEVELLevel(mob)))*3);
 			}
 		}
 		else

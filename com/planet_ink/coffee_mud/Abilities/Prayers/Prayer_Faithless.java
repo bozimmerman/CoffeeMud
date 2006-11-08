@@ -59,7 +59,7 @@ public class Prayer_Faithless extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;

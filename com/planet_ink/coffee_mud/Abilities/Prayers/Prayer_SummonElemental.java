@@ -96,7 +96,7 @@ public class Prayer_SummonElemental extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB myMonster = determineMonster(mob, mob.envStats().level());
+				MOB myMonster = determineMonster(mob, mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 				if(myMonster.isInCombat()) myMonster.makePeace();
 				CMLib.commands().postFollow(myMonster,mob,true);
 				invoker=mob;

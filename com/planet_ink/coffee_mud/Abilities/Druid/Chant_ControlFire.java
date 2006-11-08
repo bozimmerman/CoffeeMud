@@ -42,6 +42,7 @@ public class Chant_ControlFire extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
+    public long flags(){return Ability.FLAG_FIREBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -92,7 +93,7 @@ public class Chant_ControlFire extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0))+1;
+                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
 				int damage = CMLib.dice().roll(numDice, 6, 20);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

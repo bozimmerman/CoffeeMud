@@ -37,6 +37,7 @@ public class Spell_ChainLightening extends Spell
 	public int maxRange(){return 2;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public long flags(){return Ability.FLAG_AIRBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -61,7 +62,7 @@ public class Spell_ChainLightening extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int maxDie=adjustedLevel(mob,asLevel);
+		int maxDie=adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
 		int damage = CMLib.dice().roll(maxDie,8,1);
 
 		boolean success=proficiencyCheck(mob,0,auto);

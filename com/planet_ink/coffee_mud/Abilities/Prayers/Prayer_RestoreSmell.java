@@ -39,7 +39,7 @@ public class Prayer_RestoreSmell extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
-	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
@@ -54,7 +54,7 @@ public class Prayer_RestoreSmell extends Prayer
 				if((!CMLib.flags().canSmell(newMOB))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1))))
+					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+1+(2*super.getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

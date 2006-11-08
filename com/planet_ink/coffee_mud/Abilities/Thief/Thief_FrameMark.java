@@ -85,7 +85,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=(target.envStats().level()-mob.envStats().level()*15);
+		int levelDiff=(target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*15);
 		if(levelDiff>0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,levelDiff,auto);
 

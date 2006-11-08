@@ -61,7 +61,7 @@ public class Prayer_MassFreedom extends Prayer
 					if((A.invoker()==null)
 					||((clas!=Ability.ACODE_SPELL)&&(clas!=Ability.ACODE_CHANT)&&(clas!=Ability.ACODE_PRAYER)&&(clas!=Ability.ACODE_SONG))
 					||((A.invoker()!=null)
-					   &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
+					   &&(A.invoker().envStats().level()<=(caster.envStats().level()+1+(2*super.getXLEVELLevel(caster))))))
 					 	offenders.addElement(A);
 				}
 				catch(Exception e)

@@ -192,7 +192,7 @@ public class Chant_Treemorph extends Chant
 			return false;
 
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 		treeForm=CMClass.getRace("TreeGolem");
@@ -227,7 +227,7 @@ public class Chant_Treemorph extends Chant
 					tree.setMaterial(RawMaterial.RESOURCE_OAK);
 					tree.baseEnvStats().setWeight(5000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
-					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*50,-1);
+					success=maliciousAffect(mob,target,asLevel,(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*50,-1);
 					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{

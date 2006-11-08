@@ -87,7 +87,7 @@ public class Spell_MarkerSummoning extends Spell
 			MOB M=oldRoom.fetchInhabitant(m);
 			if(M!=null){
 				inhabs.addElement(M);
-				int adjustment=M.envStats().level()-mob.envStats().level();
+				int adjustment=M.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 				profNeg+=adjustment;
 			}
 		}
