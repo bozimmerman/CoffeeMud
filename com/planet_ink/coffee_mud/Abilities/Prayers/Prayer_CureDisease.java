@@ -40,7 +40,7 @@ public class Prayer_CureDisease extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public static Vector returnOffensiveAffects(Environmental fromMe)
+	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();
 

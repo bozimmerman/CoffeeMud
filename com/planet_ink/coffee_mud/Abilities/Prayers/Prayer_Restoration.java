@@ -122,7 +122,7 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				Vector offensiveAffects=Prayer_RestoreSmell.returnOffensiveAffects(mob,target);
+				Vector offensiveAffects=new Prayer_RestoreSmell().returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
@@ -132,7 +132,7 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				offensiveAffects=Prayer_RestoreVoice.returnOffensiveAffects(mob,target);
+				offensiveAffects=new Prayer_RestoreVoice().returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
@@ -152,7 +152,7 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				offensiveAffects=Prayer_Freedom.returnOffensiveAffects(mob,target);
+				offensiveAffects=new Prayer_Freedom().returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
@@ -162,7 +162,7 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				offensiveAffects=Prayer_CureDisease.returnOffensiveAffects(target);
+				offensiveAffects=new Prayer_CureDisease().returnOffensiveAffects(target);
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
@@ -182,7 +182,7 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
-				offensiveAffects=Prayer_CureDeafness.returnOffensiveAffects(mob,target);
+				offensiveAffects=new Prayer_CureDeafness().returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
