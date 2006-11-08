@@ -38,6 +38,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 								
 	public Hashtable completeEduMap=new Hashtable();
     public Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
+	public Properties helpMap=new Properties();
 
     public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost)
     {
@@ -61,6 +62,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	completeEduMap.put(def.ID,def);
         return def;
     }
+    public String getExpertiseHelp(String ID){return (ID==null)?null:helpMap.getProperty(ID.toUpperCase());}
+    
     public void delDefinition(String ID){
     	completeEduMap.remove(ID);
     }
@@ -176,14 +179,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     {
         for(int u=0;u<completeUsageMap.length;u++)
             completeUsageMap[u]=new Hashtable();
-        
+        helpMap.clear();
         Vector V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
         int levels=0;
         HashSet flags=new HashSet();
         String s=null;
         String skillMask=null;
         int[] costs=new int[5];
-        String ID,WKID=null;
+        String ID=null,WKID=null;
         String name,WKname=null;
         String listMask,WKlistMask=null;
         String finalMask,WKfinalMask=null;
@@ -196,6 +199,51 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) continue;
             int x=row.indexOf("=");
             if(x<0) continue;
+            if(row.trim().toUpperCase().startsWith("HELP_"))
+            {
+            	String lastID=ID;
+                ID=row.substring(0,x).toUpperCase();
+                row=row.substring(x+1);
+                ID=ID.substring(5).toUpperCase();
+                if(ID.length()==0) ID=lastID;
+                if((lastID==null)||(lastID.length()==0))
+                    Log.errOut("ColumbiaUniv","No last expertise found for help: "+lastID+"="+row);
+                else
+            	if(getDefinition(ID)!=null)
+            	{
+	                helpMap.remove(ID);
+	                helpMap.put(ID,row);
+            	}
+            	else
+            	{
+	                Vector stages=getStageCodes(ID);
+	                if((stages==null)||(stages.size()==0))
+	                    Log.errOut("ColumbiaUniv","Expertise not yet defined: "+ID+"="+row);
+	                else
+	                {
+	                	def=getDefinition((String)stages.elementAt(0));
+	                	if(def!=null)
+	                	{
+		                	WKID=def.name.toUpperCase().replace(' ','_');
+	                		x=WKID.lastIndexOf("_");
+	                		if((x>=0)&&(CMath.isInteger(WKID.substring(x+1))||CMath.isRomanNumeral(WKID.substring(x+1))))
+	                		{
+	                			WKID=WKID.substring(0,x);
+		                		if(!helpMap.containsKey(WKID))
+		                			helpMap.put(WKID,row+"\n\r(See help on "+def.name+").");
+	                		}
+	                	}
+		                for(int s1=0;s1<stages.size();s1++)
+		                {
+		                	def=getDefinition((String)stages.elementAt(s1));
+		                	if(def==null) continue;
+		                	WKID=def.name.toUpperCase().replace(' ','_');
+		                	if(!helpMap.containsKey(WKID)) helpMap.put(WKID,row);
+		                }
+	                }
+            	}
+            	continue;
+            }
             ID=row.substring(0,x).toUpperCase();
             row=row.substring(x+1);
             Vector parts=CMParms.parseCommas(row,false);

@@ -44,4 +44,5 @@ public interface HelpLibrary extends CMObject
     public Properties getHelpFile();
     public void unloadHelpFile(MOB mob);
     public boolean isPlayerSkill(String helpStr);
+    public void addHelpEntry(String ID, String text, boolean archon);
 }

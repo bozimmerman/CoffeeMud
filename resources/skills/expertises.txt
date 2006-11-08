@@ -1,125 +1,373 @@
 #Expertise Code=Expertise Name @x1,number of levels,expertise flags,skill mask,addtl list mask,gain mask,practices,trains,qpCost,expCost,timeCost
 EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish,-LEVEL +>={26+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to ameliorate the experience cost of casting powerful spells, especially concerning items.
+
 ARMOROPT@x1=Armor Optomizing @x2,10,LEVEL,-SKILL +Fighter_ArmorTweaking,-LEVEL +>={28+(5*@x1)},+CON {18+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to gain more protective benefits from tweaking armor.
+
 SHIELDUSE@x1=Shield Using @x2,10,LEVEL,-SKILL +Fighter_ShieldBlock,-LEVEL +>={26+(5*@x1)},+STR {18+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to better understand shield blocking and usage, and get better armor benefit from shields.
+
 CAUTIOUS@x1=Cautiously @x2,10,X1,-SKILL +Thief_Peek +Thief_Robbery +Thief_SlipItem +Thief_Steal +Thief_Swipe,-LEVEL +>={9+(5*@x1)},+WIS {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to lessen your chances of getting spotted when doing certain thiefly things.
+
 FATIGUER@x1=Fatiguing @x2,10,X1,-SKILL +Thief_DisablingCaltrops,-LEVEL +>={19+(5*@x1)},+CON {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to craft devices and traps that inhibit movement and cause fatigue.
+
 MAGEKILLER@x1=Mana Sapping @x2,10,X1,-SKILL +Thief_DazzlingCaltrops,-LEVEL +>={25+(5*@x1)},+INT {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to craft devices and traps that cause confusion and results in the loss of mana.
+
 ALERT@x1=Vigilantly @x2,10,LEVEL,-SKILLFLAG +ALERT,-LEVEL +>={14+(5*@x1)},+WIS {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to handle more difficult cases of thiefly detection. 
+
 STEALTH@x1=Stealthy @x2,10,LEVEL,-SKILLFLAG +STEALTHY,-LEVEL +>={1+(5*@x1)},+DEX {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to hide, sneak around, and conceal oneself in more difficult situations.
+
 STEALING@x1=Theft Mastery @x2,10,LEVEL,-SKILLFLAG +STEALING,-LEVEL +>={1+(5*@x1)},+DEX {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to steal, swipe, and do unseemly slight of hand with more advanced foes.
+
 ROPEUSE@x1=Rope Use @x2,10,LEVEL,-SKILLFLAG +ROPEUSING,-LEVEL +>={13+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to better use and deploy rope based snares, bindings, knots, and traps.
+
 DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-LEVEL +>={13+(5*@x1)},+CHA {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to handle more difficult cases of thiefly deceptiveness. 
+
 DETRAP@x1=Trap Disabling @x2,10,LEVEL,-SKILLFLAG +DETRAPPING,-LEVEL +>={12+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to better avoid, identify, handle, and disable traps.
+
 TRAPPING@x1=Trapping @x2,10,LEVEL,-SKILLFLAG +TRAPPING,-LEVEL +>={16+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to build and deploy traps that are better made, and more lethal.
+
 WANDUSE@x1=Wand Using @x2,10,LEVEL,-SKILL +Skill_WandUse,-LEVEL +>={26+(5*@x1)},+CHA {17+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 TUNING@x1=Tuning @x2,10,LEVEL,-SKILL +Skill_TuneInstrument,-LEVEL +>={27+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 HOMECOOKING@x2=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Apothecary,-LEVEL +>={1+(5*@x1)},+WIS {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 AXESTRIKE@x1=Axe Striking @x2,10,LEVEL,-SKILL +Specialization_Axe,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 AXESLICE@x1=Axe Slicing @x2,10,X1,-SKILL +Specialization_Axe,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 AXEPIERCE@x1=Axe Piercing @x2,10,X2,-SKILL +Specialization_Axe,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 UNARMEDSTRIKE@x1=Unarmed Striking @x2,10,LEVEL,-SKILL +Specialization_Natural,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 UNARMEDSLICE@x1=Unarmed Slicing @x2,10,X1,-SKILL +Specialization_Natural,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 UNARMEDPIERCE@x1=Unarmed Piercing @x2,10,X2,-SKILL +Specialization_Natural,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 UNARMEDBASH@x1=Unarmed Bashing @x2,10,X3,-SKILL +Specialization_Natural,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BLUNTPIERCE@x1=Blunt Piercing @x2,10,X2,-SKILL +Specialization_BluntWeapon,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BLUNTBASH@x1=Blunt Bashing @x2,10,X3,-SKILL +Specialization_BluntWeapon,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EDGEDSTRIKE@x1=Edged Striking @x2,10,LEVEL,-SKILL +Specialization_EdgedWeapon,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EDGESLICE@x1=Edged Bashing @x2,10,X1,-SKILL +Specialization_EdgedWeapon,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EDGEPIERCE@x1=Edged Piercing @x2,10,X2,-SKILL +Specialization_EdgedWeapon,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 FLAILEDSTRIKE@x1=Flailed Striking @x2,10,LEVEL,-SKILL +Specialization_FlailedWeapon,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 FLAILEDSLASH@x1=Flailed Slicing @x2,10,X1,-SKILL +Specialization_FlailedWeapon,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 FLAILEDBASH@x1=Flailed Bashing @x2,10,X3,-SKILL +Specialization_FlailedWeapon,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 HAMMERSTRIKE@x1=Hammer Striking @x2,10,LEVEL,-SKILL +Specialization_Hammer,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 HAMMERBASH@x1=Hammer Bashing @x2,10,X3,-SKILL +Specialization_Hammer,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POLESTRIKE@x1=Polearm Striking @x2,10,LEVEL,-SKILL +Specialization_Polearm,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POLESLICE@x1=Polearm Slicing @x2,10,X1,-SKILL +Specialization_Polearm,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POLEPIERCE@x1=Polearm Piercing @x2,10,X2,-SKILL +Specialization_Polearm,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDSTRIKE@x1=Ranged Striking @x2,10,LEVEL,-SKILL +Specialization_Ranged,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDPIERCE@x1=Ranged Piercing @x2,10,X2,-SKILL +Specialization_Ranged,-LEVEL +>={27+(5*@x1)},+INT {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDBASH@x1=Ranged Bashing @x2,10,X3,-SKILL +Specialization_Ranged,-LEVEL +>={27+(5*@x1)},+INT {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SWORDSTRIKE@x1=Sword Striking @x2,10,LEVEL,-SKILL +Specialization_Sword,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SWORDSLICE@x1=Sword Slicing @x2,10,X1,-SKILL +Specialization_Sword,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-LEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-LEVEL +>={14+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SLOWDANCE@x1=Slow Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&BENEFICIAL_SELF,-LEVEL +>={16+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BEATDANCE@x1=Beat Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&!BENEFICIAL_SELF&!MALICIOUS,-LEVEL +>={17+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 LONGDANCE@x1=Long Dancing @x2,10,MAXRANGE,-SKILLFLAG +DANCING,-LEVEL +>={18+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 STEADYDANCE@x1=Steady Dancing @x2,10,TIME,-SKILLFLAG +DANCING,-LEVEL +>={19+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SHARPTUNE@x1=Sharp Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&MALICIOUS,-LEVEL +>={14+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BOLDTUNE@x1=Bold Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&!MALICIOUS +PLAYING&OK +PLAYING&INDIFFERENT,-LEVEL +>={16+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RESOUNDINGTUNE@x1=Resounding Playing @x2,10,MAXRANGE,-SKILLFLAG +PLAYING,-LEVEL +>={18+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RYTHMICTUNE@x1=Rythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-LEVEL +>={19+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SHARPSING@x1=Sharp Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&MALICIOUS,-LEVEL +>={14+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REJOICESING@x1=Rejoicing Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&!MALICIOUS +SINGING&OK +SINGING&INDIFFERENT,-LEVEL +>={16+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RESOUNDSING@x1=Resounding Singing @x2,10,MAXRANGE,-SKILLFLAG +SINGING,-LEVEL +>={18+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 ECHOSING@x1=Echoed Singing @x2,10,TIME,-SKILLFLAG +SINGING,-LEVEL +>={19+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDDIVINATION@x1=Ranged Divining @x2,10,MAXRANGE,-SKILLFLAG +DIVINATION,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDDIVINATION@x1=Reduced Divining @x2,10,LOWCOST,-SKILLFLAG +DIVINATION,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERDIVINATION@x1=Power Divining @x2,10,LEVEL,-SKILLFLAG +DIVINATION,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDDIVINATION@x1=Extended Divining @x2,10,TIME,-SKILLFLAG +DIVINATION,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDILLUSION@x1=Ranged Illusing @x2,10,MAXRANGE,-SKILLFLAG +ILLUSION,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDILLUSION@x1=Reduced Illusing @x2,10,LOWCOST,-SKILLFLAG +ILLUSION,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERILLUSION@x1=Power Illusing @x2,10,LEVEL,-SKILLFLAG +ILLUSION,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDILLUSION@x1=Extended Illusing @x2,10,TIME,-SKILLFLAG +ILLUSION,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDINVOCATION@x1=Ranged In/Evoking @x2,10,MAXRANGE,-SKILLFLAG +INVOCATION,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDINVOCATION@x1=Reduced In/Evoking @x2,10,LOWCOST,-SKILLFLAG +INVOCATION,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERINVOCATION@x1=Power In/Evoking @x2,10,LEVEL,-SKILLFLAG +INVOCATION,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDINVOCATION@x1=Extended In/Evoking @x2,10,TIME,-SKILLFLAG +INVOCATION,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDALTERATION@x1=Ranged Altering @x2,10,MAXRANGE,-SKILLFLAG +ALTERATION,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDALTERATION@x1=Reduced Altering @x2,10,LOWCOST,-SKILLFLAG +ALTERATION,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERALTERATION@x1=Power Altering @x2,10,LEVEL,-SKILLFLAG +ALTERATION,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDALTERATION@x1=Extended Altering @x2,10,TIME,-SKILLFLAG +ALTERATION,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDTRANSMUTATION@x1=Ranged Transmuting @x2,10,MAXRANGE,-SKILLFLAG +TRANSMUTATION,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDTRANSMUTATION@x1=Reduced Transmuting @x2,10,LOWCOST,-SKILLFLAG +TRANSMUTATION,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERTRANSMUTATION@x1=Power Transmuting @x2,10,LEVEL,-SKILLFLAG +TRANSMUTATION,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDTRANSMUTATION@x1=Extended Transmuting @x2,10,TIME,-SKILLFLAG +TRANSMUTATION,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDENCHANTMENT@x1=Ranged Enchanting @x2,10,MAXRANGE,-SKILLFLAG +ENCHANTMENT&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDENCHANTMENT@x1=Reduced Enchanting @x2,10,LOWCOST,-SKILLFLAG +ENCHANTMENT&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERENCHANTMENT@x1=Power Enchanting @x2,10,LEVEL,-SKILLFLAG +ENCHANTMENT&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDENCHANTMENT@x1=Extended Enchanting @x2,10,TIME,-SKILLFLAG +ENCHANTMENT&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDCONJURATION@x1=Ranged Conjuring @x2,10,MAXRANGE,-SKILLFLAG +CONJURATION&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDCONJURATION@x1=Reduced Conjuring @x2,10,LOWCOST,-SKILLFLAG +CONJURATION&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERCONJURATION@x1=Power Conjuring @x2,10,LEVEL,-SKILLFLAG +CONJURATION&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDCONJURATION@x1=Extended Conjuring @x2,10,TIME,-SKILLFLAG +CONJURATION&!CLANMAGIC,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RANGEDABJURATION@x1=Ranged Abjuring @x2,10,MAXRANGE,-SKILLFLAG +ABJURATION,-LEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 REDUCEDABJURATION@x1=Reduced Abjuring @x2,10,LOWCOST,-SKILLFLAG +ABJURATION,-LEVEL +>={19+(5*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 POWERABJURATION@x1=Power Abjuring @x2,10,LEVEL,-SKILLFLAG +ABJURATION,-LEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EXTENDEDABJURATION@x1=Extended Abjuring @x2,10,TIME,-SKILLFLAG +ABJURATION,-LEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 LITECRAFT@x2=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 DURACRAFT@x2=Durable Crafting @x2,3,X2,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Cobbling +Costuming +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Tailoring +Weaving,,+STR {10+(4*@x1)},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 QUALCRAFT@x2=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+CHA {10+(4*@x1)},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 LTHLCRAFT@x2=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 CNTRCRAFT@x2=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+INT {10+(4*@x1)},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-LEVEL +>={26+(5*@x1)},+DEX {15+@x1} ,0,1,0,0,0
-TERRALIST@x1=Terranalist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-LEVEL +>={26+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
+TERRALIST@x1=Terranalist @x2,10,X1,-SKILLFLAG +ACIDIZING,-LEVEL +>={26+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 IGNALIST@x1=Ignalist @x2,10,X1,-SKILLFLAG +BURNING,-LEVEL +>={26+(5*@x1)},+STR {15+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 AQUALIST@x1=Aqualist @x2,10,X1,-SKILLFLAG +FREEZING,-LEVEL +>={26+(5*@x1)},+WIS {15+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 MOONLORE@x1=Moon Enchanting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +MOON_SUMMONING +MOON_ALTERING,-LEVEL +>={16+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 FOOLISH@x1=Foolmaking @x2,10,LEVEL|LOWCOST,-SKILLFLAG +FOOLISHNESS,-LEVEL +>={12+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SHAPING@x1=Shapeshifting @x2,10,LEVEL|X1|X2|LOWCOST,-SKILLFLAG +SHAPE_SHIFTING,-LEVEL +>={13+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 PRESERVING@x1=Preserving @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PRESERVING,-LEVEL +>={24+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 ENDURING@x1=Enduring @x2,10,LEVEL|LOWCOST,-SKILLFLAG +ENDURING,-LEVEL +>={22+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 WEATHER@x1=Weather Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WEATHER,-LEVEL +>={25+(5*@x1)},+INT {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BREEDER@x1=Breeding @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BREEDING,-LEVEL +>={25+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 DEEPER@x1=Deep Lore @x1,10,LEVEL|LOWCOST,-SKILLFLAG +DEEP_MAGIC,-LEVEL +>={25+(5*@x1)},+STR {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 PLANTMASTER@x1=Plant Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PLANT_CONTROL +PLANT_GROWTH,-LEVEL +>={26+(5*@x1)},+WIS {11+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-LEVEL +>={12+(5*@x1)},+STR {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 GHOULLORE@x1=Ghoul Lore @x2,10,X1,-SKILL +Prayer_AnimateGhoul +Prayer_AnimateGhast,-LEVEL +>={16+(5*@x1)},+CON {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SPIRITLORE@x1=Spirit Lore @x2,10,X1,-SKILL +Prayer_AnimateSpectre +Prayer_AnimateGhost,-LEVEL +>={23+(5*@x1)},+INT {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 VAMPIRELORE@x1=Vampire Lore @x2,10,X1,-SKILL +Prayer_AnimateVampire,-LEVEL +>={29+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 DEATHLORE@x1=Death Lore @x2,10,LEVEL|XPCOST,-SKILLFLAG +DEATH_LORE,-LEVEL +>={7+(5*@x1)},+CON {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 WARDING@x1=Divine Warding @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WARDING,-LEVEL +>={29+(5*@x1)},+CON {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 HEALING@x1=Healing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +HEALING,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 VEXING@x1=Vexing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +VEXING,-LEVEL +>={27+(5*@x1)},+STR {11+@x1},0,1,0,0,0
-HOLYPROT@x1=Divine Protecting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +HOLY_PROTECTION,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
+HOLYPROT@x1=Protecting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +HOLY_PROTECTION,-LEVEL +>={27+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 CORRUPTION@x1=Corrupting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +CORRUPTION,-LEVEL +>={27+(5*@x1)},+CON {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 RESTORE@x1=Restoring @x2,10,LEVEL|LOWCOST,-SKILLFLAG +RESTORATION,-LEVEL +>={28+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 BLESSING@x1=Blessing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-LEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 CURSING@x1=Cursing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-LEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 EVANGELIST@x1=Evangelising @x2,10,LEVEL|LOWCOST,-SKILLFLAG +EVANGELISM,-LEVEL +>={7+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 NEUTRALIZING@x1=Neutralizing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +NEUTRALIZATION,-LEVEL +>={25+(5*@x1)},+INT {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 CREATION@x1=Creating @x2,10,LEVEL|LOWCOST,-SKILLFLAG +CREATION,-LEVEL +>={25+(5*@x1)},+WIS {14+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 COMMUNE@x1=Communing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +COMMUNING,-LEVEL +>={25+(5*@x1)},+DEX {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+
 SUMMON@x1=Summoning Mastery @x2,10,X1,-SKILLFLAG +SUMMONING,-LEVEL +>={14+(5*@x1)},+CHA {11+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>
+

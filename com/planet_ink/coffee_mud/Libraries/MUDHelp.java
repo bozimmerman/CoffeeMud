@@ -149,6 +149,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return ""+whichConsumed;
 	}
 
+    public void addHelpEntry(String ID, String text, boolean archon)
+    {
+    	if(archon)
+	    	getArcHelpFile().put(ID.toUpperCase(),text);
+    	else
+    		getHelpFile().put(ID.toUpperCase(),text);
+    }
 	private void appendAllowed(StringBuffer prepend, String ID)
 	{
 		Vector allows=CMLib.ableMapper().getAllowsList(ID);
@@ -570,6 +577,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			                return new StringBuffer(C.name()+" is "+C.description().toLowerCase());
 			        }
 			    }
+			}
+			if(!found)
+			{
+				String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase());
+				if(s!=null)
+				{
+					thisTag=s;
+					helpStr=helpStr.toUpperCase();
+					found=true;
+				}
 			}
 		}
 		if(!areaTag)
