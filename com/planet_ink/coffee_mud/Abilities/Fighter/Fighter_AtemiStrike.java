@@ -121,7 +121,7 @@ public class Fighter_AtemiStrike extends FighterSkill
 
 		if(CMLib.flags().isGolem(target))
 		{
-			mob.tell(target,null,null,"You can't hurt <T-NAMESELF> with Atemi Strike.");
+			mob.tell(target,null,null,"You can't hurt <S-NAMESELF> with Atemi Strike.");
 			return false;
 		}
 

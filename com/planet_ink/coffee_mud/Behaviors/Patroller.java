@@ -149,7 +149,8 @@ public class Patroller extends ActiveTicker
 					if(ticking instanceof Item)
 						R.bringItemHere((Item)ticking,-1,false);
 					else
-					if(ticking instanceof MOB)
+					if((ticking instanceof MOB)
+                    &&(CMLib.flags().isInTheGame((MOB)ticking,true)))
                     {
 						R.bringMobHere((MOB)ticking,true);
                         R.show((MOB)ticking,R,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
@@ -407,7 +408,8 @@ public class Patroller extends ActiveTicker
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SLEEP)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_LADDER))
 							{
-								if(R instanceof MOB)
+								if((R instanceof MOB)
+                                &&(CMLib.flags().isInTheGame((MOB)R,true)))
 								{
 								    tickStatus=Tickable.STATUS_MISC+30;
 									thatRoom.bringMobHere((MOB)R,true);

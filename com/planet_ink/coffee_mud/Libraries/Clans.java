@@ -59,7 +59,7 @@ public class Clans extends StdLibrary implements ClanManager
         if((i1==i2)
         &&((i1==Clan.REL_WAR)
            ||(i1==Clan.REL_ALLY)))
-           return relation==Clan.REL_ALLY;
+           return i1==relation;
         for(Enumeration e=clans();e.hasMoreElements();)
         {
             Clan C=(Clan)e.nextElement();

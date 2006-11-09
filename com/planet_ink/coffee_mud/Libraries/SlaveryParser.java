@@ -199,7 +199,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
         if(poss.size()==0)
         {
             geasStep g=new geasStep(geasSteps);
-            g.que.addElement("wanderquery "+req);
+            g.que.addElement(CMParms.parse("wanderquery "+req));
             geasSteps.addElement(g);
         }
         else

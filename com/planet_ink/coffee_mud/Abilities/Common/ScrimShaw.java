@@ -41,11 +41,6 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BONE";}
-	private final static String[] SUPPORTED_ENHANCEMENTS={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
-															"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII",
-															"LTHLCRAFTI","LTHLCRAFTII","LTHLCRAFTIII",
-															"CNTRCRAFTI","CNTRCRAFTII","CNTRCRAFTIII"};
-	protected String[] supportedEnhancements(){return SUPPORTED_ENHANCEMENTS;} 
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

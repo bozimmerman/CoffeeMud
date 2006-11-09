@@ -105,7 +105,7 @@ public class Fighter_KiStrike extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				done=false;
-				beneficialAffect(mob,target,asLevel,2);
+				beneficialAffect(mob,target,asLevel,mob.isInCombat()?2:4);
 			}
 		}
 		else

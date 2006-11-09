@@ -104,7 +104,7 @@ public class StdFood extends StdItem implements Food
 				    if(A!=null){A.invoke(mob,mob,true,0);}
 				}
 				boolean full=!mob.curState().adjHunger(amountOfNourishment,mob.maxState().maxHunger(mob.baseWeight()));
-				if(hungry)
+				if((hungry)&&(mob.curState().getHunger()>0))
 					mob.tell("You are no longer hungry.");
 				else
 				if(full)

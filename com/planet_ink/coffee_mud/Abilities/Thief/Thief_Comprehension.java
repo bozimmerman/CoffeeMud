@@ -89,7 +89,7 @@ public class Thief_Comprehension extends ThiefSkill
 			if(str!=null)
 			{
 				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					queue.addElement(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),str)+" (translated from "+ID()+")"));
+					queue.addElement(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
@@ -99,7 +99,7 @@ public class Thief_Comprehension extends ThiefSkill
 					String otherMes=msg.othersMessage();
 					if(msg.target()!=null)
 						otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+ID()+")"));
+					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				}
 			}
 		}

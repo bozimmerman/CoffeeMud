@@ -41,10 +41,6 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"COSTUME","COSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLOTH";}
-	private final static String[] SUPPORTED_ENHANCEMENTS={"LITECRAFTI","LITECRAFTII","LITECRAFTIII",
-																	"DURACRAFTI","DURACRAFTII","DURACRAFTIII",
-																	"QUALCRAFTI","QUALCRAFTII","QUALCRAFTIII"};
-	protected String[] supportedEnhancements(){return SUPPORTED_ENHANCEMENTS;} 
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

@@ -101,8 +101,8 @@ public class Spell_IronGrip extends Spell
 			if((msg.amISource(mob))
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 			&&(msg.tool() instanceof Item)
-			&&(mob.isMine(msg.tool()))
-			&&(((Item)msg.tool()).amWearingAt(Item.WORN_WIELD)))
+            &&(!((Item)msg.tool()).amWearingAt(Item.IN_INVENTORY))
+			&&(mob.isMine(msg.tool())))
 			{
 				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
 				return false;

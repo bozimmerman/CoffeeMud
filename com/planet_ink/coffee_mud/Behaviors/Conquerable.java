@@ -88,7 +88,7 @@ public class Conquerable extends Arrest
                     str.append("Area '"+myArea.name()+"' is occupied by "+C.typeName()+" "+C.name()+".\n\r");
                     long remain=CONTROLTIME-(System.currentTimeMillis()-conquestDate);
                     String remainStr=myArea.getTimeObj().deriveEllapsedTimeString(remain);
-                    str.append("Full control will automatically be achived in "+remainStr+".\n\r");
+                    str.append("Full control will automatically be achieved in "+remainStr+".\n\r");
                 }
                 
                 if(C.getGovernment()!=Clan.GVT_THEOCRACY)

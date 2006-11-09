@@ -279,7 +279,7 @@ QUALCRAFT@x2=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterA
 HELP_=<EXPERTISE>The ability to craft items of the highest quality.
 HELP_QUALCRAFTI=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth 50% more.
 HELP_QUALCRAFTII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth 250% more.
-HELP_QUALCRAFTIII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth 250% more and grant an extra point of charisma.
+HELP_QUALCRAFTIII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth 250% more and grant extra charisma from being well dressed.
 
 LTHLCRAFT@x2=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.

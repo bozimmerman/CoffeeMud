@@ -138,7 +138,6 @@ public class Prop_HaveAdjuster extends Property
 
 	public void envStuff(Object[] changes, EnvStats envStats)
 	{
-        if(charStatsChanges==null) return;
         if(changes==null) return;
         for(int c=0;c<changes.length;c+=2)
         switch(((Integer)changes[c]).intValue())
@@ -190,7 +189,7 @@ public class Prop_HaveAdjuster extends Property
 	public void adjCharStats(Object[] changes, CharStats charStats)
 	{
         if(changes==null) return;
-        for(int i=0;i<charStatsChanges.length;i+=2)
+        for(int i=0;i<changes.length;i+=2)
         {
             if(changes[i] instanceof Integer)
                 charStats.setStat(((Integer)changes[i]).intValue(),charStats.getStat(((Integer)changes[i]).intValue())+((Integer)changes[i+1]).intValue());
