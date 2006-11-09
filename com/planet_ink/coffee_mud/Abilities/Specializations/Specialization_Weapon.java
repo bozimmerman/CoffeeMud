@@ -68,7 +68,7 @@ public class Specialization_Weapon extends StdAbility
     	if(mob==null) return 0;
     	if((numExpertises==mob.numExpertises())&&(bonuses!=null))
             return getDamageBonus(dmgType);
-    	if(bonuses==null) bonuses=new short[2];
+    	if(bonuses==null) bonuses=new short[3];
 		bonuses[0]=(short)getX1Level(mob);
         bonuses[1]=(short)getX2Level(mob);
         bonuses[2]=(short)getX3Level(mob);
