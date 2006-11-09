@@ -242,7 +242,7 @@ public class Intermud implements Runnable, Persistent, Serializable
         attempts++;
         try {
             if(name_servers.size()==0)
-                Log.sysOut("No I3 routers defined in coffeemud.ini file.");
+                Log.sysOut("Intermud3","No I3 routers defined in coffeemud.ini file.");
             else
             {
                 Vector connectionStatuses=new Vector(name_servers.size());
@@ -281,7 +281,7 @@ public class Intermud implements Runnable, Persistent, Serializable
     					send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
                              n.name + "\",0,\"" + chan + "\",1,})");
                     }
-                    Log.sysOut("I3 router connection to "+n.ip+": "+n.port);
+                    Log.sysOut("Intermud3","I3 client connection: "+n.ip+"@"+n.port);
                     break;
                 }
                 if(!connected)
