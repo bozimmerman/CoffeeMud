@@ -704,7 +704,7 @@ public interface Ability extends Environmental
     /** constant used to mask classificationCode() designating this ability as being breeding skill. @see Ability#classificationCode() */
     public static final int DOMAIN_BREEDING=46<<5;
     /** constant used to mask classificationCode() designating this ability as being weapon use skil. @see Ability#classificationCode() */
-    public static final int DOMAIN_WEAPON_USE=46<<5;
+    public static final int DOMAIN_WEAPON_USE=47<<5;
     /** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */

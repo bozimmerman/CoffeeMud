@@ -211,8 +211,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
                 else
             	if(getDefinition(ID)!=null)
             	{
-	                helpMap.remove(ID);
-	                helpMap.put(ID,row);
+                	def=getDefinition(ID);
+                	WKID=def.name.toUpperCase().replace(' ','_');
+	                helpMap.remove(WKID);
+	                helpMap.put(WKID,row);
             	}
             	else
             	{

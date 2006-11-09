@@ -86,6 +86,48 @@ public class CharClassData extends StdWebMacro
 					str.append(C.getTrainsFirstLevel()+" plus 1 per level after first, ");
 				if(parms.containsKey("DAMAGE"))
 					str.append("An extra point of damage per "+C.getLevelsPerBonusDamage()+" level(s), ");
+				if(parms.containsKey("QUALDOMAINLIST"))
+				{
+					Hashtable domains=new Hashtable();
+					Ability A=null;
+					String domain=null;
+					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+					{
+						A=(Ability)e.nextElement();
+						if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)
+						{
+							if((A.classificationCode()&Ability.ALL_DOMAINS)==0)
+								domain=Ability.ACODE_DESCS[A.classificationCode()];
+							else
+								domain=Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
+							Integer I=(Integer)domains.get(domain);
+							if(I==null)I=new Integer(0);
+							I=new Integer(I.intValue()+1);
+							domains.remove(domain);
+							domains.put(domain,I);
+						}
+					}
+					Integer I=null;
+					String winner=null;
+					Integer winnerI=null;
+					while(domains.size()>0)
+					{
+						winner=null;
+						winnerI=null;
+						for(Enumeration e=domains.keys();e.hasMoreElements();)
+						{
+							domain=(String)e.nextElement();
+							I=(Integer)domains.get(domain);
+							if((winnerI==null)||(I.intValue()>winnerI.intValue()))
+							{
+								winner=domain;
+								winnerI=I;
+							}
+						}
+						str.append(winner+"("+winnerI.intValue()+"), ");
+						domains.remove(winner);
+					}
+				}
 				
 				if(parms.containsKey("HITPOINTS"))
 					str.append("20 at first, plus (Constitution/"+C.getHPDivisor()+")+"+C.getHPDice()+"d"+C.getHPDie()+" per level thereafter, ");
