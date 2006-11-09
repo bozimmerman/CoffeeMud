@@ -543,6 +543,8 @@ public class Conquerable extends Arrest
 							if((M1!=M2)
 							&&(M1.location()==M2.location())
 							&&(!M1.isInCombat())
+							&&(M1.getClanID().equals(holdingClan))
+							&&(!M2.getClanID().equals(holdingClan))
 							&&(CMLib.flags().canBeSeenBy(M2,M1)))
 							{
 								Vector V=new Vector();
@@ -1040,6 +1042,7 @@ public class Conquerable extends Arrest
 						if((M!=null)
 						&&(M.isMonster())
 						&&(M.getClanID().equals(holdingClan))
+						&&(!M.getClanID().equals(msg.source().getClanID()))
 						&&(!M.isInCombat())
 						&&(!CMLib.flags().isAnimalIntelligence(M))
 						&&(CMLib.flags().aliveAwakeMobileUnbound(M,true))

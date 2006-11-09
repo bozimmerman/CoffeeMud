@@ -83,7 +83,7 @@ public class Report extends BaseAbleLister
 				V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
 				V.addElement(new Integer(Ability.ACODE_SKILL));
 				V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
-				CMLib.commands().postSay(mob,null,("^NMy skills:^? "+getAbilities(mob,V,-1,false,level)),false,false);
+				CMLib.commands().postSay(mob,null,("^NMy skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,false,level)),false,false);
 			}
 			else
 			if("AFFECTS".startsWith(s))

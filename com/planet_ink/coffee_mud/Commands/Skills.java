@@ -44,7 +44,7 @@ public class Skills extends BaseAbleLister
 		V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
 		V.addElement(new Integer(Ability.ACODE_SKILL));
 		V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
-		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,-1,true,parseOutLevel(commands))+"\n\r");
+		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
