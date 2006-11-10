@@ -206,16 +206,21 @@ public class Construction extends CraftingSkill
 								R.startItemRejuv();
 								try
 								{
+									boolean rebuild=false;
 									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R2=(Room)r.nextElement();
+										rebuild=false;
 										for(int d=0;d<R2.rawDoors().length;d++)
+										{
 											if(R2.rawDoors()[d]==room)
 											{
+												rebuild=true;
 												R2.rawDoors()[d]=R;
-												if(R2 instanceof GridLocale)
-													((GridLocale)R2).buildGrid();
 											}
+										}
+										if((rebuild)&&(R2 instanceof GridLocale))
+											((GridLocale)R2).buildGrid();
 									}
 							    }catch(NoSuchElementException e){}
 							    try
