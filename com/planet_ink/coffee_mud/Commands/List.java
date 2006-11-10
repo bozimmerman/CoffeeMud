@@ -94,7 +94,7 @@ public class List extends StdCommand
         for(Enumeration r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
-            t=CMLib.utensils().getLandTitle(thisThang);
+            t=CMLib.law().getLandTitle(thisThang);
             if(t!=null)
             {
                 thisOne=thisThang.roomID();

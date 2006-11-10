@@ -184,8 +184,8 @@ public class FireBuilding extends CommonSkill
 			}
 			if(!(lighting instanceof RawMaterial))
 			{
-				LandTitle t=CMLib.utensils().getLandTitle(mob.location());
-				if((t!=null)&&(!CMLib.utensils().doesHavePriviledgesHere(mob,mob.location())))
+				LandTitle t=CMLib.law().getLandTitle(mob.location());
+				if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
 					mob.tell("You are not allowed to burn anything here.");
 					return false;

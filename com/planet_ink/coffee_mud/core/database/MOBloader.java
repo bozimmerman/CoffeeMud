@@ -473,9 +473,9 @@ public class MOBloader
                     newMOB.resetToMaxState();
                     newMOB.setFollowing(mob);
                     if((newMOB.getStartRoom()!=null)
-                    &&(CMLib.utensils().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
+                    &&(CMLib.law().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
                     &&((newMOB.location()==null)
-                            ||(!CMLib.utensils().doesHavePriviledgesHere(mob,newMOB.location())))) 
+                            ||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location())))) 
                         newMOB.setLocation(newMOB.getStartRoom());
                     if(bringToLife)
                     {

@@ -111,8 +111,8 @@ public class Thief_ConcealWalkway extends ThiefSkill
                 A.setInvoker(mob);
                 A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.envStats().level());
                 Room R=mob.location();
-                if((CMLib.utensils().doesOwnThisProperty(mob,R))
-                ||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
+                if((CMLib.law().doesOwnThisProperty(mob,R))
+                ||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
                 {
                     E.addNonUninvokableEffect(A);
                     CMLib.database().DBUpdateExits(mob.location());

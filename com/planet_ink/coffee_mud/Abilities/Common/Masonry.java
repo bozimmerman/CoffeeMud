@@ -254,8 +254,8 @@ public class Masonry extends CraftingSkill
 									R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
 									R.rawDoors()[Directions.DOWN]=R2;
 									R.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
-									LandTitle title=CMLib.utensils().getLandTitle(R);
-									if((title!=null)&&(CMLib.utensils().getLandTitle(R2)==null))
+									LandTitle title=CMLib.law().getLandTitle(R);
+									if((title!=null)&&(CMLib.law().getLandTitle(R2)==null))
 									{
 										LandTitle A2=(LandTitle)title.newInstance();
 										A2.setLandPrice(title.landPrice());
@@ -640,7 +640,7 @@ public class Masonry extends CraftingSkill
         if(doingCode==BUILD_WALL)
         {
             Room nextRoom=mob.location().getRoomInDir(dir);
-            if((nextRoom!=null)&&(CMLib.utensils().getLandTitle(nextRoom)==null))
+            if((nextRoom!=null)&&(CMLib.law().getLandTitle(nextRoom)==null))
             {
                 commonTell(mob,"You can not build a wall blocking off the main entrance!");
                 return false;
@@ -724,7 +724,7 @@ public class Masonry extends CraftingSkill
 			woodRequired=idata[0][FOUND_AMT];
 		}
 
-		boolean canBuild=CMLib.utensils().doesOwnThisProperty(mob,mob.location());
+		boolean canBuild=CMLib.law().doesOwnThisProperty(mob,mob.location());
 		if(!canBuild)
 		{
 			if((dir>=0)
@@ -732,7 +732,7 @@ public class Masonry extends CraftingSkill
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)
-				&&(CMLib.utensils().doesOwnThisProperty(mob,R)))
+				&&(CMLib.law().doesOwnThisProperty(mob,R)))
 					canBuild=true;
 			}
 		}

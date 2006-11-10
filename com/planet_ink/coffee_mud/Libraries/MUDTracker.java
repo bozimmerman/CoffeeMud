@@ -427,8 +427,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		
         if(status!=null)status[0]=Tickable.STATUS_MISC7+11;
         
-		if((CMLib.utensils().getLandTitle(nextRoom)!=null)
-		&&(CMLib.utensils().getLandTitle(nextRoom).landOwner().length()>0))
+		if((CMLib.law().getLandTitle(nextRoom)!=null)
+		&&(CMLib.law().getLandTitle(nextRoom).landOwner().length()>0))
 			dooropen=false;
 
 		boolean reclose=false;

@@ -61,8 +61,8 @@ public class Skill_JailKey extends StdSkill
 			{
                 LegalBehavior B=null;
                 
-				Area legalA=CMLib.utensils().getLegalObject(mob.location());
-				if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
+				Area legalA=CMLib.law().getLegalObject(mob.location());
+				if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 				if(B==null) 
 				    unlockThis=null;
 				else

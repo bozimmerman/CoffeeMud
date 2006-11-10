@@ -96,7 +96,7 @@ public class Painting extends CommonSkill
 		Item I=null;
 		if(str.equalsIgnoreCase("wall"))
 		{
-			if(!CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
+			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			{
 				commonTell(mob,"You need the owners permission to paint the walls here.");
 				return false;

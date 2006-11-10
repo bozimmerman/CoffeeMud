@@ -641,7 +641,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		    if((C!=null)&&(C.getMorgue().length()>0))
 		    {
 		        Room room=getRoom(C.getMorgue());
-		        if((room!=null)&&(CMLib.utensils().doesHavePriviledgesHere(mob,room)))
+		        if((room!=null)&&(CMLib.law().doesHavePriviledgesHere(mob,room)))
 		            return room;
 		    }
 	    }

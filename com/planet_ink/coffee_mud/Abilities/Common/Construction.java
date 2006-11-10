@@ -600,7 +600,7 @@ public class Construction extends CraftingSkill
         if(doingCode==BUILD_WALL)
         {
             Room nextRoom=mob.location().getRoomInDir(dir);
-            if((nextRoom!=null)&&(CMLib.utensils().getLandTitle(nextRoom)==null))
+            if((nextRoom!=null)&&(CMLib.law().getLandTitle(nextRoom)==null))
             {
                 commonTell(mob,"You can not build a wall blocking off the main entrance!");
                 return false;
@@ -677,14 +677,14 @@ public class Construction extends CraftingSkill
 		if(idata==null) return false;
 		woodRequired=idata[0][FOUND_AMT];
 
-		boolean canBuild=CMLib.utensils().doesOwnThisProperty(mob,mob.location());
+		boolean canBuild=CMLib.law().doesOwnThisProperty(mob,mob.location());
 		if(!canBuild)
 		{
 			if((dir>=0)
 			&&((data[doingCode][DAT_REQDIR].equals("1")||(workingOn==dir))))
 			{
 				Room R=mob.location().getRoomInDir(dir);
-				if((R!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R)))
+				if((R!=null)&&(CMLib.law().doesOwnThisProperty(mob,R)))
 					canBuild=true;
 			}
 		}

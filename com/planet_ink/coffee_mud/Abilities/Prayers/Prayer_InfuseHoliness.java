@@ -70,7 +70,7 @@ public class Prayer_InfuseHoliness extends Prayer
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null)
         {
-            if((CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
+            if((CMLib.law().doesOwnThisProperty(mob,mob.location()))
             &&(CMParms.combine(commands,0).equalsIgnoreCase("room")
                 ||CMParms.combine(commands,0).equalsIgnoreCase("here")))
                 target=mob.location();
@@ -79,10 +79,10 @@ public class Prayer_InfuseHoliness extends Prayer
         }
 
         Deity D=null;
-		if(CMLib.utensils().getClericInfusion(target)!=null)
+		if(CMLib.law().getClericInfusion(target)!=null)
 		{
             
-            if(target instanceof Room) D=CMLib.utensils().getClericInfused((Room)target);
+            if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
             if(D!=null)
     			mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name()+".");
             else
@@ -103,7 +103,7 @@ public class Prayer_InfuseHoliness extends Prayer
             for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
             {
                 R=(Room)e.nextElement();
-                if(CMLib.utensils().getClericInfused((Room)target)==D)
+                if(CMLib.law().getClericInfused((Room)target)==D)
                 {
                     mob.tell("There is already a holy place of "+D.Name()+" in this area at "+R.roomTitle()+".");
                     return false;
@@ -123,7 +123,7 @@ public class Prayer_InfuseHoliness extends Prayer
 				mob.location().send(mob,msg);
                 if(D!=null) setMiscText(D.Name());
                 if((target instanceof Room)
-                &&(CMLib.utensils().doesOwnThisProperty(mob,((Room)target))))
+                &&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
                 {
                     target.addNonUninvokableEffect((Ability)this.copyOf());
                     CMLib.database().DBUpdateRoom((Room)target);

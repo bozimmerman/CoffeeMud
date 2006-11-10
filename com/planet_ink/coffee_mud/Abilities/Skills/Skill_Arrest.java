@@ -46,7 +46,7 @@ public class Skill_Arrest extends StdSkill
 	public static Vector getWarrantsOf(MOB target, Area legalA)
 	{
         LegalBehavior B=null;
-		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
+		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 		Vector warrants=new Vector();
 		if(B!=null)
         {
@@ -87,7 +87,7 @@ public class Skill_Arrest extends StdSkill
 		    return false;
 		}
 
-		if(Skill_Arrest.getWarrantsOf(target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
+		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
 		    mob.tell(target.name()+" has no warrants out here.");
 		    return false;

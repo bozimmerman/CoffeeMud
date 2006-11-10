@@ -94,7 +94,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
-		&&((canBeUninvoked())||(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),(Room)affected)))
+		&&((canBeUninvoked())||(!CMLib.law().doesHavePriviledgesHere(msg.source(),(Room)affected)))
 		&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),msg.source(),msg);
 		super.executeMsg(myHost,msg);

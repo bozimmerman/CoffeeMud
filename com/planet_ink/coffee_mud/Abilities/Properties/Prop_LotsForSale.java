@@ -43,8 +43,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(theRoom==null) return true;
 
 		if((theRoom.roomID().length()>0)
-		&&((CMLib.utensils().getLandTitle(theRoom)==null)
-			||(CMLib.utensils().getLandTitle(theRoom).landOwner().length()>0)))
+		&&((CMLib.law().getLandTitle(theRoom)==null)
+			||(CMLib.law().getLandTitle(theRoom).landOwner().length()>0)))
 			return false;
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -53,7 +53,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if((R!=null)
 			   &&(R!=fromRoom)
 			   &&(R.roomID().length()>0)
-			   &&((CMLib.utensils().getLandTitle(R)==null)||(CMLib.utensils().getLandTitle(R).landOwner().length()>0)))
+			   &&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).landOwner().length()>0)))
 				return false;
 		}
 		return true;
@@ -127,8 +127,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						R2.setRoomID(R.getArea().getNewRoomID(R,d));
 						if(R2.roomID().length()==0) continue;
 						R2.setArea(R.getArea());
-						LandTitle newTitle=CMLib.utensils().getLandTitle(R);
-						if((newTitle!=null)&&(CMLib.utensils().getLandTitle(R2)==null))
+						LandTitle newTitle=CMLib.law().getLandTitle(R);
+						if((newTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
 						{
 							newTitle=(LandTitle)((Ability)newTitle).copyOf();
 							newTitle.setLandOwner("");

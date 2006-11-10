@@ -75,7 +75,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		Chant_SummonIvy newChant=new Chant_SummonIvy();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if(CMLib.utensils().doesOwnThisProperty(mob,room))
+		if(CMLib.law().doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.Name());

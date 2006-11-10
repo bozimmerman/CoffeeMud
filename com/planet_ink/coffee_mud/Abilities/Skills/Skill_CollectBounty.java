@@ -45,12 +45,12 @@ public class Skill_CollectBounty extends StdSkill
 	
 	public Vector getWarrantsOf(MOB target, Room R)
 	{
-	    return getWarrantsOf(target,CMLib.utensils().getLegalObject(R));
+	    return getWarrantsOf(target,CMLib.law().getLegalObject(R));
 	}
 	public Vector getWarrantsOf(MOB target, Area legalA)
 	{
         LegalBehavior B=null;
-		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
+		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 		Vector warrants=new Vector();
 		if(B!=null)
 		{
@@ -68,7 +68,7 @@ public class Skill_CollectBounty extends StdSkill
 	public MOB findElligibleOfficer(Area myArea, Area legalA)
 	{
         LegalBehavior B=null;
-		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
+		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 		if((B!=null)&&(myArea!=null))
 		{
 		    for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
@@ -99,8 +99,8 @@ public class Skill_CollectBounty extends StdSkill
 	public MOB getJudgeIfHere(MOB mob, MOB target, Room R)
 	{
         LegalBehavior B=null;
-		if(R!=null) B=CMLib.utensils().getLegalBehavior(R);
-		Area legalA=CMLib.utensils().getLegalObject(R);
+		if(R!=null) B=CMLib.law().getLegalBehavior(R);
+		Area legalA=CMLib.law().getLegalObject(R);
 		if((B!=null)&&(R!=null))
 			for(int i=0;i<R.numInhabitants();i++)
 			{
@@ -157,7 +157,7 @@ public class Skill_CollectBounty extends StdSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Area legalA=CMLib.utensils().getLegalObject(R);
+		Area legalA=CMLib.law().getLegalObject(R);
 		if((success)&&(legalA!=null))
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");

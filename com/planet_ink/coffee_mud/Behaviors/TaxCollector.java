@@ -75,10 +75,10 @@ public class TaxCollector extends StdBehavior
 	                owed[OWE_BACKTAXES]+=new Integer(T.backTaxes()).doubleValue();
 	        }
 	    }
-        LegalBehavior B=CMLib.utensils().getLegalBehavior(M.location());
+        LegalBehavior B=CMLib.law().getLegalBehavior(M.location());
         if(B!=null)
         {
-            Area A2=CMLib.utensils().getLegalObject(M.location());
+            Area A2=CMLib.law().getLegalObject(M.location());
             if(A2!=null) owed[OWE_FINES]=B.finesOwed(M);
             if((A2!=null)
             &&(!B.isAnyOfficer(A2,M))
@@ -137,8 +137,8 @@ public class TaxCollector extends StdBehavior
 				
                 if(owed[OWE_FINES]>0)
                 {
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
-                    Area A2=CMLib.utensils().getLegalObject(msg.source().location());
+                    LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
+                    Area A2=CMLib.law().getLegalObject(msg.source().location());
                     if((B!=null)&&(A2!=null))
                     {
                         if(paidAmount>=owed[OWE_FINES])
@@ -191,10 +191,10 @@ public class TaxCollector extends StdBehavior
 				}
 				if((paidBackTaxes)&&(numBackTaxesUnpaid==0)&&(mob.location()!=null))
 				{
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(mob.location().getArea());
+                    LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
 				    if((B!=null)&&(!msg.source().isMonster()))
 				    {
-						Area A2=CMLib.utensils().getLegalObject(mob.location().getArea());
+						Area A2=CMLib.law().getLegalObject(mob.location().getArea());
                         B.aquit(A2,msg.source(),CMParms.makeVector("TAXEVASION"));
 				    }
 				}
@@ -271,16 +271,16 @@ public class TaxCollector extends StdBehavior
 		if((R!=null)&&(lastMonthChecked!=R.getArea().getTimeObj().getMonth()))
 		{
 		    lastMonthChecked=R.getArea().getTimeObj().getMonth();
-			Law theLaw=CMLib.utensils().getTheLaw(R,mob);
+			Law theLaw=CMLib.law().getTheLaw(R,mob);
 			if(theLaw!=null)
 			{
-			    Area A2=CMLib.utensils().getLegalObject(R);
+			    Area A2=CMLib.law().getLegalObject(R);
 				String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 				LandTitle T=null;
 				peopleWhoOwe.clear();
 				if((taxs!=null)&&(taxs.length()>0)&&(CMath.s_double(taxs)>0))
 				{
-				    taxableProperties=CMLib.utensils().getAllUniqueTitles(A2.getMetroMap(),"*",false);
+				    taxableProperties=CMLib.law().getAllUniqueTitles(A2.getMetroMap(),"*",false);
 				    for(int v=0;v<taxableProperties.size();v++)
 				    {
 				        T=(LandTitle)taxableProperties.elementAt(v);
@@ -318,15 +318,15 @@ public class TaxCollector extends StdBehavior
 				if((demandDex>=0)
 				&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 				{
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R.getArea());
+                    LegalBehavior B=CMLib.law().getLegalBehavior(R.getArea());
                     if(M.isMonster()
                     &&(M.getStartRoom()!=null)
-                    &&(CMLib.utensils().getLandTitle(M.getStartRoom())==null))
+                    &&(CMLib.law().getLandTitle(M.getStartRoom())==null))
                         demanded.removeElementAt(demandDex);
                     else
 				    if(B!=null)
 				    {
-                        B.accuse(CMLib.utensils().getLegalObject(R),M,mob,CMParms.makeVector("TAXEVASION"));
+                        B.accuse(CMLib.law().getLegalObject(R),M,mob,CMParms.makeVector("TAXEVASION"));
 						CMLib.commands().postSay(mob,M,"Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!",false,false);
 				    }
 				    else

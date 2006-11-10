@@ -129,8 +129,8 @@ public class Thief_ConcealDoor extends ThiefSkill
                 for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
                     if(R.getExitInDir(d)==E)
                     { R2=R.getRoomInDir(d); break;}
-                if((CMLib.utensils().doesOwnThisProperty(mob,R))
-                ||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
+                if((CMLib.law().doesOwnThisProperty(mob,R))
+                ||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
                 {
                     E.addNonUninvokableEffect(A);
                     CMLib.database().DBUpdateExits(mob.location());

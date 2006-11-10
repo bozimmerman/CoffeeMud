@@ -750,7 +750,7 @@ public class StdDeity extends StdMOB implements Deity
 					if(msg.source().location()!=null)
                     {
                         if(DT.parm1.equalsIgnoreCase("holy")||DT.parm1.equalsIgnoreCase("unholy")||DT.parm1.equalsIgnoreCase("balance"))
-                            yup=CMLib.utensils().getClericInfused(msg.source().location())==this;
+                            yup=CMLib.law().getClericInfused(msg.source().location())==this;
                         else
     					if(msg.source().location().roomID().equalsIgnoreCase(DT.parm1))
     						yup=true;
@@ -951,7 +951,7 @@ public class StdDeity extends StdMOB implements Deity
             
             if((msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
                 ||(CMSecurity.isASysOp(msg.source())))
-            &&(CMLib.utensils().getClericInfused(msg.source().location())==this))
+            &&(CMLib.law().getClericInfused(msg.source().location())==this))
             {
                 Vector V=serviceTriggers;
                 boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
@@ -996,7 +996,7 @@ public class StdDeity extends StdMOB implements Deity
         for(int v=0;v<V.size();v++)
         {
             R=(Room)V.elementAt(v);
-            if(CMLib.utensils().getClericInfused(R)!=this)
+            if(CMLib.law().getClericInfused(R)!=this)
             for(int m=0;m<R.numInhabitants();m++)
             {
                 M=R.fetchInhabitant(m);

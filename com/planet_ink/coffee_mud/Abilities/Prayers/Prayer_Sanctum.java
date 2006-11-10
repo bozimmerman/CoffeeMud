@@ -51,7 +51,7 @@ public class Prayer_Sanctum extends Prayer
 		&&(msg.target()==R)
 		&&(!msg.source().Name().equals(text()))
 		&&((msg.source().amFollowing()==null)||(!msg.source().amFollowing().Name().equals(text())))
-		&&(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),R)))
+		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 		{
 			msg.source().tell("You feel your muscles unwilling to cooperate.");
 			return false;
@@ -125,7 +125,7 @@ public class Prayer_Sanctum extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&(CMLib.utensils().doesOwnThisProperty(mob,((Room)target))))
+				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);

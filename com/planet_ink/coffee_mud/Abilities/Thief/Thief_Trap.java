@@ -154,7 +154,7 @@ public class Thief_Trap extends ThiefSkill
 				mob.tell("You have completed your task.");
 				boolean permanent=false;
 				if((trapThis instanceof Room)
-				&&(CMLib.utensils().doesOwnThisProperty(mob,((Room)trapThis))))
+				&&(CMLib.law().doesOwnThisProperty(mob,((Room)trapThis))))
 					permanent=true;
 				else
 				if(trapThis instanceof Exit)
@@ -164,8 +164,8 @@ public class Thief_Trap extends ThiefSkill
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 						if(R.getExitInDir(d)==trapThis)
 						{ R2=R.getRoomInDir(d); break;}
-					if((CMLib.utensils().doesOwnThisProperty(mob,R))
-					||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
+					if((CMLib.law().doesOwnThisProperty(mob,R))
+					||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
 						permanent=true;
 				}
 				if(permanent)

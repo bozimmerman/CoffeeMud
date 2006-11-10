@@ -85,7 +85,8 @@ public class CMLib
     public static final int LIBRARY_LEVELS=37;
     public static final int LIBRARY_EXPERTISES=38;
     public static final int LIBRARY_MATERIALS=39;
-    public static final int LIBRARY_TOTAL=40;
+    public static final int LIBRARY_LEGAL=40;
+    public static final int LIBRARY_TOTAL=41;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -128,6 +129,7 @@ public class CMLib
     public static CombatLibrary combat(){return (CombatLibrary)libraries[LIBRARY_COMBAT];}
     public static HelpLibrary help(){return (HelpLibrary)libraries[LIBRARY_HELP];}
     public static TrackingLibrary tracking(){return (TrackingLibrary)libraries[LIBRARY_TRACKING];}
+    public static LegalLibrary law(){return (LegalLibrary)libraries[LIBRARY_LEGAL];}
     public static MaskingLibrary masking(){return (MaskingLibrary)libraries[LIBRARY_MASKING];}
     public static ChannelsLibrary channels(){return (ChannelsLibrary)libraries[LIBRARY_CHANNELS];}
     public static CommonCommands commands(){return (CommonCommands)libraries[LIBRARY_COMMANDS];}
@@ -199,6 +201,7 @@ public class CMLib
         if(O instanceof ItemBuilderLibrary) return LIBRARY_TIMS;
         if(O instanceof ExpertiseLibrary) return LIBRARY_EXPERTISES;
         if(O instanceof MaterialLibrary) return LIBRARY_MATERIALS;
+        if(O instanceof LegalLibrary) return LIBRARY_LEGAL;
         return -1;
     }
 

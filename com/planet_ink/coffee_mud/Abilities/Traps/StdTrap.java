@@ -80,7 +80,7 @@ public class StdTrap extends StdAbility implements Trap
 		&&(R!=null)
 		&&(target.getStartRoom()!=null)
 		&&(target.getStartRoom().getArea()==R.getArea())
-		&&((CMLib.utensils().getLandTitle(R)==null)||(CMLib.utensils().doesHavePriviledgesHere(target,R))))
+		&&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().doesHavePriviledgesHere(target,R))))
 			return true;
 		return false;
 	}

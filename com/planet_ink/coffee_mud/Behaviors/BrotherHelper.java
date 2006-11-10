@@ -78,8 +78,11 @@ public class BrotherHelper extends StdBehavior
 					numInFray++;
 			}
 			int numAllowed=CMath.s_int(getParms());
-			boolean yep=true;
-			if((numAllowed==0)||(numInFray<numAllowed))
+			boolean yep=(observer.location()==observer.getStartRoom())
+						||(!CMLib.flags().isAggressiveTo(target,source))
+						||(!CMLib.law().isLegalOfficerHere(observer))
+						||(CMLib.law().isLegalOfficialHere(target));
+			if(yep&&((numAllowed==0)||(numInFray<numAllowed)))
 				yep=Aggressive.startFight(observer,source,true,false);
 			if(yep)	CMLib.commands().postSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
 		}

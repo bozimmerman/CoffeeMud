@@ -46,7 +46,7 @@ public class Skill_Warrants extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -60,7 +60,7 @@ public class Skill_Warrants extends BardSkill
 				mob.location().send(mob,msg);
 				Vector V=new Vector();
 				if(B!=null)
-                    V=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),(MOB)null);
+                    V=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)null);
 				if(V.size()==0)
 				{
 					mob.tell("No one is wanted for anything here.");

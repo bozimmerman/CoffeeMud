@@ -88,9 +88,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 				else
 				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				{
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                    LegalBehavior B=CMLib.law().getLegalBehavior(R);
                     String s="";
-                    if(B!=null) s=B.conquestInfo(CMLib.utensils().getLegalObject(R));
+                    if(B!=null) s=B.conquestInfo(CMLib.law().getLegalObject(R));
 					if(s.length()>0)
 						msg.source().tell(s);
 					else
@@ -103,7 +103,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			    &&(msg.targetMessage()!=null)
 			    &&(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()).indexOf("I HEREBY DECLARE THIS AREA")>=0))
 			    {
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                    LegalBehavior B=CMLib.law().getLegalBehavior(R);
                     if(B!=null) B.setControlPoints(clanID(),B.controlPoints()+1);
 			    }
 			}
@@ -142,7 +142,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 							}
 						}
                         String rulingClan="";
-                        LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                        LegalBehavior B=CMLib.law().getLegalBehavior(R);
                         if(B!=null) rulingClan=B.rulingClan();
 						if(!rulingClan.equals(msg.source().getClanID()))
 						{
@@ -166,7 +166,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(R!=null)
 					{
 						A=R.getArea();
-						T=CMLib.utensils().getLandTitle(R);
+						T=CMLib.law().getLandTitle(R);
 					}
 					if((T==null)
 					||((!T.landOwner().equals(clanID()))
@@ -176,7 +176,7 @@ public class StdClanFlag extends StdItem implements ClanItem
                         boolean ok=false;
 						if(A!=null) 
                         {
-                            B=CMLib.utensils().getLegalBehavior(R);
+                            B=CMLib.law().getLegalBehavior(R);
                             if(B!=null) ok=B.controlPoints()>0;
                         }
 						if(!ok)
@@ -215,7 +215,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(msg.amITarget(this))
 			&&(msg.targetMinor()==CMMsg.TYP_DROP))
 			{
-                LegalBehavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
+                LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
 				String rulingClan=(B!=null)?B.rulingClan():"";
 				if(rulingClan.length()==0)
 					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently neutral.");

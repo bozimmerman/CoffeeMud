@@ -232,9 +232,9 @@ public class LockSmith extends CraftingSkill
             }
 
 			Room otherRoom=(dir>=0)?mob.location().getRoomInDir(dir):null;
-			if((!CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
+			if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
             &&((otherRoom==null)
-                ||(!CMLib.utensils().doesOwnThisProperty(mob,otherRoom))))
+                ||(!CMLib.law().doesOwnThisProperty(mob,otherRoom))))
 			{
 				commonTell(mob,"You'll need the permission of the owner to do that.");
 				return false;

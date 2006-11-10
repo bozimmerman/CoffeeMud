@@ -274,7 +274,7 @@ public class Reset extends StdCommand
 	    		synchronized(("SYNC"+R.roomID()).intern())
 	    		{
 	    			R=CMLib.map().getRoom(R);
-	                T=CMLib.utensils().getLandTitle(R);
+	                T=CMLib.law().getLandTitle(R);
 	                if((T!=null)
 	                &&(T.landOwner().length()==0))
 	                {

@@ -51,7 +51,7 @@ public class Spell_WizardLock extends Spell
 		MOB mob=msg.source();
 		if(((!msg.amITarget(affected))&&(msg.tool()!=affected))
 		||(msg.source()==invoker())
-		||(CMLib.utensils().doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
+		||(CMLib.law().doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
 			return true;
         
 		switch(msg.targetMinor())
@@ -160,7 +160,7 @@ public class Spell_WizardLock extends Spell
 					Room R2=null;
 					Ability lock=(Ability)copyOf();
 					lock.setMiscText("");
-					if(!CMLib.utensils().doesHavePriviledgesHere(mob,R))
+					if(!CMLib.law().doesHavePriviledgesHere(mob,R))
 						for(int a=0;a<R.numEffects();a++)
 							if((R.fetchEffect(a) instanceof LandTitle)
 							   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
@@ -168,8 +168,8 @@ public class Spell_WizardLock extends Spell
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}
-					if((CMLib.utensils().doesOwnThisProperty(mob,R))
-					||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
+					if((CMLib.law().doesOwnThisProperty(mob,R))
+					||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
 					{
 						target.addNonUninvokableEffect((Ability)copyOf());
 						CMLib.database().DBUpdateExits(R);

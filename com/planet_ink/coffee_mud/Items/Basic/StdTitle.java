@@ -119,7 +119,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		Vector V=getPropertyRooms();
 		if((V!=null)&&(V.size()>0))
-			return CMLib.utensils().getLandTitle((Room)V.firstElement());
+			return CMLib.law().getLandTitle((Room)V.firstElement());
 		return null;
 	}
 
@@ -153,7 +153,7 @@ public class StdTitle extends StdItem implements LandTitle
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
-			LandTitle T=CMLib.utensils().getLandTitle(R);
+			LandTitle T=CMLib.law().getLandTitle(R);
 			if(T!=null) T.updateLot(optPlayerList);
 		}
 	}
@@ -169,13 +169,13 @@ public class StdTitle extends StdItem implements LandTitle
 		Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			LandTitle A=CMLib.utensils().getLandTitle(R);
+			LandTitle A=CMLib.law().getLandTitle(R);
 			if(A!=null) return A.getPropertyRooms();
 		}
 		Area area=CMLib.map().getArea(landPropertyID());
 		if(area!=null)
 		{
-			LandTitle A=CMLib.utensils().getLandTitle(area);
+			LandTitle A=CMLib.law().getLandTitle(area);
 			if(A!=null) return A.getPropertyRooms();
 		}
 		return new Vector();
@@ -347,10 +347,10 @@ public class StdTitle extends StdItem implements LandTitle
 			    if((allRooms!=null)&&(allRooms.size()>0))
 			    {
 			        Room R=(Room)allRooms.firstElement();
-                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                    LegalBehavior B=CMLib.law().getLegalBehavior(R);
 				    if(B!=null)
 				    {
-						Area A2=CMLib.utensils().getLegalObject(R);
+						Area A2=CMLib.law().getLegalObject(R);
 						if(A2==null)
 							Log.errOut("StdTitle",CMLib.map().getExtendedRoomID(R)+" has a legal behavior, but no area!");
 						else

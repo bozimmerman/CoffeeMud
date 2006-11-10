@@ -60,7 +60,7 @@ public class Spell_ClanHome extends Spell
 			mob.tell("You can't use this magic to get there from here.");
 			return false;
 		}
-        if(!CMLib.utensils().doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
+        if(!CMLib.law().doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
         {
             mob.tell("Your clan no longer owns that room.");
             return false;

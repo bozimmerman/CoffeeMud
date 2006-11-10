@@ -115,12 +115,12 @@ public class Thief_Squatting extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(CMLib.utensils().doesHavePriviledgesHere(mob,mob.location()))
+		if(CMLib.law().doesHavePriviledgesHere(mob,mob.location()))
 		{
 			mob.tell("This is your place already!");
 			return false;
 		}
-		LandTitle T=CMLib.utensils().getLandTitle(mob.location());
+		LandTitle T=CMLib.law().getLandTitle(mob.location());
 		boolean confirmed=false;
 		for(int r=0;r<mob.location().numEffects();r++)
 			if(mob.location().fetchEffect(r)==T)

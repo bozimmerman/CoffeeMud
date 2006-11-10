@@ -96,7 +96,7 @@ public class Spell_TeleportationWard extends Spell
 				boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				boolean shere=(msg.source().location()==affected)
 						||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea())));
-				if((!shere)&&(!summon)&&(teleport)&&(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),R)))
+				if((!shere)&&(!summon)&&(teleport)&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 				{
 					if((msg.source().location()!=null)&&(msg.source().location()!=R))
 						msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
@@ -146,7 +146,7 @@ public class Spell_TeleportationWard extends Spell
 			{
 				mob.location().send(mob,msg);
 				if((target instanceof Room)
-				&&(CMLib.utensils().doesOwnThisProperty(mob,((Room)target))))
+				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);

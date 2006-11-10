@@ -71,7 +71,7 @@ public class ClanHomeSet extends BaseClanner
 		}
 		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 		{
-			if(!CMLib.utensils().doesOwnThisProperty(C.clanID(),R))
+			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell(getScr("ClanHomeSet","notroom",C.typeName()));
 				return false;

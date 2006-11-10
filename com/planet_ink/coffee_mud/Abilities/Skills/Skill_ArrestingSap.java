@@ -173,7 +173,7 @@ public class Skill_ArrestingSap extends StdSkill
 				mob.tell(target.name()+" is way to big to knock out!");
 				return false;
 			}
-			if(Skill_Arrest.getWarrantsOf(target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
+			if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 			{
 			    mob.tell(target.name()+" has no warrants out here.");
 			    return false;

@@ -1351,7 +1351,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				if(str.endsWith("HOME")&&(str.length()<6))
 				{
-					if(CMLib.utensils().doesHavePriviledgesHere(mob,mob.location()))
+					if(CMLib.law().doesHavePriviledgesHere(mob,mob.location()))
 						if(str.startsWith("!")) 
 						{
 							if(CMSecurity.isDebugging("ARREST")) 

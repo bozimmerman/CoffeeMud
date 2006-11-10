@@ -118,7 +118,7 @@ public class Prop_Retainable extends Property
 					{
 						lastPayDayTimestamp=System.currentTimeMillis();
 						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
-						LandTitle t=CMLib.utensils().getLandTitle(mob.location());
+						LandTitle t=CMLib.law().getLandTitle(mob.location());
 						String owner="";
 						if(mob.amFollowing()!=null)
 						{
@@ -211,7 +211,7 @@ public class Prop_Retainable extends Property
 				{
 					Room room=mob.location();
 					if((room!=lastRoom)
-					&&(CMLib.utensils().doesHavePriviledgesHere(mob.amFollowing(),room))
+					&&(CMLib.law().doesHavePriviledgesHere(mob.amFollowing(),room))
 					&&(room.isInhabitant(mob)))
 					{
 						lastRoom=room;

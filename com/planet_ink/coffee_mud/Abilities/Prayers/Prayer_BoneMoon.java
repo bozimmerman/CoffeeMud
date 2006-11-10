@@ -125,7 +125,7 @@ public class Prayer_BoneMoon extends Prayer
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The Bone Moon rises over <S-NAME>.");
 				level=1;
-				if(CMLib.utensils().doesOwnThisProperty(mob,target))
+				if(CMLib.law().doesOwnThisProperty(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom(target);

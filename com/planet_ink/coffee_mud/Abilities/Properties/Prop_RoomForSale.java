@@ -167,16 +167,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		    &&(msg.othersMessage()!=null)
 		    &&(msg.othersMessage().length()>0)
 		    &&(!shopkeeperMobPresent(msg.source().location()))
-			&&(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),msg.source().location())))
+			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),msg.source().location())))
 		    {
 			    Room R=msg.source().location();
-                LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                LegalBehavior B=CMLib.law().getLegalBehavior(R);
 				if(B!=null)
 				{
 				    for(int m=0;m<R.numInhabitants();m++)
 				    {
 				        MOB M=R.fetchInhabitant(m);
-				        if(CMLib.utensils().doesHavePriviledgesHere(M,R))
+				        if(CMLib.law().doesHavePriviledgesHere(M,R))
 				            return true;
 				    }
 					MOB D=null;
@@ -186,7 +186,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				    else
 				        D=CMLib.map().getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
-                    B.accuse(CMLib.utensils().getLegalObject(R),msg.source(),D,CMParms.makeVector("PROPERTYROB","THIEF_ROBBERY"));
+                    B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,CMParms.makeVector("PROPERTYROB","THIEF_ROBBERY"));
 				}
 		    }
 			return true;

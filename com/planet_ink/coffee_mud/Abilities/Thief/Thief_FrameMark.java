@@ -66,9 +66,9 @@ public class Thief_FrameMark extends ThiefSkill
 		}
 
         LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		if((B==null)
-		||(!B.hasWarrant(CMLib.utensils().getLegalObject(mob.location()),mob)))
+		||(!B.hasWarrant(CMLib.law().getLegalObject(mob.location()),mob)))
 		{
 			mob.tell("You aren't wanted for anything here.");
 			return false;
@@ -95,7 +95,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-            B.frame(CMLib.utensils().getLegalObject(mob.location()),mob,target);
+            B.frame(CMLib.law().getLegalObject(mob.location()),mob,target);
 		}
 		return success;
 	}

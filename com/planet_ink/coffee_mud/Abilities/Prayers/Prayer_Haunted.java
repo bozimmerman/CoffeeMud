@@ -121,7 +121,7 @@ public class Prayer_Haunted extends Prayer
 				level=14;
 				numDone=0;
 				numMax=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))/8;
-				if(CMLib.utensils().doesOwnThisProperty(mob,target))
+				if(CMLib.law().doesOwnThisProperty(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom(target);

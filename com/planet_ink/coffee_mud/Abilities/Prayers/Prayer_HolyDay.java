@@ -94,7 +94,7 @@ public class Prayer_HolyDay extends Prayer
 		{
             LegalBehavior B=null;
 			if(msg.source().location()!=null) 
-			    B=CMLib.utensils().getLegalBehavior(msg.source().location());
+			    B=CMLib.law().getLegalBehavior(msg.source().location());
 			if((B!=null)&&(B.controlPoints()>0))
 			{
 				msg.source().tell("There can be no conquest on the holy day of "+godName+".");

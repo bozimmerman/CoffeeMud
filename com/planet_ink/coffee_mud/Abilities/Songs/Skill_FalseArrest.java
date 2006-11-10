@@ -61,11 +61,11 @@ public class Skill_FalseArrest extends BardSkill
 		Area A2=null;
 		if(mob.location()!=null)
 		{
-			B=CMLib.utensils().getLegalBehavior(mob.location());
-			if((B==null)||(!B.hasWarrant(CMLib.utensils().getLegalObject(mob.location()),target)))
+			B=CMLib.law().getLegalBehavior(mob.location());
+			if((B==null)||(!B.hasWarrant(CMLib.law().getLegalObject(mob.location()),target)))
 				B=null;
 			else
-				A2=CMLib.utensils().getLegalObject(mob.location());
+				A2=CMLib.law().getLegalObject(mob.location());
 		}
 
 		if(B==null)
@@ -74,11 +74,11 @@ public class Skill_FalseArrest extends BardSkill
 			Area A=(Area)e.nextElement();
 			if(CMLib.flags().canAccess(mob,A))
 			{
-				B=CMLib.utensils().getLegalBehavior(A);
+				B=CMLib.law().getLegalBehavior(A);
 				if((B!=null)
-				&&(B.hasWarrant(CMLib.utensils().getLegalObject(A),target)))
+				&&(B.hasWarrant(CMLib.law().getLegalObject(A),target)))
 				{
-					A2=CMLib.utensils().getLegalObject(A);
+					A2=CMLib.law().getLegalObject(A);
 					break;
 				}
 			}

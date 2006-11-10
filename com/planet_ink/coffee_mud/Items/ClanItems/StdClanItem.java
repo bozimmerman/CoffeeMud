@@ -262,7 +262,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			&&(targetMOB.location()!=null)
 			&&(startRoom.getArea()!=targetMOB.location().getArea()))
 			{
-				LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(startRoom.getArea());
+				LegalBehavior theLaw=CMLib.law().getLegalBehavior(startRoom.getArea());
 				if((theLaw!=null)
                 &&(theLaw.rulingClan()!=null)
                 &&(theLaw.rulingClan().equals(targetMOB.getClanID())))
@@ -334,7 +334,7 @@ public class StdClanItem extends StdItem implements ClanItem
                 Room room=msg.source().location();
                 if((room!=null)&&(room.getArea()!=null))
                 {
-                    LegalBehavior theLaw=CMLib.utensils().getLegalBehavior(room.getArea());
+                    LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
                     if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(((ClanItem)myHost).clanID())))
                     {
                         msg.source().tell("You'll need to conquer this area to do that.");

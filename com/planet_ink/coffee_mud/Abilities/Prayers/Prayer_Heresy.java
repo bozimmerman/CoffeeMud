@@ -47,7 +47,7 @@ public class Prayer_Heresy extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -86,7 +86,7 @@ public class Prayer_Heresy extends Prayer
 					if(lvl<0) lvl=0;
 					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
                     String sentence=Law.ACTION_DESCS[lvl];
-					B.addWarrant(CMLib.utensils().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
+					B.addWarrant(CMLib.law().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}
 			}
 

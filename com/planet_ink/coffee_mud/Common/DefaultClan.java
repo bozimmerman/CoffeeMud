@@ -176,7 +176,7 @@ public class DefaultClan implements Clan
         for(Enumeration e=controlledAreas.elements();e.hasMoreElements();)
         {
             Area A=(Area)e.nextElement();
-            LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
+            LegalBehavior B=CMLib.law().getLegalBehavior(A);
             if(B!=null)
                 points+=B.controlPoints();
         }
@@ -189,11 +189,11 @@ public class DefaultClan implements Clan
         for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
         {
             Area A=(Area)e.nextElement();
-            LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
+            LegalBehavior B=CMLib.law().getLegalBehavior(A);
             if(B!=null)
             {
                 String controller=B.rulingClan();
-                Area A2=CMLib.utensils().getLegalObject(A);
+                Area A2=CMLib.law().getLegalObject(A);
                 if(controller.equals(clanID())&&(!done.contains(A2)))
                     done.addElement(A2);
             }
@@ -539,8 +539,8 @@ public class DefaultClan implements Clan
                 Area A=CMLib.map().getArea((String)control.elementAt(i));
                 if(A!=null)
                 {
-                	LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
-                	Area legalA=CMLib.utensils().getLegalObject(A);
+                	LegalBehavior B=CMLib.law().getLegalBehavior(A);
+                	Area legalA=CMLib.law().getLegalObject(A);
                 	int pctRevolt=0;
                 	if((B!=null)&&(legalA!=null)) pctRevolt=B.revoltChance();
 	                msg.append("^c"+CMStrings.padRight(A.name()+"^N ("+pctRevolt+"%)",25)+"^N");

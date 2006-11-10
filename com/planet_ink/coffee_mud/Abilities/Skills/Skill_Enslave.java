@@ -157,7 +157,7 @@ public class Skill_Enslave extends StdSkill
 		{
 			Room room=mob.location();
 			if((room!=lastRoom)
-			&&(CMLib.utensils().doesHavePriviledgesHere(myMaster,room))
+			&&(CMLib.law().doesHavePriviledgesHere(myMaster,room))
 			&&(room.isInhabitant(mob)))
 			{
 				lastRoom=room;

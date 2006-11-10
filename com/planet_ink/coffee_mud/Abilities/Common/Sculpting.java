@@ -357,7 +357,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			building.recoverEnvStats();
 			if((!CMLib.flags().isGettable(building))
-			&&(!CMLib.utensils().doesOwnThisProperty(mob,mob.location())))
+			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
 			{
 				commonTell(mob,"You are not allowed to build that here.");
 				return false;

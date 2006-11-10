@@ -220,7 +220,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			else
 				other++;
 		}
-		if((CMLib.utensils().getLegalBehavior(A)==null)
+		if((CMLib.law().getLegalBehavior(A)==null)
 		&&((streets<(other/2))||((streets+buildings)<other))
 		&&(!auto))
 		{

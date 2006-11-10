@@ -237,7 +237,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					if((msg.tool()!=null)
 					&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
-	                    ||(CMLib.utensils().doesHavePriviledgesHere(msg.source(),getStartRoom()))
+	                    ||(CMLib.law().doesHavePriviledgesHere(msg.source(),getStartRoom()))
 						||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
 						||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
 					&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))

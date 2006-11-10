@@ -63,10 +63,10 @@ public class Thief_Safehouse extends ThiefSkill
     {
         if(R!=null)
         {
-            LegalBehavior law=CMLib.utensils().getLegalBehavior(R);
+            LegalBehavior law=CMLib.law().getLegalBehavior(R);
             if(law!=null)
             {
-                Area A=CMLib.utensils().getLegalObject(R);
+                Area A=CMLib.law().getLegalObject(R);
                 MOB M=null;
                 for(int r=0;r<R.numInhabitants();r++)
                 {
@@ -84,10 +84,10 @@ public class Thief_Safehouse extends ThiefSkill
         if(mob==null) return false;
         if(affected instanceof Room)
         {
-            LegalBehavior law=CMLib.utensils().getLegalBehavior((Room)affected);
+            LegalBehavior law=CMLib.law().getLegalBehavior((Room)affected);
             if(law!=null)
             {
-                Area A=CMLib.utensils().getLegalObject((Room)affected);
+                Area A=CMLib.law().getLegalObject((Room)affected);
                 if(law.isAnyOfficer(A,mob)||law.isJudge(A,mob))
                     return true;
             }
@@ -129,7 +129,7 @@ public class Thief_Safehouse extends ThiefSkill
             mob.tell("This place is already a safehouse.");
             return false;
         }
-        if((!auto)&&(CMLib.utensils().getLegalBehavior(target)==null))
+        if((!auto)&&(CMLib.law().getLegalBehavior(target)==null))
         {
             mob.tell("There is no law here!");
             return false;

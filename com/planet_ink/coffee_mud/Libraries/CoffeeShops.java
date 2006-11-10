@@ -409,7 +409,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     public double getSalesTax(Room homeRoom, MOB seller)
     {
         if((seller==null)||(homeRoom==null)) return 0.0;
-        Law theLaw=CMLib.utensils().getTheLaw(homeRoom,seller);
+        Law theLaw=CMLib.law().getTheLaw(homeRoom,seller);
         if(theLaw!=null)
         {
             String taxs=(String)theLaw.taxLaws().get("SALESTAX");
@@ -827,8 +827,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             double totalFunds=price.absoluteGoldPrice;
             if(getSalesTax(seller.getStartRoom(),seller)!=0.0)
             {
-                Law theLaw=CMLib.utensils().getTheLaw(room,seller);
-                Area A2=CMLib.utensils().getLegalObject(room);
+                Law theLaw=CMLib.law().getTheLaw(room,seller);
+                Area A2=CMLib.law().getLegalObject(room);
                 if((theLaw!=null)&&(A2!=null))
                 {
                     Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
@@ -845,7 +845,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
             if(seller.isMonster())
             {
-                LandTitle T=CMLib.utensils().getLandTitle(seller.getStartRoom());
+                LandTitle T=CMLib.law().getLandTitle(seller.getStartRoom());
                 if((T!=null)&&(T.landOwner().length()>0))
                 {
                     CMLib.beanCounter().modifyLocalBankGold(seller.getStartRoom().getArea(),
@@ -1021,7 +1021,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                             }
                         if(related)
                         {
-                            LandTitle LT=CMLib.utensils().getLandTitle(A);
+                            LandTitle LT=CMLib.law().getLandTitle(A);
                             if(LT!=null) titles.put(A,LT);
                         }
                     }
@@ -1031,7 +1031,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
-                LandTitle A=CMLib.utensils().getLandTitle(R);
+                LandTitle A=CMLib.law().getLandTitle(R);
                 if((A!=null)&&(R.roomID().length()>0))
                     titles.put(R,A);
             }

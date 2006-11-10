@@ -123,7 +123,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if(CMLib.utensils().doesOwnThisProperty(mob,room))
+		if(CMLib.law().doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.Name());

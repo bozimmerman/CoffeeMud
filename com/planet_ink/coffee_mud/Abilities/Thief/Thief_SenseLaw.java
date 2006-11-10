@@ -68,11 +68,11 @@ public class Thief_SenseLaw extends ThiefSkill
 			MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
-                LegalBehavior B=CMLib.utensils().getLegalBehavior(mob.location());
+                LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 				if(B==null)
 					return super.tick(ticking,tickID);
 				StringBuffer buf=new StringBuffer("");
-				Vector V=getLawMen(CMLib.utensils().getLegalObject(mob.location()),mob.location(),B);
+				Vector V=getLawMen(CMLib.law().getLegalObject(mob.location()),mob.location(),B);
 				for(int l=0;l<V.size();l++)
 				{
 					MOB M=(MOB)V.elementAt(l);

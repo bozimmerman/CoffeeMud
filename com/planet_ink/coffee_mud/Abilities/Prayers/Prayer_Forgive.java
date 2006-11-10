@@ -46,7 +46,7 @@ public class Prayer_Forgive extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 
 		String name=CMParms.combine(commands,0);
 		if(name.startsWith("$")) name=name.substring(1);
@@ -59,7 +59,7 @@ public class Prayer_Forgive extends Prayer
 		}
 		Vector warrants=new Vector();
 		if(B!=null)
-            warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),name);
+            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),name);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -192,7 +192,7 @@ public class DefaultLawSet implements Law
             double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
             if(tax==0.0) return;
             tax=CMath.div(tax,100.0);
-            Vector titles=CMLib.utensils().getAllUniqueTitles(A.getMetroMap(),"*",false);
+            Vector titles=CMLib.law().getAllUniqueTitles(A.getMetroMap(),"*",false);
             Hashtable owners=new Hashtable();
             for(Enumeration e=titles.elements();e.hasMoreElements();)
             {

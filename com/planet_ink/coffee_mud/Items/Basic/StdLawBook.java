@@ -74,14 +74,14 @@ public class StdLawBook extends StdItem
 			if(!mob.isMonster())
 			{
 				Area A=CMLib.map().getArea(readableText());
-                LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
+                LegalBehavior B=CMLib.law().getLegalBehavior(A);
 				if(B==null)
 				{
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
 				
-				Area A2=CMLib.utensils().getLegalObject(A);
+				Area A2=CMLib.law().getLegalObject(A);
                 Law theLaw=B.legalInfo(A2);
 				if(theLaw==null)
 				{
@@ -150,7 +150,7 @@ public class StdLawBook extends StdItem
 			try
 			{
 				Area A=CMLib.map().getArea(readableText());
-				Area A2=CMLib.utensils().getLegalObject(A);
+				Area A2=CMLib.law().getLegalObject(A);
 				if(A2==null)
 				{
 					msg.source().tell("The pages appear blank, and too damaged to write on.");
@@ -380,7 +380,7 @@ public class StdLawBook extends StdItem
                                     switch(Law.ACTIONMASK_CODES[selectedMask])
                                     {
                                     case Law.ACTIONMASK_DETAIN:
-                                        if(!CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
+                                        if(!CMLib.law().getLegalObject(A).inMetroArea(mob.location().getArea()))
                                         {
                                             mob.tell("You can not add this room as a detention center, as it is not in the area.");
                                             abort=true;
@@ -1146,7 +1146,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(!CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(!CMLib.law().getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a release room, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
@@ -1234,7 +1234,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(!CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(!CMLib.law().getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a jail, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))

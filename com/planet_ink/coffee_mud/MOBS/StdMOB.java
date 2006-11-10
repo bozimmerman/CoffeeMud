@@ -2871,7 +2871,7 @@ public class StdMOB implements MOB
         if((amFollowing()==mob)
         ||((isMonster()&&CMSecurity.isAllowed(mob,location(),"ORDER")))
         ||(getLiegeID().equals(mob.Name()))
-        ||(CMLib.utensils().doesOwnThisProperty(mob,CMLib.map().getStartRoom(this))))
+        ||(CMLib.law().doesOwnThisProperty(mob,CMLib.map().getStartRoom(this))))
             return true;
         if((!isMonster())
         &&(CMSecurity.isAllowedEverywhere(mob,"ORDER"))
@@ -2890,7 +2890,7 @@ public class StdMOB implements MOB
 				&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)>=0)
 				&&(getStartRoom()!=null))
 				{
-					LegalBehavior B=CMLib.utensils().getLegalBehavior(getStartRoom());
+					LegalBehavior B=CMLib.law().getLegalBehavior(getStartRoom());
 					if((B!=null)&&(B.rulingClan().equals(mob.getClanID())))
 						return true;
 				}

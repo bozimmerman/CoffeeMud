@@ -163,7 +163,7 @@ public class Skill_HandCuff extends StdSkill
 		{
 			if(mob.isInCombat())
 				return Ability.QUALITY_INDIFFERENT;
-			if(Skill_Arrest.getWarrantsOf((MOB)target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
+			if(Skill_Arrest.getWarrantsOf((MOB)target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 				return Ability.QUALITY_INDIFFERENT;
 			if(CMLib.flags().isStanding((MOB)target))
 				return Ability.QUALITY_INDIFFERENT;
@@ -201,7 +201,7 @@ public class Skill_HandCuff extends StdSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(Skill_Arrest.getWarrantsOf(target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
+		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
 		    mob.tell(target.name()+" has no warrants out here.");
 		    return false;

@@ -69,7 +69,7 @@ public class Prayer_GuardianHearth extends Prayer
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();
-                if((CMLib.utensils().doesHavePriviledgesHere(M,R))
+                if((CMLib.law().doesHavePriviledgesHere(M,R))
                 ||((text().length()>0)
                     &&((M.Name().equals(text()))
                         ||(M.getClanID().equals(text())))))
@@ -105,9 +105,9 @@ public class Prayer_GuardianHearth extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&(CMLib.utensils().doesOwnThisProperty(mob,((Room)target))))
+				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-                    if((mob.getClanID().length()>0)&&(CMLib.utensils().doesOwnThisProperty(mob.getClanID(),((Room)target))))
+                    if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
                         setMiscText(mob.getClanID());
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);

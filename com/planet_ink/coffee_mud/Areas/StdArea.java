@@ -775,7 +775,7 @@ public class StdArea implements Area
 				s.append("Currency       : "+CMStrings.capitalizeAndLower(currName)+"\n\r");
 			else
 				s.append("Currency       : Gold coins (default)\n\r");
-            LegalBehavior B=CMLib.utensils().getLegalBehavior(this);
+            LegalBehavior B=CMLib.law().getLegalBehavior(this);
 			if(B!=null)
 			{
                 String ruler=B.rulingClan();

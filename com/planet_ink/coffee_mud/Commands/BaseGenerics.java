@@ -6959,7 +6959,7 @@ public class BaseGenerics extends StdCommand
 			Room newRoom=CMLib.map().getRoom(newName);
 			if((newRoom==null)
 			||(CMLib.map().getExtendedRoomID(newRoom).length()==0)
-			||(!CMLib.utensils().doesOwnThisProperty(C.clanID(),newRoom)))
+			||(!CMLib.law().doesOwnThisProperty(C.clanID(),newRoom)))
 				mob.tell(getScr("BaseGenerics","clanroomerr"));
 			else
 				return CMLib.map().getExtendedRoomID(newRoom);

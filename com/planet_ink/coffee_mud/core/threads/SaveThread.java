@@ -69,7 +69,7 @@ public class SaveThread extends Thread
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				LandTitle T=CMLib.utensils().getLandTitle(R);
+				LandTitle T=CMLib.law().getLandTitle(R);
 				if(T!=null)
 				{
 					status("checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
