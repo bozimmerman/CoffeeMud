@@ -44,7 +44,7 @@ HELP_=<EXPERTISE>The ability to use wands without expending as much mana.
 TUNING@x1=Tuning @x2,10,LEVEL,-SKILL +Skill_TuneInstrument,-LEVEL +>={27+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to tune instruments to a higher pitch of effectiveness.
 
-HOMECOOKING@x2=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Apothecary,-LEVEL +>={1+(5*@x1)},+WIS {13+@x1},0,1,0,0,0
+HOMECOOKING@x1=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Apothecary,-LEVEL +>={1+(5*@x1)},+WIS {13+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook, distil, food prep, or bake especially nourishing foods or thirst quenching drinks.
 
 AXESTRIKE@x1=Axe Striking @x2,10,LEVEL,-SKILL +Specialization_Axe,-LEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
