@@ -778,11 +778,17 @@ public class StdMOB implements MOB
 		if(mob.curState().getHitPoints()<=0) return false;
 		if(amDead()) return false;
 		if(curState().getHitPoints()<=0) return false;
-		if(mob.isMonster()) return true;
-		if(isMonster()){
+		if(mob.isMonster())
+		{
+			MOB fol=mob.amFollowing();
+			if(fol!=null) return mayIFight(fol);
+			return true;
+		}
+		else
+		if(isMonster())
+		{
 			MOB fol=amFollowing();
-			if((fol!=null)&&(!fol.isMonster()))
-				return fol.mayIFight(mob);
+			if(fol!=null) return fol.mayIFight(mob);
 			return true;
 		}
 		if((mob.soulMate()!=null)||(soulMate()!=null))

@@ -54,6 +54,7 @@ public class Plains extends StdRoom
 		new Integer(RawMaterial.RESOURCE_GREENS),
 		new Integer(RawMaterial.RESOURCE_CARROTS),
 		new Integer(RawMaterial.RESOURCE_TOMATOES),
+		new Integer(RawMaterial.RESOURCE_BEANS),
 		new Integer(RawMaterial.RESOURCE_ONIONS),
 		new Integer(RawMaterial.RESOURCE_GARLIC),
 		new Integer(RawMaterial.RESOURCE_FLINT),

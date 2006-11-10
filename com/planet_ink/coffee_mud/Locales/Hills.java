@@ -54,6 +54,7 @@ public class Hills extends StdRoom
 		new Integer(RawMaterial.RESOURCE_BOYSENBERRIES),
 		new Integer(RawMaterial.RESOURCE_GREENS),
 		new Integer(RawMaterial.RESOURCE_OLIVES),
+		new Integer(RawMaterial.RESOURCE_BEANS),
 		new Integer(RawMaterial.RESOURCE_RICE),
 		new Integer(RawMaterial.RESOURCE_LEATHER),
 		new Integer(RawMaterial.RESOURCE_FEATHERS),

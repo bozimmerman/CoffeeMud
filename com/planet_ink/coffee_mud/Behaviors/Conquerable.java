@@ -543,6 +543,7 @@ public class Conquerable extends Arrest
 							if((M1!=M2)
 							&&(M1.location()==M2.location())
 							&&(!M1.isInCombat())
+							&&(holdingClan.length()>0)
 							&&(M1.getClanID().equals(holdingClan))
 							&&(!M2.getClanID().equals(holdingClan))
 							&&(CMLib.flags().canBeSeenBy(M2,M1)))
