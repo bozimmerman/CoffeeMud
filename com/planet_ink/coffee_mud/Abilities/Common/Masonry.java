@@ -216,16 +216,19 @@ public class Masonry extends CraftingSkill
 								R.startItemRejuv();
 								try
 								{
+									boolean rebuild=false;
 									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R2=(Room)r.nextElement();
+										rebuild=false;
 										for(int d=0;d<R2.rawDoors().length;d++)
 											if(R2.rawDoors()[d]==room)
 											{
+												rebuild=true;
 												R2.rawDoors()[d]=R;
-												if(R2 instanceof GridLocale)
-													((GridLocale)R2).buildGrid();
 											}
+										if((rebuild)&&(R2 instanceof GridLocale))
+											((GridLocale)R2).buildGrid();
 									}
 							    }catch(NoSuchElementException e){}
 							    try
@@ -257,7 +260,6 @@ public class Masonry extends CraftingSkill
 										LandTitle A2=(LandTitle)title.newInstance();
 										A2.setLandPrice(title.landPrice());
 										R2.addNonUninvokableEffect((Ability)A2);
-										break;
 									}
 									CMLib.database().DBCreateRoom(R2,R2.ID());
 									CMLib.database().DBUpdateExits(R2);
