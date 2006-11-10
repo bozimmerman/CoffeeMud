@@ -3292,14 +3292,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
 				int arg1=0;
-				if(CMath.isNumber(arg1s.trim()))
+				if(CMath.isMathExpression(arg1s.trim()))
 					arg1=CMath.s_parseIntExpression(arg1s.trim());
 				else
 					arg1=CMParms.parse(arg1s.trim()).size();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
 				int arg3=0;
-				if(CMath.isNumber(arg3s.trim()))
+				if(CMath.isMathExpression(arg3s.trim()))
 					arg3=CMath.s_parseIntExpression(arg3s.trim());
 				else
 					arg3=CMParms.parse(arg3s.trim()).size();
@@ -3311,14 +3311,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
 				String arg1s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
 				int arg1=0;
-				if(CMath.isNumber(arg1s))
+				if(CMath.isMathExpression(arg1s))
 					arg1=CMath.s_parseIntExpression(arg1s);
 				else
 					arg1=CMParms.parse(arg1s).size();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
 				int arg3=0;
-				if(CMath.isNumber(arg3s))
+				if(CMath.isMathExpression(arg3s))
 					arg3=CMath.s_parseIntExpression(arg3s);
 				else
 					arg3=CMParms.parse(arg3s).size();
@@ -4550,7 +4550,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
 				int arg1=0;
-				if(CMath.isNumber(arg1String))
+				if(CMath.isMathExpression(arg1String))
 					arg1=CMath.s_parseIntExpression(arg1String.trim());
 				else
 					arg1=CMParms.parse(arg1String.trim()).size();
@@ -4561,7 +4561,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
 				int arg1=0;
-				if(CMath.isNumber(arg1String))
+				if(CMath.isMathExpression(arg1String))
 					arg1=CMath.s_parseIntExpression(arg1String.trim());
 				else
 					arg1=CMParms.parse(arg1String.trim()).size();
