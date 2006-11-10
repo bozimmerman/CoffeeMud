@@ -45,6 +45,7 @@ public class Aggressive extends StdBehavior
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{
+		if(M==null) return true;
 		return CMLib.masking().maskCheck(getParms(),M);
 	}
 
