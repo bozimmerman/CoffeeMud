@@ -3290,18 +3290,40 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 42: // randnum
 			{
-				int arg1=CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim());
+				String arg1s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
+				int arg1=0;
+				if(CMath.isNumber(arg1s.trim()))
+					arg1=CMath.s_parseIntExpression(arg1s.trim());
+				else
+					arg1=CMParms.parse(arg1s.trim()).size();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				int arg3=CMLib.dice().roll(1,CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim()),0);
+				String arg3s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
+				int arg3=0;
+				if(CMath.isNumber(arg3s.trim()))
+					arg3=CMath.s_parseIntExpression(arg3s.trim());
+				else
+					arg3=CMParms.parse(arg3s.trim()).size();
+				arg3=CMLib.dice().roll(1,arg3,0);
 				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
 				break;
 			}
             case 71: // rand0num
             {
-                int arg1=CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim());
-                String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-                int arg3=CMLib.dice().roll(1,CMath.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim()),-1);
-                returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
+				String arg1s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
+				int arg1=0;
+				if(CMath.isNumber(arg1s))
+					arg1=CMath.s_parseIntExpression(arg1s);
+				else
+					arg1=CMParms.parse(arg1s).size();
+				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
+				int arg3=0;
+				if(CMath.isNumber(arg3s))
+					arg3=CMath.s_parseIntExpression(arg3s);
+				else
+					arg3=CMParms.parse(arg3s).size();
+				arg3=CMLib.dice().roll(1,arg3,-1);
+                returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RAND0NUM");
                 break;
             }
 			case 53: // incontainer
@@ -4527,14 +4549,22 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 42: // randnum
 			{
 				String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
-				int arg1=CMath.s_int(arg1String.trim());
+				int arg1=0;
+				if(CMath.isNumber(arg1String))
+					arg1=CMath.s_parseIntExpression(arg1String.trim());
+				else
+					arg1=CMParms.parse(arg1String.trim()).size();
 				results.append(CMLib.dice().roll(1,arg1,0));
 				break;
 			}
-            case 71: // randnum
+            case 71: // rand0num
             {
                 String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
-                int arg1=CMath.s_int(arg1String.trim());
+				int arg1=0;
+				if(CMath.isNumber(arg1String))
+					arg1=CMath.s_parseIntExpression(arg1String.trim());
+				else
+					arg1=CMParms.parse(arg1String.trim()).size();
                 results.append(CMLib.dice().roll(1,arg1,-1));
                 break;
             }
