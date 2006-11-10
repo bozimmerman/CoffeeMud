@@ -6649,7 +6649,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								String t=CMParms.getCleanBit(trigger,i).trim();
 								if(str.indexOf(" "+t+" ")>=0)
 								{
-									str=t;
+									str=(t.trim()+" "+str.trim()).trim();
 									tryIt=true;
 									break;
 								}
@@ -6893,7 +6893,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								String t=CMParms.getCleanBit(trigger,i).trim();
 								if(str.indexOf(" "+t+" ")>=0)
 								{
-									str=t;
+									str=(t.trim()+" "+str.trim()).trim();
 									doIt=true;
 									break;
 								}
