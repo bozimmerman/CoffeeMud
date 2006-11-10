@@ -142,22 +142,20 @@ public class Thief_Hide extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		HashSet H=mob.getGroupMembers(new HashSet());
-		int highestLevel=0;
-		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB M=mob.location().fetchInhabitant(i);
-			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
-				highestLevel=M.envStats().level();
-		}
-		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-highestLevel;
+        MOB highestMOB=getHighestLevelMOB(mob,null);
+		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You creep into a shadow and remain completely still.";
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
+		{
+			if(highestMOB!=null)
+				beneficialVisualFizzle(mob,highestMOB,"<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s).");
+			else
+				beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
+		}
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

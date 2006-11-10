@@ -149,21 +149,20 @@ public class Thief_HideOther extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int highestLevel=0;
-		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB M=mob.location().fetchInhabitant(i);
-			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
-				highestLevel=M.envStats().level();
-		}
-		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-highestLevel;
+        MOB highestMOB=getHighestLevelMOB(mob,CMParms.makeVector(target));
+		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.";
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide <T-NAMESELF> and fail(s).");
+		{
+			if(highestMOB!=null)
+				beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to hide <T-NAMESELF> from "+highestMOB.displayName(mob)+" and fail(s).");
+			else
+				beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to hide <T-NAMESELF> and fail(s).");
+		}
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

@@ -88,6 +88,35 @@ public class Ranger_Hide extends StdAbility
         affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 
+	public int getMOBLevel(MOB meMOB)
+	{
+		if(meMOB==null) return 0;
+		return meMOB.envStats().level();
+	}
+	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
+	{
+		if(meMOB==null) return null;
+		Room R=meMOB.location();
+		if(R==null) return null;
+		int highestLevel=0;
+		MOB highestMOB=null;
+		HashSet H=meMOB.getGroupMembers(new HashSet());
+		if(not!=null) H.addAll(not);
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if((M!=null)
+			&&(M!=meMOB)
+			&&(!H.contains(M))
+			&&(highestLevel<M.envStats().level()))
+			{
+				highestLevel=M.envStats().level();
+				highestMOB=M;
+			}
+		}
+		return highestMOB;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -118,15 +147,8 @@ public class Ranger_Hide extends StdAbility
 			return false;
 		}
 
-		HashSet H=mob.getGroupMembers(new HashSet());
-		int highestLevel=0;
-		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB M=mob.location().fetchInhabitant(i);
-			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
-				highestLevel=mob.envStats().level();
-		}
-		int levelDiff=mob.envStats().level()-highestLevel;
+		MOB highestMOB=this.getHighestLevelMOB(mob,null);
+		int levelDiff=(mob.envStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You creep into some foliage and remain completely still.";
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
@@ -138,7 +160,12 @@ public class Ranger_Hide extends StdAbility
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
+		{
+			if(highestMOB!=null)
+				beneficialVisualFizzle(mob,highestMOB,"<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s).");
+			else
+				beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
+		}
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

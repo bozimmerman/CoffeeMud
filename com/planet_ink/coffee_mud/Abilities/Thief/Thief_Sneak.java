@@ -60,15 +60,8 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 		}
 
-		HashSet H=mob.getGroupMembers(new HashSet());
-		int highestLevel=0;
-		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB M=mob.location().fetchInhabitant(i);
-			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
-				highestLevel=M.envStats().level();
-		}
-		int levelDiff=(mob.envStats().level()+(super.getXLEVELLevel(mob)*2))-highestLevel;
+        MOB highestMOB=getHighestLevelMOB(mob,null);
+		int levelDiff=(mob.envStats().level()+(super.getXLEVELLevel(mob)*2))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -108,21 +108,20 @@ public class Thief_HideInPlainSight extends ThiefSkill
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;
 
-        int highestLevel=0;
-        for(int i=0;i<mob.location().numInhabitants();i++)
-        {
-            MOB M=mob.location().fetchInhabitant(i);
-            if((M!=null)&&((M!=mob))&&(highestLevel<M.envStats().level()))
-                highestLevel=M.envStats().level();
-        }
-        int levelDiff=mob.envStats().level()-highestLevel-(this.getXLEVELLevel(mob)*2);
+        MOB highestMOB=getHighestLevelMOB(mob,null);
+        int levelDiff=mob.envStats().level()-getMOBLevel(highestMOB)-(this.getXLEVELLevel(mob)*2);
 
         String str="You step to the side and become totally inconspicuous.";
 
         boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
         if(!success)
-            beneficialVisualFizzle(mob,null,"<S-NAME> step(s) to the side and look(s) like an idiot.");
+        {
+        	if(highestMOB!=null)
+	            beneficialVisualFizzle(mob,highestMOB,"<S-NAME> step(s) to the side of <T-NAMESELF>, but end(s) up looking like an idiot.");
+        	else
+	            beneficialVisualFizzle(mob,null,"<S-NAME> step(s) to the side and look(s) like an idiot.");
+        }
         else
         {
             CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

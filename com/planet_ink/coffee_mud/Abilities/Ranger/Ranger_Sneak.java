@@ -45,6 +45,35 @@ public class Ranger_Sneak extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	public int getMOBLevel(MOB meMOB)
+	{
+		if(meMOB==null) return 0;
+		return meMOB.envStats().level();
+	}
+	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
+	{
+		if(meMOB==null) return null;
+		Room R=meMOB.location();
+		if(R==null) return null;
+		int highestLevel=0;
+		MOB highestMOB=null;
+		HashSet H=meMOB.getGroupMembers(new HashSet());
+		if(not!=null) H.addAll(not);
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if((M!=null)
+			&&(M!=meMOB)
+			&&(!H.contains(M))
+			&&(highestLevel<M.envStats().level()))
+			{
+				highestLevel=M.envStats().level();
+				highestMOB=M;
+			}
+		}
+		return highestMOB;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
@@ -75,15 +104,8 @@ public class Ranger_Sneak extends StdAbility
 			return false;
 		}
 
-		HashSet H=mob.getGroupMembers(new HashSet());
-		int highestLevel=0;
-		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB M=mob.location().fetchInhabitant(i);
-			if((M!=null)&&((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
-				highestLevel=mob.envStats().level();
-		}
-		int levelDiff=(mob.envStats().level()+(getXLEVELLevel(mob)*2))-highestLevel;
+        MOB highestMOB=getHighestLevelMOB(mob,null);
+		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
