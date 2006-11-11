@@ -51,8 +51,11 @@ public class Skills extends BaseAbleLister
         domainName[0]="";
         level[0]=-1;
         parseDomainInfo(mob,commands,V,level,domain,domainName);
+        if(domain[0]>=0)
+        for(int v=0;v<V.size();v++)
+            V.setElementAt(new Integer(((Integer)V.elementAt(v)).intValue()+domain[0]),v);
         if((domain[0]>=0)||(qual.length()==0))
-            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,V,domain[0],true,level[0]));
+            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES|Ability.ALL_DOMAINS,true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
