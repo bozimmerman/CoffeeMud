@@ -38,7 +38,7 @@ public class Chant_SenseGems extends Chant_SensePlants
 	public String ID() { return "Chant_SenseGems"; }
 	public String name(){ return "Sense Gems";}
 	public String displayText(){return "(Sensing Gems)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String word(){return "gems";};
 

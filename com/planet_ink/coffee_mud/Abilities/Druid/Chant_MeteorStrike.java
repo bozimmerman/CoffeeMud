@@ -37,7 +37,7 @@ public class Chant_MeteorStrike extends Chant
 	public String name(){return "Meteor Strike";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

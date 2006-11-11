@@ -64,6 +64,17 @@ public class Spell_Teleport extends Spell
 					candidates.addElement(room);
 			}
 	    }catch(NoSuchElementException nse){}
+        if(candidates.size()==0)
+        try
+        {
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            {
+                Room room=(Room)r.nextElement();
+                if((room.getArea().name().toUpperCase().indexOf(areaName)>=0)
+                &&(CMLib.flags().canAccess(mob,room)))
+                    candidates.addElement(room);
+            }
+        }catch(NoSuchElementException nse){}
 
 		if(candidates.size()==0)
 		{

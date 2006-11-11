@@ -67,7 +67,7 @@ public class Skill_TurnUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(mob.envStats().level()-target.envStats().level())*30,auto);
+		boolean success=proficiencyCheck(mob,((mob.envStats().level()+(4*getXLEVELLevel(mob)))-target.envStats().level())*30,auto);
 
 		if(success)
 		{

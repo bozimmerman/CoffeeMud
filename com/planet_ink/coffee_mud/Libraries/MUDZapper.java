@@ -203,6 +203,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SKILLFLAG",new Integer(102));
             zapCodes.put("-SKILLFLAGS",new Integer(101));
             zapCodes.put("+SKILLFLAGS",new Integer(102));
+            zapCodes.put("-MAXCLASSLEVEL",new Integer(103));
+            zapCodes.put("-MAXCLASSLEVELS",new Integer(103));
 		}
 		return zapCodes;
 	}
@@ -779,9 +781,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 6: // -ClassLevels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class level "));
+							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class level ":"Allows only class level "));
 					}
 					break;
+                case 103: // -MaxclassLevels
+                    {
+                        for(int v2=v+1;v2<V.size();v2++)
+                            buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only highest class level ":"Allows only highest class level "));
+                    }
+                    break;
 				case 7: // -Tattoos
 					{
 						buf.append((skipFirstWord?"The":"Requires")+" the following tattoo(s): ");
@@ -2102,6 +2110,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 5: // -Levels
 				case 6: // -ClassLevels
+                case 103: // -MaxclassLevels
 					{
 						Vector entry=new Vector();
 						buf.addElement(entry);
@@ -2723,6 +2732,44 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(!found) return false;
 				}
 				break;
+            case 103: // -maxclasslevel
+                {
+                    boolean found=false;
+                    int cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
+                    int c2=0;
+                    for(int v=1;v<mob.baseCharStats().numClasses();v++)
+                    {
+                        c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
+                        if(c2>cl) cl=c2;
+                    }
+                    for(int v=1;v<V.size();v+=2)
+                        if((v+1)<V.size())
+                        switch(((Integer)V.elementAt(v)).intValue())
+                        {
+                            case 37: // +lvlgr
+                                if((V.size()>1)&&(cl>((Integer)V.elementAt(1)).intValue()))
+                                   found=true;
+                                break;
+                            case 38: // +lvlge
+                                if((V.size()>1)&&(cl>=((Integer)V.elementAt(1)).intValue()))
+                                   found=true;
+                                break;
+                            case 39: // +lvlt
+                                if((V.size()>1)&&(cl<((Integer)V.elementAt(1)).intValue()))
+                                   found=true;
+                                break;
+                            case 40: // +lvlle
+                                if((V.size()>1)&&(cl<=((Integer)V.elementAt(1)).intValue()))
+                                   found=true;
+                                break;
+                            case 41: // +lvleq
+                                if((V.size()>1)&&(cl==((Integer)V.elementAt(1)).intValue()))
+                                   found=true;
+                                break;
+                        }
+                    if(!found) return false;
+                }
+                break;
 			case 7: // -tattoo
 				{
 					boolean found=false;
@@ -3394,7 +3441,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         String mobAlign=null;
         String mobGender=null;
         CharStats base=null;
-        int classLevel=-1;
         Vector V=CMParms.parse(text.toUpperCase());
         MOB mob=(E instanceof MOB)?(MOB)E:null;
         Item item=(E instanceof Item)?(Item)E:null;
@@ -3416,7 +3462,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
     		mobAlign=CMLib.flags().getAlignmentName(mob).substring(0,3);
     		mobGender=mob.charStats().genderName().toUpperCase();
-            classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 	        base=(CharStats)mob.baseCharStats().copyOf(); 
 	        base.getMyRace().affectCharStats(mob,base);
             if(CMSecurity.isASysOp(mob)
@@ -3460,8 +3505,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(!levelCheck(CMParms.combine(V,v+1),'+',0,level)) return false;
 					break;
 				case 6: // -ClassLevels
+                {
+                    int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 					if(!levelCheck(CMParms.combine(V,v+1),'+',0,classLevel)) return false;
 					break;
+                }
+                case 103: // -MaxClassLevels
+                {
+                    int cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
+                    int c2=0;
+                    for(int c3=1;c3<mob.baseCharStats().numClasses();c3++)
+                    {
+                        c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
+                        if(c2>cl) cl=c2;
+                    }
+                    if(!levelCheck(CMParms.combine(V,v+1),'+',0,cl)) return false;
+                    break;
+                }
 				case 7: // -tattoos
 					if(!tattooCheck(V,'+',v+1,mob)) return false;
 					break;

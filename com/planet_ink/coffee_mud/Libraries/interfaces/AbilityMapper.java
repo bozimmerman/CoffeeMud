@@ -387,4 +387,11 @@ public interface AbilityMapper extends CMObject
 	 * @return
 	 */
 	public String addAbilityComponent(String s, Hashtable to);
+
+    /**
+     * @param s
+     * @param to
+     * @return
+     */
+    public boolean isDomainIncludedInAnyAbility(int domain, int acode);
 }

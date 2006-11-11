@@ -39,7 +39,7 @@ public class Chant_Earthpocket extends Chant
 	public String displayText(){return "(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))+")";}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	private Container pocket=null;
 
 	public void unInvoke()

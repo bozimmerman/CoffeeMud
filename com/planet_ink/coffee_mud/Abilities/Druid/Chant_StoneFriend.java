@@ -37,7 +37,7 @@ public class Chant_StoneFriend extends Chant
 	public String ID() { return "Chant_StoneFriend"; }
 	public String name(){ return "Stone Friend";}
 	public String displayText(){return "(Charmed)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}

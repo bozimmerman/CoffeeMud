@@ -705,6 +705,8 @@ public interface Ability extends Environmental
     public static final int DOMAIN_BREEDING=46<<5;
     /** constant used to mask classificationCode() designating this ability as being weapon use skil. @see Ability#classificationCode() */
     public static final int DOMAIN_WEAPON_USE=47<<5;
+    /** constant used to mask classificationCode() designating this ability as being breeding skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_ROCKCONTROL=48<<5;
     /** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -720,7 +722,8 @@ public interface Ability extends Environmental
         "FOOLISHNESS","WARDING","DEATH_LORE","WEATHER",
         "CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
         "COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
-        "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE"
+        "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
+        "ROCK_CONTROL"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
@@ -735,7 +738,8 @@ public interface Ability extends Environmental
         "Fool-Making","Warding","Death Animating","Weather Mastering",
         "Corrupting","Restoring","Neutralizing","Creating",
         "Communing","Preserving","Enduring","Plant Controling",
-        "Animal Befriending","Deep Enchanting","Breeding","Weapon Using"
+        "Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
+        "Rock Controling"
 	};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */

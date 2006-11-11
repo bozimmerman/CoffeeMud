@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -153,7 +154,8 @@ public class Spell_StoreSpell extends Spell
 			mob.tell("You don't know how to enchant anything with '"+spellName+"'.");
 			return false;
 		}
-		if(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
+        if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
+        ||(((StdAbility)wandThis).usageCost(null)[0]>45))
 		{
 			mob.tell("That spell is too powerful to store.");
 			return false;

@@ -44,12 +44,14 @@ public class Javelin extends StdWeapon
 		baseEnvStats.setWeight(2);
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(6);
+        maxRange=10;
+        minRange=0;
 		baseGoldValue=1;
 		setUsesRemaining(1);
 		recoverEnvStats();
 		material=RawMaterial.RESOURCE_OAK;
 		weaponType=TYPE_PIERCING;
-		weaponClassification=Weapon.CLASS_RANGED;
+		weaponClassification=Weapon.CLASS_THROWN;
 	}
 
 

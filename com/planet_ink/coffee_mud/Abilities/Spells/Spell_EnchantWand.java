@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -81,6 +82,13 @@ public class Spell_EnchantWand extends Spell
 			return false;
 		}
 
+        if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
+        ||(((StdAbility)wandThis).usageCost(null)[0]>45))
+        {
+            mob.tell("That spell is too powerful to enchant into wands.");
+            return false;
+        }
+        
 		if(wand.getSpell()!=null)
 		{
 			mob.tell("A spell has already been enchanted into '"+wand.name()+"'.");

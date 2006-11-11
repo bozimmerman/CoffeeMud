@@ -37,6 +37,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public Hashtable completeAbleMap=new Hashtable();
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
 	public Hashtable allows=new Hashtable();
+    public Hashtable completeDomainMap=new Hashtable();
 
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
@@ -177,6 +178,25 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 	
+    public boolean isDomainIncludedInAnyAbility(int domain, int acode)
+    {
+        Vector V=(Vector)completeDomainMap.get(new Integer(domain));
+        if(V==null)
+        {
+            Ability A=null;
+            V=new Vector();
+            completeDomainMap.put(new Integer(domain),V);
+            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            {
+                A=(Ability)e.nextElement();
+                if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+                &&(!V.contains(new Integer((A.classificationCode()&Ability.ALL_ACODES)))))
+                    V.addElement(new Integer((A.classificationCode()&Ability.ALL_ACODES)));
+            }
+        }
+        return V.contains(new Integer(acode));
+    }
+    
 	public Vector getAllowsList(String ID)
 	{
 		String KEYID=null;

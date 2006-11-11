@@ -64,6 +64,39 @@ public class CMath
         return roman.toString();
     }
 
+    /** Convert an integer to its Roman Numeral equivalent
+     * 
+     * Usage: Return=MiscFunc.convertToRoman(Number)+".";
+     * @param i Integer to convert
+     * 
+     * @return String Converted integer
+     */
+    public static int convertFromRoman(String s)
+    {
+        int x=0;
+        while(s.startsWith("Y"))
+            x+=1000;
+        for(int i=ROMAN_HUNDREDS.length-1;i>=0;i--)
+            if(s.startsWith(ROMAN_HUNDREDS[i]))
+            {
+                x+=(100*(i+1));
+                break;
+            }
+        for(int i=ROMAN_TENS.length-1;i>=0;i--)
+            if(s.startsWith(ROMAN_TENS[i]))
+            {
+                x+=(10*(i+1));
+                break;
+            }
+        for(int i=ROMAN_ONES.length-1;i>=0;i--)
+            if(s.startsWith(ROMAN_ONES[i]))
+            {
+                x+=i+1;
+                break;
+            }
+        return x;
+    }
+
     public static boolean isRomanDigit(char c){ return ROMAN_ALL.indexOf(c)>=0;}
     
     public static boolean isRomanNumeral(String s)

@@ -44,6 +44,45 @@ public class BaseAbleLister extends StdCommand
 		}
 		return -1;
 	}
+
+    public static void parseDomainInfo(MOB mob, Vector commands, Vector acodes, int[] level, int[] domain, String[] domainName)
+    {
+        level[0]=parseOutLevel(commands);
+        String qual=CMParms.combine(commands,1).toUpperCase();
+        domain[0]=-1;
+        if(qual.length()>0)
+        for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+            if(Ability.DOMAIN_DESCS[i].replace('_',' ').startsWith(qual))
+            { domain[0]=i<<5; break;}
+            else
+            if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf("/")>=0)
+            &&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual)))
+            { domain[0]=i<<5; break;}
+        if(domain[0]>0)
+            domainName[0]=Ability.DOMAIN_DESCS[domain[0]>>5].toLowerCase();
+        if((domain[0]<0)&&(qual.length()>0))
+        {
+            StringBuffer domains=new StringBuffer("");
+            domains.append("\n\rValid schools/domains are: ");
+            for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+            {
+                boolean found=false;
+                for(int a=0;a<acodes.size();a++)
+                    found=found||CMLib.ableMapper().isDomainIncludedInAnyAbility(i<<5,((Integer)acodes.elementAt(a)).intValue());
+                if(found)
+                    domains.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+", ");
+            }
+            if(domains.toString().endsWith(", "))
+                domains=new StringBuffer(domains.substring(0,domains.length()-2));
+            if(!mob.isMonster())
+                mob.session().wraplessPrintln(domains.toString()+"\n\r");
+        }
+        else
+        if(qual.length()>0)
+            domainName[0]+=" ";
+    }
+    
+    
 	public static StringBuffer getAbilities(MOB able,
 											int ofType,
 											int ofDomain,

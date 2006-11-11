@@ -38,7 +38,7 @@ public class CombatAbilities extends StdBehavior
 
 	public int combatMode=0;
 	public DVector aggro=null;
-	public short rounds=0;
+	public short chkDown=0;
 	public Vector skillsNever=null;
 	public Vector skillsAlways=null;
 
@@ -276,10 +276,40 @@ public class CombatAbilities extends StdBehavior
 		MOB mob=(MOB)ticking;
 
 		if(!canActAtAll(mob)) return true;
-		if(!mob.isInCombat()){ if(aggro!=null)aggro=null; rounds=(short)0; return true;}
-		rounds++;
+		if(!mob.isInCombat()){ if(aggro!=null)aggro=null; return true;}
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
+        if((chkDown==0)&&(mob.inventorySize()>0))
+        {
+            Item wieldMe=null;
+            Item I=null;
+            int rtt=mob.rangeToTarget();
+            for(int i=0;i<mob.inventorySize();i++)
+            {
+                I=mob.fetchInventory(i);
+                if((!(I instanceof Weapon))
+                ||((((Weapon)I).minRange()>rtt)
+                &&(((Weapon)I).maxRange()<rtt)))
+                    continue;
+                
+                if(I.amWearingAt(Item.WORN_WIELD))
+                {
+                    wieldMe=null;
+                    break;
+                }
+                else
+                if((wieldMe==null)||(I.amWearingAt(Item.WORN_HELD)))
+                    wieldMe=I;
+            }
+            if(wieldMe!=null)
+            {
+                CMLib.commands().doStandardCommand(mob,"WIELD",CMParms.makeVector("WIELD",wieldMe.Name()));
+                if(mob.fetchWieldedItem()==null) chkDown=10;
+            }
+        }
+        else
+        if(chkDown>0) chkDown--;
+        
 		if(aggro!=null)
 		{
 			synchronized(aggro)

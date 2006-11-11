@@ -45,9 +45,39 @@ public class ExpertiseNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+        DVector experts=(DVector)httpReq.getRequestObjects().get("SORTED_EXPERTISE");
+        ExpertiseLibrary.ExpertiseDefinition E=null;
+        if(experts==null)
+        {
+            experts=new DVector(2);
+            String Ename=null;
+            String Vname=null;
+            int x=0;
+            for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+            {
+                E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+                Ename=E.name;
+                x=Ename.lastIndexOf(' ');
+                if((x>0)&&(CMath.isRomanNumeral(Ename.substring(x).trim())))
+                    Ename=Ename.substring(0,x)+" "+((char)('a'+CMath.convertFromRoman(Ename.substring(x).trim())));
+                boolean added=false;
+                for(int v=0;v<experts.size();v++)
+                {
+                    Vname=(String)experts.elementAt(v,1);
+                    if(Vname.compareTo(Ename)>0)
+                    {
+                        experts.insertElementAt(v,Ename,E);
+                        added=true;
+                        break;
+                    }
+                }
+                if(!added) experts.addElement(Ename,E);
+            }
+            httpReq.getRequestObjects().put("SORTED_EXPERTISE",experts);
+        }
+		for(Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
 		{
-			ExpertiseLibrary.ExpertiseDefinition E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+			E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
 			{
 				httpReq.addRequestParameters("EXPERTISE",E.ID);

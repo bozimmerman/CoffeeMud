@@ -36,7 +36,7 @@ public class Chant_CrystalGrowth extends Chant
 {
 	public String ID() { return "Chant_CrystalGrowth"; }
 	public String name(){ return "Crystal Growth";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}

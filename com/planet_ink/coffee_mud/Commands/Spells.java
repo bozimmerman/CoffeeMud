@@ -36,35 +36,22 @@ public class Spells extends BaseAbleLister
 
 	private String[] access={"SPELLS","SP"};
 	public String[] getAccessWords(){return access;}
+    
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		int lvl=parseOutLevel(commands);
 		String qual=CMParms.combine(commands,1).toUpperCase();
-		int domain=-1;
-		String domainName="Arcane";
-		if(qual.length()>0)
-		for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
-			if(Ability.DOMAIN_DESCS[i].startsWith(qual))
-			{ domain=i<<5; break;}
-			else
-			if((Ability.DOMAIN_DESCS[i].indexOf("/")>=0)
-			&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual)))
-			{ domain=i<<5; break;}
-		if(domain>0)
-			domainName=Ability.DOMAIN_DESCS[domain>>5].toLowerCase();
-		StringBuffer spells=new StringBuffer("");
-		if((domain<0)&&(qual.length()>0))
-		{
-			spells.append("\n\rValid schools are: ");
-			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
-				spells.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+" ");
-
-		}
-		else
-			spells.append("\n\r^HYour "+domainName.replace('_',' ')+" spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,domain,true,lvl));
+        int[] level=new int[1];
+        int[] domain=new int[1];
+        String[] domainName=new String[1];
+        domainName[0]="";
+        level[0]=-1;
+        parseDomainInfo(mob,commands,CMParms.makeVector(new Integer(Ability.ACODE_SPELL)),level,domain,domainName);
+		StringBuffer msg=new StringBuffer("");
+		if((domain[0]>=0)||(qual.length()==0))
+            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,domain[0],true,level[0]));
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln(spells.toString()+"\n\r");
+			mob.session().wraplessPrintln(msg.toString()+"\n\r");
 		return false;
 	}
 	

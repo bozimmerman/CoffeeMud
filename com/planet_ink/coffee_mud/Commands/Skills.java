@@ -44,7 +44,15 @@ public class Skills extends BaseAbleLister
 		V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
 		V.addElement(new Integer(Ability.ACODE_SKILL));
 		V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
-		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,true,parseOutLevel(commands))+"\n\r");
+        String qual=CMParms.combine(commands,1).toUpperCase();
+        int[] level=new int[1];
+        int[] domain=new int[1];
+        String[] domainName=new String[1];
+        domainName[0]="";
+        level[0]=-1;
+        parseDomainInfo(mob,commands,V,level,domain,domainName);
+        if((domain[0]>=0)||(qual.length()==0))
+            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,V,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

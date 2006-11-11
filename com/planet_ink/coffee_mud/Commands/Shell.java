@@ -636,7 +636,10 @@ public class Shell extends StdCommand
                                 int ln=CMath.s_int(line);
                                 mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.elementAt(ln));
                                 String str=mob.session().prompt("Rewrite: \n\r");
-                                vbuf.setElementAt(str,ln);
+                                if(str.length()==0)
+                                    mob.tell("(no change)");
+                                else
+                                    vbuf.setElementAt(str,ln);
                             }
                             else
                                 mob.tell("'"+line+"' is not a valid line number.");

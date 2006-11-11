@@ -36,7 +36,7 @@ public class Chant_CaveIn extends Chant
 {
 	public String ID() { return "Chant_CaveIn"; }
 	public String name(){ return "Cave-In";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|CAN_EXITS;}

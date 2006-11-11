@@ -40,7 +40,15 @@ public class Prayers extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.ACODE_PRAYER,-1,true,parseOutLevel(commands))+"\n\r");
+        String qual=CMParms.combine(commands,1).toUpperCase();
+        int[] level=new int[1];
+        int[] domain=new int[1];
+        String[] domainName=new String[1];
+        domainName[0]="";
+        level[0]=-1;
+        parseDomainInfo(mob,commands,CMParms.makeVector(new Integer(Ability.ACODE_PRAYER)),level,domain,domainName);
+        if((domain[0]>=0)||(qual.length()==0))
+            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
