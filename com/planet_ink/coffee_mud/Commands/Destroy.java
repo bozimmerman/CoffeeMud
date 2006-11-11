@@ -909,7 +909,8 @@ public class Destroy extends BaseItemParser
                 mob.tell("Please enter a valid thread name to destroy.  Use List threads for a list.");
             else
             {
-                
+                CMLib.killThread(whichT,500,1);
+                Log.sysOut("CreateEdit",mob.Name()+" destroyed thread "+whichT.getName()+".");
                 mob.tell("Ok.");
             }
         }
