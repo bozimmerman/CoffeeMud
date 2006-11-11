@@ -375,9 +375,11 @@ public class Pregnancy extends StdAbility
 							}
 							String desc="The "+sondat+" of "+mob.Name();
 							String race2=mob.baseCharStats().getMyRace().ID();
+                            MOB otherParentM=null;
 							if(z>y)
 							{
 								race2=text().substring(z+1).trim();
+                                otherParentM=CMLib.map().getLoadPlayer(text().substring(y+1,z));
 								desc+=" and "+text().substring(y+1,z);
 							}
 							desc+=".";
@@ -479,7 +481,10 @@ public class Pregnancy extends StdAbility
                             Vector channels=CMLib.channels().getFlaggedChannelNames("BIRTHS");
                             for(int i=0;i<channels.size();i++)
                                 CMLib.commands().postChannel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
-                            CMLib.database().DBCreateData(mob.Name(),"HEAVEN",mob.Name()+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
+                            String parent=mob.Name();
+                            if(mob.isMonster()&&(otherParentM!=null))
+                                parent=otherParentM.Name();
+                            CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
 						}
 						else
 							mob.tell("You are in labor!!");
