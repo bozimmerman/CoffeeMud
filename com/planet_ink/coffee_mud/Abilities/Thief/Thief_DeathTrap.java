@@ -197,7 +197,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			if(success)
 			{
 				mob.tell("You have set the trap.");
-				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1);
+				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
 				Thief_DeathTrap T=(Thief_DeathTrap)trapThis.fetchEffect(ID());
 				if(T!=null) T.setMiscText(mob.Name());
 			}
@@ -205,7 +205,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			{
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1);
+					Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}
