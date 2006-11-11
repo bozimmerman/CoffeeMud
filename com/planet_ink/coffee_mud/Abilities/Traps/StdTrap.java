@@ -299,7 +299,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;
 		int rejuv=baseRejuvTime(qualifyingClassLevel+trapBonus);
@@ -309,6 +309,12 @@ public class StdTrap extends StdAbility implements Trap
 		T.setSavable(false);
 		T.setAbilityCode(trapBonus);
 		E.addEffect(T);
+        if(perm)
+        {
+            T.setSavable(true);
+            T.makeNonUninvokable();
+        }
+        else
 		if(!isABomb())
 			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel+trapBonus));
 		return T;

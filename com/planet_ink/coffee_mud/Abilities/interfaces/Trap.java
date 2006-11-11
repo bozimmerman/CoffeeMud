@@ -133,7 +133,7 @@ public interface Trap extends Ability
 	 * @param qualifyingClassLevel the class-level at which the trapper qualified for this trap
 	 * @return the Trap object denoting the trap just added to the target object
 	 */
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel);
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean permanent);
 	/**
 	 * A simple display string describing the conditions necesssary to get the canSetTrapOn
 	 * method to return true.

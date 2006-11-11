@@ -32,7 +32,7 @@ HELP_=<EXPERTISE>The ability to better use and deploy rope based snares, binding
 DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-MAXCLASSLEVEL +>={13+(5*@x1)},+CHA {13+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to handle more difficult cases of thiefly deceptiveness. 
 
-DETRAP@x1=Trap Disabling @x2,10,LEVEL,-SKILLFLAG +DETRAPPING,-MAXCLASSLEVEL +>={12+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+DETRAP@x1=Trap Disabling @x2,10,LEVEL,-SKILLFLAG +FIND/REMOVE_TRAPS,-MAXCLASSLEVEL +>={12+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better avoid, identify, handle, and disable traps.
 
 TRAPPING@x1=Trapping @x2,10,LEVEL,-SKILLFLAG +TRAPPING,-MAXCLASSLEVEL +>={16+(5*@x1)},+DEX {13+@x1},0,1,0,0,0

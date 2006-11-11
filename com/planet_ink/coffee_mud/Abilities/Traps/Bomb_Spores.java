@@ -62,13 +62,13 @@ public class Bomb_Spores extends StdBomb
 		}
 		return true;
 	}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;
 		Vector V=returnOffensiveAffects(E);
 		if(V.size()>0)
 			setMiscText(((Ability)V.firstElement()).ID());
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
 	public void spring(MOB target)

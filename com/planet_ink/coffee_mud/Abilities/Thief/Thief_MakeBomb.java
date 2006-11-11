@@ -123,13 +123,13 @@ public class Thief_MakeBomb extends ThiefSkill
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
+				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 			}
 			else
 			{
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
 					T.spring(mob);
 				}

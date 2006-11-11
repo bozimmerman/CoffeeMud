@@ -168,22 +168,18 @@ public class Thief_Trap extends ThiefSkill
 					||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
 						permanent=true;
 				}
-				if(permanent)
-				{
-					Ability newTrap=(Ability)theTrap.copyOf();
-					newTrap.setInvoker(mob);
-					trapThis.addNonUninvokableEffect(newTrap);
-					CMLib.database().DBUpdateRoom(mob.location());
-				}
-				else
 				if(theTrap!=null)
-					theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
+                {
+					theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),permanent);
+                    if(permanent)
+                        CMLib.database().DBUpdateRoom(mob.location());
+                }
 			}
 			else
 			{
 				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

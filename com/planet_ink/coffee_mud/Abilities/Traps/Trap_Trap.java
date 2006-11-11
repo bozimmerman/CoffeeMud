@@ -64,7 +64,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;
 		int level=mob.envStats().level();
@@ -76,9 +76,17 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		E.addEffect(T);
-		T.setSavable(false);
         T.setAbilityCode(trapBonus);
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,level*30);
+        if(perm)
+        {
+            T.setSavable(true);
+            T.makeNonUninvokable();
+        }
+        else
+        {
+            T.setSavable(false);
+    		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,level*30);
+        }
 		return T;
 	}
 	public void gas(MOB mob)

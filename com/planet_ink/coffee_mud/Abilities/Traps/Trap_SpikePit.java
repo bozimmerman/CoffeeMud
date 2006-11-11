@@ -55,7 +55,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;
 		Item I=getDagger(mob);
@@ -68,7 +68,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 			I.destroy();
 			I=getDagger(mob);
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)

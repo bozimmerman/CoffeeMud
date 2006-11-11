@@ -43,7 +43,7 @@ public class Trap_BearTrap extends StdTrap
 	protected int amountRemaining=250;
 	protected MOB trapped=null;
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel)
+	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;
 		if(mob!=null)
@@ -53,7 +53,7 @@ public class Trap_BearTrap extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),30);
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel);
+		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
