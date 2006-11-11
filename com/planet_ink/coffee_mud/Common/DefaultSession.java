@@ -379,6 +379,7 @@ public class DefaultSession extends Thread implements Session
                 }
 			}
 		}
+        catch(Exception ioe){ killFlag=true;}
 		finally{writeStartTime=0;}
 	}
     public void out(String c){ if(c!=null) out(c.toCharArray());}

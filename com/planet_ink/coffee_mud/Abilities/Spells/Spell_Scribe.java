@@ -71,10 +71,20 @@ public class Spell_Scribe extends Spell
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
-			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
 		}
+        if(scrollThis==null)
+        for(int a=0;a<mob.numAbilities();a++)
+        {
+            Ability A=mob.fetchAbility(a);
+            if((A!=null)
+            &&(A instanceof Spell)
+            &&(CMLib.english().containsString(A.name(),spellName))
+            &&(!A.ID().equals(this.ID())))
+                scrollThis=(Spell)A;
+        }
 		if(scrollThis==null)
 		{
 			mob.tell("You don't know how to scribe '"+spellName+"'.");

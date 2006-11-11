@@ -193,6 +193,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	
 	public int getChannelIndex(String channelName)
 	{
+        channelName=channelName.toUpperCase();
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
 				return c;
@@ -201,6 +202,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public int getChannelCodeNumber(String channelName)
 	{
+        channelName=channelName.toUpperCase();
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
 				return 1<<c;
@@ -209,6 +211,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public String getChannelName(String channelName)
 	{
+        channelName=channelName.toUpperCase();
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
 				return ((String)channelNames.elementAt(c)).toUpperCase();

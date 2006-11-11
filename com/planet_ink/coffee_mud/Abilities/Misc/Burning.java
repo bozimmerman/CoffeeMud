@@ -200,17 +200,21 @@ public class Burning extends StdAbility
 		if(affected==null)
 			return false;
 
-		if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
+		if(affected instanceof Item)
 		{
 			Item I=(Item)affected;
-			if(!ouch((MOB)I.owner()))
-				CMLib.commands().postDrop((MOB)I.owner(),I,false,false);
-			if(I.subjectToWearAndTear())
-			{
-				if((I.usesRemaining()<1000)
-				&&(I.usesRemaining()>1))
-					I.setUsesRemaining(I.usesRemaining()-1);
-			}
+            Environmental owner=I.owner();
+            if(owner instanceof MOB)
+            {
+    			if(!ouch((MOB)owner))
+    				CMLib.commands().postDrop((MOB)owner,I,false,false);
+    			if(I.subjectToWearAndTear())
+    			{
+    				if((I.usesRemaining()<1000)
+    				&&(I.usesRemaining()>1))
+    					I.setUsesRemaining(I.usesRemaining()-1);
+    			}
+            }
 		}
 
 		// might want to add the ability for it to spread

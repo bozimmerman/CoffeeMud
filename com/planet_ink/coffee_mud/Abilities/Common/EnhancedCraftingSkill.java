@@ -44,6 +44,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
     protected static final int TYPE_QUALCRAFT=2;
     protected static final int TYPE_LTHLCRAFT=3;
     protected static final int TYPE_CNTRCRAFT=4;
+    protected final static String[] STAGE_KEY={"LITE","DURA","QUAL","LTHL","CNTR"};
     protected final static String[][] STAGE_TYPES={
         {"Light","Supple","Agile"},
         {"Strong","Reinforced","Fortified"},
@@ -162,7 +163,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 		return value;
 	}
-	
+
+    protected int getLocalExpCode(String exp)
+    {
+        if(exp==null) return -1;
+        exp=exp.toUpperCase();
+        for(int i=0;i<STAGE_KEY.length;i++)
+            if(exp.startsWith(STAGE_KEY[i]))
+                return i;
+        return -1;
+    }
+    
 	protected String applyName(String name, String word)
 	{
 		Vector V=CMParms.parse(name);
@@ -213,11 +224,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
             key=(String)types.elementAt(t);
             int stages=CMLib.expertises().getStages(key);
+            int code=getLocalExpCode(key);
+            if(code>=0)
 			for(int s=stages-1;s>=0;s--)
             {
                 stage=CMath.convertToRoman(s+1);
 				if((mob.fetchExpertise(key+stage)!=null)||(mob.fetchExpertise(key+(s+1))!=null))
-					extras.append(STAGE_TYPES[t][s]+", ");
+					extras.append(STAGE_TYPES[code][s]+", ");
             }
 		}
 		if(extras.length()>0)
@@ -249,15 +262,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
                     {
                         key=(String)experTypes.elementAt(t);
                         int stages=CMLib.expertises().getStages(key);
+                        int code=getLocalExpCode(key);
+                        if(code>=0)
 						for(int s=stages-1;s>=0;s--)
                         {
                             stage=CMath.convertToRoman(s+1);
 							if(((mob.fetchExpertise(key+stage)!=null)||(mob.fetchExpertise(key+(s+1))!=null))
-							&&(cmd.equalsIgnoreCase(STAGE_TYPES[t][s])))
+							&&(cmd.equalsIgnoreCase(STAGE_TYPES[code][s])))
 							{
 								commands.removeElementAt(0);
 								if(types==null) types=new DVector(2);
-								types.addElement(new Integer(t),new Integer(s));
+								types.addElement(new Integer(code),new Integer(s));
 								if(commands.size()>0)
 									cmd=(String)commands.firstElement();
 								else

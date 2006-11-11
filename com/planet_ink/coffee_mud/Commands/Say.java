@@ -76,12 +76,14 @@ public class Say extends StdCommand
 			toFlag=true;
 		}
 
-		if(commands.size()==1)
+        Room R=mob.location();
+		if((commands.size()==1)||(R==null))
 		{
 			mob.tell(theWord+" "+getScr("Say","saywhat"));
 			return false;
 		}
 
+        
 		String whom="";
 		Environmental target=null;
 		if(commands.size()>2)
@@ -93,7 +95,7 @@ public class Say extends StdCommand
 					{ whom=""; break;}
 			if(whom.length()>0)
 			{
-				target=mob.location().fetchFromRoomFavorMOBs(null,whom,Item.WORNREQ_ANY);
+				target=R.fetchFromRoomFavorMOBs(null,whom,Item.WORNREQ_ANY);
 				if((toFlag)&&(target==null))
 				    target=mob.fetchInventory(null,whom);
 
@@ -145,23 +147,25 @@ public class Say extends StdCommand
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
-
-		if(mob.location().okMessage(mob,msg))
+		
+        
+        
+		if(R.okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 			if(theWord.toUpperCase().startsWith(getScr("Say","saycmd5")))
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
-					Room R=mob.location().getRoomInDir(d);
-					Exit E=mob.location().getExitInDir(d);
-					if((R!=null)&&(E!=null)&&(E.isOpen()))
+					Room R2=R.getRoomInDir(d);
+					Exit E2=R.getExitInDir(d);
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 					{
 						Environmental tool=msg.tool();
 						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,getScr("Say","yell1")+" '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
-						if((R.okMessage(mob,msg))
+						if((R2.okMessage(mob,msg))
 						&&((tool==null)||(tool.okMessage(mob,msg))))
 						{
-							R.sendOthers(mob,msg);
+							R2.sendOthers(mob,msg);
 						}
 					}
 				}

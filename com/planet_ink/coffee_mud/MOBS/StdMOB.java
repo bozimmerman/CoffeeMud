@@ -3176,6 +3176,37 @@ public class StdMOB implements MOB
 						}
 					}
 				}
+                else
+                {
+                    ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
+                    if(def==null) continue;
+                    int x=def.name.lastIndexOf(' ');
+                    if(x<0) continue;
+                    if(CMath.isRomanNumeral(def.name.substring(x+1).trim())
+                    &&(exper.endsWith(def.name.substring(x+1).trim())))
+                    {
+                        num=CMath.convertFromRoman(def.name.substring(x+1).trim());
+                        experRoot=exper.substring(0,exper.length()-def.name.substring(x+1).trim().length());
+                        for(int i2=i1-1;i2>=0;i2--)
+                        {
+                            expTest=(String)exCopy.elementAt(i2);
+                            if((!remove.contains(expTest))
+                            &&(expTest.startsWith(experRoot))
+                            &&(CMath.isRomanNumeral(expTest.substring(experRoot.length()))))
+                            {
+                                num2=CMath.convertFromRoman(expTest.substring(experRoot.length()));
+                                if(num<num2)
+                                {
+                                    remove.add(exper);
+                                    exper=expTest;
+                                    num=num2;
+                                }
+                                else
+                                    remove.add(expTest);
+                            }
+                        }
+                    }
+                }
 			}
 			exCopy.removeAll(remove);
 			return exCopy.elements();

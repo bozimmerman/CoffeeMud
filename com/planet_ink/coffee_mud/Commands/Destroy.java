@@ -119,6 +119,68 @@ public class Destroy extends BaseItemParser
         deadMOB.destroy();
 		return true;
 	}
+    
+    
+    public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
+    {
+        int ac = tGroup.activeCount();
+        int agc = tGroup.activeGroupCount();
+        Thread tArray[] = new Thread [ac+1];
+        ThreadGroup tgArray[] = new ThreadGroup [agc+1];
+
+        tGroup.enumerate(tArray,false);
+        tGroup.enumerate(tgArray,false);
+
+        for (int i = 0; i<ac; ++i)
+        {
+            if (tArray[i] != null)
+            {
+                if((tArray[i] instanceof TickableGroup)
+                &&(((TickableGroup)tArray[i]).lastTicked()!=null)
+                &&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
+                    continue;
+                if((tArray[i] instanceof Tickable)
+                &&(((Tickable)tArray[i]).getTickStatus()==0))
+                    continue;
+                
+                if(tArray[i].getName().equalsIgnoreCase(threadName))
+                    return tArray[i];
+            }
+        }
+
+        if (agc > 0)
+        {
+            for (int i = 0; i<agc; ++i)
+            {
+                if (tgArray[i] != null)
+                {
+                    Thread t=findThreadGroup(threadName,tgArray[i]);
+                    if(t!=null) return t;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public Thread findThread(String threadName)
+    {
+        Thread t=null;
+        try
+        {
+            ThreadGroup topTG = Thread.currentThread().getThreadGroup();
+            while (topTG != null && topTG.getParent() != null)
+                topTG = topTG.getParent();
+            if (topTG != null)
+                t=findThreadGroup(threadName,topTG);
+
+        }
+        catch (Exception e)
+        {
+        }
+        return t;
+
+    }
 
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
@@ -836,6 +898,22 @@ public class Destroy extends BaseItemParser
 			}
 		}
         else
+        if(commandType.equals("THREAD"))
+        {
+            if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+            String which=CMParms.combine(commands,2);
+            Thread whichT=null;
+            if(which.length()>0)
+                whichT=findThread(which);
+            if(whichT==null)
+                mob.tell("Please enter a valid thread name to destroy.  Use List threads for a list.");
+            else
+            {
+                
+                mob.tell("Ok.");
+            }
+        }
+        else
         if(commandType.startsWith("SESSION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"BOOT")) return errorOut(mob);
@@ -1077,7 +1155,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SESSION, JOURNAL, SOCIAL, COMPONENT, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SESSION, THREAD, JOURNAL, SOCIAL, COMPONENT, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

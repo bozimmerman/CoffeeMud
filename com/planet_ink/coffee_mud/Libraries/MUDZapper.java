@@ -315,7 +315,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         for(int d=0;d<Ability.FLAG_DESCS.length;d++)
             if(Ability.FLAG_DESCS[d].startsWith(str))
             {
-                o=new Long(2<<d);
+                o=new Long(1<<d);
                 break;
             }
         if(o==null)

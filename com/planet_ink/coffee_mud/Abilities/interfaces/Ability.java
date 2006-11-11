@@ -767,17 +767,17 @@ public interface Ability extends Environmental
 	/** constant mask for the flags() method designating that this ability is a paralyzing effect @see Ability#flags() */
 	public static final int FLAG_PARALYZING=2048;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see Ability#flags() */
-	public static final int FLAG_NOORDERING=65536;
+	public static final int FLAG_NOORDERING=4096;
     /** constant mask for the flags() method designating that this ability is a clan magic @see Ability#flags() */
-    public static final int FLAG_CLANMAGIC=131072;
+    public static final int FLAG_CLANMAGIC=8192;
     /** constant mask for the flags() method designating that this ability is healing magic @see Ability#flags() */
-    public static final int FLAG_HEALINGMAGIC=131072*2;
+    public static final int FLAG_HEALINGMAGIC=16384;
     /** constant mask for the flags() method designating that this ability is a freezing effect @see Ability#flags() */
-    public static final int FLAG_WATERBASED=131072*4;
+    public static final int FLAG_WATERBASED=32768;
     /** constant mask for the flags() method designating that this ability is a washing effect @see Ability#flags() */
-    public static final int FLAG_AIRBASED=131072*8;
+    public static final int FLAG_AIRBASED=65536;
     /** constant mask for the flags() method designating that this ability is a grounded effect @see Ability#flags() */
-    public static final int FLAG_EARTHBASED=131072*16;
+    public static final int FLAG_EARTHBASED=131072;
 	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */

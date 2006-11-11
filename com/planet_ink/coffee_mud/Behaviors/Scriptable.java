@@ -5233,7 +5233,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(sysmsg) channel=channel.substring(1);
 				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(CMLib.channels().getChannelCodeNumber(channel)<0)
-                    scriptableError(scripted,"MPLOG","Syntax","Unknown channel "+channel+" for "+scripted.Name());
+                    scriptableError(scripted,"MPCHANNEL","Syntax","Unknown channel "+channel+" for "+scripted.Name());
 				else
 					CMLib.commands().postChannel(monster,channel,val,sysmsg);
 				break;
