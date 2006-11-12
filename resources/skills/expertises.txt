@@ -168,7 +168,7 @@ HELP_=<EXPERTISE>The ability to play tunes that have a more powerful beneficial 
 RESOUNDINGTUNE@x1=Resounding Playing @x2,10,MAXRANGE,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={18+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that can be heard from more rooms away.
 
-RYTHMICTUNE@x1=Rythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={19+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+RYTHMICTUNE@x1=Rhythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={19+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that linger a little longer after they are played.
 
 SHARPSING@x1=Sharp Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+CHA {16+@x1},0,1,0,0,0

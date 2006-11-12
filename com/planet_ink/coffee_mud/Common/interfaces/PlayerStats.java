@@ -54,7 +54,8 @@ public interface PlayerStats extends CMObject
 	public void setNotes(String newnotes);
 	public HashSet getFriends();
 	public HashSet getIgnored();
-	public Vector getTitles();
+    public Vector getTitles();
+    public String getActiveTitle();
 	public void addTellStack(String msg);
 	public Vector getTellStack();
 	public void addGTellStack(String msg);

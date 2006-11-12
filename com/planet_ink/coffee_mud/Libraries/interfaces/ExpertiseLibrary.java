@@ -132,4 +132,5 @@ public interface ExpertiseLibrary extends CMObject
     public int getExpertiseLevel(MOB mob, String expertise);
     public int getStages(String expertiseCode);
     public Vector getStageCodes(String expertiseCode);
+    public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
 }

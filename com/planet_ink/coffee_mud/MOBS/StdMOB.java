@@ -210,7 +210,7 @@ public class StdMOB implements MOB
 	{
 	    if((playerStats==null)||(playerStats.getTitles().size()==0))
 	        return name();
-	    return CMStrings.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
+	    return CMStrings.replaceAll(playerStats.getActiveTitle(),"*",Name());
 	}
 
     public String genericName()

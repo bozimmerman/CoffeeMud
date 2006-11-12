@@ -84,5 +84,11 @@ public interface CharCreationLibrary extends CMObject
      */
     public int login(MOB mob, int attempt)
         throws java.io.IOException;
-
+    
+    public Enumeration autoTitles();
+    public String getAutoTitleMask(String title);
+    public boolean isExistingAutoTitle(String title);
+    public String evaluateAutoTitle(String row, boolean addIfPossible);
+    public boolean evaluateAutoTitles(MOB mob);
+    public void reloadAutoTitles();
 }

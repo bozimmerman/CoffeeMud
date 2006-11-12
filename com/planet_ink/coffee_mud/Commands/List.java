@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -940,19 +941,44 @@ public class List extends StdCommand
 		return -1;
 	}
 	
-	public String listComponents(){
-		StringBuffer buf=new StringBuffer("^xAll Defined Spells and required components: ^N\n\r");
-		for(Enumeration e=CMLib.ableMapper().getAbilityComponentMap().keys();e.hasMoreElements();)
-		{
-			String ID=(String)e.nextElement();
-			DVector DV=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID);
-			if(DV!=null)
-				buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableMapper().getAbilityComponentDesc(null,ID)+"\n\r");
-		}
-		if(buf.length()==0) return "None defined.";
-		return buf.toString();
-	}
-	
+    public String listComponents(){
+        StringBuffer buf=new StringBuffer("^xAll Defined Spells and required components: ^N\n\r");
+        for(Enumeration e=CMLib.ableMapper().getAbilityComponentMap().keys();e.hasMoreElements();)
+        {
+            String ID=(String)e.nextElement();
+            DVector DV=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID);
+            if(DV!=null)
+                buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableMapper().getAbilityComponentDesc(null,ID)+"\n\r");
+        }
+        if(buf.length()==0) return "None defined.";
+        return buf.toString();
+    }
+    
+    public String listExpertises()
+    {
+        StringBuffer buf=new StringBuffer("^xAll Defined Expertise Codes: ^N\n\r");
+        for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+        {
+            ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+            buf.append(CMStrings.padRight("^z"+def.ID,20)+"^?: "+CMStrings.padRight(def.name,20)+": "+CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+        }
+        if(buf.length()==0) return "None defined.";
+        return buf.toString();
+    }
+    
+    public String listTitles()
+    {
+        StringBuffer buf=new StringBuffer("^xAll Defined Auto-Titles: ^N\n\r");
+        for(Enumeration e=CMLib.login().autoTitles();e.hasMoreElements();)
+        {
+            String title=(String)e.nextElement();
+            String maskDesc=CMLib.masking().maskDesc(CMLib.login().getAutoTitleMask(title));
+            buf.append(CMStrings.padRight(title,30)+": "+maskDesc+"\n\r");
+        }
+        if(buf.length()==0) return "None defined.";
+        return buf.toString();
+    }
+    
 	public final static String[][] SECURITY_LISTMAP={
 		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
 		/*01*/{"ITEMS","CMDITEMS"},
@@ -984,7 +1010,7 @@ public class List extends StdCommand
 		/*27*/{"TECH","CMDITEMS"},
 		/*28*/{"CLANITEMS","CMDITEMS"},
 		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
-        /*30*/{"TITLES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*30*/{"REALESTATE","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*31*/{"NOPURGE","NOPURGE"},
 		/*32*/{"BANNED","BAN"},
         /*33*/{"RACECATS","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
@@ -999,13 +1025,14 @@ public class List extends StdCommand
 		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*44*/{"COMPONENTS","LISTADMIN","COMPONENTS"},
-		/*45*/{"",""},
+        /*45*/{"EXPERTISES","LISTADMIN","EXPERTISES"},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
         /*48*/{"OBJCOUNTERS","LISTADMIN"},
         /*49*/{"POLLS","POLLS","LISTADMIN"},
         /*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
 		/*51*/{"EXPIRES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*52*/{"TITLES","LISTADMIN","TITLES"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1196,13 +1223,14 @@ public class List extends StdCommand
 		case 42:
 		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
 		case 44: s.wraplessPrintln(listComponents()); break;
-		case 45: break;
+		case 45: s.wraplessPrintln(listExpertises()); break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
         case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
         case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
 		case 51: s.wraplessPrintln(roomExpires(mob.location().getArea().getProperMap(),mob.location()).toString()); break;
+        case 52: s.wraplessPrintln(listTitles()); break;
         default:
 			s.println("List?!");
 			break;

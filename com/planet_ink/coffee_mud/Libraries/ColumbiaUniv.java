@@ -175,152 +175,151 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         return getExpertiseLevel(mob,(String)completeUsageMap[code].get(ID));
     }
     
-    public void recompileExpertises()
+    public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
     {
-        for(int u=0;u<completeUsageMap.length;u++)
-            completeUsageMap[u]=new Hashtable();
-        helpMap.clear();
-        Vector V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
         int levels=0;
         HashSet flags=new HashSet();
         String s=null;
         String skillMask=null;
         int[] costs=new int[5];
-        String ID=null,WKID=null;
+        String WKID=null;
         String name,WKname=null;
         String listMask,WKlistMask=null;
         String finalMask,WKfinalMask=null;
         Vector skillsToRegister=null;
         ExpertiseLibrary.ExpertiseDefinition def=null;
         boolean didOne=false;
+        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
+        int x=row.indexOf("=");
+        if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
+        if(row.trim().toUpperCase().startsWith("HELP_"))
+        {
+            String lastID=ID;
+            ID=row.substring(0,x).toUpperCase();
+            row=row.substring(x+1);
+            ID=ID.substring(5).toUpperCase();
+            if(ID.length()==0) ID=lastID;
+            if((lastID==null)||(lastID.length()==0))
+                return "Error: No last expertise found for help: "+lastID+"="+row;
+            else
+            if(getDefinition(ID)!=null)
+            {
+                def=getDefinition(ID);
+                WKID=def.name.toUpperCase().replace(' ','_');
+                if(addIfPossible)
+                {
+                    helpMap.remove(WKID);
+                    helpMap.put(WKID,row);
+                }
+            }
+            else
+            {
+                Vector stages=getStageCodes(ID);
+                if((stages==null)||(stages.size()==0))
+                    return "Error: Expertise not yet defined: "+ID+"="+row;
+                def=getDefinition((String)stages.elementAt(0));
+                if(def!=null)
+                {
+                    WKID=def.name.toUpperCase().replace(' ','_');
+                    x=WKID.lastIndexOf("_");
+                    if((x>=0)&&(CMath.isInteger(WKID.substring(x+1))||CMath.isRomanNumeral(WKID.substring(x+1))))
+                    {
+                        WKID=WKID.substring(0,x);
+                        if(addIfPossible)
+                        if(!helpMap.containsKey(WKID))
+                            helpMap.put(WKID,row+"\n\r(See help on "+def.name+").");
+                    }
+                }
+                if(addIfPossible)
+                for(int s1=0;s1<stages.size();s1++)
+                {
+                    def=getDefinition((String)stages.elementAt(s1));
+                    if(def==null) continue;
+                    WKID=def.name.toUpperCase().replace(' ','_');
+                    if(!helpMap.containsKey(WKID)) helpMap.put(WKID,row);
+                }
+            }
+            return null;
+        }
+        ID=row.substring(0,x).toUpperCase();
+        row=row.substring(x+1);
+        Vector parts=CMParms.parseCommas(row,false);
+        if(parts.size()!=11)
+            return "Error: Expertise row malformed (Requires 11 entries/10 commas): "+ID+"="+row;
+        name=(String)parts.elementAt(0);
+        if(name.length()==0)
+            return "Error: Expertise name ("+name+") malformed: "+ID+"="+row;
+        if(!CMath.isInteger((String)parts.elementAt(1)))
+            return "Error: Expertise num ("+((String)parts.elementAt(1))+") malformed: "+ID+"="+row;
+        levels=CMath.s_int((String)parts.elementAt(1));
+        flags.clear();
+        flags.addAll(CMParms.parseAny(((String)parts.elementAt(2)).toUpperCase(),"|",true));
+        
+        skillMask=(String)parts.elementAt(3);
+        if(skillMask.length()==0)
+            return "Error: Expertise skill mask ("+skillMask+") malformed: "+ID+"="+row;
+        skillsToRegister=CMLib.masking().getAbilityEduReqs(skillMask);
+        if(skillsToRegister.size()==0)
+            return "Error: Expertise no skills ("+skillMask+") found: "+ID+"="+row;
+        listMask=skillMask+" "+((String)parts.elementAt(4));
+        finalMask=(((String)parts.elementAt(5)));
+        for(int i=6;i<11;i++)
+            costs[i-6]=CMath.s_int((String)parts.elementAt(i));
+        didOne=false;
+        for(int u=0;u<completeUsageMap.length;u++)
+            didOne=didOne||flags.contains(ExpertiseLibrary.XFLAG_CODES[u]);
+        if(!didOne)
+            return "Error: No flags ("+((String)parts.elementAt(2)).toUpperCase()+") were set: "+ID+"="+row;
+        if(addIfPossible)
+        for(int l=1;l<=levels;l++)
+        {
+            WKID=CMStrings.replaceAll(ID,"@X1",""+l);
+            WKID=CMStrings.replaceAll(WKID,"@X2",""+CMath.convertToRoman(l));
+            WKname=CMStrings.replaceAll(name,"@x1",""+l);
+            WKname=CMStrings.replaceAll(WKname,"@x2",""+CMath.convertToRoman(l));
+            WKlistMask=CMStrings.replaceAll(listMask,"@x1",""+l);;
+            WKlistMask=CMStrings.replaceAll(WKlistMask,"@x2",""+CMath.convertToRoman(l));;
+            WKfinalMask=CMStrings.replaceAll(finalMask,"@x1",""+l);;
+            WKfinalMask=CMStrings.replaceAll(WKfinalMask,"@x2",""+CMath.convertToRoman(l));;
+            if((l>1)&&(listMask.toUpperCase().indexOf("-EXPERT")<0))
+            {
+                s=CMStrings.replaceAll(ID,"@X1",""+(l-1));
+                s=CMStrings.replaceAll(s,"@X2",""+CMath.convertToRoman(l-1));
+                WKlistMask="-EXPERTISE \"+"+s+"\" "+WKlistMask;
+            }
+            WKlistMask=expertMath(WKlistMask,l);
+            WKfinalMask=expertMath(WKfinalMask,l);
+            def=addDefinition(WKID,WKname,WKlistMask,WKfinalMask,costs[0],costs[1],costs[2],costs[3],costs[4]);
+            if(def!=null){
+                def.compiledFinalMask();
+                def.compiledListMask();
+            }
+        }
+        ID=CMStrings.replaceAll(ID,"@X1","");
+        ID=CMStrings.replaceAll(ID,"@X2","");
+        for(int u=0;u<completeUsageMap.length;u++)
+            if(flags.contains(ExpertiseLibrary.XFLAG_CODES[u]))
+                for(int k=0;k<skillsToRegister.size();k++)
+                    completeUsageMap[u].put((String)skillsToRegister.elementAt(k),ID);
+        return addIfPossible?ID:null;
+    }
+    
+    public void recompileExpertises()
+    {
+        for(int u=0;u<completeUsageMap.length;u++)
+            completeUsageMap[u]=new Hashtable();
+        helpMap.clear();
+        Vector V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
+        String ID=null,WKID=null;
         for(int v=0;v<V.size();v++)
         {
             String row=(String)V.elementAt(v);
-            if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) continue;
-            int x=row.indexOf("=");
-            if(x<0) continue;
-            if(row.trim().toUpperCase().startsWith("HELP_"))
-            {
-            	String lastID=ID;
-                ID=row.substring(0,x).toUpperCase();
-                row=row.substring(x+1);
-                ID=ID.substring(5).toUpperCase();
-                if(ID.length()==0) ID=lastID;
-                if((lastID==null)||(lastID.length()==0))
-                    Log.errOut("ColumbiaUniv","No last expertise found for help: "+lastID+"="+row);
-                else
-            	if(getDefinition(ID)!=null)
-            	{
-                	def=getDefinition(ID);
-                	WKID=def.name.toUpperCase().replace(' ','_');
-	                helpMap.remove(WKID);
-	                helpMap.put(WKID,row);
-            	}
-            	else
-            	{
-	                Vector stages=getStageCodes(ID);
-	                if((stages==null)||(stages.size()==0))
-	                    Log.errOut("ColumbiaUniv","Expertise not yet defined: "+ID+"="+row);
-	                else
-	                {
-	                	def=getDefinition((String)stages.elementAt(0));
-	                	if(def!=null)
-	                	{
-		                	WKID=def.name.toUpperCase().replace(' ','_');
-	                		x=WKID.lastIndexOf("_");
-	                		if((x>=0)&&(CMath.isInteger(WKID.substring(x+1))||CMath.isRomanNumeral(WKID.substring(x+1))))
-	                		{
-	                			WKID=WKID.substring(0,x);
-		                		if(!helpMap.containsKey(WKID))
-		                			helpMap.put(WKID,row+"\n\r(See help on "+def.name+").");
-	                		}
-	                	}
-		                for(int s1=0;s1<stages.size();s1++)
-		                {
-		                	def=getDefinition((String)stages.elementAt(s1));
-		                	if(def==null) continue;
-		                	WKID=def.name.toUpperCase().replace(' ','_');
-		                	if(!helpMap.containsKey(WKID)) helpMap.put(WKID,row);
-		                }
-	                }
-            	}
-            	continue;
-            }
-            ID=row.substring(0,x).toUpperCase();
-            row=row.substring(x+1);
-            Vector parts=CMParms.parseCommas(row,false);
-            if(parts.size()!=11)
-            {
-                Log.errOut("ColumbiaUniv","Expertise row malformed: "+ID+"="+row);
-                continue;
-            }
-            name=(String)parts.elementAt(0);
-            if(name.length()==0)
-            {
-                Log.errOut("ColumbiaUniv","Expertise name ("+name+") malformed: "+ID+"="+row);
-                continue;
-            }
-            if(!CMath.isInteger((String)parts.elementAt(1)))
-            {
-                Log.errOut("ColumbiaUniv","Expertise num ("+((String)parts.elementAt(1))+") malformed: "+ID+"="+row);
-                continue;
-            }
-            levels=CMath.s_int((String)parts.elementAt(1));
-            flags.clear();
-            flags.addAll(CMParms.parseAny(((String)parts.elementAt(2)).toUpperCase(),"|",true));
-            
-            skillMask=(String)parts.elementAt(3);
-            if(skillMask.length()==0)
-            {
-                Log.errOut("ColumbiaUniv","Expertise skill mask ("+skillMask+") malformed: "+ID+"="+row);
-                continue;
-            }
-            skillsToRegister=CMLib.masking().getAbilityEduReqs(skillMask);
-            if(skillsToRegister.size()==0)
-            {
-                Log.errOut("ColumbiaUniv","Expertise no skills ("+skillMask+") found: "+ID+"="+row);
-                continue;
-            }
-            listMask=skillMask+" "+((String)parts.elementAt(4));
-            finalMask=(((String)parts.elementAt(5)));
-            for(int i=6;i<11;i++)
-                costs[i-6]=CMath.s_int((String)parts.elementAt(i));
-            for(int l=1;l<=levels;l++)
-            {
-                WKID=CMStrings.replaceAll(ID,"@X1",""+l);
-                WKID=CMStrings.replaceAll(WKID,"@X2",""+CMath.convertToRoman(l));
-                WKname=CMStrings.replaceAll(name,"@x1",""+l);
-                WKname=CMStrings.replaceAll(WKname,"@x2",""+CMath.convertToRoman(l));
-                WKlistMask=CMStrings.replaceAll(listMask,"@x1",""+l);;
-                WKlistMask=CMStrings.replaceAll(WKlistMask,"@x2",""+CMath.convertToRoman(l));;
-                WKfinalMask=CMStrings.replaceAll(finalMask,"@x1",""+l);;
-                WKfinalMask=CMStrings.replaceAll(WKfinalMask,"@x2",""+CMath.convertToRoman(l));;
-                if((l>1)&&(listMask.toUpperCase().indexOf("-EXPERT")<0))
-                {
-                    s=CMStrings.replaceAll(ID,"@X1",""+(l-1));
-                    s=CMStrings.replaceAll(s,"@X2",""+CMath.convertToRoman(l-1));
-                    WKlistMask="-EXPERTISE \"+"+s+"\" "+WKlistMask;
-                }
-                WKlistMask=expertMath(WKlistMask,l);
-                WKfinalMask=expertMath(WKfinalMask,l);
-                def=addDefinition(WKID,WKname,WKlistMask,WKfinalMask,costs[0],costs[1],costs[2],costs[3],costs[4]);
-                if(def!=null){
-                    def.compiledFinalMask();
-                    def.compiledListMask();
-                }
-            }
-            didOne=false;
-            ID=CMStrings.replaceAll(ID,"@X1","");
-            ID=CMStrings.replaceAll(ID,"@X2","");
-            for(int u=0;u<completeUsageMap.length;u++)
-                if(flags.contains(ExpertiseLibrary.XFLAG_CODES[u]))
-                {
-                    didOne=true;
-                    for(int k=0;k<skillsToRegister.size();k++)
-                        completeUsageMap[u].put((String)skillsToRegister.elementAt(k),ID);
-                }
-            if(!didOne)
-                Log.errOut("ColumbiaUniv","No flags ("+((String)parts.elementAt(2)).toUpperCase()+") were set: "+ID+"="+row);
+            WKID=this.confirmExpertiseLine(row,ID,true);
+            if(WKID==null) continue;
+            if(WKID.startsWith("Error: "))
+                Log.errOut("ColumbiaUniv",WKID);
+            else
+                ID=WKID;
         }
     }
     

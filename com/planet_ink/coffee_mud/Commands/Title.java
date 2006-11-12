@@ -42,12 +42,20 @@ public class Title extends StdCommand
 	        mob.tell("You don't have any titles to select from.");
 	        return false;
 	    }
+        String currTitle=(String)mob.playerStats().getTitles().elementAt(0);
+        if(currTitle.startsWith("{")&&currTitle.endsWith("}"))
+        {
+            mob.tell("You can not change your current title.");
+            return false;
+        }
 	    PlayerStats ps=mob.playerStats();
 	    StringBuffer menu=new StringBuffer("^xTitles:^.^?\n\r");
+        CMLib.login().evaluateAutoTitles(mob);
 	    if(!ps.getTitles().contains("*")) ps.getTitles().addElement("*");
 	    for(int i=0;i<ps.getTitles().size();i++)
 	    {
 	        String title=(String)ps.getTitles().elementAt(i);
+            if(title.startsWith("{")&&title.endsWith("}")) title=title.substring(1,title.length()-1);
 	        if(title.equalsIgnoreCase("*"))
 	    	    menu.append(CMStrings.padRight(""+(i+1),2)+": Do not use a title.\n\r");
 	        else

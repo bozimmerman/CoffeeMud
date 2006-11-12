@@ -1,0 +1,13 @@
+# This file contains definitions for automatically assigned player titles.
+# The format of this file is one title definition per line.  A title definition is of the following form:
+# [TITLE]=[ZAPPER MASK]
+# [TITLE] is a free-form string for the title.  It must be unique in this list.  Titles can include
+#         letters, digits, spaces, and special characters except the = sign.  The * character will always
+#         be substituted with the players name.  If the title is wrapped in braces {}, then it will denote
+#         a mandatory title.  The player may not change a mandatory title.
+# [ZAPPER MASK] is a standard mask denoting players who will be given this title.  Players who gain the 
+#         title can have it taken away should they no longer meet the criterium of the mask.  See archon help
+#         on Prop_HaveZapper (AHELP Prop_HaveZapper) from the command line for syntax on zapper-masks.
+#
+# Player titles are updated every mud-hour (10 mins) automatically by the system for all players on-line and in memory.
+#

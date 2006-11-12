@@ -457,6 +457,97 @@ public class Create extends BaseGenerics
 		F.saveText("\n"+parms,true);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
 	}
+    
+    public void expertises(MOB mob, Vector commands)
+    {
+        if((commands.size()<3)||(CMParms.combine(commands,1).indexOf("=")<0))
+        {
+            mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r");
+            StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true).text();
+            StringBuffer inst=new StringBuffer("");
+            Vector V=new Vector();
+            if(buf!=null) V=Resources.getFileLineVector(buf);
+            for(int v=0;v<V.size();v++)
+                if(((String)V.elementAt(v)).startsWith("#"))
+                    inst.append(((String)V.elementAt(v)).substring(1)+"\n\r");
+                else
+                if(((String)V.elementAt(v)).length()>0) 
+                    break;
+            if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        String parms=CMParms.combineWithQuotes(commands,2);
+        String skillID=parms.substring(0,parms.indexOf("="));
+        if(skillID.indexOf(" ")>=0)
+        {
+            mob.tell("Spaces are not allowed in expertise codes.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        String WKID=CMStrings.replaceAll(skillID.toUpperCase(),"@X1","");
+        WKID=CMStrings.replaceAll(WKID,"@X2","").trim();
+        if(CMLib.expertises().getStages(WKID)>0)
+        {
+            mob.tell("'"+WKID+"' already exists, you'll need to destroy it first.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        String error=CMLib.expertises().confirmExpertiseLine(parms,null,false);
+        if(error!=null)
+        {
+            mob.tell(error);
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
+        F.saveText("\n"+parms,true);
+        Resources.removeResource("skills/expertises.txt");
+        CMLib.expertises().recompileExpertises();
+        mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just increased!");
+    }
+    
+    public void titles(MOB mob, Vector commands)
+    {
+        if((commands.size()<3)||(CMParms.combine(commands,1).indexOf("=")<0))
+        {
+            mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r");
+            StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true).text();
+            StringBuffer inst=new StringBuffer("");
+            Vector V=new Vector();
+            if(buf!=null) V=Resources.getFileLineVector(buf);
+            for(int v=0;v<V.size();v++)
+                if(((String)V.elementAt(v)).startsWith("#"))
+                    inst.append(((String)V.elementAt(v)).substring(1)+"\n\r");
+                else
+                if(((String)V.elementAt(v)).length()>0) 
+                    break;
+            if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        String parms=CMParms.combineWithQuotes(commands,2);
+        String skillID=parms.substring(0,parms.indexOf("="));
+        if(CMLib.login().isExistingAutoTitle(skillID))
+        {
+            mob.tell("'"+skillID+"' already exists, you'll need to destroy it first.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        String error=CMLib.login().evaluateAutoTitle(parms,false);
+        if(error!=null)
+        {
+            mob.tell(error);
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+        F.saveText("\n"+parms,true);
+        Resources.removeResource("titles.txt");
+        CMLib.login().reloadAutoTitles();
+        mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of the players just increased!");
+    }
+    
 	public void classes(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -550,6 +641,20 @@ public class Create extends BaseGenerics
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			components(mob,commands);
 		}
+        else
+        if(commandType.equals("EXPERTISE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            expertises(mob,commands);
+        }
+        else
+        if(commandType.equals("TITLE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            titles(mob,commands);
+        }
 		else
 		if(commandType.equals("AREA"))
 		{

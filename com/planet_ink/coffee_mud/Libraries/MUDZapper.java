@@ -1134,7 +1134,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-                case 71: // -senses
+                case 72: // -senses
                     {
                         buf.append((skipFirstWord?"The":"Requires")+" following sense(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
@@ -1154,7 +1154,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-                case 72: // +senses
+                case 71: // +senses
                     {
                         buf.append("Disallows the following sense(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
@@ -1334,7 +1334,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                    }
 	                }
 	                break;
-                case 69: // -disposition
+                case 70: // -disposition
                     {
                         buf.append((skipFirstWord?"The":"Requires")+" following disposition(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
@@ -1354,7 +1354,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-                case 70: // +disposition
+                case 69: // -disposition
                     {
                         buf.append("Disallows the following disposition(s): ");
                         for(int v2=v+1;v2<V.size();v2++)

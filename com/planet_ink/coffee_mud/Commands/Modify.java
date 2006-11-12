@@ -956,6 +956,20 @@ public class Modify extends BaseGenerics
 			mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
 			return false;
 		}
+        else
+        if(commandType.equals("EXPERTISE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
+            mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
+            return false;
+        }
+        else
+        if(commandType.equals("TITLE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
+            mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
+            return false;
+        }
 		else
 		if(commandType.equals("SOCIAL"))
 		{

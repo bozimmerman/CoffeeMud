@@ -267,7 +267,17 @@ public class UtiliThread extends Thread
 			}
 		}
 
-		status("checking player sessions.");
+		status("checking player titles.");
+        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        {
+            MOB M=(MOB)e.nextElement();
+            if(M.playerStats()!=null)
+            {
+                if((CMLib.login().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
+                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+            }
+        }
+        status("checking player sessions.");
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session S=CMLib.sessions().elementAt(s);

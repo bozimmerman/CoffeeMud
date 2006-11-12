@@ -311,6 +311,15 @@ public class DefaultPlayerStats implements PlayerStats
         return str.toString();
     }
     
+    public String getActiveTitle()
+    {
+        if((titles==null)||(titles.size()==0)) return null;
+        String s=(String)titles.firstElement();
+        if((s.length()<2)||(s.charAt(0)!='{')||(s.charAt(s.length()-1)!='}'))
+            return s;
+        return s.substring(1,s.length()-1);
+    }
+    
 	public Vector getTitles()
 	{
 	    return titles;
@@ -597,6 +606,7 @@ public class DefaultPlayerStats implements PlayerStats
     {
         return roomSet().contains(CMLib.map().getExtendedRoomID(R));
     }
+
     
     public int percentVisited(MOB mob, Area A)
     {

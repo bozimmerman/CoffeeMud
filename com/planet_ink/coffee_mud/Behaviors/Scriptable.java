@@ -4350,7 +4350,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((arg2.length()>0)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null))
 				{
 				    MOB M=(MOB)E;
-				    results.append((String)M.playerStats().getTitles().firstElement());
+				    results.append(M.playerStats().getActiveTitle());
 				}
 				break;
 			}

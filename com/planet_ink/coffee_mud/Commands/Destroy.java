@@ -505,6 +505,41 @@ public class Destroy extends BaseItemParser
 		return true;
 	}
 
+    protected boolean findRemoveFromFile(CMFile F, String match)
+    {
+        boolean removed=false;
+        StringBuffer text=F.textUnformatted();
+        int x=text.toString().toUpperCase().indexOf(match.toUpperCase());
+        while(x>=0)
+        {
+            if(((x==0)||(!Character.isLetterOrDigit(text.charAt(x-1))))
+            &&(text.substring(x+match.length()).trim().startsWith("=")))
+            {
+                int zb1=text.lastIndexOf("\n",x);
+                int zb2=text.lastIndexOf("\r",x);
+                int zb=(zb2>zb1)?zb2:zb1;
+                if(zb<0) zb=0; else zb++;
+                int ze1=text.indexOf("\n",x);
+                int ze2=text.indexOf("\r",x);
+                int ze=ze2+1;
+                if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1; 
+                else
+                if((ze2<0)&&(ze1>0)) ze=ze1+1;
+                if(ze<=0) ze=text.length();
+                if(!text.substring(zb).trim().startsWith("#"))
+                {
+                    text.delete(zb,ze);
+                    x=-1;
+                    removed=true;
+                }
+            }
+            x=text.toString().toUpperCase().indexOf(match.toUpperCase(),x+1);
+        }
+        if(removed)
+            F.saveRaw(text);
+        return removed;
+    }
+    
 	public boolean components(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -521,46 +556,86 @@ public class Destroy extends BaseItemParser
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		boolean removed=false;
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
 		if(F!=null)
 		{
-			StringBuffer text=F.textUnformatted();
-			int x=text.toString().toUpperCase().indexOf(classID.toUpperCase());
-			while(x>=0)
-			{
-				if(((x==0)||(!Character.isLetterOrDigit(text.charAt(x-1))))
-				&&(text.substring(x+classID.length()).trim().startsWith("=")))
-				{
-					int zb1=text.lastIndexOf("\n",x);
-					int zb2=text.lastIndexOf("\r",x);
-					int zb=(zb2>zb1)?zb2:zb1;
-					if(zb<0) zb=0; else zb++;
-					int ze1=text.indexOf("\n",x);
-					int ze2=text.indexOf("\r",x);
-					int ze=ze2+1;
-					if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1; 
-					else
-					if((ze2<0)&&(ze1>0)) ze=ze1+1;
-					if(ze<=0) ze=text.length();
-					if(!text.substring(zb).trim().startsWith("#"))
-					{
-						text.delete(zb,ze);
-						x=-1;
-						removed=true;
-					}
-				}
-				x=text.toString().toUpperCase().indexOf(classID.toUpperCase(),x+1);
-			}
+            boolean removed=this.findRemoveFromFile(F,classID);
 			if(removed)
 			{
 				CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
-				F.saveRaw(text);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
 			}
 		}
 		return true;
 	}
+    
+    public boolean expertises(MOB mob, Vector commands)
+    {
+        if(commands.size()<3)
+        {
+            mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY EXPERTISE [CODE ID or HELP line]\n\r");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return false;
+        }
+
+        String classID=CMParms.combine(commands,2);
+        CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
+        if(F!=null)
+        {
+            boolean removed=this.findRemoveFromFile(F,classID);
+            if(removed)
+            {
+                Resources.removeResource("skills/expertises.txt");
+                mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just decreased!");
+                CMLib.expertises().recompileExpertises();
+            }
+        }
+        return true;
+    }
+    
+    public boolean titles(MOB mob, Vector commands)
+    {
+        mob.tell("Destroying a title will not remove the title from all players who may have it.");
+        mob.tell("If this is important, you should destroy and then re-add the exact same title with an unreachable " +
+                 "mask for a few days to allow the system to remove the title from the players as they log in.\n\r");
+        if(commands.size()<3)
+        {
+            mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return false;
+        }
+
+        String classID=CMParms.combine(commands,2);
+        if(!CMLib.login().isExistingAutoTitle(classID))
+        {
+            mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return false;
+        }
+        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        {
+            MOB M=(MOB)e.nextElement();
+            if((M.playerStats()!=null)&&(M.playerStats().getTitles().contains(classID)))
+            {
+                M.playerStats().getTitles().remove(classID);
+                if(!CMLib.flags().isInTheGame(M,true))
+                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+            }
+        }
+        CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+        if(F!=null)
+        {
+            boolean removed=findRemoveFromFile(F,classID);
+            if(removed)
+            {
+                mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
+                Resources.removeResource("titles.txt");
+                CMLib.login().reloadAutoTitles();
+            }
+        }
+        return true;
+    }
+    
 	public boolean classes(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -843,6 +918,20 @@ public class Destroy extends BaseItemParser
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			components(mob,commands);
 		}
+        else
+        if(commandType.equals("EXPERTISE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            expertises(mob,commands);
+        }
+        else
+        if(commandType.equals("TITLE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            titles(mob,commands);
+        }
 		else
 		if(commandType.equals("USER"))
 		{

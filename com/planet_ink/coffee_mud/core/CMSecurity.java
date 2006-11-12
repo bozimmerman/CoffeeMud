@@ -51,7 +51,7 @@ public class CMSecurity
 	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV)
 	// CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY
 	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS
-	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS, COMPONENTS
+	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS, COMPONENTS, EXPERTISES, TITLES
     // FS:relative path from /coffeemud/ -- read/write access to regular file sys
     // VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
 	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,

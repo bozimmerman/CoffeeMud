@@ -37,6 +37,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
     public String ID(){return "CharCreation";}
     public Hashtable pendingLogins=new Hashtable();
+    private DVector autoTitles=null;
 
     public void reRollStats(MOB mob, CharStats C)
     {
@@ -1014,4 +1015,98 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return 1;
     }
     
+    public String evaluateAutoTitle(String row, boolean addIfPossible)
+    {
+        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
+        int x=row.indexOf("=");
+        while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf("=",x+1);
+        if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
+        String title=row.substring(0,x).trim();
+        String mask=row.substring(x+1).trim();
+        
+        if(title.length()==0)return "Error: Blank title: "+title+"="+mask+"!";
+        if(mask.length()==0)return "Error: Blank mask: "+title+"="+mask+"!";
+        if(autoTitles.contains(title)) return "Error: Duplicate title: "+title+"="+mask+"!";
+        autoTitles.addElement(title,mask,CMLib.masking().maskCompile(mask));
+        return null;
+    }
+    public boolean isExistingAutoTitle(String title)
+    {
+        if(autoTitles==null) reloadAutoTitles();
+        for(int v=0;v<autoTitles.size();v++)
+            if(((String)autoTitles.elementAt(v,1)).toUpperCase().equalsIgnoreCase(title.trim()))
+                return true;
+        return false;
+    }
+    
+    public Enumeration autoTitles()
+    {
+        if(autoTitles==null) reloadAutoTitles();
+        return autoTitles.getDimensionVector(1).elements();
+    }
+    
+    public String getAutoTitleMask(String title)
+    {
+        if(autoTitles==null) reloadAutoTitles();
+        int x=autoTitles.indexOf(title);
+        if(x<0) return "";
+        return (String)autoTitles.elementAt(x,2);
+    }
+    
+    
+    public boolean evaluateAutoTitles(MOB mob)
+    {
+        if(mob==null) return false;
+        PlayerStats P=mob.playerStats();
+        if(P==null) return false;
+        if(autoTitles==null) reloadAutoTitles();
+        String title=null;
+        Vector mask=null;
+        int pdex=0;
+        Vector PT=P.getTitles();
+        boolean somethingDone=false;
+        for(int t=0;t<autoTitles.size();t++)
+        {
+            mask=(Vector)autoTitles.elementAt(t,3);
+            title=(String)autoTitles.elementAt(t,1);
+            pdex=PT.contains(title)?t:-1;
+            if(CMLib.masking().maskCheck(mask,mob))
+            {
+                if(pdex<0)
+                {
+                    if(PT.size()>0)
+                        PT.insertElementAt(title,0);
+                    else
+                        PT.addElement(title);
+                    somethingDone=true;
+                }
+            }
+            else
+            if(pdex>=0){ somethingDone=true; PT.removeElementAt(pdex);}
+        }
+        return somethingDone;
+    }
+    public void reloadAutoTitles()
+    {
+        autoTitles=new DVector(3);
+        Vector V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
+        String WKID=null;
+        for(int v=0;v<V.size();v++)
+        {
+            String row=(String)V.elementAt(v);
+            WKID=evaluateAutoTitle(row,true);
+            if(WKID==null) continue;
+            if(WKID.startsWith("Error: "))
+                Log.errOut("CharCreation",WKID);
+        }
+        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        {
+            MOB M=(MOB)e.nextElement();
+            if(M.playerStats()!=null)
+            {
+                if((evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
+                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+            }
+        }
+    }
 }
