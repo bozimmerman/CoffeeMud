@@ -333,7 +333,8 @@ public class CombatAbilities extends StdBehavior
 				if((winAmt>minAmt)
 				&&(winAmt>(vicAmt+(vicAmt/2)))
 				&&(!((MOB)aggro.elementAt(windex,1)).amDead())
-				&&(((MOB)aggro.elementAt(windex,1)).isInCombat()))
+				&&(((MOB)aggro.elementAt(windex,1)).isInCombat())
+                &&(!mob.getGroupMembers(new HashSet()).contains((MOB)aggro.elementAt(windex,1))))
 				{
 					mob.setVictim((MOB)aggro.elementAt(windex,1));
 					victim=mob.getVictim();

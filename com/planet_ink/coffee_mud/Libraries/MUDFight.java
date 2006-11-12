@@ -1143,7 +1143,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     fighter.location().send(fighter,msg);
             }
             else
-            if((weapon!=null)&&inminrange&&inmaxrange)
+            if(inminrange&&inmaxrange&&((weapon!=null)||(fighter.rangeToTarget()==0)))
                 CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);
         }
     }
