@@ -133,8 +133,6 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        if(mob.playerStats().getSecurityGroups().size()==0)
-            return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
@@ -196,15 +194,13 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        if(mob.playerStats().getSecurityGroups().size()==0)
-            return false;
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
+        if(V.size()==0) return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
         String areaPath=("AREA "+path).trim();
         String pathSlash=path+"/";
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-        if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
         String setSlash=null;
@@ -262,13 +258,11 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        if(mob.playerStats().getSecurityGroups().size()==0)
-            return false;
-        path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
-        if(path.equals("/")||path.equals(".")) path="";
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
+        path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
+        if(path.equals("/")||path.equals(".")) path="";
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
         String setSlash=null;
@@ -324,6 +318,7 @@ public class CMSecurity
 	
 	public static Vector getSecurityCodes(MOB mob, Room room)
 	{
+        if((mob==null)||(mob.playerStats()==null)) return new Vector();
 		Vector codes=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),codes);
 		HashSet tried=new HashSet();

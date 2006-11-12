@@ -1,4 +1,20 @@
-#Expertise Code=Expertise Name @x1,number of levels,expertise flags,skill mask,addtl list mask,gain mask,practices,trains,qpCost,expCost,timeCost
+# Expertise definitions.  Expertises are flags that players can train for that enhance the numeric aspects
+# of skills.  The definitions are of the following form:
+#[EXPERTISE CODE]=[EXPERTISE NAME],[EXPERTISE LEVELS],[FLAGS],[SKILL MASK],[ADDITIONAL LIST MASK],[TRAIN MASK],[#PRACS],[#TRAINS],[#QPs],[#EXP],[#TIME]
+#[EXPERTISE CODE] = all caps code name for the flag.  To differentiate each expertise level by number, include @x1, or @x2 for roman numeral
+#[EXPERTISE NAME] = displayable name for the expertise.    To differentiate each expertise level by number, include @x1, or @x2 for roman numeral
+#[EXPERTISE LEVELS] = the number of levels of the expertise.  Each expertise level requires the former to qualify for the next.
+#[FLAGS] = one or more "|" separated flags.  Flags include: 
+#          LEVEL - enhances the power level of the skill
+#          MAXRANGE - enhances the range of the skill
+#          LOWCOST - enhances the mana/move cost of the skill
+#          XPCOST - enhances the experience cost of the skill (either lowering or raising, depending on nature of the skill)
+#          X1, X2, X3, X4 or X5 - functionality depends on how skill was coded.
+#####
+# Help entries can also be included for an expertise set by including an entry beginning with HELP_
+# A help entry that is HELP_ only will apply to the previously defined expertise.
+#
+
 EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to ameliorate the experience cost of casting powerful spells, especially concerning items.
 

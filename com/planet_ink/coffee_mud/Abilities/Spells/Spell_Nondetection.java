@@ -39,7 +39,6 @@ public class Spell_Nondetection extends Spell
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-
 	int amountAbsorbed=0;
 
 	public void unInvoke()
@@ -55,7 +54,6 @@ public class Spell_Nondetection extends Spell
 
 	}
 
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -63,7 +61,6 @@ public class Spell_Nondetection extends Spell
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
         &&((msg.source()!=mob)||(!mob.isMine(msg.tool())))
 		&&((((Ability)msg.tool()).classificationCode()&ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
@@ -72,7 +69,6 @@ public class Spell_Nondetection extends Spell
 			return false;
 		return true;
 	}
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
