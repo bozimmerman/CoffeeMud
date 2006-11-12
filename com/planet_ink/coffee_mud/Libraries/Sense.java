@@ -1134,4 +1134,5 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return -1;
     }
     
+    
 }

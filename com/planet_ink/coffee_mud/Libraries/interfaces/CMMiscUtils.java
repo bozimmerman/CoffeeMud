@@ -54,4 +54,5 @@ public interface CMMiscUtils extends CMObject
     
     public MOB getMobPossessingAnother(MOB mob);
     public void roomAffectFully(CMMsg msg, Room room, int dirCode);
+    public Vector getDeadBodies(Environmental container);
 }

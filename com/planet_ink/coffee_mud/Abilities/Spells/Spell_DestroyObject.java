@@ -43,13 +43,17 @@ public class Spell_DestroyObject extends Spell
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
-		if((target instanceof DeadBody)
-		&&(((DeadBody)target).playerCorpse())
-		&&(!((DeadBody)target).mobName().equals(mob.Name())))
-		{
-			mob.tell("You are not allowed to destroy a player corpse.");
-			return false;
-		}
+        Vector DBs=CMLib.utensils().getDeadBodies(target);
+        for(int v=0;v<DBs.size();v++)
+        {
+            DeadBody DB=(DeadBody)DBs.elementAt(v);
+    		if(DB.playerCorpse()
+    		&&(!DB.mobName().equals(mob.Name())))
+    		{
+    			mob.tell("You are not allowed to destroy a player corpse.");
+    			return false;
+    		}
+        }
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;

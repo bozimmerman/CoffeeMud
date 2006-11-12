@@ -104,7 +104,18 @@ public class Spell_MassDisintegrate extends Spell
 			{
 				Item I=mob.location().fetchItem(i);
 				if((I!=null)&&(I.container()==null))
-					V.addElement(I);
+                {
+                    Vector DBs=CMLib.utensils().getDeadBodies(I);
+                    boolean ok=true;
+                    for(int v=0;v<DBs.size();v++)
+                    {
+                        DeadBody DB=(DeadBody)DBs.elementAt(v);
+                        if(DB.playerCorpse()
+                        &&(!((DeadBody)I).mobName().equals(mob.Name())))
+                            ok=false;
+                    }
+                    if(ok) V.addElement(I);
+                }
 			}
 			for(int i=0;i<V.size();i++)
 			{

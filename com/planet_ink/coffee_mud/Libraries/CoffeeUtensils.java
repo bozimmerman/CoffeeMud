@@ -460,5 +460,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                 return wornNum;
         return -1;
     }
+    
+    public Vector getDeadBodies(Environmental E)
+    {
+        if(E instanceof DeadBody)
+            return CMParms.makeVector(E);
+        if(E instanceof Container)
+        {
+            Vector Bs=new Vector();
+            Vector V=((Container)E).getContents();
+            for(int v=0;v<V.size();v++)
+                Bs.addAll(getDeadBodies((Environmental)V.elementAt(v)));
+            return Bs;
+        }
+        return new Vector();
+    }
 }
 
