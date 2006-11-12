@@ -41,38 +41,51 @@ public class Prayer_SanctifyRoom extends Prayer
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+    
+    public static final HashSet MSG_CODESH=CMParms.makeHashSet(new Integer(CMMsg.TYP_GET),
+                                                               new Integer(CMMsg.TYP_PULL),
+                                                               new Integer(CMMsg.TYP_PUSH),
+                                                               new Integer(CMMsg.TYP_CAST_SPELL));
 
+    protected boolean inRoom(MOB mob, Room R)
+    {
+        boolean inRoom=false;
+        for(int i=0;i<R.numInhabitants();i++)
+        {
+            MOB M=R.fetchInhabitant(i);
+            if(CMLib.law().doesHavePriviledgesHere(M,R))
+            { inRoom=true; break;}
+            if((text().length()>0)&&(M.Name().equals(text())))
+            { inRoom=true; break;}
+            if((text().length()>0)&&(M.getClanID().equals(text())))
+            { inRoom=true; break;}
+
+        }
+        if(!inRoom)
+        {
+            mob.tell("You feel your muscles unwilling to cooperate.");
+            return false;
+        }
+        return true;
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null)
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-        if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PULL)||(msg.targetMinor()==CMMsg.TYP_PUSH))
+        int targMinor=msg.targetMinor();
+        if(((targMinor==CMMsg.TYP_GET)
+            ||(targMinor==CMMsg.TYP_PULL)
+            ||(targMinor==CMMsg.TYP_PUSH)
+            ||(targMinor==CMMsg.TYP_CAST_SPELL))
         &&(msg.target() instanceof Item)
+        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
         &&(!msg.source().isMine(msg.target()))
         &&((!(msg.tool() instanceof Item))
-            ||(msg.source().isMine(msg.tool())))
-        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
-		{
-			boolean inRoom=false;
-			for(int i=0;i<R.numInhabitants();i++)
-			{
-				MOB M=R.fetchInhabitant(i);
-				if(CMLib.law().doesHavePriviledgesHere(M,R))
-				{ inRoom=true; break;}
-				if((text().length()>0)&&(M.Name().equals(text())))
-				{ inRoom=true; break;}
-				if((text().length()>0)&&(M.getClanID().equals(text())))
-				{ inRoom=true; break;}
-
-			}
-			if(!inRoom)
-			{
-				msg.source().tell("You feel your muscles unwilling to cooperate.");
-				return false;
-			}
-		}
+            ||(!msg.source().isMine(msg.tool()))))
+            return inRoom(msg.source(),R);
 		return super.okMessage(myHost,msg);
 	}
 
