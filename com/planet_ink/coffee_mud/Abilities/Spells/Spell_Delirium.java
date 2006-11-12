@@ -36,7 +36,7 @@ public class Spell_Delirium extends Spell
 	public String ID() { return "Spell_Delirium"; }
 	public String name(){return "Delirium";}
 	public String displayText(){return "(Delirium)";}
-	public int maxRange(){return 1;}
+	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	int amountRemaining=0;

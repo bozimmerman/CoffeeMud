@@ -37,7 +37,7 @@ public class Chant_SummonLightning extends Chant
 	public String ID() { return "Chant_SummonLightning"; }
 	public String name(){ return renderedMundane?"lightning":"Summon Lightning";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}

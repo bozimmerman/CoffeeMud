@@ -36,7 +36,7 @@ public class Spell_WaterCannon extends Spell
 	public String ID() { return "Spell_WaterCannon"; }
 	public String name(){return "Water Cannon";}
 	public int minRange(){return 2;}
-	public int maxRange(){return 3;}
+	public int maxRange(){return adjustedMaxInvokerRange(3);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 

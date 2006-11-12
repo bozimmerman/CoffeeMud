@@ -41,7 +41,7 @@ public class Prayer_HolyWind extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int maxRange(){return 4;}
+	public int maxRange(){return adjustedMaxInvokerRange(4);}
 	public boolean doneTicking=false;
 	public long flags(){return Ability.FLAG_MOVING;}
 

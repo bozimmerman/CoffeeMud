@@ -37,7 +37,7 @@ public class Prayer_Tremor extends Prayer
 	public String displayText(){return "(Tremor)";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return 3;}
+	public int maxRange(){return adjustedMaxInvokerRange(3);}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

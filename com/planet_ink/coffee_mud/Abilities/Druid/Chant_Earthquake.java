@@ -38,7 +38,7 @@ public class Chant_Earthquake extends Chant
 	public String displayText(){return "(Quaking)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return 3;}
+	public int maxRange(){return adjustedMaxInvokerRange(3);}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected boolean oncePerRd=false;

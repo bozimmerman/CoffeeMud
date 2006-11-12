@@ -38,7 +38,7 @@ public class Spell_Geas extends Spell
 	public String name(){return "Geas";}
 	public String displayText(){return "(Geas to "+text()+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public SlaveryLibrary.geasSteps STEPS=null;
 

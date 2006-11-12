@@ -40,7 +40,7 @@ public class Chant_ControlFire extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
     public long flags(){return Ability.FLAG_FIREBASED;}
 

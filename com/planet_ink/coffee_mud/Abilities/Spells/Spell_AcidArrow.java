@@ -39,7 +39,7 @@ public class Spell_AcidArrow extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
     public long flags(){return Ability.FLAG_EARTHBASED;}
 

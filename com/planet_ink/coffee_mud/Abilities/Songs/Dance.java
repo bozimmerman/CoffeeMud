@@ -42,6 +42,7 @@ public class Dance extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
 	public int usageType(){return USAGE_MOVEMENT;}
+    public int maxRange(){return adjustedMaxInvokerRange(2);}
 	protected int invokerManaCost=-1;
     protected int steadyDown=-1;
     protected Vector commonRoomSet=null;

@@ -43,7 +43,7 @@ public class Fighter_FlyingKick extends FighterSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int minRange(){return 1;}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Environmental target)

@@ -36,7 +36,7 @@ public class Spell_Frost extends Spell
 	public String ID() { return "Spell_Frost"; }
 	public String name(){return "Frost";}
 	public String displayText(){return "(Frost)";}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public long flags(){return Ability.FLAG_WATERBASED;}

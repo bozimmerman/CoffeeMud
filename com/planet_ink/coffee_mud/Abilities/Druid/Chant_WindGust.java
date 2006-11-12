@@ -40,7 +40,7 @@ public class Chant_WindGust extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int maxRange(){return 4;}
+	public int maxRange(){return adjustedMaxInvokerRange(4);}
 	public boolean doneTicking=false;
 	public long flags(){return Ability.FLAG_MOVING;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}

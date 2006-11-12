@@ -40,7 +40,7 @@ public class Skill_FireBreathing extends BardSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	private static final String[] triggerStrings = {"FIREBREATHING","FIREBREATH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -36,7 +36,7 @@ public class Spell_GustOfWind extends Spell
 	public String ID() { return "Spell_GustOfWind"; }
 	public String name(){return "Gust of Wind";}
 	public String displayText(){return "(Blown Down)";}
-	public int maxRange(){return 4;}
+	public int maxRange(){return adjustedMaxInvokerRange(4);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean doneTicking=false;

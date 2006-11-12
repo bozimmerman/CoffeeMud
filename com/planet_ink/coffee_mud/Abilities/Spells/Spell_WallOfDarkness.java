@@ -36,7 +36,7 @@ public class Spell_WallOfDarkness extends Spell
 	public String ID() { return "Spell_WallOfDarkness"; }
 	public String name(){return "Wall of Darkness";}
 	public String displayText(){return "(Wall of Darkness)";}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 1;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

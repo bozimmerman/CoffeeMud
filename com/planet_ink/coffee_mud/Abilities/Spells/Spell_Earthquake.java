@@ -35,7 +35,7 @@ public class Spell_Earthquake extends Spell
 	public String ID() { return "Spell_Earthquake"; }
 	public String name(){return "Earthquake";}
 	public String displayText(){return "(Earthquake)";}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 1;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}

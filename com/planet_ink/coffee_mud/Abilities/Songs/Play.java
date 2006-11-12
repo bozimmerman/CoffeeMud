@@ -43,6 +43,7 @@ public class Play extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
+    public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}

@@ -37,7 +37,7 @@ public class Spell_StinkingCloud extends Spell
 	public String ID() { return "Spell_StinkingCloud"; }
 	public String name(){return "Stinking Cloud";}
 	public String displayText(){return "(In the Stinking Cloud)";}
-	public int maxRange(){return 3;}
+	public int maxRange(){return adjustedMaxInvokerRange(3);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

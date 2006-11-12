@@ -36,7 +36,7 @@ public class Spell_ElementalStorm extends Spell
 	public String ID() { return "Spell_ElementalStorm"; }
 	public String name(){return "Elemental Storm";}
 	public String displayText(){return "";}
-	public int maxRange(){return 1;}
+	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 

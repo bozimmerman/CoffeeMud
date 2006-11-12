@@ -40,7 +40,7 @@ public class Skill_Conduct extends BardSkill
 	private static final String[] triggerStrings = {"CONDUCT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

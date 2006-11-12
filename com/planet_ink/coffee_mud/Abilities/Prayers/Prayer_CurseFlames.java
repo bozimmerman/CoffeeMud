@@ -41,7 +41,7 @@ public class Prayer_CurseFlames extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

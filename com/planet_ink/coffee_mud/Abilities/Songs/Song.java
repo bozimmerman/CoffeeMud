@@ -41,8 +41,9 @@ public class Song extends StdAbility
 	private static final String[] triggerStrings = {"SING","SI"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_SINGING;}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+    public int maxRange(){return adjustedMaxInvokerRange(2);}
 
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 	protected boolean skipStandardSongInvoke(){return false;}
 	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongTick(){return false;}

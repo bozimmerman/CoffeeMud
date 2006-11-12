@@ -36,7 +36,7 @@ public class Spell_WallOfForce extends Spell
 	public String ID() { return "Spell_WallOfForce"; }
 	public String name(){return "Wall of Force";}
 	public String displayText(){return "(Wall of Force)";}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 1;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

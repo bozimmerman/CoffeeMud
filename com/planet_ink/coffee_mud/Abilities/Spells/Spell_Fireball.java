@@ -35,7 +35,7 @@ public class Spell_Fireball extends Spell
 {
 	public String ID() { return "Spell_Fireball"; }
 	public String name(){return "Fireball";}
-	public int maxRange(){return 5;}
+	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 1;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

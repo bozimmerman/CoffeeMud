@@ -39,7 +39,7 @@ public class Chant_Treeform extends Chant
 	public String displayText(){return "(Treeform)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int maxRange(){return 3;}
+	public int maxRange(){return adjustedMaxInvokerRange(3);}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;

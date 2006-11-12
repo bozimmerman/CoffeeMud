@@ -36,7 +36,7 @@ public class Spell_Nightmare extends Spell
 	public String ID() { return "Spell_Nightmare"; }
 	public String name(){return "Nightmare";}
 	public String displayText(){return "(Having a nightmare)";}
-	public int maxRange(){return 1;}
+	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}

@@ -36,7 +36,7 @@ public class Spell_MagicMissile extends Spell
 	public String ID() { return "Spell_MagicMissile"; }
 	public String name(){return "Magic Missile";}
 	public String displayText(){return "(Magic Missile spell)";}
-	public int maxRange(){return 1;}
+	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 

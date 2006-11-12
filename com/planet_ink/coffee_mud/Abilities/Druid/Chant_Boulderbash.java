@@ -38,7 +38,7 @@ public class Chant_Boulderbash extends Chant
 	public String name(){ return "Boulderbash";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 

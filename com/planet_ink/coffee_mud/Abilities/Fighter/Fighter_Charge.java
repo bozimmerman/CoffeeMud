@@ -45,7 +45,7 @@ public class Fighter_Charge extends FighterSkill
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
     protected int code=0;
     public int abilityCode(){return code;}
     public void setAbilityCode(int c){code=c;};

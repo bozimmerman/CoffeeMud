@@ -38,7 +38,7 @@ public class Chant_PlantConstriction extends Chant
 	public String name(){return "Plant Constriction";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public String displayText(){return "(Plant Constriction)";}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 0;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public boolean bubbleAffect(){return true;}

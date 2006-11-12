@@ -35,7 +35,7 @@ public class Spell_MassDisintegrate extends Spell
 {
 	public String ID() { return "Spell_MassDisintegrate"; }
 	public String name(){return "Mass Disintegrate";}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public int overrideMana(){return 200;}

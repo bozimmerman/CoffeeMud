@@ -36,7 +36,7 @@ public class Spell_Cloudkill extends Spell
 	public String ID() { return "Spell_Cloudkill"; }
 	public String name(){return "Cloudkill";}
 	public String displayText(){return "(Cloudkill)";}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 1;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}

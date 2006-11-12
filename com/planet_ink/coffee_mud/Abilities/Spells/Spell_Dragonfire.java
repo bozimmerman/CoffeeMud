@@ -36,7 +36,7 @@ public class Spell_Dragonfire extends Spell
 	public String ID() { return "Spell_Dragonfire"; }
 	public String name(){return "Dragonfire";}
 	public String displayText(){return "(Dragonfire)";}
-	public int maxRange(){return 3;}
+	public int maxRange(){return adjustedMaxInvokerRange(3);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public long flags(){return Ability.FLAG_FIREBASED;}

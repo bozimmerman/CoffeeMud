@@ -118,9 +118,9 @@ public class Skill_Befriend extends BardSkill
 
         int levelDiff=mob.envStats().level()-target.envStats().level();
         if(levelDiff>0) 
-            levelDiff=-(levelDiff*levelDiff);
+            levelDiff=(-(levelDiff*levelDiff))/(1+super.getXLEVELLevel(mob));
         else
-            levelDiff=levelDiff*(-levelDiff);
+            levelDiff=(levelDiff*(-levelDiff))/(1+super.getXLEVELLevel(mob));;
 
         boolean success=proficiencyCheck(mob,levelDiff,auto);
         if(success)

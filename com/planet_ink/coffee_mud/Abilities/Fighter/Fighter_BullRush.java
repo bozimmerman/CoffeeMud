@@ -37,7 +37,7 @@ public class Fighter_BullRush extends FighterSkill
 	public String ID() { return "Fighter_BullRush"; }
 	public String name(){ return "Bullrush";}
 	public int minRange(){return 0;}
-	public int maxRange(){return 1;}
+	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

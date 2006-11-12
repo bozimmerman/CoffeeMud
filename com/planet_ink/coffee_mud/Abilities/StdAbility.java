@@ -43,7 +43,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public void setImage(String newImage){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
-	public int maxRange(){return 0;}
+	public int maxRange(){return adjustedMaxInvokerRange(0);}
 	public int minRange(){return 0;}
     public double castingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0);}
     public double combatCastingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0);}
@@ -101,12 +101,12 @@ public class StdAbility extends ForeignScriptable implements Ability
     	return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
     }
     
-    public int asjudtedMaxInvokerRange()
+    public int adjustedMaxInvokerRange(int max)
     {
-        if(invoker==null) return maxRange();
+        if(invoker==null) return max;
         int level=getXMAXRANGELevel(invoker);
-        if(level<=0) return  maxRange();
-        return maxRange()+(int)Math.round(Math.ceil(CMath.mul(maxRange(),CMath.mul(level,0.2))));
+        if(level<=0) return  max;
+        return max+(int)Math.round(Math.ceil(CMath.mul(max,CMath.mul(level,0.2))));
     }
     
     

@@ -44,7 +44,7 @@ public class Archon_Hush extends ArchonSkill
 	private static final String[] triggerStrings = {"HUSH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public int maxRange(){return 1;}
+	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

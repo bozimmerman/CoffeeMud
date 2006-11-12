@@ -42,7 +42,7 @@ public class GenAbility extends StdAbility
     public String displayText(){return "Affected list display for "+ID();}
     public static final String[] empty={};
     public String[] triggerStrings(){return empty;}
-    public int maxRange(){return 0;}
+    public int maxRange(){return adjustedMaxInvokerRange(0);}
     public int minRange(){return 0;}
     public boolean isAutoInvoked(){return false;}
     public long flags(){return 0;}

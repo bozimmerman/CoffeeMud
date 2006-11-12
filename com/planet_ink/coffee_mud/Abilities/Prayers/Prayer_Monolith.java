@@ -37,7 +37,7 @@ public class Prayer_Monolith extends Prayer
 	public String ID() { return "Prayer_Monolith"; }
 	public String name(){return "Monolith";}
 	public String displayText(){return "(Monolith)";}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 1;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

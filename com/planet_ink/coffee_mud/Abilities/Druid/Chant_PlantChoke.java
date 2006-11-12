@@ -37,7 +37,7 @@ public class Chant_PlantChoke extends Chant
 	public String ID() { return "Chant_PlantChoke"; }
 	public String name(){return "Plant Choke";}
 	public String displayText(){return "(Plant Choke)";}
-	public int maxRange(){return 10;}
+	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

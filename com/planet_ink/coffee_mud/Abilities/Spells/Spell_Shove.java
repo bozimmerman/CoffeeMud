@@ -36,7 +36,7 @@ public class Spell_Shove extends Spell
 	public String ID() { return "Spell_Shove"; }
 	public String name(){return "Shove";}
 	public String displayText(){return "(Shoved Down)";}
-	public int maxRange(){return 4;}
+	public int maxRange(){return adjustedMaxInvokerRange(4);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Tickable.TICKID_MOB;}

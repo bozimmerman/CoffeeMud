@@ -39,7 +39,7 @@ public class Chant_Tangle extends Chant
 	public String displayText(){return "(Tangled)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return 2;}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public Item thePlants=null;
 	public int amountRemaining=0;
 	public long flags(){return Ability.FLAG_BINDING;}
