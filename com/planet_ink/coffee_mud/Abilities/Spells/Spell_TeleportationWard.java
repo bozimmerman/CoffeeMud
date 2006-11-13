@@ -86,8 +86,7 @@ public class Spell_TeleportationWard extends Spell
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
 			&&(msg.source()!=null)
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))

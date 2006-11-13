@@ -1028,6 +1028,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 	
+	public boolean isAgingThing(Environmental E)
+	{
+		if(E==null) return false;
+		Ability A=E.fetchEffect("Age");
+		if((A!=null)&&(CMath.isInteger(A.text())&&(CMath.s_long(A.text())>Short.MAX_VALUE)))
+			return true;
+		return false;
+	}
+
+	public boolean isChild(Environmental E){ return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing(E)));}
+	public boolean isBaby(Environmental E){ return ((E instanceof CagedAnimal)&&(isAgingThing(E)));}
 	
 	public String wornLocation(long wornCode)
 	{
