@@ -143,7 +143,7 @@ public class Bard extends StdCharClass
 					if(!mob2.isMonster())
 						theAmount+=(origAmount/5.0);
 					else
-					if(mob2.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)
+					if(!CMLib.flags().isAnimalIntelligence(mob2))
 						theAmount+=1.0;
 				}
 			}
@@ -191,7 +191,7 @@ public class Bard extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives bonus combat experience when in a group.";}
+	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

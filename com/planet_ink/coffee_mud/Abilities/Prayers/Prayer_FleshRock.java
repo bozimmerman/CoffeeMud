@@ -40,6 +40,7 @@ public class Prayer_FleshRock extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
+    protected CharState prevState=null;
 
 	public Item statue=null;
 	public boolean tick(Tickable ticking, int tickID)
@@ -150,11 +151,7 @@ public class Prayer_FleshRock extends Prayer
 			if(statue!=null) statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flesh is no longer made of rock.");
-			mob.curState().setHitPoints(1);
-			mob.curState().setMana(0);
-			mob.curState().setMovement(0);
-			mob.curState().setHunger(0);
-			mob.curState().setThirst(0);
+            if(prevState!=null) prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -222,6 +219,7 @@ public class Prayer_FleshRock extends Prayer
 						statue.addEffect(A);
 						A.setAffectedOne(target);
 						statue.recoverEnvStats();
+                        ((Prayer_FleshRock)A).prevState=(CharState)target.curState().copyOf();
 					}
 				}
 			}

@@ -35,15 +35,13 @@ public class ProtectedCitizens extends ActiveTicker
 {
 	public String ID(){return "ProtectedCitizens";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
-	protected static String citizenZapper="";
-	protected static String helperZapper="";
+	protected static Vector citizenZapper=null;
+	protected static Vector helperZapper=null;
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
 	protected String[] claims=null;
 	protected int radius=7;
 	protected int maxAssistance=1;
 	protected Hashtable assisters=new Hashtable();
-
-
 
 	public ProtectedCitizens()
 	{
@@ -66,33 +64,33 @@ public class ProtectedCitizens extends ActiveTicker
 		claims=null;
 	}
 
-	public String getProtectedZapper()
+	public Vector getProtectedZapper()
 	{
 		if(citizenZapper!=null) return citizenZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ citizenZapper=""; return "";}
+		if(s.length()==0){ citizenZapper=new Vector(); return citizenZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ citizenZapper=""; return "";}
-		citizenZapper=s.substring(0,x);
+		if(x<0){ citizenZapper=new Vector(); return citizenZapper;}
+		citizenZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return citizenZapper;
 	}
 
-	public String getCityguardZapper()
+	public Vector getCityguardZapper()
 	{
 		if(helperZapper!=null) return helperZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ helperZapper=""; return "";}
+		if(s.length()==0){ helperZapper=new Vector(); return helperZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ helperZapper=""; return "";}
+		if(x<0){ helperZapper=new Vector(); return helperZapper;}
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
-		if(x<0){ helperZapper=""; return "";}
-		helperZapper=s.substring(0,x);
+		if(x<0){ helperZapper=new Vector(); return helperZapper;}
+		helperZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return helperZapper;
 	}
-
+    
 	public String[] getClaims()
 	{
 		if(claims!=null) return claims;
@@ -169,7 +167,6 @@ public class ProtectedCitizens extends ActiveTicker
 			assMOBS=new Vector();
 			assisters.put(mob,assMOBS);
 		}
-		CMLib.tracking().getRadiantRooms(thisRoom,rooms,true,true,false,false,false,null,radius,null);
 		for(int a=0;a<assMOBS.size();a++)
 		{
 			MOB M=(MOB)assMOBS.elementAt(a);
@@ -180,8 +177,8 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(CMLib.flags().aliveAwakeMobileUnbound(M,true)
 			&&(!M.isInCombat())
 			&&(!BrotherHelper.isBrother(mob.getVictim(),M))
-			&&(BrotherHelper.canFreelyBehaveNormal(M))
-			&&(M.fetchEffect("Skill_Track")==null)
+			&&(canFreelyBehaveNormal(M))
+            &&(!CMLib.flags().isATrackingMonster(M))
 			&&(CMLib.flags().canHear(M))))
 			{
 				if(M.location()==thisRoom)
@@ -199,6 +196,7 @@ public class ProtectedCitizens extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return true;
 
+        CMLib.tracking().getRadiantRooms(thisRoom,rooms,true,true,false,false,false,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);
@@ -213,10 +211,10 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(!M.isInCombat())
 					&&((CMLib.flags().isMobile(M))||(M.location()==thisRoom))
 					&&(!assMOBS.contains(M))
-					&&(BrotherHelper.canFreelyBehaveNormal(M))
+					&&(canFreelyBehaveNormal(M))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M))
 					&&(CMLib.masking().maskCheck(getCityguardZapper(),M))
-					&&(M.fetchEffect("Skill_Track")==null)
+					&&(!CMLib.flags().isATrackingMonster(M))
 					&&(CMLib.flags().canHear(M))))
 					{
 						boolean notAllowed=false;

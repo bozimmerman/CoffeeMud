@@ -44,8 +44,6 @@ public class ProtectedCitizen extends ActiveTicker
 	protected int maxAssistance=1;
 	protected boolean wander=false;
 
-
-
 	public ProtectedCitizen()
 	{
         super();
@@ -162,8 +160,8 @@ public class ProtectedCitizen extends ActiveTicker
 					&&(CMLib.flags().isMobile(M2))
 					&&(CMLib.masking().maskCheck(getCityguardName(),M2))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M2))
-					&&(BrotherHelper.canFreelyBehaveNormal(M2))
-					&&(M2.fetchEffect("Skill_Track")==null)
+					&&(canFreelyBehaveNormal(M2))
+					&&(!CMLib.flags().isATrackingMonster(M2))
 					&&(CMLib.flags().canHear(M2))))
 					{
 						M=M2; break;

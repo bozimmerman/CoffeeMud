@@ -211,8 +211,34 @@ public class Jester extends StdCharClass
 		}
 	}
 
+    public int adjustExperienceGain(MOB mob, MOB victim, int amount)
+    {
+        double theAmount=new Integer(amount).doubleValue();
+        if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
+        {
+            HashSet H=mob.getGroupMembers(new HashSet());
+            double origAmount=theAmount;
+            for(Iterator e=H.iterator();e.hasNext();)
+            {
+                MOB mob2=(MOB)e.next();
+                if((mob2!=mob)
+                   &&(mob2!=victim)
+                   &&(mob2.location()!=null)
+                   &&(mob2.location()==mob.location()))
+                {
+                    if(!mob2.isMonster())
+                        theAmount+=(origAmount/6.0);
+                    else
+                    if(!CMLib.flags().isAnimalIntelligence(mob2))
+                        theAmount+=1.0;
+                }
+            }
+        }
+        return (int)Math.round(theAmount);
+    }
+    
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.";}
+	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
