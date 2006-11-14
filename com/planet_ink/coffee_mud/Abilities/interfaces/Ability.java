@@ -568,6 +568,8 @@ public interface Ability extends Environmental
 	public final static int USAGE_MOVEMENT=2;
 	/** usageType() constant meaning that the skill costs hp @see Ability#usageType()*/
 	public final static int USAGE_HITPOINTS=4;
+	/** constant descriptions for the USAGE_* values @see Ability#usageType() */
+	public final static String[] USAGE_DESCS={"MANA","MOVEMENT","HITPOINTS"};
 	
 	/** index into usageCost(MOB) array for the amount of mana this skill costs @see Ability#usageCost(MOB) */
 	public final static int USAGEINDEX_MANA=0;
@@ -741,6 +743,9 @@ public interface Ability extends Environmental
         "Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
         "Rock Controling"
 	};
+	
+	/** constant descriptions for the minRange()/maxRange() values @see Ability#minRange() */
+	public static final String[] RANGE_CHOICES={"MELEE","CLOSE","SHORT","MEDIUM","LONG","LONGER","LONGERSTILL","VERYLONG","EXTREMELYLONG","INFINITE"};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see Ability#flags() */
 	public static final int FLAG_BINDING=1;
@@ -816,7 +821,9 @@ public interface Ability extends Environmental
 	public static final int QUALITY_BENEFICIAL_OTHERS=5;
 	/* descriptive list of the QUALITY_ flags. @see Ability#abstractQuality() */
 	public static final String[] QUALITY_DESCS={"MALICIOUS","INDIFFERENT","OK_SELF","OK_OTHERS","BENEFICIAL_SELF","BENEFICIAL_OTHERS"};
-	
+
+	/* descriptive list of the CAN_ flags. @see Ability#canAffectCode() */
+	public static final String[] CAN_DESCS={"MOBS","ITEMS","AREAS","ROOMS","EXITS"};
 	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect mobs @see Ability#canAffectCode() */
 	public static final int CAN_MOBS=1;
 	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect items @see Ability#canAffectCode() */

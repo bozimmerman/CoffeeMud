@@ -3753,10 +3753,20 @@ public class BaseGenerics extends StdCommand
 		E.setLiquidRemaining(E.liquidHeld());
 	}
 
-
-
 	static void genText(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
+		if(newName.length()>0)
+			E.setStat(Field,newName);
+		else
+			mob.tell(getScr("BaseGenerics","nochange"));
+	}
+	static void genText(MOB mob, Environmental E, int showNumber, int showFlag, String FieldDisp, String Field)
+	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
@@ -3914,6 +3924,18 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
 	}
+	static void genInt(MOB mob, Environmental E, int showNumber, int showFlag, String FieldDisp, String Field)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
+		if((newName.length()>0)&&((newName.trim().equals("0"))||(CMath.s_int(newName)!=0)))
+			E.setStat(Field,""+CMath.s_int(newName));
+		else
+			mob.tell(getScr("BaseGenerics","nochange"));
+	}
 	static void genInt(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
@@ -3928,6 +3950,18 @@ public class BaseGenerics extends StdCommand
 	}
 	static void genBool(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
+		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+			E.setStat(Field,newName.toLowerCase());
+		else
+			mob.tell(getScr("BaseGenerics","nochange"));
+	}
+	static void genBool(MOB mob, Environmental E, int showNumber, int showFlag, String FieldDisp, String Field)
+	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
@@ -5357,6 +5391,34 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	public static void modifyGenAbility(MOB mob, Ability me)
+	throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		int showFlag=-1;
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+		{
+			int showNumber=0;
+	
+	        genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nunu")+" ","NUMNAME");
+		    genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nana"),"NAME");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","ipip"),"HPDIV");
+	
+			if(showFlag<-900){ ok=true; break;}
+			if(showFlag>0){ showFlag=-1; continue;}
+			showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+	
     public static void modifyFaction(MOB mob, Faction me)
     throws IOException
     {

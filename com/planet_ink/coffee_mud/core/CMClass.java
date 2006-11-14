@@ -331,6 +331,61 @@ public class CMClass extends ClassLoader
 		return false;
 	}
 
+	public static boolean addClass(String type, CMObject O)
+	{
+		Object set=null;
+		int code=classCode(type);
+		switch(code)
+		{
+		case 0: set=races; break;
+		case 1: set=charClasses; break;
+		case 2: set=MOBs; break;
+		case 3: set=abilities; break;
+		case 4: set=locales; break;
+		case 5: set=exits; break;
+		case 6: set=items; break;
+		case 7: set=behaviors; break;
+		case 8: break;
+		case 9: set=weapons; break;
+		case 10: set=armor; break;
+		case 11: set=miscMagic; break;
+		case 12: set=areaTypes; break;
+		case 13: set=commands; break;
+		case 14: set=clanItems; break;
+		case 15: set=miscTech; break;
+		case 16: set=webMacros; break;
+        case 17: set=common; break;
+        case 18: set=libraries; break;
+		}
+		if(set==null) return false;
+		if(set instanceof Vector)
+		{
+			((Vector)set).addElement(O);
+            Vector newSet=new Vector(new TreeSet((Vector)set));
+            ((Vector)set).clear();
+            ((Vector)set).addAll(newSet);
+            if(code==13)
+                for(int c=0;c<commands.size();c++)
+                {
+                    Command C=(Command)commands.elementAt(c);
+                    String[] wordList=C.getAccessWords();
+                    if(wordList!=null)
+                        for(int w=0;w<wordList.length;w++)
+                            if(!CommandWords.containsKey(wordList[w].trim().toUpperCase()))
+                                CommandWords.put(wordList[w].trim().toUpperCase(),C);
+                }
+		}
+		else
+		if(set instanceof Hashtable)
+			((Hashtable)set).put(O.ID().trim().toUpperCase(), O);
+		else
+		if(set instanceof HashSet)
+			((HashSet)set).add(O);
+		else
+			return false;
+		return true;
+	}
+
 	public static int classCode(String name)
 	{
 		for(int i=0;i<OBJECT_DESCS.length;i++)

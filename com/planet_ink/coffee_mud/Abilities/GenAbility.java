@@ -54,7 +54,13 @@ public class GenAbility extends StdAbility
     private static final int V_HERE=13;//A
     private static final int V_CMSK=14;//S
     private static final int V_SCRP=15;//S
-    private static final int NUM_VS=16;//S
+    private static final int V_TMSK=16;//S
+    private static final int V_FZZL=17;//S
+    private static final int V_ACST=18;//S
+    private static final int V_CAST=19;//S
+    private static final int V_PCST=20;//S
+    private static final int V_ATT2=21;//I
+    private static final int NUM_VS=22;//S
     private static final Object[] makeEmpty()
     {
         Object[] O=new Object[NUM_VS];
@@ -74,6 +80,12 @@ public class GenAbility extends StdAbility
         O[V_HERE]=CMClass.getAbility("Prop_HereAdjuster");
         O[V_SCRP]="";
         O[V_CMSK]="";
+        O[V_TMSK]="";
+        O[V_FZZL]="";
+        O[V_ACST]="";
+        O[V_CAST]="";
+        O[V_PCST]="";
+        O[V_ATT2]=new Integer(0);
         return O;
     }
     private static final Object V(String ID, int varNum)
@@ -82,6 +94,17 @@ public class GenAbility extends StdAbility
         Object[] O=makeEmpty();
         vars.put(ID,O);
         return O[varNum];
+    }
+    private static final void SV(String ID,int varNum,Object O)
+    {
+        if(vars.containsKey(ID))
+        	((Object[])vars.get(ID))[varNum]=O;
+        else
+        {
+	        Object[] O2=makeEmpty();
+	        vars.put(ID,O2);
+	        O2[varNum]=O;
+        }
     }
     private Behavior scriptObj=null;
     private long scriptParmHash=0;
@@ -157,10 +180,181 @@ public class GenAbility extends StdAbility
     
     public boolean isGeneric(){return true;}
     
-    public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
+    	if((!auto)
+    	&&(((String)V(ID,V_CMSK)).length()>0)
+    	&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob)))
+    	{
+    		mob.tell(CMLib.masking().maskDesc((String)V(ID,V_CMSK)));
+    		return false;
+    	}
         // dont forget to allow super. calls to Spell.invoke, Chant.invoke, etc.. based on classification?
-        return super.invoke(mob,commands,target,auto,asLevel);
+    	Environmental target=givenTarget;
+    	if((this.classificationCode()==Ability.QUALITY_BENEFICIAL_SELF)
+    	||(this.classificationCode()==Ability.QUALITY_OK_SELF))
+    	{
+    		target=mob;
+    		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+    			target=(MOB)givenTarget;
+    		if(target.fetchEffect(this.ID())!=null)
+    		{
+    			mob.tell((MOB)target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
+    			return false;
+    		}
+    	}
+    	else
+    	{
+	    	switch(canTargetCode())
+	    	{
+	    	case Ability.CAN_MOBS:
+	    		target=super.getTarget(mob, commands, givenTarget);
+	    		if(target==null) return false;
+	    		break;
+	    	case Ability.CAN_ITEMS:
+	    		target=super.getTarget(mob, mob.location(), givenTarget, commands, Item.WORNREQ_ANY);
+	    		if(target==null) return false;
+	    		break;
+	    	case Ability.CAN_ROOMS:
+	    		target=mob;
+	    		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
+	    			target=(Room)givenTarget;
+	    		if(target.fetchEffect(this.ID())!=null)
+	    		{
+	    			mob.tell("This place is already affected by "+name()+".");
+	    			return false;
+	    		}
+	    		break;
+	    	case Ability.CAN_EXITS:
+	    	{
+	    		String whatToOpen=CMParms.combine(commands,0);
+	    		Environmental openThis=null;
+	    		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+	    		if(dirCode>=0)
+	    			openThis=mob.location().getExitInDir(dirCode);
+	    		if(openThis==null)
+	    			openThis=mob.location().fetchFromRoomFavorItems(null, whatToOpen, Item.WORNREQ_ANY);
+	    		if((openThis==null)||(!(openThis instanceof Exit))) return false;
+	    		break;
+	    	}
+	    	case 0:
+	    		break;
+	    	default:
+	    		target=super.getAnyTarget(mob,commands, givenTarget, Item.WORNREQ_ANY);
+	    		if(target==null) return false;
+	    		break;
+	    	}
+    	}
+    	if((!auto)
+    	&&(target!=null)
+    	&&(((String)V(ID,V_TMSK)).length()>0)
+    	&&(!CMLib.masking().maskCheck((String)V(ID,V_TMSK), target)))
+    	{
+    		mob.tell("The target is invalid: "+CMLib.masking().maskDesc((String)V(ID,V_TMSK)));
+    		return false;
+    	}
+    	
+    	int armorCheck=0;
+    	switch(classificationCode()&Ability.ALL_ACODES)
+    	{
+    	case Ability.ACODE_CHANT: armorCheck=CharClass.ARMOR_LEATHER; break;
+    	case Ability.ACODE_COMMON_SKILL: break;
+    	case Ability.ACODE_DISEASE: break;
+    	case Ability.ACODE_LANGUAGE: break;
+    	case Ability.ACODE_POISON: break;
+    	case Ability.ACODE_PRAYER: break;
+    	case Ability.ACODE_PROPERTY: break;
+    	case Ability.ACODE_SKILL: break;
+    	case Ability.ACODE_SPELL: armorCheck=CharClass.ARMOR_CLOTH; break;
+    	case Ability.ACODE_SUPERPOWER: break;
+    	case Ability.ACODE_THIEF_SKILL: armorCheck=CharClass.ARMOR_LEATHER; break;
+    	case Ability.ACODE_TRAP: break;
+    	default:
+    		break;
+    	}
+    	if((armorCheck>0)
+		&&(!auto)
+		&&(!mob.isMonster())
+		&&(!disregardsArmorCheck(mob))
+		&&(!CMLib.utensils().armorCheck(mob,armorCheck))
+		&&(mob.isMine(this))
+		&&(mob.location()!=null)
+		&&(CMLib.dice().rollPercentage()<50))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) "+name()+" due to <S-HIS-HER> armor!");
+			return false;
+		}
+		if(!super.invoke(mob,givenTarget, auto, asLevel))
+			return false;
+    	
+		boolean success=proficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			// it worked, so build a copy of this ability,
+			// and add it to the affects list of the
+			// affected MOB.  Then tell everyone else
+			// what happened.
+			int castCode=somanticCastCode(mob,target,auto);
+	    	switch(classificationCode()&Ability.ALL_ACODES)
+	    	{
+	    	case Ability.ACODE_CHANT: break;
+	    	case Ability.ACODE_COMMON_SKILL: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
+	    	case Ability.ACODE_DISEASE: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
+	    	case Ability.ACODE_LANGUAGE: castCode=CMMsg.MSG_OK_VISUAL; break;
+	    	case Ability.ACODE_POISON: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
+	    	case Ability.ACODE_PRAYER: break;
+	    	case Ability.ACODE_PROPERTY: castCode=CMMsg.MSG_OK_VISUAL; break;
+	    	case Ability.ACODE_SKILL: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
+	    	case Ability.ACODE_SPELL: break;
+	    	case Ability.ACODE_SUPERPOWER: break;
+	    	case Ability.ACODE_THIEF_SKILL: castCode=CMMsg.MSG_THIEF_ACT; break;
+	    	case Ability.ACODE_TRAP: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
+	    	default:
+	    		break;
+	    	}
+			
+			CMMsg msg = CMClass.getMsg(mob, target, this, castCode, (auto?(String)V(ID,V_ACST):(String)V(ID,V_CAST)));
+			CMMsg msg2= null;
+			Integer OTH=(Integer)V(ID,V_ATT2);
+			if(OTH.intValue()>0)
+				msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS|OTH.intValue()|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if(mob.location().okMessage(mob,msg)&&(this.okMessage(mob, msg))
+			&&((msg2==null)||(mob.location().okMessage(mob,msg2)&&(this.okMessage(mob, msg2)))))
+			{
+				mob.location().send(mob,msg);
+				this.executeMsg(mob, msg2);
+				if(msg2!=null){ mob.location().send(mob,msg2); this.executeMsg(mob, msg2);}
+				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+				{
+					if(canAffectCode()!=0)
+					{
+						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
+							success=maliciousAffect(mob,target,asLevel,0,-1);
+						else
+							success=beneficialAffect(mob,target,asLevel,0);
+					}
+					if((success)&&(((String)V(ID,V_PCST)).length()>0))
+						if((target==null)||(target instanceof Exit)||(target instanceof Area)
+						||(mob.location()==CMLib.map().roomLocation(target)))
+							CMLib.map().roomLocation(target).show(mob,target,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
+					Behavior B=getScriptable();
+					if((success)&&(B!=null))
+					{
+						msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
+						if(B!=null) B.executeMsg(mob, msg2);
+					}
+					mob.location().recoverRoomStats();
+				}
+			}
+		}
+		else
+		if(abstractQuality()==Ability.QUALITY_MALICIOUS)
+			return maliciousFizzle(mob,target,(String)V(ID,V_FZZL));
+		else
+			return beneficialVisualFizzle(mob,target,(String)V(ID,V_FZZL));
+		
+        return true;
     }
     
     public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
@@ -219,22 +413,28 @@ public class GenAbility extends StdAbility
     public int getSaveStatIndex(){return getStatCodes().length;}
     private static final String[] CODES={"CLASS",//0
                                          "TEXT",//1
-                                         "NAME",//2
-                                         "DISPLAY",//3
-                                         "TRIGSTR",//4
-                                         "MAXRANGE",//5
-                                         "MINRANGE",//6
-                                         "AUTOINVOKE",//7
-                                         "FLAGS",//8
-                                         "CLASSIFICATION",//9
-                                         "OVERRIDEMANA",//10
-                                         "USAGEMASK",//11
-                                         "CANAFFECTMASK",//12
-                                         "CANTARGETMASK",//13
-                                         "QUALITY",//14
-                                         "HERESTATS",//15
-                                         "CASTMASK",//16
-                                         "SCRIPT",//17
+                                         "NAME",//2S
+                                         "DISPLAY",//3S
+                                         "TRIGSTR",//4S[]
+                                         "MAXRANGE",//5I
+                                         "MINRANGE",//6I
+                                         "AUTOINVOKE",//7B
+                                         "FLAGS",//8I
+                                         "CLASSIFICATION",//9I
+                                         "OVERRIDEMANA",//10I
+                                         "USAGEMASK",//11I
+                                         "CANAFFECTMASK",//12I
+                                         "CANTARGETMASK",//13I
+                                         "QUALITY",//14I
+                                         "HERESTATS",//15A
+                                         "CASTMASK",//16S
+                                         "SCRIPT",//17S
+                                         "TARGETMASK", //18S
+                                         "FIZZLEMSG", //19S
+                                         "AUTOCASTMSG", //20S
+                                         "CASTMSG",//21S
+                                         "POSTCASTMSG",//22S
+                                         "ATTACKCODE",//23I
                                         };
     public String[] getStatCodes(){return CODES;}
     protected int getCodeNum(String code){
@@ -247,6 +447,28 @@ public class GenAbility extends StdAbility
         {
         case 0: return ID();
         case 1: return text();
+        case 2: return (String)V(ID,V_NAME);
+        case 3: return (String)V(ID,V_DISP);
+        case 4: return CMParms.toStringList((String[])V(ID,V_TRIG));
+        case 5: return ((Integer)V(ID,V_MAXR)).toString();
+        case 6: return ((Integer)V(ID,V_MAXR)).toString();
+        case 7: return ((Boolean)V(ID,V_AUTO)).toString();
+        case 8: return ((Integer)V(ID,V_FLAG)).toString();
+        case 9: return ((Integer)V(ID,V_CLAS)).toString();
+        case 10: return ((Integer)V(ID,V_OMAN)).toString();
+        case 11: return ((Integer)V(ID,V_USAG)).toString();
+        case 12: return ((Integer)V(ID,V_CAFF)).toString();
+        case 13: return ((Integer)V(ID,V_CTAR)).toString();
+        case 14: return ((Integer)V(ID,V_QUAL)).toString();
+        case 15: return ((Ability)V(ID,V_HERE)).text();
+        case 16: return (String)V(ID,V_CMSK);
+        case 17: return (String)V(ID,V_SCRP);
+        case 18: return (String)V(ID,V_TMSK);
+        case 19: return (String)V(ID,V_FZZL);
+        case 20: return (String)V(ID,V_ACST);
+        case 21: return (String)V(ID,V_CAST);
+        case 22: return (String)V(ID,V_PCST);
+        case 23: return ((Integer)V(ID,V_ATT2)).toString();
         }
         return "";
     }
@@ -254,10 +476,102 @@ public class GenAbility extends StdAbility
     {
         switch(getCodeNum(code))
         {
-        case 0: return;
+        case 0:
+        if(val.trim().length()>0)
+        {
+        	V(ID,V_NAME); // force creation, if necc 
+        	Object[] O=(Object[])vars.get(ID); 
+        	vars.remove(ID); 
+        	vars.put(val,O);
+        	CMClass.delClass(this);
+        	ID=val;
+        	CMClass.addClass("ABILITY",this);
+        }
+    	break;
         case 1: setMiscText(val); break;
+        case 2: SV(ID,V_NAME,val); break;
+        case 3: SV(ID,V_DISP,val); break;
+        case 4: SV(ID,V_TRIG,CMParms.toStringArray(CMParms.parseCommas(val.toUpperCase(),true))); break;
+        case 5: SV(ID,V_MAXR,new Integer(convert(Ability.RANGE_CHOICES,val,false))); break;
+        case 6: SV(ID,V_MINR,new Integer(convert(Ability.RANGE_CHOICES,val,false))); break;
+        case 7: SV(ID,V_AUTO,new Boolean(CMath.s_bool(val))); break;
+        case 8: SV(ID,V_FLAG,new Integer(convert(Ability.FLAG_DESCS,val,true))); break;
+        case 9: SV(ID,V_CLAS,new Integer(convertClassAndDomain(val))); break;
+        case 10: SV(ID,V_OMAN,new Integer(CMath.s_int(val))); break;
+        case 11: SV(ID,V_USAG,new Integer(convert(Ability.USAGE_DESCS,val,true))); break;
+        case 12: SV(ID,V_CAFF,new Integer(convert(Ability.CAN_DESCS,val,true))); break;
+        case 13: SV(ID,V_CTAR,new Integer(convert(Ability.CAN_DESCS,val,true))); break;
+        case 14: SV(ID,V_QUAL,new Integer(convert(Ability.QUALITY_DESCS,val,false))); break;
+        case 15: ((Ability)V(ID,V_HERE)).setMiscText(val); break;
+        case 16: SV(ID,V_CMSK,val); break;
+        case 17: SV(ID,V_SCRP,val); break;
+        case 18: SV(ID,V_TMSK,val); break;
+        case 19: SV(ID,V_FZZL,val); break;
+        case 20: SV(ID,V_ACST,val); break;
+        case 21: SV(ID,V_CAST,val); break;
+        case 22: SV(ID,V_PCST,val); break;
+        case 23: SV(ID,V_ATT2,new Integer(CMath.s_int(val))); break;
         }
     }
+    
+    private int convertClassAndDomain(String val)
+    {
+    	if(CMath.isInteger(val)) return CMath.s_int(val);
+    	int dom=0;
+    	int acod=Ability.ACODE_SKILL;
+    	Vector V=CMParms.parse(val);
+    	for(int v=0;v<V.size();v++)
+    	{
+    		val=(String)V.elementAt(v);
+    		int tacod=-1;
+    		for(int a=0;a<Ability.ACODE_DESCS.length;a++)
+    			if(val.equalsIgnoreCase(Ability.ACODE_DESCS[a]))
+    				tacod=a;
+    		if(tacod<0)
+    		{
+	        	for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+	        		if(Ability.ACODE_DESCS[i].toUpperCase().startsWith(val.toUpperCase()))
+	        			tacod=i;
+	    		if(tacod<0)
+	    		{
+		    		int tdom=-1;
+		    		for(int a=0;a<Ability.DOMAIN_DESCS.length;a++)
+		    			if(val.equalsIgnoreCase(Ability.DOMAIN_DESCS[a]))
+		    				tdom=a;
+		    		if(tdom<0)
+		        	for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+		        		if(Ability.DOMAIN_DESCS[i].toUpperCase().startsWith(val.toUpperCase())
+		        				||Ability.DOMAIN_DESCS[i].toUpperCase().endsWith(val.toUpperCase()))
+		        		{ tdom=i; break;}
+		        	if(tdom>=0) dom=dom|tdom;
+	    		}
+    		}
+    		else
+    			acod=tacod;
+    	}
+    	return acod|dom;
+    }
+    
+    private int convert(String[] options, String val, boolean maskable)
+    {
+    	if(CMath.isInteger(val)) return CMath.s_int(val);
+    	for(int i=0;i<options.length;i++)
+    		if(val.equalsIgnoreCase(options[i]))
+    			return maskable?(1<<i):i;
+    	for(int i=0;i<options.length;i++)
+    		if(options[i].toUpperCase().startsWith(val.toUpperCase()))
+    			return maskable?(1<<i):i;
+    	if(maskable)
+    	{
+    		Vector V=CMParms.parseCommas(val,true);
+    		int num=0;
+    		for(int v=0;v<V.size();v++)
+    			num=num|convert(options,(String)V.elementAt(v),false);
+    		return num;
+    	}
+    	return 0;
+    }
+    
     public boolean sameAs(Environmental E)
     {
         if(!(E instanceof GenAbility)) return false;
