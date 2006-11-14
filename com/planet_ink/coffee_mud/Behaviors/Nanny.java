@@ -54,7 +54,7 @@ public class Nanny extends StdBehavior
     // dynamic list of who belongs to what, before they leave
     // and get added to official drop-offs.
     protected DVector associations=new DVector(2);
-    
+    protected DVector sayLaters=new DVector(2);
     
     public double getPaidBy(MOB mob)
     {
@@ -91,7 +91,7 @@ public class Nanny extends StdBehavior
     		if(payments.elementAt(d,1)==mob)
     			payments.removeElementAt(d);
     	}
-    	for(int d=dropOffs.size();d>=0;d--)
+    	for(int d=dropOffs.size()-1;d>=0;d--)
     	{
     		if(dropOffs.elementAt(d,2)==mob)
     		{
@@ -182,7 +182,7 @@ public class Nanny extends StdBehavior
     			Long time=(Long)dropOffs.elementAt(d,3);
     			long t=System.currentTimeMillis()-time.longValue();
     			t=Math.round(Math.floor(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
-    			if(t>0) return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching for "+E.name();
+    			if(t>0) return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching "+E.name();
     		}
     	}
     	return "";
@@ -204,8 +204,8 @@ public class Nanny extends StdBehavior
     		{
     			Long time=(Long)dropOffs.elementAt(d,3);
     			long t=System.currentTimeMillis()-time.longValue();
-    			t=Math.round(Math.floor(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
-    			if(t>0) owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for "+E.name()+", ");
+    			t=Math.round(Math.ceil(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			if(t>0) owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t*hourlyRate))+" for "+E.name()+", ");
     		}
     	}
     	String s=owed.toString();
@@ -275,13 +275,13 @@ public class Nanny extends StdBehavior
         	&&(host instanceof MOB))
         	{
         		if(amt.length()>0)
-					CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees of "+amt+" are still owed on "+obj.name()+".");
+					CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees of "+amt+" are still owed.");
         		else
         			CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees are still owed on "+obj.name()+".");
         	}
         	else
     		if(amt.length()>0)
-        		msg.source().tell("You'll need to pay "+place+" fees of "+amt+"  for "+obj.name()+" first.");
+        		msg.source().tell("You'll need to pay "+place+" fees of "+amt+" first.");
     		else
         		msg.source().tell("You'll need to pay your "+place+" fees  for "+obj.name()+" first.");
         	return false;
@@ -476,14 +476,6 @@ public class Nanny extends StdBehavior
     	return V;
     }
     
-    public void speakLater(CMMsg msg, Environmental host, String announce)
-    {
-		if(host instanceof MOB)
-			msg.addTrailerMsg(CMClass.getMsg((MOB)host,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+announce+"' to <T-NAME> ^?"));
-		else
-			msg.source().tell(msg.source(),msg.source(),null,announce);
-    }
-    
     public void executeMsg(Environmental host, CMMsg msg)
     {
         super.executeMsg(host,msg);
@@ -509,13 +501,10 @@ public class Nanny extends StdBehavior
     				list.append(", ");
         	}
     		if(list.length()>0)
-    		{
-	        	String announce="Welcome to my "+place+", <T-NAME>! You are welcome to leave " +
+    			sayLaters.addElement(msg.source(),"Welcome to my "+place+", "+msg.source().name()+"! You are welcome to leave " +
 							list.toString()+" here under my care and protection.  Be aware that I charge "
 							+CMLib.beanCounter().abbreviatedPrice(currency,hourlyRate)+" per hour, each.  " +
-							"No payment is due until you return to fetch your "+getPronoun(myAssocs)+".";
-				speakLater(msg,host,announce);
-    		}
+							"No payment is due until you return to fetch your "+getPronoun(myAssocs)+".");
         	
     		double owed=getAllOwedBy(msg.source());
     		double paid=getPaidBy(msg.source());
@@ -523,11 +512,10 @@ public class Nanny extends StdBehavior
     		{
     			Vector myStuff=getAllOwedFor(msg.source());
     			String pronoun=getPronoun(myStuff);
-    			String announce="Welcome back, <T-NAME>! If are here for your "+pronoun
+    			sayLaters.addElement(msg.source(),"Welcome back, "+msg.source().name()+"! If are here for your "+pronoun
 								+", the total bill is: "+getAllOwedBy(currency, msg.source())
 								+" ("+CMLib.beanCounter().abbreviatedPrice(currency,owed-paid)+"). "
-								+"You can just give me the money to settle the bill.";
-    			this.speakLater(msg, host, announce);
+								+"You can just give me the money to settle the bill.");
     		}
         }
         else
@@ -573,11 +561,20 @@ public class Nanny extends StdBehavior
             			CMLib.commands().postFollow((MOB)E,msg.source(),false);
             	}
             	clearTheSlate(msg.source());
-            	speakLater(msg,host,"Thanks, come again!");
+            	sayLaters.addElement(msg.source(),"Thanks, come again!");
             }
             else
-            	speakLater(msg,host,"Thanks, but you still owe "+CMLib.beanCounter().abbreviatedPrice(currency,owed-paid)+".");
+            	sayLaters.addElement(msg.source(),"Thanks, but you still owe "+CMLib.beanCounter().abbreviatedPrice(currency,owed-paid)+".");
         }
+        else
+        if((msg.source()==host)
+        &&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+        &&(msg.target() instanceof MOB)
+        &&(msg.tool() instanceof Coins)
+        &&(((Coins)msg.tool()).amDestroyed())
+        &&(!msg.source().isMine(msg.tool()))
+        &&(!((MOB)msg.target()).isMine(msg.tool())))
+            CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
     }
     
     public int getNameIndex(Vector V, String name)
@@ -704,7 +701,7 @@ public class Nanny extends StdBehavior
 	        		for(int v=0;v<V.size();v++)
 	        		{
 	        			P=((XMLLibrary.XMLpiece)V.elementAt(v));
-	        			if((P!=null)&&(P.contents!=null)&&(P.contents.size()==3)&&(P.tag.equalsIgnoreCase("PART")))
+	        			if((P!=null)&&(P.contents!=null)&&(P.contents.size()==3)&&(P.tag.equalsIgnoreCase("DROP")))
 	        			{
 	        				eName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ENAM"));
 	        				oName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ONAM"));
@@ -738,12 +735,21 @@ public class Nanny extends StdBehavior
         	}
 			changedSinceLastSave=false;
         }
+
+        for(int s=sayLaters.size()-1;s>=0;s--)
+        {
+    		if(ticking instanceof MOB)
+    			CMLib.commands().postSay((MOB)ticking,(MOB)sayLaters.elementAt(s,1),(String)sayLaters.elementAt(s,2));
+    		else
+    			((MOB)sayLaters.elementAt(s,1)).tell((String)sayLaters.elementAt(s,2));
+    		sayLaters.removeElementAt(s);
+        }
         
         Room R=CMLib.map().roomLocation((Environmental)ticking);
         Environmental owner=null;
         Environmental E=null;
         if(R!=null)
-        for(int a=associations.size();a>=0;a--)
+        for(int a=associations.size()-1;a>=0;a--)
         {
         	owner=(Environmental)associations.elementAt(a,2);
         	E=(Environmental)associations.elementAt(a,1);
@@ -762,14 +768,20 @@ public class Nanny extends StdBehavior
         }
         
         if(!changedSinceLastSave)
-    	for(int m=0;m<dropOffs.size();m++)
+    	for(int m=dropOffs.size()-1;m>=0;m--)
     		if((dropOffs.elementAt(m,1) instanceof MOB)
     		&&(!R.isInhabitant((MOB)dropOffs.elementAt(m,1))))
+    		{
+    			dropOffs.removeElementsAt(m);
     			changedSinceLastSave=true;
-    	for(int m=0;m<dropOffs.size();m++)
+    		}
+    	for(int m=dropOffs.size()-1;m>=0;m--)
     		if((dropOffs.elementAt(m,1) instanceof Item)
     		&&(!R.isContent((Item)dropOffs.elementAt(m,1))))
+    		{
+    			dropOffs.removeElementsAt(m);
     			changedSinceLastSave=true;
+    		}
     			
         if(changedSinceLastSave)
         {

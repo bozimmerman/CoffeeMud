@@ -683,6 +683,14 @@ public class RoomLoader
 	public void DBUpdateTheseItems(Room room, Vector items)
 	{
 		if((!room.savable())||(room.amDestroyed())) return;
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
+		DB.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
+		try{Thread.sleep(room.numItems());}catch(Exception e){}
+		if(DB.queryRows("SELECT * FROM CMROIT  WHERE CMROID='"+room.roomID()+"'")>0)
+			Log.errOut("Failed to update items for room "+room.roomID()+".");
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
 		for(int i=0;i<items.size();i++)
 		{
 			Item thisItem=(Item)items.elementAt(i);
@@ -711,22 +719,14 @@ public class RoomLoader
 			+thisItem.baseEnvStats().ability()+","
 			+thisItem.baseEnvStats().height()+")");
 		}
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Finished item update for room "+room.roomID());
 	}
 	
 	public void DBUpdateItems(Room room)
 	{
 		if((!room.savable())||(room.amDestroyed())) return;
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
-		DB.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
-		try{Thread.sleep(room.numItems());}catch(Exception e){}
-		if(DB.queryRows("SELECT * FROM CMROIT  WHERE CMROID='"+room.roomID()+"'")>0)
-			Log.errOut("Failed to update items for room "+room.roomID()+".");
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
 		DBUpdateTheseItems(room,DBGetContents(room));
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Finished item update for room "+room.roomID());
 	}
 
 	public void DBUpdateExits(Room room)
