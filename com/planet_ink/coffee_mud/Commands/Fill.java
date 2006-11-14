@@ -56,14 +56,22 @@ public class Fill extends BaseItemParser
 			fillFromThis=mob.location();
 		else
 		{
-			String thingToFillFrom=(String)commands.lastElement();
+            int fromDex=commands.size()-1;
+            for(int i=commands.size()-2;i>=1;i--)
+                if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+                {
+                    fromDex=i;
+                    commands.removeElementAt(i);
+                }
+			String thingToFillFrom=CMParms.combine(commands,fromDex);
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORNREQ_ANY);
 			if((fillFromThis==null)||((fillFromThis!=null)&&(!CMLib.flags().canBeSeenBy(fillFromThis,mob))))
 			{
 				mob.tell("I don't see "+thingToFillFrom+" here.");
 				return false;
 			}
-			commands.removeElementAt(commands.size()-1);
+            while(commands.size()>=(fromDex+1))
+    			commands.removeElementAt(commands.size()-1);
 		}
 
         int maxToFill=super.calculateMaxToGive(mob,commands,true,mob);

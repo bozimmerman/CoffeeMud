@@ -45,6 +45,9 @@ public class DrinkCmd extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
+        if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase("from")))
+            commands.removeElement(0);
+        
 		Environmental thisThang=null;
 		if((commands.size()==0)&&(mob.location() instanceof Drink))
 			thisThang=mob.location();
