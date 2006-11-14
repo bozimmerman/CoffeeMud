@@ -95,7 +95,7 @@ public class DefaultPoll implements Poll
         {
             PO=(PollOption)options.elementAt(i);
             str.append("<OPTION>");
-            str.append(CMLib.xml().convertXMLtoTag("TEXT",CMLib.coffeeMaker().parseOutAngleBrackets(PO.text)));
+            str.append(CMLib.xml().convertXMLtoTag("TEXT",CMLib.xml().parseOutAngleBrackets(PO.text)));
             str.append("</OPTION>");
         }
         str.append("</OPTIONS>");        
@@ -157,7 +157,7 @@ public class DefaultPoll implements Poll
             if(!XP.tag.equalsIgnoreCase("option"))
                 continue;
             PollOption PO=new PollOption();
-            PO.text=CMLib.coffeeMaker().restoreAngleBrackets(CMLib.xml().getValFromPieces(XP.contents,"TEXT"));
+            PO.text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(XP.contents,"TEXT"));
             options.addElement(PO);
         }
         bitmap=((Long)V.elementAt(5)).longValue();

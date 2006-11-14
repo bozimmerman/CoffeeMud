@@ -365,7 +365,7 @@ public class Conquerable extends Arrest
 									newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(roomData,"IABLE"));
 									newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(roomData,"IREJV"));
 									newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(roomData,"IUSES"));
-									newItem.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"ITEXT")));
+									newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"ITEXT")));
 									newItem.recoverEnvStats();
 									MOB foundMOB=null;
 									if(MOBname.length()>0)
@@ -1099,7 +1099,7 @@ public class Conquerable extends Arrest
 							data.append(CMLib.xml().convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
 							data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
 							data.append(CMLib.xml().convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
-							data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
+							data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 							data.append("</ACITEM>");
                             ((Item)I).destroy();
 						}

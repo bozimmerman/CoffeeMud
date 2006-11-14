@@ -115,10 +115,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 			CMLib.coffeeMaker().resetGenMOB(M,M.text());
 		return M;
 	}
-	public String cageText(){ return CMLib.coffeeMaker().restoreAngleBrackets(readableText());}
+	public String cageText(){ return CMLib.xml().restoreAngleBrackets(readableText());}
 	public void setCageText(String text)
 	{
-		setReadableText(CMLib.coffeeMaker().parseOutAngleBrackets(text));
+		setReadableText(CMLib.xml().parseOutAngleBrackets(text));
 		CMLib.flags().setReadable(this,false);
 	}
 }

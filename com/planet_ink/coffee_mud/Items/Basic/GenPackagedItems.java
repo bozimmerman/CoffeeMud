@@ -145,11 +145,11 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     }
     public String packageText()
     { 
-        return CMLib.coffeeMaker().restoreAngleBrackets(readableText());
+        return CMLib.xml().restoreAngleBrackets(readableText());
     }
     public void setPackageText(String text)
     {
-        setReadableText(CMLib.coffeeMaker().parseOutAngleBrackets(text));
+        setReadableText(CMLib.xml().parseOutAngleBrackets(text));
         CMLib.flags().setReadable(this,false);
     }
 }

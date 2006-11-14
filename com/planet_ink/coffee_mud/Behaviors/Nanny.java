@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -44,16 +45,174 @@ public class Nanny extends StdBehavior
     protected boolean watchesBoats=false;
     protected boolean watchesAirCars=false;
     protected boolean watchesMOBFollowers=false;
+    protected boolean changedSinceLastSave=false;
     protected String place="Nursery";
+    protected double hourlyRate=1.0; 
     
-    protected DVector dropOffs=null;//new DVector(2); //1=mob/baby, 2=owner
+    protected DVector dropOffs=null;//new DVector(3); //1=mob/baby, 2=owner, 3=time
     protected DVector payments=new DVector(2); //1=payer, 2=amount paid
     // dynamic list of who belongs to what, before they leave
     // and get added to official drop-offs.
     protected DVector associations=new DVector(2);
     
     
+    public double getPaidBy(MOB mob)
+    {
+    	if(mob==null) return 0.0;
+    	double amt=0.0;
+    	for(int d=0;d<payments.size();d++)
+    	{
+    		if(payments.elementAt(d,1)==mob)
+    			amt+=((Double)payments.elementAt(d,2)).doubleValue();
+    	}
+    	return amt;
+    }
+    
+    public void addPayment(MOB mob,double amt)
+    {
+    	if(mob==null) return;
+    	for(int d=0;d<payments.size();d++)
+    	{
+    		if(payments.elementAt(d,1)==mob)
+    		{
+    			amt+=((Double)payments.elementAt(d,2)).doubleValue();
+    			payments.setElementAt(d,2,new Double(amt));
+    			return;
+    		}
+    	}
+    	payments.addElement(mob,new Double(amt));
+    }
+    
+    public void clearTheSlate(MOB mob)
+    {
+    	if(mob==null) return;
+    	for(int d=payments.size()-1;d>=0;d--)
+    	{
+    		if(payments.elementAt(d,1)==mob)
+    			payments.removeElementAt(d);
+    	}
+    	for(int d=dropOffs.size();d>=0;d--)
+    	{
+    		if(dropOffs.elementAt(d,2)==mob)
+    		{
+    			if(!associations.contains(dropOffs.elementAt(d,1)))
+    				associations.addElement(dropOffs.elementAt(d,1),mob);
+    			dropOffs.removeElementAt(d);
+    			changedSinceLastSave=true;
+    		}
+    	}
+    }
+    
+    public double getAllOwedBy(MOB mob)
+    {
+    	if(mob==null) return 0.0;
+    	Room R=mob.location();
+    	if(R==null) return 0.0;
+    	Area A=R.getArea();
+    	if(A==null) return 0.0;
+    	double amt=0.0;
+    	for(int d=0;d<dropOffs.size();d++)
+    	{
+    		if(dropOffs.elementAt(d,2)==mob)
+    		{
+    			Long time=(Long)dropOffs.elementAt(d,3);
+    			long t=System.currentTimeMillis()-time.longValue();
+    			t=Math.round(Math.ceil(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			if(t>0) amt+=(t*hourlyRate);
+    		}
+    	}
+    	return amt;
+    }
 
+    public Vector getAllOwedFor(MOB mob)
+    {
+    	Vector V=new Vector();
+    	if(mob!=null)
+    	for(int d=0;d<dropOffs.size();d++)
+    		if(dropOffs.elementAt(d,2)==mob)
+        		V.addElement(dropOffs.elementAt(d,1));
+    	return V;
+    }
+    
+    public String getPronoun(Vector V)
+    {
+    	if(V.size()==0) return "your stuff";
+    	int babies=0;
+    	int friends=0;
+    	int objects=0;
+    	int mounts=0;
+    	for(int v=0;v<V.size();v++)
+    	{
+    		Environmental E=(Environmental)V.elementAt(v);
+    		if(CMLib.flags().isBaby(E)||CMLib.flags().isChild(E))
+    			babies++;
+    		else
+    		if(isMount(E))
+    			mounts++;
+    		else
+    		if(E instanceof Item)
+    			objects++;
+    		else
+    			friends++;
+    	}
+    	Vector pros=new Vector();
+    	if(babies>0) pros.addElement("little one"+((babies>1)?"s":""));
+    	if(mounts>0) pros.addElement("mount"+((babies>1)?"s":""));
+    	if(friends>0) pros.addElement("friend"+((babies>1)?"s":""));
+    	if(objects>0) pros.addElement("thing"+((babies>1)?"s":""));
+    	StringBuffer list=new StringBuffer("");
+    	for(int p=0;p<pros.size();p++)
+    	{
+    		list.append((String)pros.elementAt(p));
+			if((pros.size()>1)&&(p==pros.size()-2))
+				list.append(", and ");
+			else
+			if(pros.size()>1)
+				list.append(", ");
+    	}
+    	return list.toString().trim();
+    }
+    
+    public String getOwedFor(String currency, Environmental E)
+    {
+    	for(int d=0;d<dropOffs.size();d++)
+    	{
+    		if(dropOffs.elementAt(d,1)==E)
+    		{
+    			Long time=(Long)dropOffs.elementAt(d,3);
+    			long t=System.currentTimeMillis()-time.longValue();
+    			t=Math.round(Math.floor(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			if(t>0) return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching for "+E.name();
+    		}
+    	}
+    	return "";
+    }
+    
+    public String getAllOwedBy(String currency, MOB mob)
+    {
+    	if(mob==null) return "";
+    	Room R=mob.location();
+    	if(R==null) return "";
+    	Area A=R.getArea();
+    	if(A==null) return "";
+    	StringBuffer owed=new StringBuffer("");
+    	Environmental E=null;
+    	for(int d=0;d<dropOffs.size();d++)
+    	{
+    		E=(Environmental)dropOffs.elementAt(d,1);
+    		if(dropOffs.elementAt(d,2)==mob)
+    		{
+    			Long time=(Long)dropOffs.elementAt(d,3);
+    			long t=System.currentTimeMillis()-time.longValue();
+    			t=Math.round(Math.floor(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			if(t>0) owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for "+E.name()+", ");
+    		}
+    	}
+    	String s=owed.toString();
+    	if(s.endsWith(", "))s=s.substring(0,s.length()-2);
+    	return s;
+    }
+    
     public Environmental getDroppedOffObjIfAny(Environmental E)
     {
     	if(E==null) return null;
@@ -81,7 +240,25 @@ public class Nanny extends StdBehavior
         if((msg.target()==host)
         &&(targMinor==CMMsg.TYP_GIVE))
         {
-        	
+        	if(isDropOffable(msg.tool()))
+        	{
+        		String pronoun=this.getPronoun(CMParms.makeVector(msg.tool()));
+        		msg.source().tell(msg.source(),host,msg.tool(),"<T-NAME> won't accept <O-NAME>.  You should probably leave your "+pronoun+" here.");
+        		return false;
+        	}
+        	if(msg.tool() instanceof Coins)
+        	{
+        		Coins C=(Coins)msg.tool();
+        		String myCurrency=CMLib.beanCounter().getCurrency(host);
+        		if(!C.getCurrency().equalsIgnoreCase(myCurrency))
+        		{
+        			if(host instanceof MOB)
+						CMLib.commands().postSay((MOB)host,msg.source(),"I'm don't accept "+CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination())+".  I can only accept "+CMLib.beanCounter().getDenominationName(myCurrency)+".");
+        			else
+        				msg.source().tell("The "+place+" doesn't accept "+CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination())+".  It only accepts "+CMLib.beanCounter().getDenominationName(myCurrency)+".");
+        			return false;
+        		}
+        	}
         }
         else
         if(((targMinor==CMMsg.TYP_GET)
@@ -92,12 +269,22 @@ public class Nanny extends StdBehavior
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
         &&(getDroppedOffObjIfAny(msg.target()))!=null)
         {
+			Environmental obj=getDroppedOffObjIfAny(msg.target());
+    		String amt=getOwedFor(CMLib.beanCounter().getCurrency(host),obj);
         	if((msg.source().location()==CMLib.map().roomLocation(host))
         	&&(host instanceof MOB))
-				msg.addTrailerMsg(CMClass.getMsg((MOB)host,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm afraid that "+place+" fees are still owed on "+msg.target().name()+"' to <T-NAME> ^?"));
+        	{
+        		if(amt.length()>0)
+					CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees of "+amt+" are still owed on "+obj.name()+".");
+        		else
+        			CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees are still owed on "+obj.name()+".");
+        	}
         	else
-        		msg.source().tell("You'll need to pay first.");
-        		
+    		if(amt.length()>0)
+        		msg.source().tell("You'll need to pay "+place+" fees of "+amt+"  for "+obj.name()+" first.");
+    		else
+        		msg.source().tell("You'll need to pay your "+place+" fees  for "+obj.name()+" first.");
+        	return false;
         }
         else
         if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)
@@ -106,8 +293,8 @@ public class Nanny extends StdBehavior
         {
         	if(msg.source()!=host)
         	{
-	        	if(host instanceof MOB)
-					msg.addTrailerMsg(CMClass.getMsg((MOB)host,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Not in my "+place+" you dont!' to <T-NAME> ^?"));
+	        	if((host instanceof MOB)&&(msg.source().location()==CMLib.map().roomLocation(host)))
+					CMLib.commands().postSay((MOB)host,msg.source(),"Not in my "+place+" you dont!");
 	        	else
 	        		msg.source().tell("You can't do that here.");
         	}
@@ -117,7 +304,8 @@ public class Nanny extends StdBehavior
 		if((msg.sourceMinor()==CMMsg.TYP_LEAVE)
 		&&(msg.target()==CMLib.map().roomLocation(host)))
 		{
-			if(getDroppedOffObjIfAny(msg.source())!=null)
+			Environmental obj=getDroppedOffObjIfAny(msg.source());
+			if(obj!=null)
 			{
 				if((msg.tool() instanceof Ability)
 				&&(msg.source().location()!=null))
@@ -134,6 +322,24 @@ public class Nanny extends StdBehavior
 						return false;
 					}
 				}
+				else
+				{
+		    		String amt=getOwedFor(CMLib.beanCounter().getCurrency(host),obj);
+		        	if((msg.source().location()==CMLib.map().roomLocation(host))
+		        	&&(host instanceof MOB))
+		        	{
+		        		if(amt.length()>0)
+							CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees of "+amt+" are still owed on "+obj.name()+".");
+		        		else
+		        			CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees are still owed on "+obj.name()+".");
+		        	}
+		        	else
+		    		if(amt.length()>0)
+		        		msg.source().tell("You'll need to pay "+place+" fees of "+amt+" for "+obj.name()+" first.");
+		    		else
+		        		msg.source().tell("You'll need to pay your "+place+" fees  for "+obj.name()+" first.");
+				}
+				return false;
 			}
 		}
         return true;
@@ -257,6 +463,26 @@ public class Nanny extends StdBehavior
 			}
     	}
     }
+
+    public Vector myCurrentAssocs(MOB mob)
+    {
+    	Vector V=new Vector();
+    	if(mob!=null)
+    	for(int a=0;a<associations.size();a++)
+    	{
+    		if(associations.elementAt(a,2)==mob)
+    			V.add(associations.elementAt(a,1));
+    	}
+    	return V;
+    }
+    
+    public void speakLater(CMMsg msg, Environmental host, String announce)
+    {
+		if(host instanceof MOB)
+			msg.addTrailerMsg(CMClass.getMsg((MOB)host,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+announce+"' to <T-NAME> ^?"));
+		else
+			msg.source().tell(msg.source(),msg.source(),null,announce);
+    }
     
     public void executeMsg(Environmental host, CMMsg msg)
     {
@@ -266,37 +492,404 @@ public class Nanny extends StdBehavior
         if((msg.targetMinor()==CMMsg.TYP_ENTER)
         &&(msg.target()==CMLib.map().roomLocation(host)))
         {
+			String currency=CMLib.beanCounter().getCurrency(host);
         	HashSet H=msg.source().getGroupMembers(new HashSet());
         	msg.source().getRideBuddies(H);
         	if(!H.contains(msg.source())) H.add(msg.source());
         	addAssociationsIfNecessary(H);
-        	// now give the news to the new people
+    		Vector myAssocs=myCurrentAssocs(msg.source());
+    		StringBuffer list=new StringBuffer("");
+    		for(int m=0;m<myAssocs.size();m++)
+        	{
+    			list.append(((Environmental)myAssocs.elementAt(m)).name());
+    			if((myAssocs.size()>1)&&(m==myAssocs.size()-2))
+    				list.append(", and ");
+    			else
+    			if(myAssocs.size()>1)
+    				list.append(", ");
+        	}
+    		if(list.length()>0)
+    		{
+	        	String announce="Welcome to my "+place+", <T-NAME>! You are welcome to leave " +
+							list.toString()+" here under my care and protection.  Be aware that I charge "
+							+CMLib.beanCounter().abbreviatedPrice(currency,hourlyRate)+" per hour, each.  " +
+							"No payment is due until you return to fetch your "+getPronoun(myAssocs)+".";
+				speakLater(msg,host,announce);
+    		}
         	
-        	// afterwards, look for old-dropoffs to ask for money regarding
-        	
+    		double owed=getAllOwedBy(msg.source());
+    		double paid=getPaidBy(msg.source());
+    		if(owed>0)
+    		{
+    			Vector myStuff=getAllOwedFor(msg.source());
+    			String pronoun=getPronoun(myStuff);
+    			String announce="Welcome back, <T-NAME>! If are here for your "+pronoun
+								+", the total bill is: "+getAllOwedBy(currency, msg.source())
+								+" ("+CMLib.beanCounter().abbreviatedPrice(currency,owed-paid)+"). "
+								+"You can just give me the money to settle the bill.";
+    			this.speakLater(msg, host, announce);
+    		}
         }
         else
         if((msg.target()==host)
         &&(msg.targetMinor()==CMMsg.TYP_GIVE)
         &&(msg.tool() instanceof Coins))
         {
-        	// accept payments -- REMOVE from dropoffs if they pay me off!
-        	// dont forget to tell them that ill stop watching after!
+        	addPayment(msg.source(),((Coins)msg.tool()).getTotalValue());
+        	double owed=getAllOwedBy(msg.source());
+        	double paid=getPaidBy(msg.source());
+			String currency=CMLib.beanCounter().getCurrency(host);
+        	if((paid>owed)&&(host instanceof MOB))
+        	{
+	        	double change=paid-owed;
+	            Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
+	            MOB source=msg.source();
+				if((change>0.0)&&(C!=null))
+				{
+	                // this message will actually end up triggering the hand-over.
+					CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?");
+	                C.setOwner((MOB)host);
+	                long num=C.getNumberOfCoins();
+	                String curr=C.getCurrency();
+	                double denom=C.getDenomination();
+	                C.destroy();
+	                C.setNumberOfCoins(num);
+	                C.setCurrency(curr);
+	                C.setDenomination(denom);
+					msg.addTrailerMsg(newMsg);
+				}
+				else
+					CMLib.commands().postSay((MOB)host,source,"Gee, thanks. :)",true,false);
+        	}
+            ((Coins)msg.tool()).destroy();
+            if(paid>=owed)
+            {
+            	Vector V=this.getAllOwedFor(msg.source());
+            	Environmental E=null;
+            	for(int v=0;v<V.size();v++)
+            	{
+            		E=(Environmental)V.elementAt(v);
+            		if(E instanceof MOB)
+            			CMLib.commands().postFollow((MOB)E,msg.source(),false);
+            	}
+            	clearTheSlate(msg.source());
+            	speakLater(msg,host,"Thanks, come again!");
+            }
+            else
+            	speakLater(msg,host,"Thanks, but you still owe "+CMLib.beanCounter().abbreviatedPrice(currency,owed-paid)+".");
         }
+    }
+    
+    public int getNameIndex(Vector V, String name)
+    {
+    	int index=0;
+    	for(int v=0;v<V.size();v++)
+    	{
+    		if(((String)V.elementAt(v)).equals(name))
+    			index++;
+    	}
+    	return index;
+    }
+    
+    public String getParms()
+    {
+    	if(dropOffs!=null)
+    	{
+    		super.setParms("");
+	    	StringBuffer parms=new StringBuffer("");
+	    	parms.append("RATE="+hourlyRate+" ");
+	    	parms.append("NAME=\""+place+"\" ");
+	    	parms.append("WATCHES=\"");
+	    	if(watchesBabies) parms.append("Babies,");
+	    	if(watchesChildren) parms.append("Children,");
+	    	if(watchesMounts) parms.append("Mounts,");
+	    	if(watchesWagons) parms.append("Wagons,");
+	    	if(watchesCars) parms.append("Cars,");
+	    	if(watchesBoats) parms.append("Boats,");
+	    	if(watchesAirCars) parms.append("AirCars,");
+	    	if(watchesMOBFollowers) parms.append("Followers,");
+	    	parms.append("\" |~| ");
+	    	Vector oldNames=new Vector();
+	    	Environmental E=null;
+	    	MOB owner=null;
+	    	Long time=null;
+	    	String eName=null;
+	    	String oName=null;
+	    	for(int d=0;d<dropOffs.size();d++)
+	    	{
+	    		parms.append("<DROP>");
+	    		E=(Environmental)dropOffs.elementAt(d,1);
+	    		owner=(MOB)dropOffs.elementAt(d,2);
+	    		time=(Long)dropOffs.elementAt(d,3);
+	    		eName=E.Name();
+	    		oName=owner.Name();
+	    		if(oldNames.contains(eName))
+	    			eName=getNameIndex(oldNames,eName)+"."+eName;
+	    		parms.append(CMLib.xml().convertXMLtoTag("ENAM",CMLib.xml().parseOutAngleBrackets(eName)));
+	    		parms.append(CMLib.xml().convertXMLtoTag("ONAM",CMLib.xml().parseOutAngleBrackets(oName)));
+	    		parms.append(CMLib.xml().convertXMLtoTag("TIME",time.longValue()));
+	    		parms.append("</DROP>");
+	    	}
+	    	return parms.toString().trim();
+    	}
+    	return super.getParms();
+    }
+
+    public void setParms(String parms)
+    {
+    	if(dropOffs==null)
+    		super.setParms(parms);
+    	else
+    	{
+	    	hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
+	    	place=CMParms.getParmStr(parms,"NAME","nursery");
+	    	Vector watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
+	    	String watch=null;
+	    	watchesBabies=false;
+	    	watchesChildren=false;
+	    	watchesMounts=false;
+	    	watchesWagons=false;
+	    	watchesCars=false;
+	    	watchesBoats=false;
+	    	watchesAirCars=false;
+	    	watchesMOBFollowers=false;
+	    	for(int w=0;w<watches.size();w++)
+	    	{
+	    		watch=(String)watches.elementAt(w);
+		    	if(watch.startsWith("BAB")) watchesBabies=true;
+		    	if(watch.startsWith("CHI")) watchesChildren=true;
+		    	if(watch.startsWith("MOU")) watchesMounts=true;
+		    	if(watch.startsWith("WAG")) watchesWagons=true;
+		    	if(watch.startsWith("CAR")) watchesCars=true;
+		    	if(watch.startsWith("BOA")) watchesBoats=true;
+		    	if(watch.startsWith("AIR")) watchesAirCars=true;
+		    	if(watch.startsWith("FOL")) watchesMOBFollowers=true;
+	    	}
+	    	super.setParms("");
+    	}
     }
     
     public boolean tick(Tickable ticking, int tickID)
     {
         if(!super.tick(ticking,tickID))
             return false;
-        if((dropOffs==null)&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+        if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+        ||((!(ticking instanceof Environmental))))
+        	return true;
+        if(dropOffs==null)
         {
-        	// parse the parms!
+        	int x=super.parms.indexOf("|~|");
+        	if(x<0)
+        	{
+        		dropOffs=new DVector(3);
+        		setParms(super.parms);
+        	}
+        	else
+        	{
+        		String codes=super.parms.substring(x+3);
+        		parms=parms.substring(0,3);
+        		dropOffs=new DVector(3);
+        		if(codes.trim().length()>0)
+        		{
+	        		Vector V=CMLib.xml().parseAllXML(codes);
+	        		XMLLibrary.XMLpiece P=null;
+	        		Hashtable parsedPlayers=new Hashtable();
+	    	    	long time=0;
+	    	    	String eName=null;
+	    	    	Environmental E=null;
+	    	    	String oName=null;
+	    	    	Room R=CMLib.map().roomLocation((Environmental)ticking);
+	    	    	MOB O=null;
+	        		if((V!=null)&&(R!=null))
+	        		for(int v=0;v<V.size();v++)
+	        		{
+	        			P=((XMLLibrary.XMLpiece)V.elementAt(v));
+	        			if((P!=null)&&(P.contents!=null)&&(P.contents.size()==3)&&(P.tag.equalsIgnoreCase("PART")))
+	        			{
+	        				eName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ENAM"));
+	        				oName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ONAM"));
+	        				time=CMLib.xml().getLongFromPieces(P.contents,"TIME");
+	        				if(parsedPlayers.get(oName) instanceof MOB)
+	        					O=(MOB)parsedPlayers.get(oName);
+	        				else
+	        				if(parsedPlayers.get(oName) instanceof String)
+	        					continue;
+	        				else
+	        				{
+	        					O=CMLib.map().getLoadPlayer(oName);
+	        					if(O==null) 
+	        						parsedPlayers.put(oName,"");
+	        					else
+	        						parsedPlayers.put(oName,O);
+	        				}
+	        				E=R.fetchInhabitant(eName);
+	        				if(E==null) E=R.fetchAnyItem(eName);
+	        				if(E==null)
+		        				Log.errOut("Nanny","Unable to find "+eName+" for "+oName+"!!");
+	        				else
+	        				if(!dropOffs.contains(E))
+	        					dropOffs.addElement(E,O,new Long(time));
+	        			}
+	        			else
+	        				Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value);
+	        		}
+        		}
+        		setParms(super.parms);
+        	}
+			changedSinceLastSave=false;
         }
-        // now handle diaper changes
-        // and play with any kids in the room
-        // comb any horses, etc.
         
+        Room R=CMLib.map().roomLocation((Environmental)ticking);
+        Environmental owner=null;
+        Environmental E=null;
+        if(R!=null)
+        for(int a=associations.size();a>=0;a--)
+        {
+        	owner=(Environmental)associations.elementAt(a,2);
+        	E=(Environmental)associations.elementAt(a,1);
+        	if((CMLib.map().roomLocation(owner)!=R)
+        	||(!CMLib.flags().isInTheGame(owner,true)))
+        	{
+        		if(!dropOffs.contains(E))
+        		{
+        			if((E instanceof MOB)&&(((MOB)E).amFollowing()!=null))
+        				((MOB)E).setFollowing(null);
+        			dropOffs.addElement(E,owner,new Long(System.currentTimeMillis()));
+        			associations.removeElementsAt(a);
+	    			changedSinceLastSave=true;
+        		}
+        	}
+        }
+        
+        if(!changedSinceLastSave)
+    	for(int m=0;m<dropOffs.size();m++)
+    		if((dropOffs.elementAt(m,1) instanceof MOB)
+    		&&(!R.isInhabitant((MOB)dropOffs.elementAt(m,1))))
+    			changedSinceLastSave=true;
+    	for(int m=0;m<dropOffs.size();m++)
+    		if((dropOffs.elementAt(m,1) instanceof Item)
+    		&&(!R.isContent((Item)dropOffs.elementAt(m,1))))
+    			changedSinceLastSave=true;
+    			
+        if(changedSinceLastSave)
+        {
+        	Vector mobsToSave=new Vector();
+        	if(ticking instanceof MOB) 
+        		mobsToSave.addElement((MOB)ticking);
+        	MOB M=null;
+        	for(int i=0;i<R.numInhabitants();i++)
+        	{
+        		M=R.fetchInhabitant(i);
+        		if((M!=null)
+        		&&(M.savable())
+        		&&(CMLib.flags().isMobile(M))
+        		&&(M.getStartRoom()==R)
+        		&&(!mobsToSave.contains(M)))
+        			mobsToSave.addElement(M);
+        	}
+        	for(int m=0;m<dropOffs.size();m++)
+        	{
+        		E=(Environmental)dropOffs.elementAt(m,1);
+        		if((E instanceof MOB)
+        		&&(R.isInhabitant((MOB)E))
+        		&&(!mobsToSave.contains(E)))
+        			mobsToSave.addElement(E);
+        	}
+        	CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);
+        	
+        	
+        	Vector itemsToSave=new Vector();
+        	if(ticking instanceof Item) 
+        		itemsToSave.addElement((Item)ticking);
+        	Item I=null;
+        	for(int i=0;i<R.numItems();i++)
+        	{
+        		I=R.fetchItem(i);
+        		if((I!=null)
+        		&&(I.savable())
+				&&((!CMLib.flags().isGettable(I))||(I.displayText().length()==0))
+        		&&(!itemsToSave.contains(I)))
+        			itemsToSave.addElement(I);
+        	}
+        	for(int m=0;m<dropOffs.size();m++)
+        	{
+        		E=(Environmental)dropOffs.elementAt(m,1);
+        		if((E instanceof Item)
+        		&&(R.isContent((Item)E))
+        		&&(!itemsToSave.contains(E)))
+        			itemsToSave.addElement(E);
+        	}
+        	CMLib.database().DBUpdateTheseItems(R,itemsToSave);
+        	if(ticking instanceof Room)
+        		CMLib.database().DBUpdateRoom((Room)ticking);
+        	changedSinceLastSave=false;
+        }
+        
+        if((dropOffs.size()>0)&&(ticking instanceof MOB)&&(CMLib.dice().rollPercentage()<10))
+        {
+        	MOB mob=(MOB)ticking;
+        	E=(Environmental)dropOffs.elementAt(CMLib.dice().roll(1,dropOffs.size(),-1),1);
+        	if(CMLib.flags().isBaby(E))
+        	{
+    			if(E.fetchEffect("Soiled")!=null)
+        		{
+	    			R.show(mob, E, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> change(s) <T-YOUPOSS> diaper.");
+    				E.delEffect(E.fetchEffect("Soiled"));
+        		}
+    			else
+        		if(CMLib.dice().rollPercentage()>50)
+	    			R.show(mob, E, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> play(s) with <T-NAME>.");
+        		else
+	    			R.show(mob, E, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> go(es) 'coochie-coochie coo' to <T-NAME>.");
+        		
+        	}
+        	else
+        	if(CMLib.flags().isChild(E))
+        	{
+        		if(CMLib.dice().rollPercentage()>20)
+	    			R.show(mob, E, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> play(s) with <T-NAME>.");
+        		else
+        		{
+	    			R.show(mob, E, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> groom(s) <T-NAME>.");
+	    			if(E.fetchEffect("Soiled")!=null)
+	    				E.delEffect(E.fetchEffect("Soiled"));
+        		}
+        	}
+        	else
+        	if(isMount(E))
+        	{
+        		if(E instanceof MOB)
+        		{
+	        		if((!CMLib.flags().isAnimalIntelligence((MOB)E))
+	        		&&(CMLib.flags().canSpeak(mob)))
+	        			R.show(mob, E, CMMsg.MSG_NOISE,"<S-NAME> speak(s) quietly with <T-NAME>.");
+	        		else
+	        		{
+	        			Vector V=((MOB)E).charStats().getMyRace().myResources();
+	        			boolean comb=false;
+	        			if(V!=null)
+	        			for(int v=0;v<V.size();v++)
+	        				if(((Item)V.elementAt(v)).material()==RawMaterial.RESOURCE_FUR)
+	        					comb=true;
+	        			if(comb)
+		        			R.show(mob, E, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> groom(s) <T-NAME>.");
+	        			else
+		        			R.show(mob, E, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> pet(s) <T-NAME>.");
+	        		}
+        		}
+        		else
+	    			R.show(mob, E, CMMsg.MSG_LOCK,"<S-NAME> admire(s) <T-NAME>.");
+        	}
+        	else
+        	if(E instanceof MOB)
+        	{
+        		if(CMLib.flags().isAnimalIntelligence((MOB)E))
+        			R.show(mob, E, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> smile(s) and pet(s) <T-NAME>.");
+        		else
+        		if(CMLib.flags().canSpeak(mob))
+        			R.show(mob, E, CMMsg.MSG_NOISE,"<S-NAME> speak(s) quietly with <T-NAME>.");
+        	}
+        }
         return true;
     }
 }

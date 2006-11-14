@@ -148,6 +148,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{RoomLoader.DBUpdateTheseMOBs(room,mobs);}
 	
+	public void DBUpdateTheseItems(Room room, Vector items)
+	{RoomLoader.DBUpdateTheseItems(room,items);}
+	
 	public void DBUpdateMOBs(Room room)
 	{RoomLoader.DBUpdateMOBs(room);}
 	

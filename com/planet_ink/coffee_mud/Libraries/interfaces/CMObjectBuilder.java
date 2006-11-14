@@ -32,7 +32,6 @@ import java.util.*;
 */
 public interface CMObjectBuilder extends CMObject
 {
-    public final static String hexStr="0123456789ABCDEF";
     public final static String[] GENITEMCODES={
             "CLASS","USES","LEVEL","ABILITY","NAME",
             "DISPLAY","DESCRIPTION","SECRET","PROPERWORN",
@@ -51,8 +50,6 @@ public interface CMObjectBuilder extends CMObject
     public boolean get(int x, int m);
     public String getGenMOBTextUnpacked(MOB mob, String newText);
     public void resetGenMOB(MOB mob, String newText);
-    public String parseOutAngleBrackets(String s);
-    public String restoreAngleBrackets(String s);
     public int envFlags(Environmental E);
     public void setEnvFlags(Environmental E, int f);
     public String getPropertiesStr(Environmental E, boolean fromTop);

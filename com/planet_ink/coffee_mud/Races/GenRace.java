@@ -231,7 +231,7 @@ public class GenRace extends StdRace
 				Item I=(Item)myResources().elementAt(i);
 				str.append("<RSCITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(I)));
-				str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
+				str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
 				str.append("</RSCITEM>");
 			}
 			str.append("</RESOURCES>");
@@ -245,7 +245,7 @@ public class GenRace extends StdRace
 				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
-				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
+				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
 				str.append("</OFTITEM>");
 			}
 			str.append("</OUTFIT>");
@@ -255,7 +255,7 @@ public class GenRace extends StdRace
 		{
 			str.append("<WEAPON>");
 			str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(naturalWeapon)));
-			str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().parseOutAngleBrackets(naturalWeapon.text())));
+			str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.xml().parseOutAngleBrackets(naturalWeapon.text())));
 			str.append("</WEAPON>");
 		}
 		if((racialAbilityNames==null)||(racialAbilityNames.length==0))
@@ -414,7 +414,7 @@ public class GenRace extends StdRace
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
 				String idat=CMLib.xml().getValFromPieces(iblk.contents,"IDATA");
-				newOne.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
+				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				resourceChoices.addElement(newOne);
 			}
@@ -433,7 +433,7 @@ public class GenRace extends StdRace
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
 				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
-				newOne.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
+				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				outfitChoices.addElement(newOne);
 			}
@@ -447,7 +447,7 @@ public class GenRace extends StdRace
 			String idat=CMLib.xml().getValFromPieces(wblk,"IDATA");
 			if((idat!=null)&&(naturalWeapon!=null))
 			{
-				naturalWeapon.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
+				naturalWeapon.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 				naturalWeapon.recoverEnvStats();
 			}
 		}

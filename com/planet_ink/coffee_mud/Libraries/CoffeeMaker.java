@@ -81,60 +81,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
 	}
 
-	public String parseOutAngleBrackets(String s)
-	{
-		int x=s.indexOf("<");
-		while(x>=0)
-		{
-			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
-			x=s.indexOf("<");
-		}
-		x=s.indexOf(">");
-		while(x>=0)
-		{
-			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
-			x=s.indexOf(">");
-		}
-		return s;
-	}
-
-	public String restoreAngleBrackets(String s)
-	{
-		StringBuffer buf=new StringBuffer(s);
-		int loop=0;
-		while(loop<buf.length())
-		{
-			switch(buf.charAt(loop))
-			{
-			case '&':
-				if(loop<buf.length()-3)
-				{
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-						buf.replace(loop,loop+4,"<");
-					else
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
-						buf.replace(loop,loop+4,">");
-				}
-				break;
-			case '%':
-				if(loop<buf.length()-2)
-				{
-					int dig1=hexStr.indexOf(buf.charAt(loop+1));
-					int dig2=hexStr.indexOf(buf.charAt(loop+2));
-					if((dig1>=0)&&(dig2>=0))
-					{
-						buf.setCharAt(loop,(char)((dig1*16)+dig2));
-						buf.deleteCharAt(loop+1);
-						buf.deleteCharAt(loop+1);
-					}
-				}
-				break;
-			}
-			++loop;
-		}
-		return buf.toString();
-	}
-
 	public int envFlags(Environmental E)
 	{
 		int f=0;
@@ -627,7 +573,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		CMLib.database().DBCreateRoom(newRoom,roomClass);
 		newRoom.setDisplayText(CMLib.xml().getValFromPieces(xml,"RDISP"));
 		newRoom.setDescription(CMLib.xml().getValFromPieces(xml,"RDESC"));
-		newRoom.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"RTEXT")));
+		newRoom.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"RTEXT")));
 
 		// now EXITS!
 		Vector xV=CMLib.xml().getRealContentsFromPieces(xml,"ROOMEXITS");
@@ -684,7 +630,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				{
 					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
 					if(xxV==null) return unpackErr("Room","null 'exit'"+" in room "+newRoom.roomID());
-					exit.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
+					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
 					newRoom.rawExits()[dir]=exit;
 				}
 				else
@@ -760,7 +706,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					String iden=CMLib.xml().getValFromPieces(mblk.contents,"MIDEN");
 					if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newMOB);
 
-					newMOB.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT")));
+					newMOB.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT")));
 					newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
 					newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
 					newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
@@ -798,7 +744,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
 					newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
 					newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
-					newItem.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
+					newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 					newItem.setContainer(null);
 					newItem.recoverEnvStats();
 					newRoom.addItem(newItem);
@@ -1005,7 +951,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
 		newArea.setTechLevel(CMLib.xml().getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
-		newArea.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
+		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
 		CMLib.database().DBUpdateArea(newArea.Name(),newArea);
 		if(andRooms)
 		{
@@ -1239,7 +1185,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 				buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
 				buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-				buf.append(CMLib.xml().convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+				buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
 				if((mob.baseCharStats().getMyRace().isGeneric())
 				&&(!custom.contains(mob.baseCharStats().getMyRace())))
 				   custom.add(mob.baseCharStats().getMyRace());
@@ -1308,7 +1254,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
 			buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
 			buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
-			buf.append(CMLib.xml().convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
+			buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
 			buf.append("</ITEM>\n\r");
 			fillFileSet(item,files);
 		}
@@ -1336,7 +1282,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
 			newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
 			newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
-			newItem.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
+			newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 			newItem.setContainer(null);
 			newItem.recoverEnvStats();
 			addHere.addElement(newItem);
@@ -1360,7 +1306,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
 			MOB newMOB=CMClass.getMOB(mClass);
 			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
-			String text=restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
+			String text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
 			newMOB.setMiscText(text);
 			newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
 			newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
@@ -1444,7 +1390,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("RCLAS",CMClass.className(room)));
 		buf.append(CMLib.xml().convertXMLtoTag("RDISP",room.displayText()));
 		buf.append(CMLib.xml().convertXMLtoTag("RDESC",room.description()));
-		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",parseOutAngleBrackets(room.text())));
+		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",CMLib.xml().parseOutAngleBrackets(room.text())));
 		fillFileSet(room,files);
 		buf.append("<ROOMEXITS>");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
@@ -1465,7 +1411,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				{
 					buf.append("<XEXIT>");
 					buf.append(CMLib.xml().convertXMLtoTag("EXID",exit.ID()));
-					buf.append(CMLib.xml().convertXMLtoTag("EXDAT",parseOutAngleBrackets(exit.text())));
+					buf.append(CMLib.xml().convertXMLtoTag("EXDAT",CMLib.xml().parseOutAngleBrackets(exit.text())));
 					buf.append("</XEXIT>");
 				}
 				fillFileSet(exit,files);
@@ -1534,7 +1480,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 						buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
 						buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-						buf.append(CMLib.xml().convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+						buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
 						if(mob.riding()!=null)
 							buf.append(CMLib.xml().convertXMLtoTag("MRIDE",""+mob.riding()));
 						else
@@ -1571,7 +1517,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
     					buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
     					buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
     					buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-    					buf.append(CMLib.xml().convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
+    					buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
     					buf.append("</RITEM>");
     					fillFileSet(item,files);
                     }
@@ -2332,7 +2278,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		str.append(CMLib.xml().convertXMLtoTag("LEIG",mob.getLiegeID()));
 		str.append(CMLib.xml().convertXMLtoTag("HEIT",mob.baseEnvStats().height()));
 		str.append(CMLib.xml().convertXMLtoTag("WEIT",mob.baseEnvStats().weight()));
-		str.append(CMLib.xml().convertXMLtoTag("PRPT",parseOutAngleBrackets(pstats.getPrompt())));
+		str.append(CMLib.xml().convertXMLtoTag("PRPT",CMLib.xml().parseOutAngleBrackets(pstats.getPrompt())));
 		str.append(CMLib.xml().convertXMLtoTag("COLR",pstats.getColorStr()));
 		str.append(CMLib.xml().convertXMLtoTag("CLAN",mob.getClanID()));
 		str.append(CMLib.xml().convertXMLtoTag("LSIP",pstats.lastIP()));
@@ -2441,7 +2387,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			mob.setLiegeID(CMLib.xml().getValFromPieces(mblk.contents,"LEIG"));
 			mob.baseEnvStats().setHeight(CMLib.xml().getIntFromPieces(mblk.contents,"HEIT"));
 			mob.baseEnvStats().setWeight(CMLib.xml().getIntFromPieces(mblk.contents,"WEIT"));
-			mob.playerStats().setPrompt(restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"PRPT")));
+			mob.playerStats().setPrompt(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"PRPT")));
 			String colorStr=CMLib.xml().getValFromPieces(mblk.contents,"COLR");
 			if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
 				mob.playerStats().setColorStr(colorStr);
@@ -2512,7 +2458,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			{
 				behaviorstr.append("<BHAVE>");
 				behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.className(B)));
-				behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",parseOutAngleBrackets(B.getParms())));
+				behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",CMLib.xml().parseOutAngleBrackets(B.getParms())));
 				behaviorstr.append("</BHAVE>");
 			}
 		}
@@ -2526,7 +2472,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			{
 				affectstr.append("<AFF>");
 				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
-				affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",parseOutAngleBrackets(A.text())));
+				affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",CMLib.xml().parseOutAngleBrackets(A.text())));
 				affectstr.append("</AFF>");
 			}
 		}
@@ -2739,7 +2685,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				Log.errOut("CoffeeMaker","Unknown behavior "+CMLib.xml().getValFromPieces(ablk.contents,"BCLASS")+" on "+identifier(E,null)+", skipping.");
 				continue;
 			}
-			newOne.setParms(restoreAngleBrackets(bparms));
+			newOne.setParms(CMLib.xml().restoreAngleBrackets(bparms));
 			E.addBehavior(newOne);
 		}
         if(E instanceof Area)
@@ -2766,7 +2712,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				Log.errOut("CoffeeMaker","Unknown affect "+CMLib.xml().getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(E,null)+", skipping.");
 				continue;
 			}
-			newOne.setMiscText(restoreAngleBrackets(aparms));
+			newOne.setMiscText(CMLib.xml().restoreAngleBrackets(aparms));
 			E.addNonUninvokableEffect(newOne);
 		}
 		String[] codes=E.getStatCodes();

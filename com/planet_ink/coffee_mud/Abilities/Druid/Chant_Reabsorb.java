@@ -45,14 +45,19 @@ public class Chant_Reabsorb extends Chant
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
-        DeadBody D=CMLib.utensils().getDeadBody(target);
-		if((D!=null)
-		&&(D.playerCorpse())
-		&&(!D.mobName().equals(mob.Name())))
-		{
-			mob.tell("You are not allowed to reabsorb a player corpse.");
-			return false;
-		}
+		
+        Vector V=CMLib.utensils().getDeadBodies(target);
+        for(int v=0;v<V.size();v++)
+        {
+        	DeadBody D=(DeadBody)V.elementAt(v);
+			if((D!=null)
+			&&(D.playerCorpse())
+			&&(!D.mobName().equals(mob.Name())))
+			{
+				mob.tell("You are not allowed to reabsorb a player corpse.");
+				return false;
+			}
+        }
 		if(!(target.owner() instanceof Room))
 		{
 			mob.tell("You need to put "+target.name()+" on the ground first.");

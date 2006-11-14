@@ -59,6 +59,7 @@ public interface DatabaseEngine extends CMObject
 	public String DBReadRoomDesc(String roomID);
     public void DBReadAllRooms(RoomnumberSet roomsToRead);
 	public void DBUpdateTheseMOBs(Room room, Vector mobs);
+	public void DBUpdateTheseItems(Room room, Vector item);
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room, String LocaleID);
 	public void DBUpdateRoom(Room room);

@@ -34,6 +34,61 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class XMLManager extends StdLibrary implements XMLLibrary
 {
     public String ID(){return "XMLManager";}
+    
+	public String parseOutAngleBrackets(String s)
+	{
+		int x=s.indexOf("<");
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
+			x=s.indexOf("<");
+		}
+		x=s.indexOf(">");
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
+			x=s.indexOf(">");
+		}
+		return s;
+	}
+
+	public String restoreAngleBrackets(String s)
+	{
+		StringBuffer buf=new StringBuffer(s);
+		int loop=0;
+		while(loop<buf.length())
+		{
+			switch(buf.charAt(loop))
+			{
+			case '&':
+				if(loop<buf.length()-3)
+				{
+					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
+						buf.replace(loop,loop+4,"<");
+					else
+					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
+						buf.replace(loop,loop+4,">");
+				}
+				break;
+			case '%':
+				if(loop<buf.length()-2)
+				{
+					int dig1=HEX_DIGITS.indexOf(buf.charAt(loop+1));
+					int dig2=HEX_DIGITS.indexOf(buf.charAt(loop+2));
+					if((dig1>=0)&&(dig2>=0))
+					{
+						buf.setCharAt(loop,(char)((dig1*16)+dig2));
+						buf.deleteCharAt(loop+1);
+						buf.deleteCharAt(loop+1);
+					}
+				}
+				break;
+			}
+			++loop;
+		}
+		return buf.toString();
+	}
+
 	/**
 	 * Returns the double value of a string without crashing
  	 *

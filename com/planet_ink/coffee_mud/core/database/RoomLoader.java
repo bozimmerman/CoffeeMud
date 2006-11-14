@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 /* 
    Copyright 2000-2006 Bo Zimmerman
@@ -666,44 +667,52 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
 	}
 
-	private void DBUpdateContents(Room room)
-	{
-		if((!room.savable())||(room.amDestroyed())) return;
-		Vector done=new Vector();
+    
+    private Vector DBGetContents(Room room)
+    {
+		if((!room.savable())||(room.amDestroyed())) return new Vector();
+		Vector contents=new Vector();
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item thisItem=room.fetchItem(i);
-			if((thisItem!=null)&&(!done.contains(""+thisItem))&&thisItem.savable())
-			{
-				done.addElement(""+thisItem);
-				thisItem.setExpirationDate(0); // saved items won't clear!
-				DB.update(
-				"INSERT INTO CMROIT ("
-				+"CMROID, "
-				+"CMITNM, "
-				+"CMITID, "
-				+"CMITLO, "
-				+"CMITTX, "
-				+"CMITRE, "
-				+"CMITUR, "
-				+"CMITLV, "
-				+"CMITAB, "
-				+"CMHEIT"
-				+") values ("
-				+"'"+room.roomID()+"',"
-				+"'"+thisItem+"',"
-				+"'"+thisItem.ID()+"',"
-				+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
-				+"'"+thisItem.text()+" ',"
-				+thisItem.baseEnvStats().rejuv()+","
-				+thisItem.usesRemaining()+","
-				+thisItem.baseEnvStats().level()+","
-				+thisItem.baseEnvStats().ability()+","
-				+thisItem.baseEnvStats().height()+")");
-			}
+			if((thisItem!=null)&&(!contents.contains(thisItem))&&thisItem.savable())
+				contents.addElement(thisItem);
+		}
+		return contents;
+    }
+	public void DBUpdateTheseItems(Room room, Vector items)
+	{
+		if((!room.savable())||(room.amDestroyed())) return;
+		for(int i=0;i<items.size();i++)
+		{
+			Item thisItem=(Item)items.elementAt(i);
+			thisItem.setExpirationDate(0); // saved items won't clear!
+			DB.update(
+			"INSERT INTO CMROIT ("
+			+"CMROID, "
+			+"CMITNM, "
+			+"CMITID, "
+			+"CMITLO, "
+			+"CMITTX, "
+			+"CMITRE, "
+			+"CMITUR, "
+			+"CMITLV, "
+			+"CMITAB, "
+			+"CMHEIT"
+			+") values ("
+			+"'"+room.roomID()+"',"
+			+"'"+thisItem+"',"
+			+"'"+thisItem.ID()+"',"
+			+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
+			+"'"+thisItem.text()+" ',"
+			+thisItem.baseEnvStats().rejuv()+","
+			+thisItem.usesRemaining()+","
+			+thisItem.baseEnvStats().level()+","
+			+thisItem.baseEnvStats().ability()+","
+			+thisItem.baseEnvStats().height()+")");
 		}
 	}
-
+	
 	public void DBUpdateItems(Room room)
 	{
 		if((!room.savable())||(room.amDestroyed())) return;
@@ -715,7 +724,7 @@ public class RoomLoader
 			Log.errOut("Failed to update items for room "+room.roomID()+".");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
-		DBUpdateContents(room);
+		DBUpdateTheseItems(room,DBGetContents(room));
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished item update for room "+room.roomID());
 	}

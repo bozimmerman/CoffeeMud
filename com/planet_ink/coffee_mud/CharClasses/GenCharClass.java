@@ -289,7 +289,7 @@ public class GenCharClass extends StdCharClass
 				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
-				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
+				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
 				str.append("</OFTITEM>");
 			}
 			str.append("</OUTFIT>");
@@ -443,7 +443,7 @@ public class GenCharClass extends StdCharClass
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
 				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
-				newOne.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
+				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				outfitChoices.addElement(newOne);
 			}

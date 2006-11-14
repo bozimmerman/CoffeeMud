@@ -31,6 +31,8 @@ import java.util.*;
 */
 public interface XMLLibrary extends CMObject
 {
+    public final static String HEX_DIGITS="0123456789ABCDEF";
+    
     /**
      * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
      * 
@@ -215,4 +217,21 @@ public interface XMLLibrary extends CMObject
      * @return String Parameter value
      */
     public String returnXMLParm(String Blob, String Tag);
+    
+    /**
+     * parse a tag value for safety
+     * 
+     * <br><br><b>Usage:</b> String val=parseOutAngleBrackets(ThisValue);
+     * @param s String to parse
+     * @return String parsed value
+     */
+	public String parseOutAngleBrackets(String s);
+    /**
+     * restore a tag value parsed for safety
+     * 
+     * <br><br><b>Usage:</b> String val=restoreAngleBrackets(ThisValue);
+     * @param s String to parse
+     * @return String unparsed value
+     */
+	public String restoreAngleBrackets(String s);
 }

@@ -388,7 +388,7 @@ public class DefaultPlayerStats implements PlayerStats
         for(int x=getSaveStatIndex();x<codes.length;x++)
         {
         	String code=codes[x].toUpperCase();
-        	rest.append("<"+code+">"+CMLib.coffeeMaker().parseOutAngleBrackets(getStat(code))+"</"+code+">");
+        	rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
         }
         
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
@@ -399,12 +399,12 @@ public class DefaultPlayerStats implements PlayerStats
             +getAliasXML()
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toStringList(birthday)+"</BIRTHDAY>":"")
-			+((poofin.length()>0)?"<POOFIN>"+CMLib.coffeeMaker().parseOutAngleBrackets(poofin)+"</POOFIN>":"")
-			+((notes.length()>0)?"<NOTES>"+CMLib.coffeeMaker().parseOutAngleBrackets(notes)+"</NOTES>":"")
-			+((poofout.length()>0)?"<POOFOUT>"+CMLib.coffeeMaker().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
-            +((announceMsg.length()>0)?"<ANNOUNCE>"+CMLib.coffeeMaker().parseOutAngleBrackets(announceMsg)+"</ANNOUNCE>":"")
-			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.coffeeMaker().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
-			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.coffeeMaker().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
+			+((poofin.length()>0)?"<POOFIN>"+CMLib.xml().parseOutAngleBrackets(poofin)+"</POOFIN>":"")
+			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
+			+((poofout.length()>0)?"<POOFOUT>"+CMLib.xml().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
+            +((announceMsg.length()>0)?"<ANNOUNCE>"+CMLib.xml().parseOutAngleBrackets(announceMsg)+"</ANNOUNCE>":"")
+			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
+			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
             +"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
 			+getSecurityGroupStr()
             +roomSet().xml()
@@ -473,27 +473,27 @@ public class DefaultPlayerStats implements PlayerStats
 		
 		poofin=CMLib.xml().returnXMLValue(str,"POOFIN");
 		if(poofin==null) poofin="";
-		poofin=CMLib.coffeeMaker().restoreAngleBrackets(poofin);
+		poofin=CMLib.xml().restoreAngleBrackets(poofin);
 		
 		poofout=CMLib.xml().returnXMLValue(str,"POOFOUT");
 		if(poofout==null) poofout="";
-		poofout=CMLib.coffeeMaker().restoreAngleBrackets(poofout);
+		poofout=CMLib.xml().restoreAngleBrackets(poofout);
 		
 		tranpoofin=CMLib.xml().returnXMLValue(str,"TRANPOOFIN");
 		if(tranpoofin==null) tranpoofin="";
-		tranpoofin=CMLib.coffeeMaker().restoreAngleBrackets(tranpoofin);
+		tranpoofin=CMLib.xml().restoreAngleBrackets(tranpoofin);
 		
 		tranpoofout=CMLib.xml().returnXMLValue(str,"TRANPOOFOUT");
 		if(tranpoofout==null) tranpoofout="";
-		tranpoofout=CMLib.coffeeMaker().restoreAngleBrackets(tranpoofout);
+		tranpoofout=CMLib.xml().restoreAngleBrackets(tranpoofout);
 		
         announceMsg=CMLib.xml().returnXMLValue(str,"ANNOUNCE");
         if(announceMsg==null) announceMsg="";
-        announceMsg=CMLib.coffeeMaker().restoreAngleBrackets(announceMsg);
+        announceMsg=CMLib.xml().restoreAngleBrackets(announceMsg);
         
         notes=CMLib.xml().returnXMLValue(str,"NOTES");
         if(notes==null) notes="";
-        notes=CMLib.coffeeMaker().restoreAngleBrackets(notes);
+        notes=CMLib.xml().restoreAngleBrackets(notes);
 		
         String dates=CMLib.xml().returnXMLValue(str,"DATES");
         if(dates==null) dates="";
@@ -525,7 +525,7 @@ public class DefaultPlayerStats implements PlayerStats
         {
         	String val=CMLib.xml().returnXMLValue(str,codes[i].toUpperCase());
         	if(val==null) val="";
-        	setStat(codes[i].toUpperCase(),CMLib.coffeeMaker().restoreAngleBrackets(val));
+        	setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(val));
         }
 	}
 
