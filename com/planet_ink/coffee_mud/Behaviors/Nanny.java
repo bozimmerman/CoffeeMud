@@ -590,22 +590,22 @@ public class Nanny extends StdBehavior
     
     public String getParms()
     {
+    	StringBuffer parms=new StringBuffer("");
+    	parms.append("RATE="+hourlyRate+" ");
+    	parms.append("NAME=\""+place+"\" ");
+    	parms.append("WATCHES=\"");
+    	if(watchesBabies) parms.append("Babies,");
+    	if(watchesChildren) parms.append("Children,");
+    	if(watchesMounts) parms.append("Mounts,");
+    	if(watchesWagons) parms.append("Wagons,");
+    	if(watchesCars) parms.append("Cars,");
+    	if(watchesBoats) parms.append("Boats,");
+    	if(watchesAirCars) parms.append("AirCars,");
+    	if(watchesMOBFollowers) parms.append("Followers,");
+    	parms.append("\"");
     	if(dropOffs!=null)
     	{
-    		super.setParms("");
-	    	StringBuffer parms=new StringBuffer("");
-	    	parms.append("RATE="+hourlyRate+" ");
-	    	parms.append("NAME=\""+place+"\" ");
-	    	parms.append("WATCHES=\"");
-	    	if(watchesBabies) parms.append("Babies,");
-	    	if(watchesChildren) parms.append("Children,");
-	    	if(watchesMounts) parms.append("Mounts,");
-	    	if(watchesWagons) parms.append("Wagons,");
-	    	if(watchesCars) parms.append("Cars,");
-	    	if(watchesBoats) parms.append("Boats,");
-	    	if(watchesAirCars) parms.append("AirCars,");
-	    	if(watchesMOBFollowers) parms.append("Followers,");
-	    	parms.append("\" |~| ");
+	    	parms.append(" |~| ");
 	    	Vector oldNames=new Vector();
 	    	Environmental E=null;
 	    	MOB owner=null;
@@ -627,42 +627,38 @@ public class Nanny extends StdBehavior
 	    		parms.append(CMLib.xml().convertXMLtoTag("TIME",time.longValue()));
 	    		parms.append("</DROP>");
 	    	}
-	    	return parms.toString().trim();
     	}
-    	return super.getParms();
+    	return parms.toString().trim();
     }
 
     public void setParms(String parms)
     {
-    	if(dropOffs==null)
-    		super.setParms(parms);
-    	else
+		super.setParms(parms);
+    	int x=super.parms.indexOf("|~|");
+    	if(x>0) dropOffs=null;
+    	hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
+    	place=CMParms.getParmStr(parms,"NAME","nursery");
+    	Vector watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
+    	String watch=null;
+    	watchesBabies=false;
+    	watchesChildren=false;
+    	watchesMounts=false;
+    	watchesWagons=false;
+    	watchesCars=false;
+    	watchesBoats=false;
+    	watchesAirCars=false;
+    	watchesMOBFollowers=false;
+    	for(int w=0;w<watches.size();w++)
     	{
-	    	hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
-	    	place=CMParms.getParmStr(parms,"NAME","nursery");
-	    	Vector watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
-	    	String watch=null;
-	    	watchesBabies=false;
-	    	watchesChildren=false;
-	    	watchesMounts=false;
-	    	watchesWagons=false;
-	    	watchesCars=false;
-	    	watchesBoats=false;
-	    	watchesAirCars=false;
-	    	watchesMOBFollowers=false;
-	    	for(int w=0;w<watches.size();w++)
-	    	{
-	    		watch=(String)watches.elementAt(w);
-		    	if(watch.startsWith("BAB")) watchesBabies=true;
-		    	if(watch.startsWith("CHI")) watchesChildren=true;
-		    	if(watch.startsWith("MOU")) watchesMounts=true;
-		    	if(watch.startsWith("WAG")) watchesWagons=true;
-		    	if(watch.startsWith("CAR")) watchesCars=true;
-		    	if(watch.startsWith("BOA")) watchesBoats=true;
-		    	if(watch.startsWith("AIR")) watchesAirCars=true;
-		    	if(watch.startsWith("FOL")) watchesMOBFollowers=true;
-	    	}
-	    	super.setParms("");
+    		watch=(String)watches.elementAt(w);
+	    	if(watch.startsWith("BAB")) watchesBabies=true;
+	    	if(watch.startsWith("CHI")) watchesChildren=true;
+	    	if(watch.startsWith("MOU")) watchesMounts=true;
+	    	if(watch.startsWith("WAG")) watchesWagons=true;
+	    	if(watch.startsWith("CAR")) watchesCars=true;
+	    	if(watch.startsWith("BOA")) watchesBoats=true;
+	    	if(watch.startsWith("AIR")) watchesAirCars=true;
+	    	if(watch.startsWith("FOL")) watchesMOBFollowers=true;
     	}
     }
     
@@ -676,16 +672,11 @@ public class Nanny extends StdBehavior
         if(dropOffs==null)
         {
         	int x=super.parms.indexOf("|~|");
-        	if(x<0)
-        	{
-        		dropOffs=new DVector(3);
-        		setParms(super.parms);
-        	}
-        	else
+    		dropOffs=new DVector(3);
+        	if(x>0)
         	{
         		String codes=super.parms.substring(x+3);
         		parms=parms.substring(0,3);
-        		dropOffs=new DVector(3);
         		if(codes.trim().length()>0)
         		{
 	        		Vector V=CMLib.xml().parseAllXML(codes);
@@ -731,7 +722,6 @@ public class Nanny extends StdBehavior
 	        				Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value);
 	        		}
         		}
-        		setParms(super.parms);
         	}
 			changedSinceLastSave=false;
         }

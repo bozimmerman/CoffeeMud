@@ -288,8 +288,8 @@ public class CombatAbilities extends StdBehavior
             {
                 I=mob.fetchInventory(i);
                 if((!(I instanceof Weapon))
-                ||((((Weapon)I).minRange()>rtt)
-                &&(((Weapon)I).maxRange()<rtt)))
+                ||(((Weapon)I).minRange()>rtt)
+            	||(((Weapon)I).maxRange()<rtt))
                     continue;
                 
                 if(I.amWearingAt(Item.WORN_WIELD))
