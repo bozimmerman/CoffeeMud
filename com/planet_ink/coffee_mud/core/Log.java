@@ -182,13 +182,17 @@ public class Log
 								    String newERRMSGS,
 								    String newWARNMSGS,
 								    String newDBGMSGS,
-								    String newHLPMSGS)
+								    String newHLPMSGS,
+								    String newKILMSGS,
+								    String newCBTMSGS)
 	{
 		System.setProperty("LOG."+LOGNAME+"_INFO",newSYSMSGS);
 		System.setProperty("LOG."+LOGNAME+"_ERROR",newERRMSGS);
 		System.setProperty("LOG."+LOGNAME+"_WARN",newWARNMSGS);
 		System.setProperty("LOG."+LOGNAME+"_DEBUG",newDBGMSGS);
 		System.setProperty("LOG."+LOGNAME+"_HELP",newHLPMSGS);
+		System.setProperty("LOG."+LOGNAME+"_KILLS",newKILMSGS);
+		System.setProperty("LOG."+LOGNAME+"_COMBAT",newCBTMSGS);
 	}
 
 	/**
@@ -334,12 +338,16 @@ public class Log
 	public static void errOut(String Out){ errOut("UNKN",Out); }
 	public static void warnOut(String Out){ warnOut("UNKN",Out); }
 	public static void helpOut(String Out) { helpOut("UNKN",Out); }
+	public static void killsOut(String Out) { killsOut("UNKN",Out); }
+	public static void combatOut(String Out) { combatOut("UNKN",Out); }
+	public static void sysOut(String Module, String Message){ infoOut(Module,Message);}
 	public static void infoOut(String Module, String Message){ standardOut("Info",Module,Message,Integer.MIN_VALUE);}
-	public static void sysOut(String Out, String Message){ infoOut(Out,Message);}
 	public static void errOut(String Module, String Message){ standardOut("Error",Module,Message,Integer.MIN_VALUE);}
 	public static void warnOut(String Module, String Message){ standardOut("Warn",Module,Message,Integer.MIN_VALUE);}
 	public static void debugOut(String Module, String Message){ standardOut("Debug",Module,Message,Integer.MIN_VALUE);}
 	public static void helpOut(String Module, String Message){ standardOut("Help",Module,Message,Integer.MIN_VALUE);}
+	public static void killsOut(String Module, String Message){ standardOut("Kills",Module,Message,Integer.MIN_VALUE);}
+	public static void combatOut(String Module, String Message){ standardOut("Combat",Module,Message,Integer.MIN_VALUE);}
 	public static void debugOut(String Module, Exception e){ shortExOut("Debug",Module,Integer.MIN_VALUE,e);}
 	public static void errOut(String Module, Throwable e){ standardExOut("Error",Module,Integer.MIN_VALUE,e);}
 	public static void warnOut(String Module, Throwable e){ standardExOut("Error",Module,Integer.MIN_VALUE,e);}
@@ -350,12 +358,16 @@ public class Log
 	public static void errOut(String Out, int priority){ errOut("UNKN",Out,priority); }
 	public static void warnOut(String Out, int priority){ warnOut("UNKN",Out,priority); }
 	public static void helpOut(String Out, int priority) { helpOut("UNKN",Out,priority); }
+	public static void killsOut(String Out, int priority) { killsOut("UNKN",Out,priority); }
+	public static void combatOut(String Out, int priority) { combatOut("UNKN",Out,priority); }
 	public static void infoOut(String Module, String Message, int priority){ standardOut("Info",Module,Message,priority);}
 	public static void sysOut(String Out, String Message, int priority){ infoOut(Out,Message);}
 	public static void errOut(String Module, String Message, int priority){ standardOut("Error",Module,Message,priority);}
 	public static void warnOut(String Module, String Message, int priority){ standardOut("Warn",Module,Message,priority);}
 	public static void debugOut(String Module, String Message, int priority){ standardOut("Debug",Module,Message,priority);}
 	public static void helpOut(String Module, String Message, int priority){ standardOut("Help",Module,Message,priority);}
+	public static void killsOut(String Module, String Message, int priority){ standardOut("Kills",Module,Message,priority);}
+	public static void combatOut(String Module, String Message, int priority){ standardOut("Combat",Module,Message,priority);}
 	public static void debugOut(String Module, int priority, Exception e){ shortExOut("Debug",Module,priority,e);}
 	public static void errOut(String Module, int priority, Throwable e){ standardExOut("Error",Module,priority,e);}
 	public static void warnOut(String Module, int priority, Throwable e){ standardExOut("Error",Module,priority,e);}
@@ -536,9 +548,13 @@ public class Log
 	public static boolean debugChannelOn() { return isWriterOn("debug");}
 	public static boolean infoChannelOn() { return isWriterOn("info");}
 	public static boolean warnChannelOn() { return isWriterOn("warning");}
+	public static boolean killsChannelOn() { return isWriterOn("kills");}
+	public static boolean combatChannelOn() { return isWriterOn("combat");}
 	public static boolean errorChannelAt(int priority) { return getWriter("error",priority)!=null;}
 	public static boolean helpChannelAt(int priority) { return getWriter("help",priority)!=null;}
 	public static boolean debugChannelAt(int priority) { return getWriter("debug",priority)!=null;}
 	public static boolean infoChannelAt(int priority) { return getWriter("info",priority)!=null;}
 	public static boolean warnChannelAt(int priority) { return getWriter("warning",priority)!=null;}
+	public static boolean killsChannelAt(int priority) { return getWriter("kills",priority)!=null;}
+	public static boolean combatChannelAt(int priority) { return getWriter("combat",priority)!=null;}
 }

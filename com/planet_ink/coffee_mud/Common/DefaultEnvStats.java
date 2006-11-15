@@ -72,6 +72,7 @@ public class DefaultEnvStats implements EnvStats
 	public void setSensesMask(int newMask){stats[STAT_SENSES]=newMask;}
 	public void setHeight(int newHeight){stats[STAT_HEIGHT]=newHeight;}
 	public void setName(String newName){ replacementName=newName;}
+	public String getCombatStats(){return "L"+stats[STAT_LEVEL]+":A"+stats[STAT_ARMOR]+":K"+stats[STAT_ATTACK]+":D"+stats[STAT_DAMAGE];}
 	public void addAmbiance(String ambiance)
 	{
 		ambiance=ambiance.trim();

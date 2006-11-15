@@ -824,6 +824,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         MOB attacker=msg.source();
         MOB target=(MOB)msg.target();
         int dmg=msg.value();
+        if(Log.combatChannelOn())
+        {
+        	Item DI=target.fetchWieldedItem();
+        	Item KI=attacker.fetchWieldedItem();
+        	String tool=(msg.tool()==null)?"null":msg.tool().name();
+        	String type=(msg.sourceMinor()==CMMsg.NO_EFFECT)?"??":CMMsg.TYPE_DESCS[msg.sourceMinor()];
+        	Log.combatOut("DAMG",attacker.Name()+":"+attacker.envStats().getCombatStats()+":"+attacker.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+target.Name()+":"+target.envStats().getCombatStats()+":"+target.curState().getCombatStats()+":"+((DI==null)?"null":DI.name())+":"+tool+":"+type+":"+dmg);
+        }
         synchronized(("DMG"+target.Name().toUpperCase()).intern())
         {
             if((dmg>0)&&(target.curState().getHitPoints()>0))
@@ -882,6 +890,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if(msg.tool() instanceof MOB)
             {
                 MOB killer=(MOB)msg.tool();
+                if(Log.killsChannelOn())
+                {
+                	Item KI=killer.fetchWieldedItem();
+                	Item DI=deadmob.fetchWieldedItem();
+                	Log.killsOut("KILL",killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+                }
+                if(Log.combatChannelOn())
+                {
+                	Item DI=deadmob.fetchWieldedItem();
+                	Item KI=killer.fetchWieldedItem();
+                	Log.combatOut("KILL",killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+                }
                 CMLib.combat().justDie(killer,deadmob);
                 if((!deadmob.isMonster())&&(deadmob.soulMate()==null)&&(killer!=deadmob)&&(!killer.isMonster()))
                 {

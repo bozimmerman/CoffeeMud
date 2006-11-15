@@ -56,7 +56,13 @@ public interface CharState extends CMObject
     /** constant for how many fatigue points are required to be considered fatigued */
 	public final static long FATIGUED_MILLIS=Tickable.TIME_TICK*3000;
 
-    /**
+	/**
+     * Get primary combat stats as displayable code string
+     * @return primary combat stats as displayable code string
+     */
+	public String getCombatStats();
+	
+   /**
      * Get the number of fatigue points for the player
      * @return number of fatigue points
      */

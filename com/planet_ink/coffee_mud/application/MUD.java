@@ -876,7 +876,7 @@ public class MUD extends Thread implements MudHost
 				if ((page==null)||(!page.loaded))
 				{
 					Log.startLogFiles("mud",1);
-					Log.setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH");
+					Log.setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
 					Log.errOut("MUD","ERROR: Unable to read ini file: '"+iniFile+"'.");
 					System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
@@ -889,7 +889,7 @@ public class MUD extends Thread implements MudHost
 				CMProps.setVar(CMProps.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
 				CMProps.setIntVar(CMProps.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
 				Log.startLogFiles("mud",page.getInt("NUMLOGS"));
-				Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"));
+				Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));

@@ -133,6 +133,8 @@ public interface EnvStats extends CMObject
 	public void addAmbiance(String ambiance);
 	public void delAmbiance(String ambiance);
 	
+	public String getCombatStats();
+	
 	public String[] getCodes();
 	public void setStat(String code, String val);
 	public String getStat(String code);

@@ -153,6 +153,7 @@ public class DefaultCharState implements CharState
         return (int)factor;
 	}
 	
+	public String getCombatStats(){return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+Fatigue;}
 	public int getMana(){return states[STAT_MANA];}
 	public void setMana(int newVal){ states[STAT_MANA]=newVal;}
 	public boolean adjMana(int byThisMuch, CharState max)

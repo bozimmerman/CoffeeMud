@@ -931,7 +931,6 @@ public class StdMOB implements MOB
 		}
 		if(victim==mob) return;
 		if(mob==this) return;
-        
 		victim=mob;
 		recoverEnvStats();
 		recoverCharStats();
@@ -953,6 +952,13 @@ public class StdMOB implements MOB
 			}
 			else
 			{
+                if(Log.combatChannelOn())
+                {
+                	Item I=fetchWieldedItem();
+                	Item VI=mob.fetchWieldedItem();
+                	Log.combatOut("STRT",Name()+":"+envStats().getCombatStats()+":"+curState().getCombatStats()+":"+((I==null)?"null":I.name())+":"+mob.Name()+":"+mob.envStats().getCombatStats()+":"+mob.curState().getCombatStats()+":"+((VI==null)?"null":VI.name()));
+                	
+                }
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
@@ -2184,7 +2190,9 @@ public class StdMOB implements MOB
 		                adjustFaction(msg.othersMessage(),msg.value());
                 }
                 break;
-			case CMMsg.TYP_DEATH: CMLib.combat().handleDeath(msg); break;
+			case CMMsg.TYP_DEATH:
+				CMLib.combat().handleDeath(msg); 
+			break;
 			case CMMsg.TYP_REBUKE:
 				if(((msg.target()==null)&&(getLiegeID().length()>0))
 				||((msg.target()!=null)

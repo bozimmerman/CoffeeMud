@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -55,6 +55,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int practicesToPractice(){return 1;}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long flags(){return 0;}
+	protected short[] expertise=null;
 	public int usageType(){return USAGE_MANA;}
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -84,56 +85,29 @@ public class StdAbility extends ForeignScriptable implements Ability
 		}
 	}
     
-    protected int getX1Level(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-	    	return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X1,mob);
+    protected synchronized int expertise(MOB mob, int code)
+    {
+    	if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())))
+    	{
+	    	if(expertise!=null) return expertise[code];
+			expertise=new short[ExpertiseLibrary.NUM_XFLAGS];
+			for(int x=0;x<ExpertiseLibrary.NUM_XFLAGS;x++)
+				expertise[x]=(short)CMLib.expertises().getApplicableExpertiseLevel(ID(),x,mob);
+	    	return expertise[code];
+    	}
+    	expertise=null;
     	return 0;
     }
-    protected int getX2Level(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X2,mob);
-    	return 0;
-    }
-    protected int getX3Level(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X3,mob);
-    	return 0;
-    }
-    protected int getX4Level(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X4,mob);
-    	return 0;
-    }
-    protected int getX5Level(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X5,mob);
-    	return 0;
-    }
-    protected int getXLEVELLevel(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LEVEL,mob);
-    	return 0;
-    }
-    protected int getXLOWCOSTLevel(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LOWCOST,mob);
-    	return 0;
-    }
-    protected int getXMAXRANGELevel(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_MAXRANGE,mob);
-    	return 0;
-    }
-    protected int getXTIMELevel(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_TIME,mob);
-    	return 0;
-    }
-    protected int getXPCOSTLevel(MOB mob){
-    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
-    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_XPCOST,mob);
-    	return 0;
-    }
+    protected int getX1Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X1);}
+    protected int getX2Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X2);}
+    protected int getX3Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X3);}
+    protected int getX4Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X4);}
+    protected int getX5Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X5);}
+    protected int getXLEVELLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LEVEL);}
+    protected int getXLOWCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LOWCOST);}
+    protected int getXMAXRANGELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_MAXRANGE);}
+    protected int getXTIMELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_TIME);}
+    protected int getXPCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_XPCOST);}
     
     protected int getXPCOSTAdjustment(MOB mob, int xpLoss){
     	int xLevel=getXPCOSTLevel(mob);
@@ -196,6 +170,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	{
 		try
         {
+			expertise=null;
 			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -579,7 +554,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	protected void cloneFix(Ability E){}
+	protected void cloneFix(Ability E){expertise=null;}
 	public CMObject copyOf()
 	{
 		try
@@ -828,6 +803,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
+		expertise=null;
         if((mob!=null)&&(getXMAXRANGELevel(mob)>0)) 
             invoker=mob;
 		if(!auto)
