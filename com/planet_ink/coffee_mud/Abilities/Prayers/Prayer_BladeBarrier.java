@@ -84,7 +84,7 @@ public class Prayer_BladeBarrier extends Prayer
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
+				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.TYP_CAST_SPELL|CMMsg.MASK_ALWAYS,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
 				lastMessage="The blade barrier around";
 			}
 			else

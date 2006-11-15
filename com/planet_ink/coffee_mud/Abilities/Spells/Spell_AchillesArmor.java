@@ -102,6 +102,9 @@ public class Spell_AchillesArmor extends Spell
 			case CMMsg.TYP_CAST_SPELL:
 				weaponType=Weapon.TYPE_BURSTING;
 				break;
+            case CMMsg.TYP_JUSTICE:
+                weaponType=Weapon.TYPE_BASHING;
+                break;
 			}
 			if(weaponType<0)
 				return super.okMessage(myHost,msg);

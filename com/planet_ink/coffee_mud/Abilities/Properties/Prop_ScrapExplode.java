@@ -53,14 +53,14 @@ public class Prop_ScrapExplode extends Property {
 			int damage = 3 * item.envStats().weight();
 			if (mob != null)
 			{
-				CMLib.combat().postDamage(mob, mob, item, damage*2,  CMMsg.MSG_OK_VISUAL, Weapon.TYPE_PIERCING,
+				CMLib.combat().postDamage(mob, mob, item, damage*2,  CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
 				        "Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");
 				HashSet theBadGuys=mob.getGroupMembers(new HashSet());
 				for(Iterator e=theBadGuys.iterator();e.hasNext();)
 				{
 					MOB inhab=(MOB)e.next();
 					if (mob != inhab)
-						CMLib.combat().postDamage(inhab, inhab, item, damage, CMMsg.MSG_OK_VISUAL, Weapon.TYPE_PIERCING,
+						CMLib.combat().postDamage(inhab, inhab, item, damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
 						        "Fragments from " + item.Name() + " <DAMAGE> <T-NAME>!");
 				}
 			}

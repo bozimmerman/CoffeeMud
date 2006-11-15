@@ -82,7 +82,7 @@ public class Prayer_Stoning extends Prayer
 				            W.baseEnvStats().setDamage(dmg);
 				            W.envStats().setDamage(dmg);
 				        }
-				        CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.TYP_GENERAL,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
+				        CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.MASK_ALWAYS,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
 			        }
 			        else
 			            R.show(M,mob,null,CMMsg.MSG_NOISE,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");

@@ -6271,7 +6271,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
 								dmg=E.curState().getHitPoints()-1;
 							if(dmg>0)
-								CMLib.combat().postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
+								CMLib.combat().postDamage(E,E,null,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);
 						}
 					}
 					else

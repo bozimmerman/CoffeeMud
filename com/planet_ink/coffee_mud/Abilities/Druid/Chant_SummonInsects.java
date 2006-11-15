@@ -58,7 +58,7 @@ public class Chant_SummonInsects extends Chant
 			else
 			if((!M.amDead())&&(M.location()!=null))
             {
-				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,3,0),CMMsg.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
+				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,3,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
                 if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
                     CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
             }

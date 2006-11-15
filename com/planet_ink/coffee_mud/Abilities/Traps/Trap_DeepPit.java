@@ -47,7 +47,7 @@ public class Trap_DeepPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),15,1);
-			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		CMLib.commands().postLook(target,true);
 	}

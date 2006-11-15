@@ -134,8 +134,9 @@ public class Chant_CaveIn extends Chant
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)
 						damage = (int)Math.round(CMath.div(damage,1.5));
+                    
 					if(((MOB)target).location()==mob.location())
-						CMLib.combat().postDamage(mob,(MOB)target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The falling rubble <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(mob,(MOB)target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BASHING,"The falling rubble <DAMAGE> <T-NAME>!");
 				}
 				if(msg.value()<=0)
 					success=maliciousAffect(mob,target,asLevel,(target instanceof Exit)?0:10,0);

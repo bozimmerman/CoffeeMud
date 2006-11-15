@@ -85,7 +85,7 @@ public class Chant_Thorns extends Chant
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(adjustedLevel(invoker(),0)).doubleValue()/3.0),1);
-							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 						}
 					}
 				}

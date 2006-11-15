@@ -100,7 +100,7 @@ public class Trap_Launcher extends StdTrap
 			{
 				super.spring(target);
 				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),dam,1);
-				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

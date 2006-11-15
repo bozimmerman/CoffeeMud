@@ -51,7 +51,7 @@ public class Spell_AcidArrow extends Spell
 		{
 			MOB vic=(MOB)affected;
 			if((!vic.amDead())&&(vic.location()!=null))
-				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
+				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
 		}
 		return super.tick(ticking,tickID);
 	}

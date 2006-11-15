@@ -144,7 +144,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				target.location().send(target,msg);
 				if(msg.value()>0)
 					dmg=(int)Math.round(CMath.div(dmg,2.0));
-				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
@@ -169,7 +169,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					dmg=(int)Math.round(CMath.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
-				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
 		}
 	}
@@ -250,7 +250,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 				int damage=CMLib.dice().roll(mob.envStats().level(),3,1);
-				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			CMLib.commands().postLook(mob,true);
 		}

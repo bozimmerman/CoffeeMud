@@ -50,7 +50,7 @@ public class Spell_Blademouth extends Spell
         &&(msg.amISource((MOB)affected))
         &&(msg.source().location()!=null)
 	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0))
-	        CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_SLASHING,"The blades in <S-YOUPOSS> mouth <DAMAGE> <S-HIM-HER>!");
+	        CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <S-YOUPOSS> mouth <DAMAGE> <S-HIM-HER>!");
 	    super.executeMsg(host,msg);
 	}
 	

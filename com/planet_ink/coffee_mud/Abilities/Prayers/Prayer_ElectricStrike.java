@@ -64,7 +64,7 @@ public class Prayer_ElectricStrike extends Prayer
 				if(msg.value()<=0)
 				{
 					int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel),5);
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,"^SThe ELECTRIC STRIKE <DAMAGE> <T-NAME>!^?");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"^SThe ELECTRIC STRIKE <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

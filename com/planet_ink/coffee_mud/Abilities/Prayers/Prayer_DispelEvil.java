@@ -64,7 +64,7 @@ public class Prayer_DispelEvil extends Prayer
 				if(msg.value()>0)
 					harming=(int)Math.round(CMath.div(harming,2.0));
 				if(CMLib.flags().isEvil(target))
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
 			}
             else
                 return false;

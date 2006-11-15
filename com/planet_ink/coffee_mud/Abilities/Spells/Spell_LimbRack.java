@@ -54,7 +54,7 @@ public class Spell_LimbRack extends Spell
 	        String str=(text().equalsIgnoreCase("ARMSONLY"))?
 		        "<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms pulled from <S-HIS-HER> body!"
 		        :"<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms and legs pulled from <S-HIS-HER> body!";
-	        CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/10,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,str);
+	        CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
 	    }
 	    
 	    return true;
