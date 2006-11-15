@@ -459,7 +459,7 @@ public class GenAbility extends StdAbility
         case 11: return convert(Ability.USAGE_DESCS,((Integer)V(ID,V_USAG)).intValue(),true);
         case 12: return convert(Ability.CAN_DESCS,((Integer)V(ID,V_CAFF)).intValue(),true);
         case 13: return convert(Ability.CAN_DESCS,((Integer)V(ID,V_CTAR)).intValue(),true);
-        case 14: return convert(Ability.QUALITY_DESCS,((Integer)V(ID,V_QUAL)).intValue(),true);
+        case 14: return convert(Ability.QUALITY_DESCS,((Integer)V(ID,V_QUAL)).intValue(),false);
         case 15: return ((Ability)V(ID,V_HERE)).text();
         case 16: return (String)V(ID,V_CMSK);
         case 17: return (String)V(ID,V_SCRP);
@@ -581,7 +581,7 @@ public class GenAbility extends StdAbility
     
     private String convertClassAndDomain(int val)
     {
-    	int dom=val&Ability.ALL_DOMAINS>>5;
+    	int dom=(val&Ability.ALL_DOMAINS)>>5;
     	int acod=val&Ability.ALL_ACODES;
     	if((acod>=0)&&(acod<Ability.ACODE_DESCS.length)
     	&&(dom>=0)&&(dom<Ability.DOMAIN_DESCS.length))

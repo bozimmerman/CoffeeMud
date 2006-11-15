@@ -3769,7 +3769,7 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
+		mob.session().rawPrintln(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.equalsIgnoreCase("?")&&(mob.session()!=null)&&(!mob.session().killFlag())&&(help!=null)&&(help.length()>0))
@@ -5427,16 +5427,16 @@ public class BaseGenerics extends StdCommand
 		    //genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abclass"),"CLASS");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abname"),"NAME");
 		    genText(mob,me,CMParms.toStringList(Ability.ACODE_DESCS)+","+CMParms.toStringList(Ability.DOMAIN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abclassification"),"CLASSIFICATION");
-		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abdisplay"),"DISPLAY");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abtrigstr"),"TRIGSTR");
 		    genText(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,getScr("BaseGenerics","abminrange"),"MINRANGE");
 		    genText(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,getScr("BaseGenerics","abmaxrange"),"MAXRANGE");
+		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abdisplay"),"DISPLAY");
 		    genBool(mob,me,++showNumber,showFlag,getScr("BaseGenerics","abautoinvoke"),"AUTOINVOKE");
-		    genText(mob,me,CMParms.toStringList(Ability.FLAG_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abflags"),"FLAGS");
+		    genText(mob,me,"0,"+CMParms.toStringList(Ability.FLAG_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abflags"),"FLAGS");
 		    genInt(mob,me,"-1,x,"+Integer.MAX_VALUE+","+Integer.MAX_VALUE+"-(1 to 100)",++showNumber,showFlag,getScr("BaseGenerics","aboverridemana"),"OVERRIDEMANA");
 		    genText(mob,me,CMParms.toStringList(Ability.USAGE_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abusagemask"),"USAGEMASK");
-		    genText(mob,me,CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcanaffectmask"),"CANAFFECTMASK");
-		    genText(mob,me,CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcantargetmask"),"CANTARGETMASK");
+		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcanaffectmask"),"CANAFFECTMASK");
+		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcantargetmask"),"CANTARGETMASK");
 		    genText(mob,me,CMParms.toStringList(Ability.QUALITY_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abquality"),"QUALITY");
 		    genText(mob,me,CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abherestats"),"HERESTATS");
 		    genText(mob,me,CMLib.masking().maskHelp("\n","allow"),++showNumber,showFlag,getScr("BaseGenerics","abcastmask"),"CASTMASK");
