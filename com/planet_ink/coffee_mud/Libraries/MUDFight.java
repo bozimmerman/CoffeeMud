@@ -894,7 +894,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 {
                 	Item KI=killer.fetchWieldedItem();
                 	Item DI=deadmob.fetchWieldedItem();
-                	Log.killsOut("KILL",killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+                	String room=CMLib.map().getExtendedRoomID((killer.location()!=null)?killer.location():deadmob.location());
+                	Log.killsOut("KILL",room+":"+killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
                 }
                 if(Log.combatChannelOn())
                 {

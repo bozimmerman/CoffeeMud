@@ -183,6 +183,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public void loseExperience(MOB mob, int amount)
 	{
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
+		if(Log.combatChannelOn())
+		{
+        	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():null);
+        	String mobName=(mob!=null)?mob.Name():"null";
+	    	Log.killsOut("-EXP",room+":"+mobName+":"+amount);
+		}
         if((mob.getLiegeID().length()>0)&&(amount>2))
         {
 			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
@@ -354,6 +360,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
 	{
 		if(mob==null) return;
+		if(Log.combatChannelOn())
+		{
+        	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():victim.location());
+        	String mobName=(mob!=null)?mob.Name():"null";
+        	String vicName=(victim!=null)?victim.Name():"null";
+	    	Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
+		}
 		
 		amount=mob.charStats().getCurrentClass().adjustExperienceGain(mob,victim,amount);
 		amount=mob.charStats().getMyRace().adjustExperienceGain(mob,victim,amount);

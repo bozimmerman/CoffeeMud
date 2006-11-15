@@ -15,7 +15,7 @@
 # A help entry that is HELP_ only will apply to the previously defined expertise.
 #
 
-EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to ameliorate the experience cost of casting powerful spells, especially concerning items.
 
 ARMOROPT@x1=Armor Optomizing @x2,10,LEVEL,-SKILL +Fighter_ArmorTweaking,-MAXCLASSLEVEL +>={28+(5*@x1)},+CON {18+@x1},0,1,0,0,0
@@ -57,7 +57,7 @@ HELP_=<EXPERTISE>The ability to build and deploy traps that are better made, and
 WANDUSE@x1=Wand Using @x2,10,LEVEL,-SKILL +Skill_WandUse,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {17+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use wands without expending as much mana.
 
-TUNING@x1=Tuning @x2,10,LEVEL,-SKILL +Skill_TuneInstrument,-MAXCLASSLEVEL +>={27+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+TUNING@x1=Tuning @x2,10,LEVEL,-SKILL +Skill_TuneInstrument,-MAXCLASSLEVEL +>={27+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to tune instruments to a higher pitch of effectiveness.
 
 HOMECOOKING@x1=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Apothecary,-MAXCLASSLEVEL +>={1+(5*@x1)},+WIS {13+@x1},0,1,0,0,0
@@ -144,43 +144,43 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type sword.
 
-FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a power powerful malicious affect.
 
-SLOWDANCE@x1=Slow Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&BENEFICIAL_SELF,-MAXCLASSLEVEL +>={16+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+SLOWDANCE@x1=Slow Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&BENEFICIAL_SELF,-MAXCLASSLEVEL +>={16+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful beneficial passive affect.
 
-BEATDANCE@x1=Beat Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&!BENEFICIAL_SELF&!MALICIOUS,-MAXCLASSLEVEL +>={17+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+BEATDANCE@x1=Beat Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&!BENEFICIAL_SELF&!MALICIOUS,-MAXCLASSLEVEL +>={17+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful beneficial aggressive affect.
 
-LONGDANCE@x1=Long Dancing @x2,10,MAXRANGE,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>={18+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+LONGDANCE@x1=Long Dancing @x2,10,MAXRANGE,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>={18+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that garner audiences from more rooms away.
 
-STEADYDANCE@x1=Steady Dancing @x2,10,TIME,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>={19+(5*@x1)},+STR {16+@x1} +CHA {16+@x1},0,1,0,0,0
+STEADYDANCE@x1=Steady Dancing @x2,10,TIME,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>={19+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances whose affects linger after the dance is completed.
 
-SHARPTUNE@x1=Sharp Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+SHARPTUNE@x1=Sharp Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that have a power powerful malicious affect.
 
-BOLDTUNE@x1=Bold Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&!MALICIOUS +PLAYING&OK +PLAYING&INDIFFERENT,-MAXCLASSLEVEL +>={16+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+BOLDTUNE@x1=Bold Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&!MALICIOUS +PLAYING&OK +PLAYING&INDIFFERENT,-MAXCLASSLEVEL +>={16+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that have a more powerful beneficial affect.
 
-RESOUNDINGTUNE@x1=Resounding Playing @x2,10,MAXRANGE,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={18+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+RESOUNDINGTUNE@x1=Resounding Playing @x2,10,MAXRANGE,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={18+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that can be heard from more rooms away.
 
-RYTHMICTUNE@x1=Rhythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={19+(5*@x1)},+INT {16+@x1} +CHA {16+@x1},0,1,0,0,0
+RYTHMICTUNE@x1=Rhythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={19+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that linger a little longer after they are played.
 
-SHARPSING@x1=Sharp Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+SHARPSING@x1=Sharp Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to sing songs that have a power powerful malicious affect.
 
-REJOICESING@x1=Rejoicing Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&!MALICIOUS +SINGING&OK +SINGING&INDIFFERENT,-MAXCLASSLEVEL +>={16+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+REJOICESING@x1=Rejoicing Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&!MALICIOUS +SINGING&OK +SINGING&INDIFFERENT,-MAXCLASSLEVEL +>={16+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to sing songs that have a more powerful beneficial affect.
 
-RESOUNDSING@x1=Resounding Singing @x2,10,MAXRANGE,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={18+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+RESOUNDSING@x1=Resounding Singing @x2,10,MAXRANGE,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={18+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to sing songs that can be heard from more rooms away.
 
-ECHOSING@x1=Echoed Singing @x2,10,TIME,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={19+(5*@x1)},+CHA {16+@x1},0,1,0,0,0
+ECHOSING@x1=Echoed Singing @x2,10,TIME,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={19+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to sing songs that can be heard from more rooms away.
 
 RANGEDDIVINATION@x1=Ranged Divining @x2,10,MAXRANGE,-SKILLFLAG +DIVINATION,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
