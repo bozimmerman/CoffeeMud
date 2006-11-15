@@ -37,6 +37,33 @@ public class Train extends StdCommand
 
 	private String[] access={"TRAIN","TR","TRA"};
 	public String[] getAccessWords(){return access;}
+	
+	public static Vector getAllPossibleThingsToTrainFor()
+	{
+		Vector V=new Vector();
+		V.addElement("HIT POINTS");
+		V.addElement("MANA");
+		V.addElement("MOVEMENT");
+		V.addElement("GAIN");
+		V.addElement("PRACTICES");
+        for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+            if(i<CharStats.NUM_BASE_STATS)
+            	V.add(CharStats.STAT_DESCS[i]);
+		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		{
+			CharClass C=(CharClass)c.nextElement();
+            if(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
+    			V.add(C.name().toUpperCase().trim());
+		}
+		for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+		{
+			ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+			V.add(def.name.toUpperCase().trim());
+		}
+		return V;
+	}
+	
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
