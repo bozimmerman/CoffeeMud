@@ -97,7 +97,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
 			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null)&&(mob.isInCombat()))
 			{
-				affectableStats.setSpeed(affectableStats.speed()+1.0);
+				affectableStats.setSpeed(affectableStats.speed()+1.0+(0.1*(float)super.getXLEVELLevel(invoker())));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));
                 affectableStats.setDamage(affectableStats.damage()-(affectableStats.damage()/20));
 			}

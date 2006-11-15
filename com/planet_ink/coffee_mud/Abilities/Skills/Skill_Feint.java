@@ -48,7 +48,7 @@ public class Skill_Feint extends StdSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		int lvl=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
+		int lvl=adjustedLevel(invoker(),0);
 		affectableStats.setArmor(affectableStats.armor()+lvl);
 	}
 

@@ -83,37 +83,39 @@ public class Druid_GolemForm extends StdAbility
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			int xlvl=getXLEVELLevel(invoker());
+			double bonus=CMath.mul(0.1,xlvl);
 			switch(raceLevel)
 			{
 			case 0:
-				affectableStats.setArmor(affectableStats.armor()-10);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10);
-				affectableStats.setDamage(affectableStats.attackAdjustment()+5);
-				affectableStats.setSpeed(affectableStats.speed()/1.5);
+				affectableStats.setArmor(affectableStats.armor()-10-(xlvl));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(xlvl));
+				affectableStats.setDamage(affectableStats.damage()+5+(xlvl/2));
+				affectableStats.setSpeed(affectableStats.speed()/(1.5-bonus));
 				break;
 			case 1:
-				affectableStats.setArmor(affectableStats.armor()-20);
-				affectableStats.setSpeed(affectableStats.speed()/2.0);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20);
-				affectableStats.setDamage(affectableStats.attackAdjustment()+10);
+				affectableStats.setArmor(affectableStats.armor()-20-(2*xlvl));
+				affectableStats.setSpeed(affectableStats.speed()/(2.0-bonus));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20+(2*xlvl));
+				affectableStats.setDamage(affectableStats.damage()+10+(xlvl));
 				break;
 			case 2:
-				affectableStats.setArmor(affectableStats.armor()-40);
-				affectableStats.setSpeed(affectableStats.speed()/2.5);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+40);
-				affectableStats.setDamage(affectableStats.attackAdjustment()+20);
+				affectableStats.setArmor(affectableStats.armor()-40-(4*xlvl));
+				affectableStats.setSpeed(affectableStats.speed()/(2.5-bonus));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+40+(4*xlvl));
+				affectableStats.setDamage(affectableStats.damage()+20+(xlvl*2));
 				break;
 			case 3:
-				affectableStats.setArmor(affectableStats.armor()-60);
-				affectableStats.setSpeed(affectableStats.speed()/3.0);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+80);
-				affectableStats.setDamage(affectableStats.attackAdjustment()+40);
+				affectableStats.setArmor(affectableStats.armor()-60-(6*xlvl));
+				affectableStats.setSpeed(affectableStats.speed()/(3.0-bonus));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+80+(8*xlvl));
+				affectableStats.setDamage(affectableStats.damage()+40+(xlvl*4));
 				break;
 			case 4:
-				affectableStats.setArmor(affectableStats.armor()-80);
-				affectableStats.setSpeed(affectableStats.speed()/4.0);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+160);
-				affectableStats.setDamage(affectableStats.attackAdjustment()+80);
+				affectableStats.setArmor(affectableStats.armor()-80-(8*xlvl));
+				affectableStats.setSpeed(affectableStats.speed()/(4.0-bonus));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+160+(16*xlvl));
+				affectableStats.setDamage(affectableStats.damage()+80+(xlvl*8));
 				break;
 			}
 		}

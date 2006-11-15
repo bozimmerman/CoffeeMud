@@ -71,7 +71,7 @@ public class Spell_Blur extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - 5);
+		affectableStats.setArmor(affectableStats.armor() - 5 -super.getXLEVELLevel(invoker()));
 	}
 
 	public void unInvoke()

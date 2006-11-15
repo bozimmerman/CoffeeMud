@@ -47,14 +47,17 @@ public class Chant_Feralness extends Chant
 		super.affectEnvStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).charStats().getMyRace()!=((MOB)affected).baseCharStats().getMyRace()))
 		{
+			int adjLvl=adjustedLevel(invoker(),0);
+			int xlvl=getXLEVELLevel(invoker());
+			double bonus=CMath.mul(0.1,xlvl);
 			if((((MOB)affected).fetchWieldedItem()==null))
 			{
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 50);
-				affectableStats.setDamage(affectableStats.damage()*2);
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (2*adjLvl));
+				affectableStats.setDamage(affectableStats.damage()*(2+xlvl));
 			}
-			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0)));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0)));
-			affectableStats.setArmor(affectableStats.armor()+20);
+			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0-bonus)));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0-bonus)));
+			affectableStats.setArmor(affectableStats.armor()+adjLvl);
 		}
 	}
 
@@ -62,7 +65,7 @@ public class Chant_Feralness extends Chant
 	{
 		super.affectCharState(affectedMOB,affectedMaxState);
 		if((affected instanceof MOB)&&(((MOB)affected).charStats().getMyRace()!=((MOB)affected).baseCharStats().getMyRace()))
-			affectedMaxState.setHitPoints(affectedMaxState.getHitPoints()+hpAdjustment);
+			affectedMaxState.setHitPoints(affectedMaxState.getHitPoints()+hpAdjustment+(2*getXLEVELLevel(invoker())));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

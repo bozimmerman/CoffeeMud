@@ -43,8 +43,9 @@ public class Spell_Irritation extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()+20);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
+		int xlvl=super.getXLEVELLevel(invoker());
+		affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(2*xlvl));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

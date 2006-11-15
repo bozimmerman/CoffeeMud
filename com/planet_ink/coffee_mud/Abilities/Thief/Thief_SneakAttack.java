@@ -49,8 +49,9 @@ public class Thief_SneakAttack extends ThiefSkill
 		super.affectEnvStats(affected,affectableStats);
 		if(activated)
 		{
-			affectableStats.setDamage(affectableStats.damage()+5);
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50);
+			int xlvl=super.getXLEVELLevel(invoker());
+			affectableStats.setDamage(affectableStats.damage()+5+xlvl);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50+(10*xlvl));
 		}
 	}
 

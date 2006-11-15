@@ -75,14 +75,15 @@ public class Prayer_DivineLuck extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((affected.envStats().level()+(2*super.getXLEVELLevel(invoker())))/5)+1);
-		affectableStats.setDamage(affectableStats.damage()+((affected.envStats().level()+(2*super.getXLEVELLevel(invoker())))/5)+1);
+		int xlvl=super.getXLEVELLevel(invoker());
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((affected.envStats().level()+(2*xlvl))/5)+1);
+		affectableStats.setDamage(affectableStats.damage()+((affected.envStats().level()+(2*xlvl))/5)+1);
 
 		if(mob.isInCombat())
 		{
 			MOB victim=mob.getVictim();
 			if(CMLib.flags().isEvil(victim))
-				affectableStats.setArmor(affectableStats.armor()-10);
+				affectableStats.setArmor(affectableStats.armor()-10-xlvl);
 		}
 	}
 

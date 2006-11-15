@@ -70,9 +70,10 @@ public class Prayer_Avatar extends Prayer
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affected,affectedStats);
-		affectedStats.setArmor(affectedStats.armor()-(adjustedLevel(invoker(),0)*2));
+		int xlvl=adjustedLevel(invoker(),0);
+		affectedStats.setArmor(affectedStats.armor()-(xlvl*2));
 		affectedStats.setSpeed(affectedStats.speed()+2.0+CMath.mul(0.25,super.getXLEVELLevel(invoker())));
-		affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+adjustedLevel(invoker(),0));
+		affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+xlvl);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;

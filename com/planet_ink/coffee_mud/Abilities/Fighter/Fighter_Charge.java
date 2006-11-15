@@ -72,9 +72,10 @@ public class Fighter_Charge extends FighterSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*affected.envStats().level()));
-		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level())+abilityCode());
-		affectableStats.setArmor(affectableStats.armor()+(2*affected.envStats().level()));
+		int xlvl=getXLEVELLevel(invoker());
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*(affected.envStats().level()+xlvl)));
+		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level())+abilityCode()+xlvl);
+		affectableStats.setArmor(affectableStats.armor()+(2*(xlvl+affected.envStats().level())));
 	}
 
 	public int castingQuality(MOB mob, Environmental target)

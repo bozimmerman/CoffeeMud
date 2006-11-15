@@ -69,7 +69,7 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 			if((myWeapon!=null)
 			&&(myWeapon instanceof Weapon)
 			&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_THROWN))
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(proficiency(),100.0))));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((15.0+(float)getXLEVELLevel(invoker()))*(CMath.div(proficiency(),100.0))));
 		}
 	}
 

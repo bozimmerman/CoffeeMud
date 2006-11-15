@@ -50,7 +50,7 @@ public class Fighter_Battlecry extends FighterSkill
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+1+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0)));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+1+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0-getXLEVELLevel(invoker()))));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

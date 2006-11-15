@@ -47,8 +47,9 @@ public class Thief_Flank extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDamage(affectableStats.damage()+5);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50);
+		int xlvl=super.getXLEVELLevel(invoker());
+		affectableStats.setDamage(affectableStats.damage()+5+xlvl);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50+(10*xlvl));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

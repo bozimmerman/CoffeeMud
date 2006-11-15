@@ -49,8 +49,9 @@ public class Thief_Distract extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/2)+abilityCode());
-		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2))-abilityCode());
+		float f=(float)0.05*(float)super.getXLEVELLevel(invoker());
+		affectableStats.setArmor(affectableStats.armor()+(int)Math.round(CMath.div(affectableStats.armor(),2.0-f))+abilityCode());
+		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)))-abilityCode());
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -70,8 +70,9 @@ public class Thief_Mark extends ThiefSkill
 		super.affectEnvStats(affected,affectableStats);
 		if((affected!=null)&&(affected instanceof MOB)&&(((MOB)affected).getVictim()==mark))
 		{
-			affectableStats.setDamage(affectableStats.damage()+(ticks/20));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(ticks/2));
+			int xlvl=super.getXLEVELLevel(invoker());
+			affectableStats.setDamage(affectableStats.damage()+((ticks+xlvl)/20));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((ticks+xlvl)/2));
 		}
 	}
 

@@ -53,9 +53,10 @@ public class Fighter_Berzerk extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0)));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0)));
-			affectableStats.setArmor(affectableStats.armor()+20);
+			int xlvl=getXLEVELLevel(invoker());
+			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0-xlvl)));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0-xlvl)));
+			affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
 		}
 	}
 

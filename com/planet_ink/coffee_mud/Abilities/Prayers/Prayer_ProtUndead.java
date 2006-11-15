@@ -71,7 +71,10 @@ public class Prayer_ProtUndead extends Prayer
 		{
 			MOB victim=mob.getVictim();
 			if(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
-				affectableStats.setArmor(affectableStats.armor()-50);
+			{
+				int xlvl=super.getXLEVELLevel(invoker());
+				affectableStats.setArmor(affectableStats.armor()-50-(5*xlvl));
+			}
 		}
 	}
 

@@ -60,7 +60,7 @@ public class Chant_FodderSignal extends Chant
 		super.affectEnvStats(affected,affectableStats);
 
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
-		affectableStats.setArmor(affectableStats.armor()+10);
+		affectableStats.setArmor(affectableStats.armor()+10+super.getXLEVELLevel(invoker()));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

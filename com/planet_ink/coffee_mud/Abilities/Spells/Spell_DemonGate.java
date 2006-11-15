@@ -98,9 +98,10 @@ public class Spell_DemonGate extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDamage(affectableStats.damage()+20);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100);
-		affectableStats.setArmor(affectableStats.armor()+20);
+		int xlvl=super.getXLEVELLevel(invoker());
+		affectableStats.setDamage(affectableStats.damage()+20+xlvl);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(5*xlvl));
+		affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
 		affectableStats.setSpeed(affectableStats.speed()+2);
 	}
 

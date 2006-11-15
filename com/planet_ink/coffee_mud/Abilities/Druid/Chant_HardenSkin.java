@@ -44,7 +44,7 @@ public class Chant_HardenSkin extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - affectableStats.level());
+		affectableStats.setArmor(affectableStats.armor() - (2*adjustedLevel(invoker(),0)));
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

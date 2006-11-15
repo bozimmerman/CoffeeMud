@@ -76,9 +76,9 @@ public class Fighter_CalledStrike extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int hurtAmount=msg.value();
-			if(hurtAmount>=(target.baseState().getHitPoints()/hpReq))
+			if(hurtAmount>=(target.baseState().getHitPoints()/(hpReq-getXLEVELLevel(invoker()))))
 			{
-				hurtAmount=(target.baseState().getHitPoints()/hpReq);
+				hurtAmount=(target.baseState().getHitPoints()/(hpReq-getXLEVELLevel(invoker())));
 				msg.setValue(msg.value()+hurtAmount);
 				amputate();
 			}

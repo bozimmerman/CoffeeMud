@@ -54,7 +54,10 @@ public class Prayer_UndeadInvisibility extends Prayer
 		{
 			MOB victim=mob.getVictim();
 			if(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
-				affectableStats.setArmor(affectableStats.armor()-20);
+			{
+				int xlvl=super.getXLEVELLevel(invoker());
+				affectableStats.setArmor(affectableStats.armor()-20-(2*xlvl));
+			}
 		}
 	}
 

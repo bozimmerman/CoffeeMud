@@ -44,7 +44,7 @@ public class Chant_CheetahBurst extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + 1.0);
+		affectableStats.setSpeed(affectableStats.speed() + 1.0+CMath.mul(0.1,getXLEVELLevel(invoker())));
 	}
 
 

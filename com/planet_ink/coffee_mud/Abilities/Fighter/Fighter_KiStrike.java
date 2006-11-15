@@ -70,7 +70,7 @@ public class Fighter_KiStrike extends FighterSkill
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!done)
-			affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level()));
+			affectableStats.setDamage(affectableStats.damage()+(adjustedLevel(invoker(),0)));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

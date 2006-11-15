@@ -47,7 +47,8 @@ public class Prayer_Rockskin extends Prayer
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - 10);
+		int xlvl=super.getXLEVELLevel(invoker());
+		affectableStats.setArmor(affectableStats.armor() - 10-xlvl);
 	}
 
 	public void unInvoke()

@@ -84,16 +84,56 @@ public class StdAbility extends ForeignScriptable implements Ability
 		}
 	}
     
-    protected int getX1Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X1,mob);}
-    protected int getX2Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X2,mob);}
-    protected int getX3Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X3,mob);}
-    protected int getX4Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X4,mob);}
-    protected int getX5Level(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X5,mob);}
-    protected int getXLEVELLevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LEVEL,mob);}
-    protected int getXLOWCOSTLevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LOWCOST,mob);}
-    protected int getXMAXRANGELevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_MAXRANGE,mob);}
-    protected int getXTIMELevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_TIME,mob);}
-    protected int getXPCOSTLevel(MOB mob){return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_XPCOST,mob);}
+    protected int getX1Level(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+	    	return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X1,mob);
+    	return 0;
+    }
+    protected int getX2Level(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X2,mob);
+    	return 0;
+    }
+    protected int getX3Level(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X3,mob);
+    	return 0;
+    }
+    protected int getX4Level(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X4,mob);
+    	return 0;
+    }
+    protected int getX5Level(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_X5,mob);
+    	return 0;
+    }
+    protected int getXLEVELLevel(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LEVEL,mob);
+    	return 0;
+    }
+    protected int getXLOWCOSTLevel(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_LOWCOST,mob);
+    	return 0;
+    }
+    protected int getXMAXRANGELevel(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_MAXRANGE,mob);
+    	return 0;
+    }
+    protected int getXTIMELevel(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_TIME,mob);
+    	return 0;
+    }
+    protected int getXPCOSTLevel(MOB mob){
+    	if(this.isNowAnAutoEffect()||this.canBeUninvoked())
+    		return CMLib.expertises().getApplicableExpertiseLevel(ID(),ExpertiseLibrary.XFLAG_XPCOST,mob);
+    	return 0;
+    }
     
     protected int getXPCOSTAdjustment(MOB mob, int xpLoss){
     	int xLevel=getXPCOSTLevel(mob);

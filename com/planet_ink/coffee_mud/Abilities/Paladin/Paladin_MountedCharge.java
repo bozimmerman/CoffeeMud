@@ -67,9 +67,10 @@ public class Paladin_MountedCharge extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(4*affected.envStats().level()));
-		affectableStats.setArmor(affectableStats.armor()+(4*affected.envStats().level()));
-		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level()));
+		int xlvl=adjustedLevel(invoker(),0);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(4*xlvl));
+		affectableStats.setArmor(affectableStats.armor()+(4*xlvl));
+		affectableStats.setDamage(affectableStats.damage()+xlvl);
 	}
 
 	public int castingQuality(MOB mob, Environmental target)

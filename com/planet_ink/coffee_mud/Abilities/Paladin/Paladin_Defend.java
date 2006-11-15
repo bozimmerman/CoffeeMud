@@ -81,7 +81,7 @@ public class Paladin_Defend extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - 20);
+		affectableStats.setArmor(affectableStats.armor() - 20 -(4*getXLEVELLevel(invoker())));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

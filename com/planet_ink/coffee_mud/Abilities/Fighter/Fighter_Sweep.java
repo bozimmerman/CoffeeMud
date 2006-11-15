@@ -46,8 +46,10 @@ public class Fighter_Sweep extends FighterSkill
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()/2);
-		affectableStats.setDamage(affectableStats.damage()/3);
+		
+		float f=(float)1.0-(float)getXLEVELLevel(invoker());
+		affectableStats.setAttackAdjustment((int)Math.round(CMath.div(affectableStats.attackAdjustment(),1.0+f)));
+		affectableStats.setDamage((int)Math.round(CMath.div(affectableStats.damage(),2.0+f)));
 	}
 	public int castingQuality(MOB mob, Environmental target)
 	{
