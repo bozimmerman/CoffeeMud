@@ -58,6 +58,7 @@ public class Prayer_FlameWeapon extends Prayer
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+        
 		if((msg.source().location()!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
@@ -66,22 +67,23 @@ public class Prayer_FlameWeapon extends Prayer
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-			notAgain=true;
-			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
-			if(msg.source().location().okMessage(msg.source(),msg2))
-			{
-				msg.source().location().send(msg.source(), msg2);
-				if(msg2.value()<=0)
-				{
-					int flameDamage = (int) Math.round( Math.random() * 6 );
-					flameDamage *= (2+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())));
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
-					CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
-					msg3.setValue(flameDamage);
-					msg.addTrailerMsg(msg3);
-				}
-			}
-			notAgain=false;
+            try{
+    			notAgain=true;
+    			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+    			if(msg.source().location().okMessage(msg.source(),msg2))
+    			{
+    				msg.source().location().send(msg.source(), msg2);
+    				if(msg2.value()<=0)
+    				{
+    					int flameDamage = (int) Math.round( Math.random() * 6 );
+    					flameDamage *= (super.getXLEVELLevel(invoker())+(super.getX1Level(invoker())));
+    					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,"^RThe flame around "+affected.name()+" "+CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!^?"));
+    					CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+    					msg3.setValue(flameDamage);
+    					msg.addTrailerMsg(msg3);
+    				}
+    			}
+            }finally{notAgain=false;}
 		}
 	}
 

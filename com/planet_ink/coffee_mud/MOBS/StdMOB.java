@@ -3216,8 +3216,13 @@ public class StdMOB implements MOB
 	public String fetchExpertise(int x){try{return (String)expertises.elementAt(x);}catch(Exception e){} return null;}
 	public String fetchExpertise(String of){
 		try{
+            String X=null;
 			for(int i=0;i<numExpertises();i++)
-				if(fetchExpertise(i).equalsIgnoreCase(of)) return fetchExpertise(i);
+            {
+			    X=fetchExpertise(i);
+                if((X!=null)&&(X.equalsIgnoreCase(of))) 
+                    return X;
+            }
 		}catch(Exception e){}
 		return null;
 	}

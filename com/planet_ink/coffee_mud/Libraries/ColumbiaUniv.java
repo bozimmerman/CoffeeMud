@@ -68,7 +68,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	completeEduMap.remove(ID);
     }
     public Enumeration definitions(){ return ((Hashtable)completeEduMap.clone()).elements();}
-    public ExpertiseDefinition getDefinition(String ID){ return (ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
+    public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
     public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
     {
         ExpertiseDefinition D=getDefinition(ID);
@@ -137,10 +137,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         if((mob==null)||(expertise==null)) return 0;
         int level=0;
         expertise=expertise.toUpperCase();
+        String X=null;
         for(int i=0;i<mob.numExpertises();i++)
         {
-            String X=mob.fetchExpertise(i);
-            if(X.startsWith(expertise))
+            X=mob.fetchExpertise(i);
+            if((X!=null)&&(X.startsWith(expertise)))
             {
                 int x=CMath.s_int(X.substring(expertise.length()));
                 if(x>level) level=x;

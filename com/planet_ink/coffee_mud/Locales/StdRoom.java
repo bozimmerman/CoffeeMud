@@ -1142,11 +1142,11 @@ public class StdRoom implements Room
 		executeMsg(source,msg);
 	}
 
-    protected void reallySend(MOB source, CMMsg msg)
+    protected void reallySend(MOB source, CMMsg msg, int depth)
 	{
 		reallyReallySend(source,msg);
 		// now handle trailer msgs
-		if(msg.trailerMsgs()!=null)
+		if((msg.trailerMsgs()!=null)&&(depth<3))
 		{
 			for(int i=0;i<msg.trailerMsgs().size();i++)
 			{
@@ -1154,11 +1154,11 @@ public class StdRoom implements Room
 				if((msg!=msg2)
 				&&((msg2.target()==null)
 				   ||(!(msg2.target() instanceof MOB))
-				   ||(!((MOB)msg2.target()).amDead()))
+				   ||((!((MOB)msg2.target()).amDead())||(msg2.sourceMinor()==CMMsg.TYP_DEATH)))
 				&&(okMessage(source,msg2)))
 				{
 					source.executeMsg(source,msg2);
-					reallyReallySend(source,msg2);
+                    reallySend(source,msg2,depth+1);
 				}
 			}
 		}
@@ -1167,11 +1167,11 @@ public class StdRoom implements Room
 	public void send(MOB source, CMMsg msg)
 	{
 		source.executeMsg(source,msg);
-		reallySend(source,msg);
+		reallySend(source,msg,0);
 	}
 	public void sendOthers(MOB source, CMMsg msg)
 	{
-		reallySend(source,msg);
+		reallySend(source,msg,0);
 	}
 
 	public void showHappens(int allCode, String allMessage)
@@ -1264,7 +1264,7 @@ public class StdRoom implements Room
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
-		reallySend(source,msg);
+		reallySend(source,msg,0);
 		return true;
 	}
 	public boolean showOthers(MOB source,
@@ -1276,7 +1276,7 @@ public class StdRoom implements Room
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
 			return false;
-		reallySend(source,msg);
+		reallySend(source,msg,0);
 		return true;
 	}
 	public boolean showSource(MOB source,
