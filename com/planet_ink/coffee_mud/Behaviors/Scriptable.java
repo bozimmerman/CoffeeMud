@@ -7489,9 +7489,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 }
                 break;
 			case 12: // mask_prog
-				if(!canTrigger(12)) break;
+				if(!canTrigger(12)) 
+					break;
 			case 18: // act_prog
-				if(!msg.amISource(monster)&&canTrigger(18))
+				if((!msg.amISource(monster))
+				||((triggerCode==18)&&(!canTrigger(18)))) 
+					break;
+			case 43: // imask_prog
+				if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
 				{
 					boolean doIt=false;
 					String str=msg.othersMessage();
@@ -7500,7 +7505,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(str==null) break;
 					str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
                     str=CMStrings.removeColors(str);
-                    str=CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim();
+                    str=" "+CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim()+" ";
 					trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7927,6 +7932,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			    break;
 			}
 		}
+	    tickStatus=Tickable.STATUS_BEHAVIOR+100;
+	    dequeResponses();
+		altStatusTickable=null;
+		return true;
+	}
+	
+	public void dequeResponses()
+	{
 		try{
 		    tickStatus=Tickable.STATUS_BEHAVIOR+100;
 			for(int q=que.size()-1;q>=0;q--)
@@ -7940,7 +7953,5 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 }
 			}
 		}catch(Exception e){Log.errOut("Scriptable",e);}
-		altStatusTickable=null;
-		return true;
 	}
 }

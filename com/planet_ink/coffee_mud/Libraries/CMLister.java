@@ -235,6 +235,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			if(thisThang instanceof String)
 				list=(String)thisThang;
 			else
+			if(thisThang instanceof Ability)
+				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
+			else
             if(thisThang instanceof CharClass)
                 list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
             else
@@ -285,6 +288,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			if(thisThang instanceof String)
 				list=(String)thisThang;
             else
+			if(thisThang instanceof Ability)
+				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
+			else
             if(thisThang instanceof CharClass)
                 list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
             else
@@ -330,6 +336,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			if(thisThang instanceof String)
 				list=(String)thisThang;
             else
+			if(thisThang instanceof Ability)
+				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
+			else
             if(thisThang instanceof CharClass)
                 list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
             else

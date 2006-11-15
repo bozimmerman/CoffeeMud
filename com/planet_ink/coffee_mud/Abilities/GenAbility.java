@@ -118,7 +118,10 @@ public class GenAbility extends StdAbility
             else
             {
                 scriptObj=CMClass.getBehavior("Scriptable");
-                scriptObj.setParms(parm);
+                if(scriptObj!=null)
+                	scriptObj.setParms(parm);
+                else
+                	scriptParmHash=-1;
             }
         }
         return scriptObj;
@@ -148,6 +151,7 @@ public class GenAbility extends StdAbility
         {
             GenAbility A=(GenAbility)this.getClass().newInstance();
             A.ID=ID;
+            getScriptable();
             A.scriptParmHash=scriptParmHash;
             if(scriptObj!=null){ 
                 A.scriptObj=CMClass.getBehavior("Scriptable"); 
@@ -155,6 +159,7 @@ public class GenAbility extends StdAbility
             }
             else
                 A.scriptObj=null;
+            return A;
         }
         catch(Exception e)
         {
@@ -284,7 +289,7 @@ public class GenAbility extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) "+name()+" due to <S-HIS-HER> armor!");
 			return false;
 		}
-		if(!super.invoke(mob,givenTarget, auto, asLevel))
+		if(!super.invoke(mob,commands,givenTarget, auto, asLevel))
 			return false;
     	
 		boolean success=proficiencyCheck(mob,0,auto);
@@ -295,24 +300,28 @@ public class GenAbility extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			int castCode=somanticCastCode(mob,target,auto);
+			int castCode=0;
 	    	switch(classificationCode()&Ability.ALL_ACODES)
 	    	{
-	    	case Ability.ACODE_CHANT: break;
+	    	case Ability.ACODE_CHANT: castCode=CMMsg.MSG_CAST_VERBAL_SPELL; break;
 	    	case Ability.ACODE_COMMON_SKILL: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
 	    	case Ability.ACODE_DISEASE: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
 	    	case Ability.ACODE_LANGUAGE: castCode=CMMsg.MSG_OK_VISUAL; break;
 	    	case Ability.ACODE_POISON: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
-	    	case Ability.ACODE_PRAYER: break;
+	    	case Ability.ACODE_PRAYER: castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL; break;
 	    	case Ability.ACODE_PROPERTY: castCode=CMMsg.MSG_OK_VISUAL; break;
 	    	case Ability.ACODE_SKILL: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
-	    	case Ability.ACODE_SPELL: break;
-	    	case Ability.ACODE_SUPERPOWER: break;
+	    	case Ability.ACODE_SPELL: castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL; break;
+	    	case Ability.ACODE_SUPERPOWER: castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL; break;
 	    	case Ability.ACODE_THIEF_SKILL: castCode=CMMsg.MSG_THIEF_ACT; break;
 	    	case Ability.ACODE_TRAP: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
 	    	default:
+	    		castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 	    		break;
 	    	}
+			if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
+				castCode|=CMMsg.MASK_MALICIOUS;
+			if(auto) castCode|=CMMsg.MASK_ALWAYS;
 			
 			CMMsg msg = CMClass.getMsg(mob, target, this, castCode, (auto?(String)V(ID,V_ACST):(String)V(ID,V_CAST)));
 			CMMsg msg2= null;
@@ -323,7 +332,7 @@ public class GenAbility extends StdAbility
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2)&&(this.okMessage(mob, msg2)))))
 			{
 				mob.location().send(mob,msg);
-				this.executeMsg(mob, msg2);
+				this.executeMsg(mob, msg);
 				if(msg2!=null){ mob.location().send(mob,msg2); this.executeMsg(mob, msg2);}
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
@@ -342,11 +351,13 @@ public class GenAbility extends StdAbility
 					if((success)&&(B!=null))
 					{
 						msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
-						if(B!=null) B.executeMsg(mob, msg2);
+						B.executeMsg(mob, msg2);
+						((ScriptingEngine)B).dequeResponses();
 					}
 					mob.location().recoverRoomStats();
 				}
 			}
+			
 		}
 		else
 		if(abstractQuality()==Ability.QUALITY_MALICIOUS)
@@ -515,7 +526,7 @@ public class GenAbility extends StdAbility
         case 22: SV(ID,V_PCST,val); break;
         case 23: SV(ID,V_ATT2,new Integer(convert(CMMsg.TYPE_DESCS,val,false))); break;
         default:
-        	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(code);
+        	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
         	break;
         }
     }
@@ -622,6 +633,9 @@ public class GenAbility extends StdAbility
     	Vector V=CMLib.xml().parseAllXML(xml);
     	if((V==null)||(V.size()==0)) return;
     	for(int c=0;c<getStatCodes().length;c++)
+    		if(getStatCodes()[c].equals("CLASS"))
+    			ID=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c]));
+    		else
     		if(!getStatCodes()[c].equals("TEXT"))
     			setStat(getStatCodes()[c],CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c])));
     }

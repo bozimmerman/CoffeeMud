@@ -1237,6 +1237,7 @@ public class CMClass extends ClassLoader
                 tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
                 if(tempV.size()>0) Log.sysOut("MUD","Traps loaded      : "+tempV.size());
                 addV(tempV,abilities);
+                abilities=new Vector(new TreeSet(abilities));
                 
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities");
                 Vector genAbilities=CMLib.database().DBReadAbilities();
@@ -1245,8 +1246,8 @@ public class CMClass extends ClassLoader
                     int loaded=0;
                     for(int r=0;r<genAbilities.size();r++)
                     {
-                        Ability A=(Ability)(CMClass.getCharClass("GenAbility").copyOf());
-                        A.setStat("ALLXML",(String)genAbilities.elementAt(r));
+                        Ability A=(Ability)(CMClass.getAbility("GenAbility").copyOf());
+                        A.setStat("ALLXML",(String)((Vector)genAbilities.elementAt(r)).lastElement());
                         if(!A.ID().equals("GenAbility"))
                         {
                             abilities.addElement(A);
@@ -1254,10 +1255,12 @@ public class CMClass extends ClassLoader
                         }
                     }
                     if(loaded>0)
-                        Log.sysOut("MUD","GenAbilities loaded : "+loaded);
+                    {
+                        Log.sysOut("MUD","GenAbiles loaded  : "+loaded);
+                        abilities=new Vector(new TreeSet(abilities));
+                    }
                 }
                 
-                abilities=new Vector(new TreeSet(abilities));
             }
     
             items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),ancestor("ITEM"));

@@ -41,6 +41,7 @@ public interface ScriptingEngine extends Behavior
                           Vector script,
                           String msg,
                           Object[] tmp);
+	public void dequeResponses();
     
     public boolean eval(Environmental scripted,
                         MOB source,
@@ -131,6 +132,7 @@ public interface ScriptingEngine extends Behavior
         "LLOOK_PROG", // 40
         "EXECMSG_PROG", // 41
         "CNCLMSG_PROG", // 42
+        "IMASK_PROG", // 43
     };
     
     public static final String[] funcs={
