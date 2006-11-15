@@ -671,13 +671,18 @@ public class DefaultCharStats implements CharStats
     
     public void setRacialStat(int abilityCode, int racialMax)
     {
-        int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-        int currMax=getStat(STAT_MAX_STRENGTH_ADJ+abilityCode)+baseMax;
-        if(currMax<=0) currMax=1;
-        int curStat=getStat(abilityCode);
-        int racialStat=Math.round(((float)curStat/(float)currMax)*(float)racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*(float)racialMax);
-        setStat(abilityCode,((racialStat<1)&&(racialMax>0))?1:racialStat);
-        setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,racialMax-baseMax);
+        if(abilityCode>=NUM_BASE_STATS) 
+            setPermanentStat(abilityCode,racialMax);
+        else
+        {
+            int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+            int currMax=getStat(STAT_MAX_STRENGTH_ADJ+abilityCode)+baseMax;
+            if(currMax<=0) currMax=1;
+            int curStat=getStat(abilityCode);
+            int racialStat=Math.round(((float)curStat/(float)currMax)*(float)racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*(float)racialMax);
+            setStat(abilityCode,((racialStat<1)&&(racialMax>0))?1:racialStat);
+            setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,racialMax-baseMax);
+        }
     }
     
 	public void setStat(int abilityCode, int value)
