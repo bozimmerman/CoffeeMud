@@ -450,16 +450,16 @@ public class GenAbility extends StdAbility
         case 2: return (String)V(ID,V_NAME);
         case 3: return (String)V(ID,V_DISP);
         case 4: return CMParms.toStringList((String[])V(ID,V_TRIG));
-        case 5: return ((Integer)V(ID,V_MAXR)).toString();
-        case 6: return ((Integer)V(ID,V_MAXR)).toString();
+        case 5: return convert(Ability.RANGE_CHOICES,((Integer)V(ID,V_MAXR)).intValue(),false);
+        case 6: return convert(Ability.RANGE_CHOICES,((Integer)V(ID,V_MINR)).intValue(),false);
         case 7: return ((Boolean)V(ID,V_AUTO)).toString();
-        case 8: return ((Integer)V(ID,V_FLAG)).toString();
-        case 9: return ((Integer)V(ID,V_CLAS)).toString();
+        case 8: return convert(Ability.FLAG_DESCS,((Integer)V(ID,V_FLAG)).intValue(),true);
+        case 9: return convertClassAndDomain(((Integer)V(ID,V_CLAS)).intValue());
         case 10: return ((Integer)V(ID,V_OMAN)).toString();
-        case 11: return ((Integer)V(ID,V_USAG)).toString();
-        case 12: return ((Integer)V(ID,V_CAFF)).toString();
-        case 13: return ((Integer)V(ID,V_CTAR)).toString();
-        case 14: return ((Integer)V(ID,V_QUAL)).toString();
+        case 11: return convert(Ability.USAGE_DESCS,((Integer)V(ID,V_USAG)).intValue(),true);
+        case 12: return convert(Ability.CAN_DESCS,((Integer)V(ID,V_CAFF)).intValue(),true);
+        case 13: return convert(Ability.CAN_DESCS,((Integer)V(ID,V_CTAR)).intValue(),true);
+        case 14: return convert(Ability.QUALITY_DESCS,((Integer)V(ID,V_QUAL)).intValue(),true);
         case 15: return ((Ability)V(ID,V_HERE)).text();
         case 16: return (String)V(ID,V_CMSK);
         case 17: return (String)V(ID,V_SCRP);
@@ -468,7 +468,10 @@ public class GenAbility extends StdAbility
         case 20: return (String)V(ID,V_ACST);
         case 21: return (String)V(ID,V_CAST);
         case 22: return (String)V(ID,V_PCST);
-        case 23: return ((Integer)V(ID,V_ATT2)).toString();
+        case 23: return convert(CMMsg.TYPE_DESCS,((Integer)V(ID,V_ATT2)).intValue(),false);
+        default:
+        	if(code.equalsIgnoreCase("allxml")) return getAllXML();
+        	break;
         }
         return "";
     }
@@ -510,8 +513,32 @@ public class GenAbility extends StdAbility
         case 20: SV(ID,V_ACST,val); break;
         case 21: SV(ID,V_CAST,val); break;
         case 22: SV(ID,V_PCST,val); break;
-        case 23: SV(ID,V_ATT2,new Integer(CMath.s_int(val))); break;
+        case 23: SV(ID,V_ATT2,new Integer(convert(CMMsg.TYPE_DESCS,val,false))); break;
+        default:
+        	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(code);
+        	break;
         }
+    }
+    
+    private String convert(String[] options, int val, boolean mask)
+    {
+    	if(mask)
+    	{
+        	StringBuffer str=new StringBuffer("");
+        	for(int i=0;i<options.length;i++)
+        		if((val&(1<<i))>0)
+        			str.append(options[i]+",");
+        	if(str.length()>0)
+        	{
+	        	String sstr=str.toString();
+	        	if(sstr.endsWith(",")) sstr=sstr.substring(0,sstr.length()-1);
+	        	return sstr;
+        	}
+    	}
+    	else
+    	if((val>=0)&&(val<options.length)) 
+    		return options[val];
+    	return ""+val;
     }
     
     private int convertClassAndDomain(String val)
@@ -537,13 +564,13 @@ public class GenAbility extends StdAbility
 		    		int tdom=-1;
 		    		for(int a=0;a<Ability.DOMAIN_DESCS.length;a++)
 		    			if(val.equalsIgnoreCase(Ability.DOMAIN_DESCS[a]))
-		    				tdom=a;
+		    				tdom=a<<5;
 		    		if(tdom<0)
 		        	for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
 		        		if(Ability.DOMAIN_DESCS[i].toUpperCase().startsWith(val.toUpperCase())
 		        				||Ability.DOMAIN_DESCS[i].toUpperCase().endsWith(val.toUpperCase()))
-		        		{ tdom=i; break;}
-		        	if(tdom>=0) dom=dom|tdom;
+		        		{ tdom=i<<5; break;}
+		        	if(tdom>=0) dom=tdom;
 	    		}
     		}
     		else
@@ -552,21 +579,31 @@ public class GenAbility extends StdAbility
     	return acod|dom;
     }
     
-    private int convert(String[] options, String val, boolean maskable)
+    private String convertClassAndDomain(int val)
+    {
+    	int dom=val&Ability.ALL_DOMAINS>>5;
+    	int acod=val&Ability.ALL_ACODES;
+    	if((acod>=0)&&(acod<Ability.ACODE_DESCS.length)
+    	&&(dom>=0)&&(dom<Ability.DOMAIN_DESCS.length))
+    		return Ability.ACODE_DESCS[acod]+","+Ability.DOMAIN_DESCS[dom];
+    	return ""+val;
+    }
+    
+    private int convert(String[] options, String val, boolean mask)
     {
     	if(CMath.isInteger(val)) return CMath.s_int(val);
     	for(int i=0;i<options.length;i++)
     		if(val.equalsIgnoreCase(options[i]))
-    			return maskable?(1<<i):i;
+    			return mask?(1<<i):i;
     	for(int i=0;i<options.length;i++)
     		if(options[i].toUpperCase().startsWith(val.toUpperCase()))
-    			return maskable?(1<<i):i;
-    	if(maskable)
+    			return mask?(1<<i):i;
+    	if(mask)
     	{
     		Vector V=CMParms.parseCommas(val,true);
     		int num=0;
     		for(int v=0;v<V.size();v++)
-    			num=num|convert(options,(String)V.elementAt(v),false);
+    			num=num|(1<<convert(options,(String)V.elementAt(v),false));
     		return num;
     	}
     	return 0;
@@ -578,5 +615,24 @@ public class GenAbility extends StdAbility
         if(!((GenAbility)E).ID().equals(ID)) return false;
         if(!((GenAbility)E).text().equals(text())) return false;
         return true;
+    }
+    
+    private void parseAllXML(String xml)
+    {
+    	Vector V=CMLib.xml().parseAllXML(xml);
+    	if((V==null)||(V.size()==0)) return;
+    	for(int c=0;c<getStatCodes().length;c++)
+    		if(!getStatCodes()[c].equals("TEXT"))
+    			setStat(getStatCodes()[c],CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c])));
+    }
+    private String getAllXML()
+    {
+    	StringBuffer str=new StringBuffer("");
+    	for(int c=0;c<getStatCodes().length;c++)
+    		if(!getStatCodes()[c].equals("TEXT"))
+    			str.append("<"+getStatCodes()[c]+">"
+    					+CMLib.xml().parseOutAngleBrackets(getStat(getStatCodes()[c]))
+    					+"</"+getStatCodes()[c]+">");
+    	return str.toString();
     }
 }

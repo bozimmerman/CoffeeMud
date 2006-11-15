@@ -127,6 +127,9 @@ public interface DatabaseEngine extends CMObject
 	public Vector DBReadClasses();
 	public void DBDeleteClass(String classID);
 	public void DBCreateClass(String classID,String data);
+	public Vector DBReadAbilities();
+	public void DBDeleteAbility(String classID);
+	public void DBCreateAbility(String classID,String data);
 	public Object DBReadStat(long startTime);
 	public void DBDeleteStat(long startTime);
 	public void DBCreateStat(long startTime,long endTime,String data);

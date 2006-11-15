@@ -292,6 +292,15 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateClass(String classID,String data)
 	{ DataLoader.DBCreateClass(classID,data);}
 	
+	public Vector DBReadAbilities()
+	{ return DataLoader.DBReadAbilities();}
+	
+	public void DBDeleteAbility(String classID)
+	{ DataLoader.DBDeleteAbility(classID);}
+	
+	public void DBCreateAbility(String classID,String data)
+	{ DataLoader.DBCreateAbility(classID,data);}
+	
 	public Object DBReadStat(long startTime)
 	{ return StatLoader.DBRead(startTime);}
 	

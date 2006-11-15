@@ -734,6 +734,38 @@ public class Modify extends BaseGenerics
 		return true;
 	}
 
+	public boolean abilities(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ABILITY [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+	
+		String classID=CMParms.combine(commands,2);
+		Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell("'"+A.ID()+"' is not generic, and may not be modified.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+A.name()+"s.");
+		modifyGenAbility(mob,A);
+		CMLib.database().DBDeleteAbility(A.ID());
+		CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
+		return true;
+	}
+	
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -936,6 +968,12 @@ public class Modify extends BaseGenerics
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			classes(mob,commands);
+		}
+		else
+		if(commandType.equals("ABILITY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
@@ -1294,7 +1332,7 @@ public class Modify extends BaseGenerics
 				execute(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, EXPERTISE, TITLE, QUEST, MOB, USER, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

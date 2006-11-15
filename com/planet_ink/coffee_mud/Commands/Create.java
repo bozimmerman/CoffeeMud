@@ -548,6 +548,36 @@ public class Create extends BaseGenerics
         mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of the players just increased!");
     }
     
+	public void abilities(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ABILITY [ABILITY ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String classD=CMParms.combine(commands,2);
+		Ability A=CMClass.getAbility(classD);
+		if((A!=null)&&(A.isGeneric()))
+		{
+			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		if(classD.indexOf(" ")>=0)
+		{
+			mob.tell("'"+classD+"' is an invalid  id, because it contains a space.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
+		CR.setStat("CLASS",classD);
+		modifyGenAbility(mob,CR);
+		CMLib.database().DBCreateAbility(CR.ID(),CR.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
+	}
+
 	public void classes(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -633,6 +663,13 @@ public class Create extends BaseGenerics
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
+		}
+		else
+		if(commandType.equals("ABILITY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
@@ -864,10 +901,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, CLAN, MOB, RACE, CLASS, POLL, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, CLAN, RACE, CLASS, POLL, USER, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, CLAN, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
 			}
 		}
 		return false;

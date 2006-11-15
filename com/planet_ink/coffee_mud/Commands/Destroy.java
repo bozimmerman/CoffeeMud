@@ -665,6 +665,35 @@ public class Destroy extends BaseItemParser
 		return true;
 	}
 
+	public boolean abilities(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ABILITY [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+
+		String classID=CMParms.combine(commands,2);
+		Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell("'"+A.ID()+"' is not generic, and may not be deleted.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		CMClass.delClass(A);
+		CMLib.database().DBDeleteAbility(A.ID());
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
+		return true;
+	}
+
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -910,6 +939,13 @@ public class Destroy extends BaseItemParser
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
+		}
+		else
+		if(commandType.equals("ABILITY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
@@ -1245,7 +1281,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SESSION, THREAD, JOURNAL, SOCIAL, COMPONENT, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, THREAD, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

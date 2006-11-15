@@ -89,6 +89,30 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
+	public Vector DBReadAbilities()
+	{
+		DBConnection D=null;
+		Vector rows=new Vector();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMGAAC");
+			while(R.next())
+			{
+				Vector V=new Vector();
+				V.addElement(DBConnections.getRes(R,"CMGAID"));
+				V.addElement(DBConnections.getRes(R,"CMGAAT"));
+				rows.addElement(V);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		if(D!=null) DB.DBDone(D);
+		// log comment
+		return rows;
+	}
 	public Vector DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
@@ -495,6 +519,10 @@ public class DataLoader
 	{
 		DB.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
 	}
+	public void DBDeleteAbility(String classID)
+	{
+		DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");
+	}
 	public void DBDelete(String section)
 	{
 		DB.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
@@ -519,6 +547,17 @@ public class DataLoader
 		 "INSERT INTO CMCCAC ("
 		 +"CMCCID, "
 		 +"CMCDAT "
+		 +") values ("
+		 +"'"+classID+"',"
+		 +"'"+data+" '"
+		 +")");
+	}
+	public void DBCreateAbility(String classID, String data)
+	{
+		DB.update(
+		 "INSERT INTO CMGAAC ("
+		 +"CMGAID, "
+		 +"CMGAAT "
 		 +") values ("
 		 +"'"+classID+"',"
 		 +"'"+data+" '"
