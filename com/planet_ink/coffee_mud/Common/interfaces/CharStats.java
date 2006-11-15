@@ -36,6 +36,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface CharStats extends CMObject
 {
     /** stat constant for strength */
+    public static final int VALUE_ALLSTATS_DEFAULT=10;
+    
+    /** stat constant for strength */
 	public static final int STAT_STRENGTH=0;
     /** stat constant for intelligence */
 	public static final int STAT_INTELLIGENCE=1;
@@ -148,7 +151,19 @@ public interface CharStats extends CMObject
      * @param statNum which STAT_ constant to get a value for
      * @param value the value of the given STAT
      */
-	public void setPermaStat(int statNum, int value);
+	public void setPermanentStat(int statNum, int value);
+    
+    /**
+     * Set one of the basic attributes to approx the value.  The basic attributes
+     * are defined as the first 6 STAT_ constants from the CharStats interface.
+     * Using this method will also update the STAT_MAX_* attributes to make
+     * sure that they are not able to be trained upwards.
+     * @see CharStats
+     * @param statNum which STAT_ constant to get an approx value for
+     * @param value the value of the max, and approxvalue of the given STAT
+     */
+    public void setRacialStat(int statNum, int value);
+    
     /**
      * This method cross-references the given stat name string with the STAT_DESCS
      * string list in the CharStats interface to return the STAT_ constant which

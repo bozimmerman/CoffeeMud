@@ -53,7 +53,7 @@ public class DefaultCharStats implements CharStats
 	
 	public DefaultCharStats()
 	{
-        setAllBaseValues(10);
+        setAllBaseValues(VALUE_ALLSTATS_DEFAULT);
 		stats[STAT_GENDER]='M';
 	}
     public void setAllBaseValues(int def)
@@ -659,7 +659,7 @@ public class DefaultCharStats implements CharStats
 		return stats[abilityCode];
 	}
 
-	public void setPermaStat(int abilityCode, int value)
+	public void setPermanentStat(int abilityCode, int value)
 	{
 		setStat(abilityCode,value);
 		if(abilityCode<NUM_BASE_STATS)
@@ -668,6 +668,18 @@ public class DefaultCharStats implements CharStats
 					value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
 		}
 	}
+    
+    public void setRacialStat(int abilityCode, int racialMax)
+    {
+        int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+        int currMax=getStat(STAT_MAX_STRENGTH_ADJ+abilityCode)+baseMax;
+        if(currMax<=0) currMax=1;
+        int curStat=getStat(abilityCode);
+        int racialStat=Math.round(((float)curStat/(float)currMax)*(float)racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*(float)racialMax);
+        setStat(abilityCode,((racialStat<1)&&(racialMax>0))?1:racialStat);
+        setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,racialMax-baseMax);
+    }
+    
 	public void setStat(int abilityCode, int value)
 	{
         if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))

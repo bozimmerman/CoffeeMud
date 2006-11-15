@@ -55,9 +55,9 @@ public class GiantTurtle extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,26);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,2);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,26);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,2);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{

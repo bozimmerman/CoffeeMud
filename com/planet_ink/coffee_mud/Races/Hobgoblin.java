@@ -65,9 +65,9 @@ public class Hobgoblin extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,6);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,8);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,8);
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

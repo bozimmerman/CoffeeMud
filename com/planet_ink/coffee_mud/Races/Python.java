@@ -58,7 +58,7 @@ public class Python extends Snake
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,15);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,15);
 	}
 	public Vector myResources()
 	{

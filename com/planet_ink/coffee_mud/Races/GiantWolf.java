@@ -57,8 +57,8 @@ public class GiantWolf extends Wolf
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,13);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,13);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
 	public Vector myResources()
 	{

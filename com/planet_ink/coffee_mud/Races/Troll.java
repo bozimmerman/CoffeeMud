@@ -60,9 +60,9 @@ public class Troll extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,16);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,12);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,8);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,16);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,12);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,8);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-100);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)

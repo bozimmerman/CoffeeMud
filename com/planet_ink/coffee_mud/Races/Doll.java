@@ -57,9 +57,9 @@ public class Doll extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,5);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,5);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,13);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,13);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

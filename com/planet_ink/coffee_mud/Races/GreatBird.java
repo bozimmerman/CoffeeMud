@@ -70,9 +70,9 @@ public class GreatBird extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,8);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,8);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING)+50);
 	}
 	public Weapon myNaturalWeapon()

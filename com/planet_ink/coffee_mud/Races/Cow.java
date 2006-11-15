@@ -56,9 +56,9 @@ public class Cow extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,15);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,5);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,15);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

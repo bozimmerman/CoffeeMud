@@ -72,10 +72,10 @@ public class Mold extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
-		affectableStats.setPermaStat(CharStats.STAT_WISDOM,1);
-		affectableStats.setPermaStat(CharStats.STAT_CHARISMA,1);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,1);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_WISDOM,1);
+		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)-100);
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);

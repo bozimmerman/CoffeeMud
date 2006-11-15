@@ -56,8 +56,8 @@ public class GiantAnimal extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,6);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

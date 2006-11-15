@@ -49,7 +49,7 @@ public class Rat extends Rodent
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,4);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,4);
 	}
 	public Vector myResources()
 	{

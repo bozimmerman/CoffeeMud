@@ -50,9 +50,9 @@ public class Gorilla extends Monkey
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,18);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,16);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,18);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,16);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Vector myResources()
 	{

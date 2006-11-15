@@ -57,9 +57,9 @@ public class Chicken extends StdRace
 
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,4);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,4);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{

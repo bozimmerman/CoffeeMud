@@ -64,9 +64,9 @@ public class Frog extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -50,9 +50,9 @@ public class Chimp extends Monkey
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,15);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,15);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,15);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Vector myResources()
 	{

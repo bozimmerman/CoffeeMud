@@ -97,16 +97,17 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
+            int xlvl=getXLEVELLevel(invoker());
 			affectableStats.setName(CMStrings.startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
-												(int)Math.round(CMath.mul(affectableStats.level(),attadj[getRaceCode()])));
+												(int)Math.round(CMath.mul(affectableStats.level()+xlvl,attadj[getRaceCode()])));
 			affectableStats.setArmor(affectableStats.armor()+
-									(int)Math.round(CMath.mul(affectableStats.level(),armadj[getRaceCode()])));
+									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,armadj[getRaceCode()])));
 			affectableStats.setDamage(affectableStats.damage()+
-									(int)Math.round(CMath.mul(affectableStats.level(),dmgadj[getRaceCode()])));
+									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,dmgadj[getRaceCode()])));
 		}
 	}
 
@@ -136,8 +137,8 @@ public class Druid_ShapeShift extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
-		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
+        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+getXLEVELLevel(mob);
+		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this)+getXLEVELLevel(mob);
         if(qualClassLevel<0) classLevel=30;
 		raceName=getRaceName(classLevel,myRaceCode);
 		newRace=getRace(classLevel,myRaceCode);
@@ -267,6 +268,7 @@ public class Druid_ShapeShift extends StdAbility
 					Ability A=(Ability)V.elementAt(v);
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 					if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+                    lvl+=getXLEVELLevel(mob);
 					if(lvl<sortByLevel)
 					{
 						sortByLevel=lvl;

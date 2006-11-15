@@ -74,9 +74,9 @@ public class Bullywug extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,18);
-		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
-		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,7);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,18);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,7);
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
