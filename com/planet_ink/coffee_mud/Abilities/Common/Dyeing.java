@@ -50,7 +50,7 @@ public class Dyeing extends CommonSkill
 	protected String fixColor(String name, String colorWord)
 	{
 		int end=name.indexOf("^?");
-		if(end>0)
+		if((end>0)&&(end<=name.length()-3))
 		{
 			int start=name.substring(0,end).indexOf("^");
 			if((start>=0)&&(start<(end-3)))

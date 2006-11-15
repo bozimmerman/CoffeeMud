@@ -1228,7 +1228,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             		text=((Exit)msg.target()).readableText();
             	else
             	if((msg.target() instanceof Item)&&(CMLib.flags().isReadable((Item)msg.target())))
+            	{
             		text=((Item)msg.target()).readableText();
+            		if(((text==null)||(text.length()==0))
+            		&&(msg.target().description().length()>0)
+            		&&((msg.target().displayText().length()==0)
+            		   ||(!CMLib.flags().isGettable((Item)msg.target()))))
+            			text=msg.target().description();
+            	}
             	if((text!=null)
                 &&(text.length()>0))
                 {

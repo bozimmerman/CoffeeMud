@@ -75,6 +75,8 @@ public class GModify extends StdCommand
                                     DVector onfields,
                                     boolean noisy)
     {
+        if((mob.session()==null)||(mob.session().killFlag()))
+        	return false;
         boolean didAnything=false;
         if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.className(E));
         String field=null;
@@ -568,6 +570,8 @@ public class GModify extends StdCommand
 	    	synchronized(("SYNC"+R.roomID()).intern())
 	    	{
 	    		R=CMLib.map().getRoom(R);
+	            if((mob.session()==null)||(mob.session().killFlag()))
+	            	return false;
 	            boolean oldMobility=R.getArea().getMobility();
 	            if(changes.size()==0)
 	            {
