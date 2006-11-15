@@ -663,15 +663,13 @@ public class DefaultCharStats implements CharStats
 	{
 		setStat(abilityCode,value);
 		if(abilityCode<NUM_BASE_STATS)
-		{
 			setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,
 					value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
-		}
 	}
     
     public void setRacialStat(int abilityCode, int racialMax)
     {
-        if(abilityCode>=NUM_BASE_STATS) 
+        if((abilityCode>=NUM_BASE_STATS)||(getStat(abilityCode)==VALUE_ALLSTATS_DEFAULT)) 
             setPermanentStat(abilityCode,racialMax);
         else
         {
