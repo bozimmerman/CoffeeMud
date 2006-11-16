@@ -85,9 +85,9 @@ public class Prayer_AuraDivineEdict extends Prayer
 			Vector V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
 			Object O=CMLib.english().findCommand((MOB)msg.target(),(Vector)V.clone());
 			if((!((MOB)msg.target()).isMonster())
-			&&(CMClass.className(O).equalsIgnoreCase("DROP")
-			   ||CMClass.className(O).equalsIgnoreCase("SELL")
-			   ||CMClass.className(O).equalsIgnoreCase("GIVE")))
+			&&(CMClass.classID(O).equalsIgnoreCase("DROP")
+			   ||CMClass.classID(O).equalsIgnoreCase("SELL")
+			   ||CMClass.classID(O).equalsIgnoreCase("GIVE")))
 			{
 			   msg.source().tell("The divine care not about such orders.");
 			   return false;

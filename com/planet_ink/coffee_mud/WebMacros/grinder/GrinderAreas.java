@@ -116,7 +116,7 @@ public class GrinderAreas
 		String className=httpReq.getRequestParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this area.";
-		if(!className.equalsIgnoreCase(CMClass.className(A)))
+		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
 			allMyDamnRooms=new Vector();
 			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
@@ -146,7 +146,7 @@ public class GrinderAreas
 			CMLib.map().delArea(A);
 			oldName=A.Name();
 			CMLib.database().DBDeleteArea(A);
-			A=CMLib.database().DBCreateArea(name,CMClass.className(A));
+			A=CMLib.database().DBCreateArea(name,CMClass.classID(A));
 			A.setName(name);
 			redoAllMyDamnRooms=true;
 			httpReq.addRequestParameters("AREA",A.Name());

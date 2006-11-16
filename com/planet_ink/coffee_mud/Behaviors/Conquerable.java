@@ -1094,7 +1094,7 @@ public class Conquerable extends Arrest
 									data.append(CMLib.xml().convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
 								}
 							}
-							data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.className(I)));
+							data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
 							data.append(CMLib.xml().convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
 							data.append(CMLib.xml().convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
 							data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.baseEnvStats().level()));

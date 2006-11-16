@@ -522,7 +522,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return R;
-		mob.tell(getScr("BaseGenerics","type",showNumber+"",CMClass.className(R)));
+		mob.tell(getScr("BaseGenerics","type",showNumber+"",CMClass.classID(R)));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return R;
 		String newName="";
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()==0))
@@ -882,7 +882,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Key))
 			CMLib.flags().setReadable(E,false);
 		else
-		if((CMClass.className(E).endsWith("Readable"))
+		if((CMClass.classID(E).endsWith("Readable"))
 		||(E instanceof Recipe)
 		||(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
 			CMLib.flags().setReadable(E,true);
@@ -911,7 +911,7 @@ public class BaseGenerics extends StdCommand
 			boolean ok=false;
 			while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
 			{
-				if(CMClass.className(E).endsWith("SuperPill"))
+				if(CMClass.classID(E).endsWith("SuperPill"))
 				{
 					mob.tell(getScr("BaseGenerics","assspellorp",showNumber+"",E.readableText()));
 					ok=true;
@@ -962,7 +962,7 @@ public class BaseGenerics extends StdCommand
 				String newName=null;
 
 				if((E instanceof Wand)
-				||((E instanceof SpellHolder)&&(!(CMClass.className(E).endsWith("SuperPill")))))
+				||((E instanceof SpellHolder)&&(!(CMClass.classID(E).endsWith("SuperPill")))))
 				{
 					newName=mob.session().prompt(getScr("BaseGenerics","some6"),"");
 					if(newName.length()==0)
@@ -2983,7 +2983,7 @@ public class BaseGenerics extends StdCommand
 				if(E2.isGeneric())
 					inventorystr+=E2.name()+" ("+E.getShop().numberInStock(E2)+"), ";
 				else
-					inventorystr+=CMClass.className(E2)+" ("+E.getShop().numberInStock(E2)+"), ";
+					inventorystr+=CMClass.classID(E2)+" ("+E.getShop().numberInStock(E2)+"), ";
 			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
@@ -5439,9 +5439,9 @@ public class BaseGenerics extends StdCommand
 		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcantargetmask"),"CANTARGETMASK");
 		    genText(mob,me,CMParms.toStringList(Ability.QUALITY_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abquality"),"QUALITY");
 		    genText(mob,me,CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abherestats"),"HERESTATS");
-		    genText(mob,me,CMLib.masking().maskHelp("\n","allow"),++showNumber,showFlag,getScr("BaseGenerics","abcastmask"),"CASTMASK");
+		    genText(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,getScr("BaseGenerics","abcastmask"),"CASTMASK");
 		    genText(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abscript"),"SCRIPT");
-		    genText(mob,me,CMLib.masking().maskHelp("\n","allow"),++showNumber,showFlag,getScr("BaseGenerics","abtargetmask"),"TARGETMASK");
+		    genText(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,getScr("BaseGenerics","abtargetmask"),"TARGETMASK");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abfizzlemsg"),"FIZZLEMSG");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abautocastmsg"),"AUTOCASTMSG");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abcastmsg"),"CASTMSG");

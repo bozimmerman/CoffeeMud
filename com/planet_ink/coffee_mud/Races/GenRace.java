@@ -230,7 +230,7 @@ public class GenRace extends StdRace
 			{
 				Item I=(Item)myResources().elementAt(i);
 				str.append("<RSCITEM>");
-				str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(I)));
+				str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
 				str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
 				str.append("</RSCITEM>");
 			}
@@ -244,7 +244,7 @@ public class GenRace extends StdRace
 			{
 				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
-				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
+				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.classID(I)));
 				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
 				str.append("</OFTITEM>");
 			}
@@ -254,7 +254,7 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<WEAPON>");
-			str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(naturalWeapon)));
+			str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(naturalWeapon)));
 			str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.xml().parseOutAngleBrackets(naturalWeapon.text())));
 			str.append("</WEAPON>");
 		}

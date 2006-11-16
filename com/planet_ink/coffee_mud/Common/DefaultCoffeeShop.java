@@ -89,7 +89,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                 return true;
         }
         else
-        if(CMClass.className(thang1).equals(CMClass.className(thang2)))
+        if(CMClass.classID(thang1).equals(CMClass.classID(thang2)))
             return true;
     	return false;
     }
@@ -385,7 +385,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             {
                 Item I=(Item)V.elementAt(i);
                 itemstr.append("<INV>");
-                itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(I)));
+                itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
                 itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(I)));
                 itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPrice(I)));
                 itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getPropertiesStr(I,true)));

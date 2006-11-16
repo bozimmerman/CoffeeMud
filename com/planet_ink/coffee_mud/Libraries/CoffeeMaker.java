@@ -254,7 +254,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if((A!=null)&&(A.savable()))
 			{
 				abilitystr.append("<ABLTY>");
-				abilitystr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
+				abilitystr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
 				abilitystr.append(CMLib.xml().convertXMLtoTag("APROF",""+A.proficiency()));
 				abilitystr.append(CMLib.xml().convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
 				abilitystr.append("</ABLTY>");
@@ -272,7 +272,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if((I!=null)&&(I.savable()))
 			{
 				itemstr.append("<ITEM>");
-				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(I)));
+				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
 				itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
 				itemstr.append("</ITEM>");
 			}
@@ -416,7 +416,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				else
 				{
 					text.append("<KLTOOL>");
-					text.append(CMLib.xml().convertXMLtoTag("KLCLASS",CMClass.className(((DeadBody)E).killingTool())));
+					text.append(CMLib.xml().convertXMLtoTag("KLCLASS",CMClass.classID(((DeadBody)E).killingTool())));
 					text.append(CMLib.xml().convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).killingTool(),true)));
 					text.append("</KLTOOL>");
 				}
@@ -473,7 +473,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					Ability A=((Deity)E).fetchBlessing(b);
 					if(A==null) continue;
 					itemstr.append("<BLESS>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("BLCLASS",CMClass.className(A)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("BLCLASS",CMClass.classID(A)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
 					itemstr.append("</BLESS>");
 				}
@@ -485,7 +485,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					Ability A=((Deity)E).fetchCurse(b);
 					if(A==null) continue;
 					itemstr.append("<CURSE>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("CUCLASS",CMClass.className(A)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("CUCLASS",CMClass.classID(A)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
 					itemstr.append("</CURSE>");
 				}
@@ -497,7 +497,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					Ability A=((Deity)E).fetchPower(b);
 					if(A==null) continue;
 					itemstr.append("<POWER>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("POCLASS",CMClass.className(A)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("POCLASS",CMClass.classID(A)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("PODATA",getPropertiesStr(A,true)));
 					itemstr.append("</POWER>");
 				}
@@ -518,7 +518,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				{
 					Environmental Env=(Environmental)V.elementAt(b);
 					itemstr.append("<SHITEM>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.className(Env)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.classID(Env)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",((ShopKeeper)E).getShop().numberInStock(Env)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",((ShopKeeper)E).getShop().stockPrice(Env)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(Env,true)));
@@ -1073,8 +1073,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		{
 			MOB mob=(MOB)E1;
 			MOB dup=(MOB)E2;
-			if(!CMClass.className(mob).equals(CMClass.className(dup)))
-			   str.append(CMClass.className(mob)+"!="+CMClass.className(dup)+"\n\r");
+			if(!CMClass.classID(mob).equals(CMClass.classID(dup)))
+			   str.append(CMClass.classID(mob)+"!="+CMClass.classID(dup)+"\n\r");
 			if(mob.baseEnvStats().level()!=dup.baseEnvStats().level())
 			   str.append("Level- "+mob.baseEnvStats().level()+"!="+dup.baseEnvStats().level()+"\n\r");
 			if(mob.baseEnvStats().ability()!=dup.baseEnvStats().ability())
@@ -1087,8 +1087,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		{
 			Item item=(Item)E1;
 			Item dup=(Item)E2;
-			if(!CMClass.className(item).equals(CMClass.className(dup)))
-			   str.append(CMClass.className(item)+"!="+CMClass.className(dup)+"\n\r");
+			if(!CMClass.classID(item).equals(CMClass.classID(dup)))
+			   str.append(CMClass.classID(item)+"!="+CMClass.classID(dup)+"\n\r");
 			if(item.baseEnvStats().level()!=dup.baseEnvStats().level())
 			   str.append("Level- "+item.baseEnvStats().level()+"!="+dup.baseEnvStats().level()+"\n\r");
 			if(item.baseEnvStats().ability()!=dup.baseEnvStats().ability())
@@ -1148,7 +1148,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
 						dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 						dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
-						if(CMClass.className(mob).equals(CMClass.className(dup))
+						if(CMClass.classID(mob).equals(CMClass.classID(dup))
 						&&(mob.baseEnvStats().level()==dup.baseEnvStats().level())
 						&&(mob.baseEnvStats().ability()==dup.baseEnvStats().ability())
 						&&(mob.text().equals(dup.text())))
@@ -1181,7 +1181,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						continue;
 				}
 				buf.append("<MOB>");
-				buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.className(mob)));
+				buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
 				buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 				buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
 				buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
@@ -1226,7 +1226,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					Item dup=(Item)dups.elementAt(v);
 					int oldHeight=item.baseEnvStats().height();
 					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
-					if(CMClass.className(item).equals(CMClass.className(dup))
+					if(CMClass.classID(item).equals(CMClass.classID(dup))
 					&&(item.baseEnvStats().level()==dup.baseEnvStats().level())
 					&&(item.usesRemaining()==dup.usesRemaining())
 					&&(item.baseEnvStats().ability()==dup.baseEnvStats().ability())
@@ -1249,7 +1249,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				dups.addElement(item);
 			}
 			buf.append("<ITEM>");
-			buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.className(item)));
+			buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
 			buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
 			buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
 			buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
@@ -1387,7 +1387,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		buf.append("<AROOM>");
 		buf.append(CMLib.xml().convertXMLtoTag("ROOMID",room.roomID()));
 		buf.append(CMLib.xml().convertXMLtoTag("RAREA",room.getArea().Name()));
-		buf.append(CMLib.xml().convertXMLtoTag("RCLAS",CMClass.className(room)));
+		buf.append(CMLib.xml().convertXMLtoTag("RCLAS",CMClass.classID(room)));
 		buf.append(CMLib.xml().convertXMLtoTag("RDISP",room.displayText()));
 		buf.append(CMLib.xml().convertXMLtoTag("RDESC",room.description()));
 		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",CMLib.xml().parseOutAngleBrackets(room.text())));
@@ -1474,7 +1474,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						   custom.add(mob.charStats().getMyRace());
 
 						buf.append("<RMOB>");
-						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.className(mob)));
+						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
 							buf.append(CMLib.xml().convertXMLtoTag("MIDEN",""+mob));
 						buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
@@ -1505,7 +1505,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					Item item=(Item)items.elementAt(i);
                     if(item.savable())
                     {
-    					buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.className(item)));
+    					buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
     					if(((item instanceof Container)&&(((Container)item).capacity()>0))
     					||((item instanceof Rideable)&&(((Rideable)item).numRiders()>0)))
     						buf.append(CMLib.xml().convertXMLtoTag("IIDEN",""+item));
@@ -2303,7 +2303,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
 			{
 				fols.append("<FOLLOWER>");
-				fols.append(CMLib.xml().convertXMLtoTag("FCLAS",CMClass.className(thisMOB)));
+				fols.append(CMLib.xml().convertXMLtoTag("FCLAS",CMClass.classID(thisMOB)));
 				fols.append(CMLib.xml().convertXMLtoTag("FTEXT",thisMOB.text()));
 				fols.append(CMLib.xml().convertXMLtoTag("FLEVL",thisMOB.baseEnvStats().level()));
 				fols.append(CMLib.xml().convertXMLtoTag("FABLE",thisMOB.baseEnvStats().ability()));
@@ -2457,7 +2457,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if(B!=null)
 			{
 				behaviorstr.append("<BHAVE>");
-				behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.className(B)));
+				behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.classID(B)));
 				behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",CMLib.xml().parseOutAngleBrackets(B.getParms())));
 				behaviorstr.append("</BHAVE>");
 			}
@@ -2471,7 +2471,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if((A!=null)&&(A.savable()))
 			{
 				affectstr.append("<AFF>");
-				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
+				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
 				affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",CMLib.xml().parseOutAngleBrackets(A.text())));
 				affectstr.append("</AFF>");
 			}
@@ -2827,7 +2827,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 		switch(getGenMobCodeNum(code))
 		{
-		case 0: return CMClass.className(M);
+		case 0: return CMClass.classID(M);
 		case 1: return M.baseCharStats().getMyRace().ID();
 		case 2: return ""+M.baseEnvStats().level();
 		case 3: return ""+M.baseEnvStats().ability();
@@ -2993,7 +2993,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					newRoom.rawDoors()[d]=null;
 				newRoom.setRoomID(newArea.getNewRoomID(room,-1));
 				newRoom.setArea(newArea);
-				CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
+				CMLib.database().DBCreateRoom(newRoom,CMClass.classID(newRoom));
 				altIDs.put(room.roomID(),newRoom.roomID());
 				if(newRoom.numInhabitants()>0)
 					CMLib.database().DBUpdateMOBs(newRoom);

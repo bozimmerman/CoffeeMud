@@ -123,7 +123,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					Room R2=R.getRoomInDir(d);
 					if(R2==null)
 					{
-						R2=CMClass.getLocale(CMClass.className(R));
+						R2=CMClass.getLocale(CMClass.classID(R));
 						R2.setRoomID(R.getArea().getNewRoomID(R,d));
 						if(R2.roomID().length()==0) continue;
 						R2.setArea(R.getArea());
@@ -141,7 +141,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						R2.rawExits()[Directions.getOpDirectionCode(d)]=CMClass.getExit("Open");
 						updateExits=true;
 	
-						CMLib.database().DBCreateRoom(R2,CMClass.className(R2));
+						CMLib.database().DBCreateRoom(R2,CMClass.classID(R2));
 						colorForSale(R2,newTitle.rentalProperty(),true);
 						R2.getArea().fillInAreaRoom(R2);
 						CMLib.database().DBUpdateExits(R2);

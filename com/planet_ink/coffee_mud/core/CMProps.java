@@ -43,8 +43,7 @@ public class CMProps extends Properties
     	if(props==null) props=new CMProps[256];
 	    if(props[c]==null) props[c]=this; 
     }
-    private static CMProps inst=new CMProps();
-    public static CMProps instance(){return inst;}
+    public static CMProps instance(){return p();}
     
 	public static final long serialVersionUID=0;
     public static final int SYSTEM_PKILL=0;
@@ -611,12 +610,12 @@ public class CMProps extends Properties
             disable+=", CLASSES";
         CMSecurity.setDisableVars(disable);
         if(getStr("DISABLE").trim().length()>0)
-            Log.sysOut("MUD","Disabled subsystems: "+getStr("DISABLE"));
+            Log.sysOut(Thread.currentThread().getName(),"Disabled subsystems: "+getStr("DISABLE"));
         if(getStr("DEBUG").trim().length()>0)
         {
-            Log.sysOut("MUD","Debugging messages: "+getStr("DEBUG"));
+            Log.sysOut(Thread.currentThread().getName(),"Debugging messages: "+getStr("DEBUG"));
         	if(!Log.debugChannelOn())
-                Log.errOut("MUD","Debug logging is disabled! Check your DBGMSGS flag!");
+                Log.errOut(Thread.currentThread().getName(),"Debug logging is disabled! Check your DBGMSGS flag!");
         }
         CMSecurity.setDebugVars(getStr("DEBUG"));
         CMSecurity.setSaveFlags(getStr("SAVE"));

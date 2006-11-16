@@ -88,7 +88,7 @@ public class QuestLoader
 		+"CMQWINNS "
 		+") values ("
 		+"'"+Q.name()+"',"
-		+"'"+CMClass.className(Q)+"',"
+		+"'"+CMClass.classID(Q)+"',"
 		+"'"+Q.script()+" ',"
 		+"'"+Q.getWinnerStr()+" '"
 		+")");
@@ -97,7 +97,7 @@ public class QuestLoader
 	{
 		if(quests==null) quests=new Vector();
 		String quType="DefaultQuest";
-		if(quests.size()>0) quType=CMClass.className(quests.firstElement());
+		if(quests.size()>0) quType=CMClass.classID(quests.firstElement());
 		DBConnection D=null;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
 		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
@@ -120,7 +120,7 @@ public class QuestLoader
 				+"CMQWINNS "
 				+") values ("
 				+"'"+Q.name()+"',"
-				+"'"+CMClass.className(Q)+"',"
+				+"'"+CMClass.classID(Q)+"',"
 				+"'"+Q.script()+" ',"
 				+"'"+Q.getWinnerStr()+" '"
 				+")",0);

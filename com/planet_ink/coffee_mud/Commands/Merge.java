@@ -91,8 +91,8 @@ public class Merge extends StdCommand
 		for(int t=0;t<things.size();t++)
 		{
 			Environmental E2=(Environmental)things.elementAt(t);
-			if(noisy) mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.className(E)+"/"+CMClass.className(E2));
-			if(CMClass.className(E).equals(CMClass.className(E2)))
+			if(noisy) mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.classID(E)+"/"+CMClass.classID(E2));
+			if(CMClass.classID(E).equals(CMClass.classID(E2)))
 			{
 				Vector fieldsToCheck=null;
 				if(onfields.size()>0)

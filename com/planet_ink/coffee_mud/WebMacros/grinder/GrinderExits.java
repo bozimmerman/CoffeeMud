@@ -63,7 +63,7 @@ public class GrinderExits
 			
 			// important generic<->non generic swap!
 			String newClassID=httpReq.getRequestParameter("CLASSES");
-			if((newClassID!=null)&&(!CMClass.className(E).equals(newClassID)))
+			if((newClassID!=null)&&(!CMClass.classID(E).equals(newClassID)))
 			{
 				E=CMClass.getExit(newClassID);
 				R.rawExits()[dir]=E;

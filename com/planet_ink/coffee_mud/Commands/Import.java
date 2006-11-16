@@ -5584,7 +5584,7 @@ public class Import extends StdCommand
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			Room saveRoom=(Room)e.nextElement();
-			CMLib.database().DBCreateRoom(saveRoom,CMClass.className(saveRoom));
+			CMLib.database().DBCreateRoom(saveRoom,CMClass.classID(saveRoom));
 			// final exit clean-up optomization
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{

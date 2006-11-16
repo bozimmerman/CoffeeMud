@@ -837,7 +837,7 @@ public class RoomLoader
 		+") values ("
 		+"'"+room.roomID()+"',"
 		+"'"+mobID+"',"
-		+"'"+CMClass.className(thisMOB)+"',"
+		+"'"+CMClass.classID(thisMOB)+"',"
 		+"'"+thisMOB.text()+" ',"
 		+thisMOB.baseEnvStats().level()+","
 		+thisMOB.baseEnvStats().ability()+","
@@ -900,7 +900,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
 		DB.update(
 		"UPDATE CMROOM SET "
-		+"CMLOID='"+CMClass.className(room)+"',"
+		+"CMLOID='"+CMClass.classID(room)+"',"
 		+"CMAREA='"+room.getArea().Name()+"',"
 		+"CMDESC1='"+room.displayText()+" ',"
 		+"CMDESC2='"+room.description()+" ',"

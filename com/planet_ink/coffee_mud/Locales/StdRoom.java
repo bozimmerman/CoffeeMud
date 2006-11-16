@@ -1756,7 +1756,7 @@ public class StdRoom implements Room
 	public String getStat(String code){
 		switch(getCodeNum(code))
 		{
-		case 0: return CMClass.className(this);
+		case 0: return CMClass.classID(this);
 		case 1: return displayText();
 		case 2: return description();
 		case 3: return text();

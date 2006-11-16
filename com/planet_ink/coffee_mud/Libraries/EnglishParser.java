@@ -86,7 +86,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Command C=CMClass.findCommandByTrigger(firstWord,true);
 		if((C!=null)
         &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.className(C).toUpperCase()))) 
+        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase()))) 
             return C;
 
         Ability A=getToEvoke(mob,(Vector)commands.clone());
@@ -146,7 +146,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		C=CMClass.findCommandByTrigger(firstWord,false);
         if((C!=null)
         &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.className(C).toUpperCase()))) 
+        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase()))) 
             return C;
 
 

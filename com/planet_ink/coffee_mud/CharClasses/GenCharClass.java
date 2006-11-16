@@ -288,7 +288,7 @@ public class GenCharClass extends StdCharClass
 			{
 				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
-				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
+				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.classID(I)));
 				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
 				str.append("</OFTITEM>");
 			}

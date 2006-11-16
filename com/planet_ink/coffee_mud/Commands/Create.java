@@ -274,7 +274,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.roomID());
+		thisRoom.setDisplayText(CMClass.classID(thisRoom)+"-"+thisRoom.roomID());
 		thisRoom.setDescription("");
 		CMLib.database().DBCreateRoom(thisRoom,Locale);
 
@@ -402,7 +402,7 @@ public class Create extends BaseGenerics
 		Room R=CMClass.getLocale("StdRoom");
 		R.setRoomID(A.getNewRoomID(R,-1));
 		R.setArea(A);
-		R.setDisplayText(CMClass.className(R)+"-"+R.roomID());
+		R.setDisplayText(CMClass.classID(R)+"-"+R.roomID());
 		R.setDescription("");
 		CMLib.database().DBCreateRoom(R,R.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");

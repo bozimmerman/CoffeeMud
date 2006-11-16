@@ -62,7 +62,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		baseEnvStats().setHeight(M.baseEnvStats().height());
 		StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
-		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.className(M)));
+		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.classID(M)));
 		itemstr.append(CMLib.xml().convertXMLtoTag("MIDATA",CMLib.coffeeMaker().getPropertiesStr(M,true)));
 		itemstr.append("</MOBITEM>");
 		setCageText(itemstr.toString());

@@ -71,9 +71,9 @@ public class MUD extends Thread implements MudHost
     public int state=0;
 	ServerSocket servsock=null;
 
-	public MUD()
+	public MUD(String name)
 	{
-		super("MUD-MainServer");
+		super(name);
 	}
 
 	public static void fatalStartupError(Thread t, int type)
@@ -850,9 +850,12 @@ public class MUD extends Thread implements MudHost
 		private static int grpid=0;
 		private String name=null;
 		private String iniFile=null;
+		private String logName=null;
 		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
-			super(G,mudName+"#"+grpid);
+			super(G,"HOST"+grpid);
+			logName="mud"+((grpid>0)?"."+grpid+".":"");
+			grpid++;
 			iniFile=iniFileName;
 			name=mudName;
 			setDaemon(true);
@@ -875,6 +878,12 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
 				return;
 			}
+			
+			if(!logName.equals("mud"))
+			{
+				Log.startLogFiles(logName,page.getInt("NUMLOGS"));
+				Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+			}
 			CMProps.setVar(CMProps.SYSTEM_INIPATH,iniFile,false);
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,name);
 			try
@@ -884,11 +893,6 @@ public class MUD extends Thread implements MudHost
 				CMProps.setVar(CMProps.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
 				CMProps.setIntVar(CMProps.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
 
-				System.out.println();
-				Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));
-				Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2006 Bo Zimmerman");
-				Log.sysOut(Thread.currentThread().getName(),"http://coffeemud.zimmers.net");
-
 				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));
 				if(MUD.isOK)
 				{
@@ -897,7 +901,7 @@ public class MUD extends Thread implements MudHost
 					int pdex=ports.indexOf(",");
 					while(pdex>0)
 					{
-						MUD mud=new MUD();
+						MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
 						mud.acceptConnections=false;
 						mud.port=CMath.s_int(ports.substring(0,pdex));
 						ports=ports.substring(pdex+1);
@@ -905,7 +909,7 @@ public class MUD extends Thread implements MudHost
                         CMLib.hosts().addElement(mud);
 						pdex=ports.indexOf(",");
 					}
-					MUD mud=new MUD();
+					MUD mud=new MUD("MUD@"+ports);
 					mud.acceptConnections=false;
 					mud.port=CMath.s_int(ports);
 					mud.start();
@@ -988,6 +992,10 @@ public class MUD extends Thread implements MudHost
 		Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
 		while(!bringDown)
 		{
+			System.out.println();
+			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
+			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2006 Bo Zimmerman");
+			Log.sysOut(Thread.currentThread().getName(),"http://coffeemud.zimmers.net");
 			HostGroup joinable=null;
 			for(int i=0;i<iniFiles.size();i++)
 			{

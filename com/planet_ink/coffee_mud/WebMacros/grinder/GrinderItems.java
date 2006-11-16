@@ -124,7 +124,7 @@ public class GrinderItems
 			}
 			Item copyItem=(Item)I.copyOf();
 			Item oldI=I;
-			if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
+			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(I))))
 				I=CMClass.getItem(newClassID);
 	
 			for(int o=0;o<okparms.length;o++)
@@ -266,7 +266,7 @@ public class GrinderItems
 					break;
 				case 34: // readable spells
 					if(((I instanceof SpellHolder))
-					&&(CMClass.className(I).indexOf("SuperPill")<0))
+					&&(CMClass.classID(I).indexOf("SuperPill")<0))
 					{
 						if(httpReq.isRequestParameter("READABLESPELLS"))
 						{

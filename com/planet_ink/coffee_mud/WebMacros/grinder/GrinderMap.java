@@ -399,7 +399,7 @@ public class GrinderMap extends GrinderFlatMap
 								catch (java.io.UnsupportedEncodingException e) {
 								  Log.errOut("GrinderMap", "Wrong Encoding");
 								}
-								buf.append("<FONT SIZE=-2>(" + CMClass.className(GR.room()) +
+								buf.append("<FONT SIZE=-2>(" + CMClass.classID(GR.room()) +
 								           ")<BR>");
 								String displayText = GR.room().displayText();
 								if (displayText.length() > 20) {

@@ -662,7 +662,7 @@ public class GrinderFlatMap
 							{
 								Log.errOut("GrinderMap","Wrong Encoding");
 							}
-							buf.append("<FONT SIZE=-2>("+CMClass.className(GR.room())+")<BR>");
+							buf.append("<FONT SIZE=-2>("+CMClass.classID(GR.room())+")<BR>");
 							String displayText=GR.room().displayText();
 							if(displayText.length()>20)	displayText=displayText.substring(0,20)+"...";
 							buf.append(displayText+"</FONT></TD>");

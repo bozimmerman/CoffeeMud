@@ -68,7 +68,7 @@ public class AreaData extends StdWebMacro
 				Behavior B=E.fetchBehavior(b);
 				if((B!=null)&&(B.isSavable()))
 				{
-					theclasses.addElement(CMClass.className(B));
+					theclasses.addElement(CMClass.classID(B));
 					String t=B.getParms();
 					t=CMStrings.replaceAll(t,"\"","&quot;");
 					theparms.addElement(t);
@@ -98,7 +98,7 @@ public class AreaData extends StdWebMacro
 			{
 				Behavior B=(Behavior)b.nextElement();
 				if(B.canImprove(E))
-					sortMeB.addElement(CMClass.className(B));
+					sortMeB.addElement(CMClass.classID(B));
 			}
 			sortedB=(new TreeSet(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)
@@ -141,7 +141,7 @@ public class AreaData extends StdWebMacro
 				Ability Able=E.fetchEffect(a);
 				if((Able!=null)&&(Able.savable()))
 				{
-					theclasses.addElement(CMClass.className(Able));
+					theclasses.addElement(CMClass.classID(Able));
 					String t=Able.text();
 					t=CMStrings.replaceAll(t,"\"","&quot;");
 					theparms.addElement(t);
@@ -318,13 +318,13 @@ public class AreaData extends StdWebMacro
 				{
 					String className=httpReq.getRequestParameter("CLASS");
 					if((className==null)||(className.length()==0))
-						className=CMClass.className(A);
+						className=CMClass.classID(A);
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
 					if(sortedA==null)
 					{
 						Vector sortMeA=new Vector();
 						for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
-							sortMeA.addElement(CMClass.className(a.nextElement()));
+							sortMeA.addElement(CMClass.classID(a.nextElement()));
 						sortedA=(new TreeSet(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}

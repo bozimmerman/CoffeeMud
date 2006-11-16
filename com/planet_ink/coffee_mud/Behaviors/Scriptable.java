@@ -2558,7 +2558,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(arg2.length()==0)
 					returnable=true;
 				else
-				if(CMClass.className(((MOB)E).location()).toUpperCase().indexOf(arg2.toUpperCase())>=0)
+				if(CMClass.classID(((MOB)E).location()).toUpperCase().indexOf(arg2.toUpperCase())>=0)
 					returnable=true;
 				else
 					returnable=false;
@@ -3193,7 +3193,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					String sex=CMClass.className(E).toUpperCase();
+					String sex=CMClass.classID(E).toUpperCase();
 					if(arg2.equals("=="))
 						returnable=sex.indexOf(arg3)>=0;
 					else
@@ -4498,7 +4498,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E!=null)
 				{
-					String sex=CMClass.className(E).toLowerCase();
+					String sex=CMClass.classID(E).toLowerCase();
 					results.append(sex);
 				}
 				break;

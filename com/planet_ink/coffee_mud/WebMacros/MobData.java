@@ -116,7 +116,7 @@ public class MobData extends StdWebMacro
 				Ability Able=E.fetchAbility(a);
 				if((Able!=null)&&(Able.savable()))
                 {
-					theclasses.addElement(CMClass.className(Able));
+					theclasses.addElement(CMClass.classID(Able));
                     if(player)
                     {
                         theprofs.addElement(Able.proficiency()+"");
@@ -245,7 +245,7 @@ public class MobData extends StdWebMacro
 			{
 				Ability Able=E.fetchBlessing(a);
 				if(Able!=null)
-					theclasses.addElement(CMClass.className(Able));
+					theclasses.addElement(CMClass.classID(Able));
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
@@ -295,7 +295,7 @@ public class MobData extends StdWebMacro
 			{
 				Ability Able=E.fetchCurse(a);
 				if(Able!=null)
-					theclasses.addElement(CMClass.className(Able));
+					theclasses.addElement(CMClass.classID(Able));
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
@@ -517,7 +517,7 @@ public class MobData extends StdWebMacro
 			{
 				Ability Able=E.fetchPower(a);
 				if(Able!=null)
-					theclasses.addElement(CMClass.className(Able));
+					theclasses.addElement(CMClass.classID(Able));
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
@@ -592,14 +592,14 @@ public class MobData extends StdWebMacro
 						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 						{
 							MOB M2=(MOB)m.nextElement();
-							if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
+							if(CMClass.classID(M2).equals(MATCHING)&&(!M2.isGeneric()))
 							{	O=(MOB)M2.copyOf(); break;	}
 						}
 						if(O==null)
 						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							Ability A2=(Ability)a.nextElement();
-							if(CMClass.className(A2).equals(MATCHING))
+							if(CMClass.classID(A2).equals(MATCHING))
 							{	O=(Ability)A2.copyOf(); break;	}
 						}
 						if(O==null)
@@ -678,9 +678,9 @@ public class MobData extends StdWebMacro
 				bufA=new StringBuffer("");
 				Vector sortMeA=new Vector();
 				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-					sortMeA.addElement(CMClass.className(a.nextElement()));
+					sortMeA.addElement(CMClass.classID(a.nextElement()));
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
-					sortMeA.addElement(CMClass.className(m.nextElement()));
+					sortMeA.addElement(CMClass.classID(m.nextElement()));
 				CMClass.addAllItemClassNames(sortMeA,true,true);
 				Object[] sortedA=(new TreeSet(sortMeA)).toArray();
 				for(int r=0;r<sortedA.length;r++)
@@ -830,7 +830,7 @@ public class MobData extends StdWebMacro
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)
-		&&(!newClassID.equals(CMClass.className(M)))
+		&&(!newClassID.equals(CMClass.classID(M)))
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 
@@ -866,13 +866,13 @@ public class MobData extends StdWebMacro
 				break;
 			case 1: // classes
 				{
-					if(firstTime) old=CMClass.className(M);
+					if(firstTime) old=CMClass.classID(M);
 					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBS");
 					if(sorted==null)
 					{
 						Vector sortMe=new Vector();
 						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
-							sortMe.addElement(CMClass.className(m.nextElement()));
+							sortMe.addElement(CMClass.classID(m.nextElement()));
 						sorted=(new TreeSet(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-MOBS",sorted);
 					}

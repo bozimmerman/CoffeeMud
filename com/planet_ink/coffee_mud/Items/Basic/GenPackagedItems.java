@@ -68,7 +68,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         setBaseValue(I.baseGoldValue()*number);
         StringBuffer itemstr=new StringBuffer("");
         itemstr.append("<PAKITEM>");
-        itemstr.append(CMLib.xml().convertXMLtoTag("PICLASS",CMClass.className(I)));
+        itemstr.append(CMLib.xml().convertXMLtoTag("PICLASS",CMClass.classID(I)));
         itemstr.append(CMLib.xml().convertXMLtoTag("PIDATA",CMLib.coffeeMaker().getPropertiesStr(I,true)));
         itemstr.append("</PAKITEM>");
         setPackageText(itemstr.toString());

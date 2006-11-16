@@ -252,7 +252,7 @@ public class MudChat extends StdBehavior
 		if(V!=null) return V;
 		V=matchChatGroup(forMe.displayText(),chatGroups);
 		if(V!=null) return V;
-		V=matchChatGroup(CMClass.className(forMe),chatGroups);
+		V=matchChatGroup(CMClass.classID(forMe),chatGroups);
 		if(V!=null) return V;
 		if(getParms().length()>0)
 		{

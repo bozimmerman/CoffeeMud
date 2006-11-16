@@ -967,7 +967,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                    if(CMLib.flags().canBeSeenBy(mob2,mob))
                    {
                         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-                            Say.append("^H("+CMClass.className(mob2)+")^N ");
+                            Say.append("^H("+CMClass.classID(mob2)+")^N ");
     
                         if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                             Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));

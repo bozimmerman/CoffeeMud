@@ -130,7 +130,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
                 appendReps(reps,say,compress);
 				if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-					say.append("^H("+CMClass.className(item)+")^N ");
+					say.append("^H("+CMClass.classID(item)+")^N ");
                 if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                     say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
 				say.append("^I");
@@ -244,7 +244,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
             if(thisThang instanceof Race)
                 list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
             else
-				list=CMClass.className(thisThang);
+				list=CMClass.classID(thisThang);
 			if(ofType>=0)
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
@@ -297,7 +297,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
             if(thisThang instanceof Race)
                 list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
             else
-                list=CMClass.className(thisThang);
+                list=CMClass.classID(thisThang);
 			if(ofType>=0)
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
@@ -345,7 +345,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
             if(thisThang instanceof Race)
                 list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
             else
-                list=CMClass.className(thisThang);
+                list=CMClass.classID(thisThang);
 			if(ofType>=0)
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))

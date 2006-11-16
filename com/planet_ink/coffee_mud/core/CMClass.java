@@ -201,42 +201,42 @@ public class CMClass extends ClassLoader
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.className(I));
+				V.addElement(CMClass.classID(I));
 		}
 		for(Enumeration i=weapons();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.className(I));
+				V.addElement(CMClass.classID(I));
 		}
 		for(Enumeration i=armor();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.className(I));
+				V.addElement(CMClass.classID(I));
 		}
 		for(Enumeration i=miscMagic();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.className(I));
+				V.addElement(CMClass.classID(I));
 		}
 		for(Enumeration i=miscTech();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.className(I));
+				V.addElement(CMClass.classID(I));
 		}
 		for(Enumeration i=clanItems();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.className(I));
+				V.addElement(CMClass.classID(I));
 		}
 	}
 	
@@ -876,7 +876,7 @@ public class CMClass extends ClassLoader
                         Vector V=(Vector)toThis;
                         boolean doNotAdd=false;
                         for(int v=0;v<V.size();v++)
-                            if(className(V.elementAt(v)).equals(itemName))
+                            if(rawClassName(V.elementAt(v)).equals(itemName))
                             {
                                 V.setElementAt(O,v);
                                 doNotAdd=true;
@@ -896,7 +896,7 @@ public class CMClass extends ClassLoader
         return true;
     }
 
-	public static String className(Object O)
+	public static String rawClassName(Object O)
 	{
 		if(O==null) return "";
 		String name=O.getClass().getName();
@@ -931,9 +931,9 @@ public class CMClass extends ClassLoader
 				return ((CMObject)e).ID();
 			else
 			if(e instanceof Command)
-				return className(e);
+				return rawClassName(e);
 			else
-				return className(e);
+				return rawClassName(e);
 		}
 		return "";
 	}
@@ -1115,7 +1115,7 @@ public class CMClass extends ClassLoader
             if(common.size()==0) return false;
             
             webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",ancestor("WEBMACROS"));
-            Log.sysOut("MUD","WebMacros loaded  : "+webMacros.size());
+            Log.sysOut(Thread.currentThread().getName(),"WebMacros loaded  : "+webMacros.size());
             for(Enumeration e=webMacros.keys();e.hasMoreElements();)
             {
                 String key=(String)e.nextElement();
@@ -1124,27 +1124,27 @@ public class CMClass extends ClassLoader
             }
             
             races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),ancestor("RACE"));
-            Log.sysOut("MUD","Races loaded      : "+races.size());
+            Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+races.size());
             if(races.size()==0) return false;
     
             charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),ancestor("CHARCLASS"));
-            Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
+            Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+charClasses.size());
             if(charClasses.size()==0) return false;
     
             MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),ancestor("MOB"));
-            Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
+            Log.sysOut(Thread.currentThread().getName(),"MOB Types loaded  : "+MOBs.size());
             if(MOBs.size()==0) return false;
     
             exits=loadVectorListToObj(prefix+"Exits/",page.getStr("EXITS"),ancestor("EXIT"));
-            Log.sysOut("MUD","Exit Types loaded : "+exits.size());
+            Log.sysOut(Thread.currentThread().getName(),"Exit Types loaded : "+exits.size());
             if(exits.size()==0) return false;
     
             areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),ancestor("AREA"));
-            Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
+            Log.sysOut(Thread.currentThread().getName(),"Area Types loaded : "+areaTypes.size());
             if(areaTypes.size()==0) return false;
     
             locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),ancestor("LOCALE"));
-            Log.sysOut("MUD","Locales loaded    : "+locales.size());
+            Log.sysOut(Thread.currentThread().getName(),"Locales loaded    : "+locales.size());
             if(locales.size()==0) return false;
     
             abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),ancestor("ABILITY"));
@@ -1168,15 +1168,15 @@ public class CMClass extends ClassLoader
                 addV(tempV,abilities);
     
                 size+=tempV.size();
-                if(size>0) Log.sysOut("MUD","Fighter Skills    : "+size);
+                if(size>0) Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut("MUD","Chants loaded     : "+tempV.size());
+                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Chants loaded     : "+tempV.size());
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut("MUD","Languages loaded  : "+tempV.size());
+                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",ancestor("ABILITY"));
@@ -1193,11 +1193,11 @@ public class CMClass extends ClassLoader
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Misc/","%DEFAULT%",ancestor("ABILITY"));
                 size+=tempV.size();
-                Log.sysOut("MUD","Properties loaded : "+size);
+                Log.sysOut(Thread.currentThread().getName(),"Properties loaded : "+size);
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Prayers/","%DEFAULT%",ancestor("ABILITY"));
-                Log.sysOut("MUD","Prayers loaded    : "+tempV.size());
+                Log.sysOut(Thread.currentThread().getName(),"Prayers loaded    : "+tempV.size());
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",ancestor("ABILITY"));
@@ -1219,23 +1219,23 @@ public class CMClass extends ClassLoader
                 tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",ancestor("ABILITY"));
                 size+=tempV.size();
                 addV(tempV,abilities);
-                if(size>0) Log.sysOut("MUD","Skills loaded     : "+size);
+                if(size>0) Log.sysOut(Thread.currentThread().getName(),"Skills loaded     : "+size);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut("MUD","Songs loaded      : "+tempV.size());
+                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Songs loaded      : "+tempV.size());
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut("MUD","Spells loaded     : "+tempV.size());
+                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Spells loaded     : "+tempV.size());
                 addV(tempV,abilities);
     
                 tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
                 size=tempV.size();
                 addV(tempV,abilities);
-                if(size>0) Log.sysOut("MUD","Heroics loaded    : "+size);
+                if(size>0) Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
                 
                 tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut("MUD","Traps loaded      : "+tempV.size());
+                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
                 addV(tempV,abilities);
                 abilities=new Vector(new TreeSet(abilities));
                 
@@ -1256,7 +1256,7 @@ public class CMClass extends ClassLoader
                     }
                     if(loaded>0)
                     {
-                        Log.sysOut("MUD","GenAbiles loaded  : "+loaded);
+                        Log.sysOut(Thread.currentThread().getName(),"GenAbiles loaded  : "+loaded);
                         abilities=new Vector(new TreeSet(abilities));
                     }
                 }
@@ -1264,22 +1264,22 @@ public class CMClass extends ClassLoader
             }
     
             items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),ancestor("ITEM"));
-            if(items.size()>0) Log.sysOut("MUD","Basic Items loaded: "+items.size());
+            if(items.size()>0) Log.sysOut(Thread.currentThread().getName(),"Basic Items loaded: "+items.size());
     
             weapons=loadVectorListToObj(prefix+"Items/Weapons/",page.getStr("WEAPONS"),ancestor("WEAPON"));
-            if(weapons.size()>0) Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
+            if(weapons.size()>0) Log.sysOut(Thread.currentThread().getName(),"Weapons loaded    : "+weapons.size());
     
             armor=loadVectorListToObj(prefix+"Items/Armor/",page.getStr("ARMOR"),ancestor("ARMOR"));
-            if(armor.size()>0) Log.sysOut("MUD","Armor loaded      : "+armor.size());
+            if(armor.size()>0) Log.sysOut(Thread.currentThread().getName(),"Armor loaded      : "+armor.size());
     
             miscMagic=loadVectorListToObj(prefix+"Items/MiscMagic/",page.getStr("MISCMAGIC"),ancestor("MISCMAGIC"));
-            if(miscMagic.size()>0) Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
+            if(miscMagic.size()>0) Log.sysOut(Thread.currentThread().getName(),"Magic Items loaded: "+miscMagic.size());
     
             clanItems=loadVectorListToObj(prefix+"Items/ClanItems/",page.getStr("CLANITEMS"),ancestor("CLANITEMS"));
-            if(clanItems.size()>0) Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
+            if(clanItems.size()>0) Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+clanItems.size());
     
             miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),ancestor("MISCTECH"));
-            if(miscTech.size()>0) Log.sysOut("MUD","Electronics loaded: "+miscTech.size());
+            if(miscTech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+miscTech.size());
             Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
             if(tempV.size()>0) addV(tempV,miscTech);
             miscTech=new Vector(new TreeSet(miscTech));
@@ -1288,11 +1288,11 @@ public class CMClass extends ClassLoader
                 return false;
     
             behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),ancestor("BEHAVIOR"));
-            Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
+            Log.sysOut(Thread.currentThread().getName(),"Behaviors loaded  : "+behaviors.size());
             if(behaviors.size()==0) return false;
     
             commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),ancestor("COMMAND"));
-            Log.sysOut("MUD","Commands loaded   : "+commands.size());
+            Log.sysOut(Thread.currentThread().getName(),"Commands loaded   : "+commands.size());
             if(commands.size()==0) return false;
         }
         catch(Throwable t)
@@ -1337,7 +1337,7 @@ public class CMClass extends ClassLoader
                 }
             }
             if(loaded>0)
-                Log.sysOut("MUD","GenRaces loaded   : "+loaded);
+                Log.sysOut(Thread.currentThread().getName(),"GenRaces loaded   : "+loaded);
         }
         CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genClasses");
         Vector genClasses=CMLib.database().DBReadClasses();
@@ -1355,12 +1355,12 @@ public class CMClass extends ClassLoader
                 }
             }
             if(loaded>0)
-                Log.sysOut("MUD","GenClasses loaded : "+loaded);
+                Log.sysOut(Thread.currentThread().getName(),"GenClasses loaded : "+loaded);
         }
         CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: initializing classes");
         intializeClasses();
         CMLib.expertises().recompileExpertises();
-        Log.sysOut("MUD","Expertises defined: "+CMLib.expertises().numExpertises());
+        Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());
         return true;
     }
 

@@ -677,7 +677,7 @@ public class MOBloader
             if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
             {
                 String str="INSERT INTO CMCHFO ("+"CMUSERID, "+"CMFONM, "+"CMFOID, "+"CMFOTX, "+"CMFOLV, "+"CMFOAB"
-                +") values ("+"'"+mob.Name()+"',"+f+","+"'"+CMClass.className(thisMOB)+"',"+"'"+thisMOB.text()+" ',"
+                +") values ("+"'"+mob.Name()+"',"+f+","+"'"+CMClass.classID(thisMOB)+"',"+"'"+thisMOB.text()+" ',"
                 +thisMOB.baseEnvStats().level()+","+thisMOB.baseEnvStats().ability()+")";
                 V.addElement(str);
             }

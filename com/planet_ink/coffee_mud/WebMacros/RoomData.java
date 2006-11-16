@@ -282,13 +282,13 @@ public class RoomData extends StdWebMacro
 			{
 				String className=httpReq.getRequestParameter("CLASSES");
 				if((className==null)||(className.length()==0))
-					className=CMClass.className(R);
+					className=CMClass.classID(R);
 				Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
 				if(sorted==null)
 				{
 					Vector sortMe=new Vector();
 					for(Enumeration l=CMClass.locales();l.hasMoreElements();)
-						sortMe.addElement(CMClass.className(l.nextElement()));
+						sortMe.addElement(CMClass.classID(l.nextElement()));
 					sorted=(new TreeSet(sortMe)).toArray();
 					Resources.submitResource("MUDGRINDER-LOCALES",sorted);
 				}
@@ -370,7 +370,7 @@ public class RoomData extends StdWebMacro
 						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 						{
 							MOB M2=(MOB)m.nextElement();
-							if(CMClass.className(M2).equals(MATCHING)
+							if(CMClass.classID(M2).equals(MATCHING)
 							   &&(!M2.isGeneric()))
 							{	classes.addElement(M2.copyOf()); break;	}
 						}

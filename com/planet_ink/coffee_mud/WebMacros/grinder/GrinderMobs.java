@@ -314,7 +314,7 @@ public class GrinderMobs
 				return str.toString();
 			}
 			MOB oldM=M;
-			if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
+			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(M))))
 				M=CMClass.getMOB(newClassID);
 			M.setStartRoom(R);
 	
@@ -614,14 +614,14 @@ public class GrinderMobs
 							for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 							{
 								MOB M2=(MOB)m.nextElement();
-								if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
+								if(CMClass.classID(M2).equals(MATCHING)&&(!M2.isGeneric()))
 								{	O=(MOB)M2.copyOf(); break;	}
 							}
 							if(O==null)
 							for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 							{
 								Ability A2=(Ability)a.nextElement();
-								if(CMClass.className(A2).equals(MATCHING))
+								if(CMClass.classID(A2).equals(MATCHING))
 								{	O=(Ability)A2.copyOf(); break;	}
 							}
 							if(O==null)

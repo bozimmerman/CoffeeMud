@@ -49,7 +49,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
         }
         catch (Exception ex)
         {
-            Log.errOut("MUD", "Error occur during decompression.");
+            Log.errOut(Thread.currentThread().getName(), "Error occur during decompression.");
             encodeBuffer=new byte[65536];
             return "";
         }

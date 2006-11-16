@@ -90,7 +90,7 @@ public class ExitData extends StdWebMacro
 
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");
-		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(E))))
+		if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(E))))
 				E=CMClass.getExit(newClassID);
 
 		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
@@ -113,13 +113,13 @@ public class ExitData extends StdWebMacro
 				break;
 			case 1: // classes
 				{
-					if(firstTime) old=CMClass.className(E);
+					if(firstTime) old=CMClass.classID(E);
 					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-EXITS");
 					if(sorted==null)
 					{
 						Vector sortMe=new Vector();
 						for(Enumeration e=CMClass.exits();e.hasMoreElements();)
-							sortMe.addElement(CMClass.className(e.nextElement()));
+							sortMe.addElement(CMClass.classID(e.nextElement()));
 						sorted=(new TreeSet(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-EXITS",sorted);
 					}

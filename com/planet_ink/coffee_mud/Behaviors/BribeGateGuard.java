@@ -229,7 +229,7 @@ public class BribeGateGuard extends StdBehavior
 		// write an entry for that mob
 		if(surviveReboot)
 		{
-			CMLib.database().DBWriteJournal(gates(), mob.Name(), CMClass.className(balance),
+			CMLib.database().DBWriteJournal(gates(), mob.Name(), CMClass.classID(balance),
 			                            "COINS", CMLib.coffeeMaker().getPropertiesStr(balance, true),
 			                            -1);
 		}

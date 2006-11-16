@@ -499,7 +499,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                                if(mobType.equalsIgnoreCase("any"))
 	                                                    choices.addElement(M2);
 	                                                else
-	                                                if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+	                                                if((CMClass.classID(M2).toUpperCase().indexOf(mobType)>=0)
 	                                                ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 	                                                ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
 	                                                ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
@@ -521,7 +521,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                            if(mobType.equalsIgnoreCase("any"))
 	                                                choices.addElement(M2);
 	                                            else
-	                                            if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+	                                            if((CMClass.classID(M2).toUpperCase().indexOf(mobType)>=0)
 	                                            ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 	                                            ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
 	                                            ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
@@ -542,7 +542,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                MOB M2=(MOB)choices.elementAt(i);
 	                                if((M2!=null)&&(M2.isMonster()))
 	                                {
-	                                    if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+	                                    if((CMClass.classID(M2).toUpperCase().indexOf(mobType)>=0)
 	                                    ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 	                                    ||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
 	                                    ||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0)
@@ -751,7 +751,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                                            if(itemType.equalsIgnoreCase("any"))
 		                                                choices.addElement(I2);
 		                                            else
-		                                            if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+		                                            if(CMClass.classID(I2).toUpperCase().indexOf(itemType)>=0)
 		                                                choices.addElement(I2);
 		                                        }
 		                                    }
@@ -767,7 +767,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                            if(itemType.equalsIgnoreCase("any"))
 	                                                choices.addElement(I2);
 	                                            else
-	                                            if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+	                                            if(CMClass.classID(I2).toUpperCase().indexOf(itemType)>=0)
 	                                                choices.addElement(I2);
 	                                        }
 	                                    }
@@ -783,7 +783,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            for(int i=choices.size()-1;i>=0;i--)
 	                            {
 	                                Item I2=(Item)choices.elementAt(i);
-	                                if((CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+	                                if((CMClass.classID(I2).toUpperCase().indexOf(itemType)>=0)
 	                                ||(I2.name().toUpperCase().indexOf(itemType)>=0)
 	                                ||(I2.displayText().toUpperCase().indexOf(itemType)>=0))
 	                                    choices.removeElement(I2);
@@ -890,7 +890,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                     if(localeName.equalsIgnoreCase("any"))
                                         choices.addElement(R2);
                                     else
-                                    if(CMClass.className(R2).toUpperCase().indexOf(localeName)>=0)
+                                    if(CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
                                         choices.addElement(R2);
                                     else
                                     {

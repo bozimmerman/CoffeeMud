@@ -78,7 +78,7 @@ public class GModify extends StdCommand
         if((mob.session()==null)||(mob.session().killFlag()))
         	return false;
         boolean didAnything=false;
-        if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.className(E));
+        if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
         String field=null;
         String value=null;
         String equator=null;

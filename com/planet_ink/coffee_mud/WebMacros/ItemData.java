@@ -199,7 +199,7 @@ public class ItemData extends StdWebMacro
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)
-		&&(!newClassID.equals(CMClass.className(I)))
+		&&(!newClassID.equals(CMClass.classID(I)))
 		&&(CMClass.getItem(newClassID)!=null))
 		{
 			I=CMClass.getItem(newClassID);
@@ -279,7 +279,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 1: // classes
 					{
-						if(firstTime) old=CMClass.className(I);
+						if(firstTime) old=CMClass.classID(I);
 						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2");
 						if(sorted==null)
 						{
@@ -556,7 +556,7 @@ public class ItemData extends StdWebMacro
 					if(I instanceof Pill) return "true";
                     return "false";
 				case 43: // is super pill
-					if((I instanceof Pill)&&(CMClass.className(I).indexOf("SuperPill")>0)) return "true";
+					if((I instanceof Pill)&&(CMClass.classID(I).indexOf("SuperPill")>0)) return "true";
                     return "false";
 				case 44: // is potion
 					if(I instanceof Potion) return "true";
@@ -646,7 +646,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 55: // is wallpaper
-					if(CMClass.className(I).indexOf("GenWallpaper")>0) return "true";
+					if(CMClass.classID(I).indexOf("GenWallpaper")>0) return "true";
                     return "false";
 				case 56: // readabletext
 					if(firstTime) old=""+I.readableText();
