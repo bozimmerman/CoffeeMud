@@ -36,7 +36,13 @@ import java.io.ByteArrayInputStream;
 */
 public class CMProps extends Properties
 {
-    private CMProps(){super();}
+    private static CMProps[] props=new CMProps[256];
+    private CMProps(){
+    	super();
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+    	if(props==null) props=new CMProps[256];
+	    if(props[c]==null) props[c]=this; 
+    }
     private static CMProps inst=new CMProps();
     public static CMProps instance(){return inst;}
     
@@ -163,17 +169,21 @@ public class CMProps extends Properties
     public static final int SYSTEMB_ACCOUNTEXPIRATION=9;
     public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
     public static final int NUMB_SYSTEM=11;
-
-    private static String[] sysVars=new String[NUM_SYSTEM];
-    private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
-    private static Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
-    private static Vector sayFilter=new Vector();
-    private static Vector channelFilter=new Vector();
-    private static Vector emoteFilter=new Vector();
-    private static DVector newusersByIP=new DVector(2);
-    private static DVector skillMaxManaExceptions=new DVector(2);
-    private static DVector skillMinManaExceptions=new DVector(2);
-
+    
+    protected String[] sysVars=new String[NUM_SYSTEM];
+    protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
+    protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
+    protected Vector sayFilter=new Vector();
+    protected Vector channelFilter=new Vector();
+    protected Vector emoteFilter=new Vector();
+    protected DVector newusersByIP=new DVector(2);
+    protected DVector skillMaxManaExceptions=new DVector(2);
+    protected DVector skillMinManaExceptions=new DVector(2);
+    private static CMProps p()
+    { 
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    return props[c];
+	}
     public static int pkillLevelDiff=26;
 
     public static int getPKillLevelDiff(){return pkillLevelDiff;}
@@ -181,41 +191,41 @@ public class CMProps extends Properties
     public static String getVar(int varNum)
     {
         if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";
-        if(sysVars[varNum]==null) return "";
-        return sysVars[varNum];
+        if(p().sysVars[varNum]==null) return "";
+        return p().sysVars[varNum];
     }
 
     public static int getIntVar(int varNum)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return -1;
-        if(sysInts[varNum]==null) return -1;
-        return sysInts[varNum].intValue();
+        if(p().sysInts[varNum]==null) return -1;
+        return p().sysInts[varNum].intValue();
     }
 
     public static boolean getBoolVar(int varNum)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
-        if(sysBools[varNum]==null) return false;
-        return sysBools[varNum].booleanValue();
+        if(p().sysBools[varNum]==null) return false;
+        return p().sysBools[varNum].booleanValue();
     }
 
     public static void setBoolVar(int varNum, boolean val)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
-        sysBools[varNum]=new Boolean(val);
+        p().sysBools[varNum]=new Boolean(val);
     }
 
     public static void setIntVar(int varNum, int val)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
-        sysInts[varNum]=new Integer(val);
+        p().sysInts[varNum]=new Integer(val);
     }
 
     public static void setIntVar(int varNum, String val)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if(val==null) val="0";
-        sysInts[varNum]=new Integer(CMath.s_int(val));
+        p().sysInts[varNum]=new Integer(CMath.s_int(val));
     }
 
     public static void setVar(int varNum, String val, boolean upperFy)
@@ -234,7 +244,7 @@ public class CMProps extends Properties
     {
         if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
         if(val==null) val="";
-        sysVars[varNum]=val;
+        p().sysVars[varNum]=val;
         switch(varNum)
         {
         case SYSTEM_PKILL:
@@ -250,13 +260,14 @@ public class CMProps extends Properties
     public static int getCountNewUserByIP(String address)
     {
         int count=0;
-        synchronized(newusersByIP)
+        DVector DV=p().newusersByIP;
+        synchronized(DV)
         {
-            for(int i=newusersByIP.size()-1;i>=0;i--)
-                if(((String)newusersByIP.elementAt(i,1)).equalsIgnoreCase(address))
+            for(int i=DV.size()-1;i>=0;i--)
+                if(((String)DV.elementAt(i,1)).equalsIgnoreCase(address))
                 {
-                    if(System.currentTimeMillis()>(((Long)newusersByIP.elementAt(i,2)).longValue()))
-                        newusersByIP.removeElementAt(i);
+                    if(System.currentTimeMillis()>(((Long)DV.elementAt(i,2)).longValue()))
+                    	DV.removeElementAt(i);
                     else
                         count++;
                 }
@@ -265,23 +276,26 @@ public class CMProps extends Properties
     }
     public static void addNewUserByIP(String address)
     {
-        synchronized(newusersByIP)
+        DVector DV=p().newusersByIP;
+        synchronized(DV)
         {
-            newusersByIP.addElement(address,new Long(System.currentTimeMillis()+TimeManager.MILI_DAY));
+        	DV.addElement(address,new Long(System.currentTimeMillis()+TimeManager.MILI_DAY));
         }
     }
     
     public static int getMinManaException(String skillID)
     {
-    	int x=CMProps.skillMinManaExceptions.indexOf(skillID.toUpperCase());
+        DVector DV=p().skillMinManaExceptions;
+    	int x=DV.indexOf(skillID.toUpperCase());
     	if(x<0) return Integer.MIN_VALUE;
-    	return ((Integer)CMProps.skillMinManaExceptions.elementAt(x,2)).intValue();
+    	return ((Integer)DV.elementAt(x,2)).intValue();
     }
     public static int getMaxManaException(String skillID)
     {
-    	int x=CMProps.skillMaxManaExceptions.indexOf(skillID.toUpperCase());
+        DVector DV=p().skillMaxManaExceptions;
+    	int x=DV.indexOf(skillID.toUpperCase());
     	if(x<0) return Integer.MIN_VALUE;
-    	return ((Integer)CMProps.skillMaxManaExceptions.elementAt(x,2)).intValue();
+    	return ((Integer)DV.elementAt(x,2)).intValue();
     }
 
     private static int setExceptionSkillCosts(String val, DVector set)
@@ -338,11 +352,11 @@ public class CMProps extends Properties
         setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
         setVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
         setVar(SYSTEM_EMOTEFILTER,page.getStr("EMOTEFILTER"));
-        emoteFilter=CMParms.parse((page.getStr("EMOTEFILTER")).toUpperCase());
+        p().emoteFilter=CMParms.parse((page.getStr("EMOTEFILTER")).toUpperCase());
         setVar(SYSTEM_SAYFILTER,page.getStr("SAYFILTER"));
-        sayFilter=CMParms.parse((page.getStr("SAYFILTER")).toUpperCase());
+        p().sayFilter=CMParms.parse((page.getStr("SAYFILTER")).toUpperCase());
         setVar(SYSTEM_CHANNELFILTER,page.getStr("CHANNELFILTER"));
-        channelFilter=CMParms.parse((page.getStr("CHANNELFILTER")).toUpperCase());
+        p().channelFilter=CMParms.parse((page.getStr("CHANNELFILTER")).toUpperCase());
         setVar(SYSTEM_CLANTROPAREA,page.getStr("CLANTROPAREA"));
         setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
         setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
@@ -393,8 +407,8 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_BASEMAXSTAT,18);
         else
             setIntVar(SYSTEMI_BASEMAXSTAT,page.getStr("BASEMAXSTAT"));
-        setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(page.getStr("MANACOST"),CMProps.skillMaxManaExceptions));
-        setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(page.getStr("MANAMINCOST"),CMProps.skillMinManaExceptions));
+        setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(page.getStr("MANACOST"),p().skillMaxManaExceptions));
+        setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(page.getStr("MANAMINCOST"),p().skillMinManaExceptions));
         setIntVar(SYSTEMI_EDITORTYPE,0);
         if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
         setIntVar(SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
@@ -473,9 +487,9 @@ public class CMProps extends Properties
         Vector filter=null;
         switch(whichFilter)
         {
-        case SYSTEM_EMOTEFILTER: filter=emoteFilter; break;
-        case SYSTEM_SAYFILTER: filter=sayFilter; break;
-        case SYSTEM_CHANNELFILTER: filter=channelFilter; break;
+        case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
+        case SYSTEM_SAYFILTER: filter=p().sayFilter; break;
+        case SYSTEM_CHANNELFILTER: filter=p().channelFilter; break;
         }
         if((filter==null)||(filter.size()==0))
             return msg;
@@ -931,6 +945,8 @@ public class CMProps extends Properties
 
 	public CMProps(InputStream in)
 	{
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    if(props[c]==null) props[c]=this; 
 		try
 		{
 			this.load(in);
@@ -943,6 +959,8 @@ public class CMProps extends Properties
 	}
 	public CMProps(String filename)
 	{
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    if(props[c]==null) props[c]=this; 
 		try
 		{
 			CMFile F=new CMFile(filename,null,false);
@@ -977,6 +995,8 @@ public class CMProps extends Properties
 	public CMProps(Properties p, String filename)
 	{
 		super(p);
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    if(props[c]==null) props[c]=this; 
 		
 		try
 		{
@@ -1010,6 +1030,8 @@ public class CMProps extends Properties
 	public String getStr(String tagToGet)
 	{
 		String thisTag=this.getProperty(tagToGet);
+		if((thisTag==null)&&(props['0']!=null)&&(props['0']!=this))
+			return props['0'].getStr(tagToGet);
 		if(thisTag==null) return "";
 		return thisTag;
 	}

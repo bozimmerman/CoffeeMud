@@ -47,9 +47,9 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)5.2;
-	public static final long  HOST_VERSION_MINOR=6;
+	public static final long  HOST_VERSION_MINOR=8;
 	
-	public static boolean keepDown=true;
+	public static boolean bringDown=false;
 	public static String execExternalCommand=null;
 	public static Server imserver=null;
 	public static IMC2Driver imc2server=null;
@@ -727,6 +727,7 @@ public class MUD extends Thread implements MudHost
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
 		if(S!=null)S.println("CoffeeMud shutdown complete.");
+		bringDown=keepItDown;
         CMLib.threads().resumeAll();
 		if(!keepItDown)
 			if(S!=null)S.println("Restarting...");
@@ -736,7 +737,6 @@ public class MUD extends Thread implements MudHost
 		System.runFinalization();
 		try{Thread.sleep(500);}catch(Exception i){}
 
-		keepDown=keepItDown;
 		execExternalCommand=externalCommand;
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=CMLib.hosts().size()-1;m>=0;m--)
@@ -763,7 +763,7 @@ public class MUD extends Thread implements MudHost
 		super.interrupt();
 	}
 
-	public static int activeCount(ThreadGroup tGroup)
+	public static int activeThreadCount(ThreadGroup tGroup)
 	{
 		int realAC=0;
 		int ac = tGroup.activeCount();
@@ -835,61 +835,44 @@ public class MUD extends Thread implements MudHost
 		return port;
 	}
 
-	public static void main(String a[])
+	private static class HostGroup extends Thread
 	{
-		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
-		CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
-		DBConnector currentDBconnector=new DBConnector();
-        CMLib.registerLibrary(new DBInterface(currentDBconnector));
-        CMLib.registerLibrary(new ServiceEngine());
-        CMLib.registerLibrary(new IMudClient());
-		CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
-        CMProps page=null;
-		
-		String nameID="";
-		String iniFile="coffeemud.ini";
-		if(a.length>0)
+		private static int grpid=0;
+		private String name=null;
+		private String iniFile=null;
+		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
-			for(int i=0;i<a.length;i++)
-				nameID+=" "+a[i];
-			nameID=nameID.trim();
-			Vector V=CMParms.paramParse(nameID);
-			for(int v=0;v<V.size();v++)
-			{
-				String s=(String)V.elementAt(v);
-				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
-				{
-					iniFile=s.substring(5);
-					V.removeElementAt(v);
-					v--;
-				}
-			}
-			nameID=CMParms.combine(V,0);
+			super(G,mudName+"#"+grpid);
+			iniFile=iniFileName;
+			name=mudName;
+			setDaemon(true);
 		}
-		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,nameID);
-		try
+		
+		public void run()
 		{
-			while(true)
+			CMProps page=CMProps.loadPropPage("//"+iniFile);
+			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
+			CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
+			DBConnector currentDBconnector=new DBConnector();
+	        CMLib.registerLibrary(new DBInterface(currentDBconnector));
+	        CMLib.registerLibrary(new ServiceEngine());
+	        CMLib.registerLibrary(new IMudClient());
+			CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
+			if ((page==null)||(!page.loaded))
 			{
-				page=CMProps.loadPropPage("//"+iniFile);
-				if ((page==null)||(!page.loaded))
-				{
-					Log.startLogFiles("mud",1);
-					Log.setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
-					Log.errOut("MUD","ERROR: Unable to read ini file: '"+iniFile+"'.");
-					System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
-					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
-					System.exit(-1);
-				}
-				
+				Log.errOut("MUD","ERROR: Unable to read ini file: '"+iniFile+"'.");
+				System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
+				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
+				return;
+			}
+			CMProps.setVar(CMProps.SYSTEM_INIPATH,iniFile,false);
+			CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,name);
+			try
+			{
 				isOK = true;
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting");
-				CMProps.setVar(CMProps.SYSTEM_INIPATH,iniFile,false);
 				CMProps.setVar(CMProps.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
 				CMProps.setIntVar(CMProps.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
-				Log.startLogFiles("mud",page.getInt("NUMLOGS"));
-				Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));
@@ -948,37 +931,89 @@ public class MUD extends Thread implements MudHost
                     else
                         System.exit(-1);
                 }
-
-				System.gc();
-                try{Thread.sleep(1000);}catch(Exception e){}
-				System.runFinalization();
-                try{Thread.sleep(1000);}catch(Exception e){}
-                
-				if(activeCount(Thread.currentThread().getThreadGroup())>1)
+			}
+			catch(InterruptedException e)
+			{
+				Log.errOut("MUD",e);
+			}
+		}
+	}
+	
+	public static void main(String a[])
+	{
+		String nameID="";
+		Vector iniFiles=CMParms.makeVector();
+		if(a.length>0)
+		{
+			for(int i=0;i<a.length;i++)
+				nameID+=" "+a[i];
+			nameID=nameID.trim();
+			Vector V=CMParms.paramParse(nameID);
+			for(int v=0;v<V.size();v++)
+			{
+				String s=(String)V.elementAt(v);
+				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
 				{
-					try{ Thread.sleep(1000);}catch(Exception e){}
-					killCount(Thread.currentThread().getThreadGroup(),Thread.currentThread());
-					if(activeCount(Thread.currentThread().getThreadGroup())>1)
-					{
-						Log.sysOut("MUD","WARNING: " + activeCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");
-						threadList(Thread.currentThread().getThreadGroup());
-					}
+					iniFiles.addElement(s.substring(5));
+					V.removeElementAt(v);
+					v--;
 				}
-				if(keepDown)
-				   break;
+			}
+			nameID=CMParms.combine(V,0);
+		}
+		if(iniFiles.size()==0) iniFiles.addElement("coffeemud.ini");
+		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
+		String iniFile=(String)iniFiles.firstElement();
+		CMProps page=CMProps.loadPropPage("//"+iniFile);
+		if ((page==null)||(!page.loaded))
+		{
+			Log.startLogFiles("mud",1);
+			Log.setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
+			Log.errOut("MUD","ERROR: Unable to read ini file: '"+iniFile+"'.");
+			System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
+			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
+			System.exit(-1);
+		}
+		Log.startLogFiles("mud",page.getInt("NUMLOGS"));
+		Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+		while(!bringDown)
+		{
+			HostGroup joinable=null;
+			for(int i=0;i<iniFiles.size();i++)
+			{
+				iniFile=(String)iniFiles.elementAt(i);
+				ThreadGroup G=new ThreadGroup(i+"-MUD");
+				HostGroup H=new HostGroup(G,nameID,iniFile);
+				H.start();
+				if(joinable==null) joinable=H;
+			}
+			try{joinable.join();}catch(Exception e){e.printStackTrace(); Log.errOut("MUD",e); }
+			System.gc();
+	        try{Thread.sleep(1000);}catch(Exception e){}
+			System.runFinalization();
+	        try{Thread.sleep(1000);}catch(Exception e){}
+	        
+			if(activeThreadCount(Thread.currentThread().getThreadGroup())>1)
+			{
+				try{ Thread.sleep(1000);}catch(Exception e){}
+				killCount(Thread.currentThread().getThreadGroup(),Thread.currentThread());
+				if(activeThreadCount(Thread.currentThread().getThreadGroup())>1)
+				{
+					Log.sysOut("MUD","WARNING: " + activeThreadCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");
+					threadList(Thread.currentThread().getThreadGroup());
+				}
+			}
+			if(!bringDown)
+			{
 				if(execExternalCommand!=null)
 				{
 					//Runtime r=Runtime.getRuntime();
 					//Process p=r.exec(external);
 					Log.sysOut("Attempted to execute '"+execExternalCommand+"'.");
 					execExternalCommand=null;
-					break;
+					bringDown=true;
 				}
 			}
-		}
-		catch(InterruptedException e)
-		{
-			Log.errOut("MUD",e);
 		}
 	}
     
