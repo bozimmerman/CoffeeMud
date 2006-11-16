@@ -179,14 +179,154 @@ public class CMProps extends Properties
     protected DVector newusersByIP=new DVector(2);
     protected DVector skillMaxManaExceptions=new DVector(2);
     protected DVector skillMinManaExceptions=new DVector(2);
+    public int pkillLevelDiff=26;
+    
+    public boolean loaded=false;
+
+	public CMProps(InputStream in)
+	{
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    if(props[c]==null) props[c]=this; 
+		try
+		{
+			this.load(in);
+			loaded=true;
+		}
+		catch(IOException e)
+		{
+			loaded=false;
+		}
+	}
+	public CMProps(String filename)
+	{
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    if(props[c]==null) props[c]=this; 
+		try
+		{
+			CMFile F=new CMFile(filename,null,false);
+			if(F.exists())
+			{
+				this.load(new ByteArrayInputStream(F.raw()));
+				loaded=true;
+			}
+			else
+				loaded=false;
+		}
+		catch(IOException e)
+		{
+			loaded=false;
+		}
+	}
+
+    public boolean load(String filename)
+    {
+        try
+        {
+            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
+            loaded=true;
+        }
+        catch(IOException e)
+        {
+            loaded=false;
+        }
+        return loaded;
+    }
+    
+	public CMProps(Properties p, String filename)
+	{
+		super(p);
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	    if(props[c]==null) props[c]=this; 
+		
+		try
+		{
+            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
+			loaded=true;
+		}
+		catch(IOException e)
+		{
+			loaded=false;
+		}
+	}
+
+
+	public static CMProps loadPropPage(String iniFile)
+	{
+        CMProps page=null;
+		if (page==null || !page.loaded)
+		{
+            page=new CMProps(iniFile);
+			if(!page.loaded)
+				return null;
+		}
+		return page;
+	}
+	/** retrieve a particular .ini file entry as a string
+	*
+	* <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");
+	* @param tagToGet	the property tag to retreive.
+	* @return String	the value of the .ini file tag
+	*/
+	public String getStr(String tagToGet)
+	{
+		String thisTag=this.getProperty(tagToGet);
+		if((thisTag==null)&&(props['0']!=null)&&(props['0']!=this))
+			return props['0'].getStr(tagToGet);
+		if(thisTag==null) return "";
+		return thisTag;
+	}
+
+	public boolean getBoolean(String tagToGet)
+	{
+		String thisVal=getStr(tagToGet);
+		if(thisVal.toUpperCase().startsWith("T"))
+			return true;
+		return false;
+	}
+
+	/** retrieve a particular .ini file entry as a double
+	*
+	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
+	* @param tagToGet	the property tag to retreive.
+	* @return int	the value of the .ini file tag
+	*/
+	public double getDouble(String tagToGet)
+	{
+		try
+		{
+			return Double.parseDouble(getStr(tagToGet));
+		}
+		catch(Throwable t)
+		{
+			return 0.0;
+		}
+	}
+	
+	/** retrieve a particular .ini file entry as an integer
+	*
+	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
+	* @param tagToGet	the property tag to retreive.
+	* @return int	the value of the .ini file tag
+	*/
+	public int getInt(String tagToGet)
+	{
+		try
+		{
+			return Integer.parseInt(getStr(tagToGet));
+		}
+		catch(Throwable t)
+		{
+			return 0;
+		}
+	}
+	
     private static CMProps p()
     { 
     	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
 	    return props[c];
 	}
-    public static int pkillLevelDiff=26;
 
-    public static int getPKillLevelDiff(){return pkillLevelDiff;}
+    public static int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
     public static String getVar(int varNum)
     {
@@ -251,7 +391,7 @@ public class CMProps extends Properties
             {
                 int x=val.indexOf("-");
                 if(x>0)
-                    pkillLevelDiff=CMath.s_int(val.substring(x+1));
+                    p().pkillLevelDiff=CMath.s_int(val.substring(x+1));
             }
             break;
         }
@@ -317,69 +457,69 @@ public class CMProps extends Properties
     }
     
     
-    public static void loadCommonINISettings(CMProps page)
+    public void resetSystemVars()
     {
-        setVar(SYSTEM_BADNAMES,page.getStr("BADNAMES"));
-        setVar(SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
-        setVar(SYSTEM_PKILL,page.getStr("PLAYERKILL"));
-        setVar(SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
-        setVar(SYSTEM_MOBDEATH,page.getStr("MOBDEATH"));
-        setVar(SYSTEM_PLAYERFLEE,page.getStr("FLEE"));
-        setVar(SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
-        setVar(SYSTEM_EMAILREQ,page.getStr("EMAILREQ"));
-        setVar(SYSTEM_ESC0,page.getStr("ESCAPE0"));
-        setVar(SYSTEM_ESC1,page.getStr("ESCAPE1"));
-        setVar(SYSTEM_ESC2,page.getStr("ESCAPE2"));
-        setVar(SYSTEM_ESC3,page.getStr("ESCAPE3"));
-        setVar(SYSTEM_ESC4,page.getStr("ESCAPE4"));
-        setVar(SYSTEM_ESC5,page.getStr("ESCAPE5"));
-        setVar(SYSTEM_ESC6,page.getStr("ESCAPE6"));
-        setVar(SYSTEM_ESC7,page.getStr("ESCAPE7"));
-        setVar(SYSTEM_ESC8,page.getStr("ESCAPE8"));
-        setVar(SYSTEM_ESC9,page.getStr("ESCAPE9"));
-        setVar(SYSTEM_MSPPATH,page.getStr("SOUNDPATH"),false);
-        setVar(SYSTEM_CLANVOTED,page.getStr("CLANVOTED"));
-        setVar(SYSTEM_CLANVOTEO,page.getStr("CLANVOTEO"));
-        setVar(SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
-        setVar(SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
-        setVar(SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
-        setUpLowVar(SYSTEM_MUDDOMAIN,page.getStr("DOMAIN"));
-        setVar(SYSTEM_I3EMAIL,page.getStr("I3EMAIL"));
-        setUpLowVar(SYSTEM_I3ROUTERS,page.getStr("I3ROUTERS"));
-        setVar(SYSTEM_PREJUDICE,page.getStr("PREJUDICE"));
-        setVar(SYSTEM_IGNOREMASK,page.getStr("IGNOREMASK"));
-        setVar(SYSTEM_BUDGET,page.getStr("BUDGET"));
-        setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
-        setVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
-        setVar(SYSTEM_EMOTEFILTER,page.getStr("EMOTEFILTER"));
-        p().emoteFilter=CMParms.parse((page.getStr("EMOTEFILTER")).toUpperCase());
-        setVar(SYSTEM_SAYFILTER,page.getStr("SAYFILTER"));
-        p().sayFilter=CMParms.parse((page.getStr("SAYFILTER")).toUpperCase());
-        setVar(SYSTEM_CHANNELFILTER,page.getStr("CHANNELFILTER"));
-        p().channelFilter=CMParms.parse((page.getStr("CHANNELFILTER")).toUpperCase());
-        setVar(SYSTEM_CLANTROPAREA,page.getStr("CLANTROPAREA"));
-        setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
-        setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
-        setVar(SYSTEM_CLANTROPPK,page.getStr("CLANTROPPK"));
-        setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
-        setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
-        setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));
-        setVar(SYSTEM_AUTOWEATHERPARMS,page.getStr("AUTOWEATHERPARMS"));
-        setUpLowVar(SYSTEM_AUTOAREAPROPS,page.getStr("AUTOAREAPROPS"));
-        setUpLowVar(SYSTEM_MXPIMAGEPATH,page.getStr("MXPIMAGEPATH"));
-        setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
-        setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,page.getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
-        setUpLowVar(SYSTEM_PREFACTIONS,page.getStr("FACTIONS"));
+        setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
+        setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
+        setVar(SYSTEM_PKILL,getStr("PLAYERKILL"));
+        setVar(SYSTEM_PLAYERDEATH,getStr("PLAYERDEATH"));
+        setVar(SYSTEM_MOBDEATH,getStr("MOBDEATH"));
+        setVar(SYSTEM_PLAYERFLEE,getStr("FLEE"));
+        setVar(SYSTEM_SHOWDAMAGE,getStr("SHOWDAMAGE"));
+        setVar(SYSTEM_EMAILREQ,getStr("EMAILREQ"));
+        setVar(SYSTEM_ESC0,getStr("ESCAPE0"));
+        setVar(SYSTEM_ESC1,getStr("ESCAPE1"));
+        setVar(SYSTEM_ESC2,getStr("ESCAPE2"));
+        setVar(SYSTEM_ESC3,getStr("ESCAPE3"));
+        setVar(SYSTEM_ESC4,getStr("ESCAPE4"));
+        setVar(SYSTEM_ESC5,getStr("ESCAPE5"));
+        setVar(SYSTEM_ESC6,getStr("ESCAPE6"));
+        setVar(SYSTEM_ESC7,getStr("ESCAPE7"));
+        setVar(SYSTEM_ESC8,getStr("ESCAPE8"));
+        setVar(SYSTEM_ESC9,getStr("ESCAPE9"));
+        setVar(SYSTEM_MSPPATH,getStr("SOUNDPATH"),false);
+        setVar(SYSTEM_CLANVOTED,getStr("CLANVOTED"));
+        setVar(SYSTEM_CLANVOTEO,getStr("CLANVOTEO"));
+        setVar(SYSTEM_CLANVOTER,getStr("CLANVOTER"));
+        setVar(SYSTEM_AUTOPURGE,getStr("AUTOPURGE"));
+        setVar(SYSTEM_CORPSEGUARD,getStr("CORPSEGUARD"));
+        setUpLowVar(SYSTEM_MUDDOMAIN,getStr("DOMAIN"));
+        setVar(SYSTEM_I3EMAIL,getStr("I3EMAIL"));
+        setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
+        setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
+        setVar(SYSTEM_IGNOREMASK,getStr("IGNOREMASK"));
+        setVar(SYSTEM_BUDGET,getStr("BUDGET"));
+        setVar(SYSTEM_DEVALUERATE,getStr("DEVALUERATE"));
+        setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
+        setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
+        p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
+        setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
+        p().sayFilter=CMParms.parse((getStr("SAYFILTER")).toUpperCase());
+        setVar(SYSTEM_CHANNELFILTER,getStr("CHANNELFILTER"));
+        p().channelFilter=CMParms.parse((getStr("CHANNELFILTER")).toUpperCase());
+        setVar(SYSTEM_CLANTROPAREA,getStr("CLANTROPAREA"));
+        setVar(SYSTEM_CLANTROPCP,getStr("CLANTROPCP"));
+        setVar(SYSTEM_CLANTROPEXP,getStr("CLANTROPEXP"));
+        setVar(SYSTEM_CLANTROPPK,getStr("CLANTROPPK"));
+        setVar(SYSTEM_COLORSCHEME,getStr("COLORSCHEME"));
+        setVar(SYSTEM_SMTPSERVERNAME,getStr("SMTPSERVERNAME"));
+        setVar(SYSTEM_EXPCONTACTLINE,getStr("EXPCONTACTLINE"));
+        setVar(SYSTEM_AUTOWEATHERPARMS,getStr("AUTOWEATHERPARMS"));
+        setUpLowVar(SYSTEM_AUTOAREAPROPS,getStr("AUTOAREAPROPS"));
+        setUpLowVar(SYSTEM_MXPIMAGEPATH,getStr("MXPIMAGEPATH"));
+        setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
+        setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
+        setUpLowVar(SYSTEM_PREFACTIONS,getStr("FACTIONS"));
         
         if(CMLib.color()!=null) CMLib.color().clearLookups();
-        if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
+        if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
             setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
         else
-        if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("SPELLLEVEL"))
+        if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("SPELLLEVEL"))
             setIntVar(SYSTEMI_MANACONSUMEAMT,-200);
         else
-            setIntVar(SYSTEMI_MANACONSUMEAMT,CMath.s_int(page.getStr("MANACONSUMEAMT").trim()));
-        String s=page.getStr("COMBATSYSTEM");
+            setIntVar(SYSTEMI_MANACONSUMEAMT,CMath.s_int(getStr("MANACONSUMEAMT").trim()));
+        String s=getStr("COMBATSYSTEM");
         if(s.equalsIgnoreCase("queue"))
             setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_QUEUE);
         else
@@ -387,7 +527,7 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_MANUAL);
         else
             setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_DEFAULT);
-        s=page.getStr("EQVIEW");
+        s=getStr("EQVIEW");
         if(s.equalsIgnoreCase("paragraph"))
             setIntVar(SYSTEMI_EQVIEW,2);
         else
@@ -396,44 +536,44 @@ public class CMProps extends Properties
         else
             setIntVar(SYSTEMI_EQVIEW,0);
 
-        setIntVar(SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
-        setIntVar(SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
-        setIntVar(SYSTEMI_CLANENCHCOST,page.getStr("CLANENCHCOST"));
-        setIntVar(SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
-        setIntVar(SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
-        setIntVar(SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
-        setIntVar(SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
-        if(page.getStr("BASEMAXSTAT").length()==0)
+        setIntVar(SYSTEMI_MANACONSUMETIME,getStr("MANACONSUMETIME"));
+        setIntVar(SYSTEMI_PAGEBREAK,getStr("PAGEBREAK"));
+        setIntVar(SYSTEMI_CLANENCHCOST,getStr("CLANENCHCOST"));
+        setIntVar(SYSTEMI_FOLLOWLEVELDIFF,getStr("FOLLOWLEVELDIFF"));
+        setIntVar(SYSTEMI_EXPRATE,getStr("EXPRATE"));
+        setIntVar(SYSTEMI_SKYSIZE,getStr("SKYSIZE"));
+        setIntVar(SYSTEMI_MAXSTAT,getStr("MAXSTATS"));
+        if(getStr("BASEMAXSTAT").length()==0)
             setIntVar(SYSTEMI_BASEMAXSTAT,18);
         else
-            setIntVar(SYSTEMI_BASEMAXSTAT,page.getStr("BASEMAXSTAT"));
-        setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(page.getStr("MANACOST"),p().skillMaxManaExceptions));
-        setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(page.getStr("MANAMINCOST"),p().skillMinManaExceptions));
+            setIntVar(SYSTEMI_BASEMAXSTAT,getStr("BASEMAXSTAT"));
+        setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
+        setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
         setIntVar(SYSTEMI_EDITORTYPE,0);
-        if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
-        setIntVar(SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
-        setIntVar(SYSTEMI_CLANCOST,page.getStr("CLANCOST"));
-        setIntVar(SYSTEMI_DAYSCLANDEATH,page.getStr("DAYSCLANDEATH"));
-        setIntVar(SYSTEMI_MINCLANLEVEL,page.getStr("MINCLANLEVEL"));
-        setIntVar(SYSTEMI_SKILLPRACCOST,page.getStr("SKILLPRACCOST"));
-        setIntVar(SYSTEMI_SKILLTRAINCOST,page.getStr("SKILLTRAINCOST"));
-        setIntVar(SYSTEMI_COMMONPRACCOST,page.getStr("COMMONPRACCOST"));
-        setIntVar(SYSTEMI_COMMONTRAINCOST,page.getStr("COMMONTRAINCOST"));
-        setIntVar(SYSTEMI_LANGPRACCOST,page.getStr("LANGPRACCOST"));
-        setIntVar(SYSTEMI_LANGTRAINCOST,page.getStr("LANGTRAINCOST"));
-        setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
-        setIntVar(SYSTEMI_JOURNALLIMIT,page.getStr("JOURNALLIMIT"));
-        setIntVar(SYSTEMI_MUDTHEME,page.getStr("MUDTHEME"));
-        setIntVar(SYSTEMI_TRIALDAYS,page.getStr("TRIALDAYS"));
-        setIntVar(SYSTEMI_MAXCONNSPERIP,page.getStr("MAXCONNSPERIP"));
-        setIntVar(SYSTEMI_MAXNEWPERIP,page.getStr("MAXNEWPERIP"));
-        setIntVar(SYSTEMI_JSCRIPTS,page.getStr("JSCRIPTS"));
-        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(page.getDouble("DEFCMDTIME")*100.0));
-        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(page.getDouble("DEFCOMCMDTIME")*100.0));
-        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(page.getDouble("DEFABLETIME")*100.0));
-        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(page.getDouble("DEFCOMABLETIME")*100.0));
+        if(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
+        setIntVar(SYSTEMI_MINCLANMEMBERS,getStr("MINCLANMEMBERS"));
+        setIntVar(SYSTEMI_CLANCOST,getStr("CLANCOST"));
+        setIntVar(SYSTEMI_DAYSCLANDEATH,getStr("DAYSCLANDEATH"));
+        setIntVar(SYSTEMI_MINCLANLEVEL,getStr("MINCLANLEVEL"));
+        setIntVar(SYSTEMI_SKILLPRACCOST,getStr("SKILLPRACCOST"));
+        setIntVar(SYSTEMI_SKILLTRAINCOST,getStr("SKILLTRAINCOST"));
+        setIntVar(SYSTEMI_COMMONPRACCOST,getStr("COMMONPRACCOST"));
+        setIntVar(SYSTEMI_COMMONTRAINCOST,getStr("COMMONTRAINCOST"));
+        setIntVar(SYSTEMI_LANGPRACCOST,getStr("LANGPRACCOST"));
+        setIntVar(SYSTEMI_LANGTRAINCOST,getStr("LANGTRAINCOST"));
+        setIntVar(SYSTEMI_LASTPLAYERLEVEL,getStr("LASTPLAYERLEVEL"));
+        setIntVar(SYSTEMI_JOURNALLIMIT,getStr("JOURNALLIMIT"));
+        setIntVar(SYSTEMI_MUDTHEME,getStr("MUDTHEME"));
+        setIntVar(SYSTEMI_TRIALDAYS,getStr("TRIALDAYS"));
+        setIntVar(SYSTEMI_MAXCONNSPERIP,getStr("MAXCONNSPERIP"));
+        setIntVar(SYSTEMI_MAXNEWPERIP,getStr("MAXNEWPERIP"));
+        setIntVar(SYSTEMI_JSCRIPTS,getStr("JSCRIPTS"));
+        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(getDouble("DEFCMDTIME")*100.0));
+        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(getDouble("DEFCOMCMDTIME")*100.0));
+        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(getDouble("DEFABLETIME")*100.0));
+        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(getDouble("DEFCOMABLETIME")*100.0));
         
-        Vector V=CMParms.parseCommas(page.getStr("INJURYSYSTEM"),true);
+        Vector V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
         
         if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int((String)V.elementAt(0)));
         else setIntVar(SYSTEMI_INJPCTCHANCE,100);
@@ -454,32 +594,32 @@ public class CMProps extends Properties
         if(V.size()>8) setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,CMath.s_int((String)V.elementAt(8)));
         else setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,100);
         
-        String stateVar=page.getStr("STARTHP");
+        String stateVar=getStr("STARTHP");
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTHP,CMath.s_int(stateVar));
-        stateVar=page.getStr("STARTMANA");
+        stateVar=getStr("STARTMANA");
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTMANA,CMath.s_int(stateVar));
-        stateVar=page.getStr("STARTMOVE");
+        stateVar=getStr("STARTMOVE");
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
 
-        Directions.ReInitialize(page.getInt("DIRECTIONS"));
+        Directions.ReInitialize(getInt("DIRECTIONS"));
 
-        String disable=page.getStr("DISABLE");
+        String disable=getStr("DISABLE");
         if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))
             disable+=", CLASSES";
         CMSecurity.setDisableVars(disable);
-        if(page.getStr("DISABLE").trim().length()>0)
-            Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
-        if(page.getStr("DEBUG").trim().length()>0)
+        if(getStr("DISABLE").trim().length()>0)
+            Log.sysOut("MUD","Disabled subsystems: "+getStr("DISABLE"));
+        if(getStr("DEBUG").trim().length()>0)
         {
-            Log.sysOut("MUD","Debugging messages: "+page.getStr("DEBUG"));
+            Log.sysOut("MUD","Debugging messages: "+getStr("DEBUG"));
         	if(!Log.debugChannelOn())
                 Log.errOut("MUD","Debug logging is disabled! Check your DBGMSGS flag!");
         }
-        CMSecurity.setDebugVars(page.getStr("DEBUG"));
-        CMSecurity.setSaveFlags(page.getStr("SAVE"));
+        CMSecurity.setDebugVars(getStr("DEBUG"));
+        CMSecurity.setSaveFlags(getStr("SAVE"));
     }
 
     public static String applyINIFilter(String msg, int whichFilter)
@@ -941,142 +1081,4 @@ public class CMProps extends Properties
     }
 
     
-    public boolean loaded=false;
-
-	public CMProps(InputStream in)
-	{
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    if(props[c]==null) props[c]=this; 
-		try
-		{
-			this.load(in);
-			loaded=true;
-		}
-		catch(IOException e)
-		{
-			loaded=false;
-		}
-	}
-	public CMProps(String filename)
-	{
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    if(props[c]==null) props[c]=this; 
-		try
-		{
-			CMFile F=new CMFile(filename,null,false);
-			if(F.exists())
-			{
-				this.load(new ByteArrayInputStream(F.raw()));
-				loaded=true;
-			}
-			else
-				loaded=false;
-		}
-		catch(IOException e)
-		{
-			loaded=false;
-		}
-	}
-
-    public boolean load(String filename)
-    {
-        try
-        {
-            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
-            loaded=true;
-        }
-        catch(IOException e)
-        {
-            loaded=false;
-        }
-        return loaded;
-    }
-    
-	public CMProps(Properties p, String filename)
-	{
-		super(p);
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    if(props[c]==null) props[c]=this; 
-		
-		try
-		{
-            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
-			loaded=true;
-		}
-		catch(IOException e)
-		{
-			loaded=false;
-		}
-	}
-
-
-	public static CMProps loadPropPage(String iniFile)
-	{
-        CMProps page=null;
-		if (page==null || !page.loaded)
-		{
-            page=new CMProps(iniFile);
-			if(!page.loaded)
-				return null;
-		}
-		return page;
-	}
-	/** retrieve a particular .ini file entry as a string
-	*
-	* <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return String	the value of the .ini file tag
-	*/
-	public String getStr(String tagToGet)
-	{
-		String thisTag=this.getProperty(tagToGet);
-		if((thisTag==null)&&(props['0']!=null)&&(props['0']!=this))
-			return props['0'].getStr(tagToGet);
-		if(thisTag==null) return "";
-		return thisTag;
-	}
-
-	public boolean getBoolean(String tagToGet)
-	{
-		String thisVal=getStr(tagToGet);
-		if(thisVal.toUpperCase().startsWith("T"))
-			return true;
-		return false;
-	}
-
-	/** retrieve a particular .ini file entry as a double
-	*
-	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return int	the value of the .ini file tag
-	*/
-	public double getDouble(String tagToGet)
-	{
-		try
-		{
-			return Double.parseDouble(getStr(tagToGet));
-		}
-		catch(Throwable t)
-		{
-			return 0.0;
-		}
-	}
-	
-	/** retrieve a particular .ini file entry as an integer
-	*
-	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return int	the value of the .ini file tag
-	*/
-	public int getInt(String tagToGet)
-	{
-		try
-		{
-			return Integer.parseInt(getStr(tagToGet));
-		}
-		catch(Throwable t)
-		{
-			return 0;
-		}
-	}
 }

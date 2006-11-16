@@ -131,7 +131,7 @@ public class MUD extends Thread implements MudHost
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: connecting to database");
 		
-		CMProps.loadCommonINISettings(page);
+		page.resetSystemVars();
 		
 		Vector compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
