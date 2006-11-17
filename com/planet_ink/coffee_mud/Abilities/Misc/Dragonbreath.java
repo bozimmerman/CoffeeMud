@@ -71,6 +71,11 @@ public class Dragonbreath extends StdAbility
 			mob.tell("You can't breathe!");
 			return false;
 		}
+        if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
+        {
+            mob.tell("You don't have a mouth!");
+            return false;
+        }
 		char colorc='f';
 		if((text().length()==0)
 		&&(mob.charStats().getMyRace().racialCategory().equals("Dragon")))

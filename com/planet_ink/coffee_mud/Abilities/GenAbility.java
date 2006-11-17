@@ -503,7 +503,10 @@ public class GenAbility extends StdAbility
         }
     	break;
         case 1: setMiscText(val); break;
-        case 2: SV(ID,V_NAME,val); break;
+        case 2: SV(ID,V_NAME,val); 
+                if(ID.equalsIgnoreCase("GenAbility"))
+                    break;
+                break;
         case 3: SV(ID,V_DISP,val); break;
         case 4: SV(ID,V_TRIG,CMParms.toStringArray(CMParms.parseCommas(val.toUpperCase(),true))); break;
         case 5: SV(ID,V_MAXR,new Integer(convert(Ability.RANGE_CHOICES,val,false))); break;

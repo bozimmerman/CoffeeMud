@@ -60,7 +60,7 @@ public class Drow extends Elf
 		if((affected instanceof MOB)&&(((MOB)affected).location()!=null)) {
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
-			if(mob.location().getArea().getClimateObj().canSeeTheSun(room)
+			if(room.getArea().getClimateObj().canSeeTheSun(room)
 			&&(affectableStats.armor()<0))
 				affectableStats.setArmor(0);
 		}
@@ -83,7 +83,7 @@ public class Drow extends Elf
 		if(affectedMOB.location()!=null) {
 			MOB mob=affectedMOB;
 			Room room=mob.location();
-			if(mob.location().getArea().getClimateObj().canSeeTheSun(room)) {
+			if(room.getArea().getClimateObj().canSeeTheSun(room)) {
 				affectableStats.setStat(CharStats.STAT_DEXTERITY, affectableStats.getStat(CharStats.STAT_DEXTERITY) /2);
 			}
 		}
