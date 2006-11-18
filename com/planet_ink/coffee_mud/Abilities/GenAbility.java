@@ -60,12 +60,15 @@ public class GenAbility extends StdAbility
     private static final int V_CAST=19;//S
     private static final int V_PCST=20;//S
     private static final int V_ATT2=21;//I
-    private static final int NUM_VS=22;//S
+    private static final int V_PAFF=22;//S
+    private static final int V_PABL=23;//S
+    private static final int V_PDMG=24;//S
+    private static final int NUM_VS=25;//S
     private static final Object[] makeEmpty()
     {
         Object[] O=new Object[NUM_VS];
         O[V_NAME]="an ability";
-        O[V_DISP]="";
+        O[V_DISP]="(An Affect)";
         O[V_TRIG]=new String[]{"CAST","CA","C"};
         O[V_MAXR]=new Integer(0);
         O[V_MINR]=new Integer(0);
@@ -81,11 +84,14 @@ public class GenAbility extends StdAbility
         O[V_SCRP]="";
         O[V_CMSK]="";
         O[V_TMSK]="";
-        O[V_FZZL]="";
-        O[V_ACST]="";
-        O[V_CAST]="";
-        O[V_PCST]="";
+        O[V_FZZL]="<S-NAME> attempts to use this ability against <T-NAME>, and fails";
+        O[V_ACST]="An amazing thing happens to <T-NAME>!";
+        O[V_CAST]="<S-NAME> uses an ability against <T-NAME>";
+        O[V_PCST]="<T-NAME> is <DAMAGE> by an ability from <S-NAME>!";
         O[V_ATT2]=new Integer(0);
+        O[V_PAFF]="";
+        O[V_PABL]="";
+        O[V_PDMG]="1";
         return O;
     }
     private static final Object V(String ID, int varNum)
@@ -334,28 +340,109 @@ public class GenAbility extends StdAbility
 				mob.location().send(mob,msg);
 				this.executeMsg(mob, msg);
 				if(msg2!=null){ mob.location().send(mob,msg2); this.executeMsg(mob, msg2);}
-				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
-				{
-					if(canAffectCode()!=0)
-					{
-						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
-							success=maliciousAffect(mob,target,asLevel,0,-1);
-						else
-							success=beneficialAffect(mob,target,asLevel,0);
-					}
-					if((success)&&(((String)V(ID,V_PCST)).length()>0))
-						if((target==null)||(target instanceof Exit)||(target instanceof Area)
-						||(mob.location()==CMLib.map().roomLocation(target)))
-							CMLib.map().roomLocation(target).show(mob,target,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
-					Behavior B=getScriptable();
-					if((success)&&(B!=null))
-					{
-						msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
-						B.executeMsg(mob, msg2);
-						((ScriptingEngine)B).dequeResponses();
-					}
-					mob.location().recoverRoomStats();
+                if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+                {
+                    if((canAffectCode()!=0)&&(target!=null))
+                    {
+                        if(abstractQuality()==Ability.QUALITY_MALICIOUS)
+                            success=maliciousAffect(mob,target,asLevel,0,-1);
+                        else
+                            success=beneficialAffect(mob,target,asLevel,0);
+                    }
+                    String afterAffect=(String)V(ID,V_PAFF);
+                    if((afterAffect.length()>0)&&(success))
+                    {
+                        Ability P=CMClass.getAbility("Prop_SpellAdder");
+                        if(P!=null) 
+                        {
+                            Vector V=CMParms.makeVector(afterAffect);
+                            P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
+                            Ability A=null;
+                            for(int v=0;v<V.size();v+=2)
+                            {
+                                A=(Ability)V.elementAt(v);
+                                if(target.fetchEffect(A.ID())==null)
+                                {
+                                    A=(Ability)A.copyOf();
+                                    int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
+                                            getMaliciousTickdownTime(mob,target,0,asLevel):
+                                            getBeneficialTickdownTime(mob,target,0,asLevel);
+                                    A.startTickDown(mob,target,tickDown);
+                                }
+                            }
+                        }
+                    }
+                }
+                String DMG=(String)V(ID,V_PDMG);
+                int dmg=0;
+                if(DMG.trim().length()>0)
+                {
+                    DMG=CMStrings.replaceAll(DMG,"@x1",""+mob.envStats().level());
+                    if(target!=null)
+                        DMG=CMStrings.replaceAll(DMG,"@x2",""+target.envStats().level());
+                    else
+                        DMG=CMStrings.replaceAll(DMG,"@x2",""+mob.envStats().level());
+                    dmg=CMath.parseIntExpression(DMG);
+                }
+                if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+                ||(dmg>0))
+                {
+                    if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+                        dmg=dmg/2;
+                    if((success)&&(((String)V(ID,V_PCST)).length()>0))
+                        if((target==null)||(target instanceof Exit)||(target instanceof Area)
+                        ||(mob.location()==CMLib.map().roomLocation(target)))
+                        {
+                            if(dmg>0)
+                            {
+                                if(!(target instanceof MOB)) target=mob;
+                                CMLib.combat().postDamage(mob,(MOB)target,this,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),Weapon.TYPE_BURSTING,(String)V(ID,V_PCST));
+                                dmg=0;
+                            }
+                            else
+                            if(dmg<0)
+                            {
+                                if(!(target instanceof MOB)) target=mob;
+                                CMLib.combat().postHealing(mob,(MOB)target,this,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),(String)V(ID,V_PCST));
+                                dmg=0;
+                            }
+                            else
+                                CMLib.map().roomLocation(target).show(mob,target,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
+                        }
+                    if(dmg>0)
+                    {
+                        if(!(target instanceof MOB)) target=mob;
+                        CMLib.combat().postDamage(mob,(MOB)target,this,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),Weapon.TYPE_BURSTING,null);
+                    }
+                    else
+                    if(dmg<0)
+                    {
+                        if(!(target instanceof MOB)) target=mob;
+                        CMLib.combat().postHealing(mob,(MOB)target,this,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),null);
+                    }
+                    if(CMLib.flags().isInTheGame(mob,true)&&((target==null)||CMLib.flags().isInTheGame(target,true)))
+                    {
+                        Behavior B=getScriptable();
+                        if((success)&&(B!=null))
+                        {
+                            msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
+                            B.executeMsg(mob, msg2);
+                            ((ScriptingEngine)B).dequeResponses();
+                        }
+                        mob.location().recoverRoomStats();
+                    }
+                        
 				}
+                if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+                &&(CMLib.flags().isInTheGame(mob,true)&&((target==null)||CMLib.flags().isInTheGame(target,true))))
+                {
+                    String afterCast=(String)V(ID,V_PABL);
+                    if(afterCast.length()>0)
+                    {
+                        Ability P=CMClass.getAbility("Prop_SpellAdder");
+                        if(P!=null) P.invoke(mob,CMParms.makeVector(afterCast),target,true,asLevel);
+                    }
+                }
 			}
 			
 		}
@@ -446,6 +533,9 @@ public class GenAbility extends StdAbility
                                          "CASTMSG",//21S
                                          "POSTCASTMSG",//22S
                                          "ATTACKCODE",//23I
+                                         "POSTCASTAFFECT",//24S
+                                         "POSTCASTABILITY",//25S
+                                         "POSTCASTDAMAGE"//26I
                                         };
     public String[] getStatCodes(){return CODES;}
     protected int getCodeNum(String code){
@@ -480,6 +570,9 @@ public class GenAbility extends StdAbility
         case 21: return (String)V(ID,V_CAST);
         case 22: return (String)V(ID,V_PCST);
         case 23: return convert(CMMsg.TYPE_DESCS,((Integer)V(ID,V_ATT2)).intValue(),false);
+        case 24: return (String)V(ID,V_PAFF);
+        case 25: return (String)V(ID,V_PABL);
+        case 26: return (String)V(ID,V_PDMG);
         default:
         	if(code.equalsIgnoreCase("allxml")) return getAllXML();
         	break;
@@ -528,6 +621,9 @@ public class GenAbility extends StdAbility
         case 21: SV(ID,V_CAST,val); break;
         case 22: SV(ID,V_PCST,val); break;
         case 23: SV(ID,V_ATT2,new Integer(convert(CMMsg.TYPE_DESCS,val,false))); break;
+        case 24: SV(ID,V_PAFF,val); break;
+        case 25: SV(ID,V_PABL,val); break;
+        case 26: SV(ID,V_PDMG,val); break;
         default:
         	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
         	break;

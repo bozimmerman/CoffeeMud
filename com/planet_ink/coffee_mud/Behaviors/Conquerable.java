@@ -942,10 +942,15 @@ public class Conquerable extends Arrest
 				if((killer!=null)&&(R!=null))
 				{
 					// make sure followers are picked up
+                    HashSet killersSeen=new HashSet();
 					while((killer.getClanID().length()==0)
 					&&(killer.amFollowing()!=null)
-					&&(R.isInhabitant(killer.amFollowing())))
+					&&(R.isInhabitant(killer.amFollowing()))
+                    &&(!killersSeen.contains(killer)))
+                    {
+                        killersSeen.add(killer);
 						killer=killer.amFollowing();
+                    }
 						
 					if(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))
 					{ // a native was killed

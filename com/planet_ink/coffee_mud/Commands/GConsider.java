@@ -41,8 +41,7 @@ public class GConsider extends StdCommand
 	{
 		if((mob1==null)||(mobs==null)) return 0;
 	    MOB mob2=(MOB)mobs.iterator().next();
-	    while(mob2.amFollowing()!=null)
-	        mob2=mob2.amFollowing();
+        if(mob2.amFollowing()!=null) mob2=mob2.amUltimatelyFollowing();
 	    
 		int mob2Armor=mob2.adjustedArmor();
 		int mob1Armor=mob1.adjustedArmor();

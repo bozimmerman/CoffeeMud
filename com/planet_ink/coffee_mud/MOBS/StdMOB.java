@@ -2932,6 +2932,18 @@ public class StdMOB implements MOB
 		return false;
 	}
     
+    public MOB amUltimatelyFollowing()
+    {
+        MOB following=amFollowing;
+        if(following==null) return null;
+        HashSet seen=new HashSet();
+        while((following!=null)&&(following.amFollowing()!=null)&&(!seen.contains(following)))
+        {
+            seen.add(following);
+            following=following.amFollowing();
+        }
+        return following;
+    }
 	public MOB amFollowing()
 	{
 	    MOB following=amFollowing;

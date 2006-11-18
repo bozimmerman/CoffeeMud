@@ -5439,7 +5439,8 @@ public class BaseGenerics extends StdCommand
 		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcanaffectmask"),"CANAFFECTMASK");
 		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcantargetmask"),"CANTARGETMASK");
 		    genText(mob,me,CMParms.toStringList(Ability.QUALITY_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abquality"),"QUALITY");
-		    genText(mob,me,CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abherestats"),"HERESTATS");
+		    genText(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
+                    CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abherestats"),"HERESTATS");
 		    genText(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,getScr("BaseGenerics","abcastmask"),"CASTMASK");
 		    genText(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abscript"),"SCRIPT");
 		    genText(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,getScr("BaseGenerics","abtargetmask"),"TARGETMASK");
@@ -5448,6 +5449,11 @@ public class BaseGenerics extends StdCommand
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abcastmsg"),"CASTMSG");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abpostcastmsg"),"POSTCASTMSG");
 		    genText(mob,me,CMParms.toStringList(CMMsg.TYPE_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abattackcode"),"ATTACKCODE");
+            genText(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
+                    CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abpostcastaffect"),"POSTCASTAFFECT");
+            genText(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
+                    CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abpoastcastability"),"POSTCASTABILITY");
+            genText(mob,me,"Enter a damage or healing formula. Use +-*/()?. @x1=caster level, @x2=target level.  Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,getScr("BaseGenerics","abpostcastdamage"),"POSTCASTDAMAGE");
 		    
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

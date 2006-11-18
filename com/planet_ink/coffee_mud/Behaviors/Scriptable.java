@@ -4593,8 +4593,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				M=room.fetchInhabitant(p);
 				if((!M.isMonster())&&(M!=monster))
 				{
-					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster()))
+                    HashSet seen=new HashSet();
+					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
+                    {
+                        seen.add(M);
 						M=M.amFollowing();
+                    }
 					return M;
 				}
 			}
@@ -4611,8 +4615,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				M=room.fetchInhabitant(p);
 				if(M!=monster)
 				{
-					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster()))
-						M=M.amFollowing();
+                    HashSet seen=new HashSet();
+                    while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
+                    {
+                        seen.add(M);
+                        M=M.amFollowing();
+                    }
 					return M;
 				}
 			}

@@ -99,8 +99,6 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	for(Enumeration e=definitions();e.hasMoreElements();)
     	{
     		D=(ExpertiseDefinition)e.nextElement();
-            if(D.ID.toUpperCase().indexOf("STEALTH")>=0) 
-                System.out.println("HI "+mob.Name());
     		if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob)))
     		&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob))))
     			V.addElement(D);

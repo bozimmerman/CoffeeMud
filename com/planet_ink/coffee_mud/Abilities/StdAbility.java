@@ -926,6 +926,23 @@ public class StdAbility extends ForeignScriptable implements Ability
 		return h;
 	}
 
+    public int getMaliciousTickdownTime(MOB mob, Environmental target, int tickAdjustmentFromStandard, int asLevel)
+    {
+        if(tickAdjustmentFromStandard<=0)
+        {
+            tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25;
+            if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
+                tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
+
+            if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+                tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+
+            if(tickAdjustmentFromStandard<2)
+                tickAdjustmentFromStandard=2;
+        }
+        return tickAdjustmentFromStandard;
+    }
+    
 
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
@@ -951,19 +968,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			invoker=mob;
 			Ability newOne=(Ability)copyOf();
 			((StdAbility)newOne).canBeUninvoked=true;
-			if(tickAdjustmentFromStandard<=0)
-			{
-				tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25;
-				if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
-					tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
-
-				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
-					tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
-
-				if(tickAdjustmentFromStandard<2)
-					tickAdjustmentFromStandard=2;
-			}
-
+            tickAdjustmentFromStandard=getMaliciousTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
 			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
 		}
 		return ok;
@@ -1010,6 +1015,18 @@ public class StdAbility extends ForeignScriptable implements Ability
 	}
 
 
+    public int getBeneficialTickdownTime(MOB mob, Environmental target, int tickAdjustmentFromStandard, int asLevel)
+    {
+        if(tickAdjustmentFromStandard<=0)
+        {
+            tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),5)))+60;
+            if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+                tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+            if(tickAdjustmentFromStandard<5)
+                tickAdjustmentFromStandard=5;
+        }
+        return tickAdjustmentFromStandard;
+    }
 	public boolean beneficialAffect(MOB mob,
 								   Environmental target,
 								   int asLevel,
@@ -1021,16 +1038,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			invoker=mob;
 			Ability newOne=(Ability)this.copyOf();
 			((StdAbility)newOne).canBeUninvoked=true;
-
-			if(tickAdjustmentFromStandard<=0)
-			{
-				tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),5)))+60;
-				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
-					tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
-				if(tickAdjustmentFromStandard<5)
-					tickAdjustmentFromStandard=5;
-			}
-
+            tickAdjustmentFromStandard=getBeneficialTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
 			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
 		}
 		return ok;

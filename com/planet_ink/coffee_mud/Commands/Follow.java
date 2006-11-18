@@ -155,6 +155,12 @@ public class Follow extends StdCommand
 			mob.tell(target.name()+" is not accepting followers.");
 			return false;
 		}
+        MOB ultiTarget=target.amUltimatelyFollowing();
+        if((ultiTarget!=null)&&(CMath.bset(ultiTarget.getBitmap(),MOB.ATT_NOFOLLOW)))
+        {
+            mob.tell(ultiTarget.name()+" is not accepting followers.");
+            return false;
+        }
 		processFollow(mob,target,quiet);
 		return false;
 	}

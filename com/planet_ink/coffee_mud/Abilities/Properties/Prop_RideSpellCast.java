@@ -62,7 +62,7 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 					MOB M=(MOB)R;
 					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
                     {
-						if(addMeIfNeccessary(M,M))
+						if(addMeIfNeccessary(M,M,true,0))
                             lastRiders.addElement(M);
                     }
 				}

@@ -411,19 +411,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public MOB getFollowedLeader(MOB mob)
 	{
-		int tries=0;
 		MOB leader=mob;
-		while((leader.amFollowing()!=null)&&(((++tries)<1000)))
-			leader=leader.amFollowing();
+        if(leader.amFollowing()!=null) 
+            leader=leader.amUltimatelyFollowing();
 	    return leader;
 	}
 
 	public Vector[] getFormation(MOB mob)
 	{
-		int tries=0;
 		MOB leader=mob;
-		while((leader.amFollowing()!=null)&&(((++tries)<1000)))
-			leader=leader.amFollowing();
+        if(leader.amFollowing()!=null) 
+            leader=leader.amUltimatelyFollowing();
 		Vector[] done=new Vector[20];
 		processFormation(done,leader,0);
 	    return done;

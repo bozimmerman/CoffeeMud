@@ -68,13 +68,13 @@ public class NoFollow extends Follow
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
-			unfollow(mob,false);
-			mob.tell("You are no longer accepting followers.");
+			//unfollow(mob,false);
+			mob.tell("You are no longer accepting new followers.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
-			mob.tell("You are now accepting followers.");
+			mob.tell("You are now accepting new followers.");
 		}
 		return false;
 	}

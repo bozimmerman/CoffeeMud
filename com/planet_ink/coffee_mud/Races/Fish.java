@@ -115,20 +115,17 @@ public class Fish extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		MOB mob=(MOB)affected;
-		if(mob.location()!=null)
-	    {
-			if(isWaterRoom(mob.location()))
-			{
-				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
-			}
-			else
-			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
-				if((affectableStats.disposition()&EnvStats.IS_SWIMMING)>0)
-					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SWIMMING);
-			}
+		if((mob.location()!=null)&&(isWaterRoom(mob.location())))
+		{
+			if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
+				affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		}
+		else
+		{
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+			if((affectableStats.disposition()&EnvStats.IS_SWIMMING)>0)
+				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SWIMMING);
 		}
 	}
 	public String healthText(MOB viewer, MOB mob)

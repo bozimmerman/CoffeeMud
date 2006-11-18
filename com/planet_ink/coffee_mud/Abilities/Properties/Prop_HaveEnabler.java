@@ -49,7 +49,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
         super.setMiscText(newText);
         lastMOBeffected=new Vector();
     }
-	public boolean addMeIfNeccessary(Environmental source, Environmental target)
+	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting)
 	{
         if((!(target instanceof MOB))
         ||((compiledMask!=null)&&(compiledMask.size()>0)&&(!CMLib.masking().maskCheck(compiledMask,target))))
@@ -90,7 +90,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
                 Ability A2=newMOB.fetchEffect(A.ID());
 				A.setProficiency(proff);
 				newMOB.addAbility(A);
-				A.setSavable(false);
+				A.setSavable(makeLongLasting);
                 A.autoInvocation(newMOB);
                 if(!clearedYet)
                 {
@@ -171,7 +171,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
             &&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)
             &&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary(myItem.owner(),myItem.owner());
+				addMeIfNeccessary(myItem.owner(),myItem.owner(),false);
 		}
 		processing=false;
 	}

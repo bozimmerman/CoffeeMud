@@ -101,6 +101,8 @@ public class MUD extends Thread implements MudHost
 			break;
 		}
 		Log.errOut(Thread.currentThread().getName(),str);
+        bringDown=true;
+        CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,true);
 		CMLib.killThread(t,100,1);
 	}
 

@@ -252,6 +252,7 @@ public interface MOB
 	public MOB fetchFollower(int index);
 	public MOB fetchFollower(String named);
 	public MOB amFollowing();
+    public MOB amUltimatelyFollowing();
 	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);
 	public HashSet getGroupMembers(HashSet list);

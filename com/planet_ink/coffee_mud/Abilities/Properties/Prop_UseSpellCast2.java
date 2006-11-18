@@ -51,18 +51,18 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 		case CMMsg.TYP_DRINK:
 			if((myItem instanceof Drink)
 			&&(msg.amITarget(myItem)))
-				addMeIfNeccessary(msg.source(),msg.source());
+				addMeIfNeccessary(msg.source(),msg.source(),0);
 			break;
 		case CMMsg.TYP_EAT:
 			if((myItem instanceof Food)
 			&&(msg.amITarget(myItem)))
-				addMeIfNeccessary(msg.source(),msg.source());
+				addMeIfNeccessary(msg.source(),msg.source(),0);
 			break;
 		case CMMsg.TYP_GET:
 			if((!(myItem instanceof Drink))
 			  &&(!(myItem instanceof Food))
 			  &&(msg.amITarget(myItem)))
-				addMeIfNeccessary(msg.source(),msg.source());
+				addMeIfNeccessary(msg.source(),msg.source(),0);
 			break;
 		}
 		processing=false;

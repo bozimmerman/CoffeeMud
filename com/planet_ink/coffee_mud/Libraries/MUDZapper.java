@@ -2124,6 +2124,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             }
 							levelCompiledHelper(str2,'+',entry);
+                            v=V.size();
                         }
 					}
 					break;
@@ -2152,6 +2153,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
 							if(str2.startsWith("+"))
 								entry.addElement(str2.substring(1));
+                            v=V.size();
 						}
 					}
 					break;
@@ -2172,6 +2174,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if((str2.startsWith("+"))
 				        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
 							entry.addElement(str2.substring(1).toUpperCase());
+                        v=V.size();
 					}
 					break;
 				}
@@ -2200,6 +2203,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
 							if(str2.startsWith("-"))
 								entry.addElement(str2.substring(1));
+                            v=V.size();
 						}
 					}
 					break;
@@ -2236,6 +2240,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                     entry.addElement(new Integer(prof));
                                 }
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2260,6 +2265,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 Object o=makeSkillFlagObject(str2);
                                 if(o!=null) entry.addElement(o);
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2280,6 +2286,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("+"))||(str2.startsWith("-")))
                                 entry.addElement(str2.substring(1));
+                            v=V.size();
                         }
                     }
                     break;
@@ -2304,6 +2311,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(code>=0)
                                     entry.addElement(RawMaterial.MATERIAL_DESCS[(code&RawMaterial.MATERIAL_MASK)>>8]);
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2327,6 +2335,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 int code=CMLib.utensils().getWornCode(str2.substring(1));
                                 if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code-1)));
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2350,6 +2359,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code)));
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2373,6 +2383,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code)));
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2399,6 +2410,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(CMClass.globalClock().determineSeason(str2.substring(1).trim())>=0)
                                     entry.addElement(new Integer(CMClass.globalClock().determineSeason(str2.substring(1).trim())));
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2421,6 +2433,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                                 entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
+                            v=V.size();
                         }
                     }
                     break;
@@ -2463,6 +2476,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(code>=0)
                                     entry.addElement(RawMaterial.RESOURCE_DESCS[(code&RawMaterial.RESOURCE_MASK)]);
                             }
+                            v=V.size();
                         }
                     }
                     break;
@@ -2709,23 +2723,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						switch(((Integer)V.elementAt(v)).intValue())
 						{
 							case 37: // +lvlgr
-								if((V.size()>1)&&(cl>((Integer)V.elementAt(1)).intValue()))
+								if((V.size()>1)&&(cl>((Integer)V.elementAt(v+1)).intValue()))
 								   found=true;
 								break;
 							case 38: // +lvlge
-								if((V.size()>1)&&(cl>=((Integer)V.elementAt(1)).intValue()))
+								if((V.size()>1)&&(cl>=((Integer)V.elementAt(v+1)).intValue()))
 								   found=true;
 								break;
 							case 39: // +lvlt
-								if((V.size()>1)&&(cl<((Integer)V.elementAt(1)).intValue()))
+								if((V.size()>1)&&(cl<((Integer)V.elementAt(v+1)).intValue()))
 								   found=true;
 								break;
 							case 40: // +lvlle
-								if((V.size()>1)&&(cl<=((Integer)V.elementAt(1)).intValue()))
+								if((V.size()>1)&&(cl<=((Integer)V.elementAt(v+1)).intValue()))
 								   found=true;
 								break;
 							case 41: // +lvleq
-								if((V.size()>1)&&(cl==((Integer)V.elementAt(1)).intValue()))
+								if((V.size()>1)&&(cl==((Integer)V.elementAt(v+1)).intValue()))
 								   found=true;
 								break;
 						}
@@ -2747,23 +2761,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         switch(((Integer)V.elementAt(v)).intValue())
                         {
                             case 37: // +lvlgr
-                                if((V.size()>1)&&(cl>((Integer)V.elementAt(1)).intValue()))
+                                if((V.size()>1)&&(cl>((Integer)V.elementAt(v+1)).intValue()))
                                    found=true;
                                 break;
                             case 38: // +lvlge
-                                if((V.size()>1)&&(cl>=((Integer)V.elementAt(1)).intValue()))
+                                if((V.size()>1)&&(cl>=((Integer)V.elementAt(v+1)).intValue()))
                                    found=true;
                                 break;
                             case 39: // +lvlt
-                                if((V.size()>1)&&(cl<((Integer)V.elementAt(1)).intValue()))
+                                if((V.size()>1)&&(cl<((Integer)V.elementAt(v+1)).intValue()))
                                    found=true;
                                 break;
                             case 40: // +lvlle
-                                if((V.size()>1)&&(cl<=((Integer)V.elementAt(1)).intValue()))
+                                if((V.size()>1)&&(cl<=((Integer)V.elementAt(v+1)).intValue()))
                                    found=true;
                                 break;
                             case 41: // +lvleq
-                                if((V.size()>1)&&(cl==((Integer)V.elementAt(1)).intValue()))
+                                if((V.size()>1)&&(cl==((Integer)V.elementAt(v+1)).intValue()))
                                    found=true;
                                 break;
                         }

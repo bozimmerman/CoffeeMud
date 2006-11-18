@@ -390,9 +390,8 @@ public class Nanny extends StdBehavior
     public MOB ultimateFollowing(Environmental E)
     {
         MOB ultimateFollowing=null;
-        if(E instanceof MOB) ultimateFollowing=((MOB)E).amFollowing();
-        while((ultimateFollowing!=null)&&(ultimateFollowing.amFollowing()!=null))
-            ultimateFollowing=ultimateFollowing.amFollowing();
+        if(E instanceof MOB) 
+            ultimateFollowing=((MOB)E).amUltimatelyFollowing();
         return ultimateFollowing;
     }
     

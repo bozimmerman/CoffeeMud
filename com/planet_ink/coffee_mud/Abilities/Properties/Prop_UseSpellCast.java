@@ -38,7 +38,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
     
-    public boolean addMeIfNeccessary(Environmental source, Environmental target)
+    public boolean addMeIfNeccessary(Environmental source, Environmental target, int asLevel)
     {
         Vector V=getMySpellsV();
         if((target==null)
@@ -71,7 +71,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualMOB,V2,target,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
 			}
 		}
         return true;
@@ -99,17 +99,17 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 				if((myItem instanceof Drink)
 				&&(msg.tool()!=myItem)
 				&&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source());
+					addMeIfNeccessary(msg.source(),msg.source(),0);
 				break;
 			case CMMsg.TYP_WEAR:
 				if((myItem instanceof Armor)
 				  &&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source());
+					addMeIfNeccessary(msg.source(),msg.source(),0);
 				break;
 			case CMMsg.TYP_PUT:
 				if((myItem instanceof Container)
 				  &&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source());
+					addMeIfNeccessary(msg.source(),msg.source(),0);
 				break;
 			case CMMsg.TYP_WIELD:
 			case CMMsg.TYP_HOLD:
@@ -117,7 +117,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 				  &&(!(myItem instanceof Armor))
 				  &&(!(myItem instanceof Container))
 				  &&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source());
+					addMeIfNeccessary(msg.source(),msg.source(),0);
 				break;
 			}
 		processing=false;

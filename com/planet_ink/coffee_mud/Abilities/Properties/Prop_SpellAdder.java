@@ -70,7 +70,7 @@ public class Prop_SpellAdder extends Property
         if(maskString.length()>0)
         	compiledMask=CMLib.masking().maskCompile(maskString);
 	}
-
+    
 	public Vector getMySpellsV()
 	{
         if(spellV!=null) return spellV;
@@ -168,58 +168,86 @@ public class Prop_SpellAdder extends Property
 		return invokerMOB;
 	}
 
-	public boolean addMeIfNeccessary(Environmental source, Environmental target)
+
+    public Vector convertToV2(Vector spellsV, Environmental target)
+    {
+        Vector VTOO=new Vector();
+        for(int v=0;v<spellsV.size();v++)
+        {
+            Ability A=(Ability)spellsV.elementAt(v);
+            Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
+            if((EA==null)&&(didHappen(100)))
+            {
+                String t=A.text();
+                A=(Ability)A.copyOf();
+                Vector V2=new Vector();
+                if(t.length()>0)
+                {
+                    int x=t.indexOf("/");
+                    if(x<0)
+                    {
+                        V2=CMParms.parse(t);
+                        A.setMiscText("");
+                    }
+                    else
+                    {
+                        V2=CMParms.parse(t.substring(0,x));
+                        A.setMiscText(t.substring(x+1));
+                    }
+                }
+                VTOO.addElement(A);
+                VTOO.addElement(V2);
+            }
+        }
+        return VTOO;
+    }
+    
+	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, int asLevel)
 	{
-		Vector V=getMySpellsV();
+        Vector V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
         ||((compiledMask!=null)
-	    	&&(compiledMask.size()>0)
-	        &&(!CMLib.masking().maskCheck(compiledMask,target))))
-            return false;
-        
+            &&(compiledMask.size()>0)
+            &&(!CMLib.masking().maskCheck(compiledMask,target))))
+                return false;
+		Vector VTOO=convertToV2(V,target);
+        if(VTOO.size()==0) return false;
 		MOB qualMOB=getInvokerMOB(source,target);
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<VTOO.size();v+=2)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)VTOO.elementAt(v);
+            Vector V2=(Vector)VTOO.elementAt(v+1);
+			A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
 			Ability EA=target.fetchEffect(A.ID());
-			if((EA==null)&&(didHappen(100)))
-            {
-				String t=A.text();
-				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
-				if(t.length()>0)
-				{
-					int x=t.indexOf("/");
-					if(x<0)
-					{
-						V2=CMParms.parse(t);
-						A.setMiscText("");
-					}
-					else
-					{
-						V2=CMParms.parse(t.substring(0,x));
-						A.setMiscText(t.substring(x+1));
-					}
-				}
-				A.invoke(qualMOB,V2,target,true,(affected!=null)?affected.envStats().level():0);
-				EA=target.fetchEffect(A.ID());
-                lastMOB=target;
-                // this needs to go here because otherwise it makes non-item-invoked spells long lasting,
-                // which means they dont go away when item is removed.
-    			if(EA!=null)
-    			{
-    				EA.makeLongLasting();
-    				if(!this.uninvocable)
-    					EA.makeNonUninvokable();
-    			}
-    				
-    			
+            lastMOB=target;
+            // this needs to go here because otherwise it makes non-item-invoked spells long lasting,
+            // which means they dont go away when item is removed.
+			if((EA!=null)&&(makeLongLasting))
+			{
+				EA.makeLongLasting();
+				if(!this.uninvocable)
+					EA.makeNonUninvokable();
 			}
 		}
         return true;
 	}
 
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        String s=CMParms.combine(commands,0);
+        if(s.length()>0) setMiscText(s);
+        if(givenTarget!=null)
+            addMeIfNeccessary(mob,givenTarget,false,asLevel);
+        else
+        {
+            Vector V=getMySpellsV();
+            commands.clear();
+            CMParms.addToVector(convertToV2(V,null),commands);
+        }
+        return true;
+    }
+    
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," on the first one who enters.");}
     
@@ -264,7 +292,7 @@ public class Prop_SpellAdder extends Property
 			||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 				removeMyAffectsFrom(msg.source());
 			if(msg.targetMinor()==CMMsg.TYP_ENTER)
-				addMeIfNeccessary(msg.source(),msg.source());
+				addMeIfNeccessary(msg.source(),msg.source(),true,0);
 		}
 		super.executeMsg(host,msg);
 	}
@@ -281,7 +309,7 @@ public class Prop_SpellAdder extends Property
 				removeMyAffectsFrom(lastMOB);
 
 			if((lastMOB==null)&&(host!=null))
-				addMeIfNeccessary(host,host);
+				addMeIfNeccessary(host,host,true,0);
 			processing=false;
 		}
 	}
