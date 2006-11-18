@@ -1932,10 +1932,8 @@ public class StdMOB implements MOB
 			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
                 if(Log.combatChannelOn())
-                {
                     Log.combatOut(msg.source().Name()+":"+Name()+":"+CMMsg.TYPE_DESCS[msg.targetMinor()]+":"+((msg.tool()!=null)?msg.tool().Name():"null"));
-                    return false;
-                }
+                
 				if((msg.amISource(this))
 				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
