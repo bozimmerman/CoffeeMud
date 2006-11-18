@@ -155,7 +155,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-((2*getXLEVELLevel(mob))+mob.envStats().level());
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

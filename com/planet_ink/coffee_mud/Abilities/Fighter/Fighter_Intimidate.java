@@ -52,20 +52,20 @@ public class Fighter_Intimidate extends FighterSkill
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
-			MOB mob=(MOB)affected;
-			int levelDiff=((msg.source().envStats().level()-target.envStats().level())*10);
+			MOB attacker=msg.source();
+			int levelDiff=((attacker.envStats().level()-(target.envStats().level()+((2*getXLEVELLevel(target)))))*10);
 			// 1 level off = -10
 			// 10 levels off = -100
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
 			&&(levelDiff<0)
-            &&(mob.location()==target.location())
-			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
+            &&(attacker.location()==target.location())
+			&&((target.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
-				msg.source().tell("You are too intimidated by "+target.name());
-				if(msg.source().location()!=lastRoom)
+                attacker.tell("You are too intimidated by "+target.name());
+				if(target.location()!=lastRoom)
 				{
-					lastRoom=msg.source().location();
+					lastRoom=target.location();
 					helpProficiency(target);
 				}
 				if(target.getVictim()==msg.source())

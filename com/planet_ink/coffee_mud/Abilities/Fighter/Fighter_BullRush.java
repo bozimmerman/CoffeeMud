@@ -74,7 +74,7 @@ public class Fighter_BullRush extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(((2*getXLEVELLevel(mob))+mob.envStats().level()));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 

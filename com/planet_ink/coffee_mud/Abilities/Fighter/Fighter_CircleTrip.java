@@ -165,7 +165,7 @@ public class Fighter_CircleTrip extends FighterSkill
 					return false;
 				}
 
-				int levelDiff=target.envStats().level()-mob.envStats().level();
+				int levelDiff=target.envStats().level()-(((2*getXLEVELLevel(mob))+mob.envStats().level()));
 				if(levelDiff>0)
 					levelDiff=levelDiff*5;
 				else
