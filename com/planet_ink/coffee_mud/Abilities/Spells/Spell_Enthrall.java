@@ -141,19 +141,19 @@ public class Spell_Enthrall extends Spell
 
 		super.unInvoke();
 
-		if(canBeUninvoked())
-		{
-			mob.tell("Your free-will returns.");
+        if((canBeUninvoked()&&(!mob.amDead())))
+        {
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
 			if(mob.isMonster())
 			{
-				if(CMLib.dice().rollPercentage()>50)
-				{
-					if(!CMLib.flags().isMobile(mob))
+                if((CMLib.dice().rollPercentage()>50)
+                ||((mob.getStartRoom()!=null)
+                    &&(mob.getStartRoom().getArea()!=mob.location().getArea())
+                    &&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
 						CMLib.tracking().wanderAway(mob,true,true);
-				}
 				else
 				if((invoker!=null)&&(invoker!=mob))
 					mob.setVictim(invoker);

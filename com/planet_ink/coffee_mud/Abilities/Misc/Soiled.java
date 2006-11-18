@@ -191,7 +191,9 @@ public class Soiled extends StdAbility
 		// what happened.
 	    Ability A=(Ability)copyOf();
 	    A.startTickDown(mob,target,Integer.MAX_VALUE/2);
-		mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
+        Environmental msgTarget=target;
+        if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
+		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
         if(target instanceof MOB)
         {
             Item pants=((MOB)target).fetchFirstWornItem(Item.WORN_WAIST);

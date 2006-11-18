@@ -36,10 +36,31 @@ public class Spell_Summon extends Spell
 	public String ID() { return "Spell_Summon"; }
 	public String name(){return "Summon";}
 	protected int canTargetCode(){return 0;}
+    protected int canAffectCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
+    public void unInvoke()
+    {
+        if(affected instanceof MOB)
+        {
+            MOB mob=(MOB)affected;
+            if((!mob.amDead())&&(mob.location()!=null))
+            {
+                if((mob.amFollowing()!=null)
+                &&(mob.location().isInhabitant(mob.amFollowing())))
+                    return;
+                if(mob.getStartRoom().getArea()!=mob.location().getArea())
+                {
+                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn back into the summoning swirl.");
+                    mob.getStartRoom().bringMobHere(mob,false);
+                }
+            }
+        }
+        super.unInvoke();
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
@@ -123,6 +144,10 @@ public class Spell_Summon extends Spell
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
+                        if(follower.isMonster()
+                        &&(follower.getStartRoom()!=null)
+                        &&(follower.getStartRoom().getArea().name().equals(oldRoom.getArea().name())))
+                            beneficialAffect(mob,follower,asLevel,0);
 						CMLib.commands().postLook(follower,true);
 					}
 					else
