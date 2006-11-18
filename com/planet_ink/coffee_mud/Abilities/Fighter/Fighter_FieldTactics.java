@@ -39,7 +39,7 @@ public class Fighter_FieldTactics extends FighterSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	private static final Integer[] landClasses = {new Integer(-1)};
@@ -95,7 +95,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		&&(msg.value()>0))
 		{
 			if(CMLib.dice().rollPercentage()<5) helpProficiency((MOB)affected);
-			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),400.0))));
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),400.0-(10.0*getXLEVELLevel(msg.source()))))));
 		}
 		else
 		if((hidden)&&(!hiding(affected)))

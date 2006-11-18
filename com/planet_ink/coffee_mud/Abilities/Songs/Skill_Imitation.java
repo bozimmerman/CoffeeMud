@@ -43,7 +43,7 @@ public class Skill_Imitation extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SPELL;}
 	public int usageType(){return USAGE_MOVEMENT;}

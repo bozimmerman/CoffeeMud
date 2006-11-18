@@ -42,7 +42,7 @@ public class Skill_Trip extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"TRIP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public long flags(){return Ability.FLAG_MOVING;}
 	protected int enhancement=0;
 	public int abilityCode(){return enhancement;}
@@ -146,7 +146,7 @@ public class Skill_Trip extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

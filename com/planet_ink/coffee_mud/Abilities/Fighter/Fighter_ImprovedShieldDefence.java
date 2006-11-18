@@ -39,7 +39,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
     protected boolean gettingBonus=false;
@@ -51,7 +51,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		Item w=((MOB)affected).fetchFirstWornItem(Item.WORN_HELD);
 		if((w==null)||(!(w instanceof Shield))) return;
 		gettingBonus=true;
-		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.envStats().armor(),(CMath.div(proficiency(),100.0))))));
+		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.envStats().armor(),(CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))))));
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

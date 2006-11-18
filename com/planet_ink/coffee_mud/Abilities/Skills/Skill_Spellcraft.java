@@ -41,7 +41,7 @@ public class Skill_Spellcraft extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SPELL;}
 
@@ -63,14 +63,22 @@ public class Skill_Spellcraft extends StdSkill
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
 		&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
-		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
-		{
-			Ability A=(Ability)copyOf();
-			A.setMiscText(msg.tool().ID());
-			lastID=msg.tool().ID();
-			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-			helpProficiency(mob);
-		}
+		&&(msg.source().fetchAbility(msg.tool().ID())!=null))
+        {
+            boolean hasAble=(mob.fetchAbility(ID())!=null);
+            int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
+            int myLevel=0;
+            if(hasAble) myLevel=adjustedLevel(mob,0)-lowestLevel+1;
+            int lvl=(mob.envStats().level()/3)+getXLEVELLevel(mob);
+            if(myLevel<lvl) myLevel=lvl;
+    		if(((!hasAble)||proficiencyCheck(mob,0,false))&&(lowestLevel<=myLevel))
+    		{
+    			Ability A=(Ability)copyOf();
+    			A.setMiscText(msg.tool().ID());
+    			lastID=msg.tool().ID();
+    			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+    			helpProficiency(mob);
+    		}
+        }
 	}
 }

@@ -41,7 +41,7 @@ public class Fighter_BodyToss extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean anyWeapons(MOB mob)
@@ -131,7 +131,7 @@ public class Fighter_BodyToss extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int dist=2;
+				int dist=2+getXLEVELLevel(mob);
 				if(mob.location().maxRange()<2) dist=mob.location().maxRange();
 				mob.setAtRange(dist);
 				target.setAtRange(dist);

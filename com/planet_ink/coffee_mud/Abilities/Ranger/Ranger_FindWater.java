@@ -43,7 +43,7 @@ public class Ranger_FindWater extends StdAbility
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"FINDWATER"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
 	protected Vector theTrail=null;
@@ -261,7 +261,7 @@ public class Ranger_FindWater extends StdAbility
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,false,60);
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,false,60+(2*getXLEVELLevel(mob)));
 		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -270,7 +270,7 @@ public class Ranger_FindWater extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,false,false,true,true,false,60);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,false,false,true,true,false,60+(2*getXLEVELLevel(mob)));
 
 		if((success)&&(theTrail!=null))
 		{

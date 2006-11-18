@@ -37,6 +37,7 @@ public class AnimalTraining extends CommonSkill
 	public String name(){ return "Animal Training";}
 	private static final String[] triggerStrings = {"ANIMALTRAINING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
 	protected Environmental taming=null;
 	protected String skillto="";
@@ -244,8 +245,8 @@ public class AnimalTraining extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		messedUp=!proficiencyCheck(mob,-taming.envStats().level(),auto);
-		int duration=35+taming.envStats().level()-mob.envStats().level();
+		messedUp=!proficiencyCheck(mob,-taming.envStats().level()+(2*getXLEVELLevel(mob)),auto);
+		int duration=35+taming.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(duration<10) duration=10;
 		verb="training "+M.name();
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");

@@ -35,6 +35,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 {
 	public String ID() { return "Paladin_DiseaseImmunity"; }
 	public String name(){ return "Disease Immunity";}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -54,7 +55,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((affected!=null)&&(CMLib.flags().isGood(affected)))
-			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+50+proficiency());
+		if((affected!=null)&&(CMLib.flags().isGood(affected))&&(affected instanceof MOB))
+			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+50+proficiency()+(5*getXLEVELLevel((MOB)affected)));
 	}
 }

@@ -38,6 +38,7 @@ public class Unbinding extends CommonSkill
 	public String name(){ return "Unbinding";}
 	private static final String[] triggerStrings = {"UNBIND","UNTIE"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ROPEUSE; }
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	MOB found=null;
@@ -143,7 +144,7 @@ public class Unbinding extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		
-		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-CMLib.ableMapper().qualifyingLevel(mob,A);
+		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-(CMLib.ableMapper().qualifyingLevel(mob,A)+(2*getXLEVELLevel(mob)));
 		if(duration<5) duration=4;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) to unbind <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))

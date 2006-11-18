@@ -41,7 +41,7 @@ public class Skill_Chirgury extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CHIRGURY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public static final String[] parts={"FETUS","BLOOD","HEART","LUNGS","STOMACH","PANCREAS","SPLEEN","BRAIN","LIVER","INTESTINES","TONGUE","EYES","BLADDER"};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

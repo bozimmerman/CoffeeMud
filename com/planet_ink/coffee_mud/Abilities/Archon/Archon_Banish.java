@@ -44,7 +44,7 @@ public class Archon_Banish extends ArchonSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BANISH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected Room prisonRoom=null;

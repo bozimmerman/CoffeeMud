@@ -44,7 +44,7 @@ public class WingFlying extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"FLAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
     protected boolean flying=true;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

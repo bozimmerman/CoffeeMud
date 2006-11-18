@@ -38,6 +38,7 @@ public class Thief_SilentLoot extends ThiefSkill
 	public String name(){ return "Silent AutoLoot";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTLOOT"};
 	public String[] triggerStrings(){return triggerStrings;}

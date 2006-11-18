@@ -40,7 +40,7 @@ public class Skill_Stability extends BardSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -56,7 +56,7 @@ public class Skill_Stability extends BardSkill
 		&&(msg.amITarget(affected))
 		&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40,false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40+(2*getXLEVELLevel(mob)),false)))
 		{
 			Room roomS=null;
 			Room roomD=null;

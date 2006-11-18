@@ -39,6 +39,7 @@ public class Painting extends CommonSkill
 	public String name(){ return "Painting";}
 	private static final String[] triggerStrings = {"PAINT","PAINTING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 
 	protected Item building=null;
 	protected boolean messedUp=false;
@@ -182,7 +183,7 @@ public class Painting extends CommonSkill
 		building.recoverEnvStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		completion=completion-mob.envStats().level()+5;
+		completion=completion-(mob.envStats().level()+5+getXLEVELLevel(mob));
 		if(completion<10) completion=10;
 
 		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);

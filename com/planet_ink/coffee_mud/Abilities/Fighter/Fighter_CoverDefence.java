@@ -42,7 +42,7 @@ public class Fighter_CoverDefence extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL; }
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -60,7 +60,7 @@ public class Fighter_CoverDefence extends FighterSkill
 		   &&(msg.tool() instanceof Weapon)
 		   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
-		   &&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
+		   &&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		   &&(msg.source().getVictim()==mob))
 		{
 			CMMsg msg2=CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");

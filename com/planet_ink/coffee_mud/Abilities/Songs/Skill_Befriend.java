@@ -40,7 +40,7 @@ public class Skill_Befriend extends BardSkill
     public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
     private static final String[] triggerStrings = {"BEFRIEND"};
     public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_AMOROUS;}
     public int usageType(){return USAGE_MANA;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

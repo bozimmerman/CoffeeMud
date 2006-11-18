@@ -40,7 +40,7 @@ public class Skill_TuneInstrument extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"TUNEINSTRUMENT","TUNE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARTISTIC;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

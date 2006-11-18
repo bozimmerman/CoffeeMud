@@ -42,7 +42,7 @@ public class Druid_GolemForm extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 
 	public Race newRace=null;
 	public String raceName="";
@@ -165,7 +165,7 @@ public class Druid_GolemForm extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
 		raceName=getRaceName(classLevel);
@@ -220,7 +220,7 @@ public class Druid_GolemForm extends StdAbility
 			}
 		}
 
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
 		String choice=CMParms.combine(commands,0);

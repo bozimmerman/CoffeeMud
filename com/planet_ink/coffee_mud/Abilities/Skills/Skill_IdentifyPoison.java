@@ -40,7 +40,7 @@ public class Skill_IdentifyPoison extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"IDPOISON","IDENTIFYPOISON"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_POISONING;}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

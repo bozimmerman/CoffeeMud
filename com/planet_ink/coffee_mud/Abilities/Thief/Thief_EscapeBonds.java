@@ -39,7 +39,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 	public String displayText(){return "(Slipping from your bonds)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ROPEUSE;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -57,6 +57,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			if(V.size()==0)
 			{ unInvoke(); return false;}
 			int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
+                           +getXLEVELLevel(mob)
 						   +(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*2);
 			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HANDS,"<S-NAME> slip(s) and wiggle(s) in <S-HIS-HER> bonds.");
 			for(int v=0;v<V.size();v++)

@@ -45,6 +45,7 @@ public class Fighter_BullRush extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_MOVING;}
 	public int usageType(){return USAGE_MOVEMENT;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

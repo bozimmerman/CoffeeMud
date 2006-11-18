@@ -35,6 +35,7 @@ public class Paladin_Goodness extends Paladin
 {
 	public String ID() { return "Paladin_Goodness"; }
 	public String name(){ return "Paladin`s Goodness";}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
     protected boolean tickTock=false;
 	public Paladin_Goodness()
 	{
@@ -59,7 +60,7 @@ public class Paladin_Goodness extends Paladin
 					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
 			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
-					int harming=CMLib.dice().roll(1,15,0);
+					int harming=CMLib.dice().roll(1,15+getXLEVELLevel(mob),0);
 					if(CMLib.flags().isEvil(target))
 						CMLib.combat().postDamage(invoker,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGES> <T-NAME>!^?");
 				}

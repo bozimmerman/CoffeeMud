@@ -42,7 +42,7 @@ public class Fighter_Roll extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	public boolean doneThisRound=false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -63,7 +63,7 @@ public class Fighter_Roll extends FighterSkill
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&(!doneThisRound)
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(2*getXLEVELLevel(mob)),false)))
 		{
 			doneThisRound=true;
 			double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());

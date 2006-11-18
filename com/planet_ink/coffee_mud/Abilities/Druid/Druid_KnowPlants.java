@@ -42,7 +42,7 @@ public class Druid_KnowPlants extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	private static final String[] triggerStrings = {"KNOWPLANT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 
 	public static boolean isPlant(Item I)
 	{

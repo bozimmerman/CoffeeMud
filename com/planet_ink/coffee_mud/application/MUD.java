@@ -403,7 +403,7 @@ public class MUD extends Thread implements MudHost
 				{
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-					Log.sysOut(Thread.currentThread().getName(),"Connection from "+address+": "+port);
+					Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
                     int proceed=0;
                     if(CMSecurity.isBanned(address))
                         proceed=1;
@@ -447,7 +447,7 @@ public class MUD extends Thread implements MudHost
                     
 					if(proceed!=0)
 					{
-						Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address+" on port "+port);
+						Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address);
 						PrintWriter out = new PrintWriter(sock.getOutputStream());
 						out.println("\n\rOFFLINE: Blocked\n\r");
 						out.flush();
@@ -516,7 +516,7 @@ public class MUD extends Thread implements MudHost
 		{
 		}
 
-		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Server on port "+port+" stopped!");
+		Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" stopped!");
 	}
     public String getStatus()
     {
@@ -856,7 +856,7 @@ public class MUD extends Thread implements MudHost
 		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
 			super(G,"HOST"+grpid);
-			logName="mud"+((grpid>0)?"."+grpid+".":"");
+			logName="mud"+((grpid>0)?("."+grpid):"");
 			grpid++;
 			iniFile=iniFileName;
 			name=mudName;

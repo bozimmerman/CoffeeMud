@@ -42,7 +42,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"TRACKANIMAL"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -166,7 +166,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,75);
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,75+(2*getXLEVELLevel(mob)));
 		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -175,7 +175,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,75);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,75+(2*getXLEVELLevel(mob)));
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

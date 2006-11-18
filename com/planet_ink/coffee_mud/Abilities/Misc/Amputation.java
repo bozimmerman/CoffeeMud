@@ -52,7 +52,7 @@ public class Amputation extends StdAbility implements Amputator
 	private static final String[] triggerStrings = {"AMPUTATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected Vector missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];

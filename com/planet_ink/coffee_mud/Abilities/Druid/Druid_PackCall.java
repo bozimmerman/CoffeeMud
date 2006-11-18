@@ -45,7 +45,7 @@ public class Druid_PackCall extends StdAbility
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -155,7 +155,7 @@ public class Druid_PackCall extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int levelsRemaining=90;
+				int levelsRemaining=90+(10*getXLEVELLevel(mob));
 				while((mob.totalFollowers()<mob.maxFollowers())&&(levelsRemaining>0))
 				{
 					MOB victim=mob.getVictim();

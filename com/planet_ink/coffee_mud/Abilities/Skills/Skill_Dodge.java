@@ -38,7 +38,7 @@ public class Skill_Dodge extends StdSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected boolean doneThisRound=false;
@@ -67,7 +67,7 @@ public class Skill_Dodge extends StdSkill
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
 			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
-			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93,false))
+			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(3*getXLEVELLevel(mob)),false))
 			&&(msg.source().getVictim()==mob)
 		    &&(!doneThisRound)
 			&&(mob.location().okMessage(mob,msg2)))

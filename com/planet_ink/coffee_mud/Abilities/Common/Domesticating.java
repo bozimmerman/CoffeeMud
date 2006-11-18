@@ -37,6 +37,7 @@ public class Domesticating extends CommonSkill
 	public String name(){ return "Domesticating";}
 	private static final String[] triggerStrings = {"DOMESTICATE","DOMESTICATING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
 	protected MOB taming=null;
 	protected boolean messedUp=false;
@@ -167,7 +168,7 @@ public class Domesticating extends CommonSkill
 			return false;
 		taming=M;
 		verb="domesticating "+M.name();
-		int levelDiff=taming.envStats().level()-mob.envStats().level();
+		int levelDiff=taming.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff>0) levelDiff=0;
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;

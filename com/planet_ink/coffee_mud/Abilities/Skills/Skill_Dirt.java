@@ -42,7 +42,7 @@ public class Skill_Dirt extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"DIRT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -160,7 +160,7 @@ public class Skill_Dirt extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)*3),auto);
+		boolean success=proficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)*3)+(2*getXLEVELLevel(mob)),auto);
 
 		if(success)
 		{
@@ -170,7 +170,7 @@ public class Skill_Dirt extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
-				maliciousAffect(mob,target,asLevel,3,-1);
+				maliciousAffect(mob,target,asLevel,3+(getXLEVELLevel(mob)/3),-1);
 			}
 		}
 		else

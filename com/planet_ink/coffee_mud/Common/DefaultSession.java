@@ -1386,7 +1386,7 @@ public class DefaultSession extends Thread implements Session
 					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
                     {
-						Log.sysOut("Session","login: "+mob.Name());
+						Log.sysOut("Session",getAddress()+" login: "+mob.Name());
                         if(loginAttempt>0)
                             if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
                                 killFlag=true;
@@ -1548,7 +1548,7 @@ public class DefaultSession extends Thread implements Session
             Vector channels=CMLib.channels().getFlaggedChannelNames("LOGOFFS");
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out.",true);
+                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out",true);
 			// the player quit message!
             loginLogoutThread LT=new loginLogoutThread(mob,CMMsg.MSG_QUIT);
             LT.initialize();
@@ -1557,7 +1557,7 @@ public class DefaultSession extends Thread implements Session
             {
 				mob.playerStats().setLastDateTime(System.currentTimeMillis());
             }
-			Log.sysOut("Session","logout: "+name);
+			Log.sysOut("Session",getAddress()+" logout: "+name);
 			if(mob!=null) CMLib.database().DBUpdateFollowers(mob);
 			if(mob!=null) mob.removeFromGame(true);
 			if(mob!=null) mob.setSession(null);

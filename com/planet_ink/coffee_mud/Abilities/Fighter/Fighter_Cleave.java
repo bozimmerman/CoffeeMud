@@ -45,7 +45,7 @@ public class Fighter_Cleave extends FighterSkill
 
 	protected MOB thisTarget=null;
 	protected MOB nextTarget=null;
-	public int classificationCode(){ return Ability.ACODE_SKILL;	}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

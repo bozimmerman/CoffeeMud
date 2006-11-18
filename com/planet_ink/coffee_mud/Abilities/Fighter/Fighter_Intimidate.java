@@ -42,7 +42,7 @@ public class Fighter_Intimidate extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL;}
 	public Room lastRoom=null;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

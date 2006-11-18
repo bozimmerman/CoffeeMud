@@ -37,6 +37,7 @@ public class PlantLore extends CommonSkill
 	public String name(){ return "Plant Lore";}
 	private static final String[] triggerStrings = {"PLANTLORE","PSPECULATE"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected boolean success=false;
 	public PlantLore()
@@ -79,7 +80,7 @@ public class PlantLore extends CommonSkill
 					{
 						StringBuffer str=new StringBuffer("");
 						Vector V=new Vector();
-						CMLib.tracking().getRadiantRooms(room,V,true,true,false,true,false,null,2,null);
+						CMLib.tracking().getRadiantRooms(room,V,true,true,false,true,false,null,2+(getXLEVELLevel(mob)/2),null);
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);
@@ -137,7 +138,7 @@ public class PlantLore extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		int duration=45-mob.envStats().level();
+		int duration=45-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(duration<5) duration=5;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
 		if(mob.location().okMessage(mob,msg))

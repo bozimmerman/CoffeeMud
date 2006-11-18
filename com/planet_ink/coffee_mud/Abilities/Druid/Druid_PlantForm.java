@@ -132,7 +132,8 @@ public class Druid_PlantForm extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this);
+		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob))
+                            -CMLib.ableMapper().qualifyingLevel(mob,this);
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 	}
@@ -195,7 +196,7 @@ public class Druid_PlantForm extends StdAbility
 			return false;
 		}
 
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
 		String choice=CMParms.combine(commands,0);

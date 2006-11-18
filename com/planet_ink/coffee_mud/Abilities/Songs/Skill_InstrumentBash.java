@@ -40,7 +40,7 @@ public class Skill_InstrumentBash extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"INSTRUMENTBASH","IBASH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -77,7 +77,7 @@ public class Skill_InstrumentBash extends BardSkill
 					w.setName(instrument.name());
 					w.setDisplayText(instrument.displayText());
 					w.setDescription(instrument.description());
-					w.baseEnvStats().setDamage(instrument.envStats().level()+5);
+					w.baseEnvStats().setDamage(instrument.envStats().level()+5+(2*getXLEVELLevel(mob)));
 					CMLib.combat().postAttack(mob,target,w);
 				}
 			}

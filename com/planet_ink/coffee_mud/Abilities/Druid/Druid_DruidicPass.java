@@ -43,11 +43,8 @@ public class Druid_DruidicPass extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-
-	public int classificationCode()
-	{
-		return Ability.ACODE_SKILL;
-	}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

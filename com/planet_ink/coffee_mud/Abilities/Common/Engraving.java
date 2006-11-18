@@ -38,6 +38,7 @@ public class Engraving extends CommonSkill
 	public String name(){ return "Engraving";}
 	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALIGRAPHY; }
 
 	protected Item found=null;
 	protected String writing="";
@@ -113,7 +114,7 @@ public class Engraving extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		int duration=30-mob.envStats().level();
+		int duration=30-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(duration<3) duration=3;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) engraving on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))

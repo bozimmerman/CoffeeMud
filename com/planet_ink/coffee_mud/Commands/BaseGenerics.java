@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -5466,6 +5467,55 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
+    public static void modifyComponent(MOB mob, String SPELLID)
+    throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
+    
+    public static void modifyExpertise(MOB mob, ExpertiseLibrary.ExpertiseDefinition me)
+    throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            
+            
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
+    
     public static void modifyFaction(MOB mob, Faction me)
     throws IOException
     {

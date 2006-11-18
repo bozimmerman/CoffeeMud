@@ -43,7 +43,7 @@ public class Fighter_Behead extends FighterSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Environmental target)

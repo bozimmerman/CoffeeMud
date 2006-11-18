@@ -40,6 +40,7 @@ public class Herbology extends CommonSkill
 	public String name(){ return "Herbology";}
 	private static final String[] triggerStrings = {"HERBOLOGY"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected Item found=null;
 	protected boolean messedUp=false;
@@ -121,7 +122,7 @@ public class Herbology extends CommonSkill
 		found=target;
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto)) messedUp=true;
-		int duration=10-(mob.envStats().level()/3);
+		int duration=10-((mob.envStats().level()+getXLEVELLevel(mob))/3);
 		if(duration<2) duration=2;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))

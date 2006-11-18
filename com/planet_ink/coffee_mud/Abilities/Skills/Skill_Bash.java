@@ -40,7 +40,7 @@ public class Skill_Bash extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BASH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Environmental target)
@@ -105,7 +105,7 @@ public class Skill_Bash extends StdSkill
 					w.setName(thisSheild.name());
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
-					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5);
+					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5+(2*getXLEVELLevel(mob)));
 					if((CMLib.combat().postAttack(mob,target,w))
 					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 					&&(target.envStats().weight()<(mob.envStats().weight()*2)))

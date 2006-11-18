@@ -42,7 +42,7 @@ public class Fighter_LightningStrike extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -186,7 +186,8 @@ public class Fighter_LightningStrike extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int i=0;i<CMLib.ableMapper().qualifyingClassLevel(mob,this);i++)
+                int num=getXLEVELLevel(mob)+CMLib.ableMapper().qualifyingClassLevel(mob,this);
+				for(int i=0;i<num;i++)
 					if((!target.amDead())&&(!anyWeapons(mob)))
 						CMLib.combat().postAttack(mob,target,null);
 				if((!anyWeapons(mob))&&(msg.value()<=0))

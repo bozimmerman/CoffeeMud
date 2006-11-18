@@ -44,7 +44,7 @@ public class Fighter_AtemiStrike extends FighterSkill
 	protected int canAffectCode(){return 0; }
 	protected int overrideMana(){return 100; }
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void unInvoke()

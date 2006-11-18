@@ -38,6 +38,7 @@ public class Lacquerring extends CommonSkill
 	public String name(){ return "Lacquering";}
 	private static final String[] triggerStrings = {"LACQUERING","LACQUER"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 
 	protected Item found=null;
 	protected String writing="";
@@ -155,7 +156,7 @@ public class Lacquerring extends CommonSkill
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=60-mob.envStats().level();
+		int duration=60-(mob.envStats().level()+getXLEVELLevel(mob));
 		if(duration<12) duration=12;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) lacquering <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))

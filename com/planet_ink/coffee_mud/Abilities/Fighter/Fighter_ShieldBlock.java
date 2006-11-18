@@ -43,7 +43,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL; }
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	private boolean enabledFlag=true;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -59,7 +59,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
-		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
+		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		&&(msg.source().getVictim()==mob))
 		{
 			CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchFirstWornItem(Item.WORN_HELD),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");

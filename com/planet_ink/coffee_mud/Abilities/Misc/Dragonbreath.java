@@ -44,7 +44,7 @@ public class Dragonbreath extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAGONBREATH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
 	private final static String[][] DragonColors={
 		{"WHITE","c"},
 		{"BLACK","a"},
@@ -174,7 +174,7 @@ public class Dragonbreath extends StdAbility
 					invoker=mob;
 
 					int damage = 0;
-					int levelBy=mob.envStats().level()/4;
+					int levelBy=(mob.envStats().level()+(2*getXLEVELLevel(mob)))/4;
 					if(levelBy<1) levelBy=1;
 					damage += CMLib.dice().roll(levelBy,6,levelBy);
 					if(msg.value()>0)

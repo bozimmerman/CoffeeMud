@@ -38,6 +38,7 @@ public class Paladin_Aura extends Paladin
 {
 	public String ID() { return "Paladin_Aura"; }
 	public String name(){ return "Paladin`s Aura";}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Aura()
 	{
 		super();

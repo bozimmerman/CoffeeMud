@@ -39,7 +39,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
@@ -97,9 +97,10 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
 			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null)&&(mob.isInCombat()))
 			{
-				affectableStats.setSpeed(affectableStats.speed()+1.0+(0.1*(float)super.getXLEVELLevel(invoker())));
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));
-                affectableStats.setDamage(affectableStats.damage()-(affectableStats.damage()/20));
+                int xlvl=super.getXLEVELLevel(invoker());
+				affectableStats.setSpeed(affectableStats.speed()+1.0+(0.1*(float)xlvl));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/(5+xlvl)));
+                affectableStats.setDamage(affectableStats.damage()-(affectableStats.damage()/(20+xlvl)));
 			}
 		}
 	}

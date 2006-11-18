@@ -40,7 +40,7 @@ public class Skill_Map extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALIGRAPHY;}
 
 	Vector roomsMappedAlready=new Vector();
 	protected Item map=null;

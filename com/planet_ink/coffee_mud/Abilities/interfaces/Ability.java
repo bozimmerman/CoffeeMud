@@ -709,6 +709,46 @@ public interface Ability extends Environmental
     public static final int DOMAIN_WEAPON_USE=47<<5;
     /** constant used to mask classificationCode() designating this ability as being breeding skill. @see Ability#classificationCode() */
     public static final int DOMAIN_ROCKCONTROL=48<<5;
+    /** constant used to mask classificationCode() designating this ability as being kicking skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_KICKING=49<<5;
+    /** constant used to mask classificationCode() designating this ability as being punching skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_PUNCHING=50<<5;
+    /** constant used to mask classificationCode() designating this ability as being grappling skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_GRAPPLING=51<<5;
+    /** constant used to mask classificationCode() designating this ability as being caligraphy skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_CALIGRAPHY=52<<5;
+    /** constant used to mask classificationCode() designating this ability as being poisoning skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_POISONING=53<<5;
+    /** constant used to mask classificationCode() designating this ability as being arcane lore skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_ARCANELORE=54<<5;
+    /** constant used to mask classificationCode() designating this ability as being acrobatic skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_ACROBATIC=55<<5;
+    /** constant used to mask classificationCode() designating this ability as being amorous skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_AMOROUS=56<<5;
+    /** constant used to mask classificationCode() designating this ability as being street smarts skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_STREETSMARTS=57<<5;
+    /** constant used to mask classificationCode() designating this ability as being nature lore skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_NATURELORE=58<<5;
+    /** constant used to mask classificationCode() designating this ability as being dirty fighting skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_DIRTYFIGHTING=59<<5;
+    /** constant used to mask classificationCode() designating this ability as being combat lore skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_COMBATLORE=60<<5;
+    /** constant used to mask classificationCode() designating this ability as being combat fluidity skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_COMBATFLUIDITY=61<<5;
+    /** constant used to mask classificationCode() designating this ability as being evasive skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_EVASIVE=62<<5;
+    /** constant used to mask classificationCode() designating this ability as being martial lore skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_MARTIALLORE=63<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_RACIALABILITY=64<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_ARTISTIC=65<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_ANATOMY=66<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_ARMORUSE=67<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_SHIELDUSE=68<<5;
     /** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -725,7 +765,12 @@ public interface Ability extends Environmental
         "CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
         "COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
         "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
-        "ROCK_CONTROL"
+        "ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
+        "CALIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
+        "AMOROUS","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
+        "COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
+        "RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
+        "SHIELD_USE"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
@@ -741,7 +786,12 @@ public interface Ability extends Environmental
         "Corrupting","Restoring","Neutralizing","Creating",
         "Communing","Preserving","Enduring","Plant Controling",
         "Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
-        "Rock Controling"
+        "Rock Controling","Kicking","Punching","Grappling",
+        "Caligraphing","Poisoning","Arcane Loreing","Acrobatisizing",
+        "Amorousing","Street Knowing","Nature Loring","Dirty Fighting",
+        "Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
+        "Racial Knowing","Artmaking","Anatomy","Armor Using",
+        "Shield Using"
 	};
 	
 	/** constant descriptions for the minRange()/maxRange() values @see Ability#minRange() */

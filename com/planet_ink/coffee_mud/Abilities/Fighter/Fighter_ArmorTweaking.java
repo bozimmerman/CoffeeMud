@@ -43,7 +43,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
 	public int usageType(){return USAGE_MANA;}
     
 	public void executeMsg(Environmental host, CMMsg msg)

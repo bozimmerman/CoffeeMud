@@ -42,7 +42,7 @@ public class Fighter_Tumble extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SKILL; }
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -52,8 +52,9 @@ public class Fighter_Tumble extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-			affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.div(affectableStats.damage(),2.0)));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0)));
+            float f=(float)CMath.mul(0.2,getXLEVELLevel(invoker));
+			affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.div(affectableStats.damage(),2.0+f)));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0+f)));
 		}
 	}
 

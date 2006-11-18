@@ -45,6 +45,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
     protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
     protected int canTargetCode(){return 0;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_AMOROUS; }
 
     
     protected CoffeeShop shop=(CoffeeShop)CMClass.getCommon("DefaultCoffeeShop");

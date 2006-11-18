@@ -41,7 +41,7 @@ public class Paladin_MountedCharge extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
 	public int maxRange(){return 99;}

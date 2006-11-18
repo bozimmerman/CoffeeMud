@@ -41,7 +41,7 @@ public class Skill_Leeching extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"LEECH","LEECHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -76,7 +76,7 @@ public class Skill_Leeching extends StdSkill
 				mob.location().send(mob,msg);
 				Ability A=CMClass.getAbility("Disease_Leeches");
 				if(A!=null)
-					A.invoke(mob,target,true,0);
+					A.invoke(mob,target,true,adjustedLevel(mob,0));
 				
 			}
 		}

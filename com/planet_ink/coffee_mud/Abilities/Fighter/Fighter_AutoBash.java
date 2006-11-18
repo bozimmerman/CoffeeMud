@@ -42,7 +42,7 @@ public class Fighter_AutoBash extends FighterSkill
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SKILL; }
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -59,7 +59,7 @@ public class Fighter_AutoBash extends FighterSkill
 		&&(proficiencyCheck(null,0,false)))
 		{
 			Ability A=mob.fetchAbility("Skill_Bash");
-			if(A!=null) A.invoke(mob,mob.getVictim(),false,0);
+			if(A!=null) A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
 			if(CMLib.dice().rollPercentage()<10)
 				helpProficiency(mob);
 		}

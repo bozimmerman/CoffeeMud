@@ -36,6 +36,7 @@ public class Dyeing extends CommonSkill
 	public String ID() { return "Dyeing"; }
 	public String name(){ return "Dyeing";}
 	private static final String[] triggerStrings = {"DYE","DYEING"};
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	public String[] triggerStrings(){return triggerStrings;}
 
 	protected Item found=null;
@@ -153,7 +154,7 @@ public class Dyeing extends CommonSkill
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-mob.envStats().level();
+		int duration=30-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		if(duration<6) duration=6;

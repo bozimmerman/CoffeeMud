@@ -38,6 +38,7 @@ public class BodyPiercing extends CommonSkill
 	public String name(){ return "Body Piercing";}
 	private static final String[] triggerStrings = {"BODYPIERCE","BODYPIERCING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	protected String writing="";
 	MOB target=null;
 	public BodyPiercing()
@@ -154,7 +155,7 @@ public class BodyPiercing extends CommonSkill
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-mob.envStats().level();
+		int duration=30-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(duration<6) duration=6;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".");
 		if(mob.location().okMessage(mob,msg))

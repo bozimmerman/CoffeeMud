@@ -35,6 +35,7 @@ public class Paladin_ImprovedResists extends Paladin
 {
 	public String ID() { return "Paladin_ImprovedResists"; }
 	public String name(){ return "Paladin`s Resistance";}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -41,6 +41,7 @@ public class Thief_Appraise extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public int code=0;
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}

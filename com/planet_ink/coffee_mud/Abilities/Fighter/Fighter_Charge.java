@@ -42,7 +42,7 @@ public class Fighter_Charge extends FighterSkill
 	public String displayText(){return "(Charging!!)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
 	public int maxRange(){return adjustedMaxInvokerRange(2);}

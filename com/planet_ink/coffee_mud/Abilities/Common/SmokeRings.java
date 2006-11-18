@@ -37,6 +37,7 @@ public class SmokeRings extends CommonSkill
 	public String name(){ return "Smoke Rings";}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 
 	public SmokeRings()
 	{
@@ -55,7 +56,7 @@ public class SmokeRings extends CommonSkill
 		&&(msg.target()==msg.tool())
 		&&(((Light)msg.target()).amWearingAt(Item.WORN_MOUTH))
 		&&(((Light)msg.target()).isLit())
-		&&(proficiencyCheck(null,0,false)))
+		&&(proficiencyCheck(null,(10*getXLEVELLevel((MOB)affected)),false)))
 		{
 			if(CMLib.dice().rollPercentage()==1) helpProficiency((MOB)affected);
 			String str="<S-NAME> blow(s) out a perfect smoke ring.";

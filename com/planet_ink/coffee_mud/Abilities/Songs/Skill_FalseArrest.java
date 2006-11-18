@@ -41,6 +41,7 @@ public class Skill_FalseArrest extends BardSkill
 	private static final String[] triggerStrings = {"FALSEARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 50;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -95,7 +96,13 @@ public class Skill_FalseArrest extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+        int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+        if(levelDiff>0)
+            levelDiff=levelDiff*5;
+        else
+            levelDiff=0;
+        
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
 		{

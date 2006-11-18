@@ -36,6 +36,7 @@ public class Searching extends CommonSkill
 	public String ID() { return "Searching"; }
 	public String name(){ return "Searching";}
 	private static final String[] triggerStrings = {"SEARCH","SEARCHING"};
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT; }
 	public String[] triggerStrings(){return triggerStrings;}
 	protected Room searchRoom=null;
     private int bonusThisRoom=0;
@@ -101,7 +102,7 @@ public class Searching extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		int duration=3;
+		int duration=3+getXLEVELLevel(mob);
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"<S-NAME> start(s) searching."));
 		if(mob.location().okMessage(mob,msg))
 		{

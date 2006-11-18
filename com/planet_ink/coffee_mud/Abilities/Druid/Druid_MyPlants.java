@@ -42,7 +42,7 @@ public class Druid_MyPlants extends StdAbility
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"MYPLANTS","PLANTS"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 
 	public static boolean isMyPlant(Item I, MOB mob)
 	{

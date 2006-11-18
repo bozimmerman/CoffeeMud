@@ -40,7 +40,7 @@ public class Skill_Disarm extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"DISARM"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Environmental target)
@@ -95,7 +95,7 @@ public class Skill_Disarm extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=victim.envStats().level()-mob.envStats().level();
+		int levelDiff=victim.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

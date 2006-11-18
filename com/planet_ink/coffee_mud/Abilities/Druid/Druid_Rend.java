@@ -42,7 +42,7 @@ public class Druid_Rend extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -97,7 +97,7 @@ public class Druid_Rend extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=adjustedLevel(mob,asLevel)*2;
+			int topDamage=(adjustedLevel(mob,asLevel)+getX2Level(mob))*2;
 			int damage=CMLib.dice().roll(1,topDamage,0);
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))

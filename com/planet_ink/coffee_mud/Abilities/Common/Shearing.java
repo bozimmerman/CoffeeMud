@@ -36,6 +36,7 @@ public class Shearing extends CommonSkill
 	public String ID() { return "Shearing"; }
 	public String name(){ return "Shearing";}
 	private static final String[] triggerStrings = {"SHEAR","SHEARING"};
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private MOB sheep=null;
@@ -147,7 +148,7 @@ public class Shearing extends CommonSkill
 			sheep=target;
 			verb="shearing "+target.name();
             playSound="scissor.wav";
-			int duration=(target.envStats().weight()/10);
+			int duration=(target.envStats().weight()/(10+getXLEVELLevel(mob)));
 			if(duration<10) duration=10;
 			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);

@@ -42,7 +42,7 @@ public class Fighter_BlindFighting extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

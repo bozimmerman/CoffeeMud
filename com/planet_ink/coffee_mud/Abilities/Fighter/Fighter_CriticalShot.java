@@ -41,7 +41,7 @@ public class Fighter_CriticalShot extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -62,7 +62,7 @@ public class Fighter_CriticalShot extends FighterSkill
 		&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		&&((mob.rangeToTarget()>0)||((msg.tool().envStats().sensesMask()&EnvStats.SENSE_ITEMNOMINRANGE)==EnvStats.SENSE_ITEMNOMINRANGE))
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(-75)+mob.charStats().getStat(CharStats.STAT_STRENGTH),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(-75)+mob.charStats().getStat(CharStats.STAT_STRENGTH)+(2*getXLEVELLevel(mob)),false)))
 		{
 			double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(CMath.mul((msg.value()),pctRecovery));

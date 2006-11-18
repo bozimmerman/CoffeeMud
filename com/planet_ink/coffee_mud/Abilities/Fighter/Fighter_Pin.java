@@ -47,7 +47,7 @@ public class Fighter_Pin extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	public long flags(){return Ability.FLAG_BINDING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

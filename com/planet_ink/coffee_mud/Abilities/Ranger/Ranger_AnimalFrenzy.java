@@ -42,7 +42,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected Vector rangersGroup=null;
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

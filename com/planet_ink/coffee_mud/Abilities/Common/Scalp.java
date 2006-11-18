@@ -38,6 +38,7 @@ public class Scalp extends CommonSkill
 	private static final String[] triggerStrings = {"SCALP","SCALPING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public static Vector lastSoManyScalps=new Vector();
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
 	private DeadBody body=null;
 	protected boolean failed=false;
@@ -150,7 +151,7 @@ public class Scalp extends CommonSkill
 			body=(DeadBody)I;
 			verb="scalping "+I.name();
             playSound="ripping.wav";
-			int duration=(I.envStats().weight()/10);
+			int duration=(I.envStats().weight()/10)-(2*getXLEVELLevel(mob));
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);

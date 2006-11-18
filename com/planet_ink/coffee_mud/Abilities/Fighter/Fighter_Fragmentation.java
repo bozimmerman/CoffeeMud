@@ -40,7 +40,7 @@ public class Fighter_Fragmentation extends FighterSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
@@ -67,7 +67,7 @@ public class Fighter_Fragmentation extends FighterSkill
             CMMsg msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><T-NAME> fragment(s) in <S-NAME>!^</FIGHT^>^?");
             CMLib.color().fixSourceFightColor(msg2);
 			msg.addTrailerMsg(msg2);
-			msg.setValue(msg.value()+(2*(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),100.0)))));
+			msg.setValue(msg.value()+(2*(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker())))))));
 		}
 
 		return super.okMessage(myHost,msg);

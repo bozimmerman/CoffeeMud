@@ -38,6 +38,7 @@ public class FireBuilding extends CommonSkill
 	public String name(){ return "Fire Building";}
 	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	public Item lighting=null;
 	protected int durationOfBurn=0;
@@ -148,8 +149,8 @@ public class FireBuilding extends CommonSkill
 				commonTell(mob,"You can't seem to find any dry deadwood around here.");
 				return false;
 			}
-			completion=25-mob.envStats().level();
-			durationOfBurn=150+(mob.envStats().level()*5);
+			completion=25-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+			durationOfBurn=150+((mob.envStats().level()+(2*getXLEVELLevel(mob)))*5);
 			verb="building a fire";
 			displayText="You are building a fire.";
 		}
@@ -204,7 +205,7 @@ public class FireBuilding extends CommonSkill
 				return false;
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-				completion=25-mob.envStats().level();
+				completion=25-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 			verb="lighting "+lighting.name();
 			displayText="You are lighting "+lighting.name()+".";
 		}

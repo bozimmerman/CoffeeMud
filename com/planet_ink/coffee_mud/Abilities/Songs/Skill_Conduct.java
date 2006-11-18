@@ -39,7 +39,7 @@ public class Skill_Conduct extends BardSkill
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"CONDUCT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PLAYING;}
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 
@@ -94,7 +94,7 @@ public class Skill_Conduct extends BardSkill
 						{
 							follower.location().send(follower,msg2);
 							if(msg2.value()<=0)
-								SYMPHONY.invoke(follower,new Vector(),null,false,asLevel);
+								SYMPHONY.invoke(follower,new Vector(),null,false,asLevel+(3*getXLEVELLevel(mob)));
 						}
 					}
 				}

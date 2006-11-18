@@ -39,7 +39,7 @@ public class Fighter_KnifeHand extends FighterSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
@@ -63,6 +63,7 @@ public class Fighter_KnifeHand extends FighterSkill
 				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				naturalWeapon.setName("a knife hand");
 				naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+                naturalWeapon.baseEnvStats().setDamage(5+getXLEVELLevel(mob));
 				naturalWeapon.recoverEnvStats();
 				CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
 			}

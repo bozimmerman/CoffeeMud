@@ -37,6 +37,7 @@ public class Speculate extends CommonSkill
 	public String name(){ return "Speculating";}
 	private static final String[] triggerStrings = {"SPECULATE","SPECULATING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected boolean success=false;
 	public Speculate()
@@ -115,7 +116,7 @@ public class Speculate extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		int duration=45-mob.envStats().level();
+		int duration=45-(mob.envStats().level()+getXLEVELLevel(mob));
 		if(duration<10) duration=10;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) speculating on this area.");
 		if(mob.location().okMessage(mob,msg))

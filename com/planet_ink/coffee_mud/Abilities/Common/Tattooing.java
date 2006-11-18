@@ -37,6 +37,7 @@ public class Tattooing extends CommonSkill
 	public String ID() { return "Tattooing"; }
 	public String name(){ return "Tattooing";}
 	private static final String[] triggerStrings = {"TATTOO","TATTOOING"};
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	public String[] triggerStrings(){return triggerStrings;}
 	protected String writing="";
 	MOB target=null;
@@ -171,7 +172,7 @@ public class Tattooing extends CommonSkill
 		verb="tattooing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-mob.envStats().level();
+		int duration=30-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(duration<6) duration=6;
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		if("REMOVE".startsWith(message.toUpperCase()))

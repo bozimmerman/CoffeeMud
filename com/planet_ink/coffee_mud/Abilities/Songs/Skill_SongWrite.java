@@ -41,7 +41,7 @@ public class Skill_SongWrite extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SONGWRITE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALIGRAPHY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -86,7 +86,7 @@ public class Skill_SongWrite extends BardSkill
 			mob.tell("You don't know how to write '"+spellName+"'.");
 			return false;
 		}
-		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
+		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
 		if(scroll.getSpells().size()>numSpells)
 		{

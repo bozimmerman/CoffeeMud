@@ -41,7 +41,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	public boolean doneThisRound=false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -65,7 +65,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 		&&(mob.rangeToTarget()>0)
 		&&(mob.fetchEffect("Fighter_ReturnProjectile")==null)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(3*getXLEVELLevel(mob)),false))
 		&&(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0))
 		{
 			Item w=(Item)msg.tool();

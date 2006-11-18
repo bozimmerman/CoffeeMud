@@ -41,7 +41,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MULTIWATCH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public static Hashtable DATA=new Hashtable();

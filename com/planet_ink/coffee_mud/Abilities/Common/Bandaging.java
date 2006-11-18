@@ -39,6 +39,7 @@ public class Bandaging extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
 	protected Environmental bandaging=null;
 	protected boolean messedUp=false;
@@ -110,7 +111,7 @@ public class Bandaging extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,0,auto);
-		int duration=3+(int)Math.round(10*(1.0-healthPct(target)));
+		int duration=3+(int)Math.round(10*(1.0-healthPct(target)))-getXLEVELLevel(mob);
 		if(duration<3) duration=3;
 		verb="bandaging "+target.name();
 		bandaging=target;

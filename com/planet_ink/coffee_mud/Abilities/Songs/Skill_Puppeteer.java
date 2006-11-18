@@ -39,7 +39,7 @@ public class Skill_Puppeteer extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"PUPPETEER","PUPPET"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -95,12 +95,13 @@ public class Skill_Puppeteer extends BardSkill
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor()));
+				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+(5*getXLEVELLevel(invoker()))
+                            +((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor()));
 				if(!isHit)
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
-											CMLib.dice().roll(1,affected.envStats().level(),1),
+											CMLib.dice().roll(1,affected.envStats().level()+(2*getXLEVELLevel(invoker())),1),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}

@@ -35,6 +35,7 @@ public class Paladin_Courage extends Paladin
 {
 	public String ID() { return "Paladin_Courage"; }
 	public String name(){ return "Paladin`s Courage";}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Courage()
 	{
 		super();

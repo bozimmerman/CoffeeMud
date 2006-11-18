@@ -51,7 +51,7 @@ public class Skill_Disguise extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"DISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
     protected final static String[] whats={
 		//0!     1!      2!    3!     4!       5!     6!      7!          8!
@@ -177,7 +177,7 @@ public class Skill_Disguise extends BardSkill
 
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,this)>0)
-		   &&(CMLib.ableMapper().qualifyingClassLevel(mob,this)<levels[which]))
+		   &&((CMLib.ableMapper().qualifyingClassLevel(mob,this)+getXLEVELLevel(mob))<levels[which]))
 		{
 			mob.tell("You must have "+levels[which]+" levels in this skill to use that disguise.");
 			return false;

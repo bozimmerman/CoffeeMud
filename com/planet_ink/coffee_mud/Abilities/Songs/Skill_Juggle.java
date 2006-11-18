@@ -39,7 +39,7 @@ public class Skill_Juggle extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"JUGGLE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected Vector juggles=new Vector();
 	protected long lastJuggle=-1;
@@ -54,7 +54,7 @@ public class Skill_Juggle extends BardSkill
 	public int maxJuggles()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
-			return 5+(CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this));
+			return 5+(CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)+(2*getXLEVELLevel((MOB)affected)));
 		return 5;
 	}
 
@@ -62,7 +62,7 @@ public class Skill_Juggle extends BardSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 			return (int)Math.round(affected.envStats().speed())
-				   +(CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)/5);
+				   +((CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)+(2*getXLEVELLevel((MOB)affected)))/5);
 		return 1;
 	}
 
