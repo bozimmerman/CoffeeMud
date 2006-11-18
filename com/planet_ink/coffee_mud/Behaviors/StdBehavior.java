@@ -149,30 +149,32 @@ public class StdBehavior implements Behavior
 	}
 	public static boolean canActAtAll(Tickable affecting)
 	{
-		if(affecting==null) return false;
-		if(!(affecting instanceof MOB)) return false;
-
-		MOB monster=(MOB)affecting;
-		if(monster.amDead()) return false;
-		if(monster.location()==null) return false;
-		if(!CMLib.flags().aliveAwakeMobile(monster,true)) return false;
-		if(CMLib.flags().isInTheGame(monster,true)) return true;
-		return true;
+		if(affecting instanceof MOB)
+        {
+    		MOB monster=(MOB)affecting;
+    		if((monster.amDead())
+    		||(monster.location()==null)
+            ||(!CMLib.flags().aliveAwakeMobile(monster,true)) 
+            ||(!CMLib.flags().isInTheGame(monster,true)))
+                return false;
+            return true;
+        }
+        return false;
 	}
 
 	public static boolean canFreelyBehaveNormal(Tickable affecting)
 	{
-		if(affecting==null) return false;
-		if(!(affecting instanceof MOB)) return false;
-
-		MOB monster=(MOB)affecting;
-		if(!canActAtAll(monster))
-			return false;
-		if(monster.isInCombat()) return false;
-		if(monster.amFollowing()!=null)  return false;
-		if(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0)))
-			return false;
-		return true;
+        if(affecting instanceof MOB)
+        {
+    		MOB monster=(MOB)affecting;
+    		if((!canActAtAll(monster))
+    		||(monster.isInCombat()) 
+    		||(monster.amFollowing()!=null)
+    		||(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0))))
+    			return false;
+    		return true;
+        }
+        return false;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

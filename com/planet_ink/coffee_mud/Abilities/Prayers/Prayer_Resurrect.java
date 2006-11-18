@@ -157,7 +157,10 @@ public class Prayer_Resurrect extends Prayer
 								continue;
 							else
 							{
-								int expLost=((100+(2*super.getXPCOSTLevel(mob)))*body.envStats().level())/2;
+                                double lvl=(double)body.envStats().level();
+                                for(int l=body.envStats().level();l<rejuvedMOB.envStats().level();l++)
+                                    lvl=lvl/2.0;
+								int expLost=(int)Math.round(((100.0+(2.0*((double)super.getXPCOSTLevel(mob))))*lvl)/2.0);
 								rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
 								CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 							}

@@ -72,6 +72,7 @@ public class GrinderRooms
 	
 			CMLib.map().resetRoom(R);
 			Room copyRoom=(Room)R.copyOf();
+            boolean skipImage=false;
 	
 			if(!className.equalsIgnoreCase(CMClass.classID(R)))
 			{
@@ -97,6 +98,11 @@ public class GrinderRooms
 				for(int d=0;d<R.rawExits().length;d++)
 					R.rawExits()[d]=oldR.rawExits()[d];
 				redoAllMyDamnRooms=true;
+                if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
+                {
+                    R.setImage(null);
+                    skipImage=true;
+                }
 			}
 	
 			// name
@@ -112,9 +118,12 @@ public class GrinderRooms
 			R.setDescription(desc);
 	
 			// image
-			String img=httpReq.getRequestParameter("IMAGE");
-			if(img==null)img="";
-			R.setImage(img);
+            if(!skipImage)
+            {
+    			String img=httpReq.getRequestParameter("IMAGE");
+    			if(img==null)img="";
+    			R.setImage(img);
+            }
 	
 			if(R instanceof GridLocale)
 			{

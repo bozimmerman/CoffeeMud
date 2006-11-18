@@ -105,7 +105,7 @@ public class MUD extends Thread implements MudHost
 	}
 
 
-	private static boolean initHost(Thread t, CMProps page)
+	protected static boolean initHost(Thread t, CMProps page)
 	{
 
 		if (!isOK)

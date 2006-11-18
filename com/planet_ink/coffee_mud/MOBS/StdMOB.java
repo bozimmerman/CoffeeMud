@@ -347,33 +347,41 @@ public class StdMOB implements MOB
 		envStats().setWeight(envStats().weight()+(int)Math.round(CMath.div(getMoney(),100.0)));
 		if(riding()!=null) riding().affectEnvStats(this,envStats);
 		if(getMyDeity()!=null) getMyDeity().affectEnvStats(this,envStats);
+        int num=0;
 		if(charStats!=null)
 		{
-			for(int c=0;c<charStats().numClasses();c++)
+            num=charStats().numClasses();
+			for(int c=0;c<num;c++)
 				charStats().getMyClass(c).affectEnvStats(this,envStats);
 			charStats().getMyRace().affectEnvStats(this,envStats);
 		}
-
-		for(int i=0;i<inventorySize();i++)
+        Item item=null;
+		num=inventorySize();
+		for(int i=0;i<num;i++)
 		{
-			Item item=fetchInventory(i);
+			item=fetchInventory(i);
 			if(item!=null)
 			{
 				item.recoverEnvStats();
 				item.affectEnvStats(this,envStats);
 			}
 		}
-		for(int a=0;a<numAllEffects();a++)
+        Ability effect=null;
+        num=numAllEffects();
+		for(int a=0;a<num;a++)
 		{
-			Ability effect=fetchEffect(a);
+			effect=fetchEffect(a);
 			if(effect!=null)
 				effect.affectEnvStats(this,envStats);
 		}
 		/* the follower light exception*/
 		if(!CMLib.flags().isLightSource(this))
-		for(int f=0;f<numFollowers();f++)
-			if(CMLib.flags().isLightSource(fetchFollower(f)))
-				envStats.setDisposition(envStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+        {
+            num=numFollowers();
+    		for(int f=0;f<num;f++)
+    			if(CMLib.flags().isLightSource(fetchFollower(f)))
+    				envStats.setDisposition(envStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+        }
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
@@ -427,14 +435,16 @@ public class StdMOB implements MOB
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
         Ability effect=null;
-		for(int a=0;a<numAllEffects();a++)
+        int num=numAllEffects();
+		for(int a=0;a<num;a++)
 		{
 			effect=fetchEffect(a);
 			if(effect!=null)
 				effect.affectCharStats(this,charStats);
 		}
         Item item=null;
-		for(int i=0;i<inventorySize();i++)
+        num=inventorySize();
+		for(int i=0;i<num;i++)
 		{
 			item=fetchInventory(i);
 			if(item!=null)
@@ -443,7 +453,8 @@ public class StdMOB implements MOB
 		if(location()!=null)
 			location().affectCharStats(this,charStats);
 
-		for(int c=0;c<charStats.numClasses();c++)
+        num=charStats.numClasses();
+		for(int c=0;c<num;c++)
 			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
 		baseCharStats.getMyRace().agingAffects(this,baseCharStats,charStats);
@@ -513,15 +524,19 @@ public class StdMOB implements MOB
 		baseState.copyInto(maxState);
 		if(charStats.getMyRace()!=null)	charStats.getMyRace().affectCharState(this,maxState);
 		if(riding()!=null) riding().affectCharState(this,maxState);
-		for(int a=0;a<numAllEffects();a++)
+        Ability effect=null;
+        int num=numAllEffects();
+		for(int a=0;a<num;a++)
 		{
-			Ability effect=fetchEffect(a);
+			effect=fetchEffect(a);
 			if(effect!=null)
 				effect.affectCharState(this,maxState);
 		}
-		for(int i=0;i<inventorySize();i++)
+        Item item=null;
+        num=inventorySize();
+		for(int i=0;i<num;i++)
 		{
-			Item item=fetchInventory(i);
+			item=fetchInventory(i);
 			if(item!=null)
 				item.affectCharState(this,maxState);
 		}
@@ -1424,7 +1439,8 @@ public class StdMOB implements MOB
 		}
 
 		Ability A=null;
-        for(int i=0;i<numAllEffects();i++)
+        int num=numAllEffects();
+        for(int i=0;i<num;i++)
 		{
 			A=fetchEffect(i);
 			if((A!=null)&&(!A.okMessage(this,msg)))
@@ -1432,7 +1448,8 @@ public class StdMOB implements MOB
 		}
 
 		Item I=null;
-        for(int i=inventorySize()-1;i>=0;i--)
+        num=inventorySize();
+        for(int i=num-1;i>=0;i--)
 		{
 			I=fetchInventory(i);
 			if((I!=null)&&(!I.okMessage(this,msg)))
@@ -1440,7 +1457,8 @@ public class StdMOB implements MOB
 		}
 
 		Behavior B=null;
-        for(int b=0;b<numBehaviors();b++)
+        num=numBehaviors();
+        for(int b=0;b<num;b++)
 		{
 			B=fetchBehavior(b);
 			if((B!=null)&&(!B.okMessage(this,msg)))
@@ -1913,6 +1931,11 @@ public class StdMOB implements MOB
 				return false;
 			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
+                if(Log.combatChannelOn())
+                {
+                    Log.combatOut(msg.source().Name()+":"+Name()+":"+CMMsg.TYPE_DESCS[msg.targetMinor()]+":"+((msg.tool()!=null)?msg.tool().Name():"null"));
+                    return false;
+                }
 				if((msg.amISource(this))
 				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
@@ -2375,7 +2398,8 @@ public class StdMOB implements MOB
 		}
 
 		Item I=null;
-		for(int i=inventorySize()-1;i>=0;i--)
+        int num=inventorySize();
+		for(int i=num-1;i>=0;i--)
 		{
 			I=fetchInventory(i);
 			if(I!=null)
@@ -2383,7 +2407,8 @@ public class StdMOB implements MOB
 		}
 
 		Ability A=null;
-        for(int i=0;i<numAllEffects();i++)
+        num=numAllEffects();
+        for(int i=0;i<num;i++)
 		{
 			A=fetchEffect(i);
 			if(A!=null)
@@ -2539,7 +2564,8 @@ public class StdMOB implements MOB
 
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
-				if(!isMonster()) curState().expendEnergy(this,maxState,false);
+				if(!isMonster()) 
+                    curState().expendEnergy(this,maxState,false);
                 
 				if((!CMLib.flags().canBreathe(this))&&(!CMLib.flags().isGolem(this)))
 				{
@@ -2606,35 +2632,33 @@ public class StdMOB implements MOB
 				}
 			}
             
-			int a=0;
-			while(a<numAllEffects())
-			{
-				Ability A=fetchEffect(a);
-				if(A!=null)
-				{
-					tickStatus=Tickable.STATUS_AFFECT+a;
-					int s=numAllEffects();
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-
-					if(numAllEffects()==s)
-						a++;
-				}
-				else
-					a++;
-			}
+            Vector aff=cloneEffects();
+            if(aff!=null)
+            {
+                Ability A=null;
+                for(int a=0;a<aff.size();a++)
+    			{
+    				A=(Ability)aff.elementAt(a);
+    				tickStatus=Tickable.STATUS_AFFECT+a;
+    				if(!A.tick(ticking,tickID))
+    					A.unInvoke();
+    			}
+            }
 
             manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
-			for(int b=0;b<numBehaviors();b++)
+            int num=numBehaviors();
+            Behavior B=null;
+			for(int b=0;b<num;b++)
 			{
-				Behavior B=fetchBehavior(b);
+				B=fetchBehavior(b);
 				tickStatus=Tickable.STATUS_BEHAVIOR+b;
 				if(B!=null) B.tick(ticking,tickID);
 			}
 
+            num=charStats().numClasses();
 			tickStatus=Tickable.STATUS_CLASS;
-			for(int c=0;c<charStats().numClasses();c++)
+			for(int c=0;c<num;c++)
 				charStats().getMyClass(c).tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_RACE;
 			charStats().getMyRace().tick(ticking,tickID);
@@ -2644,7 +2668,8 @@ public class StdMOB implements MOB
 				try
 				{
 					String tattoo=null;
-					for(int t=0;t<numTattoos();t++)
+                    num=numTattoos();
+					for(int t=0;t<num;t++)
 					{
 						tattoo=fetchTattoo(t);
 						if((tattoo.length()>0)
@@ -2653,14 +2678,14 @@ public class StdMOB implements MOB
 						&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
 						{
 							String tat=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-							int num=CMath.s_int(tattoo.substring(0,tattoo.indexOf(" ")));
-							if(num==1)
+							int timeDown=CMath.s_int(tattoo.substring(0,tattoo.indexOf(" ")));
+							if(timeDown==1)
 							{
 								tattoos.removeElementAt(t);
 								t--;
 							}
 							else
-								tattoos.setElementAt((num-1)+" "+tat,t);
+								tattoos.setElementAt((timeDown-1)+" "+tat,t);
 						}
 					}
 				}
@@ -3065,6 +3090,7 @@ public class StdMOB implements MOB
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
+    protected Vector cloneEffects(){return (Vector)((affects.size()==0)?null:affects.clone());}
 	
 	public int numAllEffects()
 	{
@@ -3088,9 +3114,11 @@ public class StdMOB implements MOB
 	}
 	public Ability fetchEffect(String ID)
 	{
-		for(int a=0;a<numAllEffects();a++)
+        Ability A=null;
+        int num=numAllEffects();
+		for(int a=0;a<num;a++)
 		{
-			Ability A=fetchEffect(a);
+			A=fetchEffect(a);
 			if((A!=null)&&(A.ID().equals(ID)))
 				return A;
 		}

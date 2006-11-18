@@ -145,7 +145,7 @@ SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-MAXCLASSLE
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type sword.
 
 FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to perform dances that have a power powerful malicious affect.
+HELP_=<EXPERTISE>The ability to perform dances that have a more powerful malicious affect.
 
 SLOWDANCE@x1=Slow Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&BENEFICIAL_SELF,-MAXCLASSLEVEL +>={16+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful beneficial passive affect.
@@ -160,7 +160,7 @@ STEADYDANCE@x1=Steady Dancing @x2,10,TIME,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>=
 HELP_=<EXPERTISE>The ability to perform dances whose affects linger after the dance is completed.
 
 SHARPTUNE@x1=Sharp Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to play tunes that have a power powerful malicious affect.
+HELP_=<EXPERTISE>The ability to play tunes that have a more powerful malicious affect.
 
 BOLDTUNE@x1=Bold Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&!MALICIOUS +PLAYING&OK +PLAYING&INDIFFERENT,-MAXCLASSLEVEL +>={16+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that have a more powerful beneficial affect.
@@ -172,7 +172,7 @@ RYTHMICTUNE@x1=Rhythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +
 HELP_=<EXPERTISE>The ability to play tunes that linger a little longer after they are played.
 
 SHARPSING@x1=Sharp Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to sing songs that have a power powerful malicious affect.
+HELP_=<EXPERTISE>The ability to sing songs that have a more powerful malicious affect.
 
 REJOICESING@x1=Rejoicing Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&!MALICIOUS +SINGING&OK +SINGING&INDIFFERENT,-MAXCLASSLEVEL +>={16+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to sing songs that have a more powerful beneficial affect.

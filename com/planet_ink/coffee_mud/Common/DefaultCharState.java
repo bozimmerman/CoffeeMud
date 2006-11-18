@@ -195,10 +195,10 @@ public class DefaultCharState implements CharState
 			return;
 
 		botherCycle=0;
-
-		double con=new Integer(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
-		double man=new Integer((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM))).doubleValue();
-		double str=new Integer(mob.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
+		CharStats charStats=mob.charStats();
+		double con=new Integer(charStats.getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
+		double man=new Integer((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM))).doubleValue();
+		double str=new Integer(charStats.getStat(CharStats.STAT_STRENGTH)).doubleValue();
 		if(getHunger()<1)
 		{
 			con=con*.85;

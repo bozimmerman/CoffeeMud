@@ -393,7 +393,8 @@ public class StdItem implements Item
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
 		}
-		for(int a=0;a<numEffects();a++)
+        int num=numEffects();
+		for(int a=0;a<num;a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
@@ -402,7 +403,8 @@ public class StdItem implements Item
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-		for(int a=0;a<numEffects();a++)
+        int num=numEffects();
+		for(int a=0;a<num;a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
@@ -411,7 +413,8 @@ public class StdItem implements Item
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-		for(int a=0;a<numEffects();a++)
+        int num=numEffects();
+		for(int a=0;a<num;a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
@@ -438,11 +441,13 @@ public class StdItem implements Item
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
-			if(numBehaviors()==0) return false;
-			for(int b=0;b<numBehaviors();b++)
+            int num=numBehaviors();
+			if(num==0) return false;
+            Behavior B=null;
+			for(int b=0;b<num;b++)
 			{
 				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				Behavior B=fetchBehavior(b);
+				B=fetchBehavior(b);
 				if(B!=null)
 					B.tick(ticking,tickID);
 			}
@@ -450,22 +455,18 @@ public class StdItem implements Item
 		else
 		if(tickID!=Tickable.TICKID_CLANITEM)
 		{
-			int a=0;
-			while(a<numEffects())
-			{
-				Ability A=fetchEffect(a);
-				if(A!=null)
-				{
-					int s=numEffects();
-					tickStatus=Tickable.STATUS_AFFECT+a;
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-					if(numEffects()==s)
-						a++;
-				}
-				else
-					a++;
-			}
+            Vector aff=cloneEffects();
+            if(aff!=null)
+            {
+                Ability A=null;
+                for(int a=0;a<aff.size();a++)
+    			{
+    				A=(Ability)aff.elementAt(a);
+    				tickStatus=Tickable.STATUS_AFFECT+a;
+    				if(!A.tick(ticking,tickID))
+    					A.unInvoke();
+    			}
+            }
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
@@ -613,13 +614,15 @@ public class StdItem implements Item
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
-		for(int b=0;b<numBehaviors();b++)
+        int num=numBehaviors();
+		for(int b=0;b<num;b++)
 		{
 			Behavior B=fetchBehavior(b);
 			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
-		for(int a=0;a<numEffects();a++)
+        num=numEffects();
+		for(int a=0;a<num;a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(!A.okMessage(this,msg)))
@@ -976,6 +979,8 @@ public class StdItem implements Item
 		return false;
 	}
 
+    protected Vector cloneEffects(){return (Vector)(((affects==null)||(affects.size()==0))?null:affects.clone());}
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// the order that these things are checked in should

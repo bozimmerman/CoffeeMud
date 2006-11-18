@@ -319,11 +319,7 @@ public class CMProps extends Properties
 		}
 	}
 	
-    private static CMProps p()
-    { 
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    return props[c];
-	}
+    private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
     public static int getPKillLevelDiff(){return p().pkillLevelDiff;}
 

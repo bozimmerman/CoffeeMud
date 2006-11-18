@@ -46,6 +46,7 @@ public class Skill_Recall extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+        boolean group="GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
 		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -69,7 +70,7 @@ public class Skill_Recall extends StdSkill
 					if((follower!=null)
 					&&(follower.isMonster())
 					&&(!follower.isPossessing())
-					&&(follower.location()==recalledRoom)
+					&&((follower.location()==recalledRoom)||(group))
 					&&(recalledRoom.isInhabitant(follower))
 					&&(recalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
 					{

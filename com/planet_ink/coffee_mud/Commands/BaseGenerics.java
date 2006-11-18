@@ -405,6 +405,7 @@ public class BaseGenerics extends StdCommand
 				R.rawExits()[d]=oldR.rawExits()[d];
 			R.setDisplayText(oldR.displayText());
 			R.setDescription(oldR.description());
+            if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR))) R.setImage(null);
 			if((R instanceof GridLocale)&&(oldR instanceof GridLocale))
 			{
 				((GridLocale)R).setXGridSize(((GridLocale)oldR).xGridSize());

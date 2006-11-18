@@ -192,14 +192,16 @@ public class DefaultTimeClock implements TimeClock
 
 	protected String numAppendage(int num)
 	{
-	    String strn=""+num;
         if((num<11)||(num>13))
-		switch(CMath.s_int(""+(strn).charAt(strn.length()-1)))
-		{
-		case 1: return "st";
-		case 2: return "nd";
-		case 3: return "rd";
-		}
+        {
+            String strn=""+num;
+    		switch(strn.charAt(strn.length()-1))
+    		{
+    		case '1': return "st";
+    		case '2': return "nd";
+    		case '3': return "rd";
+    		}
+        }
 		return "th";
 	}
 

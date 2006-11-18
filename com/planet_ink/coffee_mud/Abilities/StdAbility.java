@@ -1430,14 +1430,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if((tickID==Tickable.TICKID_MOB)
-		&&(tickDown!=Integer.MAX_VALUE)
-		&&(canBeUninvoked()))
+		if((canBeUninvoked())
+        &&(tickID==Tickable.TICKID_MOB)
+        &&(tickDown!=Integer.MAX_VALUE))
 		{
 			if(tickDown<0)
 				return !unInvoked;
-			tickDown-=1;
-			if(tickDown<=0)
+			if((--tickDown)<=0)
 			{
 				tickDown=-1;
 				unInvoke();
