@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core;
+import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -825,6 +826,43 @@ public class CMFile
         {
         	if(CMLib.database()==null) return new Vector();
     		vfs=CMLib.database().DBReadVFSDirectory();
+            HashSet dirs=new HashSet();
+            String fname=null;
+            int x=0;
+            for(int v=0;v<vfs.size();v++)
+            {
+                fname=vfsifyFilename((String)((Vector)vfs.elementAt(v)).firstElement());
+                x=fname.indexOf("/");
+                while(x>=0)
+                {
+                    if((x>0)&&(!dirs.contains(fname.substring(0,x))))
+                        dirs.add(fname.substring(0,x));
+                    x=fname.indexOf("/",x+1);
+                }
+            }
+            String file=null;
+            String filenameAsDir=null;
+            boolean found=false;
+            for(Iterator i=dirs.iterator();i.hasNext();)
+            {
+                filenameAsDir=(String)i.next();
+                file=(filenameAsDir.endsWith("/"))?filenameAsDir.substring(0,filenameAsDir.length()-1):filenameAsDir;
+                found=false;
+                for(Enumeration e=vfs.elements();e.hasMoreElements();)
+                {
+                    fname=(String)((Vector)e.nextElement()).firstElement();
+                    if(fname.equalsIgnoreCase(file)||fname.equalsIgnoreCase(filenameAsDir))
+                    { found=true; break;}
+                }
+                if(!found)
+                {
+                    Vector V=new Vector();
+                    V.addElement(filenameAsDir);
+                    V.addElement(new Integer(VFS_MASK_DIRECTORY));
+                    V.addElement(new Long(System.currentTimeMillis()));
+                    V.addElement("");
+                }
+            }
         }
         return vfs;
     }
