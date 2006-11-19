@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Play_Lullabies extends Song
+public class Play_Lullabies extends Play
 {
 	public String ID() { return "Play_Lullabies"; }
 	public String name(){ return "Lullabies";}

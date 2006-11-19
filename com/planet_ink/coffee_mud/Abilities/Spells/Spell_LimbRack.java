@@ -52,9 +52,9 @@ public class Spell_LimbRack extends Spell
 	    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
 	    {
 	        String str=(text().equalsIgnoreCase("ARMSONLY"))?
-		        "<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms pulled from <S-HIS-HER> body!"
-		        :"<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms and legs pulled from <S-HIS-HER> body!";
-	        CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
+		        "<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"
+		        :"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!";
+	        CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
 	    }
 	    
 	    return true;
@@ -130,9 +130,12 @@ public class Spell_LimbRack extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				super.maliciousAffect(mob,target,asLevel,12,-1);
-				Ability A2=target.fetchEffect(ID());
-				if(A2!=null) ((Spell_LimbRack)A2).limbsToRemove=(Vector)remainingLimbList.clone();
+                if(msg.value()<=0)
+                {
+    				super.maliciousAffect(mob,target,asLevel,12,-1);
+    				Ability A2=target.fetchEffect(ID());
+    				if(A2!=null) ((Spell_LimbRack)A2).limbsToRemove=(Vector)remainingLimbList.clone();
+                }
 			}
 		}
 		else
