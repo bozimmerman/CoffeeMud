@@ -43,6 +43,7 @@ public class Thief_CarefulStep extends ThiefSkill
 	private static final String[] triggerStrings = {"CARESTEP","CAREFULSTEP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ACROBATIC; }
 
     public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {

@@ -158,7 +158,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if(level+20<=mob.envStats().level())
+					if(level+20<=xlevel(mob))
 					{
 						buf.append(CMStrings.padRight("Designer "+item,30)+" "+CMStrings.padRight(""+(level+20),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -173,7 +173,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+25)<=(mob.envStats().level()))
+					if((level+25)<=(xlevel(mob)))
 					{
 						buf.append(CMStrings.padRight("Cuirbouli "+item,30)+" "+CMStrings.padRight(""+(level+25),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -188,7 +188,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+30)<=mob.envStats().level())
+					if((level+30)<=xlevel(mob))
 					{
 						buf.append(CMStrings.padRight("Reinforced "+item,30)+" "+CMStrings.padRight(""+(level+30),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -203,7 +203,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+35)<=mob.envStats().level())
+					if((level+35)<=xlevel(mob))
 					{
 						buf.append(CMStrings.padRight("Masterwork "+item,30)+" "+CMStrings.padRight(""+(level+35),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -218,7 +218,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+40)<=mob.envStats().level())
+					if((level+40)<=xlevel(mob))
 					{
 						buf.append(CMStrings.padRight("Laminar "+item,30)+" "+CMStrings.padRight(""+(level+40),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -233,7 +233,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+45)<=mob.envStats().level())
+					if((level+45)<=xlevel(mob))
 					{
 						buf.append(CMStrings.padRight("Battlemoulded "+item,30)+" "+CMStrings.padRight(""+(level+45),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -315,7 +315,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				if(V.size()>0)
 				{
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-					if(((level+45)<=(mob.envStats().level()))
+					if(((level+45)<=xlevel(mob))
 					&&(recipeName.toUpperCase().indexOf("BATTLEMOULDED")>=0))
 					{
 						multiplier=9;
@@ -324,7 +324,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						break;
 					}
 					else
-					if(((level+40)<=(mob.envStats().level()))
+					if(((level+40)<=xlevel(mob))
 					&&(recipeName.toUpperCase().indexOf("LAMINAR")>=0))
 					{
 						multiplier=8;
@@ -333,7 +333,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						break;
 					}
 					else
-					if((level+35)<=(mob.envStats().level())
+					if((level+35)<=(xlevel(mob))
 					&&(recipeName.toUpperCase().indexOf("MASTERWORK")>=0))
 					{
 						multiplier=7;
@@ -342,7 +342,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						break;
 					}
 					else
-					if(((level+30)<=(mob.envStats().level()))
+					if(((level+30)<=xlevel(mob))
 					&&(recipeName.toUpperCase().indexOf("REINFORCED")>=0))
 					{
 						multiplier=6;
@@ -351,7 +351,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						break;
 					}
 					else
-					if(((level+25)<=(mob.envStats().level()))
+					if(((level+25)<=(xlevel(mob)))
 					&&(recipeName.toUpperCase().indexOf("CUIRBOULI")>=0))
 					{
 						multiplier=5;
@@ -360,7 +360,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						break;
 					}
 					else
-					if((level+20)<=(mob.envStats().level()))
+					if((level+20)<=(xlevel(mob)))
 					{
 						multiplier=4;
 						prefix="Designer ";
@@ -400,7 +400,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((dxlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;

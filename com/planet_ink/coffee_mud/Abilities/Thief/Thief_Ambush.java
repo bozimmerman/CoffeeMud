@@ -42,7 +42,7 @@ public class Thief_Ambush extends ThiefSkill
 	private static final String[] triggerStrings = {"AMBUSH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -41,7 +41,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
 	public MOB getMark(MOB mob)
 	{

@@ -168,8 +168,8 @@ public class Domesticating extends CommonSkill
 			return false;
 		taming=M;
 		verb="domesticating "+M.name();
-		int levelDiff=taming.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff>0) levelDiff=0;
+		int levelDiff=taming.envStats().level()-xlevel(mob);
+        if(levelDiff<0) levelDiff=0;
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;

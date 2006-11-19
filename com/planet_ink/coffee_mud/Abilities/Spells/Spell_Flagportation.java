@@ -118,7 +118,13 @@ public class Spell_Flagportation extends Spell
 		{
 			Room room=null;
 			int x=0;
-			while((room==null)||(room==newRoom)||(room.getArea()==newRoom.getArea())||((++x)>1000)||(room==mob.location())||(!CMLib.flags().canAccess(mob,room)))
+			while((room==null)
+            ||(room==newRoom)
+            ||(room.getArea()==newRoom.getArea())
+            ||((++x)>1000)
+            ||(room==mob.location())
+            ||(!CMLib.flags().canAccess(mob,room))
+            ||(CMLib.law().getLandTitle(room)!=null))
 				room=CMLib.map().getRandomRoom();
 			if(room==null)
 				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke flagportating transportation, but fizzle(s) the spell.");

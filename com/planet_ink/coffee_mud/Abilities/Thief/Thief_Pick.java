@@ -42,6 +42,7 @@ public class Thief_Pick extends ThiefSkill
 	private static final String[] triggerStrings = {"PICK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 	public int code=0;
 
 	public int abilityCode(){return code;}

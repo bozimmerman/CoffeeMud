@@ -36,7 +36,7 @@ public class Thief_Footlocks extends ThiefSkill
 	public String name(){ return "Footlocks";}
 	public String displayText(){ return "(Footlocked)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ROPEUSE;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"FOOTLOCK"};

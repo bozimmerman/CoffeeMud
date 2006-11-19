@@ -42,6 +42,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	private static final String[] triggerStrings = {"UNDERGROUNDCONNECTIONS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 	protected Vector pathOut=null;
 	protected int hygeineLoss=0;
 	protected String theNoun=null;
@@ -228,7 +229,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 
-		Vector trail=CMLib.tracking().getRadiantRooms(thisRoom,false,false,true,true,true,30);
+		Vector trail=CMLib.tracking().getRadiantRooms(thisRoom,false,false,true,true,true,30+(2*getXLEVELLevel(mob)));
 		Vector finalTos=new Vector();
 		for(int c=0;c<trail.size();c++)
 		{

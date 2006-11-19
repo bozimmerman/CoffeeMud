@@ -642,7 +642,7 @@ public interface Ability extends Environmental
     /** constant mask returned by classificationCode() designating this ability as being Detrapping @see Ability#classificationCode() */
     public static final int DOMAIN_DETRAP=14<<5;
     /** constant mask returned by classificationCode() designating this ability as being RopeUsing @see Ability#classificationCode() */
-    public static final int DOMAIN_ROPEUSE=15<<5;
+    public static final int DOMAIN_BINDING=15<<5;
     /** constant mask returned by classificationCode() designating this ability as being Stealing @see Ability#classificationCode() */
     public static final int DOMAIN_STEALING=16<<5;
     /** constant mask returned by classificationCode() designating this ability as being Stealthy @see Ability#classificationCode() */
@@ -724,7 +724,7 @@ public interface Ability extends Environmental
     /** constant used to mask classificationCode() designating this ability as being acrobatic skill. @see Ability#classificationCode() */
     public static final int DOMAIN_ACROBATIC=55<<5;
     /** constant used to mask classificationCode() designating this ability as being amorous skill. @see Ability#classificationCode() */
-    public static final int DOMAIN_AMOROUS=56<<5;
+    public static final int DOMAIN_INFLUENTIAL=56<<5;
     /** constant used to mask classificationCode() designating this ability as being street smarts skill. @see Ability#classificationCode() */
     public static final int DOMAIN_STREETSMARTS=57<<5;
     /** constant used to mask classificationCode() designating this ability as being nature lore skill. @see Ability#classificationCode() */
@@ -749,6 +749,12 @@ public interface Ability extends Environmental
     public static final int DOMAIN_ARMORUSE=67<<5;
     /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
     public static final int DOMAIN_SHIELDUSE=68<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_CRIMINAL=69<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_LEGAL=70<<5;
+    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_FITNESS=71<<5;
     /** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -756,7 +762,7 @@ public interface Ability extends Environmental
 		"NOTHING","DIVINATION","ABJURATION","ILLUSION",
 		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION","ENCHANTMENT/CHARM",
 		"CONJURATION", "ARCHON","SINGING","DANCING",
-		"PLAYING","DECEPTIVE","FIND/REMOVE_TRAPS","ROPEUSING",
+		"PLAYING","DECEPTIVE","FIND/REMOVE_TRAPS","BINDING",
         "STEALING","STEALTHY","TRAPPING","ALERT",
         "HOLY_PROTECTION","HEALING","VEXING","BLESSING",
         "CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
@@ -767,17 +773,17 @@ public interface Ability extends Environmental
         "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
         "ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
         "CALIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
-        "AMOROUS","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
+        "INFLUENTIAL","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
         "COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
         "RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
-        "SHIELD_USE"
+        "SHIELD_USE","CRIMINAL","LEGAL","FITNESS"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
 		"","Divining","Abjuring","Illusing",
 		"In/Evoking","Altering","Transmuting","Enchanting",
 		"Conjuring", "ArChreating","Singing", "Dancing",
-		"Playing","Deceptive","DeTrapping","Rope Using",
+		"Playing","Deceptive","DeTrapping","Binding",
         "Stealing","Stealthing","Trapping","Watching",
         "Divinely Protecting","Healing","Vexing","Blessing",
         "Cursing","Evangelising","Moon Summoning","Moon Altering",
@@ -788,10 +794,10 @@ public interface Ability extends Environmental
         "Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
         "Rock Controling","Kicking","Punching","Grappling",
         "Caligraphing","Poisoning","Arcane Loreing","Acrobatisizing",
-        "Amorousing","Street Knowing","Nature Loring","Dirty Fighting",
+        "Influencing","Street Knowing","Nature Loring","Dirty Fighting",
         "Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
         "Racial Knowing","Artmaking","Anatomy","Armor Using",
-        "Shield Using"
+        "Shield Using","Crimemaking","Legalizing","Fitness"
 	};
 	
 	/** constant descriptions for the minRange()/maxRange() values @see Ability#minRange() */

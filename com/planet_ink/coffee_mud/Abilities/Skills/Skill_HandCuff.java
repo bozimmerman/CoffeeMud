@@ -41,7 +41,7 @@ public class Skill_HandCuff extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
 	public long flags(){return Ability.FLAG_BINDING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

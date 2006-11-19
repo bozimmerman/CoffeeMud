@@ -42,7 +42,7 @@ public class Thief_Comprehension extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	protected Vector queue=new Vector();
-
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public void unInvoke()
 	{

@@ -114,7 +114,7 @@ public class LockSmith extends CraftingSkill
                             {
     							Exit exit2=mob.location().getPairedExit(dir);
     							Room room2=mob.location().getRoomInDir(dir);
-    							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
+    							((Exit)workingOn).baseEnvStats().setLevel(xlevel(mob));
     							((Exit)workingOn).recoverEnvStats();
     							((Exit)workingOn).setDoorsNLocks(true,false,true,!delock,!delock,!delock);
     							if(building instanceof Key)
@@ -130,7 +130,7 @@ public class LockSmith extends CraftingSkill
 							    &&(exit2.isGeneric())
 							    &&(room2!=null))
     							{
-    								exit2.baseEnvStats().setLevel(mob.envStats().level());
+    								exit2.baseEnvStats().setLevel(xlevel(mob));
     								exit2.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
     								if(building instanceof Key)
     									exit2.setKeyName(((Key)building).getKey());
@@ -301,7 +301,7 @@ public class LockSmith extends CraftingSkill
 			return false;
 		}
         if((makeResource>=0)&&(building!=null)) building.setMaterial(makeResource);
-		completion=15-((mob.envStats().level()-workingOn.envStats().level()));
+		completion=15-((dxlevel(mob)-workingOn.envStats().level()));
 		if(keyFlag) completion=completion/2;
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
@@ -322,8 +322,8 @@ public class LockSmith extends CraftingSkill
 		building.recoverEnvStats();
 
 		int proficiencyAddition=0;
-		if(workingOn.envStats().level()>mob.envStats().level())
-			proficiencyAddition=workingOn.envStats().level()-mob.envStats().level();
+		if(workingOn.envStats().level()>xlevel(mob))
+			proficiencyAddition=workingOn.envStats().level()-xlevel(mob);
 		messedUp=!proficiencyCheck(mob,proficiencyAddition*5,auto);
 		if(completion<8) completion=8;
 

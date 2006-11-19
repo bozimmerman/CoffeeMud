@@ -46,6 +46,7 @@ public class Thief_Squatting extends ThiefSkill
 	protected boolean failed=false;
 	protected Room room=null;
 	private LandTitle title=null;
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{

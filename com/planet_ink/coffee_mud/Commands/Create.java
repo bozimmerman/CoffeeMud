@@ -412,26 +412,15 @@ public class Create extends BaseGenerics
 	}
 
 	public void components(MOB mob, Vector commands)
+    throws IOException
 	{
-		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf("=")<0))
+		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]=[PARAMETERS] as follows: \n\r");
-			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true).text();
-			StringBuffer inst=new StringBuffer("");
-			Vector V=new Vector();
-			if(buf!=null) V=Resources.getFileLineVector(buf);
-			for(int v=0;v<V.size();v++)
-				if(((String)V.elementAt(v)).startsWith("#"))
-					inst.append(((String)V.elementAt(v)).substring(1)+"\n\r");
-				else
-				if(((String)V.elementAt(v)).length()>0) 
-					break;
-			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
+			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String parms=CMParms.combineWithQuotes(commands,2);
-		String skillID=parms.substring(0,parms.indexOf("="));
+		String skillID=CMParms.combine(commands,2);
 		Ability A=CMClass.getAbility(skillID);
 		if(A==null)
 		{
@@ -439,13 +428,18 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
+        skillID=A.ID();
 		if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())!=null)
 		{
 			mob.tell("'"+A.ID()+"' already exists, you'll need to destroy it first.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		parms=A.ID()+parms.substring(parms.indexOf("="));
+        DVector DV=new DVector(6);
+        CMLib.ableMapper().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
+        CMLib.ableMapper().addBlankAbilityComponent(DV);
+        super.modifyComponents(mob,skillID);
+        String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
 		String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
 		if(error!=null)
 		{
@@ -454,7 +448,17 @@ public class Create extends BaseGenerics
 			return;
 		}
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
-		F.saveText("\n"+parms,true);
+        StringBuffer crtestbuf=F.textUnformatted();
+        boolean addCR=false;
+        for(int c=crtestbuf.length()-1;c>=0;c--)
+            if((crtestbuf.charAt(c)=='\n')||(crtestbuf.charAt(c)=='\r'))
+                break;
+            else
+            if(Character.isWhitespace(c))
+                continue;
+            else
+            { addCR=true; break;}
+		F.saveText((addCR?"\n":"")+parms,true);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
 	}
     

@@ -41,6 +41,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"DEATHTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_TRAPPING; }
 	protected boolean sprung=false;
 
 	public boolean disabled(){return false;}
@@ -60,13 +61,13 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		E.addEffect(T);
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue());
+		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)+(2*getXLEVELLevel(mob))).intValue());
 		return T;
 	}
 
 	public void spring(MOB M)
 	{
-		if((!sprung)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+		if((!sprung)&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),M,null);
 	}
 	

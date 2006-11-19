@@ -39,7 +39,7 @@ public class Thief_Bind extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ROPEUSE;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	private static final String[] triggerStrings = {"BIND"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int maxRange=0;

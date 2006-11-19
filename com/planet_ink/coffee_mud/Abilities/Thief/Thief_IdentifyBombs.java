@@ -44,6 +44,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected Room lastRoom=null;
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 
 	public String trapCheck(Environmental E)
 	{

@@ -42,6 +42,7 @@ public class Thief_BackStab extends ThiefSkill
 	private static final String[] triggerStrings = {"BACKSTAB","BS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -172,7 +172,7 @@ public class Tattooing extends CommonSkill
 		verb="tattooing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+		int duration=30-dxlevel(mob);
 		if(duration<6) duration=6;
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		if("REMOVE".startsWith(message.toUpperCase()))

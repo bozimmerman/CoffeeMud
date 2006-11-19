@@ -128,7 +128,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					String type=(String)V.elementAt(RCP_MATERIAL);
 					String race=((String)V.elementAt(RCP_RACES)).trim();
 					String itype=CMStrings.capitalizeAndLower(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
-					if((level<=mob.envStats().level())
+					if((level<xlevel(mob))
 					&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(itype,10)+" "+wood+" "+type+"\n\r");
 				}
@@ -153,7 +153,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			{
 				String race=((String)V.elementAt(RCP_RACES)).trim();
 				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-				if(((autoGenerate>0)||(level<=mob.envStats().level()))
+				if(((autoGenerate>0)||(level<=xlevel(mob)))
 				&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;
@@ -195,7 +195,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((dxlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;

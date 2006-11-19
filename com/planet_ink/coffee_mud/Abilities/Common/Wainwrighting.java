@@ -136,7 +136,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					int capacity=CMath.s_int((String)V.elementAt(RCP_CAPACITY));
-					if(level<=mob.envStats().level())
+					if(level<=xlevel(mob))
 						buf.append(CMStrings.padRight(item,25)+" "+CMStrings.padRight(""+level,5)+" "+CMStrings.padRight(""+capacity,8)+" "+wood+"\n\r");
 				}
 			}
@@ -161,7 +161,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			if(V.size()>0)
 			{
 				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-                if((autoGenerate>0)||(level<=mob.envStats().level()))
+                if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
 					break;
@@ -196,7 +196,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((dxlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;

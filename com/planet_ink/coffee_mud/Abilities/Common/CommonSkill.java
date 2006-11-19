@@ -212,19 +212,23 @@ public class CommonSkill extends StdAbility
 		if(usageType()==Ability.USAGE_NADA) return new int[3];
 
 		int consumed=25;
-		int diff=mob.envStats().level()-CMLib.ableMapper().qualifyingLevel(mob,this);
+		int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
 		if(diff>0)
 		switch(diff)
 		{
 		case 1: consumed=20; break;
-		case 2: consumed=15; break;
-		case 3: consumed=10; break;
+		case 2: consumed=16; break;
+		case 3: consumed=13; break;
+        case 4: consumed=11; break;
+        case 5: consumed=8; break;
 		default: consumed=5; break;
 		}
 		if(overrideMana()>=0) consumed=overrideMana();
 		return buildCostArray(mob,consumed);
 	}
-
+	public int xlevel(MOB mob){ return mob.envStats().level()+(2*getXLEVELLevel(mob));}
+    public int dxlevel(MOB mob){return xlevel(mob)/3;}
+    
 	public boolean confirmPossibleMaterialLocation(int resource, Room location)
 	{
 		if(location==null) return false;

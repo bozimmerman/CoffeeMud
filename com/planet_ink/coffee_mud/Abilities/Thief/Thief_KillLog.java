@@ -45,6 +45,7 @@ public class Thief_KillLog extends ThiefSkill
 	private static final String[] triggerStrings = {"KILLLOG"};
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 	Hashtable theList=new Hashtable();
 	public MOB mark=null;
 

@@ -41,7 +41,7 @@ public class Fighter_Shrug extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

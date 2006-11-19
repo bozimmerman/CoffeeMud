@@ -43,6 +43,7 @@ public class Thief_Assassinate extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_TRACKING;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 	protected Vector theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
@@ -235,7 +236,7 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,50);
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,50+(2*getXLEVELLevel(mob)));
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -246,7 +247,7 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50+(2*getXLEVELLevel(mob)));
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);

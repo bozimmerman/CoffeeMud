@@ -42,6 +42,7 @@ public class Thief_Safehouse extends ThiefSkill
     private static final String[] triggerStrings = {"SAFEHOUSE"};
     public String[] triggerStrings(){return triggerStrings;}
     public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
     public boolean okMessage(Environmental host, CMMsg msg)
     {
@@ -136,7 +137,7 @@ public class Thief_Safehouse extends ThiefSkill
         }
         if(!isGoodSafehouse(target))
         {
-            Vector V=CMLib.tracking().getRadiantRooms(target,true,true,true,true,true,50);
+            Vector V=CMLib.tracking().getRadiantRooms(target,true,true,true,true,true,50+(2*getXLEVELLevel(mob)));
             Room R=null;
             int v=0;
             for(;v<V.size();v++)
@@ -148,7 +149,7 @@ public class Thief_Safehouse extends ThiefSkill
             mob.tell("A place like this can't be a safehouse.");
             if((isGoodSafehouse(R))&&(!isLawHere(R)))
             {
-                V=CMLib.tracking().findBastardTheBestWay(target,CMParms.makeVector(R),true,true,true,true,true,50);
+                V=CMLib.tracking().findBastardTheBestWay(target,CMParms.makeVector(R),true,true,true,true,true,50+(2*getXLEVELLevel(mob)));
                 StringBuffer trail=new StringBuffer("");
                 int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
                 while(target!=R)

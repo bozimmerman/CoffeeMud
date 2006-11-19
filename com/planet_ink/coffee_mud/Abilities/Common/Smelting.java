@@ -122,7 +122,7 @@ public class Smelting extends CraftingSkill
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					String metal1=((String)V.elementAt(RCP_METALONE)).toLowerCase();
 					String metal2=((String)V.elementAt(RCP_METALTWO)).toLowerCase();
-					if(level<=mob.envStats().level())
+					if(level<=xlevel(mob))
 						buf.append(CMStrings.padRight(item,20)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(metal1,16)+" "+metal2+"\n\r");
 				}
 			}
@@ -149,7 +149,7 @@ public class Smelting extends CraftingSkill
 			if(V.size()>0)
 			{
 				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-                if(level<=mob.envStats().level())
+                if(level<=xlevel(mob))
 				{
 					foundRecipe=V;
 					break;
@@ -201,7 +201,7 @@ public class Smelting extends CraftingSkill
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null);
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null);
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((dxlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";

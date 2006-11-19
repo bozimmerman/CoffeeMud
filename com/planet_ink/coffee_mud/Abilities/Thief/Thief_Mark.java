@@ -42,6 +42,7 @@ public class Thief_Mark extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int code=0;
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
@@ -139,8 +140,9 @@ public class Thief_Mark extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff>0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+        if(levelDiff<0) levelDiff=0;
+        levelDiff*=5;
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");

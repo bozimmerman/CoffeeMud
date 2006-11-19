@@ -49,7 +49,7 @@ public class Fighter_Warcry extends FighterSkill
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		float f=(float)1.0-(float)getXLEVELLevel(invoker());
+		float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));
 	}
 

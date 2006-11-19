@@ -38,6 +38,7 @@ public class Thief_Forgery extends ThiefSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FORGERY"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CALIGRAPHY;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -142,7 +143,10 @@ public class Thief_Forgery extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+        int levelDiff=(mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level();
+        if(levelDiff>0) levelDiff=0;
+        levelDiff*=5;
+		boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(success)
 		{

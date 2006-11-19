@@ -43,6 +43,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 
 	public void affectEnvStats(Environmental host, EnvStats stats)
 	{

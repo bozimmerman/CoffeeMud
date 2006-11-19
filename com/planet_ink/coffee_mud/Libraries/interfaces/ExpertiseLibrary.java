@@ -55,6 +55,7 @@ public interface ExpertiseLibrary extends CMObject
         private String uncompiledListMask="";
         private Vector compiledListMask=null;
         private String uncompiledFinalMask="";
+        public ExpertiseDefinition parent=null;
         private Vector compiledFinalMask=null;
         public Vector compiledListMask()
         {

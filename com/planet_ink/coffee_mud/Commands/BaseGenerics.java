@@ -3762,6 +3762,9 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
+        if(newName.equals("null"))
+            E.setStat(Field,"");
+        else
 		if(newName.length()>0)
 			E.setStat(Field,newName);
 		else
@@ -4829,6 +4832,13 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+    protected static void modifyDField(DVector fields, String fieldName, String value)
+    {
+        int x=fields.indexOf(fieldName.toUpperCase());
+        if(x<0) return;
+        fields.setElementAt(x,2,value);
+    }
+    
 	static void genAgingChart(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -5466,8 +5476,85 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
-    public static void modifyComponent(MOB mob, String SPELLID)
+
+    static boolean genText(MOB mob, DVector set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+    throws IOException
+    {
+        int setDex=set.indexOf(Field);
+        if(((showFlag>0)&&(showFlag!=showNumber))||(setDex<0)) return true;
+        mob.tell(showNumber+". "+FieldDisp+": '"+((String)set.elementAt(setDex,2)+"'."));
+        if((showFlag!=showNumber)&&(showFlag>-999)) return true;
+        String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
+        if(newName.trim().length()==0)
+        {
+            mob.tell(getScr("BaseGenerics","nochange"));
+            return false;
+        }
+        if((newName.equalsIgnoreCase("?"))&&(help!=null))
+        {
+            if((mob.session()==null)||(mob.session().killFlag()))
+                return false;
+            mob.tell(help);
+            return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
+        }
+        if(newName.equalsIgnoreCase("null")) newName="";
+        if((choices==null)||(choices.length==0))
+        {
+            set.setElementAt(setDex,2,newName);
+            return true;
+        }
+        boolean found=false;
+        for(int s=0;s<choices.length;s++)
+        {
+            if(newName.equalsIgnoreCase(choices[s]))
+            { newName=choices[s]; found=true; break;}
+        }
+        if(!found)
+        {
+            if((mob.session()==null)||(mob.session().killFlag()))
+                return false;
+            mob.tell(help);
+            return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
+        }
+        set.setElementAt(setDex,2,newName);
+        return true;
+    }
+    
+    protected static boolean modifyComponent(MOB mob, DVector components, int componentIndex)
+    throws IOException
+    {
+        DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(components,componentIndex);
+        if(mob.isMonster()) return true;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        String choices=getScr("BaseGenerics","compbadchoi");
+        String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.RESOURCE_DESCS);
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            genText(mob,decoded,(new String[]{"&&","||","X"}),choices+" &&, ||, X",++showNumber,showFlag,getScr("BaseGenerics","compandor"),"ANDOR");
+            if(((String)decoded.elementAt(0,2)).equalsIgnoreCase("X")) return false;
+            genText(mob,decoded,(new String[]{"INVENTORY","HELD","WORN"}),choices+" INVENTORY, HELD, WORN",++showNumber,showFlag,getScr("BaseGenerics","compdisposition"),"DISPOSITION");
+            genText(mob,decoded,(new String[]{"KEPT","CONSUMED"}),choices+" KEPT, CONSUMED",++showNumber,showFlag,getScr("BaseGenerics","compfate"),"FATE");
+            genText(mob,decoded,null,null,++showNumber,showFlag,getScr("BaseGenerics","compamount"),"AMOUNT");
+            genText(mob,decoded,null,allComponents,++showNumber,showFlag,getScr("BaseGenerics","compcomponentid"),"COMPONENTID");
+            genText(mob,decoded,null,CMLib.masking().maskHelp("\n",getScr("BaseGenerics","allows")),++showNumber,showFlag,getScr("BaseGenerics","compmask"),"MASK");
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+        CMLib.ableMapper().setAbilityComponentCodedFromDecodedDVector(decoded,components,componentIndex);
+        return true;
+    }
+    
+    public static void modifyComponents(MOB mob, String componentID)
     throws IOException
     {
         if(mob.isMonster())
@@ -5476,10 +5563,40 @@ public class BaseGenerics extends StdCommand
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
+        DVector codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
+        if(codedDV!=null)
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {
             int showNumber=0;
-            
+            for(int v=0;v<codedDV.size();v++)
+                if((mob.session()!=null)&&(!mob.session().killFlag()))
+                {
+                    showNumber++;
+                    if((showFlag>0)&&(showFlag!=showNumber)) continue;
+                    mob.tell(getScr("BaseGenerics","compline",showNumber+"",CMLib.ableMapper().getAbilityComponentDesc(null,codedDV,v)));
+                    if((showFlag!=showNumber)&&(showFlag>-999)) continue;
+                    if(!modifyComponent(mob,codedDV,v))
+                    {
+                        codedDV.removeElementAt(v);
+                        v--;
+                    }
+                }
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                showNumber++;
+                mob.tell(showNumber+". "+getScr("BaseGenerics","compnewone",showNumber+""));
+                if((showFlag==showNumber)||(showFlag<=-999))
+                {
+                    CMLib.ableMapper().addBlankAbilityComponent(codedDV);
+                    boolean success=modifyComponent(mob,codedDV,codedDV.size()-1);
+                    if(!success)
+                        codedDV.removeElementAt(codedDV.size()-1);
+                    else
+                    if(showFlag<=-999)
+                        continue;
+                }
+                break;
+            }
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -5491,7 +5608,7 @@ public class BaseGenerics extends StdCommand
         }
     }
     
-    public static void modifyExpertise(MOB mob, ExpertiseLibrary.ExpertiseDefinition me)
+    /*public static void modifyExpertise(MOB mob, ExpertiseLibrary.ExpertiseDefinition me)
     throws IOException
     {
         if(mob.isMonster())
@@ -5503,8 +5620,7 @@ public class BaseGenerics extends StdCommand
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {
             int showNumber=0;
-            
-            
+             
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -5514,7 +5630,7 @@ public class BaseGenerics extends StdCommand
                 ok=true;
             }
         }
-    }
+    }*/
     
     public static void modifyFaction(MOB mob, Faction me)
     throws IOException

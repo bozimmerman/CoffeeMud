@@ -41,7 +41,7 @@ public class Fighter_Endurance extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

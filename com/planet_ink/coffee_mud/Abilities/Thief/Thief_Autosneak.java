@@ -41,6 +41,7 @@ public class Thief_Autosneak extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_STEALTHY; }
 	protected boolean noRepeat=false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -106,7 +107,7 @@ public class Thief_Autosneak extends ThiefSkill
 		if(success)
 		{
 			mob.tell("You will now automatically sneak around while you move.");
-			beneficialAffect(mob,mob,asLevel,0);
+			beneficialAffect(mob,mob,asLevel,adjustedLevel(mob,asLevel));
 			Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}

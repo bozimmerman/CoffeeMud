@@ -42,6 +42,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	private static final String[] triggerStrings = {"KAMIKAZE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -129,7 +130,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		double goldRequired=new Integer((Math.round((100-(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)))*target.envStats().level())).doubleValue();
+		double goldRequired=new Integer((Math.round((100-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2*getXLEVELLevel(mob)))*2)))*target.envStats().level())).doubleValue();
 		String localCurrency=CMLib.beanCounter().getCurrency(target);
 	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)

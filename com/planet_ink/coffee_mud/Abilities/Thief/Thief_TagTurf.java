@@ -42,6 +42,7 @@ public class Thief_TagTurf extends ThiefSkill
 	private static final String[] triggerStrings = {"TURFTAG","TAGTURF"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
@@ -95,7 +96,7 @@ public class Thief_TagTurf extends ThiefSkill
 		if(A!=null)
 		{
             if((A.text().equals(mob.Name())
-            		||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0)))
+        		||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0)))
             &&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
             {
                 A.unInvoke();

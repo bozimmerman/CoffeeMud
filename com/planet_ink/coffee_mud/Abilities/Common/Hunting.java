@@ -220,7 +220,7 @@ public class Hunting extends CommonSkill
 				found.setLocation(null);
 			}
 		}
-		int duration=10+(mob.envStats().level()/4);
+		int duration=10+dxlevel(mob);
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
 		if(mob.location().okMessage(mob,msg))
 		{

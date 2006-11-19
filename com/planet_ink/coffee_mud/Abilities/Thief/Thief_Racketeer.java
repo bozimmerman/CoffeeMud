@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.core.interfaces.Tickable;
  */
 public class Thief_Racketeer extends ThiefSkill
 {
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
     public String ID()
     {
         return "Thief_Racketeer";

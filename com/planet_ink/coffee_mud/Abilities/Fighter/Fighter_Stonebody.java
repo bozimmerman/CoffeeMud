@@ -42,7 +42,7 @@ public class Fighter_Stonebody extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -63,7 +63,8 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(mob.rangeToTarget()==0)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
 		{
-			int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0));
+            float f=(float)getXLEVELLevel(mob);
+			int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0+(0.15*f)));
 			msg.setValue(msg.value()-regain);
 		}
 		return true;

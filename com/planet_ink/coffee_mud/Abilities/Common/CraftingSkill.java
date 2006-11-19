@@ -372,7 +372,7 @@ public class CraftingSkill extends GatheringSkill
                         }
                     }
                     if((levelIndex>0)
-                    &&(mob.envStats().level()<CMath.s_int((String)randomRecipe.elementAt(levelIndex))))
+                    &&(xlevel(mob)<CMath.s_int((String)randomRecipe.elementAt(levelIndex))))
                         proceed=false;
                 }
                 if((proceed)||(tries==(maxtries-1)))

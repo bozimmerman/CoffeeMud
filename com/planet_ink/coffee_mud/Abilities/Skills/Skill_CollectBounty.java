@@ -40,7 +40,7 @@ public class Skill_CollectBounty extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"COLLECTBOUNTY","BOUNTY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_LEGAL; }
 	public int usageType(){return USAGE_MANA;}
 	
 	public Vector getWarrantsOf(MOB target, Room R)
@@ -185,7 +185,7 @@ public class Skill_CollectBounty extends StdSkill
 				for(int i=0;i<warrants.size();i++)
 				{
 				    W=(LegalWarrant)warrants.elementAt(i);
-			        gold+=(W.actionCode()*5);
+			        gold+=(W.actionCode()*(5+getXLEVELLevel(mob)));
 				}
 				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+CMLib.beanCounter().nameCurrencyShort(judge,gold)+" on "+target.Name()+".");
 				String currency=CMLib.beanCounter().getCurrency(judge);

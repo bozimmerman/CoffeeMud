@@ -42,6 +42,7 @@ public class Thief_Bribe extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	protected MOB lastChecked=null;
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_INFLUENTIAL; }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -92,7 +93,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		
 		double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
-						+new Long(((100-(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)))*target.envStats().level()).doubleValue();
+						+new Long(((100-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2*getXLEVELLevel(mob)))*2)))*target.envStats().level()).doubleValue();
 
 		String currency=CMLib.beanCounter().getCurrency(target);
 		boolean success=proficiencyCheck(mob,0,auto);

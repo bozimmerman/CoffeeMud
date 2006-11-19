@@ -162,7 +162,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int exp=CMath.s_int((String)V.elementAt(RCP_EXP));
-					if(level<=mob.envStats().level())
+					if(level<=xlevel(mob))
 					{
 						String mat1=(String)V.elementAt(RCP_MATERIAL1);
 						String mat2=(String)V.elementAt(RCP_MATERIAL2);
@@ -204,7 +204,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			if(V.size()>0)
 			{
 				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-                if((autoGenerate>0)||(level<=mob.envStats().level()))
+                if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
 					break;
@@ -271,7 +271,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((dxlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))

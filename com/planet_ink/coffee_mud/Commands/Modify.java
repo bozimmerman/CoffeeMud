@@ -766,6 +766,84 @@ public class Modify extends BaseGenerics
 		return true;
 	}
 	
+    public void components(MOB mob, Vector commands)
+    throws IOException
+    {
+        if(commands.size()<3)
+        {
+            mob.tell("You have failed to specify the proper fields.\n\rFormat: MODIFY COMPONENT [SKILL ID]\n\r");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        String skillID=CMParms.combine(commands,2);
+        Ability A=CMClass.getAbility(skillID);
+        if(A==null)
+        {
+            mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        skillID=A.ID();
+        if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())==null)
+        {
+            mob.tell("A component definition for '"+A.ID()+"' doesn't exists, you'll need to create it first.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        super.modifyComponents(mob,skillID);
+        String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
+        String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
+        if(error!=null)
+        {
+            mob.tell(error);
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            return;
+        }
+        CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
+        StringBuffer text=F.textUnformatted();
+        boolean lastWasCR=true;
+        int delFromHere=-1;
+        String upID=skillID.toUpperCase();
+        for(int t=0;t<text.length();t++)
+        {
+            if(text.charAt(t)=='\n')
+                lastWasCR=true;
+            else
+            if(text.charAt(t)=='\r')
+                lastWasCR=true;
+            else
+            if(Character.isWhitespace(text.charAt(t)))
+                continue;
+            else
+            if((lastWasCR)&&(delFromHere>=0))
+            {
+                text.delete(delFromHere,t);
+                text.insert(delFromHere,parms+'\n');
+                delFromHere=-1;
+                break;
+            }
+            else
+            if((lastWasCR)&&(Character.toUpperCase(text.charAt(t))==upID.charAt(0)))
+            {
+                if((text.substring(t).toUpperCase().startsWith(upID))
+                &&(text.substring(t+upID.length()).trim().startsWith("=")))
+                    delFromHere=t;
+                lastWasCR=false;
+            }
+            else
+                lastWasCR=false;
+        }
+        if(delFromHere>0)
+        {
+            text.delete(delFromHere,text.length());
+            text.append(parms+'\n');
+        }
+        F.saveText(text.toString(),false);
+        mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
+    }
+    
+    
+    
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -991,7 +1069,7 @@ public class Modify extends BaseGenerics
 		if(commandType.equals("COMPONENT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
-			mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
+            components(mob,commands);
 			return false;
 		}
         else

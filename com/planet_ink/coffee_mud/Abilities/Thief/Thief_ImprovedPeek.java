@@ -55,7 +55,9 @@ public class Thief_ImprovedPeek extends ThiefSkill
 		{
 			helpProficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Peek");
-			A.setAbilityCode(proficiency()/5);
+            float f=(float)getXLEVELLevel(mob);
+            int ableDiv=(int)Math.round(5.0-(f*0.2));
+			A.setAbilityCode(proficiency()/ableDiv);
 		}
 		return super.okMessage(myHost,msg);
 	}

@@ -183,7 +183,7 @@ public class Painting extends CommonSkill
 		building.recoverEnvStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		completion=completion-(mob.envStats().level()+5+getXLEVELLevel(mob));
+		completion=completion-(dxlevel(mob)+5);
 		if(completion<10) completion=10;
 
 		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);

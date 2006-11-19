@@ -116,7 +116,12 @@ public class Spell_Gate extends Spell
 		{
 			Room room=null;
 			int x=0;
-			while((room==null)||(room==newRoom)||((++x)>1000)||(room==mob.location())||(!CMLib.flags().canAccess(mob,room)))
+			while((room==null)
+            ||(room==newRoom)
+            ||((++x)>1000)
+            ||(room==mob.location())
+            ||(!CMLib.flags().canAccess(mob,room))
+            ||(CMLib.law().getLandTitle(room)!=null))
 				room=CMLib.map().getRandomRoom();
 			if(room==null)
 				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");

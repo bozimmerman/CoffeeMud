@@ -42,6 +42,7 @@ public class Skill_JailKey extends StdSkill
 	private static final String[] triggerStrings = {"JAILKEY","JKEY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_LEGAL; }
 	public int code=0;
 
 	public int abilityCode(){return code;}

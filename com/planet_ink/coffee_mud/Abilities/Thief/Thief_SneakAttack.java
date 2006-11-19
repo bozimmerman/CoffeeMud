@@ -37,6 +37,7 @@ public class Thief_SneakAttack extends ThiefSkill
 	public String name(){ return "Sneak Attack";}
 	public String displayText(){return "";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

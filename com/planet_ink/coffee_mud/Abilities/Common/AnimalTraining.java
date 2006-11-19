@@ -246,7 +246,7 @@ public class AnimalTraining extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.envStats().level()+(2*getXLEVELLevel(mob)),auto);
-		int duration=35+taming.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+		int duration=35+taming.envStats().level()-dxlevel(mob);
 		if(duration<10) duration=10;
 		verb="training "+M.name();
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");

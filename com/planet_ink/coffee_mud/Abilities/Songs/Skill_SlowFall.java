@@ -40,7 +40,7 @@ public class Skill_SlowFall extends BardSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
 	public boolean activated=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

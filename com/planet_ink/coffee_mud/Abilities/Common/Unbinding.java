@@ -38,7 +38,7 @@ public class Unbinding extends CommonSkill
 	public String name(){ return "Unbinding";}
 	private static final String[] triggerStrings = {"UNBIND","UNTIE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ROPEUSE; }
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	MOB found=null;

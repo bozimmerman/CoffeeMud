@@ -40,6 +40,7 @@ public class Thief_Surrender extends ThiefSkill
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SURRENDER"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -51,7 +52,7 @@ public class Thief_Surrender extends ThiefSkill
 			MOB vic=mob.location().fetchInhabitant(i);
 			if((vic!=null)&&(vic!=mob)&&(vic.isInCombat())&&(vic.getVictim()==mob))
 			{
-				gold+=vic.envStats().level()*100;
+				gold+=(vic.envStats().level()*100)-(2*getXLEVELLevel(mob));
 				theList.addElement(vic);
 			}
 		}

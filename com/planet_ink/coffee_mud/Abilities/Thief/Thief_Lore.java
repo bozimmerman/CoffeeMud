@@ -40,6 +40,7 @@ public class Thief_Lore extends ThiefSkill
 	private static final String[] triggerStrings = {"LORE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ARCANELORE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -49,7 +50,10 @@ public class Thief_Lore extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+        int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+        if(levelDiff<0) levelDiff=0;
+        levelDiff*=5;
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(success)
 		{
@@ -61,7 +65,6 @@ public class Thief_Lore extends ThiefSkill
 				mob.tell(identity);
 
 			}
-
 		}
 		else
 			beneficialVisualFizzle(mob,target,"<S-NAME> stud(ys) <T-NAMESELF>, but can't remember a thing.");

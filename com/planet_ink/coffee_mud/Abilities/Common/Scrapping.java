@@ -40,6 +40,7 @@ public class Scrapping extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected Item found=null;
 	boolean fireRequired=false;
@@ -188,7 +189,7 @@ public class Scrapping extends CommonSkill
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int duration=35-mob.envStats().level();
+		int duration=35-dxlevel(mob);
 		if(duration<10) duration=10;
 		messedUp=!proficiencyCheck(mob,0,auto);
 		found=CMLib.materials().makeItemResource(I.material());

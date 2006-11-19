@@ -396,7 +396,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					String item=(String)Vr.elementAt(RCP_FINALFOOD);
 					if(item.length()==0) continue;
 					int level=CMath.s_int((String)Vr.elementAt(RCP_LEVEL));
-					if(level<=mob.envStats().level())
+					if(level<=xlevel(mob))
 					{
 						buf.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),20)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
@@ -463,7 +463,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		int duration=40-mob.envStats().level();
+		int duration=40-dxlevel(mob);
 		if(duration<15) duration=15;
 		cooking=(Container)target;
 		oldContents=potContents(cooking);
@@ -537,7 +537,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 			if(counts.size()==1)
 			{
-				if(CMath.s_int((String)Vr.elementAt(RCP_LEVEL))>mob.envStats().level())
+				if(CMath.s_int((String)Vr.elementAt(RCP_LEVEL))>xlevel(mob))
 					complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+CMath.s_int((String)Vr.elementAt(RCP_LEVEL))+".");
 				else
 				{

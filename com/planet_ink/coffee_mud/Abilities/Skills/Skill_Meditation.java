@@ -40,7 +40,7 @@ public class Skill_Meditation extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MEDITATE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
 
 	public void unInvoke()
 	{
@@ -103,8 +103,10 @@ public class Skill_Meditation extends StdSkill
 		if((!mob.isInCombat())
 		&&(CMLib.flags().isSitting(mob)))
 		{
-			double man=new Integer((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM))).doubleValue();
-			mob.curState().adjMana((int)Math.round((man*.1)+(mob.envStats().level()/2)),mob.maxState());
+			double man=new Integer((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+                            +(2*getXLEVELLevel(mob))
+                            +mob.charStats().getStat(CharStats.STAT_WISDOM))).doubleValue();
+			mob.curState().adjMana((int)Math.round((man*.1)+((mob.envStats().level()+(2*getXLEVELLevel(mob)))/2)),mob.maxState());
 		}
 		else
 		{

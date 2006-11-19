@@ -36,9 +36,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
     public String ID(){return "ColumbiaUniv";}
 								
-	public Hashtable completeEduMap=new Hashtable();
-    public Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
-	public Properties helpMap=new Properties();
+	protected Hashtable completeEduMap=new Hashtable();
+    protected Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
+    protected Properties helpMap=new Properties();
+    protected DVector rawDefinitions=new DVector(7);
 
     public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost)
     {

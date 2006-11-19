@@ -43,6 +43,7 @@ public class Thief_Observation extends ThiefSkill
 	private static final String[] triggerStrings = {"OBSERVE"};
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

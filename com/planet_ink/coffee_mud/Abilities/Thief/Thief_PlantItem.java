@@ -73,8 +73,9 @@ public class Thief_PlantItem extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
-		if(levelDiff>0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+        if(levelDiff<0) levelDiff=0;
+        levelDiff*=5;
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(success)
 		{

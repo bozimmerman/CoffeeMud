@@ -45,6 +45,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	public static final Vector empty=new Vector();
 	protected Room oldroom=null;
 	protected String lastReport="";
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public Vector getLawMen(Area legalObject, Room room, LegalBehavior B)
 	{
@@ -61,6 +62,11 @@ public class Thief_SenseLaw extends ThiefSkill
 		return V;
 	}
 
+    public boolean findLaw(Room R, int depth, int maxDepth)
+    {
+        return true;
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))

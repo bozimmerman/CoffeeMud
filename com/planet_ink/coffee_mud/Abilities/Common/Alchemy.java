@@ -149,7 +149,7 @@ public class Alchemy extends CraftingSkill
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(spellLevel(mob,A)>=0)
-					&&(mob.envStats().level()>=spellLevel(mob,A)))
+					&&(xlevel(mob)>=spellLevel(mob,A)))
 					{
 						buf.append(CMStrings.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -207,7 +207,7 @@ public class Alchemy extends CraftingSkill
 					String spell=(String)V.elementAt(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(mob.envStats().level()>=spellLevel(mob,A))
+					&&(xlevel(mob)>=spellLevel(mob,A))
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;

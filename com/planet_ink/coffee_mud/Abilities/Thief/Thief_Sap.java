@@ -43,6 +43,7 @@ public class Thief_Sap extends ThiefSkill
 	private static final String[] triggerStrings = {"SAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

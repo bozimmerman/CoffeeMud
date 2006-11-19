@@ -41,6 +41,7 @@ public class Thief_HighMarks extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -54,7 +55,9 @@ public class Thief_HighMarks extends ThiefSkill
 		{
 			helpProficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Mark");
-			A.setAbilityCode(proficiency()/5);
+            float f=(float)getXLEVELLevel(mob);
+            int ableDiv=(int)Math.round(5.0-(f*0.2));
+			A.setAbilityCode(proficiency()/(ableDiv));
 		}
 		return super.okMessage(myHost,msg);
 	}

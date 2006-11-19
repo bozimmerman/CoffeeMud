@@ -145,7 +145,7 @@ public class Fighter_FieldTactics extends FighterSkill
 			activated=true;
 			float xlvl=(float)getXLEVELLevel(invoker());
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((15.0+xlvl)*(CMath.div(proficiency(),100.0))));
-			affectableStats.setArmor(affectableStats.armor()-(int)Math.round((15.0*xlvl)*(CMath.div(proficiency(),100.0))));
+			affectableStats.setArmor(affectableStats.armor()-(int)Math.round((15.0+xlvl)*(CMath.div(proficiency(),100.0))));
 		}
 		else
 		{

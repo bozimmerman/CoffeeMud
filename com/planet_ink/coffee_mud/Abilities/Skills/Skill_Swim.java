@@ -40,7 +40,7 @@ public class Skill_Swim extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SWIM"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MOVEMENT;}

@@ -54,9 +54,10 @@ public class Thief_SilentLoot extends ThiefSkill
 			&&(msg.source().location()==((MOB)affected).location())
 			&&((msg.source().inventorySize())>0))
 			{
+                int max=1+getXLEVELLevel((MOB)affected);
 				Item item=msg.source().fetchCarried(null,"all");
 				if(item==null) item=msg.source().fetchWornItem("all");
-				if((item!=null)&&(msg.source().isMine(item)))
+				while(((--max)>=0)&&(item!=null)&&(msg.source().isMine(item)))
 				{
 					item.unWear();
 					item.removeFromOwnerContainer();
@@ -72,6 +73,8 @@ public class Thief_SilentLoot extends ThiefSkill
 						CMLib.commands().postGet(mob,null,item,true);
 					}
 					if(victim!=null) mob.setVictim(victim);
+                    item=msg.source().fetchCarried(null,"all");
+                    if(item==null) item=msg.source().fetchWornItem("all");
 				}
 			}
 		}

@@ -42,6 +42,7 @@ public class Thief_Embezzle extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"EMBEZZLE"};
 	public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRIMINAL; }
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);
@@ -157,10 +158,10 @@ public class Thief_Embezzle extends ThiefSkill
 				break;
 			}
 		}
-		int classLevel=mob.charStats().getClassLevel("Burglar");
+		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		if((classLevel>0)
-		&&(Math.round(hisAmount)>(1000*classLevel)))
-		   hisAmount=new Long(1000*classLevel).doubleValue();
+		&&(Math.round(hisAmount)>(1000*(classLevel)+(2*getXLEVELLevel(mob)))))
+		   hisAmount=new Long(1000*(classLevel+(2*getXLEVELLevel(mob)))).doubleValue();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -1124,46 +1124,161 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(passes.size()==0) return null;
 		return passes;
 	}
-	
+
+    public DVector getAbilityComponentDVector(String AID){ return (DVector)getAbilityComponentMap().get(AID.toUpperCase().trim());}
+    public Vector getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
+    public DVector getAbilityComponentDecodedDVector(DVector codedDV, int r)
+    {
+        DVector curr=new DVector(2);
+        Object O=null;
+        Integer disp=null;
+        String itemDesc=null;
+        curr.addElement("ANDOR",(((Boolean)codedDV.elementAt(r,1)).booleanValue()?"&&":"||"));
+        disp=(Integer)codedDV.elementAt(r,2);
+        switch(disp.intValue())
+        {
+        case 1: curr.addElement("DISPOSITION","held"); break;
+        case 2: curr.addElement("DISPOSITION","worn"); break;
+        default: curr.addElement("DISPOSITION","inventory"); break;
+        }
+        if(((Boolean)codedDV.elementAt(r,3)).booleanValue())
+            curr.addElement("FATE","consumed");
+        else
+            curr.addElement("FATE","kept");
+        curr.addElement("AMOUNT",""+((Integer)codedDV.elementAt(r,4)).toString());
+        O=codedDV.elementAt(r,5);
+        if(O instanceof String)
+            itemDesc=(String)O;
+        else
+        if(O instanceof Long)
+            itemDesc=RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toUpperCase();
+        else
+        if(O instanceof Integer)
+            itemDesc=RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toUpperCase();
+        curr.addElement("COMPONENTID",itemDesc);
+        curr.addElement("MASK",(String)codedDV.elementAt(r,6));
+        return curr;
+    }
+    
+    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, DVector codedDV, int row)
+    {
+        String[] s=new String[6];
+        for(int i=0;i<6;i++)
+            s[i]=(String)decodedDV.elementAt(i,2);
+        if(s[0].equalsIgnoreCase("||"))
+            codedDV.setElementAt(row,1,new Boolean(false));
+        else
+            codedDV.setElementAt(row,1,new Boolean(true));
+        if(s[1].equalsIgnoreCase("held"))
+            codedDV.setElementAt(row,2,new Integer(1));
+        else
+        if(s[1].equalsIgnoreCase("worn"))
+            codedDV.setElementAt(row,2,new Integer(2));
+        else
+            codedDV.setElementAt(row,2,new Integer(0));
+        if(s[2].equalsIgnoreCase("consumed"))
+            codedDV.setElementAt(row,3,new Boolean(true));
+        else
+            codedDV.setElementAt(row,3,new Boolean(false));
+        codedDV.setElementAt(row,4,new Integer(CMath.s_int(s[3])));
+        int depth=CMLib.materials().getResourceCode(s[4],false);
+        if(depth>=0) 
+            codedDV.setElementAt(row,5,new Integer(depth));
+        else
+        {
+            depth=CMLib.materials().getMaterialCode(s[4],false);
+            if(depth>=0) 
+                codedDV.setElementAt(row,5,new Long(depth));
+            else
+                codedDV.setElementAt(row,5,s[4].toUpperCase().trim());
+        }
+        codedDV.setElementAt(row,6,s[5]);
+    }
+    
+    public Vector getAbilityComponentDecodedDVectors(DVector req)
+    {
+        if(req==null) return null;
+        Vector V=new Vector();
+        for(int r=0;r<req.size();r++)
+        {
+            DVector curr=getAbilityComponentDecodedDVector(req,r);
+            V.addElement(curr);
+        }
+        return V;
+    }
+    
+    public void addBlankAbilityComponent(DVector codedDV)
+    {
+        codedDV.addElement(new Boolean(true),new Integer(0),new Boolean(false),new Integer(1),new String("resource-material-item name"),"");
+    }
+    
+    public String getAbilityComponentCodedString(String AID)
+    {
+        StringBuffer buf=new StringBuffer("");
+        Vector comps=getAbilityComponentDecodedDVectors(AID);
+        DVector curr=null;
+        for(int c=0;c<comps.size();c++)
+        {
+            curr=(DVector)comps.elementAt(c);
+            if(c>0) buf.append((String)curr.elementAt(0,2));
+            buf.append("(");
+            buf.append((String)curr.elementAt(1,2));
+            buf.append(":");
+            buf.append((String)curr.elementAt(2,2));
+            buf.append(":");
+            buf.append((String)curr.elementAt(3,2));
+            buf.append(":");
+            buf.append((String)curr.elementAt(4,2));
+            buf.append(":");
+            buf.append((String)curr.elementAt(5,2));
+            buf.append(")");
+        }
+        return AID+"="+buf.toString();
+    }
+    
+    public String getAbilityComponentDesc(MOB mob, DVector req, int r)
+    {
+        int amt=0;
+        Object O=null;
+        Integer disp=null;
+        String itemDesc=null;
+        StringBuffer buf=new StringBuffer("");
+        if(r>0) buf.append((((Boolean)req.elementAt(r,1)).booleanValue()?", and ":", or "));
+        if((mob!=null)
+        &&(((String)req.elementAt(r,6)).length()>0)
+        &&(!CMLib.masking().maskCheck((String)req.elementAt(r,6),mob)))
+            return "";
+        if(mob==null)
+        {
+            if(((String)req.elementAt(r,6)).length()>0)
+                buf.append("MASK: "+(String)req.elementAt(r,6)+": ");
+        }
+        amt=((Integer)req.elementAt(r,4)).intValue();
+        O=req.elementAt(r,5);
+        disp=(Integer)req.elementAt(r,2);
+        if(O instanceof String)
+            itemDesc=((amt>1)?(amt+" "+((String)O)+"s"):CMStrings.startWithAorAn((String)O));
+        else
+        if(O instanceof Long)
+            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toLowerCase();
+        else
+        if(O instanceof Integer)
+            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase();
+        switch(disp.intValue())
+        {
+        case 0: buf.append(itemDesc); break;
+        case 1: buf.append(itemDesc+" held"); break;
+        case 2: buf.append(itemDesc+" worn or wielded"); break;
+        }
+        return buf.toString();
+    }
+    
 	public String getAbilityComponentDesc(MOB mob, String AID)
 	{
-		DVector req=(DVector)getAbilityComponentMap().get(AID.toUpperCase().trim());
+		DVector req=getAbilityComponentDVector(AID);
 		if(req==null) return null;
 		StringBuffer buf=new StringBuffer("");
-		int amt=0;
-		Object O=null;
-		Integer disp=null;
-		String itemDesc=null;
-		for(int r=0;r<req.size();r++)
-		{
-			if(r>0) buf.append((((Boolean)req.elementAt(r,1)).booleanValue()?", and ":", or "));
-			if(mob==null)
-			{
-				if(((String)req.elementAt(r,6)).length()>0)
-					buf.append("MASK: "+(String)req.elementAt(r,6)+": ");
-			}
-			else
-			if((((String)req.elementAt(r,6)).length()>0)
-			&&(!CMLib.masking().maskCheck((String)req.elementAt(r,6),mob)))
-				continue;
-			amt=((Integer)req.elementAt(r,4)).intValue();
-			O=req.elementAt(r,5);
-			disp=(Integer)req.elementAt(r,2);
-			if(O instanceof String)
-				itemDesc=((amt>1)?(amt+" "+((String)O)+"s"):CMStrings.startWithAorAn((String)O));
-			else
-			if(O instanceof Long)
-				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toLowerCase();
-			else
-			if(O instanceof Integer)
-				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase();
-			switch(disp.intValue())
-			{
-			case 0: buf.append(itemDesc); break;
-			case 1: buf.append(itemDesc+" held"); break;
-			case 2: buf.append(itemDesc+" worn or wielded"); break;
-			}
-		}
+		for(int r=0;r<req.size();r++){ buf.append(getAbilityComponentDesc(mob,req,r));}
 		return buf.toString();
 	}
 

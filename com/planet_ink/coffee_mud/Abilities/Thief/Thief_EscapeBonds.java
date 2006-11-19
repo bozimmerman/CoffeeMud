@@ -39,7 +39,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 	public String displayText(){return "(Slipping from your bonds)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ROPEUSE;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
 	public String[] triggerStrings(){return triggerStrings;}

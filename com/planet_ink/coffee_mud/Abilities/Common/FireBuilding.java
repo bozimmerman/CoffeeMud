@@ -149,8 +149,8 @@ public class FireBuilding extends CommonSkill
 				commonTell(mob,"You can't seem to find any dry deadwood around here.");
 				return false;
 			}
-			completion=25-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
-			durationOfBurn=150+((mob.envStats().level()+(2*getXLEVELLevel(mob)))*5);
+			completion=25-(dxlevel(mob));
+			durationOfBurn=150+(xlevel(mob)*5);
 			verb="building a fire";
 			displayText="You are building a fire.";
 		}
@@ -205,7 +205,7 @@ public class FireBuilding extends CommonSkill
 				return false;
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-				completion=25-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+				completion=25-(dxlevel(mob));
 			verb="lighting "+lighting.name();
 			displayText="You are lighting "+lighting.name()+".";
 		}

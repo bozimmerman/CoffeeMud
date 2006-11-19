@@ -41,6 +41,7 @@ public class Thief_ContractHit extends ThiefSkill
 	private static final String[] triggerStrings = {"CONTRACTHIT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRIMINAL; }
 	public String displayText(){return "";}
 	protected boolean done=false;
 	protected boolean readyToHit=false;
@@ -222,8 +223,9 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff>0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+        if(levelDiff<0) levelDiff=0;
+        levelDiff*=10;
+		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
 		if(mob.location().okMessage(mob,msg))

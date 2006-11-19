@@ -38,6 +38,7 @@ public class Thief_Arsonry extends ThiefSkill
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ARSON","ARSONRY"};
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRIMINAL; }
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -106,7 +107,8 @@ public class Thief_Arsonry extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff>0) levelDiff=0;
+        if(levelDiff<0) levelDiff=0;
+        levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{

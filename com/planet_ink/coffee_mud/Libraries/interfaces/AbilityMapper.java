@@ -389,6 +389,53 @@ public interface AbilityMapper extends CMObject
 	public String addAbilityComponent(String s, Hashtable to);
 
     /**
+     * @param AID
+     * @return
+     */
+    public String getAbilityComponentCodedString(String AID);
+    
+    /**
+     * @param AID
+     * @return
+     */
+    public DVector getAbilityComponentDVector(String AID);
+    /**
+     * @param mob
+     * @param req
+     * @param r
+     * @return
+     */
+    public String getAbilityComponentDesc(MOB mob, DVector req, int r);
+    /**
+     * @param req
+     * @return
+     */
+    public Vector getAbilityComponentDecodedDVectors(DVector req);
+    /**
+     * @param AID
+     * @return
+     */
+    public Vector getAbilityComponentDecodedDVectors(String AID);
+    
+    /**
+     * @param decodedDV
+     * @param codedDV
+     * @param row
+     * @return
+     */
+    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, DVector codedDV, int row);
+    /**
+     * @param codedDV
+     * @param r
+     * @return
+     */
+    public DVector getAbilityComponentDecodedDVector(DVector codedDV, int r);
+    /**
+     * @param codedDV
+     * @return
+     */
+    public void addBlankAbilityComponent(DVector codedDV);
+    /**
      * @param s
      * @param to
      * @return

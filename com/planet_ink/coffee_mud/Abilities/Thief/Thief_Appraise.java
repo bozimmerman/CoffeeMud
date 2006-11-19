@@ -41,7 +41,7 @@ public class Thief_Appraise extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public int code=0;
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STREETSMARTS;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
@@ -63,7 +63,8 @@ public class Thief_Appraise extends ThiefSkill
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff>0) levelDiff=0;
+		if(levelDiff<0) levelDiff=0;
+        levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> appraise(s) <T-NAMESELF>.");

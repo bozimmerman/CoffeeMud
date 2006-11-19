@@ -126,7 +126,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
-					&&(mob.envStats().level()>=level))
+					&&(xlevel(mob)>=level))
 					{
 						buf.append(CMStrings.padRight(A.name(),20)+" "+CMStrings.padRight(""+level,5)+" ");
 						for(int i=2;i<V.size();i++)
@@ -202,7 +202,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 					int level=CMath.s_int((String)V.elementAt(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(mob.envStats().level()>=level)
+					&&(xlevel(mob)>=level)
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;

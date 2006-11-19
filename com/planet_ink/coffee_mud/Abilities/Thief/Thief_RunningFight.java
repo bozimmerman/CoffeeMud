@@ -42,6 +42,7 @@ public class Thief_RunningFight extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected MOB lastOpponent=null;
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -76,8 +77,8 @@ public class Thief_RunningFight extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Exit)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
-		&&((CMLib.dice().rollPercentage()+mob.envStats().level())>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-		&&((CMLib.dice().rollPercentage()+mob.envStats().level())>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_MIND)))
+		&&((CMLib.dice().rollPercentage()+mob.envStats().level()+(2*getXLEVELLevel(mob)))>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_TRAPS))
+		&&((CMLib.dice().rollPercentage()+mob.envStats().level()+(2*getXLEVELLevel(mob)))>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_MIND)))
 		{
 			MOB M=mob.getVictim();
 			if((M==null)||(M.getVictim()!=mob))

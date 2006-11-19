@@ -38,6 +38,7 @@ public class Thief_UsePoison extends ThiefSkill
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"POISON","USEPOISON"};
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_POISONING;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
