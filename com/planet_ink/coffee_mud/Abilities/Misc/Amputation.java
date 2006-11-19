@@ -172,6 +172,9 @@ public class Amputation extends StdAbility implements Amputator
 			return;
 		MOB mob=(MOB)affected;
 
+        if((mob.isMonster())&&(mob.amDead())&&(!canBeUninvoked()))
+            super.canBeUninvoked=true;
+        
 		super.unInvoke();
 
 		if(canBeUninvoked())

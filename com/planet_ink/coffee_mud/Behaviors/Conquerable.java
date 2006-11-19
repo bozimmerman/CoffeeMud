@@ -838,6 +838,11 @@ public class Conquerable extends Arrest
 				if(((String)clanControlPoints.elementAt(v,1)).equalsIgnoreCase(clanID))
 				{ index=v; break;}
 			}
+            if((holdingClan.length()>0)
+            &&(!clanID.equals(holdingClan))
+            &&(CMLib.clans().getClanRelations(clanID,holdingClan)!=Clan.REL_WAR)
+            &&(CMLib.clans().getClanRelations(holdingClan,clanID)!=Clan.REL_WAR))
+                return false;
 			if(index<0)
 			{
 				if((holdingClan.length()>0)

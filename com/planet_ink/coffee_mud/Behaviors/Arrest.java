@@ -1934,7 +1934,32 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		return true;
 	}
-	
+
+    protected void fileArrestResister(Law laws, Area myArea, LegalWarrant W)
+    {
+        if((W.criminal()!=null)
+        &&(W.arrestingOfficer()!=null)
+        &&(!W.arrestingOfficer().amDead())
+        &&(!W.crime().equalsIgnoreCase("pardoned"))
+        &&(!CMLib.flags().isInTheGame(W.criminal(),true))
+        &&(isStillACrime(W,false)))
+        {
+            if(laws.basicCrimes().containsKey("RESISTINGARREST"))
+            {
+                String[] info=(String[])laws.basicCrimes().get("RESISTINGARREST");
+                fillOutWarrant(W.criminal(),
+                                laws,
+                                myArea,
+                                null,
+                                info[Law.BIT_CRIMELOCS],
+                                info[Law.BIT_CRIMEFLAGS],
+                                info[Law.BIT_CRIMENAME],
+                                info[Law.BIT_SENTENCE],
+                                info[Law.BIT_WARNMSG]);
+            }
+        }
+    }
+    
 	protected void processWarrant(Area myArea, Law laws, LegalWarrant W, boolean debugging)
 	{
 		switch(W.state())
@@ -1995,6 +2020,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	    	            		processWarrant(myArea, laws, W, debugging);
 	    	            		return;
 	        	            }
+                            LegalWarrant lawResistW=laws.getLawresister(myArea,this,W.criminal());
+                            if(lawResistW!=null)
+                            {
+                                CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
+                                W.setState(Law.STATE_SUBDUEING);
+                                W.arrestingOfficer().setVictim(W.criminal());
+                                processWarrant(myArea, laws, W, debugging);
+                                return;
+                            }
+                            
 							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
 							W.setState(Law.STATE_ARRESTING);
 						}
@@ -2153,7 +2188,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					{
 						if(officer!=null)
+                        {
 							CMLib.commands().postSay(officer,null,"Hmph.",false,false);
+                            fileArrestResister(laws,myArea,W);
+                        }
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(myArea,null);
@@ -2163,7 +2201,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				{
 					if(officer!=null)
+                    {
 						CMLib.commands().postSay(officer,null,"Darn.",false,false);
+                        fileArrestResister(laws,myArea,W);
+                    }
 					W.setTravelAttemptTime(0);
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
@@ -2210,7 +2251,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				{
 					if(officer!=null)
+                    {
 						CMLib.commands().postSay(officer,null,"Drat! Lost another one!",false,false);
+                        fileArrestResister(laws,myArea,W);
+                    }
 					W.setTravelAttemptTime(0);
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
@@ -2278,7 +2322,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				{
 					if(officer!=null)
+                    {
 						CMLib.commands().postSay(officer,null,"Wha? Where'd he go?",false,false);
+                        fileArrestResister(laws,myArea,W);
+                    }
 					W.setTravelAttemptTime(0);
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
@@ -2335,7 +2382,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				{
 					if(officer!=null)
+                    {
 						CMLib.commands().postSay(officer,null,"Wha? Huh?",false,false);
+                        fileArrestResister(laws,myArea,W);
+                    }
 					W.setTravelAttemptTime(0);
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
@@ -2454,7 +2504,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				{
 					if(officer!=null)
+                    {
 						CMLib.commands().postSay(officer,null,"Crazy.",false,false);
+                        fileArrestResister(laws,myArea,W);
+                    }
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
 					W.setState(Law.STATE_SEEKING);
@@ -2527,6 +2580,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     if(officer!=null)
                     {
                         CMLib.commands().postSay(officer,null,"Sad.",false,false);
+                        fileArrestResister(laws,myArea,W);
                         dismissOfficer(officer);
                     }
                     W.setTravelAttemptTime(0);
@@ -2589,7 +2643,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				{
 					if(officer!=null)
+                    {
 						CMLib.commands().postSay(officer,null,"Didn't see that coming.",false,false);
+                        fileArrestResister(laws,myArea,W);
+                    }
 					W.setTravelAttemptTime(0);
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
@@ -2656,6 +2713,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				}
 				else
 				{
+                    fileArrestResister(laws,myArea,W);
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
 					W.setState(Law.STATE_SEEKING);
@@ -2722,6 +2780,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                 }
                 else
                 {
+                    fileArrestResister(laws,myArea,W);
                     unCuff(W.criminal());
                     W.setArrestingOfficer(myArea,null);
                     W.setState(Law.STATE_SEEKING);

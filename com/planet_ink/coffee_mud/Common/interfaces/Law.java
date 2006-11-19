@@ -214,6 +214,7 @@ public interface Law extends CMObject
 		public String jailMessages(int which);
 		public int jailTimes(int which);
 	    public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob);
+        public LegalWarrant getLawresister(Area A, LegalBehavior behav, MOB mob);
 		public LegalWarrant getWarrant(MOB mob, int which);
 		public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull);
 		public void resetLaw();
