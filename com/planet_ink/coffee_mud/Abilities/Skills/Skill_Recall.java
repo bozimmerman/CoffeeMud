@@ -46,7 +46,7 @@ public class Skill_Recall extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        boolean group="GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
+        boolean group=false;//"GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
 		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -66,24 +66,30 @@ public class Skill_Recall extends StdSkill
 				{
 					MOB follower=mob.fetchFollower(f);
 					
-					msg=CMClass.getMsg(follower,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo3",mob.name()));
 					if((follower!=null)
-					&&(follower.isMonster())
-					&&(!follower.isPossessing())
-					&&((follower.location()==recalledRoom)||(group))
-					&&(recalledRoom.isInhabitant(follower))
-					&&(recalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
-					{
-						msg2=CMClass.getMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-						if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
-						{
-							if(follower.isInCombat())
-								CMLib.commands().postFlee(follower,("NOWHERE"));
-							recallRoom.send(follower,msg2);
-							if(recalledRoom.isInhabitant(follower))
-								recallRoom.bringMobHere(follower,false);
-						}
-					}
+                    &&(follower.isMonster())
+                    &&(!follower.isPossessing())
+                    &&(CMLib.flags().isInTheGame(follower,true))
+                    &&(!CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
+                    {
+                        Room fRecalledRoom=recalledRoom;
+                        if(group)fRecalledRoom=follower.location();
+                        msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo3",mob.name()));
+    					if(((follower.location()==fRecalledRoom))
+    					&&(fRecalledRoom.isInhabitant(follower))
+    					&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
+    					{
+    						msg2=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+    						if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
+    						{
+    							if(follower.isInCombat())
+    								CMLib.commands().postFlee(follower,("NOWHERE"));
+    							recallRoom.send(follower,msg2);
+    							if(fRecalledRoom.isInhabitant(follower))
+    								recallRoom.bringMobHere(follower,false);
+    						}
+    					}
+                    }
 				}
 			}
 		}
