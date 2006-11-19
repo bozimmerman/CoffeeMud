@@ -835,8 +835,8 @@ public class CMFile
                 x=fname.indexOf("/");
                 while(x>=0)
                 {
-                    if((x>0)&&(!dirs.contains(fname.substring(0,x))))
-                        dirs.add(fname.substring(0,x));
+                    if((x>0)&&(!dirs.contains(fname.substring(0,x+1))))
+                        dirs.add(fname.substring(0,x+1));
                     x=fname.indexOf("/",x+1);
                 }
             }
@@ -861,6 +861,7 @@ public class CMFile
                     V.addElement(new Integer(VFS_MASK_DIRECTORY));
                     V.addElement(new Long(System.currentTimeMillis()));
                     V.addElement("");
+                    vfs.addElement(V);
                 }
             }
         }

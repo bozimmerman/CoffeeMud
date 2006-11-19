@@ -49,7 +49,7 @@ public class FileNext extends StdWebMacro
 			if(last!=null) httpReq.removeRequestParameter("FILE");
 			return "";
 		}
-		CMFile directory=new CMFile(path,M,false);
+ 		CMFile directory=new CMFile(path,M,false);
 		Vector fileList=new Vector();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{

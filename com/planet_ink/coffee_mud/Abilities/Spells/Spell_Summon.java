@@ -35,6 +35,7 @@ public class Spell_Summon extends Spell
 {
 	public String ID() { return "Spell_Summon"; }
 	public String name(){return "Summon";}
+    public String displayText(){return "(Summoned)";}
 	protected int canTargetCode(){return 0;}
     protected int canAffectCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

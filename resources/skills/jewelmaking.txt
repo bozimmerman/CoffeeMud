@@ -11,7 +11,7 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,extraMaterialRequiremen
 % Choker	8	20	2	50	GenArmor	S:NECK	0	0
 % Earrings	9	20	1	20	GenArmor	sM:EARS	0	0	PRECIOUS
 % Hairpin	10	10	1	40	GenArmor	MS-3:HEAD	0	0	PRECIOUS
-% Wedding Band	10	20	1	250	GenArmor	MS:LEFT FINGER||RIGHT FINGER	0	0		*Prop_WearSpellCast;Prayer_Fidelity
+% Wedding Band	1	20	1	250	GenArmor	MS:LEFT FINGER||RIGHT FINGER	0	0		*Prop_WearSpellCast;Prayer_Fidelity
 % Brooch	11	30	2	100	GenArmor	MS:TORSO	0	0
 % Eye Glasses	11	50	2	20	GenArmor	s:EYES	0	0	GLASS
 % Tiara	13	80	10	200	GenArmor	1:HEAD	0	0

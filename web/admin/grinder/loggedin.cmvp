@@ -77,7 +77,7 @@
 <br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
+@if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
@@ -86,7 +86,7 @@
 	<BR>
 	@endif@
 	@if?CheckAuthCode?ANYFILEBROWSE=true@
-	<A HREF="javascript:Browse('/');"><FONT COLOR=WHITE>File Browser</FONT></a>
+	<A HREF="javascript:Browse('@RequestParameter?BESTFILEBROWSE@');"><FONT COLOR=WHITE>File Browser</FONT></a>
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_JOURNALS=true@

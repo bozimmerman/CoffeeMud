@@ -151,7 +151,9 @@ public class WaterSurface extends StdRoom implements Drink
 				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
 				{	hasBoat=true; break;}
 			}
-			if((!CMLib.flags().isSwimming(mob))&&(!hasBoat)&&(!CMLib.flags().isInFlight(mob)))
+			if((!CMLib.flags().isWaterWorthy(mob))
+            &&(!hasBoat)
+            &&(!CMLib.flags().isInFlight(mob)))
 			{
 				mob.tell("You need to swim or ride a boat that way.");
 				return -1;

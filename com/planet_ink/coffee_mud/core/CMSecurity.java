@@ -126,6 +126,83 @@ public class CMSecurity
 		return true;
 	}
     
+    public static Vector getAccessibleDirs(MOB mob, Room room)
+    {
+        Vector DIRSV=new Vector();
+        if(isASysOp(mob)){ DIRSV.addElement("/"); return DIRSV; }
+        if(mob==null) return DIRSV;
+        if((mob.playerStats()==null)
+        ||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+            return DIRSV;
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
+        if(V.size()==0) return DIRSV;
+        boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        String set=null;
+        for(int v=0;v<V.size();v++)
+        {
+            set=((String)V.elementAt(v)).toUpperCase();
+            if(set.startsWith("FS:"))
+            {
+                set=set.substring(3).trim();
+                if(set.startsWith("AREA "))
+                {
+                    if(!subop)
+                        continue;
+                    DIRSV.addElement("//"+set.substring(4).trim());
+                }
+                else
+                    DIRSV.addElement("//"+set);
+            }
+            else
+            if(set.startsWith("VFS:"))
+            {
+                set=set.substring(4).trim();
+                if(set.startsWith("AREA "))
+                {
+                    if(!subop) continue;
+                    DIRSV.addElement("::"+set.substring(4).trim());
+                }
+                else
+                    DIRSV.addElement("::"+set);
+            }
+            else
+            {
+                HashSet H=(HashSet)groups.get(set);
+                if(H==null) continue;
+                for(Iterator i=H.iterator();i.hasNext();)
+                {
+                    set=((String)i.next()).toUpperCase();
+                    if(set.startsWith("FS:"))
+                    {
+                        set=set.substring(3).trim();
+                        if(set.startsWith("AREA "))
+                        {
+                            if(!subop)
+                                continue;
+                            DIRSV.addElement("//"+set.substring(4).trim());
+                        }
+                        else
+                            DIRSV.addElement("//"+set);
+                    }
+                    else
+                    if(set.startsWith("VFS:"))
+                    {
+                        set=set.substring(4).trim();
+                        if(set.startsWith("AREA "))
+                        {
+                            if(!subop) continue;
+                            DIRSV.addElement("::"+set.substring(4).trim());
+                        }
+                        else
+                            DIRSV.addElement("::"+set);
+                    }
+                }
+            }
+        }
+        return DIRSV;
+    }
+    
     public static boolean hasAccessibleDir(MOB mob, Room room)
     {
         if(isASysOp(mob)) return true;
@@ -240,6 +317,7 @@ public class CMSecurity
                 continue;
             }
             if((set.length()==0)||(path.length()==0)) return true;
+            if(set.startsWith("/")) set=set.substring(1);
             if(set.startsWith(pathSlash)
             ||path.startsWith(set+"/")
             ||set.equals(path)
@@ -296,6 +374,7 @@ public class CMSecurity
                         continue;
                     if((set.length()==0)||(subop&&set.equals("AREA"))) 
                         return true;
+                    if(set.startsWith("/")) set=set.substring(1);
                     setSlash=set.endsWith("/")?set:set+"/";
                     if(path.startsWith(setSlash)
                     ||(path.equals(set))
@@ -306,6 +385,7 @@ public class CMSecurity
                 continue;
             }
             if(set.length()==0) return true;
+            if(set.startsWith("/")) set=set.substring(1);
             setSlash=set.endsWith("/")?set:set+"/";
             if(path.startsWith(setSlash)
             ||(path.equals(set))

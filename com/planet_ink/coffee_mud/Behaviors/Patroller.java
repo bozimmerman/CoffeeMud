@@ -241,9 +241,7 @@ public class Patroller extends ActiveTicker
 			        boolean airOk=(CMLib.flags().isFlying((Environmental)ticking)
 			            ||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_AIR))
 				        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_AIR)));
-			        boolean waterOk=(CMLib.flags().isSwimming((Environmental)ticking)
-				            ||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_WATER))
-					        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_WATER)));
+			        boolean waterOk=(CMLib.flags().isWaterWorthy((Environmental)ticking));
 			        
 				    tickStatus=Tickable.STATUS_MISC+6;
 			        if(R instanceof GridLocale)
