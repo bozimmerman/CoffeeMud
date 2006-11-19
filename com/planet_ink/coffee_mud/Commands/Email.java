@@ -165,7 +165,7 @@ public class Email extends StdCommand
                     return false;
                 }
                 String message=mob.session().prompt("Enter your message\n\r: ","").trim();
-                if(subject.length()==0)
+                if(message.trim().length()==0)
                 {
                     mob.tell("Aborted");
                     return false;

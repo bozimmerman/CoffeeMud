@@ -15,53 +15,101 @@
 # A help entry that is HELP_ only will apply to the previously defined expertise.
 #
 
-EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
+EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to ameliorate the experience cost of casting powerful spells, especially concerning items.
 
-ARMOROPT@x1=Armor Optomizing @x2,10,LEVEL,-SKILL +Fighter_ArmorTweaking,-MAXCLASSLEVEL +>={28+(5*@x1)},+CON {18+@x1},0,1,0,0,0
+ARMOROPT@x1=Armor Optomizing @x2,10,LEVEL,-SKILL +Fighter_ArmorTweaking -SKILLFLAG +ARMOR_USE,-MAXCLASSLEVEL +>={28+(5*@x1)},+CON {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to gain more protective benefits from tweaking armor.
 
-SHIELDUSE@x1=Shield Using @x2,10,LEVEL,-SKILL +Fighter_ShieldBlock +Fighter_ImprovedShieldDefence +Skill_Bash,-MAXCLASSLEVEL +>={26+(5*@x1)},+STR {18+@x1},0,1,0,0,0
+SHIELDUSE@x1=Shield Using @x2,10,LEVEL,-SKILLFLAG +SHIELD_USE,-MAXCLASSLEVEL +>={26+(5*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better understand shield blocking and usage, and get better armor benefit from shields.
 
-CAUTIOUS@x1=Cautiously @x2,10,X1,-SKILL +Thief_Peek +Thief_Robbery +Thief_SlipItem +Thief_Steal +Thief_Swipe,-MAXCLASSLEVEL +>={9+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+CAUTIOUS@x1=Cautiously @x2,10,X1,-SKILL +Thief_Peek +Thief_Robbery +Thief_SlipItem +Thief_Steal +Thief_Swipe,-MAXCLASSLEVEL +>={19+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to lessen your chances of getting spotted when doing certain thiefly things.
 
-FATIGUER@x1=Fatiguing @x2,10,X1,-SKILL +Thief_DisablingCaltrops,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {13+@x1},0,1,0,0,0
+FATIGUER@x1=Fatiguing @x2,10,X1,-SKILL +Thief_DisablingCaltrops,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft devices and traps that inhibit movement and cause fatigue.
 
-MAGEKILLER@x1=Mana Sapping @x2,10,X1,-SKILL +Thief_DazzlingCaltrops,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {13+@x1},0,1,0,0,0
+MAGEKILLER@x1=Mana Sapping @x2,10,X1,-SKILL +Thief_DazzlingCaltrops,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft devices and traps that cause confusion and results in the loss of mana.
 
 ALERT@x1=Vigilantly @x2,10,LEVEL,-SKILLFLAG +ALERT,-MAXCLASSLEVEL +>={15+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to handle more difficult cases of thiefly detection. 
 
-STEALTH@x1=Stealthy @x2,10,LEVEL,-SKILLFLAG +STEALTHY,-MAXCLASSLEVEL +>={1+(5*@x1)},+DEX {9+@x1},0,1,0,0,0
+STEALTH@x1=Stealthy @x2,10,LEVEL,-SKILLFLAG +STEALTHY,-MAXCLASSLEVEL +>={10+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hide, sneak around, and conceal oneself in more difficult situations.
 
-STEALING@x1=Theft Mastery @x2,10,LEVEL,-SKILLFLAG +STEALING,-MAXCLASSLEVEL +>={1+(5*@x1)},+DEX {9+@x1},0,1,0,0,0
+STEALING@x1=Theft Mastery @x2,10,LEVEL,-SKILLFLAG +STEALING,-MAXCLASSLEVEL +>={10+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to steal, swipe, and do unseemly slight of hand with more advanced foes.
 
-ROPEUSE@x1=Binding @x2,10,LEVEL,-SKILLFLAG +BINDING,-MAXCLASSLEVEL +>={13+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+ROPEUSE@x1=Binding @x2,10,LEVEL,-SKILLFLAG +BINDING,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better use and deploy rope based snares, bindings, knots, and traps.
 
-DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-MAXCLASSLEVEL +>={13+(5*@x1)},+CHA {13+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to handle more difficult cases of thiefly deceptiveness. 
+DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-MAXCLASSLEVEL +>={23+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to handle more difficult cases of deceptiveness. 
 
-DETRAP@x1=Trap Disabling @x2,10,LEVEL,-SKILLFLAG +FIND/REMOVE_TRAPS,-MAXCLASSLEVEL +>={12+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+CALIGRAPHY@x1=Fine Caligraphy @x2,10,LEVEL,-SKILLFLAG +CALIGRAPHY,-MAXCLASSLEVEL +>={23+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to handle more difficult caligraphy chores. 
+
+POISONING@x1=Poisoning @x2,10,LEVEL,-SKILLS +Apothecary -SKILLFLAG +POISONING,-MAXCLASSLEVEL +>={10+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to make and handle more powerful poisons. 
+
+DETRAP@x1=Trap Disabling @x2,10,LEVEL,-SKILLFLAG +FIND/REMOVE_TRAPS,-MAXCLASSLEVEL +>={12+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better avoid, identify, handle, and disable traps.
 
-TRAPPING@x1=Trapping @x2,10,LEVEL,-SKILLFLAG +TRAPPING,-MAXCLASSLEVEL +>={16+(5*@x1)},+DEX {13+@x1},0,1,0,0,0
+TRAPPING@x1=Trapping @x2,10,LEVEL,-SKILLFLAG +TRAPPING,-MAXCLASSLEVEL +>={16+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to build and deploy traps that are better made, and more lethal.
 
-WANDUSE@x1=Wand Using @x2,10,LEVEL,-SKILL +Skill_WandUse,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {17+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to use wands without expending as much mana.
+WANDUSE@x1=Arcane Lore @x2,10,LEVEL,-SKILLFLAG +ARCANE_LORE,-MAXCLASSLEVEL +>={16+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Knowledge of arcane symbology and custom for better arcane identification and wand usage.
 
 TUNING@x1=Artsy @x2,10,LEVEL,-SKILLFLAG +ARTISTIC,-MAXCLASSLEVEL +>={27+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use artistic skills to their greatest level.
 
-HOMECOOKING@x1=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Apothecary,-MAXCLASSLEVEL +>={1+(5*@x1)},+WIS {13+@x1},0,1,0,0,0
+HOMECOOKING@x1=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Alchemy,-MAXCLASSLEVEL +>={10+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook, distil, food prep, or bake especially nourishing foods or thirst quenching drinks.
+
+IRONPUNCH@x1=Iron Punching @x2,10,LEVEL,-SKILLFLAG +PUNCHING,-MAXCLASSLEVEL +>={22+(5*@x1)},+STR {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to make more ferocious punches.
+
+IRONKICK@x1=Iron Kicking @x2,10,LEVEL,-SKILLFLAG +KICKING,-MAXCLASSLEVEL +>={22+(5*@x1)},+CON {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to make more ferocious kicks.
+
+VICEGRIP@x1=Vice-Gripping @x2,10,LEVEL,-SKILLFLAG +GRAPPLING,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to grapple with greater power and ability.
+
+ACROBAT@x1=Acrobatic @x2,10,LEVEL,-SKILLFLAG +ACROBATIC,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to make more graceful and powerful acrobatic maneuvers.
+
+INFLUENCE@x1=Influencing @x2,10,LEVEL,-SKILLFLAG +INFLUENTIAL,-MAXCLASSLEVEL +>={27+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to be more influential when imposing ones will on others.
+
+STREETLORE@x1=Street Lore @x2,10,LEVEL,-SKILLFLAG +STREET_SMARTS,-MAXCLASSLEVEL +>={28+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Better knowledge of the streets and how to get the most from it.
+
+NATURELORE@x1=Nature Lore @x2,10,LEVEL,-SKILLFLAG +NATURE_LORE,-MAXCLASSLEVEL +>={16+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Better knowledge of the streets and how to get the most from it.
+
+DIRTYFIGHT@x1=Dirty Fighting @x2,10,LEVEL,-SKILLFLAG +DIRTY_FIGHTING,-MAXCLASSLEVEL +>={19+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to do more damage when fighting dirty.
+
+COMBATLORE@x1=Combat Lore @x2,10,LEVEL,-SKILLFLAG +COMBAT_LORE,-MAXCLASSLEVEL +>={11+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Better knowledge of combat lore and how to make the most of it.
+
+EVASIVE@x1=Evasively @x2,10,LEVEL,-SKILLFLAG +EVASIVE,-MAXCLASSLEVEL +>={28+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Improved knowledge and skill with evasive maneuvers.
+
+MARTIAL@x1=Martial Lore @x2,10,LEVEL,-SKILLFLAG +MARTIAL_LORE,-MAXCLASSLEVEL +>={29+(5*@x1)},+STR {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Improved combat abilities through martial training and discipline.
+
+ANATOMY@x1=Anatomy @x2,10,LEVEL,-SKILLFLAG +ANATOMY,-MAXCLASSLEVEL +>={9+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Ability to apply improved anatomical knowledge to the practical arts.
+
+CRIMINAL@x1=Criminal Deviousness @x2,10,LEVEL,-SKILLFLAG +CRIMINAL,-MAXCLASSLEVEL +>={19+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Improved devious mind for accomplishing more powerful crimes.
+
+FITNESS@x1=Fitness @x2,10,LEVEL,-SKILLFLAG +FITNESS,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>Ability to keep both mind and body in top shape for all occassions.
 
 AXESTRIKE@x1=Axe Striking @x2,10,LEVEL,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an axe.
@@ -279,6 +327,9 @@ HELP_=<EXPERTISE>The ability to cast abjuration spells at a higher power level, 
 EXTENDEDABJURATION@x1=Extended Abjuring @x2,10,TIME,-SKILLFLAG +ABJURATION,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast abjuration spells that last even longer.
 
+SMARTENGINEERING@x1=Ingenius Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to engineer using fewer materials.
+
 LITECRAFT@x2=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
 HELP_LITECRAFTI=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are 10% lighter, and worth 20% more in value.
@@ -297,6 +348,9 @@ HELP_QUALCRAFTI=<EXPERTISE>The ability to craft items of the highest quality. It
 HELP_QUALCRAFTII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth 250% more.
 HELP_QUALCRAFTIII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth 250% more and grant extra charisma from being well dressed.
 
+QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL",,+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.
+
 LTHLCRAFT@x2=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.
 HELP_LTHLCRAFTI=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Damaging" are 5% more damaging, and worth 50% more.
@@ -309,25 +363,25 @@ HELP_CNTRCRAFTI=<EXPERTISE>The ability to craft weapons that are more balanced f
 HELP_CNTRCRAFTII=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Balanced" are 10 points better for attack, and worth 150% more.
 HELP_CNTRCRAFTIII=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Counterbalanced" are 20 points better for attack, and worth 500% more.
 
-AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-MAXCLASSLEVEL +>={26+(5*@x1)},+DEX {15+@x1} ,0,1,0,0,0
+AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-MAXCLASSLEVEL +>={26+(5*@x1)},+DEX {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to deal more damage from magical electrical attacks
 
-TERRALIST@x1=Terranalist @x2,10,X1,-SKILLFLAG +ACIDIZING,-MAXCLASSLEVEL +>={26+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
+TERRALIST@x1=Terranalist @x2,10,X1,-SKILLFLAG +ACIDIZING,-MAXCLASSLEVEL +>={26+(5*@x1)},+CON {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to deal more damage from magical acid attacks
 
-IGNALIST@x1=Ignalist @x2,10,X1,-SKILLFLAG +BURNING,-MAXCLASSLEVEL +>={26+(5*@x1)},+STR {15+@x1} ,0,1,0,0,0
+IGNALIST@x1=Ignalist @x2,10,X1,-SKILLFLAG +BURNING,-MAXCLASSLEVEL +>={26+(5*@x1)},+STR {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to deal more damage from magical fire attacks
 
-AQUALIST@x1=Aqualist @x2,10,X1,-SKILLFLAG +FREEZING,-MAXCLASSLEVEL +>={26+(5*@x1)},+WIS {15+@x1} ,0,1,0,0,0
+AQUALIST@x1=Aqualist @x2,10,X1,-SKILLFLAG +FREEZING,-MAXCLASSLEVEL +>={26+(5*@x1)},+WIS {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to deal more damage from magical cold and ice attacks
 
 MOONLORE@x1=Moon Enchanting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +MOON_SUMMONING +MOON_ALTERING,-MAXCLASSLEVEL +>={16+(5*@x1)},+INT {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast moon summoning and altering chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
-FOOLISH@x1=Foolmaking @x2,10,LEVEL|LOWCOST,-SKILLFLAG +FOOLISHNESS,-MAXCLASSLEVEL +>={12+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
+FOOLISH@x1=Foolmaking @x2,10,LEVEL|LOWCOST,-SKILLFLAG +FOOLISHNESS,-MAXCLASSLEVEL +>={22+(5*@x1)},+CON {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use foolish skills at a higher power level, producing longer and more malicious/beneficial effects, while also reducing mana/movement cost.
 
-SHAPING@x1=Shapeshifting @x2,10,LEVEL|X1|X2|LOWCOST,-SKILLFLAG +SHAPE_SHIFTING,-MAXCLASSLEVEL +>={13+(5*@x1)},+CON {9+@x1} ,0,1,0,0,0
+SHAPING@x1=Shapeshifting @x2,10,LEVEL|X1|X2|LOWCOST,-SKILLFLAG +SHAPE_SHIFTING,-MAXCLASSLEVEL +>={23+(5*@x1)},+CON {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use shape shifting skills and chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
 PRESERVING@x1=Preserving @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PRESERVING,-MAXCLASSLEVEL +>={24+(5*@x1)},+CON {12+@x1} ,0,1,0,0,0
@@ -357,7 +411,7 @@ HELP_=<EXPERTISE>The ability to cast plant growing chants at a higher power leve
 PLANTMASTER@x1=Plant Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PLANT_CONTROL,-MAXCLASSLEVEL +>={26+(5*@x1)},+WIS {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast plant controlling chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
-BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-MAXCLASSLEVEL +>={12+(5*@x1)},+STR {12+@x1},0,1,0,0,0
+BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-MAXCLASSLEVEL +>={22+(5*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level skeletons, zombies, and mummies.
 
 GHOULLORE@x1=Ghoul Lore @x2,10,X1,-SKILL +Prayer_AnimateGhoul +Prayer_AnimateGhast,-MAXCLASSLEVEL +>={16+(5*@x1)},+INT {12+@x1},0,1,0,0,0
@@ -369,7 +423,7 @@ HELP_=<EXPERTISE>The ability to magically generate higher level spectres and gho
 VAMPIRELORE@x1=Vampire Lore @x2,10,X1,-SKILL +Prayer_AnimateVampire,-MAXCLASSLEVEL +>={29+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level vampires.
 
-DEATHLORE@x1=Death Lore @x2,10,LEVEL|XPCOST,-SKILLFLAG +DEATH_LORE,-MAXCLASSLEVEL +>={7+(5*@x1)},+CON {12+@x1},0,1,0,0,0
+DEATHLORE@x1=Death Lore @x2,10,LEVEL|XPCOST,-SKILLFLAG +DEATH_LORE,-MAXCLASSLEVEL +>={17+(5*@x1)},+CON {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast death lore-domain prayers at a higher power level, producing higher level undead and more beneficial effects.
 
 WARDING@x1=Divine Warding @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WARDING,-MAXCLASSLEVEL +>={29+(5*@x1)},+CON {12+@x1},0,1,0,0,0
@@ -396,7 +450,7 @@ HELP_=<EXPERTISE>The ability to cast blessing-domain prayers at a higher power l
 CURSING@x1=Cursing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-MAXCLASSLEVEL +>={25+(5*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast cursing-domain prayers at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
-EVANGELIST@x1=Evangelising @x2,10,LEVEL|LOWCOST,-SKILLFLAG +EVANGELISM,-MAXCLASSLEVEL +>={7+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+EVANGELIST@x1=Evangelising @x2,10,LEVEL|LOWCOST,-SKILLFLAG +EVANGELISM,-MAXCLASSLEVEL +>={17+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast evangelism-domain prayers at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
 NEUTRALIZING@x1=Neutralizing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +NEUTRALIZATION,-MAXCLASSLEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0

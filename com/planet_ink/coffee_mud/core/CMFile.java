@@ -823,13 +823,8 @@ public class CMFile
     {
         if(vfs==null)
         {
-        	if(CMLib.database()==null)
-        	{
-        		vfs=new Vector();
-        		Log.errOut("CMFile","Unable to read master database directory.  Database library NOT FOUND!!");
-        	}
-        	else
-        		vfs=CMLib.database().DBReadVFSDirectory();
+        	if(CMLib.database()==null) return new Vector();
+    		vfs=CMLib.database().DBReadVFSDirectory();
         }
         return vfs;
     }

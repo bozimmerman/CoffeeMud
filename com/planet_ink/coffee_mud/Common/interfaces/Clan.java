@@ -614,7 +614,7 @@ public interface Clan extends Cloneable, Tickable
     public static final int GVT_THEOCRACY=4;
     /** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
 	public static final String[] GVT_DESCS={
-		"CLAN",
+		"TRIBE",
 		"GUILD",
 		"UNION",
 		"FELLOWSHIP",

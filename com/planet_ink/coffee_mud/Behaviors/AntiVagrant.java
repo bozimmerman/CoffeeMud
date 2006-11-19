@@ -61,7 +61,7 @@ public class AntiVagrant extends ActiveTicker
 		if(anywhere||(observer.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 		{
 			if(target!=null)
-			if(CMLib.flags().isSleeping(target)&&(target!=observer))
+			if(CMLib.flags().isSleeping(target)&&(target!=observer)&&(CMLib.flags().canBeSeenBy(target,observer)))
 			{
 				CMLib.commands().postSay(observer,target,"Damn lazy good for nothing!",false,false);
 				CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shake(s) <T-NAME> awake.");
@@ -75,7 +75,7 @@ public class AntiVagrant extends ActiveTicker
 				}
 			}
 			else
-			if((CMLib.flags().isSitting(target)&&(target!=observer)))
+			if((CMLib.flags().isSitting(target)&&(target!=observer))&&(CMLib.flags().canBeSeenBy(target,observer)))
 			{
 				CMLib.commands().postSay(observer,target,"Get up and move along!",false,false);
 				CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stand(s) <T-NAME> up.");
@@ -93,7 +93,8 @@ public class AntiVagrant extends ActiveTicker
 				MOB mob=observer.location().fetchInhabitant(i);
 				if((mob!=null)
 				&&(mob!=observer)
-				&&((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob))))
+				&&((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
+                &&(CMLib.flags().canBeSeenBy(mob,observer)))
 				{
 				   target=mob;
 				   break;

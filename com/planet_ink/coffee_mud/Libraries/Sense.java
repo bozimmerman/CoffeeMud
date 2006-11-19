@@ -847,36 +847,66 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		Vector V=new Vector();
 		if(E!=null)
-			for(int a=0;a<E.numEffects();a++)
-			{
-				Ability A=E.fetchEffect(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
-				{ V.addElement(A);}
-			}
+            if(domain>Ability.ALL_ACODES)
+            {
+    			for(int a=0;a<E.numEffects();a++)
+    			{
+    				Ability A=E.fetchEffect(a);
+    				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
+    				{ V.addElement(A);}
+    			}
+            }
+            else
+            for(int a=0;a<E.numEffects();a++)
+            {
+                Ability A=E.fetchEffect(a);
+                if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
+                { V.addElement(A);}
+            }
 		return V;
 	}
     public Vector domainAffects(Environmental E, int domain)
 	{
 		Vector V=new Vector();
 		if(E!=null)
-			for(int a=0;a<E.numEffects();a++)
-			{
-				Ability A=E.fetchEffect(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
-				{ V.addElement(A);}
-			}
+            if(domain>Ability.ALL_ACODES)
+            {
+    			for(int a=0;a<E.numEffects();a++)
+    			{
+    				Ability A=E.fetchEffect(a);
+    				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
+    				{ V.addElement(A);}
+    			}
+            }
+            else
+            for(int a=0;a<E.numEffects();a++)
+            {
+                Ability A=E.fetchEffect(a);
+                if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
+                { V.addElement(A);}
+            }
 		return V;
 	}
     public Vector domainAbilities(MOB E, int domain)
 	{
 		Vector V=new Vector();
 		if(E!=null)
-			for(int a=0;a<E.numAbilities();a++)
-			{
-				Ability A=E.fetchAbility(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
-				{ V.addElement(A);}
-			}
+            if(domain>Ability.ALL_ACODES)
+            {
+    			for(int a=0;a<E.numAbilities();a++)
+    			{
+    				Ability A=E.fetchAbility(a);
+    				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
+    				{ V.addElement(A);}
+    			}
+            }
+            else
+            for(int a=0;a<E.numAbilities();a++)
+            {
+                Ability A=E.fetchAbility(a);
+                if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
+                { V.addElement(A);}
+            }
 		return V;
 	}
 	public Vector flaggedAnyAffects(Environmental E, long flag)

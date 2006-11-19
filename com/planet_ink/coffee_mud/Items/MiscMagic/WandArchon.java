@@ -44,7 +44,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
-		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
+		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
 	}
 
 
@@ -181,10 +181,27 @@ public class WandArchon extends StdWand implements ArchonOnly
 					}
 					return;
 				}
+                else
+                if(message.equals("RESTORE"))
+                {
+                    mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
+                    java.util.Vector diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
+                    if(diseaseV.size()>0){ Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
+                    java.util.Vector poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
+                    if(poisonV.size()>0){ Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
+                    Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
+                    Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
+                    Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
+                    target.recoverMaxState();
+                    target.resetToMaxState();
+                    target.tell("You feel refreshed!");
+                    return;
+                }
 				else
 				if(message.equals("REFRESH"))
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
+                    Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
