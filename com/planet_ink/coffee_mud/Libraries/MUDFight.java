@@ -482,13 +482,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return C;
     }
 
-    public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
+    protected HashSet getCombatBeneficiaries(MOB killer, MOB killed, Room deathRoom, HashSet beneficiaries, CharClass combatCharClass)
     {
-        if((killer==null)||(killed==null)) return new HashSet();
-        Room deathRoom=killed.location();
-        if(deathRoom==null) deathRoom=killer.location();
-
-        HashSet beneficiaries=new HashSet();
         HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
         if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
         if(deathRoom!=null)
@@ -502,7 +497,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             }
         }
         if((killer!=null)&&(!beneficiaries.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
-        	beneficiaries.add(killer);
+            beneficiaries.add(killer);
+        return beneficiaries; 
+    }
+    
+    public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
+    {
+        if((killer==null)||(killed==null)) return new HashSet();
+        HashSet beneficiaries=new HashSet();
+        Room R=killer.location();
+        if(R!=null) getCombatBeneficiaries(killer,killed,R,beneficiaries,combatCharClass);
+        R=killed.location();
+        if((R!=null)&&(R!=killer.location())) getCombatBeneficiaries(killer,killed,R,beneficiaries,combatCharClass);
         return beneficiaries;
     }
     

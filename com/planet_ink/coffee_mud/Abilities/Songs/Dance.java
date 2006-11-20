@@ -84,7 +84,8 @@ public class Dance extends StdAbility
 		&&(!mob.amDead())
 		&&(mob.isMonster())
 		&&(!mob.isInCombat())
-		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
+		&&(CMLib.flags().aliveAwakeMobile(mob,true))
+        &&(!CMLib.flags().isATrackingMonster(mob)))
 		{
 			if((mob.location()!=originRoom)
 			&&(CMLib.flags().isMobile(mob)))
@@ -153,7 +154,8 @@ public class Dance extends StdAbility
     	int depth=super.getXMAXRANGELevel(invoker());
     	if(depth==0) return CMParms.makeVector(invoker().location());
     	Vector rooms=new Vector();
-    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, true, false, false, true, false, null, depth, null);
+        // needs to be area-only, because of the aggro-tracking rule
+    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, true, true, false, true, false, null, depth, null);
     	if(!rooms.contains(invoker().location()))
     		rooms.addElement(invoker().location());
     	return rooms;

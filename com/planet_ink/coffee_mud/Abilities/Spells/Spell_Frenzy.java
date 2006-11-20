@@ -84,6 +84,8 @@ public class Spell_Frenzy extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -102,12 +104,12 @@ public class Spell_Frenzy extends Spell
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scream(s) at <T-NAMESELF>!^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				if(target.location()==mob.location())
+				R.send(mob,msg);
+				if(target.location()==R)
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) wild!");
+					R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) wild!");
 					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
 					target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);

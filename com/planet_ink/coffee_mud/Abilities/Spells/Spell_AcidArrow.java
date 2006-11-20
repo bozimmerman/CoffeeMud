@@ -59,6 +59,8 @@ public class Spell_AcidArrow extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -73,10 +75,10 @@ public class Spell_AcidArrow extends Spell
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(auto?"An arrow made of acid appears zooming towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, conjuring an acid arrow from the java plain!^?")+CMProps.msp("spelldam1.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				invoker=mob;
                 int numDice = adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker()));
 				int damage = CMLib.dice().roll(1, numDice+10, 5);

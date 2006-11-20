@@ -65,7 +65,9 @@ public class Spell_Deafness extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-
+		Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
+        
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -83,13 +85,13 @@ public class Spell_Deafness extends Spell
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scream(s) at <T-NAMESELF>.^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) deaf!");
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) deaf!");
 				}
 			}
 		}

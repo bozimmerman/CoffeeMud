@@ -56,7 +56,7 @@ public class MXP extends StdCommand
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_MXP));
 					StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
 			        if(mxpText!=null)
-			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");
+			            mob.session().rawOut("\033[6z\n\r"+mxpText.toString()+"\n\r");
 					mob.tell("MXP codes enabled.\n\r");
 			    }
                 else

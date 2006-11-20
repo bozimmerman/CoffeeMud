@@ -150,6 +150,7 @@ public class Archon_Record extends ArchonSkill
 		}
 		public void onlyPrint(String msg){}
 		
+        public void rawOut(String msg){}
 		public void rawPrintln(String msg){}
 		public void rawPrintln(String msg, int pageBreak){}
 		public void rawPrint(String msg){}

@@ -84,6 +84,8 @@ public class Spell_Awe extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -102,10 +104,10 @@ public class Spell_Awe extends Spell
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) awesome!");
+				R.send(mob,msg);
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) awesome!");
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

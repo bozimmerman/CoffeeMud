@@ -80,8 +80,14 @@ public class Spell_ClanDonate extends Spell
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
-                if((target instanceof Coins)
-                ||(CMLib.commands().postDrop(mob,target,clanDonateRoom,true,false)))
+                boolean proceed=(target instanceof Coins);
+                if(!proceed){
+                    Room prevRoom=mob.location();
+                    clanDonateRoom.bringMobHere(mob,false);
+                    proceed=CMLib.commands().postDrop(mob,target,true,false);
+                    prevRoom.bringMobHere(mob,false);
+                }
+                if(proceed)
                 {
     				mob.location().send(mob,msg);
                     msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");

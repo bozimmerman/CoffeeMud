@@ -170,6 +170,8 @@ public class Chant_CharmAnimal extends Chant
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
@@ -194,9 +196,9 @@ public class Chant_CharmAnimal extends Chant
 			// what happened.
 			String str=auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));

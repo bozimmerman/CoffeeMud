@@ -71,6 +71,8 @@ public class Spell_Shatter extends Spell
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -85,11 +87,11 @@ public class Spell_Shatter extends Spell
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
 			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),null);
-			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
+			if((R.okMessage(mob,msg))&&((mobTarget==null)||(R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(mobTarget!=null)
-					mob.location().send(mob,msg2);
+					R.send(mob,msg2);
 				if(msg.value()<=0)
 				{
 					int damage=100+adjustedLevel(mob,asLevel)-target.envStats().level();
@@ -125,12 +127,12 @@ public class Spell_Shatter extends Spell
 					{
 						target.setUsesRemaining(100);
 						if(mobTarget==null)
-							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
+							R.show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
 						else
-							mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
+							R.show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
 						target.unWear();
 						target.destroy();
-						mob.location().recoverRoomStats();
+						R.recoverRoomStats();
 					}
 				}
 			}

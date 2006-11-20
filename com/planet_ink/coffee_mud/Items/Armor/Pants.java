@@ -38,7 +38,7 @@ public class Pants extends StdArmor
 
 		setName("a pair of pants");
 		setDisplayText("a pair of pants lies here");
-		setDescription("a well tailored pair of travellors pants.");
+		setDescription("a well tailored pair of travelers pants.");
 		properWornBitmap=Item.WORN_LEGS;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);

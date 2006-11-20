@@ -358,6 +358,7 @@ public class DefaultSession extends Thread implements Session
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
+    
 	public void out(char[] c){
 		try{
 			if((out!=null)&&(c!=null)&&(c.length>0))
@@ -465,6 +466,7 @@ public class DefaultSession extends Thread implements Session
 		catch(java.lang.NullPointerException e){}
 	}
 
+    public void rawOut(String msg){out(msg);}
 	public void rawPrint(String msg){rawPrint(msg,-1);}
 	public void rawPrint(String msg, int pageBreak)
 	{ if(msg==null)return;

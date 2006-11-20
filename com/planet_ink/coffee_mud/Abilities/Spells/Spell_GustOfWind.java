@@ -86,6 +86,8 @@ public class Spell_GustOfWind extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        Room R=CMLib.map().roomLocation(givenTarget);
+        if(R==null) R=mob.location();
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
@@ -104,7 +106,7 @@ public class Spell_GustOfWind extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?"))
+			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -114,9 +116,9 @@ public class Spell_GustOfWind extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> get(s) blown back!");
-				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				if((R.okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
-					if((msg.value()<=0)&&(target.location()==mob.location()))
+					if((msg.value()<=0)&&(target.location()==R))
 					{
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))
@@ -124,12 +126,12 @@ public class Spell_GustOfWind extends Spell
 						if(target.rangeToTarget()>target.location().maxRange())
 							target.setAtRange(target.location().maxRange());
 
-						mob.location().send(mob,msg);
+						R.send(mob,msg);
 						if((!CMLib.flags().isInFlight(target))
 						&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.envStats().level()-(adjustedLevel(mob,asLevel)/2)))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
-							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
+							R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
 							doneTicking=false;
 							success=maliciousAffect(mob,target,asLevel,2,-1);
 						}

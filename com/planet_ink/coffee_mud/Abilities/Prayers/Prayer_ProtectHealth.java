@@ -96,6 +96,8 @@ public class Prayer_ProtectHealth extends Prayer
 			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> protected health.");
 			return false;
 		}
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -109,9 +111,9 @@ public class Prayer_ProtectHealth extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a healthy mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a healthy mind and body.^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

@@ -40,6 +40,7 @@ public interface Session extends CMObject
 	public void onlyPrint(String msg, int pageBreak, boolean noCache);
 	public void onlyPrint(String msg);
 	
+    public void rawOut(String msg);
 	public void rawPrintln(String msg);
 	public void rawPrintln(String msg, int pageBreak);
 	public void rawPrint(String msg);

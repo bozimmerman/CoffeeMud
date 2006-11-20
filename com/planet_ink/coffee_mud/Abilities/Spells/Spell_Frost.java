@@ -45,6 +45,8 @@ public class Spell_Frost extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -64,19 +66,19 @@ public class Spell_Frost extends Spell
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMProps.msp("spelldam1.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
+			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				invoker=mob;
 
 				int damage = 0;
 				int maxDie =  (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/4;
 				damage += CMLib.dice().roll(maxDie,6,5);
-				mob.location().send(mob,msg2);
+				R.send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));
 
-				if(target.location()==mob.location())
+				if(target.location()==R)
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The frost <DAMAGE> <T-NAME>!");
 			}
 		}

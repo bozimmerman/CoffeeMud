@@ -65,6 +65,8 @@ public class Spell_Feeblemind extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -84,13 +86,13 @@ public class Spell_Feeblemind extends Spell
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> cast(s) at <T-NAMESELF>.^?");
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
+			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))
 			{
-				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit stupid.");
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit stupid.");
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

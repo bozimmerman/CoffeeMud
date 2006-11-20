@@ -39,12 +39,22 @@ public class Play_Instrument extends Play
 
 	protected void inpersistantAffect(MOB mob)
 	{
-		if((getSpell()!=null)
+        Ability A=getSpell();
+		if((A!=null)
 		&&((mob!=invoker())||(getSpell().abstractQuality()!=Ability.QUALITY_MALICIOUS)))
 		{
 			Vector chcommands=new Vector();
 			chcommands.addElement(mob.name());
-			((Ability)getSpell().copyOf()).invoke(invoker(),chcommands,mob,true,adjustedLevel(invoker(),0));
+            A=(Ability)A.copyOf();
+			A.invoke(invoker(),chcommands,mob,true,adjustedLevel(invoker(),0));
+            if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+            &&(mob.isMonster())
+            &&(CMLib.flags().isMobile(mob))
+            &&(!CMLib.flags().isATrackingMonster(mob)))
+            {
+                A=CMClass.getAbility("Thief_Assassinate");
+                if(A!=null) A.invoke(mob,invoker(),true,0);
+            }
 		}
 	}
 

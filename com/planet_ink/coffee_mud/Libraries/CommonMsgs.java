@@ -124,10 +124,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		return doStandardCommand(mob,"Drop",CMParms.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized)));
 	}
-    public boolean postDrop(MOB mob, Environmental dropThis, Room dropRoom, boolean quiet, boolean optimized)
-    {
-        return doStandardCommand(mob,"Drop",CMParms.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized),dropRoom));
-    }
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)

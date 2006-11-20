@@ -45,6 +45,8 @@ public class Spell_Fireball extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -59,10 +61,10 @@ public class Spell_Fireball extends Spell
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(auto?"A huge fireball appears and blazes towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a blazing fireball!^?")+CMProps.msp("fireball.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				invoker=mob;
                 int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
 				int damage = CMLib.dice().roll(numDice, 10, 10);

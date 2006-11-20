@@ -63,7 +63,11 @@ public class Thief_Assassinate extends ThiefSkill
 				return false;
 
 			MOB mob=(MOB)affected;
-
+			if((mob.isInCombat())
+            &&(mob.isMonster())
+            &&(!CMLib.flags().isMobile(mob)))
+                return true;
+            
 			Room room=mob.location();
 			if(room==null) return false;
 			if(room.isInhabitant(tracking))
@@ -76,7 +80,9 @@ public class Thief_Assassinate extends ThiefSkill
 				}
 				else
 					CMLib.combat().postAttack(mob,tracking,mob.fetchWieldedItem());
-				return false;
+                if((!mob.isMonster())||(CMLib.flags().isMobile(mob)))
+                    return false;
+				return true;
 			}
 
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -97,6 +103,8 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("The trail seems to pause here.");
 				nextDirection=-2;
 				unInvoke();
+                if(mob.isMonster()&&(!CMLib.flags().isMobile(mob)))
+                    CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
 			if(nextDirection==-1)
@@ -104,6 +112,8 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("The trail dries up here.");
 				nextDirection=-999;
 				unInvoke();
+                if(mob.isMonster()&&(!CMLib.flags().isMobile(mob)))
+                    CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
 			if(nextDirection>=0)
@@ -140,7 +150,11 @@ public class Thief_Assassinate extends ThiefSkill
 						}
 					}
 					else
+                    {
 						unInvoke();
+                        if(mob.isMonster()&&(!CMLib.flags().isMobile(mob)))
+                            CMLib.tracking().wanderAway(mob,false,true);
+                    }
 				}
 				else
 					nextDirection=-2;
@@ -170,7 +184,7 @@ public class Thief_Assassinate extends ThiefSkill
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 
-		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
+		if((!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
 			mob.tell("You can't see anything to track!");
 			return false;
@@ -189,7 +203,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		tracking=null;
 		String mobName="";
-		if((mob.fetchEffect("Thief_Mark")!=null)&&(!mob.isMonster()))
+		if((!mob.isMonster())&&(mob.fetchEffect("Thief_Mark")!=null))
 		{
 			Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 			if(A!=null) tracking=A.mark;
@@ -205,12 +219,16 @@ public class Thief_Assassinate extends ThiefSkill
 				mobName=givenTarget.name();
 			else
 				mobName=CMParms.combine(commands,0);
+            if(givenTarget instanceof MOB)
+                tracking=(MOB)givenTarget;
 			if(mobName.length()==0)
 			{
 				mob.tell("Assassinate whom?");
 				return false;
 			}
-			MOB M=mob.location().fetchInhabitant(mobName);
+			MOB M=((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()==mob.location()))?
+                    (MOB)givenTarget:
+                    mob.location().fetchInhabitant(mobName);
 			if(M!=null)
 			{
 				CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
@@ -236,7 +254,7 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,50+(2*getXLEVELLevel(mob)));
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -247,7 +265,7 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50+(2*getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
@@ -261,7 +279,8 @@ public class Thief_Assassinate extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			if((mob.location().okMessage(mob,msg))&&(tracking.okMessage(tracking,msg)))
+			if((mob.location().okMessage(mob,msg))
+            &&(tracking.okMessage(tracking,msg)))
 			{
 				mob.location().send(mob,msg);
 				tracking.executeMsg(tracking,msg);

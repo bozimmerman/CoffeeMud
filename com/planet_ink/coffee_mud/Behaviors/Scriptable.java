@@ -5702,7 +5702,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 33: // mptattoo
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String tattooName=CMParms.getCleanBit(s,2);
+				String tattooName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
 				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
 				{
 					MOB themob=(MOB)newTarget;

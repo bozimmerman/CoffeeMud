@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Empty extends BaseItemParser
+public class Empty extends Drop
 {
 	public Empty(){}
 
@@ -182,7 +182,7 @@ public class Empty extends BaseItemParser
 					&&(I.container()==null))
 					{
 						if(target instanceof Room)
-							Drop.drop(mob,R,I,true,true);
+							drop(mob,I,true,true);
 						else
 						if(target instanceof Container)
 						{

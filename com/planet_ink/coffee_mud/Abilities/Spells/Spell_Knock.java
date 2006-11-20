@@ -41,13 +41,15 @@ public class Spell_Knock extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        Room R=givenTarget==null?mob.location():CMLib.map().roomLocation(givenTarget);
+        if(R==null) R=mob.location();
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
 			int theDir=-1;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Exit E=mob.location().getExitInDir(d);
+				Exit E=R.getExitInDir(d);
 				if((E!=null)
 				&&(!E.isOpen()))
 				{
@@ -63,9 +65,9 @@ public class Spell_Knock extends Spell
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
-			openThis=mob.location().getExitInDir(dirCode);
+			openThis=R.getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+			openThis=getTarget(mob,R,givenTarget,commands,Item.WORNREQ_ANY);
 		if(openThis==null) return false;
 
 		if(openThis instanceof Exit)
@@ -103,25 +105,24 @@ public class Spell_Knock extends Spell
 			beneficialWordsFizzle(mob,openThis,"<S-NAME> point(s) at "+openThis.name()+" and shouts incoherantly, but nothing happens.");
 		else
 		{
-
 			CMMsg msg=CMClass.getMsg(mob,openThis,this,verbalCastCode(mob,openThis,auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CMProps.msp("knock.wav",10));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				for(int a=0;a<openThis.numEffects();a++)
 				{
 					Ability A=openThis.fetchEffect(a);
 					if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock"))&&(A.invoker()!=null)&&(A.invoker().envStats().level()<(mob.envStats().level()+3+(2*getXLEVELLevel(mob)))))
 					{
 						A.unInvoke();
-						mob.location().show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
+						R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
 						break;
 					}
 				}
 				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
-				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
+				CMLib.utensils().roomAffectFully(msg,R,dirCode);
 				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
-				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
+				CMLib.utensils().roomAffectFully(msg,R,dirCode);
 			}
 		}
 

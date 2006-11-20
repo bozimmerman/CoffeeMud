@@ -61,12 +61,12 @@ public class Spell_ShockingGrasp extends Spell
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> grab(s) at <T-NAMESELF>.^?")+CMProps.msp("shock.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+			if((target.location().okMessage(mob,msg))&&((target.location().okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
+                target.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().send(mob,msg2);
+                    target.location().send(mob,msg2);
 					if(msg2.value()<=0)
 					{
 						invoker=mob;

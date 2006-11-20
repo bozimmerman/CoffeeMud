@@ -65,6 +65,8 @@ public class Spell_Slow extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -83,12 +85,12 @@ public class Spell_Slow extends Spell
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> slow(s) down!");
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> slow(s) down!");
 					Ability A=target.fetchEffect("Spell_MassSlow");
 					if(A!=null)A.unInvoke();
 					success=maliciousAffect(mob,target,asLevel,0,-1);

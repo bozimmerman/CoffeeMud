@@ -65,6 +65,11 @@ public class Spell_FaerieFire extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        MOB target = getTarget(mob,commands,givenTarget);
+        if(target==null) return false;
+        Room R=CMLib.map().roomLocation(target);
+        if(R==null) R=mob.location();
+        
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -72,8 +77,6 @@ public class Spell_FaerieFire extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		MOB target = getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
@@ -85,9 +88,9 @@ public class Spell_FaerieFire extends Spell
 			// what happened.
 
 			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
