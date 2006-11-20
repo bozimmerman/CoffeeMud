@@ -210,7 +210,7 @@ public class Log
 	/**
 	* Start all of the log files in the specified directory
 	*
-	* <br><br><b>Usage:</b>  startLogFiles("c:\\temp");
+	* <br><br><b>Usage:</b>  startLogFiles("mud","",10);
 	* @param dirPath the place to create the file
 	* @param numberOfLogs maximum number of files
 	*/
