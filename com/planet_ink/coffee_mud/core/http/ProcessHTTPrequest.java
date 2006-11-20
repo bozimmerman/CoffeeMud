@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import java.net.*;
 import java.util.*;
+import java.util.regex.*;
 import org.mozilla.javascript.*;
 
 import java.io.*;
@@ -300,6 +301,21 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		if(key==null) return null;
 		return (String)getRequestParameters().get(key);
 	}
+    
+    public Vector getAllRequestParameterKeys(String keyMask)
+    {
+        Hashtable H=getRequestParameters();
+        Pattern p=Pattern.compile(keyMask,Pattern.CASE_INSENSITIVE);
+        Matcher M=null;
+        Vector V=new Vector();
+        for(Enumeration e=H.keys();e.hasMoreElements();)
+        {
+            String key=(String)e.nextElement();
+            M=p.matcher(key);
+            if(M.matches()) V.addElement(key);
+        }
+        return V;
+    }
 
 	private Hashtable getRequestParameters()
 	{

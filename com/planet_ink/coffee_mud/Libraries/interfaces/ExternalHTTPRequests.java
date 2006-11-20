@@ -52,6 +52,7 @@ public interface ExternalHTTPRequests extends CMObject
 	public String getRequestParameter(String key);
 	public void removeRequestParameter(String key);
 	public void addRequestParameters(String key, String value);
+    public Vector getAllRequestParameterKeys(String keyMask);
 	public Hashtable getVirtualDirectories();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();

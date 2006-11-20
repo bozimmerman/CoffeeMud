@@ -7,33 +7,107 @@
 	<title>Questmaker</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
-		function Clicked(val)
+		function ClickedBack()
 		{
-			document.QUESTS.FUNCTION.value=val;
+			document.QUESTS.FUNCTION.value='BACK';
 			document.QUESTS.FUNCTION.submit();
+		}
+		function ClickedNext()
+		{
+			if(document.QUESTS.QMEVAL.value!='')
+			{
+				var confirmed=true;
+				eval('confirmed='+document.QUESTS.QMEVAL.value);
+				if(!confirmed) return;
+			}
+			document.QUESTS.FUNCTION.value='NEXT';
+			document.QUESTS.submit();
+		}
+		function Close(val)
+		{
+			if(window.confirm('Cancelling will lose all your hard work.  Are you SURE?!'))
+				window.close();
 		}
 	//-->
 	</SCRIPT>
 </head>
 <body BGCOLOR=BLACK>
-	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
-	</TD>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP><FONT COLOR=WHITE><B>QuestMaker!</B></FONT></TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="window.close();"></TD></TR>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="Close('');"></TD>
+	</TR>
 	</TABLE>
-<CENTER>
 <FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
+@QuestMaker?@@RequestParameter?FUNCTION@@ @ <!-- this will update qmstate and qmdisplay! -->
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
-<INPUT TYPE-HIDDEN NAME=QMSTATE VALUE="@RequestParameter?QMSTATE@">
-@QuestMaker?@@RequestParameter?FUNCTION@@ @
+<INPUT TYPE=HIDDEN NAME=QMSTATE VALUE="@QuestMaker?QMSTATE@">
+<INPUT TYPE=HIDDEN NAME=QMDISPLAY VALUE="@RequestParameter?QMDISPLAY@">
+<INPUT TYPE=HIDDEN NAME=QMNEXT VALUE="@RequestParameter?QMDISPLAY@">
+<INPUT TYPE=HIDDEN NAME=QMPROCESS VALUE="">
+<INPUT TYPE=HIDDEN NAME=QMEVAL VALUE="">
+<FONT COLOR=WHITE>
+	<!-- qmdisplay state = '' means welcome! -->
+	@if?CheckReqParm?QMDISPLAY=@
+		Welcome to the QuestMaker.  Our first step will be to choose a name for your quest.  
+		This name must be unique among all the quests, so if you have a lot of them, you might
+		want to look over the list.  This name will never be displayed, so its not important that
+		it look right.  In fact, using short names with no spaces is the best idea; something like:
+		myfirstquest would do nicely.<P>
+		<CENTER>
+		Quest name:	<INPUT TYPE=TEXT NAME=QMNAME SIZE=20 VALUE="@RequestParameter?QMNAME@">
+		<P>
+		Just hit next to proceed.
+		</CENTER>
+		<SCRIPT LANGUAGE=JavaScript>
+		<!--
+			document.QUESTS.QMEVAL.value='next()';
+			function next()
+			{
+				if(document.QUESTS.QMNAME.value=='')
+				{
+					window.alert('Please enter some sort of name.  That would be really good.');
+					return false;
+				}
+				document.QUESTS.QMNEXT.value='QUESTTIME';
+				return true;
+			}
+		//-->
+		</SCRIPT>
+	@endif@
+	
+	<!-- qmdisplay state = '' means welcome! -->
+	@if?CheckReqParm?QMDISPLAY=QUESTTIME@
+		OK! Now we're going to decide how often our quest runs, when it starts, and how long it runs
+		before being automatically shut down.  Don't worry, if you want your quest to run all the time,
+		we'll be able to set that up here also.<P>
+		<CENTER>
+		Quest name:	<INPUT TYPE=TEXT NAME=QMNAME SIZE=10 VALUE="@RequestParameter?QMNAME@">
+		<P>
+		Just hit next to proceed.
+		</CENTER>
+		<SCRIPT LANGUAGE=JavaScript>
+		<!--
+			document.QUESTS.QMDISPLAY.value='';
+		//-->
+		</SCRIPT>
+	@endif@
+	
 	<TABLE WIDTH=100% BORDER=0><TR>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Back" ONCLICK="Clicked('BACK');"></TD>
-	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	@if?CheckReqParm?!QMDISPLAY=@
+		<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Back" ONCLICK="ClickedBack();"></TD>
+	@endif@
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
 	</TD>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=NEXT VALUE="Next" ONCLICK="Clicked('NEXT');"></TD></TR>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=NEXT VALUE="Next" ONCLICK="ClickedNext();"></TD>
+	</TR>
 	</TABLE>
+</FONT>
 </FORM>
 </CENTER>
 </BODY>
 </HTML>
+@endif@
+@endif@

@@ -36,22 +36,38 @@ public class QuestMaker extends StdWebMacro
     {
         Hashtable parms=parseParms(parm);
         if((parms==null)||(parms.size()==0)) return "";
-        if(parms.containsKey("QMSTATE"))
-        {
-            String s=httpReq.getRequestParameter("QMSTATE");
-            if((s==null)||(s.length()==0))
-                return "<QUEST />";
-            return s;
-        }
+        String qState=httpReq.getRequestParameter("QMSTATE");
+        if((qState==null)||(qState.length()==0)) qState="";
+        if(parms.containsKey("QMSTATE")) return qState;
         else
         if(parms.containsKey("NEXT"))
         {
-            
+            Vector V=httpReq.getAllRequestParameterKeys("^QM(.+)");
+            StringBuffer newState=new StringBuffer("<STATE>");
+            for(int v=0;v<V.size();v++)
+            {
+                String key=(String)V.elementAt(v);
+                if((key.equalsIgnoreCase("QMSTATE"))
+                ||(key.equalsIgnoreCase("QMPROCESS"))
+                ||(key.equalsIgnoreCase("QMNEXT"))
+                ||(key.equalsIgnoreCase("QMEVAL")))
+                    continue;
+                newState.append("<"+key.toUpperCase()+">");
+                newState.append(CMLib.xml().parseOutAngleBrackets(httpReq.getRequestParameter(key)));
+                newState.append("</"+key.toUpperCase()+">");
+            }
+            newState.append("</STATE>");
+            httpReq.addRequestParameters("QMSTATE",qState+newState.toString());
+            httpReq.addRequestParameters("QMDISPLAY",httpReq.getRequestParameter("QMNEXT"));
+            // this should add new data to the qmstate from the page and
+            // proceed on the assumption that the page knows its next display state
+            // from QMDISPLAY
         }
         else
         if(parms.containsKey("BACK"))
         {
-            
+            // this should remove the previous data from the qmstate, re-set the
+            // QMDISPLAY parm to its previous value, and return.
         }
         return "";
     }
