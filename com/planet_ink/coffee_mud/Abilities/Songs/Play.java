@@ -118,6 +118,8 @@ public class Play extends StdAbility
 		&&(!maliciousButNotAggressiveFlag())
 		&&(!mob.amDead())
 		&&(mob.isMonster())
+        &&(mob.amFollowing()==null)
+        &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
 		&&(!mob.isInCombat())
         &&(!CMLib.flags().isATrackingMonster(mob))
 		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
@@ -390,9 +392,11 @@ public class Play extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
+            String songOfStr=songOf()+" on ";
+            if(songOf().equalsIgnoreCase(instrumentName())) songOfStr="";
+			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOfStr+instrumentName()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
+				str="^S<S-NAME> start(s) playing "+songOfStr+instrumentName()+" again.^?";
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				Room R=(Room)commonRoomSet.elementAt(v);

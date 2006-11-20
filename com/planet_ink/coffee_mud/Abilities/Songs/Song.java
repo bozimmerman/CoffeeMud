@@ -102,6 +102,9 @@ public class Song extends StdAbility
 		&&(!mob.amDead())
 		&&(mob.isMonster())
 		&&(!mob.isInCombat())
+        &&(mob.amFollowing()==null)
+        &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
+        &&(!CMLib.flags().isATrackingMonster(mob))
 		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
 		{
 			if((mob.location()!=originRoom)

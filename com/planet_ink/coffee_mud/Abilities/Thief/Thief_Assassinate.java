@@ -103,8 +103,6 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("The trail seems to pause here.");
 				nextDirection=-2;
 				unInvoke();
-                if(mob.isMonster()&&(!CMLib.flags().isMobile(mob)))
-                    CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
 			if(nextDirection==-1)
@@ -112,8 +110,6 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("The trail dries up here.");
 				nextDirection=-999;
 				unInvoke();
-                if(mob.isMonster()&&(!CMLib.flags().isMobile(mob)))
-                    CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
 			if(nextDirection>=0)
@@ -152,8 +148,6 @@ public class Thief_Assassinate extends ThiefSkill
 					else
                     {
 						unInvoke();
-                        if(mob.isMonster()&&(!CMLib.flags().isMobile(mob)))
-                            CMLib.tracking().wanderAway(mob,false,true);
                     }
 				}
 				else
@@ -179,6 +173,19 @@ public class Thief_Assassinate extends ThiefSkill
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
+    public void unInvoke()
+    {
+        MOB mob=(affected instanceof MOB)?(MOB)affected:null;
+        super.unInvoke();
+        if((mob!=null)
+        &&(!mob.amDead())
+        &&(mob.isMonster())
+        &&(!CMLib.flags().isMobile(mob))
+        &&(mob.getStartRoom()!=null)
+        &&(mob.location()!=mob.getStartRoom()))
+            CMLib.tracking().wanderAway(mob,false,true);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))

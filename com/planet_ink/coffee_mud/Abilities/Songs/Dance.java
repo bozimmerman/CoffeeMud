@@ -85,6 +85,8 @@ public class Dance extends StdAbility
 		&&(mob.isMonster())
 		&&(!mob.isInCombat())
 		&&(CMLib.flags().aliveAwakeMobile(mob,true))
+        &&(mob.amFollowing()==null)
+        &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
         &&(!CMLib.flags().isATrackingMonster(mob)))
 		{
 			if((mob.location()!=originRoom)

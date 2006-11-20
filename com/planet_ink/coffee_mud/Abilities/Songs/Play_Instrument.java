@@ -49,8 +49,12 @@ public class Play_Instrument extends Play
 			A.invoke(invoker(),chcommands,mob,true,adjustedLevel(invoker(),0));
             if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
             &&(mob.isMonster())
+            &&(!mob.isInCombat())
             &&(CMLib.flags().isMobile(mob))
-            &&(!CMLib.flags().isATrackingMonster(mob)))
+            &&(!CMLib.flags().isATrackingMonster(mob))
+            &&(mob.amFollowing()==null)
+            &&(!mob.amDead())
+            &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0)))
             {
                 A=CMClass.getAbility("Thief_Assassinate");
                 if(A!=null) A.invoke(mob,invoker(),true,0);
