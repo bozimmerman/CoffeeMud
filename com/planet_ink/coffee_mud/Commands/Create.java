@@ -454,7 +454,7 @@ public class Create extends BaseGenerics
             if((crtestbuf.charAt(c)=='\n')||(crtestbuf.charAt(c)=='\r'))
                 break;
             else
-            if(Character.isWhitespace(c))
+            if(Character.isWhitespace(crtestbuf.charAt(c)))
                 continue;
             else
             { addCR=true; break;}
