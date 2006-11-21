@@ -5497,7 +5497,7 @@ public class BaseGenerics extends StdCommand
             mob.tell(help);
             return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
         }
-        if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr"))) newName="";
+        if(newName.equalsIgnoreCase("null")) newName="";
         if((choices==null)||(choices.length==0))
         {
             set.setElementAt(setDex,2,newName);
