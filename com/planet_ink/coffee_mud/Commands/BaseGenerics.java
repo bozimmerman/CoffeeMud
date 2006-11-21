@@ -307,7 +307,7 @@ public class BaseGenerics extends StdCommand
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
 				String newName=mob.session().prompt(getScr("BaseGenerics","entnull"),"");
-				if(newName.equalsIgnoreCase("null"))
+				if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 					E.setClanID("");
 				else
 				if(newName.length()>0)
@@ -357,7 +357,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","arcfilename",showNumber+"",E.getArchivePath()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","entnull2"),"");
-		if(newName.equalsIgnoreCase("null"))
+		if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setArchivePath("");
 		else
 		if(newName.length()>0)
@@ -562,7 +562,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","description",showNumber+"",E.description()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","entnull3"),"");
-		if(newName.trim().equalsIgnoreCase("null"))
+		if(newName.trim().equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setDescription("");
 		else
 		if(newName.length()>0)
@@ -630,7 +630,7 @@ public class BaseGenerics extends StdCommand
 			newName=mob.session().prompt(getScr("BaseGenerics","some3"),"");
 		if(newName.length()>0)
 		{
-			if(newName.trim().equalsIgnoreCase("null"))
+			if(newName.trim().equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 				newName="";
 			E.setDisplayText(newName);
 		}
@@ -649,7 +649,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(getScr("BaseGenerics","closedtxt",showNumber+"",E.closedText()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
-		if(newName.equals("null"))
+		if(newName.equals(getScr("BaseGenerics","nullstr")))
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),"");
 		else
 		if(newName.length()>0)
@@ -831,7 +831,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(getScr("BaseGenerics","asskeyitem",showNumber+"",E.keyName()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
-			if(newName.equalsIgnoreCase("null"))
+			if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 				E.setKeyName("");
 			else
 			if(newName.length()>0)
@@ -855,7 +855,7 @@ public class BaseGenerics extends StdCommand
 				E.setReadable(true);
 				mob.tell(getScr("BaseGenerics","readabletxt",E.readableText()));
 				String newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
-				if(newName.equalsIgnoreCase("null"))
+				if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 					E.setReadableText("");
 				else
 				if(newName.length()>0)
@@ -1009,7 +1009,7 @@ public class BaseGenerics extends StdCommand
 
 				if(ok)
 				{
-					if(newName.equalsIgnoreCase("null"))
+					if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 						E.setReadableText("");
 					else
 					if(newName.length()>0)
@@ -1700,7 +1700,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(getScr("BaseGenerics","nochange"));
 			return oldValue;
 		}
-		if(value.equalsIgnoreCase("null"))
+		if(value.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 		    value="";
 		return value;
 	}
@@ -1729,7 +1729,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(getScr("BaseGenerics","misctxt",showNumber+"",E.text()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newText=mob.session().prompt(getScr("BaseGenerics","reent"),"");
-			if(newText.equalsIgnoreCase("NULL"))
+			if(newText.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 				E.setMiscText("");
 			else
 			if(newText.length()>0)
@@ -2385,7 +2385,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","secretid",showNumber+"",E.rawSecretIdentity()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt(getScr("BaseGenerics","entnewid"),"");
-		if(newValue.equalsIgnoreCase("null"))
+		if(newValue.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setSecretIdentity("");
 		else
 		if(newValue.length()>0)
@@ -3080,7 +3080,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","prejudice",showNumber+"",E.prejudiceFactors()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt(getScr("BaseGenerics","anewstri"),"");
-		if(newValue.equalsIgnoreCase("null"))
+		if(newValue.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setPrejudiceFactors("");
 		else
 		if(newValue.length()>0)
@@ -3096,7 +3096,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","budget",showNumber+"",E.budget()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt(getScr("BaseGenerics","anewstri"),"");
-		if(newValue.equalsIgnoreCase("null"))
+		if(newValue.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setBudget("");
 		else
 		if(newValue.length()>0)
@@ -3112,7 +3112,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","devaluationrate",showNumber+"",E.devalueRate()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt(getScr("BaseGenerics","anewstri"),"");
-		if(newValue.equalsIgnoreCase("null"))
+		if(newValue.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setDevalueRate("");
 		else
 		if(newValue.length()>0)
@@ -3140,7 +3140,7 @@ public class BaseGenerics extends StdCommand
         mob.tell(getScr("BaseGenerics","ignoremask",showNumber+"",E.ignoreMask()));
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newValue=mob.session().prompt(getScr("BaseGenerics","anewsmask"),"");
-        if(newValue.equalsIgnoreCase("null"))
+        if(newValue.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
             E.setIgnoreMask("");
         else
         if(newValue.length()>0)
@@ -3762,7 +3762,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
-        if(newName.equals("null"))
+        if(newName.equals(getScr("BaseGenerics","nullstr")))
             E.setStat(Field,"");
         else
 		if(newName.length()>0)
@@ -3784,7 +3784,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		else
-		if(newName.equalsIgnoreCase("null"))
+		if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setStat(Field,"");
 		else
 		if(newName.length()>0)
@@ -3799,7 +3799,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
-		if(newName.equalsIgnoreCase("null"))
+		if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 			E.setStat(Field,"");
 		else
 		if(newName.length()>0)
@@ -4806,7 +4806,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","naturalweap",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","weapname"),"");
-		if(newName.equalsIgnoreCase("null"))
+		if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 		{
 			E.setStat("WEAPONCLASS","");
 			mob.tell(getScr("BaseGenerics","humanweapset"));
@@ -5497,7 +5497,7 @@ public class BaseGenerics extends StdCommand
             mob.tell(help);
             return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
         }
-        if(newName.equalsIgnoreCase("null")) newName="";
+        if(newName.equalsIgnoreCase(getScr("BaseGenerics","nullstr"))) newName="";
         if((choices==null)||(choices.length==0))
         {
             set.setElementAt(setDex,2,newName);
@@ -5654,7 +5654,7 @@ public class BaseGenerics extends StdCommand
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","faction",showNumber+""));
-                list.append(CMStrings.padRight("   Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Code",16)+CMStrings.padRight("Align",6)+"\n\r");
+                list.append(CMStrings.padRight(getScr("BaseGenerics","facname"),21)+CMStrings.padRight(getScr("BaseGenerics","facmin"),11)+CMStrings.padRight(getScr("BaseGenerics","facmax"),11)+CMStrings.padRight(getScr("BaseGenerics","faccode"),16)+CMStrings.padRight(getScr("BaseGenerics","facalign"),6)+"\n\r");
                 for(int r=0;r<me.ranges().size();r++)
                 {
                     Faction.FactionRange FR=(Faction.FactionRange)me.ranges().elementAt(r);
@@ -5834,7 +5834,7 @@ public class BaseGenerics extends StdCommand
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","factionmod",showNumber+""));
-                list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight("Loss",6)+"\n\r");
+                list.append("    #) "+CMStrings.padRight(getScr("BaseGenerics","faczapper"),31)+CMStrings.padRight(getScr("BaseGenerics","facgain"),6)+CMStrings.padRight(getScr("BaseGenerics","facloss"),6)+"\n\r");
                 StringBuffer choices=new StringBuffer("");
                 for(int r=0;r<me.factors().size();r++)
                 {
@@ -5979,9 +5979,9 @@ public class BaseGenerics extends StdCommand
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","factrigg",showNumber+""));
                 list.append("    "+CMStrings.padRight("Type",15)
-                        +" "+CMStrings.padRight("Direction",10)
-                        +" "+CMStrings.padRight("Factor",10)
-                        +" "+CMStrings.padRight("Flags",20)
+                        +" "+CMStrings.padRight(getScr("BaseGenerics","facdir"),10)
+                        +" "+CMStrings.padRight(getScr("BaseGenerics","facfactor"),10)
+                        +" "+CMStrings.padRight(getScr("BaseGenerics","facflags"),20)
                         +" Mask\n\r");
                 for(Enumeration e=me.Changes().elements();e.hasMoreElements();)
                 {
@@ -6084,9 +6084,9 @@ public class BaseGenerics extends StdCommand
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","abiallow",showNumber+""));
                 list.append("    #) "
-                        +CMStrings.padRight("Ability masks",40)
-                        +" "+CMStrings.padRight("Low value",10)
-                        +" "+CMStrings.padRight("High value",10)
+                        +CMStrings.padRight(getScr("BaseGenerics","facmasks"),40)
+                        +" "+CMStrings.padRight(getScr("BaseGenerics","faclow"),10)
+                        +" "+CMStrings.padRight(getScr("BaseGenerics","fachigh"),10)
                         +"\n\r");
                 int num=0;
                 StringBuffer choices=new StringBuffer("0\n\r");
@@ -7223,7 +7223,7 @@ public class BaseGenerics extends StdCommand
 		while((mob.session()!=null)&&(!mob.session().killFlag()))
 		{
 			String newName=mob.session().prompt(getScr("BaseGenerics","entnull"),"");
-			if(newName.trim().equalsIgnoreCase("null"))
+			if(newName.trim().equalsIgnoreCase(getScr("BaseGenerics","nullstr")))
 				return "";
 			else
 			if(newName.trim().length()==0)

@@ -38,7 +38,7 @@ import java.util.*;
 
 public class WillQualify extends BaseAbleLister{
 	public WillQualify() {}
-	private String[] access={"WILLQUALIFY"};
+	private String[] access={getScr("WillQualify","cmd1")};
 	public String[] getAccessWords(){return access;}
 
 	public StringBuffer getQualifiedAbilities(MOB able, String Class,
@@ -72,14 +72,14 @@ public class WillQualify extends BaseAbleLister{
 			if (thisLine.length() > 0) 
 			{
 				if (msg.length() == 0)
-				        msg.append("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r");
+				        msg.append(getScr("WillQualify","qualhdr"));
 				msg.append(thisLine);
 			}
 		}
 		if (msg.length() == 0)
 		        return msg;
 		msg.insert(0, prefix);
-		msg.append("\n\r* This skill is automatically granted.");
+		msg.append(getScr("WillQualify","autogrant"));
 		return msg;
 	}
 
@@ -87,7 +87,7 @@ public class WillQualify extends BaseAbleLister{
 	                throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		String willQualErr = "Specify level and class:  WILLQUALIFY [LEVEL] ([CLASS NAME]).";
+		String willQualErr = getScr("WillQualify","willqualinst");
 		if((commands.size()<2)||((commands.size()>1)&&(!CMath.isNumber((String)commands.elementAt(1)))))
 		{
 			mob.tell(willQualErr); 
@@ -103,10 +103,10 @@ public class WillQualify extends BaseAbleLister{
 			CharClass C=CMClass.findCharClass(className);
 			if (C == null) 
 			{
-			        mob.tell("No class found by that name.");
+			        mob.tell(getScr("WillQualify","noclass"));
 			        return false;
 			}
-			msg.append("At level "+level+" of class '"+C.ID()+"', you could qualify for:\n\r");
+			msg.append(getScr("WillQualify","atlvlannounce",""+level,C.ID()));
 			msg.append(getQualifiedAbilities(mob,C.ID(),level,""));
 			if(!mob.isMonster())
 			    mob.session().wraplessPrintln(msg.toString());

@@ -1040,7 +1040,7 @@ public class List extends StdCommand
         commands.removeElementAt(0);
         Enumeration roomsToDo=null;
         String rest=CMParms.combine(commands,0);
-        if(rest.equalsIgnoreCase("area"))
+        if(rest.equalsIgnoreCase(getScr("List","lstarea")))
             roomsToDo=mob.location().getArea().getMetroMap();
         else
         if(rest.trim().length()==0)
@@ -1056,7 +1056,7 @@ public class List extends StdCommand
                 if(R!=null)
                     roomsToDo=CMParms.makeVector(mob.location()).elements();
                 else
-                    return new StringBuffer("There's no such place as '"+rest+"'");
+                    return new StringBuffer(getScr("List","nosuchplace")+rest+"'");
             }
         }
         StringBuffer buf=new StringBuffer("");
@@ -1103,7 +1103,7 @@ public class List extends StdCommand
     {
         Vector V=CMLib.polls().getPollList();
         if(V.size()==0)
-            mob.tell("\n\rNo polls available.  Fix that by entering CREATE POLL!");
+            mob.tell(getScr("List","nopolls"));
         else
         {
             StringBuffer str=new StringBuffer("");
@@ -1112,7 +1112,7 @@ public class List extends StdCommand
                 Poll P=(Poll)V.elementAt(v);
                 str.append(CMStrings.padRight(""+(v+1),2)+": "+P.getName());
                 if(!CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE))
-                    str.append(" (inactive)");
+                    str.append(getScr("List","inactive"));
                 else
                 if(P.getExpiration()>0) 
                     str.append(" (expires: "+CMLib.time().date2String(P.getExpiration())+")");
@@ -1126,7 +1126,7 @@ public class List extends StdCommand
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("List what?");
+			mob.tell(getScr("List","listwhat"));
 			return;
 		}
 
@@ -1140,7 +1140,7 @@ public class List extends StdCommand
 		{
 			Vector V=getMyCmdWords(mob);
 			if(V.size()==0)
-				mob.tell("You are not allowed to use this command!");
+				mob.tell(getScr("List","notallow"));
 			else
 			{
 				StringBuffer str=new StringBuffer("");
@@ -1149,12 +1149,12 @@ public class List extends StdCommand
 					{
 						str.append((String)V.elementAt(v));
 						if(v==(V.size()-2))
-							str.append(", or ");
+							str.append(getScr("List","or"));
 						else
 						if(v<(V.size()-1))
 							str.append(", ");
 					}
-				mob.tell("You cannot list '"+listWord+"'.  Try "+str.toString()+".");
+				mob.tell(getScr("List","nolist",listWord)+str.toString()+".");
 			}
 			return;
 		}
@@ -1163,7 +1163,7 @@ public class List extends StdCommand
 		case 0:	s.wraplessPrintln(unlinkedExits(mob,commands)); break;
 		case 1: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.basicItems()).toString()); break;
 		case 2: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.armor()).toString()); break;
-		case 3: s.wraplessPrintln(listEnvResources(rest.equalsIgnoreCase("SHORT"))); break;
+		case 3: s.wraplessPrintln(listEnvResources(rest.equalsIgnoreCase(getScr("List","lstshort")))); break;
 		case 4: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.weapons()).toString()); break;
 		case 5: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.mobTypes()).toString()); break;
 		case 6: s.wraplessPrintln(roomDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
@@ -1171,7 +1171,7 @@ public class List extends StdCommand
 		case 8: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.locales()).toString()); break;
 		case 9: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.behaviors()).toString()); break;
 		case 10: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.exits()).toString()); break;
-		case 11: s.wraplessPrintln(listRaces(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+		case 11: s.wraplessPrintln(listRaces(CMClass.races(),rest.equalsIgnoreCase(getScr("List","lstshort"))).toString()); break;
 		case 12: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.charClasses()).toString()); break;
 		case 13: s.wraplessPrintln(listSubOps(mob).toString()); break;
 		case 14: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
@@ -1193,7 +1193,7 @@ public class List extends StdCommand
         case 30: s.wraplessPrintln(roomPropertyDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 31:
 		{
-			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");
+			StringBuffer str=new StringBuffer(getScr("List","protplayers"));
 			Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 			if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
@@ -1203,7 +1203,7 @@ public class List extends StdCommand
 		}
 		case 32:
 		{
-			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
+			StringBuffer str=new StringBuffer(getScr("List","bannednames"));
 			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
@@ -1211,12 +1211,12 @@ public class List extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-        case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+        case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase(getScr("List","lstshort"))).toString()); break;
 		case 34: s.wraplessPrintln(Log.getLog().toString()); break;
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;
-		case 38: s.println(listThreads(mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
+		case 38: s.println(listThreads(mob,CMParms.combine(commands,1).equalsIgnoreCase(getScr("List","lstshort"))).toString()); break;
 		case 39: s.println(listResources(mob,CMParms.combine(commands,1))); break;
 		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
@@ -1226,13 +1226,13 @@ public class List extends StdCommand
 		case 45: s.wraplessPrintln(listExpertises()); break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
-        case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
+        case 48: s.println(getScr("List","counterrpt")+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
         case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
 		case 51: s.wraplessPrintln(roomExpires(mob.location().getArea().getProperMap(),mob.location()).toString()); break;
         case 52: s.wraplessPrintln(listTitles()); break;
         default:
-			s.println("List?!");
+			s.println(getScr("List","listhuh"));
 			break;
 		}
 	}
@@ -1273,19 +1273,19 @@ public class List extends StdCommand
 		}
 		if(V.size()==0)
 		{
-			mob.tell("You don't see anyone here buying or selling.");
+			mob.tell(getScr("List","nobuy"));
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental shopkeeper=(Environmental)V.elementAt(i);
             ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-            String str="<S-NAME> review(s) <T-YOUPOSS> inventory.";
+            String str=getScr("List","reviewinv");
             if(SHOP instanceof Banker)
-                str="<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>.";
+                str=getScr("List","reviewacct");
             else
             if(SHOP instanceof PostOffice)
-                str="<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>.";
+                str=getScr("List","checksbox");
 			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,str);
 			if(!mob.location().okMessage(mob,newMsg))
 				return false;
