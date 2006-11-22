@@ -103,7 +103,7 @@ public class BaseChanneler extends StdCommand
 			}
 		}
 		else
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^?^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^?^.");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,getScr("BaseChanneler","channelemote",channelName,channelName,message),CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),getScr("BaseChanneler","channelmsgs",channelName,channelName,message));
 		if((mob.location()!=null)
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
 		{

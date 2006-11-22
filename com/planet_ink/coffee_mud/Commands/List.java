@@ -1069,12 +1069,12 @@ public class List extends StdCommand
             if(R.roomID().length()==0) continue;
             set=CMLib.database().DBReadRoomData(CMLib.map().getExtendedRoomID(R),false);
             if((set==null)||(set.size()==0))
-                buf.append("'"+CMLib.map().getExtendedRoomID(R)+"' could not be read from the database!\n\r");
+                buf.append("'"+CMLib.map().getExtendedRoomID(R)+getScr("List","notreaddb"));
             else
             {
                 TR=(Room)set.elements().nextElement();
                 CMLib.database().DBReadContent(TR,set);
-                buf.append("\n\r^NRoomID: "+CMLib.map().getExtendedRoomID(TR)+"\n\r");
+                buf.append(getScr("List","roomid")+CMLib.map().getExtendedRoomID(TR)+"\n\r");
                 for(int m=0;m<TR.numInhabitants();m++)
                 {
                     MOB M=TR.fetchInhabitant(m);
@@ -1115,7 +1115,7 @@ public class List extends StdCommand
                     str.append(getScr("List","inactive"));
                 else
                 if(P.getExpiration()>0) 
-                    str.append(" (expires: "+CMLib.time().date2String(P.getExpiration())+")");
+                    str.append(getScr("List","expires")+CMLib.time().date2String(P.getExpiration())+")");
                 str.append("\n\r");
             }
             mob.tell(str.toString());

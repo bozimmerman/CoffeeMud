@@ -5982,7 +5982,7 @@ public class BaseGenerics extends StdCommand
                         +" "+CMStrings.padRight(getScr("BaseGenerics","facdir"),10)
                         +" "+CMStrings.padRight(getScr("BaseGenerics","facfactor"),10)
                         +" "+CMStrings.padRight(getScr("BaseGenerics","facflags"),20)
-                        +" Mask\n\r");
+                        +getScr("BaseGenerics","facmask"));
                 for(Enumeration e=me.Changes().elements();e.hasMoreElements();)
                 {
                     Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)e.nextElement();

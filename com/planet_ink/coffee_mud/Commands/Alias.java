@@ -56,7 +56,7 @@ public class Alias extends StdCommand
             if((num>0)&&(num<=(aliasNames.length)))
             {
                 selection=aliasNames[num-1];
-                if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
+                if(mob.session().choose(getScr("Alias","delmodalias",selection),getScr("Alias","delmodopt"),getScr("Alias","delmoddef")).equals(getScr("Alias","delmoddef2")))
                 {
                     ps.delAliasName(selection);
                     mob.tell(getScr("Alias","deleted"));
@@ -68,7 +68,7 @@ public class Alias extends StdCommand
                 break;
             else
             {
-               selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
+               selection=mob.session().prompt(getScr("Alias","newalias"),"").trim().toUpperCase();
                if(selection.length()==0)
                    selection=null;
                else
@@ -93,7 +93,7 @@ public class Alias extends StdCommand
             }
             if(selection!=null)
             {
-                mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
+                mob.session().rawPrintln(getScr("Alias","aliasval",selection));
                 String value=mob.session().prompt(": ","").trim();
                 value=CMStrings.replaceAll(value,"<","");
                 value=CMStrings.replaceAll(value,"&","");

@@ -32,8 +32,7 @@ import java.util.*;
 */
 public class After extends StdCommand implements Tickable
 {
-	public String ID(){return "SysOpSkills";}
-	public String name(){return "SysOpSkills";}
+	public String name(){return "After";}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 
 	public Vector afterCmds=new Vector();
