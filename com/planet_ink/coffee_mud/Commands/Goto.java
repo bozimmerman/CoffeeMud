@@ -34,7 +34,7 @@ public class Goto extends At
 {
 	public Goto(){}
 
-	private String[] access={getScr("Goto","cmd1")};
+	private String[] access={"GOTO"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,7 +42,7 @@ public class Goto extends At
 		Room room=null;
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Goto","where"));
+			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -57,10 +57,10 @@ public class Goto extends At
 		if(stack.size()>10)
 			stack.removeElementAt(0);
 		Room curRoom=mob.location();
-		if(getScr("Goto","cmdprevious").startsWith(cmd.toString().toUpperCase()))
+		if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
 		{
 			if(stack.size()==0)
-				mob.tell(getScr("Goto","nostack"));
+				mob.tell("Your previous room stack is empty.");
 			else
 			{
 				room=CMLib.map().getRoom((String)stack.lastElement());
@@ -72,20 +72,20 @@ public class Goto extends At
 
 		if(room==null)
 		{
-			mob.tell(getScr("Goto","gotowhere"));
+			mob.tell("Goto where? Try a Room ID, player name, area name, room text, or PREVIOUS!");
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,room,"GOTO"))
 		{
-			mob.tell(getScr("Goto","nopower"));
+			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
 			return false;
 		}
 		if(curRoom==room)
 		{
-			mob.tell(getScr("Goto","done"));
+			mob.tell("Done.");
 			return false;
 		}
-		if(!getScr("Goto","cmdprevious").startsWith(cmd.toString().toUpperCase()))
+		if(!"PREVIOUS".startsWith(cmd.toString().toUpperCase()))
 		{
 			if((stack.size()==0)||(stack.lastElement()!=mob.location()))
 				stack.addElement(CMLib.map().getExtendedRoomID(mob.location()));

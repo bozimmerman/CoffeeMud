@@ -35,20 +35,20 @@ public class Fill extends BaseItemParser
 {
 	public Fill(){}
 
-	private String[] access={getScr("Fill","cmd1")};
+	private String[] access={"FILL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Fill","what"));
+			mob.tell("Fill what, from what?");
 			return false;
 		}
 		commands.removeElementAt(0);
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell(getScr("Fill","fromwhat")+(String)commands.elementAt(0)+"?");
+			mob.tell("From what should I fill the "+(String)commands.elementAt(0)+"?");
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -58,7 +58,7 @@ public class Fill extends BaseItemParser
 		{
             int fromDex=commands.size()-1;
             for(int i=commands.size()-2;i>=1;i--)
-                if(((String)commands.elementAt(i)).equalsIgnoreCase(getScr("Fill","from")))
+                if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
                 {
                     fromDex=i;
                     commands.removeElementAt(i);
@@ -67,7 +67,7 @@ public class Fill extends BaseItemParser
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORNREQ_ANY);
 			if((fillFromThis==null)||((fillFromThis!=null)&&(!CMLib.flags().canBeSeenBy(fillFromThis,mob))))
 			{
-				mob.tell(getScr("Fill","nosee",thingToFillFrom));
+				mob.tell("I don't see "+thingToFillFrom+" here.");
 				return false;
 			}
             while(commands.size()>=(fromDex+1))
@@ -81,9 +81,9 @@ public class Fill extends BaseItemParser
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Fill","all")):false;
-		if(thingToFill.toUpperCase().startsWith(getScr("Fill","alldot"))){ allFlag=true; thingToFill=getScr("Fill","allup")+thingToFill.substring(4);}
-		if(thingToFill.toUpperCase().endsWith(getScr("Fill","dotall"))){ allFlag=true; thingToFill=getScr("Fill","allup")+thingToFill.substring(0,thingToFill.length()-4);}
+		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
+		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
 		do
 		{
 			Item fillThis=mob.fetchInventory(null,thingToFill+addendumStr);
@@ -95,7 +95,7 @@ public class Fill extends BaseItemParser
 		}
 		while((allFlag)&&(maxToFill<addendum));
 		if(V.size()==0)
-			mob.tell(getScr("Fill","nohave")+thingToFill+"'.");
+			mob.tell("You don't seem to have '"+thingToFill+"'.");
 		else
 		for(int i=0;i<V.size();i++)
 		{

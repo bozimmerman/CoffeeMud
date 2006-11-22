@@ -34,7 +34,7 @@ public class Export extends StdCommand
 {
 	public Export(){}
 
-	private String[] access={getScr("Export","cmd1")};
+	private String[] access={"EXPORT"};
 	public String[] getAccessWords(){return access;}
 
 	public static void reallyExport(MOB mob, Session S, String fileName, String xml)
@@ -44,29 +44,29 @@ public class Export extends StdCommand
 		if(xml==null) return;
 		if(xml.length()==0) return;
 
-		if(fileName.equalsIgnoreCase(getScr("Export","cmdscreen")))
+		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
-			if(S!=null) mob.tell(getScr("Export","hereitis"));
+			if(S!=null) mob.tell("Here it is:\n\r\n\r");
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
 			if(S!=null) S.rawPrintln(xml+"\n\r\n\r");
 		}
 		else
-		if(fileName.equalsIgnoreCase(getScr("Export","cmdemail")))
+		if(fileName.equalsIgnoreCase("EMAIL"))
 		{
 			if(!CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 			{
-				if(S!=null) mob.tell(getScr("Export","noforward"));
+				if(S!=null) mob.tell("Mail forwarding is not enabled on this mud.");
 			    return;
 			}
 			if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
 			{
-				if(S!=null) mob.tell(getScr("Export","nobox"));
+				if(S!=null) mob.tell("No email box has been defined.");
 			    return;
 			}
 			if((mob.playerStats()==null)||(mob.playerStats().getEmail().length()==0))
 			{
-				if(S!=null) mob.tell(getScr("Export","noaddy"));
+				if(S!=null) mob.tell("No email address has been defined.");
 			    return;
 			}
 			xml=xml.replace('\n',' ');
@@ -75,18 +75,18 @@ public class Export extends StdCommand
 			        CMProps.getVar(CMProps.SYSTEM_MAILBOX),
 			        mob.Name(),
 			        mob.Name(),
-			        getScr("Export","emailsubj"),
+			        "Exported XML",
 			        xml.toString(),
 			        -1);
-			if(S!=null) mob.tell(getScr("Export","emailedto")+mob.playerStats().getEmail());
+			if(S!=null) mob.tell("XML emailed to "+mob.playerStats().getEmail());
 		}
 		else
 		{
-			if(S!=null) mob.tell(getScr("Export","writing"));
+			if(S!=null) mob.tell("Writing file...");
 			if(fileName.indexOf(".")<0)
 				fileName=fileName+".cmare";
             new CMFile(fileName,mob,false).saveText(xml);
-            if(S!=null) mob.tell(getScr("Export","filewritten",fileName));
+            if(S!=null) mob.tell("File '"+fileName+"' written.");
 		}
 	}
 
@@ -122,63 +122,63 @@ public class Export extends StdCommand
 			commandType=((String)commands.elementAt(0)).toUpperCase();
 			commands.removeElementAt(0);
 		}
-		if((!commandType.equalsIgnoreCase(getScr("Export","cmdroom")))
-		&&(!commandType.equalsIgnoreCase(getScr("Export","cmdworld")))
-		&&(!commandType.equalsIgnoreCase(getScr("Export","cmdplayer")))
-		&&(!commandType.equalsIgnoreCase(getScr("Export","cmdarea"))))
+		if((!commandType.equalsIgnoreCase("ROOM"))
+		&&(!commandType.equalsIgnoreCase("WORLD"))
+		&&(!commandType.equalsIgnoreCase("PLAYER"))
+		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
-			if(S!=null) mob.tell(getScr("Export","what"));
+			if(S!=null) mob.tell("Export what?  Room, World, Player, or Area?");
 			return false;
 		}
-		if(commandType.equalsIgnoreCase(getScr("Export","cmdplayer")))
+		if(commandType.equalsIgnoreCase("PLAYER"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,"EXPORTPLAYERS"))
 			{
-				if(S!=null) mob.tell(getScr("Export","noplayers"));
+				if(S!=null) mob.tell("You are not allowed to export player data.");
 				return false;
 			}
 		}
 		else
 		if(!CMSecurity.isAllowed(mob,room,"EXPORT"))
 		{
-			if(S!=null) mob.tell(getScr("Export","nodata"));
+			if(S!=null) mob.tell("You are not allowed to export room, mob, or item data.");
 			return false;
 		}
 
-		String subType=getScr("Export","cmddata");
+		String subType="DATA";
 		if(commands.size()>0)
 		{
 			String sub=((String)commands.firstElement()).toUpperCase().trim();
-			if((sub.equalsIgnoreCase(getScr("Export","cmditems"))
-				||sub.equalsIgnoreCase(getScr("Export","cmdmobs"))
-				||sub.equalsIgnoreCase(getScr("Export","cmdweapons"))
-				||sub.equalsIgnoreCase(getScr("Export","cmdarmor")))
-			&&(!commandType.equalsIgnoreCase(getScr("Export","cmdplayer"))))
+			if((sub.equalsIgnoreCase("ITEMS")
+				||sub.equalsIgnoreCase("MOBS")
+				||sub.equalsIgnoreCase("WEAPONS")
+				||sub.equalsIgnoreCase("ARMOR"))
+			&&(!commandType.equalsIgnoreCase("PLAYER")))
 			{
 				subType=sub;
 				commands.removeElementAt(0);
 			}
 			else
-			if(sub.equalsIgnoreCase(getScr("Export","cmdsubdata")))
+			if(sub.equalsIgnoreCase("data"))
 				commands.removeElementAt(0);
 
 			if(commands.size()==0)
 			{
-				if(S!=null) mob.tell(getScr("Export","specoutput"));
+				if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address.");
 				return false;
 			}
 			fileName=CMParms.combine(commands,0);
-			if(fileName.equalsIgnoreCase(getScr("Export","cmdscreen2")))
+			if(fileName.equalsIgnoreCase("screen"))
 				fileNameCode=0;
 			else
-			if(fileName.equalsIgnoreCase(getScr("Export","cmdemail2")))
+			if(fileName.equalsIgnoreCase("email"))
 				fileNameCode=3;
 			else
-			if(fileName.equalsIgnoreCase(getScr("Export","cmdmemory2")))
+			if(fileName.equalsIgnoreCase("memory"))
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
 				{
-					if(S!=null) mob.tell(getScr("Export","noexportmsm"));
+					if(S!=null) mob.tell("You are not allowed to export to memory.");
 					return false;
 				}
 				fileNameCode=4;
@@ -187,7 +187,7 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
 				{
-					if(S!=null) mob.tell(getScr("Export","noexportfile"));
+					if(S!=null) mob.tell("You are not allowed to export to a file.");
 					return false;
 				}
 				CMFile F=new CMFile(fileName,mob,false);
@@ -199,18 +199,18 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			if(S!=null) mob.tell(getScr("Export","unspecified"));
+			if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
 			return false;
 		}
 
 		String xml="";
-		if(subType.equalsIgnoreCase(getScr("Export","cmddata")))
+		if(subType.equalsIgnoreCase("DATA"))
 		{
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdplayer")))
+			if(commandType.equalsIgnoreCase("PLAYER"))
 			{
 				StringBuffer x=new StringBuffer("<PLAYERS>");
 				if(S!=null)
-					S.rawPrint(getScr("Export","readingplayers"));
+					S.rawPrint("Reading players...");
 				Vector V=CMLib.database().getUserList();
 				for(int v=0;v<V.size();v++)
 				{
@@ -230,16 +230,16 @@ public class Export extends StdCommand
 					S.rawPrintln("!");
 			}
 			else
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdroom")))
+			if(commandType.equalsIgnoreCase("ROOM"))
 			{
 				xml=CMLib.coffeeMaker().getRoomXML(room,custom,files,true).toString();
 				if(fileNameCode==2) fileName=fileName+"/room";
 			}
 			else
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdarea")))
+			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(S!=null)
-					S.rawPrint(getScr("Export","readingarea")+area.Name()+"'...");
+					S.rawPrint("Reading area '"+area.Name()+"'...");
 				xml=CMLib.coffeeMaker().getAreaXML(area,S,custom,files,true).toString();
 				if(fileNameCode==2){
 					if(area.getArchivePath().length()>0)
@@ -254,7 +254,7 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,"EXPORT"))
 				{
-					if(S!=null) mob.tell(getScr("Export","noworld"));
+					if(S!=null) mob.tell("You are not allowed to export world data.");
 					return false;
 				}
 				StringBuffer buf=new StringBuffer("");
@@ -265,7 +265,7 @@ public class Export extends StdCommand
 					if(A!=null)
 					{
 						if(S!=null)
-							S.rawPrint(getScr("Export","readingarea")+A.name()+"'...");
+							S.rawPrint("Reading area '"+A.name()+"'...");
 						buf.append(CMLib.coffeeMaker().getAreaXML(A,S,custom,files,true).toString());
 						if(S!=null)
 							S.rawPrintln("!");
@@ -285,17 +285,17 @@ public class Export extends StdCommand
 			}
 		}
 		else
-		if(subType.equalsIgnoreCase(getScr("Export","cmdmobs")))
+		if(subType.equalsIgnoreCase("MOBS"))
 		{
 			if(fileNameCode==2) fileName=fileName+"/mobs";
 			Hashtable found=new Hashtable();
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdroom")))
+			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<MOBS>"+CMLib.coffeeMaker().getRoomMobs(room,custom,files,found).toString()+"</MOBS>";
 			else
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdarea")))
+			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(S!=null)
-					S.rawPrint(getScr("Export","readingmobs")+area.Name()+"'...");
+					S.rawPrint("Reading area mobs '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
 				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
@@ -310,7 +310,7 @@ public class Export extends StdCommand
 			else
 			{
 				if(S!=null)
-					S.rawPrint(getScr("Export","readingworldmobs"));
+					S.rawPrint("Reading world mobs ...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
@@ -327,19 +327,19 @@ public class Export extends StdCommand
 			}
 		}
 		else
-		if((subType.equalsIgnoreCase(getScr("Export","cmditems")))
-		||(subType.equalsIgnoreCase(getScr("Export","cmdweapons")))
-		||(subType.equalsIgnoreCase(getScr("Export","cmdarmor"))))
+		if((subType.equalsIgnoreCase("ITEMS"))
+		||(subType.equalsIgnoreCase("WEAPONS"))
+		||(subType.equalsIgnoreCase("ARMOR")))
 		{
 			int type=0;
-			if(subType.equalsIgnoreCase(getScr("Export","cmdweapons")))
+			if(subType.equalsIgnoreCase("WEAPONS"))
 			{
 				if(fileNameCode==2)
 					fileName=fileName+"/weapons";
 				type=1;
 			}
 			else
-			if(subType.equalsIgnoreCase(getScr("Export","cmdarmor")))
+			if(subType.equalsIgnoreCase("ARMOR"))
 			{
 				if(fileNameCode==2)
 					fileName=fileName+"/armor";
@@ -352,10 +352,10 @@ public class Export extends StdCommand
 			}
 
 			Hashtable found=new Hashtable();
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdroom")))
+			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<ITEMS>"+CMLib.coffeeMaker().getRoomItems(room,found,files,type).toString()+"</ITEMS>";
 			else
-			if(commandType.equalsIgnoreCase(getScr("Export","cmdarea")))
+			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(S!=null)
 					S.rawPrint("Reading area "+subType.toLowerCase()+" '"+area.Name()+"'...");
@@ -373,7 +373,7 @@ public class Export extends StdCommand
 			else
 			{
 				if(S!=null)
-					S.rawPrint(getScr("Export","readingworld")+subType.toLowerCase()+" ...");
+					S.rawPrint("Reading world "+subType.toLowerCase()+" ...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{

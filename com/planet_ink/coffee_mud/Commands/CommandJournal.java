@@ -51,7 +51,7 @@ public class CommandJournal extends StdCommand
     {
         String first=(String)commands.elementAt(1);
         String second=(commands.size()>2)?CMParms.combine(commands,2):"";
-        if(!(getScr("CommandJournal","review").startsWith(first.toUpperCase().trim())))
+        if(!("REVIEW".startsWith(first.toUpperCase().trim())))
            return false;
         if((!CMSecurity.isAllowed(mob,mob.location(),security))
         &&(!CMSecurity.isAllowed(mob,mob.location(),"KILL"+security+"S")))
@@ -137,7 +137,7 @@ public class CommandJournal extends StdCommand
                 String prePend="";
                 if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
                     prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
-                CMLib.database().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),getScr("CommandJournal","all"),
+                CMLib.database().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
                         journalWord+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
                         prePend+CMParms.combine(commands,1),
                         -1);

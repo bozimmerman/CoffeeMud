@@ -34,14 +34,14 @@ public class DumpFile extends StdCommand
 {
 	public DumpFile(){}
 
-	private String[] access={getScr("DumpFile","cmd1")};
+	private String[] access={"DUMPFILE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("DumpFile","dumpinst"));
+			mob.tell("dumpfile {raw} username|all {filename1 ...}");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -50,19 +50,19 @@ public class DumpFile extends StdCommand
 		int numSessions = 0;
 		boolean rawMode=false;
 
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("DumpFile","raw")))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("raw"))
 		{
 			rawMode = true;
 			commands.removeElementAt(0);
 		}
 
 		String targetName = new String((String)commands.elementAt(0));
-		boolean allFlag=(targetName.equalsIgnoreCase(getScr("DumpFile","all")));
+		boolean allFlag=(targetName.equalsIgnoreCase("all"));
 
 		commands.removeElementAt(0);
 
 		// so they can do dumpfile (username) RAW filename too
-		if(!rawMode && ( ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("DumpFile","raw"))) )
+		if(!rawMode && ( ((String)commands.elementAt(0)).equalsIgnoreCase("raw")) )
 		{
 			rawMode = true;
 			commands.removeElementAt(0);
@@ -114,7 +114,7 @@ public class DumpFile extends StdCommand
 				}
 			}
 		}
-		mob.tell(getScr("DumpFile","dumpsmsg" , ""+numFiles ,  ""+numSessions ));
+		mob.tell("dumped " + numFiles + " files to " + numSessions + " user(s)");
 		return false;
 	}
 	

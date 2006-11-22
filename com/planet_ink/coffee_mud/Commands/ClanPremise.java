@@ -65,7 +65,7 @@ public class ClanPremise extends BaseClanner
 						premise=CMParms.combine(commands,1);
 					else
 					if(mob.session()!=null)
-						premise=mob.session().prompt(getScr("ClanPremise","desc",C.typeName()),"");
+						premise=mob.session().prompt("Describe your "+C.typeName()+"'s Premise\n\r: ","");
 					if(premise.length()>0)
 					{
 						commands.addElement(premise);
@@ -73,7 +73,7 @@ public class ClanPremise extends BaseClanner
 						{
 							C.setPremise(premise);
 							C.update();
-							clanAnnounce(mob,getScr("ClanPremise","premisechanged",C.typeName(),C.clanID()));
+							clanAnnounce(mob,"The premise of "+C.typeName()+" "+C.clanID()+" has been changed.");
 							return false;
 						}
 					}

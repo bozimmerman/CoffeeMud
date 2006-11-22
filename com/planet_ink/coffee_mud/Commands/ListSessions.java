@@ -34,7 +34,7 @@ public class ListSessions extends StdCommand
 {
 	public ListSessions(){}
 
-	private String[] access={getScr("ListSessions","cmd1")};
+	private String[] access={"SESSIONS"};
 	public String[] getAccessWords(){return access;}
 
 
@@ -46,11 +46,11 @@ public class ListSessions extends StdCommand
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
 		StringBuffer lines=new StringBuffer("\n\r^x");
         lines.append(CMStrings.padRight("#",3)+"| ");
-		lines.append(CMStrings.padRight(getScr("ListSessions","status"),9)+"| ");
-		lines.append(CMStrings.padRight(getScr("ListSessions","valid"),5)+"| ");
-		lines.append(CMStrings.padRight(getScr("ListSessions","name"),17)+"| ");
-		lines.append(CMStrings.padRight(getScr("ListSessions","ip"),17)+"| ");
-		lines.append(CMStrings.padRight(getScr("ListSessions","idle"),17)+"^.^N\n\r");
+		lines.append(CMStrings.padRight("Status",9)+"| ");
+		lines.append(CMStrings.padRight("Valid",5)+"| ");
+		lines.append(CMStrings.padRight("Name",17)+"| ");
+		lines.append(CMStrings.padRight("IP",17)+"| ");
+		lines.append(CMStrings.padRight("Idle",17)+"^.^N\n\r");
 		Vector broken=new Vector();
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
@@ -60,13 +60,13 @@ public class ListSessions extends StdCommand
 			set[1]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
 			if (thisSession.mob() != null)
 			{
-				set[2]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?getScr("ListSessions","yes"):getScr("ListSessions","noreally")),5)+"| ";
+				set[2]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
 				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
 			else
 			{
-				set[2]=CMStrings.padRight(getScr("ListSessions","na"),5)+"| ";
-				set[3]=CMStrings.padRight(getScr("ListSessions","nameless"),17)+"| ";
+				set[2]=CMStrings.padRight("N/A",5)+"| ";
+				set[3]=CMStrings.padRight("NAMELESS",17)+"| ";
 			}
 			set[4]=CMStrings.padRight(thisSession.getAddress(),17)+"| ";
 			set[5]=CMStrings.padRight(CMLib.english().returnTime(thisSession.getIdleMillis(),0)+"",17);
@@ -76,19 +76,19 @@ public class ListSessions extends StdCommand
 		int sortNum=-1;
 		if(sort.length()>0)
 		{
-			if(getScr("ListSessions","cmdstatus").startsWith(sort))
+			if("STATUS".startsWith(sort))
 				sortNum=1;
 			else
-			if(getScr("ListSessions","cmdvalid").startsWith(sort))
+			if("VALID".startsWith(sort))
 				sortNum=2;
 			else
-			if((getScr("ListSessions","cmdname").startsWith(sort))||(getScr("ListSessions","cmdplayer").startsWith(sort)))
+			if(("NAME".startsWith(sort))||("PLAYER".startsWith(sort)))
 				sortNum=3;
 			else
-			if((getScr("ListSessions","ip").startsWith(sort))||(getScr("ListSessions","cmdaddress").startsWith(sort)))
+			if(("IP".startsWith(sort))||("ADDRESS".startsWith(sort)))
 				sortNum=4;
 			else
-			if((getScr("ListSessions","cmdidle").startsWith(sort))||(getScr("ListSessions","cmdmilliseconds").startsWith(sort)))
+			if(("IDLE".startsWith(sort))||("MILLISECONDS".startsWith(sort)))
 				sortNum=5;
 		}
 		if(sortNum<0)

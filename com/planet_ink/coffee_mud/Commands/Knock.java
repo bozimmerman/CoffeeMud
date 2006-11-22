@@ -34,7 +34,7 @@ public class Knock extends StdCommand
 {
 	public Knock(){}
 
-	private String[] access={getScr("Knock","cmd1")};
+	private String[] access={"KNOCK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

@@ -34,7 +34,7 @@ public class Follow extends StdCommand
 {
 	public Follow(){}
 
-	private String[] access={getScr("Follow","cmd1"),getScr("Follow","cmd2"),getScr("Follow","cmd3"),getScr("Follow","cmd4")};
+	private String[] access={"FOLLOW","FOL","FO","F"};
 	public String[] getAccessWords(){return access;}
 
 
@@ -54,7 +54,7 @@ public class Follow extends StdCommand
 		}
 		else
 		if(errorsOk)
-			mob.tell(getScr("Follow","nofolany"));
+			mob.tell("You aren't following anyone!");
 		return true;
 	}
 
@@ -89,7 +89,7 @@ public class Follow extends StdCommand
 			if(mob.getGroupMembers(new HashSet()).contains(tofollow))
 			{
 				if(!quiet)
-					mob.tell(getScr("Follow","alreadyfol",tofollow.name()));
+					mob.tell("You are already a member of "+tofollow.name()+"'s group!");
 				return false;
 			}
 			if(nofollow(mob,false,false))
@@ -128,12 +128,12 @@ public class Follow extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Follow","whom"));
+			mob.tell("Follow whom?");
 			return false;
 		}
 
 		String whomToFollow=CMParms.combine(commands,1);
-		if((whomToFollow.equalsIgnoreCase(getScr("Follow","self"))||whomToFollow.equalsIgnoreCase(getScr("Follow","me")))
+		if((whomToFollow.equalsIgnoreCase("self")||whomToFollow.equalsIgnoreCase("me"))
 		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
 		{
 			nofollow(mob,true,quiet);
@@ -142,23 +142,23 @@ public class Follow extends StdCommand
 		MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell(getScr("Follow","nosee"));
+			mob.tell("I don't see them here.");
 			return false;
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			mob.tell(getScr("Follow","nofollow")+target.name()+"'.");
+			mob.tell("You cannot follow '"+target.name()+"'.");
 			return false;
 		}
 		if(CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.tell(target.name()+getScr("Follow","noaccept"));
+			mob.tell(target.name()+" is not accepting followers.");
 			return false;
 		}
         MOB ultiTarget=target.amUltimatelyFollowing();
         if((ultiTarget!=null)&&(CMath.bset(ultiTarget.getBitmap(),MOB.ATT_NOFOLLOW)))
         {
-            mob.tell(ultiTarget.name()+getScr("Follow","noaccept"));
+            mob.tell(ultiTarget.name()+" is not accepting followers.");
             return false;
         }
 		processFollow(mob,target,quiet);

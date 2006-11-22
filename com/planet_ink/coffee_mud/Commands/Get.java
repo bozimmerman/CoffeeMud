@@ -35,11 +35,11 @@ public class Get extends BaseItemParser
 {
 	public Get(){}
 
-	private String[] access={getScr("Get","cmd1"),getScr("Get","cmd2")};
+	private String[] access={"GET","G"};
 	public String[] getAccessWords(){return access;}
 
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
-	{ return get(mob,container,getThis,quiet,getScr("Get","descget"),false);}
+	{ return get(mob,container,getThis,quiet,"get",false);}
 
 	public static boolean get(MOB mob,
 							  Item container,
@@ -56,7 +56,7 @@ public class Get extends BaseItemParser
 		{
 			tool=getThis;
 			target=container;
-			theWhat=getScr("Get","thisfrom");
+			theWhat="<O-NAME> from <T-NAME>";
 		}
 		if(!getThis.amWearingAt(Item.IN_INVENTORY))
 		{
@@ -109,7 +109,7 @@ public class Get extends BaseItemParser
 
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Get","what"));
+			mob.tell("Get what?");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -132,9 +132,9 @@ public class Get extends BaseItemParser
 
 		String whatToGet=CMParms.combine(commands,0);
 		String unmodifiedWhatToGet=whatToGet;
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Get","all")):false;
-		if(whatToGet.toUpperCase().startsWith(getScr("Get","alldot"))){ allFlag=true; whatToGet=getScr("Get","allup")+whatToGet.substring(4);}
-		if(whatToGet.toUpperCase().endsWith(getScr("Get","dotall"))){ allFlag=true; whatToGet=getScr("Get","allup")+whatToGet.substring(0,whatToGet.length()-4);}
+		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
+		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
@@ -169,7 +169,7 @@ public class Get extends BaseItemParser
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-				get(mob,container,getThis,quiet,getScr("Get","descget"),true);
+				get(mob,container,getThis,quiet,"get",true);
 				if(getThis instanceof Coins)
 					((Coins)getThis).putCoinsBack();
 				if(getThis instanceof RawMaterial)
@@ -187,23 +187,23 @@ public class Get extends BaseItemParser
 			{
 				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
-                    mob.tell(mob,container,null,getScr("Get","nosee",unmodifiedWhatToGet));
+                    mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
 				else
-					mob.tell(container.name()+getScr("Get","closed"));
+					mob.tell(container.name()+" is closed.");
 			}
 			else
-			if(containerName.equalsIgnoreCase(getScr("Get","all")))
-				mob.tell(getScr("Get","nohere"));
+			if(containerName.equalsIgnoreCase("all"))
+				mob.tell("You don't see anything here.");
 			else
 			{
 			    Vector V=CMLib.english().possibleContainers(mob,containerCommands,Item.WORNREQ_ANY,false);
 			    if(V.size()==0)
-					mob.tell(getScr("Get","nothere",containerName));
+					mob.tell("You don't see '"+containerName+"' here.");
 				else
 			    if(V.size()==1)
-					mob.tell(mob,(Item)V.firstElement(),null,getScr("Get","noinhere",unmodifiedWhatToGet));
+					mob.tell(mob,(Item)V.firstElement(),null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME> here.");
 			    else
-					mob.tell(getScr("Get","noanyhere",unmodifiedWhatToGet)+containerName+"'.");
+					mob.tell("You don't see '"+unmodifiedWhatToGet+"' in any '"+containerName+"'.");
 			}
 		}
 		return false;

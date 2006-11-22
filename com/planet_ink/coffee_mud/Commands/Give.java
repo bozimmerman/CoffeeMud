@@ -35,31 +35,31 @@ public class Give extends BaseItemParser
 {
 	public Give(){}
 
-	private String[] access={getScr("Give","cmd1"),getScr("Give","cmd2")};
+	private String[] access={"GIVE","GI"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Give","whom"));
+			mob.tell("Give what to whom?");
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Give","towhom"));
+			mob.tell("To whom should I give that?");
 			return false;
 		}
 
 		MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
 		{
-			mob.tell(getScr("Give","nohere",(String)commands.lastElement()));
+			mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase(getScr("Give","to"))))
+		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
 		int maxToGive=calculateMaxToGive(mob,commands,true,mob);
@@ -69,9 +69,9 @@ public class Give extends BaseItemParser
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Give","all")):false;
-		if(thingToGive.toUpperCase().startsWith(getScr("Give","alldot"))){ allFlag=true; thingToGive=getScr("Give","allup")+thingToGive.substring(4);}
-		if(thingToGive.toUpperCase().endsWith(getScr("Give","dotall"))){ allFlag=true; thingToGive=getScr("Give","allup")+thingToGive.substring(0,thingToGive.length()-4);}
+		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
+		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
         Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
         if(giveThis!=null)
@@ -95,7 +95,7 @@ public class Give extends BaseItemParser
 				{
 					if((!(giveThis).amWearingAt(Item.WORN_HELD))&&(!(giveThis).amWearingAt(Item.WORN_WIELD)))
 					{
-						mob.tell(getScr("Give","removefirst"));
+						mob.tell("You must remove that first.");
 						return false;
 					}
 					CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
@@ -105,7 +105,7 @@ public class Give extends BaseItemParser
 						return false;
 				}
 			}
-            if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase(getScr("Give","all"))))
+            if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase("all")))
                 giveThis=null;
             else
             {
@@ -118,7 +118,7 @@ public class Give extends BaseItemParser
 		while((allFlag)&&(addendum<=maxToGive));
 
 		if(V.size()==0)
-			mob.tell(getScr("Give","nocarry"));
+			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<V.size();i++)
 		{

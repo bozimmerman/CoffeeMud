@@ -34,14 +34,14 @@ public class Equipment extends StdCommand
 {
 	public Equipment(){}
 
-	private String[] access={getScr("Equipment","cmd1"),getScr("Equipment","cmd2"),getScr("Equipment","cmd3")};
+	private String[] access={"EQUIPMENT","EQ","EQUIP"};
 	public String[] getAccessWords(){return access;}
 
 	public static StringBuffer getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
 		StringBuffer msg=new StringBuffer("");
 		if(CMLib.flags().isSleeping(seer))
-			return new StringBuffer(getScr("Equipment","noseenow"));
+			return new StringBuffer("(nothing you can see right now)");
 
 	    long wornCode=0;
 	    String header=null;
@@ -176,21 +176,21 @@ public class Equipment extends StdCommand
 	                            if(name.length()>75) name=name.substring(0,75)+"...";
 	                            if(wornCode==Item.WORN_HELD)
 	                            {
-	                                if(msg.length()==0) msg.append(getScr("Equipment","nothing"));
+	                                if(msg.length()==0) msg.append("nothing.");
 	                                if(mob==seer)
-	                                    msg.append(getScr("Equipment","holding",name)+CMLib.flags().colorCodes(thisItem,seer)+"^N");
+	                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N");
 	                                else
-	                                    msg.append("\n\r" + mob.charStats().HeShe() + getScr("Equipment","ishold") +
+	                                    msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
 	                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");                  
 	                            }
 	                            else
 	                            if(wornCode==Item.WORN_WIELD)
 	                            {
-	                                if(msg.length()==0) msg.append(getScr("Equipment","nothing"));
+	                                if(msg.length()==0) msg.append("nothing.");
 	                                if(mob==seer)
-	                                    msg.append(getScr("Equipment","wielding",name)+CMLib.flags().colorCodes(thisItem,seer)+"^N.");
+	                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N.");
 	                                else
-	                                    msg.append("\n\r" + mob.charStats().HeShe() + getScr("Equipment","iswield") +
+	                                    msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
 	                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");
 	                            }
 	                            else
@@ -215,7 +215,7 @@ public class Equipment extends StdCommand
 						else
 						if(seer==mob)
 						{
-							msg.append(header+getScr("Equipment","nosee")+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+							msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
 							shownThisLoc++;
 						}
 					}
@@ -265,7 +265,7 @@ public class Equipment extends StdCommand
         {
             if(mob.isMonster())
                 return null;
-			msg.append(getScr("Equipment","nothing2"));
+			msg.append("^!(nothing)^?\n\r");
         }
         else
         if((paragraphView)&&(msg.lastIndexOf(",") > -1))
@@ -273,7 +273,7 @@ public class Equipment extends StdCommand
             msg.insert(msg.lastIndexOf(",") + 1, ".");
             msg.deleteCharAt(msg.lastIndexOf(","));
             if(msg.lastIndexOf(",") > -1)
-                msg.insert(msg.lastIndexOf(",") + 1, getScr("Equipment","and"));
+                msg.insert(msg.lastIndexOf(",") + 1, " and");
         }
         return msg;
 	}
@@ -291,16 +291,16 @@ public class Equipment extends StdCommand
             boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)==2);
             if(paragraphView)
             {
-    			if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase(getScr("Equipment","cmdlong"))))
-    				mob.session().wraplessPrintln(getScr("Equipment","wearing")+getEquipment(mob,mob,true));
+    			if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")))
+    				mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,true));
     			else
-    				mob.session().wraplessPrintln(getScr("Equipment","wearing")+getEquipment(mob,mob,false));
+    				mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,false));
             }
             else
-            if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase(getScr("Equipment","cmdlong"))))
-                mob.session().wraplessPrintln(getScr("Equipment","wearinglong")+getEquipment(mob,mob,true));
+            if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")))
+                mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
             else
-                mob.session().wraplessPrintln(getScr("Equipment","wearinglong")+getEquipment(mob,mob,false));
+                mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
 		}
 		return false;
 	}

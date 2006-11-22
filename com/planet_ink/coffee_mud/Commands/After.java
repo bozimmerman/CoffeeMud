@@ -32,7 +32,7 @@ import java.util.*;
 */
 public class After extends StdCommand implements Tickable
 {
-	public String name(){return "After";}
+	public String name(){return "SysOpSkills";} // for tickables use
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 
 	public Vector afterCmds=new Vector();
@@ -49,19 +49,19 @@ public class After extends StdCommand implements Tickable
 
 		String afterErr=getScr("After","afterErr");
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("After","stop")))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("stop"))
 		{
 			afterCmds.clear();
 			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
 			mob.tell(getScr("After","ok"));
 			return false;
 		}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("After","list")))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
 		{
 			//afterCmds.clear();
 			int s=0;
-			StringBuffer str=new StringBuffer(getScr("After","currafters"));
-			str.append(CMStrings.padRight(getScr("After","nextrun"),20)+" "+CMStrings.padRight(getScr("After","interval"),20)+" "+CMStrings.padRight(getScr("After","who"),10)+getScr("After","command"));
+			StringBuffer str=new StringBuffer("^xCurrently scheduled AFTERs: ^?^.^?\n\r");
+			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");
 			while(s<afterCmds.size())
 			{
 				Vector V=(Vector)afterCmds.elementAt(s);
@@ -79,7 +79,7 @@ public class After extends StdCommand implements Tickable
 			mob.tell(str.toString());
 			return false;
 		}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("After","every")))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("every"))
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		long time=CMath.s_long((String)commands.elementAt(0));

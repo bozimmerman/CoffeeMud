@@ -34,7 +34,7 @@ public class Down extends Go
 {
 	public Down(){}
 
-	private String[] access={getScr("Down","cmd1"),getScr("Down","cmd2")};
+	private String[] access={"DOWN","D"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

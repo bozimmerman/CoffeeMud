@@ -34,7 +34,7 @@ public class Exits extends StdCommand
 {
 	public Exits(){}
 
-	private String[] access={getScr("Exits","cmd1"),getScr("Exits","cmd2")};
+	private String[] access={"EXITS","EX"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

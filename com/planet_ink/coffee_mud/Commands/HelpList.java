@@ -34,7 +34,7 @@ public class HelpList extends StdCommand
 {
 	public HelpList(){}
 
-	private String[] access={getScr("HelpList","cmd1"),getScr("HelpList","cmd2")};
+	private String[] access={"HELPLIST","HLIST"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -43,12 +43,12 @@ public class HelpList extends StdCommand
 		String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
-			mob.tell(getScr("HelpList","nohelp"));
+			mob.tell("No help is available.");
 			return false;
 		}
 		if(helpStr.length()==0)
 		{
-		    mob.tell(getScr("HelpList","patternerr"));
+		    mob.tell("You must enter a search pattern.  Use 'TOPICS' or 'COMMANDS' for an unfiltered list.");
 		    return false;
 		}
 		StringBuffer thisTag=
@@ -59,12 +59,12 @@ public class HelpList extends StdCommand
 			        mob);
 		if((thisTag==null)||(thisTag.length()==0))
 		{
-			mob.tell(getScr("HelpList","nomatches",helpStr));
-			Log.helpOut("Help",mob.Name()+getScr("HelpList","wantedhelp")+helpStr);
+			mob.tell("No help entries match '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			Log.helpOut("Help",mob.Name()+" wanted help list match on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln(getScr("HelpList","matches")+thisTag.toString().replace('_',' '));
+			mob.session().wraplessPrintln("^xHelp File Matches:^.^?\n\r^N"+thisTag.toString().replace('_',' '));
 		return false;
 	}
 	

@@ -36,14 +36,14 @@ public class JRun extends StdCommand
 {
     public JRun(){}
 
-    private String[] access={getScr("JRun","cmd1")};
+    private String[] access={"JRUN"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
     {
         if(commands.size()<2)
         {
-            mob.tell(getScr("JRun","jruncmdds"));
+            mob.tell("jrun filename1 parm1 parm2 ...");
             return false;
         }
         commands.removeElementAt(0);
@@ -52,7 +52,7 @@ public class JRun extends StdCommand
         StringBuffer ft = new CMFile(fn,mob,true).text();
         if((ft==null)||(ft.length()==0))
         {
-            mob.tell(getScr("JRun","nofound",fn));
+            mob.tell("File '"+fn+"' could not be found.");
             return false;
         }
         commands.removeElementAt(0);
@@ -69,9 +69,9 @@ public class JRun extends StdCommand
         catch(Exception e)
         {
             if(e!=null)
-                mob.tell(getScr("JRun","jserr")+e.getMessage());
+                mob.tell("JavaScript error: "+e.getMessage());
             else
-                mob.tell(getScr("JRun","unkjserr"));
+                mob.tell("JavaScript error: unknown");
         }
         Context.exit();
         return false;

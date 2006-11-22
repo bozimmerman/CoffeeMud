@@ -63,7 +63,7 @@ public class BaseAbleLister extends StdCommand
         if((domain[0]<0)&&(qual.length()>0))
         {
             StringBuffer domains=new StringBuffer("");
-            domains.append(getScr("BaseAbleLister","validschoold"));
+            domains.append("\n\rValid schools/domains are: ");
             for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
             {
                 boolean found=false;

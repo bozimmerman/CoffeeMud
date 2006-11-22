@@ -41,12 +41,12 @@ public class Cloak extends StdCommand
 	{
 		String str=(String)commands.firstElement();
 		if(Character.toUpperCase(str.charAt(0))!='C')
-			commands.insertElementAt(getScr("Cloak","off"),1);
+			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
 		int abilityCode=EnvStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
-		if(CMParms.combine(commands,0).trim().equalsIgnoreCase(getScr("Cloak","off")))
+		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
 			   A.unInvoke();
@@ -72,7 +72,7 @@ public class Cloak extends StdCommand
 			A=CMClass.getAbility(str);
 		if(A!=null)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,getScr("Cloak","nowcloaked"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) cloaked!");
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());

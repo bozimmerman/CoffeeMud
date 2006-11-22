@@ -211,7 +211,7 @@ public class CharGen extends StdCommand
 			level=CMath.s_int(CMParms.combine(commands,1));
 		}
 
-		if((C==null)&&(ClassName.toUpperCase().indexOf(getScr("CharGen","allclasses"))<0))
+		if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
 		{
 			mob.tell(getScr("CharGen","enterall"));
 			try
@@ -221,7 +221,7 @@ public class CharGen extends StdCommand
 			catch(Exception e){return false;}
 
 			C=CMClass.findCharClass(ClassName);
-			if((C==null)&&(ClassName.toUpperCase().indexOf(getScr("CharGen","allclasses"))<0))
+			if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
 				return false;
 		}
 

@@ -34,45 +34,45 @@ public class Load extends StdCommand
 {
 	public Load(){}
 
-	private String[] access={getScr("Load","cmd1")};
+	private String[] access={"LOAD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Load","what"));
+			mob.tell("LOAD what? Use LOAD RESOURCE/ABILITY/ITEM/WEAPON/ETC.. [CLASS NAME]");
 			return false;
 		}
 		String what=(String)commands.elementAt(1);
 		String name=CMParms.combine(commands,2);
-        if(what.equalsIgnoreCase(getScr("Load","cmdfaction")))
+        if(what.equalsIgnoreCase("FACTION"))
         {
             Faction F=CMLib.factions().getFaction(name);
             if(F==null)
-                mob.tell(getScr("Load","nofac",name));
+                mob.tell("Faction file '"+name+"' was not found.");
             else
-                mob.tell(getScr("Load","facloaded",F.name(),name));
+                mob.tell("Faction '"+F.name()+"' from file '"+name+"' was loaded.");
             return false;
         }
-		if(what.equalsIgnoreCase(getScr("Load","cmdresource")))
+		if(what.equalsIgnoreCase("RESOURCE"))
 		{
 			StringBuffer buf=Resources.getFileResource(name,true);
 			if((buf==null)||(buf.length()==0))
-				mob.tell(getScr("Load","noresource",name));
+				mob.tell("Resource '"+name+"' was not found.");
 			else
-				mob.tell(getScr("Load","resourceloaded",name));
+				mob.tell("Resource '"+name+"' was loaded.");
 		}
 		else
 		if(CMClass.classCode(what)<0)
-			mob.tell("'"+what+getScr("Load","noclasstype"));
+			mob.tell("'"+what+"' is not a valid class type.");
 		else
         {
             try
             {
         		if(CMClass.loadClass(what,name))
                 {
-        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+getScr("Load","classloaded"));
+        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was loaded.  Mind your casing in this string!");
                     return true;
                 }
             }
@@ -80,7 +80,7 @@ public class Load extends StdCommand
             {
                 Log.errOut("Load",t.getClass().getName()+": "+t.getMessage());
             }
-			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+getScr("Load","notloaded"));
+			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was not loaded.");
         }
 
 		return false;

@@ -48,7 +48,7 @@ public class Config extends StdCommand
 			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
 			boolean set=CMath.isSet(mob.getBitmap(),i);
 			if(MOB.AUTOREV[i]) set=!set;
-			msg.append(set?getScr("Config","on"):getScr("Config","off"));
+			msg.append(set?"ON":"OFF");
 			msg.append("\n\r");
 		}
 		mob.tell(msg.toString());

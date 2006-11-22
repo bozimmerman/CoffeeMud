@@ -110,7 +110,7 @@ public class Channel extends BaseChanneler
         
 		if((commands.size()==2)
 		&&(mob.session()!=null)
-		&&(((String)commands.firstElement()).equalsIgnoreCase(getScr("Channel","last")))
+		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			int num=CMath.s_int((String)commands.lastElement());

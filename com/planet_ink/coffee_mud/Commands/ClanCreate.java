@@ -68,7 +68,7 @@ public class ClanCreate extends BaseClanner
                         }
 						Clan C=CMLib.clans().findClan(doubleCheck);
 						if((CMLib.database().DBUserSearch(null,doubleCheck))
-						||(doubleCheck.equalsIgnoreCase(getScr("ClanCreate","allbad"))))
+						||(doubleCheck.equalsIgnoreCase("All")))
 							msg.append(getScr("ClanCreate","notava"));
 						else
 						if(C!=null)

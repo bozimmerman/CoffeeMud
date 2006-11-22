@@ -34,7 +34,7 @@ public class Ignore extends StdCommand
 {
 	public Ignore(){}
 
-	private String[] access={getScr("Ignore","cmd1")};
+	private String[] access={"IGNORE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,64 +42,64 @@ public class Ignore extends StdCommand
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 		HashSet h=pstats.getIgnored();
-		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Ignore","list"))))
+		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
-				mob.tell(getScr("Ignore","nonames"));
+				mob.tell("You have no names on your ignore list.  Use IGNORE ADD to add more.");
 			else
 			{
-				StringBuffer str=new StringBuffer(getScr("Ignore","ignoring"));
+				StringBuffer str=new StringBuffer("You are ignoring: ");
 				for(Iterator e=h.iterator();e.hasNext();)
 					str.append(((String)e.next())+" ");
 				mob.tell(str.toString());
 			}
 		}
 		else
-		if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Ignore","cmdadd")))
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("ADD"))
 		{
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell(getScr("Ignore","addwhom"));
+				mob.tell("Add whom?");
 				return false;
 			}
 			MOB M=CMClass.getMOB("StdMOB");
 			if(!CMLib.database().DBUserSearch(M,name))
 			{
-				mob.tell(getScr("Ignore","noplayer"));
+				mob.tell("No player by that name was found.");
                 M.destroy();
 				return false;
 			}
 			if(h.contains(M.Name()))
 			{
-				mob.tell(getScr("Ignore","alreadylisted"));
+				mob.tell("That name is already on your list.");
                 M.destroy();
 				return false;
 			}
 			h.add(M.Name());
-			mob.tell(getScr("Ignore","ignored",M.Name()));
+			mob.tell("The Player '"+M.Name()+"' has been added to your ignore list.");
             M.destroy();
 		}
 		else
-		if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Ignore","cmdremove")))
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
 		{
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell(getScr("Ignore","removewhom"));
+				mob.tell("Remove whom?");
 				return false;
 			}
 			if(!h.contains(name))
 			{
-				mob.tell(getScr("Ignore","nolist",name));
+				mob.tell("That name '"+name+"' does not appear on your list.  Watch your casing!");
 				return false;
 			}
 			h.remove(name);
-			mob.tell(getScr("Ignore","removed",name));
+			mob.tell("The Player '"+name+"' has been removed from your ignore list.");
 		}
 		else
 		{
-			mob.tell(getScr("Ignore","noparm",((String)commands.elementAt(1))));
+			mob.tell("Parameter '"+((String)commands.elementAt(1))+"' is not recognized.  Try LIST, ADD, or REMOVE.");
 			return false;
 		}
 		return false;

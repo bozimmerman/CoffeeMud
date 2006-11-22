@@ -34,7 +34,7 @@ public class Inventory extends StdCommand
 {
 	public Inventory(){}
 
-	private String[] access={getScr("Inventory","cmd1"),getScr("Inventory","cmd2"),getScr("Inventory","cmd3")};
+	private String[] access={"INVENTORY","INV","I"};
 	public String[] getAccessWords(){return access;}
 
 
@@ -90,7 +90,7 @@ public class Inventory extends StdCommand
 		if((mask!=null)&&(mask.trim().length()>0))
 		{
 			mask=mask.trim().toUpperCase();
-			if(!mask.startsWith(getScr("Inventory","all"))) mask=getScr("Inventory","all2")+mask;
+			if(!mask.startsWith("all")) mask="all "+mask;
 			V=(Vector)viewItems.clone();
 			viewItems.clear();
 			Item I=(V.size()>0)?(Item)V.firstElement():null;
@@ -108,20 +108,20 @@ public class Inventory extends StdCommand
 		if((viewItems.size()==0)&&(moneyItems.size()==0))
 		{
 			if((mask!=null)&&(mask.trim().length()>0))
-				msg.append(getScr("Inventory","nosee"));
+				msg.append("(nothing like that you can see right now)");
 			else
-				msg.append(getScr("Inventory","noseenow"));
+				msg.append("(nothing you can see right now)");
 		}
 		else
 		{
 			if(viewItems.size()>0)
 				msg.append(CMLib.lister().lister(seer,viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
             if(foundButUnseen)
-                msg.append(getScr("Inventory","stuffnosee"));
+                msg.append("(stuff you can't see right now)");
                 
 			if(moneyItems.size()>0)
 			{
-			    msg.append(getScr("Inventory","money"));
+			    msg.append("\n\r^HMoney:^N\n\r");
 			    Item I=null;
 				for(Enumeration e=moneyItems.keys();e.hasMoreElements();)
 				{
@@ -155,10 +155,10 @@ public class Inventory extends StdCommand
 		}
 		StringBuffer msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
-			mob.tell(getScr("Inventory","carrynada"));
+			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln(getScr("Inventory","youcarry")+msg.toString());
+			mob.session().wraplessPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 		return false;
 	}
 	

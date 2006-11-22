@@ -34,7 +34,7 @@ public class Enter extends Go
 {
 	public Enter(){}
 
-	private String[] access={getScr("Enter","cmd1"),getScr("Enter","cmd2")};
+	private String[] access={"ENTER","EN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

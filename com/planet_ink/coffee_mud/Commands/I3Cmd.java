@@ -34,15 +34,15 @@ public class I3Cmd extends StdCommand
 {
 	public I3Cmd(){}
 
-	private String[] access={getScr("I3Cmd","cmd1")};
+	private String[] access={"I3"};
 	public String[] getAccessWords(){return access;}
 
 	public void i3Error(MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),"I3"))
-			mob.tell(getScr("I3Cmd","i3cmds"));
+			mob.tell("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], or I3 INFO [MUD].");
 		else
-			mob.tell(getScr("I3Cmd","i3cmds2"));
+			mob.tell("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME].");
 	}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -50,7 +50,7 @@ public class I3Cmd extends StdCommand
 	{
 		if(!(CMLib.intermud().i3online()))
 		{
-			mob.tell(getScr("I3Cmd","noi3"));
+			mob.tell("I3 is unavailable.");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -61,69 +61,69 @@ public class I3Cmd extends StdCommand
 		}
 		String str=(String)commands.firstElement();
 		if(!(CMLib.intermud().i3online()))
-			mob.tell(getScr("I3Cmd","noi3"));
+			mob.tell("I3 is unavailable.");
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdlist")))
+		if(str.equalsIgnoreCase("list"))
 			CMLib.intermud().giveI3MudList(mob);
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdadd")))
+		if(str.equalsIgnoreCase("add"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(getScr("I3Cmd","nochannel"));
+				mob.tell("You did not specify a channel name!");
 				return false;
 			}
 			CMLib.intermud().i3channelAdd(mob,CMParms.combine(commands,1));
 		}
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdchannels")))
+		if(str.equalsIgnoreCase("channels"))
 			CMLib.intermud().giveI3ChannelsList(mob);
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmddelete")))
+		if(str.equalsIgnoreCase("delete"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(getScr("I3Cmd","nochannel"));
+				mob.tell("You did not specify a channel name!");
 				return false;
 			}
 			CMLib.intermud().i3channelRemove(mob,CMParms.combine(commands,1));
 		}
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdlisten")))
+		if(str.equalsIgnoreCase("listen"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(getScr("I3Cmd","nochannel"));
+				mob.tell("You did not specify a channel name!");
 				return false;
 			}
 			CMLib.intermud().i3channelListen(mob,CMParms.combine(commands,1));
 		}
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdlocate")))
+		if(str.equalsIgnoreCase("locate"))
 		{
 			if(commands.size()<2)
 			{
-				mob.tell(getScr("I3Cmd","noname"));
+				mob.tell("You did not specify a name!");
 				return false;
 			}
 			CMLib.intermud().i3locate(mob,CMParms.combine(commands,1));
 		}
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdsilence")))
+		if(str.equalsIgnoreCase("silence"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(getScr("I3Cmd","nochannel"));
+				mob.tell("You did not specify a channel name!");
 				return false;
 			}
 			CMLib.intermud().i3channelSilence(mob,CMParms.combine(commands,1));
 		}
 		else
-		if(str.equalsIgnoreCase(getScr("I3Cmd","cmdinfo")))
+		if(str.equalsIgnoreCase("info"))
 			CMLib.intermud().i3mudInfo(mob,CMParms.combine(commands,1));
 		else
 			i3Error(mob);

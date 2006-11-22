@@ -34,12 +34,12 @@ public class Fire extends StdCommand
 {
 	public Fire(){}
 
-	private String[] access={getScr("Fire","cmd1")};
+	private String[] access={"FIRE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String rest=getScr("Fire","cmdall");
+		String rest="ALL";
 		if(commands.size()>1) rest=CMParms.combine(commands,1);
 
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORNREQ_ANY);
@@ -48,7 +48,7 @@ public class Fire extends StdCommand
 		if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			target=null;
 		if(target==null)
-			mob.tell(getScr("Fire","whom"));
+			mob.tell("Fire whom?");
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'You are fired!'^?");

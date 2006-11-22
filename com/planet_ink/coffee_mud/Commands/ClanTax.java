@@ -68,18 +68,18 @@ public class ClanTax extends BaseClanner
 					{
 						String t=null;
 						if((commands.size()<=1)||(!CMath.isNumber(CMParms.combine(commands,1))))
-							t=mob.session().prompt(getScr("ClanTax","newtax",C.typeName()),"");
+							t=mob.session().prompt("Enter your "+C.typeName()+"'s new tax rate (0-25)\n\r: ","");
 						else
 							t=CMParms.combine(commands,1);
 						if(t.length()==0) return false;
 						int intt=CMath.s_int(t);
 						if((intt<0)||(intt>25)) 
 						{
-							mob.session().println("'"+t+getScr("ClanTax","notvalid"));
+							mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
 							return false;
 						}
 						commands.clear();
-						commands.addElement(getScr("ClanTax","clantaxcmd"));
+						commands.addElement("clantax");
 						commands.addElement(t);
 						newRate=CMath.div(CMath.s_int(t),100);
 					}
@@ -87,7 +87,7 @@ public class ClanTax extends BaseClanner
 					{
 						C.setTaxes(newRate);
 						C.update();
-						clanAnnounce(mob,getScr("ClanTax","expchanged",C.typeName(),C.clanID())+((int)Math.round(C.getTaxes()*100.0)+"%."));
+						clanAnnounce(mob,"The experience tax rate of "+C.typeName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
 						return false;
 					}
 				}

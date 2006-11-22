@@ -42,13 +42,13 @@ public class Alias extends StdCommand
         PlayerStats ps=mob.playerStats();
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            StringBuffer menu=new StringBuffer(getScr("Alias","aliasdefs"));
+            StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
             String[] aliasNames=ps.getAliasNames();
             for(int i=0;i<aliasNames.length;i++)
                 menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
             menu.append(getScr("Alias","new",""+(aliasNames.length+1)));
             mob.tell(menu.toString());
-            String which=mob.session().prompt(getScr("Alias","enterselec"),"");
+            String which=mob.session().prompt("Enter a selection: ","");
             if(which.length()==0)
                 break;
             int num=CMath.s_int(which);
@@ -56,7 +56,7 @@ public class Alias extends StdCommand
             if((num>0)&&(num<=(aliasNames.length)))
             {
                 selection=aliasNames[num-1];
-                if(mob.session().choose(getScr("Alias","delmodalias",selection),getScr("Alias","delmodopt"),getScr("Alias","delmoddef")).equals(getScr("Alias","delmoddef2")))
+                if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
                 {
                     ps.delAliasName(selection);
                     mob.tell(getScr("Alias","deleted"));
@@ -68,7 +68,7 @@ public class Alias extends StdCommand
                 break;
             else
             {
-               selection=mob.session().prompt(getScr("Alias","newalias"),"").trim().toUpperCase();
+               selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
                if(selection.length()==0)
                    selection=null;
                else
@@ -93,7 +93,7 @@ public class Alias extends StdCommand
             }
             if(selection!=null)
             {
-                mob.session().rawPrintln(getScr("Alias","aliasval",selection));
+                mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
                 String value=mob.session().prompt(": ","").trim();
                 value=CMStrings.replaceAll(value,"<","");
                 value=CMStrings.replaceAll(value,"&","");

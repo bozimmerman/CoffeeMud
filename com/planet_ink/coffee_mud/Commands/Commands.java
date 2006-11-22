@@ -34,7 +34,7 @@ public class Commands extends StdCommand
 {
 	public Commands(){}
 
-	private String[] access={getScr("Commands","cmd1")};
+	private String[] access={"COMMANDS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -75,8 +75,8 @@ public class Commands extends StdCommand
 				if(++col>3){ commandList.append("\n\r"); col=0;}
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",19));
 			}
-			commandList.append(getScr("Commands","cmdhelp"));
-			mob.session().colorOnlyPrintln(getScr("Commands","cmdlist")+commandList.toString(),23);
+			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
+			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandList.toString(),23);
 		}
 		return false;
 	}

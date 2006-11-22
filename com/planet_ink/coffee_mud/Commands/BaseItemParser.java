@@ -55,11 +55,11 @@ public class BaseItemParser extends StdCommand
         &&(CMath.s_int((String)commands.firstElement())>0))
         {
             maxToGive=CMath.s_int((String)commands.firstElement());
-            commands.setElementAt(getScr("BaseItemParser","all"),0);
+            commands.setElementAt("all",0);
             if(breakPackages)
             {
                 boolean throwError=false;
-                if((commands.size()>2)&&(getScr("BaseItemParser","from").startsWith(((String)commands.elementAt(1)).toUpperCase())))
+                if((commands.size()>2)&&("FROM".startsWith(((String)commands.elementAt(1)).toUpperCase())))
                 {
                     throwError=true;
                     commands.removeElementAt(1);

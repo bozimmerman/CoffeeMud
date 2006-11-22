@@ -34,13 +34,13 @@ public class Languages extends BaseAbleLister
 {
 	public Languages(){}
 
-	private String[] access={getScr("Languages","cmd1"),getScr("Languages","cmd2")};
+	private String[] access={"LANGUAGES","LANGS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append(getScr("Languages","langsknown")+getAbilities(mob,Ability.ACODE_LANGUAGE,-1,true,parseOutLevel(commands))+"\n\r");
+		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,Ability.ACODE_LANGUAGE,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

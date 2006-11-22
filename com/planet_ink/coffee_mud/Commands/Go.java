@@ -36,7 +36,7 @@ public class Go extends StdCommand
 {
 	public Go(){}
 
-	private String[] access={getScr("Go","cmd1"),getScr("Go","cmd2")};
+	private String[] access={"GO","WALK"};
 	public String[] getAccessWords(){return access;}
 	
 	public int energyExpenseFactor(){return 1;}
@@ -203,7 +203,7 @@ public class Go extends StdCommand
 		}
 
 		Exit opExit=thisRoom.getReverseExit(directionCode);
-		String directionName=(directionCode==Directions.GATE)&&(exit!=null)?getScr("Go","through")+exit.name():Directions.getDirectionName(directionCode);
+		String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():Directions.getDirectionName(directionCode);
 		String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
 		int generalMask=always?CMMsg.MASK_ALWAYS:0;
@@ -319,7 +319,7 @@ public class Go extends StdCommand
 					if((follower.location()==thisRoom)&&(CMLib.flags().aliveAwakeMobile(follower,true)))
 					{
 						if(CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD))
-							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,getScr("Go","onguard"));
+							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> remain(s) on guard here.");
 						else
 						{
 							follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
@@ -345,8 +345,8 @@ public class Go extends StdCommand
 		if((ifneccvec==null)||(ifneccvec.size()!=2))
 		{
 			ifneccvec=new Vector();
-			ifneccvec.addElement(getScr("Go","cmdstand"));
-			ifneccvec.addElement(getScr("Go","cmdifnecc"));
+			ifneccvec.addElement("STAND");
+			ifneccvec.addElement("IFNECESSARY");
 		}
 		if(stander==null) stander=CMClass.getCommand("Stand");
 		if((stander!=null)&&(ifneccvec!=null))

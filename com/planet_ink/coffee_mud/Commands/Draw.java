@@ -35,7 +35,7 @@ public class Draw extends Get
 {
 	public Draw(){}
 
-	private String[] access={getScr("Draw","cmd1")};
+	private String[] access={"DRAW"};
 	public String[] getAccessWords(){return access;}
 
 	public Vector getSheaths(MOB mob)
@@ -74,7 +74,7 @@ public class Draw extends Get
 			noerrors=true;
 			commands.removeElementAt(commands.size()-1);
 			if((commands.size()>0)
-			&&(((String)commands.lastElement()).equalsIgnoreCase(getScr("Draw","cmdheld"))))
+			&&(((String)commands.lastElement()).equalsIgnoreCase("HELD")))
 			{
 				commands.removeElementAt(commands.size()-1);
 				if(mob.fetchFirstWornItem(Item.WORN_HELD)!=null)
@@ -86,7 +86,7 @@ public class Draw extends Get
 		}
 		else
 		{
-			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase(getScr("Draw","cmdquietly"))))
+			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
 			{
 				commands.removeElementAt(commands.size()-1);
 				quiet=true;
@@ -111,7 +111,7 @@ public class Draw extends Get
 			if(sheaths.size()>0)
 				containerName=((Item)sheaths.elementAt(0)).name();
 			else
-				containerName=getScr("Draw","aweapon");
+				containerName="a weapon";
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
@@ -138,13 +138,13 @@ public class Draw extends Get
 		else
 		{
 			containerName=(String)commands.lastElement();
-			commands.insertElementAt(getScr("Draw","all"),0);
+			commands.insertElementAt("all",0);
 			containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_WORNONLY,true);
 			if(containers.size()==0) containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);
-			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Draw","all"));
-			if(whatToGet.toUpperCase().startsWith(getScr("Draw","alldot"))){ allFlag=true; whatToGet=getScr("Draw","allup")+whatToGet.substring(4);}
-			if(whatToGet.toUpperCase().endsWith(getScr("Draw","dotall"))){ allFlag=true; whatToGet=getScr("Draw","allup")+whatToGet.substring(0,whatToGet.length()-4);}
+			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
+			if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		}
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
@@ -171,7 +171,7 @@ public class Draw extends Get
 				Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
-				if(get(mob,container,getThis,quiet,getScr("Draw","drawword"),false))
+				if(get(mob,container,getThis,quiet,"draw",false))
 				{
 					if(getThis.container()==null)
 					{
@@ -201,12 +201,12 @@ public class Draw extends Get
 			{
 				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
-					mob.tell(getScr("Draw","nosee")+container.name()+".");
+					mob.tell("You don't see that in "+container.name()+".");
 				else
-					mob.tell(container.name()+getScr("Draw","closed"));
+					mob.tell(container.name()+" is closed.");
 			}
 			else
-				mob.tell(getScr("Draw","nohere",containerName));
+				mob.tell("You don't see "+containerName+" here.");
 		}
 		return false;
 	}

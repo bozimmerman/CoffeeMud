@@ -37,7 +37,7 @@ public class Deviations extends StdCommand
 {
 	public Deviations(){}
 
-	private String[] access={getScr("Deviations","cmd1")};
+	private String[] access={"DEVIATIONS"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean canBeOrdered(){return true;}
@@ -46,16 +46,16 @@ public class Deviations extends StdCommand
 	{
 		StringBuffer str=new StringBuffer();
 		str.append("\n\r");
-		str.append(CMStrings.padRight(getScr("Deviations","name"),20)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","lvl"),4)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","att"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","dmg"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","armor"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","speed"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","rejuv"),5)+" ");
+		str.append(CMStrings.padRight("Name",20)+" ");
+		str.append(CMStrings.padRight("Lvl",4)+" ");
+		str.append(CMStrings.padRight("Att",5)+" ");
+		str.append(CMStrings.padRight("Dmg",5)+" ");
+		str.append(CMStrings.padRight("Armor",5)+" ");
+		str.append(CMStrings.padRight("Speed",5)+" ");
+		str.append(CMStrings.padRight("Rejuv",5)+" ");
 		if(useFaction!=null)
 		    str.append(CMStrings.padRight(useFaction.name(),7)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","worn"),5));
+		str.append(CMStrings.padRight("Worn",5));
 		str.append("\n\r");
 		return str.toString();
 	}
@@ -63,23 +63,23 @@ public class Deviations extends StdCommand
 	{
 		StringBuffer str=new StringBuffer();
 		str.append("\n\r");
-		str.append(CMStrings.padRight(getScr("Deviations","name"),20)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","type"),10)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","lvl"),4)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","att"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","dmg"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","armor"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","value"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","rejuv"),5)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","weight"),4)+" ");
-		str.append(CMStrings.padRight(getScr("Deviations","size"),4));
+		str.append(CMStrings.padRight("Name",20)+" ");
+		str.append(CMStrings.padRight("Type",10)+" ");
+		str.append(CMStrings.padRight("Lvl",4)+" ");
+		str.append(CMStrings.padRight("Att",5)+" ");
+		str.append(CMStrings.padRight("Dmg",5)+" ");
+		str.append(CMStrings.padRight("Armor",5)+" ");
+		str.append(CMStrings.padRight("Value",5)+" ");
+		str.append(CMStrings.padRight("Rejuv",5)+" ");
+		str.append(CMStrings.padRight("Wght.",4)+" ");
+		str.append(CMStrings.padRight("Size",4));
 		str.append("\n\r");
 		return str.toString();
 	}
 
 	private void fillCheckDeviations(Room R, String type, Vector check)
 	{
-		if(type.equalsIgnoreCase(getScr("Deviations","cmdmobs"))||type.equalsIgnoreCase(getScr("Deviations","cmdboth")))
+		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
 		{
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -88,7 +88,7 @@ public class Deviations extends StdCommand
 					check.addElement(M);
 			}
 		}
-		if(type.equalsIgnoreCase(getScr("Deviations","cmditems"))||type.equalsIgnoreCase(getScr("Deviations","cmdboth")))
+		if(type.equalsIgnoreCase("items")||type.equalsIgnoreCase("both"))
 		{
 			for(int i=0;i<R.numItems();i++)
 			{
@@ -146,14 +146,14 @@ public class Deviations extends StdCommand
 	{
 		Vector V=CMParms.parse(rest);
 		if((V.size()==0)
-		||((!((String)V.firstElement()).equalsIgnoreCase(getScr("Deviations","cmdmobs")))
-		   &&(!((String)V.firstElement()).equalsIgnoreCase(getScr("Deviations","cmditems")))
-		   &&(!((String)V.firstElement()).equalsIgnoreCase(getScr("Deviations","cmdboth")))))
-			return new StringBuffer(getScr("Deviations","instr"));
+		||((!((String)V.firstElement()).equalsIgnoreCase("mobs"))
+		   &&(!((String)V.firstElement()).equalsIgnoreCase("items"))
+		   &&(!((String)V.firstElement()).equalsIgnoreCase("both"))))
+			return new StringBuffer("You must specify whether you want deviations on MOBS, ITEMS, or BOTH.");
 
 		String type=((String)V.firstElement()).toLowerCase();
 		if(V.size()==1)
-			return new StringBuffer(getScr("Deviations","alsoinstr"));
+			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
 		Faction useFaction=null;
 		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
@@ -165,10 +165,10 @@ public class Deviations extends StdCommand
 		String where=((String)V.elementAt(1)).toLowerCase();
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Item.WORNREQ_ANY);
 		Vector check=new Vector();
-		if(where.equalsIgnoreCase(getScr("Deviations","cmdroom")))
+		if(where.equalsIgnoreCase("room"))
 			fillCheckDeviations(mob.location(),type,check);
 		else
-		if(where.equalsIgnoreCase(getScr("Deviations","cmdarea")))
+		if(where.equalsIgnoreCase("area"))
 		{
 			for(Enumeration r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
 			{
@@ -178,25 +178,25 @@ public class Deviations extends StdCommand
 		}
 		else
 		if(E==null)
-			return new StringBuffer("'"+where+getScr("Deviations","unknown"));
+			return new StringBuffer("'"+where+"' is an unknown item or mob name.");
 		else
-		if(type.equals(getScr("Deviations","cmditems"))
+		if(type.equals("items")
 		&&(!(E instanceof Weapon))
 		&&(!(E instanceof Armor)))
-			return new StringBuffer("'"+where+getScr("Deviations","notfound"));
+			return new StringBuffer("'"+where+"' is not a weapon or armor item.");
 		else
-		if(type.equals(getScr("Deviations","cmdmobs"))
+		if(type.equals("mobs")
 		&&(!(E instanceof MOB)))
-			return new StringBuffer("'"+where+getScr("Deviations","notmob"));
+			return new StringBuffer("'"+where+"' is not a MOB.");
 		else
 		if((!(E instanceof Weapon))
 		&&(!(E instanceof Armor))
 		&&(!(E instanceof MOB)))
-			return new StringBuffer("'"+where+getScr("Deviations","notany"));
+			return new StringBuffer("'"+where+"' is not a MOB, or Weapon, or Item.");
 		else
 			check.addElement(E);
 		StringBuffer str=new StringBuffer("");
-		str.append(getScr("Deviations","devreport"));
+		str.append("Deviations Report:\n\r");
 		StringBuffer itemResults = new StringBuffer();
 		StringBuffer mobResults = new StringBuffer();
 		for(int c=0;c<check.size();c++)
@@ -228,7 +228,7 @@ public class Deviations extends StdCommand
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.baseGoldValue(),
 												vals,"VALUE"),5)+" ");
-				itemResults.append(CMStrings.padRight(""+((I.envStats().rejuv()==Integer.MAX_VALUE)?getScr("Deviations","max"):""+I.envStats().rejuv()),5)+" ");
+				itemResults.append(CMStrings.padRight(""+((I.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+I.envStats().rejuv()),5)+" ");
 				if(I instanceof Weapon)
 					itemResults.append(CMStrings.padRight(""+I.baseEnvStats().weight(),4));
 				else
@@ -258,9 +258,9 @@ public class Deviations extends StdCommand
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												(int)Math.round(M.baseEnvStats().speed()),
 												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
-				mobResults.append(CMStrings.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?getScr("Deviations","max"):""+M.envStats().rejuv()) ,5)+" ");
+				mobResults.append(CMStrings.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
 				if(useFaction!=null) 
-				    mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?getScr("Deviations","na"):""+M.fetchFaction(useFaction.factionID())),7)+" ");
+				    mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.inventorySize();j++)
 				{

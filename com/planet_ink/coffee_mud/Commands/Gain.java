@@ -34,7 +34,7 @@ public class Gain extends StdCommand
 {
 	public Gain(){}
 
-	private String[] access={getScr("Gain","cmd1")};
+	private String[] access={"GAIN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

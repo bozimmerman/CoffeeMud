@@ -63,7 +63,7 @@ public class Copy extends StdCommand
 		{
 			String rest=name.substring(x+1).trim();
 			name=name.substring(0,x).trim();
-			if((!rest.equalsIgnoreCase(getScr("Copy","room")))
+			if((!rest.equalsIgnoreCase("room"))
 			&&(rest.length()>0))
 			{
 				MOB M=mob.location().fetchInhabitant(rest);
@@ -218,7 +218,7 @@ public class Copy extends StdCommand
 					newRoom.setRoomID(room.getArea().getNewRoomID(room,dirCode));
 					if(newRoom.roomID().length()==0)
 					{
-						mob.tell(getScr("Copy","atedge"));
+						mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
 						return false;
 					}

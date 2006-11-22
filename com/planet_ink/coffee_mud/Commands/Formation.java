@@ -34,7 +34,7 @@ public class Formation extends StdCommand
 {
 	public Formation(){}
 
-	private String[] access={getScr("Formation","cmd1")};
+	private String[] access={"FORMATION"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands)
@@ -50,9 +50,9 @@ public class Formation extends StdCommand
 				if(done[i]!=null)
 				{
 					if(i==0)
-						str.append(getScr("Formation","front"));
+						str.append("^xfront  - ^.^?");
 					else
-						str.append(getScr("Formation","row")+i+" - ^.^?");
+						str.append("^xrow +"+i+" - ^.^?");
 					for(int i2=0;i2<done[i].size();i2++)
 						str.append(((i2>0)?", ":"")+((MOB)done[i].elementAt(i2)).name());
 					str.append("\n\r");
@@ -61,14 +61,14 @@ public class Formation extends StdCommand
 		}
 		else
 		if(commands.size()==1)
-			mob.tell(getScr("Formation","whom"));
+			mob.tell("Put whom in what row?");
 		else
 		if(mob.numFollowers()==0)
-			mob.tell(getScr("Formation","nofol"));
+			mob.tell("Noone is following you!");
 		else
 		{
 			String row=(String)commands.lastElement();
-			if(getScr("Formation","cmdfront").startsWith(row.toUpperCase()))
+			if("FRONT".startsWith(row.toUpperCase()))
 				row="0";
 			commands.removeElementAt(commands.size()-1);
 			String name=CMParms.combine(commands,0);
@@ -76,7 +76,7 @@ public class Formation extends StdCommand
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
 			{
-				mob.tell(getScr("Formation","notself"));
+				mob.tell("You can not move your own position.  You are always the leader of your party.");
 				return false;
 			}
 			for(int f=0;f<mob.numFollowers();f++)
@@ -89,11 +89,11 @@ public class Formation extends StdCommand
 			}
 			if(who==null)
 			{
-				mob.tell(getScr("Formation","nocalled")+name+".");
+				mob.tell("There is noone following you called "+name+".");
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
-				mob.tell("'"+row+getScr("Formation","badrow",who.name()));
+				mob.tell("'"+row+"' is not a valid row in which to put "+who.name()+".  Try number greater than 0.");
 			else
 			{
 				int leaderRow=-1;
@@ -104,14 +104,14 @@ public class Formation extends StdCommand
 						break;
 					}
 				if(leaderRow<0)
-					mob.tell(getScr("Formation","noexist"));
+					mob.tell("You do not exist.");
 				else
 				if(CMath.s_int(row)<leaderRow)
-					mob.tell(getScr("Formation","nopos",who.name())+leaderRow+".");
+					mob.tell("You can not place "+who.name()+" behind your own position, which is "+leaderRow+".");
 				else
 				{
 					mob.addFollower(who,CMath.s_int(row)-leaderRow);
-					mob.tell(getScr("Formation","posdone",who.name())+CMath.s_int(row));
+					mob.tell("You have positioned "+who.name()+" to row "+CMath.s_int(row));
 				}
 			}
 		}

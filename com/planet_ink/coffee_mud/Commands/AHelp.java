@@ -50,7 +50,7 @@ public class AHelp extends StdCommand
 		if(helpStr.length()==0)
 		{
 			thisTag=Resources.getFileResource("help/arc_help.txt",true);
-			if((thisTag!=null)&&(helpStr.equalsIgnoreCase(getScr("AHelp","more"))))
+			if((thisTag!=null)&&(helpStr.equalsIgnoreCase("more")))
 			{
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)

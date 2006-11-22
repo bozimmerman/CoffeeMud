@@ -36,7 +36,7 @@ public class Modify extends BaseGenerics
 {
 	public Modify(){}
 
-	private String[] access={getScr("Modify","cmd1"),getScr("Modify","cmd2")};
+	private String[] access={"MODIFY","MOD"};
 	public String[] getAccessWords(){return access;}
 
 	public void items(MOB mob, Vector commands)
@@ -44,8 +44,8 @@ public class Modify extends BaseGenerics
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Modify","badmod"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME](@ room/[MOB NAME]) [LEVEL, ABILITY, REJUV, USES, MISC] [NUMBER, TEXT]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 
@@ -57,7 +57,7 @@ public class Modify extends BaseGenerics
 		{
 			String rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
-			if(rest.equalsIgnoreCase(getScr("Modify","cmdroom")))
+			if(rest.equalsIgnoreCase("room"))
 				srchMob=null;
 			else
 			if(rest.length()>0)
@@ -65,8 +65,8 @@ public class Modify extends BaseGenerics
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell(getScr("Modify","nomob",rest));
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+					mob.tell("MOB '"+rest+"' not found.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 					return;
 				}
 				srchMob=M;
@@ -91,112 +91,112 @@ public class Modify extends BaseGenerics
 			modItem=srchRoom.fetchAnyItem(itemID);
 		if(modItem==null)
 		{
-			mob.tell(getScr("Modify","nohere",itemID));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("I don't see '"+itemID+" here.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		mob.location().showOthers(mob,modItem,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
+		mob.location().showOthers(mob,modItem,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 
 		Item copyItem=(Item)modItem.copyOf();
-		if(command.equals(getScr("Modify","cmdlevel")))
+		if(command.equals("LEVEL"))
 		{
 			int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
 				modItem.baseEnvStats().setLevel(newLevel);
 				modItem.recoverEnvStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
 		else
-		if(command.equals(getScr("Modify","cmdable")))
+		if(command.equals("ABILITY"))
 		{
 			int newAbility=CMath.s_int(restStr);
 			modItem.baseEnvStats().setAbility(newAbility);
 			modItem.recoverEnvStats();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
-		if(command.equals(getScr("Modify","cmdheight")))
+		if(command.equals("HEIGHT"))
 		{
 			int newAbility=CMath.s_int(restStr);
 			modItem.baseEnvStats().setHeight(newAbility);
 			modItem.recoverEnvStats();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
-		if(command.equals(getScr("Modify","cmdrejuv")))
+		if(command.equals("REJUV"))
 		{
 			int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
 				modItem.baseEnvStats().setRejuv(newRejuv);
 				modItem.recoverEnvStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 			else
 			{
 				modItem.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 				modItem.recoverEnvStats();
-				mob.tell(modItem.name()+getScr("Modify","neverrejuv"));
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+				mob.tell(modItem.name()+" will now never rejuvinate.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
 		else
-		if(command.equals(getScr("Modify","cmduses")))
+		if(command.equals("USES"))
 		{
 			int newUses=CMath.s_int(restStr);
 			if(newUses>=0)
 			{
 				modItem.setUsesRemaining(newUses);
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
 		else
-		if(command.equals(getScr("Modify","cmdmisc")))
+		if(command.equals("MISC"))
 		{
 			if(modItem.isGeneric())
 				genMiscSet(mob,modItem);
 			else
 				modItem.setMiscText(restStr);
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
 		if((command.length()==0)&&(modItem.isGeneric()))
 		{
 			genMiscSet(mob,modItem);
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+getScr("Modify","shakes"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
 		{
-			mob.tell(getScr("Modify","badmodmob"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, HEIGHT, REJUV, USES, or MISC.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 		if(!copyItem.sameAs(modItem))
-			Log.sysOut("Items",mob.Name()+getScr("Modify","modifieditem")+modItem.ID()+".");
+			Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
 	}
 
     protected void flunkCmd1(MOB mob)
 	{
-		mob.tell(getScr("Modify","badmodroom"));
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID] [TEXT]\n\r");
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
     protected void flunkCmd2(MOB mob)
 	{
-		mob.tell(getScr("Modify","badmodarea"));
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID] [TEXT]\n\r");
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell(getScr("Modify","nogridlocalechild"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshandsroom"));
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the room.");
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
@@ -223,7 +223,7 @@ public class Modify extends BaseGenerics
                     R.setStat(R.getStatCodes()[x],CMLib.english().promptText(mob,R.getStat(R.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(R.getStatCodes()[x])));
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=CMath.s_int(mob.session().prompt(getScr("Modify","which"),""));
+				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 				if(showFlag<=0)
 				{
 					showFlag=-1;
@@ -233,8 +233,8 @@ public class Modify extends BaseGenerics
 			if((!oldRoom.sameAs(mob.location()))&&(!mob.location().amDestroyed()))
 			{
 				CMLib.database().DBUpdateRoom(mob.location());
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","diff"));
-				Log.sysOut(getScr("Modify","modifiedroom"),mob.Name()+getScr("Modify","modifiedroomreally")+mob.location().roomID()+".");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+				Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 			}
 			return;
 		}
@@ -245,7 +245,7 @@ public class Modify extends BaseGenerics
 		if(commands.size()>=3)
 			restStr=CMParms.combine(commands,3);
 
-		if(command.equalsIgnoreCase(getScr("Modify","cmdarea")))
+		if(command.equalsIgnoreCase("AREA"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			Area A=CMLib.map().getArea(restStr);
@@ -254,16 +254,16 @@ public class Modify extends BaseGenerics
 			{
 				if(!mob.isMonster())
 				{
-					if(mob.session().confirm(getScr("Modify","newarea",restStr),"N"))
+					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
 					{
 						String areaType="";
 						int tries=0;
 						while((areaType.length()==0)&&((++tries)<10))
 						{
-							areaType=mob.session().prompt(getScr("Modify","areatype"),"StdArea");
+							areaType=mob.session().prompt("Enter an area type to create (default=StdArea): ","StdArea");
 							if(CMClass.getAreaType(areaType)==null)
 							{
-								mob.session().println(getScr("Modify","badareatype"));
+								mob.session().println("Invalid area type! Valid ones are:");
 								mob.session().println(CMLib.lister().reallyList(CMClass.areaTypes(),-1,null).toString());
 								areaType="";
 							}
@@ -274,12 +274,12 @@ public class Modify extends BaseGenerics
                         CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 						reid=true;
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","areatwitch"));
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This entire area twitches.\n\r");
 				}
 				else
 				{
-					mob.tell(getScr("Modify","sorry"));
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+					mob.tell("Sorry Charlie!");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
 			}
 			else
@@ -289,7 +289,7 @@ public class Modify extends BaseGenerics
 					reid=true;
 				else
 					CMLib.database().DBUpdateRoom(mob.location());
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","areatwitch2"));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This area twitches.\n\r");
 			}
 			
 			if(reid)
@@ -311,67 +311,67 @@ public class Modify extends BaseGenerics
 			}
 		}
 		else
-		if(command.equalsIgnoreCase(getScr("Modify","cmdname")))
+		if(command.equalsIgnoreCase("NAME"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDisplayText(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","diff"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
-		if(command.equalsIgnoreCase(getScr("Modify","cmdclass")))
+		if(command.equalsIgnoreCase("CLASS"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			Room newRoom=CMClass.getLocale(restStr);
 			if(newRoom==null)
 			{
-				mob.tell("'"+restStr+getScr("Modify","nolocale"));
+				mob.tell("'"+restStr+"' is not a valid room locale.");
 				return;
 			}
 			changeRoomType(mob.location(),newRoom);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","diff"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
-		if((command.equalsIgnoreCase(getScr("Modify","cmdxgrid")))&&(mob.location() instanceof GridLocale))
+		if((command.equalsIgnoreCase("XGRID"))&&(mob.location() instanceof GridLocale))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			((GridLocale)mob.location()).setXGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","diff"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
-		if((command.equalsIgnoreCase(getScr("Modify","cmdygrid")))&&(mob.location() instanceof GridLocale))
+		if((command.equalsIgnoreCase("YGRID"))&&(mob.location() instanceof GridLocale))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			((GridLocale)mob.location()).setYGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","diff"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
-		if(command.equalsIgnoreCase(getScr("Modify","cmddesc")))
+		if(command.equalsIgnoreCase("DESCRIPTION"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDescription(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","realityup"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
-		if(command.equalsIgnoreCase(getScr("Modify","cmdaffects")))
+		if(command.equalsIgnoreCase("AFFECTS"))
 		{
 			genAffects(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","realityup"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
-		if(command.equalsIgnoreCase(getScr("Modify","cmdbehavs")))
+		if(command.equalsIgnoreCase("BEHAVIORS"))
 		{
 			genBehaviors(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","realityup"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
 		{
@@ -379,7 +379,7 @@ public class Modify extends BaseGenerics
 			return;
 		}
 		mob.location().recoverRoomStats();
-		Log.sysOut(getScr("Modify","modifiedroom"),mob.Name()+getScr("Modify","modifiedroomreally")+mob.location().roomID()+".");
+		Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 	}
 
 	public void areas(MOB mob, Vector commands)
@@ -394,7 +394,7 @@ public class Modify extends BaseGenerics
 		for(Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
 			allMyDamnRooms.addElement(e.nextElement());
 
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","waveswild"));
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around wildly.");
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
 		{
@@ -428,7 +428,7 @@ public class Modify extends BaseGenerics
                     myArea.setStat(myArea.getStatCodes()[x],CMLib.english().promptText(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=CMath.s_int(mob.session().prompt(getScr("Modify","which"),""));
+				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 				if(showFlag<=0)
 				{
 					showFlag=-1;
@@ -445,36 +445,36 @@ public class Modify extends BaseGenerics
 			if(commands.size()>=3)
 				restStr=CMParms.combine(commands,3);
 
-			if(command.equalsIgnoreCase(getScr("Modify","cmdname")))
+			if(command.equalsIgnoreCase("NAME"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
 				myArea.setName(restStr);
 			}
 			else
-			if(command.equalsIgnoreCase(getScr("Modify","cmddesconly")))
+			if(command.equalsIgnoreCase("DESC"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
 				myArea.setDescription(restStr);
 			}
 			else
-			if(command.equalsIgnoreCase(getScr("Modify","cmdfile")))
+			if(command.equalsIgnoreCase("FILE"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
 				myArea.setArchivePath(restStr);
 			}
 			else
-			if((command.equalsIgnoreCase(getScr("Modify","cmdxgrid")))&&(myArea instanceof GridZones))
+			if((command.equalsIgnoreCase("XGRID"))&&(myArea instanceof GridZones))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
 				((GridZones)myArea).setXGridSize(CMath.s_int(restStr));
 			}
 			else
-			if((command.equalsIgnoreCase(getScr("Modify","cmdygrid")))&&(myArea instanceof GridZones))
+			if((command.equalsIgnoreCase("YGRID"))&&(myArea instanceof GridZones))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
 				((GridZones)myArea).setYGridSize(CMath.s_int(restStr));
 			}
-			if(command.equalsIgnoreCase(getScr("Modify","cmdclimate")))
+			if(command.equalsIgnoreCase("CLIMATE"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
 				int newClimate=0;
@@ -500,40 +500,40 @@ public class Modify extends BaseGenerics
 						// do nothing
 						break;
 					default:
-						mob.tell(getScr("Modify","badclimate",""+restStr.charAt(i)));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+						mob.tell("Invalid CLIMATE code: '"+restStr.charAt(i)+"'.  Valid codes include: R)AINY, H)OT, C)OLD, D)RY, W)INDY, N)ORMAL.\n\r");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 						return;
 					}
 				myArea.setClimateType(newClimate);
 			}
 			else
-			if(command.equalsIgnoreCase(getScr("Modify","cmdaddsub")))
+			if(command.equalsIgnoreCase("ADDSUB"))
 			{
 				if((commands.size()<4)||(!CMLib.database().DBUserSearch(null,restStr)))
 				{
-					mob.tell(getScr("Modify","badusername"));
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+					mob.tell("Unknown or invalid username given.\n\r");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
 				myArea.addSubOp(restStr);
 			}
 			else
-			if(command.equalsIgnoreCase(getScr("Modify","cmddelsub")))
+			if(command.equalsIgnoreCase("DELSUB"))
 			{
 				if((commands.size()<4)||(!myArea.amISubOp(restStr)))
 				{
-					mob.tell(getScr("Modify","badstaffname")+myArea.getSubOpList()+".\n\r");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+					mob.tell("Unknown or invalid staff name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
 				myArea.delSubOp(restStr);
 			}
 			else
-			if(command.equalsIgnoreCase(getScr("Modify","cmdaffects")))
+			if(command.equalsIgnoreCase("AFFECTS"))
 			{
 				genAffects(mob,myArea,1,1);
 				myArea.recoverEnvStats();
 			}
 			else
-			if(command.equalsIgnoreCase(getScr("Modify","cmdbehavs")))
+			if(command.equalsIgnoreCase("BEHAVIORS"))
 			{
 				genBehaviors(mob,myArea,1,1);
 				myArea.recoverEnvStats();
@@ -547,7 +547,7 @@ public class Modify extends BaseGenerics
 
 		if((!myArea.Name().equals(oldName))&&(!mob.isMonster()))
 		{
-			if(mob.session().confirm(getScr("Modify","isareanamenecc"),"N"))
+			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
 				for(Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
@@ -575,7 +575,7 @@ public class Modify extends BaseGenerics
 			myArea.setName(oldName);
 		myArea.recoverEnvStats();
 		mob.location().recoverRoomStats();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","diff"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		if(myArea.name().equals(oldName))
 			CMLib.database().DBUpdateArea(myArea.Name(),myArea);
 		else
@@ -583,7 +583,7 @@ public class Modify extends BaseGenerics
 			CMLib.database().DBUpdateArea(oldName,myArea);
 			CMLib.map().renameRooms(myArea,oldName,allMyDamnRooms);
 		}
-		Log.sysOut(getScr("Modify","modifiedroom"),mob.Name()+getScr("Modify","modifiedarea")+myArea.Name()+".");
+		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
 
 	public void exits(MOB mob, Vector commands)
@@ -591,33 +591,33 @@ public class Modify extends BaseGenerics
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell(getScr("Modify","nogridlocalechild"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Modify","badexitmod"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 
 		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell(getScr("Modify","nodir")+Directions.DIRECTIONS_DESC+".\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify a direction.  Try "+Directions.DIRECTIONS_DESC+".\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 		
 		Exit thisExit=mob.location().rawExits()[direction];
 		if(thisExit==null)
 		{
-			mob.tell(getScr("Modify","noexit")+((String)commands.elementAt(2))+"'.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify a valid exit '"+((String)commands.elementAt(2))+"'.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshandsto")+Directions.getInDirectionName(direction)+".");
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+Directions.getInDirectionName(direction)+".");
 
 		if(thisExit.isGeneric())
 		{
@@ -627,8 +627,8 @@ public class Modify extends BaseGenerics
 		
 		if(commands.size()<4)
 		{
-			mob.tell(getScr("Modify","badexitmod"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 
@@ -642,8 +642,8 @@ public class Modify extends BaseGenerics
 			thisExit.setMiscText(restStr);
 		else
 		{
-			mob.tell(getScr("Modify","badexitmod"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 		
@@ -666,8 +666,8 @@ public class Modify extends BaseGenerics
 	    }catch(NoSuchElementException e){}
 		
 		mob.location().getArea().fillInAreaRoom(mob.location());
-		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,thisExit.name()+getScr("Modify","shakes"));
-		Log.sysOut("Exits",mob.location().roomID()+getScr("Modify","exitschanged")+mob.Name()+".");
+		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
+		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
 	public boolean races(MOB mob, Vector commands)
@@ -675,8 +675,8 @@ public class Modify extends BaseGenerics
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Modify","badmodrace"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY RACE [RACE ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 
@@ -684,21 +684,21 @@ public class Modify extends BaseGenerics
 		Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
-			mob.tell("'"+raceID+getScr("Modify","noraceid"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("'"+raceID+"' is an invalid race id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 		if(!(R.isGeneric()))
 		{
-			mob.tell("'"+R.ID()+getScr("Modify","noracegen"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("'"+R.ID()+"' is not generic, and may not be modified.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesaroundall",R.name()));
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+R.name()+"s.");
 		modifyGenRace(mob,R);
 		CMLib.database().DBDeleteRace(R.ID());
 		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,R.name()+getScr("Modify","everywhereshakes"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,R.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
 
@@ -707,8 +707,8 @@ public class Modify extends BaseGenerics
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Modify","badmodclass"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY CLASS [CLASS ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 
@@ -716,21 +716,21 @@ public class Modify extends BaseGenerics
 		CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
-			mob.tell("'"+classID+getScr("Modify","badclassid"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("'"+classID+"' is an invalid class id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 		if(!(C.isGeneric()))
 		{
-			mob.tell("'"+C.ID()+getScr("Modify","noracegen"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("'"+C.ID()+"' is not generic, and may not be modified.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesaroundall",C.name()));
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+C.name()+"s.");
 		modifyGenClass(mob,C);
 		CMLib.database().DBDeleteClass(C.ID());
 		CMLib.database().DBCreateClass(C.ID(),C.classParms());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,C.name()+getScr("Modify","everywhereshakes"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,C.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
 
@@ -739,8 +739,8 @@ public class Modify extends BaseGenerics
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Modify","badmodable"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ABILITY [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 	
@@ -748,21 +748,21 @@ public class Modify extends BaseGenerics
 		Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
-			mob.tell("'"+classID+getScr("Modify","invalidable"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 		if(!(A.isGeneric()))
 		{
-			mob.tell("'"+A.ID()+getScr("Modify","noracegen"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+			mob.tell("'"+A.ID()+"' is not generic, and may not be modified.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesaroundall",A.name()));
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+A.name()+"s.");
 		modifyGenAbility(mob,A);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+getScr("Modify","everywhereshakes"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
 	
@@ -771,23 +771,23 @@ public class Modify extends BaseGenerics
     {
         if(commands.size()<3)
         {
-            mob.tell(getScr("Modify","badmodcomp"));
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+            mob.tell("You have failed to specify the proper fields.\n\rFormat: MODIFY COMPONENT [SKILL ID]\n\r");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
         String skillID=CMParms.combine(commands,2);
         Ability A=CMClass.getAbility(skillID);
         if(A==null)
         {
-            mob.tell("'"+skillID+getScr("Modify","badskillid"));
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+            mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
         skillID=A.ID();
         if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())==null)
         {
-            mob.tell(getScr("Modify","nocompexists",A.ID()));
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+            mob.tell("A component definition for '"+A.ID()+"' doesn't exists, you'll need to create it first.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
         super.modifyComponents(mob,skillID);
@@ -796,7 +796,7 @@ public class Modify extends BaseGenerics
         if(error!=null)
         {
             mob.tell(error);
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
         CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
@@ -839,7 +839,7 @@ public class Modify extends BaseGenerics
             text.append(parms+'\n');
         }
         F.saveText(text.toString(),false);
-        mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","complicup"));
+        mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
     }
     
     
@@ -852,8 +852,8 @@ public class Modify extends BaseGenerics
 
 		if(commands.size()<3)
 		{
-			mob.session().rawPrintln(getScr("Modify","badmodsoc"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([PARAM])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
         String name=((String)commands.elementAt(2)).toUpperCase();
@@ -870,13 +870,13 @@ public class Modify extends BaseGenerics
         Social S=CMLib.socials().FetchSocial((name+" "+stuff).trim(),false);
         if(S==null)
         {
-            mob.tell(getScr("Modify","nosocexists",stuff));
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+            mob.tell("The social '"+stuff+"' does not exist.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             return;
         }
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesaroundidea",S.name()));
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+S.name()+"s.");
 		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,getScr("Modify","happyup"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
 	}
 
 	public void players(MOB mob, Vector commands)
@@ -884,8 +884,8 @@ public class Modify extends BaseGenerics
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("Modify","badmoduser"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 
@@ -913,15 +913,15 @@ public class Modify extends BaseGenerics
         TM.destroy();
 		if(M==null)
 		{
-			mob.tell(getScr("Modify","noplayer")+mobID+"'!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("There is no such player as '"+mobID+"'!");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
+		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 		MOB copyMOB=(MOB)M.copyOf();
 		modifyPlayer(mob,M);
 		if(!copyMOB.sameAs(M))
-			Log.sysOut("Mobs",mob.Name()+getScr("Modify","modifiedplayer")+M.Name()+".");
+			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
 	}
 	
 	public void mobs(MOB mob, Vector commands)
@@ -930,8 +930,8 @@ public class Modify extends BaseGenerics
 
 		if(commands.size()<4)
 		{
-			mob.tell(getScr("Modify","badmodmobreally"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MOB [MOB NAME] [LEVEL, ABILITY, REJUV, MISC] [NUMBER, TEXT]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 
@@ -945,19 +945,19 @@ public class Modify extends BaseGenerics
 		MOB modMOB=mob.location().fetchInhabitant(mobID);
 		if(modMOB==null)
 		{
-			mob.tell(getScr("Modify","nohere",mobID));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("I don't see '"+mobID+" here.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 
 		if(!modMOB.isMonster())
 		{
-			mob.tell(modMOB.Name()+getScr("Modify","isplayer"));
+			mob.tell(modMOB.Name()+" is a player! Try MODIFY USER!");
 			return;
 		}
 		MOB copyMOB=(MOB)modMOB.copyOf();
-		mob.location().showOthers(mob,modMOB,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
-		if(command.equals(getScr("Modify","cmdlevel")))
+		mob.location().showOthers(mob,modMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
+		if(command.equals("LEVEL"))
 		{
 			int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
@@ -965,56 +965,56 @@ public class Modify extends BaseGenerics
 				modMOB.baseEnvStats().setLevel(newLevel);
 				modMOB.recoverCharStats();
 				modMOB.recoverEnvStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+getScr("Modify","shakespower"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 		}
 		else
-		if(command.equals(getScr("Modify","cmdable")))
+		if(command.equals("ABILITY"))
 		{
 			int newAbility=CMath.s_int(restStr);
 			modMOB.baseEnvStats().setAbility(newAbility);
 			modMOB.recoverEnvStats();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+getScr("Modify","shakespower"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 		}
 		else
-		if(command.equals(getScr("Modify","cmdrejuv")))
+		if(command.equals("REJUV"))
 		{
 			int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
 				modMOB.baseEnvStats().setRejuv(newRejuv);
 				modMOB.recoverEnvStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+getScr("Modify","shakespower"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 			else
 			{
 				modMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 				modMOB.recoverEnvStats();
-				mob.tell(modMOB.name()+getScr("Modify","neverrejuv"));
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+getScr("Modify","shakespower"));
+				mob.tell(modMOB.name()+" will now never rejuvinate.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 		}
 		else
-		if(command.equals(getScr("Modify","cmdmisc")))
+		if(command.equals("MISC"))
 		{
 			if(modMOB.isGeneric())
 				genMiscSet(mob,modMOB);
 			else
 				modMOB.setMiscText(restStr);
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+getScr("Modify","shakespower"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 		}
 		else
 		{
-			mob.tell(getScr("Modify","badmodmob2"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubspowspell"));
+			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, REJUV, or MISC.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 		}
 		if(!modMOB.sameAs(copyMOB))
-			Log.sysOut("Mobs",mob.Name()+getScr("Modify","modifiedmob")+modMOB.Name()+".");
+			Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
 	}
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell(getScr("Modify","nodothathere"));
+		mob.tell("You are not allowed to do that here.");
 		return false;
 	}
 	
@@ -1024,88 +1024,88 @@ public class Modify extends BaseGenerics
 		String commandType="";
 		if(commands.size()>1)
 			commandType=((String)commands.elementAt(1)).toUpperCase();
-		if(commandType.equals(getScr("Modify","cmditem")))
+		if(commandType.equals("ITEM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
 			items(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdroom2")))
+		if(commandType.equals("ROOM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
 			rooms(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdrace")))
+		if(commandType.equals("RACE"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
 			races(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdclass")))
+		if(commandType.equals("CLASS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
 			classes(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdable")))
+		if(commandType.equals("ABILITY"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
 			abilities(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdarea")))
+		if(commandType.equals("AREA"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
 			areas(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdexit")))
+		if(commandType.equals("EXIT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 			exits(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdcomponent")))
+		if(commandType.equals("COMPONENT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
             components(mob,commands);
 			return false;
 		}
         else
-        if(commandType.equals(getScr("Modify","cmdexpertise")))
+        if(commandType.equals("EXPERTISE"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
-            mob.tell(getScr("Modify","nomodcomp"));
+            mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
             return false;
         }
         else
-        if(commandType.equals(getScr("Modify","cmdtitle")))
+        if(commandType.equals("TITLE"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
-            mob.tell(getScr("Modify","nomodcomp"));
+            mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
             return false;
         }
 		else
-		if(commandType.equals(getScr("Modify","cmdsoc")))
+		if(commandType.equals("SOCIAL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
 			socials(mob,commands);
 		}
 		else
-		if(commandType.equals(getScr("Modify","cmdmob")))
+		if(commandType.equals("MOB"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
 			mobs(mob,commands);
 		}
 		else
-        if(commandType.startsWith(getScr("Modify","cmdjscript")))
+        if(commandType.startsWith("JSCRIPT"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS")) 
                 return errorOut(mob);
             if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
             {
-                mob.tell(getScr("Modify","reqapproval"));
+                mob.tell("This command is only used when your Scriptable Javascripts require approval as specified in your coffeemud.ini file.");
                 return true;
             }
             Long L=null;
@@ -1119,25 +1119,25 @@ public class Modify extends BaseGenerics
                 if(O instanceof StringBuffer)
                 {
                     somethingFound=true;
-                    mob.tell(getScr("Modify","unapproved")+((StringBuffer)O).toString()+"\n\r");
+                    mob.tell("Unapproved script:\n\r"+((StringBuffer)O).toString()+"\n\r");
                     if((!mob.isMonster())
-                    &&(mob.session().confirm(getScr("Modify","approve"),"Y")))
+                    &&(mob.session().confirm("Approve this script (Y/n)?","Y")))
                         CMSecurity.approveJScript(mob.Name(),L.longValue());
                     else
                         j.remove(L);
                 }
             }
             if(!somethingFound)
-                mob.tell(getScr("Modify","noapproves"));
+                mob.tell("No Javascripts require approval at this time.");
         }
         else
-		if(commandType.equals(getScr("Modify","cmduser")))
+		if(commandType.equals("USER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			players(mob,commands);
 		}
 		else
-        if(commandType.equals(getScr("Modify","cmdpoll")))
+        if(commandType.equals("POLL"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
             String name=CMParms.combine(commands,2);
@@ -1149,21 +1149,21 @@ public class Modify extends BaseGenerics
                 P=CMLib.polls().getPoll(name);
             if(P==null)
             {
-                mob.tell(getScr("Modify","nopoll",name));
-                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+                mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
                 return false;
             }
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,getScr("Modify","wavesidea")+P.getSubject()+".^?");
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms around the idea of "+P.getSubject()+".^?");
             P.modifyVote(mob);
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,getScr("Modify","uncertaintyup"));
-            Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifiedpoll")+P.getName()+".");
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world's uncertainty has changed.^?");
+            Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
         }
         else
-		if(commandType.equals(getScr("Modify","cmdquest")))
+		if(commandType.equals("QUEST"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
 			if(commands.size()<3)
-				mob.tell(getScr("Modify","stopwhich"));
+				mob.tell("Start/Stop which quest?  Use list quests.");
 			else
 			{
 				String name=CMParms.combine(commands,2);
@@ -1175,68 +1175,68 @@ public class Modify extends BaseGenerics
                 }
                 if(Q==null) Q=CMLib.quests().fetchQuest(name);
 				if(Q==null)
-					mob.tell(getScr("Modify","unknownquest",name));
+					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
 				else
 				if(!mob.isMonster())
 				{
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesaround")+Q.name()+".");
-					if((Q.running())&&(mob.session().confirm(getScr("Modify","stopquest",Q.name()),"N")))
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+Q.name()+".");
+					if((Q.running())&&(mob.session().confirm("Stop quest '"+Q.name()+"' (y/N)?","N")))
 					{
 						Q.stopQuest();
-						mob.tell(getScr("Modify","queststopped",Q.name()));
+						mob.tell("Quest '"+Q.name()+"' stopped.");
 					}
 					else
-					if((!Q.running())&&(mob.session().confirm(getScr("Modify","startquest",Q.name()),"Y")))
+					if((!Q.running())&&(mob.session().confirm("Start quest '"+Q.name()+"' (Y/n)?","Y")))
 					{
 						Q.startQuest();
                         if(!Q.running())
-    						mob.tell(getScr("Modify","questnotstarted",Q.name()));
+    						mob.tell("Quest '"+Q.name()+"' NOT started -- check your mug.log for errors.");
                         else
-                            mob.tell(getScr("Modify","queststarted",Q.name()));
+                            mob.tell("Quest '"+Q.name()+"' started.");
 					}
 				}
 			}
 		}
         else
-        if(commandType.equals(getScr("Modify","cmdfaction")))
+        if(commandType.equals("FACTION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
             if(commands.size()<3)
-                mob.tell(getScr("Modify","whichfaction"));
+                mob.tell("Modify which faction?  Use list factions.");
             else
             {
                 String name=CMParms.combine(commands,2);
                 Faction F=CMLib.factions().getFaction(name);
                 if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F==null)
-                    mob.tell(getScr("Modify","unknownfaction",name));
+                    mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
                 else
                 if(!mob.isMonster())
                 {
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesidea2")+F.name()+".");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+F.name()+".");
                     modifyFaction(mob,F);
-                    Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifiedfaction")+F.name()+" ("+F.factionID()+").");
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name()+" ("+F.factionID()+").");
                 }
             }
         }
         else
-        if(commandType.equals(getScr("Modify","cmdclan")))
+        if(commandType.equals("CLAN"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
 			if(commands.size()<3)
-				mob.tell(getScr("Modify","whichclan"));
+				mob.tell("Modify which clan?  Use clanlist.");
 			else
 			{
 				String name=CMParms.combine(commands,2);
 				Clan C=CMLib.clans().findClan(name);
 				if(C==null)
-					mob.tell(getScr("Modify","unknownclan",name));
+					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
 				else
                 if(!mob.isMonster())
                 {
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","wavesaround")+C.name()+".");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+C.name()+".");
                     modifyClan(mob,C);
-                    Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifiedclan")+C.name()+".");
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Clan "+C.name()+".");
                 }
             }
         }
@@ -1250,7 +1250,7 @@ public class Modify extends BaseGenerics
 			{
 				String rest=allWord.substring(x+1).trim();
 				allWord=allWord.substring(0,x).trim();
-				if(rest.equalsIgnoreCase(getScr("Modify","cmdroom")))
+				if(rest.equalsIgnoreCase("room"))
 					srchMob=null;
 				else
 				if(rest.length()>0)
@@ -1258,8 +1258,8 @@ public class Modify extends BaseGenerics
 					MOB M=srchRoom.fetchInhabitant(rest);
 					if(M==null)
 					{
-						mob.tell(getScr("Modify","nomob",rest));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Modify","flubsspell"));
+						mob.tell("MOB '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 						return false;
 					}
 					srchMob=M;
@@ -1280,7 +1280,7 @@ public class Modify extends BaseGenerics
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 
                     return errorOut(mob);
 				Item copyItem=(Item)thang.copyOf();
-				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
+				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
@@ -1297,7 +1297,7 @@ public class Modify extends BaseGenerics
 						genMiscText(mob,thang,++showNumber,showFlag);
 						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
-						showFlag=CMath.s_int(mob.session().prompt(getScr("Modify","which"),""));
+						showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 						if(showFlag<=0)
 						{
 							showFlag=-1;
@@ -1308,9 +1308,9 @@ public class Modify extends BaseGenerics
 				else
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+getScr("Modify","shakes"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 				if(!copyItem.sameAs(thang))
-	                Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifieditemin",thang.Name(),thang.ID())+CMLib.map().getExtendedRoomID(mob.location())+".");
+	                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
@@ -1320,7 +1320,7 @@ public class Modify extends BaseGenerics
 				MOB copyMOB=(MOB)thang.copyOf();
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
-					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
+					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					int showFlag=-1;
 					if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 						showFlag=-999;
@@ -1334,7 +1334,7 @@ public class Modify extends BaseGenerics
 						genMiscText(mob,thang,++showNumber,showFlag);
 						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
-						showFlag=CMath.s_int(mob.session().prompt(getScr("Modify","which"),""));
+						showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 						if(showFlag<=0)
 						{
 							showFlag=-1;
@@ -1342,23 +1342,23 @@ public class Modify extends BaseGenerics
 						}
 					}
 					if(!copyMOB.sameAs(thang))
-	                    Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifiedmobin",thang.Name(),thang.ID())+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
 				}
 				else
 				if(!((MOB)thang).isMonster())
 				{
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
-					players(mob,CMParms.parse(getScr("Modify","cmdmoduser")+thang.Name()+"\""));
+					players(mob,CMParms.parse("MODIFY USER \""+thang.Name()+"\""));
 				}
 				else
                 {
-					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
+					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					genMiscSet(mob,thang);
 					if(!copyMOB.sameAs(thang))
-	                    Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifiedmobin",thang.Name(),thang.ID())+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
                 }
 				thang.recoverEnvStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+getScr("Modify","shakes"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 			}
 			else
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
@@ -1369,7 +1369,7 @@ public class Modify extends BaseGenerics
 				if(thang!=null)
 				{
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
-					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,getScr("Modify","waveshands"));
+					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
 					genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
@@ -1393,24 +1393,24 @@ public class Modify extends BaseGenerics
 				    		}
 						}
 				    }catch(NoSuchElementException e){}
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+getScr("Modify","shakes"));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 					if(!copyExit.sameAs(thang))
-						Log.sysOut("CreateEdit",mob.Name()+getScr("Modify","modifiedexit")+thang.ID()+".");
+						Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
 				}
 				else
 				{
-					commands.insertElementAt(getScr("Modify","cmdexit"),1);
+					commands.insertElementAt("EXIT",1);
 					execute(mob,commands);
 				}
 			}
 			else
 			if(CMLib.socials().FetchSocial(allWord,true)!=null)
 			{
-				commands.insertElementAt(getScr("Modify","cmdsoc"),1);
+				commands.insertElementAt("SOCIAL",1);
 				execute(mob,commands);
 			}
 			else
-				mob.tell(getScr("Modify","modifyinst",commandType));
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, EXPERTISE, TITLE, QUEST, MOB, USER, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

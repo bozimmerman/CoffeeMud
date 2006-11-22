@@ -34,12 +34,12 @@ public class FactionList extends StdCommand
 {
 	public FactionList(){}
 
-	private String[] access={getScr("FactionList","cmd1"),getScr("FactionList","cmd2")};
+	private String[] access={"FACTIONS","FAC"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer(getScr("FactionList","facstandings"));
+		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
         boolean none=true;
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
@@ -52,7 +52,7 @@ public class FactionList extends StdCommand
         }
 		if(!mob.isMonster())
             if(none)
-                mob.session().colorOnlyPrintln(getScr("FactionList","facapply"));
+                mob.session().colorOnlyPrintln("\n\r^HNo factions apply.^?^N");
             else
     			mob.session().colorOnlyPrintln(msg.toString());
 		return false;

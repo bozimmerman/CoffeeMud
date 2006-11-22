@@ -34,7 +34,7 @@ public class Examine extends StdCommand
 {
     public Examine(){}
 
-    private String[] access={getScr("Examine","cmd1"),getScr("Examine","cmd2"),getScr("Examine","cmd3"),getScr("Examine","cmd4"),getScr("Examine","cmd5"),getScr("Examine","cmd6")};
+    private String[] access={"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
@@ -45,7 +45,7 @@ public class Examine extends StdCommand
             commands.removeElementAt(commands.size()-1);
             quiet=true;
         }
-        String textMsg=getScr("Examine","examines");
+        String textMsg="<S-NAME> examine(s) ";
         if(mob.location()==null) return false;
         if((commands!=null)&&(commands.size()>1))
         {
@@ -77,7 +77,7 @@ public class Examine extends StdCommand
                         thisThang=exit;
                     else
                     {
-                        mob.tell(getScr("Examine","nosee"));
+                        mob.tell("You don't see anything that way.");
                         return false;
                     }
                 }
@@ -88,7 +88,7 @@ public class Examine extends StdCommand
                 if((thisThang instanceof Room)||(thisThang instanceof Exit))
                 {
                     if(thisThang==mob.location())
-                        name=getScr("Examine","around");
+                        name="around";
                     else
                     if(dirCode>=0)
                         name=Directions.getDirectionName(dirCode);
@@ -100,7 +100,7 @@ public class Examine extends StdCommand
                     CMLib.commands().lookAtExits((Room)thisThang,mob);
             }
             else
-                mob.tell(getScr("Examine","nohere"));
+                mob.tell("You don't see that here!");
         }
         else
         {

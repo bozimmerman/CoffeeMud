@@ -34,22 +34,22 @@ public class Deposit extends BaseItemParser
 {
 	public Deposit(){}
 
-	private String[] access={getScr("Deposit","cmd1")};
+	private String[] access={"DEPOSIT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,getScr("Deposit","depositwhom"));
+        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Deposit how much with whom?");
         ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(shopkeeper==null) return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			mob.tell(getScr("Deposit","nodep")+shopkeeper.name()+".");
+			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(getScr("Deposit","depwhat"));
+			mob.tell("Deposit what or how much?");
 			return false;
 		}
 		String thisName=CMParms.combine(commands,0);
@@ -59,7 +59,7 @@ public class Deposit extends BaseItemParser
 			thisThang=mob.fetchCarried(null,thisName);
 			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
-				mob.tell(getScr("Deposit","nocarried"));
+				mob.tell("You don't seem to be carrying that.");
 				return false;
 			}
 		}
