@@ -34,7 +34,7 @@ public class GTell extends StdCommand
 {
 	public GTell(){}
 
-	private String[] access={"GTELL","GT"};
+	private String[] access={getScr("GTell","cmd1"),getScr("GTell","cmd2")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,19 +42,19 @@ public class GTell extends StdCommand
 		String text=CMParms.combine(commands,1);
 		if(text.length()==0)
 		{
-			mob.tell("Tell the group what?");
+			mob.tell(getScr("GTell","what"));
 			return false;
 		}
 		text=CMProps.applyINIFilter(text,CMProps.SYSTEM_SAYFILTER);
 		
 		if((commands.size()>2)
-		&&((((String)commands.elementAt(1)).equalsIgnoreCase("last"))
+		&&((((String)commands.elementAt(1)).equalsIgnoreCase(getScr("GTell","cmdlast")))
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{
 			Vector V=mob.playerStats().getGTellStack();
 			if(V.size()==0)
-				mob.tell("No telling.");
+				mob.tell(getScr("GTell","notel"));
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,2));
@@ -71,8 +71,8 @@ public class GTell extends StdCommand
 		{
 			MOB target=(MOB)e.next();
 			CMMsg msg=CMClass.getMsg(mob,target,null
-			        ,CMMsg.MSG_TELL,"^t^<GTELL \""+mob.name()+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^."
-			        ,CMMsg.MSG_TELL,"^t^<GTELL \""+mob.name()+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^."
+			        ,CMMsg.MSG_TELL,getScr("GTell","tellsgroup",mob.name(),text)
+			        ,CMMsg.MSG_TELL,getScr("GTell","tellsgroup",mob.name(),text)
 			        ,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))

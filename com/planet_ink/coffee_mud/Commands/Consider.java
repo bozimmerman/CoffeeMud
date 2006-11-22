@@ -35,7 +35,7 @@ public class Consider extends StdCommand
 {
 	public Consider(){}
 
-	private String[] access={"CONSIDER","COS","CO"};
+	private String[] access={getScr("Consider","cmd1"),getScr("Consider","cmd2"),getScr("Consider","cmd3")};
 	public String[] getAccessWords(){return access;}
 
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
@@ -73,7 +73,7 @@ public class Consider extends StdCommand
         {
     		if(commands.size()<2)
     		{
-    			mob.tell("Consider whom?");
+    			mob.tell(getScr("Consider","conwhom"));
     			return false;
     		}
     		commands.removeElementAt(0);
@@ -81,7 +81,7 @@ public class Consider extends StdCommand
     		target=mob.location().fetchInhabitant(targetName);
     		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
     		{
-    			mob.tell("I don't see '"+targetName+"' here.");
+    			mob.tell(getScr("Consider","dontsee",targetName));
     			return false;
     		}
         }
@@ -99,7 +99,7 @@ public class Consider extends StdCommand
 		int levelDiff=Math.abs(realDiff);
 		if(levelDiff<theDiff)
 		{
-			mob.tell("The perfect match!");
+			mob.tell(getScr("Consider","perfect"));
 			return false;
 		}
 		else
@@ -107,24 +107,24 @@ public class Consider extends StdCommand
 		{
 			if(realDiff>-(2*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" might give you a fight.");
+				mob.tell(target.charStats().HeShe()+getScr("Consider","mightfight"));
 				return false;
 			}
 			else
 			if(realDiff>-(3*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is hardly worth your while.");
+				mob.tell(target.charStats().HeShe()+getScr("Consider","not worthwhile"));
 				return false;
 			}
 			else
 			if(realDiff>-(4*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is a pushover.");
+				mob.tell(target.charStats().HeShe()+getScr("Consider","pushover"));
 				return false;
 			}
 			else
 			{
-				mob.tell(target.charStats().HeShe()+" is not worth the effort.");
+				mob.tell(target.charStats().HeShe()+getScr("Consider","noeffort"));
 				return false;
 			}
 
@@ -132,24 +132,24 @@ public class Consider extends StdCommand
 		else
 		if(realDiff<(2*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" looks a little tough.");
+			mob.tell(target.charStats().HeShe()+getScr("Consider","littletough"));
 			return false;
 		}
 		else
 		if(realDiff<(3*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" is a serious threat.");
+			mob.tell(target.charStats().HeShe()+getScr("Consider","seriousthread"));
 			return false;
 		}
 		else
 		if(realDiff<(4*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" will clean your clock.");
+			mob.tell(target.charStats().HeShe()+getScr("Consider","cleanclock"));
 			return false;
 		}
 		else
 		{
-			mob.tell(target.charStats().HeShe()+" WILL KILL YOU DEAD!");
+			mob.tell(target.charStats().HeShe()+getScr("Consider","killyoudead"));
 			return false;
 		}
 	}

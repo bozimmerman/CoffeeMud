@@ -34,18 +34,18 @@ public class DrinkCmd extends StdCommand
 {
 	public DrinkCmd(){}
 
-	private String[] access={"DRINK","DR","DRI"};
+	private String[] access={getScr("DrinkCmd","cmd1"),getScr("DrinkCmd","cmd2"),getScr("DrinkCmd","cmd3")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell("Drink what?");
+			mob.tell(getScr("DrinkCmd","what"));
 			return false;
 		}
 		commands.removeElementAt(0);
-        if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase("from")))
+        if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase(getScr("DrinkCmd","from"))))
             commands.removeElementAt(0);
         
 		Environmental thisThang=null;
@@ -59,16 +59,16 @@ public class DrinkCmd extends StdCommand
 			   &&(!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
-				mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
+				mob.tell(getScr("DrinkCmd","nosee",CMParms.combine(commands,0)));
 				return false;
 			}
 		}
-		String str="<S-NAME> take(s) a drink from <T-NAMESELF>.";
+		String str=getScr("DrinkCmd","drinks");
 		Environmental tool=null;
 		if((thisThang instanceof Drink)
 		&&(((Drink)thisThang).liquidRemaining()>0)
 		&&(((Drink)thisThang).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
-			str="<S-NAME> take(s) a drink of "+RawMaterial.RESOURCE_DESCS[((Drink)thisThang).liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+" from <T-NAMESELF>.";
+			str=getScr("DrinkCmd","takesdrink",RawMaterial.RESOURCE_DESCS[((Drink)thisThang).liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase());
 		else
 		if(thisThang instanceof Container)
 		{
@@ -80,7 +80,7 @@ public class DrinkCmd extends StdCommand
 				{
 					tool=thisThang;
 					thisThang=I;
-					str="<S-NAME> take(s) a drink of <T-NAMESELF> from <O-NAMESELF>.";
+					str=getScr("DrinkCmd","takesdrink2");
 					break;
 				}
 			}

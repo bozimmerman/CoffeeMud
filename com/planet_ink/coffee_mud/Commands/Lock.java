@@ -34,7 +34,7 @@ public class Lock extends StdCommand
 {
 	public Lock(){}
 
-	private String[] access={"LOCK","LOC"};
+	private String[] access={getScr("Lock","cmd1"),getScr("Lock","cmd2")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

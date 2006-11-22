@@ -34,7 +34,7 @@ public class Learn extends StdCommand
 {
 	public Learn(){}
 
-	private String[] access={"LEARN"};
+	private String[] access={getScr("Learn","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -52,7 +52,7 @@ public class Learn extends StdCommand
             if(teacherName.length()>1)
             {
                 commands.removeElementAt(commands.size()-1);
-                if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("FROM")))
+                if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase(getScr("Learn","from"))))
                     commands.removeElementAt(commands.size()-1);
             }
             else

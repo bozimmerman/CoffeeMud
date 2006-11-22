@@ -35,32 +35,32 @@ public class Hold extends BaseItemParser
 {
 	public Hold(){}
 
-	private String[] access={"HOLD","HOL","HO","H"};
+	private String[] access={getScr("Hold","cmd1"),getScr("Hold","cmd2"),getScr("Hold","cmd3"),getScr("Hold","cmd4")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Hold what?");
+			mob.tell(getScr("Hold","what"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(getScr("Hold","nocarry"));
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.WORN_HELD)))
 			{
 				Item item=(Item)items.elementAt(i);
 				int msgType=CMMsg.MSG_HOLD;
-				String str="<S-NAME> hold(s) <T-NAME>.";
+				String str=getScr("Hold","holdsmsg");
 				if((mob.freeWearPositions(Item.WORN_WIELD,(short)0,(short)0)>0)
 				&&((item.rawProperLocationBitmap()==Item.WORN_WIELD)
 				||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD))))
 				{
-					str="<S-NAME> wield(s) <T-NAME>.";
+					str=getScr("Hold","wieldsmsg");
 					msgType=CMMsg.MSG_WIELD;
 				}
 				CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,str);

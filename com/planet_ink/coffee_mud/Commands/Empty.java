@@ -35,7 +35,7 @@ public class Empty extends Drop
 {
 	public Empty(){}
 
-	private String[] access={"EMPTY","EMP"};
+	private String[] access={getScr("Empty","cmd1"),getScr("Empty","cmd2")};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -46,31 +46,31 @@ public class Empty extends Drop
 		Vector V=new Vector();
 		if(commands.size()<2)
 		{
-			mob.tell("Empty what where?");
+			mob.tell(getScr("Empty","emptywhere"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()>1)
 		{
 			String s=(String)commands.lastElement();
-			if(s.equalsIgnoreCase("here")) target=mob.location();
+			if(s.equalsIgnoreCase(getScr("Empty","here"))) target=mob.location();
 			else
-			if(s.equalsIgnoreCase("me")) target=mob;
+			if(s.equalsIgnoreCase(getScr("Empty","me"))) target=mob;
 			else
-			if(s.equalsIgnoreCase("self")) target=mob;
+			if(s.equalsIgnoreCase(getScr("Empty","self"))) target=mob;
 			else
-			if("INVENTORY".startsWith(s.toUpperCase())) target=mob;
+			if(getScr("Empty","inventory").startsWith(s.toUpperCase())) target=mob;
 			else
-			if(s.equalsIgnoreCase("floor")) target=mob.location();
+			if(s.equalsIgnoreCase(getScr("Empty","floor"))) target=mob.location();
 			else
-			if(s.equalsIgnoreCase("ground")) target=mob.location();
+			if(s.equalsIgnoreCase(getScr("Empty","ground"))) target=mob.location();
 			else
 			{
 				target=CMLib.english().possibleContainer(mob,commands,false,Item.WORNREQ_UNWORNONLY);
 				if(target==null) 
 					target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORNREQ_UNWORNONLY);
 				else
-					commands.addElement("delme");
+					commands.addElement(getScr("Empty","delme"));
 			}
 			if(target!=null)
 				commands.removeElementAt(commands.size()-1);
@@ -78,7 +78,7 @@ public class Empty extends Drop
 		
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("Empty it where?");
+			mob.tell(getScr("Empty","where"));
 			return false;
 		}
 
@@ -86,9 +86,9 @@ public class Empty extends Drop
         if(maxToDrop<0) return false;
 
 		whatToDrop=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
-		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
-		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
+		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Empty","all")):false;
+		if(whatToDrop.toUpperCase().startsWith(getScr("Empty","alldot"))){ allFlag=true; whatToDrop=getScr("Empty","allup")+whatToDrop.substring(4);}
+		if(whatToDrop.toUpperCase().endsWith(getScr("Empty","dotall"))){ allFlag=true; whatToDrop=getScr("Empty","allup")+whatToDrop.substring(0,whatToDrop.length()-4);}
 		int addendum=1;
 		String addendumStr="";
 		Drink drink=null;
@@ -105,7 +105,7 @@ public class Empty extends Drop
 				{
 					if((!dropThis.amWearingAt(Item.WORN_HELD))&&(!dropThis.amWearingAt(Item.WORN_WIELD)))
 					{
-						mob.tell("You must remove that first.");
+						mob.tell(getScr("Empty","removefirst"));
 						return false;
 					}
 					CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
@@ -126,26 +126,26 @@ public class Empty extends Drop
 		}
 		while((allFlag)&&(addendum<=maxToDrop));
 
-		String str="<S-NAME> empt(ys) <T-NAME>";
-		if(target instanceof Room) str+=" here.";
+		String str=getScr("Empty","emptysmsg");
+		if(target instanceof Room) str+=getScr("Empty","msghere");
 		else
 		if(target instanceof MOB) str+=".";
-		else str+=" into "+target.Name()+".";
+		else str+=getScr("Empty","msginto")+target.Name()+".";
 		
 		if((V.size()==0)&&(drink!=null))
 		{
-			mob.tell(drink.name()+" must be POURed out.");
+			mob.tell(drink.name()+getScr("Empty","mustpour"));
 			return false;
 		}
 		
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(getScr("Empty","nocarry"));
 		else
 		if((V.size()==1)&&(V.firstElement()==target))
-			mob.tell("You can't empty something into itself!");
+			mob.tell(getScr("Empty","noself"));
 		else
 		if((V.size()==1)&&(V.firstElement() instanceof Drink)&&(!((Drink)V.firstElement()).containsDrink()))
-			mob.tell(mob,(Drink)V.firstElement(),null,"<T-NAME> is already empty.");
+			mob.tell(mob,(Drink)V.firstElement(),null,getScr("Empty","emptyalready"));
 		else
 		for(int v=0;v<V.size();v++)
 		{
@@ -159,7 +159,7 @@ public class Empty extends Drop
                 if(target instanceof Drink)
                 {
                     Command C2=CMClass.getCommand("Pour");
-                    C2.execute(mob,CMParms.makeVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"));
+                    C2.execute(mob,CMParms.makeVector(getScr("Empty","cmdpour"),"$"+C.Name()+"$","$"+target.Name()+"$"));
                     skipMessage=true;
                 }
                 else

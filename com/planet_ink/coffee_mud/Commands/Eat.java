@@ -34,14 +34,14 @@ public class Eat extends StdCommand
 {
 	public Eat(){}
 
-	private String[] access={"EAT"};
+	private String[] access={getScr("Eat","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Eat what?");
+			mob.tell(getScr("Eat","what"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -51,13 +51,13 @@ public class Eat extends StdCommand
 		if((thisThang==null)
 		||((thisThang!=null)&&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
+			mob.tell(getScr("Eat","nosee",CMParms.combine(commands,0)));
 			return false;
 		}
 		boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
 		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
-			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
+			mob.tell(getScr("Eat","nohave")+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,"<S-NAME> eat(s) <T-NAMESELF>."+CMProps.msp("gulp.wav",10));

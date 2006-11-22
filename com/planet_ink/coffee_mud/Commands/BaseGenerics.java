@@ -83,12 +83,12 @@ public class BaseGenerics extends StdCommand
 		else mob.tell(getScr("BaseGenerics","nochange"));
         mob.tell(getScr("BaseGenerics","deadmobplayercorpse",""+E.playerCorpse()));
         newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
-        if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+        if((newName.length()>0)&&CMath.isBool(newName))
             E.setPlayerCorpse(Boolean.valueOf(newName.toLowerCase()).booleanValue());
         else mob.tell(getScr("BaseGenerics","nochange"));
         mob.tell(getScr("BaseGenerics","deadmobpkflag",""+E.mobPKFlag()));
         newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
-        if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+        if((newName.length()>0)&&CMath.isBool(newName))
             E.setMobPKFlag(Boolean.valueOf(newName.toLowerCase()).booleanValue());
         else mob.tell(getScr("BaseGenerics","nochange"));
         genCharStats(mob,E.charStats());
@@ -98,7 +98,7 @@ public class BaseGenerics extends StdCommand
 		else mob.tell(getScr("BaseGenerics","nochange"));
         mob.tell(getScr("BaseGenerics","deadmobkillerplayer",""+E.killerPlayer()));
         newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
-        if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+        if((newName.length()>0)&&CMath.isBool(newName))
             E.setKillerPlayer(Boolean.valueOf(newName.toLowerCase()).booleanValue());
         else mob.tell(getScr("BaseGenerics","nochange"));
         mob.tell(getScr("BaseGenerics","deadmobtod",CMLib.time().date2String(E.timeOfDeath())));
@@ -167,13 +167,13 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String currencyName=A.getCurrency().length()==0?"Default":A.getCurrency();
+		String currencyName=A.getCurrency().length()==0?getScr("BaseGenerics","dispdefault"):A.getCurrency();
 		mob.tell(getScr("BaseGenerics","currencyname",showNumber+"",currencyName));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","entdef"),"");
 		if(newName.length()>0)
 		{
-		    if(newName.equalsIgnoreCase("default"))
+		    if(newName.equalsIgnoreCase(getScr("BaseGenerics","default")))
 		        A.setCurrency("");
 		    else
 		    if((newName.indexOf("=")<0)&&(!CMLib.beanCounter().getAllCurrencies().contains(newName.trim().toUpperCase())))
@@ -698,7 +698,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String newName="Q";
+		String newName=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()>0))
 		{
 			mob.tell(getScr("BaseGenerics","aeastaffname",showNumber+"",A.getSubOpList()));
@@ -727,7 +727,7 @@ public class BaseGenerics extends StdCommand
             throws IOException
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String newArea="Q";
+		String newArea=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newArea.length()>0))
 		{
 		    mob.tell(getScr("BaseGenerics","parentareas",showNumber+"",A.getParentsList()));
@@ -770,7 +770,7 @@ public class BaseGenerics extends StdCommand
             throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        String newArea="Q";
+        String newArea=getScr("BaseGenerics","qnada");
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newArea.length()>0))
         {
             mob.tell(getScr("BaseGenerics","areachild",showNumber+"",A.getChildrenList()));
@@ -1109,13 +1109,13 @@ public class BaseGenerics extends StdCommand
 		if(E instanceof Potion)
 			((Potion)E).setDrunk(false);
 
-		String c="Q";
+		String c=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			mob.session().println(showNumber+getScr("BaseGenerics","gettable")+" "+(!CMath.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET)));
 			mob.session().println("    "+getScr("BaseGenerics","droppable")+" "+(!CMath.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP)));
 			mob.session().println("    "+getScr("BaseGenerics","removable")+" "+(!CMath.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE)));
-			mob.session().println("    "+getScr("BaseGenerics","nonlocatable")+" "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
+			mob.session().println("    "+getScr("BaseGenerics","nonlocatable")+" "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?""+true:""+false));
 			if(E instanceof Weapon)
 				mob.session().println("    "+getScr("BaseGenerics","twohanded")+" "+E.rawLogicalAnd());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -1186,7 +1186,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(buf.toString());
 			return;
 		}
-		String c="Q";
+		String c=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			char letter='A';
@@ -1260,7 +1260,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String c="Q";
+		String c=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			mob.session().println(""+showNumber+getScr("BaseGenerics","climate"));
@@ -1285,7 +1285,7 @@ public class BaseGenerics extends StdCommand
     public static void genCharStats(MOB mob, CharStats E)
     throws IOException
     {
-        String c="Q";
+        String c=getScr("BaseGenerics","qnada");
         String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
         {
@@ -1319,7 +1319,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(buf.toString());
 			return;
 		}
-		String c="Q";
+		String c=getScr("BaseGenerics","qnada");
 		String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
@@ -1382,7 +1382,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell(buf.toString());
 			return;
 		}
-		String c="Q";
+		String c=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
 		{
 			char letter='A';
@@ -1492,7 +1492,7 @@ public class BaseGenerics extends StdCommand
 					+getScr("BaseGenerics","keycode")+" "+E.keyName());
 			return;
 		}
-		String change="NO";
+		String change=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(change.length()>0))
 		{
 			mob.tell(getScr("BaseGenerics","cancontain",makeContainerTypes(E)));
@@ -1783,9 +1783,9 @@ public class BaseGenerics extends StdCommand
 		{
 		    gocontinue=false;
 		    String oldCurrency=E.getCurrency();
-		    if(oldCurrency.length()==0) oldCurrency="Default";
+		    if(oldCurrency.length()==0) oldCurrency=getScr("BaseGenerics","dispdefault");
 			oldCurrency=mob.session().prompt(getScr("BaseGenerics","entcurcode"),oldCurrency).trim().toUpperCase();
-			if(oldCurrency.equalsIgnoreCase("Default"))
+			if(oldCurrency.equalsIgnoreCase(getScr("BaseGenerics","dispdefault")))
 			{
 			    if(E.getCurrency().length()>0)
 				    E.setCurrency("");
@@ -1801,7 +1801,7 @@ public class BaseGenerics extends StdCommand
 			    Vector V=CMLib.beanCounter().getAllCurrencies();
 			    for(int v=0;v<V.size();v++)
 			        if(((String)V.elementAt(v)).length()==0)
-			            V.setElementAt("Default",v);
+			            V.setElementAt(getScr("BaseGenerics","dispdefault"),v);
 			    mob.tell(getScr("BaseGenerics","currencyerr",oldCurrency,CMParms.toStringList(V)));
 			    gocontinue=true;
 			}
@@ -2249,7 +2249,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(F==null) return;
 		Faction.FactionRange myFR=CMLib.factions().getRange(F.factionID(),E.fetchFaction(F.factionID()));
-		mob.tell(showNumber+". "+F.name()+": "+((myFR!=null)?myFR.name():"UNDEFINED")+" ("+E.fetchFaction(F.factionID())+")");
+		mob.tell(showNumber+". "+F.name()+": "+((myFR!=null)?myFR.name():getScr("BaseGenerics","undefined"))+" ("+E.fetchFaction(F.factionID())+")");
 	    if((showFlag!=showNumber)&&(showFlag>-999)) return;
 	    if(F.ranges()!=null)
 	    for(int v=0;v<F.ranges().size();v++)
@@ -2284,7 +2284,7 @@ public class BaseGenerics extends StdCommand
     throws IOException
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String newFact="Q";
+		String newFact=getScr("BaseGenerics","qnada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newFact.length()>0))
 		{
 		    mob.tell(getScr("BaseGenerics","factions",showNumber+"",E.getFactionListing()));
@@ -2534,7 +2534,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
@@ -2577,7 +2577,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E.playerStats()==null) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
@@ -2625,7 +2625,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
@@ -2665,7 +2665,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		PlayerStats P=E.playerStats();
 		if(P==null) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
@@ -2709,7 +2709,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String behaviorstr="";
@@ -2795,7 +2795,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String affectstr="";
@@ -2974,7 +2974,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String itemstr="NO";
+		String itemstr=getScr("BaseGenerics","nonada");
 		while(itemstr.length()>0)
 		{
 			String inventorystr="";
@@ -3153,7 +3153,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
@@ -3222,7 +3222,7 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		DVector members=E.getMemberList();
 		DVector membersCopy=members.copyOf();
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
@@ -3408,7 +3408,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
@@ -3476,7 +3476,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
@@ -3544,7 +3544,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String behave="NO";
+		String behave=getScr("BaseGenerics","nonada");
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
 			String abilitiestr="";
@@ -3715,7 +3715,7 @@ public class BaseGenerics extends StdCommand
 				long wornCode=1<<l;
 				if(CMLib.flags().wornLocation(wornCode).length()>0)
 				{
-					String header=(l+2)+": ("+CMLib.flags().wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?"YES":"NO");
+					String header=(l+2)+": ("+CMLib.flags().wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?getScr("BaseGenerics","yes"):getScr("BaseGenerics","nonada"));
 					mob.tell(header);
 				}
 			}
@@ -3980,7 +3980,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
-		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+		if((newName.length()>0)&&CMath.isBool(newName))
 			E.setStat(Field,newName.toLowerCase());
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
@@ -3992,7 +3992,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
-		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+		if((newName.length()>0)&&CMath.isBool(newName))
 			E.setStat(Field,newName.toLowerCase());
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
@@ -4004,7 +4004,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
-		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+		if((newName.length()>0)&&CMath.isBool(newName))
 			E.setStat(Field,newName.toLowerCase());
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
@@ -4074,7 +4074,7 @@ public class BaseGenerics extends StdCommand
 		if(newName.length()>0)
 		{
 			boolean found=false;
-			if(newName.startsWith("new "))
+			if(newName.startsWith(getScr("BaseGenerics","newone")))
 			{
 				newName=CMStrings.capitalizeAndLower(newName.substring(4));
 				if(newName.length()>0)
@@ -4609,7 +4609,7 @@ public class BaseGenerics extends StdCommand
 				boolean updateList=false;
 				if(partNum<0)
 				{
-					if(!newName.toLowerCase().startsWith("new "))
+					if(!newName.toLowerCase().startsWith(getScr("BaseGenerics","newone")))
 						mob.tell(getScr("BaseGenerics","reserr"));
 					else
 					{
@@ -4681,7 +4681,7 @@ public class BaseGenerics extends StdCommand
 				boolean updateList=false;
 				if(partNum<0)
 				{
-					if(!newName.toLowerCase().startsWith("new "))
+					if(!newName.toLowerCase().startsWith(getScr("BaseGenerics","newone")))
 						mob.tell(getScr("BaseGenerics","nameitemerr"));
 					else
 					{
@@ -4753,7 +4753,7 @@ public class BaseGenerics extends StdCommand
 				boolean updateList=false;
 				if(partNum<0)
 				{
-					if(!newName.toLowerCase().startsWith("new "))
+					if(!newName.toLowerCase().startsWith(getScr("BaseGenerics","newone")))
 						mob.tell(getScr("BaseGenerics","nameitemerr"));
 					else
 					{
@@ -5346,7 +5346,7 @@ public class BaseGenerics extends StdCommand
                 while(!mob.session().killFlag())
                 {
                     int oldNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
-                    genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nameclasslevel",i),"NAMELEVEL"+i);
+                    genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nameclasslevel",""+i),"NAMELEVEL"+i);
                     int previousNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+(i-1)));
                     int newNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
                     if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))

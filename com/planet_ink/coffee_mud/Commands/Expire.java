@@ -40,7 +40,7 @@ public class Expire extends StdCommand
         if(mob.session()==null) return false;
         commands.removeElementAt(0);
         if(commands.size()<1) {
-            mob.tell("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS]");
+            mob.tell(getScr("Expire","expireformat"));
             return false;
         }
         else 
@@ -50,11 +50,11 @@ public class Expire extends StdCommand
             MOB player=CMLib.map().getLoadPlayer(playerName);
             if((player==null)||(player.playerStats()==null)) 
             {
-                mob.tell("No player named '"+playerName+"' was found.");
+                mob.tell(getScr("Expire","noplayer",playerName));
                 return false;
             }
             long timeLeft=player.playerStats().getAccountExpiration()-System.currentTimeMillis();
-            mob.tell("Player '"+player.Name()+"' currently has "+(CMLib.english().returnTime(timeLeft,0))+" left.");
+            mob.tell(getScr("Expire","playergone",player.Name(),(CMLib.english().returnTime(timeLeft,0))));
             return false;
         }
         else 
@@ -64,16 +64,16 @@ public class Expire extends StdCommand
             MOB player=CMLib.map().getLoadPlayer(playerName);
             if((player==null)||(player.playerStats()==null)) 
             {
-                mob.tell("No player named '"+playerName+"' was found.");
+                mob.tell(getScr("Expire","noplayer",playerName));
                 return false;
             }
             player.playerStats().setAccountExpiration(days+System.currentTimeMillis());
-            mob.tell("Player '"+player.Name()+"' now has "+(CMLib.english().returnTime(player.playerStats().getAccountExpiration()-System.currentTimeMillis(),0))+" days left.");
+            mob.tell(getScr("Expire","daysleft",player.Name(),(CMLib.english().returnTime(player.playerStats().getAccountExpiration()-System.currentTimeMillis(),0))));
             return false;
         }
     }
 
-    private String[] access={"EXPIRE"};
+    private String[] access={getScr("Expire","cmd1")};
     public String[] getAccessWords(){return access;}
 
     

@@ -35,14 +35,14 @@ public class Feed extends StdCommand
 {
 	public Feed(){}
 
-	private String[] access={"FEED"};
+	private String[] access={getScr("Feed","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Feed who what?");
+			mob.tell(getScr("Feed","feedwho"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -52,12 +52,12 @@ public class Feed extends StdCommand
 		MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell("I don't see "+whom+" here.");
+			mob.tell(getScr("Feed","nosee",whom));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are in combat!");
+			mob.tell(getScr("Feed","nocombat"));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -65,22 +65,22 @@ public class Feed extends StdCommand
 			Item item=mob.fetchInventory(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell("I don't see "+what+" here.");
+				mob.tell(getScr("Feed","nosee",what));
 				return false;
 			}
 			if(!item.amWearingAt(Item.IN_INVENTORY))
 			{
-				mob.tell("You might want to remove that first.");
+				mob.tell(getScr("Feed","removefirst"));
 				return false;
 			}
 			if((!(item instanceof Food))&&(!(item instanceof Drink)))
 			{
-				mob.tell("You might want to try feeding them something edibile or drinkable.");
+				mob.tell(getScr("Feed","feededible"));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name()+" is in combat!");
+				mob.tell(getScr("Feed","nohimcombat",target.name()));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
@@ -114,7 +114,7 @@ public class Feed extends StdCommand
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.name()+getScr("Feed","noletyou"));
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

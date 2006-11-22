@@ -35,7 +35,7 @@ public class Drop extends BaseItemParser
 {
 	public Drop(){}
 
-	private String[] access={"DROP","DRO"};
+	private String[] access={getScr("Drop","cmd1"),getScr("Drop","cmd2")};
 	public String[] getAccessWords(){return access;}
 
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
@@ -77,7 +77,7 @@ public class Drop extends BaseItemParser
 
 		if(commands.size()<2)
 		{
-			mob.tell("Drop what?");
+			mob.tell(getScr("Drop","what"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -92,9 +92,9 @@ public class Drop extends BaseItemParser
         if(maxToDrop<0) return false;
         
 		whatToDrop=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
-		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
-		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
+		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Drop","all")):false;
+		if(whatToDrop.toUpperCase().startsWith(getScr("Drop","alldot"))){ allFlag=true; whatToDrop=getScr("Drop","allup")+whatToDrop.substring(4);}
+		if(whatToDrop.toUpperCase().endsWith(getScr("Drop","dotall"))){ allFlag=true; whatToDrop=getScr("Drop","allup")+whatToDrop.substring(0,whatToDrop.length()-4);}
 		int addendum=1;
 		String addendumStr="";
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
@@ -121,7 +121,7 @@ public class Drop extends BaseItemParser
 				{
 					if((!dropThis.amWearingAt(Item.WORN_HELD))&&(!dropThis.amWearingAt(Item.WORN_WIELD)))
 					{
-						mob.tell("You must remove that first.");
+						mob.tell(getScr("Drop","removefirst"));
 						return false;
 					}
 					CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
@@ -131,7 +131,7 @@ public class Drop extends BaseItemParser
 						return false;
 				}
 			}
-            if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins)&&(whatToDrop.equalsIgnoreCase("all")))
+            if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins)&&(whatToDrop.equalsIgnoreCase(getScr("Drop","all"))))
                 dropThis=null;
             else
             {
@@ -145,7 +145,7 @@ public class Drop extends BaseItemParser
 		while((allFlag)&&(addendum<=maxToDrop));
 
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(getScr("Drop","nocarry"));
 		else
 		for(int i=0;i<V.size();i++)
 			drop(mob,(Item)V.elementAt(i),false,true);

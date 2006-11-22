@@ -87,29 +87,29 @@ public class ColorSet extends StdCommand
 		if(pstats==null) return false;
 		String[] clookup=(String[])mob.session().clookup().clone();
 		if((commands.size()>1)
-		   &&("DEFAULT".startsWith(CMParms.combine(commands,1).toUpperCase())))
+		   &&(getScr("ColorSet","default").startsWith(CMParms.combine(commands,1).toUpperCase())))
 		{
 			pstats.setColorStr("");
 			mob.tell(getScr("ColorSet","changedtodef"));
 			return false;
 		}
 		if(clookup==null) return false;
-		String[][] theSet={{"Normal Text","N"},
-						   {"Highlighted Text","H"},
-                           {"Your Fight Text","f"},
-                           {"Fighting You Text","e"},
-						   {"Other Fight Text","F"},
-						   {"Spells","S"},
-						   {"Emotes","E"},
-						   {"Says","T"},
-						   {"Tells","t"},
-						   {"Room Titles","O"},
-						   {"Room Descriptions","L"},
-                           {"Weather","J"},
-						   {"Doors","d"},
-						   {"Items","I"},
-						   {"MOBs","M"},
-						   {"Channel Colors","Q"}
+		String[][] theSet={{getScr("ColorSet","normaltxt"),"N"},
+						   {getScr("ColorSet","highlighttext"),"H"},
+                           {getScr("ColorSet","fighttext"),"f"},
+                           {getScr("ColorSet","fightyoutext"),"e"},
+						   {getScr("ColorSet","otherfight"),"F"},
+						   {getScr("ColorSet","spells"),"S"},
+						   {getScr("ColorSet","emotes"),"E"},
+						   {getScr("ColorSet","says"),"T"},
+						   {getScr("ColorSet","tells"),"t"},
+						   {getScr("ColorSet","roomtitles"),"O"},
+						   {getScr("ColorSet","roomdesc"),"L"},
+                           {getScr("ColorSet","weather"),"J"},
+						   {getScr("ColorSet","doors"),"d"},
+						   {getScr("ColorSet","items"),"I"},
+						   {getScr("ColorSet","mobs"),"M"},
+						   {getScr("ColorSet","channelcolors"),"Q"}
 		};
 		String numToChange="!";
 		while(numToChange.length()>0)
@@ -122,7 +122,7 @@ public class ColorSet extends StdCommand
 				buf.append("^N");
 			}
 			mob.session().println(buf.toString());
-			numToChange=mob.session().prompt("Enter Number or RETURN: ","");
+			numToChange=mob.session().prompt(getScr("ColorSet","enternum"),"");
 			int num=CMath.s_int(numToChange);
 			if(numToChange.length()==0) break;
 			if((num<=0)||(num>theSet.length))
@@ -143,7 +143,7 @@ public class ColorSet extends StdCommand
 						buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 					}
 					mob.session().println(buf.toString()+"^N");
-					int colorNum=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of New Color: ");
+					int colorNum=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,getScr("ColorSet","entercolor"));
 					if(colorNum<0)
 						mob.tell(getScr("ColorSet","notcolor"));
 					else
@@ -174,12 +174,12 @@ public class ColorSet extends StdCommand
 							buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						}
 					mob.session().println(buf.toString()+"^N");
-					int colorNum1=pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,"Enter Name of Background Color: ");
+					int colorNum1=pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,getScr("ColorSet","enterbgcolor"));
 					if((colorNum1<0)||(!Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1].charAt(0))))
 						mob.tell(getScr("ColorSet","invalidbg"));
 					else
 					{
-						int colorNum2=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of Foreground Color: ");
+						int colorNum2=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,getScr("ColorSet","enterfgcolor"));
 						if((colorNum2<0)||(Character.isUpperCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
 							mob.tell(getScr("ColorSet","invalidfg"));
 						else

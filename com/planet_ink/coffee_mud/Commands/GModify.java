@@ -35,7 +35,7 @@ public class GModify extends StdCommand
 {
     public GModify(){}
 
-    private String[] access={"GMODIFY"};
+    private String[] access={getScr("GModify","cmd1")};
     public String[] getAccessWords(){return access;}
     
     private static final int FLAG_CASESENSITIVE=1;
@@ -65,7 +65,7 @@ public class GModify extends StdCommand
     public static void gmodifydebugtell(MOB mob, String msg)
     {
         if(mob!=null) mob.tell(msg);
-        Log.sysOut("GMODIFY",msg);
+        Log.sysOut(getScr("GModify","cmd1"),msg);
     }
 
     private static boolean tryModfy(MOB mob,
@@ -230,14 +230,14 @@ public class GModify extends StdCommand
         if(checkedOut)
         {
             if(changes.size()==0)
-                mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(room)+".");
+                mob.tell(getScr("GModify","matchedon",E.name())+CMLib.map().getExtendedRoomID(room)+".");
             else
             for(int i=0;i<changes.size();i++)
             {
                 field=(String)changes.elementAt(i,1);
                 value=(String)changes.elementAt(i,3);
                 codes=((Integer)changes.elementAt(i,4)).intValue();
-                if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
+                if(noisy) gmodifydebugtell(mob,E.name()+getScr("GModify","wantschange",field,getStat(E,field))+value+"/"+(!getStat(E,field).equals(value)));
                 if(CMath.bset(codes,FLAG_SUBSTRING))
                 {
                     int matchStart=-1;
@@ -256,7 +256,7 @@ public class GModify extends StdCommand
                 }
                 if(!getStat(E,field).equals(value))
                 {
-                    Log.sysOut("GMODIFY","The "+CMStrings.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,field)+" to "+value+".");
+                    Log.sysOut(getScr("GModify","cmd1"),getScr("GModify","changed",CMStrings.capitalizeAndLower(field),E.Name(),room.roomID(),getStat(E,field))+value+".");
                     setStat(E,field,value);
                     didAnything=true;
                 }
@@ -293,18 +293,18 @@ public class GModify extends StdCommand
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
     {
-        boolean noisy=CMSecurity.isDebugging("GMODIFY");
+        boolean noisy=CMSecurity.isDebugging(getScr("GModify","cmd1"));
         Vector placesToDo=new Vector();
         String whole=CMParms.combine(commands,0);
         commands.removeElementAt(0);
         if(commands.size()==0)
         {
-            mob.tell("GModify what?");
+            mob.tell(getScr("GModify","what"));
             return false;
         }
         if(mob.isMonster())
         {
-            mob.tell("No can do.");
+            mob.tell(getScr("GModify","no"));
             return false;
         }
         if((commands.size()>0)&&
@@ -319,37 +319,37 @@ public class GModify extends StdCommand
             sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
             sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
             sortEnumeratedList(CMClass.miscTech(),allKnownFields,allFieldsMsg);
-            mob.tell("Valid field names are "+allFieldsMsg.toString());
+            mob.tell(getScr("GModify","validfields")+allFieldsMsg.toString());
             return false;
         }
         if((commands.size()>0)&&
-           ((String)commands.elementAt(0)).equalsIgnoreCase("room"))
+           ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("GModify","cmdroom")))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"GMODIFY"))
             {
-                mob.tell("You are not allowed to do that here.");
+                mob.tell(getScr("GModify","noallowed"));
                 return false;
             }
             commands.removeElementAt(0);
             placesToDo.addElement(mob.location());
         }
         if((commands.size()>0)&&
-           ((String)commands.elementAt(0)).equalsIgnoreCase("area"))
+           ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("GModify","cmdarea")))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"GMODIFY"))
             {
-                mob.tell("You are not allowed to do that here.");
+                mob.tell(getScr("GModify","noallowed"));
                 return false;
             }
             commands.removeElementAt(0);
             placesToDo.addElement(mob.location().getArea());
         }
         if((commands.size()>0)&&
-           ((String)commands.elementAt(0)).equalsIgnoreCase("world"))
+           ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("GModify","cmdworld")))
         {
             if(!CMSecurity.isAllowedEverywhere(mob,"GMODIFY"))
             {
-                mob.tell("You are not allowed to do that.");
+                mob.tell(getScr("GModify","nohere"));
                 return false;
             }
             commands.removeElementAt(0);
@@ -376,8 +376,8 @@ public class GModify extends StdCommand
         for(int i=0;i<commands.size();i++)
         {
             String str=((String)commands.elementAt(i));
-            if((str.toUpperCase().startsWith("CHANGE="))
-            ||(str.toUpperCase().startsWith("WHEN=")))
+            if((str.toUpperCase().startsWith(getScr("GModify","cmdchange")))
+            ||(str.toUpperCase().startsWith(getScr("GModify","cmdwhen"))))
             {
                 if(s.length()>0)
                     newSet.addElement(s.toString());
@@ -395,12 +395,12 @@ public class GModify extends StdCommand
         for(int i=0;i<newSet.size();i++)
         {
             String str=((String)newSet.elementAt(i));
-            if(str.toUpperCase().startsWith("CHANGE="))
+            if(str.toUpperCase().startsWith(getScr("GModify","cmdchange")))
             {
                 use=changes;
                 str=str.substring(7).trim();
             }
-            if(str.toUpperCase().startsWith("WHEN="))
+            if(str.toUpperCase().startsWith(getScr("GModify","cmdwhen")))
             {
                 str=str.substring(5).trim();
                 use=onfields;
@@ -436,7 +436,7 @@ public class GModify extends StdCommand
                     }
                 if(divLen==0)
                 {
-                    mob.tell("String '"+str+"' does not contain an equation divider.  Even CHANGE needs at least an = sign!");
+                    mob.tell(getScr("GModify","nodivid",str));
                     return false;
                 }
                 String equator=str.substring(eq,eq+divLen);
@@ -479,7 +479,7 @@ public class GModify extends StdCommand
                 Pattern P=null;
                 if(use==null)
                 {
-                    mob.tell("'"+((String)commands.elementAt(i))+"' goes to an unknown parameter!");
+                    mob.tell("'"+((String)commands.elementAt(i))+getScr("GModify","unknownparm"));
                     return false;
                 }
                 while(val.trim().startsWith("["))
@@ -507,14 +507,14 @@ public class GModify extends StdCommand
                     use.addElement(key,equator,val,code,P);
                 else
                 {
-                    mob.tell("'"+key+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
+                    mob.tell("'"+key+getScr("GModify","nofield")+allFieldsMsg.toString());
                     return false;
                 }
             }
         }
         if((onfields.size()==0)&&(changes.size()==0))
         {
-            mob.tell("You must specify either WHEN, or CHANGES parameters for valid matches to be made.");
+            mob.tell(getScr("GModify","nowhen"));
             return false;
         }
         if(placesToDo.size()==0)
@@ -527,7 +527,7 @@ public class GModify extends StdCommand
         }
         if(placesToDo.size()==0)
         {
-            mob.tell("There are no rooms with data to gmodify!");
+            mob.tell(getScr("GModify","norooms"));
             return false;
         }
         for(int i=placesToDo.size()-1;i>=0;i--)
@@ -553,13 +553,13 @@ public class GModify extends StdCommand
         if(mob.session()!=null)
         {
             if(changes.size()==0)
-                mob.session().rawPrintln("Searching...");
+                mob.session().rawPrintln(getScr("GModify","search"));
             else
-                mob.session().rawPrint("Searching, modifying and saving...");
+                mob.session().rawPrint(getScr("GModify","modify"));
         }
-        if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
-        if(noisy) gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
-        if(noisy) gmodifydebugtell(mob,"Change fields="+CMParms.toStringList(changes.getDimensionVector(1)));
+        if(noisy) gmodifydebugtell(mob,getScr("GModify","roomstodo")+placesToDo.size());
+        if(noisy) gmodifydebugtell(mob,getScr("GModify","whenfields")+CMParms.toStringList(onfields.getDimensionVector(1)));
+        if(noisy) gmodifydebugtell(mob,getScr("GModify","changefields")+CMParms.toStringList(changes.getDimensionVector(1)));
         Log.sysOut("GModify",mob.Name()+" "+whole+".");
         for(int r=0;r<placesToDo.size();r++)
         {
@@ -627,7 +627,7 @@ public class GModify extends StdCommand
 	    	}
         }
 
-        if(mob.session()!=null) mob.session().rawPrintln("!\n\rDone!");
+        if(mob.session()!=null) mob.session().rawPrintln(getScr("GModify","done"));
         for(int i=0;i<placesToDo.size();i++)
             ((Room)placesToDo.elementAt(i)).getArea().toggleMobility(true);
         return false;

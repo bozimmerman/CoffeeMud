@@ -34,7 +34,7 @@ public class Merge extends StdCommand
 {
 	public Merge(){}
 
-	private String[] access={"MERGE"};
+	private String[] access={getScr("Merge","cmd1")};
 	public String[] getAccessWords(){return access;}
 
 	public static String getStat(Environmental E, String stat)
@@ -59,7 +59,7 @@ public class Merge extends StdCommand
 	public static void mergedebugtell(MOB mob, String msg)
 	{
 		if(mob!=null) mob.tell(msg);
-		Log.sysOut("MERGE",msg);
+		Log.sysOut(getScr("Merge","cmd1"),msg);
 	}
 
     protected static boolean tryMerge(MOB mob,
@@ -131,11 +131,11 @@ public class Merge extends StdCommand
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						String field=(String)fieldsToChange.elementAt(i);
-						if(noisy) mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
+						if(noisy) mergedebugtell(mob,E.name()+getScr("Merge","wantstochange",field,getStat(E,field))+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
 							setStat(E,field,getStat(E2,field));
-							Log.sysOut("Merge","The "+CMStrings.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+getStat(E2,field)+".");
+							Log.sysOut("Merge",getScr("Merge","fieldchanged",CMStrings.capitalizeAndLower(field),E.Name(),room.roomID())+getStat(E2,field)+".");
 							didAnything=true;
 						}
 					}
@@ -173,21 +173,21 @@ public class Merge extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		boolean noisy=CMSecurity.isDebugging("MERGE");
+		boolean noisy=CMSecurity.isDebugging(getScr("Merge","cmd1"));
 		Vector placesToDo=new Vector();
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell("Merge what file?");
+			mob.tell(getScr("Merge","whatfile"));
 			return false;
 		}
 		if(mob.isMonster())
 		{
-			mob.tell("No can do.");
+			mob.tell(getScr("Merge","nodo"));
 			return false;
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("noprompt"))
+		   ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Merge","cmdnoprompt")))
 			commands.removeElementAt(0);
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
@@ -201,37 +201,37 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscTech(),allKnownFields,allFieldsMsg);
-			mob.tell("Valid field names are "+allFieldsMsg.toString());
+			mob.tell(getScr("Merge","validnames")+allFieldsMsg.toString());
 			return false;
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("room"))
+		   ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Merge","noroom")))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"MERGE"))
 			{
-				mob.tell("You are not allowed to do that here.");
+				mob.tell(getScr("Merge","noallowed"));
 				return false;
 			}
 			commands.removeElementAt(0);
 			placesToDo.addElement(mob.location());
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("area"))
+		   ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Merge","noarea")))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"MERGE"))
 			{
-				mob.tell("You are not allowed to do that here.");
+				mob.tell(getScr("Merge","noallowed"));
 				return false;
 			}
 			commands.removeElementAt(0);
 			placesToDo.addElement(mob.location().getArea());
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("world"))
+		   ((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Merge","noworld")))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,"MERGE"))
 			{
-				mob.tell("You are not allowed to do that.");
+				mob.tell(getScr("Merge","nodothat"));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -239,7 +239,7 @@ public class Merge extends StdCommand
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Merge what file?");
+			mob.tell(getScr("Merge","whatfile"));
 			return false;
 		}
 		String filename=(String)commands.lastElement();
@@ -247,7 +247,7 @@ public class Merge extends StdCommand
 		StringBuffer buf=new CMFile(filename,mob,true).text();
 		if((buf==null)||(buf.length()==0))
 		{
-			mob.tell("File not found at: '"+filename+"'!");
+			mob.tell(getScr("Merge","nofile")+filename+"'!");
 			return false;
 		}
 
@@ -261,13 +261,13 @@ public class Merge extends StdCommand
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
 			if(mob.session()!=null)
-				mob.session().rawPrint("Unpacking mobs from file: '"+filename+"'...");
+				mob.session().rawPrint(getScr("Merge","unpackmobs")+filename+"'...");
 			String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)	mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
-				mob.tell("An error occurred on merge: "+error);
-				mob.tell("Please correct the problem and try the import again.");
+				mob.tell(getScr("Merge","mergeerr")+error);
+				mob.tell(getScr("Merge","prob"));
 				return false;
 			}
 			aremobs=true;
@@ -276,24 +276,24 @@ public class Merge extends StdCommand
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 		{
 			if(mob.session()!=null)
-				mob.session().rawPrint("Unpacking items from file: '"+filename+"'...");
+				mob.session().rawPrint(getScr("Merge","unpackitems")+filename+"'...");
 			String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)	mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
-				mob.tell("An error occurred on merge: "+error);
-				mob.tell("Please correct the problem and try the import again.");
+				mob.tell(getScr("Merge","mergeerr")+error);
+				mob.tell(getScr("Merge","prob"));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell("Files of this type are not yet supported by MERGE.  You must merge an ITEMS or MOBS file at this time.");
+			mob.tell(getScr("Merge","badfields"));
 			return false;
 		}
 		if(things.size()==0)
 		{
-			mob.tell("Nothing was found in the file to merge!");
+			mob.tell(getScr("Merge","nomerge"));
 			return false;
 		}
 		StringBuffer allFieldsMsg=new StringBuffer("");
@@ -315,17 +315,17 @@ public class Merge extends StdCommand
 		for(int i=0;i<commands.size();i++)
 		{
 			String str=((String)commands.elementAt(i)).toUpperCase();
-			if(str.startsWith("CHANGE="))
+			if(str.startsWith(getScr("Merge","cmdchange")))
 			{
 				use=changes;
 				str=str.substring(7).trim();
 			}
-			if(str.startsWith("ON="))
+			if(str.startsWith(getScr("Merge","cmdon")))
 			{
 				use=onfields;
 				str=str.substring(3).trim();
 			}
-			if(str.startsWith("IGNORE="))
+			if(str.startsWith(getScr("Merge","cmdignore")))
 			{
 				use=ignore;
 				str=str.substring(7).trim();
@@ -338,14 +338,14 @@ public class Merge extends StdCommand
 				{
 					if(use==null)
 					{
-						mob.tell("'"+str+"' is an unknown parameter!");
+						mob.tell("'"+str+getScr("Merge","unknownparm"));
 						return false;
 					}
 					if(allKnownFields.contains(s))
 						use.addElement(s);
 					else
 					{
-						mob.tell("'"+s+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
+						mob.tell("'"+s+getScr("Merge","badfield")+allFieldsMsg.toString());
 						return false;
 					}
 				}
@@ -356,21 +356,21 @@ public class Merge extends StdCommand
 			{
 				if(use==null)
 				{
-					mob.tell("'"+str+"' is an unknown parameter!");
+					mob.tell("'"+str+getScr("Merge","unknownparm"));
 					return false;
 				}
 				if(allKnownFields.contains(str))
 					use.addElement(str);
 				else
 				{
-					mob.tell("'"+str+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
+					mob.tell("'"+str+getScr("Merge","badfield")+allFieldsMsg.toString());
 					return false;
 				}
 			}
 		}
 		if((onfields.size()==0)&&(ignore.size()==0)&&(changes.size()==0))
 		{
-			mob.tell("You must specify either an ON, CHANGES, or IGNORE parameter for valid matches to be made.");
+			mob.tell(getScr("Merge","mergeinst"));
 			return false;
 		}
 		if(placesToDo.size()==0)
@@ -383,7 +383,7 @@ public class Merge extends StdCommand
 		}
 		if(placesToDo.size()==0)
 		{
-			mob.tell("There are no rooms to merge into!");
+			mob.tell(getScr("Merge","norooms"));
 			return false;
 		}
 		for(int i=placesToDo.size()-1;i>=0;i--)
@@ -407,13 +407,13 @@ public class Merge extends StdCommand
 		}
 		// now do the merge...
 		if(mob.session()!=null)
-			mob.session().rawPrint("Merging and saving...");
-		if(noisy) mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
-		if(noisy) mergedebugtell(mob,"Things loaded: "+things.size());
-		if(noisy) mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
-		if(noisy) mergedebugtell(mob,"Ignore fields="+CMParms.toStringList(ignore));
-		if(noisy) mergedebugtell(mob,"Change fields="+CMParms.toStringList(changes));
-		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
+			mob.session().rawPrint(getScr("Merge","merging"));
+		if(noisy) mergedebugtell(mob,getScr("Merge","roomstodo")+placesToDo.size());
+		if(noisy) mergedebugtell(mob,getScr("Merge","loaded")+things.size());
+		if(noisy) mergedebugtell(mob,getScr("Merge","onfields")+CMParms.toStringList(onfields));
+		if(noisy) mergedebugtell(mob,getScr("Merge","ignorefields")+CMParms.toStringList(ignore));
+		if(noisy) mergedebugtell(mob,getScr("Merge","changefields")+CMParms.toStringList(changes));
+		Log.sysOut("Import",mob.Name()+getScr("Merge","mergelog")+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
@@ -480,7 +480,7 @@ public class Merge extends StdCommand
 	    	}
 		}
 
-		if(mob.session()!=null)	mob.session().rawPrintln("!\n\rDone!");
+		if(mob.session()!=null)	mob.session().rawPrintln(getScr("Merge","done"));
 		for(int i=0;i<placesToDo.size();i++)
 			((Room)placesToDo.elementAt(i)).getArea().toggleMobility(true);
 		return false;

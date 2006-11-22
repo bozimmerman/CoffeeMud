@@ -34,7 +34,7 @@ public class Friends extends StdCommand
 {
 	public Friends(){}
 
-	private String[] access={"FRIENDS"};
+	private String[] access={getScr("Friends","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -43,67 +43,67 @@ public class Friends extends StdCommand
 		if(pstats==null) return false;
 		HashSet h=pstats.getFriends();
 
-		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
+		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Friends","cmdlist"))))
 		{
 			if(h.size()==0)
-				mob.tell("You have no friends listed.  Use FRIENDS ADD to add more.");
+				mob.tell(getScr("Friends","errmsg"));
 			else
 			{
-				StringBuffer str=new StringBuffer("Your listed friends are: ");
+				StringBuffer str=new StringBuffer(getScr("Friends","yourfriends"));
 				for(Iterator e=h.iterator();e.hasNext();)
 					str.append(((String)e.next())+" ");
 				mob.tell(str.toString());
 			}
 		}
 		else
-		if(((String)commands.elementAt(1)).equalsIgnoreCase("ADD"))
+		if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Friends","cmdadd")))
 		{
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell("Add whom?");
+				mob.tell(getScr("Friends","whom"));
 				return false;
 			}
 			MOB M=CMClass.getMOB("StdMOB");
-			if(name.equalsIgnoreCase("all"))
-				M.setName("All");
+			if(name.equalsIgnoreCase(getScr("Friends","all")))
+				M.setName(getScr("Friends","descall"));
 			else
 			if(!CMLib.database().DBUserSearch(M,name))
 			{
-				mob.tell("No player by that name was found.");
+				mob.tell(getScr("Friends","nofound"));
                 M.destroy();
 				return false;
 			}
 			if(h.contains(M.Name()))
 			{
-				mob.tell("That name is already on your list.");
+				mob.tell(getScr("Friends","already"));
                 M.destroy();
 				return false;
 			}
 			h.add(M.Name());
-			mob.tell("The Player '"+M.Name()+"' has been added to your friends list.");
+			mob.tell(getScr("Friends","added",M.Name()));
             M.destroy();
 		}
 		else
-		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
+		if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Friends","cmdremove")))
 		{
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell("Remove whom?");
+				mob.tell(getScr("Friends","remwhom"));
 				return false;
 			}
 			if(!h.contains(name))
 			{
-				mob.tell("That name '"+name+"' does not appear on your list.  Watch your casing!");
+				mob.tell(getScr("Friends","nolist",name));
 				return false;
 			}
 			h.remove(name);
-			mob.tell("The Player '"+name+"' has been removed from your friends list.");
+			mob.tell(getScr("Friends","removed",name));
 		}
 		else
 		{
-			mob.tell("Parameter '"+((String)commands.elementAt(1))+"' is not recognized.  Try LIST, ADD, or REMOVE.");
+			mob.tell(getScr("Friends","noparm",((String)commands.elementAt(1))));
 			return false;
 		}
 		return false;

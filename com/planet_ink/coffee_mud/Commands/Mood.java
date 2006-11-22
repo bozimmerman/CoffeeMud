@@ -34,7 +34,7 @@ public class Mood extends StdCommand
 {
 	public Mood(){}
 
-	private String[] access={"MOOD"};
+	private String[] access={getScr("Mood","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -47,7 +47,7 @@ public class Mood extends StdCommand
 			A.invoke(mob,V,mob,true,0);
 		}
 		else
-			mob.tell("This command is not implemented.");
+			mob.tell(getScr("Mood","notimplemented"));
 		return false;
 	}
     public double combatActionsCost(){return 0;}

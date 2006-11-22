@@ -35,13 +35,13 @@ public class Expertises extends StdCommand
 {
 	public Expertises(){}
 
-	private String[] access={"EXPERTISES","EXPS"};
+	private String[] access={getScr("Expertises","cmd1"),getScr("Expertises","cmd2")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HYour expertises:^? \n\r");
+		msg.append(getScr("Expertises","yourexper"));
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		int col=0;
         int colWidth=25;

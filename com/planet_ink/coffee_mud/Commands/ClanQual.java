@@ -67,22 +67,22 @@ public class ClanQual extends BaseClanner
 							premise=CMParms.combine(commands,1);
 						else
 						if(mob.session()!=null)
-							premise=mob.session().prompt("Describe your "+C.typeName()+"'s Qualification Code (?)\n\r: ","");
+							premise=mob.session().prompt(getScr("ClanQual","descqual",C.typeName()),"");
 
 						if(premise.equals("?"))
-							mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
+							mob.tell(CMLib.masking().maskHelp("\n\r",getScr("ClanQual","disallow")));
 						else
 						if(premise.length()>0)
 						{
 							mob.tell(getScr("ClanQual","qualicationsfollow",CMLib.masking().maskDesc(premise)));
-							if((mob.session()!=null)&&(mob.session().confirm("Is this correct (Y/n)?","Y")))
+							if((mob.session()!=null)&&(mob.session().confirm(getScr("ClanQual","iscorrect"),"Y")))
 							{
 								commands.addElement(premise);
 								if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,true))
 								{
 									C.setAcceptanceSettings(premise);
 									C.update();
-									clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.clanID()+" have been changed.");
+									clanAnnounce(mob,getScr("ClanQual","qualchanged",C.typeName(),C.clanID()));
 									return false;
 								}
 							}

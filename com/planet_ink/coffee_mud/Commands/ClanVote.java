@@ -66,8 +66,8 @@ public class ClanVote extends BaseClanner
 				else
 				{
 					msg.append(" "+CMStrings.padRight("#",3)
-							   +CMStrings.padRight("Status",15)
-							   +"Command to execute\n\r");
+							   +CMStrings.padRight(getScr("ClanVote","votestatus"),15)
+							   +getScr("ClanVote","cmdtoexec"));
 					for(int v=0;v<votesForYou.size();v++)
 					{
 						Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
@@ -75,7 +75,7 @@ public class ClanVote extends BaseClanner
 						int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
 								  +CMStrings.padRight(""+(v+1),3)
-								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
+								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+getScr("ClanVote","votescast")):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
 								  +CMStrings.padRight(CV.matter,55)+"\n\r");
 					}
 					msg.append(getScr("ClanVote","details"));
@@ -140,13 +140,13 @@ public class ClanVote extends BaseClanner
 							prompt.append(getScr("ClanVote","canprompt"));
 							choices+="C";
 						}
-						String enterWhat="to skip";
+						String enterWhat=getScr("ClanVote","toskip");
 						if(myVote!=null)
-							enterWhat=("to keep ("+(myVote.booleanValue()?"Y":"N")+") ");
+							enterWhat=(getScr("ClanVote","tokeep")+(myVote.booleanValue()?"Y":"N")+") ");
 						boolean updateVote=false;
 						if((prompt.length()>0)&&(mob.session()!=null))
 						{
-							String answer=mob.session().choose("Choices: "+prompt.toString()+"or ENTER "+enterWhat+": ",choices,"");
+							String answer=mob.session().choose(getScr("ClanVote","choicesorenter",prompt.toString())+enterWhat+": ",choices,"");
 							if(answer.length()>0)
 							switch(answer.toUpperCase().charAt(0))
 							{
@@ -164,10 +164,10 @@ public class ClanVote extends BaseClanner
 								break;
 							case 'C':
 								if((mob.session()!=null)
-								&&(mob.session().confirm("This will cancel this entire vote, are you sure (N/y)?","N")))
+								&&(mob.session().confirm(getScr("ClanVote","cancelvote"),"N")))
 								{
 									C.delVote(CV);
-									clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.clanID()+" has been deleted.");
+									clanAnnounce(mob,getScr("ClanVote","priorvote",C.typeName(),C.clanID()));
 									msg.append(getScr("ClanVote","votedeleted"));
 									updateVote=true;
 								}

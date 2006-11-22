@@ -34,7 +34,7 @@ public class GConsider extends StdCommand
 {
 	public GConsider(){}
 
-	private String[] access={"GCONSIDER","GCOS","GCO"};
+	private String[] access={getScr("GConsider","cmd1"),getScr("GConsider","cmd2"),getScr("GConsider","cmd3")};
 	public String[] getAccessWords(){return access;}
 
 	public int relativeLevelDiff(MOB mob1, HashSet mobs)
@@ -75,7 +75,7 @@ public class GConsider extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Consider whom?");
+			mob.tell(getScr("GConsider","whom"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -83,7 +83,7 @@ public class GConsider extends StdCommand
 		MOB target=mob.location().fetchInhabitant(targetName);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell("I don't see '"+targetName+"' here.");
+			mob.tell(getScr("GConsider","nohere",targetName));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class GConsider extends StdCommand
 		int levelDiff=Math.abs(realDiff);
 		if(levelDiff<theDiff)
 		{
-			mob.tell("The perfect match!");
+			mob.tell(getScr("GConsider","perfect"));
 			return false;
 		}
 		else
@@ -108,24 +108,24 @@ public class GConsider extends StdCommand
 		{
 			if(realDiff>-(2*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" might give you a fight.");
+				mob.tell(target.charStats().HeShe()+getScr("GConsider","might"));
 				return false;
 			}
 			else
 			if(realDiff>-(3*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is hardly worth your while.");
+				mob.tell(target.charStats().HeShe()+getScr("GConsider","hardly"));
 				return false;
 			}
 			else
 			if(realDiff>-(4*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is a pushover.");
+				mob.tell(target.charStats().HeShe()+getScr("GConsider","pushover"));
 				return false;
 			}
 			else
 			{
-				mob.tell(target.charStats().HeShe()+" is not worth the effort.");
+				mob.tell(target.charStats().HeShe()+getScr("GConsider","noworth"));
 				return false;
 			}
 
@@ -133,24 +133,24 @@ public class GConsider extends StdCommand
 		else
 		if(realDiff<(2*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" looks a little tough.");
+			mob.tell(target.charStats().HeShe()+getScr("GConsider","tough"));
 			return false;
 		}
 		else
 		if(realDiff<(3*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" is a serious threat.");
+			mob.tell(target.charStats().HeShe()+getScr("GConsider","serious"));
 			return false;
 		}
 		else
 		if(realDiff<(4*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" will clean your clock.");
+			mob.tell(target.charStats().HeShe()+getScr("GConsider","clock"));
 			return false;
 		}
 		else
 		{
-			mob.tell(target.charStats().HeShe()+" WILL KILL YOU DEAD!");
+			mob.tell(target.charStats().HeShe()+getScr("GConsider","killyou"));
 			return false;
 		}
 	}

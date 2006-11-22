@@ -34,7 +34,7 @@ public class Flee extends Go
 {
 	public Flee(){}
 
-	private String[] access={"FLEE"};
+	private String[] access={getScr("Flee","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -72,11 +72,11 @@ public class Flee extends Go
         if((!XPloss)&&(direction.length()==0))
         {
             mob.tell(getScr("Movement","fleestop"));
-            direction="NOWHERE";
+            direction=getScr("Flee","cmdnowhere");
         }
         
 		int directionCode=-1;
-		if(!direction.equals("NOWHERE"))
+		if(!direction.equals(getScr("Flee","cmdnowhere")))
 		{
 			if(direction.length()==0)
 			{
@@ -105,7 +105,7 @@ public class Flee extends Go
 				return false;
 			}
 		}
-		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
+		if((direction.equals(getScr("Flee","cmdnowhere")))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace();
 			if(XPloss&&(fighting!=null))

@@ -34,19 +34,19 @@ public class Dress extends StdCommand
 {
 	public Dress(){}
 
-	private String[] access={"DRESS"};
+	private String[] access={getScr("Dress","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Dress whom in what?");
+			mob.tell(getScr("Dress","whom"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are in combat!");
+			mob.tell(getScr("Dress","nocombat"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -56,12 +56,12 @@ public class Dress extends StdCommand
 		MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell("I don't see "+whom+" here.");
+			mob.tell(getScr("Dress","nothere",whom));
 			return false;
 		}
 		if((!target.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,"ORDER")))
 		{
-			mob.tell(target.Name()+" is a player!");
+			mob.tell(target.Name()+getScr("Dress","isplayer"));
 			return false;
 		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
@@ -69,14 +69,14 @@ public class Dress extends StdCommand
 			Item item=mob.fetchInventory(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell("I don't see "+what+" here.");
+				mob.tell(getScr("Dress","nothere",what));
 				return false;
 			}
 			if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
 			||(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")&&(target.isMonster()))
 			||(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")&&(target.isMonster())))
 			{
-				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
+				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,getScr("Dress","arcputson"));
 				item.unWear();
 				target.giveItem(item);
 				item.wearIfPossible(target);
@@ -102,17 +102,17 @@ public class Dress extends StdCommand
 			{
 				if(!item.amWearingAt(Item.IN_INVENTORY))
 				{
-					mob.tell("You might want to remove that first.");
+					mob.tell(getScr("Dress","removefirst"));
 					return false;
 				}
 				if(item instanceof Coins)
 				{
-				    mob.tell("I don't think you want to dress someone in "+item.name()+".");
+				    mob.tell(getScr("Dress","nodress")+item.name()+".");
 				    return false;
 				}
 				if(target.isInCombat())
 				{
-					mob.tell("Not while "+target.name()+" is in combat!");
+					mob.tell(getScr("Dress","incombat",target.name()));
 					return false;
 				}
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -128,19 +128,19 @@ public class Dress extends StdCommand
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);
-								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
+								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,getScr("Dress","putson"));
 							}
 							else
-								mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
+								mob.tell(getScr("Dress","noput",item.name())+target.name()+".");
 						}
 						else
-							mob.tell("You cannot seem to get "+item.name()+" to "+target.name()+".");
+							mob.tell(getScr("Dress","nodo",item.name())+target.name()+".");
 					}
 				}
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.name()+getScr("Dress","nolet"));
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

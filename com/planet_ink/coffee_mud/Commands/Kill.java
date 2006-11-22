@@ -36,7 +36,7 @@ public class Kill extends StdCommand
 {
 	public Kill(){}
 
-	private String[] access={"KILL","K","ATTACK"};
+	private String[] access={getScr("Kill","cmd1"),getScr("Kill","cmd2"),getScr("Kill","cmd3")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -56,7 +56,7 @@ public class Kill extends StdCommand
 		{
 			if(!mob.isInCombat())
 			{
-				mob.tell("Kill whom?");
+				mob.tell(getScr("Kill","whom"));
 				return false;
 			}
 			else
@@ -70,7 +70,7 @@ public class Kill extends StdCommand
 		String whomToKill=CMParms.combine(commands,1);
 		if(CMSecurity.isAllowed(mob,mob.location(),"KILLDEAD")&&(!mob.isMonster()))
 		{
-			if(((String)commands.lastElement()).equalsIgnoreCase("DEAD"))
+			if(((String)commands.lastElement()).equalsIgnoreCase(getScr("Kill","cmddead")))
 			{
 				commands.removeElementAt(commands.size()-1);
 				whomToKill=CMParms.combine(commands,1);
@@ -83,7 +83,7 @@ public class Kill extends StdCommand
 			target=mob.location().fetchInhabitant(whomToKill);
 			if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 			{
-				mob.tell("I don't see '"+whomToKill+"' here.");
+				mob.tell(getScr("Kill","nosee",whomToKill));
 				return false;
 			}
 		}
@@ -107,7 +107,7 @@ public class Kill extends StdCommand
 			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
 			{
-				mob.tell("^f^<FIGHT^>You are already fighting "+mob.getVictim().name()+".^</FIGHT^>^?");
+				mob.tell(getScr("Kill","alreadtfight",mob.getVictim().name()));
 				return false;
 			}
 			
@@ -124,14 +124,14 @@ public class Kill extends StdCommand
 					if(range>=0)
 						mob.setAtRange(range);
 				}
-				mob.tell("^f^<FIGHT^>You are now targeting "+target.name()+".^</FIGHT^>^?");
+				mob.tell(getScr("Kill","nowtarget",target.name()));
 				mob.setVictim(target);
 				return false;
 			}
 		}
 		
 		if((!mob.mayPhysicallyAttack(target)))
-			mob.tell("You are not allowed to attack "+target.name()+".");
+			mob.tell(getScr("Kill","noallowed")+target.name()+".");
 		else
         {
             Item weapon=mob.fetchWieldedItem();
@@ -148,7 +148,7 @@ public class Kill extends StdCommand
                     if(possibleOtherWeapon.amWearingAt(Item.IN_INVENTORY))
                     {
                         Command C=CMClass.getCommand("Wield");
-                        if(C!=null) C.execute(mob,CMParms.makeVector("WIELD",possibleOtherWeapon));
+                        if(C!=null) C.execute(mob,CMParms.makeVector(getScr("Kill","cmdwield"),possibleOtherWeapon));
                     }
                 }
             }

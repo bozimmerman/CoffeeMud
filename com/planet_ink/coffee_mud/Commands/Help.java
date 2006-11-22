@@ -34,7 +34,7 @@ public class Help extends StdCommand
 {
 	public Help(){}
 
-	private String[] access={"HELP"};
+	private String[] access={getScr("Help","cmd1")};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -43,7 +43,7 @@ public class Help extends StdCommand
 		String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
-			mob.tell("No help is available.");
+			mob.tell(getScr("Help","nohelp"));
 			return false;
 		}
 		StringBuffer thisTag=null;
@@ -62,10 +62,10 @@ public class Help extends StdCommand
 		        CMSecurity.isAllowed(mob,mob.location(),"AHELP")?CMLib.help().getArcHelpFile():null,
 		        mob);
 			if((thisList!=null)&&(thisList.length()>0))
-				mob.tell("No help is available on '"+helpStr+"'.\n\rHowever, here are some search matches:\n\r^N"+thisList.toString().replace('_',' '));
+				mob.tell(getScr("Help","matches",helpStr)+thisList.toString().replace('_',' '));
 			else
-				mob.tell("No help is available on '"+helpStr+"'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.");
-			Log.helpOut("Help",mob.Name()+" wanted help on "+helpStr);
+				mob.tell(getScr("Help","nohelpcmds",helpStr));
+			Log.helpOut("Help",mob.Name()+getScr("Help","wantedhelp")+helpStr);
 		}
 		else
 		if(!mob.isMonster())

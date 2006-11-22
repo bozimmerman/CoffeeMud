@@ -34,7 +34,7 @@ public class Group extends StdCommand
 {
 	public Group(){}
 
-	private String[] access={"GROUP","GR"};
+	private String[] access={getScr("Group","cmd1"),getScr("Group","cmd2")};
 	public String[] getAccessWords(){return access;}
 	
 	public static StringBuffer showWhoLong(MOB who)
@@ -79,7 +79,7 @@ public class Group extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		mob.tell(mob.name()+"'s group:\n\r");
+		mob.tell(mob.name()+getScr("Group","group"));
 		HashSet group=mob.getGroupMembers(new HashSet());
 		StringBuffer msg=new StringBuffer("");
 		for(Iterator e=group.iterator();e.hasNext();)

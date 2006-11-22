@@ -42,12 +42,12 @@ public class ClanList extends BaseClanner
 	    boolean trophySystemActive=CMLib.clans().trophySystemActive();
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
-		head.append(CMStrings.padRight("Clan Name",24)+" | ");
-		head.append(CMStrings.padRight("Type",13)+" | ");
-		head.append(CMStrings.padRight("Status",8)+" | ");
-		head.append(CMStrings.padRight("Members",7));
+		head.append(CMStrings.padRight(getScr("ClanList","clanname"),24)+" | ");
+		head.append(CMStrings.padRight(getScr("ClanList","clantype"),13)+" | ");
+		head.append(CMStrings.padRight(getScr("ClanList","clanstatus"),8)+" | ");
+		head.append(CMStrings.padRight(getScr("ClanList","clanmembers"),7));
 		if(trophySystemActive)
-			head.append(" | "+CMStrings.padRight("Trophies",8));
+			head.append(" | "+CMStrings.padRight(getScr("ClanList","clantrophies"),8));
 		head.append("]^.^? \n\r");
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
@@ -65,14 +65,14 @@ public class ClanList extends BaseClanner
 					||(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)))
 				{ war=true; break;}
 			}
-			String status=(war)?"At War":"Active";
+			String status=(war)?getScr("ClanList","atwar"):getScr("ClanList","active");
 			switch(thisClan.getStatus())
 			{
 			case Clan.CLANSTATUS_FADING:
-				status="Inactive";
+				status=getScr("ClanList","inactive");
 				break;
 			case Clan.CLANSTATUS_PENDING:
-				status="Pending";
+				status=getScr("ClanList","pending");
 				break;
 			}
 			msg.append(CMStrings.padRight(status,8)+"   ");

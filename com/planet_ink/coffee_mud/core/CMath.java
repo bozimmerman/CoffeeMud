@@ -410,6 +410,19 @@ public class CMath
     {
         return Boolean.valueOf(BOOL).booleanValue(); 
     }
+    
+    /**
+     * Returns whether the given string is a boolean value
+     * 
+     * <br><br><b>Usage:</b> if(isBool(CMD.substring(14)));
+     * @param BOOL Boolean value of string
+     * @return whether it is a boolean
+     */
+    public static boolean isBool(String BOOL)
+    {
+        return BOOL.equalsIgnoreCase("true")||BOOL.equalsIgnoreCase("false");
+    }
+    
     /**
      * Returns the integer value of a string without crashing
      * 

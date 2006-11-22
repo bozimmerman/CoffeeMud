@@ -34,7 +34,7 @@ public class Look extends StdCommand
 {
 	public Look(){}
 
-	private String[] access={"LOOK","LOO","LO","L"};
+	private String[] access={getScr("Look","cmd1"),getScr("Look","cmd2"),getScr("Look","cmd3"),getScr("Look","cmd4")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -46,39 +46,39 @@ public class Look extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 			quiet=true;
 		}
-		String textMsg="<S-NAME> look(s) ";
+		String textMsg=getScr("Look","looks");
 		if(R==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
 			
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("at")))
+			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Look","at"))))
 			   commands.removeElementAt(1);
 			else
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
+			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Look","to"))))
 			   commands.removeElementAt(1);
 			String ID=CMParms.combine(commands,1);
 			
-			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
+			if((ID.toUpperCase().startsWith(getScr("Look","cmdexit"))&&(commands.size()==2)))
 			{
                 CMLib.commands().lookAtExits(R,mob);
 				return false;
 			}
-			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
+			if(ID.equalsIgnoreCase(getScr("Look","cmdself"))||ID.equalsIgnoreCase(getScr("Look","cmdme")))
 				thisThang=mob;
 			
 			if(thisThang==null)
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORNREQ_ANY);
 			if((thisThang==null)
 			&&(commands.size()>2)
-			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
+			&&(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Look","in"))))
 			{
 				commands.removeElementAt(1);
 				String ID2=CMParms.combine(commands,1);
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORNREQ_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
-					mob.tell("That's not a container.");
+					mob.tell(getScr("Look","nocontainer"));
 					return false;
 				}
 			}
@@ -98,18 +98,18 @@ public class Look extends StdCommand
                     }
 					else
 					{
-						mob.tell("You don't see anything that way.");
+						mob.tell(getScr("Look","noway"));
 						return false;
 					}
 				}
 			}
 			if(thisThang!=null)
 			{
-				String name="at <T-NAMESELF>";
+				String name=getScr("Look","att");
  				if((thisThang instanceof Room)||(thisThang instanceof Exit))
 				{
 					if(thisThang==R)
-						name="around";
+						name=getScr("Look","around");
 					else
 					if(dirCode>=0)
 						name=Directions.getDirectionName(dirCode);
@@ -121,14 +121,14 @@ public class Look extends StdCommand
 					CMLib.commands().lookAtExits((Room)thisThang,mob);
 			}
 			else
-				mob.tell("You don't see that here!");
+				mob.tell(getScr("Look","nohere"));
 		}
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
 				if(((String)commands.elementAt(0)).toUpperCase().startsWith("E"))
 				{
-					mob.tell("Examine what?");
+					mob.tell(getScr("Look","exwhat"));
 					return false;
 				}
 

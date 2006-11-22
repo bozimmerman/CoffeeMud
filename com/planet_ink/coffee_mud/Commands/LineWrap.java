@@ -34,7 +34,7 @@ public class LineWrap extends StdCommand
 {
 	public LineWrap(){}
 
-	private String[] access={"LINEWRAP"};
+	private String[] access={getScr("LineWrap","cmd1")};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands)
@@ -45,8 +45,8 @@ public class LineWrap extends StdCommand
 	    
 		if(commands.size()<2)
 		{
-		    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-			mob.tell("Change your line wrap to what? Your current line wrap setting is: "+wrap+". Enter a number larger than 10 or 'disable'.");
+		    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):getScr("LineWrap","disabled");
+			mob.tell(getScr("LineWrap","changewhat",wrap));
 			return false;
 		}
 		String newWrap=CMParms.combine(commands,1);
@@ -54,16 +54,16 @@ public class LineWrap extends StdCommand
 		if((CMath.isInteger(newWrap))&&(CMath.s_int(newWrap)>10))
 		    newVal=CMath.s_int(newWrap);
 		else
-		if("DISABLED".startsWith(newWrap.toUpperCase()))
+		if(getScr("LineWrap","cmddisabled").startsWith(newWrap.toUpperCase()))
 		    newVal=0;
 		else
 		{
-			mob.tell("'"+newWrap+"' is not a valid setting. Enter a number larger than 10 or 'disable'.");
+			mob.tell("'"+newWrap+getScr("LineWrap","novalid"));
 		    return false;
 		}
 		mob.playerStats().setWrap(newVal);
-	    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-		mob.tell("Your new line wrap setting is: "+wrap+".");
+	    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):getScr("LineWrap","disabled");
+		mob.tell(getScr("LineWrap","newwrap")+wrap+".");
 		return false;
 	}
 	
