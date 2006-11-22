@@ -54,7 +54,7 @@ public class Channels extends StdCommand
 				}
 				String channelName=names[x];
 				boolean onoff=CMath.isSet(pstats.getChannelMask(),x);
-				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),24));
+				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?getScr("Channels","off"):""),24));
 			}
 		if(names.length==0)
 			buf.append(getScr("Channels","none"));

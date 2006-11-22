@@ -48,7 +48,7 @@ public class Chants extends BaseAbleLister
         level[0]=-1;
         parseDomainInfo(mob,commands,CMParms.makeVector(new Integer(Ability.ACODE_CHANT)),level,domain,domainName);
         if((domain[0]>=0)||(qual.length()==0))
-            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"chants:^? "+getAbilities(mob,Ability.ACODE_CHANT,domain[0],true,level[0]));
+            msg.append(getScr("Chants","yourchants",domainName[0].replace('_',' '))+getAbilities(mob,Ability.ACODE_CHANT,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

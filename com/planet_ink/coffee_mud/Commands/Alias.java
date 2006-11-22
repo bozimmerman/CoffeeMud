@@ -42,13 +42,13 @@ public class Alias extends StdCommand
         PlayerStats ps=mob.playerStats();
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
+            StringBuffer menu=new StringBuffer(getScr("Alias","aliasdefs"));
             String[] aliasNames=ps.getAliasNames();
             for(int i=0;i<aliasNames.length;i++)
                 menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
             menu.append(getScr("Alias","new",""+(aliasNames.length+1)));
             mob.tell(menu.toString());
-            String which=mob.session().prompt("Enter a selection: ","");
+            String which=mob.session().prompt(getScr("Alias","enterselec"),"");
             if(which.length()==0)
                 break;
             int num=CMath.s_int(which);

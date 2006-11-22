@@ -1945,8 +1945,8 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber))  return;
 		boolean seeThroughBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH);
 		boolean multiWearBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR);
-		String seeThroughStr=(!seeThroughBool)?" (opaque)":" (see-through)";
-		String multiWearStr=multiWearBool?" (multi)":"";
+		String seeThroughStr=(!seeThroughBool)?getScr("BaseGenerics","opaque"):getScr("BaseGenerics","seethru");
+		String multiWearStr=multiWearBool?getScr("BaseGenerics","multi"):"";
 		mob.tell(getScr("BaseGenerics","layer",showNumber+"",E.getClothingLayer()+"",seeThroughStr,multiWearStr));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setClothingLayer((short)getNumericData(mob,getScr("BaseGenerics","newlayer"),E.getClothingLayer()));
@@ -2768,7 +2768,7 @@ public class BaseGenerics extends StdCommand
                             {
     							parms=chosenOne.getParms();
     							parms=mob.session().prompt(getScr("BaseGenerics","behapar",parms));
-                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell(getScr("BaseGenerics","nohelp"));}
                             }
 							chosenOne.setParms(parms.trim());
 							if(!alreadyHasIt)
@@ -2845,7 +2845,7 @@ public class BaseGenerics extends StdCommand
                             {
                                 parms=chosenOne.text();
                                 parms=mob.session().prompt(getScr("BaseGenerics","effectpar",parms));
-                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell(getScr("BaseGenerics","nohelp"));}
                             }
 							chosenOne.setMiscText(parms.trim());
 							mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
@@ -5337,7 +5337,7 @@ public class BaseGenerics extends StdCommand
             genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nunu")+" ","NUMNAME");
             int numNames=CMath.s_int(me.getStat("NUMNAME"));
             if(numNames<=1)
-    			genText(mob,me,++showNumber,showFlag,"Name","NAME0");
+    			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","namename"),"NAME0");
             else
             for(int i=0;i<numNames;i++)
             {
@@ -5346,7 +5346,7 @@ public class BaseGenerics extends StdCommand
                 while(!mob.session().killFlag())
                 {
                     int oldNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
-                    genInt(mob,me,++showNumber,showFlag,"Name #"+i+" class level: ","NAMELEVEL"+i);
+                    genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nameclasslevel",i),"NAMELEVEL"+i);
                     int previousNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+(i-1)));
                     int newNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
                     if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))
@@ -5450,7 +5450,7 @@ public class BaseGenerics extends StdCommand
 		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcanaffectmask"),"CANAFFECTMASK");
 		    genText(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abcantargetmask"),"CANTARGETMASK");
 		    genText(mob,me,CMParms.toStringList(Ability.QUALITY_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abquality"),"QUALITY");
-		    genText(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
+		    genText(mob,me,getScr("BaseGenerics","parmsarelike")+
                     CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abherestats"),"HERESTATS");
 		    genText(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,getScr("BaseGenerics","abcastmask"),"CASTMASK");
 		    genText(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abscript"),"SCRIPT");
@@ -5460,9 +5460,9 @@ public class BaseGenerics extends StdCommand
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abcastmsg"),"CASTMSG");
 		    genText(mob,me,null,++showNumber,showFlag,getScr("BaseGenerics","abpostcastmsg"),"POSTCASTMSG");
 		    genText(mob,me,CMParms.toStringList(CMMsg.TYPE_DESCS),++showNumber,showFlag,getScr("BaseGenerics","abattackcode"),"ATTACKCODE");
-            genText(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
+            genText(mob,me,getScr("BaseGenerics","parmsarelike")+
                     CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abpostcastaffect"),"POSTCASTAFFECT");
-            genText(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
+            genText(mob,me,getScr("BaseGenerics","parmsarelike")+
                     CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,getScr("BaseGenerics","abpoastcastability"),"POSTCASTABILITY");
             genText(mob,me,"Enter a damage or healing formula. Use +-*/()?. @x1=caster level, @x2=target level.  Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,getScr("BaseGenerics","abpostcastdamage"),"POSTCASTDAMAGE");
 		    
@@ -5978,7 +5978,7 @@ public class BaseGenerics extends StdCommand
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","factrigg",showNumber+""));
-                list.append("    "+CMStrings.padRight("Type",15)
+                list.append("    "+CMStrings.padRight(getScr("BaseGenerics","type"),15)
                         +" "+CMStrings.padRight(getScr("BaseGenerics","facdir"),10)
                         +" "+CMStrings.padRight(getScr("BaseGenerics","facfactor"),10)
                         +" "+CMStrings.padRight(getScr("BaseGenerics","facflags"),20)

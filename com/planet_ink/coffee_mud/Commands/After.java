@@ -49,19 +49,19 @@ public class After extends StdCommand implements Tickable
 
 		String afterErr=getScr("After","afterErr");
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("stop"))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("After","stop")))
 		{
 			afterCmds.clear();
 			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
 			mob.tell(getScr("After","ok"));
 			return false;
 		}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("After","list")))
 		{
 			//afterCmds.clear();
 			int s=0;
-			StringBuffer str=new StringBuffer("^xCurrently scheduled AFTERs: ^?^.^?\n\r");
-			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");
+			StringBuffer str=new StringBuffer(getScr("After","currafters"));
+			str.append(CMStrings.padRight(getScr("After","nextrun"),20)+" "+CMStrings.padRight(getScr("After","interval"),20)+" "+CMStrings.padRight(getScr("After","who"),10)+getScr("After","command"));
 			while(s<afterCmds.size())
 			{
 				Vector V=(Vector)afterCmds.elementAt(s);
@@ -79,7 +79,7 @@ public class After extends StdCommand implements Tickable
 			mob.tell(str.toString());
 			return false;
 		}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("every"))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("After","every")))
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		long time=CMath.s_long((String)commands.elementAt(0));
