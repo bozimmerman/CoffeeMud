@@ -41,7 +41,7 @@ public class Learn extends StdCommand
 	{
 		if(commands.size()==1)
 		{
-			mob.tell(getScr("AbilityEvoker","learnerr"));
+			mob.tell("Learn what?  Enter QUALIFY or TRAIN to see what you can learn.");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -63,7 +63,7 @@ public class Learn extends StdCommand
 		Vector V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
-			Vector CC=CMParms.makeVector(getScr("CommandSet","say"),getScr("AbilityEvoker","trainme",what));
+			Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
 			mob.doCommand(CC);
 			Command C=CMClass.getCommand("TRAIN");
 			if(C!=null) C.execute(mob, commands);
@@ -71,21 +71,21 @@ public class Learn extends StdCommand
 		}
 		if(CMClass.findAbility(what, mob)!=null)
 		{
-			Vector CC=CMParms.makeVector(getScr("CommandSet","say"),getScr("AbilityEvoker","teachme",what));
+			Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what);
 			mob.doCommand(CC);
 			return true;
 		}
 		for(int v=0;v<V.size();v++)
 			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
 			{
-				Vector CC=CMParms.makeVector(getScr("CommandSet","say"),getScr("AbilityEvoker","trainme",what));
+				Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
 				mob.doCommand(CC);
 				Command C=CMClass.getCommand("TRAIN");
 				if(C!=null) C.execute(mob, commands);
 				return true;
 				
 			}
-		Vector CC=CMParms.makeVector(getScr("CommandSet","say"),getScr("AbilityEvoker","teachme",what));
+		Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what);
 		mob.doCommand(CC);
 		return false;
 	}

@@ -62,14 +62,14 @@ public class Go extends StdCommand
 					if(rMOB.location()==sourceRoom)
 					{
 						if(rMOB.riding()!=null)
-							rMOB.tell(getScr("Movement","youride",rMOB.riding().name(),Directions.getDirectionName(directionCode)));
+							rMOB.tell("You ride "+rMOB.riding().name()+" "+Directions.getDirectionName(directionCode)+".");
 						if(!move(rMOB,directionCode,flee,false,true,false))
 							fallOff=true;
 					}
 					if(fallOff)
 					{
 						if(rMOB.riding()!=null)
-							rMOB.tell(getScr("Movement","youfalloff",rMOB.riding().name()));
+							rMOB.tell("You fall off "+rMOB.riding().name()+"!");
 						rMOB.setRiding(null);
 					}
 				}
@@ -150,11 +150,11 @@ public class Go extends StdCommand
 			if((riding instanceof MOB)
 			&&((sourceRoom).isInhabitant((MOB)riding)))
 			{
-				((MOB)riding).tell(getScr("Movement","youridden",Directions.getDirectionName(directionCode)));
+				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
 				if(!move(((MOB)riding),directionCode,false,false,true,false))
 				{
 					if(theRider instanceof MOB)
-						((MOB)theRider).tell(getScr("Movement","rideerr1",((MOB)riding).name()));
+						((MOB)theRider).tell(((MOB)riding).name()+" won't seem to let you go that way.");
 					r=r-1;
 					for(;r>=0;r--)
 					{
@@ -198,7 +198,7 @@ public class Go extends StdCommand
 		Exit exit=thisRoom.getExitInDir(directionCode);
 		if(destRoom==null)
 		{
-			mob.tell(getScr("Movement","moveerr1"));
+			mob.tell("You can't go that way.");
 			return false;
 		}
 
@@ -215,23 +215,23 @@ public class Go extends StdCommand
 		CMMsg leaveMsg=null;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","sridesin",mob.riding().name(),otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sfleeswith",mob.riding().name(),directionName):getScr("Movement","srides",mob.riding().name(),directionName)));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName+".");
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) with "+mob.riding().name()+" "+directionName+".":"<S-NAME> ride(s) "+mob.riding().name()+" "+directionName+"."));
 		}
 		else
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives),otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sflees",directionName):getScr("Movement","sleaves",CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves),directionName)));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from "+otherDirectionName+".");
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) "+directionName+".":"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" "+directionName+"."));
 		}
 		boolean gotoAllowed=CMSecurity.isAllowed(mob,destRoom,"GOTO");
 		if((exit==null)&&(!gotoAllowed))
 		{
-			mob.tell(getScr("Movement","moveerr1"));
+			mob.tell("You can't go that way.");
 			return false;
 		}
 		else
 		if(exit==null)
-			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,getScr("Movement","stwitch",directionName));
+			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
 		else
 		if((exit!=null)&&(!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
 			return false;
@@ -260,7 +260,7 @@ public class Go extends StdCommand
 					mob.curState().expendEnergy(mob,mob.maxState(),true);
 			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState()))&&(!gotoAllowed))
 			{
-				mob.tell(getScr("Movement","tootired"));
+				mob.tell("You are too tired.");
 				return false;
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
@@ -281,7 +281,7 @@ public class Go extends StdCommand
 		if(enterMsg.target()==null)
 		{
 		    ((Room)leaveMsg.target()).bringMobHere(mob,false);
-			mob.tell(getScr("Movement","moveerr1"));
+			mob.tell("You can't go that way.");
 			return false;
 		}
 		mob.setLocation((Room)enterMsg.target());
@@ -322,7 +322,7 @@ public class Go extends StdCommand
 							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> remain(s) on guard here.");
 						else
 						{
-							follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
+							follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
 							if(!move(follower,directionCode,false,false,false,false))
 							{
 								//follower.setFollowing(null);
@@ -424,7 +424,7 @@ public class Go extends StdCommand
 						break;
 				}
 			if(!doneAnything)
-				mob.tell(CMStrings.capitalizeAndLower(doing)+" "+getScr("Movement","goerr"));
+				mob.tell(CMStrings.capitalizeAndLower(doing)+" which direction?\n\rTry north, south, east, west, up, or down.");
 		}
 		return false;
 	}

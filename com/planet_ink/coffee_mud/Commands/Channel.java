@@ -72,19 +72,19 @@ public class Channel extends BaseChanneler
 		if((pstats!=null)&&(CMath.isSet(pstats.getChannelMask(),channelInt)))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell(getScr("Channel","channelon",channelName,channelName.toUpperCase()));
+			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
 			return false;
 		}
 		
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.tell(getScr("Channel","quietalon"));
+			mob.tell("You have QUIET mode on.  You must turn it off first.");
 			return false;
 		}
 
 		if(commands.size()==0)
 		{
-			mob.tell(getScr("Channel","what",channelName));
+			mob.tell(channelName+" what?");
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Channel extends BaseChanneler
 		}
 		if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelInt),mob))
 		{
-			mob.tell(getScr("Channel","notava"));
+			mob.tell("This channel is not available to you.");
 			return false;
 		}
         
@@ -104,7 +104,7 @@ public class Channel extends BaseChanneler
 		if((mob.getClanID().equalsIgnoreCase("")||mob.getClanRole()==Clan.POS_APPLICANT)
         &&(flags.contains("CLANONLY")||flags.contains("CLANALLYONLY")))
 		{
-            mob.tell(getScr("Channel","clandontex"));
+            mob.tell("You can't talk to your clan - you don't have one.");
             return false;
 		}
         
@@ -117,7 +117,7 @@ public class Channel extends BaseChanneler
 			Vector que=CMLib.channels().getChannelQue(channelInt);
 			if(que.size()==0)
 			{
-				mob.tell(getScr("Channel","noentries"));
+				mob.tell("There are no previous entries on this channel.");
 				return false;
 			}
 			if(num>que.size()) num=que.size();
@@ -131,13 +131,13 @@ public class Channel extends BaseChanneler
 		else
         if(flags.contains("READONLY"))
         {
-            mob.tell(getScr("Channel","readonly"));
+            mob.tell("This channel is read-only.");
             return false;
         }
         else
         if(flags.contains("PLAYERREADONLY")&&(!mob.isMonster()))
         {
-            mob.tell(getScr("Channel","readonly"));
+            mob.tell("This channel is read-only.");
             return false;
         }
         else

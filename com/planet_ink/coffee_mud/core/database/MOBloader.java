@@ -495,7 +495,7 @@ public class MOBloader
     {
         PlayerStats pstats=mob.playerStats();
         if(pstats==null) return;
-        DB.update("UPDATE CMCHAR SET"+"  CMEMAL='"+pstats.getEmail()+"'"+"  WHERE CMUSERID='"+mob.Name()+"'");
+        DB.update("UPDATE CMCHAR SET  CMEMAL='"+pstats.getEmail()+"'  WHERE CMUSERID='"+mob.Name()+"'");
     }
 
     public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
@@ -533,7 +533,7 @@ public class MOBloader
             M.setClanID(clan);
             M.setClanRole(role);
         }
-        DB.update("UPDATE CMCHAR SET"+"  CMCLAN='"+clan+"',"+"  CMCLRO="+role+""+"  WHERE CMUSERID='"+name+"'");
+        DB.update("UPDATE CMCHAR SET  CMCLAN='"+clan+"',  CMCLRO="+role+"  WHERE CMUSERID='"+name+"'");
     }
 
     public void DBUpdate(MOB mob)
@@ -550,7 +550,7 @@ public class MOBloader
         if(mob.Name().length()==0) return;
         PlayerStats pstats=mob.playerStats();
         if(pstats==null) return;
-        DB.update("UPDATE CMCHAR SET"+"  CMPASS='"+pstats.password()+"'"+"  WHERE CMUSERID='"+mob.Name()+"'");
+        DB.update("UPDATE CMCHAR SET  CMPASS='"+pstats.password()+"'  WHERE CMUSERID='"+mob.Name()+"'");
     }
 
     public void DBUpdateJustMOB(MOB mob)
@@ -582,7 +582,7 @@ public class MOBloader
         pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
         StringBuffer cleanXML=new StringBuffer();
         cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
-        DB.update("UPDATE CMCHAR SET"+"  CMPASS='"+pstats.password()+"'"
+        DB.update("UPDATE CMCHAR SET  CMPASS='"+pstats.password()+"'"
                 +", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
                 +", CMSTRE="+mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)
                 +", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
@@ -596,7 +596,7 @@ public class MOBloader
                 +", CMLEVL='"+mob.baseCharStats().getMyLevelsStr()+"'"
                 +", CMMANA="+mob.baseState().getMana()
                 +", CMMOVE="+mob.baseState().getMovement()
-                +", CMALIG="+"-1"
+                +", CMALIG=-1"
                 +", CMEXPE="+mob.getExperience()
                 +", CMEXLV="+mob.getExpNextLevel()
                 +", CMWORS='"+mob.getWorshipCharID()+"'"
@@ -626,7 +626,7 @@ public class MOBloader
                 +", CMSAVE='"+mob.baseCharStats().getSavesAsString()+"'"
                 +", CMMXML='"+cleanXML.toString()+"'"
                 +"  WHERE CMUSERID='"+mob.Name()+"'");
-        DB.update("UPDATE CMCHAR SET"+" CMDESC='"+mob.description()+"'"+" WHERE CMUSERID='"+mob.Name()+"'");
+        DB.update("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'");
     }
 
     private void DBUpdateContents(MOB mob, Vector V)
@@ -637,9 +637,9 @@ public class MOBloader
             Item thisItem=mob.fetchInventory(i);
             if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.savable()))
             {
-                String str="INSERT INTO CMCHIT ("+"CMUSERID, "+"CMITNM, "+"CMITID, "+"CMITTX, "+"CMITLO, "+"CMITWO, "
-                +"CMITUR, "+"CMITLV, "+"CMITAB, "+"CMHEIT"
-                +") values ("+"'"+mob.Name()+"',"+"'"+(thisItem)+"',"+"'"+thisItem.ID()+"',"+"'"+thisItem.text()+" ',"+"'"
+                String str="INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
+                +"CMITUR, CMITLV, CMITAB, CMHEIT"
+                +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"','"+thisItem.text()+" ','"
                 +((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"+thisItem.rawWornCode()+","
                 +thisItem.usesRemaining()+","+thisItem.baseEnvStats().level()+","+thisItem.baseEnvStats().ability()+","
                 +thisItem.baseEnvStats().height()+")";
@@ -676,8 +676,8 @@ public class MOBloader
             MOB thisMOB=mob.fetchFollower(f);
             if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
             {
-                String str="INSERT INTO CMCHFO ("+"CMUSERID, "+"CMFONM, "+"CMFOID, "+"CMFOTX, "+"CMFOLV, "+"CMFOAB"
-                +") values ("+"'"+mob.Name()+"',"+f+","+"'"+CMClass.classID(thisMOB)+"',"+"'"+thisMOB.text()+" ',"
+                String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
+                +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"','"+thisMOB.text()+" ',"
                 +thisMOB.baseEnvStats().level()+","+thisMOB.baseEnvStats().ability()+")";
                 V.addElement(str);
             }
@@ -739,8 +739,8 @@ public class MOBloader
                     if((effectA.savable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked())) proficiency=proficiency-200;
                 }
                 H.add(thisAbility.ID());
-                String str="INSERT INTO CMCHAB ("+"CMUSERID, "+"CMABID, "+"CMABPF,"+"CMABTX"
-                +") values ("+"'"+mob.Name()+"',"+"'"+thisAbility.ID()+"',"+proficiency+",'"+thisAbility.text()+"'"+")";
+                String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+                +") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",'"+thisAbility.text()+"')";
                 V.addElement(str);
             }
         }
@@ -749,8 +749,8 @@ public class MOBloader
             Ability thisAffect=mob.fetchEffect(a);
             if((thisAffect!=null)&&(!H.contains(thisAffect.ID()))&&(thisAffect.savable())&&(!thisAffect.canBeUninvoked()))
             {
-                String str="INSERT INTO CMCHAB ("+"CMUSERID, "+"CMABID, "+"CMABPF,"+"CMABTX"
-                +") values ("+"'"+mob.Name()+"',"+"'"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",'"+thisAffect.text()+"'"+")";
+                String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+                +") values ('"+mob.Name()+"','"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",'"+thisAffect.text()+"')";
                 V.addElement(str);
             }
         }
@@ -759,8 +759,8 @@ public class MOBloader
             Behavior thisBehavior=mob.fetchBehavior(b);
             if((thisBehavior!=null)&&(thisBehavior.isSavable()))
             {
-                String str="INSERT INTO CMCHAB ("+"CMUSERID, "+"CMABID, "+"CMABPF,"+"CMABTX"
-                +") values ("+"'"+mob.Name()+"',"+"'"+thisBehavior.ID()+"',"+Integer.MIN_VALUE+",'"+thisBehavior.getParms()+"'"
+                String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+                +") values ('"+mob.Name()+"','"+thisBehavior.ID()+"',"+Integer.MIN_VALUE+",'"+thisBehavior.getParms()+"'"
                 +")";
                 V.addElement(str);
             }
@@ -774,7 +774,7 @@ public class MOBloader
         if(mob.Name().length()==0) return;
         PlayerStats pstats=mob.playerStats();
         if(pstats==null) return;
-        DB.update("INSERT INTO CMCHAR ("+"CMUSERID, "+"CMPASS, "+"CMCLAS, "+"CMRACE, "+"CMGEND "
+        DB.update("INSERT INTO CMCHAR (CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
                 +") VALUES ('"+mob.Name()+"','"+pstats.password()+"','"+mob.baseCharStats().getMyClassesStr()
                 +"','"+mob.baseCharStats().getMyRace().ID()+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))
                 +"')");

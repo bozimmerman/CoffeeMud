@@ -34,7 +34,7 @@ public class ClanPremise extends BaseClanner
 {
 	public ClanPremise(){}
 
-	private String[] access={getScr("ClanPremise","cmd")};
+	private String[] access={"CLANPREMISE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -47,14 +47,14 @@ public class ClanPremise extends BaseClanner
 		||(mob.getClanID().equalsIgnoreCase(""))
 		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
-			msg.append(getScr("ClanPremise","nomember"));
+			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
 			{
-				msg.append(getScr("ClanPremise","nopos",C.typeName()));
+				msg.append("You aren't in the right position to set the premise to your "+C.typeName()+".");
 			}
 			else
 			{

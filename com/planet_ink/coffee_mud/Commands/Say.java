@@ -34,52 +34,52 @@ public class Say extends StdCommand
 {
 	public Say(){}
 
-	private String[] access={getScr("Say","saycmd1"),
-                             getScr("Say","saycmd2"),
+	private String[] access={"SAY",
+                             "ASK",
                              "`",
-                             getScr("Say","saycmd3"),
-                             getScr("Say","saycmd4")};
+                             "SA",
+                             "SAYTO"};
 	public String[] getAccessWords(){return access;}
 
     protected static final String[] impossibleTargets={
-		getScr("Say","imptarget1"),
-		getScr("Say","imptarget2"),
-		getScr("Say","imptarget3"),
-		getScr("Say","imptarget4"),
-		getScr("Say","imptarget5"),
-		getScr("Say","imptarget6"),
-		getScr("Say","imptarget7"),
-		getScr("Say","imptarget8"),
-		getScr("Say","imptarget9"),
-		getScr("Say","imptarget10"),
-		getScr("Say","imptarget11"),
-		getScr("Say","imptarget12"),
-		getScr("Say","imptarget13"),
-		getScr("Say","imptarget14")
+		"HERE",
+		"THERE",
+		"IS",
+		"JUST",
+		"A",
+		"AN",
+		"TO",
+		"THE",
+		"SOME",
+		"SITS",
+		"RESTS",
+		"LEFT",
+		"HAS",
+		"BEEN"
 	};
 
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String theWord=getScr("Say","theword1");
+		String theWord="Say";
 		boolean toFlag=false;
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Say","saycmd2")))
-			theWord=getScr("Say","theword2");
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("ASK"))
+			theWord="Ask";
 		else
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Say","saycmd5")))
-			theWord=getScr("Say","theword3");
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("YELL"))
+			theWord="Yell";
 		else
-		if(((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Say","saycmd4"))
-		||((String)commands.elementAt(0)).equalsIgnoreCase(getScr("Say","saycmd4b")))
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("SAYTO")
+		||((String)commands.elementAt(0)).equalsIgnoreCase("SAYT"))
 		{
-			theWord=getScr("Say","theword1");
+			theWord="Say";
 			toFlag=true;
 		}
 
         Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			mob.tell(theWord+" "+getScr("Say","saywhat"));
+			mob.tell(theWord+"  what?");
 			return false;
 		}
 
@@ -126,21 +126,21 @@ public class Say extends StdCommand
 		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(theWord+" "+getScr("Say","saywhat"));
+			mob.tell(theWord+"  what?");
 			return false;
 		}
 		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell(getScr("Say","saysee",whom));
+			mob.tell("you don't see "+whom+" here to speak to.");
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_SAYFILTER);
 
 		CMMsg msg=null;
-		if((!theWord.equalsIgnoreCase(getScr("Say","saycmd2")))&&(target!=null))
-		    theWord+=getScr("Say","saysto");
+		if((!theWord.equalsIgnoreCase("ASK"))&&(target!=null))
+		    theWord+="(s) to";
 		else
-		    theWord+=getScr("Say","says");
+		    theWord+="(s)";
 		String fromSelf="^T^<SAY \""+((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		String toTarget="^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
@@ -153,7 +153,7 @@ public class Say extends StdCommand
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
-			if(theWord.toUpperCase().startsWith(getScr("Say","saycmd5")))
+			if(theWord.toUpperCase().startsWith("YELL"))
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R2=R.getRoomInDir(d);
@@ -161,7 +161,7 @@ public class Say extends StdCommand
 					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 					{
 						Environmental tool=msg.tool();
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,getScr("Say","yell1")+" '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
 						if((R2.okMessage(mob,msg))
 						&&((tool==null)||(tool.okMessage(mob,msg))))
 						{

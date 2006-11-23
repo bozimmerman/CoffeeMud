@@ -36,7 +36,7 @@ public class AutoGuard extends StdCommand
 {
 	public AutoGuard(){}
 
-	private String[] access={getScr("AutoGuard","cmd"),getScr("AutoGuard","cmd1")};
+	private String[] access={"AUTOGUARD","GUARD"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -46,16 +46,16 @@ public class AutoGuard extends StdCommand
 		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell(getScr("AutoGuard","guardon"));
+			mob.tell("You are now on guard. You will no longer follow group leaders.");
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,getScr("AutoGuard","guardonmsg"),false,false);
+				CMLib.commands().postSay(mob,null,"I am now on guard.",false,false);
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell(getScr("AutoGuard","guardoff"));
+			mob.tell("You are no longer on guard.  You will now follow group leaders.");
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,getScr("AutoGuard","followglead"),false,false);
+				CMLib.commands().postSay(mob,null,"I will now follow my group leader.",false,false);
 		}
 		return false;
 	}

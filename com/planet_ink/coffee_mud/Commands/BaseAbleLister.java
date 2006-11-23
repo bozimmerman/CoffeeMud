@@ -135,7 +135,7 @@ public class BaseAbleLister extends StdCommand
 				&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
 					if(thisLine.length()==0)
-						thisLine.append(getScr("BaseAbleLister","level",""+l));
+						thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
 					if((++col)>3)
 					{
 						thisLine.append("\n\r");
@@ -148,10 +148,10 @@ public class BaseAbleLister extends StdCommand
 				msg.append(thisLine);
 		}
 		if(msg.length()==0)
-			msg.append(getScr("BaseAbleLister","none"));
+			msg.append("^!None!^?");
 		else
 		if(addQualLine)
-			msg.append(getScr("BaseAbleLister","useq"));
+			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can GAIN.");
 		return msg;
 	}
 }

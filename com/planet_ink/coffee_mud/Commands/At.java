@@ -34,7 +34,7 @@ public class At extends StdCommand
 {
 	public At(){}
 
-	private String[] access={getScr("At","cmd")};
+	private String[] access={"AT"};
 	public String[] getAccessWords(){return access;}
 
 	public Room findRoomLiberally(MOB mob, StringBuffer cmd)
@@ -190,7 +190,7 @@ public class At extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell(getScr("At","error1"));
+			mob.tell("At where do what?");
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
@@ -199,14 +199,14 @@ public class At extends StdCommand
 		if(room==null)
 		{
 			if(CMSecurity.isAllowedAnywhere(mob,"AT"))
-				mob.tell(getScr("At","error2"));
+				mob.tell("At where? Try a Room ID, player name, area name, or room text!");
 			else
-				mob.tell(getScr("At","npowerful"));
+				mob.tell("You aren't powerful enough to do that.");
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,room,"AT"))
 		{
-			mob.tell(getScr("At","npowerfult"));
+			mob.tell("You aren't powerful enough to do that there.");
 			return false;
 		}
 		Room R=mob.location();

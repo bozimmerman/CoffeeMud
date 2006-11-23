@@ -34,7 +34,7 @@ public class Questwins extends StdCommand
 {
 	public Questwins(){}
 
-	private String[] access={getScr("Questwins","cmd")};
+	private String[] access={"QUESTWINS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -47,7 +47,7 @@ public class Questwins extends StdCommand
 				qVec.addElement(Q.name());
 		}
 		Collections.sort(qVec);
-		StringBuffer msg=new StringBuffer(getScr("Questwins","cal"));
+		StringBuffer msg=new StringBuffer("^HQuests you are listed as having won:^?^N\n\r");
 		int col=0;
 		for(int i=0;i<qVec.size();i++)
 		{

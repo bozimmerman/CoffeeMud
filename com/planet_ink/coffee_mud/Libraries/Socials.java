@@ -203,7 +203,7 @@ public class Socials extends StdLibrary implements SocialsList
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.session().rawPrintln(showNumber+". "+"Target Effect type: "+((me.targetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.targetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.targetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.targetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE")))));
+        mob.session().rawPrintln(showNumber+". Target Effect type: "+((me.targetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.targetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.targetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.targetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE")))));
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
         if((newName!=null)&&(newName.length()>0))
@@ -236,7 +236,7 @@ public class Socials extends StdLibrary implements SocialsList
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.session().rawPrintln(showNumber+". "+"Your action type: "+((me.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
+        mob.session().rawPrintln(showNumber+". Your action type: "+((me.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName=mob.session().choose("Change W)ords, M)ovement (small), S)ound, L)arge Movement: ","WMSL","");
         if((newName!=null)&&(newName.length()>0))
@@ -435,7 +435,7 @@ public class Socials extends StdLibrary implements SocialsList
                     resaveSocials=true;
                     if(showFlag<-900){ ok=true; break;}
                     if(showFlag>0){ showFlag=-1; continue;}
-                    showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+                    showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
                     if(showFlag<=0)
                     {
                         showFlag=-1;

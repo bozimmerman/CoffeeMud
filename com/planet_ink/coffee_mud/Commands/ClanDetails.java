@@ -34,7 +34,7 @@ public class ClanDetails extends BaseClanner
 {
 	public ClanDetails(){}
 
-	private String[] access={getScr("ClanDetails","cmd"),getScr("ClanDetails","cmd1")};
+	private String[] access={"CLANDETAILS","CLAN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -56,12 +56,12 @@ public class ClanDetails extends BaseClanner
 			}
 			if(!found)
 			{
-				msg.append(getScr("ClanDetails","nocn",qual));
+				msg.append("No clan was found by the name of '"+qual+"'.\n\r");
 			}
 		}
 		else
 		{
-			msg.append(getScr("ClanDetails","spec"));
+			msg.append("You need to specify which clan you would like details on. Try 'CLANLIST'.\n\r");
 		}
 		mob.tell(msg.toString());
 		return false;

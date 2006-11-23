@@ -34,14 +34,14 @@ public class CharGen extends StdCommand
 {
 	public CharGen(){}
 
-	private String[] access={getScr("CharGen","cmd")};
+	private String[] access={"CHARGEN"};
 	public String[] getAccessWords(){return access;}
 
 	protected MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=CMClass.getMOB("StdMOB");
 		CMLib.factions().setAlignment(mob,Faction.ALIGN_NEUTRAL);
-		mob.setName(getScr("CharGen","stdmobname"));
+		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
@@ -213,10 +213,10 @@ public class CharGen extends StdCommand
 
 		if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
 		{
-			mob.tell(getScr("CharGen","enterall"));
+			mob.tell("Enter 'ALL' for all classes.");
 			try
 			{
-				ClassName=mob.session().prompt(getScr("CharGen","entcname"+" "));
+				ClassName=mob.session().prompt("Enter a class name:");
 			}
 			catch(Exception e){return false;}
 
@@ -229,7 +229,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=CMath.s_int(mob.session().prompt(getScr("CharGen","entlevel")+" "));
+				level=CMath.s_int(mob.session().prompt("Enter a level (1-25): "));
 			}
 			catch(Exception e){return false;}
 			if(level<=0)
@@ -237,9 +237,9 @@ public class CharGen extends StdCommand
 		}
 
 		if(C!=null)
-			mob.session().print(getScr("CharGen","average")+" "+C.name()+"...");
+			mob.session().print("\n\rAverage "+C.name()+"...");
 		else
-			mob.session().print(getScr("CharGen","averages"));
+			mob.session().print("\n\rAverage MOB stats, across all classes...");
 
 		MOB avgMob=null;
 		if(C!=null)

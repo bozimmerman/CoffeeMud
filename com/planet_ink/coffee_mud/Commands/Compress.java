@@ -34,7 +34,7 @@ public class Compress extends StdCommand
 {
     public Compress(){}
 
-    private String[] access={getScr("Compress","cmd")};
+    private String[] access={"COMPRESS"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
@@ -42,12 +42,12 @@ public class Compress extends StdCommand
         if(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS))
         {
             mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_COMPRESS));
-            mob.tell(getScr("Compress","off"));
+            mob.tell("Compressed views are now inactive.");
         }
         else
         {
             mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_COMPRESS));
-            mob.tell(getScr("Compress","on"));
+            mob.tell("Compressed views are now active.");
         }
         return false;
     }

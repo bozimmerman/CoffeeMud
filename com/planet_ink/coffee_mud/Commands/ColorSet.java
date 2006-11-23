@@ -35,7 +35,7 @@ public class ColorSet extends StdCommand
 {
 	public ColorSet(){}
 
-	private String[] access={getScr("ColorSet","cmd")};
+	private String[] access={"COLORSET"};
 	public String[] getAccessWords(){return access;}
 	
 	public String colorDescription(String code)
@@ -53,7 +53,7 @@ public class ColorSet extends StdCommand
 		    if(what.indexOf("|")>0)
 		    {
 		        what=what.substring(what.indexOf("|")+1);
-		        buf.append(getScr("ColorSet","backfore"));
+		        buf.append("^N=background, foreground=");
 		    }
 		    else
 		        what=null;
@@ -90,7 +90,7 @@ public class ColorSet extends StdCommand
 		   &&("DEFAULT".startsWith(CMParms.combine(commands,1).toUpperCase())))
 		{
 			pstats.setColorStr("");
-			mob.tell(getScr("ColorSet","changedtodef"));
+			mob.tell("Your colors have been changed back to default.");
 			return false;
 		}
 		if(clookup==null) return false;
@@ -126,7 +126,7 @@ public class ColorSet extends StdCommand
 			int num=CMath.s_int(numToChange);
 			if(numToChange.length()==0) break;
 			if((num<=0)||(num>theSet.length))
-				mob.tell(getScr("ColorSet","notentry"));
+				mob.tell("That is not a valid entry!");
 			else
 			{
 				num--;
@@ -136,7 +136,7 @@ public class ColorSet extends StdCommand
 				boolean changes=false;
 				if(theSet[num][1].charAt(0)!='Q')
 				{
-					buf.append(getScr("ColorSet","availcolors"));
+					buf.append("^N\n\rAvailable Colors: ");
 					for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 					{
 					    if(ii>0) buf.append(", ");
@@ -145,7 +145,7 @@ public class ColorSet extends StdCommand
 					mob.session().println(buf.toString()+"^N");
 					int colorNum=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of New Color: ");
 					if(colorNum<0)
-						mob.tell(getScr("ColorSet","notcolor"));
+						mob.tell("That is not a valid color!");
 					else
 					{
 						clookup[theSet[num][1].charAt(0)]=clookup[ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum].charAt(0)];
@@ -154,7 +154,7 @@ public class ColorSet extends StdCommand
 				}
 				else
 				{
-					buf.append(getScr("ColorSet","availbackground"));
+					buf.append("^N\n\r\n\rAvailable Background Colors: ");
 					boolean first=true;
 					for(int ii=0;ii<ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
 					    if(Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0)))
@@ -165,7 +165,7 @@ public class ColorSet extends StdCommand
 						    else
 								buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						}
-					buf.append(getScr("ColorSet","availforeground"));
+					buf.append("^N\n\rAvailable Foreground Colors: ");
 					first=true;
 					for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 					    if(Character.isLowerCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
@@ -176,12 +176,12 @@ public class ColorSet extends StdCommand
 					mob.session().println(buf.toString()+"^N");
 					int colorNum1=pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,"Enter Name of Background Color: ");
 					if((colorNum1<0)||(!Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1].charAt(0))))
-						mob.tell(getScr("ColorSet","invalidbg"));
+						mob.tell("That is not a valid Background color!");
 					else
 					{
 						int colorNum2=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of Foreground Color: ");
 						if((colorNum2<0)||(Character.isUpperCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
-							mob.tell(getScr("ColorSet","invalidfg"));
+							mob.tell("That is not a valid Foreground color!");
 						else
 						{
 						    changes=true;

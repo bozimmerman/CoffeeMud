@@ -41,10 +41,10 @@ public class Gain extends StdCommand
 	{
 		if(commands.size()==1)
 		{
-			mob.tell(getScr("AbilityEvoker","gainerr"));
+			mob.tell("Gain what?  Enter QUALIFY to see what you can gain.");
 			return false;
 		}
-		commands.insertElementAt(getScr("CommandSet","say"),0);
+		commands.insertElementAt("SAY",0);
 		mob.doCommand(commands);
 		return false;
 	}

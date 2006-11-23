@@ -45,12 +45,12 @@ public class Stand extends StdCommand
 		if(CMLib.flags().isStanding(mob))
 		{
 			if(!ifnecessary)
-				mob.tell(getScr("Movement","standerr1"));
+				mob.tell("You are already standing!");
 		}
 		else
 		if(mob.location()!=null)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:getScr("Movement","standup"));
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:"<S-NAME> stand(s) up.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

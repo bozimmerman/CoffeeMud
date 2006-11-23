@@ -34,7 +34,7 @@ public class Crawl extends Go
 {
 	public Crawl(){}
 
-	private String[] access={getScr("Crawl","cmd"),getScr("Crawl","cmd1")};
+	private String[] access={"CRAWL","CR"};
 	public String[] getAccessWords(){return access;}
     
     public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
@@ -45,7 +45,7 @@ public class Crawl extends Go
             int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
             if(direction<0)
             {
-                mob.tell(getScr("Movement","crawlerr1"));
+                mob.tell("Crawl which way?\n\rTry north, south, east, west, up, or down.");
                 return false;
             }
         }
@@ -67,7 +67,7 @@ public class Crawl extends Go
 		}
 		else
 		{
-			mob.tell(getScr("Movement","crawlerr1"));
+			mob.tell("Crawl which way?\n\rTry north, south, east, west, up, or down.");
 			return false;
 		}
 		return false;

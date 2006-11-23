@@ -41,12 +41,12 @@ public class Sleep extends StdCommand
 	{
 		if(CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(getScr("Movement","sleeperr1"));
+			mob.tell("You are already asleep!");
 			return false;
 		}
 		if(commands.size()<=1)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,getScr("Movement","sleep"));
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,"<S-NAME> lay(s) down and take(s) a nap.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -55,14 +55,14 @@ public class Sleep extends StdCommand
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORNREQ_UNWORNONLY);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			mob.tell(getScr("Movement","youdontsee",possibleRideable));
+			mob.tell("You don't see '"+possibleRideable+"' here.");
 			return false;
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=getScr("Movement","sleepmounton",((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob));
+			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
 		else
-			mountStr=getScr("Movement","sleepson");
+			mountStr="<S-NAME> sleep(s) on <T-NAME>.";
 		String sourceMountStr=null;
 		if(!CMLib.flags().canBeSeenBy(E,mob))
 			sourceMountStr=mountStr;

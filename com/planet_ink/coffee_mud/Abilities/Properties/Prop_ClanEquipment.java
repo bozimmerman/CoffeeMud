@@ -264,7 +264,7 @@ public class Prop_ClanEquipment extends Property
                         int flameDamage=CMLib.dice().roll(1,6,0);
                         flameDamage*=PowerLevel;
                         CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
-                                "^F^<FIGHT^>The magic of "+clanName+" <DAMAGE>"+" <T-NAME>!^</FIGHT^>^?");
+                                "^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
                         wandUse.helpProficiency(mob);
                         return;
                     }

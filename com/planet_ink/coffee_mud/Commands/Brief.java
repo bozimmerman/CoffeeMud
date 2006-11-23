@@ -34,7 +34,7 @@ public class Brief extends StdCommand
 {
 	public Brief(){}
 
-	private String[] access={getScr("Brief","cmd")};
+	private String[] access={"BRIEF"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,12 +42,12 @@ public class Brief extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_BRIEF));
-			mob.tell(getScr("Brief","briefoff"));
+			mob.tell("Brief room descriptions are now off.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_BRIEF));
-			mob.tell(getScr("Brief","briefon"));
+			mob.tell("Brief room descriptions are now on.");
 		}
 		return false;
 	}

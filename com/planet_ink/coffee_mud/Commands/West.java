@@ -42,7 +42,7 @@ public class West extends Go
 		standIfNecessary(mob);
 		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell(getScr("Movement","standandgoerr1"));
+			mob.tell("You need to stand up first.");
 			return false;
 		}
 		move(mob,Directions.WEST,false,false,false);

@@ -34,7 +34,7 @@ public class ClanResign extends BaseClanner
 {
 	public ClanResign(){}
 
-	private String[] access={getScr("ClanResign","cmd")};
+	private String[] access={"CLANRESIGN"};
 	public String[] getAccessWords(){return access;}
     
 	public boolean execute(MOB mob, Vector commands)
@@ -44,7 +44,7 @@ public class ClanResign extends BaseClanner
 		if((mob.getClanID()==null)
 		||(mob.getClanID().equalsIgnoreCase("")))
 		{
-			msg.append(getScr("ClanResign","nomember"));
+			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		if(!mob.isMonster())

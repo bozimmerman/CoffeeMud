@@ -41,7 +41,7 @@ public class Practice extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr1",""+mob.getPractices()));
+			mob.tell("You have "+mob.getPractices()+" practice points.  Enter HELP PRACTICE for more information.");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -68,26 +68,26 @@ public class Practice extends StdCommand
 
 		if((teacher==null)||((teacher!=null)&&(!CMLib.flags().canBeSeenBy(teacher,mob))))
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr2"));
+			mob.tell("That person doesn't seem to be here.");
 			return false;
 		}
 
 		Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr3",abilityName));
+			mob.tell("You don't seem to know "+abilityName+".");
 			return false;
 		}
 		if(!myAbility.savable())
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr5",abilityName));
+			mob.tell(abilityName+" cannot be practiced, as it is a native skill.");
 			return false;
 		}
 
 		Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.name(),abilityName));
+			mob.tell(teacher.name()+" doesn't seem to know "+abilityName+".");
 			return false;
 		}
 
@@ -98,7 +98,7 @@ public class Practice extends StdCommand
 		CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
 			return false;
-		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","practices",myAbility.name()));
+		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> practice(s) '"+myAbility.name()+"' with <T-NAMESELF>.");
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		teacherAbility.practice(teacher,mob);

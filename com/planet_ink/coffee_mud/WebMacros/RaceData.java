@@ -161,14 +161,14 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("TRAINS"))
 				{
 					if(mob.getTrains()>0)
-						str.append("trains"+"+"+mob.getTrains()+", ");
+						str.append("trains+"+mob.getTrains()+", ");
 				}
 				if(parms.containsKey("EXPECTANCY"))
 					str.append(""+R.getAgingChart()[Race.AGE_ANCIENT]+", ");
 				if(parms.containsKey("PRACS"))
 				{
 					if(mob.getPractices()>0)
-						str.append("practices"+"+"+mob.getPractices()+", ");
+						str.append("practices+"+mob.getPractices()+", ");
 				}
 				if(parms.containsKey("ABILITIES"))
 				{

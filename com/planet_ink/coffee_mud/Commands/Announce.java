@@ -35,7 +35,7 @@ public class Announce extends StdCommand
 {
 	public Announce(){}
 
-	private String[] access={getScr("Announce","cmd"),getScr("Announce","cmdt"),getScr("Announce","cmdm")};
+	private String[] access={"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"};
 	public String[] getAccessWords(){return access;}
 
 	public void sendAnnounce(String announcement, Session S)
@@ -54,13 +54,13 @@ public class Announce extends StdCommand
     	  	switch(alignType)
     	  	{
     	  	  case 0:
-    	  	    Message.append(getScr("Announce","evil",announcement));
+    	  	    Message.append("^rA terrifying voice bellows out of Hell '"+announcement+"'.^N");
     	  	    break;
     	  	  case 1:
-    	  	    Message.append(getScr("Announce","good",announcement));
+    	  	    Message.append("^wAn awe-inspiring voice thunders down from Heaven '"+announcement+"'.^N");
     	  	    break;
     	  	  case 2:
-    	  	    Message.append(getScr("Announce","neutral",announcement));
+    	  	    Message.append("^pA powerful voice rings out '"+announcement+"'.^N");
     	  	    break;
     	  	}
         }
@@ -72,37 +72,37 @@ public class Announce extends StdCommand
 	{
         
         String cmd=((String)commands.firstElement()).toUpperCase();
-        if((!cmd.equalsIgnoreCase(getScr("Announce","cmdm")))
-        &&(!cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
-        &&(!cmd.equalsIgnoreCase(getScr("Announce","cmd"))))
+        if((!cmd.equalsIgnoreCase("ANNOUNCEMSG"))
+        &&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
+        &&(!cmd.equalsIgnoreCase("ANNOUNCE")))
         {
-            boolean cmdm=getScr("Announce","cmdm").toUpperCase().startsWith(cmd);
-            boolean cmdt=getScr("Announce","cmdt").toUpperCase().startsWith(cmd);
-            boolean cmd1=getScr("Announce","cmd").toUpperCase().startsWith(cmd);
+            boolean cmdm="ANNOUNCEMSG".toUpperCase().startsWith(cmd);
+            boolean cmdt="ANNOUNCETO".toUpperCase().startsWith(cmd);
+            boolean cmd1="ANNOUNCE".toUpperCase().startsWith(cmd);
             if(cmdm&&(!cmdt)&&(!cmd1))
-                cmd=getScr("Announce","cmdm");
+                cmd="ANNOUNCEMSG";
             else
             if(cmdt&&(!cmdm)&&(!cmd1))
-                cmd=getScr("Announce","cmdt");
+                cmd="ANNOUNCETO";
             else
             if(cmd1&&(!cmdm)&&(!cmdt))
-                cmd=getScr("Announce","cmd");
+                cmd="ANNOUNCE";
         }
 		if(commands.size()>1)
 		{
-            if(cmd.equalsIgnoreCase(getScr("Announce","cmdm")))
+            if(cmd.equalsIgnoreCase("ANNOUNCEMSG"))
             {
                 String s=CMParms.combine(commands,1);
                 if(mob.playerStats()!=null)
                     mob.playerStats().setAnnounceMessage(s);
-                mob.tell(getScr("Announce","changed"));
+                mob.tell("Your announce message has been changed.");
             }
             else
-            if((!cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
-            ||(((String)commands.elementAt(1)).toUpperCase().equals(getScr("Announce","all"))))
+            if((!cmd.equalsIgnoreCase("ANNOUNCETO"))
+            ||(((String)commands.elementAt(1)).toUpperCase().equals("ALL")))
 			{
                 String text=null;
-                if(cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
+                if(cmd.equalsIgnoreCase("ANNOUNCETO"))
                     text=CMParms.combine(commands,2);
                 else
                     text=CMParms.combine(commands,1);
@@ -133,11 +133,11 @@ public class Announce extends StdCommand
 					}
 				}
 				if(!found)
-					mob.tell(getScr("Announce","notfound"));
+					mob.tell("You can't find anyone by that name.");
 			}
 		}
 		else
-			mob.tell(getScr("Announce","exp"));
+			mob.tell("Usage ANNOUNCETO [ALL|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r");
 		return false;
 	}
 	

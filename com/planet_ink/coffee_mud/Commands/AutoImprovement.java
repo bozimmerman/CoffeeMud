@@ -36,7 +36,7 @@ public class AutoImprovement extends StdCommand
 {
 	public AutoImprovement(){}
 
-	private String[] access={getScr("AutoImprovement","cmd")};
+	private String[] access={"AUTOIMPROVEMENT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,12 +44,12 @@ public class AutoImprovement extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
-			mob.tell(getScr("AutoImprovement","turnoff"));
+			mob.tell("Skill improvement notifications are now off.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
-			mob.tell(getScr("AutoImprovement","turnon"));
+			mob.tell("Skill improvement notifications are now on.");
 		}
 		return false;
 	}

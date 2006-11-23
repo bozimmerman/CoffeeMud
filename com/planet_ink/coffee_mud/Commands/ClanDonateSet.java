@@ -35,7 +35,7 @@ public class ClanDonateSet extends BaseClanner
 {
 	public ClanDonateSet(){}
 
-	private String[] access={getScr("ClanDonateSet","cmd")};
+	private String[] access={"CLANDONATESET"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -55,39 +55,39 @@ public class ClanDonateSet extends BaseClanner
 
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
-			mob.tell(getScr("ClanDonateSet","evenmember"));
+			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
 		Clan C=CMLib.clans().getClan(mob.getClanID());
 		if(C==null)
 		{
-			mob.tell(getScr("ClanDonateSet","nolonger",mob.getClanID()));
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 			return false;
 		}
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell(getScr("ClanDonateSet","donroom",C.typeName()));
+			mob.tell("You cannot set a donation room.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
 		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell(getScr("ClanDonateSet","donotownroom",C.typeName()));
+				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
 			{
 				C.setDonation(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell(getScr("ClanDonateSet","donationset",C.typeName(),C.clanID(),R.roomTitle()));
-				clanAnnounce(mob,getScr("ClanDonateSet","donationset",C.typeName(),C.clanID(),R.roomTitle()));
+				mob.tell("The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
+				clanAnnounce(mob,"The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell(getScr("ClanDonateSet","notrightpos",C.typeName()));
+			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s donation room.");
 			return false;
 		}
 		return false;

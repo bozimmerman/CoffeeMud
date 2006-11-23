@@ -76,7 +76,7 @@ public class MOTD extends StdCommand
 					{
 						if(message.startsWith("<cmvp>"))
 							message=new String(CMLib.httpUtils().doVirtualPage(message.substring(6).getBytes()));
-						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\r"+"FROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\rFROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
 						buf.append("\n\r--------------------------------------\n\r");
 					}
 				}

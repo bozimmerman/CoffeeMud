@@ -41,7 +41,7 @@ public class Enter extends Go
 	{
 		if(commands.size()<=1)
 		{
-			mob.tell(getScr("Movement","entererr1"));
+			mob.tell("Enter what or where? Try EXITS.");
 			return false;
 		}
 		String enterWhat=CMParms.combine(commands,1).toUpperCase();
@@ -54,7 +54,7 @@ public class Enter extends Go
 				Command C=CMClass.getCommand("Sit");
 				if(C!=null) return C.execute(mob,commands);
 			}
-			mob.tell(getScr("Movement","youdontsee",enterWhat.toLowerCase()));
+			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
 			return false;
 		}
 		move(mob,dir,false,false,false);

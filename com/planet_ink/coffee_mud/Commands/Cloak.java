@@ -34,7 +34,7 @@ public class Cloak extends StdCommand
 {
 	public Cloak(){}
 
-	private String[] access={getScr("Cloak","cmd")};
+	private String[] access={"CLOAK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -51,7 +51,7 @@ public class Cloak extends StdCommand
 		   if(A!=null)
 			   A.unInvoke();
 		   else
-			   mob.tell(getScr("Cloak","notcloaked"));
+			   mob.tell("You are not cloaked!");
 		   return false;
 		}
 		else
@@ -59,7 +59,7 @@ public class Cloak extends StdCommand
 		{
 		    if(CMath.bset(A.abilityCode(),abilityCode)&&(!CMath.bset(A.abilityCode(),EnvStats.IS_NOT_SEEN)))
 		    {
-				mob.tell(getScr("Cloak","alreadycloaked"));
+				mob.tell("You are already cloaked!");
 				return false;
 		    }
 		}
@@ -80,10 +80,10 @@ public class Cloak extends StdCommand
 			
 			mob.recoverEnvStats();
 			mob.location().recoverRoomStats();
-			mob.tell(getScr("Cloak","uninvoke"));
+			mob.tell("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'.");
 			return false;
 		}
-		mob.tell(getScr("Cloak","notavail"));
+		mob.tell("Cloaking is not available!");
 		return false;
 	}
 	

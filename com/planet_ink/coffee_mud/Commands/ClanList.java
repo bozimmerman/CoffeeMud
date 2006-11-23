@@ -34,7 +34,7 @@ public class ClanList extends BaseClanner
 {
 	public ClanList(){}
 
-	private String[] access={getScr("ClanList","cmd"),getScr("ClanList","cmd1")};
+	private String[] access={"CLANLIST","CLANS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

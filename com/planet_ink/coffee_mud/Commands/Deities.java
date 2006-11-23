@@ -34,7 +34,7 @@ public class Deities extends StdCommand
 {
 	public Deities(){}
 
-	private String[] access={getScr("Deities","cmd"),getScr("Deities","cmd1")};
+	private String[] access={"DEITIES","GODS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,9 +42,9 @@ public class Deities extends StdCommand
 		String str=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		if(str.length()==0)
-			msg.append(getScr("Deities","knowmsg"));
+			msg.append("\n\r^xThe known deities:^.^? \n\r\n\r");
 		else
-			msg.append(getScr("Deities","knownames",str));
+			msg.append("\n\r^HThe known deities named '"+str+"':^? \n\r");
 		int col=0;
 		for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
 		{
@@ -65,7 +65,7 @@ public class Deities extends StdCommand
                     msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 				if(D.numBlessings()>0)
 				{
-					msg.append(getScr("Deities","blessings"));
+					msg.append("\n\rBlessings: ");
 					for(int b=0;b<D.numBlessings();b++)
 					{
 						msg.append(D.fetchBlessing(b).name());
@@ -88,7 +88,7 @@ public class Deities extends StdCommand
                 {
     				if(D.numPowers()>0)
     				{
-    					msg.append(getScr("Deities","grpowers"));
+    					msg.append("\n\rGranted Powers: ");
     					for(int b=0;b<D.numPowers();b++)
     					{
     						msg.append(D.fetchPower(b).name());
@@ -110,7 +110,7 @@ public class Deities extends StdCommand
 			}
 		}
 		if(str.length()==0)
-			msg.append(getScr("Deities","details"));
+			msg.append("\n\r\n\r^xUse DEITIES <NAME> to see important details on each deity!^.^N\n\r");
 		mob.tell(msg.toString());
 		return false;
 	}

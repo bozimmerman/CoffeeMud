@@ -34,7 +34,7 @@ public class Boot extends StdCommand
 {
 	public Boot(){}
 
-	private String[] access={getScr("Boot","cmd")};
+	private String[] access={"BOOT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -43,7 +43,7 @@ public class Boot extends StdCommand
 		if(mob.session()==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(getScr("Boot","bootwho"));
+			mob.tell("Boot out who?");
 			return false;
 		}
 		String whom=CMParms.combine(commands,0);
@@ -56,24 +56,24 @@ public class Boot extends StdCommand
 			{
 				if(S==mob.session())
 				{
-					mob.tell(getScr("Boot","tryquit"));
+					mob.tell("Try QUIT.");
 					return false;
 				}
 			    if(S.mob()!=null)
 			    {
-					mob.tell(getScr("Boot","youboot",S.mob().name()));
+					mob.tell("You boot "+S.mob().name());
 					if(S.mob().location()!=null)
-						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,getScr("Boot","bootsom"));
+						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
 			    }
 			    else
-			        mob.tell(getScr("Boot","youboot2",S.getAddress()));
+			        mob.tell("You boot "+S.getAddress());
 				S.setKillFlag(true);
 				boot=true;
 				break;
 			}
 		}
 		if(!boot)
-			mob.tell(getScr("Boot","cantfind"));
+			mob.tell("You can't find anyone by that name or ip address.");
 		return false;
 	}
 	

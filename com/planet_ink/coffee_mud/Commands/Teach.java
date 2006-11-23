@@ -41,7 +41,7 @@ public class Teach extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("AbilityEvoker","teacherr1"));
+			mob.tell("Teach who what?");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -50,7 +50,7 @@ public class Teach extends StdCommand
 		MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
 		if((student==null)||((student!=null)&&(!CMLib.flags().canBeSeenBy(student,mob))))
 		{
-			mob.tell(getScr("AbilityEvoker","teacherr2"));
+			mob.tell("That person doesn't seem to be here.");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -65,7 +65,7 @@ public class Teach extends StdCommand
 			myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell(getScr("AbilityEvoker","teacherr3",abilityName));
+			mob.tell("You don't seem to know "+abilityName+".");
 			return false;
 		}
 		if(!myAbility.canBeTaughtBy(mob,student))
@@ -74,7 +74,7 @@ public class Teach extends StdCommand
 			return false;
 		if(student.fetchAbility(myAbility.ID())!=null)
 		{
-			mob.tell(getScr("AbilityEvoker","teacherr4",student.name()));
+			mob.tell(student.name()+" already knows how to do that.");
 			return false;
 		}
 		if((student.session()!=null)&&(!student.session().confirm(mob.Name()+" wants to teach you "+myAbility.name()+".  Is this Ok (y/N)?","N")))
@@ -82,7 +82,7 @@ public class Teach extends StdCommand
 		CMMsg msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
 			return false;
-		msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_TEACH,getScr("AbilityEvoker","teaches",myAbility.name()));
+		msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		myAbility.teach(mob,student);

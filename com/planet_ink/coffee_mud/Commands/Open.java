@@ -42,7 +42,7 @@ public class Open extends BaseItemParser
 		String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
-			mob.tell(getScr("Movement","openerr1"));
+			mob.tell("Open what?");
 			return false;
 		}
 		Environmental openThis=null;
@@ -54,11 +54,11 @@ public class Open extends BaseItemParser
 
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell(getScr("Movement","youdontsee",whatToOpen));
+			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return false;
 		}
-		String openWord=((openThis==null)||(!(openThis instanceof Exit)))?getScr("Movement","sopenword"):((Exit)openThis).openWord();
-		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,(getScr("Movement","sopens",openWord))+CMProps.msp("dooropen.wav",10));
+		String openWord=((openThis==null)||(!(openThis instanceof Exit)))?"open":((Exit)openThis).openWord();
+		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMProps.msp("dooropen.wav",10));
 		if(openThis instanceof Exit)
 		{
 			boolean open=((Exit)openThis).isOpen();
@@ -82,7 +82,7 @@ public class Open extends BaseItemParser
 					}
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(opE.isOpen())&&(((Exit)openThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,getScr("Movement","afteropens",opE.name(),Directions.getInDirectionName(opCode)));
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" opens.");
 				}
 			}
 		}

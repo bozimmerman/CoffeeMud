@@ -32,7 +32,7 @@ import java.util.*;
 */
 public class Alias extends StdCommand
 {
-    private String[] access={getScr("Alias","cmd")};
+    private String[] access={"ALIAS"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
@@ -46,7 +46,7 @@ public class Alias extends StdCommand
             String[] aliasNames=ps.getAliasNames();
             for(int i=0;i<aliasNames.length;i++)
                 menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
-            menu.append(getScr("Alias","new",""+(aliasNames.length+1)));
+            menu.append((aliasNames.length+1)+". Add a new alias\n\r");
             mob.tell(menu.toString());
             String which=mob.session().prompt("Enter a selection: ","");
             if(which.length()==0)
@@ -59,7 +59,7 @@ public class Alias extends StdCommand
                 if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
                 {
                     ps.delAliasName(selection);
-                    mob.tell(getScr("Alias","deleted"));
+                    mob.tell("Alias deleted.");
                     selection=null;
                 }
             }
@@ -75,7 +75,7 @@ public class Alias extends StdCommand
                if(ps.getAlias(selection).length()>0)
                {
                    selection=null;
-                   mob.tell(getScr("Alias","taken"));
+                   mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
                }
                else
                {
@@ -86,7 +86,7 @@ public class Alias extends StdCommand
                            break;
                        }
                    if(selection==null)
-                       mob.tell(getScr("Alias","letornum"));
+                       mob.tell("Your alias name may only contain letters and numbers without spaces. ");
                    else
                        ps.addAliasName(selection);
                }
@@ -98,17 +98,17 @@ public class Alias extends StdCommand
                 value=CMStrings.replaceAll(value,"<","");
                 value=CMStrings.replaceAll(value,"&","");
                 if((value.length()==0)&&(ps.getAlias(selection).length()>0))
-                    mob.tell(getScr("Alias","nochange"));
+                    mob.tell("(No change)");
                 else
                 if(value.length()==0)
                 {
-                    mob.tell(getScr("Alias","aborted"));
+                    mob.tell("Aborted.");
                     ps.delAliasName(selection);
                 }
                 else
                 {
                     ps.setAlias(selection,value);
-                    mob.tell(getScr("Alias","changed"));
+                    mob.tell("The alias was successfully changed.");
                 }
             }
         }

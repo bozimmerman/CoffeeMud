@@ -34,7 +34,7 @@ public class Ban extends StdCommand
 {
 	public Ban(){}
 
-	private String[] access={getScr("Ban","bancmd")};
+	private String[] access={"BAN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -43,16 +43,16 @@ public class Ban extends StdCommand
 		String banMe=CMParms.combine(commands,0);
 		if(banMe.length()==0)
 		{
-			mob.tell(getScr("Ban","banerr"));
+			mob.tell("Ban what?  Enter an IP address or name mask.");
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();
         int b=CMSecurity.ban(banMe);
         if(b<0)
-            mob.tell(getScr("Ban","banned",banMe));
+            mob.tell("Logins and IPs matching "+banMe+" are now banned.");
         else
         {
-			mob.tell(getScr("Ban","albanned")+(b+1)+".");
+			mob.tell("That is already banned.  Do LIST BANNED and check out #"+(b+1)+".");
 			return false;
 		}
         return true;

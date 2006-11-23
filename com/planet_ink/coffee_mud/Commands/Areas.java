@@ -34,7 +34,7 @@ public class Areas extends StdCommand
 {
 	public Areas(){}
 
-	private String[] access={getScr("Areas","cmd")};
+	private String[] access={"AREAS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -49,7 +49,7 @@ public class Areas extends StdCommand
 				else
 					areasVec.addElement("("+A.name()+")");
 		}
-		StringBuffer msg=new StringBuffer(getScr("Areas","cal"));
+		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)
 		{
@@ -60,7 +60,7 @@ public class Areas extends StdCommand
 			}
 			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),22)+"^N");
 		}
-		msg.append(getScr("Areas","help"));
+		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(msg.toString());
 		return false;

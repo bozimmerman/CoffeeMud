@@ -34,7 +34,7 @@ public class AHelp extends StdCommand
 {
 	public AHelp(){}
 
-	private String[] access={getScr("Ahelp","cmd1"),"AHELP"};
+	private String[] access={"ARCHELP","AHELP"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -43,7 +43,7 @@ public class AHelp extends StdCommand
 		String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getArcHelpFile().size()==0)
 		{
-			mob.tell(getScr("Ahelp","aerr"));
+			mob.tell("No archon help is available.");
 			return false;
 		}
 		StringBuffer thisTag=null;
@@ -66,7 +66,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append(getScr("Ahelp","Properties"));
+					    theRest.append("\n\rProperties:\n\r");
 						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
@@ -79,7 +79,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append(getScr("Ahelp","Diseases"));
+					    theRest.append("\n\rDiseases:\n\r");
 						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
@@ -92,7 +92,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append(getScr("Ahelp","Poisons"));
+					    theRest.append("\n\rPoisons:\n\r");
 						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
@@ -105,7 +105,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append(getScr("Ahelp","SuperPowers"));
+					    theRest.append("\n\rSuper Powers:\n\r");
 						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
@@ -117,7 +117,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append(getScr("Ahelp","Behavior"));
+					    theRest.append("\n\r\n\rBehaviors:\n\r");
 						theRest.append(CMLib.lister().fourColumns(V));
 					}
 					Resources.submitResource("arc_help.therest",theRest);
@@ -130,8 +130,8 @@ public class AHelp extends StdCommand
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			mob.tell(getScr("Ahelp","ahelp",helpStr));
-			Log.errOut(getScr("Ahelp","errout",mob.name(),helpStr));
+			mob.tell("No archon help is available on "+helpStr+" .\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			Log.errOut("Help: "+mob.name()+" wanted archon help on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())

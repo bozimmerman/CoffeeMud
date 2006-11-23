@@ -34,14 +34,14 @@ public class Compare extends StdCommand
 {
 	public Compare(){}
 
-	private String[] access={getScr("Compare","cmd"),getScr("Compare","cmd1")};
+	private String[] access={"COMPARE","COMP"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Compare","compwhat"));
+			mob.tell("Compare what to what?");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -64,13 +64,13 @@ public class Compare extends StdCommand
                 }
                 if((compareThis==null)||((compareThis!=null)&&(!CMLib.flags().canBeSeenBy(compareThis,mob)))) 
 				{
-                    mob.tell(getScr("Compare","donthave",( (String) commands.elementAt(0))));
+                    mob.tell("You don't have a "+( (String) commands.elementAt(0))+".");
                     return false;
                 }
             }
             else 
 			{
-                mob.tell(getScr("Compare","donthave", ( (String) commands.elementAt(0)) ));
+                mob.tell("You don't have a "+ ( (String) commands.elementAt(0)) +".");
                 return false;
             }
 		}
@@ -106,7 +106,7 @@ public class Compare extends StdCommand
 			if(toThis==null) toThis=possible;
 			if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
 			{
-				mob.tell(getScr("Compare","compwhath",compareThis.name()));
+				mob.tell("Compare a "+compareThis.name()+" to what?");
 				return false;
 			}
 		}
@@ -114,7 +114,7 @@ public class Compare extends StdCommand
 			toThis=mob.fetchInventory(null,CMParms.combine(commands,1));
 		if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
 		{
-			mob.tell(getScr("Compare","donthave",((String)commands.elementAt(1))));
+			mob.tell("You don't have a "+((String)commands.elementAt(1))+".");
 			return false;
 		}
 
@@ -125,32 +125,32 @@ public class Compare extends StdCommand
 			cDmg+=(int)Math.round(CMath.div(compareThis.baseEnvStats().attackAdjustment()-toThis.baseEnvStats().attackAdjustment(),100.0)*cDmg);
 
 			if(cDmg==tDmg)
-				mob.tell(getScr("Compare","lokksame",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
 			else
 			if(cDmg>tDmg)
-				mob.tell(getScr("Compare","better",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" looks better than "+toThis.name()+".");
 			else
-				mob.tell(getScr("Compare","worse",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" looks worse than "+toThis.name()+".");
 		}
 		else
 		if((compareThis instanceof Armor)&&(toThis instanceof Armor))
 		{
 			if(!compareThis.compareProperLocations(toThis))
 			{
-				mob.tell(getScr("Compare","notworn",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" is not worn the same way as "+toThis.name()+", and can't be compared to it.");
 				return false;
 			}
 			if(compareThis.baseEnvStats().armor()==toThis.baseEnvStats().armor())
-				mob.tell(getScr("Compare","lokksame",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
 			else
 			if(compareThis.baseEnvStats().armor()>toThis.baseEnvStats().armor())
-				mob.tell(getScr("Compare","better",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" looks better than "+toThis.name()+".");
 			else
-				mob.tell(getScr("Compare","worse",compareThis.name(),toThis.name()));
+				mob.tell(compareThis.name()+" looks worse than "+toThis.name()+".");
 
 		}
 		else
-			mob.tell(getScr("Compare","cannotc",compareThis.name(),toThis.name()));
+			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

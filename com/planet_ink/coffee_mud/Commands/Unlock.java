@@ -42,7 +42,7 @@ public class Unlock extends StdCommand
 		String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
-			mob.tell(getScr("Movement","unlockerr1"));
+			mob.tell("Unlock what?");
 			return false;
 		}
 		Environmental unlockThis=null;
@@ -54,10 +54,10 @@ public class Unlock extends StdCommand
 
 		if((unlockThis==null)||(!CMLib.flags().canBeSeenBy(unlockThis,mob)))
 		{
-			mob.tell(getScr("Movement","youdontsee",whatTounlock));
+			mob.tell("You don't see '"+whatTounlock+"' here.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_UNLOCK,getScr("Movement","sunlocks")+CMProps.msp("doorunlock.wav",10));
+		CMMsg msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAMESELF>."+CMProps.msp("doorunlock.wav",10));
 		if(unlockThis instanceof Exit)
 		{
 			boolean locked=((Exit)unlockThis).isLocked();
@@ -83,7 +83,7 @@ public class Unlock extends StdCommand
 					if((opE!=null)
 					&&(!opE.isLocked())
 					&&(!((Exit)unlockThis).isLocked()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,getScr("Movement","afterunlocks",opE.name(),Directions.getInDirectionName(opCode)));
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" is unlocked from the other side.");
 				}
 			}
 		}

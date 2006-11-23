@@ -34,7 +34,7 @@ public class ClanMorgueSet extends BaseClanner
 {
 	public ClanMorgueSet(){}
 
-	private String[] access={getScr("ClanMorgueSet","cmd")};
+	private String[] access={"CLANMORGUESET"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -55,39 +55,39 @@ public class ClanMorgueSet extends BaseClanner
 
 		if((mob.getClanID()==null)||(R==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
-			mob.tell(getScr("ClanMorgueSet","notmember"));
+			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
 		Clan C=CMLib.clans().getClan(mob.getClanID());
 		if(C==null)
 		{
-			mob.tell(getScr("ClanMorgueSet","noclancalled",mob.getClanID()));
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 			return false;
 		}
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell(getScr("ClanMorgueSet","nomorguemem",C.typeName()));
+			mob.tell("You cannot set a morgue.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
 		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell(getScr("ClanMorgueSet","noownarea",C.typeName()));
+				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 			{
 				C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell(getScr("ClanMorgueSet","nowsetto",C.typeName(),R.roomTitle()));
+				mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
 				clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell(getScr("ClanMorgueSet","nopos",C.typeName()));
+			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s morgue.");
 			return false;
 		}
 		return false;

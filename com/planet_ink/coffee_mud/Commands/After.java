@@ -39,7 +39,7 @@ public class After extends StdCommand implements Tickable
 
 	public After(){}
 
-	private String[] access={getScr("After","cmd")};
+	private String[] access={"AFTER"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -47,13 +47,13 @@ public class After extends StdCommand implements Tickable
 		boolean every=false;
 		commands.removeElementAt(0);
 
-		String afterErr=getScr("After","afterErr");
+		String afterErr="format: after (every) [X] [TICKS/MINUTES/SECONDS/HOURS] [COMMAND]";
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("stop"))
 		{
 			afterCmds.clear();
 			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
-			mob.tell(getScr("After","ok"));
+			mob.tell("Ok.");
 			return false;
 		}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
@@ -83,24 +83,24 @@ public class After extends StdCommand implements Tickable
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		long time=CMath.s_long((String)commands.elementAt(0));
-		if(time==0) { mob.tell(getScr("After","timerr")+afterErr); return false;}
+		if(time==0) { mob.tell("Time may not be 0."+afterErr); return false;}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		String s=(String)commands.elementAt(0);
-		if(s.equalsIgnoreCase(getScr("After","ticks")))
+		if(s.equalsIgnoreCase("ticks"))
 			time=time*Tickable.TIME_TICK;
 		else
-		if(s.equalsIgnoreCase(getScr("After","seconds")))
+		if(s.equalsIgnoreCase("seconds"))
 			time=time*1000;
 		else
-		if(s.equalsIgnoreCase(getScr("After","minutes")))
+		if(s.equalsIgnoreCase("minutes"))
 			time=time*1000*60;
 		else
-		if(s.equalsIgnoreCase(getScr("After","hours")))
+		if(s.equalsIgnoreCase("hours"))
 			time=time*1000*60*60;
 		else
 		{
-			mob.tell("'"+s+" "+getScr("After","timerr")+" "+afterErr);
+			mob.tell("'"+s+" Time may not be 0. "+afterErr);
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -113,7 +113,7 @@ public class After extends StdCommand implements Tickable
 		V.addElement(commands);
 		afterCmds.addElement(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-		mob.tell(getScr("After","ok"));
+		mob.tell("Ok.");
 		return false;
 	}
 	

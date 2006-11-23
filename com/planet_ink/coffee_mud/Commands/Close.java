@@ -34,7 +34,7 @@ public class Close extends StdCommand
 {
 	public Close(){}
 
-	private String[] access={getScr("Close","cmd"),getScr("Close","cmd1"),getScr("Close","cmd2"),getScr("Close","cmd3")};
+	private String[] access={"CLOSE","CLOS","CLO","CL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,7 +42,7 @@ public class Close extends StdCommand
 		String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
-			mob.tell(getScr("Movement","closeerr1"));
+			mob.tell("Close what?");
 			return false;
 		}
 		Environmental closeThis=null;
@@ -54,11 +54,11 @@ public class Close extends StdCommand
 
 		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{
-			mob.tell(getScr("Movement","youdontsee",whatToClose));
+			mob.tell("You don't see '"+whatToClose+"' here.");
 			return false;
 		}
-		String closeWord=((closeThis==null)||(!(closeThis instanceof Exit)))?getScr("Movement","scloseword"):((Exit)closeThis).closeWord();
-		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,getScr("Movement","scloses",closeWord)+CMProps.msp("dooropen.wav",10));
+		String closeWord=((closeThis==null)||(!(closeThis instanceof Exit)))?"close":((Exit)closeThis).closeWord();
+		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,"<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMProps.msp("dooropen.wav",10));
 		if(closeThis instanceof Exit)
 		{
 			boolean open=((Exit)closeThis).isOpen();
@@ -84,7 +84,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,getScr("Movement","aftercloses",opE.name(),Directions.getInDirectionName(opCode)));
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" closes.");
 				}
 			}
 		}

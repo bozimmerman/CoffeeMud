@@ -34,7 +34,7 @@ public class ClanExile extends BaseClanner
 {
 	public ClanExile(){}
 
-	private String[] access={getScr("ClanExile","cmd")};
+	private String[] access={"CLANEXILE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -49,14 +49,14 @@ public class ClanExile extends BaseClanner
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 			{
-				msg.append(getScr("ClanExile","evenmember"));
+				msg.append("You aren't even a member of a clan.");
 			}
 			else
 			{
 				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
-					mob.tell(getScr("ClanExile","nolonger",mob.getClanID()));
+					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
 				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,false))
@@ -64,7 +64,7 @@ public class ClanExile extends BaseClanner
 					DVector apps=C.getMemberList();
 					if(apps.size()<1)
 					{
-						mob.tell(getScr("ClanExile","nomembers",C.typeName()));
+						mob.tell("There are no members in your "+C.typeName()+".");
 						return false;
 					}
 					for(int q=0;q<apps.size();q++)
@@ -79,35 +79,35 @@ public class ClanExile extends BaseClanner
 						MOB M=CMLib.map().getLoadPlayer(qual);
 						if(M==null)
 						{
-							mob.tell(getScr("ClanExile","clannotfound",qual,C.typeName()));
+							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
 							return false;
 						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,true))
 						{
-							clanAnnounce(mob,getScr("ClanExile","msgex",C.typeName(),C.name(),M.Name()));
+							clanAnnounce(mob,"Member exiled from "+C.typeName()+" "+C.name()+": "+M.Name());
 							CMLib.database().DBUpdateClanMembership(qual, "", 0);
 							M.setClanID("");
 							M.setClanRole(0);
-							mob.tell(getScr("ClanExile","exiled",M.Name(),C.typeName(),C.clanID()));
-							M.tell(getScr("ClanExile","youexiled",C.typeName(),C.clanID()));
+							mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
+							M.tell("You have been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
 							C.updateClanPrivileges(M);
 							return false;
 						}
 					}
 					else
 					{
-						msg.append(getScr("ClanExile","notmem",qual,C.typeName()));
+						msg.append(qual+" isn't a member of your "+C.typeName()+".");
 					}
 				}
 				else
 				{
-					msg.append(getScr("ClanExile","notpos",C.typeName()));
+					msg.append("You aren't in the right position to exile anyone from your "+C.typeName()+".");
 				}
 			}
 		}
 		else
 		{
-			msg.append(getScr("ClanExile","specmem"));
+			msg.append("You haven't specified which member you are exiling.");
 		}
 		mob.tell(msg.toString());
 		return false;

@@ -41,12 +41,12 @@ public class Sit extends StdCommand
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(getScr("Movement","siterr1"));
+			mob.tell("You are already sitting!");
 			return false;
 		}
 		if(commands.size()<=1)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,getScr("Movement","sitdown"));
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,"<S-NAME> sit(s) down and take(s) a rest.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -58,7 +58,7 @@ public class Sit extends StdCommand
 			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORNREQ_UNWORNONLY);
 			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
-				mob.tell(getScr("Movement","youdontsee",possibleRideable));
+				mob.tell("You don't see '"+possibleRideable+"' here.");
 				return false;
 			}
 			if(E instanceof MOB)
@@ -69,9 +69,9 @@ public class Sit extends StdCommand
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=getScr("Movement","sitmounton",((Rideable)E).mountString(CMMsg.TYP_SIT,mob));
+			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.";
 		else
-			mountStr=getScr("Movement","sitson");
+			mountStr="<S-NAME> sit(s) on <T-NAME>.";
 		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);

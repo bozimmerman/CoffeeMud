@@ -34,7 +34,7 @@ public class ANSI extends StdCommand
 {
 	public ANSI(){}
 
-	private String[] access={"ANSI",getScr("ANSI","cmd1"),getScr("ANSI","cmd2")};
+	private String[] access={"ANSI","COLOR","COLOUR"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,11 +44,11 @@ public class ANSI extends StdCommand
 			if(!CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
-				mob.tell(getScr("ANSI","enabled"));
+				mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
 			}
 			else
 			{
-				mob.tell(getScr("ANSI","alenabled"));
+				mob.tell("^!ANSI^N is ^Halready^N enabled.\n\r");
 			}
             mob.session().setClientTelnetMode(Session.TELNET_ANSI,true);
             mob.session().setServerTelnetMode(Session.TELNET_ANSI,true);

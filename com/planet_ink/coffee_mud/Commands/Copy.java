@@ -34,17 +34,17 @@ public class Copy extends StdCommand
 {
 	public Copy(){}
 
-	private String[] access={getScr("Copy","cmd")};
+	private String[] access={"COPY"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,getScr("Copy","wavearms"));
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		commands.removeElementAt(0); // copy
 		if(commands.size()<1)
 		{
-			mob.tell(getScr("Copy","failfi"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME]/[DIRECTIONS])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 		int number=1;
@@ -69,8 +69,8 @@ public class Copy extends StdCommand
 				MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell(getScr("Copy","mobnf",rest));
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
+					mob.tell("MOB '"+rest+"' not found.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 					return false;
 				}
 				dest=M;
@@ -124,8 +124,8 @@ public class Copy extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell(getScr("Copy","living",name));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
+			mob.tell("There's no such thing in the living world as a '"+name+"'.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
 		Room room=mob.location();
@@ -135,7 +135,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYMOBS"))
 				{
-					mob.tell(getScr("Copy","copy",E.name()));
+					mob.tell("You are not allowed to copy "+E.name());
 					return false;
 				}
 				MOB newMOB=(MOB)E.copyOf();
@@ -150,10 +150,10 @@ public class Copy extends StdCommand
 				if(i==0)
 				{
 					if(number>1)
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,getScr("Copy","su",number+"",newMOB.name()));
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.name()+"s instantiate from the Java plain.");
 					else
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,getScr("Copy","se",newMOB.name()));
-					Log.sysOut("SysopUtils",getScr("Copy","sy",mob.Name(),number+"",newMOB.Name()));
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" mob "+newMOB.Name()+".");
 				}
 			}
 			else
@@ -161,28 +161,28 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYITEMS"))
 				{
-					mob.tell(getScr("Copy","copy",E.name()));
+					mob.tell("You are not allowed to copy "+E.name());
 					return false;
 				}
 				Item newItem=(Item)E.copyOf();
 				newItem.setContainer(null);
 				newItem.wearAt(0);
-				String end=getScr("Copy","stringend");
+				String end="from the sky";
 				if(dest instanceof Room)
 					((Room)dest).addItem(newItem);
 				else
 				if(dest instanceof MOB)
 				{
 					((MOB)dest).addInventory(newItem);
-					end=getScr("Copy","ia",dest.name());
+					end="into "+dest.name()+"'s arms";
 				}
 				if(i==0)
 				{
 					if(number>1)
-						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","sm",number+"",newItem.name(),end));
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s falls "+end+".");
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","sw",newItem.name(),end));
-					Log.sysOut("SysopUtils",mob.Name()+" "+getScr("Copy","ya",number+"",newItem.ID()));
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" fall "+end+".");
+					Log.sysOut("SysopUtils",mob.Name()+" "+number+" copied "+newItem.ID()+" item.");
 				}
 			}
 			else
@@ -190,12 +190,12 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS"))
 				{
-					mob.tell(getScr("Copy","copy",E.name()));
+					mob.tell("You are not allowed to copy "+E.name());
 					return false;
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
-					mob.tell(getScr("Copy","roomal",Directions.getInDirectionName(dirCode)));
+					mob.tell("A room already exists "+Directions.getInDirectionName(dirCode)+"!");
 					return false;
 				}
 	    		synchronized(("SYNC"+room.roomID()).intern())
@@ -219,7 +219,7 @@ public class Copy extends StdCommand
 					if(newRoom.roomID().length()==0)
 					{
 						mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 						return false;
 					}
 					newRoom.setArea(room.getArea());
@@ -234,20 +234,20 @@ public class Copy extends StdCommand
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","yy",number+"",room.roomTitle(),Directions.getInDirectionName(dirCode)));
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+room.roomTitle()+"s fall "+Directions.getInDirectionName(dirCode)+".");
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","ma",room.roomTitle(),Directions.getInDirectionName(dirCode)));
-						Log.sysOut("SysopUtils",getScr("Copy","mk",mob.Name(),number+"",room.roomID()));
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
+						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+room.roomID()+".");
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,getScr("Copy","ma",room.roomTitle(),Directions.getInDirectionName(dirCode)));
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
 					room=newRoom;
 	    		}
 			}
 			else
 			{
-				mob.tell(getScr("Copy","cantj",E.name()));
-				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,getScr("Copy","flub"));
+				mob.tell("I can't just make a copy of a '"+E.name()+"'.\n\r");
+				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				break;
 			}
 		}

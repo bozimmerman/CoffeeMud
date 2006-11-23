@@ -762,31 +762,31 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("PLAYER TOPICS");
 		if(Resources.getResource("ARCHON TOPICS")!=null)
 			Resources.removeResource("ARCHON TOPICS");
-		if(Resources.getResource("help"+"/help.txt")!=null)
-			Resources.removeResource("help"+"/help.txt");
-		if(Resources.getResource("text"+"/races.txt")!=null)
-			Resources.removeResource("text"+"/races.txt");
-		if(Resources.getResource("text"+"/newchar.txt")!=null)
-			Resources.removeResource("text"+"/newchar.txt");
-		if(Resources.getResource("text"+"/stats.txt")!=null)
-			Resources.removeResource("text"+"/stats.txt");
-		if(Resources.getResource("text"+"/classes.txt")!=null)
-			Resources.removeResource("text"+"/classes.txt");
-		if(Resources.getResource("text"+"/alignment.txt")!=null)
-			Resources.removeResource("text"+"/alignment.txt");
-		if(Resources.getResource("help"+"/arc_help.txt")!=null)
-			Resources.removeResource("help"+"/arc_help.txt");
+		if(Resources.getResource("help/help.txt")!=null)
+			Resources.removeResource("help/help.txt");
+		if(Resources.getResource("text/races.txt")!=null)
+			Resources.removeResource("text/races.txt");
+		if(Resources.getResource("text/newchar.txt")!=null)
+			Resources.removeResource("text/newchar.txt");
+		if(Resources.getResource("text/stats.txt")!=null)
+			Resources.removeResource("text/stats.txt");
+		if(Resources.getResource("text/classes.txt")!=null)
+			Resources.removeResource("text/classes.txt");
+		if(Resources.getResource("text/alignment.txt")!=null)
+			Resources.removeResource("text/alignment.txt");
+		if(Resources.getResource("help/arc_help.txt")!=null)
+			Resources.removeResource("help/arc_help.txt");
 		if(Resources.getResource("MAIN HELP FILE")!=null)
 			Resources.removeResource("MAIN HELP FILE");
 		if(Resources.getResource("ARCHON HELP FILE")!=null)
 			Resources.removeResource("ARCHON HELP FILE");
 
 		// also the intro page
-		if(Resources.getResource("text"+"/intro.txt")!=null)
-			Resources.removeResource("text"+"/intro.txt");
+		if(Resources.getResource("text/intro.txt")!=null)
+			Resources.removeResource("text/intro.txt");
 
-		if(Resources.getResource("text"+"/offline.txt")!=null)
-			Resources.removeResource("text"+"/offline.txt");
+		if(Resources.getResource("text/offline.txt")!=null)
+			Resources.removeResource("text/offline.txt");
 
 		if(mob!=null)
 			mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");

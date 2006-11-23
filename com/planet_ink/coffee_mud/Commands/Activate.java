@@ -35,14 +35,14 @@ public class Activate extends BaseItemParser
 {
 	public Activate(){}
 
-	private String[] access={getScr("Activate","actcmd1"),getScr("Activate","actcmd2"),"A",">"};
+	private String[] access={"ACTIVATE","ACT","A",">"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Activate","acterr"));
+			mob.tell("Activate what?");
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
@@ -60,10 +60,10 @@ public class Activate extends BaseItemParser
 		if((item==null)&&(E instanceof Electronics))
 		    item=(Item)E;
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
-			mob.tell(getScr("Activate","actsee",what));
+			mob.tell("You don't see anything called "+what+" here that you can activate.");
 		else
 		if(item==null)
-			mob.tell(getScr("Activate","actcant",E.name())+"'.");
+			mob.tell("You can't activate "+E.name()+"'.");
 
 		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);

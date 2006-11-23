@@ -62,19 +62,19 @@ public class CommandJournal extends StdCommand
             
         Item journalItem=CMClass.getItem("StdJournal");
         if(journalItem==null)
-            mob.tell(getScr("CommandJournal","featdis"));
+            mob.tell("This feature has been disabled.");
         else
         {
             Vector journal=CMLib.database().DBReadJournal(journalID);
             int size=0;
             if(journal!=null) size=journal.size();
             if(size<=0)
-                mob.tell(getScr("CommandJournal","nolisted",journalWord));
+                mob.tell("There are no "+journalWord+" listed at this time.");
             else
             {
                 journalItem.setName(journalID);                     
                 if(count>size)
-                    mob.tell(getScr("CommandJournal","maxcount",journalWord,""+size));
+                    mob.tell("Maximum count of "+journalWord+" is "+size+".");
                 else
                 while(count<=size)
                 {
@@ -127,7 +127,7 @@ public class CommandJournal extends StdCommand
         }
         if((journalNum>=0)&&(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(journalNum),mob)))
         {
-            mob.tell(getScr("CommandJournal","notava"));
+            mob.tell("This command is not available to you.");
             return false;
         }
         if(CMParms.combine(commands,1).length()>0)
@@ -141,13 +141,13 @@ public class CommandJournal extends StdCommand
                         journalWord+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
                         prePend+CMParms.combine(commands,1),
                         -1);
-                mob.tell(getScr("CommandJournal","thankyou",journalWord.toLowerCase()));
+                mob.tell("Your "+journalWord.toLowerCase()+" message has been sent.  Thank you.");
                 if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
-                    CMLib.commands().postChannel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,CMParms.combine(commands,1)),true);
+                    CMLib.commands().postChannel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",mob.Name()+" posted to "+journalWord+": "+CMParms.combine(commands,1),true);
             }
         }
         else
-            mob.tell(getScr("CommandJournal","whats",journalWord.toLowerCase()));
+            mob.tell("What's the "+journalWord.toLowerCase()+"? Be Specific!");
         return false;
     }
     

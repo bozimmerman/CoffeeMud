@@ -34,7 +34,7 @@ public class ClanVote extends BaseClanner
 {
 	public ClanVote(){}
 
-	private String[] access={getScr("ClanVote","cmd")};
+	private String[] access={"CLANVOTE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,7 +44,7 @@ public class ClanVote extends BaseClanner
 		||(mob.getClanID().equalsIgnoreCase(""))
 		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
-			msg.append(getScr("ClanVote","nomember"));
+			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		if(!mob.isMonster())
@@ -62,7 +62,7 @@ public class ClanVote extends BaseClanner
 			if(commands.size()<2)
 			{
 				if(votesForYou.size()==0)
-					msg.append(getScr("ClanVote","novotes",C.typeName()));
+					msg.append("Your "+C.typeName()+" does not have anything up for your vote.");
 				else
 				{
 					msg.append(" "+CMStrings.padRight("#",3)
@@ -78,7 +78,7 @@ public class ClanVote extends BaseClanner
 								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
 								  +CMStrings.padRight(CV.matter,55)+"\n\r");
 					}
-					msg.append(getScr("ClanVote","details"));
+					msg.append("\n\rEnter CLANVOTE [#] to see details or place your vote.");
 				}
 			}
 			else
@@ -88,7 +88,7 @@ public class ClanVote extends BaseClanner
 				if((which>=0)&&(which<votesForYou.size()))
 					CV=(Clan.ClanVote)votesForYou.elementAt(which);
 				if(CV==null)
-					msg.append(getScr("ClanVote","noexist"));
+					msg.append("That vote does not exist.  Use CLANVOTE to see a list.");
 				else
 				{
 					int yeas=0;
@@ -104,25 +104,25 @@ public class ClanVote extends BaseClanner
 							else
 								nays++;
 						}
-					msg.append(getScr("ClanVote","vote",""+(which+1)));
-					msg.append(getScr("ClanVote","started",CV.voteStarter));
+					msg.append("Vote       : "+(which+1)+"\n\r");
+					msg.append("Started by : "+CV.voteStarter+"\n\r");
 					if(CV.voteStatus==Clan.VSTAT_STARTED)
-						msg.append(getScr("ClanVote","startedon",CMLib.time().date2String(CV.voteStarted)));
+						msg.append("Started on : "+CMLib.time().date2String(CV.voteStarted)+"\n\r");
 					else
-						msg.append(getScr("ClanVote","endedon",CMLib.time().date2String(CV.voteStarted)));
-					msg.append(getScr("ClanVote","status",Clan.VSTAT_DESCS[CV.voteStatus]));
+						msg.append("Ended on   : "+CMLib.time().date2String(CV.voteStarted)+"\n\r");
+					msg.append("Status     : "+Clan.VSTAT_DESCS[CV.voteStatus]+"\n\r");
 					switch(CV.voteStatus)
 					{
 					case Clan.VSTAT_STARTED:
-						msg.append(getScr("ClanVote","ifpassed"));
+						msg.append("If passed, the following command would be executed:\n\r");
 						break;
 					case Clan.VSTAT_PASSED:
-						msg.append(getScr("ClanVote","yeasnays",""+yeas,""+nays));
-						msg.append(getScr("ClanVote","executed"));
+						msg.append("Results    : "+yeas+" Yeas, "+nays+" Nays\n\r");
+						msg.append("The following command has been executed:\n\r");
 						break;
 					case Clan.VSTAT_FAILED:
-						msg.append(getScr("ClanVote","resultsyeasnays",""+yeas,""+nays));
-						msg.append(getScr("ClanVote","executed2"));
+						msg.append("Results    : "+yeas+" Yeas, "+nays+" Nays\n\r");
+						msg.append("The following command will not be executed:\n\r");
 						break;
 					}
 					msg.append(CV.matter+"\n\r");
@@ -133,11 +133,11 @@ public class ClanVote extends BaseClanner
 						StringBuffer prompt=new StringBuffer("");
 						String choices="";
 						if(CV.votes==null) CV.votes=new DVector(2);
-						prompt.append(getScr("ClanVote","ynprompt"));
+						prompt.append("Y)EA N)AY ");
 						choices="YN";
 						if(CV.voteStarter.equals(mob.Name()))
 						{
-							prompt.append(getScr("ClanVote","canprompt"));
+							prompt.append("C)ANCEL ");
 							choices+="C";
 						}
 						String enterWhat="to skip";
@@ -151,14 +151,14 @@ public class ClanVote extends BaseClanner
 							switch(answer.toUpperCase().charAt(0))
 							{
 							case 'Y':
-								msg.append(getScr("ClanVote","recorded"));
+								msg.append("Your YEA vote is recorded.");
 								CV.votes.addElement(mob.Name(),new Boolean(true));
 								updateVote=true;
 								yeas++;
 								break;
 							case 'N':
 								CV.votes.addElement(mob.Name(),new Boolean(false));
-								msg.append(getScr("ClanVote","nayrecorded"));
+								msg.append("Your NAY vote is recorded.");
 								updateVote=true;
 								nays++;
 								break;
@@ -168,7 +168,7 @@ public class ClanVote extends BaseClanner
 								{
 									C.delVote(CV);
 									clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.clanID()+" has been deleted.");
-									msg.append(getScr("ClanVote","votedeleted"));
+									msg.append("The vote has been deleted.");
 									updateVote=true;
 								}
 								break;

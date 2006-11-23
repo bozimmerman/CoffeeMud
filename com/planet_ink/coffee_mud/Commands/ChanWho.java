@@ -34,7 +34,7 @@ public class ChanWho extends StdCommand
 {
 	public ChanWho(){}
 
-	private String[] access={getScr("ChanWho","cmd")};
+	private String[] access={"CHANWHO"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -42,7 +42,7 @@ public class ChanWho extends StdCommand
 		String channel=CMParms.combine(commands,1);
 		if((channel==null)||(channel.length()==0))
 		{
-			mob.tell(getScr("ChanWho","specname"));
+			mob.tell("You must specify a channel name. Try CHANNELS for a list.");
 			return false;
 		}
 		int x=channel.indexOf("@");
@@ -54,7 +54,7 @@ public class ChanWho extends StdCommand
 			channel=CMLib.channels().getChannelName(channelInt).toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
-				mob.tell(getScr("ChanWho","validname"));
+				mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
 				return false;
 			}
 			CMLib.intermud().i3chanwho(mob,channel,mud);
@@ -64,10 +64,10 @@ public class ChanWho extends StdCommand
 		channel=CMLib.channels().getChannelName(channelInt);
 		if(channelInt<0)
 		{
-			mob.tell(getScr("ChanWho","validname"));
+			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
 			return false;
 		}
-		String head="^x"+getScr("ChanWho","listening")+" "+channel+":^?^.^N\n\r";
+		String head="^x\n\rListening on "+channel+":^?^.^N\n\r";
 		StringBuffer buf=new StringBuffer("");
         boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains("SAMEAREA");
 		for(int s=0;s<CMLib.sessions().size();s++)
@@ -84,7 +84,7 @@ public class ChanWho extends StdCommand
 					buf.append("^x[^?^.^N"+CMStrings.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");
 		}
 		if(buf.length()==0)
-			mob.tell(getScr("ChanWho","nobody",head));
+			mob.tell(head+"Nobody!");
 		else
 			mob.tell(head+buf.toString());
 		return false;

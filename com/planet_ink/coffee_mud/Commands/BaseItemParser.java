@@ -77,7 +77,7 @@ public class BaseItemParser extends StdCommand
                 	if(max>3000) max=3000;
                 	if(maxToGive>max)
                 	{
-                		mob.tell(getScr("BaseItemParser","onlyhandle",""+max));
+                		mob.tell("You can only handle "+max+" at a time.");
                 		return -1;
                 	}
                     Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive);
@@ -85,7 +85,7 @@ public class BaseItemParser extends StdCommand
                     {
                     	if(throwError)
                     	{
-	                        mob.tell(getScr("BaseItemParser","nogetfrom",fromWhat.name()));
+	                        mob.tell("You can't get anything from "+fromWhat.name()+".");
 	                        return -1;
                     	}
                     }
@@ -103,7 +103,7 @@ public class BaseItemParser extends StdCommand
                 else
                 if(throwError)
                 {
-                    mob.tell(getScr("BaseItemParser","noseehere",packCheckName));
+                    mob.tell("You don't see '"+packCheckName+"' here.");
                     return -1;
                 }
             }

@@ -34,7 +34,7 @@ public class Credits extends StdCommand
 {
 	public Credits(){}
 
-	private String[] access={getScr("Credits","cmd")};
+	private String[] access={"CREDITS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -43,7 +43,7 @@ public class Credits extends StdCommand
 		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else
-			mob.tell(getScr("Credits","thegreatmaker"));
+			mob.tell("CoffeeMud is (C)2000-2006 by Bo Zimmerman");
 		return false;
 	}
 	

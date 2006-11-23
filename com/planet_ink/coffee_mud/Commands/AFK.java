@@ -34,7 +34,7 @@ public class AFK extends StdCommand
 {
 	public AFK(){}
 
-	private String[] access={getScr("AFK","afkcmd")};
+	private String[] access={"AFK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

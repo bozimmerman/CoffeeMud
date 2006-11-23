@@ -36,7 +36,7 @@ public class AutoExits extends StdCommand
 {
 	public AutoExits(){}
 
-	private String[] access={getScr("AutoExits","cmd")};
+	private String[] access={"AUTOEXITS"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -45,12 +45,12 @@ public class AutoExits extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
-			mob.tell(getScr("AutoExits","turnoff"));
+			mob.tell("Autoexits has been turned off.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
-			mob.tell(getScr("AutoExits","turnon"));
+			mob.tell("Autoexits has been turned on.");
 		}
 		return false;
 	}

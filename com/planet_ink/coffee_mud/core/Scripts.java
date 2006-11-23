@@ -65,7 +65,7 @@ public class Scripts
     	if(parserSections==null)
     	{
     		parserSections=new Hashtable();
-    		CMFile F=new CMFile("resources/scripts/"+language.toUpperCase()+"_"+country.toUpperCase()+"/"+"parser_"+language.toLowerCase()+"_"+country.toUpperCase()+".properties",null,false,true);
+    		CMFile F=new CMFile("resources/text/parser.properties",null,false,true);
     		if(!F.exists()){ Log.errOut("Parser text not found! This mud is in deep doo-doo!"); return null;}
     		StringBuffer alldata=F.text();
     		Vector V=Resources.getFileLineVector(alldata);

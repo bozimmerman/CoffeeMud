@@ -32,7 +32,7 @@ import java.util.*;
 */
 public class Affect extends StdCommand
 {
-	private String[] access={getScr("Affect","cmd"),getScr("Affect","cmd1"),getScr("Affect","cmd2")};
+	private String[] access={"AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 
 	public String getAffects(MOB mob)
@@ -85,10 +85,10 @@ public class Affect extends StdCommand
 		if(S!=null)
 		{
 			if(S==mob.session())
-				S.colorOnlyPrint(getScr("Affect","affected"));
+				S.colorOnlyPrint(" \n\r^!You are affected by: ^?");
             String msg=getAffects(mob);
             if(msg.length()<5)
-                S.colorOnlyPrintln(getScr("Affect","nothing"));
+                S.colorOnlyPrintln("Nothing!\n\r^N");
             else
                 S.colorOnlyPrintln(msg);
 		}

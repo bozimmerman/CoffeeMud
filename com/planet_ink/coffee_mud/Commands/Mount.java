@@ -41,7 +41,7 @@ public class Mount extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Movement","mounterr1",((String)commands.elementAt(0))));
+			mob.tell(((String)commands.elementAt(0))+" what?");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -97,23 +97,23 @@ public class Mount extends StdCommand
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0),Item.WORNREQ_UNWORNONLY);
 		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
 		{
-			mob.tell(getScr("Movement","youdontsee",CMParms.combine(commands,0)));
+			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
 			return false;
 		}
 		String mountStr=null;
 		if(recipient instanceof Rideable)
 		{
 			if(RI!=null)
-				mountStr=getScr("Movement","mountonto");
+				mountStr="<S-NAME> mount(s) <O-NAME> onto <T-NAMESELF>.";
 			else
-				mountStr=getScr("Movement","mounton",((Rideable)recipient).mountString(CMMsg.TYP_MOUNT,mob));
+				mountStr="<S-NAME> "+((Rideable)recipient).mountString(CMMsg.TYP_MOUNT,mob)+" <T-NAMESELF>.";
 		}
 		else
 		{
 			if(RI!=null)
-				mountStr=getScr("Movement","mountsto");
+				mountStr="<S-NAME> mount(s) <O-NAME> to <T-NAMESELF>.";
 			else
-				mountStr=getScr("Movement","mounts");
+				mountStr="<S-NAME> mount(s) <T-NAMESELF>.";
 		}
 		CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
 		if(mob.location().okMessage(mob,msg))

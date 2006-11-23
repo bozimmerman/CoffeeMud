@@ -35,7 +35,7 @@ public class AutoGold extends StdCommand
 {
 	public AutoGold(){}
 
-	private String[] access={getScr("AutoGold","cmd")};
+	private String[] access={"AUTOGOLD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -43,12 +43,12 @@ public class AutoGold extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
-			mob.tell(getScr("AutoGold","turnoff"));
+			mob.tell("Autogold has been turned off.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
-			mob.tell(getScr("AutoGold","turnon"));
+			mob.tell("Autogold has been turned on.");
 		}
 		return false;
 	}

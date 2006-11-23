@@ -47,7 +47,7 @@ public class Flee extends Go
 		{
 			if((R==null)||(!mob.isInCombat()))
 			{
-				mob.tell(getScr("Movement","fleeerr1"));
+				mob.tell("You can only flee while in combat.");
 				return false;
 			}
 		}
@@ -71,7 +71,7 @@ public class Flee extends Go
         
         if((!XPloss)&&(direction.length()==0))
         {
-            mob.tell(getScr("Movement","fleestop"));
+            mob.tell("You stop fighting.");
             direction="NOWHERE";
         }
         
@@ -101,7 +101,7 @@ public class Flee extends Go
 				directionCode=Directions.getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
-				mob.tell(getScr("Movement","fleeerr2"));
+				mob.tell("Flee where?!");
 				return false;
 			}
 		}
@@ -114,7 +114,7 @@ public class Flee extends Go
 				if(whatToDo==null) return false;
 				int[] expLost={10+((mob.envStats().level()-fighting.envStats().level()))*5};
 				if(expLost[0]<10) expLost[0]=10;
-				CMLib.combat().handleConsequences(mob,fighting,whatToDo,expLost,getScr("Movement","fleeexp"));
+				CMLib.combat().handleConsequences(mob,fighting,whatToDo,expLost,"You lose @x1 experience points for withdrawing.");
 				double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
 				if(expLost[0]>0)
 				{

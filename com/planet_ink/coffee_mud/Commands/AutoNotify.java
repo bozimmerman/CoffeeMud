@@ -36,7 +36,7 @@ public class AutoNotify extends StdCommand
 
 	public AutoNotify(){}
 
-	private String[] access={getScr("AutoNotify","cmd")};
+	private String[] access={"AUTONOTIFY"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -45,12 +45,12 @@ public class AutoNotify extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTONOTIFY))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
-			mob.tell(getScr("AutoNotify","turnoff"));
+			mob.tell("Notification of the arrival of your FRIENDS is now off.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
-			mob.tell(getScr("AutoNotify","turnon"));
+			mob.tell("Notification of the arrival of your FRIENDS is now on.");
 		}
 		return false;
 	}

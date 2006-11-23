@@ -34,7 +34,7 @@ public class Chants extends BaseAbleLister
 {
 	public Chants(){}
 
-	private String[] access={getScr("Chants","cmd")};
+	private String[] access={"CHANTS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

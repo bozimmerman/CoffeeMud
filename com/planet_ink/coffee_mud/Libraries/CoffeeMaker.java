@@ -577,7 +577,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 		// now EXITS!
 		Vector xV=CMLib.xml().getRealContentsFromPieces(xml,"ROOMEXITS");
-		if(xV==null) return unpackErr("Room","null 'xV'"+" in room "+newRoom.roomID());
+		if(xV==null) return unpackErr("Room","null 'xV' in room "+newRoom.roomID());
 		for(int x=0;x<xV.size();x++)
 		{
 			XMLLibrary.XMLpiece xblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
@@ -624,12 +624,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			else
 			{
 				Vector xxV=CMLib.xml().getContentsFromPieces(xblk.contents,"XEXIT");
-				if(xxV==null) return unpackErr("Room","null 'xxV'"+" in room "+newRoom.roomID());
+				if(xxV==null) return unpackErr("Room","null 'xxV' in room "+newRoom.roomID());
 				Exit exit=null;
 				if(xxV.size()>0)
 				{
 					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
-					if(xxV==null) return unpackErr("Room","null 'exit'"+" in room "+newRoom.roomID());
+					if(xxV==null) return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
 					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
 					newRoom.rawExits()[dir]=exit;
 				}
@@ -687,17 +687,17 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			Hashtable identTable=new Hashtable();
 
 			Vector cV=CMLib.xml().getRealContentsFromPieces(xml,"ROOMCONTENT");
-			if(cV==null) return unpackErr("Room","null 'cV'"+" in room "+newRoom.roomID());
+			if(cV==null) return unpackErr("Room","null 'cV' in room "+newRoom.roomID());
 			if(cV.size()>0)
 			{
 				Hashtable mobRideTable=new Hashtable();
 				Vector mV=CMLib.xml().getRealContentsFromPieces(cV,"ROOMMOBS");
-				if(mV!=null) //return unpackErr("Room","null 'mV'"+" in room "+newRoom.roomID());
+				if(mV!=null) //return unpackErr("Room","null 'mV' in room "+newRoom.roomID());
 				for(int m=0;m<mV.size();m++)
 				{
 					XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece)mV.elementAt(m);
 					if((!mblk.tag.equalsIgnoreCase("RMOB"))||(mblk.contents==null))
-						return unpackErr("Room","bad 'mblk'"+" in room "+newRoom.roomID());
+						return unpackErr("Room","bad 'mblk' in room "+newRoom.roomID());
 					String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
 					MOB newMOB=CMClass.getMOB(mClass);
 					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.roomID());
@@ -724,12 +724,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 				Hashtable itemLocTable=new Hashtable();
 				Vector iV=CMLib.xml().getRealContentsFromPieces(cV,"ROOMITEMS");
-				if(iV!=null) //return unpackErr("Room","null 'iV'"+" in room "+newRoom.roomID());
+				if(iV!=null) //return unpackErr("Room","null 'iV' in room "+newRoom.roomID());
 				for(int i=0;i<iV.size();i++)
 				{
 					XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
 					if((!iblk.tag.equalsIgnoreCase("RITEM"))||(iblk.contents==null))
-						return unpackErr("Room","bad 'iblk'"+" in room "+newRoom.roomID());
+						return unpackErr("Room","bad 'iblk' in room "+newRoom.roomID());
 					String iClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
 					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID());

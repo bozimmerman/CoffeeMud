@@ -35,39 +35,39 @@ public class Auction extends Channel
 	public Auction(){}
 	protected Ability auctionA=null;
 
-	private String[] access={getScr("Auction","cmd")};
+	private String[] access={"AUCTION"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		int channelInt=CMLib.channels().getChannelIndex(getScr("Auction","cmd"));
-		int channelNum=CMLib.channels().getChannelCodeNumber(getScr("Auction","cmd"));
+		int channelInt=CMLib.channels().getChannelIndex("AUCTION");
+		int channelNum=CMLib.channels().getChannelCodeNumber("AUCTION");
 
 		if(CMath.isSet(pstats.getChannelMask(),channelInt))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell(getScr("Auction","turnon"));
+			mob.tell("The AUCTION channel has been turned on.  Use `NOAUCTION` to turn it off again.");
 		}
 
 		if((commands.size()>1)
 		&&(auctionA!=null)
 		&&(auctionA.invoker()==mob))
 		{
-			if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Auction","channel")))
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("CHANNEL"))
 			{
 				commands.removeElementAt(1);
 				super.execute(mob,commands);
 				return false;
 			}
 			else
-			if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Auction","close")))
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("CLOSE"))
 			{
 				commands.removeElementAt(1);
 				Vector V=new Vector();
-				V.addElement(getScr("Auction","cmd"));
-				V.addElement(getScr("Auction","closed"));
+				V.addElement("AUCTION");
+				V.addElement("The auction has been closed.");
 				CMLib.threads().deleteTick(auctionA,Tickable.TICKID_QUEST);
 				auctionA=null;
 				super.execute(mob,V);
@@ -78,7 +78,7 @@ public class Auction extends Channel
 		{
 			if(commands.size()==1)
 			{
-				mob.tell(getScr("Auction","nothing"));
+				mob.tell("There is nothing up for auction right now.");
 				return false;
 			}
 			Vector V=new Vector();
@@ -95,11 +95,11 @@ public class Auction extends Channel
 			Environmental E=mob.fetchInventory(null,s);
 			if((E==null)||(E instanceof MOB))
 			{
-				mob.tell(getScr("Auction","erritem",s));
+				mob.tell(s+" is not an item you can auction.");
 				return false;
 			}
 			if((mob.isMonster())
-            ||(!mob.session().confirm(getScr("Auction","confirmed",E.name(),((String)V.firstElement())),getScr("Auction","yes"))))
+            ||(!mob.session().confirm("Auction "+E.name()+" with a starting bid of "+((String)V.firstElement())+" (Y/n)?","Y")))
 				return false;
 			auctionA=CMClass.getAbility("Prop_Auction");
 			auctionA.invoke(mob,V,E,false,0);

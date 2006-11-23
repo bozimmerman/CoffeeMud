@@ -34,7 +34,7 @@ public class Buy extends StdCommand
 {
 	public Buy(){}
 
-	private String[] access={getScr("Buy","cmd")};
+	private String[] access={"BUY"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -46,7 +46,7 @@ public class Buy extends StdCommand
 			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(M==null)
 			{
-				mob.tell(getScr("Buy","nonecalled",((String)commands.lastElement())));
+				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -54,16 +54,16 @@ public class Buy extends StdCommand
 			mobFor=M;
 		}
 
-        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,getScr("Buy","buywhatwhom"));
+        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Buy what from whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(getScr("Buy","buywhat"));
+			mob.tell("Buy what?");
 			return false;
 		}
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(getScr("Buy","notaspk",shopkeeper.name()));
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
 			return false;
 		}
 
@@ -97,18 +97,18 @@ public class Buy extends StdCommand
 		if((mobFor!=null)&&(mobFor!=mob))
 		{
 			if(mobFor.name().indexOf(" ")>=0)
-				forName=" "+getScr("Buy","forname1",mobFor.Name());
+				forName=" for '"+mobFor.Name()+"'";
 			else
-				forName=" "+getScr("Buy","forname2",mobFor.Name());
+				forName=" for "+mobFor.Name();
 		}
 
 		if(V.size()==0)
-            mob.tell(mob,shopkeeper,null,getScr("Buy","donthaveany",whatName));
+            mob.tell(mob,shopkeeper,null,"<T-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
         else
 		for(int v=0;v<V.size();v++)
 		{
 			Environmental thisThang=(Environmental)V.elementAt(v);
-			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,getScr("Buy","buysfrom",forName));
+			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

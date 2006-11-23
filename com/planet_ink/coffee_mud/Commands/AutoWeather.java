@@ -36,7 +36,7 @@ public class AutoWeather extends StdCommand
 {
 	public AutoWeather(){}
 
-	private String[] access={getScr("AutoWeather","cmd")};
+	private String[] access={"AUTOWEATHER"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -46,12 +46,12 @@ public class AutoWeather extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
-			mob.tell(getScr("AutoWeather","turnoff"));
+			mob.tell("Weather descriptions are now off.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
-			mob.tell(getScr("AutoWeather","turnon"));
+			mob.tell("Weather descriptions are now on.");
 		}
 		return false;
 	}

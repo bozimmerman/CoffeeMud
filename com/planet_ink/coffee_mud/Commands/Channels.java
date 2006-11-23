@@ -34,14 +34,14 @@ public class Channels extends StdCommand
 {
 	public Channels(){}
 
-	private String[] access={getScr("Channels","cmd")};
+	private String[] access={"CHANNELS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		StringBuffer buf=new StringBuffer(getScr("Channels","avchannels"));
+		StringBuffer buf=new StringBuffer("Available channels: \n\r");
 		int col=0;
 		String[] names=CMLib.channels().getChannelNames();
 		for(int x=0;x<names.length;x++)
@@ -57,9 +57,9 @@ public class Channels extends StdCommand
 				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),24));
 			}
 		if(names.length==0)
-			buf.append(getScr("Channels","none"));
+			buf.append("None!");
 		else
-			buf.append(getScr("Channels","usechannels"));
+			buf.append("\n\rUse NOCHANNELNAME (ex: NOGOSSIP) to turn a channel off.");
 		mob.tell(buf.toString());
 		return false;
 	}

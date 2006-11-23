@@ -34,7 +34,7 @@ public class Dismount extends StdCommand
 {
 	public Dismount(){}
 
-	private String[] access={getScr("Dismount","cmd"),getScr("Dismount","cmd1"),getScr("Dismount","cmd2")};
+	private String[] access={"DISMOUNT","DISEMBARK","LEAVE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,10 +44,10 @@ public class Dismount extends StdCommand
 		{
 			if(mob.riding()==null)
 			{
-				mob.tell(getScr("Movement","dismounterr1"));
+				mob.tell("But you aren't riding anything?!");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,getScr("Movement","dismounts",mob.riding().dismountString(mob)));
+			CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString(mob)+" <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
@@ -56,7 +56,7 @@ public class Dismount extends StdCommand
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
 			if((E==null)||(!(E instanceof Rider)))
 			{
-				mob.tell(getScr("Movement","dismounterr2",CMParms.combine(commands,0)));
+				mob.tell("You don't see anything called '"+CMParms.combine(commands,0)+"' here to dismount from anything.");
 				return false;
 			}
 			Rider RI=(Rider)E;
@@ -65,15 +65,15 @@ public class Dismount extends StdCommand
 			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
 			   ||(!CMLib.flags().canBeSeenBy(RI.riding(),mob)))
 			{
-				mob.tell(getScr("Movement","dismounterr3",RI.name()));
+				mob.tell("But "+RI.name()+" is not mounted to anything?!");
 				return false;
 			}
 			if((RI instanceof MOB)&&(!CMLib.flags().isBoundOrHeld(RI))&&(!((MOB)RI).willFollowOrdersOf(mob)))
 			{
-			    mob.tell(getScr("Movement","dismounterr4",RI.name()));
+			    mob.tell(RI.name()+" may not want you to do that.");
 			    return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,getScr("Movement","dismounts2"));
+			CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,"<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

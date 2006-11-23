@@ -47,7 +47,7 @@ public class Play_Retreat extends Play
 	{
 		if(directionCode<0)
 		{
-			mob.tell(getScr("Movement","fleeerr2"));
+			mob.tell("Flee where?!");
 			return;
 		}
 		mob.makePeace();

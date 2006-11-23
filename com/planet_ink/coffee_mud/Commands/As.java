@@ -34,7 +34,7 @@ public class As extends StdCommand
 {
 	public As(){}
 
-	private String[] access={getScr("As","cmd")};
+	private String[] access={"AS"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -43,14 +43,14 @@ public class As extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("As","error"));
+			mob.tell("As whom do what?");
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		if((!CMSecurity.isAllowed(mob,mob.location(),getScr("As","cmd")))||(mob.isMonster()))
+		if((!CMSecurity.isAllowed(mob,mob.location(),"AS"))||(mob.isMonster()))
 		{
-			mob.tell(getScr("As","notp"));
+			mob.tell("You aren't powerful enough to do that.");
 			return false;
 		}
 		Session mySession=mob.session();
@@ -72,24 +72,24 @@ public class As extends StdCommand
 		}
 		if(M==null)
 		{
-			mob.tell(getScr("As","noname"));
+			mob.tell("You don't know of anyone by that name.");
 			return false;
 		}
 		if(M.soulMate()!=null)
 		{
-		    mob.tell(M.Name()+" "+getScr("As","possessed"));
+		    mob.tell(M.Name()+" is being possessed at the moment.");
 		    return false;
 		}
 		if((CMSecurity.isASysOp(M))&&(!CMSecurity.isASysOp(mob)))
 		{
-		    mob.tell(getScr("As","notp",M.Name()));
+		    mob.tell("You aren't powerful enough to do that.");
 		    return false;
 		}
         if(!M.isMonster())
         {
             if(!CMSecurity.isAllowedEverywhere(mob,"ORDER"))
             {
-                mob.tell(getScr("As","notpl",M.Name()));
+                mob.tell("You can't do things as players if you can't order them.");
                 return false;
             }
         }
@@ -103,7 +103,7 @@ public class As extends StdCommand
 		mySession.setMob(M);
 		M.setSoulMate(mob);
         //mySession.initTelnetMode(oldBitmap);
-		if(((String)commands.firstElement()).equalsIgnoreCase(getScr("As","here"))
+		if(((String)commands.firstElement()).equalsIgnoreCase("here")
 		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
 		{
 		    if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))

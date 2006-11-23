@@ -34,7 +34,7 @@ public class ClanCreate extends BaseClanner
 {
 	public ClanCreate(){}
 
-	private String[] access={getScr("ClanCreate","cmd")};
+	private String[] access={"CLANCREATE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -49,46 +49,46 @@ public class ClanCreate extends BaseClanner
 				{
 					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<new Integer(cost).doubleValue())
 					{
-						mob.tell(getScr("ClanCreate","cantafford",CMLib.beanCounter().nameCurrencyShort(mob,cost)));
+						mob.tell("It costs "+CMLib.beanCounter().nameCurrencyShort(mob,cost)+" to create a clan.  You don't have it.");
 						return false;
 					}
 				}
 				try
 				{
-					String check=mob.session().prompt(getScr("ClanCreate","aresure"),getScr("ClanCreate","noword"));
+					String check=mob.session().prompt("Are you sure you want to found a new clan (y/N)?","N");
 					if(check.equalsIgnoreCase("Y"))
 					{
-						String doubleCheck=mob.session().prompt(getScr("ClanCreate","enternamec"),"");
+						String doubleCheck=mob.session().prompt("Enter the name of your new clan (30 chars max), exactly how you want it\n\r:","");
 						if(doubleCheck.length()<1)
 							return false;
                         if(doubleCheck.length()>30) // Robert checking length
                         {
-                            mob.tell(getScr("ClanCreate","shorter"));
+                            mob.tell("That name is too long, please use a shorter one.");
                             return false;
                         }
 						Clan C=CMLib.clans().findClan(doubleCheck);
 						if((CMLib.database().DBUserSearch(null,doubleCheck))
 						||(doubleCheck.equalsIgnoreCase("All")))
-							msg.append(getScr("ClanCreate","notava"));
+							msg.append("That name clans are available.  You may 'CLANAPPLY' to join them.");
 						else
 						if(C!=null)
-							msg.append(getScr("ClanCreate","alexist",C.clanID()));
+							msg.append("Clan "+C.clanID()+"  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");
 						else
 						{
-							if(mob.session().confirm(getScr("ClanCreate","iscorrect",doubleCheck), getScr("ClanCreate","noword")))
+							if(mob.session().confirm("Is '"+doubleCheck+"' correct (y/N)?", "N"))
 							{
 								int govtType=-1;
 								while(govtType==-1)
 								{
 									String govt=mob.session().prompt(
-									getScr("ClanCreate","msg1")
-									+getScr("ClanCreate","msg2")
-									+getScr("ClanCreate","msg3")
-									+getScr("ClanCreate","msg4")
-									+getScr("ClanCreate","msg5")
-									+getScr("ClanCreate","msg6")
+									"Now enter a political style for this clan. Choices are:\n\r"
+									+"TRIBE - Ruled by a boss who assigns underlings.\n\r"
+									+"GUILD - Ruled by a numerous bosses who assign underlings.\n\r"
+									+"UNION - Ruled by an elected set of leaders and staff.\n\r"
+									+"FELLOWSHIP - All decisions and staff are set through the vote.\n\r"
+									+"THEOCRACY - Clerics rule, can conquer through conversion.\n\r"
 									+": ","");
-									if(govt.length()==0){ mob.tell(getScr("ClanCreate","aborted")); return false;}
+									if(govt.length()==0){ mob.tell("Aborted."); return false;}
 									for(int i=0;i<Clan.GVT_DESCS.length;i++)
 										if(govt.equalsIgnoreCase(Clan.GVT_DESCS[i]))
 											govtType=i;
@@ -104,7 +104,7 @@ public class ClanCreate extends BaseClanner
 								newClan.create();
 								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
 								newClan.updateClanPrivileges(mob);
-								clanAnnounce(mob, getScr("ClanCreate","cison",newClan.typeName(),newClan.clanID()));
+								clanAnnounce(mob, "The "+newClan.typeName()+" "+newClan.clanID()+" is online and can now accept applicants.");
 							}
 						}
 					}
@@ -116,7 +116,7 @@ public class ClanCreate extends BaseClanner
 		}
 		else
 		{
-			msg.append(getScr("ClanCreate","almember",mob.getClanID()));
+			msg.append("You are already a member of "+mob.getClanID()+". You need to resign from your before you can create one.");
 		}
 		mob.tell(msg.toString());
 		return false;

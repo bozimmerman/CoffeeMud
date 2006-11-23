@@ -35,7 +35,7 @@ public class ClanHomeSet extends BaseClanner
 {
 	public ClanHomeSet(){}
 
-	private String[] access={getScr("ClanHomeSet","cmd")};
+	private String[] access={"CLANHOMESET"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -55,39 +55,39 @@ public class ClanHomeSet extends BaseClanner
 
 		if((mob.getClanID()==null)||(R==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
-			mob.tell(getScr("ClanHomeSet","evenmember"));
+			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
 		Clan C=CMLib.clans().getClan(mob.getClanID());
 		if(C==null)
 		{
-			mob.tell(getScr("ClanHomeSet","nolonger",mob.getClanID()));
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 			return false;
 		}
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell(getScr("ClanHomeSet","cantsethome",C.typeName()));
+			mob.tell("You cannot set a home.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
 		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell(getScr("ClanHomeSet","notroom",C.typeName()));
+				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 			{
 				C.setRecall(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell(getScr("ClanHomeSet","homesetted",C.typeName(),C.clanID(),R.roomTitle()));
-				clanAnnounce(mob,getScr("ClanHomeSet","homesetted",C.typeName(),C.clanID(),R.roomTitle()));
+				mob.tell("The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle()+".");
+				clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell(getScr("ClanHomeSet","notrightposhome",C.typeName()));
+			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s home.");
 			return false;
 		}
 		return false;

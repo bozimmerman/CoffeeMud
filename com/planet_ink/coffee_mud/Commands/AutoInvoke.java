@@ -35,7 +35,7 @@ public class AutoInvoke extends StdCommand
 {
 	public AutoInvoke(){}
 
-	private String[] access={getScr("AutoInvoke","cmd")};
+	private String[] access={"AUTOINVOKE"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -62,23 +62,23 @@ public class AutoInvoke extends StdCommand
 	            effects.addElement(A.ID());
 	    }
 
-	    StringBuffer str=new StringBuffer(getScr("AutoInvoke","aia"));
+	    StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
 	    for(int a=0;a<abilities.size();a++)
 	    {
 	        Ability A=mob.fetchAbility((String)abilities.elementAt(a));
 	        if(A!=null)
 	        {
 		        if(effects.contains(A.ID()))
-		            str.append(CMStrings.padRight(A.Name(),20)+getScr("AutoInvoke","aia"));
+		            str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
 		        else
-		            str.append(CMStrings.padRight(A.Name(),20)+getScr("AutoInvoke","aia"));
+		            str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
 	        }
 	    }
 
 	    mob.tell(str.toString());
 	    if(mob.session()!=null)
 	    {
-		    String s=mob.session().prompt(getScr("AutoInvoke","toggle"),"");
+		    String s=mob.session().prompt("Enter one to toggle or RETURN: ","");
 		    Ability foundA=null;
 		    if(s.length()>0)
 		    {
@@ -96,7 +96,7 @@ public class AutoInvoke extends StdCommand
 			        { foundA=A; break;}
 		        }
 		        if(foundA==null)
-		            mob.tell(getScr("AutoInvoke","terror",s));
+		            mob.tell("'"+s+"' is invalid.");
 		        else
 		        if(effects.contains(foundA.ID()))
 		        {
@@ -104,17 +104,17 @@ public class AutoInvoke extends StdCommand
 		            if(foundA!=null)
 		                mob.delEffect(foundA);
 		            if(mob.fetchEffect(foundA.ID())!=null)
-		                mob.tell(getScr("AutoInvoke","failed",foundA.name()));
+		                mob.tell(foundA.name()+" failed to successfully deactivate.");
 		            else
-		                mob.tell(getScr("AutoInvoke","deactivate",foundA.name()));
+		                mob.tell(foundA.name()+" successfully deactivated.");
 		        }
 		        else
 		        {
 		            foundA.autoInvocation(mob);
 		            if(mob.fetchEffect(foundA.ID())!=null)
-		                mob.tell(getScr("AutoInvoke","inoked",foundA.name()));
+		                mob.tell(foundA.name()+" successfully invoked.");
 		            else
-		                mob.tell(getScr("AutoInvoke","ninvoked",foundA.name()));
+		                mob.tell(foundA.name()+" failed to successfully invoke.");
 		        }
 		    }
 	    }

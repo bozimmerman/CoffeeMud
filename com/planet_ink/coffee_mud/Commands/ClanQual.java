@@ -34,7 +34,7 @@ public class ClanQual extends BaseClanner
 {
 	public ClanQual(){}
 
-	private String[] access={getScr("ClanQual","cmd")};
+	private String[] access={"CLANQUAL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -47,14 +47,14 @@ public class ClanQual extends BaseClanner
 		||(mob.getClanID().equalsIgnoreCase(""))
 		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
-			msg.append(getScr("ClanQual","nomember"));
+			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
 			{
-				msg.append(getScr("ClanQual","nopos",C.typeName()));
+				msg.append("You aren't in the right position to set the qualifications to your "+C.typeName()+".");
 			}
 			else
 			{
@@ -74,7 +74,7 @@ public class ClanQual extends BaseClanner
 						else
 						if(premise.length()>0)
 						{
-							mob.tell(getScr("ClanQual","qualicationsfollow",CMLib.masking().maskDesc(premise)));
+							mob.tell("Your qualifications will be as follows: "+CMLib.masking().maskDesc(premise)+"\n\r");
 							if((mob.session()!=null)&&(mob.session().confirm("Is this correct (Y/n)?","Y")))
 							{
 								commands.addElement(premise);

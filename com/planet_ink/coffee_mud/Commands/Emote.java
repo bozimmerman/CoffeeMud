@@ -34,14 +34,14 @@ public class Emote extends StdCommand
 {
 	public Emote(){}
 
-	private String[] access={getScr("Emote","emotecmd"),",",";",":"};
+	private String[] access={"EMOTE",",",";",":"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("Emote","emoteerr"));
+			mob.tell(" EMOTE what?");
 			return false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);

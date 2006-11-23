@@ -35,7 +35,7 @@ public class ClanWho extends Who
 {
 	public ClanWho(){}
 
-	private String[] access={getScr("ClanWho","cmd"),getScr("ClanWho","cmd1")};
+	private String[] access={"CLANWHO","CLWH"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands)
@@ -45,7 +45,7 @@ public class ClanWho extends Who
 		||(mob.getClanID().equalsIgnoreCase(""))
 		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
-			mob.tell(getScr("ClanWho","nomember"));
+			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
 		StringBuffer msg=new StringBuffer("");

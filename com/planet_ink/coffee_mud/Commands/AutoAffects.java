@@ -32,7 +32,7 @@ import java.util.*;
 */
 public class AutoAffects extends StdCommand
 {
-    private String[] access={getScr("AutoAffects","cmd"),getScr("AutoAffects","cmd1"),getScr("AutoAffects","cmd2")};
+    private String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
     public String[] getAccessWords(){return access;}
 
     public String getAutoAffects(MOB mob)
@@ -88,10 +88,10 @@ public class AutoAffects extends StdCommand
         if(S!=null)
         {
             if(S==mob.session())
-                S.colorOnlyPrint(getScr("AutoAffect","affected"));
+                S.colorOnlyPrint(" \n\r^!Your auto-invoked skills are:^?");
             String msg=getAutoAffects(mob);
             if(msg.length()<5)
-                S.colorOnlyPrintln(getScr("AutoAffect","nothing"));
+                S.colorOnlyPrintln(" Non-existant!\n\r^N");
             else
                 S.colorOnlyPrintln(msg);
         }

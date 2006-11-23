@@ -34,7 +34,7 @@ public class ClanDeclare extends BaseClanner
 {
 	public ClanDeclare(){}
 
-	private String[] access={getScr("ClanDeclare","cmd")};
+	private String[] access={"CLANDECLARE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,7 +44,7 @@ public class ClanDeclare extends BaseClanner
 		commands.setElementAt(getAccessWords()[0],0);
 		if(commands.size()<3)
 		{
-			mob.tell(getScr("ClanDeclare","specname"));
+			mob.tell("You must specify the clans name, and a new relationship.");
 			return false;
 		}
 		String rel=((String)commands.lastElement()).toUpperCase();
@@ -57,14 +57,14 @@ public class ClanDeclare extends BaseClanner
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 			{
-				msg.append(getScr("ClanDeclare","evenmember"));
+				msg.append("You aren't even a member of a clan.");
 			}
 			else
 			{
 				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
-					mob.tell(getScr("ClanDeclare","nolonger",mob.getClanID()));
+					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
 				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,false))
@@ -75,23 +75,23 @@ public class ClanDeclare extends BaseClanner
 							newRole=i;
 					if(newRole<0)
 					{
-						mob.tell(getScr("ClanDeclare","notvrel",rel));
+						mob.tell("'"+rel+"' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.");
 						return false;
 					}
 					Clan C2=CMLib.clans().findClan(clan);
 					if(C2==null)
 					{
-						mob.tell(getScr("ClanDeclare","notvclan",clan));
+						mob.tell(clan+" isn't valid clan.");
 						return false;
 					}
 					if(C2==C)
 					{
-						mob.tell(getScr("ClanDeclare","cantdothat"));
+						mob.tell("You can't do that.");
 						return false;
 					}
 					if(C.getClanRelations(C2.clanID())==newRole)
 					{
-						mob.tell(getScr("ClanDeclare","alreadystate",C2.clanID()));
+						mob.tell("You are already in that state with "+C2.clanID()+".");
 						return false;
 
 					}
@@ -101,13 +101,13 @@ public class ClanDeclare extends BaseClanner
 						last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*Tickable.TIME_TICK);
 						if(System.currentTimeMillis()<last)
 						{
-							mob.tell(getScr("ClanDeclare","waitforrel"));
+							mob.tell("You must wait at least 1 mud month between relation changes.");
 							return false;
 						}
 					}
 					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,true))
 					{
-						clanAnnounce(mob,getScr("ClanDeclare","declared",C.typeName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
+						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
 						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 						C.update();
 						return false;
@@ -115,13 +115,13 @@ public class ClanDeclare extends BaseClanner
 				}
 				else
 				{
-					msg.append(getScr("ClanDeclare","notright",C.typeName()));
+					msg.append("You aren't in the right position to declare relationships with your "+C.typeName()+".");
 				}
 			}
 		}
 		else
 		{
-			mob.tell(getScr("ClanDeclare","specnameandrel"));
+			mob.tell("You must specify the clans name, and a new relationship.");
 			return false;
 		}
 		mob.tell(msg.toString());

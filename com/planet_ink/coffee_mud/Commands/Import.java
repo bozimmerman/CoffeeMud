@@ -3250,7 +3250,7 @@ public class Import extends StdCommand
 					 if(val4>0)
 					 {
 						 I=CMClass.getMiscMagic("GenPill");
-						 ((Pill)I).setSpellList("Poison"+";");
+						 ((Pill)I).setSpellList("Poison;");
 					 }
 					 ((Food)I).setNourishment(20*val1);
 					 break;

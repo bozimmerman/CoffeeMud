@@ -36,7 +36,7 @@ public class Autoforward extends StdCommand
 {
 	public Autoforward(){}
 
-	private String[] access={getScr("Autoforward","cmd")};
+	private String[] access={"AUTOFORWARD"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -44,18 +44,18 @@ public class Autoforward extends StdCommand
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 		{
-			mob.tell(getScr("Autoforward","nota"));
+			mob.tell("This feature is not activated.");
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
-			mob.tell(getScr("Autoforward","turnon"));
+			mob.tell("Autoemail forwarding has been turned on.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
-			mob.tell(getScr("Autoforward","turnoff"));
+			mob.tell("Autoemail forwarding has been turned off.");
 		}
 		return false;
 	}

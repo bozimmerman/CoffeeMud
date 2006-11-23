@@ -35,7 +35,7 @@ public class AutoAssist extends StdCommand
 {
 	public AutoAssist(){}
 
-	private String[] access={getScr("AutoAssist","cmd")};
+	private String[] access={"AUTOASSIST"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -44,12 +44,12 @@ public class AutoAssist extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
-			mob.tell(getScr("AutoAssist","turnon"));
+			mob.tell("Autoassist has been turned on.");
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
-			mob.tell(getScr("AutoAssist","turnoff"));
+			mob.tell("Autoassist has been turned off.");
 		}
 		return false;
 	}

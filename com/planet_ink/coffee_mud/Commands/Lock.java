@@ -42,7 +42,7 @@ public class Lock extends StdCommand
 		String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
-			mob.tell(getScr("Movement","lockerr1"));
+			mob.tell("Lock what?");
 			return false;
 		}
 		Environmental lockThis=null;
@@ -54,10 +54,10 @@ public class Lock extends StdCommand
 
 		if((lockThis==null)||(!CMLib.flags().canBeSeenBy(lockThis,mob)))
 		{
-			mob.tell(getScr("Movement","youdontsee",whatTolock));
+			mob.tell("You don't see '"+whatTolock+"' here.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,getScr("Movement","slocks")+CMProps.msp("doorlock.wav",10));
+		CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAMESELF>."+CMProps.msp("doorlock.wav",10));
 		if(lockThis instanceof Exit)
 		{
 			boolean locked=((Exit)lockThis).isLocked();
@@ -83,7 +83,7 @@ public class Lock extends StdCommand
 					if((opE!=null)
 					&&(opE.isLocked())
 					&&(((Exit)lockThis).isLocked()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,getScr("Movement","afterlocks",opE.name(),Directions.getInDirectionName(opCode)));
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" is locked from the other side.");
 				}
 			}
 		}

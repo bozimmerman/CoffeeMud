@@ -59,7 +59,7 @@ public class Spell_WordRecall extends Spell
             int AUTO=auto?CMMsg.MASK_ALWAYS:0;
             Room recalledRoom=mob.location();
             Room recallRoom=mob.getStartRoom();
-            CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
+            CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
             CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,verbalCastCode(mob,recallRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,recallRoom,auto),null);
             if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
             {
@@ -71,7 +71,7 @@ public class Spell_WordRecall extends Spell
                 {
                     MOB follower=mob.fetchFollower(f);
                     
-                    msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
+                    msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
                     if((follower!=null)
                     &&(follower.isMonster())
                     &&(!follower.isPossessing())
@@ -91,7 +91,7 @@ public class Spell_WordRecall extends Spell
             }
         }
         else
-            beneficialWordsFizzle(mob,null,getScr(ID(),"recallgo4"));
+            beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard.");
 
         // return whether it worked
         return success;
