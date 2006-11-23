@@ -4934,7 +4934,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				break;
 			}
 			case 3: // mpslay
-
             {
 				Environmental newTarget=getArgumentItem(CMParms.getPastBitClean(s,0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
@@ -5286,7 +5285,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 5: // mpmload
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(7).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 				Vector Ms=new Vector();
 				MOB m=CMClass.getMOB(s);
 				if(m!=null) Ms.addElement(m);
@@ -5314,7 +5313,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				// if not mob
 				if(scripted instanceof MOB)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(7).trim());
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 					int containerIndex=s.toUpperCase().indexOf(" INTO ");
 					Container container=null;
 					if(containerIndex>=0)
@@ -5378,7 +5377,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 41: // mpoloadroom
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(11).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 				if(lastKnownLocation!=null)
 				{
 					Vector Is=new Vector();
@@ -5886,7 +5885,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				if(lastKnownLocation!=null)
 				{
-					String s2=s.substring(7).trim();
+					String s2=CMParms.getPastBitClean(s,0).trim();
 					Environmental E=null;
 					if(s2.equalsIgnoreCase("self")||s2.equalsIgnoreCase("me"))
 						E=scripted;
