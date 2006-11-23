@@ -25,7 +25,7 @@ carrot soup	FOOD		15	carrots	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	
 hot fudge	FOOD		16	Chocolate	10												
 pepper soup	FOOD		17	peppers	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
 vegetable soup	FOOD		17	greens	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
-hot chocolate	FOOD		18	cocoa	1	milk	1										
+hot chocolate	DRINK		18	cocoa	1	milk	1										
 soap	SOAP		19	ash	1	limes	1	beef	1								
 dolmas	FOOD		20	rice	1	grapes	1										
 kabobs	FOOD		21	peppers	1	meat	-1	fish	1								

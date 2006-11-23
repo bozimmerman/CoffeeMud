@@ -467,7 +467,8 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if((target==null)
 		||((givenTarget==null)
 		   &&(!CMLib.flags().canBeSeenBy(target,mob))
-		   &&((!CMLib.flags().canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
+		   &&((!CMLib.flags().canBeHeardBy(target,mob))
+                   ||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
 				mob.tell("You don't see that here.");

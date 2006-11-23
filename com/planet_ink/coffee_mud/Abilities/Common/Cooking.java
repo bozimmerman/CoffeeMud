@@ -631,11 +631,22 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				}
 				if(timesTwo) food.setNourishment(food.nourishment()*2);
 			}
+            ((Food)building).setMaterial(RawMaterial.RESOURCE_BEEF);
 			for(int v=0;v<contents.size();v++)
 			{
 				Item I=(Item)contents.elementAt(v);
 				if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
 					food.baseEnvStats().setWeight(food.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
+                if(I instanceof Food)
+                    switch(((Food)I).material()&RawMaterial.MATERIAL_MASK)
+                    {
+                    case RawMaterial.MATERIAL_VEGETATION:
+                        food.setMaterial(((Food)I).material());
+                        break;
+                    case RawMaterial.MATERIAL_FLESH:
+                        food.setMaterial(((Food)I).material());
+                        break;
+                    }
 			}
 			food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
 			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);
@@ -652,12 +663,15 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			building.setDescription("It looks "+((messedUp)?"spoiled!":"good!"));
 			building.setSecretIdentity("This was prepared by "+mob.Name()+".");
 			Drink drink=(Drink)building;
+            int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 			for(int v=0;v<contents.size();v++)
 			{
 				Item I=(Item)contents.elementAt(v);
 				drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
 				if(I instanceof Food)
 					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
+                if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                    liquidType=((Drink)I).liquidType();
 			}
 			if(drink.liquidRemaining()>0)
 			{
@@ -674,6 +688,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
 			if(messedUp)drink.setThirstQuenched(1);
             playSound=defaultDrinkSound;
+            building.setMaterial(liquidType);
+            drink.setLiquidType(liquidType);
 		}
 		else
 		if(CMClass.getItem(foodType)!=null)
@@ -687,11 +703,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				Drink drink=(Drink)building;
 				int rem=drink.liquidHeld();
 				drink.setLiquidRemaining(0);
+                int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 				for(int v=0;v<contents.size();v++)
 				{
 					Item I=(Item)contents.elementAt(v);
 					drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
 					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
+                    if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                        liquidType=((Drink)I).liquidType();
 				}
 				if((drink.liquidRemaining()>0)&&(!messedUp))
 					drink.setLiquidHeld(drink.liquidRemaining());
@@ -701,7 +720,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					drink.setLiquidRemaining(1);
 					drink.setThirstQuenched(1);
 				}
-				building.setMaterial(drink.liquidType());
+				building.setMaterial(liquidType);
+                drink.setLiquidType(liquidType);
 			}
 			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);
             playSound=defaultFoodSound;
