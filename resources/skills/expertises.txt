@@ -48,8 +48,8 @@ HELP_=<EXPERTISE>The ability to better use and deploy rope based snares, binding
 DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-MAXCLASSLEVEL +>={23+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to handle more difficult cases of deceptiveness. 
 
-CALIGRAPHY@x1=Fine Caligraphy @x2,10,LEVEL,-SKILLFLAG +CALIGRAPHY,-MAXCLASSLEVEL +>={23+(5*@x1)},+INT {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to handle more difficult caligraphy chores. 
+CALIGRAPHY@x1=Fine Calligraphy @x2,10,LEVEL,-SKILLFLAG +CALLIGRAPHY,-MAXCLASSLEVEL +>={23+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to handle more difficult calligraphy chores. 
 
 POISONING@x1=Poisoning @x2,10,LEVEL,-SKILLS +Apothecary -SKILLFLAG +POISONING,-MAXCLASSLEVEL +>={10+(5*@x1)},+INT {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to make and handle more powerful poisons. 
@@ -81,7 +81,7 @@ HELP_=<EXPERTISE>The ability to grapple with greater power and ability.
 ACROBAT@x1=Acrobatic @x2,10,LEVEL,-SKILLFLAG +ACROBATIC,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to make more graceful and powerful acrobatic maneuvers.
 
-FLUIDITY@x1=Coombat Fluidity @x2,10,LOWCOST,-SKILLFLAG +KICKING +PUNCHING +GRAPPLING +ACROBATIC +MARTIAL_LORE +DIRTY_FIGHTING,-MAXCLASSLEVEL +>={1+(3*@x1)},+DEX {12+@x1},0,1,0,0,0
+FLUIDITY@x1=Combat Fluidity @x2,10,LOWCOST,-SKILLFLAG +KICKING +PUNCHING +GRAPPLING +ACROBATIC +MARTIAL_LORE +DIRTY_FIGHTING,-MAXCLASSLEVEL +>={1+(3*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>Reduces the cost of using combat skills.
 
 INFLUENCE@x1=Influencing @x2,10,LEVEL,-SKILLFLAG +INFLUENTIAL,-MAXCLASSLEVEL +>={27+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
@@ -330,7 +330,7 @@ HELP_=<EXPERTISE>The ability to cast abjuration spells at a higher power level, 
 EXTENDEDABJURATION@x1=Extended Abjuring @x2,10,TIME,-SKILLFLAG +ABJURATION,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast abjuration spells that last even longer.
 
-SMARTENGINEERING@x1=Ingenius Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
+SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
 LITECRAFT@x2=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0

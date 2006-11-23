@@ -715,8 +715,8 @@ public interface Ability extends Environmental
     public static final int DOMAIN_PUNCHING=50<<5;
     /** constant used to mask classificationCode() designating this ability as being grappling skill. @see Ability#classificationCode() */
     public static final int DOMAIN_GRAPPLING=51<<5;
-    /** constant used to mask classificationCode() designating this ability as being caligraphy skill. @see Ability#classificationCode() */
-    public static final int DOMAIN_CALIGRAPHY=52<<5;
+    /** constant used to mask classificationCode() designating this ability as being calligraphy skill. @see Ability#classificationCode() */
+    public static final int DOMAIN_CALLIGRAPHY=52<<5;
     /** constant used to mask classificationCode() designating this ability as being poisoning skill. @see Ability#classificationCode() */
     public static final int DOMAIN_POISONING=53<<5;
     /** constant used to mask classificationCode() designating this ability as being arcane lore skill. @see Ability#classificationCode() */
@@ -772,7 +772,7 @@ public interface Ability extends Environmental
         "COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
         "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
         "ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
-        "CALIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
+        "CALLIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
         "INFLUENTIAL","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
         "COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
         "RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",

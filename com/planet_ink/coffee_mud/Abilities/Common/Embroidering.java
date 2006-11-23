@@ -37,7 +37,7 @@ public class Embroidering extends CommonSkill
 	public String name(){ return "Embroidering";}
 	private static final String[] triggerStrings = {"EMBROIDER","EMBROIDERING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALIGRAPHY; }
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
 
 	protected Item found=null;
 	protected String writing="";

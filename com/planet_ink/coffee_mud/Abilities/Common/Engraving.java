@@ -38,7 +38,7 @@ public class Engraving extends CommonSkill
 	public String name(){ return "Engraving";}
 	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALIGRAPHY; }
+    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
 
 	protected Item found=null;
 	protected String writing="";

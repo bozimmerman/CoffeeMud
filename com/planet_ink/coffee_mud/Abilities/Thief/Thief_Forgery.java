@@ -38,7 +38,7 @@ public class Thief_Forgery extends ThiefSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FORGERY"};
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CALIGRAPHY;}
+    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
