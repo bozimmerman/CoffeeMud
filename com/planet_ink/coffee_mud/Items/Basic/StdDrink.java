@@ -76,14 +76,22 @@ public class StdDrink extends StdContainer implements Drink,Item
 
 	public boolean containsDrink()
 	{
-		if((liquidRemaining()<1)
-		||
-		 ((!CMLib.flags().isGettable(this))
-		&&(owner()!=null)
-		&&(owner() instanceof Room)
-		&&(((Room)owner()).getArea()!=null)
-		&&(((Room)owner()).getArea().getClimateObj().weatherType((Room)owner())==Climate.WEATHER_DROUGHT)))
-			return false;
+        if((!CMLib.flags().isGettable(this))
+        &&(owner()!=null)
+        &&(owner() instanceof Room)
+        &&(((Room)owner()).getArea()!=null)
+        &&(((Room)owner()).getArea().getClimateObj().weatherType((Room)owner())==Climate.WEATHER_DROUGHT))
+            return false;
+		if(liquidRemaining()<1)
+        {
+            Vector V=getContents();
+            for(int v=0;v<V.size();v++)
+                if((V.elementAt(v) instanceof Item)
+                &&(V.elementAt(v) instanceof Drink)
+                &&((((Item)V.elementAt(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                    return true;
+            return false;
+        }
 		return true;
 	}
 
