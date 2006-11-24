@@ -411,7 +411,7 @@ public class Export extends StdCommand
 			{
                 Object O=i.next();
 				String filename=(String)O;
-				StringBuffer buf=new CMFile("resources/"+filename,null,true).text();
+				StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,true).text();
 				if((buf!=null)&&(buf.length()>0))
 				{
 					str.append("<FILE NAME=\""+filename+"\">");

@@ -227,13 +227,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
 					filenames.addElement(filename);
-                    parseParmFilenames(new CMFile("resources/"+filename,null,true).text().toString(),filenames,depth+1);
+                    parseParmFilenames(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),filenames,depth+1);
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
 					filenames.addElement(filename);
-					parseParmFilenames(new CMFile("resources/"+filename,null,true).text().toString(),filenames,depth+1);
+					parseParmFilenames(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),filenames,depth+1);
 					break;
 				}
 			}
@@ -260,12 +260,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
-					results.append(parseLoads(new CMFile("resources/"+filename,null,true).text().toString(),depth+1));
+					results.append(parseLoads(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),depth+1));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
-					results.append(parseLoads(new CMFile("resources/"+filename,null,true).text().toString(),depth+1));
+					results.append(parseLoads(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),depth+1));
 					break;
 				}
 			}
@@ -5245,6 +5245,31 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					CMLib.commands().postChannel(monster,channel,val,sysmsg);
 				break;
 			}
+            case 68: // cd
+            {
+                String scriptname=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                if(!new CMFile(Resources.makeFileResourceName(scriptname),null,false,true).exists())
+                    scriptableError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
+                else
+                {
+                    Vector delThese=new Vector();
+                    boolean foundKey=false;
+                    scriptname=scriptname.toUpperCase().trim();
+                    String parmname=scriptname;
+                    Vector V=Resources.findResourceKeys(parmname);
+                    for(Enumeration e=V.elements();e.hasMoreElements();)
+                    {
+                        String key=(String)e.nextElement();
+                        if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(parmname)))
+                        { foundKey=true; delThese.addElement(key);}
+                    }
+                    if(foundKey)
+                        for(int i=0;i<delThese.size();i++)
+                            Resources.removeResource((String)delThese.elementAt(i));
+                }
+                
+                break;
+            }
 			case 60: // trains
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -5588,7 +5613,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
                 {
                     s=CMParms.getPastBit(s,1).trim();
-                    lastKnownLocation.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s),CMMsg.NO_EFFECT,null);
+                    if(newTarget==monster)
+                        lastKnownLocation.showSource(monster,null,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    else
+                        lastKnownLocation.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s),CMMsg.NO_EFFECT,null);
                 }
                 else
                 if(parm.equalsIgnoreCase("world"))

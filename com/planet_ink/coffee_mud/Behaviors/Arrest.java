@@ -421,7 +421,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 				}
 				if(lawprops.isEmpty())
-                    lawprops.load(new ByteArrayInputStream(new CMFile("resources/"+lawName,null,false).raw()));
+                    lawprops.load(new ByteArrayInputStream(new CMFile(Resources.makeFileResourceName(lawName),null,false).raw()));
 			}
 			catch(IOException e)
 			{

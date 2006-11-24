@@ -613,7 +613,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if(mine.size()>1)
                 {
                     if((F.choiceIntro()!=null)&&(F.choiceIntro().length()>0))
-                        session.println(null,null,null,"\n\r\n\r"+new CMFile("resources/"+F.choiceIntro(),null,true).text().toString());
+                        session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,true).text().toString());
                     StringBuffer menu=new StringBuffer("Select one: ");
                     Vector namedChoices=new Vector();
                     for(int m=0;m<mine.size();m++)

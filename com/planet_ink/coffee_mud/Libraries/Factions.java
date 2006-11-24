@@ -90,7 +90,7 @@ public class Factions extends StdLibrary implements FactionManager
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-        StringBuffer buf=new CMFile("resources/"+factionID,null,true).text();
+        StringBuffer buf=new CMFile(Resources.makeFileResourceName(factionID),null,true).text();
 	    if((buf!=null)&&(buf.length()>0))
 	    {
             F=(Faction)CMClass.getCommon("DefaultFaction");

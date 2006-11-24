@@ -169,7 +169,7 @@ public class MudChat extends StdBehavior
 	
 	protected static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
-		StringBuffer rsc=new CMFile("resources/"+resourceName,null,true).text();
+		StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,true).text();
 		chatGroups=parseChatData(rsc,chatGroups);
 		return chatGroups;
 	}

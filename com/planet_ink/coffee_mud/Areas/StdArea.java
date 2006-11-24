@@ -534,8 +534,8 @@ public class StdArea implements Area
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if(envStats().sensesMask()>0)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
+	    int senses=envStats.sensesMask()&(Integer.MAX_VALUE-(EnvStats.SENSE_UNLOCATABLE|EnvStats.CAN_NOT_SEE));
+		if(senses>0) affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
 		int disposition=envStats().disposition()
 			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
 		if((affected instanceof Room)&&(CMLib.map().hasASky((Room)affected)))

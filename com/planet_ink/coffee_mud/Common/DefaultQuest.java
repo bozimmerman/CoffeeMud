@@ -1907,7 +1907,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', no IMPORT MOBS file.");
                             q.error=true; break;
                         }
-                        StringBuffer buf=new CMFile("resources/"+CMParms.combine(p,2),null,true).text();
+                        StringBuffer buf=new CMFile(Resources.makeFileResourceName(CMParms.combine(p,2)),null,true).text();
                         if((buf==null)||((buf!=null)&&(buf.length()<20)))
                         {
                             if(!isQuiet)
@@ -1944,7 +1944,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 Log.errOut("Quest","Quest '"+name()+"', no import filename!");
                             q.error=true; break;
                         }
-                        StringBuffer buf=new CMFile("resources/"+CMParms.combine(p,2),null,true).text();
+                        StringBuffer buf=new CMFile(Resources.makeFileResourceName(CMParms.combine(p,2)),null,true).text();
                         if((buf==null)||((buf!=null)&&(buf.length()<20)))
                         {
                             if(!isQuiet)
@@ -3100,7 +3100,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        			Object O=getObjectIfSpecified(parms,oldArgs,0,1);
         				args.addElement((O==null)?"":O);
 	        		}
-		            StringBuffer buf=new CMFile("resources/"+filename,null,true).text();
+		            StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,true).text();
 		            if(buf!=null) text=buf.toString();
         		}catch(CMException ex){
         			Log.errOut("DefaultQuest","'"+text+"' either has a space in the filename, or unknown parms.");
