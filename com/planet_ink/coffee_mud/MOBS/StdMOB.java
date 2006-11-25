@@ -1586,7 +1586,8 @@ public class StdMOB implements MOB
 				{
 					if((!CMLib.flags().canBeSeenBy(msg.target(),this))
 					&&(!(isMine(msg.target())&&(msg.target() instanceof Item)))
-					&&(!(isInCombat()&&(msg.target()==victim))))
+					&&(!((isInCombat())&&(msg.target()==victim)))
+                    &&(!((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))))
 					{
 						mob.tell("You don't see '"+msg.target().name()+"' here.");
 						return false;

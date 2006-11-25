@@ -2537,15 +2537,17 @@ public class BaseGenerics extends StdCommand
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
 		{
-			String behaviorstr="";
+			String tattoostr="";
 			for(int b=0;b<E.numTattoos();b++)
 			{
 				String B=E.fetchTattoo(b);
-				if(B!=null)	behaviorstr+=B+", ";
+				if(B!=null)	tattoostr+=B+", ";
 			}
-			if(behaviorstr.length()>0)
-				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Tattoos: '"+behaviorstr+"'.");
+			if(tattoostr.length()>0)
+                tattoostr=tattoostr.substring(0,tattoostr.length()-2);
+            if((tattoostr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
+                tattoostr=tattoostr.substring(0,60)+"...";
+			mob.tell(showNumber+". Tattoos: '"+tattoostr+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter a tattoo to add/remove\n\r:","");
 			if(behave.length()>0)
@@ -3165,6 +3167,8 @@ public class BaseGenerics extends StdCommand
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
+            if((abilitiestr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
+                abilitiestr=abilitiestr.substring(0,60)+"...";
 			mob.tell(showNumber+". Abilities: '"+abilitiestr+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
