@@ -50,7 +50,7 @@ public class Prop_NoSummon extends Property
 		&&(msg.source()!=null)
 		&&(msg.source().location()!=null)
 		&&((msg.source().location()==affected)
-		   ||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea()))))
+		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea()))))
         &&((!nonAggroOK)||(!(msg.target() instanceof MOB))||(!CMLib.flags().isAggressiveTo((MOB)msg.target(),null)))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 		{

@@ -27,7 +27,7 @@ public class ScriptableEverymob extends StdBehavior
         ||(!M.isMonster())
         ||(M.getStartRoom()==null)
         ||(metroA==null)
-        ||(!metroA.inMetroArea(M.getStartRoom().getArea()))
+        ||(!metroA.inMyMetroArea(M.getStartRoom().getArea()))
         ||(M.fetchBehavior("Scriptable")!=null))
             return;
         Scriptable S=new Scriptable();

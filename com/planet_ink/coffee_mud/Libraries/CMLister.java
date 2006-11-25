@@ -164,6 +164,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                     while(V.size()>0)
                     {
                         item2=(Item)V.firstElement();
+                        V.removeElementAt(0);
                         int reps2=getReps(item2,V,mob,useName,false);
                         if(CMLib.flags().canBeSeenBy(item2,mob)
                         &&((item2.displayText().length()>0)

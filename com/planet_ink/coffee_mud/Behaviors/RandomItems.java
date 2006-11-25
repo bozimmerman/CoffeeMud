@@ -171,7 +171,7 @@ public class RandomItems extends ActiveTicker
 		{
 			Room R=CMLib.map().roomLocation(I);
 			if(R==null) return false;
-			return ((Area)thang).inMetroArea(R.getArea());
+			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
 		else
         if(thang instanceof Room)
@@ -382,7 +382,7 @@ public class RandomItems extends ActiveTicker
 							for(int m=0;m<room.numInhabitants();m++)
 							{
 								MOB M=room.fetchInhabitant(m);
-								if((M.savable())&&(M.getStartRoom().getArea().inMetroArea(room.getArea())))
+								if((M.savable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
 									inhabs.addElement(M);
 							}
 							if(inhabs.size()>0)

@@ -43,6 +43,7 @@ public interface EnglishParsing extends CMObject
     public Object findCommand(MOB mob, Vector commands);
     public boolean evokedBy(Ability thisAbility, String thisWord);
     public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
+    public boolean isAnEvokeWord(MOB mob, String word);
     public Ability getToEvoke(MOB mob, Vector commands);
     public boolean preEvoke(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining);
     public void evoke(MOB mob, Vector commands);

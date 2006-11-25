@@ -64,7 +64,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
         return s;
     }
-
+    
 	public Object findCommand(MOB mob, Vector commands)
 	{
 		if((mob==null)
@@ -94,6 +94,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         &&(!CMSecurity.isDisabled("ABILITY_"+A.ID().toUpperCase())))
 			return A;
 
+        if(isAnEvokeWord(mob,firstWord))
+            return null;
+        
 		Social social=CMLib.socials().FetchSocial(commands,true);
 		if(social!=null) return social;
 
@@ -217,6 +220,27 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return false;
 	}
 
+    public boolean isAnEvokeWord(MOB mob, String word)
+    {
+        if(mob==null) return false;
+        Ability A=null;
+        HashSet done=new HashSet();
+        for(int i=0;i<mob.numAbilities();i++)
+        {
+            A=mob.fetchAbility(i);
+            if((A!=null)
+            &&(A.triggerStrings()!=null)
+            &&(!done.contains(A.triggerStrings())))
+            {
+                done.add(A.triggerStrings());
+                for(int t=0;t<A.triggerStrings().length;t++)
+                    if(word.equals(A.triggerStrings()[t]))
+                        return true;
+            }
+        }
+        return false;
+    }
+    
 	public Ability getToEvoke(MOB mob, Vector commands)
 	{
 		String evokeWord=((String)commands.elementAt(0)).toUpperCase();

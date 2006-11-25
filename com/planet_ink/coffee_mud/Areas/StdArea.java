@@ -600,12 +600,12 @@ public class StdArea implements Area
 		}
 		return null;
 	}
-	public boolean inMetroArea(Area A)
+	public boolean inMyMetroArea(Area A)
 	{
 		if(A==this) return true;
 		if(getNumChildren()==0) return false;
 		for(int i=0;i<getNumChildren();i++)
-			if(getChild(i).inMetroArea(A))
+			if(getChild(i).inMyMetroArea(A))
 				return true;
 		return false;
 	}

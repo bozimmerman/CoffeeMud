@@ -78,7 +78,7 @@ public class WizEmote extends StdCommand
                     Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()!=null)
                     &&(S.mob().location()!=null)
-                    &&(A.inMetroArea(S.mob().location().getArea()))
+                    &&(A.inMyMetroArea(S.mob().location().getArea()))
                     &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
                         S.stdPrintln("^w"+msg+"^?");
                 }

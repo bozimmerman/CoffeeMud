@@ -449,7 +449,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public void fillInAreaRooms() { }
 
-	public boolean inMetroArea(Area A)
+	public boolean inMyMetroArea(Area A)
 	{
 		if(A==this) return true;
 		return false;

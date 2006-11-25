@@ -233,7 +233,7 @@ public class Conquerable extends Arrest
 					if((M!=null)
 					&&(M.isMonster())
 					&&(M.getStartRoom()!=null)
-					&&(myArea.inMetroArea(M.getStartRoom().getArea()))
+					&&(myArea.inMyMetroArea(M.getStartRoom().getArea()))
 					&&(M.getClanID().equals(holdingClan)))
 						M.setClanID("");
 				}
@@ -280,7 +280,7 @@ public class Conquerable extends Arrest
                 &&(I.owner() instanceof MOB)
                 &&(((MOB)I.owner()).isMonster())
                 &&(CMLib.flags().isInTheGame((MOB)I.owner(),true))
-                &&(A.inMetroArea(((MOB)I.owner()).getStartRoom().getArea()))
+                &&(A.inMyMetroArea(((MOB)I.owner()).getStartRoom().getArea()))
                 &&((holdingClan.length()==0)||(I.clanID().equals(holdingClan)))
                 &&(I.ciType()!=ClanItem.CI_PROPAGANDA))
                     itemControlPoints+=((MOB)((Item)I).owner()).envStats().level();
@@ -355,7 +355,7 @@ public class Conquerable extends Arrest
 							String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
 							String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
 							Room R=CMLib.map().getRoom(roomID);
-							if((R!=null)&&(A.inMetroArea(R.getArea())))
+							if((R!=null)&&(A.inMyMetroArea(R.getArea())))
 							{
 								String iClass=CMLib.xml().getValFromPieces(roomData,"ICLAS");
 								Item newItem=CMClass.getItem(iClass);
@@ -444,7 +444,7 @@ public class Conquerable extends Arrest
 						if(R==null)
                             deRegisterClanItem(i);
                         else
-						if(!A.inMetroArea(R.getArea()))
+						if(!A.inMyMetroArea(R.getArea()))
                             deRegisterClanItem(i);
                         else
 						if(I.amDestroyed())
@@ -574,7 +574,7 @@ public class Conquerable extends Arrest
 				if((M!=null)
 		        &&(M.isMonster())
 				&&(M.getStartRoom()!=null)
-				&&(A.inMetroArea(M.getStartRoom().getArea()))
+				&&(A.inMyMetroArea(M.getStartRoom().getArea()))
 				&&(!CMLib.flags().isAnimalIntelligence(M)))
 				{
 					if((M.getClanID().length()==0)
@@ -635,7 +635,7 @@ public class Conquerable extends Arrest
 			&&(msg.target() instanceof MOB)
 			&&(myArea!=null)
 			&&(((MOB)msg.target()).getStartRoom()!=null)
-			&&(myArea.inMetroArea(((MOB)msg.target()).getStartRoom().getArea())))
+			&&(myArea.inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea())))
 				msg.setValue(0);
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ORDER)
@@ -770,7 +770,7 @@ public class Conquerable extends Arrest
 					if((M!=null)
 					&&(M.isMonster())
 					&&(M.getStartRoom()!=null)
-					&&(myArea.inMetroArea(M.getStartRoom().getArea()))
+					&&(myArea.inMyMetroArea(M.getStartRoom().getArea()))
 					&&(!CMLib.flags().isAnimalIntelligence(M))
 					&&(M.getClanID().length()==0))
 						M.setClanID(holdingClan);
@@ -820,7 +820,7 @@ public class Conquerable extends Arrest
 				&&(I.ciType()==ClanItem.CI_FLAG))
 				{
 					Room R=CMLib.map().roomLocation(I);
-					if((R!=null)&&((A==null)||(A.inMetroArea(R.getArea()))))
+					if((R!=null)&&((A==null)||(A.inMyMetroArea(R.getArea()))))
 						return true;
 				}
 			}
@@ -858,7 +858,7 @@ public class Conquerable extends Arrest
 							if((M!=null)
 							&&(M.isMonster())
 							&&(M.getStartRoom()!=null)
-							&&(myArea.inMetroArea(M.getStartRoom().getArea()))
+							&&(myArea.inMyMetroArea(M.getStartRoom().getArea()))
 							&&(M.getClanID().equals(clanID)))
 								amount+=M.envStats().level();
 						}
@@ -957,7 +957,7 @@ public class Conquerable extends Arrest
 						killer=killer.amFollowing();
                     }
 						
-					if(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))
+					if(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 					{ // a native was killed
 						if((!killer.getClanID().equals(holdingClan))
                         &&(flagFound((Area)myHost,killer.getClanID())))
@@ -1006,7 +1006,7 @@ public class Conquerable extends Arrest
                 Clan C=CMLib.clans().getClan(msg.source().getClanID());
                 if((C!=null)
                 &&(C.getGovernment()==Clan.GVT_THEOCRACY)
-                &&(((Area)myHost).inMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
+                &&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
                 &&(!msg.source().getClanID().equals(holdingClan))
                 &&(flagFound((Area)myHost,msg.source().getClanID())))
                 {
@@ -1019,7 +1019,7 @@ public class Conquerable extends Arrest
 			&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 			&&(msg.source().isMonster())
 			&&(msg.source().getStartRoom()!=null)
-			&&(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))
+			&&(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source()))
 			&&(!msg.source().getClanID().equals(holdingClan))))
 			   msg.source().setClanID(holdingClan);
@@ -1035,7 +1035,7 @@ public class Conquerable extends Arrest
 			&&(msg.source().getClanID().length()>0)
 			&&(!msg.source().getClanID().equals(holdingClan))
 			&&(((Room)msg.target()).numInhabitants()>0)
-			&&(myArea.inMetroArea(((Room)msg.target()).getArea())))
+			&&(myArea.inMyMetroArea(((Room)msg.target()).getArea())))
 			{
 				Clan C=CMLib.clans().getClan(holdingClan);
 				if(C==null)
@@ -1086,7 +1086,7 @@ public class Conquerable extends Arrest
 						ClanItem I=(ClanItem)clanItems.elementAt(i);
 						Room R=CMLib.map().roomLocation(I);
 						if((R!=null)
-						&&(((Area)myHost).inMetroArea(R.getArea()))
+						&&(((Area)myHost).inMyMetroArea(R.getArea()))
 						&&(!((Item)I).amDestroyed())
 						&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent(I))))
 						{
@@ -1098,7 +1098,7 @@ public class Conquerable extends Arrest
 							{
 								MOB M=(MOB)((Item)I).owner();
 								if((M.getStartRoom()!=null)
-								&&(myArea.inMetroArea(M.getStartRoom().getArea())))
+								&&(myArea.inMyMetroArea(M.getStartRoom().getArea())))
 								{
 									data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
 									data.append(CMLib.xml().convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));

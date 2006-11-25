@@ -293,10 +293,13 @@ public class Play extends StdAbility
 		else
 		{
 			int dir=this.getCorrectDirToOriginRoom(R,v);
+            String songOf=songOf();
+            if(!songOf.equals(this.instrumentName()))
+                songOf="the "+songOf;
 			if(dir>=0)
-				msgStr="^SYou hear the "+songOf()+" being played "+Directions.getInDirectionName(dir)+"!^?";
+				msgStr="^SYou hear "+songOf+" being played "+Directions.getInDirectionName(dir)+"!^?";
 			else
-				msgStr="^SYou hear the "+songOf()+" being played nearby!^?";
+				msgStr="^SYou hear "+songOf+" being played nearby!^?";
 		}
 		return msgStr;
 	}

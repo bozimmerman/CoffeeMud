@@ -380,7 +380,7 @@ public class StdLawBook extends StdItem
                                     switch(Law.ACTIONMASK_CODES[selectedMask])
                                     {
                                     case Law.ACTIONMASK_DETAIN:
-                                        if(!CMLib.law().getLegalObject(A).inMetroArea(mob.location().getArea()))
+                                        if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
                                         {
                                             mob.tell("You can not add this room as a detention center, as it is not in the area.");
                                             abort=true;
@@ -1146,7 +1146,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(!CMLib.law().getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a release room, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
@@ -1234,7 +1234,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(!CMLib.law().getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a jail, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))

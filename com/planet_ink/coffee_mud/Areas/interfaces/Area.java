@@ -114,7 +114,7 @@ public interface Area extends Environmental
     public void addMetroRoomnumber(String roomID);
     public void delMetroRoomnumber(String roomID);
 	public int metroSize();
-	public boolean inMetroArea(Area A);
+	public boolean inMyMetroArea(Area A);
 	public Room getRandomMetroRoom();
 	public Vector getMetroCollection();
 	

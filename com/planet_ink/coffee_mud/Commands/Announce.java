@@ -38,11 +38,11 @@ public class Announce extends StdCommand
 	private String[] access={"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"};
 	public String[] getAccessWords(){return access;}
 
-	public void sendAnnounce(String announcement, Session S)
+	public void sendAnnounce(MOB from, String announcement, Session S)
 	{
 	  	StringBuffer Message=new StringBuffer("");
-        if((S.mob()!=null)&&(S.mob().playerStats()!=null)&&(S.mob().playerStats().announceMessage().length()>0))
-            Message.append(S.mob().playerStats().announceMessage()+" '"+announcement+"'.^.^N");
+        if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().announceMessage().length()>0))
+            Message.append(from.playerStats().announceMessage()+" '"+announcement+"'.^.^N");
         else
         {
     	  	int alignType=2;
@@ -113,7 +113,7 @@ public class Announce extends StdCommand
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE")))
-						sendAnnounce(text,S);
+						sendAnnounce(mob,text,S);
 				}
 			}
 			else
@@ -127,7 +127,7 @@ public class Announce extends StdCommand
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))
 					&&(CMLib.english().containsString(S.mob().name(),(String)commands.elementAt(1))))
 					{
-						sendAnnounce(CMParms.combine(commands,2),S);
+						sendAnnounce(mob,CMParms.combine(commands,2),S);
 						found=true;
 						break;
 					}

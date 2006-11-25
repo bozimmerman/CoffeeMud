@@ -480,7 +480,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		Room R=accused.location();
 
-		if((A!=null)&&(!A.inMetroArea(R.getArea())))
+		if((A!=null)&&(!A.inMyMetroArea(R.getArea())))
 			return null;
 		MOB M=getAWitnessHere(R,accused);
 		if(M!=null) return M;
@@ -516,7 +516,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		if((M!=null)&&(M.isMonster())&&(M.location()!=null))
 		{
-			if((myArea!=null)&&(!myArea.inMetroArea(M.location().getArea()))) return false;
+			if((myArea!=null)&&(!myArea.inMyMetroArea(M.location().getArea()))) return false;
 
 			if(isAnyKindOfOfficer(laws,M)
 			&&(!isBusyWithJustice(laws,M))
@@ -540,7 +540,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((M!=null)
 			&&(M!=criminal)
 			&&(M.location()!=null)
-			&&(myArea.inMetroArea(M.location().getArea()))
+			&&(myArea.inMyMetroArea(M.location().getArea()))
 			&&((victim==null)||(M!=victim))
 			&&(isElligibleOfficer(laws,M,myArea))
 			&&(CMLib.flags().canBeSeenBy(criminal,M)))
@@ -556,7 +556,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		Room R=criminal.location();
 		if(R==null) return null;
-		if((myArea!=null)&&(!myArea.inMetroArea(R.getArea()))) return null;
+		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea()))) return null;
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if(M==null)
 			for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
@@ -575,7 +575,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		Room R=criminal.location();
 		if(R==null) return null;
-		if((myArea!=null)&&(!myArea.inMetroArea(R.getArea()))) return null;
+		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea()))) return null;
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if(M!=null) return M;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -1220,7 +1220,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(CMSecurity.isDebugging("ARREST")) Log.debugOut("ARREST",mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is not here.");
 		    return false;
 		}
-		if((myArea!=null)&&(!myArea.inMetroArea(mob.location().getArea())))
+		if((myArea!=null)&&(!myArea.inMyMetroArea(mob.location().getArea())))
 		{
 			if(CMSecurity.isDebugging("ARREST")) Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is not in the area.");
 		    return false;

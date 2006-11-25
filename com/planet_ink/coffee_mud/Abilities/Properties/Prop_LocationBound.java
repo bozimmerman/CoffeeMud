@@ -111,9 +111,9 @@ public class Prop_LocationBound extends Property
 			        return false;
 		        }
 	            Area A=CMLib.map().getArea(text());
-	            if((A!=null)&&(!A.inMetroArea(whereTo.getArea())))
+	            if((A!=null)&&(!A.inMyMetroArea(whereTo.getArea())))
 	            {
-			        if(!A.inMetroArea(R.getArea()))
+			        if(!A.inMyMetroArea(R.getArea()))
 			        {
 				        if(affected instanceof MOB)
 				        {

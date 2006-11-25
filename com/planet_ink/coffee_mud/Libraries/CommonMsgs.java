@@ -42,13 +42,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     protected final static int LOOK_NORMAL=1;
     protected final static int LOOK_BRIEFOK=2;
     protected String unknownCommand(){return "Huh?";}
+    protected String unknownInvoke(){return "You don't know how to @x1 that.";}
 
 	public boolean handleUnknownCommand(MOB mob, Vector command)
 	{
 		if(mob==null) return false;
 		Room R=mob.location();
-		if(R==null){ mob.tell(unknownCommand()); return false;}
-		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,unknownCommand(),CMParms.combine(command,0),null);
+        String msgStr=unknownCommand();
+		if(R==null){ mob.tell(msgStr); return false;}
+        if((command.size()>0)&&(CMLib.english().isAnEvokeWord(mob,((String)command.firstElement()).toUpperCase())))
+            msgStr=CMStrings.replaceAll(unknownInvoke(),"@x1",((String)command.firstElement()).toLowerCase());
+		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,CMParms.combine(command,0),null);
 		if(!R.okMessage(mob,msg)) return false;
 		R.send(mob,msg);
 		return true;

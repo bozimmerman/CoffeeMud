@@ -46,7 +46,7 @@ public class ResetWhole extends StdBehavior
 		if(!msg.source().isMonster())
 		{
 			if((E instanceof Area)
-			&&(((Area)E).inMetroArea(msg.source().location().getArea())))
+			&&(((Area)E).inMyMetroArea(msg.source().location().getArea())))
 				lastAccess=System.currentTimeMillis();
 			else
 			if((E instanceof Room)

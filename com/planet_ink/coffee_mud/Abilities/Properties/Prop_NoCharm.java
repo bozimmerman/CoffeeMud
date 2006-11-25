@@ -45,7 +45,7 @@ public class Prop_NoCharm extends Property
 		&&(msg.source()!=null)
 		&&(msg.source().location()!=null)
 		&&((msg.source().location()==affected)
-		   ||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea())))
+		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea())))
 		   ||(msg.target()==affected))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
