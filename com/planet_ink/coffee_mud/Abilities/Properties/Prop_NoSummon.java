@@ -33,7 +33,13 @@ public class Prop_NoSummon extends Property
 	public String ID() { return "Prop_NoSummon"; }
 	public String name(){ return "Summon Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-
+	protected boolean nonAggroOK=false;
+    
+    public void setMiscText(String text)
+    {
+        nonAggroOK=CMParms.parse(text.toUpperCase()).contains("ALLOWNONAGGR");
+        
+    }
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -45,6 +51,7 @@ public class Prop_NoSummon extends Property
 		&&(msg.source().location()!=null)
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea()))))
+        &&((!nonAggroOK)||(!(msg.target() instanceof MOB))||(!CMLib.flags().isAggressiveTo((MOB)msg.target(),null)))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 		{
             Ability A=(Ability)msg.tool();

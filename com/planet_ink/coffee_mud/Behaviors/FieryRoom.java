@@ -53,11 +53,12 @@ public class FieryRoom
         newDisplay = CMParms.getParmStr(newParms, "Title", "A Charred Ruin");
         newDesc = CMParms.getParmStr(newParms, "Description", "Whatever was once here is now nothing more than ash.");
         directDamage = CMParms.getParmInt(newParms, "damage", 10);
-        if (newParms.toUpperCase().indexOf("NOSTOP") > 0) noStop = true;
-        if (newParms.toUpperCase().indexOf("NONPC") > 0) noNpc = true;
-        if (newParms.toUpperCase().indexOf("NOFIRETEXT") > 0) noFireText = true;
         eqChance = CMParms.getParmInt(newParms, "eqchance", 0);
         burnTicks = CMParms.getParmInt(newParms, "burnticks", 12);
+        Vector V=CMParms.parse(newParms.toUpperCase());
+        noStop=(V.contains("NOSTOP"));
+        noNpc=(V.contains("NONPC"));
+        noFireText=(V.contains("NOFIRETEXT"));
         setFireTexts();
     }
 

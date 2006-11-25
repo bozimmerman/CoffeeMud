@@ -1576,7 +1576,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(!CMLib.flags().aliveAwakeMobile(msg.source(),true))
 			return;
 
-		if(msg.source().location()==null) return;
+        Room R=msg.source().location();
+		if(R==null) return;
 
 		if((msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
@@ -1633,7 +1634,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if(isTheJudge(laws,(MOB)msg.target()))
 			{
-				Room R=msg.source().location();
 				if(!msg.source().isMonster())
 				for(int i=0;i<R.numInhabitants();i++)
 				{
@@ -1799,7 +1799,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				}
 
 				if((laws.basicCrimes().containsKey("TRESPASSING"))
-				&&(CMLib.masking().maskCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),msg.source())))
+				&&((CMLib.masking().maskCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),msg.source()))
+                    ||(msg.source().isMonster()
+                        &&(msg.source().getStartRoom()!=null)
+                        &&(msg.source().getStartRoom().getArea()!=R.getArea())
+                        &&(CMLib.flags().isAggressiveTo(msg.source(),null))
+                        &&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),msg.source())))))
 				{
 					String[] info=(String[])laws.basicCrimes().get("TRESPASSING");
 					fillOutWarrant(msg.source(),
