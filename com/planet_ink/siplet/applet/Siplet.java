@@ -205,7 +205,11 @@ public class Siplet extends Applet
                 catch(Exception e)
                 {
                     if(e instanceof com.jcraft.jzlib.ZStreamException)
+                    {
+                        disconnectFromURL();
+                        try{Thread.sleep(100);}catch(Exception e2){}
                         connectToURL();
+                    }
                     else
                     {
                         disconnectFromURL();

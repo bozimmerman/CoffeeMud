@@ -61,6 +61,12 @@ public interface Quest extends Tickable
 
     public void stepQuest();
     
+    public void setCopy(boolean truefalse);
+    public boolean isCopy();
+    public void setSpawnable(boolean truefalse);
+    public boolean isSpawnable();
+    
+    
 	// these refer the objects designated during the quest
 	public int wasQuestMob(String name);
 	public int wasQuestItem(String name);
@@ -121,7 +127,7 @@ public interface Quest extends Tickable
 	public void setStat(String code, String val);
 	
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
-										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL"};
+										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
 												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE"};

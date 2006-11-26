@@ -66,8 +66,25 @@ public class QuestMaker extends StdWebMacro
         else
         if(parms.containsKey("BACK"))
         {
-            // this should remove the previous data from the qmstate, re-set the
-            // QMDISPLAY parm to its previous value, and return.
+            Vector V=CMLib.xml().parseAllXML(qState);
+            if(V.size()>0)
+            {
+                StringBuffer newBuf=new StringBuffer("");
+                XMLLibrary.XMLpiece tagsFrom=(XMLLibrary.XMLpiece)V.lastElement();
+                for(int v=0;v<V.size()-1;v++)
+                    newBuf.append("<STATE>"+((XMLLibrary.XMLpiece)V.elementAt(v)).value+"</STATE>");
+                httpReq.addRequestParameters("QMSTATE",qState+newBuf.toString());
+                if(tagsFrom.contents!=null)
+                for(int t=0;t<tagsFrom.contents.size();t++)
+                {
+                    XMLLibrary.XMLpiece tag=(XMLLibrary.XMLpiece)tagsFrom.contents.elementAt(t);
+                    String tagName=tag.tag;
+                    String tagValue=CMLib.xml().restoreAngleBrackets(tag.value);
+                    httpReq.addRequestParameters(tagName,tagValue);
+                }
+                // this should remove the previous data from the qmstate, re-set the
+                // QMDISPLAY parm to its previous value, and return.
+            }
         }
         return "";
     }

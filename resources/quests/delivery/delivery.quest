@@ -1,8 +1,8 @@
 #set the quest name
 set name delivery
 
-# this one runs every 10 mins
-set wait 150
+# this one runs every 2 mins
+set wait 30
 set interval 1
 
 # dont run this quest if any other quest is running.
@@ -10,6 +10,10 @@ set interval 1
 # the high level will mean any other quests can 
 # run though
 set runlevel 10
+
+#this quest always runs as a copy of itself.
+#so we set the spawnable flag to true
+set spawnable true
 
 import items quests/delivery/note.cmare
 #import our secret note
@@ -19,6 +23,8 @@ set area any
 
 quiet
 # this makes sure we don't get a final error message
+# normally not necessary, but since this runs so often,
+# error messages will be fairly common.
 
 set mob ANY MASK=+INT 6
 # load up any mob from the above area.  Will set a room!

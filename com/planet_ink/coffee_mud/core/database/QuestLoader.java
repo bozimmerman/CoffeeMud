@@ -111,6 +111,7 @@ public class QuestLoader
 		for(int m=0;m<quests.size();m++)
 		{
 			Quest Q=(Quest)quests.elementAt(m);
+            if(Q.isCopy()) continue;
 			try{
 				D.update(
 				"INSERT INTO CMQUESTS ("
