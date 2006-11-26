@@ -122,7 +122,7 @@ public interface Quest extends Tickable
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
-												 "ROOMGROUPAROUND","LOCALEGROUPAROUND"};
+												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE"};
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};
 	
