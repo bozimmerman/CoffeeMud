@@ -58,7 +58,9 @@ public interface Quest extends Tickable
 	// mobs to their previous state.  If the quest is autorandom, it 
 	// will restart the waiting process
 	public void stopQuest();
-	
+
+    public void stepQuest();
+    
 	// these refer the objects designated during the quest
 	public int wasQuestMob(String name);
 	public int wasQuestItem(String name);

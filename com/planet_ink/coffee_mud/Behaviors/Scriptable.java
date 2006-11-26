@@ -6375,6 +6375,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					scriptableError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
 				break;
 			}
+            case 69: // MPSTEPQUEST
+            {
+                s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+                Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
+                if(Q!=null) Q.stepQuest();
+                else
+                    scriptableError(scripted,"MPSTEPQUEST","Unknown","Quest: "+s);
+                break;
+            }
 			case 23: //MPSTARTQUEST
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());

@@ -2892,7 +2892,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             ticksRemaining--;
             if(ticksRemaining<0)
             {
-                stopQuest();
+                stepQuest();
                 if(!setWaitRemaining()) 
                     return false;
             }
