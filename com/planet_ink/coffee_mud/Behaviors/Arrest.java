@@ -1487,6 +1487,83 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!CMSecurity.isDisabled("ARREST")));
 	}
 
+    public void testEntryLaw(Law laws, Area myArea, MOB testMOB, Room R)
+    {
+        if((laws.basicCrimes().containsKey("NUDITY"))
+        &&(!testMOB.isMonster())
+        &&(testMOB.fetchFirstWornItem(Item.WORN_LEGS)==null)
+        &&(testMOB.getWearPositions(Item.WORN_LEGS)>0)
+        &&(testMOB.fetchFirstWornItem(Item.WORN_WAIST)==null)
+        &&(testMOB.getWearPositions(Item.WORN_WAIST)>0)
+        &&(testMOB.fetchFirstWornItem(Item.WORN_ABOUT_BODY)==null)
+        &&(testMOB.getWearPositions(Item.WORN_ABOUT_BODY)>0))
+        {
+            String info[]=(String[])laws.basicCrimes().get("NUDITY");
+            fillOutWarrant(testMOB,
+                            laws,
+                           myArea,
+                           null,
+                           info[Law.BIT_CRIMELOCS],
+                           info[Law.BIT_CRIMEFLAGS],
+                           info[Law.BIT_CRIMENAME],
+                           info[Law.BIT_SENTENCE],
+                           info[Law.BIT_WARNMSG]);
+        }
+        
+
+        Item w=null;
+        if((laws.basicCrimes().containsKey("ARMED"))
+        &&((!testMOB.isMonster())||(laws.arrestMobs()))
+        &&((w=testMOB.fetchWieldedItem())!=null)
+        &&(w instanceof Weapon)
+        &&(((Weapon)w).weaponClassification()!=Weapon.CLASS_NATURAL)
+        &&(((Weapon)w).weaponClassification()!=Weapon.CLASS_HAMMER)
+        &&(((Weapon)w).weaponClassification()!=Weapon.CLASS_STAFF)
+        &&(CMLib.flags().isSeen(w))
+        &&(!CMLib.flags().isHidden(w))
+        &&(!CMLib.flags().isInvisible(w)))
+        {
+            String info[]=(String[])laws.basicCrimes().get("ARMED");
+            if((testMOB.session()==null)
+            ||(((System.currentTimeMillis()-testMOB.session().getLastNPCFight())>30000)
+                &&((System.currentTimeMillis()-testMOB.session().getLastPKFight())>30000)))
+            {
+                fillOutWarrant(testMOB,
+                               laws,
+                               myArea,
+                               null,
+                               info[Law.BIT_CRIMELOCS],
+                               info[Law.BIT_CRIMEFLAGS],
+                               info[Law.BIT_CRIMENAME],
+                               info[Law.BIT_SENTENCE],
+                               info[Law.BIT_WARNMSG]);
+            }
+        }
+        
+        if((laws.basicCrimes().containsKey("TRESPASSING"))
+        &&((CMLib.masking().maskCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),testMOB))
+            ||(testMOB.isMonster()
+                &&(testMOB.getStartRoom()!=null)
+                &&(testMOB.getStartRoom().getArea()!=R.getArea())
+                &&(CMLib.flags().isPossiblyAggressive(testMOB))
+                &&((testMOB.amFollowing()==null)
+                        ||((!testMOB.amFollowing().isMonster())&&(testMOB.amFollowing().location()==testMOB.location())))
+                &&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),testMOB)))))
+        {
+            String[] info=(String[])laws.basicCrimes().get("TRESPASSING");
+            fillOutWarrant(testMOB,
+                            laws,
+                           myArea,
+                           null,
+                           info[Law.BIT_CRIMELOCS],
+                           info[Law.BIT_CRIMEFLAGS],
+                           info[Law.BIT_CRIMENAME],
+                           info[Law.BIT_SENTENCE],
+                           info[Law.BIT_WARNMSG]);
+        }
+    }
+    
+    
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
@@ -1567,11 +1644,28 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return;
 		}
 
-		if((msg.source().isMonster())&&(!laws.arrestMobs()))
-			return;
-
 		if(isAnyKindOfOfficer(laws,msg.source())||(isTheJudge(laws,msg.source())))
+        {
+            if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+            &&(msg.target() instanceof Room))
+            {
+                Room R=(Room)msg.target();
+                MOB M=null;
+                for(int m=0;m<R.numInhabitants();m++)
+                {
+                    M=R.fetchInhabitant(m);
+                    if((M!=null)
+                    &&(M!=msg.source())
+                    &&(!isAnyKindOfOfficer(laws,M))
+                    &&(!isTheJudge(laws,M)))
+                        testEntryLaw(laws,myArea,M,R);
+                }
+            }
 			return;
+        }
+
+        if((msg.source().isMonster())&&(!laws.arrestMobs()))
+            return;
 
 		if(!CMLib.flags().aliveAwakeMobile(msg.source(),true))
 			return;
@@ -1747,77 +1841,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		    }
 			if(msg.sourceMinor()==CMMsg.TYP_ENTER)
-			{
-				if((laws.basicCrimes().containsKey("NUDITY"))
-				&&(!msg.source().isMonster())
-				&&(msg.source().fetchFirstWornItem(Item.WORN_LEGS)==null)
-				&&(msg.source().getWearPositions(Item.WORN_LEGS)>0)
-				&&(msg.source().fetchFirstWornItem(Item.WORN_WAIST)==null)
-				&&(msg.source().getWearPositions(Item.WORN_WAIST)>0)
-				&&(msg.source().fetchFirstWornItem(Item.WORN_ABOUT_BODY)==null)
-				&&(msg.source().getWearPositions(Item.WORN_ABOUT_BODY)>0))
-				{
-					String info[]=(String[])laws.basicCrimes().get("NUDITY");
-					fillOutWarrant(msg.source(),
-									laws,
-								   myArea,
-								   null,
-								   info[Law.BIT_CRIMELOCS],
-								   info[Law.BIT_CRIMEFLAGS],
-								   info[Law.BIT_CRIMENAME],
-								   info[Law.BIT_SENTENCE],
-								   info[Law.BIT_WARNMSG]);
-				}
-
-				Item w=null;
-				if((laws.basicCrimes().containsKey("ARMED"))
-				&&((!msg.source().isMonster())||(laws.arrestMobs()))
-				&&((w=msg.source().fetchWieldedItem())!=null)
-				&&(w instanceof Weapon)
-				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_NATURAL)
-				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_HAMMER)
-				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_STAFF)
-				&&(CMLib.flags().isSeen(w))
-				&&(!CMLib.flags().isHidden(w))
-				&&(!CMLib.flags().isInvisible(w)))
-				{
-					String info[]=(String[])laws.basicCrimes().get("ARMED");
-					if((msg.source().session()==null)
-					||(((System.currentTimeMillis()-msg.source().session().getLastNPCFight())>30000)
-						&&((System.currentTimeMillis()-msg.source().session().getLastPKFight())>30000)))
-					{
-						fillOutWarrant(msg.source(),
-										laws,
-									   myArea,
-									   null,
-									   info[Law.BIT_CRIMELOCS],
-									   info[Law.BIT_CRIMEFLAGS],
-									   info[Law.BIT_CRIMENAME],
-									   info[Law.BIT_SENTENCE],
-									   info[Law.BIT_WARNMSG]);
-					}
-				}
-
-				if((laws.basicCrimes().containsKey("TRESPASSING"))
-				&&((CMLib.masking().maskCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),msg.source()))
-                    ||(msg.source().isMonster()
-                        &&(msg.source().getStartRoom()!=null)
-                        &&(msg.source().getStartRoom().getArea()!=R.getArea())
-                        &&(CMLib.flags().isAggressiveTo(msg.source(),null))
-                        &&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),msg.source())))))
-				{
-					String[] info=(String[])laws.basicCrimes().get("TRESPASSING");
-					fillOutWarrant(msg.source(),
-									laws,
-								   myArea,
-								   null,
-								   info[Law.BIT_CRIMELOCS],
-								   info[Law.BIT_CRIMEFLAGS],
-								   info[Law.BIT_CRIMENAME],
-								   info[Law.BIT_SENTENCE],
-								   info[Law.BIT_WARNMSG]);
-				}
-			}
+                testEntryLaw(laws,myArea,msg.source(),R);
+            
 			for(int i=0;i<laws.otherCrimes().size();i++)
 			{
 				Vector V=(Vector)laws.otherCrimes().elementAt(i);

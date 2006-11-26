@@ -28,8 +28,10 @@ public class Siplet extends Applet
     
     public final static long serialVersionUID=6;
     public static final float VERSION_MAJOR=(float)2.0;
-    public static final long  VERSION_MINOR=3;
+    public static final long  VERSION_MINOR=4;
     protected StringBuffer buf=new StringBuffer("");
+    protected String lastURL="coffeemud.homeip.net";
+    protected int lastPort=23;
     protected Socket sock=null;
     protected InputStream rawin=null;
     protected BufferedReader[] in;
@@ -78,12 +80,14 @@ public class Siplet extends Applet
         g.drawString(buffer.toString(), 5, 15);
     }
 
-    public boolean connectToURL(){ return connectToURL("coffeemud.homeip.net",23);}
+    public boolean connectToURL(){ return connectToURL(lastURL,lastPort);}
     public boolean connectToURL(String url, int port)
     {
         connected=false;
         try
         {
+            lastURL=url;
+            lastPort=port;
             //addItem("connecting to "+url+":"+port+" ");
             sock=new Socket(InetAddress.getByName(url),port);
             rawin=sock.getInputStream();
@@ -104,7 +108,6 @@ public class Siplet extends Applet
         }
         return true;
     }
-    
     public void disconnectFromURL()
     {
         connected=false;
@@ -201,8 +204,13 @@ public class Siplet extends Applet
                 }
                 catch(Exception e)
                 {
-                    disconnectFromURL();
-                    return;
+                    if(e instanceof com.jcraft.jzlib.ZStreamException)
+                        connectToURL();
+                    else
+                    {
+                        disconnectFromURL();
+                        return;
+                    }
                 }
             }
             if(sock.isClosed()) 

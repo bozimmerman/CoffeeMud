@@ -178,27 +178,27 @@ public class Equipment extends StdCommand
 	                            {
 	                                if(msg.length()==0) msg.append("nothing.");
 	                                if(mob==seer)
-	                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N");
+	                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N");
 	                                else
 	                                    msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
-	                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");                  
+	                                             name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N.");                  
 	                            }
 	                            else
 	                            if(wornCode==Item.WORN_WIELD)
 	                            {
 	                                if(msg.length()==0) msg.append("nothing.");
 	                                if(mob==seer)
-	                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N.");
+	                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N.");
 	                                else
 	                                    msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
-	                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");
+	                                             name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N.");
 	                            }
 	                            else
 	                            {
 	                                if(mob==seer)
-	                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
+	                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N,");
 	                                else
-	                                    msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
+	                                    msg.append(header+name.trim()+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N,");
 	                            }
 	                        }
 	                        else
@@ -206,16 +206,16 @@ public class Equipment extends StdCommand
 	                            String name=thisItem.name();
 	                            if(name.length()>53) name=name.substring(0,50)+"...";
 	    						if(mob==seer)
-	    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+	    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
 	    						else
-	    							msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+	    							msg.append(header+name.trim()+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
 	                        }
 	                        shownThisLoc++;
 						}
 						else
 						if(seer==mob)
 						{
-							msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
+							msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
 							shownThisLoc++;
 						}
 					}

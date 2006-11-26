@@ -1,5 +1,6 @@
 <HTML>
 <HEAD>
+<TITLE>Siplet</TITLE>
 <LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
 <SCRIPT LANGUAGE=JavaScript src="floater.js"></SCRIPT>
 <script language=JavaScript>
@@ -39,7 +40,7 @@ function openWindow()
 	var wname='dwindow'+windowsOpen;
     var thespan=document.getElementById("DWINDOW");
     thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname);
-    loadwindow('term.cmvp',730,355,wname);
+    loadwindow('term.cmvp?wnum='+currentWindow,730,355,wname);
 }
 
 function rotateWindow()
