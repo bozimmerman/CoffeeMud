@@ -165,24 +165,21 @@ public class Score extends Affect
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
-			msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and have been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 			if((!CMSecurity.isDisabled("LEVELS"))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
-				if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-				&&(mob.baseEnvStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
-					msg.append("You will not gain further levels through experience.\n\r");
+				if(((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
+					&&(mob.baseEnvStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+				||(mob.getExpNeededLevel()==Integer.MAX_VALUE))
+					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, "+(mob.getExpNeededDelevel())+" over your last level.\n\r");
 				else
-				if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
-					msg.append("You will not gain further levels through experience.\n\r");
-				else
-					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? ^<HELP^>experience points^</HELP^> to advance to the next level.\n\r");
+					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and need "+(mob.getExpNeededLevel())+" to advance.\n\r");
 			}
+			else
+				msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>.\n\r");
 		}
-		else
-			msg.append("You been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
-			
+		msg.append("You have been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
 		    String factionID=(String)e.nextElement();

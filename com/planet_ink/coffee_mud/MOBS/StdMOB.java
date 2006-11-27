@@ -118,6 +118,24 @@ public class StdMOB implements MOB
 	public int getPractices(){return Practices;}
 	public int getExperience(){return Experience;}
 	public int getExpNextLevel(){return CMLib.leveler().getLevelExperience(baseEnvStats().level());}
+	public int getExpPrevLevel()
+	{
+		if(baseEnvStats().level()<=1) return 0;
+		int neededLowest=CMLib.leveler().getLevelExperience(baseEnvStats().level()-2);
+		return neededLowest;
+	}
+	public int getExpNeededDelevel()
+	{
+		if(baseEnvStats().level()<=1) return 0;
+		if((CMSecurity.isDisabled("EXPERIENCE"))
+		||(charStats().getCurrentClass().expless())
+		||(charStats().getMyRace().expless()))
+		    return 0;
+		int ExpPrevLevel=getExpPrevLevel();
+		if(ExpPrevLevel>getExperience())
+			ExpPrevLevel=getExperience()-1000;
+		return getExperience()-ExpPrevLevel;
+	}
 	public int getExpNeededLevel()
 	{
 		if(!isMonster())

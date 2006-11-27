@@ -177,6 +177,8 @@ public interface MOB
 	public int getExperience();
 	public int getExpNextLevel();
 	public int getExpNeededLevel();
+	public int getExpNeededDelevel();
+	public int getExpPrevLevel();
 	public int getTrains();
 	public int getMoney();
 	public void setAgeHours(long newVal);
