@@ -706,7 +706,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
@@ -727,7 +727,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
@@ -744,7 +744,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 					if((thisThang.container()==goodLocation)
 					&&(thisThang.displayText().length()>0)
-					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&(containsString(thisThang.displayText(),srchStr)))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -781,7 +781,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 	
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(thisThang.ID().equalsIgnoreCase(srchStr)
 						   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 						   ||(thisThang.name().equalsIgnoreCase(srchStr))))
@@ -813,7 +813,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 	
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 						   &&((!allFlag)||(thisThang.displayText().length()>0))))
 							if((--myOccurrance)<=0)
@@ -840,7 +840,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
 						&&(thisThang.displayText().length()>0)
-						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(containsString(thisThang.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
 								return thisThang;
