@@ -146,6 +146,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		String recipeName=CMParms.combine(commands,0);
 		Vector foundRecipe=null;
 		Vector matches=matchingRecipeNames(recipes,recipeName,true);
+        boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS");
 		for(int r=0;r<matches.size();r++)
 		{
 			Vector V=(Vector)matches.elementAt(r);
@@ -154,7 +155,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				String race=((String)V.elementAt(RCP_RACES)).trim();
 				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 				if(((autoGenerate>0)||(level<=xlevel(mob)))
-				&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
+				&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;
 					break;
