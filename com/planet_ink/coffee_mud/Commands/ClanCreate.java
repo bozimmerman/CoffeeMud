@@ -82,7 +82,7 @@ public class ClanCreate extends BaseClanner
 								{
 									String govt=mob.session().prompt(
 									"Now enter a political style for this clan. Choices are:\n\r"
-									+"TRIBE - Ruled by a boss who assigns underlings.\n\r"
+									+"GANG  - Ruled by a boss who assigns underlings.\n\r"
 									+"GUILD - Ruled by a numerous bosses who assign underlings.\n\r"
 									+"UNION - Ruled by an elected set of leaders and staff.\n\r"
 									+"FELLOWSHIP - All decisions and staff are set through the vote.\n\r"

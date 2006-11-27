@@ -924,6 +924,7 @@ public class Fey extends Language
 		hashwords.put("TREE","rhabuu");
 		hashwords.put("TRENCHCOAT","lufluu");
 		hashwords.put("TRIBE","galn'hiete");
+        hashwords.put("GANG","galn'hiete");
 		hashwords.put("TRUE","vosalb");
 		hashwords.put("TRUELY","vosalb-eh");
 		hashwords.put("TRUTH","vosuu");
