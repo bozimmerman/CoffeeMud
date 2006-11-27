@@ -92,6 +92,20 @@ public class Spell_Summon extends Spell
 		MOB target=null;
 		try
 		{
+            Session S=null;
+            for(int s=0;s<CMLib.sessions().size();s++)
+            {
+                S=CMLib.sessions().elementAt(s);
+                if((S!=null)
+                &&(S.mob()!=null)
+                &&(CMLib.flags().canAccess(mob,S.mob().location()))
+                &&(CMLib.english().containsString(S.mob().name(),areaName)))
+                {
+                    oldRoom=S.mob().location();
+                    break;
+                }
+            }
+            if(oldRoom==null)
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();

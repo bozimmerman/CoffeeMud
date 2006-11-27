@@ -57,7 +57,7 @@ public class Spell_DetectSentience extends Spell
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(CMStrings.padRight("Name",25)+"| ");
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,35);
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,35+this.getXMAXRANGELevel(mob));
 				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{

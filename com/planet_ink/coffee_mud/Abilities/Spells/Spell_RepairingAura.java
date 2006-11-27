@@ -74,30 +74,68 @@ public class Spell_RepairingAura extends Spell
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already repairing!");
 			return false;
 		}
+        if((!(target instanceof Item))&&(!(target instanceof MOB)))
+        {
+            mob.tell(target.name()+" would not be affected by this spell.");
+            return false;
+        }
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
+        Item realTarget=null;
+        if(target instanceof Item)
+            realTarget=(Item)target;
+        else
+        if(target instanceof MOB)
+        {
+            Vector choices=new Vector();
+            Vector inventory=new Vector();
+            MOB M=(MOB)target;
+            Item I=null;
+            for(int i=0;i<M.inventorySize();i++)
+            {
+                I=M.fetchInventory(i);
+                if((I!=null)&&(I.subjectToWearAndTear())&&(I.fetchEffect(ID())==null))
+                {
+                    if(I.amWearingAt(Item.IN_INVENTORY))
+                        inventory.addElement(I);
+                    else
+                        choices.addElement(I);
+                }
+            }
+            Vector chooseFrom=inventory;
+            if(choices.size()<3)
+                inventory.addAll(choices);
+            else
+                chooseFrom=choices;
+            if(chooseFrom.size()<1)
+                success=false;
+            else
+                realTarget=(Item)chooseFrom.elementAt(CMLib.dice().roll(1,chooseFrom.size(),-1));
+        }
 
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			if(mob.location().okMessage(mob,msg))
+            CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+			if(mob.location().okMessage(mob,msg)&&((msg2==null)||mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> attain(s) a repairing aura.");
-				beneficialAffect(mob,target,asLevel,0);
-				Spell_RepairingAura A=(Spell_RepairingAura)target.fetchEffect(ID());
+                if(msg2!=null) mob.location().send(mob,msg2);
+				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,"<T-NAME> attain(s) a repairing aura.");
+				beneficialAffect(mob,realTarget,asLevel,0);
+				Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
 				if(A!=null) A.adjustedLevel=adjustedLevel(mob,asLevel);
-				target.recoverEnvStats();
+                realTarget.recoverEnvStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

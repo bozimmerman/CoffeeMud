@@ -318,7 +318,7 @@ public class Skill_Disguise extends BardSkill
 				mob.location().send(mob,msg);
 				if(A==null)	beneficialAffect(mob,mob,asLevel,0);
 				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
-				if(A!=null) A.values[which]=how;
+				if(A!=null){ A.values[which]=how; A.makeLongLasting();}
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();
