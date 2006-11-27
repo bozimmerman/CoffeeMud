@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -114,6 +114,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
         bundling=false;
 		String startStr=null;
 		int completion=4;
+        boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS");
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl "+CMStrings.padRight("Type",10)+" Material required\n\r");
@@ -129,7 +130,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					String race=((String)V.elementAt(RCP_RACES)).trim();
 					String itype=CMStrings.capitalizeAndLower(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
 					if((level<xlevel(mob))
-					&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
+					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(itype,10)+" "+wood+" "+type+"\n\r");
 				}
 			}
@@ -146,7 +147,6 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		String recipeName=CMParms.combine(commands,0);
 		Vector foundRecipe=null;
 		Vector matches=matchingRecipeNames(recipes,recipeName,true);
-        boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS");
 		for(int r=0;r<matches.size();r++)
 		{
 			Vector V=(Vector)matches.elementAt(r);
