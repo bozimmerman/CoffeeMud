@@ -527,7 +527,18 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(location!=null)
 				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornReqCode);
 			else
-				target=mob.fetchCarried(container,targetName);
+            switch(wornReqCode)
+            {
+            case Item.WORNREQ_ANY:
+                target=mob.fetchInventory(container,targetName);
+                break;
+            case Item.WORNREQ_UNWORNONLY:
+                target=mob.fetchCarried(container,targetName);
+                break;
+            case Item.WORNREQ_WORNONLY:
+                target=mob.fetchWornItem(targetName);
+                break;
+            }
 		}
 		if(target!=null) targetName=target.name();
 		
