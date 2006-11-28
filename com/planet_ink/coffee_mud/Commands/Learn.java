@@ -50,19 +50,32 @@ public class Learn extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
+        String teacherName="";
+        if(commands.size()>1)
+        {
+            teacherName=" "+(String)commands.lastElement();
+            if(teacherName.length()>1)
+            {
+                commands.removeElementAt(commands.size()-1);
+                if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("FROM")))
+                    commands.removeElementAt(commands.size()-1);
+            }
+            else
+                teacherName="";
+        }
 		
 		String what=CMParms.combine(commands,0);
 		Vector V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
-			Vector CC=null;
-			CMParms.makeVector("SAY","I would like to be trained in "+what);
+			Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
 			mob.doCommand(CC);
+			if(teacherName.length()>0) commands.addElement(teacherName.trim());
 			Command C=CMClass.getCommand("TRAIN");
 			if(C!=null) C.execute(mob, commands);
 			return true;
 		}
-		if(CMClass.findAbility(what, mob)!=null)
+		if(CMClass.findAbility(what+teacherName, mob)!=null)
 		{
 			Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what);
 			mob.doCommand(CC);
@@ -73,12 +86,13 @@ public class Learn extends StdCommand
 			{
 				Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
 				mob.doCommand(CC);
+				if(teacherName.length()>0) commands.addElement(teacherName.trim());
 				Command C=CMClass.getCommand("TRAIN");
 				if(C!=null) C.execute(mob, commands);
 				return true;
 				
 			}
-		Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what);
+		Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what+teacherName);
 		mob.doCommand(CC);
 		return false;
 	}
