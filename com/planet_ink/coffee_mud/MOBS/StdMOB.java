@@ -1510,7 +1510,7 @@ public class StdMOB implements MOB
 
 			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			{
-				int srcMajor=msg.sourceMajor();
+				int srcCode=msg.sourceMajor();
 
 				if(amDead())
 				{
@@ -1518,7 +1518,7 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+				if(CMath.bset(srcCode,CMMsg.MASK_MALICIOUS))
 				{
 					if((msg.target()!=this)&&(msg.target()!=null)&&(msg.target() instanceof MOB))
 					{
@@ -1541,7 +1541,7 @@ public class StdMOB implements MOB
 				}
 
 
-				if(CMath.bset(srcMajor,CMMsg.MASK_EYES))
+				if(CMath.bset(srcCode,CMMsg.MASK_EYES))
 				{
 					if(CMLib.flags().isSleeping(this))
 					{
@@ -1558,11 +1558,11 @@ public class StdMOB implements MOB
 							return false;
 						}
 				}
-				if(CMath.bset(srcMajor,CMMsg.MASK_MOUTH))
+				if(CMath.bset(srcCode,CMMsg.MASK_MOUTH))
 				{
 					if(!CMLib.flags().aliveAwakeMobile(this,false))
 						return false;
-					if(CMath.bset(srcMajor,CMMsg.MASK_SOUND))
+					if(CMath.bset(srcCode,CMMsg.MASK_SOUND))
 					{
 						if((msg.tool()==null)
 						||(!(msg.tool() instanceof Ability))
@@ -1600,12 +1600,12 @@ public class StdMOB implements MOB
 						}
 					}
 				}
-				if(CMath.bset(srcMajor,CMMsg.MASK_HANDS))
+				if(CMath.bset(srcCode,CMMsg.MASK_HANDS))
 				{
 					if((!CMLib.flags().canBeSeenBy(msg.target(),this))
 					&&(!(isMine(msg.target())&&(msg.target() instanceof Item)))
 					&&(!((isInCombat())&&(msg.target()==victim)))
-                    &&(!((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))))
+					&&(CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS)))
 					{
 						mob.tell("You don't see '"+msg.target().name()+"' here.");
 						return false;
@@ -1626,7 +1626,7 @@ public class StdMOB implements MOB
 					}
 				}
 
-				if(CMath.bset(srcMajor,CMMsg.MASK_MOVE))
+				if(CMath.bset(srcCode,CMMsg.MASK_MOVE))
 				{
 					boolean sitting=CMLib.flags().isSitting(this);
 					if((sitting)

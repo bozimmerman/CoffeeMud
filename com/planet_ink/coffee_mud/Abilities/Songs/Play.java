@@ -418,18 +418,19 @@ public class Play extends StdAbility
 						Room R2=follower.location();
 	
 						// malicious songs must not affect the invoker!
-						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL|CMMsg.MASK_SOUND;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						int msgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.TYP_CAST_SPELL;
+						int mndMsgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND;
+						if(auto){ msgType|=CMMsg.MASK_ALWAYS; mndMsgType|=CMMsg.MASK_ALWAYS;}
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
-							affectType=affectType|CMMsg.MASK_MALICIOUS;
+							msgType=msgType|CMMsg.MASK_MALICIOUS;
 	
 						if(CMLib.flags().canBeHeardBy(invoker,follower)
                         &&(follower.fetchEffect(this.ID())==null))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,msgType|CMMsg.MASK_HANDS,null,msgType,null,msgType,null);
 							CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
-								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.MASK_SOUND|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+								msg2=CMClass.getMsg(mob,follower,this,mndMsgType|CMMsg.MASK_HANDS,null,mndMsgType,null,mndMsgType,null);
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
 								R2.send(follower,msg2);
