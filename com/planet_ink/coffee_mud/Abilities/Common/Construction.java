@@ -80,6 +80,7 @@ public class Construction extends CraftingSkill
 	protected int workingOn=-1;
 	protected String designTitle="";
 	protected String designDescription="";
+	public Construction(){super();}
 
 	public Exit generify(Exit E)
 	{
@@ -544,7 +545,7 @@ public class Construction extends CraftingSkill
 				return false;
 			}
 			helping=true;
-			verb="helping "+targetMOB.name()+" with "+helpingAbility.verb;
+			verb="helping "+targetMOB.name()+" with "+helpingAbility.name();
 			startStr="<S-NAME> start(s) "+verb;
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 			if(mob.location().okMessage(mob,msg))

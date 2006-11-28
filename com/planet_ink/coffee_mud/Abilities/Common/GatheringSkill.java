@@ -43,6 +43,8 @@ public class GatheringSkill extends CommonSkill
 	public String supportedResourceString(){return "";}
 	protected static final Hashtable supportedResources=new Hashtable();
 	
+	public GatheringSkill(){super();}
+	
 	public Vector myResources()
 	{
 	    if(supportedResources.containsKey(ID()))

@@ -55,7 +55,7 @@ public class CommonSkill extends StdAbility
 	protected boolean aborted=false;
 	protected boolean helping=false;
     protected boolean bundling=false;
-	protected CommonSkill helpingAbility=null;
+	public Ability helpingAbility=null;
 	protected int tickUp=0;
 	protected String verb="working";
     protected String playSound=null;
@@ -89,9 +89,9 @@ public class CommonSkill extends StdAbility
 			}
 			if((helping)
 			&&(helpingAbility!=null)
-			&&(helpingAbility.affected instanceof MOB)
-			&&(((MOB)helpingAbility.affected).isMine(helpingAbility)))
-				helpingAbility.tick(helpingAbility.affected,tickID);
+			&&(helpingAbility.affecting() instanceof MOB)
+			&&(((MOB)helpingAbility.affecting()).isMine(helpingAbility)))
+				helpingAbility.tick(helpingAbility.affecting(),tickID);
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 			    mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}

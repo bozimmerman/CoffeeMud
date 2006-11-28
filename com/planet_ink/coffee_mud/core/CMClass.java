@@ -316,10 +316,8 @@ public class CMClass extends ClassLoader
         if(libraries.contains(O)){ libraries.removeElement(O); return true;}
 		if(commands.contains(O))
 		{
-			for(Enumeration e=CommandWords.keys();e.hasMoreElements();)
-				if(CommandWords.get(e.nextElement())==O)
-					CommandWords.remove(e.nextElement());
 			commands.removeElement(O);
+	        reloadCommandWords();
 			return true;
 		}
 		if(webMacros.contains(O))
@@ -364,16 +362,7 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(code==13)
-                for(int c=0;c<commands.size();c++)
-                {
-                    Command C=(Command)commands.elementAt(c);
-                    String[] wordList=C.getAccessWords();
-                    if(wordList!=null)
-                        for(int w=0;w<wordList.length;w++)
-                            if(!CommandWords.containsKey(wordList[w].trim().toUpperCase()))
-                                CommandWords.put(wordList[w].trim().toUpperCase(),C);
-                }
+            if(code==13) reloadCommandWords();
 		}
 		else
 		if(set instanceof Hashtable)
@@ -432,16 +421,7 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(code==13)
-                for(int c=0;c<commands.size();c++)
-                {
-                    Command C=(Command)commands.elementAt(c);
-                    String[] wordList=C.getAccessWords();
-                    if(wordList!=null)
-                        for(int w=0;w<wordList.length;w++)
-                            if(!CommandWords.containsKey(wordList[w].trim().toUpperCase()))
-                                CommandWords.put(wordList[w].trim().toUpperCase(),C);
-                }
+            if(code==13) reloadCommandWords();
         }
 		return true;
 	}
@@ -455,22 +435,29 @@ public class CMClass extends ClassLoader
     }
 	public static Object getClass(String calledThis)
 	{
-		Object thisItem=getGlobal(races,calledThis);
-		if(thisItem==null) thisItem=getGlobal(charClasses,calledThis);
-		if(thisItem==null) thisItem=getGlobal(MOBs,calledThis);
-		if(thisItem==null) thisItem=getGlobal(abilities,calledThis);
-		if(thisItem==null) thisItem=getGlobal(locales,calledThis);
-		if(thisItem==null) thisItem=getGlobal(exits,calledThis);
-		if(thisItem==null) thisItem=getGlobal(items,calledThis);
-		if(thisItem==null) thisItem=getGlobal(behaviors,calledThis);
-		if(thisItem==null) thisItem=getGlobal(weapons,calledThis);
-		if(thisItem==null) thisItem=getGlobal(armor,calledThis);
-		if(thisItem==null) thisItem=getGlobal(miscMagic,calledThis);
-		if(thisItem==null) thisItem=getGlobal(areaTypes,calledThis);
-		if(thisItem==null) thisItem=getGlobal(clanItems,calledThis);
-		if(thisItem==null) thisItem=getGlobal(miscTech,calledThis);
-        if(thisItem==null) thisItem=getGlobal(common,calledThis);
-        if(thisItem==null) thisItem=getGlobal(libraries,calledThis);
+		String shortThis=calledThis;
+		int x=shortThis.lastIndexOf('.');
+		if(x>0) shortThis=shortThis.substring(x+1);
+		Object thisItem=getGlobal(races,shortThis);
+		if(thisItem==null) thisItem=getGlobal(charClasses,shortThis);
+		if(thisItem==null) thisItem=getGlobal(MOBs,shortThis);
+		if(thisItem==null) thisItem=getGlobal(abilities,shortThis);
+		if(thisItem==null) thisItem=getGlobal(locales,shortThis);
+		if(thisItem==null) thisItem=getGlobal(exits,shortThis);
+		if(thisItem==null) thisItem=getGlobal(items,shortThis);
+		if(thisItem==null) thisItem=getGlobal(behaviors,shortThis);
+		if(thisItem==null) thisItem=getGlobal(weapons,shortThis);
+		if(thisItem==null) thisItem=getGlobal(armor,shortThis);
+		if(thisItem==null) thisItem=getGlobal(miscMagic,shortThis);
+		if(thisItem==null) thisItem=getGlobal(areaTypes,shortThis);
+		if(thisItem==null) thisItem=getGlobal(clanItems,shortThis);
+		if(thisItem==null) thisItem=getGlobal(miscTech,shortThis);
+        if(thisItem==null) thisItem=getGlobal(common,shortThis);
+        if(thisItem==null) thisItem=getGlobal(libraries,shortThis);
+        if(thisItem==null) thisItem=getGlobal(commands,shortThis);
+        if(thisItem==null) thisItem=getGlobal(webMacros,shortThis);
+        if((thisItem==null)&&(classes.containsKey(calledThis)))
+        try{	return ((Class)classes.get(calledThis)).newInstance();}catch(Exception e){}
 		return thisItem;
 	}
 
@@ -992,7 +979,7 @@ public class CMClass extends ClassLoader
         classes.put(className, result);
         return result;
     }
-    
+
     /**
      * This is the required version of loadClass which is called
      * both from loadClass above and from the internal function
@@ -1016,16 +1003,20 @@ public class CMClass extends ClassLoader
             if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
         	return result;
         }
-
-        try{
-        	result=super.findSystemClass(className); 
-        	if(result!=null)
-        	{
-                if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
-        		return result;
-        	}
-        } catch(Throwable t){}
-        
+        if((super.findLoadedClass(className)!=null)
+        ||(className.indexOf("com.planet_ink.coffee_mud.")<0)
+        ||(className.startsWith("com.planet_ink.coffee_mud.core."))
+        ||(className.indexOf(".interfaces.")>=0))
+        {
+	        try{
+	        	result=super.findSystemClass(className); 
+	        	if(result!=null)
+	        	{
+	                if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+	        		return result;
+	        	}
+	        } catch(Throwable t){}
+        }
         /* Try to load it from our repository */
         CMFile CF=new CMFile(pathName,null,false);
         byte[] classData=CF.raw();
@@ -1093,7 +1084,22 @@ public class CMClass extends ClassLoader
             if(debugging) Log.debugOut("CMClass","Loaded: "+mainClass.getName());
             return mainClass;
         }
-        return finishDefineClass(className,classData,null,resolveIt);
+	    result=finishDefineClass(className,classData,null,resolveIt);
+		return result;
+    }
+    
+    protected static void reloadCommandWords()
+    {
+    	CommandWords.clear();
+        for(int c=0;c<commands.size();c++)
+        {
+            Command C=(Command)commands.elementAt(c);
+            String[] wordList=C.getAccessWords();
+            if(wordList!=null)
+                for(int w=0;w<wordList.length;w++)
+                    CommandWords.put(wordList[w].trim().toUpperCase(),C);
+        }
+
     }
     
     public static boolean loadClasses(CMProps page)
@@ -1300,16 +1306,9 @@ public class CMClass extends ClassLoader
             t.printStackTrace();
             return false;
         }
-        
-        for(int c=0;c<commands.size();c++)
-        {
-            Command C=(Command)commands.elementAt(c);
-            String[] wordList=C.getAccessWords();
-            if(wordList!=null)
-                for(int w=0;w<wordList.length;w++)
-                    CommandWords.put(wordList[w].trim().toUpperCase(),C);
-        }
 
+        reloadCommandWords();
+        
         // misc startup stuff
         for(int c=0;c<charClasses.size();c++)
         {

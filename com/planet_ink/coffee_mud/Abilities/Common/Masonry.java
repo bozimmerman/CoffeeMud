@@ -581,7 +581,7 @@ public class Masonry extends CraftingSkill
 				return false;
 			}
 			helping=true;
-			verb="helping "+targetMOB.name()+" with "+helpingAbility.verb;
+			verb="helping "+targetMOB.name()+" with "+helpingAbility.name();
 			startStr="<S-NAME> start(s) "+verb;
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 			if(mob.location().okMessage(mob,msg))

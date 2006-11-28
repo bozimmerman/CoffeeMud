@@ -45,6 +45,8 @@ public class CraftingSkill extends GatheringSkill
 	protected boolean refitting=false;
 	protected boolean messedUp=false;
 
+	public CraftingSkill(){super();}
+	
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
