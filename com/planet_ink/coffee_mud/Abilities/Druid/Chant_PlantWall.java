@@ -196,7 +196,7 @@ public class Chant_PlantWall extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				amountRemaining=mob.baseState().getHitPoints()/6;
+				amountRemaining=(mob.baseState().getHitPoints()/6)+(2*(super.getX1Level(invoker())+super.getXLEVELLevel(invoker())));
 				Item I=CMClass.getItem("GenItem");
 				I.setName("a plant wall");
 				I.setDisplayText("a writhing plant wall has grown here");

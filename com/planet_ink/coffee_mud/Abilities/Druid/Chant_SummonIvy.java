@@ -65,6 +65,8 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
+		Chant_SummonIvy newChant=new Chant_SummonIvy();
+		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
@@ -72,7 +74,6 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
-		Chant_SummonIvy newChant=new Chant_SummonIvy();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

@@ -78,7 +78,7 @@ public class Chant_SummonFood extends Chant
 					newItem.setDisplayText(CMStrings.capitalizeAndLower(newItem.name())+" are growing here.");
 					newItem.setDescription("These little berries look juicy and good.");
 					newItem.setMaterial(berryType);
-					newItem.setNourishment(150);
+					newItem.setNourishment(150+(10*super.getX1Level(mob)));
 					newItem.setBaseValue(1);
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);

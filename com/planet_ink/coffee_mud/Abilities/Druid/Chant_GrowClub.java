@@ -90,7 +90,7 @@ public class Chant_GrowClub extends Chant
 				int damage=6;
 				try{ damage=(((level+(2*super.getXLEVELLevel(mob)))-1)/2)+2;}catch(Throwable t){}
 				if(damage<6) damage=6;
-				newItem.baseEnvStats().setDamage(damage);
+				newItem.baseEnvStats().setDamage(damage+super.getX1Level(mob));
 				newItem.recoverEnvStats();
 				newItem.setBaseValue(0);
 				newItem.setWeaponClassification(Weapon.CLASS_BLUNT);

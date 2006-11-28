@@ -151,7 +151,7 @@ public class Chant_SummonFlyTrap extends Chant
 		Behavior B=CMClass.getBehavior("Aggressive");
 		B.setParms("mobkiller -RACE +Insect +Arachnid");
 		newMOB.addBehavior(B);
-		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB)-(10*super.getX1Level(caster)));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));

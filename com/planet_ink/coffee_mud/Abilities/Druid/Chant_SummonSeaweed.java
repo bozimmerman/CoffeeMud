@@ -74,13 +74,14 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
+		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
+		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
-		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

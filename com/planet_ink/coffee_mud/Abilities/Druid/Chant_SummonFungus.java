@@ -117,10 +117,11 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
+		Chant_SummonFungus newChant=new Chant_SummonFungus();
+		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
-		Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

@@ -56,10 +56,11 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
+		Chant_SummonTree newChant=new Chant_SummonTree();
+		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
-		Chant_SummonTree newChant=new Chant_SummonTree();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

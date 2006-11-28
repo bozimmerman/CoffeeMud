@@ -50,26 +50,78 @@ public class Spell_ChangeSex extends Spell
 		affectableStats.setStat(CharStats.STAT_GENDER,gender);
 	}
 
+	public void setChildStuff(MOB M, Environmental target)
+	{
+		if(CMLib.flags().isChild(M))
+		{
+			if(M.charStats().getStat(CharStats.STAT_GENDER)=='F')
+			{
+				M.setDescription(CMStrings.replaceAll(M.description()," son "," daughter "));
+				if(target!=null)
+					target.setDescription(CMStrings.replaceAll(target.description()," son "," daughter "));
+			}
+			else
+			{
+				M.setDescription(CMStrings.replaceAll(M.description()," daughter "," son "));
+				if(target!=null)
+					target.setDescription(CMStrings.replaceAll(target.description()," daughter "," son "));
+			}
+		}
+	}
 
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		super.unInvoke();
-
-		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) like <S-HIS-HER> old self again.");
+		if(affected instanceof CagedAnimal)
+		{
+			CagedAnimal target=(CagedAnimal)affected;
+			MOB mob=target.unCageMe();
+			super.unInvoke();
+			if(canBeUninvoked())
+			{
+				Ability A=mob.fetchEffect(ID());
+				if(A!=null) mob.delEffect(A);
+				mob.recoverCharStats();
+				mob.recoverEnvStats();
+				setChildStuff(mob, target);
+				Room R=CMLib.map().roomLocation(target);
+				if(R!=null)
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) like <S-HIS-HER> old self again.");
+				
+			}
+			
+		}
+		else
+		if(affected instanceof MOB)
+		{
+			MOB mob=(MOB)affected;
+			super.unInvoke();
+			if(canBeUninvoked())
+				if((mob.location()!=null)&&(!mob.amDead()))
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) like <S-HIS-HER> old self again.");
+		}
 	}
 
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
+		if(target instanceof Item)
+		{
+			if(!(target instanceof CagedAnimal))
+			{
+				mob.tell("This spell won't have much effect on "+target.name()+".");
+				return false;
+			}
+		}
+		else
+		if(!(target instanceof MOB))
+		{
+			mob.tell("This spell won't have much effect on "+target.name()+".");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -93,10 +145,34 @@ public class Spell_ChangeSex extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=beneficialAffect(mob,target,asLevel,0);
-					target.recoverCharStats();
+					MOB M=null;
+					if(target instanceof MOB)
+					{
+						success=beneficialAffect(mob,target,asLevel,0);
+						M=(MOB)target;
+						M.recoverCharStats();
+						M.recoverEnvStats();
+					}
+					else
+					if(target instanceof CagedAnimal)
+					{
+						M=((CagedAnimal)target).unCageMe();
+						char gender='M';
+						if(M.baseCharStats().getStat(CharStats.STAT_GENDER)!='F')
+							gender='F';
+						M.baseCharStats().setStat(CharStats.STAT_GENDER,gender);
+						M.recoverCharStats();
+						M.recoverEnvStats();
+						setChildStuff(M, target);
+						M.text();
+						((CagedAnimal)target).cageMe(M);
+						target.text();
+					}
+					else
+						return false;
+					M.recoverCharStats();
 					target.recoverEnvStats();
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) "+target.charStats().genderName()+"!");
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) "+M.charStats().genderName()+"!");
 				}
 			}
 		}

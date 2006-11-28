@@ -123,10 +123,11 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
+		Chant_SummonHouseplant newChant=new Chant_SummonHouseplant();
 		newItem.baseEnvStats().setWeight(1);
+		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" appears here.");
-		Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

@@ -108,6 +108,7 @@ public class Chant_SummonPlants extends Chant
 			newItem.setDescription("Happy flowers with little blue and purple blooms.");
 			break;
 		}
+		newItem.baseEnvStats().setLevel(10+(10*newChant.getX1Level(mob)));
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());

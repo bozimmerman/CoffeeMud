@@ -52,6 +52,8 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
+		Chant_GrowOak newChant=new Chant_GrowOak();
+		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.baseEnvStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);
 		newItem.setMaterial(material);
@@ -61,9 +63,8 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
-		Chant_GrowOak newChant=new Chant_GrowOak();
 		newChant.PlantsLocation=room;
-		newChant.hpRemaining=100*(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		newChant.hpRemaining=100*(mob.envStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
 		newChant.littlePlants=newItem;
 		newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
 		room.recoverEnvStats();

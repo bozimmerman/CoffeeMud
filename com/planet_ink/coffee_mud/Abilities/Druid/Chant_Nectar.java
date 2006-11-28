@@ -104,11 +104,11 @@ public class Chant_Nectar extends Chant
 			case CMMsg.TYP_DRINK:
 				{
 					MOB M=msg.source();
-					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION),0);
+					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,hp,null);
-					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2),0);
+					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					M.curState().adjMana(mana,M.maxState());
-					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2),0);
+					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					M.curState().adjMovement(move,M.maxState());
 				}
 				break;

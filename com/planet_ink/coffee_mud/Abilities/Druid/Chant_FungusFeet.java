@@ -83,7 +83,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		affectableState.setMovement((int)Math.round(CMath.div(affectableState.getMovement(),drawups)));
+		affectableState.setMovement((int)Math.round(CMath.div(affectableState.getMovement(),drawups+(0.1*super.getX1Level(invoker())))));
 	}
 
 	public void unInvoke()

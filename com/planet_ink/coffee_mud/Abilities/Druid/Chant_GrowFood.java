@@ -98,7 +98,7 @@ public class Chant_GrowFood extends Chant
 				if(material==RawMaterial.RESOURCE_HERBS)
 					newItem.setNourishment(1);
 				else
-					newItem.setNourishment(150);
+					newItem.setNourishment(150+(10*super.getX1Level(mob)));
 				String name=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
