@@ -58,8 +58,16 @@ public interface Social extends Environmental
                           Environmental target,
                           boolean auto);
     public CMMsg makeChannelMsg(MOB mob,
-            int channelInt,
-            String channelName,
-            Vector commands,
-            boolean makeTarget);
+					            int channelInt,
+					            String channelName,
+					            Vector commands,
+					            boolean makeTarget);
+	public CMMsg makeMessage(MOB mob,
+							 String str,
+							 String end,
+							 int srcMask,
+							 int fullCode,
+							 Vector commands,
+							 String I3channelName,
+							 boolean makeTarget);
 }

@@ -65,20 +65,59 @@ public class GTell extends StdCommand
 			return false;
 		}
 								 
-
+		CMMsg tellMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_TELL,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_TELL,null);
+		text=text.trim();
+		if(text.startsWith(",")
+		||(text.startsWith(":")
+			&&(text.length()>1)
+			&&(Character.isLetter(text.charAt(1))||text.charAt(1)==' ')))
+		{
+			text=text.substring(1);
+			Vector V=CMParms.parse(text);
+			Social S=CMLib.socials().FetchSocial(V,true);
+			if(S==null) S=CMLib.socials().FetchSocial(V,false);
+			if(S!=null)
+			{
+				tellMsg=S.makeMessage(mob,
+						"^t^<GTELL \""+mob.name()+"\"^>[GTELL] ",
+						"^</GTELL^>^?^.",
+						CMMsg.MASK_ALWAYS,
+						CMMsg.MSG_TELL,
+						V,
+						null,
+						false);
+			}
+			else
+			{
+                if(text.trim().startsWith("'")||text.trim().startsWith("`"))
+                	text=text.trim();
+                else
+                	text=" "+text.trim();
+    			tellMsg.setSourceMessage("^t^<GTELL \""+mob.name()+"\"^>[GTELL] <S-NAME>"+text+"^</GTELL^>^?^.");
+    			tellMsg.setOthersMessage(tellMsg.sourceMessage());
+			}
+		}
+		else
+		{
+			tellMsg.setSourceMessage("^t^<GTELL \""+mob.name()+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^.");
+			tellMsg.setOthersMessage(tellMsg.sourceMessage());
+		}
+		
 		HashSet group=mob.getGroupMembers(new HashSet());
+		CMMsg msg=tellMsg;
 		for(Iterator e=group.iterator();e.hasNext();)
 		{
 			MOB target=(MOB)e.next();
-			CMMsg msg=CMClass.getMsg(mob,target,null
-			        ,CMMsg.MSG_TELL,"^t^<GTELL \""+mob.name()+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^."
-			        ,CMMsg.MSG_TELL,"^t^<GTELL \""+mob.name()+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^."
-			        ,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
 				if(target.playerStats()!=null)
-					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(msg.sourceMessage()),false));
+				{
+					String tellStr=(target==mob)?msg.sourceMessage():(
+									(target==msg.target())?msg.targetMessage():msg.othersMessage()
+									);
+					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false));
+				}
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)
 				{

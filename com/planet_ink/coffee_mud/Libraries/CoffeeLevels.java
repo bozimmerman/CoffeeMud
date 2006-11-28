@@ -278,6 +278,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	        return;
         if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1)))
             return;
+        if(mob.getGroupMembers(new HashSet()).size()>1)
+        {
+        	Command C=CMClass.getCommand("GTell");
+        	try{
+        		if(C!=null) C.execute(mob,CMParms.makeVector("GTELL",",has gained a level."));
+        	}catch(Exception e){}
+        }
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		theNews.append(baseLevelAdjuster(mob,1));

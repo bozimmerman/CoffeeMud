@@ -149,6 +149,19 @@ public class DefaultSocial implements Social
 								Vector commands,
 								boolean makeTarget)
 	{
+		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
+		String end=makeTarget?"":"^</CHANNEL^>^?^.";
+		return makeMessage(mob,str,end,CMMsg.MASK_CHANNEL,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),commands,channelName,makeTarget);
+	}
+	public CMMsg makeMessage(MOB mob,
+							 String str,
+							 String end,
+							 int srcMask,
+							 int fullCode,
+							 Vector commands,
+							 String I3channelName,
+							 boolean makeTarget)
+	{
 		String targetStr="";
 		if((commands.size()>1)
         &&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF"))
@@ -163,7 +176,10 @@ public class DefaultSocial implements Social
 		    else
 				Target=CMLib.map().getPlayer(targetStr);
 			
-			if(((Target==null)&&(makeTarget))||((targetMud.length()>0)&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(channelName)))))
+			if(((Target==null)&&(makeTarget))
+			||((targetMud.length()>0)
+					&&(I3channelName!=null)
+					&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(I3channelName)))))
 			{
 				Target=CMClass.getMOB("StdMOB");
 				Target.setName(targetStr);
@@ -190,16 +206,14 @@ public class DefaultSocial implements Social
             See_when_no_target=null;
         
 		CMMsg msg=null;
-		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
-		String end=makeTarget?"":"^</CHANNEL^>^?^.";
         if(end.length()==0) mspFile="";
 		if((Target==null)&&(targetable()))
-			msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
 		if(Target==null)
-			msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,fullCode,str+Third_party_sees+end+mspFile);
 		else
-			msg=CMClass.getMsg(mob,Target,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Target_sees+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,Target,this,srcMask|sourceCode(),str+You_see+end+mspFile,fullCode,str+Target_sees+end+mspFile,fullCode,str+Third_party_sees+end+mspFile);
 		return msg;
 	}
 

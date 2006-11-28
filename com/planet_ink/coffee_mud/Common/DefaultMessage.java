@@ -221,8 +221,11 @@ public class DefaultMessage implements CMMsg
 		othersMsg=Message;
 	}
 	public MOB source(){ return myAgent; }
+    public void setSource(MOB mob){myAgent=mob;}
 	public Environmental target() { return myTarget; }
+    public void setTarget(Environmental E){myTarget=E;}
 	public Environmental tool() { return myTool; }
+    public void setTool(Environmental E){myTool=E;}
 	public int targetMajor() { return targetCode&CMMsg.MAJOR_MASK; }
 	public int targetMinor() { return targetCode&CMMsg.MINOR_MASK; }
 	public int targetCode() { return targetCode; }

@@ -108,6 +108,7 @@ public class Chant_SummonPlants extends Chant
 			newItem.setDescription("Happy flowers with little blue and purple blooms.");
 			break;
 		}
+		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newItem.baseEnvStats().setLevel(10+(10*newChant.getX1Level(mob)));
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
@@ -115,7 +116,6 @@ public class Chant_SummonPlants extends Chant
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
-		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

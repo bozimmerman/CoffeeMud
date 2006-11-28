@@ -62,10 +62,12 @@ public interface CMMsg extends CMObject
     public void setOthersMessage(String str);
 
 	public Environmental target();
-	public Environmental tool();
-	public MOB source();
-
+    public void setTarget(Environmental E);
 	public boolean amITarget(Environmental thisOne);
+	public Environmental tool();
+    public void setTool(Environmental E);
+	public MOB source();
+    public void setSource(MOB mob);
 	public boolean amISource(MOB thisOne);
 
 	public int value();
