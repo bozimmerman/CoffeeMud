@@ -620,7 +620,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(loc==null) return false;
 		if(loc.getGridParent()==this) return true;
 		if(loc.getGridParent()!=null) return false;
-        try{return rooms.contains(loc);}catch(Exception e){} // optomization
+        try{return rooms.contains(loc);}catch(Exception e){} // optimization
 	    DVector myRooms=rooms.copyOf();
 		for(int i=0;i<myRooms.size();i++)
 			if(loc==myRooms.elementAt(i,1))

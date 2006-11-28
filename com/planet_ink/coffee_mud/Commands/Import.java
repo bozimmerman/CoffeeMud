@@ -5585,7 +5585,7 @@ public class Import extends StdCommand
 		{
 			Room saveRoom=(Room)e.nextElement();
 			CMLib.database().DBCreateRoom(saveRoom,CMClass.classID(saveRoom));
-			// final exit clean-up optomization
+			// final exit clean-up optimization
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				Exit E=saveRoom.rawExits()[d];

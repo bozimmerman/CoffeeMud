@@ -124,7 +124,7 @@ public interface CMMsg extends CMObject
 	public static final int MASK_DELICATE=262144;  // for thief skills!
 	public static final int MASK_MALICIOUS=524288; // for attacking
 	public static final int MASK_CHANNEL=1048576;  // for channel messages
-	public static final int MASK_OPTIMIZE=2097152; // to optomize a repeated msg
+	public static final int MASK_OPTIMIZE=2097152; // to optimize a repeated msg
 
 	// minor messages
 	public static final int TYP_AREAAFFECT=1;
