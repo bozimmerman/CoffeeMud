@@ -102,6 +102,7 @@ public class Spell_Summon extends Spell
                 &&(CMLib.english().containsString(S.mob().name(),areaName)))
                 {
                     oldRoom=S.mob().location();
+                    target=S.mob();
                     break;
                 }
             }
