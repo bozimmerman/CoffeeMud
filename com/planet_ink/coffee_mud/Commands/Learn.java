@@ -39,31 +39,24 @@ public class Learn extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		if(mob.location().numInhabitants()==1)
+		{
+			mob.tell("You will need to find someone to teach you first.");
+			return false;
+		}
 		if(commands.size()==1)
 		{
 			mob.tell("Learn what?  Enter QUALIFY or TRAIN to see what you can learn.");
 			return false;
 		}
 		commands.removeElementAt(0);
-        String teacherName=null;
-        if(commands.size()>1)
-        {
-            teacherName=(String)commands.lastElement();
-            if(teacherName.length()>1)
-            {
-                commands.removeElementAt(commands.size()-1);
-                if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("FROM")))
-                    commands.removeElementAt(commands.size()-1);
-            }
-            else
-                teacherName=null;
-        }
 		
 		String what=CMParms.combine(commands,0);
 		Vector V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
-			Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
+			Vector CC=null;
+			CMParms.makeVector("SAY","I would like to be trained in "+what);
 			mob.doCommand(CC);
 			Command C=CMClass.getCommand("TRAIN");
 			if(C!=null) C.execute(mob, commands);

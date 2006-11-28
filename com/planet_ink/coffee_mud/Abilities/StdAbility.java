@@ -667,6 +667,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int[] buildCostArray(MOB mob, int consumed)
 	{
 		int[] usageCosts=new int[3];
+		int costDown=0;
+		if(consumed>2)
+		{
+			costDown=getXLOWCOSTLevel(mob);
+			if(costDown>=consumed) 
+				costDown=consumed/2;
+		}
 		boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
 		boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
 		boolean useHits=CMath.bset(usageType(),Ability.USAGE_HITPOINTS);
@@ -680,43 +687,52 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if((!useMana)&&(useMoves)&&(useHits)) divider=2;
 
 		if(useMana){
-			usageCosts[0]=consumed/divider;
-			if(usageCosts[0]<5)	usageCosts[0]=5;
 			if(consumed==Integer.MAX_VALUE)
 			{
-				usageCosts[0]=mob.maxState().getMana();
+				usageCosts[0]=mob.maxState().getMana()-costDown;
 				if(mob.baseState().getMana()>mob.maxState().getMana())
-				    usageCosts[0]=mob.baseState().getMana();
+				    usageCosts[0]=mob.baseState().getMana()-costDown;
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((Integer.MAX_VALUE-consumed),100.0)))-costDown;
+			else
+			{
+				usageCosts[0]=(consumed-costDown)/divider;
+				if(usageCosts[0]<5)	usageCosts[0]=5;
+			}
 		}
 		if(useMoves){
-			usageCosts[1]=consumed/divider;
-			if(usageCosts[1]<5)	usageCosts[1]=5;
 			if(consumed==Integer.MAX_VALUE)
 			{
-				usageCosts[1]=mob.maxState().getMovement();
+				usageCosts[1]=mob.maxState().getMovement()-costDown;
 				if(mob.baseState().getMovement()>mob.maxState().getMovement())
-				    usageCosts[1]=mob.baseState().getMovement();
+				    usageCosts[1]=mob.baseState().getMovement()-costDown;
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[1]=(int)Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[1]=(int)Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Integer.MAX_VALUE-consumed),100.0)))-costDown;
+			else
+			{
+				usageCosts[1]=(consumed-costDown)/divider;
+				if(usageCosts[1]<5)	usageCosts[1]=5;
+			}
 		}
 		if(useHits){
-			usageCosts[2]=consumed/divider;
-			if(usageCosts[2]<5)	usageCosts[2]=5;
 			if(consumed==Integer.MAX_VALUE)
 			{
-				usageCosts[2]=mob.maxState().getHitPoints();
+				usageCosts[2]=mob.maxState().getHitPoints()-costDown;
 				if(mob.baseState().getHitPoints()>mob.maxState().getHitPoints())
-				    usageCosts[2]=mob.baseState().getHitPoints();
+				    usageCosts[2]=mob.baseState().getHitPoints()-costDown;
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[2]=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[2]=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Integer.MAX_VALUE-consumed),100.0)))-costDown;
+			else
+			{
+				usageCosts[2]=(consumed-costDown)/divider;
+				if(usageCosts[2]<5)	usageCosts[2]=5;
+			}
 		}
 		return usageCosts;
 	}
@@ -759,8 +775,8 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
 		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
-        consumed-=getXLOWCOSTLevel(mob);
-		if(consumed<minimum) consumed=minimum;
+		if(consumed<minimum) 
+			consumed=minimum;
 		if(overrideMana()>=0) consumed=overrideMana();
 		return buildCostArray(mob,consumed);
 	}

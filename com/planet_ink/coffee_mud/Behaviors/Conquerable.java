@@ -695,7 +695,7 @@ public class Conquerable extends Arrest
             }
         
     		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-    		&&(!msg.source().isMonster())
+    		&&((msg.source().getStartRoom()==null)||(!myArea.inMyMetroArea(msg.source().getStartRoom().getArea())))
     		&&(msg.value()>0))
     		{
     			Clan C=CMLib.clans().getClan(holdingClan);

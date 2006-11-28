@@ -1465,29 +1465,50 @@ public class DefaultSession extends Thread implements Session
 						if(mob==null) break;
                         while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()));
 
-						if(!afkFlag())
-						{
-							if(getIdleMillis()>=600000)
-								setAfkFlag(true);
-						}
-						else
-						if((getIdleMillis()>=10800000)
-						&&(mob()!=null)
-						&&((System.currentTimeMillis()-lastBlahCheck)>=60000))
+						if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
+						&&(mob()!=null))
 						{
 							lastBlahCheck=System.currentTimeMillis();
-							if((!CMLib.flags().isSleeping(mob))
-							&&(mob().fetchEffect("Disease_Blahs")==null))
+							Vector V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
+							if((V.size()>0)
+							&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
+							&&(CMath.s_int((String)V.firstElement())>0))
 							{
-								Ability A=CMClass.getAbility("Disease_Blahs");
-								if(A!=null) A.invoke(mob,mob,true,0);
+								int minsIdle=(int)(getIdleMillis()/60000);
+								if(minsIdle>=CMath.s_int((String)V.firstElement()))
+								{
+									println("\n\r^ZYou are being logged out!^?");
+									setKillFlag(true);
+								}
+								else
+								if(minsIdle>=CMath.s_int((String)V.lastElement()))
+								{
+									int remain=CMath.s_int((String)V.firstElement())-minsIdle;
+									println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
+								}
+							}
+							
+							if(!afkFlag())
+							{
+								if(getIdleMillis()>=600000)
+									setAfkFlag(true);
 							}
 							else
-							if((CMLib.flags().isSleeping(mob))
-							&&(mob().fetchEffect("Disease_Narcolepsy")==null))
+							if((getIdleMillis()>=10800000)&&(!killFlag()))
 							{
-								Ability A=CMClass.getAbility("Disease_Narcolepsy");
-								if(A!=null) A.invoke(mob,mob,true,0);
+								if((!CMLib.flags().isSleeping(mob))
+								&&(mob().fetchEffect("Disease_Blahs")==null))
+								{
+									Ability A=CMClass.getAbility("Disease_Blahs");
+									if(A!=null) A.invoke(mob,mob,true,0);
+								}
+								else
+								if((CMLib.flags().isSleeping(mob))
+								&&(mob().fetchEffect("Disease_Narcolepsy")==null))
+								{
+									Ability A=CMClass.getAbility("Disease_Narcolepsy");
+									if(A!=null) A.invoke(mob,mob,true,0);
+								}
 							}
 						}
 						if((needPrompt)&&(waiting))

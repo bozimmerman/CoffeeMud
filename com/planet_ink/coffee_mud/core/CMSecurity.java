@@ -50,7 +50,7 @@ public class CMSecurity
 	// ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
 	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV), CMDABILITIES
 	// CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY
-	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS
+	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS, IDLEOK
 	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS, COMPONENTS, EXPERTISES, TITLES
     // FS:relative path from /coffeemud/ -- read/write access to regular file sys
     // VFS:relative path from /coffeemud/ -- read/write access to virtual file sys

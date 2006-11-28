@@ -40,11 +40,13 @@ public class Chant_CheetahBurst extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
+	protected int tickDown=3;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + 1.0+CMath.mul(0.1,getXLEVELLevel(invoker())));
+		if(tickDown==1)
+			affectableStats.setSpeed(affectableStats.speed() + 3.0+CMath.mul(0.1,getXLEVELLevel(invoker())));
 	}
 
 
@@ -66,6 +68,14 @@ public class Chant_CheetahBurst extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		MOB mob=(MOB)affected;
+		if((--tickDown)==0)
+		{
+			mob.recoverEnvStats();
+			tickDown=3;
+		}
+		else
+		if(tickDown==1)
+			mob.recoverEnvStats();
 		mob.curState().adjMovement(mob.charStats().getStat(CharStats.STAT_STRENGTH)/5,mob.maxState());
 		return true;
 	}

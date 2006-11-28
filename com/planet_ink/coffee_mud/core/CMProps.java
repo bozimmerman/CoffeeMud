@@ -100,7 +100,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_AUTOAREAPROPS=51;
     public static final int SYSTEM_MOBDEATH=52;
     public static final int SYSTEM_I3ROUTERS=53;
-    public static final int NUM_SYSTEM=54;
+    public static final int SYSTEM_IDLETIMERS=54;
+    public static final int NUM_SYSTEM=55;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -477,6 +478,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_CLANVOTEO,getStr("CLANVOTEO"));
         setVar(SYSTEM_CLANVOTER,getStr("CLANVOTER"));
         setVar(SYSTEM_AUTOPURGE,getStr("AUTOPURGE"));
+        setVar(SYSTEM_IDLETIMERS,getStr("IDLETIMERS"));
         setVar(SYSTEM_CORPSEGUARD,getStr("CORPSEGUARD"));
         setUpLowVar(SYSTEM_MUDDOMAIN,getStr("DOMAIN"));
         setVar(SYSTEM_I3EMAIL,getStr("I3EMAIL"));

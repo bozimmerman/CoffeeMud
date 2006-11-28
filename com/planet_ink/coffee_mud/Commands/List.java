@@ -107,7 +107,7 @@ public class List extends StdCommand
         return lines;
     }
 	public StringBuffer roomTypes(Vector these, Room likeRoom)
-	{return roomDetails(these.elements(),likeRoom);}
+	{return roomTypes(these.elements(),likeRoom);}
 	public StringBuffer roomTypes(Enumeration these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
@@ -126,6 +126,66 @@ public class List extends StdCommand
 		return lines;
 	}
 
+	public StringBuffer roomResources(Vector these, Room likeRoom)
+	{return roomResources(these.elements(),likeRoom);}
+	public StringBuffer roomResources(Enumeration these, Room likeRoom)
+	{
+		StringBuffer lines=new StringBuffer(CMStrings.padRight("Room ID#",30)+"| "
+										   +CMStrings.padRight("Room Type",15)+"| "
+										   +"Resource\n\r");
+		if(!these.hasMoreElements()) return lines;
+		if(likeRoom==null) return lines;
+        Room thisThang=null;
+        String thisOne=null;
+        for(Enumeration r=these;r.hasMoreElements();)
+        {
+            thisThang=(Room)r.nextElement();
+            thisOne=thisThang.roomID();
+			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
+			{
+				lines.append(CMStrings.padRight(thisOne,30)+": ");
+				lines.append(CMStrings.padRight(thisThang.ID(),15)+": ");
+				String thisRsc="-";
+				if(thisThang.myResource()>=0) 
+					thisRsc=RawMaterial.RESOURCE_DESCS[thisThang.myResource()&RawMaterial.RESOURCE_MASK];
+				lines.append(thisRsc+"\n\r");
+			}
+		}
+		lines.append("\n\r");
+		return lines;
+	}
+	
+	public StringBuffer areaConquests(Enumeration these)
+	{
+		StringBuffer lines=new StringBuffer(CMStrings.padRight("Area",26)+"| "
+										   +CMStrings.padRight("Clan",40)+"| "
+										   +"Controlled\n\r");
+		if(!these.hasMoreElements()) return lines;
+        Area thisThang=null;
+        String thisOne=null;
+        for(Enumeration r=these;r.hasMoreElements();)
+        {
+            thisThang=(Area)r.nextElement();
+            thisOne=thisThang.name();
+			if(thisOne.length()>0)
+			{
+				lines.append(CMStrings.padRight(thisOne,26)+": ");
+				String controller="The Archons";
+				String fully="";
+				LegalBehavior law=CMLib.law().getLegalBehavior(thisThang);
+				if(law!=null)
+				{
+					controller=law.rulingClan();
+					fully=""+((controller.length()>0)&&law.isFullyControlledByClan());
+				}
+				lines.append(CMStrings.padRight(controller,40)+": ");
+				lines.append(fully+"\n\r");
+			}
+		}
+		lines.append("\n\r");
+		return lines;
+	}
+	
 	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
 	{
 		int ac = tGroup.activeCount();
@@ -960,7 +1020,7 @@ public class List extends StdCommand
         for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
         {
             ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-            buf.append(CMStrings.padRight("^z"+def.ID,20)+"^?: "+CMStrings.padRight(def.name,20)+": "+CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+            buf.append(CMStrings.padRight("^Z"+def.ID,20)+"^?: "+CMStrings.padRight(def.name,20)+": "+CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
         }
         if(buf.length()==0) return "None defined.";
         return buf.toString();
@@ -1033,6 +1093,8 @@ public class List extends StdCommand
         /*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
 		/*51*/{"EXPIRES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*52*/{"TITLES","LISTADMIN","TITLES"},
+		/*53*/{"AREARESOURCES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1231,6 +1293,8 @@ public class List extends StdCommand
         case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
 		case 51: s.wraplessPrintln(roomExpires(mob.location().getArea().getProperMap(),mob.location()).toString()); break;
         case 52: s.wraplessPrintln(listTitles()); break;
+		case 53: s.wraplessPrintln(roomResources(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 54: s.wraplessPrintln(areaConquests(CMLib.map().sortedAreas()).toString()); break;
         default:
 			s.println("List?!");
 			break;
