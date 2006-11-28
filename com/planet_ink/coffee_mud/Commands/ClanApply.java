@@ -54,20 +54,29 @@ public class ClanApply extends BaseClanner
 					{
                         if(CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob))
                         {
-                        	int role=C.getAutoPosition();
-    						CMLib.database().DBUpdateClanMembership(mob.Name(), C.clanID(), role);
-    						mob.setClanID(C.clanID());
-    						mob.setClanRole(role);
-    						if(mob.getClanRole()==Clan.POS_APPLICANT)
-    						{
-        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
-	    						mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
-    						}
-    						else
-    						{
-        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new member: "+mob.Name());
-    							mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
-    						}
+                        	int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
+                        	int numMembers=C.getSize();
+                        	if((maxMembers<=0)||(numMembers<maxMembers))
+                        	{
+	                        	int role=C.getAutoPosition();
+	    						CMLib.database().DBUpdateClanMembership(mob.Name(), C.clanID(), role);
+	    						mob.setClanID(C.clanID());
+	    						mob.setClanRole(role);
+	    						if(mob.getClanRole()==Clan.POS_APPLICANT)
+	    						{
+	        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
+		    						mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
+	    						}
+	    						else
+	    						{
+	        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new member: "+mob.Name());
+	    							mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
+	    						}
+                        	}
+                        	else
+                        	{
+                                msg.append("This "+C.typeName()+" already has the maximum number of members ("+numMembers+"/"+maxMembers+") and can not accept new applicants.");
+                        	}
                         }
                         else
                         {
