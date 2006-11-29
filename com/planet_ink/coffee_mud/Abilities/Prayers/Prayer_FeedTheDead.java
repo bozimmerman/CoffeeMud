@@ -87,6 +87,10 @@ public class Prayer_FeedTheDead extends Prayer
 			{
 				mob.location().send(mob,msg);
 				CMLib.leveler().postExperience(mob,null,null,-amount,false);
+				if((mob.envStats().level()>target.envStats().level())&&(target.isMonster()))
+					amount+=(mob.envStats().level()-target.envStats().level())
+						  *(mob.envStats().level()/10)
+						  *amount;
 				CMLib.leveler().postExperience(target,null,null,amount,false);
 			}
 		}
