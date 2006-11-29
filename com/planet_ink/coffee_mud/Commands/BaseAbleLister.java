@@ -32,7 +32,36 @@ import java.util.*;
 */
 public class BaseAbleLister extends StdCommand
 {
-	public static int parseOutLevel(Vector commands)
+	
+	protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
+	{
+		return parsedOutIndividualSkill(mob,qual,CMParms.makeVector(new Integer(acode)));
+	}
+	protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector acodes)
+	{
+		Ability A=CMClass.findAbility(qual);
+		if((A!=null)
+		&&(acodes.contains(new Integer(A.classificationCode()&Ability.ALL_ACODES))))
+		{
+			Ability A2=mob.fetchAbility(A.ID());
+			if(A2==null)
+				mob.tell("You don't know '"+A.name()+"'.");
+			else
+			{
+				int level=CMLib.ableMapper().qualifyingLevel(mob,A2);
+				if(level<0) level=0;
+				StringBuffer line=new StringBuffer("");
+				line.append("\n\rLevel ^!"+level+"^?:\n\r");
+				line.append("^N[^H"+CMStrings.padRight(Integer.toString(A2.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
+				line.append("^?\n\r");
+				if(mob.session()!=null)
+					mob.session().wraplessPrintln(line.toString());
+			}
+			return true;
+		}
+		return false;
+	}
+	protected int parseOutLevel(Vector commands)
 	{
 		if((commands.size()>1)
 		&&(commands.lastElement() instanceof String)
@@ -45,7 +74,7 @@ public class BaseAbleLister extends StdCommand
 		return -1;
 	}
 
-    public static void parseDomainInfo(MOB mob, Vector commands, Vector acodes, int[] level, int[] domain, String[] domainName)
+	protected void parseDomainInfo(MOB mob, Vector commands, Vector acodes, int[] level, int[] domain, String[] domainName)
     {
         level[0]=parseOutLevel(commands);
         String qual=CMParms.combine(commands,1).toUpperCase();
@@ -83,7 +112,7 @@ public class BaseAbleLister extends StdCommand
     }
     
     
-	public static StringBuffer getAbilities(MOB able,
+	protected StringBuffer getAbilities(MOB able,
 											int ofType,
 											int ofDomain,
 											boolean addQualLine,
@@ -99,11 +128,11 @@ public class BaseAbleLister extends StdCommand
 		V.addElement(new Integer(ofType));
 		return getAbilities(able,V,mask,addQualLine,maxLevel);
 	}
-	public static StringBuffer getAbilities(MOB able,
-											Vector ofTypes,
-											int mask,
-											boolean addQualLine,
-											int maxLevel)
+	protected StringBuffer getAbilities(MOB able,
+									 Vector ofTypes,
+									 int mask,
+									 boolean addQualLine,
+									 int maxLevel)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;

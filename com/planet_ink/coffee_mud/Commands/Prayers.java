@@ -41,6 +41,8 @@ public class Prayers extends BaseAbleLister
 	{
 		StringBuffer msg=new StringBuffer("");
         String qual=CMParms.combine(commands,1).toUpperCase();
+		if(parsedOutIndividualSkill(mob,qual,Ability.ACODE_PRAYER))
+			return true;
         int[] level=new int[1];
         int[] domain=new int[1];
         String[] domainName=new String[1];

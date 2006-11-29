@@ -40,6 +40,8 @@ public class Languages extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
+		if(parsedOutIndividualSkill(mob,CMParms.combine(commands,1),Ability.ACODE_SPELL))
+			return true;
 		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,Ability.ACODE_LANGUAGE,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());

@@ -45,6 +45,8 @@ public class Skills extends BaseAbleLister
 		V.addElement(new Integer(Ability.ACODE_SKILL));
 		V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
         String qual=CMParms.combine(commands,1).toUpperCase();
+		if(parsedOutIndividualSkill(mob,qual,V))
+			return true;
         int[] level=new int[1];
         int[] domain=new int[1];
         String[] domainName=new String[1];

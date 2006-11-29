@@ -41,6 +41,8 @@ public class Spells extends BaseAbleLister
 		throws java.io.IOException
 	{
 		String qual=CMParms.combine(commands,1).toUpperCase();
+		if(parsedOutIndividualSkill(mob,qual,Ability.ACODE_SPELL))
+			return true;
         int[] level=new int[1];
         int[] domain=new int[1];
         String[] domainName=new String[1];
