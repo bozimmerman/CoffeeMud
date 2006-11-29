@@ -80,9 +80,25 @@ public class Wear extends BaseItemParser
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
-		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,0)))
-				wear(mob,(Item)items.elementAt(i),false);
+		{
+			// sort hold-onlys down.
+			Item I=null;
+			for(int i=items.size()-2;i>=0;i--)
+			{
+				I=(Item)items.elementAt(i);
+				if(I.rawProperLocationBitmap()==Item.WORN_HELD)
+				{
+					items.removeElementAt(i);
+					items.addElement(I);
+				}
+			}
+			for(int i=0;i<items.size();i++)
+			{
+				I=(Item)items.elementAt(i);
+				if((items.size()==1)||(I.canWear(mob,0)))
+					wear(mob,I,false);
+			}
+		}
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
