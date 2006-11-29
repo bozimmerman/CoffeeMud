@@ -66,13 +66,15 @@ public class Skill_Disarm extends StdSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		MOB victim=mob.getVictim();
-		if(victim==null)
+		if(!mob.isInCombat())
 		{
 			mob.tell("You must be in combat to do this!");
 			return false;
 		}
-		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+		MOB victim=super.getTarget(mob, commands, givenTarget);
+		if(victim==null) return false;
+		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>0))
+		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>0)))
 		{
 			mob.tell("You are too far away to disarm!");
 			return false;
