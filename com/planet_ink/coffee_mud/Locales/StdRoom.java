@@ -1324,19 +1324,27 @@ public class StdRoom implements Room
 		while(numEffects()>0)
 			delEffect(fetchEffect(0));
 		try{
-		for(int a=numInhabitants()-1;a>=0;a--)
-			fetchInhabitant(a).destroy();
+            Vector V=new Vector();
+            for(int v=0;v<numInhabitants();v++)
+                V.addElement(fetchInhabitant(v));
+            for(int v=0;v<V.size();v++)
+                ((MOB)V.elementAt(v)).destroy();
+            if(numInhabitants()>0)
+            for(int v=0;v<V.size();v++)
+                delInhabitant((MOB)V.elementAt(v));
 		}catch(Exception e){}
-		while(numInhabitants()>0)
-			delInhabitant(fetchInhabitant(0));
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
 		try{
-            while(numItems()>0)
-                fetchItem(0).destroy();
+            Vector V=new Vector();
+            for(int v=0;v<numItems();v++)
+                V.addElement(fetchItem(v));
+            for(int v=0;v<V.size();v++)
+                ((Item)V.elementAt(v)).destroy();
+            if(numItems()>0)
+            for(int v=0;v<V.size();v++)
+                delItem((Item)V.elementAt(v));
 		}catch(Exception e){}
-		while(numItems()>0)
-			delItem(fetchItem(0));
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid(null);
 		clearSky();

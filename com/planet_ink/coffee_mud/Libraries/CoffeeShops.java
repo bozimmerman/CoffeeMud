@@ -1093,7 +1093,42 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
         }
-        return V;
+        if(V.size()<2) return V;
+        Vector V2=new Vector(V.size());
+        LandTitle L=null;
+        LandTitle L2=null;
+        int x=-1;
+        int x2=-1;
+        while(V.size()>0)
+        {
+            if(((!(V.elementAt(0) instanceof LandTitle)))
+            ||((x=(L=(LandTitle)V.elementAt(0)).landPropertyID().lastIndexOf('#'))<0))
+            {
+                if(V2.size()==0)
+                    V2.addElement(V.remove(0));
+                else
+                    V2.insertElementAt(V.remove(0),0);
+            }
+            else
+            {
+                
+                int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
+                for(int v=1;v<V.size();v++)
+                    if(V.elementAt(v) instanceof LandTitle)
+                    {
+                        L2=(LandTitle)V.elementAt(v);
+                        x2=L2.landPropertyID().lastIndexOf('#');
+                        if((x2>0)&&(CMath.s_int(L2.landPropertyID().substring(x+1).trim())<lowest))
+                        {
+                            lowest=CMath.s_int(L2.landPropertyID().substring(x+1).trim());
+                            L=L2;
+                        }
+                    }
+                V.removeElement(L);
+                V2.addElement(L);
+            }
+        }
+        return V2;
     }
     
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores)
