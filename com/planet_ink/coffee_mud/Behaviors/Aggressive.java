@@ -87,11 +87,11 @@ public class Aggressive extends StdBehavior
 					if(A!=null)
 					{
 						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-						A.invoke(monster,mob,false,0);
+						monster.enqueCommand(CMParms.makeVector(A.triggerStrings()[0],R.getContextName(mob)),0);
 					}
 				}
 				// normal attack
-				CMLib.combat().postAttack(monster,mob,monster.fetchWieldedItem());
+				monster.enqueCommand(CMParms.makeVector("KILL",R.getContextName(mob)),0);
 				return true;
 			}
 		}

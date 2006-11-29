@@ -191,7 +191,7 @@ public class Farming extends GatheringSkill
 				{
 					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
 					mine=(Item)I2.copyOf();
-					if(mob.location().fetchItem(null,"$"+I2.Name()+"$")==null)
+					if(mob.location().fetchItem(null,mob.location().getContextName(I2))==null)
 						mob.location().addItemRefuse(mine,Item.REFUSE_RESOURCE);
 					break;
 				}

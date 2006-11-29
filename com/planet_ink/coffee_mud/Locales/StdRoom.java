@@ -1488,6 +1488,59 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	public String getContextName(Environmental E)
+	{
+		if(E instanceof Exit)
+		{
+			for(int e=0;e<rawExits().length;e++)
+				if(rawExits()[e]==E)
+					return Directions.getDirectionName(e);
+			return E.Name();
+		}
+		else
+		if(E instanceof MOB)
+		{
+			if(inhabitants==null) return E.name();
+			Vector V=(Vector)inhabitants.clone();
+			int context=0;
+			for(int v=0;v<V.size();v++)
+				if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
+				||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
+				{
+					if(V.elementAt(v)==E)
+					{
+						if(context==0)
+							return E.name();
+						return E.name()+"."+context;
+					}
+					context++;
+				}
+		}
+		else
+		if(E instanceof Item)
+		{
+			if(contents==null) return E.name();
+			Vector V=(Vector)contents.clone();
+			int context=0;
+			for(int v=0;v<V.size();v++)
+				if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
+				||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
+				{
+					if(V.elementAt(v)==E)
+					{
+						if(context==0)
+							return E.name();
+						return E.name()+"."+context;
+					}
+					context++;
+				}
+		}
+		else
+		if(E!=null)
+			return E.name();
+		return "nothing";
+	}
+	
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;

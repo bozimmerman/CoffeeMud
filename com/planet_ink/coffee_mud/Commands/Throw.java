@@ -40,7 +40,7 @@ public class Throw extends StdCommand
 		throws java.io.IOException
 	{
 		if((commands.size()==2)&&(mob.isInCombat()))
-			commands.addElement("$"+mob.getVictim().name()+"$");
+			commands.addElement(mob.getVictim().location().getContextName(mob.getVictim()));
 		if(commands.size()<3)
 		{
 			mob.tell("Throw what, where or at whom?");

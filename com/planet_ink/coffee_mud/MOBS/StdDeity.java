@@ -417,7 +417,7 @@ public class StdDeity extends StdMOB implements Deity
 			Vector V=new Vector();
 			if(Curse.canTarget(Ability.CAN_MOBS))
 			{
-				V.addElement("$"+mob.name()+"$");
+				V.addElement(mob.location().getContextName(mob));
 				Curse.invoke(this,V,mob,true,mob.envStats().level());
 			}
 			else

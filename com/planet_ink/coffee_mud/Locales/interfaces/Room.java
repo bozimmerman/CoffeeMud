@@ -215,6 +215,8 @@ public interface Room extends Environmental, Affectable, Behavable
 	public MOB fetchPCInhabitant(int i);
 	public void bringMobHere(MOB mob, boolean andFollowers);
 
+	public String getContextName(Environmental E);
+	
 	public void addItem(Item item);
 	public void addItemRefuse(Item item, double survivalRLHours);
 	public void delItem(Item item);
