@@ -53,6 +53,8 @@ public interface SocialsList extends CMObject
         throws IOException;
     public Social FetchSocial(String name, boolean exactOnly);
     public Social FetchSocial(Vector C, boolean exactOnly);
+    public String findSocialName(String named, boolean exactOnly);
+    public String getSocialsHelp(MOB mob, String named);
     public Social enumSocial(int index);
     public void save(MOB whom);
     public Vector getAllSocialObjects(String named);

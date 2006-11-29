@@ -293,7 +293,7 @@ public class Socials extends StdLibrary implements SocialsList
                 for(int v=0;v<socials.size();v++)
                 {
                     Social S=(Social)socials.elementAt(v);
-                    int x=S.Name().indexOf(" ");
+                    int x=S.Name().indexOf(' ');
                     if(x<0)
                     { 
                         str.append((v+1)+") No Target (NONE)\n\r"); 
@@ -335,7 +335,8 @@ public class Socials extends StdLibrary implements SocialsList
                     newOne=mob.session().prompt("\n\rNew target (TARGET,NONE,ALL,SELF): ","").toUpperCase().trim();
                 if(newOne.startsWith("<")||newOne.startsWith(">")||(newOne.startsWith("T-")))
                     newOne="TNAME";
-                if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET")) newOne=" <T-NAME>";
+                if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET")) 
+                	newOne=" <T-NAME>";
                 else
                 if(newOne.equalsIgnoreCase("NONE")) newOne="";
                 else
@@ -637,6 +638,7 @@ public class Socials extends StdLibrary implements SocialsList
     {
         Vector all=new Vector();
         Hashtable soc=getSocialHash();
+        named=named.toUpperCase();
         for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
         {
             Social I=(Social)e.nextElement();
@@ -646,10 +648,84 @@ public class Socials extends StdLibrary implements SocialsList
                 name=I.name().substring(0,space).trim().toUpperCase();
             else
                 name=I.name().trim().toUpperCase();
-            if(name.equalsIgnoreCase(named))
+            if(name.equals(named))
                 all.addElement(I);
         }
         return all;
+    }
+
+    public String findSocialName(String named, boolean exactOnly)
+    {
+        if(named==null) return null;
+        named=named.toUpperCase().trim();
+        if(named.length()==0) return null;
+    	int x=named.indexOf(' ');
+    	if(x>0)named=named.substring(0,x).trim();
+        Hashtable soc=getSocialHash();
+        for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
+        {
+            Social S=(Social)e.nextElement();
+            String name=S.name().toUpperCase().trim();
+            int space=name.indexOf(' ');
+            if(space>0)name=name.substring(0,space).trim();
+            if(name.equals(named)) return name.toLowerCase();
+            if((!exactOnly)&&(name.startsWith(named)))
+            	return name.toLowerCase();
+        }
+        return null;
+    }
+    
+    public String getSocialsHelp(MOB mob, String named)
+    {
+    	String realName=findSocialName(named,true);
+    	if(realName==null) realName=findSocialName(named,false);
+    	if(realName==null) return null;
+    	Vector list=getAllSocialObjects(realName.toUpperCase());
+    	if((list==null)||(list.size()==0)) return null;
+    	StringBuffer help=new StringBuffer("");
+    	help.append("^H\n\r");
+    	help.append("Social     : ^x"+realName+"^.^N\n\r");
+    	Session session=mob.session();
+    	MOB tgtMOB=CMClass.getMOB("StdMOB");
+    	tgtMOB.setName("the target");
+    	MOB othMOB=CMClass.getMOB("StdMOB");
+    	othMOB.setName("someone");
+    	for(int l=0;l<list.size();l++)
+    	{
+    		Social S=(Social)list.elementAt(l);
+            int x=S.Name().indexOf(' ');
+            String rest=(x>0)?S.Name().substring(x+1).trim().toUpperCase():"";
+            if(rest.length()==0)
+            {
+            	help.append("\n\r");
+            	help.append("^H");
+            	help.append("Target     ^?: ^xnone^.^N\n\r");
+            	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, null, null, S.You_see(), false)+"\n\r");
+            	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, null, null, S.Third_party_sees(), false)+"\n\r");
+            }
+            else
+            if(rest.equals("<T-NAME>"))
+            {
+            	help.append("\n\r");
+            	help.append("^H");
+            	help.append("Target     ^?: ^xsomeone^.^N\n\r");
+            	help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
+            	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
+            	help.append("Target sees: "+CMLib.coffeeFilter().fullOutFilter(session, tgtMOB, mob, tgtMOB, null, S.Target_sees(), false)+"\n\r");
+            	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+            }
+            else
+            {
+            	help.append("\n\r");
+            	help.append("^H");
+            	help.append("Target     ^?: ^x"+rest.toLowerCase()+"^.^N\n\r");
+            	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, null, null, S.You_see(), false)+"\n\r");
+            	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, null, null, S.Third_party_sees(), false)+"\n\r");
+            }
+    	}
+    	tgtMOB.destroy();
+    	othMOB.destroy();
+    	return help.toString();
     }
     
 	public String getSocialsList()

@@ -588,6 +588,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					found=true;
 				}
 			}
+			if(!found)
+			{ 
+				String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase());
+				if(s!=null)
+				{
+					thisTag=s;
+					helpStr=helpStr.toUpperCase();
+					found=true;
+				}
+			}
 		}
 		if(!areaTag)
 			while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
