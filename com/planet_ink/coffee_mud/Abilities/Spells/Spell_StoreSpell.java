@@ -35,7 +35,25 @@ import java.util.*;
 public class Spell_StoreSpell extends Spell
 {
 	public String ID() { return "Spell_StoreSpell"; }
-	public String name(){return "Store Spell";}
+    public String Name(){return "Store Spell";}
+	public String name(){
+        if((affected!=null)&&(CMLib.flags().isInTheGame(affected,true)))
+        {
+            if(spellName.length()==0)
+            {
+                spellName="unknown";
+                int x=text().indexOf("/");
+                Ability A=null;
+                if(x>0)
+                {
+                    A=CMClass.getAbility(text().substring(0,x));
+                    if(A!=null)  spellName=A.name();
+                }
+            }
+            return "Store Spell: "+spellName;
+        }
+        return Name();
+    }
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return overridemana;}

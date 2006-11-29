@@ -49,8 +49,36 @@ public class Transfer extends At
 		String mobname=(String)commands.elementAt(0);
 		Room curRoom=mob.location();
 		Vector V=new Vector();
-		if(mobname.equalsIgnoreCase("all"))
+        boolean allFlag=false;
+        if(mobname.equalsIgnoreCase("ALL"))
+        {
+            allFlag=true;
+            if(commands.size()>2)
+            {
+                commands.removeElementAt(0);
+                mobname=(String)commands.elementAt(0);
+            }
+            else
+                mobname="";
+        }
+        boolean itemFlag=false;
+        if((mobname.equalsIgnoreCase("item")||(mobname.equalsIgnoreCase("items"))))
+        {
+            itemFlag=true;
+            if(commands.size()>2)
+            {
+                commands.removeElementAt(0);
+                mobname=(String)commands.elementAt(0);
+            }
+            else
+                mobname="";
+        }
+		if((mobname.length()==0)&&(allFlag))
 		{
+            if(itemFlag)
+                for(int i=0;i<curRoom.numItems();i++)
+                    V.addElement(curRoom.fetchItem(i));
+            else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
 				MOB M=curRoom.fetchInhabitant(i);
@@ -59,13 +87,26 @@ public class Transfer extends At
 			}
 		}
 		else
+        if(itemFlag)
 		{
-			boolean allFlag=false;
-			if(mobname.toUpperCase().startsWith("ALL "))
-			{
-				mobname=mobname.substring(4);
-				allFlag=true;
-			}
+                if(!allFlag)
+                {
+                    Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Item.WORNREQ_UNWORNONLY);
+                    if(E instanceof Item) V.addElement(E);
+                }
+                else
+                if(mobname.length()>0)
+                {
+                    for(int i=0;i<curRoom.numItems();i++)
+                    {
+                        Item I=curRoom.fetchItem(i);
+                        if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
+                            V.addElement(I);
+                    }
+                }
+        }
+        else
+        {
 			if(!allFlag)
 				for(int s=0;s<CMLib.sessions().size();s++)
 				{
@@ -115,7 +156,7 @@ public class Transfer extends At
 
 		if(V.size()==0)
 		{
-			mob.tell("Transfer whom?  '"+mobname+"' is unknown to you.");
+			mob.tell("Transfer what?  '"+mobname+"' is unknown to you.");
 			return false;
 		}
 
@@ -131,6 +172,14 @@ public class Transfer extends At
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
+        if(V.elementAt(i) instanceof Item)
+        {
+            Item I=(Item)V.elementAt(i);
+            if(!room.isContent(I))
+                room.bringItemHere(I,0,true);
+        }
+        else
+        if(V.elementAt(i) instanceof MOB)
 		{
 			MOB M=(MOB)V.elementAt(i);
 			if(!room.isInhabitant(M))
