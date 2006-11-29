@@ -52,6 +52,7 @@ public class ThinRoom implements Room {
 	public String roomID(){return roomID;}
 	public void setRoomID(String newRoomID){roomID=newRoomID;};
     public void initializeClass(){}
+    public String getContextName(Environmental E){return E==null?"nothing":E.name();}
 
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
