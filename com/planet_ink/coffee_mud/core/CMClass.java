@@ -320,12 +320,8 @@ public class CMClass extends ClassLoader
 	        reloadCommandWords();
 			return true;
 		}
-		if(webMacros.contains(O))
-			for(Enumeration e=webMacros.keys();e.hasMoreElements();)
-			{ 
-				String key=(String)e.nextElement();
-				if(webMacros.get(key)==O) webMacros.remove(key);
-			}
+		if((O instanceof WebMacro)&&(webMacros.containsKey(((WebMacro)O).ID().trim().toUpperCase())))
+		{    webMacros.remove(((WebMacro)O).ID().trim().toUpperCase()); return true;}
 		return false;
 	}
 
