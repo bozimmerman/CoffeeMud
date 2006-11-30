@@ -469,12 +469,20 @@ public class XMLManager extends StdLibrary implements XMLLibrary
     {
         int end=-1;
         start--;
-        while((end<0)||(!acceptableTag(buf,start+1,end)))
+        while((end<(start+1))||(!acceptableTag(buf,start+1,end)))
         {
             start=buf.indexOf("<",start+1);
             if(start<0) return null;
             end=buf.indexOf(">",start);
             if(end<=start) return null;
+			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+3).equals("<!--")))
+			{
+				int commentEnd=buf.indexOf("-->",start+1);
+				if(commentEnd<0) return null;
+				end=-1;
+				start=commentEnd;
+				continue;
+			}
             int nextStart=buf.indexOf("<",start+1);
             while((nextStart>=0)&&(nextStart<end))
             {

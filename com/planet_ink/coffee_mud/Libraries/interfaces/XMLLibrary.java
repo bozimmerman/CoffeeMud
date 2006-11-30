@@ -101,9 +101,10 @@ public interface XMLLibrary extends CMObject
         public int outerEnd=-1;
         public void addContent(XMLpiece x)
         {
-            if(x==null) return;
-            if(contents==null) contents=new Vector();
-            contents.addElement(x);
+    		if (x == null) return;
+    		if (contents == null) contents = new Vector();
+    		x.parent=this;
+    		contents.addElement(x);
         }
     }
     
