@@ -330,23 +330,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	
 	protected boolean evaluateSkillFlagObject(Object o, Ability A)
 	{
-		boolean result=false;
         if(A!=null) 
         {
             if(o instanceof Object[])
             {
                 Object[] set=(Object[])o;
-                result=true;
                 for(int i=0;i<set.length;i++)
                     if(set[i] instanceof Boolean)
                     {
                         if(evaluateSkillFlagObject(set[i+1],A))
-                        { result=false; break;}
+                        	return false;
                         i++;
                     }
                     else
                     if(!evaluateSkillFlagObject(set[i],A))
-                    { result=false; break;}
+                    	return false;
+                return true;
             }
             else
 	        if(o instanceof Integer)
@@ -354,26 +353,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	            int val=((Integer)o).intValue();
 	            if(((A.classificationCode()&Ability.ALL_ACODES)==val)
 	            ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
-	            	result=true;
+	                return true;
 	        }
 	        else
 	        if(o instanceof Short)
 	        {
 	            int val=((Short)o).intValue();
 	            if(A.abstractQuality()==val)
-	            	result=true;
+	                return true;
 	        }
 	        else
 	        if(o instanceof Long)
 	        {
 	            long val=((Long)o).longValue();
 	            if((A.flags()&val)==val)
-	            	result=true;
+	                return true;
 	        }
         }
-if(result&&(A.ID().toUpperCase().indexOf("SHRUG")>=0))        
-System.out.println(A.ID()+"/"+o.getClass().getName()+"/"+o.toString()+"/"+(A.classificationCode()&Ability.ALL_ACODES)+"/"+(A.classificationCode()&Ability.ALL_DOMAINS));        
-        return result;
+        return false;
 	}
 	
 	
