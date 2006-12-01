@@ -42,7 +42,7 @@ public class Skill_Arrest extends StdSkill
 	private static final String[] triggerStrings = {"ARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_LEGAL; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
 	public static Vector getWarrantsOf(MOB target, Area legalA)
 	{

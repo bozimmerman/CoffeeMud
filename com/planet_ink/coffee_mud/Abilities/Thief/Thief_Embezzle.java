@@ -42,7 +42,7 @@ public class Thief_Embezzle extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"EMBEZZLE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRIMINAL; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);

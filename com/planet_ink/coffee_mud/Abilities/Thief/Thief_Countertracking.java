@@ -41,7 +41,7 @@ public class Thief_Countertracking extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_STEALTHY; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY; }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -43,7 +43,7 @@ public class Thief_Assassinate extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 	protected Vector theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;

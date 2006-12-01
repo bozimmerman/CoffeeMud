@@ -39,7 +39,7 @@ public class Thief_Distract extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"DISTRACT"};
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_DECEPTIVE; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;

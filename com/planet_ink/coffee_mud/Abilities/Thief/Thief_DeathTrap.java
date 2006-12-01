@@ -41,7 +41,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"DEATHTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_TRAPPING; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING; }
 	protected boolean sprung=false;
 
 	public boolean disabled(){return false;}

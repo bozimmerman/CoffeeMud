@@ -40,7 +40,7 @@ public class Skill_CollectBounty extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"COLLECTBOUNTY","BOUNTY"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_LEGAL; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 	public int usageType(){return USAGE_MANA;}
 	
 	public Vector getWarrantsOf(MOB target, Room R)

@@ -42,7 +42,7 @@ public class Skill_Climb extends StdSkill
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_FITNESS; }
+    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
