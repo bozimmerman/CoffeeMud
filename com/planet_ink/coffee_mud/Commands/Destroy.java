@@ -695,7 +695,7 @@ public class Destroy extends BaseItemParser
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return false;
         }
-		CMClass.delClass(O);
+		CMClass.delClass("ABILITY",(Ability)O);
 		CMLib.database().DBDeleteAbility(A.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
 		return true;

@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CoffeeTableRow extends CMObject
+public interface CoffeeTableRow extends CMCommon
 {
     public final int STAT_LOGINS=0;
     public final int STAT_TICKSONLINE=1;

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface MaskingLibrary extends CMObject
+public interface MaskingLibrary extends CMLibrary
 {
     public Hashtable getMaskCodes();
     public String rawMaskHelp();

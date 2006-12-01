@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface StatisticsLibrary extends CMObject
+public interface StatisticsLibrary extends CMLibrary
 {
     public void update();
     public void bump(Environmental E, int type);

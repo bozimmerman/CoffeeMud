@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface SocialsList extends CMObject
+public interface SocialsList extends CMLibrary
 {
     public final String filename=Resources.buildResourcePath("")+"socials.txt";
     

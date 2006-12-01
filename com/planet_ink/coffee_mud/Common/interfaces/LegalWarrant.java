@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface LegalWarrant extends CMObject
+public interface LegalWarrant extends CMCommon
 {
 	public void setArrestingOfficer(Area legalArea, MOB mob);
 	public MOB criminal();

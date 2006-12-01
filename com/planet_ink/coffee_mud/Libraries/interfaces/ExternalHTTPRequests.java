@@ -32,7 +32,7 @@ import java.net.InetAddress;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ExternalHTTPRequests extends CMObject
+public interface ExternalHTTPRequests extends CMLibrary
 {
 	public byte [] doVirtualPage(byte [] data)
 		throws HTTPRedirectException;

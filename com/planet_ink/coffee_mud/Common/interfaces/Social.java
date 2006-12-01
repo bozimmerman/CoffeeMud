@@ -30,7 +30,7 @@ limitations under the License.
 
 import java.util.Vector;
 
-public interface Social extends Environmental
+public interface Social extends Environmental, CMCommon
 {
     public String Name();
     public void setName(String newName);

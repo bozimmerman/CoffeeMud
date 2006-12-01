@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface MaterialLibrary extends CMObject
+public interface MaterialLibrary extends CMLibrary
 {
     public Environmental unbundle(Item I, int number);
     public int getMaterialRelativeInt(String s);

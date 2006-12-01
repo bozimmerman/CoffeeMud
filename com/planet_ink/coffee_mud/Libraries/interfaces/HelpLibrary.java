@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface HelpLibrary extends CMObject
+public interface HelpLibrary extends CMLibrary
 {
     public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
     public Vector getTopics(boolean archonHelp, boolean standardHelp);

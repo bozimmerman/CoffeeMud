@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ListingLibrary extends CMObject
+public interface ListingLibrary extends CMLibrary
 {
 
     public String itemSeenString(MOB viewer, Environmental item, boolean useName, boolean longLook, boolean sysMsgs);

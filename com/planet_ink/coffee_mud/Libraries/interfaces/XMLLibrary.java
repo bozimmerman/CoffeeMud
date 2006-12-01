@@ -29,7 +29,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface XMLLibrary extends CMObject
+public interface XMLLibrary extends CMLibrary
 {
     public final static String HEX_DIGITS="0123456789ABCDEF";
     

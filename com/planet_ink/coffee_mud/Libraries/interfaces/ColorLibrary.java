@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ColorLibrary extends CMObject
+public interface ColorLibrary extends CMLibrary
 {
     public static final String COLOR_WHITE="\033[1;37m";
     public static final String COLOR_LIGHTGREEN="\033[1;32m";

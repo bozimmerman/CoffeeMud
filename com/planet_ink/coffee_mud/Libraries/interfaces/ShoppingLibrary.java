@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ShoppingLibrary extends CMObject
+public interface ShoppingLibrary extends CMLibrary
 {
     public ShopKeeper getShopKeeper(Environmental E);
     public Vector getAllShopkeepers(Room here, MOB notMOB);

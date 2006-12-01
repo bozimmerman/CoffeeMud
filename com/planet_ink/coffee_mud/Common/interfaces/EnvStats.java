@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface EnvStats extends CMObject
+public interface EnvStats extends CMCommon
 {
     public final static int STAT_LEVEL=0;
     public final static int STAT_SENSES=1;         // see Senses class

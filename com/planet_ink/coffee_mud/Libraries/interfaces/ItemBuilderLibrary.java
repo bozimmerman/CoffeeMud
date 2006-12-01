@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ItemBuilderLibrary 
+public interface ItemBuilderLibrary extends CMLibrary
 {
 	public int timsLevelCalculator(Item I);
 	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul);

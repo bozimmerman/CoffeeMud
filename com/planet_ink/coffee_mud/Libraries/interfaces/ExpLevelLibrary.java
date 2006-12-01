@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ExpLevelLibrary extends CMObject
+public interface ExpLevelLibrary extends CMLibrary
 {
     /**
      * Returns how much experience a player must have to be the given level.

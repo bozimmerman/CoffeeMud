@@ -39,8 +39,7 @@ public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
     protected static Hashtable classes=new Hashtable();
-    protected static CMClass inst=new CMClass();
-    public static CMClass instance(){ return inst;}
+    public static CMClass instance(){ return new CMClass();}
     
     public static final int OBJECT_RACE=0;
     public static final int OBJECT_CHARCLASS=1;
@@ -91,7 +90,7 @@ public class CMClass extends ClassLoader
     protected static final Vector MSGS_CACHE=new Vector();
     protected static final boolean KEEP_OBJECT_CACHE=false;
     static{ if(KEEP_OBJECT_CACHE) for(int i=0;i<OBJECT_TOTAL;i++)OBJECT_CACHE[i]=new java.util.WeakHashMap();}
-    protected static final String[] OBJECT_DESCS={
+    public static final String[] OBJECT_DESCS={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
 		"MISCTECH","WEBMACROS","COMMON","LIBRARY"
@@ -114,8 +113,8 @@ public class CMClass extends ClassLoader
 		"com.planet_ink.coffee_mud.Items.interfaces.ClanItem",
 		"com.planet_ink.coffee_mud.Items.interfaces.Electronics",
 		"com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro",
-        "com.planet_ink.coffee_mud.core.interfaces.CMObject",
-        "com.planet_ink.coffee_mud.core.interfaces.CMObject",
+        "com.planet_ink.coffee_mud.Common.interfaces.CMCommon",
+        "com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary",
 		};
 
     public static void bumpCounter(Object O, int which)
@@ -294,35 +293,52 @@ public class CMClass extends ClassLoader
               +webMacros.size();
     }
     
-	public static boolean delClass(Object O)
+	public static boolean delClass(String type, CMObject O)
 	{
         if(classes.containsKey(O.getClass().getName()))
             classes.remove(O.getClass().getName());
-		if(races.contains(O)){ races.removeElement(O); return true;}
-		if(charClasses.contains(O)){ charClasses.removeElement(O); return true;}
-		if(MOBs.contains(O)){ MOBs.removeElement(O); return true;}
-		if(abilities.contains(O)){abilities.removeElement(O); return true;}
-		if(locales.contains(O)){ locales.removeElement(O); return true;}
-		if(exits.contains(O)){ exits.removeElement(O); return true;}
-		if(items.contains(O)){ items.removeElement(O); return true;}
-		if(behaviors.contains(O)){ behaviors.removeElement(O); return true;}
-		if(weapons.contains(O)){ weapons.removeElement(O); return true;}
-		if(armor.contains(O)){ armor.removeElement(O); return true;}
-		if(miscMagic.contains(O)){ miscMagic.removeElement(O); return true;}
-		if(clanItems.contains(O)){ clanItems.removeElement(O); return true;}
-		if(miscTech.contains(O)){ miscTech.removeElement(O); return true;}
-		if(areaTypes.contains(O)){ areaTypes.removeElement(O); return true;}
-        if(common.containsKey(classID(O))){ common.remove(classID(O)); return true;}
-        if(libraries.contains(O)){ libraries.removeElement(O); return true;}
-		if(commands.contains(O))
+		Object set=null;
+		int code=classCode(type);
+		switch(code)
 		{
-			commands.removeElement(O);
-	        reloadCommandWords();
-			return true;
+		case 0: set=races; break;
+		case 1: set=charClasses; break;
+		case 2: set=MOBs; break;
+		case 3: set=abilities; break;
+		case 4: set=locales; break;
+		case 5: set=exits; break;
+		case 6: set=items; break;
+		case 7: set=behaviors; break;
+		case 8: break;
+		case 9: set=weapons; break;
+		case 10: set=armor; break;
+		case 11: set=miscMagic; break;
+		case 12: set=areaTypes; break;
+		case 13: set=commands; break;
+		case 14: set=clanItems; break;
+		case 15: set=miscTech; break;
+		case 16: set=webMacros; break;
+        case 17: set=common; break;
+        case 18: set=libraries; break;
 		}
-		if((O instanceof WebMacro)&&(webMacros.containsKey(((WebMacro)O).ID().trim().toUpperCase())))
-		{    webMacros.remove(((WebMacro)O).ID().trim().toUpperCase()); return true;}
-		return false;
+		if(set==null) return false;
+		if(set instanceof Vector)
+		{
+			((Vector)set).remove(O);
+            Vector newSet=new Vector(new TreeSet((Vector)set));
+            ((Vector)set).clear();
+            ((Vector)set).addAll(newSet);
+            if(code==13) reloadCommandWords();
+		}
+		else
+		if(set instanceof Hashtable)
+			((Hashtable)set).remove(O.ID().trim());
+		else
+		if(set instanceof HashSet)
+			((HashSet)set).remove(O);
+		else
+			return false;
+		return true;
 	}
 
 	public static boolean addClass(String type, CMObject O)
@@ -380,6 +396,20 @@ public class CMClass extends ClassLoader
 		}
 		return -1;
 	}
+	
+	public static int classCode(Object O)
+	{
+		for(int i=CMClass.OBJECT_ANCESTORS.length-1;i>=0;i--)
+		{
+			try{
+				Class ancestorCl = instance().loadClass(CMClass.OBJECT_ANCESTORS[i]);
+				if(CMClass.checkAncestry(O.getClass(),ancestorCl))
+					return i;
+			}catch(Exception e){}
+		}
+		return -1;
+	}
+	
 	public static boolean loadClass(String name, String path)
 	{
 		Object set=null;

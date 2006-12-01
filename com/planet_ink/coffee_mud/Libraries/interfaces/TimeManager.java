@@ -31,7 +31,7 @@ import java.text.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface TimeManager extends CMObject
+public interface TimeManager extends CMLibrary
 {
 	public final static long MILI_SECOND=1000;
 	public final static long MILI_MINUTE=MILI_SECOND*60;

@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CommonCommands extends CMObject
+public interface CommonCommands extends CMLibrary
 {
     public boolean doStandardCommand(MOB mob, String command, Vector parms);
     public StringBuffer getScore(MOB mob);

@@ -31,7 +31,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CoffeeShop extends CMObject
+public interface CoffeeShop extends CMCommon
 {
     public boolean inBaseInventory(Environmental thisThang);
     public Environmental addStoreInventory(Environmental thisThang, ShopKeeper shop);

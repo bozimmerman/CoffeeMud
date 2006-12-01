@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface TimeClock extends Tickable
+public interface TimeClock extends Tickable, CMCommon
 {
 	public String timeDescription(MOB mob, Room room);
     public String getShortTimeDescription();

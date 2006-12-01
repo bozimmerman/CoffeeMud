@@ -33,7 +33,7 @@ import java.util.*;
  * @author Owner
  *
  */
-public interface AbilityMapper extends CMObject
+public interface AbilityMapper extends CMLibrary
 {
     /**
      * @author Owner

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface EnglishParsing extends CMObject
+public interface EnglishParsing extends CMLibrary
 {
     public static final int FLAG_STR=0;
     public static final int FLAG_DOT=1;

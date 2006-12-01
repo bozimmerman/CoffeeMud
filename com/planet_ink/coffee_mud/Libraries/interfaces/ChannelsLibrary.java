@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ChannelsLibrary extends CMObject
+public interface ChannelsLibrary extends CMLibrary
 {
     public final int QUEUE_SIZE=100;
     

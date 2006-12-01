@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface CharStats extends CMObject
+public interface CharStats extends CMCommon
 {
     /** stat constant for strength */
     public static final int VALUE_ALLSTATS_DEFAULT=10;

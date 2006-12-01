@@ -39,44 +39,75 @@ public class Unload extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		String list="CLASS, HELP, USER, FACTION, ALL, <filename>";
+		
 		String str=CMParms.combine(commands,1);
 		if(str.length()==0)
 		{
-			mob.tell("UNLOAD what? try CLASS <>, HELP, EXPERTISES, FACTION <>, ALL, <filename>");
+			mob.tell("UNLOAD what? Try "+list);
 			return false;
 		}
-		if(((String)commands.elementAt(1)).equalsIgnoreCase("CLASS"))
+		String what=(String)commands.elementAt(1);
+		if((what.equalsIgnoreCase("CLASS")||(CMClass.classCode(what)>=0))
+		&&(CMSecurity.isASysOp(mob)))
 		{
 			if(commands.size()<3)
 			{
-				mob.tell("Unload which class?");
+				mob.tell("Unload which "+what+"?");
 				return false;
 			}
-			commands.removeElementAt(0);
-			commands.removeElementAt(0);
-			for(int i=0;i<commands.size();i++)
+			if(what.equalsIgnoreCase("CLASS"))
 			{
-				String name=(String)commands.elementAt(0);
-				Object O=CMClass.getClass(name);
-				if((O==null)||(!CMClass.delClass(O)))
-					mob.tell("Class '"+name+"' was not found in the class loader.");
-				else
-					mob.tell("Class '"+name+"' was unloaded.");
+				Object O=CMClass.getClass((String)commands.elementAt(2));
+				if(O!=null)
+				{
+					int x=CMClass.classCode(O);
+					if(x>=0) what=CMClass.OBJECT_DESCS[x];
+				}
 			}
+			if(CMClass.classCode(what)<0)
+				mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+list);
+			else
+	        {
+				commands.removeElementAt(0);
+				commands.removeElementAt(0);
+				for(int i=0;i<commands.size();i++)
+				{
+					String name=(String)commands.elementAt(0);
+					Object O=CMClass.getClass(name);
+					if(!(O instanceof CMObject))
+						mob.tell("Class '"+name+"' was not found in the class loader.");
+					else
+					if(!CMClass.delClass(what,(CMObject)O))
+						mob.tell("Failed to unload class '"+name+"' from the class loader.");
+					else
+						mob.tell("Class '"+name+"' was unloaded.");
+				}
+	        }
 			return false;
 		}
+		else
 		if(str.equalsIgnoreCase("help"))
 		{
+			CMFile F=new CMFile("//resources/help",mob,false);
+			if((F.exists())&&(F.canRead())&&(F.canWrite())&&(F.isDirectory()))
+			{
+				CMLib.help().unloadHelpFile(mob);
+				return false;
+			}
+			else
+				mob.tell("No access to help.");
+		}
+		else
+		if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))
+		{
+			mob.tell("All soft resources unloaded.");
+            CMLib.factions().removeFaction(null);
+			Resources.clearResources();
 			CMLib.help().unloadHelpFile(mob);
 			return false;
 		}
-		if(str.equalsIgnoreCase("all"))
-		{
-			mob.tell("All resources unloaded.");
-            CMLib.factions().removeFaction(null);
-			Resources.clearResources();
-			return false;
-		}
+		else
         // User Unloading
         if((((String)commands.elementAt(1)).equalsIgnoreCase("USER"))
         &&(mob.session()!=null)
@@ -134,8 +165,10 @@ public class Unload extends StdCommand
             mob.tell(done+" user(s) unloaded.");
             return true;
         }
+        else
         // Faction Unloading
-        if(((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
+        if((((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
+        &&(CMSecurity.isAllowed(mob, mob.location(), "CMDFACTIONS")))
         {
             String which=CMParms.combine(commands,2);
             if(which.length()==0) {
@@ -152,25 +185,57 @@ public class Unload extends StdCommand
                 return false;
             }
         }
-        if("EXPERTISE".startsWith(((String)commands.elementAt(1)).toUpperCase()))
+        else
+        if(("EXPERTISE".startsWith(((String)commands.elementAt(1)).toUpperCase()))
+        &&(CMSecurity.isAllowed(mob, mob.location(), "EXPERTISE")))
         {
             Resources.removeResource("skills/expertises.txt");
             CMLib.expertises().recompileExpertises();
             mob.tell("Expertise list unloaded and reloaded.");
             return false;
         }
-		Vector V=Resources.findResourceKeys(str);
-		if(V.size()==0)
-		{
-			mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
-			return false;
-		}
-		for(int v=0;v<V.size();v++)
-		{
-			String key=(String)V.elementAt(v);
-			Resources.removeResource(key);
-			mob.tell("Resource '"+key+"' unloaded.");
-		}
+        else
+        {
+        	CMFile F1=new CMFile(str,mob,false,true);
+        	if(!F1.exists())
+        	{
+        		int x=str.indexOf(':');
+        		if(x<0) x=str.lastIndexOf(' ');
+        		if(x>=0) F1=new CMFile(str.substring(x+1).trim(),mob,false,true);
+        	}
+        	if(!F1.exists())
+        	{
+        		F1=new CMFile(Resources.buildResourcePath(str),mob,false,true);
+            	if(!F1.exists())
+            	{
+            		int x=str.indexOf(':');
+            		if(x<0) x=str.lastIndexOf(' ');
+            		if(x>=0) F1=new CMFile(Resources.buildResourcePath(str.substring(x+1).trim()),mob,false,true);
+            	}
+        	}
+        	if(F1.exists())
+        	{
+        		CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,true);
+        		if((!F2.exists())||(!F2.canRead()))
+        		{
+        			mob.tell("Inaccessible resource: '"+str+"'");
+        			return false;
+        		}
+        	}
+        	
+			Vector V=Resources.findResourceKeys(str);
+			if(V.size()==0)
+			{
+				mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
+				return false;
+			}
+			for(int v=0;v<V.size();v++)
+			{
+				String key=(String)V.elementAt(v);
+				Resources.removeResource(key);
+				mob.tell("Resource '"+key+"' unloaded.");
+			}
+        }
 		return false;
 	}
 	

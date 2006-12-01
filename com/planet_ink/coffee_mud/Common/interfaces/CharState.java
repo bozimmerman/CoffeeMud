@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface CharState extends CMObject
+public interface CharState extends CMCommon
 {
     public final static int STAT_HITPOINTS=0;
     public final static int STAT_MANA=1;

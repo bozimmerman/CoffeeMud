@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ThreadEngine extends CMObject
+public interface ThreadEngine extends CMLibrary
 {
 	// tick related
 	public void startTickDown(Tickable E,

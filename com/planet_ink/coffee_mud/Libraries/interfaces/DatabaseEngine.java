@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface DatabaseEngine extends CMObject
+public interface DatabaseEngine extends CMLibrary
 {
 	public String errorStatus();
 	public void resetconnections();

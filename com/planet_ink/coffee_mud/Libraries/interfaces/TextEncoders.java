@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface TextEncoders extends CMObject
+public interface TextEncoders extends CMLibrary
 {
     public String decompressString(byte[] b);
     public byte[] compressString(String s);

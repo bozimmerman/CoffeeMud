@@ -29,7 +29,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface PlayerStats extends CMObject
+public interface PlayerStats extends CMCommon
 {
 	public static final String defaultPrompt="^N%E<^c%hhp %mm %vmv^N>";
 	public String getEmail();

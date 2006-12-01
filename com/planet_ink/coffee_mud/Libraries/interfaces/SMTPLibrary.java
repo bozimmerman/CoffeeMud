@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 import com.planet_ink.coffee_mud.Libraries.SMTPclient;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 
-public interface SMTPLibrary
+public interface SMTPLibrary extends CMLibrary
 {
     /** Default port number */
     public static final int DEFAULT_PORT = 25;

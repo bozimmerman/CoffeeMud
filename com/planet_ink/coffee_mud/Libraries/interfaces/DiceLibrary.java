@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface DiceLibrary extends CMObject
+public interface DiceLibrary extends CMLibrary
 {
     public void seed();
     public boolean normalizeAndRollLess(int score);

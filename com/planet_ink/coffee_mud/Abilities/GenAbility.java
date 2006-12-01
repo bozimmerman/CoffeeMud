@@ -590,7 +590,7 @@ public class GenAbility extends StdAbility
         	Object[] O=(Object[])vars.get(ID); 
         	vars.remove(ID); 
         	vars.put(val,O);
-        	CMClass.delClass(this);
+        	CMClass.delClass("ABILITY",this);
         	ID=val;
         	CMClass.addClass("ABILITY",this);
         }

@@ -36,7 +36,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Faction extends CMObject, MsgListener
+public interface Faction extends CMCommon, MsgListener
 {
     public final static int ALIGN_INDIFF=0;
     public final static int ALIGN_EVIL=1;

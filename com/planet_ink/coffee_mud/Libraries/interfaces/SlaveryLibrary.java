@@ -29,7 +29,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface SlaveryLibrary extends CMObject
+public interface SlaveryLibrary extends CMLibrary
 {
     public final static int STEP_EVAL=0;
     public final static int STEP_INT1=1;

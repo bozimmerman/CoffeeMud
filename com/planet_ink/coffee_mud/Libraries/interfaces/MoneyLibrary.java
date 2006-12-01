@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface MoneyLibrary extends CMObject
+public interface MoneyLibrary extends CMLibrary
 {
     public static final String defaultCurrencyDefinition=
         "=1 gold coin(s);100 golden note(s);10000 whole note(s);1000000 Archon note(s)";

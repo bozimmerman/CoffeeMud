@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CombatLibrary extends CMObject
+public interface CombatLibrary extends CMLibrary
 {
     public static final int ARMOR_CEILING=500;
     public static final int PROWESS_CEILING=1000;

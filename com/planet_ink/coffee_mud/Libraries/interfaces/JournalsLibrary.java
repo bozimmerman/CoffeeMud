@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface JournalsLibrary extends CMObject
+public interface JournalsLibrary extends CMLibrary
 {
     public int loadCommandJournals(String list);
     public int getNumCommandJournals();

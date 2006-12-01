@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CMFlagLibrary extends CMObject
+public interface CMFlagLibrary extends CMLibrary
 {
     public final static int flag_arrives=0;
     public final static int flag_leaves=1;

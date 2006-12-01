@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface LegalLibrary extends CMObject
+public interface LegalLibrary extends CMLibrary
 {
     public Law getTheLaw(Room R, MOB mob);
     public LegalBehavior getLegalBehavior(Area A);

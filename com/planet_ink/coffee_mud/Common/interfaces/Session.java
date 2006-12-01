@@ -30,7 +30,7 @@ import java.net.Socket;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Session extends CMObject
+public interface Session extends CMCommon
 {
     public void initializeSession(Socket s, String introTextStr);
     public void start();

@@ -35,7 +35,7 @@ import java.util.*;
  * a compact list by ordering the digits and then tagging the 
  * groups without missing members.
  */
-public interface CMIntegerGrouper extends CMObject
+public interface CMIntegerGrouper extends CMCommon
 {
 	/** 
 	 * This set of integers as a savable string.

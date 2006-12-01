@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * It does most of the mundane things related to weather 
  * changes based on season, area, and other factors.
  */
-public interface Climate extends Tickable, CMObject
+public interface Climate extends Tickable, CMCommon
 {
 	/**
 	 * Returns the specific weather situation for

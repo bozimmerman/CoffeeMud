@@ -46,7 +46,7 @@ import java.util.*;
   * </ul>
   * @author=Bo Zimmerman, Jeremy Vyska
   */
-public interface Clan extends Cloneable, Tickable
+public interface Clan extends Cloneable, Tickable, CMCommon
 {
 
 	/**

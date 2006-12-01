@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface I3Interface extends CMObject
+public interface I3Interface extends CMLibrary
 {
 	public void i3who(MOB mob, String mudName);
 	public void i3tell(MOB mob, String tellName, String mudName, String message);

@@ -29,7 +29,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CMMsg extends CMObject
+public interface CMMsg extends CMCommon
 {
 	public int targetMajor();
 	public int targetMinor();

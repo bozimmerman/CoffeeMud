@@ -29,7 +29,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface QuestManager extends CMObject
+public interface QuestManager extends CMLibrary
 {
     public Quest objectInUse(Environmental E);
     public int numQuests();

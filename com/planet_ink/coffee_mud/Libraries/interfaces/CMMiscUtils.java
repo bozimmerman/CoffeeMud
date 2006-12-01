@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CMMiscUtils extends CMObject
+public interface CMMiscUtils extends CMLibrary
 {
     public String getFormattedDate(Environmental E);
     public double memoryUse ( Environmental E, int number );
