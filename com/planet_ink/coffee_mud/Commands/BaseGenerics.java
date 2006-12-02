@@ -37,11 +37,11 @@ import java.io.IOException;
 */
 public class BaseGenerics extends StdCommand
 {
-	private static final long maxLength=Long.MAX_VALUE;
+	private final long maxLength=Long.MAX_VALUE;
 	// showNumber should always be a valid number no less than 1
 	// showFlag should be a valid number for editing, or -1 for skipping
 
-	static void genName(MOB mob, Environmental E, int showNumber, int showFlag)
+	protected void genName(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -54,7 +54,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genImage(MOB mob, Environmental E, int showNumber, int showFlag)
+	protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -67,7 +67,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genCorpseData(MOB mob, DeadBody E, int showNumber, int showFlag)
+	protected void genCorpseData(MOB mob, DeadBody E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -111,7 +111,7 @@ public class BaseGenerics extends StdCommand
         else mob.tell("(no change)");
 	}
 
-	static void genAuthor(MOB mob, Area A, int showNumber, int showFlag)
+	protected void genAuthor(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -124,7 +124,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genPanelType(MOB mob, ShipComponent.ShipPanel S, int showNumber, int showFlag)
+	protected void genPanelType(MOB mob, ShipComponent.ShipPanel S, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -163,7 +163,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	static void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
+	protected void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -191,7 +191,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genTimeClock(MOB mob, Area A, int showNumber, int showFlag)
+	protected void genTimeClock(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
 
@@ -298,7 +298,7 @@ public class BaseGenerics extends StdCommand
 		TC.save();
 	}
 
-	static void genClan(MOB mob, MOB E, int showNumber, int showFlag)
+	protected void genClan(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag<=0)||(showFlag==showNumber))
@@ -350,7 +350,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	static void genArchivePath(MOB mob, Area E, int showNumber, int showFlag)
+	protected void genArchivePath(MOB mob, Area E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -366,7 +366,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static Room changeRoomType(Room R, Room newRoom)
+	public Room changeRoomType(Room R, Room newRoom)
 	{
 		if((R==null)||(newRoom==null)) return R;
 		synchronized(("SYNC"+R.roomID()).intern())
@@ -520,7 +520,7 @@ public class BaseGenerics extends StdCommand
 		return R;
 	}
 
-	static Room genRoomType(MOB mob, Room R, int showNumber, int showFlag)
+	Room genRoomType(MOB mob, Room R, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return R;
@@ -555,7 +555,7 @@ public class BaseGenerics extends StdCommand
 		return R;
 	}
 
-	static void genDescription(MOB mob, Environmental E, int showNumber, int showFlag)
+	protected void genDescription(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -571,7 +571,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genNotes(MOB mob, MOB E, int showNumber, int showFlag)
+	protected void genNotes(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -584,7 +584,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genPassword(MOB mob, MOB E, int showNumber, int showFlag)
+	protected void genPassword(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -600,7 +600,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genEmail(MOB mob, MOB E, int showNumber, int showFlag)
+	protected void genEmail(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -614,7 +614,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -639,7 +639,7 @@ public class BaseGenerics extends StdCommand
 		if((E instanceof Item)&&(E.displayText().length()==0))
 			mob.tell("(blended)");
 	}
-	public static void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
+	public void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -657,7 +657,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDoorName(MOB mob, Exit E, int showNumber, int showFlag)
+	public void genDoorName(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -673,7 +673,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genBurnout(MOB mob, Light E, int showNumber, int showFlag)
+	public void genBurnout(MOB mob, Light E, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Is destroyed after burnout: '"+E.destroyedWhenBurnedOut()+"'.");
@@ -681,7 +681,7 @@ public class BaseGenerics extends StdCommand
 		E.setDestroyedWhenBurntOut(!E.destroyedWhenBurnedOut());
 	}
 
-	public static void genOpenWord(MOB mob, Exit E, int showNumber, int showFlag)
+	public void genOpenWord(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -694,7 +694,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genSubOps(MOB mob, Area A, int showNumber, int showFlag)
+	public void genSubOps(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -723,7 +723,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-    public static void genParentAreas(MOB mob, Area A, int showNumber, int showFlag)
+    public void genParentAreas(MOB mob, Area A, int showNumber, int showFlag)
             throws IOException
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -766,7 +766,7 @@ public class BaseGenerics extends StdCommand
 		}
     }
 
-    public static void genChildAreas(MOB mob, Area A, int showNumber, int showFlag)
+    public void genChildAreas(MOB mob, Area A, int showNumber, int showFlag)
             throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -808,7 +808,7 @@ public class BaseGenerics extends StdCommand
         }
     }
 
-	public static void genCloseWord(MOB mob, Exit E, int showNumber, int showFlag)
+	public void genCloseWord(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -821,7 +821,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genExitMisc(MOB mob, Exit E, int showNumber, int showFlag)
+	public void genExitMisc(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -868,7 +868,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genReadable1(MOB mob, Item E, int showNumber, int showFlag)
+	public void genReadable1(MOB mob, Item E, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
@@ -895,7 +895,7 @@ public class BaseGenerics extends StdCommand
 			CMLib.flags().setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",CMLib.flags().isReadable(E)));
 	}
 
-	public static void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
+	public void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1054,7 +1054,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genRecipe(MOB mob, Recipe E, int showNumber, int showFlag)
+	public void genRecipe(MOB mob, Recipe E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1102,7 +1102,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genGettable(MOB mob, Item E, int showNumber, int showFlag)
+	public void genGettable(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1137,7 +1137,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void toggleDispositionMask(EnvStats E, int mask)
+	public void toggleDispositionMask(EnvStats E, int mask)
 	{
 		int current=E.disposition();
 		if((current&mask)==0)
@@ -1146,7 +1146,7 @@ public class BaseGenerics extends StdCommand
 			E.setDisposition(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 
-	public static void genDisposition(MOB mob, EnvStats E, int showNumber, int showFlag)
+	public void genDisposition(MOB mob, EnvStats E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1218,7 +1218,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static boolean genGenericPrompt(MOB mob, String prompt, boolean val)
+	public boolean genGenericPrompt(MOB mob, String prompt, boolean val)
 	{
 		try
 		{
@@ -1236,7 +1236,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void toggleSensesMask(EnvStats E, int mask)
+	public void toggleSensesMask(EnvStats E, int mask)
 	{
 		int current=E.sensesMask();
 		if((current&mask)==0)
@@ -1245,7 +1245,7 @@ public class BaseGenerics extends StdCommand
 			E.setSensesMask(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 
-	public static void toggleClimateMask(Area A, int mask)
+	public void toggleClimateMask(Area A, int mask)
 	{
 		int current=A.climateType();
 		if((current&mask)==0)
@@ -1256,7 +1256,7 @@ public class BaseGenerics extends StdCommand
 
 
 
-	public static void genClimateType(MOB mob, Area A, int showNumber, int showFlag)
+	public void genClimateType(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1282,7 +1282,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-    public static void genCharStats(MOB mob, CharStats E)
+    public void genCharStats(MOB mob, CharStats E)
     throws IOException
     {
         String c="Q";
@@ -1307,7 +1307,7 @@ public class BaseGenerics extends StdCommand
     }
     
     
-	public static void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1344,7 +1344,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genSensesMask(MOB mob, EnvStats E, int showNumber, int showFlag)
+	public void genSensesMask(MOB mob, EnvStats E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1414,7 +1414,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genDoorsNLocks(MOB mob, Exit E, int showNumber, int showFlag)
+	public void genDoorsNLocks(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1467,7 +1467,7 @@ public class BaseGenerics extends StdCommand
 		E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
 	}
 
-	public static String makeContainerTypes(Container E)
+	public String makeContainerTypes(Container E)
 	{
 		String canContain=", "+Container.CONTAIN_DESCS[0];
 		if(E.containTypes()>0)
@@ -1481,7 +1481,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void genLidsNLocks(MOB mob, Container E, int showNumber, int showFlag)
+	public void genLidsNLocks(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1546,7 +1546,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genLevel(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genLevel(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1557,7 +1557,7 @@ public class BaseGenerics extends StdCommand
 		E.baseEnvStats().setLevel(getNumericData(mob,"Enter a new level\n\r:",E.baseEnvStats().level()));
 	}
 
-	public static void genRejuv(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genRejuv(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1581,7 +1581,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genUses(MOB mob, Item E, int showNumber, int showFlag)
+	public void genUses(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1590,7 +1590,7 @@ public class BaseGenerics extends StdCommand
 		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
 	}
 
-	public static void genMaxUses(MOB mob, Wand E, int showNumber, int showFlag)
+	public void genMaxUses(MOB mob, Wand E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1599,7 +1599,7 @@ public class BaseGenerics extends StdCommand
 		E.setMaxUses(getNumericData(mob,"Enter a new value\n\r:",E.maxUses()));
 	}
 
-	public static void genCondition(MOB mob, Item E, int showNumber, int showFlag)
+	public void genCondition(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1608,7 +1608,7 @@ public class BaseGenerics extends StdCommand
 		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
 	}
 
-	public static void genMiscSet(MOB mob, Environmental E)
+	public void genMiscSet(MOB mob, Environmental E)
 		throws IOException
 	{
 		if(E instanceof ShopKeeper)
@@ -1656,7 +1656,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static int getNumericData(MOB mob, String prompt, int oldValue)
+	public int getNumericData(MOB mob, String prompt, int oldValue)
 		throws IOException
 	{
 		String value=mob.session().prompt(prompt,"");
@@ -1669,7 +1669,7 @@ public class BaseGenerics extends StdCommand
 		return numValue;
 	}
 
-	public static boolean getBooleanData(MOB mob, String prompt, boolean oldValue)
+	public boolean getBooleanData(MOB mob, String prompt, boolean oldValue)
 	throws IOException
 	{
 		boolean bool=mob.session().confirm(prompt,oldValue?"Y":"N");
@@ -1678,7 +1678,7 @@ public class BaseGenerics extends StdCommand
 		return bool;
 	}
 	
-	public static long getLongData(MOB mob, String prompt, long oldValue)
+	public long getLongData(MOB mob, String prompt, long oldValue)
 	throws IOException
 	{
 		String value=mob.session().prompt(prompt,"");
@@ -1691,7 +1691,7 @@ public class BaseGenerics extends StdCommand
 		return numValue;
 	}
 
-	public static String getTextData(MOB mob, String prompt, String oldValue)
+	public String getTextData(MOB mob, String prompt, String oldValue)
 	throws IOException
 	{
 		String value=mob.session().prompt(prompt,"").trim();
@@ -1705,7 +1705,7 @@ public class BaseGenerics extends StdCommand
 		return value;
 	}
 
-	public static double getDoubleData(MOB mob, String prompt, double oldValue)
+	public double getDoubleData(MOB mob, String prompt, double oldValue)
 		throws IOException
 	{
 		String value=mob.session().prompt(prompt,"");
@@ -1718,7 +1718,7 @@ public class BaseGenerics extends StdCommand
 		return numValue;
 	}
 
-	public static void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if(E.isGeneric())
@@ -1740,7 +1740,7 @@ public class BaseGenerics extends StdCommand
 
 	}
 
-	public static void genTitleRoom(MOB mob, LandTitle E, int showNumber, int showFlag)
+	public void genTitleRoom(MOB mob, LandTitle E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1763,7 +1763,7 @@ public class BaseGenerics extends StdCommand
 
 	}
 
-	public static void genAbility(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genAbility(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1772,7 +1772,7 @@ public class BaseGenerics extends StdCommand
 		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
 	}
 
-	public static void genCoinStuff(MOB mob, Coins E, int showNumber, int showFlag)
+	public void genCoinStuff(MOB mob, Coins E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1845,7 +1845,7 @@ public class BaseGenerics extends StdCommand
 		E.setNumberOfCoins(getLongData(mob,"Enter stack size\n\r:",E.getNumberOfCoins()));
 	}
 
-	public static void genHitPoints(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genHitPoints(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1862,7 +1862,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genValue(MOB mob, Item E, int showNumber, int showFlag)
+	public void genValue(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1871,7 +1871,7 @@ public class BaseGenerics extends StdCommand
 		E.setBaseValue(getNumericData(mob,"Enter a new value\n\r:",E.baseGoldValue()));
 	}
 
-	public static void genWeight(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genWeight(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1881,7 +1881,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void genClanItem(MOB mob, ClanItem E, int showNumber, int showFlag)
+	public void genClanItem(MOB mob, ClanItem E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1919,7 +1919,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genHeight(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genHeight(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1929,7 +1929,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void genSize(MOB mob, Armor E, int showNumber, int showFlag)
+	public void genSize(MOB mob, Armor E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1939,7 +1939,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void genLayer(MOB mob, Armor E, int showNumber, int showFlag)
+	public void genLayer(MOB mob, Armor E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))  return;
@@ -1958,7 +1958,7 @@ public class BaseGenerics extends StdCommand
 	}
 	
 	
-	public static void genCapacity(MOB mob, Container E, int showNumber, int showFlag)
+	public void genCapacity(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1967,7 +1967,7 @@ public class BaseGenerics extends StdCommand
 		E.setCapacity(getNumericData(mob,"Enter a new capacity\n\r:",E.capacity()));
 	}
 
-	public static void genAttack(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genAttack(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1976,7 +1976,7 @@ public class BaseGenerics extends StdCommand
 		E.baseEnvStats().setAttackAdjustment(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().attackAdjustment()));
 	}
 
-	public static void genDamage(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genDamage(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1985,7 +1985,7 @@ public class BaseGenerics extends StdCommand
 		E.baseEnvStats().setDamage(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().damage()));
 	}
 
-	public static void genBanker1(MOB mob, Banker E, int showNumber, int showFlag)
+	public void genBanker1(MOB mob, Banker E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1993,7 +1993,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setCoinInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getCoinInterest()));
 	}
-	public static void genBanker2(MOB mob, Banker E, int showNumber, int showFlag)
+	public void genBanker2(MOB mob, Banker E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2001,7 +2001,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setItemInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getItemInterest()));
 	}
-	public static void genBanker3(MOB mob, Banker E, int showNumber, int showFlag)
+	public void genBanker3(MOB mob, Banker E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2013,7 +2013,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genBanker4(MOB mob, Banker E, int showNumber, int showFlag)
+	public void genBanker4(MOB mob, Banker E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2022,7 +2022,7 @@ public class BaseGenerics extends StdCommand
 		E.setLoanInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getLoanInterest()));
 	}
 
-	public static void genSpeed(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genSpeed(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2031,7 +2031,7 @@ public class BaseGenerics extends StdCommand
 		E.baseEnvStats().setSpeed(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.baseEnvStats().speed())));
 	}
 
-	public static void genArmor(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genArmor(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2043,7 +2043,7 @@ public class BaseGenerics extends StdCommand
 		E.baseEnvStats().setArmor(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().armor()));
 	}
 
-	public static void genMoney(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genMoney(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2052,7 +2052,7 @@ public class BaseGenerics extends StdCommand
 		CMLib.beanCounter().setMoney(E,getNumericData(mob,"Enter a new value\n\r:",CMLib.beanCounter().getMoney(E)));
 	}
 
-	public static void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)
+	public void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2088,7 +2088,7 @@ public class BaseGenerics extends StdCommand
 			E.setAmmoCapacity(0);
 		}
 	}
-	public static void genWeaponRanges(MOB mob, Weapon E, int showNumber, int showFlag)
+	public void genWeaponRanges(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2109,7 +2109,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genWeaponType(MOB mob, Weapon E, int showNumber, int showFlag)
+	public void genWeaponType(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2140,7 +2140,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genTechLevel(MOB mob, Area A, int showNumber, int showFlag)
+	public void genTechLevel(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2177,7 +2177,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void genMaterialCode(MOB mob, Item E, int showNumber, int showFlag)
+	public void genMaterialCode(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2210,7 +2210,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genInstrumentType(MOB mob, MusicalInstrument E, int showNumber, int showFlag)
+	public void genInstrumentType(MOB mob, MusicalInstrument E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2243,7 +2243,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-    public static void genSpecialFaction(MOB mob, MOB E, int showNumber, int showFlag, Faction F)
+    public void genSpecialFaction(MOB mob, MOB E, int showNumber, int showFlag, Faction F)
     throws IOException
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2280,7 +2280,7 @@ public class BaseGenerics extends StdCommand
 	    }
 	    mob.tell("(no change)");
     }
-    public static void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
+    public void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
     throws IOException
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2318,7 +2318,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genGender(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genGender(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2347,7 +2347,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genWeaponClassification(MOB mob, Weapon E, int showNumber, int showFlag)
+	public void genWeaponClassification(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2378,7 +2378,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genSecretIdentity(MOB mob, Item E, int showNumber, int showFlag)
+	public void genSecretIdentity(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2394,7 +2394,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genNourishment(MOB mob, Food E, int showNumber, int showFlag)
+	public void genNourishment(MOB mob, Food E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2407,7 +2407,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genRace(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genRace(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2437,7 +2437,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genCharClass(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genCharClass(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2530,7 +2530,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genTattoos(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genTattoos(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2574,7 +2574,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genTitles(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genTitles(MOB mob, MOB E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2623,7 +2623,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genExpertises(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genExpertises(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2661,7 +2661,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genSecurity(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genSecurity(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2707,7 +2707,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genBehaviors(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genBehaviors(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2793,7 +2793,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genAffects(MOB mob, Environmental E, int showNumber, int showFlag)
+	public void genAffects(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2865,7 +2865,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genRideable1(MOB mob, Rideable R, int showNumber, int showFlag)
+	public void genRideable1(MOB mob, Rideable R, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2895,7 +2895,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	public static void genRideable2(MOB mob, Rideable R, int showNumber, int showFlag)
+	public void genRideable2(MOB mob, Rideable R, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2909,7 +2909,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genShopkeeper1(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	public void genShopkeeper1(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2972,7 +2972,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genShopkeeper2(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	public void genShopkeeper2(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3075,7 +3075,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-	public static void genShopkeeper3(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	public void genShopkeeper3(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3091,7 +3091,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genShopkeeper4(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	public void genShopkeeper4(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3107,7 +3107,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genShopkeeper5(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	public void genShopkeeper5(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3122,7 +3122,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genShopkeeper6(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	public void genShopkeeper6(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3135,7 +3135,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-    public static void genShopkeeper7(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+    public void genShopkeeper7(MOB mob, ShopKeeper E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3151,7 +3151,7 @@ public class BaseGenerics extends StdCommand
             mob.tell("(no change)");
     }
 
-	public static void genAbilities(MOB mob, MOB E, int showNumber, int showFlag)
+	public void genAbilities(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3222,7 +3222,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag)
+	public void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3360,7 +3360,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
-	public static void genDeity1(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity1(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3372,7 +3372,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDeity2(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity2(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3384,7 +3384,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDeity3(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity3(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3396,7 +3396,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDeity4(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity4(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3408,7 +3408,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDeity5(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity5(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3476,7 +3476,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genDeity6(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity6(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3544,7 +3544,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genDeity7(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity7(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3611,7 +3611,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-	public static void genDeity8(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity8(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3623,7 +3623,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDeity9(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity9(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3635,7 +3635,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	public static void genDeity0(MOB mob, Deity E, int showNumber, int showFlag)
+	public void genDeity0(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3647,7 +3647,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-    public static void genDeity11(MOB mob, Deity E, int showNumber, int showFlag)
+    public void genDeity11(MOB mob, Deity E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3659,7 +3659,7 @@ public class BaseGenerics extends StdCommand
         else
             mob.tell("(no change)");
     }
-	public static void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag)
+	public void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3672,7 +3672,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genGridLocaleY(MOB mob, GridZones E, int showNumber, int showFlag)
+	public void genGridLocaleY(MOB mob, GridZones E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3685,7 +3685,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	public static void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
+	public void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3740,7 +3740,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void genThirstQuenched(MOB mob, Drink E, int showNumber, int showFlag)
+	public void genThirstQuenched(MOB mob, Drink E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3749,7 +3749,7 @@ public class BaseGenerics extends StdCommand
 		E.setThirstQuenched(getNumericData(mob,"Enter a new amount\n\r:",E.thirstQuenched()));
 	}
 
-	public static void genDrinkHeld(MOB mob, Drink E, int showNumber, int showFlag)
+	public void genDrinkHeld(MOB mob, Drink E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3759,7 +3759,7 @@ public class BaseGenerics extends StdCommand
 		E.setLiquidRemaining(E.liquidHeld());
 	}
 
-	static void genText(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genText(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3774,7 +3774,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genText(MOB mob, Environmental E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genText(MOB mob, Environmental E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3796,7 +3796,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3811,7 +3811,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3827,7 +3827,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3843,7 +3843,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3861,7 +3861,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genClanAccept(MOB mob, Clan E, int showNumber, int showFlag)
+	protected void genClanAccept(MOB mob, Clan E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3879,7 +3879,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
+	protected void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3934,7 +3934,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genInt(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genInt(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3946,7 +3946,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genInt(MOB mob, Environmental E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genInt(MOB mob, Environmental E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3965,7 +3965,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genInt(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genInt(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3977,7 +3977,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genBool(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genBool(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3989,7 +3989,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genBool(MOB mob, Environmental E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genBool(MOB mob, Environmental E, int showNumber, int showFlag, String FieldDisp, String Field)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4001,7 +4001,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genBool(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genBool(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4013,7 +4013,96 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
+	
+	protected void genDisableFlags(MOB mob, Race E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		int flags=CMath.s_int(E.getStat("DISFLAGS"));
+		String newName="?";
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+		{
+			StringBuffer disabled=new StringBuffer("");
+			for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
+				if(CMath.isSet(flags,i))
+					disabled.append(Race.GENFLAG_DESCS[i]);
+			
+			mob.tell(showNumber+". Disabled: '"+disabled+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			
+			newName=mob.session().prompt("Enter flag to toggle (?)\n\r:","").toUpperCase();
+			if(newName.length()==0)
+				mob.tell("(no change)");
+			else
+			if(CMParms.contains(Race.GENFLAG_DESCS,newName))
+			{
+				int bit=CMParms.indexOf(Race.GENFLAG_DESCS,newName);
+				if(CMath.isSet(flags,bit))
+					flags=flags-(int)CMath.pow(2,bit);
+				else
+					flags=flags+(int)CMath.pow(2,bit);
+			}
+			else
+			if(newName.equalsIgnoreCase("?"))
+			{
+			    StringBuffer str=new StringBuffer("Valid values: \n\r");
+			    for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
+			        str.append(Race.GENFLAG_DESCS[i]+"\n\r");
+			    mob.tell(str.toString());
+			}
+			else
+				mob.tell("(no change)");
+		}
+		E.setStat("DISFLAGS",""+flags);
+	}
+	
+	protected void genRaceWearFlags(MOB mob, Race E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		int flags=CMath.s_int(E.getStat("WEAR"));
+		String newName="?";
+		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+		{
+			StringBuffer wearable=new StringBuffer("");
+			for(int i=1;i<Item.WORN_DESCS.length;i++)
+				if(CMath.isSet(flags,i-1))
+					wearable.append(Item.WORN_DESCS[i]+" ");
+			
+			mob.tell(showNumber+". UNWearable locations: '"+wearable+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			
+			newName=mob.session().prompt("Enter a location to toggle (?)\n\r:","").toUpperCase();
+			if(newName.length()==0)
+				mob.tell("(no change)");
+			else
+			if(CMParms.contains(Item.WORN_DESCS,newName))
+			{
+				int bit=CMParms.indexOf(Item.WORN_DESCS,newName)-1;
+				if(bit>=0)
+				{
+					if(CMath.isSet(flags,bit))
+						flags=flags-(int)CMath.pow(2,bit);
+					else
+						flags=flags+(int)CMath.pow(2,bit);
+				}
+			}
+			else
+			if(newName.equalsIgnoreCase("?"))
+			{
+			    StringBuffer str=new StringBuffer("Valid values: \n\r");
+			    for(int i=0;i<Item.WORN_DESCS.length;i++)
+			        str.append(Item.WORN_DESCS[i]+" ");
+			    mob.tell(str.toString());
+			}
+			else
+				mob.tell("(no change)");
+		}
+		E.setStat("WEAR",""+flags);
+	}
+	
+	
+	protected void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4040,7 +4129,8 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-    static void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
+	
+    void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4068,7 +4158,7 @@ public class BaseGenerics extends StdCommand
         }
     }
     
-	static void genCat(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genCat(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4116,21 +4206,24 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genHealthBuddy(MOB mob, Race E, int showNumber, int showFlag)
+	
+	
+	protected void genRaceBuddy(MOB mob, Race E, int showNumber, int showFlag, String prompt, String flag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Health Race: '"+E.getStat("HEALTHRACE")+"'.");
+		mob.tell(showNumber+". "+prompt+": '"+E.getStat(flag)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 		{
 			Race R2=CMClass.getRace(newName);
+			if(R2==null) R2=(Race)CMClass.unsortedLoadClass("RACE",newName);
 			if((R2!=null)&&(R2.isGeneric()))
 				R2=null;
 			if(R2==null)
 			{
-				StringBuffer str=new StringBuffer("That race name is invalid.  Valid races include: ");
+				StringBuffer str=new StringBuffer("That race name is invalid or is generic.  Valid races include: ");
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
@@ -4140,12 +4233,15 @@ public class BaseGenerics extends StdCommand
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
-				E.setStat("HEALTHRACE",R2.ID());
+			if(CMClass.getRace(newName)==R2)
+				E.setStat(flag,R2.ID());
+			else
+				E.setStat(flag,R2.getClass().getName());
 		}
 		else
 			mob.tell("(no change)");
 	}
-	static void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4180,7 +4276,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genEStats(MOB mob, Race R, int showNumber, int showFlag)
+	protected void genEStats(MOB mob, Race R, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4257,7 +4353,7 @@ public class BaseGenerics extends StdCommand
             }
         }
 	}
-	static void genAState(MOB mob,
+	protected void genAState(MOB mob,
 	        			  Race R,
 	        			  String field,
 	        			  String prompt,
@@ -4319,7 +4415,7 @@ public class BaseGenerics extends StdCommand
             }
         }
 	}
-	static void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
+	protected void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4383,7 +4479,7 @@ public class BaseGenerics extends StdCommand
         }
 	}
 
-	static void genEStats(MOB mob, CharClass R, int showNumber, int showFlag)
+	protected void genEStats(MOB mob, CharClass R, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4460,7 +4556,7 @@ public class BaseGenerics extends StdCommand
             }
         }
 	}
-	static void genAState(MOB mob,
+	protected void genAState(MOB mob,
 	        			  CharClass R,
 	        			  String field,
 	        			  String prompt,
@@ -4522,7 +4618,7 @@ public class BaseGenerics extends StdCommand
             }
         }
 	}
-	static void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
+	protected void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4579,7 +4675,7 @@ public class BaseGenerics extends StdCommand
             }
         }
 	}
-	static void genResources(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genResources(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4651,7 +4747,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	static void genOutfit(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genOutfit(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4723,7 +4819,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	static void genOutfit(MOB mob, CharClass E, int showNumber, int showFlag)
+	protected void genOutfit(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4795,7 +4891,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	static void genWeapon(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genWeapon(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4836,14 +4932,14 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-    protected static void modifyDField(DVector fields, String fieldName, String value)
+    protected void modifyDField(DVector fields, String fieldName, String value)
     {
         int x=fields.indexOf(fieldName.toUpperCase());
         if(x<0) return;
         fields.setElementAt(x,2,value);
     }
     
-	static void genAgingChart(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genAgingChart(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4880,53 +4976,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	static void genRaceFlags(MOB mob, Race E, int showNumber, int showFlag)
-	throws IOException
-	{
-		if((showFlag>0)&&(showFlag!=showNumber))
-		    return;
-
-		int flags=CMath.s_int(E.getStat("DISFLAGS"));
-		StringBuffer sets=new StringBuffer("");
-	    if(CMath.bset(flags,Race.GENFLAG_NOCLASS))
-		    sets.append("Classless ");
-	    if(CMath.bset(flags,Race.GENFLAG_NOLEVELS))
-		    sets.append("Leveless ");
-	    if(CMath.bset(flags,Race.GENFLAG_NOEXP))
-		    sets.append("Expless ");
-
-		mob.tell(showNumber+". Extra Racial Flags: "+sets.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999))
-		    return;
-		String newName=mob.session().prompt("Enter: 1) Classless, 2) Leveless, 3) Expless\n\r:","");
-		switch(CMath.s_int(newName))
-		{
-		case 1:
-		    if(CMath.bset(flags,Race.GENFLAG_NOCLASS))
-		        flags=CMath.unsetb(flags,Race.GENFLAG_NOCLASS);
-		    else
-		        flags=flags|Race.GENFLAG_NOCLASS;
-		    break;
-		case 2:
-		    if(CMath.bset(flags,Race.GENFLAG_NOLEVELS))
-		        flags=CMath.unsetb(flags,Race.GENFLAG_NOLEVELS);
-		    else
-		        flags=flags|Race.GENFLAG_NOLEVELS;
-		    break;
-		case 3:
-		    if(CMath.bset(flags,Race.GENFLAG_NOEXP))
-		        flags=CMath.unsetb(flags,Race.GENFLAG_NOEXP);
-		    else
-		        flags=flags|Race.GENFLAG_NOEXP;
-		    break;
-		default:
-			mob.tell("(no change)");
-			break;
-		}
-		E.setStat("DISFLAGS",""+flags);
-	}
-
-	static void genClassFlags(MOB mob, CharClass E, int showNumber, int showFlag)
+	protected void genClassFlags(MOB mob, CharClass E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -4972,7 +5022,7 @@ public class BaseGenerics extends StdCommand
 		E.setStat("DISFLAGS",""+flags);
 	}
 
-	static void genRacialAbilities(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genRacialAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5066,7 +5116,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	static void genRacialEffects(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genRacialEffects(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5149,7 +5199,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	static void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
+	protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5245,7 +5295,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	static void genCulturalAbilities(MOB mob, Race E, int showNumber, int showFlag)
+	protected void genCulturalAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5325,7 +5375,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	public static void modifyGenClass(MOB mob, CharClass me)
+	public void modifyGenClass(MOB mob, CharClass me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -5427,7 +5477,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenAbility(MOB mob, Ability me)
+	public void modifyGenAbility(MOB mob, Ability me)
 	throws IOException
 	{
 		if(mob.isMonster())
@@ -5481,7 +5531,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-    static boolean genText(MOB mob, DVector set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+    boolean genText(MOB mob, DVector set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     {
         int setDex=set.indexOf(Field);
@@ -5524,7 +5574,7 @@ public class BaseGenerics extends StdCommand
         return true;
     }
     
-    protected static boolean modifyComponent(MOB mob, DVector components, int componentIndex)
+    protected boolean modifyComponent(MOB mob, DVector components, int componentIndex)
     throws IOException
     {
         DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(components,componentIndex);
@@ -5558,7 +5608,7 @@ public class BaseGenerics extends StdCommand
         return true;
     }
     
-    public static void modifyComponents(MOB mob, String componentID)
+    public void modifyComponents(MOB mob, String componentID)
     throws IOException
     {
         if(mob.isMonster())
@@ -5612,7 +5662,7 @@ public class BaseGenerics extends StdCommand
         }
     }
     
-    public static void modifyFaction(MOB mob, Faction me)
+    public void modifyFaction(MOB mob, Faction me)
     throws IOException
     {
         if(mob.isMonster())
@@ -6279,7 +6329,7 @@ public class BaseGenerics extends StdCommand
         }
     }
 
-	public static void modifyGenRace(MOB mob, Race me)
+	public void modifyGenRace(MOB mob, Race me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6299,10 +6349,13 @@ public class BaseGenerics extends StdCommand
 			genInt(mob,me,++showNumber,showFlag,"Base Female Height","FHEIGHT");
 			genInt(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
 			genRaceAvailability(mob,me,++showNumber,showFlag);
+			genDisableFlags(mob,me,++showNumber,showFlag);
 			genText(mob,me,++showNumber,showFlag,"Leaving text","LEAVE");
 			genText(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");
-			genHealthBuddy(mob,me,++showNumber,showFlag);
+			genRaceBuddy(mob,me,++showNumber,showFlag,"Health Race","HEALTHRACE");
+			genRaceBuddy(mob,me,++showNumber,showFlag,"Event Race","EVENTRACE");
 			genBodyParts(mob,me,++showNumber,showFlag);
+			genRaceWearFlags(mob,me,++showNumber,showFlag);
 			genAgingChart(mob,me,++showNumber,showFlag);
             genBool(mob,me,++showNumber,showFlag,"Never create corpse","BODYKILL");
 			genEStats(mob,me,++showNumber,showFlag);
@@ -6310,10 +6363,10 @@ public class BaseGenerics extends StdCommand
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
 			genAState(mob,me,"ASTATE","CharState Adjustments",++showNumber,showFlag);
 			genAState(mob,me,"STARTASTATE","New Player CharState Adj.",++showNumber,showFlag);
-			genRaceFlags(mob,me,++showNumber,showFlag);
 			genResources(mob,me,++showNumber,showFlag);
 			genOutfit(mob,me,++showNumber,showFlag);
 			genWeapon(mob,me,++showNumber,showFlag);
+			genRaceBuddy(mob,me,++showNumber,showFlag,"Weapons Race","WEAPONRACE");
 			genRacialAbilities(mob,me,++showNumber,showFlag);
 			genCulturalAbilities(mob,me,++showNumber,showFlag);
 			//genRacialEffects(mob,me,++showNumber,showFlag);
@@ -6328,7 +6381,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenItem(MOB mob, Item me)
+	public void modifyGenItem(MOB mob, Item me)
 		throws IOException
 	{
 		boolean ok=false;
@@ -6394,7 +6447,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenFood(MOB mob, Food me)
+	public void modifyGenFood(MOB mob, Food me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6442,7 +6495,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	public static void modifyGenDrink(MOB mob, Drink me)
+	public void modifyGenDrink(MOB mob, Drink me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6496,7 +6549,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenWallpaper(MOB mob, Item me)
+	public void modifyGenWallpaper(MOB mob, Item me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6532,7 +6585,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.Map me)
+	public void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.Map me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6579,7 +6632,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenContainer(MOB mob, Container me)
+	public void modifyGenContainer(MOB mob, Container me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6649,7 +6702,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenWeapon(MOB mob, Weapon me)
+	public void modifyGenWeapon(MOB mob, Weapon me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6713,7 +6766,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	public static void modifyGenArmor(MOB mob, Armor me)
+	public void modifyGenArmor(MOB mob, Armor me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6772,7 +6825,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void modifyGenInstrument(MOB mob, MusicalInstrument me)
+	public void modifyGenInstrument(MOB mob, MusicalInstrument me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6821,7 +6874,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void modifyGenExit(MOB mob, Exit me)
+	public void modifyGenExit(MOB mob, Exit me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6870,7 +6923,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 
-	public static void modifyGenMOB(MOB mob, MOB me)
+	public void modifyGenMOB(MOB mob, MOB me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -6965,7 +7018,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell("\n\rNow don't forget to equip "+me.charStats().himher()+" with stuff before saving!\n\r");
 	}
 
-	public static void modifyPlayer(MOB mob, MOB me)
+	public void modifyPlayer(MOB mob, MOB me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -7060,7 +7113,7 @@ public class BaseGenerics extends StdCommand
 	}
 
 	
-	static void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
+	protected void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell("Clan Status: ");
@@ -7085,7 +7138,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
-	static void genClanGovt(MOB mob, Clan C, int showNumber, int showFlag)
+	protected void genClanGovt(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -7118,7 +7171,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
-	static void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
+	protected void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -7151,7 +7204,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
-	static void genClanClass(MOB mob, Clan C, int showNumber, int showFlag)
+	protected void genClanClass(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -7194,7 +7247,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
-	static String genClanRoom(MOB mob, Clan C, String oldRoomID, String promptCode, int showNumber, int showFlag)
+	String genClanRoom(MOB mob, Clan C, String oldRoomID, String promptCode, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return oldRoomID;
@@ -7222,7 +7275,7 @@ public class BaseGenerics extends StdCommand
 		return oldRoomID;
 	}
     
-	public static void modifyClan(MOB mob, Clan C)
+	public void modifyClan(MOB mob, Clan C)
 	throws IOException
 	{
 		if(mob.isMonster())
@@ -7267,7 +7320,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
-	public static void modifyGenShopkeeper(MOB mob, ShopKeeper me)
+	public void modifyGenShopkeeper(MOB mob, ShopKeeper me)
 		throws IOException
 	{
 		if(mob.isMonster())

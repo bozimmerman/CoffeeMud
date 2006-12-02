@@ -70,6 +70,8 @@ public class GenRace extends StdRace
 	public boolean classless(){return (disableFlags&Race.GENFLAG_NOCLASS)==Race.GENFLAG_NOCLASS;}
 	public boolean leveless(){return (disableFlags&Race.GENFLAG_NOLEVELS)==Race.GENFLAG_NOLEVELS;}
 	public boolean expless(){return (disableFlags&Race.GENFLAG_NOEXP)==Race.GENFLAG_NOEXP;}
+	public boolean fertile(){return !((disableFlags&Race.GENFLAG_NOFERTILE)==Race.GENFLAG_NOFERTILE);}
+	protected boolean uncharmable(){return ((disableFlags&Race.GENFLAG_NOCHARM)==Race.GENFLAG_NOCHARM);}
 
 	//                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -84,6 +86,8 @@ public class GenRace extends StdRace
 	protected Vector naturalWeaponChoices=null;
 	protected Vector resourceChoices=null;
 	protected Race healthBuddy=null;
+	protected Race eventBuddy=null;
+	protected Race weaponBuddy=null;
 
 	protected String[] racialEffectNames=null;
 	protected int[] racialEffectLevels=null;
@@ -117,6 +121,8 @@ public class GenRace extends StdRace
 	}
 	public Weapon myNaturalWeapon()
 	{
+		if(weaponBuddy!=null)
+			return weaponBuddy.myNaturalWeapon();
 		if(naturalWeapon!=null)
 			return naturalWeapon;
 		return funHumanoidWeapon();
@@ -132,6 +138,7 @@ public class GenRace extends StdRace
 	{
 		return leaveStr;
 	}
+	public Race makeGenRace(){return this;}
 	public String healthText(MOB viewer, MOB mob)
 	{
 		if((healthBuddy!=null)&&(healthBuddy!=this))
@@ -183,6 +190,15 @@ public class GenRace extends StdRace
 		return resourceChoices;
 	}
 
+	protected String getRaceLocatorID(Race R)
+	{
+		if(R==null) return "";
+		if(R.isGeneric()) return R.ID();
+		if(R==CMClass.getRace(R.ID()))
+			return R.ID();
+		return R.getClass().getName();
+	}
+	
 	public String racialParms()
 	{
 		StringBuffer str=new StringBuffer("");
@@ -201,7 +217,9 @@ public class GenRace extends StdRace
 		for(int i=0;i<bodyMask().length;i++)
 			bbody.append((""+bodyMask()[i])+";");
 		str.append(CMLib.xml().convertXMLtoTag("BODY",bbody.toString()));
-		str.append(CMLib.xml().convertXMLtoTag("HEALTHRACE",(healthBuddy!=null)?healthBuddy.ID():""));
+		str.append(CMLib.xml().convertXMLtoTag("HEALTHRACE",getRaceLocatorID(healthBuddy)));
+		str.append(CMLib.xml().convertXMLtoTag("EVENTRACE",getRaceLocatorID(eventBuddy)));
+		str.append(CMLib.xml().convertXMLtoTag("WEAPONRACE",getRaceLocatorID(weaponBuddy)));
 		str.append(CMLib.xml().convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toStringList(getAgingChart())));
@@ -374,7 +392,9 @@ public class GenRace extends StdRace
 		destroyBodyAfterUse=CMLib.xml().getBoolFromPieces(raceData,"DESTROYBODY");
 		leaveStr=CMLib.xml().getValFromPieces(raceData,"LEAVE");
 		arriveStr=CMLib.xml().getValFromPieces(raceData,"ARRIVE");
-		healthBuddy=CMClass.getRace(CMLib.xml().getValFromPieces(raceData,"HEALTHRACE"));
+		setStat("HEALTHRACE",CMLib.xml().getValFromPieces(raceData,"HEALTHRACE"));
+		setStat("EVENTRACE",CMLib.xml().getValFromPieces(raceData,"EVENTRACE"));
+		setStat("WEAPONRACE",CMLib.xml().getValFromPieces(raceData,"WEAPONRACE"));
 		String body=CMLib.xml().getValFromPieces(raceData,"BODY");
 		Vector V=CMParms.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
@@ -522,7 +542,7 @@ public class GenRace extends StdRace
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
 									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
-									 "DISFLAGS","STARTASTATE"
+									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE"
 									 };
 	public String getStat(String code)
 	{
@@ -548,7 +568,7 @@ public class GenRace extends StdRace
 		case 9: return ""+availabilityCode();
 		case 10: return leaveStr();
 		case 11: return arriveStr();
-		case 12: return ((healthBuddy==null)?"":healthBuddy.ID());
+		case 12: return getRaceLocatorID(healthBuddy);
 		case 13:
 		{
 			StringBuffer bbody=new StringBuffer("");
@@ -584,8 +604,31 @@ public class GenRace extends StdRace
 		case 39: return CMParms.toStringList(getAgingChart());
 		case 40: return ""+disableFlags;
 		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
+		case 42: return getRaceLocatorID(eventBuddy);
+		case 43: return getRaceLocatorID(weaponBuddy);
 		}
 		return "";
+	}
+	public boolean tick(Tickable myChar, int tickID)
+	{
+		if(eventBuddy!=null)
+			if(!eventBuddy.tick(myChar,tickID))
+				return false;
+		return super.tick(myChar, tickID);
+	}
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if(eventBuddy!=null)
+			eventBuddy.executeMsg(myHost, msg);
+		super.executeMsg(myHost, msg);
+	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if((eventBuddy!=null)
+		&&(!eventBuddy.okMessage(myHost, msg)))
+			return false;
+		return super.okMessage(myHost, msg);
+		
 	}
 
 	public void startRacing(MOB mob, boolean verifyOnly)
@@ -624,7 +667,15 @@ public class GenRace extends StdRace
 		case 9: availability=CMath.s_int(val); break;
 		case 10: leaveStr=val;break;
 		case 11: arriveStr=val;break;
-		case 12: healthBuddy=CMClass.getRace(val); break;
+		case 12:
+		{
+			healthBuddy=CMClass.getRace(val);
+			try{
+				if(healthBuddy==null)
+					healthBuddy=(Race)CMClass.unsortedLoadClass("RACE",val);
+			}catch(Exception e){}
+			break;
+		}
 		case 13:
 		{
 			Vector V=CMParms.parseSemicolons(val,false);
@@ -757,6 +808,20 @@ public class GenRace extends StdRace
 				 }
 		case 40: disableFlags=CMath.s_int(val); break;
 		case 41: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
+		case 42:
+		{
+			eventBuddy=CMClass.getRace(val);
+			if(eventBuddy==null)
+				eventBuddy=(Race)CMClass.unsortedLoadClass("RACE",val);
+			break;
+		}
+		case 43:
+		{
+			weaponBuddy=CMClass.getRace(val);
+			if(weaponBuddy==null)
+				weaponBuddy=(Race)CMClass.unsortedLoadClass("RACE",val);
+			break;
+		}
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

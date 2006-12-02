@@ -42,7 +42,7 @@ public class Spirit extends Undead
 
 	protected static Vector resources=new Vector();
 
-	public Weapon funHumanoidWeapon()
+	protected Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
 		{

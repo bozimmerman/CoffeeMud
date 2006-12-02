@@ -255,9 +255,8 @@ public class CMath
     }
     public static boolean isSet(int number, int bitnumber)
     {
-        if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))
-            return true;
-        return false;
+    	int mask=(int)pow(2,bitnumber);
+    	return ((number&mask)==mask);
     }
     public static boolean isPct(String s)
     {

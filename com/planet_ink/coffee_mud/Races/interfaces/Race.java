@@ -151,6 +151,22 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	 * @return an array of body parts
 	 */
 	public int[] bodyMask();
+	
+	/**
+	 * Converts this race to a generic race (if it isn't already)
+	 * and returns it.  Returns itself if its already generic.
+	 * @return the generic race.
+	 */
+	public Race makeGenRace();
+	
+	/**
+	 * Converts this race to a generic race (if it isn't already)
+	 * and mixes its attributes with the race passed it.  A new
+	 * race ID and a new race name must also be provided.
+	 * @return the generic race.
+	 */
+	public Race mixRace(Race race, String newRaceID, String newRaceName);
+	
 	/**
 	 * Whether this race, generally speaking, can procreate.
 	 * @return whether this race is capable of procreating
@@ -378,6 +394,12 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	public final static int GENFLAG_NOLEVELS=2;
 	/** constant used to set and check the expless flag on generic races */
 	public final static int GENFLAG_NOEXP=4;
+	/** constant used to set and check the charming flag on generic races */
+	public final static int GENFLAG_NOCHARM=8;
+	/** constant used to set and check the fertility flag on generic races */
+	public final static int GENFLAG_NOFERTILE=16;
+	/** constant string list naming each of the GENFLAG_* constants in the order of their value */
+	public final static String[] GENFLAG_DESCS={"CLASSLESS","LEVELLESS","EXPLESS","CHARMLESS","CHILDLESS"};
 
 	/** array mapping worn locations to body parts, indexed by body parts. */
 	public final static long[] BODY_WEARVECTOR={

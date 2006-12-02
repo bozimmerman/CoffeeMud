@@ -116,7 +116,6 @@ public class CMClass extends ClassLoader
         "com.planet_ink.coffee_mud.Common.interfaces.CMCommon",
         "com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary",
 		};
-
     public static void bumpCounter(Object O, int which)
     {
         if(KEEP_OBJECT_CACHE)
@@ -297,30 +296,7 @@ public class CMClass extends ClassLoader
 	{
         if(classes.containsKey(O.getClass().getName()))
             classes.remove(O.getClass().getName());
-		Object set=null;
-		int code=classCode(type);
-		switch(code)
-		{
-		case 0: set=races; break;
-		case 1: set=charClasses; break;
-		case 2: set=MOBs; break;
-		case 3: set=abilities; break;
-		case 4: set=locales; break;
-		case 5: set=exits; break;
-		case 6: set=items; break;
-		case 7: set=behaviors; break;
-		case 8: break;
-		case 9: set=weapons; break;
-		case 10: set=armor; break;
-		case 11: set=miscMagic; break;
-		case 12: set=areaTypes; break;
-		case 13: set=commands; break;
-		case 14: set=clanItems; break;
-		case 15: set=miscTech; break;
-		case 16: set=webMacros; break;
-        case 17: set=common; break;
-        case 18: set=libraries; break;
-		}
+		Object set=getClassSet(type);
 		if(set==null) return false;
 		if(set instanceof Vector)
 		{
@@ -328,7 +304,8 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(code==13) reloadCommandWords();
+            if(set==commands) 
+            	reloadCommandWords();
 		}
 		else
 		if(set instanceof Hashtable)
@@ -340,33 +317,38 @@ public class CMClass extends ClassLoader
 			return false;
 		return true;
 	}
+	
+	protected static Object getClassSet(String type) { return getClassSet(classCode(type));}
+	protected static Object getClassSet(int code)
+	{
+		switch(code)
+		{
+		case 0: return races;
+		case 1: return charClasses; 
+		case 2: return MOBs; 
+		case 3: return abilities; 
+		case 4: return locales; 
+		case 5: return exits; 
+		case 6: return items; 
+		case 7: return behaviors; 
+		case 8: return null;
+		case 9: return weapons; 
+		case 10: return armor; 
+		case 11: return miscMagic; 
+		case 12: return areaTypes; 
+		case 13: return commands; 
+		case 14: return clanItems; 
+		case 15: return miscTech; 
+		case 16: return webMacros; 
+        case 17: return common; 
+        case 18: return libraries; 
+		}
+		return null;
+	}
 
 	public static boolean addClass(String type, CMObject O)
 	{
-		Object set=null;
-		int code=classCode(type);
-		switch(code)
-		{
-		case 0: set=races; break;
-		case 1: set=charClasses; break;
-		case 2: set=MOBs; break;
-		case 3: set=abilities; break;
-		case 4: set=locales; break;
-		case 5: set=exits; break;
-		case 6: set=items; break;
-		case 7: set=behaviors; break;
-		case 8: break;
-		case 9: set=weapons; break;
-		case 10: set=armor; break;
-		case 11: set=miscMagic; break;
-		case 12: set=areaTypes; break;
-		case 13: set=commands; break;
-		case 14: set=clanItems; break;
-		case 15: set=miscTech; break;
-		case 16: set=webMacros; break;
-        case 17: set=common; break;
-        case 18: set=libraries; break;
-		}
+		Object set=getClassSet(type);
 		if(set==null) return false;
 		if(set instanceof Vector)
 		{
@@ -374,7 +356,8 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(code==13) reloadCommandWords();
+            if(set==commands) 
+            	reloadCommandWords();
 		}
 		else
 		if(set instanceof Hashtable)
@@ -410,36 +393,13 @@ public class CMClass extends ClassLoader
 		return -1;
 	}
 	
-	public static boolean loadClass(String name, String path)
+	public static boolean loadClass(String classType, String path)
 	{
-		Object set=null;
         debugging=CMSecurity.isDebugging("CLASSLOADER");
-		int code=classCode(name);
-		switch(code)
-		{
-		case 0: set=races; break;
-		case 1: set=charClasses; break;
-		case 2: set=MOBs; break;
-		case 3: set=abilities; break;
-		case 4: set=locales; break;
-		case 5: set=exits; break;
-		case 6: set=items; break;
-		case 7: set=behaviors; break;
-		case 8: break;
-		case 9: set=weapons; break;
-		case 10: set=armor; break;
-		case 11: set=miscMagic; break;
-		case 12: set=areaTypes; break;
-		case 13: set=commands; break;
-		case 14: set=clanItems; break;
-		case 15: set=miscTech; break;
-		case 16: set=webMacros; break;
-        case 17: set=common; break;
-        case 18: set=libraries; break;
-		}
+		Object set=getClassSet(classType);
 		if(set==null) return false;
 
-		if(!loadListToObj(set,path,OBJECT_ANCESTORS[code]))
+		if(!loadListToObj(set,path,OBJECT_ANCESTORS[classCode(classType)]))
             return false;
 
         if(set instanceof Vector)
@@ -447,9 +407,45 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(code==13) reloadCommandWords();
+            if(set==commands) reloadCommandWords();
         }
 		return true;
+	}
+
+	public static Object unsortedLoadClass(String classType, String path)
+	{
+		if((path==null)||(path.length()==0))
+			return null;
+		try{
+			String pathLess=path;
+			if(pathLess.toUpperCase().endsWith(".CLASS"))
+				pathLess=pathLess.substring(0,pathLess.length()-6);
+			else
+			if(pathLess.toUpperCase().endsWith(".JS"))
+				pathLess=pathLess.substring(0,pathLess.length()-3);
+			pathLess=pathLess.replace('/','.');
+			pathLess=pathLess.replace('\\','.');
+			if(classes.contains(pathLess)) 
+				return ((Class)classes.get(pathLess)).newInstance();
+		}catch(Exception e){}
+		Vector V=new Vector();
+		if(classCode(classType)<0)
+			return null;
+		if((!path.toUpperCase().endsWith(".CLASS"))
+		&&(!path.toUpperCase().endsWith(".JS")))
+		{
+			path=path.replace('.','/');
+			path+=".class";
+		}
+		if(!loadListToObj(V,path,OBJECT_ANCESTORS[classCode(classType)]))
+			return null;
+		if(V.size()==0) return null;
+		return (Object)V.firstElement();
+	}
+
+	public static boolean checkForCMClass(String classType, String path)
+	{ 
+		return unsortedLoadClass(classType,path)!=null;
 	}
 
     public static String ancestor(String code)
@@ -464,25 +460,19 @@ public class CMClass extends ClassLoader
 		String shortThis=calledThis;
 		int x=shortThis.lastIndexOf('.');
 		if(x>0) shortThis=shortThis.substring(x+1);
-		Object thisItem=getGlobal(races,shortThis);
-		if(thisItem==null) thisItem=getGlobal(charClasses,shortThis);
-		if(thisItem==null) thisItem=getGlobal(MOBs,shortThis);
-		if(thisItem==null) thisItem=getGlobal(abilities,shortThis);
-		if(thisItem==null) thisItem=getGlobal(locales,shortThis);
-		if(thisItem==null) thisItem=getGlobal(exits,shortThis);
-		if(thisItem==null) thisItem=getGlobal(items,shortThis);
-		if(thisItem==null) thisItem=getGlobal(behaviors,shortThis);
-		if(thisItem==null) thisItem=getGlobal(weapons,shortThis);
-		if(thisItem==null) thisItem=getGlobal(armor,shortThis);
-		if(thisItem==null) thisItem=getGlobal(miscMagic,shortThis);
-		if(thisItem==null) thisItem=getGlobal(areaTypes,shortThis);
-		if(thisItem==null) thisItem=getGlobal(clanItems,shortThis);
-		if(thisItem==null) thisItem=getGlobal(miscTech,shortThis);
-        if(thisItem==null) thisItem=getGlobal(common,shortThis);
-        if(thisItem==null) thisItem=getGlobal(libraries,shortThis);
-        if(thisItem==null) thisItem=getGlobal(commands,shortThis);
-        if(thisItem==null) thisItem=getGlobal(webMacros,shortThis);
-        if((thisItem==null)&&(classes.containsKey(calledThis)))
+		Object set=null;
+		Object thisItem=null;
+		for(int i=0;i<CMClass.OBJECT_DESCS.length;i++)
+		{
+			set=getClassSet(i);
+			if(set==null) continue;
+			if(set instanceof Vector)
+				thisItem=getGlobal((Vector)set,shortThis);
+			else
+			if(set instanceof Hashtable)
+				thisItem=getGlobal((Hashtable)set,shortThis);
+			if(thisItem!=null) return thisItem;
+		}
         try{	return ((Class)classes.get(calledThis)).newInstance();}catch(Exception e){}
 		return thisItem;
 	}

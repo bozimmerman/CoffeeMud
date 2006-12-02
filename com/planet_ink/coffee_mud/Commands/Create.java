@@ -349,9 +349,21 @@ public class Create extends BaseGenerics
 		Race R=CMClass.getRace(raceID);
 		if((R!=null)&&(R.isGeneric()))
 		{
-			mob.tell("A generic race with the ID '"+R.ID()+"' already exists!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.tell("This generic race already exists.. perhaps you might modify it?");
 			return;
+		}
+		Race GR=null;
+		if((R!=null)&&(!R.isGeneric()))
+		{
+			if((mob.session()==null)
+			||(!mob.session().confirm("Currently, "+R.ID()+" is a standard race.  This will convert the " +
+									  "race to a GenRace so that you can modify it.  Be warned that special " +
+									  "functionality of the race may be lost by doing this.  You can undo this "+
+									  "action by destroying the same race ID after creating it.  Do you wish to " +
+									  "continue (y/N)?", "N")))
+				return;
+			GR=R.makeGenRace();
+			raceID=GR.ID();
 		}
 		if(raceID.indexOf(" ")>=0)
 		{
@@ -359,11 +371,36 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
-		GR.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(raceID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(raceID)+"</NAME></RACE>");
+		if(GR==null)
+		{
+			GR=(Race)CMClass.getRace("GenRace").copyOf();
+			GR.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(raceID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(raceID)+"</NAME></RACE>");
+		}
 		CMClass.addRace(GR);
 		modifyGenRace(mob,GR);
 		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
+		if(R!=null)
+		for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+		{
+			Room room=(Room)e.nextElement();
+			for(int i=0;i<room.numInhabitants();i++)
+			{
+				MOB M=room.fetchInhabitant(i);
+				if(M==null) continue;
+				if(M.baseCharStats().getMyRace()==R)
+					M.baseCharStats().setMyRace(GR);
+				if(M.charStats().getMyRace()==R)
+					M.charStats().setMyRace(GR);
+			}
+			for(e=CMLib.map().players();e.hasMoreElements();)
+			{
+				MOB M=(MOB)e.nextElement();
+				if(M.baseCharStats().getMyRace()==R)
+					M.baseCharStats().setMyRace(GR);
+				if(M.charStats().getMyRace()==R)
+					M.charStats().setMyRace(GR);
+			}
+		}
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just increased!");
 	}
 
@@ -610,6 +647,32 @@ public class Create extends BaseGenerics
 		CMClass.addCharClass(CR);
 		modifyGenClass(mob,CR);
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
+		if(C!=null)
+			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			{
+				Room room=(Room)e.nextElement();
+				for(int i=0;i<room.numInhabitants();i++)
+				{
+					MOB M=room.fetchInhabitant(i);
+					if(M==null) continue;
+					for(int c=0;c<M.baseCharStats().numClasses();c++)
+						if(M.baseCharStats().getMyClass(c)==C)
+							M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+					for(int c=0;c<M.charStats().numClasses();c++)
+						if(M.charStats().getMyClass(c)==C)
+							M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+				}
+				for(e=CMLib.map().players();e.hasMoreElements();)
+				{
+					MOB M=(MOB)e.nextElement();
+					for(int c=0;c<M.baseCharStats().numClasses();c++)
+						if(M.baseCharStats().getMyClass(c)==C)
+							M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+					for(int c=0;c<M.charStats().numClasses();c++)
+						if(M.charStats().getMyClass(c)==C)
+							M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+				}
+			}
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just increased!");
 	}
 

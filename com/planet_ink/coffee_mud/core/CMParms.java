@@ -1068,15 +1068,18 @@ public class CMParms
         return V2;
     }
 
-    public static boolean contains(String[] supported, String expertise)
+    public static int indexOf(String[] supported, String expertise)
     {
-        if(supported==null) return true;
-        if(expertise==null) return false;
+        if(supported==null) return -1;
+        if(expertise==null) return -1;
         for(int i=0;i<supported.length;i++)
             if(supported[i].equals(expertise))
-                return true;
-        return false;
+                return i;
+        return -1;
     }
+    public static boolean contains(String[] supported, String expertise)
+    { return indexOf(supported,expertise)>=0;}
+    
     public static boolean startsWith(String[] supported, String expertise)
     {
         if(supported==null) return true;

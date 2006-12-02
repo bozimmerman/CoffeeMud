@@ -319,7 +319,7 @@ public class StdRace implements Race
 		return CMLib.combat().standardMobCondition(viewer,mob);
 	}
 
-	public Weapon funHumanoidWeapon()
+	protected Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
 		{
@@ -555,6 +555,401 @@ public class StdRace implements Race
 		racialEffectMap.put(level,finalV);
 		return finalV;
 	}
+	
+	public Race makeGenRace()
+	{
+		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
+		GR.setRacialParms("<RACE><ID>"+ID()+"</ID><NAME>"+name()+"</NAME></RACE>");
+		GR.setStat("CAT",racialCategory());
+		GR.setStat("BWEIGHT",""+lightestWeight());
+		GR.setStat("VWEIGHT",""+weightVariance());
+		GR.setStat("MHEIGHT",""+shortestMale());
+		GR.setStat("FHEIGHT",""+shortestFemale());
+		GR.setStat("WEAR",""+forbiddenWornBits());
+		GR.setStat("AVAIL",""+availabilityCode());
+		GR.setStat("VHEIGHT",""+heightVariance());
+		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME));
+		GR.setStat("LEAVE",leaveStr());
+		GR.setStat("ARRIVE",arriveStr());
+		GR.setStat("HEALTHRACE",CMClass.classID(this));
+		GR.setStat("EVENTRACE",CMClass.classID(this));
+		GR.setStat("BODYKILL",""+destroyBodyAfterUse());
+		GR.setStat("AGING",CMParms.toStringList(getAgingChart()));
+		for(int i=0;i<Race.BODYPARTSTR.length;i++)
+				GR.bodyMask()[i]=bodyMask()[i];
+		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        RS.setAllValues(0);
+        MOB fakeMOB=CMClass.getMOB("StdMOB");
+		affectEnvStats(fakeMOB,RS);
+		RS.setRejuv(0);
+
+		Weapon W=myNaturalWeapon();
+		Weapon NW=CMClass.getWeapon("Natural");
+		if((W!=null)&&(W!=NW))
+		{
+			if(!W.isGeneric())
+			{
+				Weapon W2=CMClass.getWeapon("GenWeapon");
+				W2.setName(W.name());
+				W2.setWeaponClassification(W.weaponClassification());
+				W2.setWeaponType(W.weaponType());
+				W2.baseEnvStats().setDamage(W.envStats().damage());
+				W2.baseEnvStats().setAttackAdjustment(W.envStats().attackAdjustment());
+				W2.recoverEnvStats();
+				W2.text();
+				W=W2;
+			}
+			GR.setStat("WEAPONCLASS",W.ID());
+			GR.setStat("WEAPONXML",W.text());
+		}
+		GR.setStat("WEAPONRACE",getClass().getName());
+		
+		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        S1.setAllValues(0);
+        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        S2.setAllValues(10);
+        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        S3.setAllValues(11);
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        SETSTAT.setAllValues(0);
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        ADJSTAT.setAllValues(0);
+		affectCharStats(fakeMOB,S1);
+		affectCharStats(fakeMOB,S2);
+		affectCharStats(fakeMOB,S3);
+		for(int i=0;i<CharStats.NUM_STATS;i++)
+			if(i!=CharStats.STAT_AGE)
+			{
+				if(i<CharStats.NUM_BASE_STATS)
+				{
+					if((S2.getStat(i)==S3.getStat(i))
+					&&(S1.getStat(i+CharStats.STAT_MAX_STRENGTH_ADJ)!=0))
+					{
+						SETSTAT.setStat(i,S2.getStat(i));
+						S1.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+						S2.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+						S3.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+					}
+					else
+						ADJSTAT.setStat(i,S1.getStat(i));
+				}
+				else
+					ADJSTAT.setStat(i,S1.getStat(i));
+			}
+		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
+		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
+
+        CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
+		affectCharState(fakeMOB,CS);
+		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
+
+        CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
+		affectCharState(fakeMOB,STARTCS);
+		GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
+
+		GR.setStat("DISFLAGS",""+((classless()?Race.GENFLAG_NOCLASS:0)
+								|(leveless()?Race.GENFLAG_NOLEVELS:0)
+								|(uncharmable()?Race.GENFLAG_NOCHARM:0)
+								|(fertile()?0:Race.GENFLAG_NOFERTILE)
+								|(expless()?Race.GENFLAG_NOEXP:0)));
+
+		GR.setStat("NUMRSC","");
+		for(int i=0;i<myResources().size();i++)
+			GR.setStat("GETRSCID"+i,((Item)myResources().elementAt(i)).ID());
+		for(int i=0;i<myResources().size();i++)
+			GR.setStat("GETRSCPARM"+i,((Item)myResources().elementAt(i)).text());
+
+		Vector outfit=outfit(null);
+		GR.setStat("NUMOFT","");
+		if((outfit!=null)&&(outfit.size()>0))
+		{
+			GR.setStat("NUMOFT",""+outfit.size());
+			for(int i=0;i<outfit.size();i++)
+				GR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+			for(int i=0;i<outfit.size();i++)
+				GR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
+		}
+
+		if((racialAbilityNames()==null)||(racialAbilityNames().length==0))
+			GR.setStat("NUMRABLE","");
+		else
+		{
+			GR.setStat("NUMRABLE",""+racialAbilityNames().length);
+			for(int i=0;i<racialAbilityNames().length;i++)
+			{
+				GR.setStat("GETRABLE"+i,racialAbilityNames()[i]);
+				GR.setStat("GETRABLELVL"+i,""+racialAbilityLevels()[i]);
+				GR.setStat("GETRABLEQUAL"+i,""+racialAbilityQuals()[i]);
+				GR.setStat("GETRABLEPROF"+i,""+racialAbilityProficiencies()[i]);
+			}
+		}
+		
+		if((culturalAbilityNames()==null)||(culturalAbilityNames().length==0))
+			GR.setStat("NUMCABLE","");
+		else
+		{
+			GR.setStat("NUMCABLE",""+culturalAbilityNames().length);
+			for(int i=0;i<culturalAbilityNames().length;i++)
+			{
+				GR.setStat("GETCABLE"+i,culturalAbilityNames()[i]);
+				GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
+			}
+		}
+		
+		if((racialEffectNames()==null)||(racialEffectNames().length==0))
+			GR.setStat("NUMREFF","");
+		else
+		{
+			GR.setStat("NUMREFF",""+racialAbilityNames().length);
+			for(int i=0;i<racialEffectNames().length;i++)
+			{
+				GR.setStat("GETREFF"+i,racialEffectNames()[i]);
+				GR.setStat("GETREFFLVL"+i,""+racialEffectLevels()[i]);
+				GR.setStat("GETREFFPARM"+i,racialEffectParms()[i]);
+			}
+		}
+		return GR;
+	}
+
+	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	{
+		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
+		Race race1=this;
+		Race race2=race;
+		GR.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceName+"</NAME></RACE>");
+		if(!race1.isGeneric()) race1=race1.makeGenRace();
+		if(!race2.isGeneric()) race2=race2.makeGenRace();
+		
+		Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
+		Race otherRace=(nonHuman==race1)?race2:race1;
+		GR.setStat("CAT",nonHuman.racialCategory());
+		GR.setStat("BWEIGHT",""+((race1.lightestWeight()+race2.lightestWeight())/2));
+		GR.setStat("VWEIGHT",""+((race1.weightVariance()+race2.weightVariance())/2));
+		GR.setStat("MHEIGHT",""+((race1.shortestMale()+race2.shortestMale())/2));
+		GR.setStat("FHEIGHT",""+((race1.shortestFemale()+race2.shortestFemale())/2));
+		GR.setStat("VHEIGHT",""+((race1.heightVariance()+race2.heightVariance())/2));
+		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME));
+		GR.setStat("LEAVE",nonHuman.leaveStr());
+		GR.setStat("ARRIVE",nonHuman.arriveStr());
+		GR.setStat("HEALTHRACE",otherRace.getStat("HEALTHRACE"));
+		GR.setStat("EVENTRACE",otherRace.getStat("EVENTRACE"));
+		GR.setStat("WEAPONRACE",otherRace.getStat("WEAPONRACE"));
+		int[] aging=(int[])race1.getAgingChart().clone();
+		for(int i=0;i<aging.length;i++)
+		    aging[i]+=race2.getAgingChart()[i];
+		for(int i=0;i<aging.length;i++)
+		    aging[i]=aging[i]/2;
+		
+		int race1worn=CMath.s_int(otherRace.getStat("WEAR"));
+		int race2worn=CMath.s_int(nonHuman.getStat("WEAR"));
+		int finalWear=0;
+		boolean toggle=false;
+		for(int i=0;i<Item.WORN_DESCS.length;i++)
+			if((!CMath.isSet(race1worn,i))&&(!CMath.isSet(race2worn,i)))
+			{}
+			else
+			if(CMath.isSet(race1worn,i)&&CMath.isSet(race2worn,i))
+				finalWear=finalWear|(int)CMath.pow(2,i);
+			else
+			if(CMath.isSet(race1worn,i))
+				finalWear=finalWear|(int)CMath.pow(2,i);
+			else
+			if(toggle)
+			{
+				finalWear=finalWear|(int)CMath.pow(2,i);
+				toggle=!toggle;
+			}
+		
+		GR.setStat("WEAR",""+finalWear);
+		Weapon W=otherRace.myNaturalWeapon();
+		if(W==null) W=nonHuman.myNaturalWeapon();
+		if(W!=null)
+		{
+			GR.setStat("WEAPONCLASS",W.ID());
+			GR.setStat("WEAPONXML",W.text());
+		}
+		
+		GR.setStat("BODYKILL",""+otherRace.getStat("BODYKILL"));
+		GR.setStat("AGING",CMParms.toStringList(aging));
+		for(int i=0;i<Race.BODYPARTSTR.length;i++)
+			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
+				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
+			else
+			if((race1.bodyMask()[i]<=0)&&(race2.bodyMask()[i]>=0))
+				GR.bodyMask()[i]=race2.bodyMask()[i];
+			else
+				GR.bodyMask()[i]=race1.bodyMask()[i];
+
+		EnvStats RS1=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
+		RS1.setAllValues(0); 
+		CMLib.coffeeMaker().setEnvStats(RS1,race1.getStat("ESTATS"));
+		
+		EnvStats RS2=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
+		RS2.setAllValues(0); 
+		CMLib.coffeeMaker().setEnvStats(RS2,race2.getStat("ESTATS"));
+		
+		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
+		RS.setAbility((RS1.ability()+RS2.ability())/2);
+		RS.setArmor((RS2.armor()+RS2.armor())/2);
+		RS.setAttackAdjustment((RS1.attackAdjustment()+RS2.attackAdjustment())/2);
+		RS.setDamage((RS1.damage()+RS2.damage())/2);
+		RS.setHeight((RS1.height()+RS2.height())/2);
+		RS.setSpeed((RS1.speed()+RS2.speed())/2.0);
+		RS.setWeight((RS1.weight()+RS2.weight())/2);
+		RS.setRejuv(0);
+		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+
+        CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        SETSTAT1.setAllValues(0);
+        CMLib.coffeeMaker().setCharStats(SETSTAT1,race1.getStat("CSTATS"));
+        
+        CharStats SETSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        SETSTAT2.setAllValues(0);
+        CMLib.coffeeMaker().setCharStats(SETSTAT2,race2.getStat("CSTATS"));
+        
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        SETSTAT.setAllValues(0);
+        
+        CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        ADJSTAT1.setAllValues(0);
+        CMLib.coffeeMaker().setCharStats(ADJSTAT1,race1.getStat("CSTATS"));
+        
+        CharStats ADJSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        ADJSTAT2.setAllValues(0);
+        CMLib.coffeeMaker().setCharStats(ADJSTAT2,race2.getStat("CSTATS"));
+        
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        ADJSTAT.setAllValues(0);
+
+		for(int i=0;i<CharStats.NUM_STATS;i++)
+		{
+			if(i<CharStats.NUM_BASE_STATS)
+			{
+				SETSTAT.setStat(i,(SETSTAT1.getStat(i)+SETSTAT2.getStat(i))/2);
+				ADJSTAT.setStat(i,(ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
+			}
+			else
+			if((i!=CharStats.STAT_GENDER)&&(i!=CharStats.STAT_AGE))
+				ADJSTAT.setStat(i,(ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
+		}
+		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
+		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
+
+        CharState CS1=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CS1.setAllValues(0);
+        CMLib.coffeeMaker().setCharState(CS1,race1.getStat("ASTATE"));
+        CharState CS2=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CS2.setAllValues(0);
+        CMLib.coffeeMaker().setCharState(CS2,race2.getStat("ASTATE"));
+        CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CS.setAllValues(0);
+        
+		CS.setFatigue((CS1.getFatigue()+CS2.getFatigue())/2);
+		CS.setHitPoints((CS1.getHitPoints()+CS2.getHitPoints())/2);
+		CS.setHunger((CS1.getHunger()+CS2.getHunger())/2);
+		CS.setMana((CS1.getMana()+CS2.getMana())/2);
+		CS.setMovement((CS1.getMovement()+CS2.getMovement())/2);
+		CS.setThirst((CS1.getThirst()+CS2.getThirst())/2);
+		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
+
+        CharState STARTCS1=(CharState)CMClass.getCommon("DefaultCharState"); 
+        STARTCS1.setAllValues(0);
+        CMLib.coffeeMaker().setCharState(STARTCS1,race1.getStat("STARTASTATE"));
+        
+        CharState STARTCS2=(CharState)CMClass.getCommon("DefaultCharState"); 
+        STARTCS2.setAllValues(0);
+        CMLib.coffeeMaker().setCharState(STARTCS1,race2.getStat("STARTASTATE"));
+        
+        CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); 
+        STARTCS.setAllValues(0);
+        
+        STARTCS.setFatigue((STARTCS1.getFatigue()+STARTCS2.getFatigue())/2);
+        STARTCS.setHitPoints((STARTCS1.getHitPoints()+STARTCS2.getHitPoints())/2);
+        STARTCS.setHunger((STARTCS1.getHunger()+STARTCS2.getHunger())/2);
+        STARTCS.setMana((STARTCS1.getMana()+STARTCS2.getMana())/2);
+        STARTCS.setMovement((STARTCS1.getMovement()+STARTCS2.getMovement())/2);
+        STARTCS.setThirst((STARTCS1.getThirst()+STARTCS2.getThirst())/2);
+		GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
+
+		GR.setStat("DISFLAGS",""+(CMath.s_int(race1.getStat("DISFLAGS"))|CMath.s_int(race2.getStat("DISFLAGS"))));
+		
+		Vector rscs=nonHuman.myResources();
+		GR.setStat("NUMRSC",(rscs.size()>0)?"":""+rscs.size());
+		for(int i=0;i<rscs.size();i++)
+			GR.setStat("GETRSCID"+i,((Item)rscs.elementAt(i)).ID());
+		for(int i=0;i<rscs.size();i++)
+			GR.setStat("GETRSCPARM"+i,((Item)rscs.elementAt(i)).text());
+
+		GR.setStat("NUMOFT","");
+		Race outfitRace=(nonHuman.outfit(null)!=null)?nonHuman:otherRace;
+		Vector outfit=outfitRace.outfit(null);
+		if((outfit!=null)&&(outfit.size()>0))
+		{
+			GR.setStat("NUMOFT",""+outfit.size());
+			for(int i=0;i<outfit.size();i++)
+				GR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+			for(int i=0;i<outfit.size();i++)
+				GR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
+		}
+
+		race1.racialAbilities(null);
+		race2.racialAbilities(null);
+		Vector data1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
+		Vector data2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
+		// kill half of them.
+		for(int i=1;i<data1.size();i++)
+			data1.removeElementAt(i);
+		for(int i=1;i<data2.size();i++)
+			data2.removeElementAt(i);
+
+		if((data1.size()+data2.size())>0)
+			GR.setStat("NUMRABLE",""+(data1.size()+data2.size()));
+		else
+			GR.setStat("NUMRABLE","");
+		for(int i=0;i<data1.size();i++)
+		{
+			GR.setStat("GETRABLE"+i,(String)data1.elementAt(i));
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)data1.elementAt(i))));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)data1.elementAt(i)));
+		}
+		for(int i=0;i<data2.size();i++)
+		{
+			GR.setStat("GETRABLE"+(i+data1.size()),(String)data2.elementAt(i));
+			GR.setStat("GETRABLELVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)data2.elementAt(i))));
+			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)data2.elementAt(i)));
+		}
+
+		data1=race1.racialEffects(null);
+		data2=race2.racialEffects(null);
+		// kill half of them.
+		for(int i=1;i<data1.size();i++)
+			data1.removeElementAt(i);
+		for(int i=1;i<data2.size();i++)
+			data2.removeElementAt(i);
+
+		if((data1.size()+data2.size())>0)
+			GR.setStat("NUMREFF",""+(data1.size()+data2.size()));
+		else
+			GR.setStat("NUMREFF","");
+		for(int i=0;i<data1.size();i++)
+		{
+			GR.setStat("GETREFF"+i,(String)data1.elementAt(i));
+			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)data1.elementAt(i)));
+		}
+		for(int i=0;i<data2.size();i++)
+		{
+			GR.setStat("GETREFF"+(i+data1.size()),(String)data2.elementAt(i));
+			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)data2.elementAt(i)));
+		}
+		return GR;
+	}
+
+
 
 	public Vector racialAbilities(MOB mob)
 	{

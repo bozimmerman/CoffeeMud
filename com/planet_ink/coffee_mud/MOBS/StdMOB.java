@@ -1073,9 +1073,14 @@ public class StdMOB implements MOB
 	}
 	public Weapon myNaturalWeapon()
 	{
+		Weapon W=null;
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
-			return charStats().getMyRace().myNaturalWeapon();
-		return CMClass.getWeapon("Natural");
+			W=charStats().getMyRace().myNaturalWeapon();
+		else
+			W=CMClass.getWeapon("Natural");
+		if(W.subjectToWearAndTear())
+			W.setUsesRemaining(100);
+		return W;
 	}
 
     public String displayName(MOB viewer)

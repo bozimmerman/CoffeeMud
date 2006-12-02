@@ -690,7 +690,7 @@ public class Modify extends BaseGenerics
 		}
 		if(!(R.isGeneric()))
 		{
-			mob.tell("'"+R.ID()+"' is not generic, and may not be modified.");
+			mob.tell("'"+R.ID()+"' is not generic, and may not be modified as it is.  Use CREATE RACE "+R.ID()+" to convert it to a generic race.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}

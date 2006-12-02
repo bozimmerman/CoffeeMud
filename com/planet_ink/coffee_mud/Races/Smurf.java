@@ -53,7 +53,7 @@ public class Smurf extends StdRace
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
-	public Weapon funHumanoidWeapon()
+	protected Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
 		{
