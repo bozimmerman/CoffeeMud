@@ -36,6 +36,10 @@ public class FaerieDragon extends StdRace
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	private String[]culturalAbilityNames={"Draconic"};
+	private int[]culturalAbilityProficiencies={100};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
@@ -60,21 +64,6 @@ public class FaerieDragon extends StdRace
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-2);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2);
-	}
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Draconic");
-			if(A!=null)
-			{
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-				if(mob.isMonster())
-					A.invoke(mob,mob,false,0);
-			}
-		}
 	}
 	public Weapon myNaturalWeapon()
 	{

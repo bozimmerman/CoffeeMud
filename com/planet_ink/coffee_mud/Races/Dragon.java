@@ -80,21 +80,6 @@ public class Dragon extends StdRace
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+15);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+15);
 	}
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Draconic");
-			if(A!=null)
-			{
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-				if(mob.isMonster())
-					A.invoke(mob,mob,false,0);
-			}
-		}
-	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
