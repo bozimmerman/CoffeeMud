@@ -314,9 +314,9 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				}
 				case 2:
 				{
-					underA.theNoun="a large group of teamsters carrying potatoe sacks";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A group of large teamsters with big empty potatoe sacks approaches.");
-					Room destR=makeNewRoom(area,"A potatoe sack","Once you get past the musty rotten smell, this is really uncomfortable!");
+					underA.theNoun="a large group of teamsters carrying potato sacks";
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A group of large teamsters with big empty potato sacks approaches.");
+					Room destR=makeNewRoom(area,"A potato sack","Once you get past the musty rotten smell, this is really uncomfortable!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into a sack");
 					break;
 				}
