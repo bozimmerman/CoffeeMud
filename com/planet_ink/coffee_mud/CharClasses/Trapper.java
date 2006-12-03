@@ -153,10 +153,10 @@ public class Trapper extends Thief
 						int qlvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),false,msg.tool().ID());
 						if((qlvl>=0)
 						&&(myChar.charStats().getClassLevel(C)>=qlvl)
-						&&((chosenC==null)||(chosenC==this)))
+						&&((chosenC==null)||(chosenC.ID().equals(ID()))))
 							chosenC=C;
 					}
-					if(chosenC==this)
+					if((chosenC!=null)&&(chosenC.ID().equals(ID())))
 					{
 						if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
 						{

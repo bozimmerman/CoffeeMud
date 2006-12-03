@@ -547,13 +547,13 @@ public class GenRace extends StdRace
 	public String getStat(String code)
 	{
 		int num=0;
-		int mul=1;
-		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
-		{
-			num=(CMath.s_int(""+code.charAt(code.length()-1))*mul)+num;
-			mul=mul*10;
-			code=code.substring(0,code.length()-1);
-		}
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
@@ -648,10 +648,12 @@ public class GenRace extends StdRace
 	public void setStat(String code, String val)
 	{
 		int num=0;
-		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
+        int numDex=code.length();
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
 		{
-			num=(num*10)+CMath.s_int(""+code.charAt(code.length()-1));
-			code=code.substring(0,code.length()-1);
+			num=CMath.s_int(code.substring(numDex));
+			code=code.substring(0,numDex);
 		}
 		switch(getCodeNum(code))
 		{
@@ -688,7 +690,7 @@ public class GenRace extends StdRace
 		case 15: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
 		case 16: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
 		case 17: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
-		case 18: if(CMath.s_int(val)==0) resourceChoices=null; break;
+		case 18: if(CMath.s_int(val)==0) resourceChoices=null; else resourceChoices=new Vector(CMath.s_int(val)); break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
 					 if(num>=resourceChoices.size())
 						resourceChoices.addElement(CMClass.getItem(val));
@@ -696,7 +698,8 @@ public class GenRace extends StdRace
 				        resourceChoices.setElementAt(CMClass.getItem(val),num);
 					 break;
 				 }
-		case 20: {   if((resourceChoices!=null)&&(num<resourceChoices.size()))
+		case 20: {
+                     if((resourceChoices!=null)&&(num<resourceChoices.size()))
 					 {
 						Item I=(Item)resourceChoices.elementAt(num);
 						I.setMiscText(val);
@@ -759,7 +762,7 @@ public class GenRace extends StdRace
 				     culturalAbilityProficiencies[num]=CMath.s_int(val);
 					 break;
 				 }
-		case 31: if(CMath.s_int(val)==0) outfitChoices=null; break;
+		case 31: if(CMath.s_int(val)==0) outfitChoices=null; else outfitChoices=new Vector(CMath.s_int(val)); break;
 		case 32: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
 						outfitChoices.addElement(CMClass.getItem(val));

@@ -95,8 +95,7 @@ public class Unload extends StdCommand
 				CMLib.help().unloadHelpFile(mob);
 				return false;
 			}
-			else
-				mob.tell("No access to help.");
+			mob.tell("No access to help.");
 		}
 		else
 		if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))

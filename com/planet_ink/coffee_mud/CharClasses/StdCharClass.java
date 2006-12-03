@@ -251,7 +251,7 @@ public class StdCharClass implements CharClass
 			if((C!=null)
 			&&(ql>0)
 			&&(ql<=mob.charStats().getClassLevel(C)))
-				return (C==this);
+				return (C.ID().equals(ID()));
 		}
 		return false;
 	}
@@ -276,7 +276,7 @@ public class StdCharClass implements CharClass
 	{
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
 		&&(E instanceof Weapon)
-		&&(mob.charStats().getCurrentClass()==this)
+		&&(mob.charStats().getCurrentClass().ID().equals(ID()))
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&RawMaterial.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(new Integer(((Weapon)E).weaponClassification())))))
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
@@ -368,6 +368,202 @@ public class StdCharClass implements CharClass
 			}
         }
 	}
+    
+    public CharClass makeGenCharClass()
+    {
+        if(isGeneric()) return this;
+        CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
+        CR.setClassParms("<CCLASS><ID>"+ID()+"</ID><NAME>"+name()+"</NAME></CCLASS>");
+        CR.setStat("BASE",baseClass());
+        CR.setStat("HPDIV",""+getHPDivisor());
+        CR.setStat("HPDICE",""+getHPDice());
+        CR.setStat("LVLPRAC",""+getBonusPracLevel());
+        CR.setStat("MANADIV",""+getManaDivisor());
+        CR.setStat("LVLATT",""+getBonusAttackLevel());
+        CR.setStat("ATTATT",""+getAttackAttribute());
+        CR.setStat("FSTTRAN",""+getTrainsFirstLevel());
+        CR.setStat("FSTPRAC",""+getPracsFirstLevel());
+        CR.setStat("LVLDAM",""+getLevelsPerBonusDamage());
+        CR.setStat("LVLMOVE",""+getMovementMultiplier());
+        CR.setStat("ARMOR",""+allowedArmorLevel());
+        //CR.setStat("STRWEAP",""+this.allowedArmorLevel());
+        //CR.setStat("STRARM",""+this.allowedArmorLevel());
+        CR.setStat("STRLMT",""+otherLimitations());
+        CR.setStat("STRBON",""+otherBonuses());
+        //CR.setStat("QUAL",""+this.qu);
+        CR.setStat("PLAYER",""+availabilityCode());
+        
+        MOB fakeMOB=CMClass.getMOB("StdMOB");
+        fakeMOB.baseCharStats().setMyClasses(ID());        
+        fakeMOB.baseCharStats().setMyLevels("0");
+        fakeMOB.recoverCharStats();
+        
+        EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        RS.setAllValues(0);
+        affectEnvStats(fakeMOB,RS);
+        RS.setRejuv(0);
+        CR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+        
+        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        S1.setMyClasses(ID());        
+        S1.setMyLevels("0");
+        S1.setAllValues(0);
+        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        S2.setAllValues(10);
+        S2.setMyClasses(ID());        
+        S2.setMyLevels("0");
+        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        S3.setAllValues(11);
+        S3.setMyClasses(ID());        
+        S3.setMyLevels("0");
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        SETSTAT.setAllValues(0);
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        ADJSTAT.setAllValues(0);
+        affectCharStats(fakeMOB,S1);
+        affectCharStats(fakeMOB,S2);
+        affectCharStats(fakeMOB,S3);
+        for(int i=0;i<CharStats.NUM_STATS;i++)
+            if(i!=CharStats.STAT_AGE)
+            {
+                if(i<CharStats.NUM_BASE_STATS)
+                {
+                    if((S2.getStat(i)==S3.getStat(i))
+                    &&(S1.getStat(i+CharStats.STAT_MAX_STRENGTH_ADJ)!=0))
+                    {
+                        SETSTAT.setStat(i,S2.getStat(i));
+                        S1.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+                        S2.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+                        S3.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+                    }
+                    else
+                        ADJSTAT.setStat(i,S1.getStat(i));
+                }
+                else
+                    ADJSTAT.setStat(i,S1.getStat(i));
+            }
+        CR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
+        CR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
+
+        CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
+        affectCharState(fakeMOB,CS);
+        CR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
+
+        Vector data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+        DVector completeSet=new DVector(6);
+        String aID=null;
+        for(int i=0;i<data1.size();i++)
+        {
+            aID=(String)data1.elementAt(i);
+            completeSet.addElement(aID,
+                                   new Integer(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
+                                   new Integer(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),
+                                   new Boolean(CMLib.ableMapper().getDefaultGain(ID(),false,aID)),
+                                   new Boolean(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
+                                   CMLib.ableMapper().getDefaultParm(ID(),false,aID));
+        }
+        
+        if(data1.size()>0)
+            CR.setStat("NUMCABLE",""+data1.size());
+        else
+            CR.setStat("NUMCABLE","");
+        for(int i=0;i<completeSet.size();i++)
+        {
+            CR.setStat("GETCABLE"+i,completeSet.elementAt(i,1).toString());
+            CR.setStat("GETCABLELVL"+i,completeSet.elementAt(i,2).toString());
+            CR.setStat("GETCABLEPROF"+i,completeSet.elementAt(i,3).toString());
+            CR.setStat("GETCABLEGAIN"+i,completeSet.elementAt(i,4).toString());
+            CR.setStat("GETCABLESECR"+i,completeSet.elementAt(i,5).toString());
+            CR.setStat("GETCABLEPARM"+i,completeSet.elementAt(i,6).toString());
+        }
+        
+        HashSet H=disallowedWeaponClasses(null);
+        if((H==null)||(H.size()==0))
+            CR.setStat("NUMWEAP","");
+        else
+        {
+            CR.setStat("NUMWEAP",""+H.size());
+            CR.setStat("GETWEAP",""+CMParms.toStringList(H));
+        }
+        
+        Vector outfit=outfit(null);
+        if(outfit==null) outfit=new Vector();
+        CR.setStat("NUMOFT",""+outfit.size());
+        for(int i=0;i<outfit.size();i++)
+            CR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+        for(int i=0;i<outfit.size();i++)
+            CR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
+        
+        CR.setStat("HPDIE",""+getHPDie());
+        CR.setStat("MANADICE",""+getManaDice());
+        CR.setStat("MANADIE",""+getManaDie());
+        CR.setStat("DISFLAGS",""+((raceless()?CharClass.GENFLAG_NORACE:0)
+                                |(leveless()?CharClass.GENFLAG_NOLEVELS:0)
+                                |(expless()?CharClass.GENFLAG_NOEXP:0)));
+        //CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
+        //this.startCharacter(mob,isBorrowedClass,verifyOnly)
+        //CR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
+        String[] names=nameSet();
+        Vector securitySets=new Vector(); 
+        Vector securityLvls=new Vector(); 
+        CR.setStat("NUMNAME",""+names.length);
+        for(int n=0;n<names.length;n++)
+            CR.nameSet()[n]=names[n];
+        int[] lvls=new int[names.length];
+        int nameDex=0;
+        Vector firstSet=getSecurityGroups(0);
+        Vector cumulativeSet=(Vector)firstSet.clone();
+        securitySets.addElement(firstSet);
+        securityLvls.addElement(new Integer(0));
+        for(int x=1;x<20000;x++)
+        {
+            if(!this.name(x).equals(names[nameDex]))
+            {
+                nameDex++;
+                if(nameDex>=names.length)
+                    break;
+                lvls[nameDex]=x;
+            }
+            if(getSecurityGroups(x).size()!=cumulativeSet.size())
+            {
+                Vector V=(Vector)getSecurityGroups(x).clone();
+                for(int i=0;i<cumulativeSet.size();i++)
+                    V.remove(cumulativeSet.elementAt(i));
+                securitySets.addElement(V);
+                securityLvls.addElement(new Integer(x));
+                cumulativeSet.addAll(V);
+            }
+        }
+        for(int l=0;l<lvls.length;l++)
+            CR.setStat("NAMELEVEL"+l,""+lvls[l]);
+        if((securitySets.size()==1)
+        &&(((Vector)securitySets.firstElement()).size()==0))
+        {
+            securitySets.clear();
+            securityLvls.clear();
+        }
+        CR.setStat("NUMSSET",""+securitySets.size());
+        for(int s=0;s<securitySets.size();s++)
+        {
+            CR.setStat("SSET"+s,CMParms.combine((Vector)securitySets.elementAt(s),0));
+            CR.setStat("SSETLEVEL"+s,""+((Integer)securityLvls.elementAt(s)).intValue());
+        }
+        H=requiredWeaponMaterials();
+        if((H==null)||(H.size()==0))
+            CR.setStat("NUMWMAT","");
+        else
+        {
+            CR.setStat("NUMWMAT",""+H.size());
+            CR.setStat("GETWMAT",""+CMParms.toStringList(H));
+        }
+        CR.setStat("ARMORMINOR",""+requiredArmorSourceMinor());
+        CR.setStat("STATCLASS",this.getClass().getName());
+        CR.setStat("EVENTCLASS",this.getClass().getName());
+        fakeMOB.destroy();
+        return CR;
+    }
+    
+    
 	public void endCharacter(MOB mob)
 	{
 	}
@@ -389,7 +585,7 @@ public class StdCharClass implements CharClass
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-		if(affectableStats.getCurrentClass()==this)
+		if(affectableStats.getCurrentClass().ID().equals(ID()))
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)+maxStatAdj[i]);
 	}
@@ -423,7 +619,7 @@ public class StdCharClass implements CharClass
 	    if((msg.source()==myHost)
 	    &&(msg.targetMinor()==CMMsg.TYP_WIELD)
 	    &&(msg.target() instanceof Weapon)
-		&&(msg.source().charStats().getCurrentClass()==this)
+		&&(msg.source().charStats().getCurrentClass().ID().equals(ID()))
 	    &&(!msg.source().isMonster())
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))

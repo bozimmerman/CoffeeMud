@@ -135,16 +135,16 @@ public class DefaultCharStats implements CharStats
 			if(theClass.length()>0)
             {
                 C=CMClass.getCharClass(theClass);
-                if(C!=null)
-                    MyClasses.addElement(C);
+                if(C==null) C=CMClass.getCharClass("StdCharClass");
+                MyClasses.addElement(C);
             }
 			x=classes.indexOf(";");
 		}
 		if(classes.trim().length()>0)
         {
             C=CMClass.getCharClass(classes.trim());
-            if(C!=null)
-                MyClasses.addElement(C);
+            if(C==null) C=CMClass.getCharClass("StdCharClass");
+            MyClasses.addElement(C);
         }
 		myClasses=new CharClass[MyClasses.size()];
 		for(int i=0;i<MyClasses.size();i++)
@@ -303,10 +303,10 @@ public class DefaultCharStats implements CharStats
 	}
 	public int getClassLevel(CharClass aClass)
 	{
-		if(myClasses==null)	return -1;
+		if((myClasses==null)||(aClass==null))	return -1;
 		for(int i=0;i<myClasses.length;i++)
 			if((myClasses[i]!=null)
-			&&(myClasses[i]==aClass)
+			&&(myClasses[i].ID().equals(aClass.ID()))
             &&(i<myLevels.length))
 			   return myLevels[i].intValue();
 		return -1;

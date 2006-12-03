@@ -303,7 +303,7 @@ public class SkyWatcher extends StdCharClass
 	{
 		if(myChar==null) return duration;
 		if(((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
-		&&(myChar.charStats().getCurrentClass()==this)
+		&&(myChar.charStats().getCurrentClass().ID().equals(ID()))
 		&&(!skill.ID().equals("FoodPrep"))
 		&&(!skill.ID().equals("Cooking"))
 		&&(!skill.ID().equals("Herbalism"))

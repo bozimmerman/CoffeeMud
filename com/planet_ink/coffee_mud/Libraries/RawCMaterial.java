@@ -324,6 +324,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         return null;
     }
     
+    public String getMaterialDesc(int MASK)
+    {
+        MASK=(MASK&RawMaterial.MATERIAL_MASK)>>8;
+        if((MASK>=0)&&(MASK<RawMaterial.MATERIAL_DESCS.length))
+            return RawMaterial.MATERIAL_DESCS[MASK];
+        return "";
+    }
+    
+    public String getResourceDesc(int MASK)
+    {
+        MASK=(MASK&RawMaterial.RESOURCE_MASK);
+        if((MASK>=0)&&(MASK<RawMaterial.RESOURCE_DESCS.length))
+            return RawMaterial.RESOURCE_DESCS[MASK];
+        return "";
+    }
+    
 	public int getMaterialRelativeInt(String s)
 	{
 		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)

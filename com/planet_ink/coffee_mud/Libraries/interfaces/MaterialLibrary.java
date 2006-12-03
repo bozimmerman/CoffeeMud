@@ -38,6 +38,8 @@ public interface MaterialLibrary extends CMLibrary
     public int getMaterialRelativeInt(String s);
     public int getMaterialCode(String s, boolean exact);
     public int getResourceCode(String s, boolean exact);
+    public String getResourceDesc(int MASK);
+    public String getMaterialDesc(int MASK);
     public Item makeItemResource(int type);
     public Environmental makeResource(int myResource, int localeCode, boolean noAnimals);
     public int getRandomResourceOfMaterial(int material);

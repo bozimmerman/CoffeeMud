@@ -482,75 +482,35 @@ public class Destroy extends BaseItemParser
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		boolean backR=false;
-		try
-		{
-			backR=CMClass.checkForCMClass("RACE","com/planet_ink/coffee_mud/Races/"+R.ID()+".class");
-			if(!backR)
-			{
-				MOB foundOne=null;
-				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-				{
-					Room room=(Room)e.nextElement();
-					for(int i=0;i<room.numInhabitants();i++)
-					{
-						MOB M=room.fetchInhabitant(i);
-						if((M.baseCharStats().getMyRace()==R)
-						||(M.charStats().getMyRace()==R))
-							foundOne=M;
-					}
-					if(foundOne!=null) break;
-				}
-				if(foundOne==null)
-				for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
-				{
-					MOB M=(MOB)e.nextElement();
-					if((M.baseCharStats().getMyRace()==R)
-					||(M.charStats().getMyRace()==R))
-						foundOne=M;
-				}
-				if(foundOne!=null)
-				{
-					mob.tell("A MOB called '"+foundOne.Name()+" in "+CMLib.map().getExtendedRoomID(foundOne.location())+" is this race, and must first be deleted.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return false;
-				}
-			}
-	    }
-		catch(NoSuchElementException e)
-	    {
-	    	
-	    }
 		String oldRID=R.ID();
 		CMClass.delRace(R);
 		CMLib.database().DBDeleteRace(R.ID());
-		if(backR)
+		CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class");
+		Race oldR=CMClass.getRace(oldRID);
+        if(oldR==null) oldR=CMClass.getRace("StdRace");
+		for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 		{
-			CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class");
-			Race oldR=CMClass.getRace(oldRID);
-			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			Room room=(Room)e.nextElement();
+			for(int i=0;i<room.numInhabitants();i++)
 			{
-				Room room=(Room)e.nextElement();
-				for(int i=0;i<room.numInhabitants();i++)
-				{
-					MOB M=room.fetchInhabitant(i);
-					if(M==null) continue;
-					if(M.baseCharStats().getMyRace()==R)
-						M.baseCharStats().setMyRace(oldR);
-					if(M.charStats().getMyRace()==R)
-						M.charStats().setMyRace(oldR);
-				}
-				for(e=CMLib.map().players();e.hasMoreElements();)
-				{
-					MOB M=(MOB)e.nextElement();
-					if(M.baseCharStats().getMyRace()==R)
-						M.baseCharStats().setMyRace(oldR);
-					if(M.charStats().getMyRace()==R)
-						M.charStats().setMyRace(oldR);
-				}
+				MOB M=room.fetchInhabitant(i);
+				if(M==null) continue;
+				if(M.baseCharStats().getMyRace()==R)
+					M.baseCharStats().setMyRace(oldR);
+				if(M.charStats().getMyRace()==R)
+					M.charStats().setMyRace(oldR);
 			}
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
+			for(e=CMLib.map().players();e.hasMoreElements();)
+			{
+				MOB M=(MOB)e.nextElement();
+				if(M.baseCharStats().getMyRace()==R)
+					M.baseCharStats().setMyRace(oldR);
+				if(M.charStats().getMyRace()==R)
+					M.charStats().setMyRace(oldR);
+			}
 		}
+        if(!oldR.ID().equals("StdRace"))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
 		else
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just decreased!");
 		return true;
@@ -712,7 +672,39 @@ public class Destroy extends BaseItemParser
 		}
 		CMClass.delCharClass(C);
 		CMLib.database().DBDeleteClass(C.ID());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
+        String oldCID=C.ID();
+        CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class");
+        CharClass oldC=CMClass.getCharClass(oldCID);
+        if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
+        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+        {
+            Room room=(Room)e.nextElement();
+            for(int i=0;i<room.numInhabitants();i++)
+            {
+                MOB M=room.fetchInhabitant(i);
+                if(M==null) continue;
+                for(int c=0;c<M.baseCharStats().numClasses();c++)
+                    if(M.baseCharStats().getMyClass(c)==C)
+                        M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+                for(int c=0;c<M.charStats().numClasses();c++)
+                    if(M.charStats().getMyClass(c)==C)
+                        M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+            }
+            for(e=CMLib.map().players();e.hasMoreElements();)
+            {
+                MOB M=(MOB)e.nextElement();
+                for(int c=0;c<M.baseCharStats().numClasses();c++)
+                    if(M.baseCharStats().getMyClass(c)==C)
+                        M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+                for(int c=0;c<M.charStats().numClasses();c++)
+                    if(M.charStats().getMyClass(c)==C)
+                        M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+            }
+        }
+        if(!oldC.ID().equals("StdCharClass"))
+            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
+        else
+    		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
 		return true;
 	}
 

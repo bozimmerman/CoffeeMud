@@ -56,6 +56,22 @@ public class GenCharClass extends StdCharClass
 	protected String otherBonuses="";
 	protected String qualifications="";
 	protected int selectability=0;
+    public int getHPDivisor(){return hpDivisor;}
+    public int getHPDice(){return hpDice;}
+    public int getHPDie(){return hpDie;}
+    public int getManaDivisor(){return manaDivisor;}
+    public int getManaDice(){return manaDice;}
+    public int getManaDie(){return manaDie;}
+    
+    // IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
+    public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+    
+    private HashSet requiredWeaponMaterials=null; // set of Integer material masks
+    protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+    
+    protected int requiredArmorSourceMinor=-1;
+    public int requiredArmorSourceMinor(){return requiredArmorSourceMinor;}
+    
 	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
@@ -63,6 +79,8 @@ public class GenCharClass extends StdCharClass
 	protected EnvStats adjEStats=null;
 	protected CharState adjState=null;
 	protected CharState startAdjState=null;
+    protected CharClass statBuddy=null;
+    protected CharClass eventBuddy=null;
 	protected int disableFlags=0;
 	public boolean raceless(){return (disableFlags&CharClass.GENFLAG_NORACE)==CharClass.GENFLAG_NORACE;}
 	public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
@@ -119,15 +137,30 @@ public class GenCharClass extends StdCharClass
 
 	public String weaponLimitations()
 	{
-		if((disallowedWeaponClasses(null)==null)||(disallowedWeaponClasses(null).size()==0))
-			return "No limitations.";
-		StringBuffer str=new StringBuffer("The following weapon types may not be used:");
-		for(Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
-		{
-			Integer I=(Integer)i.next();
-			str.append(Weapon.classifictionDescription[I.intValue()]);
-		}
-		return str.toString();
+	    StringBuffer str=new StringBuffer("");
+		if((disallowedWeaponClasses(null)!=null)&&(disallowedWeaponClasses(null).size()>0))
+        {
+            str.append("The following weapon types may not be used: ");
+    		for(Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
+    		{
+    			Integer I=(Integer)i.next();
+    			str.append(CMStrings.capitalizeAndLower(Weapon.classifictionDescription[I.intValue()])+" ");
+    		}
+            str.append(".  ");
+        }
+        if((requiredWeaponMaterials()!=null)&&(requiredWeaponMaterials().size()>0))
+        {
+            str.append("Requires using weapons made of the following materials: ");
+            for(Iterator i=requiredWeaponMaterials().iterator();i.hasNext();)
+            {
+                Integer I=(Integer)i.next();
+                str.append(CMStrings.capitalizeAndLower(CMLib.materials().getMaterialDesc(I.intValue()))+" ");
+            }
+            str.append(".  ");
+        }
+        
+        if(str.length()==0) str.append("No limitations.");
+		return str.toString().trim();
 	}
 
 	public void cloneFix(CharClass C)
@@ -162,6 +195,16 @@ public class GenCharClass extends StdCharClass
 	}
 	public String statQualifications(){return CMLib.masking().maskDesc(qualifications);}
 
+    protected String getCharClassLocatorID(CharClass C)
+    {
+        if(C==null) return "";
+        if(C.isGeneric()) return C.ID();
+        if(C==CMClass.getCharClass(C.ID()))
+            return C.ID();
+        return C.getClass().getName();
+    }
+    
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(adjEStats!=null)
@@ -177,7 +220,30 @@ public class GenCharClass extends StdCharClass
 			affectableStats.setSpeed(affectableStats.speed()+adjEStats.speed());
 			affectableStats.setWeight(affectableStats.weight()+adjEStats.weight());
 		}
+        if(statBuddy!=null)
+            statBuddy.affectEnvStats(affected,affectableStats);
 	}
+    public boolean tick(Tickable myChar, int tickID)
+    {
+        if(eventBuddy!=null)
+            if(!eventBuddy.tick(myChar,tickID))
+                return false;
+        return super.tick(myChar, tickID);
+    }
+    public void executeMsg(Environmental myHost, CMMsg msg)
+    {
+        if(eventBuddy!=null)
+            eventBuddy.executeMsg(myHost, msg);
+        super.executeMsg(myHost, msg);
+    }
+    public boolean okMessage(Environmental myHost, CMMsg msg)
+    {
+        if((eventBuddy!=null)
+        &&(!eventBuddy.okMessage(myHost, msg)))
+            return false;
+        return super.okMessage(myHost, msg);
+        
+    }
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
@@ -187,6 +253,8 @@ public class GenCharClass extends StdCharClass
 			for(int i=0;i<CharStats.NUM_STATS;i++)
 				if(setStats.getStat(i)!=0)
 					affectableStats.setStat(i,setStats.getStat(i));
+        if(statBuddy!=null)
+            statBuddy.affectCharStats(affectedMob,affectableStats);
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
@@ -199,6 +267,8 @@ public class GenCharClass extends StdCharClass
 			affectableMaxState.setMovement(affectableMaxState.getMovement()+adjState.getMovement());
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
+        if(statBuddy!=null)
+            statBuddy.affectCharState(affectedMob,affectableMaxState);
 	}
 
 	public String classParms()
@@ -280,6 +350,18 @@ public class GenCharClass extends StdCharClass
 			}
 			str.append("</NOWEAPS>");
 		}
+        if((requiredWeaponMaterials==null)||(requiredWeaponMaterials.size()==0))
+            str.append("<NOWMATS/>");
+        else
+        {
+            str.append("<NOWMATS>");
+            for(Iterator i=requiredWeaponMaterials.iterator();i.hasNext();)
+            {
+                Integer I=(Integer)i.next();
+                str.append(CMLib.xml().convertXMLtoTag("WMAT",""+I.intValue()));
+            }
+            str.append("</NOWMATS>");
+        }
 		if((outfit(null)==null)||(outfit(null).size()==0))	str.append("<OUTFIT/>");
 		else
 		{
@@ -302,6 +384,9 @@ public class GenCharClass extends StdCharClass
         }
 
 		str.append("</CCLASS>");
+        str.append(CMLib.xml().convertXMLtoTag("ARMORMINOR",""+requiredArmorSourceMinor));
+        str.append(CMLib.xml().convertXMLtoTag("STATCLASS",getCharClassLocatorID(statBuddy)));
+        str.append(CMLib.xml().convertXMLtoTag("EVENTCLASS",getCharClassLocatorID(eventBuddy)));
 		return str.toString();
 	}
 	public void setClassParms(String parms)
@@ -430,6 +515,21 @@ public class GenCharClass extends StdCharClass
 			}
 		}
 
+        // now WEAPON MATERIALS!
+        xV=CMLib.xml().getRealContentsFromPieces(classData,"NOWMATS");
+        requiredWeaponMaterials=null;
+        if((xV!=null)&&(xV.size()>0))
+        {
+            requiredWeaponMaterials=new HashSet();
+            for(int x=0;x<xV.size();x++)
+            {
+                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+                if((!iblk.tag.equalsIgnoreCase("WMAT"))||(iblk.contents==null))
+                    continue;
+                requiredWeaponMaterials.add(new Integer(CMath.s_int(iblk.value)));
+            }
+        }
+        
 		// now OUTFIT!
 		Vector oV=CMLib.xml().getRealContentsFromPieces(classData,"OUTFIT");
 		outfitChoices=null;
@@ -473,6 +573,10 @@ public class GenCharClass extends StdCharClass
             securityGroupLevels[i]=(Integer)groupLevelSet.elementAt(i);
         }
         securityGroupCache.clear();
+        
+        requiredArmorSourceMinor=CMLib.xml().getIntFromPieces(classData,"ARMORMINOR");
+        setStat("STATCLASS",CMLib.xml().getValFromPieces(classData,"STATCLASS"));
+        setStat("EVENTCLASS",CMLib.xml().getValFromPieces(classData,"EVENTCLASS"));
 	}
 
 	protected DVector getAbleSet()
@@ -500,18 +604,21 @@ public class GenCharClass extends StdCharClass
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
-									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET","SSETLEVEL"
+									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
+                                     "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
+                                     "EVENTCLASS"
 									 };
+    
 	public String getStat(String code)
 	{
 		int num=0;
-		int mul=1;
-		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
-		{
-			num=(CMath.s_int(""+code.charAt(code.length()-1))*mul)+num;
-			mul=mul*10;
-			code=code.substring(0,code.length()-1);
-		}
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
 		switch(getCodeNum(code))
 		{
 		case 0: return ID;
@@ -568,21 +675,25 @@ public class GenCharClass extends StdCharClass
         case 45: if(num<securityGroupLevels.length)
                     return ""+securityGroupLevels[num];
                  break;
+        case 46: return ""+((requiredWeaponMaterials!=null)?requiredWeaponMaterials.size():0);
+        case 47: return CMParms.toStringList(requiredWeaponMaterials);
+        case 48: return ""+requiredArmorSourceMinor();
+        case 49: return this.getCharClassLocatorID(statBuddy);
+        case 50: return this.getCharClassLocatorID(eventBuddy);
 		}
 		return "";
 	}
 	protected String[] tempables=new String[6];
 	public void setStat(String code, String val)
 	{
-
-		int num=0;
-		int mul=1;
-		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
-		{
-			num=(CMath.s_int(""+code.charAt(code.length()-1))*mul)+num;
-			mul=mul*10;
-			code=code.substring(0,code.length()-1);
-		}
+        int num=0;
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
 		switch(getCodeNum(code))
 		{
 		case 0: ID=val; break;
@@ -630,7 +741,9 @@ public class GenCharClass extends StdCharClass
 				 else
 					 disallowedWeaponSet=new HashSet();
 				 break;
-		case 32: Vector V=CMParms.parseCommas(val,true);
+		case 32:
+        {
+                 Vector V=CMParms.parseCommas(val,true);
 				 if(V.size()>0)
 				 {
 					disallowedWeaponSet=new HashSet();
@@ -640,6 +753,7 @@ public class GenCharClass extends StdCharClass
 				 else
 					 disallowedWeaponSet=null;
 				 break;
+        }
 		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
 		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
@@ -680,8 +794,8 @@ public class GenCharClass extends StdCharClass
                     }
                     names=newNames;
                     nameLevels=newLevels;
-                    break;
                  }
+                 break;
         case 42: if(num<nameLevels.length)
                     nameLevels[num]=new Integer(CMath.s_int(val));
                  break;
@@ -717,6 +831,43 @@ public class GenCharClass extends StdCharClass
                     securityGroupLevels[num]=new Integer(CMath.s_int(val));
                 securityGroupCache.clear();
                  break;
+        case 46: if(CMath.s_int(val)==0)
+                     requiredWeaponMaterials=null;
+                 else
+                     requiredWeaponMaterials=new HashSet();
+                 break;
+        case 47:
+        {
+                 Vector V=CMParms.parseCommas(val,true);
+                 if(V.size()>0)
+                 {
+                     requiredWeaponMaterials=new HashSet();
+                     for(int v=0;v<V.size();v++)
+                         requiredWeaponMaterials.add(new Integer(CMath.s_int((String)V.elementAt(v))));
+                 }
+                 else
+                     requiredWeaponMaterials=null;
+                 break;
+        }
+        case 48: requiredArmorSourceMinor=CMath.s_int(val); break;
+        case 49:
+        {
+            statBuddy=CMClass.getCharClass(val);
+            try{
+                if(statBuddy==null)
+                    statBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val);
+            }catch(Exception e){}
+            break;
+        }
+        case 50:
+        {
+            eventBuddy=CMClass.getCharClass(val);
+            try{
+                if(eventBuddy==null)
+                    eventBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val);
+            }catch(Exception e){}
+            break;
+        }
 		}
 	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)

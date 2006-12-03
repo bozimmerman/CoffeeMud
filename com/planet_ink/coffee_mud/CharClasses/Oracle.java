@@ -210,7 +210,7 @@ public class Oracle extends Cleric
 			{
 				CharClass C=CMClass.randomCharClass();
 				if((C!=null)
-				&&(C!=this)
+				&&(!C.ID().equals(ID()))
 				&&(!C.ID().equalsIgnoreCase("Archon"))
 				&&(mob.charStats().getClassLevel(C)<0))
 				{

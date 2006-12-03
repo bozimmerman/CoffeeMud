@@ -159,7 +159,7 @@ public class Artisan extends StdCharClass
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
-			if(mob.charStats().getCurrentClass()==this)
+			if(mob.charStats().getCurrentClass().ID().equals(ID()))
 			{
 				int exp=0;
 				for(int a=0;a<mob.numAllEffects();a++)

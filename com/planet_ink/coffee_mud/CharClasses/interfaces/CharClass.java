@@ -121,11 +121,20 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * Returns whether this class is fully defined using the setParms
 	 * method, as opposed to being defined by its Java code.
 	 * @see CharClass#classParms()
+     * @see CharClass#makeGenCharClass()
 	 * @see CharClass#setClassParms(String)
 	 * @return whether this class is defined fully by parameters
 	 */
 	public boolean isGeneric();
 
+    /**
+     * Converts this class into a generic one, if it is not already.
+     * If it is generic, this method returns itself.  Otherwise, the
+     * standard char class is converted to a generic one and returned.
+     * @see CharClass#isGeneric()
+     * @return a generic version of this class.
+     */
+    public CharClass makeGenCharClass();
 	/**
 	 * Returns a Vector of security flag strings granted to all mobs/players
 	 * who are this class, and the given class level or lower.

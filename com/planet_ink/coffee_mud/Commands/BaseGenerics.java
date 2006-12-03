@@ -3934,6 +3934,62 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
+    
+    protected void genWeaponMaterials(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        Vector set=CMParms.parseCommas(E.getStat(Field),true);
+        StringBuffer str=new StringBuffer("");
+        for(int v=0;v<set.size();v++)
+            str.append(" "+CMLib.materials().getMaterialDesc(CMath.s_int((String)set.elementAt(v))));
+    
+        mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        String newName="?";
+        boolean setChanged=false;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        {
+            newName=mob.session().prompt("Enter a material type to add/remove to requirements (?)\n\r:","");
+            if(newName.equals("?"))
+                mob.tell(CMParms.toStringList(RawMaterial.MATERIAL_DESCS));
+            else
+            if(newName.length()>0)
+            {
+                int foundCode=CMLib.materials().getMaterialCode(newName,true);
+                if(foundCode<0) foundCode=CMLib.materials().getMaterialCode(newName,false);
+                if(foundCode<0)
+                {
+                    mob.tell("'"+newName+"' is not recognized.  Try '?'.");
+                    newName="?";
+                }
+                else
+                {
+                    int x=set.indexOf(""+foundCode);
+                    if(x>=0)
+                    {
+                        setChanged=true;
+                        set.removeElementAt(x);
+                        mob.tell("'"+newName+"' removed.");
+                        newName="?";
+                    }
+                    else
+                    {
+                        set.addElement(""+foundCode);
+                        setChanged=true;
+                        mob.tell("'"+newName+"' added.");
+                        newName="?";
+                    }
+                }
+            }
+        }
+        if(setChanged)
+            E.setStat(Field,CMParms.toStringList(set));
+        else
+            mob.tell("(no change)");
+    }
+    
+    
 	protected void genInt(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
@@ -4241,6 +4297,42 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
+    
+    protected void genClassBuddy(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        mob.tell(showNumber+". "+prompt+": '"+E.getStat(flag)+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        String newName=mob.session().prompt("Enter a new one\n\r:","");
+        if(newName.length()>0)
+        {
+            CharClass C2=CMClass.getCharClass(newName);
+            if(C2==null) C2=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",newName);
+            if((C2!=null)&&(C2.isGeneric()))
+                C2=null;
+            if(C2==null)
+            {
+                StringBuffer str=new StringBuffer("That char class name is invalid or is generic.  Valid char classes include: ");
+                for(Enumeration r=CMClass.charClasses();r.hasMoreElements();)
+                {
+                    CharClass C=(CharClass)r.nextElement();
+                    if(!C.isGeneric())
+                        str.append(C.ID()+", ");
+                }
+                mob.tell(str.toString().substring(0,str.length()-2)+".");
+            }
+            else
+            if(CMClass.getCharClass(newName)==C2)
+                E.setStat(flag,C2.ID());
+            else
+                E.setStat(flag,C2.getClass().getName());
+        }
+        else
+            mob.tell("(no change)");
+    }
+    
+    
 	protected void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4683,18 +4775,33 @@ public class BaseGenerics extends StdCommand
 		{
 			StringBuffer parts=new StringBuffer("");
 			int numResources=CMath.s_int(E.getStat("NUMRSC"));
-			Vector V=new Vector();
-			for(int v=0;v<numResources;v++)
+			DVector DV=new DVector(2);
+			for(int r=0;r<numResources;r++)
 			{
-				Item I=CMClass.getItem(E.getStat("GETRSCID"+v));
+				Item I=CMClass.getItem(E.getStat("GETRSCID"+r));
 				if(I!=null)
 				{
-					I.setMiscText(E.getStat("GETRSCPARM"+v));
+					I.setMiscText(E.getStat("GETRSCPARM"+r));
 					I.recoverEnvStats();
-					parts.append(I.name()+", ");
-					V.addElement(I);
+                    boolean done=false;
+                    for(int v=0;v<DV.size();v++)
+                        if(I.sameAs((Environmental)DV.elementAt(v,1)))
+                        { DV.setElementAt(v,2,new Integer(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
+                    if(!done)
+                        DV.addElement(I,new Integer(1));
 				}
+                else
+                    parts.append("Unknown: "+E.getStat("GETRSCID"+r)+", ");
 			}
+            for(int v=0;v<DV.size();v++)
+            {
+                Item I=(Item)DV.elementAt(v,1);
+                int i=((Integer)DV.elementAt(v,2)).intValue();
+                if(i<2)
+                    parts.append(I.name()+", ");
+                else
+                    parts.append(I.name()+" ("+i+"), ");
+            }
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
 			mob.tell(showNumber+". Resources: "+parts.toString()+".");
@@ -4703,8 +4810,8 @@ public class BaseGenerics extends StdCommand
 			if(newName.length()>0)
 			{
 				int partNum=-1;
-				for(int i=0;i<V.size();i++)
-					if(CMLib.english().containsString(((Item)V.elementAt(i)).name(),newName))
+				for(int i=0;i<DV.size();i++)
+					if(CMLib.english().containsString(((Item)DV.elementAt(i,1)).name(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4717,7 +4824,12 @@ public class BaseGenerics extends StdCommand
 						if(I!=null)
 						{
 							I=(Item)I.copyOf();
-							V.addElement(I);
+                            boolean done=false;
+                            for(int v=0;v<DV.size();v++)
+                                if(I.sameAs((Environmental)DV.elementAt(v,1)))
+                                { DV.setElementAt(v,2,new Integer(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
+                            if(!done)
+                                DV.addElement(I,new Integer(1));
 							mob.tell(I.name()+" added.");
 							updateList=true;
 						}
@@ -4726,18 +4838,39 @@ public class BaseGenerics extends StdCommand
 				}
 				else
 				{
-					Item I=(Item)V.elementAt(partNum);
-					V.removeElementAt(partNum);
+					Item I=(Item)DV.elementAt(partNum,1);
+                    int i=((Integer)DV.elementAt(partNum,2)).intValue();
+                    if(i<2)
+    					DV.removeElementAt(partNum);
+                    else
+                        DV.setElementAt(partNum,2,new Integer(i-1));
 					mob.tell(I.name()+" removed.");
 					updateList=true;
 				}
 				if(updateList)
 				{
-					E.setStat("NUMRSC","");
-					for(int i=0;i<V.size();i++)
-						E.setStat("GETRSCID"+i,((Item)V.elementAt(i)).ID());
-					for(int i=0;i<V.size();i++)
-						E.setStat("GETRSCPARM"+i,((Item)V.elementAt(i)).text());
+                    int dex=0;
+                    for(int i=0;i<DV.size();i++)
+                        dex+=((Integer)DV.elementAt(i,2)).intValue();
+					E.setStat("NUMRSC",""+dex);
+                    dex=0;
+                    Item I=null;
+                    Integer N=null;
+					for(int i=0;i<DV.size();i++)
+                    {
+                        I=(Item)DV.elementAt(i,1);
+                        N=(Integer)DV.elementAt(i,2);
+                        for(int n=0;n<N.intValue();n++)
+    						E.setStat("GETRSCID"+(dex++),I.ID());
+                    }
+                    dex=0;
+					for(int i=0;i<DV.size();i++)
+                    {
+                        I=(Item)DV.elementAt(i,1);
+                        N=(Integer)DV.elementAt(i,2);
+                        for(int n=0;n<N.intValue();n++)
+                            E.setStat("GETRSCPARM"+(dex++),I.text());
+                    }
 				}
 			}
 			else
@@ -5199,92 +5332,215 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+    
+    protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
+    throws IOException
+    {
+        
+        Integer level=null;
+        if(origLevelIndex>=0)
+        {
+            if(mob.session().confirm("Enter Y to DELETE, or N to modify (y/N)?","N"))
+            {
+                DVector set=(DVector)sets.elementAt(origLevelIndex,2);
+                set.removeElementAt(origAbleIndex);
+                return null;
+            }
+            level=(Integer)sets.elementAt(origLevelIndex,1);
+        }
+        else
+            level=new Integer(1);
+        level=new Integer(CMath.s_int(mob.session().prompt("Enter the level of this skill ("+level+"): ",""+level)));
+        if(level.intValue()<=0)
+        {
+            mob.tell("Aborted.");
+            return null;
+        }
+        Integer prof=null;
+        Boolean secret=null;
+        Boolean gained=null;
+        String parms="";
+        if(origLevelIndex<0)
+        {
+            prof=new Integer(0);
+            secret=new Boolean(false);
+            gained=new Boolean(false);
+            parms="";
+        }
+        else
+        {
+            DVector set=(DVector)sets.elementAt(origLevelIndex,2);
+            gained=(Boolean)set.elementAt(origAbleIndex,2);
+            prof=(Integer)set.elementAt(origAbleIndex,3);
+            secret=(Boolean)set.elementAt(origAbleIndex,4);
+            parms=(String)set.elementAt(origAbleIndex,5);
+            set.removeElementAt(origAbleIndex);
+            origAbleIndex=-1;
+        }
+        
+        int newlevelIndex=sets.indexOf(level);
+        DVector levelSet=null;
+        if(newlevelIndex<0)
+        {
+            newlevelIndex=sets.size();
+            levelSet=new DVector(5);
+            sets.addElement(level,levelSet);
+        }
+        else
+            levelSet=(DVector)sets.elementAt(newlevelIndex,2);
+        prof=new Integer(CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+prof.toString()+"): ",prof.toString())));
+        gained=new Boolean(mob.session().confirm("Is this skill automatically gained (Y/N)?",""+gained.toString()));
+        secret=new Boolean(mob.session().confirm("Is this skill secret (N/y)?",secret.toString()));
+        parms=mob.session().prompt("Enter any properties ("+parms+"): ",parms);
+        levelSet.addElement(ableID,gained,prof,secret,parms);
+        return sets;
+    }
+    
 	protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
+        if((showFlag!=showNumber)&&(showFlag>-999))
+        {
+            mob.tell(showNumber+". Class Abilities: [...].");
+            return;
+        }
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
 		{
 			StringBuffer parts=new StringBuffer("");
-			int numResources=CMath.s_int(E.getStat("NUMCABLE"));
-			Vector ables=new Vector();
-			Vector data=new Vector();
-			for(int v=0;v<numResources;v++)
+			int numAbles=CMath.s_int(E.getStat("NUMCABLE"));
+            DVector levelSets=new DVector(2);
+            int maxAbledLevel=Integer.MIN_VALUE;
+			for(int v=0;v<numAbles;v++)
 			{
 				Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETCABLELVL"+v)+"/"+E.getStat("GETCABLEGAIN"+v)+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
-					ables.addElement(A);
-					data.addElement(A.ID()+";"+E.getStat("GETCABLELVL"+v)+";"+E.getStat("GETCABLEPROF"+v)+";"+E.getStat("GETCABLEGAIN"+v)+";"+E.getStat("GETCABLESECR"+v)+";"+E.getStat("GETCABLEPARM"+v));
+                    Boolean gain=new Boolean(CMath.s_bool(E.getStat("GETCABLEGAIN"+v)));
+                    Integer defProf=new Integer(CMath.s_int(E.getStat("GETCABLEPROF"+v)));
+                    Integer lvl=new Integer(CMath.s_int(E.getStat("GETCABLELVL"+v)));
+                    Boolean secret=new Boolean(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
+                    String parm=E.getStat("GETCABLEPARM"+v);
+                    int lvlIndex=levelSets.indexOf(lvl);
+                    DVector set=null;
+                    if(lvlIndex<0)
+                    {
+                        set=new DVector(5);
+                        levelSets.addElement(lvl,set);
+                        if(lvl.intValue()>maxAbledLevel)
+                            maxAbledLevel=lvl.intValue();
+                    }
+                    else
+                        set=(DVector)levelSets.elementAt(lvlIndex,2);
+                    set.addElement(A.ID(),gain,defProf,secret,parm);
 				}
 			}
-			if(parts.toString().endsWith(", "))
-			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Class Abilities: "+parts.toString()+".");
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+            String header=showNumber+". Class Abilities: ";
+            String spaces=CMStrings.repeat(" ",2+(""+showNumber).length());
+            parts.append("\n\r");
+            parts.append(spaces+CMStrings.padRight("Lvl",3)+" "
+                               +CMStrings.padRight("Skill",25)+" "
+                               +CMStrings.padRight("Proff",5)+" "
+                               +CMStrings.padRight("Gain",5)+" "
+                               +CMStrings.padRight("Secret",6)+" "
+                               +CMStrings.padRight("Parm",20)+"\n\r"
+                               );
+            for(int i=0;i<=maxAbledLevel;i++)
+            {
+                int index=levelSets.indexOf(new Integer(i));
+                if(index<0) continue;
+                DVector set=(DVector)levelSets.elementAt(index,2);
+                for(int s=0;s<set.size();s++)
+                {
+                    String ID=(String)set.elementAt(s,1);
+                    Boolean gain=(Boolean)set.elementAt(s,2);
+                    Integer defProf=(Integer)set.elementAt(s,3);
+                    Boolean secret=(Boolean)set.elementAt(s,4);
+                    String parm=(String)set.elementAt(s,5);
+                    parts.append(spaces+CMStrings.padRight(""+i,3)+" "
+                                        +CMStrings.padRight(""+ID,25)+" "
+                                        +CMStrings.padRight(defProf.toString(),5)+" "
+                                        +CMStrings.padRight(gain.toString(),5)+" "
+                                        +CMStrings.padRight(secret.toString(),6)+" "
+                                        +CMStrings.padRight(parm,20)+"\n\r"
+                                        );
+                }
+            }
+                
+			mob.session().wraplessPrintln(header+parts.toString());
 			String newName=mob.session().prompt("Enter an ability name to add or remove (?)\n\r:","");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
-				int partNum=-1;
-				for(int i=0;i<ables.size();i++)
-					if(CMLib.english().containsString(((Ability)ables.elementAt(i)).ID(),newName))
-					{ partNum=i; break;}
+				int lvlIndex=-1;
+                int ableIndex=-1;
+                DVector myLevelSet=null;
+                for(int s=0;s<levelSets.size();s++)
+                {
+                    DVector lvls=(DVector)levelSets.elementAt(s,2);
+                    for(int l=0;l<lvls.size();l++)
+                        if(CMLib.english().containsString(((String)lvls.elementAt(l,1)),newName))
+                        {
+                            lvlIndex=s;
+                            ableIndex=l;
+                            myLevelSet=lvls;
+                            break;
+                        }
+                    if(lvlIndex>=0) break;
+                }
 				boolean updateList=false;
-				if(partNum<0)
+				if(ableIndex<0)
 				{
 					Ability A=CMClass.getAbility(newName);
 					if(A==null)
 						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
 					else
 					{
-						StringBuffer str=new StringBuffer(A.ID()+";");
-						String level=mob.session().prompt("Enter the level of this skill (1): ","1");
-						str.append((""+CMath.s_int(level))+";");
-						String prof=mob.session().prompt("Enter the (default) proficiency level (0): ","0");
-						str.append((""+CMath.s_int(prof))+";");
-						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
-							str.append("true;");
-						else
-							str.append("false;");
-						if(mob.session().confirm("Is this skill secret (N/y)?","N"))
-							str.append("true;");
-						else
-							str.append("false;");
-						String parm=mob.session().prompt("Enter any properties (): ","");
-						str.append(parm);
-						data.addElement(str.toString());
-						ables.addElement(A);
-						mob.tell(A.name()+" added.");
-						updateList=true;
+                        // add new one here
+                        if(genClassAbleMod(mob,levelSets,A.ID(),-1,-1)!=null)
+                        {
+    						mob.tell(A.ID()+" added.");
+    						updateList=true;
+                            numAbles++;
+                        }
 					}
 				}
 				else
 				{
-					Ability A=(Ability)ables.elementAt(partNum);
-					ables.removeElementAt(partNum);
-					data.removeElementAt(partNum);
+                    String aID=(String)myLevelSet.elementAt(ableIndex,1);
+                    if(genClassAbleMod(mob,levelSets,aID,lvlIndex,ableIndex)!=null)
+                        mob.tell(aID+" modified.");
+                    else
+                    {
+                        mob.tell(aID+" removed.");
+                        numAbles--;
+                    }
+                    
 					updateList=true;
-					mob.tell(A.name()+" removed.");
 				}
 				if(updateList)
 				{
-					if(data.size()>0)
-						E.setStat("NUMCABLE",""+data.size());
+					if(numAbles>0)
+						E.setStat("NUMCABLE",""+numAbles);
 					else
 						E.setStat("NUMCABLE","");
-					for(int i=0;i<data.size();i++)
-					{
-						Vector V=CMParms.parseSemicolons((String)data.elementAt(i),false);
-						E.setStat("GETCABLE"+i,((String)V.elementAt(0)));
-						E.setStat("GETCABLELVL"+i,((String)V.elementAt(1)));
-						E.setStat("GETCABLEPROF"+i,((String)V.elementAt(2)));
-						E.setStat("GETCABLEGAIN"+i,((String)V.elementAt(3)));
-						E.setStat("GETCABLESECR"+i,((String)V.elementAt(4)));
-						E.setStat("GETCABLEPARM"+i,((String)V.elementAt(5)));
+                    int dex=0;
+                    for(int s=0;s<levelSets.size();s++)
+                    {
+                        Integer lvl=(Integer)levelSets.elementAt(s,1);
+                        DVector lvls=(DVector)levelSets.elementAt(s,2);
+                        for(int l=0;l<lvls.size();l++)
+                        {
+    						E.setStat("GETCABLE"+dex,lvls.elementAt(l,1).toString());
+    						E.setStat("GETCABLELVL"+dex,lvl.toString());
+                            E.setStat("GETCABLEGAIN"+dex,lvls.elementAt(l,2).toString());
+    						E.setStat("GETCABLEPROF"+dex,lvls.elementAt(l,3).toString());
+    						E.setStat("GETCABLESECR"+dex,lvls.elementAt(l,4).toString());
+    						E.setStat("GETCABLEPARM"+dex,lvls.elementAt(l,5).toString());
+                            dex++;
+                        }
 					}
 				}
 			}
@@ -5391,16 +5647,16 @@ public class BaseGenerics extends StdCommand
             genInt(mob,me,++showNumber,showFlag,"Number of Class Names: ","NUMNAME");
             int numNames=CMath.s_int(me.getStat("NUMNAME"));
             if(numNames<=1)
-    			genText(mob,me,++showNumber,showFlag,"Name","NAME0");
+    			genText(mob,me,++showNumber,showFlag,"Class Name","NAME0");
             else
             for(int i=0;i<numNames;i++)
             {
-                genText(mob,me,++showNumber,showFlag,"Name #"+i+" class level: ","NAME"+i);
+                genText(mob,me,++showNumber,showFlag,"Class Name #"+i+": ","NAME"+i);
                 if(i>0)
                 while(!mob.session().killFlag())
                 {
                     int oldNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
-                    genInt(mob,me,++showNumber,showFlag,"Name #"+i+" class level: ","NAMELEVEL"+i);
+                    genInt(mob,me,++showNumber,showFlag,"Class Name #"+i+" class level: ","NAMELEVEL"+i);
                     int previousNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+(i-1)));
                     int newNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
                     if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))
@@ -5413,7 +5669,6 @@ public class BaseGenerics extends StdCommand
                         break;
                 }
             }
-		    genText(mob,me,++showNumber,showFlag,"Name","NAME");
 			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
             genClassAvailability(mob,me,++showNumber,showFlag);
 			genInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");
@@ -5430,6 +5685,11 @@ public class BaseGenerics extends StdCommand
 			genInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
 			genInt(mob,me,++showNumber,showFlag,"Moves/Level","LVLMOVE");
 			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
+            
+            int armorMinorCode=CMath.s_int(me.getStat("ARMORMINOR"));
+            boolean newSpells=CMLib.english().promptBool(mob,armorMinorCode>0,++showNumber,showFlag,"Armor restricts only spells");
+            me.setStat("ARMORMINOR",""+(newSpells?CMMsg.TYP_CAST_SPELL:-1));
+            
 			genText(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
 			genText(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
 			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
@@ -5440,7 +5700,10 @@ public class BaseGenerics extends StdCommand
 			genAState(mob,me,"STARTASTATE","New Player CharState Adj.",++showNumber,showFlag);
 			genClassFlags(mob,me,++showNumber,showFlag);
 			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
+            genWeaponMaterials(mob,me,++showNumber,showFlag,"Weapon Materials","NUMWMAT","GETWMAT");
 			genOutfit(mob,me,++showNumber,showFlag);
+            genClassBuddy(mob,me,++showNumber,showFlag,"Stat-Modifying Class","STATCLASS");
+            genClassBuddy(mob,me,++showNumber,showFlag,"Special Events Class","EVENTCLASS");
 			genClassAbilities(mob,me,++showNumber,showFlag);
             genInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMSSET");
             int numGroups=CMath.s_int(me.getStat("NUMSSET"));

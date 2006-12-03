@@ -577,12 +577,7 @@ public class StdRace implements Race
 		GR.setStat("AGING",CMParms.toStringList(getAgingChart()));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 				GR.bodyMask()[i]=bodyMask()[i];
-		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-        RS.setAllValues(0);
-        MOB fakeMOB=CMClass.getMOB("StdMOB");
-		affectEnvStats(fakeMOB,RS);
-		RS.setRejuv(0);
-
+        
 		Weapon W=myNaturalWeapon();
 		Weapon NW=CMClass.getWeapon("Natural");
 		if((W!=null)&&(W!=NW))
@@ -604,7 +599,13 @@ public class StdRace implements Race
 		}
 		GR.setStat("WEAPONRACE",getClass().getName());
 		
+        EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        RS.setAllValues(0);
+        MOB fakeMOB=CMClass.getMOB("StdMOB");
+        affectEnvStats(fakeMOB,RS);
+        RS.setRejuv(0);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+        
         CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
         S1.setAllValues(0);
         CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
@@ -644,9 +645,9 @@ public class StdRace implements Race
 		affectCharState(fakeMOB,CS);
 		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-        CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
-		affectCharState(fakeMOB,STARTCS);
-		GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
+        //CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
+		//startRacing(fakeMOB,falsed);
+		//GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
 
 		GR.setStat("DISFLAGS",""+((classless()?Race.GENFLAG_NOCLASS:0)
 								|(leveless()?Race.GENFLAG_NOLEVELS:0)
@@ -654,61 +655,64 @@ public class StdRace implements Race
 								|(fertile()?0:Race.GENFLAG_NOFERTILE)
 								|(expless()?Race.GENFLAG_NOEXP:0)));
 
-		GR.setStat("NUMRSC","");
-		for(int i=0;i<myResources().size();i++)
-			GR.setStat("GETRSCID"+i,((Item)myResources().elementAt(i)).ID());
-		for(int i=0;i<myResources().size();i++)
-			GR.setStat("GETRSCPARM"+i,((Item)myResources().elementAt(i)).text());
+        Vector rscs=myResources();
+        if(rscs==null)rscs=new Vector();
+        String txt=null;
+        Item I=null;
+        GR.setStat("NUMRSC",""+rscs.size());
+		for(int i=0;i<rscs.size();i++)
+        {
+            I=(Item)rscs.elementAt(i);
+            I.recoverEnvStats();
+            txt=I.text();
+            GR.setStat("GETRSCID"+i,I.ID());
+			GR.setStat("GETRSCPARM"+i,txt);
+        }
 
 		Vector outfit=outfit(null);
-		GR.setStat("NUMOFT","");
-		if((outfit!=null)&&(outfit.size()>0))
-		{
-			GR.setStat("NUMOFT",""+outfit.size());
-			for(int i=0;i<outfit.size();i++)
-				GR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
-			for(int i=0;i<outfit.size();i++)
-				GR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
-		}
+        if(outfit==null) outfit=new Vector();
+		GR.setStat("NUMOFT",""+outfit.size());
+		for(int i=0;i<outfit.size();i++)
+			GR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+		for(int i=0;i<outfit.size();i++)
+			GR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
 
-		if((racialAbilityNames()==null)||(racialAbilityNames().length==0))
-			GR.setStat("NUMRABLE","");
-		else
-		{
-			GR.setStat("NUMRABLE",""+racialAbilityNames().length);
-			for(int i=0;i<racialAbilityNames().length;i++)
-			{
-				GR.setStat("GETRABLE"+i,racialAbilityNames()[i]);
-				GR.setStat("GETRABLELVL"+i,""+racialAbilityLevels()[i]);
-				GR.setStat("GETRABLEQUAL"+i,""+racialAbilityQuals()[i]);
-				GR.setStat("GETRABLEPROF"+i,""+racialAbilityProficiencies()[i]);
-			}
-		}
+        GR.setStat("NUMRABLE","");
+        if(racialAbilityNames()!=null)
+        {
+    		GR.setStat("NUMRABLE",""+racialAbilityNames().length);
+    		for(int i=0;i<racialAbilityNames().length;i++)
+    		{
+    			GR.setStat("GETRABLE"+i,racialAbilityNames()[i]);
+    			GR.setStat("GETRABLELVL"+i,""+racialAbilityLevels()[i]);
+    			GR.setStat("GETRABLEQUAL"+i,""+racialAbilityQuals()[i]);
+    			GR.setStat("GETRABLEPROF"+i,""+racialAbilityProficiencies()[i]);
+    		}
+        }
 		
-		if((culturalAbilityNames()==null)||(culturalAbilityNames().length==0))
-			GR.setStat("NUMCABLE","");
-		else
-		{
-			GR.setStat("NUMCABLE",""+culturalAbilityNames().length);
-			for(int i=0;i<culturalAbilityNames().length;i++)
-			{
-				GR.setStat("GETCABLE"+i,culturalAbilityNames()[i]);
-				GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
-			}
-		}
+        GR.setStat("NUMCABLE","");
+        if(culturalAbilityNames()!=null)
+        {
+            GR.setStat("NUMCABLE",""+culturalAbilityNames().length);
+    		for(int i=0;i<culturalAbilityNames().length;i++)
+    		{
+    			GR.setStat("GETCABLE"+i,culturalAbilityNames()[i]);
+    			GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
+    		}
+        }
 		
-		if((racialEffectNames()==null)||(racialEffectNames().length==0))
-			GR.setStat("NUMREFF","");
-		else
-		{
-			GR.setStat("NUMREFF",""+racialAbilityNames().length);
-			for(int i=0;i<racialEffectNames().length;i++)
-			{
-				GR.setStat("GETREFF"+i,racialEffectNames()[i]);
-				GR.setStat("GETREFFLVL"+i,""+racialEffectLevels()[i]);
-				GR.setStat("GETREFFPARM"+i,racialEffectParms()[i]);
-			}
-		}
+		GR.setStat("NUMREFF","");
+        if(racialEffectNames()!=null)
+        {
+            GR.setStat("NUMREFF",""+racialEffectNames().length);
+    		for(int i=0;i<racialEffectNames().length;i++)
+    		{
+    			GR.setStat("GETREFF"+i,racialEffectNames()[i]);
+    			GR.setStat("GETREFFLVL"+i,""+racialEffectLevels()[i]);
+    			GR.setStat("GETREFFPARM"+i,racialEffectParms()[i]);
+    		}
+        }
+        fakeMOB.destroy();
 		return GR;
 	}
 
@@ -875,7 +879,7 @@ public class StdRace implements Race
 		GR.setStat("DISFLAGS",""+(CMath.s_int(race1.getStat("DISFLAGS"))|CMath.s_int(race2.getStat("DISFLAGS"))));
 		
 		Vector rscs=nonHuman.myResources();
-		GR.setStat("NUMRSC",(rscs.size()>0)?"":""+rscs.size());
+		GR.setStat("NUMRSC",""+rscs.size());
 		for(int i=0;i<rscs.size();i++)
 			GR.setStat("GETRSCID"+i,((Item)rscs.elementAt(i)).ID());
 		for(int i=0;i<rscs.size();i++)

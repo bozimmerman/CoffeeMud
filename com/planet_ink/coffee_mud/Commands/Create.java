@@ -636,14 +636,30 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
+        CharClass CR=null;
+        if((C!=null)&&(!C.isGeneric()))
+        {
+            if((mob.session()==null)
+            ||(!mob.session().confirm("Currently, "+C.ID()+" is a standard character class.  This will convert the " +
+                                      "class to a GenCharClass so that you can modify it.  Be warned that special " +
+                                      "functionality of the class may be lost by doing this.  You can undo this "+
+                                      "action by destroying the same class ID after creating it.  Do you wish to " +
+                                      "continue (y/N)?", "N")))
+                return;
+            CR=C.makeGenCharClass();
+            classD=CR.ID();
+        }
 		if(classD.indexOf(" ")>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid class id, because it contains a space.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
-		CR.setClassParms("<CCLASS><ID>"+CMStrings.capitalizeAndLower(classD)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classD)+"</NAME></CCLASS>");
+        if(CR==null)
+        {
+            CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
+    		CR.setClassParms("<CCLASS><ID>"+CMStrings.capitalizeAndLower(classD)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classD)+"</NAME></CCLASS>");
+        }
 		CMClass.addCharClass(CR);
 		modifyGenClass(mob,CR);
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
