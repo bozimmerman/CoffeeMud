@@ -82,11 +82,11 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.text();
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		int it=0;
-		while(it<newMOB.location().numItems())
+		while(it<R.numItems())
 		{
-			Item item=newMOB.location().fetchItem(it);
+			Item item=R.fetchItem(it);
 			if((item!=null)&&(item.container()==body))
 			{
 				CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);

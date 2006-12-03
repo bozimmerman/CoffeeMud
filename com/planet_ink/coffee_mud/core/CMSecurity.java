@@ -200,6 +200,48 @@ public class CMSecurity
                 }
             }
         }
+        String dir=null;
+        for(int d=0;d<DIRSV.size();d++)
+        {
+            dir=(String)DIRSV.elementAt(d);
+            if(dir.startsWith("//"))
+            {
+                dir=dir.substring(2);
+                String path="";
+                String subPath=null;
+                while(dir.startsWith("/")) dir=dir.substring(1);
+                while(dir.length()>0)
+                {
+                    while(dir.startsWith("/")) dir=dir.substring(1);
+                    int x=dir.indexOf('/');
+                    subPath=dir;
+                    if(x>0)
+                    { 
+                        subPath=dir.substring(0,x).trim(); 
+                        dir=dir.substring(x+1).trim();
+                    }
+                    else
+                    {
+                        subPath=dir.trim();
+                        dir="";
+                    }
+                    CMFile F=new CMFile(path,null,true,false);
+                    if((F.exists())&&(F.canRead())&&(F.isDirectory()))
+                    {
+                        String[] files=F.list();
+                        for(int f=0;f<files.length;f++)
+                            if(files[f].equalsIgnoreCase(subPath))
+                            {
+                                if(path.length()>0)
+                                    path+="/";
+                                path+=files[f];
+                                break;
+                            }
+                    }
+                }
+                DIRSV.setElementAt("//"+path,d);
+            }
+        }
         return DIRSV;
     }
     

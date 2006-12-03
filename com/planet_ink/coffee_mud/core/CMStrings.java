@@ -254,6 +254,7 @@ public class CMStrings
     
     public static String removeColors(String s)
     {
+        if(s==null) return "";
         StringBuffer str=new StringBuffer(s);
         int colorStart=-1;
         for(int i=0;i<str.length();i++)
@@ -320,6 +321,7 @@ public class CMStrings
     
     public static int lengthMinusColors(String thisStr)
     {
+        if(thisStr==null) return 0;
         int size=0;
         for(int i=0;i<thisStr.length();i++)
         {

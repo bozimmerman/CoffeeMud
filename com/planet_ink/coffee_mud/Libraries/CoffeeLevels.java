@@ -363,6 +363,30 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         mob.charStats().getMyRace().level(mob,newAbilityIDs);
 
 	}
+    
+    public int adjustedExperience(MOB mob, MOB victim, int amount)
+    {
+        amount=mob.charStats().getCurrentClass().adjustExperienceGain(mob,victim,amount);
+        amount=mob.charStats().getMyRace().adjustExperienceGain(mob,victim,amount);
+        
+        if(victim!=null)
+        {
+            int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+            int levelDiff=victim.envStats().level()-mob.envStats().level();
+
+            if(levelDiff<(-levelLimit) )
+                amount=0;
+            else
+            if(levelLimit>0)
+            {
+                double levelFactor=CMath.div(levelDiff,levelLimit);
+                if(levelFactor>new Integer(levelLimit).doubleValue())
+                    levelFactor=new Integer(levelLimit).doubleValue();
+                amount=(int)Math.round(new Integer(amount).doubleValue()+CMath.mul(levelFactor,amount));
+            }
+        }
+        return amount;
+    }
 
 	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
 	{
@@ -374,26 +398,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         	String vicName=(victim!=null)?victim.Name():"null";
 	    	Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
 		}
-		
-		amount=mob.charStats().getCurrentClass().adjustExperienceGain(mob,victim,amount);
-		amount=mob.charStats().getMyRace().adjustExperienceGain(mob,victim,amount);
-		
-		if(victim!=null)
-		{
-			int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-			int levelDiff=victim.envStats().level()-mob.envStats().level();
 
-			if(levelDiff<(-levelLimit) )
-				amount=0;
-			else
-			if(levelLimit>0)
-			{
-				double levelFactor=CMath.div(levelDiff,levelLimit);
-				if(levelFactor>new Integer(levelLimit).doubleValue())
-					levelFactor=new Integer(levelLimit).doubleValue();
-				amount=(int)Math.round(new Integer(amount).doubleValue()+CMath.mul(levelFactor,amount));
-			}
-		}
+        amount=adjustedExperience(mob,victim,amount);
+		
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
 			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());

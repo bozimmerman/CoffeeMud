@@ -701,11 +701,13 @@ public class Conquerable extends Arrest
     			Clan C=CMLib.clans().getClan(holdingClan);
     			if(C.getTaxes()!=0)
     			{
-    				int value=(int)Math.round(CMath.mul(msg.value(),C.getTaxes()));
-    				if(value>0)
+                    MOB target=(msg.target() instanceof MOB)?(MOB)msg.target():null;
+                    int lossAmt=(int)Math.round(CMath.mul(msg.value(),C.getTaxes()));
+    				int clanAmt=(int)Math.round(CMath.mul(CMLib.leveler().adjustedExperience(msg.source(),target,msg.value()),C.getTaxes()));
+    				if(lossAmt>0)
     				{
-    					msg.setValue(msg.value()-value);
-    					C.setExp(C.getExp()+value);
+    					msg.setValue(msg.value()-lossAmt);
+                        C.adjExp(clanAmt);
     					C.update();
     				}
     			}
@@ -1016,8 +1018,8 @@ public class Conquerable extends Arrest
             }
             else
 			if((holdingClan.length()>0)
-			&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 			&&(msg.source().isMonster())
+            &&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 			&&(msg.source().getStartRoom()!=null)
 			&&(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source()))
