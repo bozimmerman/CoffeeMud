@@ -53,7 +53,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
     private boolean stoppingQuest=false;
-    protected boolean isSpawnable=false;
+    protected int spawn=SPAWN_NO;
     private QuestState questState=new QuestState();
     private boolean runningCopy=false;
 
@@ -92,7 +92,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 7: return ""+startDate();
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
-        case 10: return ""+isSpawnable();
+        case 10: return SPAWN_DESCS[getSpawn()];
 		}
 		return questState.getStat(named);
 	}
@@ -114,8 +114,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public void setCopy(boolean truefalse){runningCopy=truefalse;}
     public boolean isCopy(){return runningCopy;}
 
-    public void setSpawnable(boolean truefalse){this.isSpawnable=truefalse;}
-    public boolean isSpawnable(){return isSpawnable;}
+    public void setSpawn(int spawnFlag){spawn=(spawnFlag<0)?0:spawnFlag;}
+    public int getSpawn(){return spawn;}
 
 	public int minPlayers(){return minPlayers;}
 	public void setMinPlayers(int players){minPlayers=players;}
@@ -135,11 +135,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         minWait=-1;
         maxWait=-1;
         minPlayers=-1;
-        isSpawnable=false;
+        spawn=SPAWN_NO;
         playerMask="";
         runLevel=-1;
         setVars(parseScripts(parm,new Vector(),new Vector()),0);
-        if(isCopy()) isSpawnable=false;
+        if(isCopy()) spawn=SPAWN_NO;
     }
     public String script(){return parms;}
 
@@ -2541,7 +2541,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running()) stopQuest();
         Vector args=new Vector();
         questState=new QuestState();
-        if((!isCopy())&&(isSpawnable()))
+        if((!isCopy())&&(getSpawn()==SPAWN_FIRST))
         {
             Quest Q2=(Quest)copyOf();
             Q2.setCopy(true);
@@ -3598,7 +3598,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 7: setStartDate(val); break;
 		case 8: setStartDate(val); break;
 		case 9: setWaitInterval(CMath.s_parseIntExpression(val)); break;
-        case 10: setSpawnable(CMath.s_bool(val)); break;
+        case 10: setSpawn(CMParms.indexOf(SPAWN_DESCS,val)); break;
 		default:
 			int x=questState.vars.indexOf(code.toUpperCase().trim());
 			if(x>=0) 
@@ -3630,7 +3630,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 7: return ""+startDate();
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
-        case 10: return ""+isSpawnable();
+        case 10: return SPAWN_DESCS[getSpawn()];
 		default: 
 			int x=questState.vars.indexOf(code.toUpperCase().trim());
 			if(x>=0) return (String)questState.vars.elementAt(x,2);

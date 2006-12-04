@@ -63,8 +63,8 @@ public interface Quest extends Tickable, CMCommon
     
     public void setCopy(boolean truefalse);
     public boolean isCopy();
-    public void setSpawnable(boolean truefalse);
-    public boolean isSpawnable();
+    public void setSpawn(int spawnFlag);
+    public int getSpawn();
     
     
 	// these refer the objects designated during the quest
@@ -122,6 +122,11 @@ public interface Quest extends Tickable, CMCommon
 	public int minsRemaining();
 	public int waitRemaining();
 	
+    public final static int SPAWN_NO=0;
+    public final static int SPAWN_FIRST=1;
+    public final static int SPAWN_ANY=2;
+    public final static String[] SPAWN_DESCS={"FALSE","TRUE","ANY"};
+    
 	public boolean isStat(String code);
 	public String getStat(String code);
 	public void setStat(String code, String val);
