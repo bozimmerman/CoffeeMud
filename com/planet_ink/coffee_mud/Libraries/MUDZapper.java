@@ -2786,6 +2786,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf;
 	}
     
+    public Room outdoorRoom(Area A)
+    {
+        Room R=null;
+        for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+        {
+            R=(Room)e.nextElement();
+            if((R.domainType()&Room.INDOORS)==0) return R;
+        }
+        return A.getRandomMetroRoom();
+    }
+    
 	public boolean maskCheck(Vector cset, Environmental E)
 	{
 		if(E==null) return true;
@@ -2794,7 +2805,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         CharStats base=null;
         MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
         Item item=(E instanceof Item)?(Item)E:null;
-        Room R=CMLib.map().roomLocation(E);
+        Room R=(E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E);
         
 		for(int c=0;c<cset.size();c++)
 		{
@@ -3631,7 +3642,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         Vector V=CMParms.parse(text.toUpperCase());
         MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
         Item item=(E instanceof Item)?(Item)E:null;
-        Room R=CMLib.map().roomLocation(E);
+        Room R=(E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E);
         String clanID=null;
         
         if(mob!=null)

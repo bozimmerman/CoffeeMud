@@ -80,15 +80,20 @@ public class StdWeapon extends StdItem implements Weapon
 		super.affectEnvStats(affected,affectableStats);
 		if(amWearingAt(Item.WORN_WIELD))
 		{
-			if(envStats().attackAdjustment()!=0)
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()+(envStats().ability()*10)));
+            if(envStats().attackAdjustment()!=0)
+    			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()));
 			if(envStats().damage()!=0)
-				affectableStats.setDamage(affectableStats.damage()+(envStats().damage()+(envStats().ability()*2)));
+				affectableStats.setDamage(affectableStats.damage()+envStats().damage());
 		}
 	}
 	public void recoverEnvStats()
 	{
 		super.recoverEnvStats();
+        if(envStats().damage()!=0)
+        {
+            envStats().setDamage(envStats().damage()+(envStats().ability()*2));
+            envStats().setAttackAdjustment(envStats().attackAdjustment()+(envStats().ability()*10));
+        }
 		if((subjectToWearAndTear())&&(usesRemaining()<100))
 			envStats().setDamage(((int)Math.round(CMath.mul(envStats().damage(),CMath.div(usesRemaining(),100)))));
 	}

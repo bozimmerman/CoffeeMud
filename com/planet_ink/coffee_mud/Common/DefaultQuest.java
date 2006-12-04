@@ -391,7 +391,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 }
                 if(cmd.equals("STEP"))
                 {
-                    if(startLine>=0) q.lastLine=v+1;
+                    if((p.size()>1)&&(((String)p.elementAt(1)).equalsIgnoreCase("BREAK")))
+                        q.done=true;
+                    else
+                        if(startLine>=0) q.lastLine=v+1;
                     return;
                 }
                 if(cmd.equals("RESET"))
