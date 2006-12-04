@@ -38,7 +38,7 @@ public class Chant_PredictWeather extends Chant
 	public String ID() { return "Chant_PredictWeather"; }
 	public String name(){ return "Predict Weather";}
 	public String displayText(){return "(Predict Weather)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	String lastPrediction="";
 
 	public void unInvoke()

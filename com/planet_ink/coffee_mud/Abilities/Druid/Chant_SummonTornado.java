@@ -40,7 +40,7 @@ public class Chant_SummonTornado extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -52,6 +52,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int maxWait=-1;
     protected int waitRemaining=-1;
     protected int ticksRemaining=-1;
+    protected long lastStartDateTime=System.currentTimeMillis();
     private boolean stoppingQuest=false;
     protected int spawn=SPAWN_NO;
     private QuestState questState=new QuestState();
@@ -145,7 +146,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public void autostartup()
     {
-        if(!setWaitRemaining())
+        if(!resetWaitRemaining())
             CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         else
         if(!running())
@@ -159,13 +160,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         String cmd=null;
         String var=null;
         String val=null;
+        boolean inScript=false;
         for(int v=0;v<script.size();v++)
         {
             line=(String)script.elementAt(v);
             parsedLine=CMParms.parse(line);
             if(parsedLine.size()>0)
             {
-                cmd=((String)parsedLine.elementAt(0)).toUpperCase();
+                cmd=((String)parsedLine.elementAt(0)).toUpperCase().trim();
+                if(cmd.equals("</SCRIPT>")&&(inScript)){ inScript=false; continue;}
+                if(cmd.equals("<SCRIPT>")){ inScript=true; continue;}
                 if(cmd.equals("STEP")) return;
                 if((cmd.equals("SET"))&&(parsedLine.size()>1))
                 {
@@ -2364,6 +2368,35 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                     }
                     else
+                    if(cmd.equals("STAT"))
+                    {
+                        if(q.envObject==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot give stat, no mob or item set.");
+                            q.error=true; break;
+                        }
+                        if(p.size()<3)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quest","Quest '"+name()+"', cannot give stat, stat name not given.");
+                            q.error=true; break;
+                        }
+                        String stat=(String)p.elementAt(2);
+                        String val=CMParms.combineWithQuotes(p,3);
+                        Vector toSet=new Vector();
+                        if(q.envObject instanceof Vector)
+                            toSet=(Vector)q.envObject;
+                        else
+                        if(q.envObject!=null) 
+                            toSet.addElement(q.envObject);
+                        for(int i=0;i<toSet.size();i++)
+                        {
+                            Environmental E2=(Environmental)toSet.elementAt(i);
+                            runtimeRegisterStat(E2,stat,val,true);
+                        }
+                    }
+                    else
                     if(cmd.equals("AFFECT"))
                     {
                         if(q.envObject==null)
@@ -2532,6 +2565,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             }
         }
     }
+
+    public void spawnQuest(String script, boolean reTime)
+    {
+        Quest Q2=(Quest)copyOf();
+        Q2.setCopy(true);
+        Q2.setScript(script());
+        CMLib.quests().addQuest(Q2);
+        if(reTime)
+        {
+            Q2.resetWaitRemaining();
+            Q2.possiblyStartQuest();
+        }
+        else
+            Q2.startQuest();
+    }
     
     
     // this will execute the quest script.  If the quest is running, it
@@ -2541,17 +2589,55 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running()) stopQuest();
         Vector args=new Vector();
         questState=new QuestState();
-        if((!isCopy())&&(getSpawn()==SPAWN_FIRST))
+        if((!isCopy())&&(getSpawn()!=SPAWN_NO))
         {
-            Quest Q2=(Quest)copyOf();
-            Q2.setCopy(true);
-            Q2.setScript(script());
-            CMLib.quests().addQuest(Q2);
-            Q2.startQuest();
-            ticksRemaining=-1;
-            if((!setWaitRemaining())||(runningCopy))
-                CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
-            return;
+            if(getSpawn()==SPAWN_FIRST)
+            {
+                spawnQuest(script(),false);
+                ticksRemaining=-1;
+                if((!resetWaitRemaining())||(runningCopy))
+                    CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
+                lastStartDateTime=System.currentTimeMillis();
+                return;
+            }
+            else
+            if(getSpawn()==SPAWN_ANY)
+            {
+                StringBuffer scr=new StringBuffer("");
+                Vector script=parseScripts(script(),new Vector(),args);
+                Vector line=null;
+                boolean inScript=false;
+                String cmd=null;
+                for(int v=0;v<script.size();v++)
+                {
+                    line=CMParms.parse(((String)script.elementAt(v)).toUpperCase().trim());
+                    if(line.size()==0) continue;
+                    cmd=((String)line.firstElement()).toUpperCase().trim();
+                    scr.append(((String)script.elementAt(v))+"\n\r");
+                    if(cmd.equals("</SCRIPT>")&&(inScript))
+                    {
+                        inScript=false; 
+                        continue;
+                    }
+                    if(cmd.equals("<SCRIPT>"))
+                    { 
+                        inScript=true; 
+                        continue;
+                    }
+                    if(cmd.equals("STEP"))
+                    {
+                        spawnQuest(scr.toString(),true);
+                        scr=new StringBuffer("");
+                    }
+                }
+                if(scr.toString().trim().length()>0)
+                    spawnQuest(scr.toString(),true);
+                ticksRemaining=-1;
+                if((!resetWaitRemaining())||(runningCopy))
+                    CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
+                lastStartDateTime=System.currentTimeMillis();
+                return;
+            }
         }
         Vector script=parseScripts(script(),new Vector(),args);
         try{
@@ -2578,6 +2664,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             waitRemaining=-1;
             ticksRemaining=duration();
             CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
+            lastStartDateTime=System.currentTimeMillis();
         }
     }
 
@@ -2639,6 +2726,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 if(V.size()<2) continue;
                 Environmental E=(Environmental)V.elementAt(0);
                 Object O=V.elementAt(1);
+                if(O instanceof String)
+                {
+                    String stat=(String)O;
+                    String parms=(String)V.elementAt(2);
+                    E.setStat(stat,parms);
+                }
+                else
                 if(O instanceof Behavior)
                 {
                     Behavior B=E.fetchBehavior(((Behavior)O).ID());
@@ -2707,7 +2801,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running())
         {
             ticksRemaining=-1;
-            if(!setWaitRemaining())
+            if(!resetWaitRemaining())
                 CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         }
         Vector args=new Vector();
@@ -2760,7 +2854,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running())
         {
             ticksRemaining=-1;
-            if((!setWaitRemaining())||(runningCopy))
+            if((!resetWaitRemaining())||(runningCopy))
                 CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         }
         if(runningCopy)
@@ -2771,7 +2865,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         stoppingQuest=false;
     }
     
-    public boolean setWaitRemaining()
+    public boolean resetWaitRemaining()
     {
         if(((minWait()<0)||(maxWait<0))
         &&(startDate().trim().length()==0))
@@ -2950,47 +3044,50 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if(ticksRemaining<0)
             {
                 stepQuest();
-                if(!setWaitRemaining()) 
+                if(!resetWaitRemaining()) 
                     return false;
             }
             tickStatus=Tickable.STATUS_END;
         }
         else
         {
-            tickStatus=Tickable.STATUS_DEAD;
             waitRemaining--;
             if(waitRemaining<0)
-            {
-                ticksRemaining=duration();
-                boolean allowedToRun=true;
-                if(runLevel()>=0)
-            	for(int q=0;q<CMLib.quests().numQuests();q++)
-            	{
-            		Quest Q=CMLib.quests().fetchQuest(q);
-            		if((!Q.name().equals(name))
-                    &&(Q.running())
-                    &&(Q.runLevel()<=runLevel()))
-            		{ allowedToRun=false; break;}
-            	}
-                int numElligiblePlayers=CMLib.sessions().size();
-                if(playerMask.length()>0)
-                {
-                	numElligiblePlayers=0;
-                	for(int s=CMLib.sessions().size()-1;s>=0;s--)
-                	{
-                		Session S=CMLib.sessions().elementAt(s);
-                		if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob())))
-                			numElligiblePlayers++;
-                	}
-                }
-                if((allowedToRun)&&(numElligiblePlayers>=minPlayers))
-	                startQuest();
-            }
+                possiblyStartQuest();
         }
         tickStatus=Tickable.STATUS_NOT;
         return true;
     }
 
+    public void possiblyStartQuest()
+    {
+        ticksRemaining=duration();
+        boolean allowedToRun=true;
+        if(runLevel()>=0)
+        for(int q=0;q<CMLib.quests().numQuests();q++)
+        {
+            Quest Q=CMLib.quests().fetchQuest(q);
+            if((!Q.name().equals(name))
+            &&(Q.running())
+            &&(Q.runLevel()<=runLevel()))
+            { allowedToRun=false; break;}
+        }
+        int numElligiblePlayers=CMLib.sessions().size();
+        if(playerMask.length()>0)
+        {
+            numElligiblePlayers=0;
+            for(int s=CMLib.sessions().size()-1;s>=0;s--)
+            {
+                Session S=CMLib.sessions().elementAt(s);
+                if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob())))
+                    numElligiblePlayers++;
+            }
+        }
+        if((allowedToRun)&&(numElligiblePlayers>=minPlayers))
+            startQuest();
+    }
+    
+    
     public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give)
     {
         if(mob==null) return;
@@ -3104,6 +3201,23 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             behaving.addBehavior(B);
         }
         if(B!=null) B.registerDefaultQuest(this);
+        questState.addons.addElement(V,new Integer(questState.preserveState));
+    }
+    
+    public void runtimeRegisterStat(Environmental obj, String stat, String parms, boolean give)
+    {
+        if(obj==null) return;
+        runtimeRegisterObject(obj);
+        Vector V=new Vector();
+        V.addElement(obj);
+        stat=stat.toUpperCase().trim();
+        String oldVal=obj.getStat(stat);
+        V.addElement(stat);
+        V.addElement(oldVal);
+        if(!give) return;
+        V.addElement(stat);
+        V.addElement(oldVal);
+        obj.setStat(stat,parms);
         questState.addons.addElement(V,new Integer(questState.preserveState));
     }
     
@@ -3598,7 +3712,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 7: setStartDate(val); break;
 		case 8: setStartDate(val); break;
 		case 9: setWaitInterval(CMath.s_parseIntExpression(val)); break;
-        case 10: setSpawn(CMParms.indexOf(SPAWN_DESCS,val)); break;
+        case 10: 
+            setSpawn(CMParms.indexOf(SPAWN_DESCS,val.toUpperCase().trim())); 
+            break;
 		default:
 			int x=questState.vars.indexOf(code.toUpperCase().trim());
 			if(x>=0) 

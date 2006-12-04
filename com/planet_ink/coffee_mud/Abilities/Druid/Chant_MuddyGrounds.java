@@ -37,7 +37,7 @@ public class Chant_MuddyGrounds extends Chant
 	public String ID() { return "Chant_MuddyGrounds"; }
 	public String name(){return "Muddy Grounds";}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER;}
+    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 

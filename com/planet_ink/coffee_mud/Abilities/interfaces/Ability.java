@@ -682,7 +682,7 @@ public interface Ability extends Environmental
 	/** constant used to mask classificationCode() designating this ability as being death lore skil. @see Ability#classificationCode() */
     public static final int DOMAIN_DEATHLORE=34<<5;
 	/** constant used to mask classificationCode() designating this ability as being weather skil. @see Ability#classificationCode() */
-    public static final int DOMAIN_WEATHER=35<<5;
+    public static final int DOMAIN_WEATHER_MASTERY=35<<5;
 	/** constant used to mask classificationCode() designating this ability as being corrupting skil. @see Ability#classificationCode() */
     public static final int DOMAIN_CORRUPTION=36<<5;
 	/** constant used to mask classificationCode() designating this ability as being restoring skil. @see Ability#classificationCode() */
@@ -767,7 +767,7 @@ public interface Ability extends Environmental
         "HOLY_PROTECTION","HEALING","VEXING","BLESSING",
         "CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
         "GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
-        "FOOLISHNESS","WARDING","DEATH_LORE","WEATHER",
+        "FOOLISHNESS","WARDING","DEATH_LORE","WEATHER_MASTERY",
         "CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
         "COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
         "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",

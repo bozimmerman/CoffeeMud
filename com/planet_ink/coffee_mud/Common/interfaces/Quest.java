@@ -52,6 +52,8 @@ public interface Quest extends Tickable, CMCommon
 	// this will execute the quest script.  If the quest is running, it 
 	// will call stopQuest first to shut it down.
 	public void startQuest();
+    
+    public void possiblyStartQuest();
 	
 	// this will stop executing of the quest script.  It will clean up 
 	// any objects or mobs which may have been loaded, restoring map 
@@ -121,11 +123,12 @@ public interface Quest extends Tickable, CMCommon
 	public int ticksRemaining();
 	public int minsRemaining();
 	public int waitRemaining();
+    public boolean resetWaitRemaining();
 	
     public final static int SPAWN_NO=0;
     public final static int SPAWN_FIRST=1;
     public final static int SPAWN_ANY=2;
-    public final static String[] SPAWN_DESCS={"FALSE","TRUE","ANY"};
+    public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
     
 	public boolean isStat(String code);
 	public String getStat(String code);

@@ -393,7 +393,7 @@ HELP_=<EXPERTISE>The ability to cast preserving-domain chants at a higher power 
 ENDURING@x1=Enduring @x2,10,LEVEL|LOWCOST,-SKILLFLAG +ENDURING,-MAXCLASSLEVEL +>={22+(5*@x1)},+CON {15+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast enduring-domain chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
-WEATHER@x1=Weather Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WEATHER,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+WEATHER@x1=Weather Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WEATHER_MASTERY,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast weather altering chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
 BREEDER@x1=Breeding @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BREEDING,-MAXCLASSLEVEL +>={25+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
