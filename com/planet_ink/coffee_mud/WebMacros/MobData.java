@@ -548,6 +548,65 @@ public class MobData extends StdWebMacro
 	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
+        if(parms.containsKey("PRICEFACTORS"))
+        {
+            Vector theprices=new Vector();
+            Vector themasks=new Vector();
+            int num=1;
+            if(!httpReq.isRequestParameter("IPRIC"+num))
+            {
+                String[] prics=E.itemPricingAdjustments();
+                for(int p=0;p<prics.length;p++)
+                {
+                    int x=prics[p].indexOf(' ');
+                    if(x<0)
+                    {
+                        theprices.addElement(prics[p]);
+                        themasks.addElement("");
+                    }
+                    else
+                    {
+                        theprices.addElement(prics[p].substring(0,x));
+                        themasks.addElement(prics[p].substring(x+1));
+                    }
+                }
+            }
+            else
+            while(httpReq.isRequestParameter("IPRIC"+num))
+            {
+                String PRICE=httpReq.getRequestParameter("IPRIC"+num);
+                String MASK=httpReq.getRequestParameter("IPRICM"+num);
+                if((PRICE!=null)&&(PRICE.length()>0)&&(CMath.isNumber(PRICE)))
+                {
+                    theprices.addElement(PRICE);
+                    if(MASK!=null)
+                        themasks.addElement(MASK);
+                    else
+                        themasks.addElement("");
+                }
+                num++;
+            }
+            str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+            str.append("<TR><TD WIDTH=20%>Price Factor</TD><TD>Item type Mask</TD></TR>");
+            for(int i=0;i<theprices.size();i++)
+            {
+                String PRICE=(String)theprices.elementAt(i);
+                String MASK=(String)themasks.elementAt(i);
+                str.append("<TR><TD>");
+                str.append("<INPUT TYPE=TEXT SIZE=5 NAME=IPRIC"+(i+1)+" VALUE=\""+PRICE+"\">");
+                str.append("</TD><TD>");
+                str.append("<INPUT TYPE=TEXT SIZE=50 NAME=IPRICM"+(i+1)+" VALUE=\""+MASK+"\">");
+                str.append("</TD>");
+                str.append("</TR>");
+            }
+            str.append("<TR><TD>");
+            str.append("<INPUT TYPE=TEXT SIZE=5 NAME=IPRIC"+(theprices.size()+1)+">");
+            str.append("</TD><TD>");
+            str.append("<INPUT TYPE=TEXT SIZE=50 NAME=IPRICM"+(theprices.size()+1)+">");
+            str.append("</TD></TR>");
+            str.append("</TABLE>");
+            
+        }
 		if(parms.containsKey("SHOPINVENTORY"))
 		{
 			Vector theclasses=new Vector();

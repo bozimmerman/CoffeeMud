@@ -42,6 +42,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected long budgetMax=Long.MAX_VALUE/2;
 	protected int budgetTickDown=2;
 	protected String devalueRate="";
+    protected String[] pricingAdjustments=new String[0];
 
 	public StdShopKeeper()
 	{
@@ -357,6 +358,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
     public String ignoreMask(){return "";}
     public void setIgnoreMask(String factors){}
 
+    public String[] itemPricingAdjustments(){ return pricingAdjustments;}
+    public void setItemPricingAdjustments(String[] factors){pricingAdjustments=factors;}
+    
 	public String budget(){return budget;}
 	public void setBudget(String factors){budget=factors; budgetTickDown=0;}
 	

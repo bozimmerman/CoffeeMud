@@ -641,4 +641,29 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob.substring(foundb,founde);
 	}
 
+    public String getXMLList(Vector V)
+    {
+        StringBuffer str=new StringBuffer("");
+        String s=null;
+        for(int v=0;v<V.size();v++)
+        {
+            s=V.elementAt(v).toString();
+            if(s.trim().length()==0)
+                str.append("<X />");
+            else
+                str.append("<X>"+parseOutAngleBrackets(s)+"</X>");
+        }
+        return str.toString();
+    }
+    
+    public Vector parseXMLList(String numberedList)
+    {
+        Vector xml=parseAllXML(numberedList);
+        Vector V=new Vector();
+        for(int v=0;v<xml.size();v++)
+            V.addElement(this.restoreAngleBrackets(((XMLpiece)xml.elementAt(v)).value));
+        return V;
+    }
+    
+
 }

@@ -96,6 +96,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
     public String ignoreMask(){return ignore;}
     public void setIgnoreMask(String factors){ignore=factors;}
     private MOB staticMOB=null;
+    private String[] pricingAdjustments=new String[0];
+    public String[] itemPricingAdjustments(){ return pricingAdjustments;}
+    public void setItemPricingAdjustments(String[] factors)
+    {
+        if((!(affected instanceof MOB))||(!((MOB)affected).isMonster()))
+            factors=new String[0];
+        pricingAdjustments=factors;
+    }
     
     public MOB deriveMerchant(MOB roomHelper)
     {

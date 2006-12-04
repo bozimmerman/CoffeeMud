@@ -416,6 +416,7 @@ public class Modify extends BaseGenerics
                 genParentAreas(mob,myArea,++showNumber,showFlag);
                 genChildAreas(mob,myArea,++showNumber,showFlag);
 				genSubOps(mob,myArea,++showNumber,showFlag);
+                genAreaBlurbs(mob,myArea,++showNumber,showFlag);
 				if(myArea instanceof GridZones)
 				{
 					genGridLocaleX(mob,(GridZones)myArea,++showNumber,showFlag);

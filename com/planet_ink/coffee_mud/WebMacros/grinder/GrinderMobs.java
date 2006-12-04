@@ -635,7 +635,27 @@ public class GrinderMobs
 						theprice=httpReq.getRequestParameter("SPRIC"+num);
 					}
 				}
-	
+                
+                int num=1;
+                if((M instanceof ShopKeeper)
+                &&(httpReq.isRequestParameter("IPRIC1")))
+                {
+                    Vector prics=new Vector();
+                    String DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
+                    String MASK=httpReq.getRequestParameter("IPRICM"+num);
+                    while((DOUBLE!=null)&&(MASK!=null))
+                    {
+                        if(DOUBLE==null)
+                            break;
+                        else
+                        if(CMath.isNumber(DOUBLE))
+                            prics.addElement((DOUBLE+" "+MASK).trim());
+                        num++;
+                        DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
+                        MASK=httpReq.getRequestParameter("IPRICM"+num);
+                    }
+                    ((ShopKeeper)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
+                }
 			}
 	
 			M.recoverEnvStats();

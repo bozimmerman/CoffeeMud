@@ -70,7 +70,7 @@ public class GenBanker extends StdBanker
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
-	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT","IGNOREMASK","LOANINT"};
+	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -84,6 +84,7 @@ public class GenBanker extends StdBanker
 		case 4: return ""+getItemInterest();
         case 5: return ignoreMask();
 		case 6: return ""+getLoanInterest();
+        case 7: return CMParms.toStringList(itemPricingAdjustments());
 		}
 		return "";
 	}
@@ -101,6 +102,7 @@ public class GenBanker extends StdBanker
 		case 4: setItemInterest(CMath.s_double(val)); break;
         case 5: setIgnoreMask(val); break;
 		case 6: setLoanInterest(CMath.s_double(val)); break;
+        case 7: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
 		}
 	}
 	protected int getCodeNum(String code){

@@ -101,7 +101,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_MOBDEATH=52;
     public static final int SYSTEM_I3ROUTERS=53;
     public static final int SYSTEM_IDLETIMERS=54;
-    public static final int NUM_SYSTEM=55;
+    public static final int SYSTEM_PRICEFACTORS=55;
+    public static final int NUM_SYSTEM=56;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -484,6 +485,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_I3EMAIL,getStr("I3EMAIL"));
         setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
         setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
+        setUpLowVar(SYSTEM_PRICEFACTORS,getStr("PRICEFACTORS"));
         setVar(SYSTEM_IGNOREMASK,getStr("IGNOREMASK"));
         setVar(SYSTEM_BUDGET,getStr("BUDGET"));
         setVar(SYSTEM_DEVALUERATE,getStr("DEVALUERATE"));

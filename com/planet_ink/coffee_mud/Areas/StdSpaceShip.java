@@ -49,6 +49,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected static Climate climateObj=null;
 	protected Vector parents=null;
     protected Vector parentsToLoad=new Vector();
+    protected Vector blurbFlags=new Vector();
     protected String imageName="";
 	protected RoomnumberSet properRoomIDSet=null;
 	public void setClimateObj(Climate obj){climateObj=obj;}
@@ -305,6 +306,86 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		return true;
 	}
 
+    protected Vector allBlurbFlags()
+    {
+        Vector V=(Vector)blurbFlags.clone();
+        String flag=null;
+        Area A=null;
+        int num=0;
+        for(Enumeration e=getParents();e.hasMoreElements();)
+        {
+            A=(Area)e.nextElement();
+            num=A.numBlurbFlags();
+            for(int x=0;x<num;x++)
+            {
+                flag=A.getBlurbFlag(x);
+                V.addElement(flag+" "+A.getBlurbFlag(flag));
+            }
+        }
+        return V;
+    }
+    
+    public String getBlurbFlag(String flag)
+    {
+        if((flag==null)||(flag.trim().length()==0))
+            return null;
+        flag=flag.toUpperCase().trim()+" ";
+        Vector V=allBlurbFlags();
+        for(int i=0;i<V.size();i++)
+            if(((String)V.elementAt(i)).startsWith(flag))
+                return ((String)V.elementAt(i)).substring(flag.length());
+        return null;
+    }
+    public int numAllBlurbFlags(){return allBlurbFlags().size();}
+    public int numBlurbFlags(){return blurbFlags.size();}
+    public String getBlurbFlag(int which)
+    {
+        if(which<0) return null;
+        Vector V=allBlurbFlags();
+        if(which>=V.size()) return null;
+        try{
+            String s=(String)V.elementAt(which);
+            int x=s.indexOf(' ');
+            return s.substring(0,x).trim();
+        }catch(Exception e){}
+        return null;
+    }
+    public void addBlurbFlag(String flagPlusDesc)
+    {
+        if(flagPlusDesc==null) return;
+        flagPlusDesc=flagPlusDesc.trim();
+        if(flagPlusDesc.length()==0) return;
+        int x=flagPlusDesc.indexOf(' ');
+        String flag=null;
+        if(x>=0) 
+        {
+            flag=flagPlusDesc.substring(0,x).toUpperCase();
+            flagPlusDesc=flagPlusDesc.substring(x);
+        }
+        else
+        {
+            flag=flagPlusDesc.toUpperCase().trim();
+            flagPlusDesc="";
+        }
+        if(getBlurbFlag(flag)==null)
+            blurbFlags.addElement((flag+" "+flagPlusDesc).trim());
+    }
+    public void delBlurbFlag(String flagOnly)
+    {
+        if(flagOnly==null) return;
+        flagOnly=flagOnly.toUpperCase().trim();
+        if(flagOnly.length()==0) return;
+        flagOnly+=" ";
+        try{
+            for(int v=0;v<blurbFlags.size();v++)
+                if(((String)blurbFlags.elementAt(v)).startsWith(flagOnly))
+                {
+                    blurbFlags.removeElementAt(v);
+                    return;
+                }
+        }catch(Exception e){}
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -873,7 +954,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL","BLURBS"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
@@ -888,6 +969,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		case 2: return description();
 		case 3: return text();
 		case 4: return ""+getTechLevel();
+        case 5: return ""+CMLib.xml().getXMLList(blurbFlags);
 		}
 		return "";
 	}
@@ -900,6 +982,17 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
 		case 4: setTechLevel(CMath.s_int(val)); break;
+        case 5:
+        {
+            if(val.startsWith("+"))
+                addBlurbFlag(val.substring(1));
+            else
+            if(val.startsWith("-"))
+                delBlurbFlag(val.substring(1));
+            else
+                blurbFlags=CMLib.xml().parseXMLList(val);
+            break;
+        }
 		}
 	}
 	public boolean sameAs(Environmental E)

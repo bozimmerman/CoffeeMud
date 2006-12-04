@@ -90,6 +90,12 @@ public interface Area extends Environmental
 	public String getAuthorID();
 	public String getCurrency();
 	public void setCurrency(String currency);
+    public int numBlurbFlags();
+    public int numAllBlurbFlags();
+    public String getBlurbFlag(String flag);
+    public String getBlurbFlag(int which);
+    public void addBlurbFlag(String flagPlusDesc);
+    public void delBlurbFlag(String flagOnly);
 
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);

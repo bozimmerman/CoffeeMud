@@ -80,6 +80,12 @@
 			document.AREAEDIT.target='MAP';
 			document.AREAEDIT.submit();
 		}
+		function OpenUp(file,named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/"+file+"?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -364,10 +370,23 @@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Prejudices:</B></FONT>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=SHOPPREJ SIZE=60 MAXLENGTH=255 VALUE="@MobData?SHOPPREJ@">
+		<a href="javascript:OpenUp('ihelp.cmvp','PREJUDICE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 	</TR>
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ignorable Mask:</B></FONT>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=IGNOREMASK SIZE=60 MAXLENGTH=255 VALUE="@MobData?IGNOREMASK@">
+		<a href="javascript:OpenUp('ihelp.cmvp','IGNOREMASK');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Shop Item Pricing:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>
+	    	<FONT COLOR=WHITE>
+			@MobData?PRICEFACTORS@
+			</FONT>
+			<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+			<INPUT TYPE=BUTTON NAME=RESHOW2 VALUE="Submit" ONCLICK="ReShow();">
+			<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
+		</TD>
 	</TR>
 	@if?MobData?ISBANKER@
 		<TR>

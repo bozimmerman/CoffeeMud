@@ -176,6 +176,9 @@ public interface XMLLibrary extends CMLibrary
         
     public Vector parseAllXML(StringBuffer buf);
     
+    public Vector parseXMLList(String numberedList);
+    public String getXMLList(Vector V);
+    
     /**
      * Return the data value within the first XML block
      * <TAG>Data</TAG>

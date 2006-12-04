@@ -923,7 +923,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-
+    
     public static String toStringList(double[] V)
     {
         if((V==null)||(V.length==0)){
@@ -973,6 +973,14 @@ public class CMParms
     }
 
     public static Vector makeVector(Object[] O)
+    {
+        Vector V=new Vector();
+        if(O!=null)
+        for(int s=0;s<O.length;s++)
+            V.addElement(O[s]);
+        return V;
+    }
+    public static Vector makeVector(String[] O)
     {
         Vector V=new Vector();
         if(O!=null)

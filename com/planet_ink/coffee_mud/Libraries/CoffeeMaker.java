@@ -189,11 +189,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		else
 		if(E instanceof Area)
 		{
+            Area myArea=(Area)E;
 		    StringBuffer str = new StringBuffer();
 		    StringBuffer parentstr = new StringBuffer();
 		    StringBuffer childrenstr = new StringBuffer();
-		    str.append(CMLib.xml().convertXMLtoTag("ARCHP", ( (Area) E).getArchivePath()));
-		    for(Enumeration e=((Area)E).getParents(); e.hasMoreElements();)
+		    str.append(CMLib.xml().convertXMLtoTag("ARCHP",myArea.getArchivePath()));
+		    for(Enumeration e=myArea.getParents(); e.hasMoreElements();)
 			{
 		        Area A=(Area)e.nextElement();
 		        parentstr.append("<PARENT>");
@@ -201,7 +202,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		        parentstr.append("</PARENT>");
 		    }
 		    str.append(CMLib.xml().convertXMLtoTag("PARENTS",parentstr.toString()));
-		    for(Enumeration e=((Area)E).getChildren(); e.hasMoreElements();)
+		    for(Enumeration e=myArea.getChildren(); e.hasMoreElements();)
 			{
 		        Area A=(Area)e.nextElement();
 		        childrenstr.append("<CHILD>");
@@ -210,8 +211,16 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    }
 		    str.append(CMLib.xml().convertXMLtoTag("CHILDREN",childrenstr.toString()));
 		    str.append(getExtraEnvPropertiesStr(E));
-			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",((Area)E).getAuthorID()));
-			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",((Area)E).getCurrency()));
+			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
+			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
+            Vector V=new Vector();
+            String flag=null;
+            for(int i=0;i<myArea.numBlurbFlags();i++)
+            {
+                flag=myArea.getBlurbFlag(i);
+                V.addElement((flag+" "+myArea.getBlurbFlag(flag)).trim());
+            }
+            str.append(CMLib.xml().convertXMLtoTag("BLURBS",CMLib.xml().getXMLList(V)));
 		    return str.toString();
 		}
 		else
@@ -511,6 +520,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				text.append(CMLib.xml().convertXMLtoTag("BUDGET",((ShopKeeper)E).budget()));
 				text.append(CMLib.xml().convertXMLtoTag("DEVALR",((ShopKeeper)E).devalueRate()));
 				text.append(CMLib.xml().convertXMLtoTag("INVRER",((ShopKeeper)E).invResetRate()));
+                String[] prics=((ShopKeeper)E).itemPricingAdjustments();
+                if(prics.length==0) text.append("<IPRICS />");
+                else
+                {
+                    text.append("<IPRICS>");
+                    for(int p=0;p<prics.length;p++)
+                        text.append(CMLib.xml().convertXMLtoTag("IPRIC",CMLib.xml().parseOutAngleBrackets(prics[p])));
+                    text.append("</IPRICS>");
+                }
 
 				Vector V=((ShopKeeper)E).getShop().getStoreInventory();
 				StringBuffer itemstr=new StringBuffer("");
@@ -1626,6 +1644,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                     ((Area)E).addChildToLoad(CMLib.xml().getValFromPieces(ablk.contents,"CHILDNAMED"));
                 }
             }
+            for(int x=((Area)E).numBlurbFlags()-1;x>=0;x--)
+                ((Area)E).delBlurbFlag(((Area)E).getBlurbFlag(x));
+            Vector VB=CMLib.xml().parseXMLList(CMLib.xml().getValFromPieces(V,"BLURBS"));
+            for(int i=0;i<VB.size();i++)
+                ((Area)E).addBlurbFlag((String)VB.elementAt(i));
 			setExtraEnvProperties(E,V);
 		}
 		else
@@ -1768,7 +1791,22 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		shopmob.setDevalueRate(CMLib.xml().getValFromPieces(buf,"DEVALR"));
 		shopmob.setInvResetRate(CMLib.xml().getIntFromPieces(buf,"INVRER"));
 		shopmob.getShop().emptyAllShelves();
-
+        Vector iV=CMLib.xml().getRealContentsFromPieces(buf,"IPRICS");
+        if(iV!=null)
+        {
+            String[] ipric=new String[iV.size()];
+            for(int i=0;i<iV.size();i++)
+            {
+                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
+                if((!iblk.tag.equalsIgnoreCase("IPRIC"))||(iblk.contents==null))
+                {
+                    Log.errOut("CoffeeMaker","Error parsing 'IPRICS' of "+identifier(E,null)+".  Load aborted");
+                    continue;
+                }
+                ipric[i]=CMLib.xml().restoreAngleBrackets(iblk.value);
+            }
+            shopmob.setItemPricingAdjustments(ipric);
+        }
 		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"STORE");
 		if(V==null)
 		{

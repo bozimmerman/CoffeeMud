@@ -337,6 +337,58 @@ public class AreaData extends StdWebMacro
 						str.append(">"+cnam);
 					}
 				}
+                
+                if(parms.containsKey("BLURBS"))
+                {
+                    Vector theprices=new Vector();
+                    Vector themasks=new Vector();
+                    int num=1;
+                    if(!httpReq.isRequestParameter("IPRIC"+num))
+                    {
+                        for(int p=0;p<A.numBlurbFlags();p++)
+                        {
+                            String flag=A.getBlurbFlag(p);
+                            theprices.addElement(flag);
+                            themasks.addElement(A.getBlurbFlag(flag));
+                        }
+                    }
+                    else
+                    while(httpReq.isRequestParameter("BLURBFLAG"+num))
+                    {
+                        String PRICE=httpReq.getRequestParameter("BLURBFLAG"+num);
+                        String MASK=httpReq.getRequestParameter("BLURB"+num);
+                        if((PRICE!=null)&&(PRICE.length()>0))
+                        {
+                            theprices.addElement(PRICE);
+                            if(MASK!=null)
+                                themasks.addElement(MASK);
+                            else
+                                themasks.addElement("");
+                        }
+                        num++;
+                    }
+                    str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+                    str.append("<TR><TD WIDTH=20%>Flag</TD><TD>Description</TD></TR>");
+                    for(int i=0;i<theprices.size();i++)
+                    {
+                        String PRICE=(String)theprices.elementAt(i);
+                        String MASK=(String)themasks.elementAt(i);
+                        str.append("<TR><TD>");
+                        str.append("<INPUT TYPE=TEXT SIZE=5 NAME=BLURBFLAG"+(i+1)+" VALUE=\""+PRICE+"\">");
+                        str.append("</TD><TD>");
+                        str.append("<INPUT TYPE=TEXT SIZE=50 NAME=BLURB"+(i+1)+" VALUE=\""+MASK+"\">");
+                        str.append("</TD>");
+                        str.append("</TR>");
+                    }
+                    str.append("<TR><TD>");
+                    str.append("<INPUT TYPE=TEXT SIZE=5 NAME=BLURBFLAG"+(theprices.size()+1)+">");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT SIZE=50 NAME=BLURB"+(theprices.size()+1)+">");
+                    str.append("</TD></TR>");
+                    str.append("</TABLE>");
+                    
+                }
+                
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
 

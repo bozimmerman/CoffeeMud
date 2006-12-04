@@ -380,6 +380,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shop.budget()));
             itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shop.devalueRate()));
             itemstr.append(CMLib.xml().convertXMLtoTag("IGNOR",shop.ignoreMask()));
+            itemstr.append(CMLib.xml().convertXMLtoTag("PRICM",CMParms.toStringList(shop.itemPricingAdjustments())));
             itemstr.append("<INVS>");
             for(int i=0;i<V.size();i++)
             {
@@ -421,6 +422,8 @@ public class DefaultCoffeeShop implements CoffeeShop
             if(parm!=null) shop.setDevalueRate(parm);
             parm=CMParms.getParmStr(text,"IGNOR","");
             if(parm!=null) shop.setIgnoreMask(parm);
+            parm=CMParms.getParmStr(text,"PRICM","");
+            if(parm!=null) shop.setItemPricingAdjustments((parm.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(parm,true)));
             return;
         }
 

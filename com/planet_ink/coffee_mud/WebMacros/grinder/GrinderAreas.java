@@ -183,6 +183,26 @@ public class GrinderAreas
 					break;
 		}
 
+        int num=1;
+        if(httpReq.isRequestParameter("BLURBFLAG1"))
+        {
+            Vector prics=new Vector();
+            String DOUBLE=httpReq.getRequestParameter("BLURBFLAG"+num);
+            String MASK=httpReq.getRequestParameter("BLURB"+num);
+            while((DOUBLE!=null)&&(MASK!=null))
+            {
+                if(DOUBLE==null) break;
+                if(DOUBLE.trim().length()>0)
+                    prics.addElement((DOUBLE.toUpperCase().trim()+" "+MASK).trim());
+                num++;
+                DOUBLE=httpReq.getRequestParameter("BLURBFLAG"+num);
+                MASK=httpReq.getRequestParameter("BLURB"+num);
+            }
+            for(int x=A.numBlurbFlags()-1;x>=0;x--)
+                A.delBlurbFlag(A.getBlurbFlag(x));
+            for(int v=0;v<prics.size();v++)
+                A.addBlurbFlag((String)prics.elementAt(v));
+        }
 		// description
 		String desc=httpReq.getRequestParameter("DESCRIPTION");
 		if(desc==null)desc="";

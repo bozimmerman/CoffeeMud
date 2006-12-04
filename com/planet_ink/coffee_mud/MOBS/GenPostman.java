@@ -73,7 +73,7 @@ public class GenPostman extends StdPostman
                                      "PREJUDICE",
                                      "POSTCHAIN","POSTMIN","POSTLBS",
                                      "POSTHOLD","POSTNEW","POSTHELD",
-                                     "IGNOREMASK"};
+                                     "IGNOREMASK","PRICEMASKS"};
     public String getStat(String code)
     {
         if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -89,6 +89,7 @@ public class GenPostman extends StdPostman
         case 6: return ""+feeForNewBox();
         case 7: return ""+maxMudMonthsHeld();
         case 8: return ignoreMask();
+        case 9: return CMParms.toStringList(itemPricingAdjustments());
         }
         return "";
     }
@@ -108,6 +109,7 @@ public class GenPostman extends StdPostman
         case 6: setFeeForNewBox(CMath.s_double(val)); break;
         case 7: setMaxMudMonthsHeld(CMath.s_int(val)); break;
         case 8: setIgnoreMask(val); break;
+        case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
         }
     }
     protected int getCodeNum(String code){

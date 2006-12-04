@@ -160,12 +160,28 @@ public interface ShopKeeper extends Environmental
      * @return the string describing price prejudicing
      */
 	public String prejudiceFactors();
+    
     /**
      * Sets the string describing how pricing for this ShopKeeper will differ based on customer attributes
      * such as race.
      * @param factors the string describing price prejudicing
      */
-	public void setPrejudiceFactors(String factors);
+    public void setPrejudiceFactors(String factors);
+    
+    /**
+     * A string set describing how pricing for this ShopKeeper will differ based on item masks
+     * The format for each string is a floating point number followers by a space and a zapper mask
+     * @return an array of the strings describing price adjustments
+     */
+    public String[] itemPricingAdjustments();
+    
+    /**
+     * Sets the string set describing how pricing for this ShopKeeper will differ based on item masks
+     * The format for each string is a floating point number followers by a space and a zapper mask
+     * @param factors the string describing price prejudicing
+     */
+	public void setItemPricingAdjustments(String[] factors);
+    
     /** 
      * Returns the mask used to determine if a customer is ignored by the ShopKeeper.
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary

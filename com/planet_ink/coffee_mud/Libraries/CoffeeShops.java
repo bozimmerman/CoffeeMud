@@ -279,6 +279,36 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return 1.0;
     }
 
+    public double itemPriceFactor(Environmental E, Room R, String[] priceFactors, boolean pawnTo)
+    {
+        if(priceFactors.length==0) 
+        {
+            priceFactors=CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.SYSTEM_PRICEFACTORS).trim(),true));
+            if(priceFactors.length==0) return 1.0;
+        }
+        double factor=1.0;
+        int x=0;
+        String factorMask=null;
+        Environmental oldOwner=null;
+        if(E instanceof Item)
+        {
+            oldOwner=((Item)E).owner();
+            if(R!=null) ((Item)E).setOwner(R);
+        }
+        for(int p=0;p<priceFactors.length;p++)
+        {
+            factorMask=priceFactors[p].trim();
+            x=factorMask.indexOf(' ');
+            if(x<0) continue;
+            if(CMLib.masking().maskCheck(factorMask.substring(x+1).trim(),E))
+                factor*=CMath.s_double(factorMask.substring(0,x).trim());
+        }
+        if(E instanceof Item)
+            ((Item)E).setOwner(oldOwner);
+        if(factor!=0.0) return factor;
+        return 1.0;
+    }
+
     public ShopKeeper.ShopPrice sellingPrice(MOB seller,
                                              MOB buyer,
                                              Environmental product,
@@ -310,6 +340,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
 
         double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),false);
+        Room loc=CMLib.map().roomLocation(shop);
+        prejudiceFactor*=itemPriceFactor(product,loc,shop.itemPricingAdjustments(),false);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         // the price is 200% at 0 charisma, and 100% at 30
@@ -382,6 +414,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(buyer==null) return val;
 
         double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
+        Room loc=CMLib.map().roomLocation(shop);
+        prejudiceFactor*=itemPriceFactor(product,loc,shop.itemPricingAdjustments(),true);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         //double halfPrice=Math.round(CMath.div(val,2.0));
