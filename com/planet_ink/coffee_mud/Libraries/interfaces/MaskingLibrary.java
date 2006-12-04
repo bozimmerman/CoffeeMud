@@ -37,7 +37,7 @@ public interface MaskingLibrary extends CMLibrary
     public Hashtable getMaskCodes();
     public String rawMaskHelp();
     public String maskHelp(String CR, String word);
-    public boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob);
+    public boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R);
     public boolean levelCheck(String text, char prevChar, int lastPlace, int lvl);
     public Vector levelCompiledHelper(String str, char c, Vector entry);
 	public Vector getAbilityEduReqs(String text);
@@ -46,8 +46,8 @@ public interface MaskingLibrary extends CMLibrary
     public boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob);
     public boolean nameCheck(Vector V, char plusMinus, int fromHere, Environmental E);
     public boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E);
-    public boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob);
-    public boolean wornCheck(Vector V, char plusMinus, int fromHere, MOB mob);
+    public boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R);
+    public boolean wornCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R);
     public boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find);
     public boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find);
     public String maskDesc(String text);
@@ -82,7 +82,7 @@ public interface MaskingLibrary extends CMLibrary
         +"-FACTION (<WORD> all faction and values, even a lack of faction) <BR>"
         +"-FACTION +myfactionrange +myotherfactionrange (create exceptions) <BR>"
         +"-myfactionrange -myotherfactionrange (<WORD> only named faction range)<BR>"
-        +"-TATTOOS (<WORD> all tattoos, even a lack of a tatoo) <BR>"
+        +"-TATTOOS (<WORD> all tattoos, even a lack of a tattoo) <BR>"
         +"-TATTOOS +mytatto +thistattoo +anytattoo etc..  (create exceptions) <BR>"
         +"+TATTOOS (do not <WORD> any or no tattoos) <BR>"
         +"+TATTOOS -mytattoo -anytatto, etc.. (create exceptions) <BR>"
