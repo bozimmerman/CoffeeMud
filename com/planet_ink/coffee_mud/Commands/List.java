@@ -738,7 +738,12 @@ public class List extends StdCommand
 				{
 					buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",20)+" ");
 					if(Q.running())
-						buf.append("running ("+Q.minsRemaining()+" mins left)");
+					{
+						if(Q.isCopy())
+							buf.append("copy running ("+Q.minsRemaining()+" mins left)");
+						else
+							buf.append("running ("+Q.minsRemaining()+" mins left)");
+					}
 					else
 					if(Q.waiting())
 						buf.append("waiting ("+Q.waitRemaining()+" ticks left)");

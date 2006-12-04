@@ -68,8 +68,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 	public void addQuest(Quest Q)
 	{
-		if((fetchQuest(Q.name())==null)
-		&&(!quests.contains(Q)))
+		if(!quests.contains(Q))
 		{
 			quests.addElement(Q);
 			Q.autostartup();

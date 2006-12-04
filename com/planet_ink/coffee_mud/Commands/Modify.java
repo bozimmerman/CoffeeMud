@@ -1190,8 +1190,8 @@ public class Modify extends BaseGenerics
 					if((!Q.running())&&(mob.session().confirm("Start quest '"+Q.name()+"' (Y/n)?","Y")))
 					{
 						Q.startQuest();
-                        if(!Q.running())
-    						mob.tell("Quest '"+Q.name()+"' NOT started -- check your mug.log for errors.");
+                        if((!Q.running())&&(Q.getSpawn()!=Quest.SPAWN_ANY))
+    						mob.tell("Quest '"+Q.name()+"' NOT started -- check your mud.log for errors.");
                         else
                             mob.tell("Quest '"+Q.name()+"' started.");
 					}

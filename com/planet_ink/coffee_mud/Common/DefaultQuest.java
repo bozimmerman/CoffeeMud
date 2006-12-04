@@ -41,7 +41,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     protected String name="";
     protected String startDate="";
-    protected boolean alreadyDateStarted=false;
     protected int duration=450; // about 30 minutes
     protected String parms="";
     protected Vector winners=new Vector();
@@ -57,6 +56,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int spawn=SPAWN_NO;
     private QuestState questState=new QuestState();
     private boolean runningCopy=false;
+    private Hashtable stepEllapsedTimes=new Hashtable();
 
     // the unique name of the quest
     public String name(){return name;}
@@ -131,7 +131,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         parms=parm;
         name="";
         startDate="";
-        alreadyDateStarted=false;
         duration=-1;
         minWait=-1;
         maxWait=-1;
@@ -146,7 +145,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public void autostartup()
     {
-        if(!resetWaitRemaining())
+        if(!resetWaitRemaining(0))
             CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         else
         if(!running())
@@ -300,6 +299,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		        parseQuestScript(script, (Vector)allArgs.elementAt(a),-1);
         }
     }
+
+    protected void errorOccurred(QuestState q, boolean quietFlag, String msg)
+    {
+    	if(!quietFlag) Log.errOut("Quest",msg);
+        q.error=true; 
+    }
     
     public void parseQuestScript(Vector script, Vector args, int startLine)
     {
@@ -349,14 +354,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         jscript.append(((String)script.elementAt(v))+"\n");
                     if(v>=script.size())
                     {
-                        Log.errOut("Quest","Quest '"+name()+"', <SCRIPT> command without </SCRIPT> found.");
-                        q.error=true; 
+                    	errorOccurred(q,false,"Quest '"+name()+"', <SCRIPT> command without </SCRIPT> found.");
                         break;
                     }
                     if(!CMSecurity.isApprovedJScript(jscript))
                     {
-                        Log.errOut("Quest","Quest '"+name()+"', <SCRIPT> not approved.  Use MODIFY JSCRIPT to approve.");
-                        q.error=true; 
+                    	errorOccurred(q,false,"Quest '"+name()+"', <SCRIPT> not approved.  Use MODIFY JSCRIPT to approve.");
                         break;
                     }
                     Context cx = Context.enter();
@@ -372,10 +375,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     catch(Exception e)
                     {
                         if(e!=null)
-                            Log.errOut("Quest","Quest '"+name()+"', JScript q.error: "+e.getMessage()+".");
+                        	errorOccurred(q,false,"Quest '"+name()+"', JScript q.error: "+e.getMessage()+".");
                         else
-                            Log.errOut("Quest","Quest '"+name()+"', Unknown JScript q.error.");
-                        q.error=true; 
+                        	errorOccurred(q,false,"Quest '"+name()+"', Unknown JScript q.error.");
                         Context.exit();
                         break;
                     }
@@ -416,8 +418,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         CMLib.map().resetArea(q.area);
                     else
                     {
-                        Log.errOut("Quest","Quest '"+name()+"', no resettable room, roomgroup, or area set.");
-                        q.error=true; 
+                    	errorOccurred(q,false,"Quest '"+name()+"', no resettable room, roomgroup, or area set.");
                         break;
                     }
                 }
@@ -426,9 +427,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     if(p.size()<2)
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unfound variable on set.");
-                        q.error=true; break;
+                    	errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound variable on set.");
+                    	break;
                     }
                     cmd=((String)p.elementAt(1)).toUpperCase();
                     if(cmd.equals("AREA"))
@@ -474,9 +474,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             q.area=(Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1));
                         if(q.area==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', unknown area '"+CMParms.combine(p,2)+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown area '"+CMParms.combine(p,2)+"'.");
+                        	break;
                         }
                     }
                     else
@@ -578,16 +577,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
 	                                    choices.removeElementAt(c);
 	                            if((choices.size()==0)&&(!isQuiet))
-	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                                errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 	                        }
 	                        if((choices!=null)&&(choices.size()>0))
 	                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
                         if(q.mob==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !mob '"+p+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !mob '"+p+"'.");
+                        	break;
                         }
                         questifyScriptableBehavs(q.mob);
                         if(q.room!=null)
@@ -652,16 +650,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
 	                                    choices.removeElementAt(c);
 	                            if((choices.size()==0)&&(!isQuiet))
-	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                                errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 	                        }
                         }
                         if((choices!=null)&&(choices.size()>0))
                             q.mobGroup=choices;
                         else
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !mobgroup '"+mobName+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !mobgroup '"+mobName+"'.");
+                        	break;
                         }
                         q.envObject=q.mobGroup;
                     }
@@ -716,16 +713,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
 	                                    choices.removeElementAt(c);
 	                            if((choices.size()==0)&&(!isQuiet))
-	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                                errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 	                        }
                         }
                         if((choices!=null)&&(choices.size()>0))
                             q.itemGroup=choices;
                         else
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !itemgroup '"+itemName+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemgroup '"+itemName+"'.");
+                        	break;
                         }
                         q.envObject=q.itemGroup;
                     }
@@ -815,16 +811,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
 	                                    choices.removeElementAt(c);
 	                            if((choices.size()==0)&&(!isQuiet))
-	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                                errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 	                        }
 	                        if((choices!=null)&&(choices.size()>0))
 	                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
                         if(q.item==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !item '"+p+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !item '"+p+"'.");
+                        	break;
                         }
                         questifyScriptableBehavs(q.item);
                         if(q.room!=null)
@@ -865,16 +860,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	range=CMath.parseIntExpression((String)p.elementAt(2));
                         	if(range<=0)
                         	{
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !localegrouparound #'"+((String)p.elementAt(2)+"'."));
-	                            q.error=true; break;
+                            	errorOccurred(q,isQuiet,"Quest '"+name()+"', !localegrouparound #'"+((String)p.elementAt(2)+"'."));
+                            	break;
                         	}
                         	p.removeElementAt(2);
                         	if(q.room==null)
                         	{
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', localegrouparound !room.");
-	                            q.error=true; break;
+                            	errorOccurred(q,isQuiet,"Quest '"+name()+"', localegrouparound !room.");
+                            	break;
                         	}
                     	}
                     	else
@@ -935,9 +928,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        	q.roomGroup=(Vector)choices.clone();
                         	else
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !localegroup '"+CMParms.combine(p,2)+"'.");
-	                            q.error=true; break;
+                            	errorOccurred(q,isQuiet,"Quest '"+name()+"', !localegroup '"+CMParms.combine(p,2)+"'.");
+                            	break;
 	                        }
                         	q.envObject=q.roomGroup;
                         }
@@ -947,9 +939,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.room=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 	                        if(q.room==null)
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !locale '"+CMParms.combine(p,2)+"'.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', !locale '"+CMParms.combine(p,2)+"'.");
+	                            break;
 	                        }
 	                        q.area=q.room.getArea();
 	                    	q.envObject=q.room;
@@ -980,16 +971,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	range=CMath.s_parseIntExpression((String)p.elementAt(2));
                         	if(range<=0)
                         	{
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !roomgrouparound #'"+((String)p.elementAt(2)+"'."));
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"'omgrouparound #'"+((String)p.elementAt(2)+"'."));
+	                            break;
                         	}
                         	p.removeElementAt(2);
                         	if(q.room==null)
                         	{
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', roomgrouparound !room.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', roomgrouparound !room.");
+	                            break;
                         	}
                     	}
                     	else
@@ -1073,9 +1062,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        	q.roomGroup=(Vector)choices.clone();
                         	else
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !roomgroup '"+CMParms.combine(p,2)+"'.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', !roomgroup '"+CMParms.combine(p,2)+"'.");
+	                            break;
 	                        }
                         	q.envObject=q.roomGroup;
                         }
@@ -1085,9 +1073,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.room=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 	                        if(q.room==null)
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !room '"+CMParms.combine(p,2)+"'.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', !room '"+CMParms.combine(p,2)+"'.");
+	                            break;
 	                        }
 	                        q.area=q.room.getArea();
 	                    	q.envObject=q.room;
@@ -1161,16 +1148,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
 	                                    choices.removeElementAt(c);
 	                            if((choices.size()==0)&&(!isQuiet))
-	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                                errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 	                        }
 	                        if((choices!=null)&&(choices.size()>0))
 	                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
                         if(q.mob==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !mob '"+mobName+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !mob '"+mobName+"'.");
+                            break;
                         }
                         if(reselect) q.reselectable.addElement(q.mob);
                         questifyScriptableBehavs(q.mob);
@@ -1254,16 +1240,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                &&(CMLib.quests().objectInUse((Environmental)choices.elementAt(c))!=null))
 	                                    choices.removeElementAt(c);
 	                            if((choices.size()==0)&&(!isQuiet))
-	                                Log.errOut("Quest","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+	                                errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 	                        }
 	                        if((choices!=null)&&(choices.size()>0))
 	                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         }
                         if(q.item==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !item '"+itemName+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !item '"+itemName+"'.");
+                            break;
                         }
                         questifyScriptableBehavs(q.item);
                         if(q.room!=null)
@@ -1285,16 +1270,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }catch(CMException ex){
 	                    	if(p.size()>2)
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', agent syntax '"+CMParms.combine(p,2)+"'.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', agent syntax '"+CMParms.combine(p,2)+"'.");
+	                            break;
 	                        }
                         }
                     	if(q.mob==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', agent !mob.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', agent !mob.");
+                            break;
                         }
                         questifyScriptableBehavs(q.mob);
                     	q.mysteryData.agent=q.mob;
@@ -1333,9 +1316,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         if(F==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !faction #'"+numStr+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !faction #'"+numStr+"'.");
+                            break;
                         }
                         q.mysteryData.faction=F;
                     }
@@ -1383,9 +1365,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			                        if(F==null) F=CMLib.factions().getFactionByName((String)p.elementAt(pi));
 			                        if(F==null)
 			                        {
-			                            if(!isQuiet)
-			                                Log.errOut("Quest","Quest '"+name()+"', !factiongroup '"+(String)p.elementAt(pi)+"'.");
-			                            q.error=true; break;
+		                                errorOccurred(q,isQuiet,"Quest '"+name()+"', !factiongroup '"+(String)p.elementAt(pi)+"'.");
+			                            break;
 			                        }
 		                        	if(!q.mysteryData.factionGroup.contains(F))
 		                        		q.mysteryData.factionGroup.addElement(F);
@@ -1414,15 +1395,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        String numStr=CMParms.combine(p,2).toUpperCase();
 	                        if(!CMath.isMathExpression(numStr))
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup #'"+numStr+"'.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', !agentgroup #'"+numStr+"'.");
+	                            break;
 	                        }
 	                        if((q.mobGroup==null)||(q.mobGroup.size()==0))
 	                        {
-	                            if(!isQuiet)
-	                                Log.errOut("Quest","Quest '"+name()+"', !agentgroup mobgroup.");
-	                            q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', !agentgroup mobgroup.");
+	                            break;
 	                        }
 	                        Vector V=(Vector)q.mobGroup.clone();
 	                        q.mysteryData.agentGroup=new Vector();
@@ -1477,15 +1456,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         String numStr=CMParms.combine(p,2).toUpperCase();
                         if(!CMath.isMathExpression(numStr))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
+                            break;
                         }
                         if((q.roomGroup==null)||(q.roomGroup.size()==0))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" roomGroup.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !"+cmd.toLowerCase()+" roomGroup.");
+                            break;
                         }
                         Vector V=(Vector)q.roomGroup.clone();
                         Vector V2=new Vector();
@@ -1566,9 +1543,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     		String numStr=(String)p.elementAt(pi);
                     		if(!CMath.isMathExpression(numStr))
                     		{
-                                if(!isQuiet)
-                                    Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
-                                q.error=true; break;
+                                errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
+                                break;
                     		}
                     		TimeClock TC2=(TimeClock)NOW.copyOf();
                     		TC2.tickTock(CMath.parseIntExpression(numStr));
@@ -1603,9 +1579,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         String numStr=CMParms.combine(p,2);
                 		if(!CMath.isMathExpression(numStr))
                 		{
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
+                            break;
                 		}
                 		TC=(TimeClock)NOW.copyOf();
                 		TC.tickTock(CMath.parseIntExpression(numStr));
@@ -1708,15 +1683,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	}
                     	if(p.size()>2)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" syntax '"+CMParms.combine(p,2)+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" syntax '"+CMParms.combine(p,2)+"'.");
+                            break;
                         }
                     	if(q.room==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !room.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" !room.");
+                            break;
                         }
                     	if(cmd.equals("WHEREHAPPENED"))
 	                    	q.mysteryData.whereHappened=q.room;
@@ -1786,16 +1759,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         String numStr=CMParms.combine(p,2).toUpperCase();
                         if(!CMath.isMathExpression(numStr))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !"+cmd.toLowerCase()+" #'"+numStr+"'.");
+                            break;
                         }
                         if(((q.mobGroup==null)||(q.mobGroup.size()==0))
                         &&((q.itemGroup==null)||(q.itemGroup.size()==0)))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', !"+cmd.toLowerCase()+" mobgroup itemgroup.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', !"+cmd.toLowerCase()+" mobgroup itemgroup.");
+                            break;
                         }
                         Vector V;
                         if((q.mobGroup!=null)&&(q.mobGroup.size()>0))
@@ -1876,9 +1847,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	}
                     	if(p.size()>2)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" syntax '"+CMParms.combine(p,2)+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" syntax '"+CMParms.combine(p,2)+"'.");
+                            break;
                         }
                     	if((q.envObject instanceof Vector)
                     	&&(((Vector)q.envObject).size()>0)
@@ -1886,9 +1856,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     		q.envObject=(Environmental)((Vector)q.envObject).elementAt(CMLib.dice().roll(1,((Vector)q.envObject).size(),-1));
                     	if(!(q.envObject instanceof Environmental))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', "+cmd.toLowerCase()+" !object.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" !object.");
+                            break;
                         }
                     	if(cmd.equals("TARGET"))
 	                    	q.mysteryData.target=(Environmental)q.envObject;
@@ -1909,9 +1878,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else   
                     if(!isStat(cmd))
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unknown variable '"+cmd+"'.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown variable '"+cmd+"'.");
+                        break;
                     }
                 }
                 else
@@ -1919,45 +1887,39 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     if(p.size()<2)
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', no IMPORT type.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', no IMPORT type.");
+                        break;
                     }
                     cmd=((String)p.elementAt(1)).toUpperCase();
                     if(cmd.equals("MOBS"))
                     {
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', no IMPORT MOBS file.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', no IMPORT MOBS file.");
+                            break;
                         }
                         StringBuffer buf=new CMFile(Resources.makeFileResourceName(CMParms.combine(p,2)),null,true).text();
                         if((buf==null)||((buf!=null)&&(buf.length()<20)))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
+                            break;
                         }
                         if(buf.substring(0,20).indexOf("<MOBS>")<0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Invalid XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', Invalid XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
+                            break;
                         }
                         q.loadedMobs=new Vector();
                         String errorStr=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),q.loadedMobs,null);
                         if(errorStr.length()>0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Error on import of: '"+CMParms.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',Error on import of: '"+CMParms.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
+                            break;
                         }
                         if(q.loadedMobs.size()<=0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","No mobs loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',No mobs loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
+                            break;
                         }
                     }
                     else
@@ -1965,43 +1927,37 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', no import filename!");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', no import filename!");
+                            break;
                         }
                         StringBuffer buf=new CMFile(Resources.makeFileResourceName(CMParms.combine(p,2)),null,true).text();
                         if((buf==null)||((buf!=null)&&(buf.length()<20)))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
+                            break;
                         }
                         if(buf.substring(0,20).indexOf("<ITEMS>")<0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Invalid XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',Invalid XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
+                            break;
                         }
                         q.loadedItems=new Vector();
                         String errorStr=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),q.loadedItems,null);
                         if(errorStr.length()>0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Error on import of: '"+CMParms.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',Error on import of: '"+CMParms.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
+                            break;
                         }
                         if(q.loadedItems.size()<=0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","No items loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
-                            q.error=true; break;
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"',No items loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
+                            break;
                         }
                     }
                     else
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unknown import type '"+cmd+"'.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown import type '"+cmd+"'.");
+                        break;
                     }
                 }
                 else
@@ -2018,18 +1974,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     if(p.size()<2)
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unfound type on load.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound type on load.");
+                        break;
                     }
                     cmd=((String)p.elementAt(1)).toUpperCase();
                     if(cmd.equals("MOB")||cmd.equals("MOBGROUP"))
                     {
                         if(q.loadedMobs.size()==0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot load mob, no mobs imported.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot load mob, no mobs imported.");
+                            break;
                         }
                         int maxToLoad=Integer.MAX_VALUE;
                         if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
@@ -2039,9 +1993,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	}
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', no mob name to load!");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', no mob name to load!");
+                            break;
                         }
                         String mobName=CMParms.combine(p,2);
                         String mask=pickMask(s,p);
@@ -2061,9 +2014,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         if(choices.size()==0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', no mob found to load '"+mobName+"'!");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', no mob found to load '"+mobName+"'!");
+                            break;
                         }
                         Vector mobsToDo=null;
                         if(cmd.equalsIgnoreCase("MOB"))
@@ -2115,9 +2067,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.loadedItems.size()==0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot load item, no items imported.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot load item, no items imported.");
+                            break;
                         }
                         int maxToLoad=Integer.MAX_VALUE;
                         if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
@@ -2127,9 +2078,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	}
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', no item name to load!");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', no item name to load!");
+                            break;
                         }
                         String itemName=CMParms.combine(p,2);
                         Vector choices=new Vector();
@@ -2144,9 +2094,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         if(choices.size()==0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', no item found to load '"+itemName+"'!");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', no item found to load '"+itemName+"'!");
+                            break;
                         }
                         Vector itemsToDo=null;
                         if(cmd.equalsIgnoreCase("ITEM"))
@@ -2194,9 +2143,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                     else
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unknown load type '"+cmd+"'.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown load type '"+cmd+"'.");
+                        break;
                     }
 
                 }
@@ -2205,24 +2153,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     if(p.size()<2)
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unfound type on give.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound type on give.");
+                        break;
                     }
                     cmd=((String)p.elementAt(1)).toUpperCase();
                     if(cmd.equals("FOLLOWER"))
                     {
                         if(q.mob==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give follower, no mob set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give follower, no mob set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give follower, follower name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give follower, follower name not given.");
+                            break;
                         }
                         String mobName=CMParms.combine(p,2);
                         Vector choices=new Vector();
@@ -2241,9 +2186,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         if(choices.size()==0)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give follower, no mobs called '"+mobName+"' previously set in script.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give follower, no mobs called '"+mobName+"' previously set in script.");
+                            break;
                         }
                         MOB M2=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         M2.setFollowing(q.mob);
@@ -2253,21 +2197,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if((q.item==null)&&(q.itemGroup==null))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give item, no item set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item, no item set.");
+                            break;
                         }
                         if((q.mob==null)&&(q.mobGroup==null))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give item, no mob set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item, no mob set.");
+                            break;
                         }
                         if(p.size()>2)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+CMParms.combine(p,2)+"'.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+CMParms.combine(p,2)+"'.");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.mob!=null) 
@@ -2304,22 +2245,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if((q.mob==null)&&(q.mobGroup==null))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give ability, no mob set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give ability, no mob set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give ability, ability name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give ability, ability name not given.");
+                            break;
                         }
                         Ability A3=CMClass.findAbility((String)p.elementAt(2));
                         if(A3==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.mob!=null) 
@@ -2338,22 +2276,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.envObject==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give behavior, no mob or item set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give behavior, no mob or item set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give behavior, behavior name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give behavior, behavior name not given.");
+                            break;
                         }
                         Behavior B=CMClass.getBehavior((String)p.elementAt(2));
                         if(B==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.envObject instanceof Vector)
@@ -2372,15 +2307,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.envObject==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give stat, no mob or item set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give stat, no mob or item set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give stat, stat name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give stat, stat name not given.");
+                            break;
                         }
                         String stat=(String)p.elementAt(2);
                         String val=CMParms.combineWithQuotes(p,3);
@@ -2401,22 +2334,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.envObject==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give Effect, no mob, room or item set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give Effect, no mob, room or item set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give Effect, ability name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give Effect, ability name not given.");
+                            break;
                         }
                         Ability A3=CMClass.findAbility((String)p.elementAt(2));
                         if(A3==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot give Effect, ability name unknown '"+((String)p.elementAt(2))+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give Effect, ability name unknown '"+((String)p.elementAt(2))+".");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.envObject instanceof Vector)
@@ -2432,9 +2362,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                     else
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unknown give type '"+cmd+"'.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown give type '"+cmd+"'.");
+                        break;
                     }
                 }
                 else
@@ -2442,31 +2371,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     if(p.size()<2)
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unfound type on take.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound type on take.");
+                        break;
                     }
                     cmd=((String)p.elementAt(1)).toUpperCase();
                     if(cmd.equals("ABILITY"))
                     {
                         if((q.mob==null)&&(q.mobGroup==null))
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take ability, no mob set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take ability, no mob set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take ability, ability name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take ability, ability name not given.");
+                            break;
                         }
                         Ability A3=CMClass.findAbility((String)p.elementAt(2));
                         if(A3==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take ability, ability name unknown '"+((String)p.elementAt(2))+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take ability, ability name unknown '"+((String)p.elementAt(2))+".");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.mob!=null) 
@@ -2485,22 +2410,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.envObject==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take behavior, no mob or item set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take behavior, no mob or item set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take behavior, behavior name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take behavior, behavior name not given.");
+                            break;
                         }
                         Behavior B=CMClass.getBehavior((String)p.elementAt(2));
                         if(B==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.envObject instanceof Vector)
@@ -2519,22 +2441,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.envObject==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take Effect, no mob, room or item set.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take Effect, no mob, room or item set.");
+                            break;
                         }
                         if(p.size()<3)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take Effect, ability name not given.");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take Effect, ability name not given.");
+                            break;
                         }
                         Ability A3=CMClass.findAbility((String)p.elementAt(2));
                         if(A3==null)
                         {
-                            if(!isQuiet)
-                                Log.errOut("Quest","Quest '"+name()+"', cannot take Effect, ability name unknown '"+((String)p.elementAt(2))+".");
-                            q.error=true; break;
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take Effect, ability name unknown '"+((String)p.elementAt(2))+".");
+                            break;
                         }
                         Vector toSet=new Vector();
                         if(q.envObject instanceof Vector)
@@ -2550,16 +2469,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                     else
                     {
-                        if(!isQuiet)
-                            Log.errOut("Quest","Quest '"+name()+"', unknown take type '"+cmd+"'.");
-                        q.error=true; break;
+                        errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown take type '"+cmd+"'.");
+                        break;
                     }
                 }
                 else
                 {
-                    if(!isQuiet)
-                        Log.errOut("Quest","Quest '"+name()+"', unknown command '"+cmd+"'.");
-                    q.error=true; break;
+                    errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown command '"+cmd+"'.");
+                    break;
                 }
                 q.done=true;
             }
@@ -2568,14 +2485,30 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public void spawnQuest(String script, boolean reTime)
     {
-        Quest Q2=(Quest)copyOf();
+        Quest Q2=(Quest)CMClass.getCommon("DefaultQuest");
         Q2.setCopy(true);
-        Q2.setScript(script());
+        Q2.setScript(script);
         CMLib.quests().addQuest(Q2);
         if(reTime)
         {
-            Q2.resetWaitRemaining();
+        	Long ellapsed=(Long)stepEllapsedTimes.get(script);
+        	if(ellapsed==null) ellapsed=new Long(0);
+        	stepEllapsedTimes.remove(script);
+        	ellapsed=new Long(ellapsed.longValue()+(System.currentTimeMillis()-lastStartDateTime));
+        	stepEllapsedTimes.put(script,ellapsed);
+            Q2.resetWaitRemaining(ellapsed.longValue());
+            // problem is that possiblyStartQuest sets the time remaining (sets to RUNNING state), then
+            // calls startQuest, which calls stopQuest, deletes the quest, but keeps it running because 
+            // it re-enters a running state.  Only happens with the spawned ones because only they are
+            // deleted when they are stopped.
             Q2.possiblyStartQuest();
+            if(!Q2.running()) 
+            {
+                CMLib.threads().deleteTick(Q2,-1);
+                CMLib.quests().delQuest(Q2);
+            }
+            else
+            	stepEllapsedTimes.remove(script);
         }
         else
             Q2.startQuest();
@@ -2595,7 +2528,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             {
                 spawnQuest(script(),false);
                 ticksRemaining=-1;
-                if((!resetWaitRemaining())||(runningCopy))
+                if((!resetWaitRemaining(0))||(runningCopy))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
                 lastStartDateTime=System.currentTimeMillis();
                 return;
@@ -2633,7 +2566,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 if(scr.toString().trim().length()>0)
                     spawnQuest(scr.toString(),true);
                 ticksRemaining=-1;
-                if((!resetWaitRemaining())||(runningCopy))
+                if((!resetWaitRemaining(0))||(runningCopy))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
                 lastStartDateTime=System.currentTimeMillis();
                 return;
@@ -2659,12 +2592,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(duration()<0)
             Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
 
-        if((!questState.error)&&(questState.done)&&(duration()>0))
+        if((!questState.error)&&(questState.done))
         {
-            waitRemaining=-1;
-            ticksRemaining=duration();
-            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
+	        if(duration()>0)
+	        {
+	            waitRemaining=-1;
+	            ticksRemaining=duration();
+	            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
+	        }
             lastStartDateTime=System.currentTimeMillis();
+            stepEllapsedTimes.remove(script());
         }
     }
 
@@ -2801,7 +2738,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running())
         {
             ticksRemaining=-1;
-            if(!resetWaitRemaining())
+            if(!resetWaitRemaining(0))
                 CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         }
         Vector args=new Vector();
@@ -2854,7 +2791,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(running())
         {
             ticksRemaining=-1;
-            if((!resetWaitRemaining())||(runningCopy))
+            if((!resetWaitRemaining(0))||(runningCopy))
                 CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         }
         if(runningCopy)
@@ -2865,7 +2802,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         stoppingQuest=false;
     }
     
-    public boolean resetWaitRemaining()
+    public boolean resetWaitRemaining(long ellapsedTime)
     {
         if(((minWait()<0)||(maxWait<0))
         &&(startDate().trim().length()==0))
@@ -2907,7 +2844,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             }
         }
         else
-            waitRemaining=minWait+(CMLib.dice().roll(1,maxWait,0));
+            waitRemaining=(minWait+(CMLib.dice().roll(1,maxWait,0)))-(int)(ellapsedTime/Tickable.TIME_TICK);
         return true;
     }
 
@@ -3044,24 +2981,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if(ticksRemaining<0)
             {
                 stepQuest();
-                if(!resetWaitRemaining()) 
+                if(!resetWaitRemaining(0)) 
                     return false;
             }
             tickStatus=Tickable.STATUS_END;
         }
         else
-        {
-            waitRemaining--;
-            if(waitRemaining<0)
-                possiblyStartQuest();
-        }
+            possiblyStartQuest();
         tickStatus=Tickable.STATUS_NOT;
         return true;
     }
 
     public void possiblyStartQuest()
     {
-        ticksRemaining=duration();
+        if((--waitRemaining)>=0) return;
+        
         boolean allowedToRun=true;
         if(runLevel()>=0)
         for(int q=0;q<CMLib.quests().numQuests();q++)

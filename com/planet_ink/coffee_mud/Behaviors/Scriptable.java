@@ -58,6 +58,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Quest defaultQuest=null;
 
+	private Quest getQuest(String named)
+	{
+		if((defaultQuest!=null)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuest.name())))
+			return defaultQuest;
+		Quest Q=null;
+		for(int i=0;i<CMLib.quests().numQuests();i++)
+		{
+			try{Q=CMLib.quests().fetchQuest(i);}catch(Exception e){}
+			if(Q!=null)
+			{
+				if(Q.name().equalsIgnoreCase(named))
+					if(Q.running()) return Q;
+			}
+		}
+		return CMLib.quests().fetchQuest(named);
+	}
+	
 	public long getTickStatus()
 	{
 	    Tickable T=altStatusTickable;
@@ -1007,7 +1024,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						{
 							int num=CMath.s_int(mid.substring(0,y).trim());
 							mid=mid.substring(y+1).trim();
-							Quest Q=mid.equals("*")?defaultQuest:CMLib.quests().fetchQuest(mid);
+							Quest Q=getQuest(mid);
 							if(Q!=null)	middle=Q.getQuestItemName(num);
 						}
 						back=back.substring(x+1);
@@ -1026,7 +1043,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						{
 							int num=CMath.s_int(mid.substring(0,y).trim());
 							mid=mid.substring(y+1).trim();
-							Quest Q=mid.equals("*")?defaultQuest:CMLib.quests().fetchQuest(mid);
+							Quest Q=getQuest(mid);
 							if(Q!=null)	middle=Q.getQuestMobName(num);
 						}
 						back=back.substring(x+1);
@@ -1975,7 +1992,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
+				Quest Q=getQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1989,7 +2006,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
+				Quest Q=getQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -2000,7 +2017,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
+				Quest Q=getQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -2131,7 +2148,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=arg2.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg2);
+				Quest Q=getQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -2757,7 +2774,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
 				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
-				Quest Q=arg1.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg1);
+				Quest Q=getQuest(arg1);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"QUESTPOINTS","Syntax",evaluable);
@@ -4266,7 +4283,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				if((arg1.length()!=0)&&(arg2.length()!=0))
 				{
-					Quest Q=arg1.equals("*")?defaultQuest:CMLib.quests().fetchQuest(arg1);
+					Quest Q=getQuest(arg1);
 					if(Q!=null) results.append(Q.getStat(arg2));
 				}
 				break;
@@ -5229,7 +5246,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String qstr=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
 				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
-				Quest Q=qstr.equals("*")?defaultQuest:CMLib.quests().fetchQuest(qstr);
+				Quest Q=getQuest(qstr);
 				if(Q==null)
                     scriptableError(scripted,"QUESTPOINTS","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
 				else
@@ -6386,7 +6403,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 21: //MPENDQUEST
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
-				Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
+				Quest Q=getQuest(s);
 				if(Q!=null) Q.stopQuest();
 				else
 					scriptableError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
@@ -6395,7 +6412,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 69: // MPSTEPQUEST
             {
                 s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
-                Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
+                Quest Q=getQuest(s);
                 if(Q!=null) Q.stepQuest();
                 else
                     scriptableError(scripted,"MPSTEPQUEST","Unknown","Quest: "+s);
@@ -6404,7 +6421,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 23: //MPSTARTQUEST
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
-				Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
+				Quest Q=getQuest(s);
 				if(Q!=null) Q.startQuest();
 				else
 					scriptableError(scripted,"MPSTARTQUEST","Unknown","Quest: "+s);
@@ -6414,7 +6431,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String questName=CMParms.getCleanBit(s,1).trim();
 				questName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,questName);
-				Quest Q=questName.equals("*")?defaultQuest:CMLib.quests().fetchQuest(questName);
+				Quest Q=getQuest(questName);
 				if(Q==null)
 				{
 					scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Quest: "+questName);
@@ -6470,7 +6487,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(whoName.length()>0)
 				{
 					s=CMParms.getPastBitClean(s,1);
-					Quest Q=s.equals("*")?defaultQuest:CMLib.quests().fetchQuest(s);
+					Quest Q=getQuest(s);
 					if(Q!=null) 
                         Q.declareWinner(whoName);
 					else
@@ -7977,7 +7994,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 13: // questtimeprog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
-					Quest Q=CMParms.getCleanBit(trigger,1).equals("*")?defaultQuest:CMLib.quests().fetchQuest(CMParms.getCleanBit(trigger,1));
+					Quest Q=getQuest(CMParms.getCleanBit(trigger,1));
 					if((Q!=null)&&(Q.running())&&(!Q.stopping()))
 					{
 						int time=CMath.s_int(CMParms.getCleanBit(trigger,2).trim());

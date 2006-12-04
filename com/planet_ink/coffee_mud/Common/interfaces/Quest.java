@@ -65,9 +65,9 @@ public interface Quest extends Tickable, CMCommon
     
     public void setCopy(boolean truefalse);
     public boolean isCopy();
+    
     public void setSpawn(int spawnFlag);
     public int getSpawn();
-    
     
 	// these refer the objects designated during the quest
 	public int wasQuestMob(String name);
@@ -123,7 +123,7 @@ public interface Quest extends Tickable, CMCommon
 	public int ticksRemaining();
 	public int minsRemaining();
 	public int waitRemaining();
-    public boolean resetWaitRemaining();
+    public boolean resetWaitRemaining(long minusEllapsed);
 	
     public final static int SPAWN_NO=0;
     public final static int SPAWN_FIRST=1;
