@@ -213,6 +213,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SKILLFLAGS",new Integer(102));
             zapCodes.put("-MAXCLASSLEVEL",new Integer(103));
             zapCodes.put("-MAXCLASSLEVELS",new Integer(103));
+            zapCodes.put("+WEATHER",new Integer(104));
+            zapCodes.put("-WEATHER",new Integer(105));
+            zapCodes.put("+DAY",new Integer(106));
+            zapCodes.put("-DAY",new Integer(107));
 		}
 		return zapCodes;
 	}
@@ -1279,6 +1283,62 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
+                    
+                case 104: // +weather
+                {
+                    buf.append("Disallowed during the following weather conditions(s): ");
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        String str2=(String)V.elementAt(v2);
+                        if(zapCodes.containsKey(str2))
+                            break;
+                        if(str2.startsWith("-"))
+                            if(CMath.isInteger(str2.substring(1).trim()))
+                            {
+                                int weather=CMath.s_int(str2.substring(1).trim());
+                                if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
+                                    buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
+                            }
+                            else
+                            {
+                                int weather=CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).toUpperCase().trim());
+                                if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
+                                    buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
+                            }
+                    }
+                    if(buf.toString().endsWith(", "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    buf.append(".  ");
+                }
+                break;
+            case 105: // -weather
+                {
+                    buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following weather conditions(s): ");
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        String str2=(String)V.elementAt(v2);
+                        if(zapCodes.containsKey(str2))
+                            break;
+                        if(str2.startsWith("+"))
+                            if(CMath.isInteger(str2.substring(1).trim()))
+                            {
+                                int weather=CMath.s_int(str2.substring(1).trim());
+                                if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
+                                    buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
+                            }
+                            else
+                            {
+                                int weather=CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).toUpperCase().trim());
+                                if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
+                                    buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
+                            }
+                    }
+                    if(buf.toString().endsWith(", "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    buf.append(".  ");
+                }
+                break;
+                
                 case 77: // +month
                     {
                         buf.append("Disallowed during the following month(s): ");
@@ -1311,6 +1371,39 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
+                case 106: // +day
+                    {
+                        buf.append("Disallowed during the following day(s) of the month: ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("-"))
+                                buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 107: // -day
+                    {
+                        buf.append((skipFirstWord?"Only ":"Allowed only ")+"on the following day(s) of the month: ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("+"))
+                                buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                        
                 case 85: // +quallvl
                     if((v+1)<V.size())
 	                {
@@ -2433,10 +2526,39 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         }
                     }
                     break;
+                case 104: // +weather
+                case 105: // -weather
+                    {
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get(str));
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                            {
+                                v=v2-1;
+                                break;
+                            }
+                            else
+                            if((str2.startsWith("-"))||(str2.startsWith("+")))
+                            {
+                                if(CMath.isInteger(str2.substring(1).trim()))
+                                    entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
+                                else
+                                if(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())>=0)
+                                    entry.addElement(new Integer(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())));
+                            }
+                            v=V.size();
+                        }
+                    }
+                    break;
                 case 73: // +HOUR
                 case 74: // -HOUR
                 case 77: // +MONTH
                 case 78: // -MONTH
+                case 106: // +DAY
+                case 107: // -DAY
                     {
                         Vector entry=new Vector();
                         buf.addElement(entry);
@@ -3042,6 +3164,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(!found) return false;
                 }
                 break;
+            case 104: // +weather
+            {
+                if(R!=null)
+                for(int v=1;v<V.size();v++)
+                    if(R.getArea().getClimateObj().weatherType(R)==((Integer)V.elementAt(v)).intValue())
+                        return false;
+                break;
+            }
+            case 105: // -weather
+                {
+                    boolean found=false;
+                    if(R!=null)
+                    for(int v=1;v<V.size();v++)
+                        if(R.getArea().getClimateObj().weatherType(R)==((Integer)V.elementAt(v)).intValue())
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
             case 77: // +month
                 {
                     if(R!=null)
@@ -3056,6 +3196,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 106: // +day
+                {
+                    if(R!=null)
+                    for(int v=1;v<V.size();v++)
+                        if(R.getArea().getTimeObj().getDayOfMonth()==((Integer)V.elementAt(v)).intValue())
+                            return false;
+                    break;
+                }
+            case 107: // -day
+                {
+                    boolean found=false;
+                    if(R!=null)
+                    for(int v=1;v<V.size();v++)
+                        if(R.getArea().getTimeObj().getDayOfMonth()==((Integer)V.elementAt(v)).intValue())
                         { found=true; break;}
                     if(!found) return false;
                 }
@@ -3999,6 +4157,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         if(!found) return false;
                     }
                     break;
+                case 104: // +weather
+                    {
+                        if((R!=null)
+                        &&(R.getArea().getClimateObj().weatherType(R)>=0)
+                        &&((fromHereEqual(V,'-',v+1,""+Climate.WEATHER_DESCS[R.getArea().getClimateObj().weatherType(R)]))))
+                            return false;
+                        break;
+                    }
+                case 105: // -weather
+                    {
+                        boolean found=false;
+                        if((R!=null)
+                        &&(R.getArea().getClimateObj().weatherType(R)>=0)
+                        &&((fromHereEqual(V,'+',v+1,""+Climate.WEATHER_DESCS[R.getArea().getClimateObj().weatherType(R)]))))
+                        { found=true;}
+                        if(!found) return false;
+                    }
+                    break;
                 case 77: // +month
                     {
                         if((R!=null)
@@ -4011,6 +4187,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         boolean found=false;
                         if((R!=null)
                         &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getMonth())))
+                        { found=true;}
+                        if(!found) return false;
+                    }
+                    break;
+                case 106: // +day
+                    {
+                        if((R!=null)
+                        &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getDayOfMonth())))
+                            return false;
+                        break;
+                    }
+                case 107: // -day
+                    {
+                        boolean found=false;
+                        if((R!=null)
+                        &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getDayOfMonth())))
                         { found=true;}
                         if(!found) return false;
                     }

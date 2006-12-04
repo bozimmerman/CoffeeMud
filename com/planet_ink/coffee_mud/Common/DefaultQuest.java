@@ -997,6 +997,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         Vector choices2=new Vector();
                         Vector choices3=new Vector();
                         Vector names=new Vector();
+                        String mask=pickMask(s,p);
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
                                 names.addElement(p.elementAt(ip));
@@ -1023,6 +1024,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                     Room R2=(Room)e.nextElement();
                                     String display=R2.displayText().toUpperCase();
                                     String desc=R2.description().toUpperCase();
+                                    if((mask.length()>0)&&(!CMLib.masking().maskCheck(mask,R2))) 
+                                        continue;
                                     if(localeName.equalsIgnoreCase("any"))
                                     {
                                         choices=choices0;
