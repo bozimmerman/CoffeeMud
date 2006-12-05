@@ -16,7 +16,7 @@ set runlevel 10
 set spawnable true
 
 import items quests/delivery/note.cmare
-#import our secret note
+#import our package
 
 set area any
 # inform the quest that it occurs anywhere
@@ -34,7 +34,7 @@ set mob ANY MASK=+INT 6
 give behavior Scriptable LOAD=quests/delivery/deliverer.script
 # load the above behavior into the last mob (Human)
 
-load item secret note
+load item post-marked package
 # load our secret note.  For the time being, it will sit in the room
 
 give item

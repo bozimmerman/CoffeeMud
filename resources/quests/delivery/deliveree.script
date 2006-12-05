@@ -1,16 +1,16 @@
 # this script is for the human chosen to be the note bearer
 
 SPEECH_PROG 'I have a delivery from'
-	if has($n 'a most secret note')
-		say "$n" It is not for me.  Give it to someone else.
+	if has($n 'a post-marked package')
+		say "$n" Thank you very much, go ahead and give it to me
 	endif
 ~
 	
 
-GIVE_PROG p a most secret note
-	whisper "$n" Thank you.  You've done well.
+GIVE_PROG p a post-marked package
+	whisper "$n" Thank you.  Here's the stipend you were promised.
 	if !QUESTWINNER($n delivery)
-		mpexp $n 50%
+		mpexp $n 10%
 		mpoload QuestPoint
 		give "a quest point" "$n"
 	endif
