@@ -55,7 +55,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     private boolean stoppingQuest=false;
     protected int spawn=SPAWN_NO;
     private QuestState questState=new QuestState();
-    private boolean runningCopy=false;
+    private boolean copy=false;
     private Hashtable stepEllapsedTimes=new Hashtable();
 
     // the unique name of the quest
@@ -112,8 +112,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public int duration(){return duration;}
     public void setDuration(int newTicks){duration=newTicks;}
     
-    public void setCopy(boolean truefalse){runningCopy=truefalse;}
-    public boolean isCopy(){return runningCopy;}
+    public void setCopy(boolean truefalse){copy=truefalse;}
+    public boolean isCopy(){return copy;}
 
     public void setSpawn(int spawnFlag){spawn=(spawnFlag<0)?0:spawnFlag;}
     public int getSpawn(){return spawn;}
@@ -2486,7 +2486,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public void spawnQuest(String script, boolean reTime)
+    public boolean spawnQuest(String script, boolean reTime)
     {
         Quest Q2=(Quest)CMClass.getCommon("DefaultQuest");
         Q2.setCopy(true);
@@ -2500,42 +2500,33 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	ellapsed=new Long(ellapsed.longValue()+(System.currentTimeMillis()-lastStartDateTime));
         	stepEllapsedTimes.put(script,ellapsed);
             Q2.resetWaitRemaining(ellapsed.longValue());
-            // problem is that possiblyStartQuest sets the time remaining (sets to RUNNING state), then
-            // calls startQuest, which calls stopQuest, deletes the quest, but keeps it running because 
-            // it re-enters a running state.  Only happens with the spawned ones because only they are
-            // deleted when they are stopped.
-            Q2.possiblyStartQuest();
-            if(!Q2.running()) 
+            if(Q2.startQuestOnTime())
             {
-                CMLib.threads().deleteTick(Q2,-1);
-                CMLib.quests().delQuest(Q2);
-            }
-            else
             	stepEllapsedTimes.remove(script);
+            	return true;
+            }
         }
         else
-            Q2.startQuest();
+        if(Q2.startQuest())
+        	return true;
+    	Q2.enterDormantState();
+    	return false;
     }
     
     
     // this will execute the quest script.  If the quest is running, it
     // will call stopQuest first to shut it down.
-    public void startQuest()
+    public boolean startQuest()
     {
-        if(running()) stopQuest();
+        if(running()) 
+        	stopQuest();
+        
         Vector args=new Vector();
         questState=new QuestState();
         if((!isCopy())&&(getSpawn()!=SPAWN_NO))
         {
             if(getSpawn()==SPAWN_FIRST)
-            {
                 spawnQuest(script(),false);
-                ticksRemaining=-1;
-                if((!resetWaitRemaining(0))||(runningCopy))
-                    CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
-                lastStartDateTime=System.currentTimeMillis();
-                return;
-            }
             else
             if(getSpawn()==SPAWN_ANY)
             {
@@ -2567,13 +2558,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                 }
                 if(scr.toString().trim().length()>0)
-                    spawnQuest(scr.toString(),true);
-                ticksRemaining=-1;
-                if((!resetWaitRemaining(0))||(runningCopy))
-                    CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
-                lastStartDateTime=System.currentTimeMillis();
-                return;
+                	spawnQuest(scr.toString(),true);
             }
+            lastStartDateTime=System.currentTimeMillis();
+        	enterDormantState();
+            return false; // always return false, since, per se, this quest is NOT started.
         }
         Vector script=parseScripts(script(),new Vector(),args);
         try{
@@ -2586,28 +2575,37 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             if(!questState.beQuiet)
                 Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
-            stopQuest();
         }
         else
         if(!questState.done)
             Log.errOut("Quest","Nothing parsed in '"+name()+"', quest not started");
         else
         if(duration()<0)
+        {
             Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
-
+            questState.error=true;
+        }
         if((!questState.error)&&(questState.done))
         {
-	        if(duration()>0)
-	        {
-	            waitRemaining=-1;
-	            ticksRemaining=duration();
-	            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
-	        }
-            lastStartDateTime=System.currentTimeMillis();
-            stepEllapsedTimes.remove(script());
+        	enterRunningState();
+        	return true;
         }
+        stopQuest();
+        return false;
     }
 
+    public void enterRunningState()
+    {
+        if(duration()>0)
+        {
+            waitRemaining=-1;
+            ticksRemaining=duration();
+            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
+        }
+        lastStartDateTime=System.currentTimeMillis();
+        stepEllapsedTimes.remove(script());
+    }
+    
     public void cleanQuestStep()
     {
         stoppingQuest=true;
@@ -2728,15 +2726,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         stoppingQuest=false;
     }
     
-    
+
     // this will cause a quest to begin parsing its next "step".
     // this will clear out unpreserved objects from previous
     // step and resume quest script processing.
     // if this is the LAST step, stopQuest() is automatically called
     
-    public void stepQuest()
+    public boolean stepQuest()
     {
-        if((questState==null)||(stoppingQuest)||(!running())) return;
+        if((questState==null)||(stoppingQuest)||(!running())) 
+        	return false;
         cleanQuestStep();
         if(running())
         {
@@ -2757,25 +2756,26 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             if(!questState.beQuiet)
                 Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
-            stopQuest();
         }
         else
         if(!questState.done)
         {
             // valid DONE state, when stepping over the end
-            stopQuest();
         }
         else
         if(duration()<0)
+        {
             Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
+            questState.error=true;
+        }
 
         if((!questState.error)&&(questState.done)&&(duration()>=0))
         {
-            waitRemaining=-1;
-            ticksRemaining=duration();
-            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
+        	enterRunningState();
+        	return true;
         }
-        
+        stopQuest();
+        return false;
     }
     
     // this will stop executing of the quest script.  It will clean up
@@ -2791,18 +2791,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             questState.addons.setElementAt(q,2,new Integer(0));
         cleanQuestStep();
         stoppingQuest=true;
-        if(running())
-        {
-            ticksRemaining=-1;
-            if((!resetWaitRemaining(0))||(runningCopy))
-                CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
-        }
-        if(runningCopy)
-        {
-            CMLib.threads().deleteTick(this,-1);
-            CMLib.quests().delQuest(this);
-        }
+        enterDormantState();
         stoppingQuest=false;
+    }
+    
+    public boolean enterDormantState()
+    {
+    	ticksRemaining=-1;
+        if((isCopy())||(!resetWaitRemaining(0)))
+    	{
+    		CMLib.quests().delQuest(this);
+            CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
+            return false;
+    	}
+        return true;
     }
     
     public boolean resetWaitRemaining(long ellapsedTime)
@@ -2810,7 +2812,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(((minWait()<0)||(maxWait<0))
         &&(startDate().trim().length()==0))
             return false;
-        if(running()) return true;
+        if(running()) 
+        	return true;
         if(startDate().length()>0)
         {
             if(startDate().toUpperCase().startsWith("MUDDAY"))
@@ -2982,22 +2985,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             tickStatus=Tickable.STATUS_ALIVE;
             ticksRemaining--;
             if(ticksRemaining<0)
-            {
                 stepQuest();
-                if(!resetWaitRemaining(0)) 
-                    return false;
-            }
             tickStatus=Tickable.STATUS_END;
         }
         else
-            possiblyStartQuest();
+        	startQuestOnTime();
         tickStatus=Tickable.STATUS_NOT;
         return true;
     }
 
-    public void possiblyStartQuest()
+    public boolean startQuestOnTime()
     {
-        if((--waitRemaining)>=0) return;
+        if((--waitRemaining)>=0) return false;
         
         boolean allowedToRun=true;
         if(runLevel()>=0)
@@ -3020,8 +3019,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     numElligiblePlayers++;
             }
         }
+    	ticksRemaining=-1;
         if((allowedToRun)&&(numElligiblePlayers>=minPlayers))
-            startQuest();
+            return startQuest();
+        else
+        {
+        	enterDormantState();
+        	return false;
+        }
     }
     
     

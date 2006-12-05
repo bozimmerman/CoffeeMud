@@ -116,13 +116,16 @@ public class Spell_ImprovedPolymorph extends Spell
 			return false;
 
 		int targetStatTotal=0;
-		for(int s=0;s<CharStats.NUM_BASE_STATS;s++)
-			targetStatTotal+=target.baseCharStats().getStat(s);
-
 		MOB fakeMOB=CMClass.getMOB("StdMOB");
 		for(int s=0;s<CharStats.NUM_BASE_STATS;s++)
+		{
+			targetStatTotal+=target.baseCharStats().getStat(s);
 			fakeMOB.baseCharStats().setStat(s,target.baseCharStats().getStat(s));
+		}
 		fakeMOB.baseCharStats().setMyRace(R);
+		fakeMOB.recoverCharStats();
+		fakeMOB.recoverEnvStats();
+		fakeMOB.recoverMaxState();
 		fakeMOB.recoverCharStats();
 		fakeMOB.recoverEnvStats();
 		fakeMOB.recoverMaxState();
@@ -131,21 +134,22 @@ public class Spell_ImprovedPolymorph extends Spell
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=targetStatTotal-fakeStatTotal;
-        if((!CMLib.flags().canMove(fakeMOB))) statDiff+=10;
-        if((!CMLib.flags().canBreathe(fakeMOB))) statDiff+=10;
-        if((!CMLib.flags().canSee(fakeMOB))) statDiff+=3;
-        if((!CMLib.flags().canHear(fakeMOB))) statDiff+=3;
-        if((!CMLib.flags().canSpeak(fakeMOB))) statDiff+=3;
-        if((!CMLib.flags().canSmell(fakeMOB))) statDiff+=1;
+        if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target)) statDiff+=50;
+        if(CMLib.flags().canBreathe(fakeMOB)!=CMLib.flags().canBreathe(target)) statDiff+=50;
+        if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target)) statDiff+=25;
+        if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target)) statDiff+=10;
+        if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target)) statDiff+=25;
+        if(CMLib.flags().canSmell(fakeMOB)!=CMLib.flags().canSmell(target)) statDiff+=5;
+        fakeMOB.destroy();
+        
 		if(statDiff<0) statDiff=statDiff*-1;
-		int levelDiff=(mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level();
+		int levelDiff=((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;
 		}
-        fakeMOB.destroy();
 		
 		if(success)
 		{

@@ -51,9 +51,9 @@ public interface Quest extends Tickable, CMCommon
 	
 	// this will execute the quest script.  If the quest is running, it 
 	// will call stopQuest first to shut it down.
-	public void startQuest();
+	public boolean startQuest();
     
-    public void possiblyStartQuest();
+    public boolean startQuestOnTime();
 	
 	// this will stop executing of the quest script.  It will clean up 
 	// any objects or mobs which may have been loaded, restoring map 
@@ -61,7 +61,9 @@ public interface Quest extends Tickable, CMCommon
 	// will restart the waiting process
 	public void stopQuest();
 
-    public void stepQuest();
+    public boolean stepQuest();
+
+    public boolean enterDormantState();
     
     public void setCopy(boolean truefalse);
     public boolean isCopy();
