@@ -47,6 +47,7 @@ public interface Quest extends Tickable, CMCommon
 	// the rest of the script.  This may be semicolon-separated instructions, 
 	// or a LOAD command followed by the quest script path.
 	public void setScript(String parm);
+    public void setVars(Vector script, int startAtLine);
 	public String script();
 	
 	// this will execute the quest script.  If the quest is running, it 

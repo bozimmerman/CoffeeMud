@@ -152,7 +152,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
     }
     
-    protected void setVars(Vector script, int startAtLine)
+    public void setVars(Vector script, int startAtLine)
     {
         String line=null;
         Vector parsedLine=null;
@@ -160,7 +160,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         String var=null;
         String val=null;
         boolean inScript=false;
-        for(int v=0;v<script.size();v++)
+        for(int v=startAtLine;v<script.size();v++)
         {
             line=(String)script.elementAt(v);
             parsedLine=CMParms.parse(line);
@@ -2486,10 +2486,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public boolean spawnQuest(String script, boolean reTime)
+    public boolean spawnQuest(String script, Vector baseVars, boolean reTime)
     {
         Quest Q2=(Quest)CMClass.getCommon("DefaultQuest");
         Q2.setCopy(true);
+        Q2.setVars(baseVars,0);
         Q2.setScript(script);
         CMLib.quests().addQuest(Q2);
         if(reTime)
@@ -2523,10 +2524,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         
         Vector args=new Vector();
         questState=new QuestState();
+        Vector baseScript=parseScripts(script(),new Vector(),args);
         if((!isCopy())&&(getSpawn()!=SPAWN_NO))
         {
             if(getSpawn()==SPAWN_FIRST)
-                spawnQuest(script(),false);
+                spawnQuest(script(),baseScript,false);
             else
             if(getSpawn()==SPAWN_ANY)
             {
@@ -2553,20 +2555,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     }
                     if(cmd.equals("STEP"))
                     {
-                        spawnQuest(scr.toString(),true);
+                        spawnQuest(scr.toString(),baseScript,true);
                         scr=new StringBuffer("");
                     }
                 }
                 if(scr.toString().trim().length()>0)
-                	spawnQuest(scr.toString(),true);
+                	spawnQuest(scr.toString(),baseScript,true);
             }
             lastStartDateTime=System.currentTimeMillis();
         	enterDormantState();
             return false; // always return false, since, per se, this quest is NOT started.
         }
-        Vector script=parseScripts(script(),new Vector(),args);
         try{
-	        parseQuestScript(script,args,0);
+	        parseQuestScript(baseScript,args,0);
         }catch(Throwable t){
         	questState.error=true;
         	Log.errOut("DefaultQuest",t);
@@ -2734,19 +2735,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public boolean stepQuest()
     {
-        if((questState==null)||(stoppingQuest)||(!running())) 
+        if((questState==null)||(stoppingQuest)) 
         	return false;
         cleanQuestStep();
-        if(running())
-        {
-            ticksRemaining=-1;
-            if(!resetWaitRemaining(0))
-                CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
-        }
+        ticksRemaining=-1;
+        setDuration(-1);
+        
         Vector args=new Vector();
         Vector script=parseScripts(script(),new Vector(),args);
         try{
-            setDuration(-1);
+        	setVars(script,questState.lastLine);
             parseQuestScript(script,args,questState.lastLine);
         }catch(Throwable t){
             questState.error=true;
@@ -2791,6 +2789,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             questState.addons.setElementAt(q,2,new Integer(0));
         cleanQuestStep();
         stoppingQuest=true;
+        if(!isCopy()) 
+        	setScript(script()); // causes wait times/name to reload
         enterDormantState();
         stoppingQuest=false;
     }
@@ -2985,7 +2985,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             tickStatus=Tickable.STATUS_ALIVE;
             ticksRemaining--;
             if(ticksRemaining<0)
-                stepQuest();
+                stopQuest();
             tickStatus=Tickable.STATUS_END;
         }
         else

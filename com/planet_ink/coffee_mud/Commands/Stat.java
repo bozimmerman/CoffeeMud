@@ -263,31 +263,31 @@ public class Stat extends BaseAbleLister
 		if(commands.size()>1)
 		{
 			String s=((String)commands.elementAt(0)).toUpperCase();
-			if("TATTOOS".startsWith(s))
+			if("TATTOOS".equals(s)||"TATTOO".equals(s)||"TATT".equals(s))
 			{
 				ableTypes=-5;
 				commands.removeElementAt(0);
 			}
 			else
-			if("QUESTWINS".startsWith(s)||"QUESTS".startsWith(s))
+			if("QUESTWINS".equals(s)||"QUESTS".equals(s)||"QUEST".equals(s)||"QUESTWIN".equals(s))
 			{
 				ableTypes=-4;
 				commands.removeElementAt(0);
 			}
 			else
-			if("EQUIPMENT".startsWith(s))
+			if("EQUIPMENT".equals(s)||"EQ".equals(s)||"EQUIP".equals(s))
 			{
 				ableTypes=-2;
 				commands.removeElementAt(0);
 			}
 			else
-			if("COMBAT".startsWith(s))
+			if("COMBAT".equals(s))
 			{
 				ableTypes=-6;
 				commands.removeElementAt(0);
 			}
 			else
-			if("INVENTORY".startsWith(s))
+			if("INVENTORY".equals(s)||"INVEN".equals(s)||"INV".equals(s))
 			{
 				ableTypes=-3;
 				commands.removeElementAt(0);
@@ -295,7 +295,7 @@ public class Stat extends BaseAbleLister
 			else
 			for(int a=0;a<Ability.ACODE_DESCS.length;a++)
 			{
-				if((Ability.ACODE_DESCS[a]+"S").startsWith(s))
+				if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
 				{
 					ableTypes=a;
 					commands.removeElementAt(0);
