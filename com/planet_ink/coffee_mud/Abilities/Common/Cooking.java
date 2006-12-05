@@ -129,13 +129,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if((cooking!=null)&&(!aborted)&&(finalRecipe!=null)&&(building!=null))
+				if((cooking!=null)&&(finalRecipe!=null)&&(building!=null))
 				{
 					Vector V=cooking.getContents();
 					for(int v=0;v<V.size();v++)
 						((Item)V.elementAt(v)).destroy();
 					if((cooking instanceof Drink)&&(building instanceof Drink))
 						((Drink)cooking).setLiquidRemaining(0);
+					if(!aborted)
 					for(int i=0;i<finalAmount*(abilityCode());i++)
 					{
 						Item food=((Item)building.copyOf());

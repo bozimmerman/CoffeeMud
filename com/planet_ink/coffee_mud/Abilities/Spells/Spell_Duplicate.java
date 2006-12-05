@@ -56,7 +56,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 
-		int multiPlier=5+target.envStats().weight();
+		int multiPlier=5+(((target.envStats().weight())+(target.value()))/2);
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
 		multiPlier+=(target instanceof Pill)?10:0;
