@@ -149,6 +149,8 @@ public class GrinderFlatMap
 				hashRooms.put(GR.roomID,GR);
 			}
 		}
+		//for(int a=0;a<areaMap.size();a++)
+		//	((GrinderRoom)areaMap.elementAt(a)).score=scoreRoom((GrinderRoom)areaMap.elementAt(a), "X!X!X", new int[2], new HashSet(), new HashSet());
 	}
 
     public void rebuildGrid()
@@ -516,36 +518,22 @@ public class GrinderFlatMap
         return true;
     }
 
- 	public void getRadiantRooms(GrinderRoom room,
-								Vector rooms,
-								int maxDepth)
-	{
-		int depth=0;
-		if(room==null) return;
-		if(rooms.contains(room)) return;
-		rooms.addElement(room);
-		int min=0;
-		int size=rooms.size();
-		while(depth<maxDepth)
-		{
-			for(int r=min;r<size;r++)
-			{
-				GrinderRoom R1=(GrinderRoom)rooms.elementAt(r);
-				if(R1!=null)
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-					{
-						GrinderDir R=R1.doors[d];
-						GrinderRoom GR=((R!=null)?getRoom(R.room):null);
-						if((GR!=null)&&(!rooms.contains(GR)))
-							rooms.addElement(GR);
-					}
-			}
-			min=size;
-			size=rooms.size();
-			depth++;
-		}
-	}
-
+ 	public int scoreRoom(GrinderRoom room, String fromRoom, int[] xy, HashSet roomsDone, HashSet coordsDone)
+ 	{
+ 		int score=0;
+ 		roomsDone.add(room.roomID);
+ 		coordsDone.add(xy[0]+"/"+xy[1]);
+ 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+ 			if((room.doors[d]!=null)
+ 			&&(!roomsDone.contains(room.doors[d].room)))
+ 			{
+ 				int[] newXY=newXY(xy,d);
+	 			if(!coordsDone.contains(newXY[0]+"/"+newXY[1]))
+	 				score+=scoreRoom((GrinderRoom)hashRooms.get(room.doors[d]),room.roomID,newXY,roomsDone,coordsDone);
+ 			}
+ 		return score+1;
+ 	}
+ 	
 	public void placeRooms()
     {
         if(areaMap==null) return;
@@ -841,6 +829,38 @@ public class GrinderFlatMap
 			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/D"+dirLetter+theRest;
     	else
 			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/O"+dirLetter+theRest;
+    }
+    
+    
+    public int[] newXY(int[] xy, int dir)
+    {
+    	xy=(int[])xy.clone();
+        switch(dir)
+        {
+            case Directions.NORTH:
+                xy[1]--; break;
+            case Directions.SOUTH:
+            	xy[1]++; break;
+            case Directions.EAST:
+                xy[0]++; break;
+            case Directions.WEST:
+            	xy[0]--; break;
+			case Directions.NORTHEAST:
+				xy[1]--; xy[0]++; break;
+			case Directions.NORTHWEST:
+				xy[1]--; xy[0]--;break;
+			case Directions.SOUTHEAST:
+				xy[1]++; xy[0]++; break;
+			case Directions.SOUTHWEST:
+				xy[1]++; xy[0]--; break;
+            case Directions.UP:
+            	xy[1]--;
+                break;
+            case Directions.DOWN:
+            	xy[1]++;
+                break;
+        }
+        return xy;
     }
 
 	public void placeRoom(GrinderRoom room,
