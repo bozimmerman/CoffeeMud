@@ -9,14 +9,14 @@ SPEECH_PROG 'I have a delivery from'
 
 GIVE_PROG p a post-marked package
 	whisper "$n" Thank you.  Here's the stipend you were promised.
-	if !QUESTWINNER($n delivery)
+	if !QUESTWINNER($n *)
 		mpexp $n 10%
 		mpoload QuestPoint
 		give "a quest point" "$n"
 	endif
-	mpsetvar $n delivery didit
+	mpsetvar $n * didit
 	mpoload 100
 	give 100 "$n"
-	mpquestwin $n delivery
-	mpendquest delivery
+	mpquestwin $n *
+	mpendquest *
 ~

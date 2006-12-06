@@ -1,21 +1,21 @@
 # this script is for the human chosen to be the note bearer
 GREET_PROG 50
 	if has($i 'a post-marked package')
-		sayto "$n" I have a package I need to be delivered to ${2 delivery}.  If you'll deliver it, say 'I accept', and I will give you the details. A small stipend is involved.
+		sayto "$n" I have a package I need to be delivered to ${2 *}.  If you'll deliver it, say 'I accept', and I will give you the details. A small stipend is involved.
 		mpsetvar $i DELIVERY ''
 	endif
 ~
 
 SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
 	if has($i 'a post-marked package')
-		sayto "$n" I have a package I need to be delivered to ${2 delivery}.  If you'll deliver it, say 'I accept', and I will give you the details. A small stipend is involved.
+		sayto "$n" I have a package I need to be delivered to ${2 *}.  If you'll deliver it, say 'I accept', and I will give you the details. A small stipend is involved.
 		mpsetvar $i DELIVERY ''
 	endif
 ~
 
 QUEST_TIME_PROG * -1
 	if !has($i 'a post-marked package') and var('$<$i DELIVERY>' delivery != 'didit')
-		tell "$<$i DELIVERY>" "Never mind.  The package is worthless now, and I found someone else to deliver them."
+		tell "$<$i DELIVERY>" "Never mind.  The package is worthless now, and I found someone else to deliver for me."
 	endif
 	mpsetvar $i DELIVERY ''
 	mpsetvar * DELIVERY ''
@@ -25,7 +25,7 @@ QUEST_TIME_PROG * -1
 SPEECH_PROG p i accept
 	if has($i 'a post-marked package')
 		give "a post-marked package" "$n"
-		sayto "$n" Find ${2 delivery}.  Say these words: "I have a delivery from ${1 delivery}" and, if he responds, give it to him.  Understood?  Now go!
+		sayto "$n" Find ${2 *}.  Say these words: "I have a delivery from ${1 *}" and, if he responds, give it to him.  Understood?  Off you go then..
 		mpsetvar $i DELIVERY $n
 		mpsetvar $n delivery
 	endif

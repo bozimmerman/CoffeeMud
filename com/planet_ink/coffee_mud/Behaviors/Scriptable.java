@@ -7991,7 +7991,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					}
 				}
 				break;
-			case 13: // questtimeprog
+			case 13: // quest time prog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
 					Quest Q=getQuest(CMParms.getCleanBit(trigger,1));
