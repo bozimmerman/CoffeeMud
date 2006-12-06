@@ -34,7 +34,7 @@ public class GrinderRoom
 	public int x=0;
 	public int y=0;
     public int z=0;
-    public int score=0;
+    public int[] optiXY=null;
 	public String roomID="";
 	private Room roomCache=null;
 	public Room room()

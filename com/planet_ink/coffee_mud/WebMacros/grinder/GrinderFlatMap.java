@@ -446,6 +446,54 @@ public class GrinderFlatMap
                 somethingDone=true;
         }
     }
+    
+    public void optiPositionRooms()
+    {
+        for(int a=0;a<areaMap.size();a++)
+            ((GrinderRoom)areaMap.elementAt(a)).optiXY=null;
+        GrinderRoom R=null;
+        GrinderRoom R2=null;
+        for(int a=0;a<areaMap.size();a++)
+        {
+            R=(GrinderRoom)areaMap.elementAt(a);
+            if(R.optiXY==null)
+            {
+                for(int a2=a+1;a2<areaMap.size();a2++)
+                {
+                    R2=((GrinderRoom)areaMap.elementAt(a));
+                    if(R2.optiXY!=null)
+                    for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                        if((R2.doors[d]!=null)
+                        &&(R2.doors[d].room!=null)
+                        &&(R2.doors[d].room.equals(R.roomID)))
+                            R.optiXY=newXY(R2.optiXY,d);
+                }
+                if(R.optiXY==null)
+                    optiPositionRoom((GrinderRoom)areaMap.elementAt(a),new int[2],hashRooms,false);
+            }
+        }
+    }
+    public void optiPositionRoom(GrinderRoom room, int[] xy, Hashtable H, boolean ignoreUPDOWN)
+    {
+        GrinderRoom R2=null;
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            if((!ignoreUPDOWN)||((d!=Directions.UP)&&(d!=Directions.DOWN)))
+            {
+                if((room.doors[d]!=null)
+                &&(room.doors[d].room!=null)
+                &&(room.doors[d].room.length()>0))
+                {
+                    R2=(GrinderRoom)H.get(room.doors[d].room);
+                    if((R2!=null)
+                    &&(R2.optiXY==null))
+                    {
+                        R2.optiXY=newXY(xy,d);
+                        optiPositionRoom(room,R2.optiXY,H,ignoreUPDOWN);
+                    }
+                }
+            }
+    }
+    
 
     public GrinderRoom getRoom(String ID)
     {
@@ -925,12 +973,12 @@ public class GrinderFlatMap
     }
 
 	public void placeRoom(GrinderRoom room,
-                                int favoredX,
-                                int favoredY,
-                                Hashtable processed,
-                                boolean doNotDefer,
-								boolean passTwo,
-								int depth)
+                          int favoredX,
+                          int favoredY,
+                          Hashtable processed,
+                          boolean doNotDefer,
+						  boolean passTwo,
+						  int depth)
     {
         if(room==null) return;
         if(depth>500) return;
