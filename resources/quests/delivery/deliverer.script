@@ -17,8 +17,10 @@ QUEST_TIME_PROG * -1
 	if !has($i 'a post-marked package') and var('$<$i DELIVERY>' delivery != 'didit')
 		tell "$<$i DELIVERY>" "Never mind.  The package is worthless now, and I found someone else to deliver for me."
 	endif
+	if EVAL('$<$i DELIVERY>' != '')
+		mpsetvar '$<$i DELIVERY>' DELIVERY ''
+	endif
 	mpsetvar $i DELIVERY ''
-	mpsetvar * DELIVERY ''
 ~
 
 

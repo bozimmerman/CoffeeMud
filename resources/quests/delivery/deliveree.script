@@ -14,7 +14,7 @@ GIVE_PROG p a post-marked package
 		mpoload QuestPoint
 		give "a quest point" "$n"
 	endif
-	mpsetvar $n * didit
+	mpsetvar $n DELIVERY didit
 	mpoload 100
 	give 100 "$n"
 	mpquestwin $n *
