@@ -239,6 +239,8 @@ public class Construction extends CraftingSkill
 									}
 							    }catch(NoSuchElementException e){}
 								R.getArea().fillInAreaRoom(R);
+                                if(CMSecurity.isDebugging("PROPERTY"))
+                                    Log.debugOut("Construction",R.roomID()+" updated.");
 								CMLib.database().DBUpdateRoom(R);
 								CMLib.database().DBUpdateExits(R);
 							}
