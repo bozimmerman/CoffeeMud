@@ -31,10 +31,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GrinderRoom
 {
-	public int x=0;
-	public int y=0;
     public int z=0;
-    public int[] optiXY=null;
+    public int[] xy=null;
 	public String roomID="";
 	private Room roomCache=null;
 	public Room room()

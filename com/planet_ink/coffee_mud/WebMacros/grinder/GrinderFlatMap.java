@@ -153,9 +153,16 @@ public class GrinderFlatMap
 		//	((GrinderRoom)areaMap.elementAt(a)).score=scoreRoom((GrinderRoom)areaMap.elementAt(a), "X!X!X", new int[2], new HashSet(), new HashSet());
 	}
 
+	public double getDistanceFrom(int[] xy1,int[] xy2)
+	{
+		return Math.sqrt((new Integer(xy1[0]-xy2[0]).doubleValue()*new Integer(xy1[0]-xy2[0]).doubleValue())
+						+(new Integer(xy1[1]-xy2[1]).doubleValue()*new Integer(xy1[1]-xy2[1]).doubleValue()));
+	}
+	
     public void rebuildGrid()
     {
-		if(areaMap==null) return;
+		if((areaMap==null)||(hashRooms==null)) 
+			return;
 		
         // very happy special case
         if(area instanceof GridZones)
@@ -171,44 +178,193 @@ public class GrinderFlatMap
                 	areaMap.remove(room);
                 else
                 {
-	                room.x=myxy[0]-boundsXYXY[0];
-	                room.y=myxy[1]-boundsXYXY[1];
+                	room.xy=new int[2];
+	                room.xy[0]=myxy[0]-boundsXYXY[0];
+	                room.xy[1]=myxy[1]-boundsXYXY[1];
                 }
             }
         }
         else
         {
-		    // build grid!
-		    int xoffset=0;
-		    int yoffset=0;
-		    for(int x=0;x<areaMap.size();x++)
+            Vector sets=new Vector();
+            Vector bestSet=null;
+            HashSet roomsDone=new HashSet();
+            boolean didSomething=true;
+            // first, cluster the rooms WITHOUT positioning them
+            Vector finalCluster=new Vector();
+            while((roomsDone.size()<areaMap.size())&&(didSomething))
+            {
+            	didSomething=false;
+    	        for(int i=0;i<areaMap.size();i++)
+    	        {
+    	            GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
+    	            if(roomsDone.contains(room.roomID)) continue;
+    	            Vector V=scoreRoom(hashRooms, room, roomsDone,false);
+    	            if(bestSet==null)
+    	            	bestSet=V;
+    	            else
+    	            if(bestSet.size()<V.size())
+    	            	bestSet=V;
+    	        }
+    	        if(bestSet!=null)
+    	        {
+    	        	if(bestSet.size()==1)
+    	        		finalCluster.addElement(bestSet.firstElement());
+    	        	else
+    	        	{
+	    	        	GrinderRoom winnerR=(GrinderRoom)bestSet.firstElement();
+	    	        	scoreRoom(hashRooms, winnerR, roomsDone,true);
+	    	        	sets.addElement(bestSet);
+    	        	}
+    	        	for(int v=0;v<bestSet.size();v++)
+    	        		roomsDone.add(((GrinderRoom)bestSet.elementAt(v)).roomID);
+    	        	bestSet=null;
+    	        	didSomething=true;
+    	        }
+            }
+            // find leftover rooms and make them their own cluster
+            for(int a=0;a<areaMap.size();a++)
+            	if(!roomsDone.contains(((GrinderRoom)areaMap.elementAt(a)).roomID))
+            		finalCluster.add((GrinderRoom)areaMap.elementAt(a));
+            if(finalCluster.size()>0)
+            {
+	            boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
+	    		int[] midXY=new int[2];
+	    		midXY[0]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
+	    		midXY[1]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
+	    		((GrinderRoom)finalCluster.firstElement()).xy=(int[])midXY.clone();
+	    		miniGrid[midXY[0]][midXY[1]]=true;
+	            for(int f=1;f<finalCluster.size();f++)
+	            {
+	    			int[] bestCoords=new int[]{miniGrid.length-1,miniGrid.length-1};
+	    			for(int x=0;x<miniGrid.length;x++)
+	        			for(int y=0;y<miniGrid[x].length;y++)
+	        				if((!miniGrid[x][y])
+	        				&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
+	        					bestCoords=new int[]{x,y};
+	    			miniGrid[bestCoords[0]][bestCoords[1]]=true;
+		    		((GrinderRoom)finalCluster.elementAt(f)).xy=(int[])bestCoords.clone();
+	            }
+	            for(int f=0;f<finalCluster.size();f++)
+	            {
+		    		((GrinderRoom)finalCluster.elementAt(f)).xy[0]*=2;
+		    		((GrinderRoom)finalCluster.elementAt(f)).xy[1]*=2;
+	            }
+	            sets.addElement(finalCluster);
+            }
+
+            // figure out width height, and xy bounds
+            // store them in a vector parallel to each
+            Vector sizeInfo=new Vector(sets.size());
+            GrinderRoom R=null;
+            for(int s=0;s<sets.size();s++)
+            {
+            	Vector set=(Vector)sets.elementAt(s);
+        		R=((GrinderRoom)set.elementAt(0));
+            	int[] minXY=new int[]{R.xy[0],R.xy[1]};
+            	int[] maxXY=new int[]{R.xy[0],R.xy[1]};
+            	for(int r=1;r<set.size();r++)
+            	{
+            		R=((GrinderRoom)set.elementAt(r));
+            		if(R.xy[0]<minXY[0]) minXY[0]=R.xy[0];
+            		if(R.xy[1]<minXY[1]) minXY[1]=R.xy[1];
+            		
+            		if(R.xy[0]>maxXY[0]) maxXY[0]=R.xy[0];
+            		if(R.xy[1]>maxXY[1]) maxXY[1]=R.xy[1];
+            	}
+            	int[] widthHeightXY=new int[2];
+            	widthHeightXY[0]=maxXY[0]-minXY[0];
+            	widthHeightXY[1]=maxXY[1]-minXY[1];
+            	for(int r=0;r<set.size();r++)
+            	{
+            		R=((GrinderRoom)set.elementAt(r));
+            		R.xy[0]-=minXY[0];
+            		R.xy[1]-=minXY[1];
+            	}
+            	sizeInfo.add(widthHeightXY);
+            }
+            
+            // now cluster them into a top-level grid.. we'll trim the grid later.
+            // yes, i know there must be a more efficient way...
+    		Vector[][] grid=new Vector[sets.size()+1][sets.size()+1];
+    		int[] midXY=new int[2];
+    		midXY[0]=(int)Math.round(Math.floor(new Integer(sets.size()+1).doubleValue()/2.0));
+    		midXY[1]=(int)Math.round(Math.floor(new Integer(sets.size()+1).doubleValue()/2.0));
+    		grid[midXY[0]][midXY[1]]=(Vector)sets.firstElement();
+    		int mostLeft=midXY[0];
+    		int mostTop=midXY[1];
+    		for(int a=1;a<sets.size();a++)
+    		{
+    			int[] bestCoords=new int[]{grid.length-1,grid.length-1};
+    			for(int x=0;x<grid.length;x++)
+        			for(int y=0;y<grid[x].length;y++)
+        				if((grid[x][y]==null)
+        				&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
+        					bestCoords=new int[]{x,y};
+    			if(grid[bestCoords[0]][bestCoords[1]]!=null)
+    			{
+    				Log.errOut("GFlagMap","Lost a chunk of rooms to bad spiral positioning!!!");
+    				while(grid[bestCoords[0]][bestCoords[1]]!=null)
+    				{
+    					bestCoords[0]=CMLib.dice().roll(1,grid.length-1,-1);
+    					bestCoords[1]=CMLib.dice().roll(1,grid.length-1,-1);
+    				}
+    			}
+    				
+        		grid[bestCoords[0]][bestCoords[1]]=(Vector)sets.elementAt(a);
+        		if(bestCoords[0]<mostLeft)
+        			mostLeft=bestCoords[0];
+        		if(bestCoords[1]<mostTop)
+        			mostTop=bestCoords[1];
+    		}
+    		// JUST DO XS FIRST!!
+    		Vector set=null;
+    		int rightMostX=0;
+    		int nextRightMostX=0;
+    		for(int x=mostLeft;x<grid.length;x++)
+    		{
+    			for(int y=0;y<grid[x].length;y++)
+    			{
+    				set=grid[x][y];
+    				if(set!=null)
+    	            	for(int r=0;r<set.size();r++)
+    	            	{
+    	            		R=((GrinderRoom)set.elementAt(r));
+    	            		R.xy[0]+=rightMostX;
+    	            		if(R.xy[0]>nextRightMostX)
+    	            			nextRightMostX=R.xy[0];
+    	            	}
+    			}
+    			rightMostX=nextRightMostX+2;
+    		}
+    		// now do YS
+    		int bottomMostY=0;
+    		int nextBottomMostY=0;
+			for(int y=mostTop;y<grid[0].length;y++)
 			{
-				GrinderRoom GR=(GrinderRoom)areaMap.elementAt(x);
-		        if(GR.x<xoffset) xoffset=GR.x;
-		        if(GR.y<yoffset) yoffset=GR.y;
-			}
-	
-		    xoffset=xoffset*-1;
-		    yoffset=yoffset*-1;
-	
-		    Xbound=0;
-		    Ybound=0;
-		    for(int x=0;x<areaMap.size();x++)
-		    {
-		        GrinderRoom room=(GrinderRoom)areaMap.elementAt(x);
-		        room.x=room.x+xoffset;
-		        if(room.x>Xbound)
-		            Xbound=room.x;
-		        room.y=room.y+yoffset;
-		        if(room.y>Ybound)
-		            Ybound=room.y;
-		    }
+	    		for(int x=0;x<grid.length;x++)
+	    		{
+    				set=grid[x][y];
+    				if(set!=null)
+    	            	for(int r=0;r<set.size();r++)
+    	            	{
+    	            		R=((GrinderRoom)set.elementAt(r));
+    	            		R.xy[1]+=bottomMostY;
+    	            		if(R.xy[1]>nextBottomMostY)
+    	            			nextBottomMostY=R.xy[1];
+    	            	}
+    			}
+    			bottomMostY=nextBottomMostY+2;
+    		}
+			Xbound=nextRightMostX;
+			Ybound=nextBottomMostY;
         }
+        
 	    grid=new GrinderRoom[Xbound+1][Ybound+1];
 	    for(int y=0;y<areaMap.size();y++)
 	    {
 	        GrinderRoom room=(GrinderRoom)areaMap.elementAt(y);
-	        grid[room.x][room.y]=room;
+	        grid[room.xy[0]][room.xy[1]]=room;
 	    }
     }
 
@@ -217,283 +373,9 @@ public class GrinderFlatMap
         if(areaMap==null)
             return;
         grid=null;
-        placeRooms();
-        hashRooms=null;
         rebuildGrid();
+        hashRooms=null;
     }
-
-    protected GrinderRoom getProcessedRoomAt(Hashtable processed, int x, int y)
-    {
-        for(Enumeration e=processed.elements();e.hasMoreElements();)
-        {
-            GrinderRoom room=(GrinderRoom)e.nextElement();
-            if((room.x==x)&&(room.y==y))
-                return room;
-        }
-        return null;
-    }
-
-    public GrinderRoom crowdInY(int x)
-    {
-        for(int y=Ystart;y<=Ybound;y++)
-            if(grid[x][y]!=null)  return grid[x][y];
-        if(x==Xstart)
-            Xstart++;
-        else
-            Xbound--;
-        return null;
-    }
-    public GrinderRoom crowdInX(int y)
-    {
-        for(int x=Xstart;x<=Xbound;x++)
-            if(grid[x][y]!=null)
-                return grid[x][y];
-        if(y==Ystart)
-            Ystart++;
-        else
-            Ybound--;
-        return null;
-    }
-
-
-    public HashSet getCrowdedBlock(GrinderRoom startR)
-    {
-        HashSet block=new HashSet();
-        block.add(startR);
-        boolean doneSomething=true;
-        GrinderRoom R=null;
-        GrinderRoom gridEdgeR=null;
-        GrinderDir dir=null;
-        while(doneSomething)
-        {
-            doneSomething=false;
-            for(Iterator i=block.iterator();i.hasNext();)
-            {
-                R=(GrinderRoom)i.next();
-                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-                {
-                    gridEdgeR=getRoomInDir(startR,d);
-                    dir=R.doors[d];
-                    if((gridEdgeR!=null)
-                    &&(dir!=null)
-                    &&(dir.room!=null)
-                    &&(dir.room.length()>0)
-                    &&(!block.contains(gridEdgeR)))
-                    {
-                		gridEdgeR=null;
-                	    if((d==Directions.UP)||(d==Directions.DOWN))
-                	    {
-                			int actualDir=findRelGridDir(startR,dir.room);
-                			if(actualDir>=0) gridEdgeR=getRoomInDir(startR,actualDir);
-                	    }
-                	    else
-                	        gridEdgeR=getRoomInDir(startR,d);
-
-                	    if((dir.room.length()>0)&&((gridEdgeR==null)||((gridEdgeR!=null)&&(!gridEdgeR.roomID.equals(dir.room)))))
-                    	    continue;
-            	        doneSomething=true;
-            	        block.add(gridEdgeR);
-                    }
-                }
-            }
-        }
-        return block;
-    }
-
-    public GrinderRoom closestToCenter(HashSet block)
-    {
-        GrinderRoom R=null;
-        int centerX=Xstart+((Xbound-Xstart)/2);
-        int centerY=Ystart+((Ybound-Ystart)/2);
-        double bestDistance=Double.MAX_VALUE;
-        GrinderRoom winnerR=null;
-        for(Iterator i=block.iterator();i.hasNext();)
-        {
-            R=(GrinderRoom)i.next();
-            double diff=new Integer(((R.x>centerX)?R.x-centerX:centerX-R.x)
-         		   +((R.y>centerY)?R.y-centerY:centerY-R.y)).doubleValue()/2.0;
-            if(diff<bestDistance)
-            {
-                bestDistance=diff;
-                winnerR=R;
-            }
-        }
-        return winnerR;
-    }
-
-    public boolean moveCrowdToBestBlock(GrinderRoom R)
-    {
-        HashSet block=getCrowdedBlock(R);
-        if((block==null)||(block.size()==0)) return false;
-        GrinderRoom closestR=closestToCenter(block);
-        int[] newBlock=findEmptyCrowdBlock(block,closestR);
-        if(newBlock!=null)
-        {
-            // remove from old grid
-            for(Iterator i=block.iterator();i.hasNext();)
-            {
-                R=(GrinderRoom)i.next();
-                grid[R.x][R.y]=null;
-            }
-            int xworkdiff=newBlock[0]-closestR.x;
-            int yworkdiff=newBlock[1]-closestR.y;
-            for(Iterator i=block.iterator();i.hasNext();)
-            {
-                R=(GrinderRoom)i.next();
-                R.x+=xworkdiff;
-                R.y+=yworkdiff;
-                grid[R.x][R.y]=R;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public int[] findEmptyCrowdBlock(HashSet block, GrinderRoom bestR)
-    {
-        int[] found=null;
-        if(bestR==null) return null;
-        int centerX=Xstart+((Xbound-Xstart)/2);
-        int centerY=Ystart+((Ybound-Ystart)/2);
-        double bestdiff=new Integer(((bestR.x>centerX)?bestR.x-centerX:centerX-bestR.x)
-     		   +((bestR.y>centerY)?bestR.y-centerY:centerY-bestR.y)).doubleValue()/2.0;
-        double diff=0.0;
-        GrinderRoom R=null;
-        boolean good=false;
-        int xworkdiff=0;
-        int yworkdiff=0;
-        int newx=0;
-        int newy=0;
-        for(int x=Xstart;x<=Xbound;x++)
-            for(int y=Ystart;y<=Ybound;y++)
-	        {
-	            diff=new Integer(((x>centerX)?x-centerX:centerX-x)
-          		   +((y>centerY)?y-centerY:centerY-y)).doubleValue()/2.0;
-	            if(diff<bestdiff)
-	            {
-	                good=true;
-	                xworkdiff=x-bestR.x;
-	                yworkdiff=y-bestR.y;
-	                for(Iterator i=block.iterator();i.hasNext();)
-	                {
-	                    R=(GrinderRoom)i.next();
-	                    newx=R.x+xworkdiff;
-	                    newy=R.y+yworkdiff;
-	                    if((newx<=Xstart)
-	                    ||(newx>=Xbound)
-	                    ||(newy<=Ystart)
-	                    ||(newy>=Ybound))
-	                    { good=false; break;}
-
-	                    if(((grid[newx][newy]!=null)&&(!block.contains(grid[newx][newy])))
-	                    ||((grid[newx-1][newy]!=null)&&(!block.contains(grid[newx-1][newy])))
-	                    ||((grid[newx+1][newy]!=null)&&(!block.contains(grid[newx+1][newy])))
-	                    ||((grid[newx][newy-1]!=null)&&(!block.contains(grid[newx][newy-1])))
-	                    ||((grid[newx][newy+1]!=null)&&(!block.contains(grid[newx][newy+1]))))
-	                    { good=false; break;}
-	                }
-	                if(good)
-	                {
-	                    bestdiff=diff;
-	                    if(found==null) found=new int[2];
-	                    found[0]=x;
-	                    found[1]=y;
-	                }
-	            }
-	        }
-        return found;
-    }
-
-    public void crowdMap()
-    {
-    	if(area instanceof GridZones) return;
-        boolean somethingDone=true;
-        GrinderRoom R=null;
-        while(somethingDone)
-        {
-            somethingDone=false;
-            R=crowdInY(Xstart);
-            if(R!=null)
-            {
-                if(moveCrowdToBestBlock(R))
-                    somethingDone=true;
-            }
-            else
-                somethingDone=true;
-            R=crowdInY(Xbound);
-            if(R!=null)
-            {
-                if(moveCrowdToBestBlock(R))
-                    somethingDone=true;
-            }
-            else
-                somethingDone=true;
-            R=crowdInX(Ystart);
-            if(R!=null)
-            {
-                if(moveCrowdToBestBlock(R))
-                    somethingDone=true;
-            }
-            else
-                somethingDone=true;
-            R=crowdInX(Ybound);
-            if(R!=null)
-            {
-                if(moveCrowdToBestBlock(R))
-                    somethingDone=true;
-            }
-            else
-                somethingDone=true;
-        }
-    }
-    
-    public void optiPositionRooms()
-    {
-        for(int a=0;a<areaMap.size();a++)
-            ((GrinderRoom)areaMap.elementAt(a)).optiXY=null;
-        GrinderRoom R=null;
-        GrinderRoom R2=null;
-        for(int a=0;a<areaMap.size();a++)
-        {
-            R=(GrinderRoom)areaMap.elementAt(a);
-            if(R.optiXY==null)
-            {
-                for(int a2=a+1;a2<areaMap.size();a2++)
-                {
-                    R2=((GrinderRoom)areaMap.elementAt(a));
-                    if(R2.optiXY!=null)
-                    for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-                        if((R2.doors[d]!=null)
-                        &&(R2.doors[d].room!=null)
-                        &&(R2.doors[d].room.equals(R.roomID)))
-                            R.optiXY=newXY(R2.optiXY,d);
-                }
-                if(R.optiXY==null)
-                    optiPositionRoom((GrinderRoom)areaMap.elementAt(a),new int[2],hashRooms,false);
-            }
-        }
-    }
-    public void optiPositionRoom(GrinderRoom room, int[] xy, Hashtable H, boolean ignoreUPDOWN)
-    {
-        GrinderRoom R2=null;
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-            if((!ignoreUPDOWN)||((d!=Directions.UP)&&(d!=Directions.DOWN)))
-            {
-                if((room.doors[d]!=null)
-                &&(room.doors[d].room!=null)
-                &&(room.doors[d].room.length()>0))
-                {
-                    R2=(GrinderRoom)H.get(room.doors[d].room);
-                    if((R2!=null)
-                    &&(R2.optiXY==null))
-                    {
-                        R2.optiXY=newXY(xy,d);
-                        optiPositionRoom(room,R2.optiXY,H,ignoreUPDOWN);
-                    }
-                }
-            }
-    }
-    
 
     public GrinderRoom getRoom(String ID)
     {
@@ -512,52 +394,6 @@ public class GrinderFlatMap
 
     protected final static int CLUSTERSIZE=3;
 
-    protected boolean isEmptyCluster(Hashtable processed, int x, int y)
-    {
-        for(Enumeration e=processed.elements();e.hasMoreElements();)
-        {
-            GrinderRoom room=(GrinderRoom)e.nextElement();
-            if((((room.x>x-CLUSTERSIZE)&&(room.x<x+CLUSTERSIZE))
-            &&((room.y>y-CLUSTERSIZE)&&(room.y<y+CLUSTERSIZE)))
-            ||((room.x==x)&&(room.y==y)))
-                return false;
-        }
-        return true;
-    }
-
-    protected void findEmptyCluster(Hashtable processed, Vector XY)
-    {
-        int x=((Integer)XY.elementAt(0)).intValue();
-        int y=((Integer)XY.elementAt(1)).intValue();
-        int spacing=CLUSTERSIZE;
-        while(true)
-        {
-            for(int i=0;i<8;i++)
-            {
-                int yadjust=0;
-                int xadjust=0;
-                switch(i)
-                {
-                    case 0: xadjust=1; break;
-                    case 1: xadjust=1;yadjust=1; break;
-                    case 2: yadjust=1; break;
-                    case 3: xadjust=1;xadjust=-1; break;
-                    case 4: xadjust=-1; break;
-                    case 5: xadjust=-1;yadjust=-1; break;
-                    case 6: yadjust=-1; break;
-                    case 7: yadjust=-1;xadjust=1; break;
-                }
-                if(isEmptyCluster(processed,x+(spacing*xadjust),y+(spacing*yadjust)))
-                {
-                    XY.setElementAt(new Integer(x+(spacing*xadjust)),0);
-                    XY.setElementAt(new Integer(y+(spacing*yadjust)),1);
-                    return;
-                }
-            }
-            spacing+=1;
-        }
-    }
-
     public boolean anythingThatDirection(GrinderRoom room, int direction)
     {
         GrinderDir D=room.doors[direction];
@@ -566,17 +402,21 @@ public class GrinderFlatMap
         return true;
     }
 
-	public Vector scoreRoom(Hashtable H, GrinderRoom room)
+	public Vector scoreRoom(Hashtable H, GrinderRoom room, HashSet roomsDone, boolean finalPosition)
 	{
 		HashSet coordsDone=new HashSet();
 		coordsDone.add(0+"/"+0);
-		HashSet roomsDone=new HashSet();
+		
+		HashSet myRoomsDone=new HashSet();
+		myRoomsDone.add(room.roomID);
+		
 		Hashtable xys=new Hashtable();
-		roomsDone.add(room.roomID);
+		int[] xy=new int[2];
+		if(finalPosition) room.xy=xy;
+		xys.put(room.roomID,xy);
+		
 		Vector V=new Vector();
 		V.addElement(room);
-		int[] xy=new int[2];
-		xys.put(room.roomID,xy);
 		int startHere=0;
 		while(startHere!=V.size())
 		{
@@ -591,6 +431,7 @@ public class GrinderFlatMap
 		 			if((R.doors[d]!=null)
 		 			&&(R.doors[d].room!=null)
 				 	&&(R.doors[d].room.length()>0)
+		 			&&(!myRoomsDone.contains(R.doors[d].room))
 		 			&&(!roomsDone.contains(R.doors[d].room)))
 		 			{
 		 				GrinderRoom R2=(GrinderRoom)H.get(R.doors[d].room);
@@ -599,7 +440,8 @@ public class GrinderFlatMap
 		 				xys.put(R2.roomID,xy2);
 		 				if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
 		 				{
-			 				roomsDone.add(R2.roomID);
+		 					if(finalPosition) R2.xy=xy2;
+			 				myRoomsDone.add(R2.roomID);
 			 				coordsDone.add(xy2[0]+"/"+xy2[1]);
 			 				V.addElement(R2);
 		 				}
@@ -609,82 +451,6 @@ public class GrinderFlatMap
 		return V;
 	}
 	
-	public void specialSortAreaMap()
-	{
-        Vector sets=new Vector();
-        for(int i=0;i<areaMap.size();i++)
-        {
-            GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
-            Vector V=scoreRoom(hashRooms, room);
-            if(sets.size()==0) 
-            	sets.addElement(V);
-            else
-            for(int s=0;s<sets.size();s++)
-            	if(((Vector)sets.elementAt(s)).size()<=V.size())
-            	{ sets.insertElementAt(V,s); break;}
-        }
-        Vector newAreaMap=new Vector();
-        HashSet newAreaMapDone=new HashSet();
-        for(int s=0;s<sets.size();s++)
-        {
-        	Vector V=(Vector)sets.elementAt(s);
-        	for(int v=0;v<V.size();v++)
-        		if(!newAreaMapDone.contains(V.elementAt(v)))
-        		{
-        			newAreaMap.add(V.elementAt(v));
-        			newAreaMapDone.add(V.elementAt(v));
-        		}
-        }
-        for(int i=0;i<areaMap.size();i++)
-        	if(!newAreaMapDone.contains(areaMap.elementAt(i)))
-        		newAreaMap.add(areaMap.elementAt(i));
-        areaMap=newAreaMap;
-	}
-	
-	public void placeRooms()
-    {
-        if(areaMap==null) return;
-        if(areaMap.size()==0) return;
-        
-        // very happy special case
-        if(area instanceof GridZones) return;
-
-        for(int i=0;i<areaMap.size();i++)
-        {
-            GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
-            room.x=0;
-            room.y=0;
-            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-            {
-                GrinderDir dir=room.doors[d];
-                if(dir!=null)
-                    dir.positionedAlready=false;
-            }
-        }
-        
-        specialSortAreaMap();
-        
-        Hashtable processed=new Hashtable();
-        boolean doneSomething=true;
-
-        while((areaMap.size()>processed.size())&&(doneSomething))
-        {
-            doneSomething=false;
-            for(int i=0;i<areaMap.size();i++)
-            {
-                GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
-                if(!processed.containsKey(room.roomID))
-                {
-                    placeRoom(room,0,0,processed,true,true,0);
-                    doneSomething=true;
-                }
-            }
-        }
-
-        if(areaMap.size()>processed.size())
-            Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) were not placed.");
-    }
-
 	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -861,36 +627,36 @@ public class GrinderFlatMap
 	    switch(d)
 	    {
 	        case Directions.NORTH:
-	            if(room.y>0)
-	                return grid[room.x][room.y-1];
+	            if(room.xy[1]>0)
+	                return grid[room.xy[0]][room.xy[1]-1];
 	            break;
 	        case Directions.SOUTH:
-	            if(room.y<Ybound)
-	                return grid[room.x][room.y+1];
+	            if(room.xy[1]<Ybound)
+	                return grid[room.xy[0]][room.xy[1]+1];
 	            break;
 	        case Directions.NORTHWEST:
-	            if((room.y>0)&&(room.x>0))
-	                return grid[room.x-1][room.y-1];
+	            if((room.xy[1]>0)&&(room.xy[0]>0))
+	                return grid[room.xy[0]-1][room.xy[1]-1];
 	            break;
 	        case Directions.SOUTHWEST:
-	            if((room.y<Ybound)&&(room.x>0))
-	                return grid[room.x-1][room.y+1];
+	            if((room.xy[1]<Ybound)&&(room.xy[0]>0))
+	                return grid[room.xy[0]-1][room.xy[1]+1];
 	            break;
 	        case Directions.NORTHEAST:
-	            if((room.y>0)&&(room.x<Xbound))
-	                return grid[room.x+1][room.y-1];
+	            if((room.xy[1]>0)&&(room.xy[0]<Xbound))
+	                return grid[room.xy[0]+1][room.xy[1]-1];
 	            break;
 	        case Directions.SOUTHEAST:
-	            if((room.y<Ybound)&&(room.x<Xbound))
-	                return grid[room.x+1][room.y+1];
+	            if((room.xy[1]<Ybound)&&(room.xy[0]<Xbound))
+	                return grid[room.xy[0]+1][room.xy[1]+1];
 	            break;
 	        case Directions.EAST:
-	            if(room.x<Xbound)
-	                return grid[room.x+1][room.y];
+	            if(room.xy[0]<Xbound)
+	                return grid[room.xy[0]+1][room.xy[1]];
 	            break;
 	        case Directions.WEST:
-	            if(room.x>0)
-	                return grid[room.x-1][room.y];
+	            if(room.xy[0]>0)
+	                return grid[room.xy[0]-1][room.xy[1]];
 	            break;
 	    }
 		return null;
@@ -970,121 +736,6 @@ public class GrinderFlatMap
                 break;
         }
         return xy;
-    }
-
-	public void placeRoom(GrinderRoom room,
-                          int favoredX,
-                          int favoredY,
-                          Hashtable processed,
-                          boolean doNotDefer,
-						  boolean passTwo,
-						  int depth)
-    {
-        if(room==null) return;
-        if(depth>500) return;
-        GrinderRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
-        if(anythingAt!=null)
-        {
-            // maybe someone else will take care of it?
-            if(!doNotDefer)
-                for(int r=0;r<areaMap.size();r++)
-                {
-                    GrinderRoom roomToBlame=(GrinderRoom)areaMap.elementAt(r);
-                    if(roomToBlame!=room)
-                        for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
-                        {
-                            GrinderDir RD=roomToBlame.doors[rd];
-                            if((RD!=null)
-							&&(RD.room!=null)
-							&&(!RD.positionedAlready)
-							&&(RD.room.equals(room.roomID)))
-                                return;
-                        }
-                }
-            // nope; nobody can.  It's up to this!
-            Vector XY=new Vector();
-            XY.addElement(new Integer(0));
-            XY.addElement(new Integer(0));
-            findEmptyCluster(processed,XY);
-            room.x=((Integer)XY.elementAt(0)).intValue();
-            room.y=((Integer)XY.elementAt(1)).intValue();
-        }
-        else
-        {
-            room.x=favoredX;
-            room.y=favoredY;
-        }
-
-        // once done, is never undone.  A room is
-        // considered processed only once!
-        processed.put(room.roomID,room);
-
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-        {
-            String roomID=null;
-            if(room.doors[d]!=null)
-                roomID=room.doors[d].room;
-
-            if((roomID!=null)
-			&&(roomID.length()>0)
-			&&(processed.get(roomID)==null)
-            &&(passTwo||((d!=Directions.UP)&&(d!=Directions.DOWN))))
-            {
-				GrinderRoom nextRoom=getRoom(roomID);
-                if(nextRoom!=null)
-                {
-                    int newFavoredX=room.x;
-                    int newFavoredY=room.y;
-                    switch(d)
-                    {
-                        case Directions.NORTH:
-                            newFavoredY--; break;
-                        case Directions.SOUTH:
-                            newFavoredY++; break;
-                        case Directions.EAST:
-                            newFavoredX++; break;
-                        case Directions.WEST:
-                            newFavoredX--; break;
-						case Directions.NORTHEAST:
-							newFavoredY--; newFavoredX++; break;
-						case Directions.NORTHWEST:
-							newFavoredY--; newFavoredX--;break;
-						case Directions.SOUTHEAST:
-							newFavoredY++; newFavoredX++; break;
-						case Directions.SOUTHWEST:
-							newFavoredY++; newFavoredX--; break;
-                        case Directions.UP:
-                            if(!anythingThatDirection(room,Directions.NORTH))
-                                newFavoredY--;
-                            else
-                            if(!anythingThatDirection(room,Directions.WEST))
-                                newFavoredX--;
-                            else
-                            if(!anythingThatDirection(room,Directions.EAST))
-                                newFavoredX++;
-                            else
-                            if(!anythingThatDirection(room,Directions.SOUTH))
-                                newFavoredY++;
-                            break;
-                        case Directions.DOWN:
-                            if(!anythingThatDirection(room,Directions.SOUTH))
-                                newFavoredY++;
-                            else
-                            if(!anythingThatDirection(room,Directions.EAST))
-                                newFavoredX++;
-                            else
-                            if(!anythingThatDirection(room,Directions.WEST))
-                                newFavoredX--;
-                            else
-                            if(!anythingThatDirection(room,Directions.NORTH))
-                                newFavoredY--;
-                            break;
-                    }
-                    room.doors[d].positionedAlready=true;
-                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,false,passTwo,depth+1);
-                }
-            }
-        }
     }
 
 	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq)
