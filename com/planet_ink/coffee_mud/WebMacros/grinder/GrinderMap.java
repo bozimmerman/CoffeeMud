@@ -72,8 +72,8 @@ public class GrinderMap extends GrinderFlatMap
         if(areaMap==null)
             return;
         grid=null;
-        hashRooms=null;
         placeRooms();
+        hashRooms=null;
         rebuildGrid();
     }
 
@@ -254,6 +254,8 @@ public class GrinderMap extends GrinderFlatMap
 				  dir.positionedAlready = false;
 			}
 		}
+		
+		specialSortAreaMap();
 
 		Hashtable processed = new Hashtable();
 		boolean doneSomething = true;

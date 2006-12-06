@@ -217,8 +217,8 @@ public class GrinderFlatMap
         if(areaMap==null)
             return;
         grid=null;
-        hashRooms=null;
         placeRooms();
+        hashRooms=null;
         rebuildGrid();
     }
 
@@ -518,22 +518,81 @@ public class GrinderFlatMap
         return true;
     }
 
- 	public int scoreRoom(GrinderRoom room, String fromRoom, int[] xy, HashSet roomsDone, HashSet coordsDone)
- 	{
- 		int score=0;
- 		roomsDone.add(room.roomID);
- 		coordsDone.add(xy[0]+"/"+xy[1]);
- 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
- 			if((room.doors[d]!=null)
- 			&&(!roomsDone.contains(room.doors[d].room)))
- 			{
- 				int[] newXY=newXY(xy,d);
-	 			if(!coordsDone.contains(newXY[0]+"/"+newXY[1]))
-	 				score+=scoreRoom((GrinderRoom)hashRooms.get(room.doors[d]),room.roomID,newXY,roomsDone,coordsDone);
- 			}
- 		return score+1;
- 	}
- 	
+	public Vector scoreRoom(Hashtable H, GrinderRoom room)
+	{
+		HashSet coordsDone=new HashSet();
+		coordsDone.add(0+"/"+0);
+		HashSet roomsDone=new HashSet();
+		Hashtable xys=new Hashtable();
+		roomsDone.add(room.roomID);
+		Vector V=new Vector();
+		V.addElement(room);
+		int[] xy=new int[2];
+		xys.put(room.roomID,xy);
+		int startHere=0;
+		while(startHere!=V.size())
+		{
+			int s=startHere;
+			int size=V.size();
+			startHere=size;
+			for(;s<size;s++)
+			{
+				GrinderRoom R=(GrinderRoom)V.elementAt(s);
+				xy=(int[])xys.get(R.roomID);
+		 		for(int d=0;d<4;d++)
+		 			if((R.doors[d]!=null)
+		 			&&(R.doors[d].room!=null)
+				 	&&(R.doors[d].room.length()>0)
+		 			&&(!roomsDone.contains(R.doors[d].room)))
+		 			{
+		 				GrinderRoom R2=(GrinderRoom)H.get(R.doors[d].room);
+		 				if(R2==null) continue;
+		 				int[] xy2=newXY(xy,d);
+		 				xys.put(R2.roomID,xy2);
+		 				if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
+		 				{
+			 				roomsDone.add(R2.roomID);
+			 				coordsDone.add(xy2[0]+"/"+xy2[1]);
+			 				V.addElement(R2);
+		 				}
+		 			}
+			}
+		}
+		return V;
+	}
+	
+	public void specialSortAreaMap()
+	{
+        Vector sets=new Vector();
+        for(int i=0;i<areaMap.size();i++)
+        {
+            GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
+            Vector V=scoreRoom(hashRooms, room);
+            if(sets.size()==0) 
+            	sets.addElement(V);
+            else
+            for(int s=0;s<sets.size();s++)
+            	if(((Vector)sets.elementAt(s)).size()<=V.size())
+            	{ sets.insertElementAt(V,s); break;}
+        }
+        Vector newAreaMap=new Vector();
+        HashSet newAreaMapDone=new HashSet();
+        for(int s=0;s<sets.size();s++)
+        {
+        	Vector V=(Vector)sets.elementAt(s);
+        	for(int v=0;v<V.size();v++)
+        		if(!newAreaMapDone.contains(V.elementAt(v)))
+        		{
+        			newAreaMap.add(V.elementAt(v));
+        			newAreaMapDone.add(V.elementAt(v));
+        		}
+        }
+        for(int i=0;i<areaMap.size();i++)
+        	if(!newAreaMapDone.contains(areaMap.elementAt(i)))
+        		newAreaMap.add(areaMap.elementAt(i));
+        areaMap=newAreaMap;
+	}
+	
 	public void placeRooms()
     {
         if(areaMap==null) return;
@@ -554,7 +613,9 @@ public class GrinderFlatMap
                     dir.positionedAlready=false;
             }
         }
-
+        
+        specialSortAreaMap();
+        
         Hashtable processed=new Hashtable();
         boolean doneSomething=true;
 
