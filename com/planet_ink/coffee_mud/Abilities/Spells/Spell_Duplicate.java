@@ -56,7 +56,8 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 
-		int multiPlier=5+(((target.envStats().weight())+(target.value()))/2);
+		int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
+		int multiPlier=5+(((target.envStats().weight())+value)/2);
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
 		multiPlier+=(target instanceof Pill)?10:0;
@@ -73,8 +74,8 @@ public class Spell_Duplicate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		mob.tell("You lose "+expLoss+" experience points.");
-        expLoss=getXPCOSTAdjustment(mob,expLoss);
+        expLoss=getXPCOSTAdjustment(mob,-expLoss);
+		mob.tell("You lose "+(-expLoss)+" experience points.");
 		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 
 		boolean success=proficiencyCheck(mob,0,auto);
@@ -96,6 +97,11 @@ public class Spell_Duplicate extends Spell
 					((Room)target.owner()).addItemRefuse(newTarget,Item.REFUSE_PLAYER_DROP);
 				else
 					mob.addInventory(newTarget);
+				if(newTarget instanceof Coins)
+					((Coins)newTarget).putCoinsBack();
+				else
+				if(newTarget instanceof RawMaterial)
+					((RawMaterial)newTarget).rebundle();
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

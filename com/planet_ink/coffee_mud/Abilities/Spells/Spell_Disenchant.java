@@ -59,7 +59,8 @@ public class Spell_Disenchant extends Spell
 			doneSomething=true;
 		}
 		else
-		if(target.envStats().ability()>0)
+		if((target.envStats().ability()>0)
+		&&(!(target instanceof Coins)))
 		{
 			level=level-(target.baseEnvStats().ability()*3);
 			target.baseEnvStats().setAbility(0);
