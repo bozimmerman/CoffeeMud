@@ -897,9 +897,40 @@ public class List extends StdCommand
 
 	public String listResources(MOB mob, String parm)
 	{
-		Enumeration keys=Resources.findResourceKeys(parm).elements();
-		
-		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
+		Vector keySet=Resources.findResourceKeys(parm);
+		if(keySet.size()==1)
+		{
+			String key=(String)keySet.firstElement();
+			StringBuffer str=new StringBuffer("^x"+key.toString()+"^?\n\r");
+			Object o=Resources.getResource(key);
+			if(o instanceof Vector) str.append(CMParms.toStringList((Vector)o));
+			else
+			if(o instanceof Hashtable) str.append(CMParms.toStringList((Hashtable)o));
+			else
+			if(o instanceof HashSet) str.append(CMParms.toStringList((HashSet)o));
+			else
+			if(o instanceof String[]) str.append(CMParms.toStringList((String[])o));
+			else
+			if(o instanceof boolean[]) str.append(CMParms.toStringList((boolean[])o));
+			if(o instanceof byte[]) str.append(CMParms.toStringList((byte[])o));
+			else
+			if(o instanceof char[]) str.append(CMParms.toStringList((char[])o));
+			else
+			if(o instanceof double[]) str.append(CMParms.toStringList((double[])o));
+			else
+			if(o instanceof int[]) str.append(CMParms.toStringList((int[])o));
+			else
+			if(o instanceof long[]) str.append(CMParms.toStringList((long[])o));
+			else
+			if(o!=null)
+				str.append(o.toString());
+			return str.toString();
+		}
+		else
+		{
+			Enumeration keys=keySet.elements();
+			return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
+		}
 	}
 	
     public String listMaterials()
