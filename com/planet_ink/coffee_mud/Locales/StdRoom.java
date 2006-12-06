@@ -1379,6 +1379,31 @@ public class StdRoom implements Room
 	}
     public boolean amDestroyed(){return amDestroyed;}
 
+	public boolean isHere(Environmental E)
+	{
+		if(E instanceof Item)
+			return isContent((Item)E);
+		else
+		if(E instanceof MOB)
+			return isInhabitant((MOB)E);
+		else
+		if(E instanceof Exit)
+		{
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if(rawExits()[d]==E) return true;
+		}
+		else
+		if(E instanceof Room)
+			return isSameRoom(E);
+		else
+		if(E instanceof Ability)
+			return fetchEffect(E.ID())!=null;
+		else
+		if(E instanceof Behavior)
+			return fetchBehavior(E.ID())!=null;
+		return false;
+	}
+	
 	public MOB fetchInhabitant(String inhabitantID)
 	{
 		MOB mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);

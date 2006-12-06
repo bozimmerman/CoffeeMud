@@ -59,6 +59,7 @@ public class Spell_AddLimb extends Spell
                 noloop=true;
     			if((mob.location()!=null)&&(!mob.amDead()))
     				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
+    			mob.recoverCharStats();
     			mob.confirmWearability();
     		}
         }

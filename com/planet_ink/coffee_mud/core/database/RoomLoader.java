@@ -444,9 +444,15 @@ public class RoomLoader
 		{
 			Item keyItem=(Item)e.nextElement();
 			String location=(String)itemLocs.get(keyItem);
-			Item container=(Item)itemNums.get(location);
-			if(container!=null)
-				keyItem.setContainer(container);
+			Environmental container=(Environmental)itemNums.get(location);
+			if((container instanceof Container)&&(((Container)container).capacity()>0))
+				keyItem.setContainer((Container)container);
+			else
+			if(container instanceof Rideable)
+				keyItem.setRiding((Rideable)container);
+			else
+			if(container instanceof Item)
+				keyItem.setContainer((Item)container);
 		}
 	}
 
@@ -695,6 +701,13 @@ public class RoomLoader
 		{
 			Item thisItem=(Item)items.elementAt(i);
 			thisItem.setExpirationDate(0); // saved items won't clear!
+			Environmental container=thisItem.container();
+			if((container==null)
+			&&(thisItem.riding()!=null)
+			&&(thisItem.riding().savable())
+			&&(room.isHere(thisItem.riding())))
+				container=thisItem.riding();
+			
 			DB.update(
 			"INSERT INTO CMROIT ("
 			+"CMROID, "
@@ -711,7 +724,7 @@ public class RoomLoader
 			+"'"+room.roomID()+"',"
 			+"'"+thisItem+"',"
 			+"'"+thisItem.ID()+"',"
-			+"'"+((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"
+			+"'"+((container!=null)?(""+container):"")+"',"
 			+"'"+thisItem.text()+" ',"
 			+thisItem.baseEnvStats().rejuv()+","
 			+thisItem.usesRemaining()+","

@@ -204,6 +204,7 @@ public interface Room extends Environmental, Affectable, Behavable
 							  Environmental tool,
 							  int allCode,
 							  String allMessage);
+	public boolean isHere(Environmental E);
 
 	public MOB fetchInhabitant(String inhabitantID);
 	public void addInhabitant(MOB mob);

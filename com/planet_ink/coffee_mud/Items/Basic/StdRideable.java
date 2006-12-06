@@ -64,6 +64,18 @@ public class StdRideable extends StdContainer implements Rideable
 		super.destroy();
 	}
 
+	public boolean savable()
+	{
+		Rider R=null;
+		for(int r=0;r<numRiders();r++)
+		{
+			R=fetchRider(r);
+			if(!R.savable())
+				return false;
+		}
+		return super.savable();
+	}
+	
 	public boolean isMobileRideBasis()
 	{
 		switch(rideBasis()){

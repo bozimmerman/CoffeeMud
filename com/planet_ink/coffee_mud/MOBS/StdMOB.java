@@ -2796,7 +2796,8 @@ public class StdMOB implements MOB
 			CMMsg msg=CMClass.getMsg(this,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
 			if((R.okMessage(this,msg))
 			&&(item.okMessage(item,msg))
-            &&((charStats().getWearableRestrictionsBitmap()&oldCode)==0))
+            &&((charStats().getWearableRestrictionsBitmap()&oldCode)==0)
+			&&(item.canWear(this,oldCode)))
 			   item.wearAt(oldCode);
 		}
 	}

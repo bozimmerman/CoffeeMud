@@ -62,6 +62,7 @@ public class ThinRoom implements Room {
 	public void toggleMobility(boolean onoff){}
 	public boolean getMobility(){return true;}
 	private boolean recurse=false;
+	public boolean isHere(Environmental E){return false;}
 	
 	public Room prepareRoomInDir(Room R, int direction)
 	{

@@ -94,6 +94,19 @@ public class StdRideable extends StdMOB implements Rideable
 		}
 		return true;
 	}
+	
+	public boolean savable()
+	{
+		Rider R=null;
+		for(int r=0;r<numRiders();r++)
+		{
+			R=fetchRider(r);
+			if(!R.savable())
+				return false;
+		}
+		return super.savable();
+	}
+	
 	// common item/mob stuff
 	public int rideBasis(){return rideBasis;}
 	public void setRideBasis(int basis){rideBasis=basis;}
