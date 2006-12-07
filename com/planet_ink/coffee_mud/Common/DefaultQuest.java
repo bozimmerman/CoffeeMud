@@ -2632,21 +2632,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     if(B!=null) B.endQuest(E,M,name());
                     CMLib.tracking().wanderAway(M,true,false);
                     Room R=M.getStartRoom();
+                    if(M.location()!=null)
+                        M.location().delInhabitant(M);
+                    M.setLocation(null);
+                    M.destroy();
                     if(R!=null)
-                    {
-                        if(M.location()!=null)
-                            M.location().delInhabitant(M);
-                        M.setLocation(null);
-                        M.destroy();
                         CMLib.map().resetRoom(R);
-                    }
-                    else
-                    {
-                        if(M.location()!=null)
-                            M.location().delInhabitant(M);
-                        M.setLocation(null);
-                        M.destroy();
-                    }
                 }
             }
         }

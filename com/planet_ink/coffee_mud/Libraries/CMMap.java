@@ -1080,6 +1080,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			boolean mobile=room.getMobility();
 			room.toggleMobility(false);
 			if(resetMsg==null) resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
+			resetMsg.setTarget(room);
 			room.executeMsg(room,resetMsg);
 			emptyRoom(room,null);
 	        Ability A=null;
