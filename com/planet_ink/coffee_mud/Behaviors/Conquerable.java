@@ -716,33 +716,6 @@ public class Conquerable extends Arrest
 		return super.okMessage(myHost,msg);
 	}
 
-	public void setControlPoints(String clanID, int newControlPoints)
-	{
-		int changeAmount=0;
-		synchronized(clanControlPoints)
-		{
-			int index=-1;
-			for(int v=0;v<clanControlPoints.size();v++)
-			{
-				if(((String)clanControlPoints.elementAt(v,1)).equalsIgnoreCase(clanID))
-				{ index=v; break;}
-			}
-			int[] i=null;
-			if(index>=0)
-				i=(int[])clanControlPoints.elementAt(index,2);
-			if(i==null)
-			{
-				if(newControlPoints>0)
-					changeAmount=newControlPoints;
-			}
-			else
-				changeAmount=newControlPoints-i[0];
-		}
-		if(changeAmount!=0)
-			changeControlPoints(clanID,changeAmount);
-	}
-
-	
     protected void declareWinner(String clanID)
 	{
 		if((holdingClan.equals(clanID))||(totalControlPoints<0))
@@ -793,6 +766,7 @@ public class Conquerable extends Arrest
 		{
 			if(!clanItems.contains(I))
 				clanItems.addElement(I);
+			I.setExpirationDate(0);
 		}
 	}
     
