@@ -1022,6 +1022,7 @@ public class CMClass extends ClassLoader
         if((super.findLoadedClass(className)!=null)
         ||(className.indexOf("com.planet_ink.coffee_mud.")<0)
         ||(className.startsWith("com.planet_ink.coffee_mud.core."))
+        ||(className.startsWith("com.planet_ink.coffee_mud.application."))
         ||(className.indexOf(".interfaces.")>=0))
         {
 	        try{

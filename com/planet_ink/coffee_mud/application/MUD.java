@@ -46,29 +46,31 @@ import java.sql.*;
 
 public class MUD extends Thread implements MudHost
 {
-	public static final float HOST_VERSION_MAJOR=(float)5.2;
-	public static final long  HOST_VERSION_MINOR=10;
+    private static final float HOST_VERSION_MAJOR=(float)5.2;
+    private static final long  HOST_VERSION_MINOR=10;
 	
-	public static boolean bringDown=false;
-	public static String execExternalCommand=null;
-	public static Server imserver=null;
-	public static IMC2Driver imc2server=null;
-    public static SaveThread saveThread=null;
-    public static UtiliThread utiliThread=null;
-	public static Vector webServers=new Vector();
-	public static SMTPserver smtpServerThread=null;
-	public static DVector accessed=new DVector(2);
-	public static Vector autoblocked=new Vector();
-	public static Vector databases=new Vector();
-
-	public static boolean serverIsRunning = false;
-	public static boolean isOK = false;
-
-	public boolean acceptConnections=false;
-	public String host="MyHost";
-	public int port=5555;
-    public final static String[] STATE_STRING={"waiting","accepting","allowing"};
-    public int state=0;
+    private static boolean bringDown=false;
+    private static String execExternalCommand=null;
+    private static Server imserver=null;
+    private static IMC2Driver imc2server=null;
+    private static SaveThread saveThread=null;
+    private static UtiliThread utiliThread=null;
+    private static Vector webServers=new Vector();
+    private static SMTPserver smtpServerThread=null;
+    private static DVector accessed=new DVector(2);
+    private static Vector autoblocked=new Vector();
+    private static Vector databases=new Vector();
+    
+    private static boolean serverIsRunning = false;
+    
+    protected static boolean isOK = false;
+    protected boolean acceptConnections=false;
+    protected String host="MyHost";
+    protected int port=5555;
+    
+    
+    private final static String[] STATE_STRING={"waiting","accepting","allowing"};
+    private int state=0;
 	ServerSocket servsock=null;
 
 	public MUD(String name)
