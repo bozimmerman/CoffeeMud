@@ -41,6 +41,28 @@ public class Prayer_Sanctum extends Prayer
 	protected int canAffectCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+    protected boolean inRoom(MOB mob, Room R)
+    {
+        boolean inRoom=false;
+        for(int i=0;i<R.numInhabitants();i++)
+        {
+            MOB M=R.fetchInhabitant(i);
+            if(CMLib.law().doesHavePriviledgesHere(M,R))
+            { inRoom=true; break;}
+            if((text().length()>0)&&(M.Name().equals(text())))
+            { inRoom=true; break;}
+            if((text().length()>0)&&(M.getClanID().equals(text())))
+            { inRoom=true; break;}
+
+        }
+        if(!inRoom)
+        {
+            mob.tell("You feel your muscles unwilling to cooperate.");
+            return false;
+        }
+        return true;
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null)
@@ -50,7 +72,10 @@ public class Prayer_Sanctum extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==R)
 		&&(!msg.source().Name().equals(text()))
-		&&((msg.source().amFollowing()==null)||(!msg.source().amFollowing().Name().equals(text())))
+        &&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
+		&&((msg.source().amFollowing()==null)
+            ||((!msg.source().amFollowing().Name().equals(text()))
+                &&(msg.source().amFollowing().getClanID().length()==0)||(!msg.source().amFollowing().getClanID().equals(text()))))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 		{
 			msg.source().tell("You feel your muscles unwilling to cooperate.");
@@ -127,8 +152,16 @@ public class Prayer_Sanctum extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMLib.database().DBUpdateRoom((Room)target);
+                    if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
+                        setMiscText(mob.getClanID());
+                    if((mob.getClanID().length()>0)
+                    &&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
+                        beneficialAffect(mob,target,asLevel,0);
+                    else
+                    {
+    					target.addNonUninvokableEffect((Ability)this.copyOf());
+    					CMLib.database().DBUpdateRoom((Room)target);
+                    }
 				}
 				else
 					beneficialAffect(mob,target,asLevel,0);

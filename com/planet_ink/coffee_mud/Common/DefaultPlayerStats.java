@@ -196,7 +196,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getPrompt()
 	{
 		if((prompt==null)||(prompt.length()==0))
-			return defaultPrompt;
+            return "^N%E<^c%hhp %mm %vmv^N>";
 		return prompt;
 	}
 

@@ -117,8 +117,17 @@ public class Prayer_SanctifyRoom extends Prayer
                     
                     if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
                         setMiscText(mob.getClanID());
-					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMLib.database().DBUpdateRoom((Room)target);
+                    
+                    if((mob.getClanID().length()>0)
+                    &&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target)))
+                    &&(CMLib.clans().getClan(mob.getClanID())!=null)
+                    &&(!CMLib.clans().getClan(mob.getClanID()).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
+                        beneficialAffect(mob,target,asLevel,0);
+                    else
+                    {
+    					target.addNonUninvokableEffect((Ability)this.copyOf());
+    					CMLib.database().DBUpdateRoom((Room)target);
+                    }
 				}
 				else
 					beneficialAffect(mob,target,asLevel,0);

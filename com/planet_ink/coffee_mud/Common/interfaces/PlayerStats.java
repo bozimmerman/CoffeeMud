@@ -31,7 +31,6 @@ import java.util.*;
 */
 public interface PlayerStats extends CMCommon
 {
-	public static final String defaultPrompt="^N%E<^c%hhp %mm %vmv^N>";
 	public String getEmail();
 	public void setEmail(String newAdd);
 	/** When the USER last logged off */
