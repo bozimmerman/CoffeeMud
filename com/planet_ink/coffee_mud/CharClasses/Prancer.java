@@ -34,7 +34,7 @@ import java.util.*;
 public class Prancer extends StdCharClass
 {
 	public String ID(){return "Prancer";}
-	public String name(){return "Prancer";}
+	public String name(){return "Dancer";}
 	public String baseClass(){return "Bard";}
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getMovementMultiplier(){return 18;}
@@ -154,13 +154,13 @@ public class Prancer extends StdCharClass
 		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Prancer.");
+				mob.tell("You need at least a 9 Charisma to become a Dancer.");
 			return false;
 		}
 		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Prancer.");
+				mob.tell("You need at least a 9 Strength to become a Dancer.");
 			return false;
 		}
 		if((!(mob.charStats().getMyRace().ID().equals("Human")))
@@ -169,7 +169,7 @@ public class Prancer extends StdCharClass
 		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
 		{
 			if(!quiet)
-				mob.tell("You must be Human, Elf, Halfling, or Half Elf to be a Prancer");
+				mob.tell("You must be Human, Elf, Halfling, or Half Elf to be a Dancer");
 			return false;
 		}
 

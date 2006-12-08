@@ -111,6 +111,26 @@ public class Archon extends StdCharClass
 			mob.tell("This class cannot be learned.");
 		return false;
 	}
+
+    public static final String[] ARCHON_IMMUNITIES={"Spell_Scry","Thief_Listen","Spell_Claireaudience","Spell_Clairevoyance"};
+    
+    public boolean okMessage(Environmental myHost, CMMsg msg)
+    {
+        if((msg.tool() != null)
+        &&(msg.target()==myHost)
+        &&(msg.tool() instanceof Ability)
+        &&((CMParms.indexOf(ARCHON_IMMUNITIES,msg.tool().ID())>=0)
+            ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
+            ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)))
+        {
+            ((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");
+            if(msg.source()!=msg.target())
+                msg.source().tell(msg.source(),msg.target(),msg.tool(),"<T-NAME> is immune to <O-NAME>.");
+            return false;
+        }
+        return super.okMessage(myHost, msg);
+    }
+    
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
