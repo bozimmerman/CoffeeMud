@@ -36,7 +36,7 @@ public class Prop_Doppleganger extends Property
 	public String ID() { return "Prop_Doppleganger"; }
 	public String name(){ return "Doppleganger";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	protected boolean lastLevelChangers=true;
+	//protected boolean lastLevelChangers=true;
     private int maxLevel=Integer.MAX_VALUE;
     private int minLevel=Integer.MIN_VALUE;
     protected Environmental lastOwner=null;
@@ -74,37 +74,52 @@ public class Prop_Doppleganger extends Property
     	super.executeMsg(myHost,msg);
     }
     
+    public boolean qualifies(MOB mob, Room R)
+    {
+        if((mob==affected)||(mob==null)) return false;
+        if(mob.fetchEffect(ID())!=null) return false;
+        if(mob.isMonster()) return true;
+        if((!CMSecurity.isAllowed(mob,R,"CMDMOBS"))
+        &&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
+            return true;
+        return false;
+    }
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(msg.target() instanceof Room)
-		&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
-		&&(lastLevelChangers))
+		&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
+		//&&(lastLevelChangers))
 		{
-			lastLevelChangers=false;
+			//lastLevelChangers=false;
 			MOB mob=(MOB)affected;
-
-			if((mob.location()!=null)
+			Room R=(Room)msg.target();
+			if((R!=null)
 			&&(CMLib.flags().aliveAwakeMobile(mob,true))
-			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
-			&&(mob.location().numInhabitants()>1))
+			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
 			{
 				int total=0;
 				int num=0;
 				MOB victim=mob.getVictim();
-				if(victim!=null)
+                if(qualifies(victim,R))
 				{
 					total+=victim.envStats().level();
 					num++;
 				}
-				for(int i=0;i<mob.location().numInhabitants();i++)
+                MOB entrant=(MOB)msg.source();
+                if(qualifies(entrant,R))
+                {
+                    total+=entrant.envStats().level();
+                    num++;
+                }
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=mob.location().fetchInhabitant(i);
+					MOB M=R.fetchInhabitant(i);
 					if((M!=mob)
 					&&((M.getVictim()==mob)||(victim==null))
-					&&(M.fetchEffect(ID())==null)
-			        &&(!CMSecurity.isAllowed(M,mob.location(),"CMDMOBS"))
-			        &&(!CMSecurity.isAllowed(M,mob.location(),"CMDROOMS")))
+                    &&((M!=victim)&&(M!=entrant))
+                    &&(qualifies(M,R)))
 					{
 						total+=M.envStats().level();
 						num++;
@@ -140,10 +155,12 @@ public class Prop_Doppleganger extends Property
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((ticking==affected)
+		/*if((ticking==affected)
 		&&(tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB))
 			lastLevelChangers=true;
+        */
 		return super.tick(ticking,tickID);
+        
 	}
 }
