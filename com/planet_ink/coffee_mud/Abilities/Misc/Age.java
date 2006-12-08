@@ -87,6 +87,7 @@ public class Age extends StdAbility
 		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
+            ((Item)affected).setExpirationDate(0);
 		    if(myRace==null)
 		    {
 		        MOB M=((CagedAnimal)affected).unCageMe();
