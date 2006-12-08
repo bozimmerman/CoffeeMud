@@ -4999,6 +4999,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							{
 								M.baseCharStats().setStat(i,CMath.s_int(arg3.trim()));
 								M.recoverCharStats();
+                                if(arg2.equalsIgnoreCase("RACE"))
+                                    M.charStats().getMyRace().startRacing(M,false);
 								found=true;
 								break;
 							}
@@ -5030,7 +5032,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             for(int i=0;i<M.baseState().getStatCodes().length;i++)
                                 if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
                                 {
-                                    M.curState().setStat(arg2.substring(4),arg3);
+                                    M.baseState().setStat(arg2.substring(4),arg3);
                                     found=true;
                                     break;
                                 }
@@ -5045,7 +5047,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						((MOB)newTarget).recoverCharStats();
 					newTarget.recoverEnvStats();
 					if(newTarget instanceof MOB)
+                    {
 						((MOB)newTarget).recoverMaxState();
+                        if(arg2.equalsIgnoreCase("LEVEL"))
+                        {
+                            ((MOB)newTarget).baseCharStats().getCurrentClass().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            ((MOB)newTarget).recoverCharStats();
+                            ((MOB)newTarget).recoverEnvStats();
+                        }
+                    }
 				}
 				break;
 			}
@@ -5133,6 +5143,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                     else
                                         M.baseCharStats().setStat(i,CMath.s_int(arg3.trim()));
 									M.recoverCharStats();
+                                    if(arg2.equalsIgnoreCase("RACE"))
+                                        M.charStats().getMyRace().startRacing(M,false);
 									found=true;
 									break;
 								}
@@ -5169,7 +5181,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                 for(int i=0;i<M.baseState().getStatCodes().length;i++)
                                     if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
                                     {
-                                        M.curState().setStat(arg2.substring(4),arg3);
+                                        M.baseState().setStat(arg2.substring(4),arg3);
                                         found=true;
                                         break;
                                     }
@@ -5198,7 +5210,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						((MOB)newTarget).recoverCharStats();
 					newTarget.recoverEnvStats();
 					if(newTarget instanceof MOB)
+                    {
 						((MOB)newTarget).recoverMaxState();
+                        if(arg2.equalsIgnoreCase("LEVEL"))
+                        {
+                            ((MOB)newTarget).baseCharStats().getCurrentClass().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            ((MOB)newTarget).recoverCharStats();
+                            ((MOB)newTarget).recoverEnvStats();
+                        }
+                    }
 				}
 				break;
 			}
