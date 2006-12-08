@@ -88,16 +88,21 @@ public class Announce extends StdCommand
             if(cmd1&&(!cmdm)&&(!cmdt))
                 cmd="ANNOUNCE";
         }
-		if(commands.size()>1)
-		{
-            if(cmd.equalsIgnoreCase("ANNOUNCEMSG"))
+        if(cmd.equalsIgnoreCase("ANNOUNCEMSG"))
+        {
+            String s=CMParms.combine(commands,1);
+            if(s.length()==0)
+                mob.tell("Your announce message is currently: "+mob.playerStats().announceMessage());
+            else
             {
-                String s=CMParms.combine(commands,1);
                 if(mob.playerStats()!=null)
                     mob.playerStats().setAnnounceMessage(s);
                 mob.tell("Your announce message has been changed.");
             }
-            else
+        }
+        else
+		if(commands.size()>1)
+		{
             if((!cmd.equalsIgnoreCase("ANNOUNCETO"))
             ||(((String)commands.elementAt(1)).toUpperCase().equals("ALL")))
 			{
