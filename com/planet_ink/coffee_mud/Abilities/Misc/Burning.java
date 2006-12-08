@@ -128,6 +128,7 @@ public class Burning extends StdAbility
 							}
 						}
 					}
+                    if(!(affected instanceof ClanItem))
 					switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 					{
 					case RawMaterial.MATERIAL_LIQUID:

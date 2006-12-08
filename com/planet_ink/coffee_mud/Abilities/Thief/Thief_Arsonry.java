@@ -73,6 +73,7 @@ public class Thief_Arsonry extends ThiefSkill
 				&&(I.container()==null)
 				&&(I.displayText().length()==0)
 				&&(CMLib.flags().isGettable(I))
+                &&(!(I instanceof ClanItem))
 				&&(CMLib.flags().burnStatus(I)>0))
 					choices.addElement(I);
 			}

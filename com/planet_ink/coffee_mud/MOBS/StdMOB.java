@@ -774,6 +774,7 @@ public class StdMOB implements MOB
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();
 		    
+        location().showOthers(this,null,CMMsg.MSG_BRINGTOLIFE,null);
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");
 		else

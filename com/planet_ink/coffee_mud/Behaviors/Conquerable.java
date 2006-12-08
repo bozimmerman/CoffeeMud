@@ -993,11 +993,11 @@ public class Conquerable extends Arrest
             else
 			if((holdingClan.length()>0)
 			&&(msg.source().isMonster())
-            &&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
+            &&(msg.sourceMinor()==CMMsg.TYP_LIFE)
 			&&(msg.source().getStartRoom()!=null)
 			&&(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source()))
-			&&(!msg.source().getClanID().equals(holdingClan))))
+			&&(!msg.source().getClanID().equals(holdingClan)))
 			   msg.source().setClanID(holdingClan);
 
 			if(msg.tool() instanceof ClanItem)

@@ -75,13 +75,16 @@ public class UtiliThread extends Thread
 			MOB M=null;
 			Room R=null;
 			Vector roomsToGo=new Vector();
-			boolean success=true;
+            MOB expireM=CMLib.map().god(null);
+            CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 			    R=(Room)r.nextElement();
+                expireM.setLocation(R);
+                expireMsg.setTarget(R);
 			    if((R.expirationDate()!=0)
 			    &&(currentTime>R.expirationDate())
-				&&(R.okMessage(R,CMClass.getMsg(CMLib.map().god(R),R,null,CMMsg.MSG_EXPIRE,null))))
+				&&(R.okMessage(R,expireMsg)))
 			    	roomsToGo.addElement(R);
 			    else
 			    if(!R.amDestroyed())
@@ -109,12 +112,16 @@ public class UtiliThread extends Thread
 			    }
 			    if(stuffToGo.size()>0)
 			    {
-			    	MOB god=CMLib.map().god(R);
+                    boolean success=true;
 				    for(int s=0;s<stuffToGo.size();s++)
 				    {
 				    	Environmental E=(Environmental)stuffToGo.elementAt(s);
 						status("expiring "+E.Name());
-				    	success=R.showOthers(god,E,CMMsg.MSG_EXPIRE,null);
+                        expireMsg.setTarget(E);
+                        if(R.okMessage(expireM,expireMsg))
+                            R.sendOthers(expireM,expireMsg);
+                        else
+                            success=false;
 				    	if(debug) Log.sysOut("UTILITHREAD","Expired "+E.Name()+" in "+CMLib.map().getExtendedRoomID(R)+": "+success);
 				    }
 				    stuffToGo.clear();
@@ -123,7 +130,8 @@ public class UtiliThread extends Thread
 			for(int r=0;r<roomsToGo.size();r++)
 			{
 				R=(Room)roomsToGo.elementAt(r);
-		    	MOB god=CMLib.map().god(R);
+                expireM.setLocation(R);
+                expireMsg.setTarget(R);
 				status("expirating room "+CMLib.map().getExtendedRoomID(R));
 				if(debug)
 				{
@@ -131,7 +139,7 @@ public class UtiliThread extends Thread
 					if(roomID.length()==0) roomID="(unassigned grid room, probably in the air)";
 			    	if(debug) Log.sysOut("UTILITHREAD","Expired "+roomID+".");
 				}
-				R.sendOthers(god,CMClass.getMsg(god,R,null,CMMsg.MSG_EXPIRE,null));
+				R.sendOthers(expireM,expireMsg);
 			}
 	    }
 	    catch(java.util.NoSuchElementException e){}
