@@ -50,8 +50,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		Room R=mob.location();
         String msgStr=unknownCommand();
 		if(R==null){ mob.tell(msgStr); return false;}
-        if((command.size()>0)&&(CMLib.english().isAnEvokeWord(mob,((String)command.firstElement()).toUpperCase())))
-            msgStr=CMStrings.replaceAll(unknownInvoke(),"@x1",((String)command.firstElement()).toLowerCase());
+        if(command.size()>0)
+        {
+            String word=CMLib.english().getAnEvokeWord(mob,(String)command.firstElement());
+            if(word!=null)
+                msgStr=CMStrings.replaceAll(unknownInvoke(),"@x1",word.toLowerCase());
+        }
 		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,CMParms.combine(command,0),null);
 		if(!R.okMessage(mob,msg)) return false;
 		R.send(mob,msg);

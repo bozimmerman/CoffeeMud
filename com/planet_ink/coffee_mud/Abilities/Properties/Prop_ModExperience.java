@@ -36,7 +36,7 @@ public class Prop_ModExperience extends Property
 	boolean disabled=false;
 	public String ID() { return "Prop_ModExperience"; }
 	public String name(){ return "Modifying Experience Gained";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 
 	public String accountForYourself()
 	{ return "";	}

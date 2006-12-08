@@ -128,20 +128,32 @@ public class Chant_Reincarnation extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
+        if(target.fetchEffect(ID())!=null)
+        {
+            if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,"<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>."))
+                target.delEffect(target.fetchEffect(ID()));
+            else
+                mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>.");
+            return false;
+        }
 		if(target.isMonster())
 		{
 			mob.tell("Your chant would have no effect on such a creature.");
 			return false;
 		}
 
+        boolean success=proficiencyCheck(mob,0,auto);
+        if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+        {
+            mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+            success=false;
+        }
+        
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
-
-		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			int modifier=0;
