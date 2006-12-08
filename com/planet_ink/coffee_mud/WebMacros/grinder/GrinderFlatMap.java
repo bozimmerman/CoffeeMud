@@ -185,180 +185,7 @@ public class GrinderFlatMap
             }
         }
         else
-        {
-            Vector sets=new Vector();
-            Vector bestSet=null;
-            HashSet roomsDone=new HashSet();
-            boolean didSomething=true;
-            // first, cluster the rooms WITHOUT positioning them
-            Vector finalCluster=new Vector();
-            while((roomsDone.size()<areaMap.size())&&(didSomething))
-            {
-            	didSomething=false;
-    	        for(int i=0;i<areaMap.size();i++)
-    	        {
-    	            GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
-    	            if(roomsDone.contains(room.roomID)) continue;
-    	            Vector V=scoreRoom(hashRooms, room, roomsDone,false);
-    	            if(bestSet==null)
-    	            	bestSet=V;
-    	            else
-    	            if(bestSet.size()<V.size())
-    	            	bestSet=V;
-    	        }
-    	        if(bestSet!=null)
-    	        {
-    	        	if(bestSet.size()==1)
-    	        		finalCluster.addElement(bestSet.firstElement());
-    	        	else
-    	        	{
-	    	        	GrinderRoom winnerR=(GrinderRoom)bestSet.firstElement();
-	    	        	scoreRoom(hashRooms, winnerR, roomsDone,true);
-	    	        	sets.addElement(bestSet);
-    	        	}
-    	        	for(int v=0;v<bestSet.size();v++)
-    	        		roomsDone.add(((GrinderRoom)bestSet.elementAt(v)).roomID);
-    	        	bestSet=null;
-    	        	didSomething=true;
-    	        }
-            }
-            // find leftover rooms and make them their own cluster
-            for(int a=0;a<areaMap.size();a++)
-            	if(!roomsDone.contains(((GrinderRoom)areaMap.elementAt(a)).roomID))
-            		finalCluster.add((GrinderRoom)areaMap.elementAt(a));
-            if(finalCluster.size()>0)
-            {
-	            boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
-	    		int[] midXY=new int[2];
-	    		midXY[0]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
-	    		midXY[1]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
-	    		((GrinderRoom)finalCluster.firstElement()).xy=(int[])midXY.clone();
-	    		miniGrid[midXY[0]][midXY[1]]=true;
-	            for(int f=1;f<finalCluster.size();f++)
-	            {
-	    			int[] bestCoords=new int[]{miniGrid.length-1,miniGrid.length-1};
-	    			for(int x=0;x<miniGrid.length;x++)
-	        			for(int y=0;y<miniGrid[x].length;y++)
-	        				if((!miniGrid[x][y])
-	        				&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
-	        					bestCoords=new int[]{x,y};
-	    			miniGrid[bestCoords[0]][bestCoords[1]]=true;
-		    		((GrinderRoom)finalCluster.elementAt(f)).xy=(int[])bestCoords.clone();
-	            }
-	            for(int f=0;f<finalCluster.size();f++)
-	            {
-		    		((GrinderRoom)finalCluster.elementAt(f)).xy[0]*=2;
-		    		((GrinderRoom)finalCluster.elementAt(f)).xy[1]*=2;
-	            }
-	            sets.addElement(finalCluster);
-            }
-
-            // figure out width height, and xy bounds
-            // store them in a vector parallel to each
-            Vector sizeInfo=new Vector(sets.size());
-            GrinderRoom R=null;
-            for(int s=0;s<sets.size();s++)
-            {
-            	Vector set=(Vector)sets.elementAt(s);
-        		R=((GrinderRoom)set.elementAt(0));
-            	int[] minXY=new int[]{R.xy[0],R.xy[1]};
-            	int[] maxXY=new int[]{R.xy[0],R.xy[1]};
-            	for(int r=1;r<set.size();r++)
-            	{
-            		R=((GrinderRoom)set.elementAt(r));
-            		if(R.xy[0]<minXY[0]) minXY[0]=R.xy[0];
-            		if(R.xy[1]<minXY[1]) minXY[1]=R.xy[1];
-            		
-            		if(R.xy[0]>maxXY[0]) maxXY[0]=R.xy[0];
-            		if(R.xy[1]>maxXY[1]) maxXY[1]=R.xy[1];
-            	}
-            	int[] widthHeightXY=new int[2];
-            	widthHeightXY[0]=maxXY[0]-minXY[0];
-            	widthHeightXY[1]=maxXY[1]-minXY[1];
-            	for(int r=0;r<set.size();r++)
-            	{
-            		R=((GrinderRoom)set.elementAt(r));
-            		R.xy[0]-=minXY[0];
-            		R.xy[1]-=minXY[1];
-            	}
-            	sizeInfo.add(widthHeightXY);
-            }
-            
-            // now cluster them into a top-level grid.. we'll trim the grid later.
-            // yes, i know there must be a more efficient way...
-    		Vector[][] grid=new Vector[sets.size()+1][sets.size()+1];
-    		int[] midXY=new int[2];
-    		midXY[0]=(int)Math.round(Math.floor(new Integer(sets.size()+1).doubleValue()/2.0));
-    		midXY[1]=(int)Math.round(Math.floor(new Integer(sets.size()+1).doubleValue()/2.0));
-    		grid[midXY[0]][midXY[1]]=(Vector)sets.firstElement();
-    		int mostLeft=midXY[0];
-    		int mostTop=midXY[1];
-    		for(int a=1;a<sets.size();a++)
-    		{
-    			int[] bestCoords=new int[]{grid.length-1,grid.length-1};
-    			for(int x=0;x<grid.length;x++)
-        			for(int y=0;y<grid[x].length;y++)
-        				if((grid[x][y]==null)
-        				&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
-        					bestCoords=new int[]{x,y};
-    			if(grid[bestCoords[0]][bestCoords[1]]!=null)
-    			{
-    				Log.errOut("GFlagMap","Lost a chunk of rooms to bad spiral positioning!!!");
-    				while(grid[bestCoords[0]][bestCoords[1]]!=null)
-    				{
-    					bestCoords[0]=CMLib.dice().roll(1,grid.length-1,-1);
-    					bestCoords[1]=CMLib.dice().roll(1,grid.length-1,-1);
-    				}
-    			}
-    				
-        		grid[bestCoords[0]][bestCoords[1]]=(Vector)sets.elementAt(a);
-        		if(bestCoords[0]<mostLeft)
-        			mostLeft=bestCoords[0];
-        		if(bestCoords[1]<mostTop)
-        			mostTop=bestCoords[1];
-    		}
-    		// JUST DO XS FIRST!!
-    		Vector set=null;
-    		int rightMostX=0;
-    		int nextRightMostX=0;
-    		for(int x=mostLeft;x<grid.length;x++)
-    		{
-    			for(int y=0;y<grid[x].length;y++)
-    			{
-    				set=grid[x][y];
-    				if(set!=null)
-    	            	for(int r=0;r<set.size();r++)
-    	            	{
-    	            		R=((GrinderRoom)set.elementAt(r));
-    	            		R.xy[0]+=rightMostX;
-    	            		if(R.xy[0]>nextRightMostX)
-    	            			nextRightMostX=R.xy[0];
-    	            	}
-    			}
-    			rightMostX=nextRightMostX+2;
-    		}
-    		// now do YS
-    		int bottomMostY=0;
-    		int nextBottomMostY=0;
-			for(int y=mostTop;y<grid[0].length;y++)
-			{
-	    		for(int x=0;x<grid.length;x++)
-	    		{
-    				set=grid[x][y];
-    				if(set!=null)
-    	            	for(int r=0;r<set.size();r++)
-    	            	{
-    	            		R=((GrinderRoom)set.elementAt(r));
-    	            		R.xy[1]+=bottomMostY;
-    	            		if(R.xy[1]>nextBottomMostY)
-    	            			nextBottomMostY=R.xy[1];
-    	            	}
-    			}
-    			bottomMostY=nextBottomMostY+2;
-    		}
-			Xbound=nextRightMostX;
-			Ybound=nextBottomMostY;
-        }
+            placeRooms();
         
 	    grid=new GrinderRoom[Xbound+1][Ybound+1];
 	    for(int y=0;y<areaMap.size();y++)
@@ -367,7 +194,252 @@ public class GrinderFlatMap
 	        grid[room.xy[0]][room.xy[1]]=room;
 	    }
     }
+    
+    
+    public void placeRooms()
+    {
+        if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
+            return;
+        
+        Vector sets=new Vector();
+        Vector bestSet=null;
+        HashSet roomsDone=new HashSet();
+        boolean didSomething=true;
+        // first, cluster the rooms WITHOUT positioning them
+        Vector finalCluster=new Vector();
+        while((roomsDone.size()<areaMap.size())&&(didSomething))
+        {
+            didSomething=false;
+            for(int i=0;i<areaMap.size();i++)
+            {
+                GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
+                if(roomsDone.contains(room.roomID)) continue;
+                Vector V=scoreRoom(hashRooms, room, roomsDone,false);
+                if(bestSet==null)
+                    bestSet=V;
+                else
+                if(bestSet.size()<V.size())
+                    bestSet=V;
+            }
+            if(bestSet!=null)
+            {
+                if(bestSet.size()==1)
+                    finalCluster.addElement(bestSet.firstElement());
+                else
+                {
+                    GrinderRoom winnerR=(GrinderRoom)bestSet.firstElement();
+                    scoreRoom(hashRooms, winnerR, roomsDone,true);
+                    sets.addElement(bestSet);
+                }
+                for(int v=0;v<bestSet.size();v++)
+                    roomsDone.add(((GrinderRoom)bestSet.elementAt(v)).roomID);
+                bestSet=null;
+                didSomething=true;
+            }
+        }
+        // find leftover rooms and make them their own cluster
+        for(int a=0;a<areaMap.size();a++)
+            if(!roomsDone.contains(((GrinderRoom)areaMap.elementAt(a)).roomID))
+                finalCluster.add((GrinderRoom)areaMap.elementAt(a));
+        if(finalCluster.size()>0)
+        {
+            boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
+            int[] midXY=new int[2];
+            midXY[0]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
+            midXY[1]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
+            ((GrinderRoom)finalCluster.firstElement()).xy=(int[])midXY.clone();
+            miniGrid[midXY[0]][midXY[1]]=true;
+            for(int f=1;f<finalCluster.size();f++)
+            {
+                int[] bestCoords=new int[]{miniGrid.length-1,miniGrid.length-1};
+                for(int x=0;x<miniGrid.length;x++)
+                    for(int y=0;y<miniGrid[x].length;y++)
+                        if((!miniGrid[x][y])
+                        &&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
+                            bestCoords=new int[]{x,y};
+                miniGrid[bestCoords[0]][bestCoords[1]]=true;
+                ((GrinderRoom)finalCluster.elementAt(f)).xy=(int[])bestCoords.clone();
+            }
+            for(int f=0;f<finalCluster.size();f++)
+            {
+                ((GrinderRoom)finalCluster.elementAt(f)).xy[0]*=2;
+                ((GrinderRoom)finalCluster.elementAt(f)).xy[1]*=2;
+            }
+            sets.addElement(finalCluster);
+        }
+        clusterSet(sets);
+    }
 
+    public void placeRoomsII()
+    {
+        if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
+            return;
+        
+        Vector sets=new Vector();
+        HashSet roomsDone=new HashSet();
+        boolean didSomething=true;
+        // first, cluster the rooms WITHOUT positioning them
+        Vector finalCluster=new Vector();
+        while((roomsDone.size()<areaMap.size())&&(didSomething))
+        {
+            didSomething=false;
+            for(int i=0;i<areaMap.size();i++)
+            {
+                GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
+                if(roomsDone.contains(room.roomID)) continue;
+                Vector V=scoreRoomII(hashRooms, room, roomsDone);
+                if((V!=null)&&(V.size()>0))
+                {
+                    if(V.size()==1)
+                        finalCluster.addElement(V.firstElement());
+                    else
+                        sets.addElement(V);
+                    didSomething=true;
+                }
+            }
+        }
+        // find leftover rooms and make them their own cluster
+        for(int a=0;a<areaMap.size();a++)
+            if(!roomsDone.contains(((GrinderRoom)areaMap.elementAt(a)).roomID))
+                finalCluster.add((GrinderRoom)areaMap.elementAt(a));
+        if(finalCluster.size()>0)
+        {
+            boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
+            int[] midXY=new int[2];
+            midXY[0]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
+            midXY[1]=(int)Math.round(Math.floor(new Integer(finalCluster.size()+1).doubleValue()/2.0));
+            ((GrinderRoom)finalCluster.firstElement()).xy=(int[])midXY.clone();
+            miniGrid[midXY[0]][midXY[1]]=true;
+            for(int f=1;f<finalCluster.size();f++)
+            {
+                int[] bestCoords=new int[]{miniGrid.length-1,miniGrid.length-1};
+                for(int x=0;x<miniGrid.length;x++)
+                    for(int y=0;y<miniGrid[x].length;y++)
+                        if((!miniGrid[x][y])
+                        &&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
+                            bestCoords=new int[]{x,y};
+                miniGrid[bestCoords[0]][bestCoords[1]]=true;
+                ((GrinderRoom)finalCluster.elementAt(f)).xy=(int[])bestCoords.clone();
+            }
+            for(int f=0;f<finalCluster.size();f++)
+            {
+                ((GrinderRoom)finalCluster.elementAt(f)).xy[0]*=2;
+                ((GrinderRoom)finalCluster.elementAt(f)).xy[1]*=2;
+            }
+            sets.addElement(finalCluster);
+        }
+        clusterSet(sets);
+    }
+
+    public void clusterSet(Vector sets)
+    {
+        // figure out width height, and xy bounds
+        // store them in a vector parallel to each
+        Vector sizeInfo=new Vector(sets.size());
+        GrinderRoom R=null;
+        for(int s=0;s<sets.size();s++)
+        {
+            Vector set=(Vector)sets.elementAt(s);
+            R=((GrinderRoom)set.elementAt(0));
+            int[] minXY=new int[]{R.xy[0],R.xy[1]};
+            int[] maxXY=new int[]{R.xy[0],R.xy[1]};
+            for(int r=1;r<set.size();r++)
+            {
+                R=((GrinderRoom)set.elementAt(r));
+                if(R.xy[0]<minXY[0]) minXY[0]=R.xy[0];
+                if(R.xy[1]<minXY[1]) minXY[1]=R.xy[1];
+                
+                if(R.xy[0]>maxXY[0]) maxXY[0]=R.xy[0];
+                if(R.xy[1]>maxXY[1]) maxXY[1]=R.xy[1];
+            }
+            int[] widthHeightXY=new int[2];
+            widthHeightXY[0]=maxXY[0]-minXY[0];
+            widthHeightXY[1]=maxXY[1]-minXY[1];
+            for(int r=0;r<set.size();r++)
+            {
+                R=((GrinderRoom)set.elementAt(r));
+                R.xy[0]-=minXY[0];
+                R.xy[1]-=minXY[1];
+            }
+            sizeInfo.add(widthHeightXY);
+        }
+        
+        // now cluster them into a top-level grid.. we'll trim the grid later.
+        // yes, i know there must be a more efficient way...
+        Vector[][] grid=new Vector[sets.size()+1][sets.size()+1];
+        int[] midXY=new int[2];
+        midXY[0]=(int)Math.round(Math.floor(new Integer(sets.size()+1).doubleValue()/2.0));
+        midXY[1]=(int)Math.round(Math.floor(new Integer(sets.size()+1).doubleValue()/2.0));
+        grid[midXY[0]][midXY[1]]=(Vector)sets.firstElement();
+        int mostLeft=midXY[0];
+        int mostTop=midXY[1];
+        for(int a=1;a<sets.size();a++)
+        {
+            int[] bestCoords=new int[]{grid.length-1,grid.length-1};
+            for(int x=0;x<grid.length;x++)
+                for(int y=0;y<grid[x].length;y++)
+                    if((grid[x][y]==null)
+                    &&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
+                        bestCoords=new int[]{x,y};
+            if(grid[bestCoords[0]][bestCoords[1]]!=null)
+            {
+                Log.errOut("GFlagMap","Lost a chunk of rooms to bad spiral positioning!!!");
+                while(grid[bestCoords[0]][bestCoords[1]]!=null)
+                {
+                    bestCoords[0]=CMLib.dice().roll(1,grid.length-1,-1);
+                    bestCoords[1]=CMLib.dice().roll(1,grid.length-1,-1);
+                }
+            }
+                
+            grid[bestCoords[0]][bestCoords[1]]=(Vector)sets.elementAt(a);
+            if(bestCoords[0]<mostLeft)
+                mostLeft=bestCoords[0];
+            if(bestCoords[1]<mostTop)
+                mostTop=bestCoords[1];
+        }
+        // JUST DO XS FIRST!!
+        Vector set=null;
+        int rightMostX=0;
+        int nextRightMostX=0;
+        for(int x=mostLeft;x<grid.length;x++)
+        {
+            for(int y=0;y<grid[x].length;y++)
+            {
+                set=grid[x][y];
+                if(set!=null)
+                    for(int r=0;r<set.size();r++)
+                    {
+                        R=((GrinderRoom)set.elementAt(r));
+                        R.xy[0]+=rightMostX;
+                        if(R.xy[0]>nextRightMostX)
+                            nextRightMostX=R.xy[0];
+                    }
+            }
+            rightMostX=nextRightMostX+2;
+        }
+        // now do YS
+        int bottomMostY=0;
+        int nextBottomMostY=0;
+        for(int y=mostTop;y<grid[0].length;y++)
+        {
+            for(int x=0;x<grid.length;x++)
+            {
+                set=grid[x][y];
+                if(set!=null)
+                    for(int r=0;r<set.size();r++)
+                    {
+                        R=((GrinderRoom)set.elementAt(r));
+                        R.xy[1]+=bottomMostY;
+                        if(R.xy[1]>nextBottomMostY)
+                            nextBottomMostY=R.xy[1];
+                    }
+            }
+            bottomMostY=nextBottomMostY+2;
+        }
+        Xbound=nextRightMostX;
+        Ybound=nextBottomMostY;
+    }
+    
     public void rePlaceRooms()
     {
         if(areaMap==null)
@@ -402,6 +474,73 @@ public class GrinderFlatMap
         return true;
     }
 
+    public Vector scoreRoomII(Hashtable H, GrinderRoom room, HashSet roomsDone)
+    {
+        HashSet coordsDone=new HashSet();
+        coordsDone.add(0+"/"+0);
+        roomsDone.add(room.roomID);
+        
+        Vector V=new Vector();
+        V.addElement(room);
+        int startHere=0;
+        room.xy=new int[2];
+        GrinderRoom R2=null;
+        GrinderRoom R3=null;
+        while(startHere!=V.size())
+        {
+            int s=startHere;
+            int size=V.size();
+            startHere=size;
+            for(;s<size;s++)
+            {
+                GrinderRoom R=(GrinderRoom)V.elementAt(s);
+                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                    if((R.doors[d]!=null)
+                    &&(R.doors[d].room!=null)
+                    &&(R.doors[d].room.length()>0)
+                    &&(!roomsDone.contains(R.doors[d].room))
+                    &&(!roomsDone.contains(R.doors[d].room)))
+                    {
+                        R2=(GrinderRoom)H.get(R.doors[d].room);
+                        if(R2==null) continue;
+                        R2.xy=newXY(R.xy,d);
+                        if(coordsDone.contains(R2.xy[0]+"/"+R2.xy[1]))
+                        {
+                            boolean adjust=false;
+                            for(int v=0;v<V.size();v++)
+                            {
+                                adjust=false;
+                                R3=(GrinderRoom)V.elementAt(v);
+                                switch(d)
+                                {
+                                case Directions.NORTH: adjust=(R3.xy[1]<=R2.xy[1]); break;
+                                case Directions.SOUTH: adjust=(R3.xy[1]>=R2.xy[1]); break;
+                                case Directions.EAST: adjust=(R3.xy[0]>=R2.xy[0]); break;
+                                case Directions.WEST: adjust=(R3.xy[0]<=R2.xy[0]); break;
+                                case Directions.NORTHEAST: adjust=(R3.xy[1]<=R2.xy[1])||(R3.xy[0]>=R2.xy[0]); break;
+                                case Directions.NORTHWEST: adjust=(R3.xy[1]<=R2.xy[1])||(R3.xy[0]<=R2.xy[0]); break;
+                                case Directions.SOUTHEAST: adjust=(R3.xy[1]<=R2.xy[1]); break;
+                                case Directions.SOUTHWEST: adjust=(R3.xy[1]<=R2.xy[1]); break;
+                                case Directions.UP: adjust=(R3.xy[1]<=R2.xy[1]); break;
+                                case Directions.DOWN: adjust=(R3.xy[1]>=R2.xy[1]); break;
+                                }
+                                if(adjust)
+                                {
+                                    //coordsDone.remove(R3.xy[0]+"/"+R3.xy[1]);
+                                    R3.xy=newXY(R3.xy,d);
+                                    coordsDone.add(R3.xy[0]+"/"+R3.xy[1]);
+                                }
+                            }
+                        }
+                        roomsDone.add(R2.roomID);
+                        coordsDone.add(R2.xy[0]+"/"+R2.xy[1]);
+                        V.addElement(R2);
+                    }
+            }
+        }
+        return V;
+    }
+    
 	public Vector scoreRoom(Hashtable H, GrinderRoom room, HashSet roomsDone, boolean finalPosition)
 	{
 		HashSet coordsDone=new HashSet();
@@ -622,51 +761,25 @@ public class GrinderFlatMap
 		}
 	}
 
-	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
+	protected GrinderRoom getRoomInDir(int[] xy, int d)
 	{
-	    switch(d)
-	    {
-	        case Directions.NORTH:
-	            if(room.xy[1]>0)
-	                return grid[room.xy[0]][room.xy[1]-1];
-	            break;
-	        case Directions.SOUTH:
-	            if(room.xy[1]<Ybound)
-	                return grid[room.xy[0]][room.xy[1]+1];
-	            break;
-	        case Directions.NORTHWEST:
-	            if((room.xy[1]>0)&&(room.xy[0]>0))
-	                return grid[room.xy[0]-1][room.xy[1]-1];
-	            break;
-	        case Directions.SOUTHWEST:
-	            if((room.xy[1]<Ybound)&&(room.xy[0]>0))
-	                return grid[room.xy[0]-1][room.xy[1]+1];
-	            break;
-	        case Directions.NORTHEAST:
-	            if((room.xy[1]>0)&&(room.xy[0]<Xbound))
-	                return grid[room.xy[0]+1][room.xy[1]-1];
-	            break;
-	        case Directions.SOUTHEAST:
-	            if((room.xy[1]<Ybound)&&(room.xy[0]<Xbound))
-	                return grid[room.xy[0]+1][room.xy[1]+1];
-	            break;
-	        case Directions.EAST:
-	            if(room.xy[0]<Xbound)
-	                return grid[room.xy[0]+1][room.xy[1]];
-	            break;
-	        case Directions.WEST:
-	            if(room.xy[0]>0)
-	                return grid[room.xy[0]-1][room.xy[1]];
-	            break;
-	    }
-		return null;
+        GrinderRoom GR=null;
+        xy=newXY(xy,d);
+        if((xy[0]>=0)&&(xy[1]>=0)
+        &&(xy[0]<grid.length)&&(xy[1]<grid[xy[0]].length))
+        {
+            GR=grid[xy[0]][xy[1]];
+            if(GR!=null) return GR;
+            xy=newXY(xy,d);
+        }
+        return null;
 	}
 
 	protected int findRelGridDir(GrinderRoom room, String roomID)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			GrinderRoom possRoom=getRoomInDir(room,d);
+			GrinderRoom possRoom=getRoomInDir(room.xy,d);
 			if((possRoom!=null)&&(possRoom.roomID.equals(roomID)))
 				return d;
 		}
@@ -687,10 +800,10 @@ public class GrinderFlatMap
 	    if((d==Directions.UP)||(d==Directions.DOWN))
 	    {
 			int actualDir=findRelGridDir(room,dir.room);
-			if(actualDir>=0) roomPointer=getRoomInDir(room,actualDir);
+			if(actualDir>=0) roomPointer=getRoomInDir(room.xy,actualDir);
 	    }
 	    else
-	        roomPointer=getRoomInDir(room,d);
+	        roomPointer=getRoomInDir(room.xy,d);
 
 	    String dirName=Directions.getDirectionName(d);
 	    if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))

@@ -3013,11 +3013,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	ticksRemaining=-1;
         if((allowedToRun)&&(numElligiblePlayers>=minPlayers))
             return startQuest();
-        else
-        {
-        	enterDormantState();
-        	return false;
-        }
+    	enterDormantState();
+    	return false;
     }
     
     

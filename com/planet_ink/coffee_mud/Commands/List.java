@@ -926,11 +926,8 @@ public class List extends StdCommand
 				str.append(o.toString());
 			return str.toString();
 		}
-		else
-		{
-			Enumeration keys=keySet.elements();
-			return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
-		}
+		Enumeration keys=keySet.elements();
+		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
 	}
 	
     public String listMaterials()
