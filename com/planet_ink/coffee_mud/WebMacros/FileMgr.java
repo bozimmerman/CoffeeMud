@@ -168,6 +168,23 @@ public class FileMgr extends StdWebMacro
 					return "Error creating directory!";
 				return "Created directory.";
 			}
+            else
+            if(parms.containsKey("DELETEDIR"))
+            {
+                if(!F.exists())
+                    return "Directory '"+F.getAbsolutePath()+"' does not exists -- directory not deleted!";
+                if(!F.delete())
+                    return "Error deleting directory!";
+                if(F.getAbsolutePath().equals("/"))
+                    return  "Error deleting directory!";
+                String newPath=F.getAbsolutePath();
+                if(newPath.endsWith("/")) newPath=newPath.substring(0,newPath.length()-1);
+                int x=newPath.lastIndexOf("/");
+                if(x>0) newPath=newPath.substring(0,x);
+                httpReq.addRequestParameters("PATH",newPath);
+                httpReq.removeRequestParameter("FILE");
+                return "Deleted directory.";
+            }
 			else
 			if(parms.containsKey("APPEND"))
 			{

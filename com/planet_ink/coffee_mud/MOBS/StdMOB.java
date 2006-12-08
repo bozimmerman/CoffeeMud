@@ -3099,7 +3099,9 @@ public class StdMOB implements MOB
 	}
 	public Ability findAbility(String ID)
 	{
-		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,false);
+		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,true);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,false);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,true);
 		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
 		if(A==null) A=fetchAbility(ID);
 		return A;

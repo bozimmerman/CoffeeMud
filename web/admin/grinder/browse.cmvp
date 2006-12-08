@@ -21,15 +21,24 @@
 			document.BROWSE.PATH.value=path+named+"/";
 			document.BROWSE.submit();
 		}
-		function CreateDir(named)
+		function CreateDir()
 		{
 			var named=prompt('Enter new directory name:','');
-			if(named=='') return;
+			if((named=='')||(named==null)) return;
 			document.BROWSE.FUNCTION.value="NEWDIR";
 			var path=document.BROWSE.PATH.value;
 			if((path.length>0)&&(path.lastIndexOf('/')!=path.length-1))
 				path=path+'/';
 			document.BROWSE.PATH.value=path+named+"/";
+			document.BROWSE.submit();
+		}
+		function DeleteDir()
+		{
+			document.BROWSE.FUNCTION.value="DELDIR";
+			var path=document.BROWSE.PATH.value;
+			if((path.length>0)&&(path.lastIndexOf('/')!=path.length-1))
+				path=path+'/';
+			document.BROWSE.PATH.value=path;
 			document.BROWSE.submit();
 		}
 		function NewFile(action)
@@ -54,6 +63,7 @@
 </head>
 <body BGCOLOR=BLACK>
 <FORM NAME=BROWSE TARGET=_top METHOD=POST ACTION="browse.cmvp">
+@if?CheckReqParm?FUNCTION=DELDIR@<FONT COLOR=RED>@FileMgr?DELETEDIR@</FONT><BR>@endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
@@ -61,7 +71,8 @@
 @if?CheckReqParm?FUNCTION=UPLOAD@<FONT COLOR=RED>@FileMgr?UPLOAD@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=SEARCH@<FONT COLOR=RED>@FileMgr?SEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=NAMESEARCH@<FONT COLOR=RED>@FileMgr?NAMESEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
-<a href="javascript:CreateDir();"><FONT COLOR=YELLOW>*create new dir*</FONT></a><P>
+<a href="javascript:CreateDir();"><FONT COLOR=YELLOW>*create new dir*</FONT></a>
+<a href="javascript:DeleteDir();"><FONT COLOR=YELLOW>*delete this dir*</FONT></a><P>
 <a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT></a><BR>
 @FileNext?RESET@
 @loop@
