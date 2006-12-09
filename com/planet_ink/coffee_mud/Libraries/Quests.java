@@ -97,4 +97,11 @@ public class Quests extends StdLibrary implements QuestManager
 		CMLib.database().DBUpdateQuests(quests);
 	}
     
+    public String listHolidays(Area A, String otherParms)
+    {
+        StringBuffer str=new StringBuffer("");
+        
+        return str.toString();
+    }
+    
 }

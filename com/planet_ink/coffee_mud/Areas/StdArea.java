@@ -200,6 +200,7 @@ public class StdArea implements Area
         parents=null;
         childrenToLoad=null;
         parentsToLoad=null;
+        blurbFlags=null;
         subOps=null;
         properRooms=null;
         //metroRooms=null;

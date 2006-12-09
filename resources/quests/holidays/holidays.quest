@@ -1,0 +1,5 @@
+set name holidays
+set wait 120
+set interval 1
+set spawnable all
+step break

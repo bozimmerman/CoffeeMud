@@ -172,9 +172,9 @@ public class Score extends Affect
 				if(((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
 					&&(mob.baseEnvStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
 				||(mob.getExpNeededLevel()==Integer.MAX_VALUE))
-					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, "+(mob.getExpNeededDelevel())+" over your last level.\n\r");
+					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, ^!"+(mob.getExpNeededDelevel())+"^? over your last level.\n\r");
 				else
-					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and need "+(mob.getExpNeededLevel())+" to advance.\n\r");
+					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and need ^!"+(mob.getExpNeededLevel())+"^? to advance.\n\r");
 			}
 			else
 				msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>.\n\r");

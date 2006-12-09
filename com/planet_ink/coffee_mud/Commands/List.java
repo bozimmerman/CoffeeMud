@@ -1128,6 +1128,7 @@ public class List extends StdCommand
         /*52*/{"TITLES","LISTADMIN","TITLES"},
 		/*53*/{"AREARESOURCES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1328,6 +1329,7 @@ public class List extends StdCommand
         case 52: s.wraplessPrintln(listTitles()); break;
 		case 53: s.wraplessPrintln(roomResources(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 54: s.wraplessPrintln(areaConquests(CMLib.map().sortedAreas()).toString()); break;
+        case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1)).toString()); break;
         default:
 			s.println("List?!");
 			break;

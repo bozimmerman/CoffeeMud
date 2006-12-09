@@ -1,5 +1,5 @@
-set name Harsh Winter
-set wait 20
+set name harsh winter
+set wait 120
 set interval 1
 set duration 100+(1?400)
 quiet

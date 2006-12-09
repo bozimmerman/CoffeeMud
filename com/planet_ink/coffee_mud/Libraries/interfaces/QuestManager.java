@@ -39,4 +39,6 @@ public interface QuestManager extends CMLibrary
     public void shutdown();
     public void delQuest(Quest Q);
     public void save();
+    public String listHolidays(Area A, String otherParms);
+    
 }
