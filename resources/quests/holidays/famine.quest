@@ -1,0 +1,20 @@
+set name Famine
+set wait 1
+set interval 1
+set duration 100+(1?400)
+set area
+quiet
+set room any mask=-SEASON +SUMMER -WEATHER +HEAT +DUST
+set room
+set mobgroup
+set mob
+set item
+set mobgroup any mask=+INT 3 +JAVACLASS -StdShopkeeper -GenShopkeeper
+give behavior MudChat +(food | hunger | famine)\;5we're all so hungry\;5please don't speak of the famine\;5hopefully there will be more food next season
+set room
+set mobgroup
+set mob
+set item
+set mobgroup any mask=-JAVACLASS +StdShopkeeper +GenShopkeeper
+give stat PRICEMASKS 10.0 -JAVACLASS +StdFood +GenFood +GenFoodResource
+give behavior MudChat +(food | hunger | famine)\;5yes, the famine affects us all\;5the famine has put a premium on food prices\;\;(price | prices)\;9the famine has put a premium on food prices

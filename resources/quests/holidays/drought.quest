@@ -1,0 +1,20 @@
+set name Drought
+set wait 1
+set interval 1
+set duration 100+(1?400)
+set area
+quiet
+set room any mask=-SEASON +SUMMER -WEATHER +DROUGHT
+set room
+set mobgroup
+set mob
+set item
+set mobgroup any mask=+INT 3 +JAVACLASS -StdShopkeeper -GenShopkeeper
+give behavior MudChat +(water | thirst | drought)\;5we're all so thirsty\;5please don't speak of the drought\;5hopefully there will be more rain soon
+set room
+set mobgroup
+set mob
+set item
+set mobgroup any mask=-JAVACLASS +StdShopkeeper +GenShopkeeper
+give stat PRICEMASKS 20.0 -JAVACLASS +StdDrink +GenDrink +GenLiquidResource +GenPotion +StdPotion
+give behavior MudChat +(food | hunger | drought)\;5yes, the drought affects us all\;5the drought has put a premium on water\;\;(price | prices)\;9the famine has put a premium on water prices

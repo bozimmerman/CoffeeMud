@@ -412,6 +412,7 @@ public class UtiliThread extends Thread
                     debugging=CMSecurity.isDebugging("UTILITHREAD");
                     vacuum();
                     checkHealth();
+                    Resources.removeResource("SYSTEM_HASHED_MASKS");
                     lastStop=System.currentTimeMillis();
                     milliTotal+=(lastStop-lastStart);
                     tickTotal++;

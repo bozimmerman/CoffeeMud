@@ -394,7 +394,7 @@ public class DefaultSession extends Thread implements Session
 			try{
 				if(snoops.size()>0)
 					for(int s=0;s<snoops.size();s++)
-						((Session)snoops.elementAt(s)).onlyPrint(msg,0,noCache);
+						((Session)snoops.elementAt(s)).onlyPrint("^Z"+((mob==null)?"?":mob.Name())+msg+"^N",0,noCache);
 			}catch(IndexOutOfBoundsException x){}
 
 			if(msg.endsWith("\n\r")

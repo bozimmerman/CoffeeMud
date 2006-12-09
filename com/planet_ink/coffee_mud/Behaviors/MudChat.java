@@ -43,6 +43,7 @@ public class MudChat extends StdBehavior
 	// collections.
 	protected Vector myChatGroup=null;
 	protected String myOldName="";
+    protected Vector addedChatData=new Vector();
 	// chat collection: first string is the pattern
 	// match string
 	// following strings are the proposed responses.
@@ -60,9 +61,27 @@ public class MudChat extends StdBehavior
 
     public void setParms(String newParms)
     {
-        super.setParms(newParms);
+        if(newParms.startsWith("+"))
+        {
+            Vector V=CMParms.parseSemicolons(newParms.substring(1),false);
+            StringBuffer rsc=new StringBuffer("");
+            for(int v=0;v<V.size();v++)
+                rsc.append(((String)V.elementAt(v))+"\n\r");
+            V=parseChatData(rsc,new Vector());
+            for(int v=0;v<V.size();v++)
+            {
+                Vector V2=(Vector)V.elementAt(v);
+                for(int v2=1;v2<V2.size();v2++)
+                    addedChatData.addElement(V2.elementAt(v2));
+            }
+        }
+        else
+        {
+            super.setParms(newParms);
+            addedChatData.clear();
+        }
         responseQue=new Vector();
-    	myChatGroup=null;
+        myChatGroup=null;
     }
 
 	protected static synchronized Vector getChatGroups(String parms)
@@ -241,7 +260,7 @@ public class MudChat extends StdBehavior
 		return null;
 	}
 
-	protected Vector getMyChatGroup(MOB forMe, Vector chatGroups)
+	protected Vector getMyBaseChatGroup(MOB forMe, Vector chatGroups)
 	{
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
@@ -267,6 +286,23 @@ public class MudChat extends StdBehavior
 		return (Vector)chatGroups.elementAt(0);
 	}
 
+    protected Vector getMyChatGroup(MOB forMe, Vector chatGroups)
+    {
+        if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
+            return myChatGroup;
+        Vector chatGrp=getMyBaseChatGroup(forMe,chatGroups);
+        if((addedChatData==null)||(addedChatData.size()==0)) return chatGrp;
+        chatGrp=(Vector)chatGrp.clone();
+        for(int v=0;v<addedChatData.size();v++)
+            if(chatGrp.size()==(v+1))
+                chatGrp.addElement(addedChatData.elementAt(v));
+            else
+                chatGrp.insertElementAt(addedChatData.elementAt(v),v+1);
+        chatGrp.trimToSize();
+        return chatGrp;
+    }
+    
+    
 	protected void queResponse(Vector responses, MOB source, MOB target, String rest)
 	{
 		int total=0;

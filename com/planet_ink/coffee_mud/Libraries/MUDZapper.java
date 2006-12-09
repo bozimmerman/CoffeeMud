@@ -47,6 +47,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
     
+    public Vector preCompiled(String str)
+    {
+        Hashtable H=(Hashtable)Resources.getResource("SYSTEM_HASHED_MASKS");
+        if(H==null){ H=new Hashtable(); Resources.submitResource("SYSTEM_HASHED_MASKS",H); }
+        Vector V=(Vector)H.get(str.toUpperCase().trim());
+        if(V==null)
+        {
+            V=maskCompile(str);
+            H.put(str.toUpperCase().trim(),V);
+        }
+        return V;
+    }
+    
     public Hashtable getMaskCodes()
 	{
 		if(zapCodes.size()==0)
@@ -137,8 +150,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-MATERIAL",new Integer(50));
             zapCodes.put("+RESOURCE",new Integer(51));
             zapCodes.put("-RESOURCE",new Integer(52));
-            zapCodes.put("+JAVACLASS",new Integer(53));
-            zapCodes.put("-JAVACLASS",new Integer(54));
+            zapCodes.put("-JAVACLASS",new Integer(53));
+            zapCodes.put("+JAVACLASS",new Integer(54));
             zapCodes.put("+ABILITY",new Integer(55));
             zapCodes.put("-ABILITY",new Integer(56));
             zapCodes.put("+ABLE",new Integer(55));
@@ -2249,7 +2262,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 9: // -Names
 				case 32: // -Area
                 case 100: // -Home
-                case 54: // -JavaClass
+                case 53: // -JavaClass
 					{
 						Vector entry=new Vector();
 						buf.addElement(entry);
@@ -2299,7 +2312,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 16: // +Names
 				case 31: // +Area
                 case 99: // +Home
-                case 53: // +JavaClass
+                case 54: // +JavaClass
 					{
 						Vector entry=new Vector();
 						buf.addElement(entry);
@@ -3288,8 +3301,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 43: // -effects
 				{
-					if(E.numEffects()==0) 
-						return false;
 					boolean found=false;
 					for(int a=0;a<E.numEffects();a++)
 					{
@@ -3299,6 +3310,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
 							{ found=true; break;}
 					}
+                    if(!found)
+                    for(int a=0;a<E.numBehaviors();a++)
+                    {
+                        Behavior B=E.fetchBehavior(a);
+                        if(B!=null)
+                        for(int v=1;v<V.size();v++)
+                            if(B.name().equalsIgnoreCase((String)V.elementAt(v)))
+                            { found=true; break;}
+                    }
 					if(!found) return false;
 				}
 				break;
@@ -3319,7 +3339,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 42: // +effects
-				if(E.numEffects()>0) 
 				for(int a=0;a<E.numEffects();a++)
 				{
 					Ability A=E.fetchEffect(a);
@@ -3328,6 +3347,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
 						{ return false;}
 				}
+                for(int a=0;a<E.numBehaviors();a++)
+                {
+                    Behavior B=E.fetchBehavior(a);
+                    if(B!=null)
+                    for(int v=1;v<V.size();v++)
+                        if(B.name().equalsIgnoreCase((String)V.elementAt(v)))
+                            return false;
+                }
 				break;
 			case 16: // +name
 				{
@@ -3627,7 +3654,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 	
-	public boolean maskCheck(String text, Environmental E)
+	public boolean maskCheck(String text, Environmental E){ return maskCheck(this.preCompiled(text),E);}
+    public boolean oldMaskCheck(String text, Environmental E)
 	{
 		if(E==null) return true;
 		if(text.trim().length()==0) return true;
@@ -4063,7 +4091,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
 				case 43: // -Effects
 				{
-					if(E.numEffects()==0) return false;
 					boolean found=false;
 					for(int a=0;a<E.numEffects();a++)
 					{
@@ -4071,6 +4098,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if((A!=null)&&(fromHereStartsWith(V,'+',v+1,A.Name().toUpperCase())))
 						{ found=true; break;}
 					}
+                    if(!found)
+                        for(int a=0;a<E.numBehaviors();a++)
+                        {
+                            Behavior B=E.fetchBehavior(a);
+                            if((B!=null)&&(fromHereStartsWith(V,'+',v+1,B.name().toUpperCase())))
+                            { found=true; break;}
+                        }
 					if(!found) return false;
 					break;
 				}
@@ -4081,6 +4115,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if((A!=null)&&(fromHereStartsWith(V,'-',v+1,A.Name().toUpperCase())))
 							return false;
 					}
+                    for(int a=0;a<E.numBehaviors();a++)
+                    {
+                        Behavior B=E.fetchBehavior(a);
+                        if((B!=null)&&(fromHereStartsWith(V,'-',v+1,B.name().toUpperCase())))
+                            return false;
+                    }
 					break;
 				case 46: // -Faction
 					if(!factionCheck(V,'+',v+1,mob)) 

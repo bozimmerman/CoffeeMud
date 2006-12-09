@@ -35,7 +35,6 @@ public class QuestChat extends MudChat
 
 	public String ID(){return "QuestChat";}
 	private Hashtable alreadySaid=new Hashtable();
-	private Vector addedChatData=new Vector();
 	private Quest myQuest=null;
 	
     public void registerDefaultQuest(Quest Q){ myQuest=Q;}
@@ -45,27 +44,6 @@ public class QuestChat extends MudChat
     	super.startBehavior(E);
     	//Behavior B=E.fetchBehavior("MudChat");
     	//if(B!=null)E.delBehavior(B);
-    }
-    
-    public void setParms(String newParms)
-    {
-    	if(newParms.startsWith("+"))
-    	{
-    		Vector V=CMParms.parseSemicolons(newParms.substring(1),false);
-    		StringBuffer rsc=new StringBuffer("");
-    		for(int v=0;v<V.size();v++)
-    			rsc.append(((String)V.elementAt(v))+"\n\r");
-    		V=super.parseChatData(rsc,new Vector());
-    		for(int v=0;v<V.size();v++)
-    		{
-    			Vector V2=(Vector)V.elementAt(v);
-    			for(int v2=1;v2<V2.size();v2++)
-    				addedChatData.addElement(V2.elementAt(v2));
-    		}
-    		myChatGroup=null;
-    	}
-    	else
-    		super.setParms(newParms);
     }
     
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
@@ -114,22 +92,4 @@ public class QuestChat extends MudChat
 		}
 		return super.match(speaker,expression,message,rest);
 	}
-    
-	protected Vector getMyChatGroup(MOB forMe, Vector chatGroups)
-	{
-		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
-			return myChatGroup;
-		Vector chatGrp=super.getMyChatGroup(forMe,chatGroups);
-		if((addedChatData==null)||(addedChatData.size()==0)) return chatGrp;
-		chatGrp=(Vector)chatGrp.clone();
-		for(int v=0;v<addedChatData.size();v++)
-			if(chatGrp.size()==(v+1))
-				chatGrp.addElement(addedChatData.elementAt(v));
-			else
-				chatGrp.insertElementAt(addedChatData.elementAt(v),v+1);
-		chatGrp.trimToSize();
-		return chatGrp;
-	}
-	
-	
 }
