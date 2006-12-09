@@ -393,8 +393,11 @@ public class DefaultSession extends Thread implements Session
 		{
 			try{
 				if(snoops.size()>0)
+                {
+                    String msgColored=CMStrings.replaceAll(msg,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
 					for(int s=0;s<snoops.size();s++)
-						((Session)snoops.elementAt(s)).onlyPrint("^Z"+((mob==null)?"?":mob.Name())+msg+"^N",0,noCache);
+						((Session)snoops.elementAt(s)).onlyPrint(msgColored,0,noCache);
+                }
 			}catch(IndexOutOfBoundsException x){}
 
 			if(msg.endsWith("\n\r")
@@ -505,17 +508,17 @@ public class DefaultSession extends Thread implements Session
 	}
 
 	public void colorOnlyPrintln(String msg)
-	{ colorOnlyPrint(msg,-1);}
-	public void colorOnlyPrintln(String msg, int pageBreak)
+	{ colorOnlyPrint(msg,-1,false);}
+	public void colorOnlyPrintln(String msg, int pageBreak, boolean noCache)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",pageBreak,false);
+	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",pageBreak,noCache);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
-	{ colorOnlyPrint(msg,-1);}
-	public void colorOnlyPrint(String msg, int pageBreak)
-	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),pageBreak,false);
+	{ colorOnlyPrint(msg,-1,false);}
+	public void colorOnlyPrint(String msg, int pageBreak, boolean noCache)
+	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),pageBreak,noCache);
 	  needPrompt=true;
 	}
 
@@ -1448,8 +1451,11 @@ public class DefaultSession extends Thread implements Session
     								milliTotal+=(lastStop-lastStart);
     								
     								if(snoops.size()>0)
+                                    {
+                                        String msgColored=CMStrings.replaceAll(input,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
     									for(int s=0;s<snoops.size();s++)
-    										((Session)snoops.elementAt(s)).rawPrintln(input);
+    										((Session)snoops.elementAt(s)).rawPrintln(msgColored);
+                                    }
     								
     								lastStart=System.currentTimeMillis();
                                     if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));

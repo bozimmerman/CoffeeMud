@@ -61,7 +61,7 @@ public class ATopics extends StdCommand
 			Resources.submitResource(resName,topicBuffer);
 		}
 		if((topicBuffer!=null)&&(mob!=null)&&(!mob.isMonster()))
-			mob.session().colorOnlyPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.",23);
+			mob.session().colorOnlyPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.",23,false);
 	}
 
 

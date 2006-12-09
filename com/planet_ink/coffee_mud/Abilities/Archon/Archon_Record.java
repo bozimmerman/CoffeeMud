@@ -186,8 +186,8 @@ public class Archon_Record extends ArchonSkill
 		public void wraplessPrintln(String msg){}
 		public void wraplessPrint(String msg){}
 		
-		public void colorOnlyPrintln(String msg, int pageBreak){}
-		public void colorOnlyPrint(String msg, int pageBreak){}
+		public void colorOnlyPrintln(String msg, int pageBreak,boolean noCache){}
+		public void colorOnlyPrint(String msg, int pageBreak,boolean noCache){}
 		public void colorOnlyPrintln(String msg){}
 		public void colorOnlyPrint(String msg){}
 		

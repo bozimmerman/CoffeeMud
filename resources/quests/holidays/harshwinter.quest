@@ -1,8 +1,7 @@
 set name Harsh Winter
-set wait 1
+set wait 20
 set interval 1
 set duration 100+(1?400)
-set area
 quiet
 set room any -SEASON +WINTER -WEATHER +COLD +BLIZZARD
 set room
