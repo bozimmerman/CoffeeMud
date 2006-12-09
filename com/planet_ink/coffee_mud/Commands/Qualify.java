@@ -278,15 +278,9 @@ public class Qualify extends BaseAbleLister
 		if(!mob.isMonster())
 		{
 			mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
-			mob.tell("\n\rUse the GAIN command with your teacher to gain new skills and spells.");
-			if(classesFound&&edusFound) 
-				mob.tell("\n\rUse the TRAIN command to train for a new class, or for new expertises.");
-			else
+			mob.tell("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises.");
 			if(classesFound) 
 				mob.tell("\n\rUse the TRAIN command to train for a new class.");
-			else
-			if(edusFound) 
-				mob.tell("\n\rUse the TRAIN command to train for new expertises.");
 		}
 		return false;
 	}

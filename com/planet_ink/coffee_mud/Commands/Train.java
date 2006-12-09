@@ -55,11 +55,6 @@ public class Train extends StdCommand
             if(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
     			V.add(C.name().toUpperCase().trim());
 		}
-		for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-		{
-			ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-			V.add(def.name.toUpperCase().trim());
-		}
 		return V;
 	}
 	
@@ -119,7 +114,6 @@ public class Train extends StdCommand
         else
             abilityCode=-1;
 		CharClass theClass=null;
-		ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(!CMSecurity.isDisabled("CLASSTRAINING"))
 		&&(abilityCode<0))
@@ -165,27 +159,6 @@ public class Train extends StdCommand
 				abilityCode=105;
 			else
 			{
-				Vector V=CMLib.expertises().myListableExpertises(mob);
-				for(int v=V.size()-1;v>=0;v--)
-					if(mob.fetchExpertise(((ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v)).ID)!=null)
-						V.removeElementAt(v);
-				for(int v=0;v<V.size();v++)
-				{
-					ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
-					thingsToTrainFor.append(def.name+", ");
-					if((def.name.equalsIgnoreCase(abilityName))
-					&&(theExpertise==null))
-						theExpertise=def;
-				}
-				if(theExpertise!=null)
-				{
-					if(!CMLib.expertises().myQualifiedExpertises(mob).contains(theExpertise))
-					{
-						mob.tell("You do not yet fully qualify for that expertise.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
-						return false;
-					}
-					abilityCode=107;
-				}
 				if(abilityCode<0)
 				{
 					mob.tell("You can't train for '"+abilityName+"'. Try "+thingsToTrainFor.toString()+"HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.");
@@ -194,18 +167,6 @@ public class Train extends StdCommand
 			}
 		}
 
-		if(abilityCode==107)
-		{
-			if(((theExpertise.trainCost>0)&&(mob.getTrains()<theExpertise.trainCost))
-			||((theExpertise.practiceCost>0)&&(mob.getPractices()<theExpertise.practiceCost))
-			||((theExpertise.expCost>0)&&(mob.getExperience()<theExpertise.expCost))
-			||((theExpertise.qpCost>0)&&(mob.getQuestPoint()<theExpertise.qpCost)))
-			{
-				mob.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
-				return false;
-			}
-		}
-		else
 		if(abilityCode==104)
 		{
 			if(mob.getPractices()<7)
@@ -325,12 +286,6 @@ public class Train extends StdCommand
 			}
 		}
 		
-		if((abilityCode==107)&&(teacher.fetchExpertise(theExpertise.ID)==null))
-		{
-			mob.tell(mob,teacher,null,"<T-NAME> doesn't appear to know anything about that.");
-			return false;
-		}
-
 		if(abilityCode<100)
 		{
 			int teachStat=teacher.charStats().getStat(abilityCode);
@@ -427,16 +382,6 @@ public class Train extends StdCommand
 			mob.recoverCharStats();
 			mob.charStats().getCurrentClass().startCharacter(mob,false,true);
 			break;
-		case 107:
-		{
-			mob.setPractices(mob.getPractices()-theExpertise.practiceCost);
-			mob.setTrains(mob.getTrains()-theExpertise.trainCost);
-			mob.setExperience(mob.getExperience()-theExpertise.expCost);
-			mob.setQuestPoint(mob.getQuestPoint()-theExpertise.qpCost);
-			mob.addExpertise(theExpertise.ID);
-			mob.tell("You have learned about "+theExpertise.name+"!");
-			break;
-		}
 		}
 		return false;
 	}

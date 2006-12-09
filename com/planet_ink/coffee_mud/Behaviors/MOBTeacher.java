@@ -87,6 +87,20 @@ public class MOBTeacher extends CombatAbilities
 		}
 	}
 
+    public boolean tryTeach(MOB teacher, MOB student, String teachWhat)
+    {
+        CMMsg msg2=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);
+        if(!teacher.location().okMessage(teacher,msg2))
+            return false;
+        msg2=CMClass.getMsg(teacher,student,null,CMMsg.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'.");
+        if(!teacher.location().okMessage(teacher,msg2))
+            return false;
+        teacher.location().send(teacher,msg2);
+        return true;
+    }
+    
+    
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -274,10 +288,10 @@ public class MOBTeacher extends CombatAbilities
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB monster=myMOB;
-		MOB mob=msg.source();
+		MOB student=msg.source();
 
 		if((!msg.amISource(monster))
-		&&(!mob.isMonster())
+		&&(!student.isMonster())
 		&&(msg.sourceMessage()!=null)
 		&&((msg.target()==null)||msg.amITarget(monster))
 		&&(msg.targetMinor()==CMMsg.TYP_SPEAK))
@@ -327,33 +341,59 @@ public class MOBTeacher extends CombatAbilities
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.trim().equalsIgnoreCase("LIST"))
 				{
-					CMLib.commands().postSay(monster,mob,"Try the QUALIFY command.",true,false);
+					CMLib.commands().postSay(monster,student,"Try the QUALIFY command.",true,false);
 					return;
 				}
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
-			    	boolean foundEXP=false;
-			    	boolean foundClass=false;
-			    	for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-			    	{
-			    		ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-			    		if(CMLib.english().containsString(def.name,s))
-			    		{
-			    			s=def.name;
-			    			foundEXP=true;
-			    			break;
-			    		}
-			    	}
-			    	if((!foundEXP)&&(CMClass.findCharClass(s.trim())!=null))
-			    		foundClass=true;
-			    	if(foundEXP)
-						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an expertise-- try TRAINing it.",true,false);
+                    ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
+                    Vector V=CMLib.expertises().myListableExpertises(monster);
+                    for(int v=0;v<V.size();v++)
+                    {
+                        ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+                        if((def.name.equalsIgnoreCase(s))
+                        &&(theExpertise==null))
+                            theExpertise=def;
+                    }
+                    if(theExpertise==null)
+                    for(int v=0;v<V.size();v++)
+                    {
+                        ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+                        if((CMLib.english().containsString(def.name,s)
+                        &&(theExpertise==null)))
+                            theExpertise=def;
+                    }
+                    if(theExpertise!=null)
+                    {
+                        if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
+                        {
+                            monster.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
+                            CMLib.commands().postSay(monster,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()),true,false);
+                            return;
+                        }
+                        if(((theExpertise.trainCost>0)&&(student.getTrains()<theExpertise.trainCost))
+                        ||((theExpertise.practiceCost>0)&&(student.getPractices()<theExpertise.practiceCost))
+                        ||((theExpertise.expCost>0)&&(student.getExperience()<theExpertise.expCost))
+                        ||((theExpertise.qpCost>0)&&(student.getQuestPoint()<theExpertise.qpCost)))
+                        {
+                            monster.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
+                            CMLib.commands().postSay(monster,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()),true,false);
+                            return ;
+                        }
+                        if(!tryTeach(monster,student,theExpertise.name))
+                            return ;
+                        student.setPractices(student.getPractices()-theExpertise.practiceCost);
+                        student.setTrains(student.getTrains()-theExpertise.trainCost);
+                        student.setExperience(student.getExperience()-theExpertise.expCost);
+                        student.setQuestPoint(student.getQuestPoint()-theExpertise.qpCost);
+                        student.addExpertise(theExpertise.ID);
+                    }
+                    else
+			    	if((CMClass.findCharClass(s.trim())!=null))
+						CMLib.commands().postSay(monster,student,"I've heard of "+s+", but that's an class-- try TRAINing  for it.",true,false);
 			    	else
-			    	if(foundClass)
-						CMLib.commands().postSay(monster,mob,"I've heard of "+s+", but that's an class-- try TRAINing  for it.",true,false);
-			    	else
-						CMLib.commands().postSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
+						CMLib.commands().postSay(monster,student,"I'm sorry, I've never heard of "+s,true,false);
 					return;
 				}
 				if(giveABonus)
@@ -363,24 +403,19 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				if(mob.fetchAbility(myAbility.ID())!=null)
+				if(student.fetchAbility(myAbility.ID())!=null)
 				{
-					CMLib.commands().postSay(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
+					CMLib.commands().postSay(monster,student,"But you already know '"+myAbility.name()+"'.",true,false);
 					return;
 				}
 				myAbility.setProficiency(75);
-				if(!myAbility.canBeTaughtBy(monster,mob))
+				if(!myAbility.canBeTaughtBy(monster,student))
 					return;
-				if(!myAbility.canBeLearnedBy(monster,mob))
+				if(!myAbility.canBeLearnedBy(monster,student))
 					return;
-				CMMsg msg2=CMClass.getMsg(monster,mob,null,CMMsg.MSG_SPEAK,null);
-				if(!monster.location().okMessage(monster,msg2))
-					return;
-				msg2=CMClass.getMsg(monster,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
-				if(!monster.location().okMessage(monster,msg2))
-					return;
-				myAbility.teach(monster,mob);
-				monster.location().send(monster,msg2);
+                if(!tryTeach(monster,student,myAbility.name()))
+                    return ;
+				myAbility.teach(monster,student);
 				monster.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);
 				monster.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 				monster.recoverCharStats();

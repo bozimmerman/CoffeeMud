@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,6 +37,27 @@ public class Teach extends StdCommand
 
 	private String[] access={"TEACH"};
 	public String[] getAccessWords(){return access;}
+    
+    
+    public boolean tryTeach(MOB teacher, MOB student, String teachWhat)
+    throws java.io.IOException
+    {
+        if((student.session()!=null)
+        &&(!student.session().confirm(teacher.Name()+" wants to teach you "+teachWhat+".  Is this Ok (y/N)?","N")))
+        {
+            teacher.tell(student.charStats().HeShe()+" does not want you to.");
+            return false;
+        }
+        CMMsg msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);
+        if(!teacher.location().okMessage(teacher,msg))
+            return false;
+        msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'.");
+        if(!teacher.location().okMessage(teacher,msg))
+            return false;
+        teacher.location().send(teacher,msg);
+        return true;
+    }
+    
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -65,8 +87,60 @@ public class Teach extends StdCommand
 			myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell("You don't seem to know "+abilityName+".");
-			return false;
+            ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
+            Vector V=CMLib.expertises().myListableExpertises(mob);
+            for(int v=0;v<V.size();v++)
+            {
+                ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+                if((def.name.equalsIgnoreCase(abilityName))
+                &&(theExpertise==null))
+                    theExpertise=def;
+            }
+            if(theExpertise==null)
+            for(int v=0;v<V.size();v++)
+            {
+                ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+                if((CMLib.english().containsString(def.name,abilityName)
+                &&(theExpertise==null)))
+                    theExpertise=def;
+            }
+            if(theExpertise!=null)
+            {
+                if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
+                {
+                    mob.tell("You are refusing to teach right now.");
+                    return false;
+                }
+                if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+                &&((!student.isMonster())||(!student.willFollowOrdersOf(mob))))
+                {
+                    mob.tell(student.name()+" is refusing training at this time.");
+                    return false;
+                }
+                if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
+                {
+                    mob.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
+                    return false;
+                }
+                if(((theExpertise.trainCost>0)&&(student.getTrains()<theExpertise.trainCost))
+                ||((theExpertise.practiceCost>0)&&(student.getPractices()<theExpertise.practiceCost))
+                ||((theExpertise.expCost>0)&&(student.getExperience()<theExpertise.expCost))
+                ||((theExpertise.qpCost>0)&&(student.getQuestPoint()<theExpertise.qpCost)))
+                {
+                    mob.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
+                    return false;
+                }
+                if(!tryTeach(mob,student,theExpertise.name))
+                    return false;
+                student.setPractices(student.getPractices()-theExpertise.practiceCost);
+                student.setTrains(student.getTrains()-theExpertise.trainCost);
+                student.setExperience(student.getExperience()-theExpertise.expCost);
+                student.setQuestPoint(student.getQuestPoint()-theExpertise.qpCost);
+                student.addExpertise(theExpertise.ID);
+                return true;
+            }
+            mob.tell("You don't seem to know "+abilityName+".");
+            return false;
 		}
 		if(!myAbility.canBeTaughtBy(mob,student))
 			return false;
@@ -77,16 +151,9 @@ public class Teach extends StdCommand
 			mob.tell(student.name()+" already knows how to do that.");
 			return false;
 		}
-		if((student.session()!=null)&&(!student.session().confirm(mob.Name()+" wants to teach you "+myAbility.name()+".  Is this Ok (y/N)?","N")))
-			return false;
-		CMMsg msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_SPEAK,null);
-		if(!mob.location().okMessage(mob,msg))
-			return false;
-		msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
-		if(!mob.location().okMessage(mob,msg))
-			return false;
+        if(!tryTeach(mob,student,myAbility.name()))
+            return false;
 		myAbility.teach(mob,student);
-		mob.location().send(mob,msg);
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

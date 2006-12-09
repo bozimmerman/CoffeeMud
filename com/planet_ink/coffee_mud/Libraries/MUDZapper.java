@@ -3654,8 +3654,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 	
-	public boolean maskCheck(String text, Environmental E){ return maskCheck(this.preCompiled(text),E);}
-    public boolean oldMaskCheck(String text, Environmental E)
+	public boolean maskCheckCompiled(String text, Environmental E){ return maskCheck(preCompiled(text),E);}
+    public boolean maskCheck(String text, Environmental E)
 	{
 		if(E==null) return true;
 		if(text.trim().length()==0) return true;

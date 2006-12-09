@@ -3008,7 +3008,7 @@ public class StdMOB implements MOB
 	{
 		if(list==null) return list;
 		if(!list.contains(this)) list.add(this);
-		if(amFollowing()!=null)
+		if((amFollowing()!=null)&&(!list.contains(amFollowing())))
 			amFollowing().getGroupMembers(list);
 		for(int f=0;f<numFollowers();f++)
 		{
