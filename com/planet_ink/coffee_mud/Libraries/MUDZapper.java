@@ -230,6 +230,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-WEATHER",new Integer(105));
             zapCodes.put("+DAY",new Integer(106));
             zapCodes.put("-DAY",new Integer(107));
+            zapCodes.put("+SYSOP",new Integer(108));
+            zapCodes.put("-SYSOP",new Integer(109));
 		}
 		return zapCodes;
 	}
@@ -2609,6 +2611,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                    }
 	                }
                 	break;
+                case 108: // +sysop
+                case 109: // +sysop
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get(str));
+                    break;
+                }
                 case 51: // +Resource
                 case 52: // -Resource
                     {
@@ -2828,6 +2838,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(V.size()>0)
 			switch(((Integer)V.firstElement()).intValue())
 			{
+            case 108: // +sysop
+                if(CMSecurity.isASysOp(mob))
+                    return true;
+                break;
+            case 109: // -sysop
+                if(CMSecurity.isASysOp(mob))
+                    return false;
+                break;
 			case 0: // -class
 				if(!V.contains(mob.baseCharStats().getCurrentClass().name()))
 					return false;
