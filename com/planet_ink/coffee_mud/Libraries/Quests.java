@@ -292,7 +292,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         int moodIndex=properties.indexOf("PRICING");
         String moodSetting=(moodIndex<0)?"":(String)properties.elementAt(moodIndex,2);
-        mob.tell(showNumber+". Mood setting: '"+((moodSetting.length()==0)?"Not used":moodSetting)+"'.");
+        /*mob.tell(showNumber+". Mood setting: '"+((moodSetting.length()==0)?"Not used":moodSetting)+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newValue=mob.session().prompt("Enter a new value (null=dont use) (?)\n\r:",moodSetting);
         if(newValue.equalsIgnoreCase("null"))
@@ -302,6 +302,7 @@ public class Quests extends StdLibrary implements QuestManager
             E.setPrejudiceFactors(newValue);
         else
             mob.tell("(no change)");
+       */
     }
     
 
