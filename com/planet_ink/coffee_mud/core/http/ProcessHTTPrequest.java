@@ -163,6 +163,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				return false;
 			}
 
+            statusExtra=inLine;
 			if(command.startsWith("["))
 			{
 				int err=400;
@@ -181,7 +182,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				case 500: status=S_500; break;
 				case 501: status=S_501; break;
 				}
-				statusExtra=inLine;
 				return false;
 			}
 

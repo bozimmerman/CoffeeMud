@@ -469,6 +469,8 @@ public class ServiceEngine implements ThreadEngine
 			Tickable E=C.clientObject;
 			if((E instanceof Ability)&&(E.ID().equals("ItemRejuv")))
 				E=((Ability)E).affecting();
+            if(E instanceof Room)
+                return CMLib.map().getExtendedRoomID((Room)E);
 			if(E!=null) return E.name();
 			return "!NULL!";
 		}

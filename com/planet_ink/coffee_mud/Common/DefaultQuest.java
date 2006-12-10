@@ -138,7 +138,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         spawn=SPAWN_NO;
         playerMask="";
         runLevel=-1;
-        setVars(parseScripts(parm,new Vector(),new Vector()),0);
+        setVars(parseLoadScripts(parm,new Vector(),new Vector()),0);
         if(isCopy()) spawn=SPAWN_NO;
     }
     public String script(){return parms;}
@@ -154,28 +154,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public void setVars(Vector script, int startAtLine)
     {
-        String line=null;
         Vector parsedLine=null;
-        String cmd=null;
         String var=null;
         String val=null;
-        boolean inScript=false;
-        for(int v=startAtLine;v<script.size();v++)
+        Vector setScripts=CMLib.quests().parseQuestCommandLines(script,"SET",startAtLine);
+        for(int v=0;v<setScripts.size();v++)
         {
-            line=(String)script.elementAt(v);
-            parsedLine=CMParms.parse(line);
-            if(parsedLine.size()>0)
+            parsedLine=(Vector)setScripts.elementAt(v);
+            if(parsedLine.size()>1)
             {
-                cmd=((String)parsedLine.elementAt(0)).toUpperCase().trim();
-                if(cmd.equals("</SCRIPT>")&&(inScript)){ inScript=false; continue;}
-                if(cmd.equals("<SCRIPT>")){ inScript=true; continue;}
-                if(cmd.equals("STEP")) return;
-                if((cmd.equals("SET"))&&(parsedLine.size()>1))
-                {
-                    var=((String)parsedLine.elementAt(1)).toUpperCase();
-                    val=CMParms.combine(parsedLine,2);
-                    setStat(var,val);
-                }
+                var=((String)parsedLine.elementAt(1)).toUpperCase();
+                val=CMParms.combine(parsedLine,2);
+                setStat(var,val);
             }
         }
     }
@@ -305,6 +295,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	if(!quietFlag) Log.errOut("Quest",msg);
         q.error=true; 
     }
+
+    private Enumeration getAppropriateRoomSet(QuestState q)
+    {
+        if(q.roomGroup!=null)
+            return q.roomGroup.elements();
+        else
+        if(q.area!=null) 
+            return q.area.getMetroMap();
+        return CMLib.map().rooms();
+    }
     
     public void parseQuestScript(Vector script, Vector args, int startLine)
     {
@@ -421,7 +421,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         CMLib.map().resetArea(q.area);
                     else
                     {
-                    	errorOccurred(q,false,"Quest '"+name()+"', no resettable room, roomgroup, or area set.");
+                    	errorOccurred(q,false,"Quest '"+name()+"', no resettable room, roomgroup, area, or areagroup set.");
                         break;
                     }
                 }
@@ -482,6 +482,69 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                     }
                     else
+                    if(cmd.equals("AREAGROUP"))
+                    {
+                        q.area=null;
+                        q.roomGroup=null;
+                        if(p.size()<3) continue;
+                        Vector names=new Vector();
+                        Vector areas=new Vector();
+                        if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
+                            for(int ip=3;ip<p.size();ip++)
+                                names.addElement(p.elementAt(ip));
+                        else
+                            names.addElement(CMParms.combine(p,2));
+                        for(int n=0;n<names.size();n++)
+                        {
+                            String areaName=(String)names.elementAt(n);
+                            int oldSize=areas.size();
+                            if(areaName.equalsIgnoreCase("any"))
+                                areas.addElement(CMLib.map().getRandomArea());
+                            if(oldSize==areas.size())
+                            for (Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
+                            {
+                                Area A2 = (Area) e.nextElement();
+                                if (A2.Name().equalsIgnoreCase(areaName))
+                                {
+                                    areas.addElement(A2);
+                                    break;
+                                }
+                            }
+                            if(oldSize==areas.size())
+                            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+                            {
+                                Area A2=(Area)e.nextElement();
+                                if(CMLib.english().containsString(A2.Name(),areaName))
+                                {
+                                    areas.addElement(A2);
+                                    break;
+                                }
+                            }
+                        }
+                        if(areas.size()>0)
+                        {
+                            q.roomGroup=new Vector();
+                            Area A=null;
+                            Room R=null;
+                            for(Enumeration e=areas.elements();e.hasMoreElements();)
+                            {
+                                A=(Area)e.nextElement();
+                                for(Enumeration e2=A.getMetroMap();e2.hasMoreElements();)
+                                {
+                                    R=(Room)e2.nextElement();
+                                    if(!q.roomGroup.contains(R))
+                                        q.roomGroup.add(R);
+                                }
+                            }
+                            q.envObject=q.roomGroup;
+                        }
+                        else
+                        {
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown areas '"+CMParms.combine(p,2)+"'.");
+                            break;
+                        }
+                    }
+                    else
                     if(cmd.equals("MOBTYPE"))
                     {
                         q.mob=null;
@@ -505,11 +568,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            {
 	                                try
 	                                {
-	                                    Enumeration e=CMLib.map().rooms();
-	                                    if(q.roomGroup!=null) e=q.roomGroup.elements();
-	                                    else
-	                                    if(q.area!=null) e=q.area.getMetroMap();
-	                                    for(;e.hasMoreElements();)
+	                                    for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
 	                                    {
 	                                        Room R2=(Room)e.nextElement();
 	                                        for(int i=0;i<R2.numInhabitants();i++)
@@ -626,11 +685,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Vector choices3=new Vector();
 	                        try
 	                        {
-	                            Enumeration e=CMLib.map().rooms();
-	                            if(q.roomGroup!=null) e=q.roomGroup.elements();
-	                            else
-	                            if(q.area!=null) e=q.area.getMetroMap();
-	                            for(;e.hasMoreElements();)
+	                            for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
 	                            {
 	                                Room R2=(Room)e.nextElement();
 	                                for(int i=0;i<R2.numInhabitants();i++)
@@ -690,11 +745,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        if(itemName.length()==0) itemName="ANY";
 	                        try
 	                        {
-	                            Enumeration e=CMLib.map().rooms();
-	                            if(q.roomGroup!=null) e=q.roomGroup.elements();
-	                            else
-	                            if(q.area!=null) e=q.area.getMetroMap();
-	                            for(;e.hasMoreElements();)
+	                            for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
 	                            {
 	                                Room R2=(Room)e.nextElement();
 	                                for(int i=0;i<R2.numItems();i++)
@@ -754,11 +805,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            {
 	                                if(q.itemGroup==null)
 	                                {
-	                                    Enumeration e=CMLib.map().rooms();
-	                                    if(q.roomGroup!=null) e=q.roomGroup.elements();
-	                                    else
-	                                    if(q.area!=null) e=q.area.getMetroMap();
-		                                for(;e.hasMoreElements();)
+		                                for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
 		                                {
 		                                    Room R2=(Room)e.nextElement();
 		                                    for(int i=0;i<R2.numItems();i++)
@@ -1123,11 +1170,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        {
 	                            try
 	                            {
-	                                Enumeration e=CMLib.map().rooms();
-	                                if(q.roomGroup!=null) e=q.roomGroup.elements();
-	                                else
-	                                if(q.area!=null) e=q.area.getMetroMap();
-	                                for(;e.hasMoreElements();)
+	                                for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
 	                                {
 	                                    Room R2=(Room)e.nextElement();
 	                                    for(int i=0;i<R2.numInhabitants();i++)
@@ -1216,11 +1259,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }
 	                        else
 	                        {
-	                            Enumeration e=CMLib.map().rooms();
-	                            if(q.roomGroup!=null) e=q.roomGroup.elements();
-	                            else
-	                            if(q.area!=null) e=q.area.getMetroMap();
-	                            for(;e.hasMoreElements();)
+	                            for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
 	                            {
 	                                Room R2=(Room)e.nextElement();
 	                                for(int i=0;i<R2.numItems();i++)
@@ -1968,7 +2007,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                 	boolean error=q.error;
                 	Vector args2=new Vector();
-                	parseQuestScriptWArgs(parseScripts(s,args,args2),args2);
+                	parseQuestScriptWArgs(parseLoadScripts(s,args,args2),args2);
                 	if((!error)&&(q.error)) 
                 		break;
                 }
@@ -2524,7 +2563,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         
         Vector args=new Vector();
         questState=new QuestState();
-        Vector baseScript=parseScripts(script(),new Vector(),args);
+        Vector baseScript=parseLoadScripts(script(),new Vector(),args);
         if((!isCopy())&&(getSpawn()!=SPAWN_NO))
         {
             if(getSpawn()==SPAWN_FIRST)
@@ -2532,35 +2571,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             else
             if(getSpawn()==SPAWN_ANY)
             {
-                StringBuffer scr=new StringBuffer("");
-                Vector script=parseScripts(script(),new Vector(),args);
-                Vector line=null;
-                boolean inScript=false;
-                String cmd=null;
-                for(int v=0;v<script.size();v++)
-                {
-                    line=CMParms.parse(((String)script.elementAt(v)).toUpperCase().trim());
-                    if(line.size()==0) continue;
-                    cmd=((String)line.firstElement()).toUpperCase().trim();
-                    scr.append(((String)script.elementAt(v))+"\n\r");
-                    if(cmd.equals("</SCRIPT>")&&(inScript))
-                    {
-                        inScript=false; 
-                        continue;
-                    }
-                    if(cmd.equals("<SCRIPT>"))
-                    { 
-                        inScript=true; 
-                        continue;
-                    }
-                    if(cmd.equals("STEP"))
-                    {
-                        spawnQuest(scr.toString(),baseScript,true);
-                        scr=new StringBuffer("");
-                    }
-                }
-                if(scr.toString().trim().length()>0)
-                	spawnQuest(scr.toString(),baseScript,true);
+                Vector parsed=CMLib.quests().parseQuestSteps(baseScript,0);
+                for(int p=0;p<parsed.size();p++)
+                    spawnQuest((String)parsed.elementAt(p),baseScript,true);
             }
             lastStartDateTime=System.currentTimeMillis();
         	enterDormantState();
@@ -2736,7 +2749,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         setDuration(-1);
         
         Vector args=new Vector();
-        Vector script=parseScripts(script(),new Vector(),args);
+        Vector script=parseLoadScripts(script(),new Vector(),args);
         try{
         	setVars(script,questState.lastLine);
             parseQuestScript(script,args,questState.lastLine);
@@ -3276,7 +3289,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return false;
     }
     
-    private Vector parseScripts(String text, Vector oldArgs, Vector args)
+    public Vector parseLoadScripts(String text, Vector oldArgs, Vector args)
     {
         if(text.trim().toUpperCase().startsWith("LOAD="))
         {

@@ -342,11 +342,11 @@ public class TaxCollector extends StdBehavior
 				    StringBuffer say=new StringBuffer("");
 				    String currency=CMLib.beanCounter().getCurrency(mob);
 				    double denomination=CMLib.beanCounter().getLowestDenomination(currency);
-				    if(owe[OWE_CITIZENTAX]>0)
+				    if(owe[OWE_CITIZENTAX]>1.0)
 				    	say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_CITIZENTAX],denomination)))+" in local taxes. ");
-				    if(owe[OWE_BACKTAXES]>0)
+				    if(owe[OWE_BACKTAXES]>1.0)
 				    	say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_BACKTAXES],denomination)))+" in back property taxes");
-                    if(owe[OWE_FINES]>0)
+                    if(owe[OWE_FINES]>1.0)
                         say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_FINES],denomination)))+" in fines");
 				    if(say.length()>0)
 				    {

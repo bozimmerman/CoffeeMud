@@ -789,8 +789,8 @@ public class List extends StdCommand
 		    whichTickTock="";
 		}
 		if(!activeOnly)
-			msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",18)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10));
-		msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",18)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10)+"\n\r");
+			msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",25)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10));
+		msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",25)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10)+"\n\r");
 		int col=0;
 		int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		int whichTick=-1;
@@ -823,7 +823,7 @@ public class List extends StdCommand
 							col=1;
 						}
 						msg.append(CMStrings.padRight(""+v,4)
-								   +CMStrings.padRight(name,18)
+								   +CMStrings.padRight(name,25)
 								   +" "+CMStrings.padRight(id+"",5)
 								   +(activeOnly?(status+(suspended?"*":"")):CMStrings.padRight(status+(suspended?"*":""),10)));
 					}

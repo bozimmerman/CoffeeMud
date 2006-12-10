@@ -40,5 +40,7 @@ public interface QuestManager extends CMLibrary
     public void delQuest(Quest Q);
     public void save();
     public String listHolidays(Area A, String otherParms);
+    public Vector parseQuestSteps(Vector script, int startLine);
+    public Vector parseQuestCommandLines(Vector script, String cmdOnly, int startLine);
     
 }

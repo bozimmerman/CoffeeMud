@@ -88,13 +88,13 @@ public class Prop_Doppleganger extends Property
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
-		&&(msg.target() instanceof Room)
-		&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
+		&&(((msg.target() instanceof Room)&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
+           ||(msg.sourceMinor()==CMMsg.TYP_LIFE)))
 		//&&(lastLevelChangers))
 		{
 			//lastLevelChangers=false;
 			MOB mob=(MOB)affected;
-			Room R=(Room)msg.target();
+            Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
 			if((R!=null)
 			&&(CMLib.flags().aliveAwakeMobile(mob,true))
 			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))

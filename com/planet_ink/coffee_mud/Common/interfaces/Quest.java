@@ -141,7 +141,8 @@ public interface Quest extends Tickable, CMCommon
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
-												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE"};
+												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE",
+                                                 "AREAGROUP"};
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};
 	

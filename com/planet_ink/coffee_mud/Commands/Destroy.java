@@ -1086,7 +1086,7 @@ public class Destroy extends BaseItemParser
             {
                 CMLib.killThread(whichT,500,1);
                 Log.sysOut("CreateEdit",mob.Name()+" destroyed thread "+whichT.getName()+".");
-                mob.tell("Ok.");
+                mob.tell("Stop sent to: "+whichT.getName()+".");
             }
         }
         else
