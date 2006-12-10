@@ -78,23 +78,25 @@ public class Prop_Trainer extends Prop_StatTrainer
 						{
 							C=(CharClass)c.nextElement();
 							if((C.baseClass().equalsIgnoreCase(baseClass))
-							&&(!allowedClasses.contains(C.ID())))
-								allowedClasses.addElement(C.ID());
+							&&(!allowedClasses.contains(C)))
+								allowedClasses.addElement(C);
 						}
 					}
 					else
-						allowedClasses.addElement(C.ID());
+						allowedClasses.addElement(C);
 				}
 				else
-				if(CMLib.expertises().getDefinition(s)!=null)
-					allowedExpertises.addElement(s.trim().toUpperCase());
+                {
+                    ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
+    				if(def!=null) allowedExpertises.addElement(def);
+                }
 			}
 			if(allowedClasses.size()==0)
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				allowedClasses.addElement(c.nextElement());
 			if(allowedExpertises.size()==0)
 			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-				allowedExpertises.addElement(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID);
+				allowedExpertises.addElement((ExpertiseLibrary.ExpertiseDefinition)e.nextElement());
 			
 			
 			MOB mob=(MOB)affected;
