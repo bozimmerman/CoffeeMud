@@ -189,7 +189,6 @@ public class Qualify extends BaseAbleLister
 			msg.append(msg2.toString()+"\n\r");
 		}
 
-		boolean edusFound=false;
 		if((mob!=null)
 		&&(showAll
 			||(qual.equalsIgnoreCase("EXPS"))
@@ -209,7 +208,6 @@ public class Qualify extends BaseAbleLister
 			        int colWidth=25;
 					for(int e=0;e<V.size();e++)
 					{
-						edusFound=true;
 						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(e);
 			            if(def.name.length()>=colWidth)
 			            {
@@ -241,7 +239,6 @@ public class Qualify extends BaseAbleLister
 	                String prefix=null;
 					for(int v=0;v<V.size();v++)
 					{
-						edusFound=true;
 						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
 	                    req=CMLib.masking().maskDesc(def.finalRequirements(),true);
 	                    prefix="^<HELP^>"+def.name+"^</HELP^>";

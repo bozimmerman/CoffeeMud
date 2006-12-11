@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -81,6 +82,21 @@ public class Learn extends StdCommand
 			mob.doCommand(CC);
 			return true;
 		}
+        ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
+        for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+        {
+            ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+            if((def.name.equalsIgnoreCase(what+teacherName)
+                 ||def.name.equalsIgnoreCase(what)))
+            { theExpertise=def; break;}
+        }
+        if(theExpertise!=null)
+        {
+            Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+theExpertise.name);
+            mob.doCommand(CC);
+            return true;
+        }
+        
 		for(int v=0;v<V.size();v++)
 			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
 			{

@@ -594,7 +594,7 @@ public class StdMOB implements MOB
 
 	public void destroy()
 	{
-        if((CMSecurity.isDebugging("MISSINGKIDS"))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_int(fetchEffect("Age").text())>Short.MAX_VALUE))
+        if((CMSecurity.isDebugging("MISSINGKIDS"))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
             Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
         if(soulMate()!=null) dispossess(false);
         MOB possessor=CMLib.utensils().getMobPossessingAnother(this);

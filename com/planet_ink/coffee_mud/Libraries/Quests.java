@@ -245,7 +245,7 @@ public class Quests extends StdLibrary implements QuestManager
                 if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("STAT"))&&(lineV.size()>2))
                 {
                     var=((String)lineV.elementAt(2)).toUpperCase();
-                    properties.addElement(var,CMParms.combineWithQuotes(lineV,3),new Integer(v));
+                    stats.addElement(var,CMParms.combineWithQuotes(lineV,3),new Integer(v));
                 }
             }
         }

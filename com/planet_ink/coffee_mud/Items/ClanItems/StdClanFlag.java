@@ -61,6 +61,20 @@ public class StdClanFlag extends StdItem implements ClanItem
 
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
+    
+    public void setOwner(Environmental E)
+    {
+        if((E==null)&&(super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging("FLAGWATCHING")))
+        { Log.debugOut("FLAGWATCH",name()); Log.debugOut("FLAGWATCH",new Exception(name()+" is being null-ownered."));}
+        super.setOwner(E);
+    }
+
+    public void destroy()
+    {
+        if((super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging("FLAGWATCHING")))
+        { Log.debugOut("FLAGWATCH",name()); Log.debugOut("FLAGWATCH",new Exception(name()+" is being destroyed."));}
+        super.destroy();
+    }
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
