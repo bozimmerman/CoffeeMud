@@ -55,7 +55,7 @@ public class Ogre extends Humanoid
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-    public int availabilityCode(){return Area.THEME_FANTASY;}
+    public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
