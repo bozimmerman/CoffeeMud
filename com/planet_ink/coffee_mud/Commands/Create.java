@@ -804,6 +804,20 @@ public class Create extends BaseGenerics
 			socials(mob,commands);
 		}
 		else
+        if(commandType.equals("HOLIDAY"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            String named=CMParms.combine(commands,2);
+            if(named.trim().length()==0)
+            {
+                mob.tell("Include a name!");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+                return false;
+            }
+            mob.tell(CMLib.quests().createHoliday(mob.location().getArea(),named));
+        }
+        else
         if(commandType.equals("FACTION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
@@ -984,10 +998,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, CLAN, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, HOLIDAY, CLAN, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
 			}
 		}
 		return false;

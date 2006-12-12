@@ -1160,6 +1160,27 @@ public class Modify extends BaseGenerics
             Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
         }
         else
+        if(commandType.equals("HOLIDAY"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+            String name=CMParms.combine(commands,2);
+            int num=-1;
+            if(CMath.isInteger(name))
+                num=CMath.s_int(name);
+            else
+            if(name.length()>0)
+                num=CMLib.quests().getHolidayIndex(name);
+            if(num<0)
+            {
+                mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+                return false;
+            }
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            CMLib.quests().modifyHoliday(mob,num);
+            Log.sysOut("CreateEdit",mob.Name()+" modified Holiday "+name+".");
+        }
+        else
 		if(commandType.equals("QUEST"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
@@ -1411,7 +1432,7 @@ public class Modify extends BaseGenerics
 				execute(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, EXPERTISE, TITLE, QUEST, MOB, USER, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

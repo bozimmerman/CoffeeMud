@@ -75,13 +75,27 @@ public interface EnglishParsing extends CMLibrary
         throws IOException;
     public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
         throws IOException;
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
+        throws IOException;
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+        throws IOException;
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
+        throws IOException;
     public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
+        throws IOException;
+    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
         throws IOException;
     public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
         throws IOException;
+    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+        throws IOException;
     public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
+        throws IOException;
+    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
         throws IOException;
     public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
 	    throws IOException;
+    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+        throws IOException;
     public String returnTime(long millis, long ticks);
 }

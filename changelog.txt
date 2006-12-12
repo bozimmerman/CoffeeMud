@@ -1923,3 +1923,66 @@ ruthless programmer, and sentenced to a quick death.
 23. New zapper mask: +HOME
 24. More stuff added to mudgrinder control panel.
 25. Bugs detonated underground, mysteriously.  Wild claims about bug strength forthcoming.
+# Build 5.2.10 Released Dec 11, 2006
+Internal: New Libraries: Law
+New Behavior: Nanny -- for easily automating watching over children, mounts, followers for gold
+New Scriptable trigger: IMASK_PROG (a mask prog that only responds to scripted mob)
+New Scriptable function: ISLIKE (for doing zapper mask checks on object)
+New Scriptable commands: MPUNLOADSCRIPT (an unload for scriptable files only); MPSTEPQUEST
+Scriptable change: MPGSET/MPSETting a mobs level will rescore it, changing race resizes it
+MudChat now has a "Quest" syntax for additing entries
+Arrest changes: trespassing now also includes being a foreign aggro mob not following a player
+Arrest changes: being wanted for resisting arrest now starts the "copkiller" effect (police don't follow normal procedure)
+Behavior MOBTeachers now teach Expertises
+Quest changes: now support multi-step quests, spawned quests, multi-quest spawned scripts, AREAGROUPs, and GIVE STATs
+Internal: New message type: LIFE (is sent when mobs are rejuved or initially brought into a map)
+GTELL now supports socials/emotes, and automatically emotes a LEVEL msg when a group member levels
+NOFOLLOW (by itself) no longer un-follows all group members, so it can be used to limit FUTURE followings only.
+The despotic Clan type "Clan" renamed to "Gang" to differentiate it from the more generic "Clan" name.
+Dozens of new skill, chant, prayer -domains implemented
+SNOOPED players will be tagged with their snoopitude names
+We now have a AUTO-player-TITLING system -- just use CREATE TITLE to get started
+I3 now connects to the new server, and their are coffeemud.ini entries to specify servers
+Two new log types -- kill log and combat log -- turn these on if you have lots of disk space!
+CoffeeMud has an IDLE timer system now -- settable through coffeemud.ini file
+ShopKeepers can now have price adjustments to items based on zapper masks of items.  Called PriceFactors
+new coffeemud.ini entry: MAXCLANMEMBERS - limit the number of members of player driven clans
+Generic Abilities -- yes, create a new skill/spell/property/whatever from the comfort of your command line editor.  use CREATE ABILITY to get started.
+Generic Races - CREATE RACE <RACEID> can now be used to CONVERT existing standard races to genraces.  This is a very faithful copy system.
+Generic Classes - CREATE CLASS <CLASSID> can now be used to CONVERT existing standard char classes to gencharclasses.  Not as faithful a copy as genraces due to the complexity of gencharclass code.
+Saving a room with items riding rideables will have ride-status be rememberd and restored on room reload, including riding items like wagons on horzes.
+Most java classes can be reloaded at run-time; the LOAD command will unload existing classes from the classloader first, so UNLOAD not necessary.  This includes .class files, .js (javascript) classes, and if setup correctly, .java files will be recompiled and loaded.
+As mentioned previously -- scripts directory eliminated and language scripts folded back into java code.  This is a linguistic surrender to a massive codebase that I can't maintain in an abstract language-scripted form.
+DESTROY now supports THREAD type -- doesn't always work for all threads though as thread.stop() is deprecated..
+CoffeeMud now has numerous skill-tied Expertises, as well as ability to define/destroy them online -- use CREATE/LIST EXPERTISE to get started
+can now LIST AREARESOURCES to scan current resource settings for area rooms
+can now LIST CONQUEREd to review area conquest details
+LIST RESOURCE <specific resource name> will now show the CONTENT of that resource
+New command: LEARN -- combines GAIN with TRAIN
+Expertises are now GAINED and TEACHed instead of TRAINed
+Online COMPONENT editor improved to be more like other online editors.
+All skill-listing commands, such as CHANTS/PRAYERS/SKILLs supports domain parameter, and skill-name parameters now
+ANNOUNCEMSG (no parm) now reveals existing announce message
+Don't normally announce bugs, but the one related to the MUDGRinder menu for non-archons was a doozy. Some may look at it now and wonder at all the "new" editors in there.
+can now TRANSFER large chunks of items from one place to another.
+Prop_SpellAdder (and derivatimes -- PropFightSpellCast, etc -- supports NOUNINVOKE flag now)
+Several new DEBUG coffeemud.ini entries for your amusement
+New Prayer: ROT (counter to good prayer)
+CoffeeMud now stores backup of player kids in database. Resurrect prayer can be used to bring then back, esp. when used by an Archon
+New Fighter Skill: Armor Tweaking
+Songs, Dances, Plays all now support multi-room effects which are exploited only by expertises -- still a cool feature
+Several new MOODs -- and improvements to old ones
+New Thief skills (though Archon only for the moment): Thief_IdentifyTraps, Thief_DisablingCaltrops, Thief_Autocaltrops, Thief_SetDecoys, Thief_Footlocks, Thief_DazzlingCaltrops, Thief_AutoMarkTraps, Thief_AutoDetectTraps
+Several new zapper masks: +-DAY, +-WEATHER, +-SILLFLAG +-MAXCLASSLEVELS
+Areas now have something called a Blurb flag -- not sure what its good for yet, but they are there for flagging areas and/or adding to area help files with custom state information about the area.
+HELP <socialname> now works
+BLOOD liquid types will now rot
+New resource type: BEANS
+Weapon change: magical bonus (+1, +2, etc) is now calculated as part of the attack/damage bonus of the weapon instead of purely as a bonus on the user of the weapon.
+Archon wands/staffs now both have level x up/down ability as well as RESTORE ability
+Can now delete directories in MUDGrinder File Manager
+MUDGrinder FLAT-Map area editor uses a new algorithm for placing rooms that GREATLY improves readability
+Yet another step taken towards the "Multi-Host" MUD abilities -- still not there by a longshot, but more work done in that direction.
+Mechanism for how standard races set their "default stats" (the way birds have an int of 1, for instance) was changed to be a bit more flexible, to allow higher stats in extreme circumstances
+Really a consequence of the GenRace changes, but auto-Mixed races (from breeding) will be a much more accurate mix of the races now.
+Prancer class renamed to Dancer

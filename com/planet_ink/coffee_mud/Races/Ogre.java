@@ -42,24 +42,66 @@ public class Ogre extends Humanoid
 	public int weightVariance(){return 90;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
-	private String[]culturalAbilityNames={"Gigantic"};
-	private int[]culturalAbilityProficiencies={100};
+	private String[]culturalAbilityNames={"Gigantic","Orcish"};
+	private int[]culturalAbilityProficiencies={100,50};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
+    private int[] agingChart={0,2,6,30,69,104,136,142,148};
+    public int[] getAgingChart(){return agingChart;}
+    
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+    public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-10);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-5);
-		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-5);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+10);
+        affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-10);
+        if(affectedMOB.isMonster())
+        {
+            affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-3);
+            affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3);
+            affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-4);
+            affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+10);
+        }
+        else
+        {
+            affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-2);
+            affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)-2);
+            affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+3);
+            affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+3);
+            affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
+            affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
+            affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-1);
+            affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-1);
+        }
 	}
+    
+    public Vector outfit(MOB myChar)
+    {
+        if(outfitChoices==null)
+        {
+            outfitChoices=new Vector();
+            // Have to, since it requires use of special constructor
+            Armor s1=CMClass.getArmor("GenShirt");
+            s1.setName("a large patchy tunic");
+            s1.setDisplayText("a large patchy tunic is crumpled up here.");
+            s1.setDescription("It is a large ragged patchy nasty sweat-stained tunic.");
+            s1.text();
+            outfitChoices.addElement(s1);
+            Armor p1=CMClass.getArmor("GenPants");
+            p1.setName("some torn leggings");
+            p1.setDisplayText("some torn leggings lie here.");
+            p1.setDescription("They appear made for a large person with poor taste in clothing.");
+            p1.text();
+            outfitChoices.addElement(p1);
+            Armor s3=CMClass.getArmor("GenBelt");
+            outfitChoices.addElement(s3);
+        }
+        return outfitChoices;
+    }
 }

@@ -1057,6 +1057,27 @@ public class Destroy extends BaseItemParser
 				mob.tell("Ok.");
 			}
 		}
+        else
+        if(commandType.equals("HOLIDAY"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+            String name=CMParms.combine(commands,2);
+            int num=-1;
+            if(CMath.isInteger(name))
+                num=CMath.s_int(name);
+            else
+            if(name.length()>0)
+                num=CMLib.quests().getHolidayIndex(name);
+            if(num<0)
+            {
+                mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+                return false;
+            }
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            mob.tell(CMLib.quests().deleteHoliday(mob.location().getArea(),num));
+            Log.sysOut("CreateEdit",mob.Name()+" deleted Holiday "+name+".");
+        }
 		else
 		if(commandType.equals("BAN"))
 		{
@@ -1331,7 +1352,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, THREAD, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

@@ -379,19 +379,19 @@ public class MudChat extends StdBehavior
 		if(l==0) return true;
 		if((expression.charAt(0)=='(')
 		&&(expression.charAt(l-1)==')'))
-			expression=expression.substring(1,expression.length()-1);
+			expression=expression.substring(1,expression.length()-1).trim();
 
 		int end=0;
 		for(;((end<expression.length())&&(("(&|~").indexOf(expression.charAt(end))<0));end++);
 		String check=null;
 		if(end<expression.length())
 		{
-			check=expression.substring(0,end);
-			expression=expression.substring(end);
+			check=expression.substring(0,end).trim();
+			expression=expression.substring(end).trim();
 		}
 		else
 		{
-			check=expression;
+			check=expression.trim();
 			expression="";
 		}
 		boolean response=true;
@@ -404,14 +404,14 @@ public class MudChat extends StdBehavior
 		else
 		if(check.startsWith("^"))
 		{
-			response=message.trim().startsWith(check.substring(1));
+			response=message.trim().startsWith(check.substring(1).trim());
 			if(response)
 				rest[0]=message.substring(check.substring(1).trim().length());
 		}
 		else
 		if(check.length()>0)
 		{
-			int x=message.toUpperCase().indexOf(check.toUpperCase());
+			int x=message.toUpperCase().indexOf(check.toUpperCase().trim());
 			response=(x>=0);
 			if(response)
 				rest[0]=message.substring(x+check.length());
@@ -439,19 +439,19 @@ public class MudChat extends StdBehavior
 					}
 				if(expEnd<expression.length()&&(parenCount<=0))
 				{
-					return response&match(speaker,expression.substring(1,expEnd),message,rest);
+					return response&match(speaker,expression.substring(1,expEnd).trim(),message,rest);
 				}
 				return response;
 			}
 			else
 			if(expression.startsWith("&"))
-				return response&&match(speaker,expression.substring(1),message,rest);
+				return response&&match(speaker,expression.substring(1).trim(),message,rest);
 			else
 			if(expression.startsWith("|"))
-				return response||match(speaker,expression.substring(1),message,rest);
+				return response||match(speaker,expression.substring(1).trim(),message,rest);
 			else
 			if(expression.startsWith("~"))
-				return response&&(!match(speaker,expression.substring(1),message,rest));
+				return response&&(!match(speaker,expression.substring(1).trim(),message,rest));
 
 		}
 		return response;

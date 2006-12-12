@@ -864,6 +864,20 @@ public class CMParms
         return s.toString().substring(2);
     }
 
+    public static String toStringList(Enumeration e)
+    {
+        if(!e.hasMoreElements()) return "";
+        StringBuffer s=new StringBuffer("");
+        Object o=null;
+        for(;e.hasMoreElements();)
+        {
+            o=e.nextElement();
+            s.append(", "+o);
+        }
+        if(s.length()==0) return "";
+        return s.toString().substring(2);
+    }
+
     public static String toStringList(long[] V)
     {
         if((V==null)||(V.length==0)){

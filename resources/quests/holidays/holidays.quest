@@ -1,5 +1,46 @@
 set name holidays
-set wait 120
+set wait 130
 set interval 1
 set spawnable all
+set duration 1
 step break
+
+set name drought
+set wait 120
+set interval 1
+set duration 900+(1?400)
+quiet
+set room any mask=-SEASON +SUMMER -WEATHER +DROUGHT
+set room
+set mobgroup RESELECT mask=+INT 3
+give behavior MudChat +(water | thirst | drought)\;5yes, the drought affects us all\;5we're all so thirsty\;5please don't speak of the drought\;5hopefully there will be more rain soon\;\;(price | prices)\;9the famine has put a premium on water prices
+set mobgroup RESELECT  mask=-JAVACLASS +StdShopkeeper +GenShopkeeper
+give stat PRICEMASKS 20.0 -JAVACLASS +StdDrink +GenDrink +GenLiquidResource +GenPotion +StdPotion
+STEP BREAK
+
+set name famine
+set wait 120
+set interval 1
+set duration 900+(1?400)
+quiet
+set room any mask=-SEASON +SUMMER -WEATHER +HEAT +DUST
+set room
+set mobgroup RESELECT mask=+INT 3
+give behavior MudChat +(food | hunger | famine)\;5yes, the famine affects us all\;5we're all so hungry\;5please don't speak of the famine\;5hopefully there will be more food next season\;\;(price | prices)\;9the famine has put a premium on food prices
+set mobgroup RESELECT mask=-JAVACLASS +StdShopkeeper +GenShopkeeper
+give stat PRICEMASKS 10.0 -JAVACLASS +StdFood +GenFood +GenFoodResource
+STEP BREAK
+
+set name harsh winter
+set wait 120
+set interval 1
+set duration 900+(1?400)
+quiet
+set room any -SEASON +WINTER -WEATHER +COLD +BLIZZARD
+set room
+set mobgroup RESELECT mask=+INT 3
+give behavior MudChat +(cold | freezing | winter | blizzard | snow)\;5yes, the harsh winter affects us all\;5we're all freezing! its been so cold!\;5please don't speak of the winter, it will kill us all\;5spring cant come too soon can it?\;\;(prices | price | wood | cloth )\;9the harsh winter has put a premium on wood and warm clothing
+set mobgroup RESELECT  mask=-JAVACLASS +StdShopKeeper +GenShopKeeper
+give stat PRICEMASKS 10.0 -MATERIAL +WOODEN -RESOURCE +COAL,5.0 -MATERIAL +CLOTH +LEATHER -CLASS +GenArmor
+STEP BREAK
+

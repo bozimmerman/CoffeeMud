@@ -39,5 +39,6 @@ public class StdBomb extends StdTrap
 	public String requiresToSet(){return "";}
 	public boolean isABomb(){return true;}
 	public int baseRejuvTime(int level){ return 5;}
+    public StdBomb(){ super(); reset=5;}
 
 }

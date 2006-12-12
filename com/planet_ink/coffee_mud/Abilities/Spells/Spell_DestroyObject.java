@@ -60,6 +60,10 @@ public class Spell_DestroyObject extends Spell
 
 		boolean success=proficiencyCheck(mob,(((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level())*25),auto);
 
+        if((target instanceof ClanItem)
+        &&(!((ClanItem)target).clanID().equals(mob.getClanID())))
+            success=false;
+        
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),

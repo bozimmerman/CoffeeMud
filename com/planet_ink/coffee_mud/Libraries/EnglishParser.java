@@ -1382,14 +1382,29 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,false,false);
+        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null);
+    }
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    throws IOException
+    {
+        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help);
     }
     public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false);
+        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+    }
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
+    throws IOException
+    {
+        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);
     }
     public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
+    throws IOException
+    {
+        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+    }
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1398,27 +1413,47 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         else
             mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter a new value "+(emptyOK?"(or NULL)":"")+"\n\r:","");
-        if((newName.equalsIgnoreCase("null"))&&(emptyOK))
-            return "";
-        else
-        if(newName.length()>0)
-            return newName;
-        else
+        String newName="?";
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            mob.tell("(no change)");
-            return oldVal;
+            newName=mob.session().prompt("Enter a new value "+(emptyOK?"(or NULL)":"")+"\n\r:","");
+            if((newName.equalsIgnoreCase("null"))&&(emptyOK))
+                return "";
+            else
+            if(newName.equals("?")&&(help!=null))
+                mob.tell(help);
+            else
+            if(newName.length()>0)
+                return newName;
+            else
+                break;
         }
+        mob.tell("(no change)");
+        return oldVal;
     }
     public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    {
+        return promptBool(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+    }
+    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter true or false:","");
-        if(newName.toUpperCase().startsWith("T")||newName.toUpperCase().startsWith("F"))
-            return newName.toUpperCase().startsWith("T");
+        String newName="?";
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+            newName=mob.session().prompt("Enter true or false:","");
+            if(newName.equals("?")&&(help!=null))
+                mob.tell(help);
+            else
+            if(newName.toUpperCase().startsWith("T")||newName.toUpperCase().startsWith("F"))
+                return newName.toUpperCase().startsWith("T");
+            else
+                break;
+        }
         mob.tell("(no change)");
         return oldVal;
     }
@@ -1426,12 +1461,26 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
+        return promptDouble(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+    }
+    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    throws IOException
+    {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter a new value:","");
-        if(CMath.isNumber(newName))
-            return CMath.s_double(newName);
+        String newName="?";
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+            newName=mob.session().prompt("Enter a new value:","");
+            if(newName.equals("?")&&(help!=null))
+                mob.tell(help);
+            else
+            if(CMath.isNumber(newName))
+                return CMath.s_double(newName);
+            else
+                break;
+        }
         mob.tell("(no change)");
         return oldVal;
     }
@@ -1439,12 +1488,27 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
+        return promptInteger(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+    }
+    
+    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    throws IOException
+    {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter a new value:","");
-        if(CMath.isInteger(newName))
-            return CMath.s_int(newName);
+        String newName="?";
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+            newName=mob.session().prompt("Enter a new value:","");
+            if(newName.equals("?")&&(help!=null))
+                mob.tell(help);
+            else
+            if(CMath.isInteger(newName))
+                return CMath.s_int(newName);
+            else
+                break;
+        }
         mob.tell("(no change)");
         return oldVal;
     }
@@ -1452,12 +1516,27 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
+        return promptLong(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+    }
+    
+    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    throws IOException
+    {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter a new value:","");
-        if(CMath.isInteger(newName))
-            return CMath.s_long(newName);
+        String newName="?";
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+            newName=mob.session().prompt("Enter a new value:","");
+            if(newName.equals("?")&&(help!=null))
+                mob.tell(help);
+            else
+            if(CMath.isInteger(newName))
+                return CMath.s_long(newName);
+            else
+                break;
+        }
         mob.tell("(no change)");
         return oldVal;
     }

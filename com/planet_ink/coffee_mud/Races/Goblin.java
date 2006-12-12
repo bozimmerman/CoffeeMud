@@ -66,7 +66,6 @@ public class Goblin extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,8);
 	}
 	public Weapon myNaturalWeapon()

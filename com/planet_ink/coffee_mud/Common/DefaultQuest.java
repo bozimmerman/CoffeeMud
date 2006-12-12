@@ -489,11 +489,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         if(p.size()<3) continue;
                         Vector names=new Vector();
                         Vector areas=new Vector();
-                        if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
-                            for(int ip=3;ip<p.size();ip++)
-                                names.addElement(p.elementAt(ip));
-                        else
-                            names.addElement(CMParms.combine(p,2));
+                        for(int ip=2;ip<p.size();ip++)
+                            names.addElement(p.elementAt(ip));
                         for(int n=0;n<names.size();n++)
                         {
                             String areaName=(String)names.elementAt(n);
@@ -649,6 +646,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	errorOccurred(q,isQuiet,"Quest '"+name()+"', !mob '"+p+"'.");
                         	break;
                         }
+                        if(reselect) q.reselectable.add(q.mob);
                         questifyScriptableBehavs(q.mob);
                         if(q.room!=null)
                             q.room.bringMobHere(q.mob,false);
@@ -712,7 +710,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }
                         }
                         if((choices!=null)&&(choices.size()>0))
+                        {
                             q.mobGroup=choices;
+                            if(reselect) q.reselectable.addAll(choices);
+                        }
                         else
                         {
                         	errorOccurred(q,isQuiet,"Quest '"+name()+"', !mobgroup '"+mobName+":"+mask+"'.");
@@ -771,7 +772,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }
                         }
                         if((choices!=null)&&(choices.size()>0))
+                        {
+                            if(reselect) q.reselectable.addAll(choices);
                             q.itemGroup=choices;
+                        }
                         else
                         {
                         	errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemgroup '"+itemName+":"+mask+"'.");
@@ -872,6 +876,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	break;
                         }
                         questifyScriptableBehavs(q.item);
+                        if(reselect) q.reselectable.add(q.item);
                         if(q.room!=null)
                             q.room.bringItemHere(q.item,-1,true);
                         else
@@ -1292,6 +1297,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             errorOccurred(q,isQuiet,"Quest '"+name()+"', !item '"+itemName+"'.");
                             break;
                         }
+                        if(reselect) q.reselectable.add(q.item);
                         questifyScriptableBehavs(q.item);
                         if(q.room!=null)
                             q.room.bringItemHere(q.item,-1,true);
@@ -2571,7 +2577,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             else
             if(getSpawn()==SPAWN_ANY)
             {
-                Vector parsed=CMLib.quests().parseQuestSteps(baseScript,0);
+                Vector parsed=CMLib.quests().parseQuestSteps(baseScript,0,false);
                 for(int p=0;p<parsed.size();p++)
                     spawnQuest((String)parsed.elementAt(p),baseScript,true);
             }
