@@ -151,7 +151,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			success=false;
 		}
 		
-		if(success)
+		if((success)&&((auto)||((levelDiff-statDiff)>-100)))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
