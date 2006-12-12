@@ -39,6 +39,7 @@ public interface Quest extends Tickable, CMCommon
     // the unique start date of the quest
     public String startDate();
     public void setStartDate(String newName);
+    public void setStartMudDate(String newName);
     
 	// the duration, in ticks
 	public int duration();

@@ -107,6 +107,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         &&(CMath.isMathExpression(newDate.substring(x+1))))
 	    	startDate=newDate;
     }
+    public void setStartMudDate(String newDate){
+        setStartDate(newDate);
+        if(startDate.equals(newDate))
+            startDate="MUDDAY "+startDate;
+    }
     
     // the duration, in ticks
     public int duration(){return duration;}
@@ -3663,7 +3668,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 5: setPlayerMask(val); break;
 		case 6: setRunLevel(CMath.s_parseIntExpression(val)); break;
 		case 7: setStartDate(val); break;
-		case 8: setStartDate(val); break;
+		case 8: setStartMudDate(val); break;
 		case 9: setWaitInterval(CMath.s_parseIntExpression(val)); break;
         case 10: 
             setSpawn(CMParms.indexOf(SPAWN_DESCS,val.toUpperCase().trim())); 

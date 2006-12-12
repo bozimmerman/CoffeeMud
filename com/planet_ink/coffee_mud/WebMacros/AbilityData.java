@@ -174,6 +174,29 @@ public class AbilityData extends StdWebMacro
 						str.append(thang.toString()+", ");
 					}
 				}
+                if(parms.containsKey("TYPENDOMAIN"))
+                {
+                    StringBuffer thang=new StringBuffer("");
+                    thang.append(CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]));
+                    if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
+                    {
+                        int domain=A.classificationCode()&Ability.ALL_DOMAINS;
+                        domain=domain>>5;
+                        thang.append(": "+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain]).replace('_',' '));
+                    }
+                    
+                    if(thang.length()>0)
+                    {
+                        thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
+
+                        int x=thang.toString().indexOf("/");
+                        while(x>0){
+                            thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
+                            x=thang.toString().indexOf("/",x+1);
+                        }
+                        str.append(thang.toString()+", ");
+                    }
+                }
 				if(parms.containsKey("QLEVEL"))
 				{
 					String className=httpReq.getRequestParameter("CLASS");

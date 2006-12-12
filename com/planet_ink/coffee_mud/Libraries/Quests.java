@@ -255,7 +255,7 @@ public class Quests extends StdLibrary implements QuestManager
         newHoliday.append("QUIET\n\r");
         newHoliday.append("SET MOBGROUP RESELECT MASK=+INT 3\n\r");
         newHoliday.append("GIVE BEHAVIOR MUDCHAT +(|"+named+")\\;9Happy "+named+" $n!\\;\n\r");
-        newHoliday.append("SET MOBGROUP MASK=-JAVACLASS +GenShopkeeper +StdShopKeeper\n\r");
+        newHoliday.append("SET MOBGROUP RESELECT MASK=-JAVACLASS +GenShopkeeper +StdShopKeeper\n\r");
         newHoliday.append("GIVE STAT PRICEMASKS 0.75 -MATERIAL +CLOTH\n\r");
         newHoliday.append("STEP BREAK\n\r");
         F.saveText(newHoliday,true);
