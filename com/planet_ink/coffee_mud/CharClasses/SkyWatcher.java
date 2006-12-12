@@ -216,10 +216,10 @@ public class SkyWatcher extends StdCharClass
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin")))
 		{
 			if(!quiet)
-				mob.tell("You must be Human, Elf, Dwarf, or Half Elf to be a SkyWatcher");
+				mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a SkyWatcher");
 			return false;
 		}
 		return super.qualifiesForThisClass(mob,quiet);

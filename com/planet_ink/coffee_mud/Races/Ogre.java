@@ -42,8 +42,8 @@ public class Ogre extends Humanoid
 	public int weightVariance(){return 90;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
-	private String[]culturalAbilityNames={"Gigantic","Orcish"};
-	private int[]culturalAbilityProficiencies={100,50};
+	private String[]culturalAbilityNames={"Gigantic","Orcish","Butchering"};
+	private int[]culturalAbilityProficiencies={100,50,75};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -55,12 +55,13 @@ public class Ogre extends Humanoid
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-    public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+    public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
         affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-10);
+        affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
         if(affectedMOB.isMonster())
         {
             affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-3);
@@ -72,8 +73,8 @@ public class Ogre extends Humanoid
         {
             affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-2);
             affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)-2);
-            affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+3);
-            affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+3);
+            affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+4);
+            affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+4);
             affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
             affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
             affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-1);

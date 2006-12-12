@@ -163,10 +163,10 @@ public class Prancer extends StdCharClass
 				mob.tell("You need at least a 9 Strength to become a Dancer.");
 			return false;
 		}
-		if((!(mob.charStats().getMyRace().ID().equals("Human")))
-		&&(!(mob.charStats().getMyRace().ID().equals("Elf")))
-		&&(!(mob.charStats().getMyRace().ID().equals("Halfling")))
-		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
+		if((!(mob.charStats().getMyRace().racialCategory().equals("Human")))
+		&&(!(mob.charStats().getMyRace().racialCategory().equals("Humanoid")))
+		&&(!(mob.charStats().getMyRace().racialCategory().equals("Elf")))
+		&&(!(mob.charStats().getMyRace().racialCategory().equals("Halfling"))))
 		{
 			if(!quiet)
 				mob.tell("You must be Human, Elf, Halfling, or Half Elf to be a Dancer");

@@ -72,6 +72,7 @@ public class Halfling extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+10);
         affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,affectableStats.getStat(CharStats.STAT_SAVE_DETECTION)+10);
 	}
+	
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -95,6 +96,7 @@ public class Halfling extends StdRace
 		}
 		return outfitChoices;
 	}
+	
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 

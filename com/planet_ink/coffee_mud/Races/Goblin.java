@@ -42,8 +42,8 @@ public class Goblin extends StdRace
 	public int weightVariance(){return 50;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Golbinoids";}
-	private String[]culturalAbilityNames={"Goblinese"};
-	private int[]culturalAbilityProficiencies={100};
+	private String[]culturalAbilityNames={"Goblinese","Orcish","Mining"};
+	private int[]culturalAbilityProficiencies={100,50,75};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -51,11 +51,11 @@ public class Goblin extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,12,20,30,45,47,49};
+	private int[] agingChart={0,1,2,12,21,34,52,57,63};
 	public int[] getAgingChart(){return agingChart;}
 	
 	protected static Vector resources=new Vector();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -65,8 +65,26 @@ public class Goblin extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,8);
+		if(affectedMOB.isMonster())
+		{
+			affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,12);
+			affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
+			affectableStats.setRacialStat(CharStats.STAT_WISDOM,8);
+			affectableStats.setRacialStat(CharStats.STAT_CHARISMA,9);
+		}
+		else
+		{
+            affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
+            affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+2);
+            affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-1);
+            affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-1);
+            affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
+            affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
+            affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-1);
+            affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-1);
+            affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+1);
+            affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+1);
+		}
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -114,6 +132,32 @@ public class Goblin extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
+	
+	public Vector outfit(MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			outfitChoices=new Vector();
+			// Have to, since it requires use of special constructor
+			Armor s1=CMClass.getArmor("GenShirt");
+			s1.setName("a small ratty tunic");
+			s1.setDisplayText("a small ratty tunic is folded neatly here.");
+			s1.setDescription("It is a small ratty abused little shirt.");
+			s1.text();
+			outfitChoices.addElement(s1);
+			Armor p1=CMClass.getArmor("GenPants");
+			p1.setName("a cotton loincloth");
+			p1.setDisplayText("a cotton loincloth lies here");
+			p1.setDescription("Looks like little more than some rags pinned together at the corners.");
+			p1.text();
+			outfitChoices.addElement(p1);
+			Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.addElement(s3);
+		}
+		return outfitChoices;
+	}
+	
+	
 	public Vector myResources()
 	{
 		synchronized(resources)

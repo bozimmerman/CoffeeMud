@@ -210,12 +210,12 @@ public class Delver extends StdCharClass
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Gnome"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoids"))
 		&& !(mob.charStats().getMyRace().racialCategory().equals("Troll-kin"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling")))
 		{
 			if(!quiet)
-				mob.tell("You must be Human, Halfling, Dwarf, or Half Elf to be a Delver");
+				mob.tell("You must be Human, Halfling, Dwarf, Goblin, or Half Elf to be a Delver");
 			return false;
 		}
 		return super.qualifiesForThisClass(mob,quiet);

@@ -68,7 +68,9 @@ public class RaceData extends StdWebMacro
 					str.append(R.myNaturalWeapon().name()+", ");
 				MOB mob=CMClass.getMOB("StdMOB");
 				MOB mob2=CMClass.getMOB("StdMOB");
+				mob.setSession((Session)CMClass.getCommon("DefaultSession"));
 				mob.baseCharStats().setMyRace(R);
+				mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 				R.startRacing(mob,false);
 				mob.recoverCharStats();
 				mob.recoverCharStats();
@@ -77,6 +79,7 @@ public class RaceData extends StdWebMacro
 				mob2.recoverCharStats();
 				mob2.recoverEnvStats();
 				mob2.recoverMaxState();
+				mob.setSession(null);
 				if(parms.containsKey("STATS"))
 				{
 					for(int c=0;c<CharStats.NUM_STATS;c++)

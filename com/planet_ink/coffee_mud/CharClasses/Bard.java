@@ -182,6 +182,17 @@ public class Bard extends StdCharClass
 	public String statQualifications(){return "Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
+		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling"))
+		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf-kin")))
+		{
+			if(!quiet)
+				mob.tell("You must be Human, Elf, Dwarf, Halfling, Elf-kin, or Half Elf to be a Bard");
+			return false;
+		}
 		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
