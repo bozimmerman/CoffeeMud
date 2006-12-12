@@ -1925,7 +1925,7 @@ ruthless programmer, and sentenced to a quick death.
 25. Bugs detonated underground, mysteriously.  Wild claims about bug strength forthcoming.
 # Build 5.2.10 Released Dec 11, 2006
 Internal: New Libraries: Law
-New Behavior: Nanny -- for easily automating watching over children, mounts, followers for gold
+New Behavior: Nanny -- for easily automating watching over children, mounts, or followers for gold by the hour.
 New Scriptable trigger: IMASK_PROG (a mask prog that only responds to scripted mob)
 New Scriptable function: ISLIKE (for doing zapper mask checks on object)
 New Scriptable commands: MPUNLOADSCRIPT (an unload for scriptable files only); MPSTEPQUEST
@@ -1986,3 +1986,4 @@ Yet another step taken towards the "Multi-Host" MUD abilities -- still not there
 Mechanism for how standard races set their "default stats" (the way birds have an int of 1, for instance) was changed to be a bit more flexible, to allow higher stats in extreme circumstances
 Really a consequence of the GenRace changes, but auto-Mixed races (from breeding) will be a much more accurate mix of the races now.
 Prancer class renamed to Dancer
+Special/Reserved Quest called holidays can be added to/modified on an area-by-area basis using LIST/CREATE/MODIFY HOLIDAY <name>

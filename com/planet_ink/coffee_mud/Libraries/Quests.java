@@ -160,7 +160,7 @@ public class Quests extends StdLibrary implements QuestManager
             }
             if(nameLine!=null)
             {
-                boolean contains=(areaName==null);
+                boolean contains=true;//(areaName==null);
                 if(areaLine!=null)
                 {
                     if(!contains)
