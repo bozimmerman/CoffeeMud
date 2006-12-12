@@ -6,7 +6,7 @@ set duration 1
 step break
 
 set name drought
-set wait 1500
+set wait 120
 set interval 1
 set duration 900+(1?400)
 quiet
@@ -19,7 +19,7 @@ give stat PRICEMASKS 20.0 -JAVACLASS +StdDrink +GenDrink +GenLiquidResource +Gen
 STEP BREAK
 
 set name famine
-set wait 1500
+set wait 120
 set interval 1
 set duration 900+(1?400)
 quiet
@@ -32,7 +32,7 @@ give stat PRICEMASKS 10.0 -JAVACLASS +StdFood +GenFood +GenFoodResource
 STEP BREAK
 
 set name harsh winter
-set wait 1500
+set wait 120
 set interval 1
 set duration 900+(1?400)
 quiet
