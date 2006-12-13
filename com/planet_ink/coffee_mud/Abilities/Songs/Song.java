@@ -72,11 +72,19 @@ public class Song extends StdAbility
 		&&(!unInvoked))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			{
+				if(msg.source().location()!=null)
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) singing.");
 				unInvoke();
+			}
 			else
 			if((msg.target() instanceof Armor)
 			&&(msg.targetMinor()==CMMsg.TYP_WEAR))
+			{
+				if(msg.source().location()!=null)
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) singing.");
 				unInvoke();
+			}
 		}
 	}
 

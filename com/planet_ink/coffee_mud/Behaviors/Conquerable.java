@@ -69,6 +69,7 @@ public class Conquerable extends Arrest
     {
         return holdingClan;
     }
+    
     public String conquestInfo(Area myArea)
     {
         StringBuffer str=new StringBuffer("");
@@ -804,6 +805,25 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
+	public void setControlPoints(String clanID, int newControlPoints)
+	{
+		synchronized(clanControlPoints)
+		{
+			int index=-1;
+			for(int v=0;v<clanControlPoints.size();v++)
+			{
+				if(((String)clanControlPoints.elementAt(v,1)).equalsIgnoreCase(clanID))
+				{ index=v; break;}
+			}
+			if(index>=0)
+				clanControlPoints.setElementAt(index,2,new int[]{newControlPoints});
+			else
+				clanControlPoints.addElement(clanID,new int[]{newControlPoints});
+            if(newControlPoints>=totalControlPoints)
+                declareWinner(clanID);
+		}
+	}
+	
     protected boolean changeControlPoints(String clanID, int amount)
 	{
 		synchronized(clanControlPoints)

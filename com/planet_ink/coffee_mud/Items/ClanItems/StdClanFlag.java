@@ -114,11 +114,16 @@ public class StdClanFlag extends StdItem implements ClanItem
 				else
 			    if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 			    &&(CMSecurity.isAllowed(msg.source(),R,"CMDROOMS"))
-			    &&(msg.targetMessage()!=null)
-			    &&(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()).indexOf("I HEREBY DECLARE THIS AREA")>=0))
+			    &&(msg.targetMessage()!=null))
 			    {
-                    LegalBehavior B=CMLib.law().getLegalBehavior(R);
-                    if(B!=null) B.setControlPoints(clanID(),B.controlPoints()+1);
+			    	String msgStr=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
+			    	final String alert="I HEREBY DECLARE THIS AREA";
+			    	int msgIndex=msgStr.indexOf(alert);
+			    	if(msgIndex>=0)
+				    {
+	                    LegalBehavior B=CMLib.law().getLegalBehavior(R);
+	                    if(B!=null) B.setControlPoints(clanID(),B.controlPoints()+1);
+				    }
 			    }
 			}
 		}

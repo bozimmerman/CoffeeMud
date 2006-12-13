@@ -7490,7 +7490,7 @@ public class BaseGenerics extends StdCommand
 	protected void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell("Clan Status: ");
+		mob.tell(showNumber+". Clan Status: "+Clan.CLANSTATUS_DESC[C.getStatus()]);
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		switch(C.getStatus())
 		{

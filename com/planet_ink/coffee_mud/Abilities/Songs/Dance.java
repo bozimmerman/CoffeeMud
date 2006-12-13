@@ -249,7 +249,11 @@ public class Dance extends StdAbility
 		&&(msg.amISource(invoker()))
 		&&(msg.target() instanceof Armor)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
+		{
+			if(msg.source().location()!=null)
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) dancing.");
 			unInvoke();
+		}
 		super.executeMsg(host,msg);
 	}
 

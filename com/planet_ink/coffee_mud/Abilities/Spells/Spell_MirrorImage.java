@@ -53,22 +53,21 @@ public class Spell_MirrorImage extends Spell
 
 		MOB mob=(MOB)affected;
 
-		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
+		if((msg.amITarget(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(mob!=msg.source()))
 		{
-			if(invoker()!=null)
+			if(numberOfImages <= 0)
 			{
-				if(numberOfImages <= 0)
-				{
-					unInvoke();
-					return true;
-				}
-				int numberOfTargets = numberOfImages + 1;
-				if(randomizer.nextInt() % numberOfTargets == 0)
-				{
-					if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
-						numberOfImages--;
-					return false;
-				}
+				unInvoke();
+				return true;
+			}
+			int numberOfTargets = numberOfImages + 1;
+			if(randomizer.nextInt() % numberOfTargets == 0)
+			{
+				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
+					numberOfImages--;
+				return false;
 			}
 		}
 		return true;

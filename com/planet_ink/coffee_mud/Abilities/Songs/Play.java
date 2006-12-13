@@ -164,13 +164,21 @@ public class Play extends StdAbility
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(instrument.amWearingAt(Item.WORN_MOUTH)))
+			{
+				if(msg.source().location()!=null)
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) playing.");
 				unInvoke();
+			}
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_REMOVE)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WEAR)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WIELD))
 			&&(instrument.amWearingAt(Item.WORN_HELD)))
+			{
+				if(msg.source().location()!=null)
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) playing.");
 				unInvoke();
+			}
 		}
 	}
 
