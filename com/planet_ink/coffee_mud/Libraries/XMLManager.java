@@ -475,7 +475,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
             if(start<0) return null;
             end=buf.indexOf(">",start);
             if(end<=start) return null;
-			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+3).equals("<!--")))
+			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+4).equals("<!--")))
 			{
 				int commentEnd=buf.indexOf("-->",start+1);
 				if(commentEnd<0) return null;
