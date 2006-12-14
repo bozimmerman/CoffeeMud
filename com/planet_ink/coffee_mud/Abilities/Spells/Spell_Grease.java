@@ -75,6 +75,7 @@ public class Spell_Grease extends Spell
 					if(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*4))
 					{
                         int greaseEffect = (int) Math.round(Math.random()*3);
+                        if((!CMLib.flags().isFlying(mob))||(greaseEffect==FUMBLE_WEAPON))
                         switch(greaseEffect)
                         {
                             case SIT:
