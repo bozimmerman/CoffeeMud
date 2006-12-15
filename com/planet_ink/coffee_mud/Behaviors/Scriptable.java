@@ -4794,6 +4794,76 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+			case 70: // switch
+			{
+				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
+				Vector V=new Vector();
+				V.addElement("");
+				int depth=0;
+				boolean foundendif=false;
+                boolean ignoreUntilEndScript=false;
+                boolean inCase=false;
+                boolean matchedCase=false;
+				si++;
+				String s2=null;
+				while(si<script.size())
+				{
+					s=((String)script.elementAt(si)).trim();
+					cmd=CMParms.getCleanBit(s,0).toUpperCase();
+                    if(cmd.equals("<SCRIPT>"))
+                        ignoreUntilEndScript=true;
+                    else
+                    if(cmd.equals("</SCRIPT>"))
+                        ignoreUntilEndScript=false;
+                    else
+                    if(ignoreUntilEndScript){}
+                    else
+					if(cmd.equals("ENDSWITCH")&&(depth==0))
+					{
+						foundendif=true;
+						break;
+					}
+					else
+					if(cmd.equals("CASE")&&(depth==0))
+					{
+						s2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
+						inCase=s.equalsIgnoreCase(s2);
+						matchedCase=matchedCase||inCase;
+					}
+					else
+					if(cmd.equals("DEFAULT")&&(depth==0))
+					{
+						inCase=!matchedCase;
+					}
+					else
+					{
+						if(inCase)
+							V.addElement(s);
+						if(cmd.equals("SWITCH"))
+							depth++;
+						else
+						if(cmd.equals("ENDSWITCH"))
+							depth--;
+					}
+					si++;
+				}
+				if(!foundendif)
+				{
+					scriptableError(scripted,"SWITCH","Syntax"," Without ENDSWITCH!");
+                    tickStatus=Tickable.STATUS_END;
+					return null;
+				}
+				if(V.size()>1)
+				{
+					String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+					if(response!=null) 
+                    {
+                        tickStatus=Tickable.STATUS_END;
+                        return response;
+                    }
+				}
+				break;
+			}
 			case 62: // for x = 1 to 100
 			{
 				if(CMParms.numBits(s)<6)
