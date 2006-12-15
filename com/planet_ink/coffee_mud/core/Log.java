@@ -166,10 +166,13 @@ public class Log
 	 */
 	private static String prop(String type)
 	{
-        if(FLAGS.containsKey(type)) return (String)FLAGS.get(type);
-		String s=System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
-		if(s==null) return "";
-        FLAGS.put(type,s);
+        String s=(String)FLAGS.get(type);
+        if(s==null)
+        {
+    		System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
+    		if(s==null) s="";
+            FLAGS.put(type,s);
+        }
 		return s;
 	}
 	
