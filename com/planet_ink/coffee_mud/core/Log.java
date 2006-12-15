@@ -52,6 +52,7 @@ public class Log
 	private static String LOGNAME = "APPLICATION";
     
     private static Hashtable FLAGS=new Hashtable();
+    private static Hashtable WRITERS=new Hashtable();
     
 	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
 	private final static String[] maskErrMsgs={
@@ -119,25 +120,33 @@ public class Log
 	 */
 	private static PrintWriter getWriter(String name, int priority)
 	{
+		PrintWriter[] writers=(PrintWriter[])WRITERS.get(name);
+		if(priority<0) priority=0;
+		if(priority>9) priority=9;
+		if(writers!=null) return writers[priority];
+		writers=new PrintWriter[10];
+		WRITERS.put(name,writers);
 		String flag=prop(name);
 		if(flag==null)
-			return systemOutWriter;
+		{
+			for(int i=0;i<10;i++)
+				writers[i]=systemOutWriter;
+		}
 		else
 		if(flag.length()>0)
 		{
             if(flag.startsWith("OFF")) return null;
-            if(priority>=0)
-            {
-                int x=flag.length();
-    			while(Character.isDigit(flag.charAt(--x)));
-    			if(priority>s_int(flag.substring(x+1)))
-    				return null;
-            }
 			if(flag.startsWith("ON"))
-				return systemOutWriter;
+			{
+				for(int i=0;i<10;i++)
+					writers[i]=systemOutWriter;
+			}
 			else
 			if((flag.startsWith("FILE"))||(flag.startsWith("BOTH")))
-				return fileOutWriter;
+			{
+				for(int i=0;i<10;i++)
+					writers[i]=fileOutWriter;
+			}
 			else
 			if(flag.startsWith("OWNFILE"))
 			{
@@ -146,13 +155,22 @@ public class Log
 				{
 					filePath = fileOut.getAbsolutePath();
 					FileOutputStream fileStream=new FileOutputStream(fileOut,true);
-					return new PrintWriter(fileStream,true);
+					PrintWriter pw=new PrintWriter(fileStream,true);
+					for(int i=0;i<10;i++)
+						writers[i]=pw;
+					WRITERS.remove(name);
 				}
 				catch(IOException e)
 				{
 					Log.errOut("Log",e);
 				}
 			}
+            int x=flag.length();
+			while(Character.isDigit(flag.charAt(--x)));
+			int max=s_int(flag.substring(x+1));
+			for(int i=max+1;i<10;i++)
+				writers[i]=null;
+        	return writers[priority];
 		}
 		return null;
 	}
@@ -169,7 +187,7 @@ public class Log
         String s=(String)FLAGS.get(type);
         if(s==null)
         {
-    		System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
+    		s=System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
     		if(s==null) s="";
             FLAGS.put(type,s);
         }
@@ -202,6 +220,7 @@ public class Log
 		System.setProperty("LOG."+LOGNAME+"_KILLS",newKILMSGS);
 		System.setProperty("LOG."+LOGNAME+"_COMBAT",newCBTMSGS);
         FLAGS.clear();
+        WRITERS.clear();
 	}
 
 	/**
@@ -280,7 +299,7 @@ public class Log
 			FileOutputStream fileStream=new FileOutputStream(fileOut);
 			fileOutWriter=new PrintWriter(fileStream,true);
 			System.setErr(new PrintStream(fileStream));
-            
+	        WRITERS.clear();
 		}
 		catch(IOException e)
 		{
