@@ -50,6 +50,9 @@ public class Log
 	/** log name */
 	private static String logName = "application";
 	private static String LOGNAME = "APPLICATION";
+    
+    private static Hashtable FLAGS=new Hashtable();
+    
 	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
 	private final static String[] maskErrMsgs={
     	"broken pipe",
@@ -163,8 +166,10 @@ public class Log
 	 */
 	private static String prop(String type)
 	{
+        if(FLAGS.containsKey(type)) return (String)FLAGS.get(type);
 		String s=System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
 		if(s==null) return "";
+        FLAGS.put(type,s);
 		return s;
 	}
 	
@@ -193,6 +198,7 @@ public class Log
 		System.setProperty("LOG."+LOGNAME+"_HELP",newHLPMSGS);
 		System.setProperty("LOG."+LOGNAME+"_KILLS",newKILMSGS);
 		System.setProperty("LOG."+LOGNAME+"_COMBAT",newCBTMSGS);
+        FLAGS.clear();
 	}
 
 	/**
@@ -218,6 +224,7 @@ public class Log
 	{
 		logName=newLogName;
 		LOGNAME=logName.toUpperCase().trim();
+        FLAGS.clear();
 		try
 		{
 			File directoryPath = null;
