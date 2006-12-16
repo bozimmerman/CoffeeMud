@@ -4796,7 +4796,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 70: // switch
 			{
-				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
+				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
 				Vector V=new Vector();
 				V.addElement("");
 				int depth=0;
@@ -4826,8 +4826,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					else
 					if(cmd.equals("CASE")&&(depth==0))
 					{
-						s2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
-						inCase=s.equalsIgnoreCase(s2);
+						s2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
+						inCase=var.equalsIgnoreCase(s2);
 						matchedCase=matchedCase||inCase;
 					}
 					else
