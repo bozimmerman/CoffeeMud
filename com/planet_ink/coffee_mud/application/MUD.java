@@ -217,6 +217,7 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
         
+        CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
         CMClass.globalClock().initializeINIClock(page);
         CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
 		CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
