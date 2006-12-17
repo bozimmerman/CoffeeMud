@@ -1569,7 +1569,7 @@ public class StdRoom implements Room
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
-		String newThingName=CMLib.english().preItemParser(thingName);
+		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
@@ -1613,7 +1613,7 @@ public class StdRoom implements Room
 			found=mob.fetchWornItem(thingName);
 		if(found==null)
 		{
-			newThingName=CMLib.english().failedItemParser(thingName);
+			newThingName=CMLib.lang().failedItemParser(thingName);
 			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,wornReqCode); 
 		}
 		return found;
@@ -1621,7 +1621,7 @@ public class StdRoom implements Room
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName, int wornReqCode)
 	{
 		// def was Item.WORNREQ_UNWORNONLY;
-		String newThingName=CMLib.english().preItemParser(thingName);
+		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
 		Vector V=(Vector)contents.clone();
@@ -1643,7 +1643,7 @@ public class StdRoom implements Room
 		}
 		if(found==null)
 		{
-			newThingName=CMLib.english().failedItemParser(thingName);
+			newThingName=CMLib.lang().failedItemParser(thingName);
 			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName,wornReqCode); 
 		}
 		return found;
@@ -1652,7 +1652,7 @@ public class StdRoom implements Room
 	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode)
 	{
 		// def was Item.WORNREQ_UNWORNONLY;
-		String newThingName=CMLib.english().preItemParser(thingName);
+		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
 		Vector V=(Vector)inhabitants.clone();
@@ -1663,7 +1663,7 @@ public class StdRoom implements Room
 		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
 		if(found==null)
 		{
-			newThingName=CMLib.english().failedItemParser(thingName);
+			newThingName=CMLib.lang().failedItemParser(thingName);
 			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName,wornReqCode); 
 		}
 		return found;
@@ -1672,7 +1672,7 @@ public class StdRoom implements Room
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
-		String newThingName=CMLib.english().preItemParser(thingName);
+		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
@@ -1703,7 +1703,7 @@ public class StdRoom implements Room
                 return getExitInDir(d);
 		if(found==null)
 		{
-			newThingName=CMLib.english().failedItemParser(thingName);
+			newThingName=CMLib.lang().failedItemParser(thingName);
 			if(newThingName!=null) return fetchFromMOBRoomFavorsItems(mob,goodLocation,newThingName,wornReqCode); 
 		}
 		return found;

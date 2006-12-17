@@ -735,7 +735,7 @@ public class MUD extends Thread implements MudHost
 		webServers.clear();
 		
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
-		Scripts.clear();
+		CMLib.lang().clear();
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 
 		try{Thread.sleep(500);}catch(Exception i){}
@@ -897,7 +897,6 @@ public class MUD extends Thread implements MudHost
 				CMProps.setVar(CMProps.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
 				CMProps.setIntVar(CMProps.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
 
-				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));
 				if(MUD.isOK)
 				{
 					CMLib.hosts().clear();

@@ -86,7 +86,8 @@ public class CMLib
     public static final int LIBRARY_EXPERTISES=38;
     public static final int LIBRARY_MATERIALS=39;
     public static final int LIBRARY_LEGAL=40;
-    public static final int LIBRARY_TOTAL=41;
+    public static final int LIBRARY_LANGUAGE=41;
+    public static final int LIBRARY_TOTAL=42;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -150,6 +151,7 @@ public class CMLib
     public static AbilityMapper ableMapper(){return (AbilityMapper)libraries[LIBRARY_ABLEMAP];}
     public static TextEncoders encoder(){return (TextEncoders)libraries[LIBRARY_ENCODER];}
     public static SMTPLibrary smtp(){return (SMTPLibrary)libraries[LIBRARY_SMTP];}
+    public static LanguageLibrary lang(){return (LanguageLibrary)libraries[LIBRARY_LANGUAGE];}
     public static DiceLibrary dice(){return (DiceLibrary)libraries[LIBRARY_DICE];}
     public static FactionManager factions(){return (FactionManager)libraries[LIBRARY_FACTIONS];}
     public static ClanManager clans(){return (ClanManager)libraries[LIBRARY_CLANS];}
@@ -172,6 +174,7 @@ public class CMLib
         if(O instanceof HelpLibrary) return LIBRARY_HELP;
         if(O instanceof ExpLevelLibrary) return LIBRARY_LEVELS;
         if(O instanceof TrackingLibrary) return LIBRARY_TRACKING;
+        if(O instanceof LanguageLibrary) return LIBRARY_LANGUAGE;
         if(O instanceof MaskingLibrary) return LIBRARY_MASKING;
         if(O instanceof ChannelsLibrary) return LIBRARY_CHANNELS;
         if(O instanceof CommonCommands) return LIBRARY_COMMANDS;

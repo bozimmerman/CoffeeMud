@@ -1459,7 +1459,7 @@ public class DefaultSession extends Thread implements Session
     								
     								lastStart=System.currentTimeMillis();
                                     if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
-                                    Vector MORE_CMDS=CMLib.english().preCommandParser(CMDS);
+                                    Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
                                     for(int m=0;m<MORE_CMDS.size();m++)
                                     	if(mob!=null)
 		    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),0);
