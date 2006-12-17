@@ -98,7 +98,38 @@ public class CMFile
         // fill in all we can
         vfsBits=0;
         Vector info=getVFSInfo(absolutePath);
-        localFile=new File(getIOReadableLocalPathAndName());
+        String ioPath=getIOReadableLocalPathAndName();
+        localFile=new File(ioPath);
+        if(!localFile.exists())
+        {
+            File localDir=new File(".");
+            int endZ=-1;
+            boolean found=true;
+            while((!localFile.exists())&&(endZ<ioPath.length())&&(localDir.exists())&&(localDir.isDirectory())&&(found))
+            {
+                int startZ=endZ+1;
+                endZ=ioPath.indexOf(pathSeparator,startZ);
+                if(endZ<0)
+                    endZ=ioPath.length();
+                String[] files=localDir.list();
+                found=false;
+                for(int f=0;f<files.length;f++)
+                    if(files[f].equalsIgnoreCase(ioPath.substring(startZ,endZ)))
+                    {   
+                        if(!files[f].equals(ioPath.substring(startZ,endZ)))
+                            ioPath=ioPath.substring(0,startZ)+files[f]+((endZ<ioPath.length())?ioPath.substring(endZ):"");
+                        found=true; 
+                        break;
+                    }
+                if(found)
+                {
+                    if(endZ==ioPath.length())
+                        localFile=new File(ioPath);
+                    else
+                        localDir=new File(localDir.getAbsolutePath()+pathSeparator+ioPath.substring(startZ,endZ));
+                }
+            }
+        }
         if((info!=null)&&((!demandLocal)||(!localFile.exists())))
         {
             vfsBits=vfsBits|((Integer)info.elementAt(CMFile.VFS_INFO_BITS)).intValue();
