@@ -38,7 +38,8 @@ public class EvilExecutioner  extends StdBehavior
     public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
     protected boolean doPlayers=false;
     protected long deepBreath=System.currentTimeMillis();
-
+    protected boolean noRecurse=true;
+    
     public void setParms(String newParms)
     {
         super.setParms(newParms);
@@ -71,8 +72,9 @@ public class EvilExecutioner  extends StdBehavior
             deepBreath=System.currentTimeMillis();
             return;
         }
-        if((deepBreath==0)||(System.currentTimeMillis()-deepBreath)>6000)
+        if((deepBreath==0)||((System.currentTimeMillis()-deepBreath)>60000)&&(!noRecurse))
         {
+            noRecurse=true;
             deepBreath=0;
             MOB observer=(MOB)affecting;
             // base 90% chance not to be executed
@@ -90,6 +92,7 @@ public class EvilExecutioner  extends StdBehavior
                 if(oldFollowing!=null)
                     source.setFollowing(oldFollowing);
             }
+            noRecurse=false;
         }
     }
 }

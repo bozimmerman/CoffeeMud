@@ -456,6 +456,7 @@ public class CMProps extends Properties
     
     public void resetSystemVars()
     {
+        CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
         setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
         setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
         setVar(SYSTEM_PKILL,getStr("PLAYERKILL"));

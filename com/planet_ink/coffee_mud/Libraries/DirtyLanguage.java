@@ -39,8 +39,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	protected String language="en";
     protected String country="TX";
     protected Locale currentLocale=null;
-    protected Hashtable translatorSections=null;
-    protected Hashtable parserSections=null;
+    protected static final int CMD_REPLACE=0;
+    protected static final int CMD_REPLACESTR=1;
+    protected static final int CMD_IGNORE=2;
+    protected static final int CMD_IGNORESTR=3;
+    protected static final int CMD_AUTOIGNORE=4;
+    protected static final int CMD_DEFINE=5;
+    protected Hashtable HASHED_CMDS=CMStrings.makeNumericHash(
+            new String[]{"REPLACE","REPLACESTR","IGNORE","IGNORESTR","AUTOIGNORE","DEFINE"});
 	
 	public void setLocale(String lang, String state)
 	{
@@ -73,6 +79,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         DVector currentSection=null;
         DVector globalDefinitions=new DVector(2);
         DVector localDefinitions=new DVector(2);
+        Hashtable currentSectionReplaceStrs=new Hashtable();
+        HashSet currentSectionIgnoreStrs=new HashSet();
+        DVector sectionIndexes=new DVector(2);
         for(int v=0;v<V.size();v++)
         {
             s=((String)V.elementAt(v)).trim();
@@ -80,8 +89,17 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
             if(s.startsWith("["))
             {
                 int x=s.lastIndexOf("]");
+                if((currentSectionReplaceStrs.size()>0)
+                &&(currentSection!=null))
+                    currentSection.addElement("REPLACESTR",currentSectionReplaceStrs);
+                if((currentSectionIgnoreStrs.size()>0)
+                &&(currentSection!=null))
+                    currentSection.addElement("IGNORESTR",currentSectionIgnoreStrs);
                 currentSection=new DVector(3);
+                currentSectionReplaceStrs.clear();
+                currentSectionIgnoreStrs.clear();
                 parserSections.put(s.substring(1,x).toUpperCase(),currentSection);
+                sectionIndexes.addElement(s.substring(1,x).toUpperCase(),new Integer(v));
                 localDefinitions.clear();
             }
             else
@@ -116,9 +134,42 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 }
             }
             else
-            if(s.toUpperCase().startsWith("REPLACE"))
+            if(s.toUpperCase().startsWith("IGNORESTR"))
             {
-                String cmd="REPLACE";
+                int regstart=s.indexOf('"');
+                if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                int regend=s.indexOf('"',regstart+1);
+                while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
+                    regend=s.indexOf('"',regend+1);
+                if(regend<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                String expression=s.substring(regstart+1,regend);
+                currentSectionIgnoreStrs.add(expression);
+            }
+            else
+            if(s.toUpperCase().startsWith("REPLACESTR"))
+            {
+                int regstart=s.indexOf('"');
+                if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                int regend=s.indexOf('"',regstart+1);
+                while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
+                    regend=s.indexOf('"',regend+1);
+                if(regend<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                String expression=s.substring(regstart+1,regend);
+                s=s.substring(regend+1).trim();
+                if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                regstart=s.indexOf('"');
+                if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                regend=s.indexOf('"',regstart+1);
+                while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
+                    regend=s.indexOf('"',regend+1);
+                if(regend<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                String replacement=s.substring(regstart+1,regend);
+                currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
+            }
+            else
+            if(s.toUpperCase().startsWith("REPLACE")||s.toUpperCase().startsWith("IGNORE"))
+            {
+                String cmd=s.toUpperCase().startsWith("REPLACE")?"REPLACE":"IGNORE";
                 int regstart=s.indexOf('"');
                 if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
                 int regend=s.indexOf('"',regstart+1);
@@ -147,29 +198,44 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
             else
                 Log.errOut("Scripts","Unknown parser command, line "+v);
         }
+        if((currentSectionReplaceStrs.size()>0)
+        &&(currentSection!=null))
+            currentSection.addElement("REPLACESTR",currentSectionReplaceStrs);
+        if((currentSectionIgnoreStrs.size()>0)
+        &&(currentSection!=null))
+            currentSection.addElement("IGNORESTR",currentSectionIgnoreStrs);
+        parserSections.put("INDEXES",sectionIndexes);
         return parserSections;
     }
     
 	
     public DVector getLanguageParser(String parser)
     {
+        Hashtable parserSections=(Hashtable)Resources.getResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase());
     	if(parserSections==null)
+        {
             parserSections=loadFileSections("resources/parser_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
+            Resources.submitResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase(),parserSections);
+        }
     	return (DVector)parserSections.get(parser);
     }
 	
     public DVector getLanguageTranslator(String parser)
     {
-        if(parserSections==null)
-            parserSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
-        return (DVector)parserSections.get(parser);
+        Hashtable translationSections=(Hashtable)Resources.getResource("TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase());
+        if(translationSections==null)
+        {
+            translationSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
+            Resources.submitResource("TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase(),translationSections);
+        }
+        return (DVector)translationSections.get(parser);
     }
     
 	
 	public void clear()
 	{
-        translatorSections=null;
-        parserSections=null;
+        Resources.removeResource("TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase());
+        Resources.removeResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase());
 	}
 	
     public Vector preCommandParser(Vector CMDS)
@@ -231,35 +297,83 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         return MORE_CMDS;
     }
     
-    protected String basicParser(String str, DVector parser)
+    protected String basicParser(String str, String parserName, boolean nullIfLonger)
     {
-        if((parser==null)||(str==null)) return null;
+        DVector parser=CMLib.lang().getLanguageParser(parserName);
+        if((parser==null)||(str==null)) 
+            return null;
         Pattern pattern=null;
         Matcher matcher=null;
         String oldStr=str;
+        boolean autoIgnore=false;
+        Integer I=null;
+        HashSet ignoreSet=null;
+        String rep=null;
         for(int p=0;p<parser.size();p++)
         {
-            if(((String)parser.elementAt(p,1)).equals("REPLACE"))
+            I=(Integer)HASHED_CMDS.get(parser.elementAt(p,1));
+            if(I!=null)
+            switch(I.intValue())
+            {
+            case CMD_REPLACE:
             {
                 pattern=(Pattern)parser.elementAt(p,2);
                 matcher=pattern.matcher(str);
                 if(matcher.find())
                     for(int i=0;i<=matcher.groupCount();i++)
                         str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
+                break;
+            }
+            case CMD_REPLACESTR:
+            {
+                rep=(String)((Hashtable)parser.elementAt(p,2)).get(str.toLowerCase());
+                if(rep!=null) return rep;
+                break;
+            }
+            case CMD_IGNORE:
+            {
+                pattern=(Pattern)parser.elementAt(p,2);
+                matcher=pattern.matcher(str);
+                if(matcher.find()) return null;
+                break;
+            }
+            case CMD_IGNORESTR:
+            {
+                ignoreSet=(HashSet)parser.elementAt(p,2);
+                if(ignoreSet.contains(str.toLowerCase()))
+                    return null;
+                break;
+            }
+            case CMD_AUTOIGNORE:
+                autoIgnore=true;
+                break;
             }
         }
+        if(str.equals(oldStr))
+        {
+            if(autoIgnore)
+            {
+                if(ignoreSet==null)
+                {
+                    ignoreSet=new HashSet();
+                    parser.addElement("IGNORESTR",ignoreSet);
+                }
+                ignoreSet.add(oldStr.toLowerCase());
+            }
+            return null;
+        }
+        else
+        if(!nullIfLonger)
+            return str;
         return str.length()>=oldStr.length()?null:str;
-        
     }
     
     public String preItemParser(String item)
     {
-        DVector parser=CMLib.lang().getLanguageParser("ITEM-PRE-PROCESSOR");
-        return basicParser(item,parser);
+        return basicParser(item,"ITEM-PRE-PROCESSOR",true);
     }
     public String failedItemParser(String item)
     {
-        DVector parser=CMLib.lang().getLanguageParser("ITEM-FAIL-PROCESSOR");
-        return basicParser(item,parser);
+        return basicParser(item,"ITEM-FAIL-PROCESSOR",true);
     }
 }
