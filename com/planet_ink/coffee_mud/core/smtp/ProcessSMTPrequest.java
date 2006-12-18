@@ -529,7 +529,7 @@ public class ProcessSMTPrequest extends Thread
 				if(cmd.equals("HELO")
 				||cmd.equals("EHLO"))
 				{
-					if(domain!=null)
+					if((domain!=null)&&(parm.trim().length()==0))
 						replyData=("503 "+sock.getLocalAddress().getHostName()+" Duplicate HELO/EHLO"+cr).getBytes();
 					else	
 					if(parm.trim().length()==0)
