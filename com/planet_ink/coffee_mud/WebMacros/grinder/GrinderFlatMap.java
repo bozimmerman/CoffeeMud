@@ -761,10 +761,10 @@ public class GrinderFlatMap
 		}
 	}
 
-	protected GrinderRoom getRoomInDir(int[] xy, int d)
+	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
 	{
         GrinderRoom GR=null;
-        xy=newXY(xy,d);
+        int[] xy=newXY(room.xy,d);
         if((xy[0]>=0)&&(xy[1]>=0)
         &&(xy[0]<grid.length)&&(xy[1]<grid[xy[0]].length))
         {
@@ -779,7 +779,7 @@ public class GrinderFlatMap
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			GrinderRoom possRoom=getRoomInDir(room.xy,d);
+			GrinderRoom possRoom=getRoomInDir(room,d);
 			if((possRoom!=null)&&(possRoom.roomID.equals(roomID)))
 				return d;
 		}
@@ -800,10 +800,10 @@ public class GrinderFlatMap
 	    if((d==Directions.UP)||(d==Directions.DOWN))
 	    {
 			int actualDir=findRelGridDir(room,dir.room);
-			if(actualDir>=0) roomPointer=getRoomInDir(room.xy,actualDir);
+			if(actualDir>=0) roomPointer=getRoomInDir(room,actualDir);
 	    }
 	    else
-	        roomPointer=getRoomInDir(room.xy,d);
+	        roomPointer=getRoomInDir(room,d);
 
 	    String dirName=Directions.getDirectionName(d);
 	    if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))

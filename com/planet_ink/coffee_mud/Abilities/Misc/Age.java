@@ -100,6 +100,7 @@ public class Age extends StdAbility
 		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
 		            ((Item)affected).destroy();
 		        }
+                M.delEffect(M.fetchEffect(ID()));
 	            M.destroy();
 		    }
 			if(ellapsed>=myRace.getAgingChart()[1])
@@ -466,8 +467,14 @@ public class Age extends StdAbility
 		{
 			if(divisor==0.0)
 			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
-			affected.baseCharStats().setStat(CharStats.STAT_AGE,(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor))));
-			affectableStats.setStat(CharStats.STAT_AGE,affected.baseCharStats().getStat(CharStats.STAT_AGE));
+            int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+            if((age>=Short.MAX_VALUE)||(age<0))
+                Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+l+")/4000)/"+divisor);
+            else
+            {
+    			affected.baseCharStats().setStat(CharStats.STAT_AGE,age);
+    			affectableStats.setStat(CharStats.STAT_AGE,affected.baseCharStats().getStat(CharStats.STAT_AGE));
+            }
 		}
 	}
 }

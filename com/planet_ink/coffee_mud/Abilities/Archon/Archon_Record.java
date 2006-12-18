@@ -115,7 +115,7 @@ public class Archon_Record extends ArchonSkill
 					FakeSession F=new FakeSession(file);
 					A2.sess=F;
 	                target.addNonUninvokableEffect(A2);
-	                mob.tell("Enter RECORD "+mob.Name()+" again to stop recording.");
+	                mob.tell("Enter RECORD "+target.Name()+" again to stop recording.");
 				}
 			}
 		}

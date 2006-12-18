@@ -40,13 +40,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
     protected String country="TX";
     protected Locale currentLocale=null;
     protected static final int CMD_REPLACE=0;
-    protected static final int CMD_REPLACESTR=1;
+    protected static final int CMD_REPLACEWHOLE=1;
     protected static final int CMD_IGNORE=2;
-    protected static final int CMD_IGNORESTR=3;
+    protected static final int CMD_IGNOREWHOLE=3;
     protected static final int CMD_AUTOIGNORE=4;
     protected static final int CMD_DEFINE=5;
+    protected static final int CMD_REPLACEALL=6;
     protected Hashtable HASHED_CMDS=CMStrings.makeNumericHash(
-            new String[]{"REPLACE","REPLACESTR","IGNORE","IGNORESTR","AUTOIGNORE","DEFINE"});
+            new String[]{"REPLACE","REPLACEWHOLE","IGNORE","IGNOREWHOLE","AUTOIGNORE","DEFINE","REPLACEALL"});
 	
 	public void setLocale(String lang, String state)
 	{
@@ -91,10 +92,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 int x=s.lastIndexOf("]");
                 if((currentSectionReplaceStrs.size()>0)
                 &&(currentSection!=null))
-                    currentSection.addElement("REPLACESTR",currentSectionReplaceStrs);
+                    currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs);
                 if((currentSectionIgnoreStrs.size()>0)
                 &&(currentSection!=null))
-                    currentSection.addElement("IGNORESTR",currentSectionIgnoreStrs);
+                    currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs);
                 currentSection=new DVector(3);
                 currentSectionReplaceStrs.clear();
                 currentSectionIgnoreStrs.clear();
@@ -134,7 +135,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 }
             }
             else
-            if(s.toUpperCase().startsWith("IGNORESTR"))
+            if(s.toUpperCase().startsWith("IGNOREWHOLE"))
             {
                 int regstart=s.indexOf('"');
                 if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
@@ -146,7 +147,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 currentSectionIgnoreStrs.add(expression);
             }
             else
-            if(s.toUpperCase().startsWith("REPLACESTR"))
+            if(s.toUpperCase().startsWith("REPLACEWHOLE"))
             {
                 int regstart=s.indexOf('"');
                 if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
@@ -164,6 +165,29 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                     regend=s.indexOf('"',regend+1);
                 if(regend<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
                 String replacement=s.substring(regstart+1,regend);
+                currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
+            }
+            else
+            if(s.toUpperCase().startsWith("REPLACEALL"))
+            {
+                String cmd="REPLACEALL";
+                int regstart=s.indexOf('"');
+                if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                int regend=s.indexOf('"',regstart+1);
+                while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
+                    regend=s.indexOf('"',regend+1);
+                if(regend<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                String expression=s.substring(regstart+1,regend);
+                s=s.substring(regend+1).trim();
+                if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                regstart=s.indexOf('"');
+                if(regstart<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                regend=s.indexOf('"',regstart+1);
+                while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
+                    regend=s.indexOf('"',regend+1);
+                if(regend<0){ Log.errOut("Scripts","Malformed parser, line "+v); continue;}
+                String replacement=s.substring(regstart+1,regend);
+                currentSection.addElement(cmd,expression,replacement);
                 currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
             }
             else
@@ -200,10 +224,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         }
         if((currentSectionReplaceStrs.size()>0)
         &&(currentSection!=null))
-            currentSection.addElement("REPLACESTR",currentSectionReplaceStrs);
+            currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs);
         if((currentSectionIgnoreStrs.size()>0)
         &&(currentSection!=null))
-            currentSection.addElement("IGNORESTR",currentSectionIgnoreStrs);
+            currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs);
         parserSections.put("INDEXES",sectionIndexes);
         return parserSections;
     }
@@ -309,6 +333,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         Integer I=null;
         HashSet ignoreSet=null;
         String rep=null;
+        String wit=null;
         for(int p=0;p<parser.size();p++)
         {
             I=(Integer)HASHED_CMDS.get(parser.elementAt(p,1));
@@ -324,10 +349,23 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                         str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
                 break;
             }
-            case CMD_REPLACESTR:
+            case CMD_REPLACEWHOLE:
             {
                 rep=(String)((Hashtable)parser.elementAt(p,2)).get(str.toLowerCase());
                 if(rep!=null) return rep;
+                break;
+            }
+            case CMD_REPLACEALL:
+            {
+                rep=(String)parser.elementAt(p,2);
+                if(rep.length()==0) break;
+                int x=str.toLowerCase().indexOf(rep);
+                while(x>=0)
+                {
+                    wit=(String)parser.elementAt(p,3);
+                    str=str.substring(0,x)+wit+str.substring(x+rep.length());
+                    x=str.toLowerCase().indexOf(rep,x+wit.length());
+                }
                 break;
             }
             case CMD_IGNORE:
@@ -337,7 +375,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 if(matcher.find()) return null;
                 break;
             }
-            case CMD_IGNORESTR:
+            case CMD_IGNOREWHOLE:
             {
                 ignoreSet=(HashSet)parser.elementAt(p,2);
                 if(ignoreSet.contains(str.toLowerCase()))
@@ -356,7 +394,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 if(ignoreSet==null)
                 {
                     ignoreSet=new HashSet();
-                    parser.addElement("IGNORESTR",ignoreSet);
+                    parser.addElement("IGNOREWHOLE",ignoreSet);
                 }
                 ignoreSet.add(oldStr.toLowerCase());
             }

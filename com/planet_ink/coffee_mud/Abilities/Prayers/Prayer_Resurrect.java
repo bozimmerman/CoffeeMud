@@ -180,7 +180,8 @@ public class Prayer_Resurrect extends Prayer
 							else
 								it++;
 						}
-						body.destroy();
+                        body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
+                        body.destroy();
 						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
 						Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
@@ -237,6 +238,7 @@ public class Prayer_Resurrect extends Prayer
 						MOB rejuvedMOB=(MOB)object;
 						rejuvedMOB.recoverCharStats();
 						rejuvedMOB.recoverMaxState();
+                        body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 						body.destroy();
 						rejuvedMOB.bringToLife(mob.location(),true);
 						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");

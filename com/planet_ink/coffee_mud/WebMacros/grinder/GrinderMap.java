@@ -276,6 +276,7 @@ public class GrinderMap extends GrinderFlatMap
 		for (int x = 0; x < areaMap.size(); x++)
 		{
 			GrinderRoom GR = (GrinderRoom) areaMap.elementAt(x);
+            if(GR.xy==null) Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
 			if (GR.z < minZ)
 			{
 				if (debug) Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + GR.z);
