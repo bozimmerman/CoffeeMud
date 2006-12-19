@@ -106,7 +106,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
     {
         StringBuffer buf=new StringBuffer(str);
         for(int i=0;i<buf.length()-1;i++)
-        if(buf.charAt(i)=='\'')
+        if(buf.charAt(i)=='\\')
             switch(buf.charAt(i+1))
             {
             case '\\':
@@ -114,18 +114,15 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 break;
             case 't':
                 buf.deleteCharAt(i);
-                buf.setCharAt(i,'t');
-                i++;
+                buf.setCharAt(i,'\t');
                 break;
             case 'r':
                 buf.deleteCharAt(i);
                 buf.setCharAt(i,'\r');
-                i++;
                 break;
             case 'n':
                 buf.deleteCharAt(i);
                 buf.setCharAt(i,'\n');
-                i++;
                 break;
             case '\"':
                 buf.deleteCharAt(i);
