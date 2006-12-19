@@ -1070,7 +1070,7 @@ public class CMParms
         for(Enumeration e=V.keys();e.hasMoreElements();)
         {
             String KEY=(String)e.nextElement();
-            s.append(KEY+"="+((String)V.get(KEY))+"/");
+            s.append(KEY+"="+(V.get(KEY).toString())+"/");
         }
         return s.toString();
     }

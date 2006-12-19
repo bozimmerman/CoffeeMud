@@ -71,22 +71,67 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
     
     protected String filterString(String str)
     {
-        str=CMStrings.replaceAll(str,"\\","\\\\");
-        str=CMStrings.replaceAll(str,"\t","\\t");
-        str=CMStrings.replaceAll(str,"\n","\\n");
-        str=CMStrings.replaceAll(str,"\r","\\r");
-        str=CMStrings.replaceAll(str,"\"","\\\"");
-        return str;
+        StringBuffer buf=new StringBuffer(str);
+        for(int i=0;i<buf.length();i++)
+            switch(buf.charAt(i))
+            {
+            case '\\':
+                buf.insert(i,'\\');
+                i++;
+                break;
+            case '\t':
+                buf.setCharAt(i,'t');
+                buf.insert(i,'\\');
+                i++;
+                break;
+            case '\r':
+                buf.setCharAt(i,'r');
+                buf.insert(i,'\\');
+                i++;
+                break;
+            case '\n':
+                buf.setCharAt(i,'n');
+                buf.insert(i,'\\');
+                i++;
+                break;
+            case '\"':
+                buf.insert(i,'\\');
+                i++;
+                break;
+            }
+        return buf.toString();
     }
     
     protected String unFilterString(String str)
     {
-        str=CMStrings.replaceAll(str,"\\\\","\\");
-        str=CMStrings.replaceAll(str,"\\\"","\"");
-        str=CMStrings.replaceAll(str,"\\n","\n");
-        str=CMStrings.replaceAll(str,"\\r","\r");
-        str=CMStrings.replaceAll(str,"\\t","\t");
-        return str;
+        StringBuffer buf=new StringBuffer(str);
+        for(int i=0;i<buf.length()-1;i++)
+        if(buf.charAt(i)=='\'')
+            switch(buf.charAt(i+1))
+            {
+            case '\\':
+                buf.deleteCharAt(i);
+                break;
+            case 't':
+                buf.deleteCharAt(i);
+                buf.setCharAt(i,'t');
+                i++;
+                break;
+            case 'r':
+                buf.deleteCharAt(i);
+                buf.setCharAt(i,'\r');
+                i++;
+                break;
+            case 'n':
+                buf.deleteCharAt(i);
+                buf.setCharAt(i,'\n');
+                i++;
+                break;
+            case '\"':
+                buf.deleteCharAt(i);
+                break;
+            }
+        return buf.toString();
     }
     
     protected Hashtable loadFileSections(String filename)
