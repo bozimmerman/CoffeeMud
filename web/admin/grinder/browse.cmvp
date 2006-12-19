@@ -6,6 +6,7 @@
 <html>
 <head>
 	<title>Browsing: @RequestParameter?PATH@</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
 		function OpenFile(action)

@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?SYSOP=true@ <BODY> @AddFile?/grinder/nopriv.cmvp@ @else@
 
 <head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<title>CoffeeMud MUDGrinder</title>

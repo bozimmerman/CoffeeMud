@@ -5,6 +5,7 @@
 <html>
 <head>
 	<title>Control Panel</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
 		function Clicked(action)

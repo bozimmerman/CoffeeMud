@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?AUTH_STAT=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<title>Statistics Report</title>
 	<script language=JavaScript>
 	<!--

@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?AUTH_JOURNALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<title>SourceForge RFE Submitter</title>
 	<script language=JavaScript>
 	<!--

@@ -1,6 +1,7 @@
 <HTML>
 <HEAD>
 <LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
+	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
 <SCRIPT LANGUAGE=JavaScript src="dropdown.js"></SCRIPT>
 </HEAD>
 <BODY BGCOLOR=BLACK>

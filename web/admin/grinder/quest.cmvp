@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<title>Quest Manager</title>
 	<script language=JavaScript>
 	<!--

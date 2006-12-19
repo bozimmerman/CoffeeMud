@@ -1,8 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
+<link rel="grinder icon" href="/images/grinder.ico" >
 <meta name="robots" content="noindex,nofollow">
 <TITLE>@AbilityData?domain@ @AbilityName@</TITLE>
+<link rel="coffeemud icon" href="images/coffeemud.ico" >
 </HEAD>
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
 <H3>@AbilityName@ (@AbilityData?domain@)</H3>

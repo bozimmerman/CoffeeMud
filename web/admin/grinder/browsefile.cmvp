@@ -5,6 +5,7 @@
 <html>
 <head>
 	<title>File/Script Editor</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
 		function openUp(named)

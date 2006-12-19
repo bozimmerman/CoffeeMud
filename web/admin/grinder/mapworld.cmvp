@@ -3,6 +3,9 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <HTML>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+</head>
 <FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/worldmap.cmvp?@RequestParametersEncoded@ @if?!CheckReqParm?ROOM=@#@RequestParameterEncoded?ROOM@ @endif@" NAME=MAP>
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/menu3.cmvp?@RequestParametersEncoded@" NAME=MENU>

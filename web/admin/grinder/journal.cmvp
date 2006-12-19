@@ -5,6 +5,7 @@
 <html>
 <head>
 	<title>Journal Browser</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
 		function Clicked(action)

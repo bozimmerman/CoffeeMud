@@ -5,6 +5,7 @@
 <html>
 <head>
 	<title>Banned List Management</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
 		function ClearClicked(action)

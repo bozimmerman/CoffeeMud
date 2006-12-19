@@ -9,6 +9,7 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMud MUDGrinder</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
 		function Clicked(action)

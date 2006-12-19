@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?AUTH_LISTADMIN=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<title>Thread Group #@RequestParameter?TICKGROUPCOUNTER@</title>
 	<script language=JavaScript>
 	<!--
