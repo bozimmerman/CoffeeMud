@@ -368,8 +368,8 @@ public class MOBTeacher extends CombatAbilities
                     {
                         if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
                         {
-                            monster.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
-                            CMLib.commands().postSay(monster,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()),true,false);
+                            monster.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()));
+                            CMLib.commands().postSay(monster,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()),true,false);
                             return;
                         }
                         if(((theExpertise.trainCost>0)&&(student.getTrains()<theExpertise.trainCost))
@@ -378,7 +378,7 @@ public class MOBTeacher extends CombatAbilities
                         ||((theExpertise.qpCost>0)&&(student.getQuestPoint()<theExpertise.qpCost)))
                         {
                             monster.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
-                            CMLib.commands().postSay(monster,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()),true,false);
+                            CMLib.commands().postSay(monster,student,"I'm sorry, but to learn the expertise '"+theExpertise.name+"' requires: "+theExpertise.costDescription(),true,false);
                             return ;
                         }
                         if(!tryTeach(monster,student,theExpertise.name))
