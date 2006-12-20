@@ -3709,15 +3709,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     		mobGender=mob.charStats().genderName().toUpperCase();
 	        base=(CharStats)mob.baseCharStats().copyOf(); 
 	        base.getMyRace().affectCharStats(mob,base);
-            if(CMSecurity.isASysOp(mob)
-            ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
-                for(int v=0;v<V.size();v++)
-                {
-                    String str=(String)V.elementAt(v);
-                    if(str.equals("+SYSOP")) return true;
-                    else
-                    if(str.equals("-SYSOP")) return false;
-                }
         }
 		int level=E.envStats().level();
 		for(int v=0;v<V.size();v++)
@@ -3729,6 +3720,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(zapCodes.containsKey(str))
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
+                case 108:
+                    if(CMSecurity.isASysOp(mob))
+                        return true;
+                    break;
+                case 109:
+                    if(CMSecurity.isASysOp(mob))
+                        return false;
+                    break;
 				case 0: // -class
 					if(!fromHereStartsWith(V,'+',v+1,mobClass)) return false;
 					break;
