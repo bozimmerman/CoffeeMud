@@ -39,11 +39,13 @@ public interface Deity extends MOB
 	public String getWorshipRequirementsDesc();
 	
 	/** Manipulation of blessing objects, which includes spells, traits, skills, etc.*/
-	public void addBlessing(Ability to);
+	public void addBlessing(Ability to, boolean clericOnly);
 	public void delBlessing(Ability to);
 	public int numBlessings();
 	public Ability fetchBlessing(int index);
 	public Ability fetchBlessing(String ID);
+    public boolean fetchBlessingCleric(int index);
+    public boolean fetchBlessingCleric(String ID);
 	
 	public String getClericRitual();
 	public void setClericRitual(String ritual);
@@ -58,11 +60,13 @@ public interface Deity extends MOB
 	public String getWorshipTriggerDesc();
 	
 	/** Manipulation of curse objects, which includes spells, traits, skills, etc.*/
-	public void addCurse(Ability to);
+	public void addCurse(Ability to, boolean clericOnly);
 	public void delCurse(Ability to);
 	public int numCurses();
 	public Ability fetchCurse(int index);
 	public Ability fetchCurse(String ID);
+    public boolean fetchCurseCleric(int index);
+    public boolean fetchCurseCleric(String ID);
 	
 	public String getClericSin();
 	public void setClericSin(String ritual);

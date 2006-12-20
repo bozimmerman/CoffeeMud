@@ -228,14 +228,19 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("BLESSINGS"))
 		{
 			Vector theclasses=new Vector();
+            Vector theclerics=new Vector();
 			if(httpReq.isRequestParameter("BLESS1"))
 			{
 				int num=1;
 				String behav=httpReq.getRequestParameter("BLESS"+num);
 				while(behav!=null)
 				{
+                    boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					if(behav.length()>0)
+                    {
 						theclasses.addElement(behav);
+                        theclerics.addElement(new Boolean(clericOnly));
+                    }
 					num++;
 					behav=httpReq.getRequestParameter("BLESS"+num);
 				}
@@ -245,17 +250,22 @@ public class MobData extends StdWebMacro
 			{
 				Ability Able=E.fetchBlessing(a);
 				if(Able!=null)
+                {
 					theclasses.addElement(CMClass.classID(Able));
+                    theclerics.addElement(new Boolean(E.fetchBlessingCleric(a)));
+                }
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
+                boolean clericOnly=((Boolean)theclerics.elementAt(i)).booleanValue();
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=BLESS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+                str.append("<INPUT TYPE=CHECKBOX NAME=BLONLY"+(i+1)+" "+((clericOnly)?"CHECKED":"")+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=100%>");
@@ -267,6 +277,7 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
+            str.append("<INPUT TYPE=CHECKBOX NAME=BLONLY"+(theclasses.size()+1)+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}
@@ -278,14 +289,19 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("CURSES"))
 		{
 			Vector theclasses=new Vector();
+            Vector theclerics=new Vector();
 			if(httpReq.isRequestParameter("CURSE1"))
 			{
 				int num=1;
 				String behav=httpReq.getRequestParameter("CURSE"+num);
 				while(behav!=null)
 				{
+                    boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					if(behav.length()>0)
+                    {
 						theclasses.addElement(behav);
+                        theclerics.addElement(new Boolean(clericOnly));
+                    }
 					num++;
 					behav=httpReq.getRequestParameter("CURSE"+num);
 				}
@@ -295,17 +311,22 @@ public class MobData extends StdWebMacro
 			{
 				Ability Able=E.fetchCurse(a);
 				if(Able!=null)
+                {
 					theclasses.addElement(CMClass.classID(Able));
+                    theclerics.addElement(new Boolean(E.fetchCurseCleric(a)));
+                }
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
+                boolean clericOnly=((Boolean)theclerics.elementAt(i)).booleanValue();
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CURSE"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+                str.append("<INPUT TYPE=CHECKBOX NAME=CUONLY"+(i+1)+" "+((clericOnly)?"CHECKED":"")+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=100%>");
@@ -317,6 +338,7 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
+            str.append("<INPUT TYPE=CHECKBOX NAME=CUONLY"+(theclasses.size()+1)+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

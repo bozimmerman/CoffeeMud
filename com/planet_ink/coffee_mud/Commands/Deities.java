@@ -69,6 +69,8 @@ public class Deities extends StdCommand
 					for(int b=0;b<D.numBlessings();b++)
 					{
 						msg.append(D.fetchBlessing(b).name());
+                        if(D.fetchBlessingCleric(b))
+                            msg.append(" (Clerics only)");
 						if(b<D.numBlessings()-1)
 							msg.append(", ");
 					}

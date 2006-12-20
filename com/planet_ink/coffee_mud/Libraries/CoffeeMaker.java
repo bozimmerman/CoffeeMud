@@ -483,6 +483,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					if(A==null) continue;
 					itemstr.append("<BLESS>");
 					itemstr.append(CMLib.xml().convertXMLtoTag("BLCLASS",CMClass.classID(A)));
+                    itemstr.append(CMLib.xml().convertXMLtoTag("BLONLY",""+((Deity)E).fetchBlessingCleric(b)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
 					itemstr.append("</BLESS>");
 				}
@@ -495,6 +496,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					if(A==null) continue;
 					itemstr.append("<CURSE>");
 					itemstr.append(CMLib.xml().convertXMLtoTag("CUCLASS",CMClass.classID(A)));
+                    itemstr.append(CMLib.xml().convertXMLtoTag("CUONLY",""+((Deity)E).fetchCurseCleric(b)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
 					itemstr.append("</CURSE>");
 				}
@@ -2169,6 +2171,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						Log.errOut("CoffeeMaker","Unknown bless "+CMLib.xml().getValFromPieces(ablk.contents,"BLCLASS")+" on "+identifier(E,null)+", skipping.");
 						continue;
 					}
+                    boolean clericsOnly=CMLib.xml().getBoolFromPieces(ablk.contents,"BLONLY");
 					Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"BLDATA");
 					if((adat==null)||(newOne==null))
 					{
@@ -2176,7 +2179,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						return;
 					}
 					setPropertiesStr(newOne,adat,true);
-					godmob.addBlessing(newOne);
+					godmob.addBlessing(newOne,clericsOnly);
 				}
 				V=CMLib.xml().getRealContentsFromPieces(buf,"CURSES");
 				if(V!=null)
@@ -2195,6 +2198,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 							Log.errOut("CoffeeMaker","Unknown curse "+CMLib.xml().getValFromPieces(ablk.contents,"CUCLASS")+" on "+identifier(E,null)+", skipping.");
 							continue;
 						}
+                        boolean clericsOnly=CMLib.xml().getBoolFromPieces(ablk.contents,"CUONLY");
 						Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"CUDATA");
 						if((adat==null)||(newOne==null))
 						{
@@ -2202,7 +2206,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 							return;
 						}
 						setPropertiesStr(newOne,adat,true);
-						godmob.addCurse(newOne);
+						godmob.addCurse(newOne,clericsOnly);
 					}
 				}
 				V=CMLib.xml().getRealContentsFromPieces(buf,"POWERS");

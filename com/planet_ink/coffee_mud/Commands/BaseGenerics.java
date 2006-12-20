@@ -3568,12 +3568,13 @@ public class BaseGenerics extends StdCommand
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
+                            boolean clericOnly=mob.session().confirm("Is this for clerics only (y/N)?","N");
 							if(!alreadyHasIt)
 								mob.tell(chosenOne.ID()+" added.");
 							else
 								mob.tell(chosenOne.ID()+" re-added.");
 							if(!alreadyHasIt)
-								E.addBlessing((Ability)chosenOne.copyOf());
+								E.addBlessing((Ability)chosenOne.copyOf(),clericOnly);
 						}
 						else
 						{
@@ -3636,12 +3637,13 @@ public class BaseGenerics extends StdCommand
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
+                            boolean clericOnly=mob.session().confirm("Is this for clerics only (y/N)?","N");
 							if(!alreadyHasIt)
 								mob.tell(chosenOne.ID()+" added.");
 							else
 								mob.tell(chosenOne.ID()+" re-added.");
 							if(!alreadyHasIt)
-								E.addCurse((Ability)chosenOne.copyOf());
+								E.addCurse((Ability)chosenOne.copyOf(),clericOnly);
 						}
 						else
 						{

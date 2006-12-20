@@ -156,9 +156,10 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
+                    boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					Ability B=CMClass.getAbility(aff);
 					if(B==null) return "Unknown Blessing '"+aff+"'.";
-					E.addBlessing(B);
+					E.addBlessing(B,clericOnly);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("BLESS"+num);
@@ -184,8 +185,9 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
+                    boolean clericOnly=(httpReq.isRequestParameter("CUONLY"+num))&&(httpReq.getRequestParameter("CUONLY"+num)).equalsIgnoreCase("on");
 					if(B==null) return "Unknown Curse '"+aff+"'.";
-					E.addCurse(B);
+					E.addCurse(B,clericOnly);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("CURSE"+num);

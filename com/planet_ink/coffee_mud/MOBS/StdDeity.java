@@ -47,8 +47,8 @@ public class StdDeity extends StdMOB implements Deity
     protected Vector serviceTriggers=new Vector();
 	protected Vector clericPowerTriggers=new Vector();
 	protected Vector clericCurseTriggers=new Vector();
-	protected Vector blessings=new Vector();
-	protected Vector curses=new Vector();
+	protected DVector blessings=new DVector(2);
+	protected DVector curses=new DVector(2);
 	protected Vector powers=new Vector();
 	protected Hashtable trigBlessingParts=new Hashtable();
 	protected Hashtable trigBlessingTimes=new Hashtable();
@@ -91,8 +91,8 @@ public class StdDeity extends StdMOB implements Deity
             clericTriggers=(Vector)((StdDeity)E).clericTriggers.clone();
             clericPowerTriggers=(Vector)((StdDeity)E).clericPowerTriggers.clone();
             clericCurseTriggers=(Vector)((StdDeity)E).clericCurseTriggers.clone();
-            blessings=(Vector)((StdDeity)E).blessings.clone();
-            curses=(Vector)((StdDeity)E).curses.clone();
+            blessings=(DVector)((StdDeity)E).blessings.copyOf();
+            curses=(DVector)((StdDeity)E).curses.copyOf();
             powers=(Vector)((StdDeity)E).powers.clone();
             trigBlessingParts=(Hashtable)((StdDeity)E).trigBlessingParts.clone();
             trigBlessingTimes=(Hashtable)((StdDeity)E).trigBlessingTimes.clone();
@@ -467,8 +467,9 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				else
 				{
-					Ability Blessing=fetchBlessing(CMLib.dice().roll(1,numBlessings(),-1));
-					if(Blessing!=null)
+                    int randNum=CMLib.dice().roll(1,numBlessings(),-1);
+					Ability Blessing=fetchBlessing(randNum);
+					if((Blessing!=null)&&(!fetchBlessingCleric(randNum)))
 						bestowBlessing(mob,Blessing);
 				}
 			}
@@ -520,8 +521,9 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				else
 				{
-					Ability Curse=fetchCurse(CMLib.dice().roll(1,numCurses(),-1));
-					if(Curse!=null)
+                    int randNum=CMLib.dice().roll(1,numCurses(),-1);
+					Ability Curse=fetchCurse(randNum);
+					if((Curse!=null)&&(!fetchBlessingCleric(randNum)))
 						bestowCurse(mob,Curse);
 				}
 			}
@@ -1215,7 +1217,7 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public void addBlessing(Ability to)
+	public void addBlessing(Ability to, boolean clericOnly)
 	{
 		if(to==null) return;
 		for(int a=0;a<numBlessings();a++)
@@ -1224,7 +1226,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		blessings.addElement(to);
+		blessings.addElement(to,new Boolean(clericOnly));
 	}
 	public void delBlessing(Ability to)
 	{
@@ -1238,11 +1240,30 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		try
 		{
-			return (Ability)blessings.elementAt(index);
+			return (Ability)blessings.elementAt(index,1);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+    public boolean fetchBlessingCleric(int index)
+    {
+        try
+        {
+            return ((Boolean)blessings.elementAt(index,2)).booleanValue();
+        }
+        catch(java.lang.ArrayIndexOutOfBoundsException x){}
+        return false;
+    }
+    public boolean fetchBlessingCleric(String ID)
+    {
+        for(int a=0;a<numBlessings();a++)
+        {
+            Ability A=fetchBlessing(a);
+            if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
+                return fetchBlessingCleric(a);
+        }
+        return false;
+    }
 	public Ability fetchBlessing(String ID)
 	{
 		for(int a=0;a<numBlessings();a++)
@@ -1251,7 +1272,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CMLib.english().fetchEnvironmental(blessings,ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(blessings.getDimensionVector(1),ID,false);
 	}
 
     protected void parseTriggers(Vector putHere, String trigger)
@@ -1584,7 +1605,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	/** Manipulation of curse objects, which includes spells, traits, skills, etc.*/
-	public void addCurse(Ability to)
+	public void addCurse(Ability to, boolean clericOnly)
 	{
 		if(to==null) return;
 		for(int a=0;a<numCurses();a++)
@@ -1593,7 +1614,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		curses.addElement(to);
+		curses.addElement(to, new Boolean(clericOnly));
 	}
 	public void delCurse(Ability to)
 	{
@@ -1607,7 +1628,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		try
 		{
-			return (Ability)curses.elementAt(index);
+			return (Ability)curses.elementAt(index,1);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1620,8 +1641,28 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CMLib.english().fetchEnvironmental(curses,ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(curses.getDimensionVector(1),ID,false);
 	}
+
+    public boolean fetchCurseCleric(int index)
+    {
+        try
+        {
+            return ((Boolean)curses.elementAt(index,2)).booleanValue();
+        }
+        catch(java.lang.ArrayIndexOutOfBoundsException x){}
+        return false;
+    }
+    public boolean fetchCurseCleric(String ID)
+    {
+        for(int a=0;a<numCurses();a++)
+        {
+            Ability A=fetchCurse(a);
+            if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
+                return fetchCurseCleric(a);
+        }
+        return false;
+    }
 
 	public String getClericSin()
 	{ return clericSin;}
