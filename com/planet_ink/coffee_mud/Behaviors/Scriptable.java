@@ -2166,6 +2166,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=CMLib.masking().maskCheck(arg2, E);
 				break;
 			}
+            case 86: // contains
+            { 
+                String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
+                returnable=CMParms.stringContains(arg1,arg2)>=0;
+                break;
+            }
 			case 16: // hitprcnt
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4299,6 +4306,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				results.append(CMLib.masking().maskDesc(arg1));
 				break;
 			}
+            case 86: // contains
+            {
+                results.append("[unimplemented function]");
+                break;
+            }
 			case 81: // trains
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));

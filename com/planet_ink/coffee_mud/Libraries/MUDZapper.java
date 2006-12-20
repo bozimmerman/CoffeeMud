@@ -232,6 +232,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-DAY",new Integer(107));
             zapCodes.put("+SYSOP",new Integer(108));
             zapCodes.put("-SYSOP",new Integer(109));
+            zapCodes.put("+SUBOP",new Integer(110));
+            zapCodes.put("-SUBOP",new Integer(111));
 		}
 		return zapCodes;
 	}
@@ -2613,6 +2615,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 	break;
                 case 108: // +sysop
                 case 109: // +sysop
+                case 110: // +subop
+                case 111: // +subop
                 {
                     Vector entry=new Vector();
                     buf.addElement(entry);
@@ -2844,6 +2848,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 109: // -sysop
                 if(CMSecurity.isASysOp(mob))
+                    return false;
+                break;
+            case 110: // +unsop
+                if(CMSecurity.isASysOp(mob)
+                ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
+                    return true;
+                break;
+            case 111: // -unsop
+                if(CMSecurity.isASysOp(mob)
+                ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
                     return false;
                 break;
 			case 0: // -class
@@ -3720,12 +3734,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(zapCodes.containsKey(str))
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
-                case 108:
+                case 108: // +sysop
                     if(CMSecurity.isASysOp(mob))
                         return true;
                     break;
-                case 109:
+                case 109: // -sysop
                     if(CMSecurity.isASysOp(mob))
+                        return false;
+                    break;
+                case 110: // +subop
+                    if(CMSecurity.isASysOp(mob)
+                    ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
+                        return true;
+                    break;
+                case 111: // -subop
+                    if(CMSecurity.isASysOp(mob)
+                    ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
                         return false;
                     break;
 				case 0: // -class

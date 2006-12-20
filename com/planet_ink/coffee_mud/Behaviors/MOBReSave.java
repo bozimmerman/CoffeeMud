@@ -70,11 +70,8 @@ public class MOBReSave extends ActiveTicker
 						if(mob.location()!=R)
 							R.bringMobHere(mob,false);
 						roomsReset.add(R.roomID());
-				    	synchronized(("SYNC"+R.roomID()).intern())
-				    	{
-							CMLib.map().resetRoom(R);
-							CMLib.database().DBUpdateMOBs(R);
-				    	}
+						CMLib.map().resetRoom(R);
+						CMLib.database().DBUpdateMOBs(R);
 					}
 				}
 				if(canAct(ticking,tickID))

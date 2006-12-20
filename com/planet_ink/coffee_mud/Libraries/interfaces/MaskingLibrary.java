@@ -57,8 +57,10 @@ public interface MaskingLibrary extends CMLibrary
     public boolean maskCheck(String text, Environmental E);
     
     public final String DEFAULT_MASK_HELP =
-        "+SYSOP (allow archons or area staff to bypass the rules)  <BR>"
-        +"-SYSOP (always <WORD> archons and area staff)  <BR>"
+        "+SYSOP (allow archons to bypass the rules)  <BR>"
+        +"-SYSOP (always <WORD> archons)  <BR>"
+        +"+SUBOP (allow archons or area staff to bypass the rules)  <BR>"
+        +"-SUBOP (always <WORD> archons and area staff)  <BR>"
         +"-PLAYER (<WORD> all players) <BR>"
         +"-MOB (<WORD> all mobs/npcs)  <BR>"
         +"-CLASS  (<WORD> all classes)  <BR>"

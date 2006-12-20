@@ -83,6 +83,20 @@ public class Learn extends StdCommand
 			return true;
 		}
         ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
+        Vector V2=CMLib.expertises().myListableExpertises(mob);
+        for(Enumeration e=V2.elements();e.hasMoreElements();)
+        {
+            ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+            if((def.name.equalsIgnoreCase(what+teacherName)
+            ||def.name.equalsIgnoreCase(what))
+            ||(def.name.toLowerCase().startsWith((what+teacherName).toLowerCase())
+                &&(CMath.isRomanNumeral(def.name.substring((what+teacherName).length()).trim())||CMath.isNumber(def.name.substring((what+teacherName).length()).trim())))
+            ||(def.name.toLowerCase().startsWith((what).toLowerCase())
+                    &&(CMath.isRomanNumeral(def.name.substring((what).length()).trim())||CMath.isNumber(def.name.substring((what).length()).trim())))
+            )
+            { theExpertise=def; break;}
+        }
+        if(theExpertise==null)
         for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
         {
             ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();

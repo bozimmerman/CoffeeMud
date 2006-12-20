@@ -221,6 +221,7 @@ public interface ScriptingEngine extends Behavior
         "QVAR", // 83
         "MATH", // 84
         "ISLIKE", //85
+        "CONTAINS", //86
     };
     public static final String[] methods={
         "MPASOUND", //1

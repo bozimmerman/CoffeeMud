@@ -593,6 +593,26 @@ public class CMParms
         return makeIntArray('\0',0);
     }
 
+    public static int stringContains(String str1, String str2)
+    {
+        StringBuffer buf1=new StringBuffer(str1.toLowerCase());
+        for(int i=buf1.length()-1;i>=0;i--)
+            if((buf1.charAt(i)!=' ')
+            &&(buf1.charAt(i)!='\'')
+            &&(buf1.charAt(i)!='\"')
+            &&(buf1.charAt(i)!='`')
+            &&(!Character.isLetterOrDigit(buf1.charAt(i))))
+                buf1.setCharAt(i,' ');
+        Vector V2=CMParms.parse(str2.toLowerCase());
+        Vector V=CMParms.parse(buf1.toString());
+        String s=null;
+        for(int i=0;i<V.size();i++)
+        {
+            s=(String)V.elementAt(i);
+        }
+        return -1;
+    }
+    
     public static int getParmPlus(String text, String key)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
