@@ -4,8 +4,11 @@
 
 
 
+
   
                                                            
+  
+  
   
   
   
@@ -21,9 +24,11 @@
 
 
 
+
                    
 <center>       
 <table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
+
 
 
 
@@ -31,7 +36,9 @@
 
 
 
+
            <tr>
+
 
 
 
@@ -39,7 +46,9 @@
       
       
       
+      
       <h1>Installing and Using CoffeeMud 5.2</h1>
+
 
 
 
@@ -47,11 +56,14 @@
 
 
 
+
            </tr>
 
 
 
+
            <tr>
+
 
 
 
@@ -60,11 +72,14 @@
       
       
       
+      
       <ul>
 
 
 
+
                   <li><a href="#installation">Installation</a></li>
+
 
 
 
@@ -73,7 +88,9 @@
           
           
           
+          
           <ul>
+
 
 
 
@@ -81,11 +98,14 @@
 
 
 
+
                       <li><a href="#changedfdb">Changed w/fakedb</a></li>
 
 
 
+
                       <li><a href="#changed">Changed w/o fakedb</a></li>
+
 
 
 
@@ -94,7 +114,9 @@
           
           
           
+          
           </ul>
+
 
 
 
@@ -102,11 +124,14 @@
 
 
 
+
                   <li><a href="#settings">Settings</a></li>
 
 
 
+
                   <li><a href="#package">The CoffeeMud Package</a></li>
+
 
 
 
@@ -116,7 +141,9 @@
           
           
           
+          
           <ul>
+
 
 
 
@@ -124,7 +151,9 @@
 
 
 
+
                       <li><a href="#mysqlwin">MySQL/ Win</a></li>
+
 
 
 
@@ -132,11 +161,14 @@
 
 
 
+
                       <li><a href="#hsql">HSQL</a></li>
 
 
 
+
                       <li><a href="#derby">Derby</a></li>
+
 
 
 
@@ -145,7 +177,9 @@
           
           
           
+          
           </ul>
+
 
 
 
@@ -153,7 +187,9 @@
 
 
 
+
                   <li><a href="#shutdown">Offline/ Shutdown</a></li>
+
 
 
 
@@ -161,11 +197,14 @@
       
       
       
+      
       </ul>
 
 
 
+
               </td>
+
 
 
 
@@ -174,11 +213,14 @@
       
       
       
+      
       <h2><a name="installation">Installation</a></h2>
 
 
 
+
                                                                   
+      
       
       
       
@@ -192,7 +234,9 @@ GCJ -- CoffeeMud            (and Sun) do not support it.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -203,7 +247,9 @@ on upgrading.  If           this is your first installation, keep reading.
 
 
 
+
                                                                   
+      
       
       
       
@@ -213,7 +259,9 @@ called,    for           instance, "CoffeeMud".         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -237,7 +285,9 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
                                                                   
+      
       
       
       
@@ -246,7 +296,9 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
                                                                   
+      
       
       
       
@@ -254,7 +306,9 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
                                                                   
+      
       
       
       
@@ -262,7 +316,9 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
                                                                   
+      
       
       
       
@@ -274,7 +330,9 @@ prompt and            enter (for Windows or DOS users):         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -284,7 +342,9 @@ Muds             Name"           </code>         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -293,7 +353,9 @@ Muds             Name"           </code>         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -303,7 +365,9 @@ Muds             Name"           </code>         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -318,7 +382,9 @@ you may           first modify, then make executable using the command <code>chm
 
 
 
+
                                                                   
+      
       
       
       
@@ -333,7 +399,9 @@ up the book  and           read it.  The commands to do this are:
 
 
 
+
                                                          
+      
       
       
       
@@ -341,7 +409,9 @@ up the book  and           read it.  The commands to do this are:
 
 
 
+
                                                                   
+      
       
       
       
@@ -353,7 +423,9 @@ you should enter:         </p>
 
 
 
+
                                                          
+      
       
       
       
@@ -361,7 +433,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -371,7 +445,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -380,7 +456,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -388,18 +466,37 @@ you should enter:         </p>
 
 
 
+
                   <li>Finish reading this document           </li>
 
 
 
+
                <li>Go through the <a href="../coffeemud.ini">coffeemud.ini</a>
- file,   or use the <a href="MUDGrinder.html">MudGrinders</a> Control Panel.</li>
+ file,   and use the <a href="MUDGrinder.html">MudGrinders</a> Control Panel.</li>
+        <ul>
+          <li>Set your DOMAIN field</li>
+        </ul>
+        <ul>
+          <li>Set your SMTPSERVERNAME field</li>
+          <li>Visit <a href="http://www.muddomain.com/imc/">http://www.muddomain.com/imc/</a> , apply for an IMC2 account</li>
+          <ul>
+            <li>IMC2 Settings (IMC2LOGIN, IMC2PASS1, IMC2PASS2, etc..)</li>
+          </ul>
+          <li>Set your I3EMAIL and I3STATE fields</li>
+          <li>Set your START field</li>
+          <li>Set your SOUNDPATH field</li>
+          <li>Set your MXPIMAGEPATH field</li>
+        </ul>
+
 
 
 
                   <li>Read the <a href="ArchonGuide.html">Archon's Guide</a>.</li>
 
+
         <li>Review the <a href="GameBuildersGuide.html">Game Builders Guide</a>.</li>
+
 
 
 
@@ -407,7 +504,9 @@ you should enter:         </p>
 
 
 
+
                <li>Peruse the <a href="Reference.html">Reference Guide</a></li>
+
 
 
 
@@ -415,7 +514,9 @@ you should enter:         </p>
 
 
 
+
                   <li>Be aware of the <a href="SMTPServer.html">SMTP Server Guide</a>.</li>
+
 
 
 
@@ -423,7 +524,9 @@ you should enter:         </p>
 
 
 
+
                                                                  
+      
       
       
       
@@ -431,7 +534,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -440,8 +545,10 @@ you should enter:         </p>
 
 
 
+
                  <img src="images/mug.jpg" alt="CoffeeMud logo" />
                                                                  
+      
       
       
       
@@ -449,7 +556,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -461,7 +570,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -469,7 +580,9 @@ you should enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -480,7 +593,9 @@ many other things           probably have.   Therefore, follow these steps:
 
 
 
+
                                                                   
+      
       
       
       
@@ -488,8 +603,10 @@ many other things           probably have.   Therefore, follow these steps:
 
 
 
+
                   <li>                                                  
                                      
+          
           
           
           
@@ -502,12 +619,15 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -519,12 +639,15 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -533,12 +656,15 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -553,12 +679,15 @@ settings  for             instance.           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -568,7 +697,9 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
                   </li>
+
 
 
 
@@ -577,7 +708,9 @@ new             build.  As in step 4, merge any other files back into their
           
           
           
+          
           <p>             Smile, you are done.           </p>
+
 
 
 
@@ -585,7 +718,9 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
                                                                  
+      
       
       
       
@@ -593,7 +728,9 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
                                                                   
+      
       
       
       
@@ -601,7 +738,9 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
                                                                   
+      
       
       
       
@@ -614,7 +753,9 @@ below.   If you don't know whether or not you are using fakedb,
 
 
 
+
                                                                   
+      
       
       
       
@@ -622,8 +763,10 @@ below.   If you don't know whether or not you are using fakedb,
 
 
 
+
                   <li>                                                  
                                      
+          
           
           
           
@@ -639,12 +782,15 @@ them!           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -654,12 +800,15 @@ them!           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -672,12 +821,15 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -687,12 +839,15 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -701,7 +856,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                   </li>
+
 
 
 
@@ -710,7 +867,9 @@ all             the files matching fakedb.data.*  Do NOT delete
           
           
           
+          
           <p>             Smile, you are done.           </p>
+
 
 
 
@@ -718,7 +877,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                                                                  
+      
       
       
       
@@ -726,7 +887,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                                                                   
+      
       
       
       
@@ -734,7 +897,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                                                                   
+      
       
       
       
@@ -745,7 +910,9 @@ instructions:            </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -753,8 +920,10 @@ instructions:            </p>
 
 
 
+
                   <li>                                                  
                                      
+          
           
           
           
@@ -772,12 +941,15 @@ to copy FakeDB's schema             for use with the upgrade application.
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -787,12 +959,15 @@ to copy FakeDB's schema             for use with the upgrade application.
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -807,12 +982,15 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -822,12 +1000,15 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -836,12 +1017,15 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -853,7 +1037,9 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
@@ -862,7 +1048,9 @@ you             preserve your olde CoffeeMud database from the olde version!
           
           
           
+          
           <p>             Smile, you are done.           </p>
+
 
 
 
@@ -870,11 +1058,14 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                                                                  
       
       
       
+      
       </ul>
+
 
 
 
@@ -883,11 +1074,14 @@ you             preserve your olde CoffeeMud database from the olde version!
       
       
       
+      
       <h2><a name="settings">Settings</a></h2>
 
 
 
+
                                                                   
+      
       
       
       
@@ -902,7 +1096,9 @@ can.           </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -915,7 +1111,9 @@ effect.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -926,7 +1124,9 @@ effect.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -934,9 +1134,11 @@ effect.         </p>
 
 
 
+
                   <li><span class="bold">SYSMSGS, ERRMSGS, DBGMSGS</span> 
                                                                          
              
+          
           
           
           
@@ -953,12 +1155,15 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+
                   </li>
+
 
 
 
                    <li><span class="bold">PORT</span>                   
                                                                     
+          
           
           
           
@@ -969,12 +1174,15 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">START</span>                
                                                                         
+          
           
           
           
@@ -987,13 +1195,16 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">CHANNELS</span>             
                                                                         
    
+          
           
           
           
@@ -1009,7 +1220,9 @@ below) is  16 or 32, I forget.             </p>
 
 
 
+
                     </li>
+
 
 
 
@@ -1019,9 +1232,11 @@ below) is  16 or 32, I forget.             </p>
           
           
           
+          
           <p>             This TCP/IP setting denotes how many connections
    can be queued up when             the server is busy. Leave it at 6. 
          </p>
+
 
 
 
@@ -1029,8 +1244,10 @@ below) is  16 or 32, I forget.             </p>
 
 
 
+
                <li><span class="bold">BIND</span>                       
                                                                 
+          
           
           
           
@@ -1041,13 +1258,16 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">RUNI3SERVER</span>          
                                                                         
       
+          
           
           
           
@@ -1058,13 +1278,16 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">I3PORT</span>               
                                                                         
  
+          
           
           
           
@@ -1077,13 +1300,16 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">I3STATE</span>              
                                                                         
   
+          
           
           
           
@@ -1094,13 +1320,16 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">I3CHANNELS</span>           
                                                                         
      
+          
           
           
           
@@ -1118,13 +1347,16 @@ of  the InterMud3             channel to map this local channel to.  A couple
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">RUNWEBSERVERS</span>        
                                                                         
         
+          
           
           
           
@@ -1139,13 +1371,16 @@ CoffeeMud   web server in             general, please read the <a href="WebServe
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">RUNSMTPSERVER</span>        
                                                                         
         
+          
           
           
           
@@ -1160,7 +1395,9 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+
                     </li>
+
 
 
 
@@ -1168,6 +1405,7 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
    CHARCLASSES, RACES, COMMANDS,             LOCALES, AREAS, EXITS</span>
                                                                         
                 
+          
           
           
           
@@ -1181,12 +1419,15 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+
                   </li>
+
 
 
 
                    <li><span class="bold">DBCLASS</span>                
                                                                        
+          
           
           
           
@@ -1201,12 +1442,15 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+
                    </li>
+
 
 
 
                    <li><span class="bold">DBSERVICE</span>              
                                                                         
+          
           
           
           
@@ -1224,13 +1468,16 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
                     </li>
+
 
 
 
                      <li><span class="bold">DBUSER, DBPASS</span>       
                                                                         
          
+          
           
           
           
@@ -1241,13 +1488,16 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
                   </li>
+
 
 
 
                    <li><span class="bold">DBCONNECTIONS</span>          
                                                                         
     
+          
           
           
           
@@ -1258,7 +1508,9 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
                   </li>
+
 
 
 
@@ -1266,11 +1518,14 @@ on "The  CoffeeMud Database" for more             information.
       
       
       
+      
       </ul>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1281,8 +1536,10 @@ in the MUDGrinder    to           modify them.         </p>
 
 
 
+
                  <img src="images/hd.jpg" alt="packages" />
                                                                  
+      
       
       
       
@@ -1290,7 +1547,9 @@ in the MUDGrinder    to           modify them.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1300,8 +1559,10 @@ to   edit when           configuring your server.         </p>
 
 
 
+
                 <img src="images/dir-com.jpg" alt="com" />
                                                                  
+      
       
       
       
@@ -1312,8 +1573,10 @@ to   edit when           configuring your server.         </p>
 
 
 
+
                 <img src="images/dir-guides.jpg" alt="guides" />
                                                                  
+      
       
       
       
@@ -1324,7 +1587,9 @@ inside it.            </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1335,7 +1600,9 @@ inside it.            </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1345,8 +1612,10 @@ inside it.            </p>
 
 
 
+
                 <img src="images/dir-lib.jpg" alt="lib" />
                                                                  
+      
       
       
       
@@ -1358,8 +1627,10 @@ inside it.            </p>
 
 
 
+
                 <img src="images/dir-web.jpg" alt="web" />
                                                                  
+      
       
       
       
@@ -1372,7 +1643,9 @@ you            CAN edit.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1380,7 +1653,9 @@ you            CAN edit.         </p>
 
 
 
+
                   <tbody>
+
 
 
 
@@ -1388,7 +1663,9 @@ you            CAN edit.         </p>
 
 
 
+
                       <td>                 admin.ini               </td>
+
 
 
 
@@ -1399,7 +1676,9 @@ and  utilities.               </td>
 
 
 
+
                      </tr>
+
 
 
 
@@ -1407,7 +1686,9 @@ and  utilities.               </td>
 
 
 
+
                       <td>                 common.ini               </td>
+
 
 
 
@@ -1417,7 +1698,9 @@ and  utilities.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1425,7 +1708,9 @@ and  utilities.               </td>
 
 
 
+
                       <td>                 pub.ini               </td>
+
 
 
 
@@ -1434,7 +1719,9 @@ public   web server.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1442,7 +1729,9 @@ public   web server.               </td>
 
 
 
+
                        <td>                 email.ini               </td>
+
 
 
 
@@ -1451,7 +1740,9 @@ smtp   server.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1460,8 +1751,10 @@ smtp   server.               </td>
         
         
         
+        
         </tbody>                                                        
  
+      
       
       
       
@@ -1469,7 +1762,9 @@ smtp   server.               </td>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1482,7 +1777,9 @@ smtp   server.               </td>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1492,7 +1789,9 @@ smtp   server.               </td>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1505,7 +1804,9 @@ are stored for players to access.            </p>
 
 
 
+
                                                                  
+      
       
       
       
@@ -1515,8 +1816,10 @@ are stored for players to access.            </p>
 
 
 
+
                 <img src="images/dir-resources.jpg" alt="resources" />
                                                                  
+      
       
       
       
@@ -1529,7 +1832,9 @@ find most of           the important files for tinkering with the configuration
 
 
 
+
                                                                   
+      
       
       
       
@@ -1537,7 +1842,9 @@ find most of           the important files for tinkering with the configuration
 
 
 
+
                   <tbody>
+
 
 
 
@@ -1545,7 +1852,9 @@ find most of           the important files for tinkering with the configuration
 
 
 
+
                       <td>                 chat.dat               </td>
+
 
 
 
@@ -1555,7 +1864,9 @@ MudChat   behavior.  You can                 edit this one too.
 
 
 
+
                     </tr>
+
 
 
 
@@ -1563,7 +1874,9 @@ MudChat   behavior.  You can                 edit this one too.
 
 
 
+
                       <td>                 laws.ini               </td>
+
 
 
 
@@ -1573,7 +1886,9 @@ to  deal with law through law books.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1581,7 +1896,9 @@ to  deal with law through law books.               </td>
 
 
 
+
                       <td>                 lawtoc.ini               </td>
+
 
 
 
@@ -1590,7 +1907,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1598,7 +1917,9 @@ GenLawBook   item.               </td>
 
 
 
+
                       <td>                 alignment.ini               </td>
+
 
 
 
@@ -1608,7 +1929,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1616,7 +1939,9 @@ GenLawBook   item.               </td>
 
 
 
+
                       <td>                 movingroom.xml               </td>
+
 
 
 
@@ -1625,31 +1950,43 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
                     <tr>
 
 
+
             <td>parser_en_TX.properties</td>
+
 
 
             <td>The definitions file for CoffeeMud's user-input translation engine.</td>
 
 
+
           </tr>
 
 
+
           <tr>
+
             <td>translation_en_TX.properties</td>
+
             <td>The definitions file for CoffeeMud's user-putput translation engine.</td>
+
           </tr>
+
           <tr>
+
 
 
 
                       <td>                 socials.txt               </td>
+
 
 
 
@@ -1659,7 +1996,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1667,7 +2006,9 @@ GenLawBook   item.               </td>
 
 
 
+
                       <td>                 mxp_images.txt               </td>
+
 
 
 
@@ -1676,7 +2017,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1684,11 +2027,14 @@ GenLawBook   item.               </td>
 
 
 
+
             <td valign="top">titles.txt<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1697,11 +2043,14 @@ GenLawBook   item.               </td>
 
 
 
+
             </td>
 
 
 
+
           </tr>
+
 
 
 
@@ -1710,8 +2059,10 @@ GenLawBook   item.               </td>
         
         
         
+        
         </tbody>                                                        
  
+      
       
       
       
@@ -1719,7 +2070,9 @@ GenLawBook   item.               </td>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1730,7 +2083,9 @@ directory is unused.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1739,10 +2094,13 @@ directory is unused.         </p>
 
 
 
+
       </p>
 
 
 
+
+      
       
       
       
@@ -1750,7 +2108,9 @@ directory is unused.         </p>
 
 
 
+
         <tbody>
+
 
 
 
@@ -1758,11 +2118,14 @@ directory is unused.         </p>
 
 
 
+
             <td valign="top">deities.cmare<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1772,7 +2135,9 @@ this set of mobs.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1780,7 +2145,9 @@ this set of mobs.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -1788,7 +2155,9 @@ this set of mobs.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1797,7 +2166,9 @@ creation wizard when new factions are created. &nbsp;Do not modify this file!!<b
 
 
 
+
             </td>
+
 
 
 
@@ -1805,7 +2176,9 @@ creation wizard when new factions are created. &nbsp;Do not modify this file!!<b
 
 
 
+
           <tr>
+
 
 
 
@@ -1813,7 +2186,9 @@ creation wizard when new factions are created. &nbsp;Do not modify this file!!<b
 
 
 
+
             </td>
+
 
 
 
@@ -1823,7 +2198,9 @@ use  of.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1831,7 +2208,9 @@ use  of.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -1839,7 +2218,9 @@ use  of.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1849,7 +2230,9 @@ to           load it up, and see the Programmer's Guide for more information<br 
 
 
 
+
             </td>
+
 
 
 
@@ -1857,6 +2240,8 @@ to           load it up, and see the Programmer's Guide for more information<br 
 
 
 
+
+        
         
         
         
@@ -1864,11 +2249,14 @@ to           load it up, and see the Programmer's Guide for more information<br 
       
       
       
+      
       </table>
 
 
 
+
                                                                  
+      
       
       
       
@@ -1884,7 +2272,9 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -1893,10 +2283,13 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
       </p>
 
 
 
+
+      
       
       
       
@@ -1904,7 +2297,9 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
         <tbody>
+
 
 
 
@@ -1912,11 +2307,14 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
             <td valign="top">blackjack.script<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1927,7 +2325,9 @@ help on Scriptable for more information.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1935,7 +2335,9 @@ help on Scriptable for more information.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -1943,7 +2345,9 @@ help on Scriptable for more information.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1953,7 +2357,9 @@ resources/progs/clearChannelQue.js &lt;channel_name&gt;<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1961,7 +2367,9 @@ resources/progs/clearChannelQue.js &lt;channel_name&gt;<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -1969,7 +2377,9 @@ resources/progs/clearChannelQue.js &lt;channel_name&gt;<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1979,7 +2389,9 @@ is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -1987,7 +2399,9 @@ is added above.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -1995,7 +2409,9 @@ is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2004,7 +2420,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2012,7 +2430,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2020,7 +2440,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2030,7 +2452,9 @@ JRUN resources/progs/everyoneIsHome.js<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2038,7 +2462,9 @@ JRUN resources/progs/everyoneIsHome.js<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2046,7 +2472,9 @@ JRUN resources/progs/everyoneIsHome.js<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2057,7 +2485,9 @@ behavior (to implement law in that area).<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2065,7 +2495,9 @@ behavior (to implement law in that area).<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2073,7 +2505,9 @@ behavior (to implement law in that area).<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2082,7 +2516,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2090,7 +2526,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2098,7 +2536,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2107,7 +2547,9 @@ which rooms have the most items in them. &nbsp;To execute, enter JRUN resources/
 
 
 
+
             </td>
+
 
 
 
@@ -2115,7 +2557,9 @@ which rooms have the most items in them. &nbsp;To execute, enter JRUN resources/
 
 
 
+
           <tr>
+
 
 
 
@@ -2123,7 +2567,9 @@ which rooms have the most items in them. &nbsp;To execute, enter JRUN resources/
 
 
 
+
             </td>
+
 
 
 
@@ -2132,11 +2578,14 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
             </td>
 
 
 
+
           </tr>
+
 
 
 
@@ -2144,11 +2593,14 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
             <td valign="top">strangetrader.script<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2157,7 +2609,9 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
             </td>
+
 
 
 
@@ -2165,6 +2619,8 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
+        
         
         
         
@@ -2172,11 +2628,14 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
       
       
       
+      
       </table>
 
 
 
+
                                                                  
+      
       
       
       
@@ -2189,9 +2648,11 @@ the MUDGrinder.         </p>
 
 
 
+
                                                                  
       
                                                                  
+      
       
       
       
@@ -2203,7 +2664,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
         </p>
+
 
 
 
@@ -2211,7 +2674,9 @@ returns. &nbsp;This directory includes:<br />
       
       
       
+      
       <table border="1" width="100%">
+
 
 
 
@@ -2219,7 +2684,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2227,7 +2694,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Alchemy skill<br />
+
 
 
 
@@ -2235,11 +2704,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2247,7 +2719,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Armorsmithing skill<br />
+
 
 
 
@@ -2255,11 +2729,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2267,7 +2744,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Baking skill<br />
+
 
 
 
@@ -2275,11 +2754,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2287,7 +2769,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Baking skill<br />
+
 
 
 
@@ -2295,11 +2779,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2307,7 +2794,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Blacksmithing skill<br />
+
 
 
 
@@ -2315,11 +2804,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2327,7 +2819,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Carpentry skill<br />
+
 
 
 
@@ -2335,11 +2829,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2347,7 +2844,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Clan Crafting skill<br />
+
 
 
 
@@ -2355,11 +2854,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2367,7 +2869,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Cobbler skill<br />
+
 
 
 
@@ -2375,7 +2879,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -2383,7 +2889,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">components.txt</td>
+
 
 
 
@@ -2392,7 +2900,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2400,7 +2910,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2408,7 +2920,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Costuming skill<br />
+
 
 
 
@@ -2416,7 +2930,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -2424,7 +2940,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">expertises.txt</td>
+
 
 
 
@@ -2433,7 +2951,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2441,7 +2961,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2449,7 +2971,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Fletching skill<br />
+
 
 
 
@@ -2457,11 +2981,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2469,7 +2996,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the FoodPrep skill<br />
+
 
 
 
@@ -2477,11 +3006,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2489,7 +3021,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Glass Blowing skill<br />
+
 
 
 
@@ -2497,11 +3031,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2509,7 +3046,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Herbalism skill<br />
+
 
 
 
@@ -2517,11 +3056,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2529,7 +3071,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Herbology skill<br />
+
 
 
 
@@ -2537,11 +3081,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2549,7 +3096,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Instruments skill<br />
+
 
 
 
@@ -2557,11 +3106,14 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2569,7 +3121,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Insults text source file for the Joke skill<br />
+
 
 
 
@@ -2577,7 +3131,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -2585,7 +3141,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">insulto.txt</td>
+
 
 
 
@@ -2594,7 +3152,9 @@ skill<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2602,7 +3162,9 @@ skill<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2610,7 +3172,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Jewelmaking skill<br />
+
 
 
 
@@ -2618,11 +3182,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2630,7 +3197,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Leatherworking skill<br />
+
 
 
 
@@ -2638,11 +3207,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2650,7 +3222,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Distilling skill<br />
+
 
 
 
@@ -2658,11 +3232,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2670,7 +3247,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Armorsmithing skill<br />
+
 
 
 
@@ -2678,11 +3257,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2690,7 +3272,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Costuming skill<br />
+
 
 
 
@@ -2698,11 +3282,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2710,7 +3297,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Leatherworking skill<br />
+
 
 
 
@@ -2718,11 +3307,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2730,7 +3322,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Tailoring skill<br />
+
 
 
 
@@ -2738,11 +3332,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2750,7 +3347,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Weaponsmithing skill<br />
+
 
 
 
@@ -2758,11 +3357,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2770,7 +3372,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Papermaking skill<br />
+
 
 
 
@@ -2778,11 +3382,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2790,7 +3397,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Poisons skill<br />
+
 
 
 
@@ -2798,11 +3407,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2810,7 +3422,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Pottery skill<br />
+
 
 
 
@@ -2818,11 +3432,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2830,7 +3447,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Cooking skill<br />
+
 
 
 
@@ -2838,11 +3457,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2850,7 +3472,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Scrimshawing skill<br />
+
 
 
 
@@ -2858,11 +3482,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2870,7 +3497,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Sculpting skill<br />
+
 
 
 
@@ -2878,11 +3507,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2890,7 +3522,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the ShipWrighting skill<br />
+
 
 
 
@@ -2898,11 +3532,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2910,7 +3547,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Smelting skill<br />
+
 
 
 
@@ -2918,11 +3557,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2930,7 +3572,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Tailoring skill<br />
+
 
 
 
@@ -2938,11 +3582,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2950,7 +3597,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes/Descriptiong for the Taxidermy skill<br />
+
 
 
 
@@ -2958,11 +3607,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2970,7 +3622,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Torturesmithing skill<br />
+
 
 
 
@@ -2978,11 +3632,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -2990,7 +3647,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Wainwrighting skill<br />
+
 
 
 
@@ -2998,11 +3657,14 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
+
  <tr>
+
 
 
 
@@ -3010,7 +3672,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Weaponsmithing skill<br />
+
 
 
 
@@ -3018,7 +3682,9 @@ skill<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -3026,7 +3692,9 @@ skill<br />
 
 
 
+
             <td valign="top">weaving.txt</td>
+
 
 
 
@@ -3034,7 +3702,9 @@ skill<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3042,7 +3712,9 @@ skill<br />
 
 
 
+
                    
+        
         
         
         
@@ -3050,11 +3722,14 @@ skill<br />
       
       
       
+      
       </table>
 
 
 
+
                                                                  
+      
       
       
       
@@ -3065,7 +3740,9 @@ skill<br />
 
 
 
+
                                                                   
+      
       
       
       
@@ -3073,7 +3750,9 @@ skill<br />
 
 
 
+
                   <tbody>
+
 
 
 
@@ -3081,7 +3760,9 @@ skill<br />
 
 
 
+
                       <td>                 alignment.txt               </td>
+
 
 
 
@@ -3090,7 +3771,9 @@ skill<br />
 
 
 
+
                      </tr>
+
 
 
 
@@ -3098,7 +3781,9 @@ skill<br />
 
 
 
+
                       <td>                 classes.txt               </td>
+
 
 
 
@@ -3107,7 +3792,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3115,7 +3802,9 @@ skill<br />
 
 
 
+
                       <td>                 credits.txt               </td>
+
 
 
 
@@ -3124,7 +3813,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3132,7 +3823,9 @@ skill<br />
 
 
 
+
                        <td>                 down.txt               </td>
+
 
 
 
@@ -3142,7 +3835,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3150,7 +3845,9 @@ skill<br />
 
 
 
+
                       <td>                  intro.txt               </td>
+
 
 
 
@@ -3159,7 +3856,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3167,7 +3866,9 @@ skill<br />
 
 
 
+
                       <td>                 mxp.txt                </td>
+
 
 
 
@@ -3177,7 +3878,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3185,11 +3888,14 @@ skill<br />
 
 
 
+
             <td valign="top">                  newchar.txt<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3198,7 +3904,9 @@ mud  to  new players.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3206,7 +3914,9 @@ mud  to  new players.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -3215,8 +3925,10 @@ mud  to  new players.<br />
 
 
 
+
                       <td>                 A text file shown to players after
 they have created their character.               </td>
+
 
 
 
@@ -3224,7 +3936,9 @@ they have created their character.               </td>
 
 
 
+
                     <tr>
+
 
 
 
@@ -3232,7 +3946,9 @@ they have created their character.               </td>
 
 
 
+
             </td>
+
 
 
 
@@ -3241,7 +3957,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3249,11 +3967,14 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
           <tr>
 
 
 
+
                       <td>                 offline.txt                </td>
+
 
 
 
@@ -3262,7 +3983,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3270,7 +3993,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
                       <td>                 races.txt               </td>
+
 
 
 
@@ -3279,7 +4004,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3287,11 +4014,14 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
             <td valign="top">rules.txt<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3300,7 +4030,9 @@ command.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3308,11 +4040,14 @@ command.<br />
 
 
 
+
           <tr>
 
 
 
+
                       <td>                 stats.txt               </td>
+
 
 
 
@@ -3321,7 +4056,9 @@ command.<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3329,7 +4066,9 @@ command.<br />
 
 
 
+
                       <td>                 motd.txt               </td>
+
 
 
 
@@ -3346,7 +4085,9 @@ how   to log in perhaps.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -3354,11 +4095,14 @@ how   to log in perhaps.               </td>
 
 
 
+
             <td valign="top">themes.txt<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3368,11 +4112,14 @@ well, however.<br />
 
 
 
+
             </td>
 
 
 
+
           </tr>
+
 
 
 
@@ -3381,12 +4128,15 @@ well, however.<br />
         
         
         
+        
         </tbody>                                                        
  
       
       
       
+      
       </table>
+
 
 
 
@@ -3395,11 +4145,14 @@ well, however.<br />
       
       
       
+      
       <h2><a name="database">The CoffeeMud Database</a></h2>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3412,7 +4165,9 @@ would be   bad.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3425,7 +4180,9 @@ package.             FakeDB is rather slow, and hardly a powerful or professiona
 
 
 
+
                                                                   
+      
       
       
       
@@ -3456,7 +4213,9 @@ for  more           information on this.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3469,7 +4228,9 @@ a  JDBC  compliant           Driver class.  In many cases, you will be creating
 
 
 
+
                                                                  
+      
       
       
       
@@ -3481,7 +4242,9 @@ recommended.            </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3495,7 +4258,9 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                                                                   
+      
       
       
       
@@ -3504,7 +4269,9 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                                                                   
+      
       
       
       
@@ -3512,8 +4279,10 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                   <li>                                                  
                                      
+          
           
           
           
@@ -3523,12 +4292,15 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3538,12 +4310,15 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3552,12 +4327,15 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3569,12 +4347,15 @@ block               begins with CREATE TABLE, and ends with a semicolon );
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3586,12 +4367,15 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3600,12 +4384,15 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3614,12 +4401,15 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3632,12 +4422,15 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3648,12 +4441,15 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3666,12 +4462,15 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3681,8 +4480,10 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
                                                                         
            
+          
           
           
           
@@ -3690,8 +4491,10 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
                                                                         
                        
+          
           
           
           
@@ -3703,7 +4506,9 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+
                   </li>
+
 
 
 
@@ -3711,11 +4516,14 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
       
       
       
+      
       </ul>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3724,7 +4532,9 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+
                                                                   
+      
       
       
       
@@ -3732,8 +4542,10 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+
                   <li>                                                  
                                      
+          
           
           
           
@@ -3750,12 +4562,15 @@ file    called "mysql-4.0.1.2-win.zip" (or whatever the newest
 
 
 
+
                     </li>
+
 
 
 
                      <li>                                               
                                           
+          
           
           
           
@@ -3771,12 +4586,15 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3789,12 +4607,15 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
                    </li>
+
 
 
 
                     <li>                                                
                                         
+          
           
           
           
@@ -3806,12 +4627,15 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
                                                                         
            
           
           
           
+          
           <pre># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:29:14<br />#<br /># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:27:39<br />#<br />use coffeemud &lt;----ADD THIS LINE!<br />CREATE TABLE CMCHAB (<br />CMUSERID char (50) NULL ,<br />CMABID char (50) NULL ,<br />CMABPF int NULL ,<br />CMABTX text NULL<br />etc..<br />etc..<br /></pre>
+
 
 
 
@@ -3820,8 +4644,10 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
           
           
           
+          
           <p>             Now copy the edited coffeemuddbmysql.sql to your
              <code>c:\mysql\bin</code>             folder.             </p>
+
 
 
 
@@ -3829,8 +4655,10 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
                      <li>                                               
                                           
+          
           
           
           
@@ -3852,12 +4680,15 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
                     </li>
+
 
 
 
                      <li>                                               
                                           
+          
           
           
           
@@ -3871,12 +4702,15 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
                     </li>
+
 
 
 
                      <li>                                               
                                           
+          
           
           
           
@@ -3886,12 +4720,15 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
                                                                         
            
           
           
           
+          
           <pre>DBCLASS=com.planet_ink.fakedb.Driver<br />DBSERVICE=jdbc:fakedb:resources/data<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=2<br /></pre>
+
 
 
 
@@ -3900,7 +4737,9 @@ there, you're in business, and MySQL is running in the             background.
           
           
           
+          
           <p>             and change it to:             </p>
+
 
 
 
@@ -3909,7 +4748,9 @@ there, you're in business, and MySQL is running in the             background.
           
           
           
+          
           <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=4<br /></pre>
+
 
 
 
@@ -3917,8 +4758,10 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
                      <li>                                               
                                           
+          
           
           
           
@@ -3933,12 +4776,15 @@ called           <code>planet_ink</code>.            </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -3949,7 +4795,9 @@ called           <code>planet_ink</code>.            </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -3957,11 +4805,14 @@ called           <code>planet_ink</code>.            </p>
       
       
       
+      
       </ul>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3970,7 +4821,9 @@ on a UN*X or           Linux machine</a></h3>
 
 
 
+
                                                                   
+      
       
       
       
@@ -3978,8 +4831,10 @@ on a UN*X or           Linux machine</a></h3>
 
 
 
+
                   <li>                                                  
                                      
+          
           
           
           
@@ -3989,12 +4844,15 @@ root  user.           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -4006,12 +4864,15 @@ into  /CoffeeMud/com/.           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -4023,12 +4884,15 @@ coffeemud".              </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -4040,12 +4904,15 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -4055,12 +4922,15 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                   </li>
+
 
 
 
                    <li>                                                 
                                       
+          
           
           
           
@@ -4069,7 +4939,9 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4078,8 +4950,10 @@ the             quotes. Now type, "quit".           </p>
           
           
           
+          
           <p>             Edit the following settings in CoffeeMud/coffeemud.ini: 
                </p>
+
 
 
 
@@ -4088,7 +4962,9 @@ the             quotes. Now type, "quit".           </p>
           
           
           
+          
           <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=coffee<br />DBPASS=password<br />DBCONNECTIONS=4<br /></pre>
+
 
 
 
@@ -4097,7 +4973,9 @@ the             quotes. Now type, "quit".           </p>
           
           
           
+          
           <p>             (no quotes on the password here)<br />
+
 
 
 
@@ -4105,11 +4983,14 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                   </li>
 
 
 
+
                                                                   
+      
       
       
       
@@ -4117,7 +4998,9 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                                                                    
+      
       
       
       
@@ -4125,11 +5008,14 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                                                                   
       
       
       
+      
       <ul>
+
 
 
 
@@ -4138,8 +5024,10 @@ the             quotes. Now type, "quit".           </p>
           
           
           
+          
           <p>           Go to <a href="http://sourceforge.net/projects/hsqldb/">http://sourceforge.net/projects/hsqldb/</a> 
              and download the applicable archive.         </p>
+
 
 
 
@@ -4147,8 +5035,10 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                  <li>Putting HSQLDB into the classpath                  
                                                                    
+          
           
           
           
@@ -4159,7 +5049,9 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                 </li>
+
 
 
 
@@ -4168,13 +5060,16 @@ the             quotes. Now type, "quit".           </p>
           
           
           
+          
           <p>           Open a command window and navigate to the root of
    the CoffeeMUD install           directory.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4184,8 +5079,10 @@ call    it):         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4193,8 +5090,10 @@ call    it):         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4203,8 +5102,10 @@ call    it):         </p>
 
 
 
+
                                                                         
                      
+          
           
           
           
@@ -4213,8 +5114,10 @@ call    it):         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4222,8 +5125,10 @@ call    it):         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4232,8 +5137,10 @@ call    it):         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4243,8 +5150,10 @@ the    database         </p>
 
 
 
+
                                                                         
                      
+          
           
           
           
@@ -4252,8 +5161,10 @@ the    database         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4262,8 +5173,10 @@ the    database         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4272,8 +5185,10 @@ the    database         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4281,8 +5196,10 @@ the    database         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4291,12 +5208,15 @@ the    database         </p>
 
 
 
+
                                                                         
                      
           
           
           
+          
           <pre>Open Command Menu.<br />Select SHUTDOWN.<br />Click the Execute Button.<br />Open the File Menu.<br />Select Exit.<br /></pre>
+
 
 
 
@@ -4305,8 +5225,10 @@ the    database         </p>
           
           
           
+          
           <p>           The coffeemud database will exist in the folder where
    the           DatabaseManager utility was run.         </p>
+
 
 
 
@@ -4314,9 +5236,11 @@ the    database         </p>
 
 
 
+
                  <li>Set up CoffeeMUD to use the correct driver         
                                                                         
    
+          
           
           
           
@@ -4327,8 +5251,10 @@ in   front of them) and add           the following lines below them:
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4336,8 +5262,10 @@ in   front of them) and add           the following lines below them:
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4347,12 +5275,15 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
                 </li>
+
 
 
 
                  <li>Shut down the database gracefully                  
                                                                    
+          
           
           
           
@@ -4362,8 +5293,10 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4372,8 +5305,10 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4381,8 +5316,10 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4391,7 +5328,9 @@ dream...         </p>
 
 
 
+
                 </li>
+
 
 
 
@@ -4399,7 +5338,9 @@ dream...         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -4407,7 +5348,9 @@ dream...         </p>
 
 
 
+
                                                                    
+      
       
       
       
@@ -4416,7 +5359,9 @@ dream...         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -4424,8 +5369,10 @@ dream...         </p>
 
 
 
+
                  <li>Get the database software                          
                                                            
+          
           
           
           
@@ -4435,12 +5382,15 @@ dream...         </p>
 
 
 
+
                 </li>
+
 
 
 
                  <li>Putting Derby into the classpath                   
                                                                   
+          
           
           
           
@@ -4453,12 +5403,15 @@ into the root of the           CoffeeMUD folder or they can be placed into
 
 
 
+
                 </li>
+
 
 
 
                  <li>Creating the coffeemud database                    
                                                                  
+          
           
           
           
@@ -4468,8 +5421,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4477,8 +5432,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4486,8 +5443,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4495,8 +5454,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4505,8 +5466,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                      
+          
           
           
           
@@ -4514,8 +5477,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4524,8 +5489,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4533,8 +5500,10 @@ to   start the database interface.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4544,8 +5513,10 @@ and   exit the utility.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4553,8 +5524,10 @@ and   exit the utility.         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4565,13 +5538,16 @@ and   exit the utility.         </p>
 
 
 
+
                 </li>
+
 
 
 
                  <li>Set up CoffeeMUD to use the correct driver         
                                                                         
    
+          
           
           
           
@@ -4582,8 +5558,10 @@ in   front of them) and add           the following lines below them:
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4591,7 +5569,9 @@ in   front of them) and add           the following lines below them:
 
 
 
+
                 </li>
+
 
 
 
@@ -4600,8 +5580,10 @@ in   front of them) and add           the following lines below them:
           
           
           
+          
           <p>           Currently there are some minor changes that must
 be made to the code           for Derby to work properly.         </p>
+
 
 
 
@@ -4609,8 +5591,10 @@ be made to the code           for Derby to work properly.         </p>
 
 
 
+
                  <li>Change?                                            
                                          
+          
           
           
           
@@ -4621,8 +5605,10 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4632,8 +5618,10 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4642,8 +5630,10 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4651,8 +5641,10 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4661,12 +5653,15 @@ dream...         </p>
 
 
 
+
                 </li>
+
 
 
 
                  <li>Increasing performance                             
                                                         
+          
           
           
           
@@ -4678,8 +5673,10 @@ about 300    Megs...)         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4689,8 +5686,10 @@ about 300    Megs...)         </p>
 
 
 
+
                                                                         
                      
+          
           
           
           
@@ -4698,8 +5697,10 @@ about 300    Megs...)         </p>
 
 
 
+
                                                                         
                     
+          
           
           
           
@@ -4710,7 +5711,9 @@ it will run at about           the same speed as other databases. More informati
 
 
 
+
                 </li>
+
 
 
 
@@ -4718,7 +5721,9 @@ it will run at about           the same speed as other databases. More informati
       
       
       
+      
       </ul>
+
 
 
 
@@ -4727,11 +5732,14 @@ it will run at about           the same speed as other databases. More informati
       
       
       
+      
       <h2><a name="shutdown">The OffLine And Shutdown Applications</a></h2>
 
 
 
+
                                                                   
+      
       
       
       
@@ -4747,7 +5755,9 @@ you should    go into your           coffeemud directory and enter:
 
 
 
+
                                                                   
+      
       
       
       
@@ -4755,7 +5765,9 @@ you should    go into your           coffeemud directory and enter:
 
 
 
+
                                                                  
+      
       
       
       
@@ -4769,7 +5781,9 @@ folder or directory.         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -4784,7 +5798,9 @@ enter:         </p>
 
 
 
+
                                                                   
+      
       
       
       
@@ -4792,7 +5808,9 @@ enter:         </p>
 
 
 
+
         	</td>
+
 
 
 
@@ -4800,7 +5818,9 @@ enter:         </p>
 
 
 
+
                            
+  
   
   
   
@@ -4809,7 +5829,9 @@ enter:         </p>
 
 
 
+
        </center>
+
 
 
 
@@ -4817,7 +5839,9 @@ enter:         </p>
 
 
 
+
          <br />
+
 
 
 

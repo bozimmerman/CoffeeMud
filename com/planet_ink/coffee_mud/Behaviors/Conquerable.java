@@ -404,7 +404,7 @@ public class Conquerable extends Arrest
                                         if(!found)
                                         {
     										foundMOB.addInventory(newItem);
-    										newItem.wearIfPossible(foundMOB);
+    										newItem.wearAt(newItem.rawProperLocationBitmap());
                                         }
 									}
 									else

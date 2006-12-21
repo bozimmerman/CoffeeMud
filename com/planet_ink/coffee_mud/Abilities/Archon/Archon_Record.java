@@ -107,10 +107,14 @@ public class Archon_Record extends ArchonSkill
 				String filename=mob.Name()+System.currentTimeMillis()+".log";
 				CMFile file=new CMFile("/"+target.Name()+System.currentTimeMillis()+".log",null,true);
 				if(!file.canWrite())
-	                Log.sysOut("Record",mob.name()+" failed to start recording "+target.name()+".");
+                {
+                    if(CMSecurity.isASysOp(mob)&&(!CMSecurity.isASysOp(target)))
+    	                Log.sysOut("Record",mob.name()+" failed to start recording "+target.name()+".");
+                }
 				else
 				{
-	                Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
+                    if(CMSecurity.isASysOp(mob)&&(!CMSecurity.isASysOp(target)))
+    	                Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
 					Archon_Record A2=(Archon_Record)copyOf();
 					FakeSession F=new FakeSession(file);
 					A2.sess=F;

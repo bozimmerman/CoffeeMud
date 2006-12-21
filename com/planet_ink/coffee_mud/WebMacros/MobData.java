@@ -781,7 +781,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(MOB M, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer itemList(MOB oldM, MOB M, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
@@ -790,6 +790,10 @@ public class MobData extends StdWebMacro
 			Vector itemlist=null;
 			if(httpReq.isRequestParameter("ITEM1"))
 			{
+                if(oldM!=M)
+                    for(int i=0;i<oldM.inventorySize();i++)
+                        M.addInventory(oldM.fetchInventory(i));
+                            
 				itemlist=RoomData.items;
 				for(int i=1;;i++)
 				{
@@ -907,7 +911,7 @@ public class MobData extends StdWebMacro
 				httpReq.getRequestObjects().put(mobCode,M);
 			}
     	}
-
+    	MOB oldM=M;
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)
@@ -1307,7 +1311,7 @@ public class MobData extends StdWebMacro
 		if(M instanceof ShopKeeper)
 			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms,1));
 
-		str.append(itemList(M,httpReq,parms,1));
+		str.append(itemList(oldM,M,httpReq,parms,1));
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

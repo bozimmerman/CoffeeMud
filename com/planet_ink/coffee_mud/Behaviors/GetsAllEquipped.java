@@ -44,7 +44,14 @@ public class GetsAllEquipped extends ActiveTicker
 
 	protected boolean DoneEquipping=false;
 
-
+	public void executeMsg(Environmental host, CMMsg msg)
+    {
+	    super.executeMsg(host,msg);
+        if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+        &&(msg.source()!=host)
+        &&(msg.source().location()!=CMLib.map().roomLocation(host)))
+            DoneEquipping=false;
+    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -59,14 +66,27 @@ public class GetsAllEquipped extends ActiveTicker
 			if(thisRoom.numItems()==0) return true;
 
 			DoneEquipping=true;
-			Vector V=new Vector();
-			V.addElement("GET");
-			V.addElement("ALL");
-			Vector V1=new Vector();
-			V1.addElement("WEAR");
-			V1.addElement("ALL");
-			mob.doCommand(V);
-			mob.doCommand(V1);
+            Vector stuffIHad=new Vector();
+            for(int i=0;i<mob.inventorySize();i++)
+                stuffIHad.addElement(mob.fetchInventory(i));
+            mob.enqueCommand(CMParms.makeVector("GET","ALL"),0);
+            Item I=null;
+            Vector dropThisStuff=new Vector();
+            for(int i=0;i<mob.inventorySize();i++)
+            {
+                I=mob.fetchInventory(i);
+                if((I!=null)&&(!stuffIHad.contains(I)))
+                {
+                    if(I instanceof DeadBody)
+                        dropThisStuff.addElement(I);
+                    else
+                    if((I.container()!=null)&&(I.container() instanceof DeadBody))
+                        I.setContainer(null);
+                }
+            }
+            for(int d=0;d<dropThisStuff.size();d++)
+                mob.enqueCommand(CMParms.makeVector("DROP",((Item)dropThisStuff.elementAt(d)).Name()),0);
+			mob.enqueCommand(CMParms.makeVector("WEAR","ALL"),0);
 		}
 		return true;
 	}

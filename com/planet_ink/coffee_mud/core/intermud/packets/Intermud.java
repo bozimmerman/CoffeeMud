@@ -245,6 +245,8 @@ public class Intermud implements Runnable, Persistent, Serializable
                 Log.sysOut("Intermud3","No I3 routers defined in coffeemud.ini file.");
             else
             {
+                if(CMProps.getVar(CMProps.SYSTEM_I3EMAIL).indexOf("@")<0)
+                    Log.errOut("Intermud","Please set I3EMAIL in your coffeemud.ini file.");
                 Vector connectionStatuses=new Vector(name_servers.size());
                 for(int i=0;i<name_servers.size();i++)
                 {
