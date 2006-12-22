@@ -593,6 +593,119 @@ public class CMParms
         return makeIntArray('\0',0);
     }
 
+    private static int stringContains(Vector V, char combiner, StringBuffer buf, int lastIndex)
+    {
+        String str=buf.toString().trim();
+        if(str.length()==0) return lastIndex;
+        buf.setLength(0);
+        switch(combiner)
+        {
+        case '&': 
+            lastIndex=V.indexOf(str);
+            return lastIndex;
+        case '|':
+            if(lastIndex>=0) return lastIndex;
+            return V.indexOf(str);
+        case '>':
+            if(lastIndex<0) return lastIndex;
+            return V.indexOf(str,lastIndex<0?0:lastIndex+1);
+        case '<':
+        {
+            if(lastIndex<0) return lastIndex;
+            int newIndex=V.indexOf(str);
+            if(newIndex<lastIndex) return newIndex;
+            return -1;
+        }
+        }
+        return -1;
+    }
+    private static int stringContains(Vector V, char[] str, int[] index, int depth)
+    {
+        StringBuffer buf=new StringBuffer("");
+        int lastIndex=0;
+        boolean quoteMode=false;
+        char combiner='&';
+        for(int i=index[0];i<str.length;i++)
+        {
+            switch(str[i])
+            {
+            case ')':
+                if((depth>0)&&(!quoteMode))
+                {
+                    index[0]=i;
+                    return stringContains(V,combiner,buf,lastIndex);
+                }
+                buf.append(str[i]);
+                break;
+            case ' ':
+                buf.append(str[i]);
+                break;
+            case '&':
+            case '|':
+            case '>':
+            case '<':
+                if(quoteMode)
+                    buf.append(str[i]);
+                else
+                {
+                    lastIndex=stringContains(V,combiner,buf,lastIndex);
+                    combiner=str[i];
+                }
+                break;
+            case '(':
+                if(!quoteMode)
+                {
+                    lastIndex=stringContains(V,combiner,buf,lastIndex);
+                    index[0]=i+1;
+                    int newIndex=stringContains(V,str,index,depth+1);
+                    i=index[0];
+                    switch(combiner)
+                    {
+                    case '&': 
+                        if((lastIndex<0)||(newIndex<0))
+                            lastIndex=-1;
+                        break;
+                    case '|':
+                        if(newIndex>=0)
+                            lastIndex=newIndex;
+                        break;
+                    case '>':
+                        if(newIndex<=lastIndex)
+                            lastIndex=-1;
+                        else
+                            lastIndex=newIndex;
+                        break;
+                    case '<':
+                        if((newIndex<0)||(newIndex>=lastIndex))
+                            lastIndex=-1;
+                        else
+                            lastIndex=newIndex;
+                        break;
+                    }
+                }
+                else
+                    buf.append(str[i]);
+                break;
+            case '\"':
+                quoteMode=(!quoteMode);
+                break;
+            case '\\':
+                if(i<str.length-1)
+                {
+                    buf.append(str[i+1]);
+                    i++;
+                }
+                break;
+            default:
+                if(Character.isLetter(str[i]))
+                    buf.append(Character.toLowerCase(str[i]));
+                else
+                    buf.append(str[i]);
+                break;
+            }
+        }
+        return stringContains(V,combiner,buf,lastIndex);
+    }
     public static int stringContains(String str1, String str2)
     {
         StringBuffer buf1=new StringBuffer(str1.toLowerCase());
@@ -603,14 +716,8 @@ public class CMParms
             &&(buf1.charAt(i)!='`')
             &&(!Character.isLetterOrDigit(buf1.charAt(i))))
                 buf1.setCharAt(i,' ');
-        Vector V2=CMParms.parse(str2.toLowerCase());
         Vector V=CMParms.parse(buf1.toString());
-        String s=null;
-        for(int i=0;i<V.size();i++)
-        {
-            s=(String)V.elementAt(i);
-        }
-        return -1;
+        return stringContains(V,str2.toCharArray(),new int[]{0},0);
     }
     
     public static int getParmPlus(String text, String key)

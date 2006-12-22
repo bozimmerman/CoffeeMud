@@ -2166,7 +2166,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=CMLib.masking().maskCheck(arg2, E);
 				break;
 			}
-            case 86: // contains
+            case 86: // strcontains
             { 
                 String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
@@ -4306,7 +4306,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				results.append(CMLib.masking().maskDesc(arg1));
 				break;
 			}
-            case 86: // contains
+            case 86: // strcontains
             {
                 results.append("[unimplemented function]");
                 break;
