@@ -2666,6 +2666,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                         CMLib.tracking().wanderAway(M,false,true);
                 }
+                i--;
             }
         }
         if(questState.addons.size()>0)

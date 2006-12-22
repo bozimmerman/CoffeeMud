@@ -1248,7 +1248,7 @@ public class DefaultSession extends Thread implements Session
                               c++; break; }
                 case 'E': {   MOB victim=mob().getVictim();
                               if((mob().isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
-                                  buf.append(victim.charStats().getMyRace().healthText(mob(),victim)+"\n\r");
+                                  buf.append(victim.healthText(mob())+"\n\r");
                               c++; break; }
                 case 'g': { buf.append((int)Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob())/CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob()))))); c++; break;}
                 case 'G': { buf.append(CMLib.beanCounter().nameCurrencyShort(mob(),CMLib.beanCounter().getTotalAbsoluteNativeValue(mob()))); c++; break;}
