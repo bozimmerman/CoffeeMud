@@ -57,6 +57,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     private Hashtable noTrigger=new Hashtable();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Quest defaultQuest=null;
+    protected static boolean playerSetOverride=false;
 
 	private Quest getQuest(String named)
 	{
@@ -172,6 +173,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         public Environmental host(){return h;}
         public MOB source(){return s;}
         public Environmental target(){return t;}
+        public void setPlayerSetOverride(boolean truefalse){playerSetOverride=truefalse;}
         public MOB monster(){return m;}
         public Item item(){return pi;}
         public Item item2(){return si;}
@@ -4717,7 +4719,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         JScriptEvent scope = new JScriptEvent(scripted,source,target,monster,primaryItem,secondaryItem,msg);
                         cx.initStandardObjects(scope);
-                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString"};
+                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString","setPlayerSetOverride"};
                         scope.defineFunctionProperties(names, JScriptEvent.class,
                                                        ScriptableObject.DONTENUM);
                         cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);
@@ -5061,7 +5063,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=CMParms.getCleanBit(s,2);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
-				if(newTarget!=null)
+                if((newTarget!=null)
+                &&((!(newTarget instanceof MOB))
+                  ||(((MOB)newTarget).isMonster())
+                  ||(playerSetOverride)))
 				{
 					boolean found=false;
 					for(int i=0;i<newTarget.getStatCodes().length;i++)
@@ -5189,7 +5194,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=CMParms.getCleanBit(s,2);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
-				if(newTarget!=null)
+				if((newTarget!=null)
+                &&((!(newTarget instanceof MOB))
+                  ||(((MOB)newTarget).isMonster())
+                  ||(playerSetOverride)))
 				{
                     
 					boolean found=false;
