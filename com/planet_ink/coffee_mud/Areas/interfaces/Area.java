@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Area extends Environmental
+public interface Area extends Environmental, Economics
 {
 	public final static int THEME_FANTASY=1;
 	public final static int THEME_TECHNOLOGY=2;

@@ -446,16 +446,19 @@
 			<TR>
 				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+				<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 			    </TD>
 			</TR>
 			<TR>
 				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
+				<a href="javascript:OpenUp('ihelp.cmvp','DEVALRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 			    </TD>
 			</TR>
 			<TR>
 				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
+				<a href="javascript:OpenUp('ihelp.cmvp','INVRESETRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 			    </TD>
 			</TR>
 		@endif@

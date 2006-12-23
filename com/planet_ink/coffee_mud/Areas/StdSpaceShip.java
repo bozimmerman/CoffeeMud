@@ -953,6 +953,26 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	    return true;
 	}
 
+    public String prejudiceFactors(){return "";}
+    public void setPrejudiceFactors(String factors){}
+    public final static String[] empty=new String[0];
+    public String[] itemPricingAdjustments(){return empty;}
+    public void setItemPricingAdjustments(String[] factors){}
+    public String ignoreMask(){return "";}
+    public void setIgnoreMask(String factors){}
+    public String budget(){return "";}
+    public void setBudget(String factors){}
+    public String devalueRate(){return "";}
+    public void setDevalueRate(String factors){}
+    public int invResetRate(){return 0;}
+    public void setInvResetRate(int ticks){}
+    public int finalInvResetRate(){ return 0;}
+    public String finalPrejudiceFactors(){ return "";}
+    public String finalIgnoreMask(){ return "";}
+    public String[] finalItemPricingAdjustments(){ return empty;}
+    public String finalBudget(){ return "";}
+    public String finalDevalueRate(){ return "";}
+   
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL","BLURBS"};
 	public String[] getStatCodes(){return CODES;}

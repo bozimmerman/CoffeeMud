@@ -213,6 +213,22 @@ public class Reset extends StdCommand
 			mob.tell("Done.");
 		}
         else
+        if(CMLib.map().getPlayer(s)!=null)
+        {
+            MOB M=CMLib.map().getPlayer(s);
+            String what="";
+            if(commands.size()>0)
+                what=CMParms.combine(commands,1).toUpperCase();
+            if(what.startsWith("EXPERTIS"))
+            {
+                while(M.numExpertises()>0)
+                    M.delExpertise(M.fetchExpertise(0));
+                mob.tell("Done.");
+            }
+            else
+                mob.tell("Can't reset that trait -- as its not defined.");
+        }
+        else
 		if(s.equalsIgnoreCase("arearoomids"))
 		{
 			Area A=mob.location().getArea();

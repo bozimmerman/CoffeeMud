@@ -418,6 +418,98 @@ public class StdArea implements Area
 	}
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
+    protected String prejudiceFactors="";
+    public String finalPrejudiceFactors()
+    {
+        String s=finalPrejudiceFactors(this);
+        if(s.length()>0) return s;
+        return CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
+    }
+    protected String finalPrejudiceFactors(Area A){
+        if(A.prejudiceFactors().length()>0) return A.prejudiceFactors();
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalPrejudiceFactors((Area)e.nextElement()); if(s.length()!=0) return s;}
+        return "";
+    }
+    public String prejudiceFactors(){return prejudiceFactors;}
+    public void setPrejudiceFactors(String factors){prejudiceFactors=factors;}
+    protected String[] itemPricingAdjustments=new String[0];
+    protected final static String[] empty=new String[0];
+    public String[] finalItemPricingAdjustments()
+    {
+        String[] s=finalItemPricingAdjustments(this);
+        if(s.length>0) return s;
+        return CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.SYSTEM_PRICEFACTORS).trim(),true));
+    }
+    protected String[] finalItemPricingAdjustments(Area A){
+        if(A.itemPricingAdjustments().length>0) return A.itemPricingAdjustments();
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String[]  s=finalItemPricingAdjustments((Area)e.nextElement()); if(s.length!=0) return s;}
+        return empty;
+    }
+    public String[] itemPricingAdjustments(){return itemPricingAdjustments;}
+    public void setItemPricingAdjustments(String[] factors){itemPricingAdjustments=factors;}
+    protected String ignoreMask="";
+    public String finalIgnoreMask()
+    {
+        String s=finalIgnoreMask(this);
+        if(s.length()>0) return s;
+        return CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
+    }
+    protected String finalIgnoreMask(Area A){
+        if(A.ignoreMask().length()>0) return A.ignoreMask();
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalIgnoreMask((Area)e.nextElement()); if(s.length()!=0) return s;}
+        return "";
+    }
+    public String ignoreMask(){return ignoreMask;}
+    public void setIgnoreMask(String factors){ignoreMask=factors;}
+    protected String budget="";
+    public String finalBudget()
+    {
+        String s=finalBudget(this);
+        if(s.length()>0) return s;
+        return CMProps.getVar(CMProps.SYSTEM_BUDGET);
+    }
+    protected String finalBudget(Area A){
+        if(A.budget().length()>0) return A.budget();
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalBudget((Area)e.nextElement()); if(s.length()!=0) return s;}
+        return "";
+    }
+    public String budget(){return budget;}
+    public void setBudget(String factors){budget=factors;}
+    protected String devalueRate="";
+    public String finalDevalueRate()
+    {
+        String s=finalDevalueRate(this);
+        if(s.length()>0) return s;
+        return CMProps.getVar(CMProps.SYSTEM_DEVALUERATE);
+    }
+    protected String finalDevalueRate(Area A){
+        if(A.devalueRate().length()>0) return A.devalueRate();
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalDevalueRate((Area)e.nextElement()); if(s.length()!=0) return s;}
+        return "";
+    }
+    public String devalueRate(){return devalueRate;}
+    public void setDevalueRate(String factors){devalueRate=factors;}
+    protected int invResetRate=0;
+    public int invResetRate(){return invResetRate;}
+    public void setInvResetRate(int ticks){invResetRate=ticks;}
+    public int finalInvResetRate()
+    {
+        int x=finalInvResetRate(this);
+        if(x!=0) return x;
+        return CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
+        
+    }
+    protected int finalInvResetRate(Area A){
+        if(A.invResetRate()!=0) return A.invResetRate();
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { int x=finalInvResetRate((Area)e.nextElement()); if(x!=0) return x;}
+        return 0;
+    }
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -1402,16 +1494,19 @@ public class StdArea implements Area
 	        return true;
 	}
 
-
-
-
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS",
 	    								 "CLIMATE",
 	    								 "DESCRIPTION",
 	    								 "TEXT",
 	    								 "TECHLEVEL",
-                                         "BLURBS"};
+                                         "BLURBS",
+                                         "PREJUDICE",
+                                         "BUDGET",
+                                         "DEVALRATE",
+                                         "INVRESETRATE",
+                                         "IGNOREMASK",
+                                         "PRICEMASKS"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
@@ -1427,6 +1522,12 @@ public class StdArea implements Area
 		case 3: return text();
 		case 4: return ""+getTechLevel();
         case 5: return ""+CMLib.xml().getXMLList(blurbFlags);
+        case 6: return prejudiceFactors();
+        case 7: return budget();
+        case 8: return devalueRate();
+        case 9: return ""+invResetRate();
+        case 10: return ignoreMask();
+        case 11: return CMParms.toStringList(itemPricingAdjustments());
 		}
 		return "";
 	}
@@ -1450,6 +1551,12 @@ public class StdArea implements Area
                 blurbFlags=CMLib.xml().parseXMLList(val);
             break;
         }
+        case 6: setPrejudiceFactors(val); break;
+        case 7: setBudget(val); break;
+        case 8: setDevalueRate(val); break;
+        case 9: setInvResetRate(CMath.s_int(val)); break;
+        case 10: setIgnoreMask(val); break;
+        case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
 		}
 	}
 	public boolean sameAs(Environmental E)

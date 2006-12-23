@@ -111,7 +111,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
     public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
 	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
-    
+    protected Area getStartArea(){
+        Area A=CMLib.map().getStartArea(this);
+        if(A==null) CMLib.map().areaLocation(this);
+        if(A==null) A=(Area)CMLib.map().areas().nextElement();
+        return A;
+    }
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -120,8 +125,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			if((--invResetTickDown)==0)
 			{
-				invResetTickDown=invResetRate(); // we should now be at a positive number.
-				if(invResetTickDown<=0) invResetTickDown=CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
+				invResetTickDown=finalInvResetRate(); // we should now be at a positive number.
 				if(invResetTickDown<=0)
 					invResetTickDown=Integer.MAX_VALUE;
 				else
@@ -148,8 +152,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				budgetTickDown=100;
 				budgetRemaining=Long.MAX_VALUE/2;
-				String s=budget();
-				if(s.length()==0) s=CMProps.getVar(CMProps.SYSTEM_BUDGET);
+				String s=finalBudget();
 				Vector V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
@@ -196,7 +199,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
 			{
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
                     return false;
                 if(CMLib.coffeeShops().standardSellEvaluation(this,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
                     return super.okMessage(myHost,msg);
@@ -205,7 +208,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
                     return false;
                 if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                     return false;
@@ -215,7 +218,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 			case CMMsg.TYP_LIST:
             {
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
                     return false;
 				return super.okMessage(myHost,msg);
             }
@@ -336,7 +339,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					Vector inventory=getShop().getStoreInventory();
 					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
-                    int limit=CMParms.getParmInt(prejudiceFactors(),"LIMIT",0);
+                    int limit=CMParms.getParmInt(finalPrejudiceFactors(),"LIMIT",0);
                     String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this);
 					if(s.length()>0)
 						mob.tell(s);
@@ -352,21 +355,46 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			super.executeMsg(myHost,msg);
 	}
 
+    public String finalPrejudiceFactors(){ 
+        if(prejudiceFactors().length()>0) return prejudiceFactors();
+        return getStartArea().finalPrejudiceFactors();
+    }
 	public String prejudiceFactors(){return CMLib.encoder().decompressString(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=CMLib.encoder().compressString(factors);}
     
+    public String finalIgnoreMask(){ 
+        if(ignoreMask().length()>0) return ignoreMask();
+        return getStartArea().finalIgnoreMask();
+    }
     public String ignoreMask(){return "";}
     public void setIgnoreMask(String factors){}
 
+    public String[] finalItemPricingAdjustments(){ 
+        if((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
+            return itemPricingAdjustments();
+        return getStartArea().finalItemPricingAdjustments();
+    }
     public String[] itemPricingAdjustments(){ return pricingAdjustments;}
     public void setItemPricingAdjustments(String[] factors){pricingAdjustments=factors;}
     
+    public String finalBudget(){ 
+        if(budget().length()>0) return budget();
+        return getStartArea().finalBudget();
+    }
 	public String budget(){return budget;}
 	public void setBudget(String factors){budget=factors; budgetTickDown=0;}
 	
+    public String finalDevalueRate(){
+        if(devalueRate().length()>0) return devalueRate();
+        return getStartArea().finalDevalueRate();
+    }
 	public String devalueRate(){return devalueRate;}
 	public void setDevalueRate(String factors){devalueRate=factors;}
 	
+    public int finalInvResetRate(){
+        if(invResetRate()!=0) return invResetRate();
+        return getStartArea().finalInvResetRate();
+    }
 	public int invResetRate(){return invResetRate;}
 	public void setInvResetRate(int ticks){invResetRate=ticks; invResetTickDown=0;}
 	

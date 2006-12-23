@@ -82,6 +82,45 @@
 	</TD>
 </TR>
 <TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Economic Prejudices:</B></FONT>
+	<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=SHOPPREJ SIZE=60 MAXLENGTH=255 VALUE="@AreaData?SHOPPREJ@">
+	<a href="javascript:OpenUp('ihelp.cmvp','PREJUDICE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Economic Ignorable Mask:</B></FONT>
+	<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=IGNOREMASK SIZE=60 MAXLENGTH=255 VALUE="@AreaData?IGNOREMASK@">
+	<a href="javascript:OpenUp('ihelp.cmvp','IGNOREMASK');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Economic Item Pricing:</B></FONT>
+    <TD WIDTH=450 COLSPAN=2>
+    	<FONT COLOR=WHITE>
+		@MobData?PRICEFACTORS@
+		</FONT>
+		<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+		<INPUT TYPE=BUTTON NAME=RESHOW2 VALUE="Submit" ONCLICK="ReShow();">
+		<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Shops Budgets:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@AreaData?BUDGET@">
+	<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Economic Deval. Rate(s):</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@AreaData?DEVALRATE@">
+	<a href="javascript:OpenUp('ihelp.cmvp','DEVALRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Shops Inv. Reset (Ticks):</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@AreaData?INVRESETRATE@">
+	<a href="javascript:OpenUp('ihelp.cmvp','INVRESETRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+    </TD>
+</TR>
+<TR>
 	<TD><FONT COLOR="#66FFFF"><B>Climate:</B></FONT></TD>
     <TD COLSPAN=2>
 	<SELECT NAME=CLIMATE MULTIPLE>

@@ -314,6 +314,43 @@ public class AreaData extends StdWebMacro
 					    currency=A.getCurrency();
 					str.append(currency);
 				}
+                if(parms.containsKey("SHOPPREJ"))
+                {
+                    String val=httpReq.getRequestParameter("SHOPPREJ");
+                    if((val==null)||(val.length()==0))
+                        val=A.prejudiceFactors();
+                    str.append(val);
+                }
+                if(parms.containsKey("BUDGET"))
+                {
+                    String val=httpReq.getRequestParameter("BUDGET");
+                    if((val==null)||(val.length()==0))
+                        val=A.budget();
+                    str.append(val);
+                }
+                if(parms.containsKey("DEVALRATE"))
+                {
+                    String val=httpReq.getRequestParameter("DEVALRATE");
+                    if((val==null)||(val.length()==0))
+                        val=A.devalueRate();
+                    str.append(val);
+                }
+                if(parms.containsKey("INVRESETRATE"))
+                {
+                    String val=httpReq.getRequestParameter("INVRESETRATE");
+                    if((val==null)||(val.length()==0))
+                        val=A.invResetRate()+"";
+                    str.append(val);
+                }
+                if(parms.containsKey("IGNOREMASK"))
+                {
+                    String val=httpReq.getRequestParameter("IGNOREMASK");
+                    if((val==null)||(val.length()==0))
+                        val=A.ignoreMask();
+                    str.append(val);
+                }
+                if(parms.containsKey("PRICEFACTORS"))
+                    str.append(MobData.priceFactors(A,httpReq,parms,0));
 				if(parms.containsKey("CLASSES"))
 				{
 					String className=httpReq.getRequestParameter("CLASS");

@@ -517,21 +517,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if(E instanceof ShopKeeper)
 			{
 				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
-				text.append(CMLib.xml().convertXMLtoTag("PREJFC",((ShopKeeper)E).prejudiceFactors()));
-                text.append(CMLib.xml().convertXMLtoTag("IGNMSK",((ShopKeeper)E).ignoreMask()));
-				text.append(CMLib.xml().convertXMLtoTag("BUDGET",((ShopKeeper)E).budget()));
-				text.append(CMLib.xml().convertXMLtoTag("DEVALR",((ShopKeeper)E).devalueRate()));
-				text.append(CMLib.xml().convertXMLtoTag("INVRER",((ShopKeeper)E).invResetRate()));
-                String[] prics=((ShopKeeper)E).itemPricingAdjustments();
-                if(prics.length==0) text.append("<IPRICS />");
-                else
-                {
-                    text.append("<IPRICS>");
-                    for(int p=0;p<prics.length;p++)
-                        text.append(CMLib.xml().convertXMLtoTag("IPRIC",CMLib.xml().parseOutAngleBrackets(prics[p])));
-                    text.append("</IPRICS>");
-                }
-
 				Vector V=((ShopKeeper)E).getShop().getStoreInventory();
 				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<V.size();b++)
@@ -1787,28 +1772,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		boolean variableEq=false;
 		ShopKeeper shopmob=(ShopKeeper)E;
 		shopmob.setWhatIsSold(CMLib.xml().getIntFromPieces(buf,"SELLCD"));
-		shopmob.setPrejudiceFactors(CMLib.xml().getValFromPieces(buf,"PREJFC"));
-        shopmob.setIgnoreMask(CMLib.xml().getValFromPieces(buf,"IGNMSK"));
-		shopmob.setBudget(CMLib.xml().getValFromPieces(buf,"BUDGET"));
-		shopmob.setDevalueRate(CMLib.xml().getValFromPieces(buf,"DEVALR"));
-		shopmob.setInvResetRate(CMLib.xml().getIntFromPieces(buf,"INVRER"));
 		shopmob.getShop().emptyAllShelves();
-        Vector iV=CMLib.xml().getRealContentsFromPieces(buf,"IPRICS");
-        if(iV!=null)
-        {
-            String[] ipric=new String[iV.size()];
-            for(int i=0;i<iV.size();i++)
-            {
-                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
-                if((!iblk.tag.equalsIgnoreCase("IPRIC"))||(iblk.contents==null))
-                {
-                    Log.errOut("CoffeeMaker","Error parsing 'IPRICS' of "+identifier(E,null)+".  Load aborted");
-                    continue;
-                }
-                ipric[i]=CMLib.xml().restoreAngleBrackets(iblk.value);
-            }
-            shopmob.setItemPricingAdjustments(ipric);
-        }
 		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"STORE");
 		if(V==null)
 		{
@@ -2491,6 +2455,27 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	public String getExtraEnvPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
+        
+        
+        if(E instanceof Economics)
+        {
+            text.append(CMLib.xml().convertXMLtoTag("PREJFC",((Economics)E).prejudiceFactors()));
+            text.append(CMLib.xml().convertXMLtoTag("IGNMSK",((Economics)E).ignoreMask()));
+            text.append(CMLib.xml().convertXMLtoTag("BUDGET",((Economics)E).budget()));
+            text.append(CMLib.xml().convertXMLtoTag("DEVALR",((Economics)E).devalueRate()));
+            text.append(CMLib.xml().convertXMLtoTag("INVRER",((Economics)E).invResetRate()));
+            String[] prics=((Economics)E).itemPricingAdjustments();
+            if(prics.length==0) text.append("<IPRICS />");
+            else
+            {
+                text.append("<IPRICS>");
+                for(int p=0;p<prics.length;p++)
+                    text.append(CMLib.xml().convertXMLtoTag("IPRIC",CMLib.xml().parseOutAngleBrackets(prics[p])));
+                text.append("</IPRICS>");
+            }
+
+        }
+        
 		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
 		StringBuffer behaviorstr=new StringBuffer("");
 		for(int b=0;b<E.numBehaviors();b++)
@@ -2706,6 +2691,30 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 
 	    E.setImage(CMLib.xml().getValFromPieces(buf,"IMG"));
+        if(E instanceof Economics)
+        {
+            ((Economics)E).setPrejudiceFactors(CMLib.xml().getValFromPieces(buf,"PREJFC"));
+            ((Economics)E).setIgnoreMask(CMLib.xml().getValFromPieces(buf,"IGNMSK"));
+            ((Economics)E).setBudget(CMLib.xml().getValFromPieces(buf,"BUDGET"));
+            ((Economics)E).setDevalueRate(CMLib.xml().getValFromPieces(buf,"DEVALR"));
+            ((Economics)E).setInvResetRate(CMLib.xml().getIntFromPieces(buf,"INVRER"));
+            Vector iV=CMLib.xml().getRealContentsFromPieces(buf,"IPRICS");
+            if(iV!=null)
+            {
+                String[] ipric=new String[iV.size()];
+                for(int i=0;i<iV.size();i++)
+                {
+                    XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
+                    if((!iblk.tag.equalsIgnoreCase("IPRIC"))||(iblk.contents==null))
+                    {
+                        Log.errOut("CoffeeMaker","Error parsing 'IPRICS' of "+identifier(E,null)+".  Load aborted");
+                        continue;
+                    }
+                    ipric[i]=CMLib.xml().restoreAngleBrackets(iblk.value);
+                }
+                ((Economics)E).setItemPricingAdjustments(ipric);
+            }
+        }
 		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"BEHAVES");
 		if(V==null)
 		{

@@ -186,11 +186,19 @@ public class Save extends StdCommand
 			mob.tell("Quest list saved.");
 		}
 		else
+        if(CMLib.map().getPlayer(commandType)!=null)
+        {
+            MOB M=CMLib.map().getPlayer(commandType);
+            CMLib.database().DBUpdatePlayer(M);
+            if(CMLib.flags().isInTheGame(M,true))
+                CMLib.database().DBUpdateFollowers(M);
+        }
+        else
 		{
 			mob.tell(
 				"\n\rYou cannot save '"+commandType+"'. "
 				+"However, you might try "
-				+"ITEMS, USERS, QUESTS, MOBS, or ROOM.");
+				+"ITEMS, USERS, <playername>, QUESTS, MOBS, or ROOM.");
 		}
 		return false;
 	}

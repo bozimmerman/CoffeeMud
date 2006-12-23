@@ -114,6 +114,7 @@ public class CMFile
                 String[] files=localDir.list();
                 found=false;
                 for(int f=0;f<files.length;f++)
+                {
                     if(files[f].equalsIgnoreCase(ioPath.substring(startZ,endZ)))
                     {   
                         if(!files[f].equals(ioPath.substring(startZ,endZ)))
@@ -121,10 +122,21 @@ public class CMFile
                         found=true; 
                         break;
                     }
+                }
                 if(found)
                 {
                     if(endZ==ioPath.length())
-                        localFile=new File(ioPath);
+                    {
+                        int lastSep=ioPath.lastIndexOf(pathSeparator);
+                        if(lastSep>=0)
+                        {
+                            localPath=ioPath.substring(0,lastSep);
+                            name=ioPath.substring(lastSep+1);
+                        }
+                        else
+                            name=ioPath;
+                        localFile=new File(getIOReadableLocalPathAndName());
+                    }
                     else
                         localDir=new File(localDir.getAbsolutePath()+pathSeparator+ioPath.substring(startZ,endZ));
                 }

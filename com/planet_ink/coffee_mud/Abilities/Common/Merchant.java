@@ -104,6 +104,43 @@ public class Merchant extends CommonSkill implements ShopKeeper
             factors=new String[0];
         pricingAdjustments=factors;
     }
+    protected Area getStartArea(){
+        Area A=CMLib.map().getStartArea(affected);
+        if(A==null) CMLib.map().areaLocation(affected);
+        if(A==null) A=(Area)CMLib.map().areas().nextElement();
+        return A;
+    }
+    public int finalInvResetRate(){
+        if((invResetRate()!=0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster()))) 
+            return invResetRate();
+        return getStartArea().finalInvResetRate();
+    }
+    public String finalPrejudiceFactors(){ 
+        if((prejudiceFactors().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster()))) 
+            return prejudiceFactors();
+        return getStartArea().finalPrejudiceFactors();
+    }
+    public String finalIgnoreMask(){ 
+        if((ignoreMask().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster()))) 
+            return ignoreMask();
+        return getStartArea().finalIgnoreMask();
+    }
+    public String[] finalItemPricingAdjustments(){ 
+        if(((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
+        ||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+            return itemPricingAdjustments();
+        return getStartArea().finalItemPricingAdjustments();
+    }
+    public String finalBudget(){ 
+        if((budget().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster()))) 
+            return budget();
+        return getStartArea().finalBudget();
+    }
+    public String finalDevalueRate(){
+        if((devalueRate().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+            return devalueRate();
+        return getStartArea().finalDevalueRate();
+    }
     
     public MOB deriveMerchant(MOB roomHelper)
     {
@@ -135,8 +172,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
         }
         staticMOB.setStartRoom(room);
         staticMOB.setLocation(room);
-        if(CMLib.beanCounter().getTotalAbsoluteNativeValue(staticMOB)<new Integer(CMath.s_int(budget())).doubleValue())
-            staticMOB.setMoney(CMath.s_int(budget()));
+        if(CMLib.beanCounter().getTotalAbsoluteNativeValue(staticMOB)<new Integer(CMath.s_int(finalBudget())).doubleValue())
+            staticMOB.setMoney(CMath.s_int(finalBudget()));
         return staticMOB;
     }
 
@@ -172,7 +209,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                     shopperM.tell(shopperM,null,null,"You'll have to talk to <S-NAME> about that.");
     				return false;
                 }
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),merchantM)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),merchantM)) 
                     return false;
                 double budgetRemaining=CMLib.beanCounter().getTotalAbsoluteValue(merchantM,CMLib.beanCounter().getCurrency(merchantM));
                 double budgetMax=budgetRemaining*100;
@@ -183,7 +220,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),merchantM)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),merchantM)) 
                     return false;
                 if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                     return false;
@@ -192,7 +229,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				return false;
 			}
 			case CMMsg.TYP_LIST:
-                CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),merchantM); 
+                CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),merchantM); 
 				break;
 			default:
 				break;

@@ -301,7 +301,7 @@ public class LockSmith extends CraftingSkill
 			return false;
 		}
         if((makeResource>=0)&&(building!=null)) building.setMaterial(makeResource);
-		completion=15-((dxlevel(mob)-workingOn.envStats().level()));
+		completion=15-((xlevel(mob)-workingOn.envStats().level()));
 		if(keyFlag) completion=completion/2;
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";

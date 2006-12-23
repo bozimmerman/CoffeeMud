@@ -639,7 +639,7 @@ public class GrinderMobs
 				}
                 
                 int num=1;
-                if((M instanceof ShopKeeper)
+                if((M instanceof Economics)
                 &&(httpReq.isRequestParameter("IPRIC1")))
                 {
                     Vector prics=new Vector();
@@ -656,7 +656,7 @@ public class GrinderMobs
                         DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
                         MASK=httpReq.getRequestParameter("IPRICM"+num);
                     }
-                    ((ShopKeeper)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
+                    ((Economics)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
                 }
 			}
 	

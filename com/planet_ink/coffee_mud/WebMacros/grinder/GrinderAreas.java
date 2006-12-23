@@ -232,6 +232,53 @@ public class GrinderAreas
 		if(currency==null)currency="";
 		A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
 		
+        // SHOPPREJ
+        String SHOPPREJ=httpReq.getRequestParameter("SHOPPREJ");
+        if(SHOPPREJ==null)SHOPPREJ="";
+        A.setPrejudiceFactors(CMLib.coffeeFilter().safetyFilter(SHOPPREJ));
+        
+        // BUDGET
+        String BUDGET=httpReq.getRequestParameter("BUDGET");
+        if(BUDGET==null)BUDGET="";
+        A.setBudget(CMLib.coffeeFilter().safetyFilter(BUDGET));
+        
+        // DEVALRATE
+        String DEVALRATE=httpReq.getRequestParameter("DEVALRATE");
+        if(DEVALRATE==null)DEVALRATE="";
+        A.setDevalueRate(CMLib.coffeeFilter().safetyFilter(DEVALRATE));
+        
+        // INVRESETRATE
+        String INVRESETRATE=httpReq.getRequestParameter("INVRESETRATE");
+        if(INVRESETRATE==null)INVRESETRATE="0";
+        A.setInvResetRate(CMath.s_int(CMLib.coffeeFilter().safetyFilter(INVRESETRATE)));
+
+        // IGNOREMASK
+        String IGNOREMASK=httpReq.getRequestParameter("IGNOREMASK");
+        if(IGNOREMASK==null)IGNOREMASK="";
+        A.setCurrency(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
+        
+        // PRICEFACTORS
+        num=1;
+        if((A instanceof Economics)
+        &&(httpReq.isRequestParameter("IPRIC1")))
+        {
+            Vector prics=new Vector();
+            String DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
+            String MASK=httpReq.getRequestParameter("IPRICM"+num);
+            while((DOUBLE!=null)&&(MASK!=null))
+            {
+                if(DOUBLE==null)
+                    break;
+                else
+                if(CMath.isNumber(DOUBLE))
+                    prics.addElement((DOUBLE+" "+MASK).trim());
+                num++;
+                DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
+                MASK=httpReq.getRequestParameter("IPRICM"+num);
+            }
+            ((Economics)A).setItemPricingAdjustments(CMParms.toStringArray(prics));
+        }
+        
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");
         for(int v=0;v<A.getNumParents();v++)

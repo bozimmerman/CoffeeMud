@@ -281,11 +281,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     public double itemPriceFactor(Environmental E, Room R, String[] priceFactors, boolean pawnTo)
     {
-        if(priceFactors.length==0) 
-        {
-            priceFactors=CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.SYSTEM_PRICEFACTORS).trim(),true));
-            if(priceFactors.length==0) return 1.0;
-        }
+        if(priceFactors.length==0) return 1.0;
         double factor=1.0;
         int x=0;
         String factorMask=null;
@@ -339,9 +335,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return val;
         }
 
-        double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),false);
+        double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),false);
         Room loc=CMLib.map().roomLocation(shop);
-        prejudiceFactor*=itemPriceFactor(product,loc,shop.itemPricingAdjustments(),false);
+        prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),false);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         // the price is 200% at 0 charisma, and 100% at 30
@@ -367,8 +363,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(num<=0) return 0.0;
         double resourceRate=0.0;
         double itemRate=0.0;
-        String s=shop.devalueRate();
-        if(s.length()==0) s=CMProps.getVar(CMProps.SYSTEM_DEVALUERATE);
+        String s=shop.finalDevalueRate();
         Vector V=CMParms.parse(s.trim());
         if(V.size()<=0)
             return 0.0;
@@ -413,9 +408,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
         if(buyer==null) return val;
 
-        double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
+        double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),true);
         Room loc=CMLib.map().roomLocation(shop);
-        prejudiceFactor*=itemPriceFactor(product,loc,shop.itemPricingAdjustments(),true);
+        prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),true);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         //double halfPrice=Math.round(CMath.div(val,2.0));
@@ -472,7 +467,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 int medianLevel=sellerR.getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
                 if(medianLevel>0)
                 {
-                    String range=CMParms.getParmStr(shop.prejudiceFactors(),"RANGE","0");
+                    String range=CMParms.getParmStr(shop.finalPrejudiceFactors(),"RANGE","0");
                     int rangeI=0;
                     if((range.endsWith("%"))&&(CMath.isInteger(range.substring(0,range.length()-1))))
                     {
@@ -1167,7 +1162,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores)
     {
-        if(ignoreMask.length()==0) ignoreMask=CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
         if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob)))
         {
             mob.tell(whoIgnores,null,null,"<S-NAME> appear(s) to be ignoring you.");

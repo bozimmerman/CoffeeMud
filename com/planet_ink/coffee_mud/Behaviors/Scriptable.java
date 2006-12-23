@@ -57,7 +57,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     private Hashtable noTrigger=new Hashtable();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Quest defaultQuest=null;
-    protected static boolean playerSetOverride=false;
 
 	private Quest getQuest(String named)
 	{
@@ -173,7 +172,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         public Environmental host(){return h;}
         public MOB source(){return s;}
         public Environmental target(){return t;}
-        public void setPlayerSetOverride(boolean truefalse){playerSetOverride=truefalse;}
         public MOB monster(){return m;}
         public Item item(){return pi;}
         public Item item2(){return si;}
@@ -5044,6 +5042,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					Ability A=newTarget.fetchEffect(which);
 					if(A!=null)
 					{
+                        if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                            Log.sysOut("Scriptable",newTarget.Name()+" was MPUNAFFECTED by "+A.Name());
 						A.unInvoke();
 						if(newTarget.fetchEffect(which)==A)
 							newTarget.delEffect(A);
@@ -5063,11 +5063,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=CMParms.getCleanBit(s,2);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
-                if((newTarget!=null)
-                &&((!(newTarget instanceof MOB))
-                  ||(((MOB)newTarget).isMonster())
-                  ||(playerSetOverride)))
+                if(newTarget!=null)
 				{
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+                        Log.sysOut("Scriptable",newTarget.Name()+" has "+arg2+" MPSETTED to "+arg3);
 					boolean found=false;
 					for(int i=0;i<newTarget.getStatCodes().length;i++)
 					{
@@ -5194,12 +5193,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=CMParms.getCleanBit(s,2);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
-				if((newTarget!=null)
-                &&((!(newTarget instanceof MOB))
-                  ||(((MOB)newTarget).isMonster())
-                  ||(playerSetOverride)))
+				if(newTarget!=null)
 				{
-                    
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+                        Log.sysOut("Scriptable",newTarget.Name()+" has "+arg2+" MPGSETTED to "+arg3);
 					boolean found=false;
                     for(int i=0;i<newTarget.getStatCodes().length;i++)
                     {
@@ -5832,6 +5829,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(cast!=null) A=CMClass.findAbility(cast);
 				if((newTarget!=null)&&(A!=null))
 				{
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                        Log.sysOut("Scriptable",newTarget.Name()+" was MPAFFECTED by "+A.Name());
 					A.setMiscText(m2);
 					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
 						newTarget.addNonUninvokableEffect(A);
@@ -5853,6 +5852,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				if((newTarget!=null)&&(A!=null))
 				{
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                        Log.sysOut("Scriptable",newTarget.Name()+" was MPBEHAVED with "+A.name());
 					A.setParms(m2);
 					if(newTarget.fetchBehavior(A.ID())==null)
 						newTarget.addBehavior(A);
@@ -5867,6 +5868,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					Behavior A=newTarget.fetchBehavior(cast);
 					if(A!=null) newTarget.delBehavior(A);
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                        Log.sysOut("Scriptable",newTarget.Name()+" was MPUNBEHAVED with "+A.name());
 				}
 				break;
 			}
@@ -6721,8 +6724,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             ((MOB)newTarget).addExpertise(D.ID);
                     }
 				}
-				if((newTarget!=null)&&(A!=null)&&(newTarget instanceof MOB))
+				if((newTarget!=null)
+                &&(A!=null)
+                &&(newTarget instanceof MOB))
 				{
+                    if(!((MOB)newTarget).isMonster())
+                        Log.sysOut("Scriptable",newTarget.Name()+" was MPENABLED with "+A.Name());
 					if(p2.trim().startsWith("++"))
 						p2=""+(CMath.s_int(p2.trim().substring(2))+A.proficiency());
 					else
@@ -6743,6 +6750,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					Ability A=((MOB)newTarget).findAbility(cast);
 					if(A!=null)((MOB)newTarget).delAbility(A);
+                    if((!((MOB)newTarget).isMonster())&&(A!=null))
+                        Log.sysOut("Scriptable",newTarget.Name()+" was MPDISABLED with "+A.Name());
                     ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
                     if((newTarget!=null)&&(newTarget instanceof MOB)&&(D!=null))
                         ((MOB)newTarget).delExpertise(D.ID);

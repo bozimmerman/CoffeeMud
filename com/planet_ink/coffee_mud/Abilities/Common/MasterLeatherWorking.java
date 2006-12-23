@@ -400,7 +400,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((dxlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((xlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;

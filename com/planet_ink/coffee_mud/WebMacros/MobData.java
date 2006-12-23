@@ -193,9 +193,9 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(int e=0;e<E.numExpertises();e++)
 			{
-				ExpertiseLibrary.ExpertiseDefinition X=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement(); 
+				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E.fetchExpertise(e)); 
 				theclasses.addElement(X.ID);
 			}
 			for(int i=0;i<theclasses.size();i++)
@@ -567,9 +567,9 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
-	{
-		StringBuffer str=new StringBuffer("");
+    public static StringBuffer priceFactors(Economics E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    {
+        StringBuffer str=new StringBuffer("");
         if(parms.containsKey("PRICEFACTORS"))
         {
             Vector theprices=new Vector();
@@ -629,6 +629,13 @@ public class MobData extends StdWebMacro
             str.append("</TABLE>");
             
         }
+        return str;
+    }
+    
+	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	{
+        StringBuffer str=new StringBuffer("");
+        str.append(priceFactors(E,httpReq,parms,borderSize));
 		if(parms.containsKey("SHOPINVENTORY"))
 		{
 			Vector theclasses=new Vector();
