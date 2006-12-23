@@ -84,9 +84,7 @@ public class ClanReject extends BaseClanner
 						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,true))
 						{
-							M.setClanID("");
-							M.setClanRole(0);
-							CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
+                            C.delMember(M);
 							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.clanID()+"'.");
 							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.clanID()+"'.");
 							return false;

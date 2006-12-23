@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDCLANS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Clans List</title>
+	<script language=JavaScript>
+	<!--
+		function Clan(action)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,"Clan",strFeatures, false);
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+	</TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="clans.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Manager</H2></FONT></TD></TR>
+	<TD WIDTH=50%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+	<TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
+	<TD WIDTH=10%><B><FONT COLOR=YELLOW>Members</FONT></B></TD>
+	<TD WIDTH=10%><B><FONT COLOR=YELLOW>Status</FONT></B></TD>
+	<TD WIDTH=20%><B><FONT COLOR=YELLOW>Trophies</FONT></B></TD>
+	</TR>
+	@ClanNext?RESET@
+	@loop@
+	@ClanNext@
+	<TR>
+	<TD><a href="javascript:Clan('@ClanID@')"><FONT COLOR=WHITE><B>@ClanID@</B></FONT></a></TD>
+	<TD><FONT COLOR=WHITE>@ClanData?TYPE@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ClanData?NUMMEMBERS@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ClanData?STATUS@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ClanData?TROPHIESHORT@</FONT></TD>
+	</TR>
+	@back@
+	<TR>
+	<TD COLSPAN=5><a href="javascript:Clan('_NEWONE_&NEWCLANID='+document.RESOURCES.NEWCLANID.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWCLANID SIZE=70></B></FONT></TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	</CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

@@ -85,12 +85,9 @@ public class ClanExile extends BaseClanner
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,true))
 						{
 							clanAnnounce(mob,"Member exiled from "+C.typeName()+" "+C.name()+": "+M.Name());
-							CMLib.database().DBUpdateClanMembership(qual, "", 0);
-							M.setClanID("");
-							M.setClanRole(0);
-							mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
-							M.tell("You have been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
-							C.updateClanPrivileges(M);
+                            mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
+                            M.tell("You have been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
+                            C.delMember(M);
 							return false;
 						}
 					}

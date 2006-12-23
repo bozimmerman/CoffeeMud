@@ -57,16 +57,15 @@ public class ClanResign extends BaseClanner
 				{
 					if(C!=null)
 						clanAnnounce(mob,"Member resigned from "+C.typeName()+" "+C.name()+": "+mob.Name());
-					CMLib.database().DBUpdateClanMembership(mob.Name(), "", 0);
-					mob.setClanID("");
-					mob.setClanRole(0);
 					if(C!=null)
-					{
-						C.updateClanPrivileges(mob);
-						CMLib.database().DBUpdateClanMembership(mob.Name(),"",0);
-					}
+                        C.delMember(mob);
 					else
+                    {
+                        CMLib.database().DBUpdateClanMembership(mob.Name(), "", 0);
+                        mob.setClanID("");
+                        mob.setClanRole(0);
 						CMLib.database().DBUpdateClanMembership(mob.Name(),"",0);
+                    }
 				}
 				else
 				{

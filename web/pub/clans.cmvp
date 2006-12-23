@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMud Web Server</title>
+</head>
+
+<body BGCOLOR=#FFFFCC>
+<h3>Current Clans Information</h3><P>
+<UL>
+@loop@
+@ClanNext@
+<LI><A href="#@ClanID@">@ClanID@</A>
+@back@
+</UL><P>
+@ClanNext?reset@
+@loop@
+@ClanNext@
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#FFCCFF ALIGN=CENTER><a name="@ClanID@"><H3>@ClanID@</H3></a></TD></TR>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Type</B></TD><TD>@ClanData?type@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Status</B></TD><TD>@ClanData?status@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Qualifications</B></TD><TD>@ClanData?acceptance@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Premise</B></TD><TD>@ClanData?premise@<BR></TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Tax Rate</B></TD><TD>@ClanData?tax@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Trophies</B></TD><TD>@ClanData?trophies@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Officers</B></TD>
+	<TD>
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=2@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=4@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=8@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=16@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=32@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+	</TD>
+</TR>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Relations</B></TD>
+	<TD>
+		@ClanData?otherclanstart@
+		<TABLE WIDTH=50% BORDER=1>
+		@loop@
+			@ClanData?otherclannext@
+			<TR><TD>@ClanData?otherclanname@</B></TD><TD>@ClanData?clanidrelations@</TD></TR>
+		@back@
+		</TABLE>
+	</TD>
+</TR>
+</TABLE>
+<P>
+@back@
+</BODY>
+</HTML>

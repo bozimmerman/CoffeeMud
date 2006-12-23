@@ -59,9 +59,7 @@ public class ClanApply extends BaseClanner
                         	if((maxMembers<=0)||(numMembers<maxMembers))
                         	{
 	                        	int role=C.getAutoPosition();
-	    						CMLib.database().DBUpdateClanMembership(mob.Name(), C.clanID(), role);
-	    						mob.setClanID(C.clanID());
-	    						mob.setClanRole(role);
+                                C.addMember(mob,role);
 	    						if(mob.getClanRole()==Clan.POS_APPLICANT)
 	    						{
 	        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());

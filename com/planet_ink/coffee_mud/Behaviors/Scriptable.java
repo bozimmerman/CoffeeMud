@@ -5138,8 +5138,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(arg2.equalsIgnoreCase("LEVEL"))
                         {
                             ((MOB)newTarget).baseCharStats().getCurrentClass().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            ((MOB)newTarget).recoverMaxState();
                             ((MOB)newTarget).recoverCharStats();
                             ((MOB)newTarget).recoverEnvStats();
+                            ((MOB)newTarget).resetToMaxState();
                         }
                     }
 				}
@@ -5302,8 +5304,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(arg2.equalsIgnoreCase("LEVEL"))
                         {
                             ((MOB)newTarget).baseCharStats().getCurrentClass().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            ((MOB)newTarget).recoverMaxState();
                             ((MOB)newTarget).recoverCharStats();
                             ((MOB)newTarget).recoverEnvStats();
+                            ((MOB)newTarget).resetToMaxState();
                         }
                     }
 				}

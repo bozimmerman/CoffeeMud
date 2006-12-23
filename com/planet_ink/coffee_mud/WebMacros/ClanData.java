@@ -39,6 +39,152 @@ public class ClanData extends StdWebMacro
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
 	// MEMBERNAME, MEMBERPOS
 
+    public static StringBuffer members(Clan C, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    {
+        StringBuffer str=new StringBuffer("");
+        if(parms.containsKey("MEMBERSLIST"))
+        {
+            Vector themembers=new Vector();
+            Vector theroles=new Vector();
+            if(httpReq.isRequestParameter("MEMB1"))
+            {
+                int num=1;
+                String behav=httpReq.getRequestParameter("MEMB"+num);
+                while(behav!=null)
+                {
+                    if(behav.length()>0)
+                    {
+                        MOB M=CMLib.map().getLoadPlayer(behav);
+                        if(M!=null)
+                        {
+                            themembers.addElement(behav);
+                            String role=httpReq.getRequestParameter("ROLE"+num);
+                            if(role!=null)
+                                theroles.addElement(new Integer(CMath.s_int(role)));
+                            else
+                                theroles.addElement(new Integer(M.getClanRole()));
+                        }
+                    }
+                    num++;
+                    behav=httpReq.getRequestParameter("MEMB"+num);
+                }
+            }
+            else
+            {
+                DVector members=C.getMemberList();
+                for(int d=0;d<members.size();d++)
+                {
+                    themembers.addElement(((String)members.elementAt(d,1)));
+                    theroles.addElement(((Integer)members.elementAt(d,2)));
+                }
+            }
+            str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
+            for(int i=0;i<themembers.size();i++)
+            {
+                String themember=(String)themembers.elementAt(i);
+                Integer role=(Integer)theroles.elementAt(i);
+                str.append("<TR><TD WIDTH=35%>");
+                str.append("<SELECT ONCHANGE=\"EditMember(this);\" NAME=MEMB"+(i+1)+">");
+                str.append("<OPTION VALUE=\"\">Delete!");
+                str.append("<OPTION VALUE=\""+themember+"\" SELECTED>"+themember);
+                str.append("</SELECT>");
+                str.append("</TD>");
+                str.append("<TD WIDTH=65% COLSPAN=2>");
+                str.append("<SELECT NAME=ROLE"+(i+1)+">");
+                for(int r=0;r<Clan.POSORDER.length;r++)
+                {
+                    str.append("<OPTION VALUE=\""+Clan.POSORDER[r]+"\"");
+                    if(Clan.POSORDER[r]==role.intValue())
+                        str.append(" SELECTED");
+                    str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),Clan.POSORDER[r],true,false));
+                }
+                str.append("</SELECT>");
+                str.append("</TD>");
+                str.append("</TR>");
+            }
+            str.append("<TR><TD WIDTH=35%>");
+            str.append("<SELECT ONCHANGE=\"AddMember(this);\" NAME=MEMB"+(themembers.size()+1)+">");
+            str.append("<OPTION SELECTED VALUE=\"\">Select a new Member");
+            Vector V=CMLib.database().getUserList();
+            String mem=null;
+            for(int v=0;v<V.size();v++)
+            {
+                mem=(String)V.elementAt(v);
+                if(!themembers.contains(mem))
+                    str.append("<OPTION VALUE=\""+mem+"\">"+mem);
+            }
+            str.append("</SELECT>");
+            str.append("</TD>");
+            str.append("<TD WIDTH=65% COLSPAN=2>");
+            str.append("<SELECT NAME=ROLE"+(themembers.size()+1)+">");
+            for(int r=0;r<Clan.POSORDER.length;r++)
+            {
+                str.append("<OPTION VALUE=\""+Clan.POSORDER[r]+"\"");
+                str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),Clan.POSORDER[r],true,false));
+            }
+            str.append("</SELECT>");
+            str.append("</TD>");
+            str.append("</TR>");
+            str.append("</TABLE>, ");
+        }
+        return str;
+    }
+
+    public static StringBuffer relations(Clan C, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    {
+        StringBuffer str=new StringBuffer("");
+        if(parms.containsKey("RELATIONS"))
+        {
+            Vector therelations=new Vector();
+            Clan CC=null;
+            if(httpReq.isRequestParameter("RELATION1"))
+            {
+                int num=1;
+                String behav=httpReq.getRequestParameter("RELATION"+num);
+                while(behav!=null)
+                {
+                    if(behav.length()>0)
+                        therelations.addElement(new Integer(CMath.s_int(behav)));
+                    num++;
+                    behav=httpReq.getRequestParameter("RELATION"+num);
+                }
+            }
+            else
+            {
+                for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+                {
+                    CC=(Clan)e.nextElement();
+                    if(CC==C) continue;
+                    therelations.addElement(new Integer(C.getClanRelations(CC.clanID())));
+                }
+            }
+            str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
+            int relat=-1;
+            for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+            {
+                CC=(Clan)e.nextElement();
+                if(CC==C) continue;
+                relat++;
+                Integer relation=(Integer)therelations.elementAt(relat);
+                str.append("<TR><TD WIDTH=35%><FONT COLOR=YELLOW><B>"+CC.name()+"</B></FONT>");
+                str.append("<TD WIDTH=65% COLSPAN=2>");
+                str.append("<SELECT NAME=RELATION"+(relat+1)+">");
+                for(int r=0;r<Clan.REL_DESCS.length;r++)
+                {
+                    str.append("<OPTION VALUE=\""+r+"\"");
+                    if(r==relation.intValue())
+                        str.append(" SELECTED");
+                    str.append(">"+CMStrings.capitalizeAndLower(Clan.REL_DESCS[r]));
+                }
+                str.append("</SELECT>");
+                str.append("</TD>");
+                str.append("</TR>");
+            }
+            str.append("</TABLE>, ");
+        }
+        return str;
+    }
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -52,15 +198,19 @@ public class ClanData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("PREMISE"))
 					str.append(C.getPremise()+", ");
+                if(parms.containsKey("RECALLID"))
+                    str.append(C.getRecall()+", ");
 				if(parms.containsKey("RECALL"))
 				{
 					Room R=CMLib.map().getRoom(C.getRecall());
 					if(R!=null)	str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
+                if(parms.containsKey("MORGUEID"))
+                    str.append(C.getMorgue()+", ");
 				if(parms.containsKey("MORGUE"))
 				{
-					Room R=CMLib.map().getRoom(C.getRecall());
+					Room R=CMLib.map().getRoom(C.getMorgue());
 					if(R!=null)	str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
@@ -69,13 +219,35 @@ public class ClanData extends StdWebMacro
 					int pos=C.getAutoPosition();
 					str.append(CMLib.clans().getRoleName(C.getGovernment(),pos,true,false)+", ");
 				}
+                if(parms.containsKey("AUTOPOSITIONID"))
+                {
+                    for(int i=0;i<Clan.POSORDER.length;i++)
+                        str.append("<OPTION VALUE="+Clan.POSORDER[i]+" "+((C.getAutoPosition()==Clan.POSORDER[i])?"SELECTED":"")+">"+CMLib.clans().getRoleName(C.getGovernment(),Clan.POSORDER[i],true,false));
+                }
 				if(parms.containsKey("TROPHIES"))
 				{
 				    if(C.getTrophies()==0)
 				        str.append("None");
 				    else
-				        str.append("Some trophies");
+                    {
+                        for(int i=0;i<Clan.TROPHY_DESCS.length;i++)
+                            if((Clan.TROPHY_DESCS[i].length()>0)&&((C.getTrophies()&i)==i))
+                                str.append(Clan.TROPHY_DESCS[i]+", ");
+                    }
 				}
+                if(parms.containsKey("TROPHIESHORT"))
+                {
+                    if(C.getTrophies()==0)
+                        str.append("None");
+                    else
+                    {
+                        for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
+                            if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&((C.getTrophies()&i)==i))
+                                str.append(Clan.TROPHY_DESCS_SHORT[i]+", ");
+                    }
+                }
+                if(parms.containsKey("DONATIONID"))
+                    str.append(C.getDonation()+", ");
 				if(parms.containsKey("DONATION"))
 				{
 					Room R=CMLib.map().getRoom(C.getDonation());
@@ -84,6 +256,16 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("TAX"))
 					str.append(""+((int)Math.round(C.getTaxes()*100.0))+"%, ");
+                if(parms.containsKey("CCLASSID"))
+                {
+                    str.append("<OPTION VALUE=\"\" "+((C.getAutoPosition()<0)?"SELECTED":"")+">None");
+                    CharClass CC=null;
+                    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+                    {
+                        CC=(CharClass)e.nextElement();
+                        str.append("<OPTION VALUE=\""+CC.ID()+"\" "+((C.getClanClass().equalsIgnoreCase(CC.ID()))?"SELECTED":"")+">"+CC.name());
+                    }
+                }
 				if(parms.containsKey("CCLASS"))
 				{
 					CharClass CC=CMClass.getCharClass(C.getClanClass());
@@ -94,10 +276,22 @@ public class ClanData extends StdWebMacro
 					str.append(""+C.getExp()+", ");
 				if(parms.containsKey("STATUS"))
 					str.append(CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[C.getStatus()].toLowerCase())+", ");
+                if(parms.containsKey("STATUSID"))
+                {
+                    for(int i=0;i<Clan.CLANSTATUS_DESC.length;i++)
+                        str.append("<OPTION VALUE="+i+" "+((C.getStatus()==i)?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[i]));
+                }
 				if(parms.containsKey("ACCEPTANCE"))
 					str.append(CMLib.masking().maskDesc(C.getAcceptanceSettings())+", ");
+                if(parms.containsKey("ACCEPTANCEID"))
+                    str.append(C.getAcceptanceSettings());
 				if(parms.containsKey("TYPE"))
 					str.append(C.typeName()+", ");
+                if(parms.containsKey("TYPEID"))
+                {
+                    for(int i=0;i<Clan.GVT_DESCS.length;i++)
+                        str.append("<OPTION VALUE="+i+" "+((C.getGovernment()==i)?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(Clan.GVT_DESCS[i]));
+                }
 				if(parms.containsKey("CLANIDRELATIONS"))
 					str.append(CMStrings.capitalizeAndLower(Clan.REL_DESCS[C.getClanRelations(httpReq.getRequestParameter("CLANID"))].toLowerCase())+", ");
 				if(parms.containsKey("POINTS"))
@@ -108,11 +302,14 @@ public class ClanData extends StdWebMacro
 						httpReq.removeRequestParameter("CLANMEMBER");
 					return "";
 				}
+                if(parms.contains("NUMMEMBERS"))
+                    str.append(""+C.getMemberList().size()+", ");
 				if(parms.containsKey("MEMBERNEXT"))
 				{
 					String member=httpReq.getRequestParameter("CLANMEMBER");
 					String lastID="";
 					String posFilter=httpReq.getRequestParameter("CLANPOSFILTER");
+                    if(posFilter==null) posFilter=(String)parms.get("CLANPOSFILTER");
 					if(posFilter==null) posFilter="";
 					DVector members=C.getMemberList((posFilter.length()>0)?CMath.s_int(posFilter):-1);
 					for(int x=0;x<members.size();x++)
@@ -135,24 +332,60 @@ public class ClanData extends StdWebMacro
 					String member=httpReq.getRequestParameter("CLANMEMBER");
 					str.append(member+", ");
 				}
-				if(parms.containsKey("MEMBERPOS"))
-				{
-					String member=httpReq.getRequestParameter("CLANMEMBER");
-					if(member!=null)
-					{
-						DVector members=C.getMemberList();
-						for(int x=0;x<members.size();x++)
-						{
-							String name=(String)members.elementAt(x,1);
-							if(name.equals(member))
-							{
-								Integer I=(Integer)members.elementAt(x,2);
-								str.append(CMStrings.capitalizeAndLower(Clan.ROL_DESCS[C.getGovernment()][I.intValue()].toLowerCase())+", ");
-								break;
-							}
-						}
-					}
-				}
+                if(parms.containsKey("MEMBERPOS"))
+                {
+                    String member=httpReq.getRequestParameter("CLANMEMBER");
+                    if(member!=null)
+                    {
+                        DVector members=C.getMemberList();
+                        for(int x=0;x<members.size();x++)
+                        {
+                            String name=(String)members.elementAt(x,1);
+                            if(name.equals(member))
+                            {
+                                Integer I=(Integer)members.elementAt(x,2);
+                                str.append(CMStrings.capitalizeAndLower(CMLib.clans().getRoleName(C.getGovernment(),I.intValue(),true,false))+", ");
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(parms.containsKey("OTHERCLANSTART"))
+                {
+                    if(httpReq.getRequestParameter("CLANID")!=null)
+                        httpReq.removeRequestParameter("CLANID");
+                    return "";
+                }
+                if(parms.containsKey("OTHERCLANNEXT"))
+                {
+                    String member=httpReq.getRequestParameter("CLANID");
+                    String lastID="";
+                    Clan CC=null;
+                    for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+                    {
+                        CC=(Clan)e.nextElement();
+                        if(CC==C) continue;
+                        String name=CC.clanID();
+                        if((member==null)||((member.length()>0)&&(member.equals(lastID))&&(!name.equals(lastID))))
+                        {
+                            httpReq.addRequestParameters("CLANID",name);
+                            return "";
+                        }
+                        lastID=name;
+                    }
+                    httpReq.addRequestParameters("CLANID","");
+                    if(parms.containsKey("EMPTYOK"))
+                        return "<!--EMPTY-->";
+                    return " @break@";
+                }
+                if(parms.containsKey("OTHERCLANNAME"))
+                {
+                    String member=httpReq.getRequestParameter("CLANID");
+                    Clan CC=CMLib.clans().getClan(member);
+                    if(CC!=null) str.append(CC.name()+", ");
+                }
+                str.append(ClanData.members(C,httpReq,parms,0));
+                str.append(ClanData.relations(C,httpReq,parms,0));
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);

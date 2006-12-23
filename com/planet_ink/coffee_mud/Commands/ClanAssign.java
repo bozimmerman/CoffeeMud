@@ -149,9 +149,7 @@ public class ClanAssign extends BaseClanner
 								}
 							}
 							clanAnnounce(mob,M.name()+" of the "+C.typeName()+" "+C.clanID()+" changed from "+CMLib.clans().getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
-							M.setClanRole(newPos);
-							C.updateClanPrivileges(M);
-							CMLib.database().DBUpdateClanMembership(M.Name(), C.clanID(), newPos);
+                            C.addMember(M,newPos);
 							mob.tell(M.Name()+" of the "+C.typeName()+" "+C.clanID()+" has been assigned to be "+CMStrings.startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))+". ");
 							M.tell("You have been assigned to be "+CMStrings.startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" "+C.clanID()+".");
 							return false;

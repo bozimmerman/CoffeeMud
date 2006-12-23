@@ -300,6 +300,21 @@ public class DefaultClan implements Clan
     {
         CMLib.database().DBUpdateClan(this);
     }
+    
+    public void addMember(MOB M, int role)
+    {
+        M.setClanID(clanID());
+        M.setClanRole(role);
+        CMLib.database().DBUpdateClanMembership(M.Name(), M.getClanID(), role);
+        updateClanPrivileges(M);
+    }
+    public void delMember(MOB M)
+    {
+        CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
+        M.setClanID("");
+        M.setClanRole(0);
+        updateClanPrivileges(M);
+    }
 
     public boolean updateClanPrivileges(MOB M)
     {

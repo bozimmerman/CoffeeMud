@@ -643,6 +643,12 @@ public class StdCharClass implements CharClass
 		mob.baseEnvStats().setDamage(getLevelDamage(mob));
 		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
 		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
+        mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
+        mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
+        mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
+        if(mob.getWimpHitPoint()>0)
+            mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
+        mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
 		return mob;
 	}
 

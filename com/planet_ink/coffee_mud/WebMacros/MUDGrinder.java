@@ -124,7 +124,62 @@ public class MUDGrinder extends StdWebMacro
 			Log.sysOut("Grinder",mob.Name()+" obliterated area "+A.Name());
 			return "The area "+A.Name()+" has been successfully deleted.";
 		}
+        else
+        if(parms.containsKey("DELCLAN"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("CLAN");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            Clan C=CMLib.clans().getClan(last);
+            if(C==null) return "@break@";
+            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+            C.destroyClan();
+            Log.sysOut("Grinder",mob.Name()+" destroyed clan "+C.clanID());
+            return "The clan "+C.clanID()+" has been successfully destroyed.";
+        }
+        else
+        if(parms.containsKey("EDITCLAN"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("CLAN");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            Clan C=CMLib.clans().getClan(last);
+            if(C==null) return "@break@";
+            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+            String err=new GrinderClans().runMacro(httpReq,parm);
+            if(err.length()>0) return err;
+            C.update();
+            Log.sysOut("Grinder",mob.Name()+" modified clan "+C.clanID());
+            return "The clan "+C.clanID()+" has been successfully modified.";
+        }
 		else
+        if(parms.containsKey("ADDCLAN"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("NEWCLANID");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            Clan C=CMLib.clans().findClan(last);
+            if((C!=null) 
+            ||(CMLib.database().DBUserSearch(null,last))
+            ||(last.equalsIgnoreCase("All")))
+                return "@break@";
+            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+            Clan newClan=CMLib.clans().getClanType(Clan.TYPE_CLAN);
+            newClan.setName(last);
+            newClan.setGovernment(Clan.GVT_DICTATORSHIP);
+            newClan.setStatus(Clan.CLANSTATUS_PENDING);
+            newClan.create();
+            Log.sysOut("Grinder",mob.Name()+" created clan "+newClan.clanID());
+            httpReq.addRequestParameters("CLAN",last);
+            return "The clan "+newClan.clanID()+" has been successfully created.";
+        }
+        else
 		if(parms.containsKey("IMPORTAREA"))
 		{
 			MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));

@@ -458,6 +458,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 */
 	public int getTopRank();
 
+    /**
+     * Del a member from this clan
+     * @param M the member to remove
+     */
+    public void delMember(MOB M);
+    /**
+     * Adds a new member to this clan
+     * @param M the member to add
+     * @param role the coded role number
+     */
+    public void addMember(MOB M, int role);
 	/**
 	 * Orders the system to update this clan in the database.
 	 */
@@ -535,7 +546,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	public static final int POS_LEADER=16;
 	/** Boss constant for a clan members position. */
 	public static final int POS_BOSS=32;
-	/** Descriptive strings constant for the Clan.POS_* constants, ordered by value. @see Clan */
+	/** Numeric ordering for the Clan.POS_* constants, ordered by value. @see Clan */
 	public static final int[] POSORDER={POS_APPLICANT,
 										POS_MEMBER,
 										POS_STAFF,

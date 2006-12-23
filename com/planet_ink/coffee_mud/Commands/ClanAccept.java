@@ -86,13 +86,10 @@ public class ClanAccept extends BaseClanner
 						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
 						{
+                            C.addMember(M,Clan.POS_MEMBER);
 							clanAnnounce(mob,M.Name()+" is now a new member of "+C.typeName()+" "+C.name()+".");
-							M.setClanID(mob.getClanID());
-							M.setClanRole(Clan.POS_MEMBER);
-							CMLib.database().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
 							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.clanID()+"'.");
 							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.clanID()+"'.");
-							C.updateClanPrivileges(M);
 							return false;
 						}
 					}

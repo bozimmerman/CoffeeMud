@@ -60,7 +60,7 @@
 	<TD WIDTH=10%><B><a href="javascript:Sort('HOURS')"><FONT COLOR=YELLOW>Hours</FONT></a></B></TD>
 	<TD WIDTH=35%><B><a href="javascript:Sort('LASTDATETIMEMILLIS')"><FONT COLOR=YELLOW>Last Date/Time</FONT></a></B></TD>
 	</TR>
-	@ResourceMgr?RESET@
+	@PlayerNext?RESET@
 	@loop@
 	<TR>
 	@PlayerNext@
