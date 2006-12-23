@@ -2850,12 +2850,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if(CMSecurity.isASysOp(mob))
                     return false;
                 break;
-            case 110: // +unsop
+            case 110: // +subop
                 if(CMSecurity.isASysOp(mob)
                 ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
                     return true;
                 break;
-            case 111: // -unsop
+            case 111: // -subop
                 if(CMSecurity.isASysOp(mob)
                 ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
                     return false;
