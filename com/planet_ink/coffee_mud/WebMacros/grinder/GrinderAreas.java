@@ -255,7 +255,7 @@ public class GrinderAreas
         // IGNOREMASK
         String IGNOREMASK=httpReq.getRequestParameter("IGNOREMASK");
         if(IGNOREMASK==null)IGNOREMASK="";
-        A.setCurrency(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
+        A.setIgnoreMask(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
         
         // PRICEFACTORS
         num=1;

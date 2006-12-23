@@ -452,7 +452,7 @@
 			<TR>
 				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
-				<a href="javascript:OpenUp('ihelp.cmvp','DEVALRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+				<a href="javascript:OpenUp('ihelp.cmvp','DEVALUERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 			    </TD>
 			</TR>
 			<TR>

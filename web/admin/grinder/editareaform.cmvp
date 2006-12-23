@@ -11,6 +11,12 @@
 	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+		function OpenUp(file,named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/"+file+"?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
 		function EditBehavior(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -95,7 +101,7 @@
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Economic Item Pricing:</B></FONT>
     <TD WIDTH=450 COLSPAN=2>
     	<FONT COLOR=WHITE>
-		@MobData?PRICEFACTORS@
+		@AreaData?PRICEFACTORS@
 		</FONT>
 		<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 		<INPUT TYPE=BUTTON NAME=RESHOW2 VALUE="Submit" ONCLICK="ReShow();">
@@ -111,7 +117,7 @@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Economic Deval. Rate(s):</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@AreaData?DEVALRATE@">
-	<a href="javascript:OpenUp('ihelp.cmvp','DEVALRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+	<a href="javascript:OpenUp('ihelp.cmvp','DEVALUERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
     </TD>
 </TR>
 <TR>

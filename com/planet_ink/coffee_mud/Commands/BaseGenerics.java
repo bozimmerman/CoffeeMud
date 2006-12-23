@@ -3075,7 +3075,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-	protected void genShopkeeper3(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	protected void genEconomics1(MOB mob, Economics E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3091,7 +3091,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-    protected void genShopkeeper8(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+    protected void genEconomics2(MOB mob, Economics E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3202,7 +3202,7 @@ public class BaseGenerics extends StdCommand
         }
     }
     
-	protected void genShopkeeper4(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	protected void genEconomics3(MOB mob, Economics E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3218,7 +3218,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	protected void genShopkeeper5(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	protected void genEconomics4(MOB mob, Economics E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3233,7 +3233,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	protected void genShopkeeper6(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+	protected void genEconomics5(MOB mob, Economics E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3246,7 +3246,7 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-    protected void genShopkeeper7(MOB mob, ShopKeeper E, int showNumber, int showFlag)
+    protected void genEconomics6(MOB mob, Economics E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -7747,9 +7747,9 @@ public class BaseGenerics extends StdCommand
 			genAffects(mob,me,++showNumber,showFlag);
 			genShopkeeper1(mob,me,++showNumber,showFlag);
 			genShopkeeper2(mob,me,++showNumber,showFlag);
-			genShopkeeper3(mob,me,++showNumber,showFlag);
-            genShopkeeper7(mob,me,++showNumber,showFlag);
-            genShopkeeper8(mob,me,++showNumber,showFlag);
+            genEconomics1(mob,me,++showNumber,showFlag);
+            genEconomics5(mob,me,++showNumber,showFlag);
+            genEconomics6(mob,me,++showNumber,showFlag);
 			if(me instanceof Banker)
 			{
 				genBanker1(mob,(Banker)me,++showNumber,showFlag);
@@ -7769,9 +7769,9 @@ public class BaseGenerics extends StdCommand
             }
             else
 			{
-				genShopkeeper4(mob,me,++showNumber,showFlag);
-				genShopkeeper5(mob,me,++showNumber,showFlag);
-				genShopkeeper6(mob,me,++showNumber,showFlag);
+                genEconomics2(mob,me,++showNumber,showFlag);
+                genEconomics3(mob,me,++showNumber,showFlag);
+                genEconomics4(mob,me,++showNumber,showFlag);
 			}
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genSensesMask(mob,me.baseEnvStats(),++showNumber,showFlag);

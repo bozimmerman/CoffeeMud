@@ -411,7 +411,6 @@ public class Modify extends BaseGenerics
 				genTechLevel(mob,myArea,++showNumber,showFlag);
 				genClimateType(mob,myArea,++showNumber,showFlag);
 				genTimeClock(mob,myArea,++showNumber,showFlag);
-				genCurrency(mob,myArea,++showNumber,showFlag);
 				genArchivePath(mob,myArea,++showNumber,showFlag);
                 genParentAreas(mob,myArea,++showNumber,showFlag);
                 genChildAreas(mob,myArea,++showNumber,showFlag);
@@ -427,6 +426,15 @@ public class Modify extends BaseGenerics
 				genImage(mob,myArea,++showNumber,showFlag);
                 for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
                     myArea.setStat(myArea.getStatCodes()[x],CMLib.english().promptText(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
+                if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))
+                    mob.tell("*** Area Economics settings: ");
+                    genCurrency(mob,myArea,++showNumber,showFlag);
+                    genEconomics1(mob,myArea,++showNumber,showFlag);
+                    genEconomics2(mob,myArea,++showNumber,showFlag);
+                    genEconomics3(mob,myArea,++showNumber,showFlag);
+                    genEconomics4(mob,myArea,++showNumber,showFlag);
+                    genEconomics5(mob,myArea,++showNumber,showFlag);
+                    genEconomics6(mob,myArea,++showNumber,showFlag);
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
