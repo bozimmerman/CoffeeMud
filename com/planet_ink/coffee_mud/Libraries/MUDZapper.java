@@ -51,11 +51,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     {
         Hashtable H=(Hashtable)Resources.getResource("SYSTEM_HASHED_MASKS");
         if(H==null){ H=new Hashtable(); Resources.submitResource("SYSTEM_HASHED_MASKS",H); }
-        Vector V=(Vector)H.get(str.toUpperCase().trim());
+        Vector V=(Vector)H.get(str.toLowerCase().trim());
         if(V==null)
         {
             V=maskCompile(str);
-            H.put(str.toUpperCase().trim(),V);
+            H.put(str.toLowerCase().trim(),V);
         }
         return V;
     }
