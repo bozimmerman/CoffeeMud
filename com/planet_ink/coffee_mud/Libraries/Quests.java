@@ -260,7 +260,7 @@ public class Quests extends StdLibrary implements QuestManager
         F.saveText(newHoliday,true);
         Quest Q=fetchQuest("holidays");
         if(Q!=null) Q.setScript(holidayDefinition);
-        return "Ok";
+        return "";
     }
     
     public String deleteHoliday(Area A, int holidayNumber)

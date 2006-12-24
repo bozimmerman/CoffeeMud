@@ -807,15 +807,23 @@ public class Create extends BaseGenerics
         if(commandType.equals("HOLIDAY"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
             String named=CMParms.combine(commands,2);
             if(named.trim().length()==0)
             {
+                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
                 mob.tell("Include a name!");
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
                 return false;
             }
-            mob.tell(CMLib.quests().createHoliday(mob.location().getArea(),named));
+            String err=CMLib.quests().createHoliday(mob.location().getArea(),named);
+            if(err.length()>0)
+            {
+                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+                mob.tell(err);
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+            }
+            else
+                mob.doCommand(CMParms.makeVector("MODIFY","HOLIDAY",named));
         }
         else
         if(commandType.equals("FACTION"))
