@@ -63,7 +63,7 @@ public class HolidayNext extends StdWebMacro
             String step=(String)steps.elementAt(s);
             V=Resources.getFileLineVector(new StringBuffer(step));
             Vector cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
-            Vector areaLine=null;
+            //Vector areaLine=null;
             Vector nameLine=null;
             for(int v=0;v<cmds.size();v++)
             {
@@ -71,19 +71,19 @@ public class HolidayNext extends StdWebMacro
                 if(line.size()>1)
                 {
                     var=((String)line.elementAt(1)).toUpperCase();
-                    if(var.equals("AREAGROUP"))
-                    { areaLine=line;}
+                    //if(var.equals("AREAGROUP"))
+                    //{ areaLine=line;}
                     if(var.equals("NAME"))
                     { nameLine=line;}
                 }
             }
             if(nameLine!=null)
             {
-                String areaName=null;
+                /*String areaName=null;
                 if(areaLine==null)
                     areaName="*special*";
                 else
-                    areaName=CMParms.combineWithQuotes(areaLine,2);
+                    areaName=CMParms.combineWithQuotes(areaLine,2);*/
                 String name=CMParms.combine(nameLine,2);
                 holidays.addElement(name);
             }

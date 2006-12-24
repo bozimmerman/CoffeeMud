@@ -55,9 +55,9 @@ public class HolidayData extends StdWebMacro
                 DVector settings=(DVector)encodedData.elementAt(0);
                 DVector behaviors=(DVector)encodedData.elementAt(1);
                 DVector properties=(DVector)encodedData.elementAt(2);
-                DVector stats=(DVector)encodedData.elementAt(3);
-                Vector stepV=(Vector)encodedData.elementAt(4);
-                int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
+                //DVector stats=(DVector)encodedData.elementAt(3);
+                //Vector stepV=(Vector)encodedData.elementAt(4);
+                //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
                 
                 StringBuffer str=new StringBuffer("");
                 if(parms.containsKey("NAME"))
@@ -104,9 +104,9 @@ public class HolidayData extends StdWebMacro
                     String old=httpReq.getRequestParameter("MOOD");
                     if(old==null)
                     {
-                        int dex=behaviors.indexOf("MOOD");
+                        int dex=properties.indexOf("MOOD");
                         if(dex>=0)
-                            old=(String)behaviors.elementAt(dex,2);
+                            old=(String)properties.elementAt(dex,2);
                         else
                             old="Unknown";
                     }
