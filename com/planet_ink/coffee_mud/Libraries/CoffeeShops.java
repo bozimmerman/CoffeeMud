@@ -1245,7 +1245,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(thisThang instanceof PackagedItems)
             thisThang=((PackagedItems)thisThang).getItem();
         if(thisThang==null) return false;
-        if(thisThang instanceof Coins) return false;
+        if((thisThang instanceof Coins)
+        ||(thisThang instanceof DeadBody)
+        ||(CMLib.flags().isChild(thisThang)))
+            return false;
         switch(shop.whatIsSold())
         {
         case ShopKeeper.DEAL_ANYTHING:

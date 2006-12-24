@@ -44,6 +44,7 @@ public interface Faction extends CMCommon, MsgListener
     public final static int ALIGN_GOOD=3;
     public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
     public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
+    public final static String[] EXPAFFECT_DESCS={"None","Proportional (Extreme)","Higher (mine)","Lower (mine)","Higher (other)","Lower (other)"};
     public final static int TAG_NAME=0;
     public final static int TAG_MINIMUM=1;
     public final static int TAG_MAXIMUM=2;

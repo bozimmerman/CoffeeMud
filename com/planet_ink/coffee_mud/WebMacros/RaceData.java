@@ -62,6 +62,82 @@ public class RaceData extends StdWebMacro
 						str.append(helpHelp(s,limit));
 					}
 				}
+                if(parms.containsKey("NAME"))
+                {
+                    String old=httpReq.getRequestParameter("NAME");
+                    if(old==null) old=R.name();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("CAT"))
+                {
+                    String old=httpReq.getRequestParameter("CAT");
+                    if(old==null) old=R.racialCategory();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("VWEIGHT"))
+                {
+                    String old=httpReq.getRequestParameter("VWEIGHT");
+                    if(old==null) old=""+R.weightVariance();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("BWEIGHT"))
+                {
+                    String old=httpReq.getRequestParameter("BWEIGHT");
+                    if(old==null) old=""+R.lightestWeight();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("VHEIGHT"))
+                {
+                    String old=httpReq.getRequestParameter("VHEIGHT");
+                    if(old==null) old=""+R.heightVariance();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("MHEIGHT"))
+                {
+                    String old=httpReq.getRequestParameter("MHEIGHT");
+                    if(old==null) old=""+R.shortestMale();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("FHEIGHT"))
+                {
+                    String old=httpReq.getRequestParameter("FHEIGHT");
+                    if(old==null) old=""+R.shortestFemale();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("LEAVESTR"))
+                {
+                    String old=httpReq.getRequestParameter("LEAVESTR");
+                    if(old==null) old=""+R.leaveStr();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("ARRIVESTR"))
+                {
+                    String old=httpReq.getRequestParameter("ARRIVESTR");
+                    if(old==null) old=""+R.arriveStr();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("HEALTHRACE"))
+                {
+//TODO: healthrace                    
+                }
+                if(parms.containsKey("BODY"))
+                {
+//TODO: body parts                    
+                }
+                if(parms.containsKey("WEAR"))
+                    for(int b=0;b<Item.WORN_CODES.length;b++)
+                        if(CMath.bset(R.forbiddenWornBits(),Item.WORN_CODES[b]))
+                            str.append(Item.WORN_DESCS[b]+", ");
+                if(parms.containsKey("WEARID"))
+                {
+//TODO: wearid                    
+                }
+                if(parms.containsKey("PLAYABLEID"))
+                {
+//TODO: playableid                    
+                }
+                
+                
 				if(parms.containsKey("PLAYABLE"))
 					str.append(Area.THEME_DESCS_EXT[R.availabilityCode()]+", ");
 				if(parms.containsKey("NATURALWEAPON"))
