@@ -18,6 +18,11 @@
 			document.RESOURCES.action=action;
 			document.RESOURCES.submit();
 		}
+		function Refresh()
+		{
+			document.RESOURCES.action='clans.cmvp';
+			document.RESOURCES.submit();
+		}
 	//-->
 	</script>
 </head>
@@ -64,8 +69,7 @@
 	<TR>
 	<TD WIDTH=33% ALIGN=CENTER>
 	</TD>
-	<TD WIDTH=33% ALIGN=CENTER>
-	</TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
 	<TD WIDTH=33% ALIGN=CENTER>
 	</TD>
 	</TR>

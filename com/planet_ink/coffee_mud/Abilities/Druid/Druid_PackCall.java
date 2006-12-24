@@ -197,7 +197,8 @@ public class Druid_PackCall extends StdAbility
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					newMOB.setStartRoom(null);
 					int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
-					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.name()+"!");
+                    if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) <T-NAMESELF>!");
 					CMLib.commands().postFollow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 					{

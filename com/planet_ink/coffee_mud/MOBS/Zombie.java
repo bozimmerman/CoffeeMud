@@ -42,6 +42,8 @@ public class Zombie extends Undead
 		setDisplayText("a skeleton slowly moves about.");
 		setMoney(10);
 		baseEnvStats.setWeight(30);
+        baseCharStats().setMyRace(CMClass.getRace("Undead"));
+        baseCharStats().getMyRace().startRacing(this,false);
 
 		baseEnvStats().setDamage(8);
 		baseEnvStats().setLevel(2);

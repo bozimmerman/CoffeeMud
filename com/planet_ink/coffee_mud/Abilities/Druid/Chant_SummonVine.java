@@ -150,10 +150,6 @@ public class Chant_SummonVine extends Chant
 				if(target!=null)
 				{
 					beneficialAffect(mob,target,asLevel,0);
-					if(target.isInCombat()) target.makePeace();
-					CMLib.commands().postFollow(target,mob,true);
-					if(target.amFollowing()!=mob)
-						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
 				else
 					mob.tell("Nature seems unwilling to heed to your call.");
@@ -198,8 +194,14 @@ public class Chant_SummonVine extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
+        CMLib.commands().postFollow(newMOB,caster,true);
+        if(newMOB.amFollowing()!=caster)
+            caster.tell(newMOB.name()+" seems unwilling to follow you.");
+        else
+        {
+            if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+        }
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

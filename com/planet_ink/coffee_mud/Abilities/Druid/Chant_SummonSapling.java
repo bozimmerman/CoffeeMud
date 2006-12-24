@@ -199,7 +199,8 @@ public class Chant_SummonSapling extends Chant
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
+        if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+        newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

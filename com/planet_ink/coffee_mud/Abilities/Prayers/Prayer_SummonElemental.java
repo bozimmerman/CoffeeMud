@@ -97,12 +97,8 @@ public class Prayer_SummonElemental extends Prayer
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
-				if(myMonster.isInCombat()) myMonster.makePeace();
-				CMLib.commands().postFollow(myMonster,mob,true);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
-				if(myMonster.amFollowing()!=mob)
-					mob.tell(myMonster.name()+" seems unwilling to follow you.");
 			}
 		}
 		else
@@ -179,6 +175,16 @@ public class Prayer_SummonElemental extends Prayer
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
+        MOB victim=caster.getVictim();
+        CMLib.commands().postFollow(newMOB,caster,true);
+        if(newMOB.amFollowing()!=caster)
+            caster.tell(newMOB.name()+" seems unwilling to follow you.");
+        else
+        if(victim!=null)
+        {
+            if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+        }
 		newMOB.setStartRoom(null);
 		return(newMOB);
 

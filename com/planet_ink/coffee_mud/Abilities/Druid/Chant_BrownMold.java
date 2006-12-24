@@ -56,7 +56,7 @@ public class Chant_BrownMold extends Chant
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(!mob.isInCombat())
-				||(mob.location()!=invoker.location())))
+				||((invoker!=null)&&(mob.location()!=invoker.location()))))
 					unInvoke();
 			}
 		}
@@ -127,10 +127,6 @@ public class Chant_BrownMold extends Chant
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
 				beneficialAffect(mob,target,asLevel,0);
-				if(target.isInCombat()) target.makePeace();
-				CMLib.commands().postFollow(target,mob,true);
-				if(target.amFollowing()!=mob)
-					mob.tell(target.name()+" seems unwilling to follow you.");
 			}
 		}
 		else
@@ -171,9 +167,15 @@ public class Chant_BrownMold extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
-		newMOB.setStartRoom(null);
+        CMLib.commands().postFollow(newMOB,caster,true);
+        if(newMOB.amFollowing()!=caster)
+            caster.tell(newMOB.name()+" seems unwilling to follow you.");
+        else
+        {
+    		if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+    		newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+        }
+        newMOB.setStartRoom(null);
 		return(newMOB);
 	}
 }

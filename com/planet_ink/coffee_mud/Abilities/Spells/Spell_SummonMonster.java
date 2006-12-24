@@ -75,17 +75,12 @@ public class Spell_SummonMonster extends Spell
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain....^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
-				if(target.isInCombat()) target.makePeace();
-				CMLib.commands().postFollow(target,mob,true);
-				if(target.isInCombat()) target.makePeace();
 				beneficialAffect(mob,target,asLevel,0);
-				if(target.amFollowing()!=mob)
-					mob.tell(target.name()+" seems unwilling to follow you.");
 			}
 		}
 		else
@@ -97,25 +92,77 @@ public class Spell_SummonMonster extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		String mobID = "Dog";
-
-		if (level >= 5)
-		{
-			mobID = "Orc";
-		}
-
-		if (level >= 10)
-		{
-			mobID = "Tiger";
-		}
-
-		if (level >= 15)
-		{
-			mobID = "Troll";
-		}
-
-
-		MOB newMOB=CMClass.getMOB(mobID);
+        MOB newMOB=null;
+        Vector choices=new Vector();
+        MOB M=null;
+        int range=0;
+        int diff=2;
+        if(level>=100)
+            diff=20;
+        else
+        if(level>=80)
+            diff=17;
+        else
+        if(level>=60)
+            diff=15;
+        else
+        if(level>=40)
+            diff=10;
+        else
+        if(level>=20)
+            diff=7;
+        else
+        if(level>=10)
+            diff=5;
+        while((choices.size()==0)&&(range<100))
+        {
+            range+=diff;
+		    for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+            {
+                M=(MOB)((MOB)e.nextElement()).newInstance();
+                if((M.baseEnvStats().level()<level-range)
+                ||(M.baseEnvStats().level()>level+range)
+                ||(M.isGeneric())
+                ||(!CMLib.flags().isEvil(M))
+                ||(!M.baseCharStats().getMyRace().fertile())
+                ||CMLib.flags().isGolem(M)
+                ){ M.destroy(); try{Thread.sleep(1);}catch(Exception e1){} continue;}
+                choices.addElement(M);
+            }
+        }
+        if(choices.size()>0)
+        {
+            MOB winM=(MOB)choices.firstElement();
+            for(int i=1;i<choices.size();i++)
+            {
+                M=(MOB)choices.elementAt(i);
+                if(CMath.pow(level-M.baseEnvStats().level(),2)<CMath.pow(level-winM.baseEnvStats().level(),2))
+                    winM=M;
+            }
+            newMOB=winM;
+        }
+        else
+        {
+            newMOB=CMClass.getMOB("GenMOB");
+            newMOB.baseEnvStats().setLevel(level);
+            newMOB.charStats().setMyRace(CMClass.getRace("Unique"));
+            newMOB.setName("a wierd extra-planar monster");
+            newMOB.setDisplayText("a wierd extra-planar monster stands here");
+            newMOB.setDescription("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!");
+            CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+            newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
+            newMOB.baseState().setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+            newMOB.recoverMaxState();
+            newMOB.resetToMaxState();
+            newMOB.recoverEnvStats();
+            newMOB.recoverCharStats();
+            newMOB.baseCharStats().getCurrentClass().fillOutMOB(newMOB,level);
+            newMOB.recoverMaxState();
+            newMOB.resetToMaxState();
+            newMOB.recoverEnvStats();
+            newMOB.recoverCharStats();
+        }
+        newMOB.setMoney(0);
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
@@ -126,6 +173,16 @@ public class Spell_SummonMonster extends Spell
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+        MOB victim=caster.getVictim();
+        CMLib.commands().postFollow(newMOB,caster,true);
+        if(newMOB.amFollowing()!=caster)
+            caster.tell(newMOB.name()+" seems unwilling to follow you.");
+        else
+        if(victim!=null)
+        {
+            if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+        }
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}
