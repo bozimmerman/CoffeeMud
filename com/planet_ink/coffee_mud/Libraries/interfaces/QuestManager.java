@@ -42,6 +42,7 @@ public interface QuestManager extends CMLibrary
     public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput);
     public Vector parseQuestCommandLines(Vector script, String cmdOnly, int startLine);
     public int getHolidayIndex(String named);
+    public String getHolidayName(int index);
     public String listHolidays(Area A, String otherParms);
     public String deleteHoliday(Area A, int holidayNumber);
     public void modifyHoliday(MOB mob, int holidayNumber);
