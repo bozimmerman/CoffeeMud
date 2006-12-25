@@ -77,6 +77,7 @@ public class StdTrap extends StdAbility implements Trap
 		Room R=target.location();
 		if((target.isMonster())
 		&&(!canBeUninvoked())
+        &&(!isABomb())
 		&&(R!=null)
 		&&(target.getStartRoom()!=null)
 		&&(target.getStartRoom().getArea()==R.getArea())

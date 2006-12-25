@@ -49,7 +49,9 @@ public class Prayer_SanctifyRoom extends Prayer
 
     protected boolean inRoom(MOB mob, Room R)
     {
-        boolean inRoom=false;
+        boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
+                        ||((text().length()>0)&&(mob.Name().equals(text())))
+                        ||((text().length()>0)&&(mob.getClanID().equals(text()))));
         for(int i=0;i<R.numInhabitants();i++)
         {
             MOB M=R.fetchInhabitant(i);
