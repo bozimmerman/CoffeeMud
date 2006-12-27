@@ -118,11 +118,28 @@ public class RaceData extends StdWebMacro
                 }
                 if(parms.containsKey("HEALTHRACE"))
                 {
+                    R=R.makeGenRace();
+                    String old=httpReq.getRequestParameter("HEALTHRACE");
+                    if(old==null) old=""+R.getStat("HEALTHRACE");
+                    str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
+                    Race R2=null;
+                    for(Enumeration e=CMClass.races();e.hasMoreElements();)
+                    {
+                        R2=(Race)e.nextElement();
+                        
+                    }
 //TODO: healthrace                    
                 }
                 if(parms.containsKey("BODY"))
                 {
-//TODO: body parts                    
+                    str.append("<TABLE WIDTH=100% BORDER=0>");
+                    for(int i=0;i<Race.BODYPARTSTR.length;i++)
+                    {
+                        String old=httpReq.getRequestParameter("BODYPART"+i);
+                        if(old==null) old=""+R.bodyMask()[i];
+                        str.append("<TR><TD>"+Race.BODYPARTSTR[i]+"</TD><TD><INPUT TYPE=TEXT NAME=BODYPART"+i+" VALUE=\""+old+"\" SIZE=3></TD></TR>");
+                    }
+                    str.append("</TABLE>, ");
                 }
                 if(parms.containsKey("WEAR"))
                     for(int b=0;b<Item.WORN_CODES.length;b++)
@@ -130,11 +147,39 @@ public class RaceData extends StdWebMacro
                             str.append(Item.WORN_DESCS[b]+", ");
                 if(parms.containsKey("WEARID"))
                 {
-//TODO: wearid                    
+                    String old=httpReq.getRequestParameter("WEARID");
+                    long mask=0;
+                    if(old==null) 
+                        mask=R.forbiddenWornBits();
+                    else
+                    {
+                        mask|=CMath.s_long(old);
+                        for(int i=1;;i++)
+                            if(httpReq.isRequestParameter("WEARID"+(new Integer(i).toString())))
+                                mask|=CMath.s_long(httpReq.getRequestParameter("WEARID"+(new Integer(i).toString())));
+                            else
+                                break;
+                    }
+                    for(int i=0;i<Item.WORN_CODES.length;i++)
+                    {
+                        str.append("<OPTION VALUE="+Item.WORN_CODES[i]+" ");
+                        if(CMath.bset(mask,Item.WORN_CODES[i]))
+                            str.append("SELECTED");
+                        str.append(">"+Item.WORN_DESCS[i]);
+                    }
+                    str.append(", ");
                 }
                 if(parms.containsKey("PLAYABLEID"))
                 {
-//TODO: playableid                    
+                    String old=httpReq.getRequestParameter("PLAYABLEID");
+                    long mask=0;
+                    if(old==null) 
+                        mask=R.availabilityCode();
+                    else
+                        mask|=CMath.s_long(old);
+                    for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
+                        str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_DESCS_EXT[i]);
+                    str.append(", ");
                 }
                 
                 
