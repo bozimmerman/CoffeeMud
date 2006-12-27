@@ -136,7 +136,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		return newItem;
 	}
 
-	public Item buildMyPlant(MOB mob, Room room)
+    protected Item buildMyPlant(MOB mob, Room room)
 	{
 		return buildFungus(mob,room);
 	}

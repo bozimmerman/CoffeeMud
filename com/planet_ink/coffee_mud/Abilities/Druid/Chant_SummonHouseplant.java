@@ -142,7 +142,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		return newItem;
 	}
 
-	public Item buildMyPlant(MOB mob, Room room)
+    protected Item buildMyPlant(MOB mob, Room room)
 	{
 		return buildHouseplant(mob,room);
 	}

@@ -96,7 +96,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		return newItem;
 	}
 
-	public Item buildMyPlant(MOB mob, Room room)
+    protected Item buildMyPlant(MOB mob, Room room)
 	{
 		return buildSeaweed(mob,room);
 	}

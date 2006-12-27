@@ -42,7 +42,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	protected int material=0;
 	protected int oldMaterial=-1;
 
-	public Item buildMyPlant(MOB mob, Room room)
+    protected Item buildMyPlant(MOB mob, Room room)
 	{
 		int code=material&RawMaterial.RESOURCE_MASK;
 		Item newItem=CMClass.getBasicItem("GenItem");

@@ -130,10 +130,31 @@ public class Chant_SummonPlants extends Chant
 		return newItem;
 	}
 
-	public Item buildMyPlant(MOB mob, Room room)
-	{
-		return buildPlant(mob,room);
-	}
+    public Item buildMyThing(MOB mob, Room room)
+    {
+        Area A=room.getArea();
+        Vector V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
+        int pct=0;
+        if(A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>10)
+            pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+        Item I=buildMyPlant(mob,room);
+        if((I!=null)
+        &&(A!=null)
+        &&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob)))
+        &&(!CMLib.law().isACity(A))
+        &&(pct>0))
+        {
+            int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+            if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
+            {
+                Ability A2=CMClass.getAbility("Chant_DruidicConnection");
+                if(A2!=null) A2.invoke(mob,A,true,0);
+            }
+        }
+        return I;
+    }
+    
+	protected Item buildMyPlant(MOB mob, Room room){ return buildPlant(mob,room);}
 
 	public boolean rightPlace(MOB mob,boolean auto)
 	{
@@ -170,7 +191,7 @@ public class Chant_SummonPlants extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				buildMyPlant(mob,mob.location());
+				buildMyThing(mob,mob.location());
 			}
 		}
 		else

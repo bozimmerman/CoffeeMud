@@ -80,6 +80,22 @@ public class Druid_MyPlants extends StdAbility
 		return null;
 	}
 
+    public static Vector myAreaPlantRooms(MOB mob, Area A)
+    {
+        Vector V=new Vector();
+        try
+        {
+            if(A!=null)
+            for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+            {
+                Room R=(Room)r.nextElement();
+                if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
+                    V.addElement(R);
+            }
+        }catch(NoSuchElementException e){}
+        return V;
+    }
+    
 	public static Vector myPlantRooms(MOB mob)
 	{
 		Vector V=new Vector();

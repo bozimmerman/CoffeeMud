@@ -203,26 +203,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 		Area A=CMLib.map().areaLocation(target);
-		int other=0;
-		int streets=0;
-		int buildings=0;
-		Room R=null;
-		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
-		{
-			R=(Room)e.nextElement();
-			if(R.roomID().length()==0) continue;
-			if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				streets++;
-			else
-			if((R.domainType()==Room.DOMAIN_INDOORS_METAL)
-			||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
-			||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
-				buildings++;
-			else
-				other++;
-		}
-		if((CMLib.law().getLegalBehavior(A)==null)
-		&&((streets<(other/2))||((streets+buildings)<other))
+        if((!CMLib.law().isACity(A))
 		&&(!auto))
 		{
 			mob.tell("You can only use this skill in cities.");
@@ -231,6 +212,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 		Vector trail=CMLib.tracking().getRadiantRooms(thisRoom,false,false,true,true,true,30+(2*getXLEVELLevel(mob)));
 		Vector finalTos=new Vector();
+        Room R=null;
 		for(int c=0;c<trail.size();c++)
 		{
 			R=(Room)trail.elementAt(c);

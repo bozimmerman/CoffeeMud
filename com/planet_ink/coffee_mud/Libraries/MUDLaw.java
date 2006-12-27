@@ -91,6 +91,31 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return getLegalObject(R.getArea());
 	}
 
+    public boolean isACity(Area A)
+    {
+        int other=0;
+        int streets=0;
+        int buildings=0;
+        Room R=null;
+        for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+        {
+            R=(Room)e.nextElement();
+            if(R.roomID().length()==0) continue;
+            if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+                streets++;
+            else
+            if((R.domainType()==Room.DOMAIN_INDOORS_METAL)
+            ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
+            ||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
+                buildings++;
+            else
+                other++;
+        }
+        if((streets<(other/2))||((streets+buildings)<other))
+            return false;
+        return true;
+    }
+    
 	public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
 	{
 	    Vector V=new Vector();

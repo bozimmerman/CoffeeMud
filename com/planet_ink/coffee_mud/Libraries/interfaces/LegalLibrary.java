@@ -48,4 +48,6 @@ public interface LegalLibrary extends CMLibrary
     public boolean isLegalOfficerHere(MOB mob);
     public boolean isLegalJudgeHere(MOB mob);
     public boolean isLegalOfficialHere(MOB mob);
+    
+    public boolean isACity(Area A);
 }

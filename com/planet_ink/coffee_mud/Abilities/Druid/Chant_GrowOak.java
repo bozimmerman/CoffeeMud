@@ -43,7 +43,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	protected int hpRemaining=0;
 	protected int lastHp=-1;
 
-	public Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(MOB mob, Room room)
 	{
 		int material=RawMaterial.RESOURCE_OAK;
 		int code=material&RawMaterial.RESOURCE_MASK;
