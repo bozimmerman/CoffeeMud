@@ -43,6 +43,21 @@ public class Chant_CalmWind extends Chant
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 
+    public static void xpWorthyChange(MOB mob, Climate oldC, Climate newC)
+    {
+        if((oldC.nextWeatherType(null)!=Climate.WEATHER_CLEAR)
+        &&(oldC.nextWeatherType(null)!=Climate.WEATHER_CLOUDY)
+        &&((newC.nextWeatherType(null)==Climate.WEATHER_CLEAR)
+            ||(newC.nextWeatherType(null)==Climate.WEATHER_CLOUDY))
+        &&((newC.weatherType(null)==Climate.WEATHER_CLEAR)
+                ||(newC.weatherType(null)==Climate.WEATHER_CLOUDY)))
+        {
+            mob.tell("^YYou have restored balance to the weather!^N");
+            CMLib.leveler().postExperience(mob,null,null,25,false);
+        }
+    }
+    
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -81,24 +96,27 @@ public class Chant_CalmWind extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
+                Climate C=mob.location().getArea().getClimateObj();
+                Climate oldC=(Climate)C.copyOf();
+				switch(C.weatherType(mob.location()))
 				{
 				case Climate.WEATHER_WINDY:
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+					C.setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				case Climate.WEATHER_THUNDERSTORM:
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_RAIN);
+					C.setNextWeatherType(Climate.WEATHER_RAIN);
 					break;
 				case Climate.WEATHER_BLIZZARD:
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
+					C.setNextWeatherType(Climate.WEATHER_SNOW);
 					break;
 				case Climate.WEATHER_DUSTSTORM:
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+					C.setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				default:
 					break;
 				}
-				mob.location().getArea().getClimateObj().forceWeatherTick(mob.location().getArea());
+				C.forceWeatherTick(mob.location().getArea());
+                Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
 			}
 		}
 		else

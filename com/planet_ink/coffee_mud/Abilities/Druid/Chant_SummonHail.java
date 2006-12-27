@@ -102,10 +102,12 @@ public class Chant_SummonHail extends Chant
                     else
                         CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");
                 }
-                if(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)
+                Climate C=mob.location().getArea().getClimateObj();
+                Climate oldC=(Climate)C.copyOf();
+                if(C.weatherType(mob.location())!=Climate.WEATHER_HAIL)
                 {
-                    mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_HAIL);
-                    mob.location().getArea().getClimateObj().forceWeatherTick(mob.location().getArea());
+                    C.setNextWeatherType(Climate.WEATHER_HAIL);
+                    C.forceWeatherTick(mob.location().getArea());
                 }
             }
         }

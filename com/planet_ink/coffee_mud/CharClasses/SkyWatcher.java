@@ -196,7 +196,11 @@ public class SkyWatcher extends StdCharClass
 		return true;
 	}
 
-
+	public void executeMsg(Environmental host, CMMsg msg)
+    {
+        
+    }
+    
 	public String statQualifications(){return "Constitution 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

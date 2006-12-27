@@ -123,7 +123,7 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Bury",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_CatsGrace",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"AnimalTraining",false);

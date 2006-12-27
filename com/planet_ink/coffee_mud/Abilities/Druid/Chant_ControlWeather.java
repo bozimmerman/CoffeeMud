@@ -40,11 +40,15 @@ public class Chant_ControlWeather extends Chant
 	protected int canAffectCode(){return Ability.CAN_AREAS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-
+	public int controlCode=0;
+    public int abilityCode(){return controlCode;}
+    public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
+    
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
-		if(!msg.amISource(invoker())
+		if((!msg.amISource(invoker())||(abilityCode()==1))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
@@ -65,7 +69,13 @@ public class Chant_ControlWeather extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Ability A=mob.location().getArea().fetchEffect(ID());
+        Chant_ControlWeather A=(Chant_ControlWeather)mob.location().getArea().fetchEffect(ID());
+        if((A!=null)&&(A.abilityCode()==1))
+        {
+            long remaining=A.tickDown*Tickable.TIME_TICK;
+            mob.tell("This area is under an enchantment of climactic balance, which can not be controlled for "+mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)+".");
+            return false;
+        }
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/(mob.envStats().level()+(super.getXLEVELLevel(mob)));
 		if(size<0) size=0;
@@ -73,7 +83,7 @@ public class Chant_ControlWeather extends Chant
 		boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");
+			CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?"The sky changes color as the weather comes under control!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
