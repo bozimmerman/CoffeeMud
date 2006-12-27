@@ -211,7 +211,7 @@ public class Gaian extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.";}
+	public String otherBonuses(){return "Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.  Can create a druidic connection with an area.";}
 
 	public void affectCharState(MOB affected, CharState affectableState)
 	{

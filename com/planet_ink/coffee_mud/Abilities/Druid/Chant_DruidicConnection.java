@@ -116,7 +116,10 @@ public class Chant_DruidicConnection extends Chant
                 }
             }
             invoker.tell("You have destroyed your connection with "+affected.name()+"!");
+            for(Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
+                ((Room)e.nextElement()).recoverRoomStats();
         }
+        super.unInvoke();
     }
     
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -178,6 +181,8 @@ public class Chant_DruidicConnection extends Chant
                     A.setSavable(false);
                     A.makeLongLasting();
                     A.startTime=System.currentTimeMillis();
+                    for(Enumeration e=target.getMetroMap();e.hasMoreElements();)
+                        ((Room)e.nextElement()).recoverRoomStats();
                 }
             }
             else

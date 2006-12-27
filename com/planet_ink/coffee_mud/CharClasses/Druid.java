@@ -298,7 +298,7 @@ public class Druid extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
+	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -222,7 +222,7 @@ public class Delver extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "";}
+	public String otherBonuses(){return "Can create a druidic connection with an area.";}
 
 	public Vector outfit(MOB myChar)
 	{
