@@ -148,6 +148,13 @@ public class Prancer extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if(!super.okMessage(host,msg))
+            return false;
+        return Bard.visitationBonusOKMessage(host,msg);
+    }
+    
 	public String statQualifications(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -271,7 +278,7 @@ public class Prancer extends StdCharClass
         return (int)Math.round(theAmount);
     }
     
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.";}
+	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
 
 	public void level(MOB mob, Vector newAbilityIDs)
 	{

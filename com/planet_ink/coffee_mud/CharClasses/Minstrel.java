@@ -182,6 +182,13 @@ public class Minstrel extends StdCharClass
 		}
 	}
 
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if(!super.okMessage(host,msg))
+            return false;
+        return Bard.visitationBonusOKMessage(host,msg);
+    }
+    
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
 		if(E instanceof MusicalInstrument)
@@ -240,7 +247,7 @@ public class Minstrel extends StdCharClass
     }
     
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.";}
+	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

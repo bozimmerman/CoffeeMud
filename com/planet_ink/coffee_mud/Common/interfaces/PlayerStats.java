@@ -88,6 +88,7 @@ public interface PlayerStats extends CMCommon
     
     public void addRoomVisit(Room R);
     public boolean hasVisited(Room R);
+    public boolean hasVisited(Area A);
     public int percentVisited(MOB mob, Area A);
 
     public String[] getAliasNames();

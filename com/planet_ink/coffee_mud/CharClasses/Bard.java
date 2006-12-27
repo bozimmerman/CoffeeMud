@@ -153,6 +153,62 @@ public class Bard extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if(!super.okMessage(host,msg))
+            return false;
+        return Bard.visitationBonusOKMessage(host,msg);
+    }
+    public static boolean visitationBonusOKMessage(Environmental host, CMMsg msg)
+    {
+        if((msg.target() instanceof Room)
+        &&(host instanceof MOB)
+        &&(!((MOB)host).isMonster())
+        &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+        &&(((MOB)host).playerStats()!=null))
+        {
+            Room R=(Room)msg.target();
+            if(((R.roomID().length()>0)
+            ||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+            &&(!((MOB)host).playerStats().hasVisited(R)))
+            {
+                Area A=R.getArea();
+                if(!((MOB)host).playerStats().hasVisited(A))
+                {
+                    ((MOB)host).playerStats().addRoomVisit(R);
+                    int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
+                    if(xp>250) xp=250;
+                    if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have discovered '"+A.name()+"', you gain "+xp+" experience."));
+                }
+                else
+                {
+                    int pctBefore=((MOB)host).playerStats().percentVisited((MOB)host,A);
+                    ((MOB)host).playerStats().addRoomVisit(R);
+                    int pctAfter=((MOB)host).playerStats().percentVisited((MOB)host,A);
+                    if((pctBefore<50)&&(pctAfter>=50))
+                    {
+                        int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
+                        if(xp>125) xp=125;
+                        if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have familiarized yourself with '"+A.name()+"', you gain "+xp+" experience."));
+                    }
+                    else
+                    if((pctBefore<90)&&(pctAfter>=90))
+                    {
+                        int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
+                        if(xp>250) xp=250;
+                        if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have explored '"+A.name()+"', you gain "+xp+" experience."));
+                    }
+                    
+                }
+                    
+            }
+        }
+        return true;
+    }
+    
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -202,7 +258,7 @@ public class Bard extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.";}
+	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration experience based on danger level.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

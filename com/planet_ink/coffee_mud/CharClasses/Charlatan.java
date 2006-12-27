@@ -168,7 +168,7 @@ public class Charlatan extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level!";}
+	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration experience based on danger level.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -183,6 +183,8 @@ public class Charlatan extends StdCharClass
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+        if(!Bard.visitationBonusOKMessage(myHost,msg))
+            return false;
 		MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
@@ -214,7 +216,7 @@ public class Charlatan extends StdCharClass
 				return false;
 			}
 		}
-		return true;
+		return super.okMessage(myHost,msg);
 	}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

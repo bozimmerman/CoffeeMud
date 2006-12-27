@@ -606,6 +606,12 @@ public class DefaultPlayerStats implements PlayerStats
     {
         return roomSet().contains(CMLib.map().getExtendedRoomID(R));
     }
+    public boolean hasVisited(Area A)
+    {
+        int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+        if(numRooms<=0) return true;
+        return roomSet().roomCount(A.Name())>0;
+    }
 
     
     public int percentVisited(MOB mob, Area A)
