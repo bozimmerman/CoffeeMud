@@ -284,6 +284,14 @@ public class Age extends StdAbility
 					newMan.recoverEnvStats();
 					newMan.recoverMaxState();
 					newMan.resetToMaxState();
+                    if(CMLib.flags().isAnimalIntelligence(newMan))
+                    {
+                        newMan.baseCharStats().setMyClasses(";StdCharClass");
+                        newMan.recoverCharStats();
+                        newMan.recoverEnvStats();
+                        newMan.recoverMaxState();
+                        newMan.resetToMaxState();
+                    }
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.map().addPlayer(newMan);
 

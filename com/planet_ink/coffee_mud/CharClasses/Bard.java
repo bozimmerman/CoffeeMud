@@ -125,32 +125,33 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 	}
 
-	public int adjustExperienceGain(MOB mob, MOB victim, int amount)
-	{
-		double theAmount=new Integer(amount).doubleValue();
-		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
-		{
-			HashSet H=mob.getGroupMembers(new HashSet());
-			double origAmount=theAmount;
-			for(Iterator e=H.iterator();e.hasNext();)
-			{
-				MOB mob2=(MOB)e.next();
-				if((mob2!=mob)
-				   &&(mob2!=victim)
-				   &&(mob2.location()!=null)
-				   &&(mob2.location()==mob.location()))
-				{
-					if(!mob2.isMonster())
-						theAmount+=(origAmount/5.0);
-					else
-					if(!CMLib.flags().isAnimalIntelligence(mob2))
-						theAmount+=1.0;
-				}
-			}
-		}
-		return (int)Math.round(theAmount);
-	}
-
+	public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,5.0);}
+    public static int bardAdjustExperienceGain(MOB mob, MOB victim, int amount, double rate)
+    {
+        double theAmount=new Integer(amount).doubleValue();
+        if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
+        {
+            HashSet H=mob.getGroupMembers(new HashSet());
+            double origAmount=theAmount;
+            for(Iterator e=H.iterator();e.hasNext();)
+            {
+                MOB mob2=(MOB)e.next();
+                if((mob2!=mob)
+                   &&(mob2!=victim)
+                   &&(mob2.location()!=null)
+                   &&(mob2.location()==mob.location()))
+                {
+                    if(!mob2.isMonster())
+                        theAmount+=(origAmount/rate);
+                    else
+                    if(!CMLib.flags().isAnimalIntelligence(mob2))
+                        theAmount+=1.0;
+                }
+            }
+        }
+        return (int)Math.round(theAmount);
+    }
+    
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
     public boolean okMessage(Environmental host, CMMsg msg)
@@ -173,6 +174,40 @@ public class Bard extends StdCharClass
             &&(!((MOB)host).playerStats().hasVisited(R)))
             {
                 Area A=R.getArea();
+                MOB M=null;
+                boolean pub=false;
+                for(int m=0;m<R.numInhabitants();m++)
+                {
+                    M=R.fetchInhabitant(m);
+                    if((M instanceof ShopKeeper)
+                    &&(M.getStartRoom()==R))
+                    {
+                        Vector V=((ShopKeeper)M).getShop().getBaseInventory();
+                        Vector V2=new Vector();
+                        for(int i=0;i<V.size();i++)
+                        {
+                            if(V.elementAt(i) instanceof Potion)
+                            {
+                                V2.addAll(((Potion)V).getSpells());
+                                for(int v=V2.size()-1;v>=0;v--)
+                                    if((((Ability)V2.elementAt(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+                                        V2.removeElementAt(v);
+                                
+                                
+                            }
+                            if(V.elementAt(i) instanceof Drink)
+                                V2.addAll(CMLib.flags().domainAffects((Environmental)V.elementAt(i),Ability.ACODE_POISON));
+                            if(V2!=null)
+                            for(int v=0;v<V2.size();v++)
+                                pub=pub||CMath.bset(((Ability)V2.elementAt(v)).flags(),Ability.FLAG_INTOXICATING);
+                        }
+                    }
+                }
+                if(pub)
+                {
+                    if(CMLib.leveler().postExperience((MOB)host,null,null,50,true))
+                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have discovered a new pub, you gain "+50+" experience."));
+                }
                 if(!((MOB)host).playerStats().hasVisited(A))
                 {
                     ((MOB)host).playerStats().addRoomVisit(R);

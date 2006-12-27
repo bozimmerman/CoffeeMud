@@ -52,7 +52,7 @@ public class Apprentice extends StdCharClass
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-
+    protected HashSet currentApprentices=new HashSet();
 
     public void initializeClass()
     {
@@ -131,6 +131,28 @@ public class Apprentice extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}
 
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if((tickID==Tickable.TICKID_MOB)
+        &&(ticking instanceof MOB)
+        &&(!((MOB)ticking).isMonster()))
+        {
+            if(((MOB)ticking).baseCharStats().getCurrentClass()==this)
+            {
+                if(!currentApprentices.contains(ticking))
+                    currentApprentices.add(ticking);
+            }
+            else
+            if(currentApprentices.contains(ticking))
+            {
+                currentApprentices.remove(ticking);
+                ((MOB)ticking).tell("You are no longer an apprentice!");
+                CMLib.leveler().postExperience((MOB)ticking,null,null,1000,false);
+            }
+        }
+        return super.tick(ticking,tickID);
+    }
+    
 	public String statQualifications(){return "Wisdom 5+, Intelligence 5+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

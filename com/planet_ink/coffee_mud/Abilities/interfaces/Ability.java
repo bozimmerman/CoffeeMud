@@ -839,6 +839,8 @@ public interface Ability extends Environmental
     public static final int FLAG_AIRBASED=65536;
     /** constant mask for the flags() method designating that this ability is a grounded effect @see Ability#flags() */
     public static final int FLAG_EARTHBASED=131072;
+    /** constant mask for the flags() method designating that this ability is an intoxicating effect @see Ability#flags() */
+    public static final int FLAG_INTOXICATING=262144;
 	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
@@ -860,7 +862,8 @@ public interface Ability extends Environmental
 	    "HEALING",
         "FREEZING",
         "ELECTROCUTING",
-        "ACIDIZING"
+        "ACIDIZING",
+        "INTOXICATING"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see Ability#abstractQuality()*/

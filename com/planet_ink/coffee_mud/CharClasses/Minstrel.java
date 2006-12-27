@@ -220,31 +220,7 @@ public class Minstrel extends StdCharClass
 			+(affectableStats.getClassLevel(this)*2));
 	}
 
-    public int adjustExperienceGain(MOB mob, MOB victim, int amount)
-    {
-        double theAmount=new Integer(amount).doubleValue();
-        if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
-        {
-            HashSet H=mob.getGroupMembers(new HashSet());
-            double origAmount=theAmount;
-            for(Iterator e=H.iterator();e.hasNext();)
-            {
-                MOB mob2=(MOB)e.next();
-                if((mob2!=mob)
-                   &&(mob2!=victim)
-                   &&(mob2.location()!=null)
-                   &&(mob2.location()==mob.location()))
-                {
-                    if(!mob2.isMonster())
-                        theAmount+=(origAmount/5.0);
-                    else
-                    if(!CMLib.flags().isAnimalIntelligence(mob2))
-                        theAmount+=1.0;
-                }
-            }
-        }
-        return (int)Math.round(theAmount);
-    }
+    public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,5.0);}
     
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
