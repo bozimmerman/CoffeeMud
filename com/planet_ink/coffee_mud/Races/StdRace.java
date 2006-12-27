@@ -425,6 +425,10 @@ public class StdRace implements Race
 		if(room==null) room=mob.location();
 
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
+        if((mob.amFollowing()!=null)
+        &&(mob.isMonster())
+        &&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
+            Body.setSavedMOB((MOB)mob.copyOf());
 		Body.setCharStats((CharStats)mob.baseCharStats().copyOf());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());

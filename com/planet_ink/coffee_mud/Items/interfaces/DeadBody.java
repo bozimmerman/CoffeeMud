@@ -51,5 +51,7 @@ public interface DeadBody extends Container
 	public void setMobPKFlag(boolean truefalse);
 	public long timeOfDeath();
 	public void setTimeOfDeath(long time);
+    public void setSavedMOB(MOB mob);
+    public MOB savedMOB();
 }
   

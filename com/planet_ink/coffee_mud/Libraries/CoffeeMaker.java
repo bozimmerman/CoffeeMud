@@ -421,6 +421,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
 				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
 				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
+                if(((DeadBody)E).savedMOB()!=null)
+                    text.append("<MOBS>"+getMOBXML(((DeadBody)E).savedMOB())+"</MOBS>");
 				if(((DeadBody)E).killingTool()==null) text.append("<KLTOOL />");
 				else
 				{
@@ -1185,23 +1187,30 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					else
 						continue;
 				}
-				buf.append("<MOB>");
-				buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
-				buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
-				buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-				buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-				buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
-				if((mob.baseCharStats().getMyRace().isGeneric())
-				&&(!custom.contains(mob.baseCharStats().getMyRace())))
-				   custom.add(mob.baseCharStats().getMyRace());
-				fillFileSet(mob,files);
-				buf.append("</MOB>\n\r");
+                buf.append(getMOBXML(mob));
+                if((mob.baseCharStats().getMyRace().isGeneric())
+                &&(!custom.contains(mob.baseCharStats().getMyRace())))
+                   custom.add(mob.baseCharStats().getMyRace());
+                fillFileSet(mob,files);
 			}
 		}
         room.destroy();
 		return buf;
 	}
 
+    public StringBuffer getMOBXML(MOB mob)
+    {
+        StringBuffer buf=new StringBuffer("");
+        buf.append("<MOB>");
+        buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
+        buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
+        buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+        buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+        buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
+        buf.append("</MOB>\n\r");
+        return buf;
+    }
+    
 	public StringBuffer getUniqueItemXML(Item item, 
     									 int type, 
     									 Hashtable found,
@@ -1296,8 +1305,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	}
 
 	public String addMOBsFromXML(String xmlBuffer,
-										Vector addHere,
-										Session S)
+								 Vector addHere,
+								 Session S)
 	{
 		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null) return unpackErr("MOBs","null 'xml'");
@@ -2047,6 +2056,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					((DeadBody)E).setMobPKFlag(CMLib.xml().getBoolFromPieces(buf,"MPKILL"));
 					((DeadBody)E).setDestroyAfterLooting(CMLib.xml().getBoolFromPieces(buf,"MBREAL"));
 					((DeadBody)E).setLastMessage(CMLib.xml().getValFromPieces(buf,"MDLMSG"));
+                    String mobsXML=CMLib.xml().getValFromPieces(buf,"MOBS");
+                    if((mobsXML!=null)&&(mobsXML.length()>0))
+                    {
+                        Vector V=new Vector();
+                        String err=addMOBsFromXML("<MOBS>"+mobsXML+"</MOBS>",V,null);
+                        if((err.length()==0)&&(V.size()>0))
+                            ((DeadBody)E).setSavedMOB((MOB)V.firstElement());
+                        
+                    }
 					Vector dblk=CMLib.xml().getContentsFromPieces(buf,"KLTOOL");
 					if((dblk!=null)&&(dblk.size()>0))
 					{

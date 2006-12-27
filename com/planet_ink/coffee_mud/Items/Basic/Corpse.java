@@ -46,7 +46,8 @@ public class Corpse extends GenContainer implements DeadBody
 	protected boolean playerCorpse=false;
 	protected long timeOfDeath=System.currentTimeMillis();
 	protected boolean mobPKFlag=false;
-
+	protected MOB savedMOB=null;
+    
 	public Corpse()
 	{
 		super();
@@ -95,6 +96,14 @@ public class Corpse extends GenContainer implements DeadBody
 		else
 			super.setSecretIdentity(newIdentity);
 	}
+    
+    public void destroy()
+    {
+        super.destroy();
+        if(savedMOB!=null)
+            savedMOB.destroy();
+        savedMOB=null;
+    }
 
 	public String mobName(){ return mobName;}
 	public void setMobName(String newName){mobName=newName;}
@@ -116,6 +125,8 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
 	public long timeOfDeath(){return timeOfDeath;}
 	public void setTimeOfDeath(long time){timeOfDeath=time;}
+    public void setSavedMOB(MOB mob){savedMOB=mob;}
+    public MOB savedMOB(){return savedMOB;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
