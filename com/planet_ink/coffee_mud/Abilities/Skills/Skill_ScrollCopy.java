@@ -108,8 +108,18 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,target,CMMsg.MSG_HANDS,"<S-NAME> cop(ys) '"+thisSpell.name()+"' from <O-NAME>."))
+			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> cop(ys) '"+thisSpell.name()+"' from <O-NAME>."))
+            {
 				thisSpell.teach(T,mob);
+                if((mob.fetchAbility(thisSpell.ID())!=null)
+                &&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
+                &&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
+                {
+                    int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
+                    if(xp>=0)
+                        CMLib.leveler().postExperience(mob,null,null,xp,false);
+                }
+            }
 		}
 		else
 			mob.location().show(mob,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to copy '"+thisSpell.name()+"' from "+target.name()+", but fail(s).");

@@ -52,6 +52,7 @@ public class Gaoler extends StdCharClass
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
+    public Hashtable mudHourMOBXPMap=new Hashtable();
 
 
 	public Gaoler()
@@ -85,10 +86,10 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Hide",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Brainwash",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HandCuff",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_TarAndFeather",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Flay",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_ArrestingSap",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_ArrestingSap",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_HandCuff",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_TarAndFeather",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Flay",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Torturesmithing",false,CMParms.parseSemicolons("Carpentry,Blacksmithing(75)",true),"+INT 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Leeching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CollectBounty",true);
@@ -171,6 +172,45 @@ public class Gaoler extends StdCharClass
 		}
 		return super.tick(ticking,tickID);
 	}
+    
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        if((msg.source()==host)
+        &&(msg.target() instanceof MOB)
+        &&(msg.target()!=msg.source())
+        &&(msg.tool() instanceof Ability)
+        &&((MOB)host).isMine(msg.tool())
+        &&(msg.tool().ID().equals("Thief_Flay")
+            ||msg.tool().ID().equals("Skill_Chirgury")
+            ||msg.tool().ID().equals("Tattooing")
+            ||msg.tool().ID().equals("Tattooing")
+            ||msg.tool().ID().equals("BodyPiercing")
+            ||msg.tool().ID().equals("Amputation"))
+        &&(CMLib.map().getStartArea(host)!=null)
+        &&(((MOB)host).charStats().getClassLevel(this)>0))
+        {
+            CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMProps.msp("scream.wav",40));
+            if(((MOB)msg.target()).location().okMessage((MOB)msg.target(),msg2))
+            {
+                int xp=(int)Math.round(10.0*CMath.div(msg.target().envStats().level(),((MOB)host).charStats().getClassLevel(this)));
+                int[] done=(int[])mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
+                if(done==null){ done=new int[2]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
+                if(done[0]!=CMLib.map().getStartArea(host).getTimeObj().getHoursInDay())
+                    done[1]=0;
+                done[0]=CMLib.map().getStartArea(host).getTimeObj().getHoursInDay();
+                
+                if(done[1]<(90+(10*((MOB)host).envStats().level())))
+                {
+                    done[1]+=xp;
+                    CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
+                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"The sweet screams of your victim earns you "+xp+" experience points."));
+                }
+                else
+                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"The screams of your victims bore you now."));
+                msg.addTrailerMsg(msg2);
+            }
+        }
+    }
 
 	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
@@ -201,5 +241,5 @@ public class Gaoler extends StdCharClass
 		return outfitChoices;
 	}
 
-	public String otherBonuses(){return "Gains experience when using certain skills.";}
+	public String otherBonuses(){return "Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.";}
 }

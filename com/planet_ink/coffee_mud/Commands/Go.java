@@ -273,7 +273,20 @@ public class Go extends StdCommand
 			riders=ridersAhead(mob,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee);
 			if(riders==null) return false;
 		}
-
+        Vector enterTrailersSoFar=null;
+		Vector leaveTrailersSoFar=null;
+        if((leaveMsg.trailerMsgs()!=null)&&(leaveMsg.trailerMsgs().size()>0))
+        {
+            leaveTrailersSoFar=new Vector();
+            leaveTrailersSoFar.addAll(leaveMsg.trailerMsgs());
+            leaveMsg.trailerMsgs().clear();
+        }
+        if((enterMsg.trailerMsgs()!=null)&&(enterMsg.trailerMsgs().size()>0))
+        {
+            enterTrailersSoFar=new Vector();
+            enterTrailersSoFar.addAll(enterMsg.trailerMsgs());
+            enterMsg.trailerMsgs().clear();
+        }
 		if(exit!=null) exit.executeMsg(mob,enterMsg);
 		if(mob.location()!=null)  mob.location().delInhabitant(mob);
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
@@ -334,6 +347,13 @@ public class Go extends StdCommand
 				//	follower.setFollowing(null);
 			}
 		}
+        if((leaveTrailersSoFar!=null)&&(leaveMsg.target() instanceof Room))
+        for(int t=0;t<leaveTrailersSoFar.size();t++)
+            ((Room)leaveMsg.target()).send(mob,(CMMsg)leaveTrailersSoFar.elementAt(t));
+        if((enterTrailersSoFar!=null)&&(enterMsg.target() instanceof Room))
+        for(int t=0;t<enterTrailersSoFar.size();t++)
+            ((Room)enterMsg.target()).send(mob,(CMMsg)enterTrailersSoFar.elementAt(t));
+            
 		return true;
 	}
 

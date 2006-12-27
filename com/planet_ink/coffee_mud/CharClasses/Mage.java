@@ -357,7 +357,7 @@ public class Mage extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-
+    
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

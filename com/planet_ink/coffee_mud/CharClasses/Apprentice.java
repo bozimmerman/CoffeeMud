@@ -160,5 +160,5 @@ public class Apprentice extends StdCharClass
 		return outfitChoices;
 	}
 	
-	public String otherBonuses(){return "";}
+	public String otherBonuses(){return "Gains lots of xp for training to a new class.";}
 }
