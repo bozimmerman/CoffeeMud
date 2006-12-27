@@ -88,6 +88,9 @@ public class Thief_KillLog extends ThiefSkill
 				set[2]="1";
 				set[3]="0";
 				theList.put(mark.Name(),set);
+                MOB mob=(MOB)affected;
+                mob.tell("Ah, a new one for your kill log.");
+                CMLib.leveler().postExperience(mob,null,null,mark.envStats().level(),false);
 			}
 			set[1]=""+mark.envStats().level();
 			set[3]=new Integer(CMath.s_int(set[3])+1).toString();

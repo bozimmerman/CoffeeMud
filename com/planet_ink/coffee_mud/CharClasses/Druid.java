@@ -298,7 +298,7 @@ public class Druid extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.";}
+	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -323,7 +323,31 @@ public class Druid extends StdCharClass
 		}
 		return true;
 	}
+    
+    public static void doAnimalFollowerLevelingCheck(CharClass C, Environmental host, CMMsg msg)
+    {
+        if((msg.source()!=host)
+        &&(msg.sourceMessage()==null)
+        &&(msg.sourceMinor()==CMMsg.TYP_LEVEL)
+        &&(msg.source().isMonster())
+        &&((msg.source().amFollowing()==host)||(msg.source().amUltimatelyFollowing()==host))
+        &&(host instanceof MOB)
+        &&(((MOB)host).charStats().getCurrentClass()==C)
+        &&(CMLib.flags().isAnimalIntelligence(msg.source())
+          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
+          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
+        {
+            int xp=msg.source().envStats().level()*5;
+            if(xp>0)
+            {
+                ((MOB)host).tell("Your stewardship has benefitted "+msg.source().name()+".");
+                CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
+            }
+        }
+    }
 
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
+    
     public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
     {
 		if((mob!=null)

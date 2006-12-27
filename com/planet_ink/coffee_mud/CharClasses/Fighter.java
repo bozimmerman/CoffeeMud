@@ -160,9 +160,9 @@ public class Fighter extends StdCharClass
 		if(mob.playerStats()==null)
 		{
 			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
-												mob.charStats().getClassLevel(ID()),
-												false,
-												false);
+            												 mob.charStats().getClassLevel(ID()),
+            												 false,
+            												 false);
 			for(Enumeration a=V.elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
@@ -174,6 +174,30 @@ public class Fighter extends StdCharClass
 		}
 	}
 
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+    public String otherBonuses(){return "Receives bonus conquest experience.";}
+    public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
+    {
+        if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)
+        &&(msg.target() instanceof Area)
+        &&(msg.targetMessage()!=null)
+        &&(msg.targetMessage().equalsIgnoreCase("CONQUEST"))
+        &&(host instanceof MOB)
+        &&(((MOB)host).charStats().getCurrentClass()==C)
+        &&(msg.source().Name().equals(((MOB)host).getClanID()))
+        )
+        {
+            Area A=(Area)msg.target();
+            int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],((MOB)host).envStats().level()));
+            if(xp>500) xp=500;
+            if(xp>0)
+            {
+                ((MOB)host).tell("^YVictory!!^N");
+                CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
+            }
+        }
+    }
+    
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

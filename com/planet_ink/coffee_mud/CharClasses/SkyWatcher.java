@@ -226,7 +226,7 @@ public class SkyWatcher extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.";}
+	public String otherBonuses(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.";}
 
 	private static final double[] moonfactors={2.0,1.0,0.0,-1.0,-2.0,-1.0,0.0,2.0,5.0};
 

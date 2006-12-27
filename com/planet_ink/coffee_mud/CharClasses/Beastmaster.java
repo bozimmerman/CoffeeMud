@@ -219,9 +219,11 @@ public class Beastmaster extends StdCharClass
 		}
 		return true;
 	}
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
+
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.";}
+	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.";}
 
     public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{

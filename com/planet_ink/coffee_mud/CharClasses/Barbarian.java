@@ -146,7 +146,8 @@ public class Barbarian extends StdCharClass
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Strength 9+, Constitution 9+";}
-	public String otherBonuses(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.";}
+	public String otherBonuses(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest experience.";}
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)

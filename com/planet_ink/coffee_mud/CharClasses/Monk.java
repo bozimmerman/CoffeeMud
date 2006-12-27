@@ -204,7 +204,8 @@ public class Monk extends StdCharClass
 		return false;
 	}
 
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives 2%/lvl unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives 2%/level trap avoidance.";}
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives 2%/lvl unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives 2%/level trap avoidance.  Receives bonus conquest experience.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

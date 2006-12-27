@@ -366,13 +366,13 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		switch(dirCode)
 		{
 		case Directions.NORTH:
-			return '^';
+			return 'N';
 		case Directions.SOUTH:
-			return 'v';
+			return 'S';
 		case Directions.EAST:
-			return '>';
+			return 'E';
 		case Directions.WEST:
-			return '<';
+			return 'W';
 		case Directions.UP:
 			return 'U';
 		case Directions.DOWN:

@@ -276,8 +276,17 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 	        return;
-        if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1)))
+        Room room=mob.location();
+        CMMsg msg=CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1);
+        if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,msg))
             return;
+        if(room!=null)
+        {
+            if(!room.okMessage(mob,msg))
+                return;
+            room.executeMsg(mob,msg);
+        }
+        
         if(mob.getGroupMembers(new HashSet()).size()>1)
         {
         	Command C=CMClass.getCommand("GTell");
@@ -290,12 +299,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append(baseLevelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
-            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level(),mob.location());
+            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level(),room);
             Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDLEVELS");
             Vector channels2=CMLib.channels().getFlaggedChannelNames("LEVELS");
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(mob.location())+".",true);
+                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels2.size();i++)
                 CMLib.commands().postChannel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);

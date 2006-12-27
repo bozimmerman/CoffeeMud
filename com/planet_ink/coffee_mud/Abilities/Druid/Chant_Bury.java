@@ -108,14 +108,7 @@ public class Chant_Bury extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
-				{
-					double exp=10.0;
-					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-					int levelDiff=mob.envStats().level()-target.envStats().level();
-					if(levelDiff>levelLimit) exp=0.0;
-                    if(exp>0.0)
-                        CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob),false);
-				}
+                    mob.curState().adjMana(3*target.envStats().level()*super.getXLEVELLevel(mob),mob.maxState());
                 target.destroy();
 				mob.location().recoverRoomStats();
 			}

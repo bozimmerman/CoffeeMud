@@ -126,7 +126,9 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
+    public String otherBonuses(){return "Benefits from animal followers leveling.";}
 	public String otherLimitations(){return "Sneak and Hide attempts will fail outside of the wild.";}
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);

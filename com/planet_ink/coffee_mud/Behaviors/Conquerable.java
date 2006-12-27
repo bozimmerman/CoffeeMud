@@ -724,6 +724,16 @@ public class Conquerable extends Arrest
 		Clan C=CMLib.clans().findClan(clanID);
 		if(C==null) return;
 
+        MOB mob=CMLib.map().god(null);
+        mob.setName(clanID);
+        if(myArea!=null)
+            for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
+                if(!((Room)e.nextElement()).show(mob,myArea,null,CMMsg.MSG_AREAAFFECT,null,CMMsg.MSG_AREAAFFECT,"CONQUEST",CMMsg.MSG_AREAAFFECT,null))
+                {
+                    Log.errOut("Conquest","Conquest was stopped in "+myArea.name()+" for "+clanID+".");
+                    return;
+                }
+        
         if(CMSecurity.isDebugging("CONQUEST")) 
             Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" are conquered by "+clanID+", vanquishing '"+holdingClan+"'.");
 		if(holdingClan.length()>0)
