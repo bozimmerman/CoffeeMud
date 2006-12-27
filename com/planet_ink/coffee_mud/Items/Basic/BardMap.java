@@ -49,13 +49,14 @@ public class BardMap extends GenMap
 
 	public void doMapArea()
 	{
-		myMap=null;
+		//myMap=null;
 	}
 
-	public StringBuffer[][] getMyMappedRoom()
+	public StringBuffer[][] getMyMappedRoom(int width)
 	{
-		if(myMap!=null)	return myMap;
-		myMap=finishMapMaking();
+        StringBuffer[][] myMap=null;
+		//if(myMap!=null)	return myMap;
+		myMap=finishMapMaking(width);
 		return myMap;
 	}
 

@@ -36,7 +36,6 @@ import java.util.*;
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.Map
 {
 	public String ID(){	return "StdMap";}
-	protected StringBuffer[][] myMap=null;
 	protected int oldLevel=0;
 
 	public StdMap()
@@ -91,7 +90,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 		this.setName(newName+".");
 		this.setDescription("Looks like "+newName+".");
-		myMap=null;
+		//myMap=null;
 	}
 
     public MapRoom[][] rebuildGrid(Hashtable areaMap)
@@ -189,7 +188,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
-	public Hashtable makeMapRooms()
+	public Hashtable makeMapRooms(int width)
 	{
 		Vector mapAreas=CMParms.parseSemicolons(getMapArea(),true);
 		Hashtable mapRooms=new Hashtable();
@@ -210,9 +209,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 
 
-	public StringBuffer[][] finishMapMaking()
+	public StringBuffer[][] finishMapMaking(int width)
 	{
-		Hashtable mapRooms=makeMapRooms();
+		Hashtable mapRooms=makeMapRooms(width);
 		StringBuffer[][] map=new StringBuffer[0][0];
 		if(mapRooms.size()>0)
 		{
@@ -220,12 +219,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			MapRoom[][] grid=rebuildGrid(mapRooms);
 			if((grid.length==0)||(grid[0].length==0))
 				return map;
-			int ysize=grid[0].length/5;
-			int xsize=grid.length/9;
+            int numXSquares=(int)Math.round(Math.floor(CMath.div(width-6,8)));
+            int numYSquares=((numXSquares/2)+1);
+			int xsize=grid.length/numXSquares;
+            int ysize=grid[0].length/numYSquares;
 			map=new StringBuffer[xsize+1][ysize+1];
 			for(int y=0;y<grid[0].length;y++)
 			{
-				int ycoord=y/5;
+				int ycoord=y/numYSquares;
 				int lastX=-1;
 				String line1="";
 				String line2="";
@@ -289,9 +290,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 
 
-	public StringBuffer[][] getMyMappedRoom()
+	public StringBuffer[][] getMyMappedRoom(int width)
 	{
-		if(oldLevel!=envStats().level())
+        StringBuffer[][] myMap=null;
+		/*if(oldLevel!=envStats().level())
 		{
 			myMap=null;
 			oldLevel=envStats().level();
@@ -306,7 +308,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 		if(myMap!=null)
 			return myMap;
-		myMap=finishMapMaking();
+        */
+		myMap=finishMapMaking(width);
 		Resources.submitResource("map"+envStats().level()+":"+getMapArea(),myMap);
 		return myMap;
 	}
@@ -543,7 +546,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		case CMMsg.TYP_READ:
 			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
-				StringBuffer map[][]=getMyMappedRoom();
+                int cols=(mob.session()==null)?80:(mob.session().getWrap()+2);
+				StringBuffer map[][]=getMyMappedRoom(cols);
 				if((CMLib.flags().isReadable(this))
 				&&(map!=null)
 				&&(map.length>0)

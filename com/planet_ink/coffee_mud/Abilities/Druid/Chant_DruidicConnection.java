@@ -41,7 +41,7 @@ public class Chant_DruidicConnection extends Chant
     protected int canAffectCode(){return CAN_AREAS;}
     protected int canTargetCode(){return 0;}
     protected long startTime=System.currentTimeMillis();
-
+    public boolean bubbleAffect(){return (affected instanceof Area);}
     
     public boolean tick(Tickable ticking, int tickID)
     {

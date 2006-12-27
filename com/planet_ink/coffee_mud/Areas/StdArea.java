@@ -722,11 +722,31 @@ public class StdArea implements Area
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+envStats().weight());
+        for(int a=0;a<numEffects();a++)
+        {
+            Ability A=fetchEffect(a);
+            if((A!=null)&&(A.bubbleAffect()))
+               A.affectEnvStats(affected,affectableStats);
+        }
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}
+	{
+        for(int a=0;a<numEffects();a++)
+        {
+            Ability A=fetchEffect(a);
+            if((A!=null)&&(A.bubbleAffect()))
+               A.affectCharStats(affectedMob,affectableStats);
+        }
+    }
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}
+	{
+        for(int a=0;a<numEffects();a++)
+        {
+            Ability A=fetchEffect(a);
+            if((A!=null)&&(A.bubbleAffect()))
+               A.affectCharState(affectedMob,affectableMaxState);
+        }
+    }
 
 	public void addNonUninvokableEffect(Ability to)
 	{
