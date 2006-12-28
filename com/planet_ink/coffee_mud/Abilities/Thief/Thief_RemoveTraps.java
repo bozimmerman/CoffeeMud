@@ -43,6 +43,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public Environmental lastChecked=null;
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public Vector lastDone=new Vector();
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -104,6 +105,14 @@ public class Thief_RemoveTraps extends ThiefSkill
 			}
 		}
 		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
+        if((success)&&(!lastDone.contains(""+unlockThis)))
+        {
+            while(lastDone.size()>40) lastDone.removeElementAt(0);
+            lastDone.addElement(""+unlockThis);
+            msg.setValue(1);
+        }
+        else
+            msg.setValue(0);
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
