@@ -222,7 +222,7 @@ public class Delver extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "Can create a druidic connection with an area.";}
+	public String otherBonuses(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
 
 	public Vector outfit(MOB myChar)
 	{
@@ -235,6 +235,12 @@ public class Delver extends StdCharClass
 		return outfitChoices;
 	}
 
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        super.executeMsg(host,msg);
+        Druid.doAnimalFreeingCheck(this,host,msg);
+    }
+    
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

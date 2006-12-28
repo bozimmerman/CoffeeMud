@@ -53,6 +53,7 @@ public class Druid extends StdCharClass
 	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
 	protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+    public static Hashtable animalChecking=new Hashtable();
 
 	public Druid()
 	{
@@ -298,7 +299,7 @@ public class Druid extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.";}
+	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -345,8 +346,48 @@ public class Druid extends StdCharClass
             }
         }
     }
+    
+    public static void doAnimalFreeingCheck(CharClass C, Environmental host, CMMsg msg)
+    {
+        if((msg.source()!=host)
+        &&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
+        &&(msg.source().isMonster())
+        &&(host instanceof MOB)
+        &&(!((MOB)host).isMonster())
+        &&(msg.target()==host)
+        &&(msg.source().getStartRoom()!=null)
+        &&(CMLib.law().isACity(msg.source().getStartRoom().getArea()))
+        &&(((MOB)host).charStats().getCurrentClass()==C)
+        &&(CMLib.flags().isAnimalIntelligence(msg.source())
+          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
+          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
+        &&(CMLib.flags().flaggedAffects(msg.source(),Ability.FLAG_SUMMONING).size()==0)
+        &&(msg.source().location()!=null)
+        &&(!msg.source().amDestroyed())
+        &&(CMLib.flags().isInTheGame((MOB)host,true))
+        &&(!CMLib.law().isACity(msg.source().location().getArea())))
+        {
+            Object[] stuff=(Object[])animalChecking.get(host);
+            Room room=msg.source().location();
+            if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*TimeClock.TIME_MILIS_PER_MUDHOUR)))
+            {
+                stuff=new Object[3];
+                stuff[0]=new Long(System.currentTimeMillis());
+                animalChecking.remove(host);
+                animalChecking.put(host,stuff);
+                stuff[1]=new Integer(0);
+                stuff[2]=new Vector();
+            }
+            if((((Integer)stuff[1]).intValue()<19)&&(!((Vector)stuff[2]).contains(""+msg.source())))
+            {
+                stuff[1]=new Integer(((Integer)stuff[1]).intValue()+1);
+                ((MOB)host).tell("You have freed "+msg.source().name()+" from "+(msg.source().getStartRoom().getArea().name())+".");
+                CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
+            }
+        }
+    }
 
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
+    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg); Druid.doAnimalFreeingCheck(this,host,msg);}
     
     public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
     {

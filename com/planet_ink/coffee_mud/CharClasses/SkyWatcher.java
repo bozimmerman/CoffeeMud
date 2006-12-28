@@ -198,7 +198,8 @@ public class SkyWatcher extends StdCharClass
 
 	public void executeMsg(Environmental host, CMMsg msg)
     {
-        
+        super.executeMsg(host,msg);
+        Druid.doAnimalFreeingCheck(this,host,msg);
     }
     
 	public String statQualifications(){return "Constitution 9+, Intelligence 9+";}
@@ -230,7 +231,7 @@ public class SkyWatcher extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.";}
+	public String otherBonuses(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
 
 	private static final double[] moonfactors={2.0,1.0,0.0,-1.0,-2.0,-1.0,0.0,2.0,5.0};
 
