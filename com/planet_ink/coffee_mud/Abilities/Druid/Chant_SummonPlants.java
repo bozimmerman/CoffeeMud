@@ -41,6 +41,7 @@ public class Chant_SummonPlants extends Chant
 	protected int canTargetCode(){return 0;}
 	protected Room PlantsLocation=null;
 	protected Item littlePlants=null;
+    protected static Hashtable plantBonuses=new Hashtable();
 
 	public void unInvoke()
 	{
@@ -133,6 +134,7 @@ public class Chant_SummonPlants extends Chant
     public Item buildMyThing(MOB mob, Room room)
     {
         Area A=room.getArea();
+        boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
         Vector V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
         int pct=0;
         if(A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>10)
@@ -140,15 +142,40 @@ public class Chant_SummonPlants extends Chant
         Item I=buildMyPlant(mob,room);
         if((I!=null)
         &&(A!=null)
-        &&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob)))
-        &&(!CMLib.law().isACity(A))
-        &&(pct>0))
+        &&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob))))
         {
-            int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
-            if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
+            if(!CMLib.law().isACity(A))
             {
-                Ability A2=CMClass.getAbility("Chant_DruidicConnection");
-                if(A2!=null) A2.invoke(mob,A,true,0);
+                if(pct>0)
+                {
+                    int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+                    if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
+                    {
+                        Ability A2=CMClass.getAbility("Chant_DruidicConnection");
+                        if(A2!=null) A2.invoke(mob,A,true,0);
+                    }
+                }
+            }
+            else
+            if((bonusWorthy)&&(!mob.isMonster()))
+            {
+                long[] num=(long[])plantBonuses.get(mob.Name()+"/"+room.getArea().Name());
+                if((num==null)||(System.currentTimeMillis()-num[1]>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*TimeClock.TIME_MILIS_PER_MUDHOUR)))
+                {
+                    num=new long[2];
+                    plantBonuses.remove(mob.Name()+"/"+room.getArea().Name());
+                    plantBonuses.put(mob.Name()+"/"+room.getArea().Name(),num);
+                    num[1]=System.currentTimeMillis();
+                }
+                if(V.size()>=num[0])
+                {
+                    num[0]++;
+                    if(num[0]<19)
+                    {
+                        mob.tell("You have made this city greener.");
+                        CMLib.leveler().postExperience(mob,null,null,(int)num[0],false);
+                    }
+                }
             }
         }
         return I;
