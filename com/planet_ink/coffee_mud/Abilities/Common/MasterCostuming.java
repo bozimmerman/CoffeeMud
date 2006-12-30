@@ -232,6 +232,8 @@ public class MasterCostuming extends EnhancedCraftingSkill implements ItemCrafto
 			building=null;
 			mending=false;
 			messedUp=false;
+            refitting=false;
+            aborted=false;
 			String recipeName=CMParms.combine(commands,0);
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName,true);

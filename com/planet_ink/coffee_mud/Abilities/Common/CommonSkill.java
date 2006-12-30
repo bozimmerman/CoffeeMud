@@ -252,6 +252,7 @@ public class CommonSkill extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        aborted=false;
 		if(mob.isInCombat())
 		{
 			commonEmote(mob,"<S-NAME> <S-IS-ARE> in combat!");

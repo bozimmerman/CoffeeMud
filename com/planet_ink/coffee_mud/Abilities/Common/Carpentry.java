@@ -243,6 +243,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			building=null;
 			mending=false;
+            refitting=false;
+            aborted=false;
 			key=null;
 			messedUp=false;
 			int amount=-1;

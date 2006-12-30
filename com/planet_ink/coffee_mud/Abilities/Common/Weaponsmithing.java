@@ -254,6 +254,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(fire==null) return false;
 			building=null;
 			messedUp=false;
+            refitting=false;
+            aborted=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{

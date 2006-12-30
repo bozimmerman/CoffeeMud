@@ -261,6 +261,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
+            refitting=false;
+            aborted=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{

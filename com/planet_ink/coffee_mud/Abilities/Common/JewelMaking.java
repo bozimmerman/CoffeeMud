@@ -228,6 +228,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			refitting=false;
+            aborted=false;
 			messedUp=false;
 			if(fire==null) return false;
 			String jewel=(String)commands.elementAt(1);
@@ -338,7 +339,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			beingDone=null;
 			building=null;
 			mending=false;
-			refitting=false;
+            refitting=false;
+            aborted=false;
 			messedUp=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

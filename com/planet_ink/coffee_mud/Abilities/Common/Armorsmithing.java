@@ -251,6 +251,8 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
+            refitting=false;
+            aborted=false;
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			int amount=-1;

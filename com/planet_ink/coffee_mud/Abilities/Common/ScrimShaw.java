@@ -192,6 +192,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
 			mending=false;
 			key=null;
 			messedUp=false;
+            refitting=false;
+            aborted=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{
