@@ -135,6 +135,7 @@ public class Butchering extends GatheringSkill
 		if(I==null) return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)
+           ||((DeadBody)I).playerCorpse()
 		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
 			commonTell(mob,"You can't butcher "+I.name()+".");

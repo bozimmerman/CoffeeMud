@@ -48,6 +48,7 @@ public class Prop_NoRecall extends Property
 			&&(msg.source().location()!=null))
             {
 				if(((myHost instanceof MOB)&&((msg.source()==myHost)||(msg.source().location()==((MOB)myHost).location()))&&(msg.source().isInCombat()))
+                ||((myHost instanceof Rideable)&&(msg.source().riding()==myHost))
 	            ||((myHost instanceof Item)&&(msg.source()==((Item)myHost).owner()))
 	            ||((myHost instanceof Room)&&(msg.source().location()==myHost))
 				||(myHost instanceof Exit)
