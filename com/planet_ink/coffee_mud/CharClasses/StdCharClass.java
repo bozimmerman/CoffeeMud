@@ -189,7 +189,7 @@ public class StdCharClass implements CharClass
 			if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass"))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner")))
+			&&((!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))||(baseClass().equals("StdCharClass"))))
 			{
 				if(!quiet)
 					mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");

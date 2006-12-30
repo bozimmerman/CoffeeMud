@@ -236,6 +236,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			int y=parse.toUpperCase().indexOf("LOAD=");
 			if(y>=0)
 			{
+                if(parse.substring(0,y).trim().endsWith("#"))
+                {
+                    parse=parse.substring(y+1);
+                    continue;
+                }
 				int z=parse.indexOf("~",y);
 				while((z>0)&&(parse.charAt(z-1)=='\\'))
 				    z=parse.indexOf("~",z+1);
@@ -269,7 +274,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			int y=parse.toUpperCase().indexOf("LOAD=");
 			if(y>=0)
 			{
-				results.append(parse.substring(0,y).trim()+"\n");
+                if(parse.substring(0,y).trim().endsWith("#"))
+                {
+                    results.append(parse.substring(0,y+1));
+                    parse=parse.substring(y+1);
+                    continue;
+                }
+                results.append(parse.substring(0,y).trim()+"\n");
 				int z=parse.indexOf("~",y);
 				while((z>0)&&(parse.charAt(z-1)=='\\'))
 				    z=parse.indexOf("~",z+1);

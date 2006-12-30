@@ -577,9 +577,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		else
 			I=CMClass.getItem("GenResource");
         I.baseEnvStats().setWeight(1);
+        I.setMaterial(type);
         adjustResourceName(I);
 		I.setDescription("");
-		I.setMaterial(type);
 		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
 		I.recoverEnvStats();
 		return I;

@@ -685,7 +685,7 @@ public class Socials extends StdLibrary implements SocialsList
     	StringBuffer help=new StringBuffer("");
     	help.append("^H\n\r");
     	help.append("Social     : ^x"+realName+"^.^N\n\r");
-    	Session session=mob.session();
+    	Session session=(mob!=null)?mob.session():null;
     	MOB tgtMOB=CMClass.getMOB("StdMOB");
     	tgtMOB.setName("the target");
     	MOB othMOB=CMClass.getMOB("StdMOB");

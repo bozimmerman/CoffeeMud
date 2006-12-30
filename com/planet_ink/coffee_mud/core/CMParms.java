@@ -419,7 +419,7 @@ public class CMParms
                 {
                     s=s.substring(i+1);
                     if(((s.trim().startsWith("'"))||(s.trim().startsWith("`")))
-                    &&((s.trim().startsWith("'"))||(s.trim().startsWith("`"))))
+                    &&((s.trim().endsWith("'"))||(s.trim().endsWith("`"))))
                         s=s.trim().substring(1,s.length()-1);
                     return s;
                 }
