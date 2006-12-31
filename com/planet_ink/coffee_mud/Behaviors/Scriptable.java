@@ -6881,7 +6881,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								tryIt=true;
 						}
 						else
-						if(trigger.trim().equalsIgnoreCase("ALL"))
+                        if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
 							tryIt=true;
 						else
 						{
@@ -7006,6 +7006,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     str=CMStrings.removeColors(str);
                     str=CMStrings.replaceAll(str,"\n\r"," ");
 					trigger=trigger.substring(11).trim();
+                    if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
+                    {
+                        que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str));
+                        return;
+                    }
+                    else
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim();
@@ -7125,7 +7131,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								doIt=true;
 						}
 						else
-						if(trigger.trim().equalsIgnoreCase("ALL"))
+						if(trigger.trim().equalsIgnoreCase("ALL")||(trigger.trim().length()==0))
 							doIt=true;
 						else
 						{
@@ -7719,6 +7725,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     str=CMStrings.removeColors(str);
                     str=" "+CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim()+" ";
 					trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
+                    if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
+                        doIt=true;
+                    else
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim();
@@ -7809,6 +7818,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         str=" "+CMStrings.removeColors(str)+" ";
                         str=CMStrings.replaceAll(str,"\n\r"," ");
                         trigger=CMParms.getPastBit(trigger.trim(),1);
+                        if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
+                            doIt=true;
+                        else
                         if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         {
                             trigger=trigger.substring(1).trim().toUpperCase();

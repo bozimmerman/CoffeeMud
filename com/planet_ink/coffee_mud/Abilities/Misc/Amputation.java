@@ -584,12 +584,6 @@ public class Amputation extends StdAbility implements Amputator
 				if(msg.value()<=0)
 				{
 					amputate(target,A,gone);
-                    if(mob.isMine(this))
-                    {
-                        msg=CMClass.getMsg((MOB)target,null,this,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMProps.msp("scream.wav",40));
-                        if(((MOB)target).location().okMessage((MOB)target,msg))
-                            ((MOB)target).location().send((MOB)target,msg);
-                    }
 					if(newOne==true)
 						target.addNonUninvokableEffect(A);
 					target.recoverCharStats();

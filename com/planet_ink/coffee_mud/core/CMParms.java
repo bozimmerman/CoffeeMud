@@ -593,6 +593,24 @@ public class CMParms
         return makeIntArray('\0',0);
     }
 
+    private static int strIndex(Vector V, String str, int start)
+    {
+        if(str.indexOf(' ')<0) return V.indexOf(str,start);
+        Vector V2=CMParms.parse(str);
+        if(V2.size()==0) return -1;
+        int x=V.indexOf(V2.firstElement(),start);
+        boolean found=false;
+        while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
+        {
+            found=true;
+            for(int v2=1;v2<V2.size();v2++)
+                if(!V.elementAt(x+v2).equals(V2.elementAt(v2)))
+                { found=false; break;}
+            if(!found) x=V.indexOf(V2.firstElement(),x+1);
+        }
+        if(found) return x;
+        return -1;
+    }
     private static int stringContains(Vector V, char combiner, StringBuffer buf, int lastIndex)
     {
         String str=buf.toString().trim();
@@ -601,18 +619,18 @@ public class CMParms
         switch(combiner)
         {
         case '&': 
-            lastIndex=V.indexOf(str);
+            lastIndex=strIndex(V,str,0);
             return lastIndex;
         case '|':
             if(lastIndex>=0) return lastIndex;
-            return V.indexOf(str);
+            return strIndex(V,str,0);
         case '>':
             if(lastIndex<0) return lastIndex;
-            return V.indexOf(str,lastIndex<0?0:lastIndex+1);
+            return strIndex(V,str,lastIndex<0?0:lastIndex+1);
         case '<':
         {
             if(lastIndex<0) return lastIndex;
-            int newIndex=V.indexOf(str);
+            int newIndex=strIndex(V,str,0);
             if(newIndex<lastIndex) return newIndex;
             return -1;
         }

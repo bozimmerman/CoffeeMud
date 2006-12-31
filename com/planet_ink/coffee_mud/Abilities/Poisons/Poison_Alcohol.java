@@ -38,6 +38,7 @@ public class Poison_Alcohol extends Poison
 	private static final String[] triggerStrings = {"POISONALCOHOL"};
 	public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
 	public String[] triggerStrings(){return triggerStrings;}
+    public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
 
 	protected int POISON_TICKS(){return 65;}
 	protected int POISON_DELAY(){return 1;}

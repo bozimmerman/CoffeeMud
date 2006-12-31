@@ -188,7 +188,7 @@ public class Bard extends StdCharClass
                         {
                             if(V.elementAt(i) instanceof Potion)
                             {
-                                V2.addAll(((Potion)V).getSpells());
+                                V2.addAll(((Potion)V.elementAt(i)).getSpells());
                                 for(int v=V2.size()-1;v>=0;v--)
                                     if((((Ability)V2.elementAt(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
                                         V2.removeElementAt(v);
