@@ -961,6 +961,15 @@ public class StdRace implements Race
 
 
 
+    public DVector culturalAbilities()
+    {
+        DVector ables=new DVector(2);
+        if((culturalAbilityNames()!=null)
+        &&(culturalAbilityProficiencies()!=null))
+            for(int i=0;i<culturalAbilityNames().length;i++)
+                ables.addElement(culturalAbilityNames()[i],new Integer(culturalAbilityProficiencies()[i]));
+        return ables;
+    }
 	public Vector racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)

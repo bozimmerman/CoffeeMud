@@ -859,7 +859,7 @@ public class MobData extends StdWebMacro
 				Object[] sorted=(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)
 					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
-				Resources.submitResource("MUDGRINDER-POSS",mposs);
+				Resources.submitResource("MUDGRINDER-MOBPOSS",mposs);
 			}
 			str.append(mposs);
 			str.append("</SELECT>");
