@@ -1244,7 +1244,7 @@ public class DefaultSession extends Thread implements Session
                               c++; break; }
                 case 'e': {   MOB victim=mob().getVictim();
                               if((mob().isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
-                                  buf.append(victim.name());
+                                  buf.append(victim.displayName(mob));
                               c++; break; }
                 case 'E': {   MOB victim=mob().getVictim();
                               if((mob().isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
@@ -1287,6 +1287,12 @@ public class DefaultSession extends Thread implements Session
                                     case 'M': { buf.append(tank.maxState().getMana()); c++; break;}
                                     case 'v': { buf.append(tank.curState().getMovement()); c++; break;}
                                     case 'V': { buf.append(tank.maxState().getMovement()); c++; break;}
+                                    case 'e': {   buf.append(tank.displayName(mob())); c++; break;} 
+                                    case 'E': {   if((mob().isInCombat())&&(CMLib.flags().canBeSeenBy(tank,mob)))
+                                                      buf.append(tank.healthText(mob())+"\n\r");
+                                                  c++;
+                                                  break;
+                                              }
                                 }
                             c++;
                             break;
