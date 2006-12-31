@@ -126,9 +126,15 @@ public class RaceData extends StdWebMacro
                     for(Enumeration e=CMClass.races();e.hasMoreElements();)
                     {
                         R2=(Race)e.nextElement();
-                        
+                        if(!R2.isGeneric())
+                            str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(R2.getClass().getName()))?"SELECTED":"")+">"+R2.getClass().getName());
+                        else
+                        {
+                            String RID="com.planet_ink.coffee_mud.Races."+R2.ID();
+                            if(CMClass.checkForCMClass("RACE",RID))
+                                str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(RID))?"SELECTED":"")+">"+RID);
+                        }
                     }
-//TODO: healthrace                    
                 }
                 if(parms.containsKey("BODY"))
                 {
