@@ -417,11 +417,12 @@ public class CMParms
             {
                 if(w==which)
                 {
-                    s=s.substring(i+1);
-                    if(((s.trim().startsWith("'"))||(s.trim().startsWith("`")))
-                    &&((s.trim().endsWith("'"))||(s.trim().endsWith("`"))))
-                        s=s.trim().substring(1,s.length()-1);
-                    return s;
+                    String ts=s.substring(i+1).trim();
+                    if((ts.length()>1)
+                    &&((ts.startsWith("'"))||(ts.startsWith("`")))
+                    &&((ts.endsWith("'"))||(ts.endsWith("`"))))
+                        return ts.substring(1,ts.length()-1);
+                    return s.substring(i+1);
                 }
                 w++;
                 in=false;
