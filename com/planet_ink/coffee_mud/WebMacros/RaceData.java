@@ -563,6 +563,20 @@ public class RaceData extends StdWebMacro
                     if(old==null) old=""+R.getStat("HEALTHRACE");
                     str.append(raceDropDown(old));
                 }
+                if(parms.containsKey("WEAPONRACE"))
+                {
+                    R=R.makeGenRace();
+                    String old=httpReq.getRequestParameter("WEAPONRACE");
+                    if(old==null) old=""+R.getStat("WEAPONRACE");
+                    str.append(raceDropDown(old));
+                }
+                if(parms.containsKey("EVENTRACE"))
+                {
+                    R=R.makeGenRace();
+                    String old=httpReq.getRequestParameter("EVENTRACE");
+                    if(old==null) old=""+R.getStat("EVENTRACE");
+                    str.append(raceDropDown(old));
+                }
                 if(parms.containsKey("BODY"))
                 {
                     str.append("<TABLE WIDTH=100% BORDER=0>");
@@ -655,6 +669,26 @@ public class RaceData extends StdWebMacro
                 {
                     Vector V=CMParms.makeVector(R.myNaturalWeapon());
                     str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
+                }
+                if(parms.containsKey("RESOURCES"))
+                {
+                    //TODO: race resources (item list with # of each)
+                }
+                if(parms.containsKey("BODYKILL"))
+                {
+                    //TODO: whether race disappears when killed
+                }
+                if(parms.containsKey("STARTASTATE"))
+                {
+                    //TODO: starting race state on creation?
+                }
+                if(parms.containsKey("DISFLAGS"))
+                {
+                    //TODO: race disable flags
+                }
+                if(parms.containsKey("AGING"))
+                {
+                    //TODO: race aging chart
                 }
                 
 				if(parms.containsKey("STATS"))
