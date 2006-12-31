@@ -70,6 +70,7 @@ public class Chant_AnimalSpy extends Chant
 				if(A!=null)
 					invoker.delEffect(A);
 				invoker.tell("Your connection with '"+spy.name()+"' fades.");
+Log.errOut("AnimalSpy",new Exception());
 			}
 		}
 		super.unInvoke();
@@ -123,7 +124,10 @@ public class Chant_AnimalSpy extends Chant
 		finally
 		{
 			disable=false;
-			if((spy!=null)&&((spy.amFollowing()!=invoker)||(spy.amDead())||(!CMLib.flags().isInTheGame(spy,true))))
+			if((spy!=null)&&((spy.amFollowing()!=invoker)
+                            ||(spy.amDead())
+                            ||(!CMLib.flags().isInTheGame(spy,false))
+                            ||(!CMLib.flags().isInTheGame(invoker,true))))
 				unInvoke();
 		}
 	}

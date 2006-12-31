@@ -295,7 +295,9 @@ public class StdRace implements Race
 						A.setProficiency(culturalAbilityProficiencies()[a]);
 						mob.addAbility(A);
 						A.autoInvocation(mob);
-						if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+						if((mob.isMonster())
+                        &&(!CMLib.flags().isChild(mob))
+                        &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 						{
 							if(A.proficiency()>0) A.setProficiency(100);
 							A.invoke(mob,mob,false,0);

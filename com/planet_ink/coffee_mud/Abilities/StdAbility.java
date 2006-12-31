@@ -962,7 +962,8 @@ public class StdAbility implements Ability
             if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
                 tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
 
-            if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+            if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+            ||(mob instanceof Deity))
                 tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 
             if(tickAdjustmentFromStandard<2)
@@ -1047,8 +1048,9 @@ public class StdAbility implements Ability
     {
         if(tickAdjustmentFromStandard<=0)
         {
-            tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),5)))+60;
-            if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+            tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*5)+60;
+            if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+            ||(mob instanceof Deity))
                 tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
             if(tickAdjustmentFromStandard<5)
                 tickAdjustmentFromStandard=5;

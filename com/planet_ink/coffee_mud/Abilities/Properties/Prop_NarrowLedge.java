@@ -79,7 +79,8 @@ public class Prop_NarrowLedge extends Property
 						else
 						{
 							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+" to <S-HIS-HER> death!!");
-							mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
+                            if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
+                                mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
 						}
 					}
 				}

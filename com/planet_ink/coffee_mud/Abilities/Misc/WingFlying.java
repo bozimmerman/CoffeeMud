@@ -45,7 +45,7 @@ public class WingFlying extends StdAbility
 	private static final String[] triggerStrings = {"FLAP"};
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
-    protected boolean flying=true;
+    protected Race flyingRace=null;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -53,12 +53,22 @@ public class WingFlying extends StdAbility
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		if((!CMLib.flags().isSleeping(affected))&&(flying))
+		if((!CMLib.flags().isSleeping(affected))&&(flyingRace!=null))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 		else
 			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));
 	}
 
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if((tickID==Tickable.TICKID_MOB)&&(flyingRace!=null)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getMyRace()!=flyingRace))
+        {
+            flyingRace=null;
+            unInvoke();
+        }
+        return super.tick(ticking,tickID);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -76,12 +86,12 @@ public class WingFlying extends StdAbility
 		String str="";
 		if(wasFlying)
 		{
-			flying=false;
+            flyingRace=null;
 			str="<S-NAME> stop(s) flapping <S-HIS-HER> wings.";
 		}
 		else
 		{
-			flying=true;
+            flyingRace=target.charStats().getMyRace();
 			str="<S-NAME> start(s) flapping <S-HIS-HER> wings.";
 		}
 

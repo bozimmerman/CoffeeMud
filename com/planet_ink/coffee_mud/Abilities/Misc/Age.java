@@ -71,6 +71,49 @@ public class Age extends StdAbility
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
 	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
+    protected MOB getFollowing(Environmental babe)
+    {
+        MOB following=null;
+        if(babe instanceof MOB)
+            following=((MOB)babe).amFollowing();
+        else
+        if((babe instanceof Item)
+        &&(((Item)babe).owner() instanceof MOB)
+        &&(CMLib.flags().isInTheGame(((Item)babe).owner(),true)))
+            following=(MOB)((Item)babe).owner();
+        Room room=CMLib.map().roomLocation(babe);
+        if((following!=null)&&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())<0)&&(room!=null))
+        {
+            MOB M=null;
+            Vector choices=new Vector();
+            for(int i=0;i<room.numInhabitants();i++)
+            {
+                M=room.fetchInhabitant(i);
+                if((M!=null)
+                &&(M!=babe)
+                &&(M!=following)
+                &&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())>=0))
+                {
+                    if(M.isMonster())
+                        choices.addElement(M);
+                    else
+                    if(choices.size()==0)
+                        choices.addElement(M);
+                    else
+                        choices.insertElementAt(M,0);
+                }
+            }
+            if(choices.size()>0)
+            {
+                if(babe instanceof MOB)
+                    ((MOB)babe).setFollowing((MOB)choices.firstElement());
+                following=(MOB)choices.firstElement();
+            }
+        }
+        return following;
+    }
+    
+    
     protected void doThang()
 	{
 		if(affected==null) return;
@@ -109,15 +152,11 @@ public class Age extends StdAbility
 				if(R!=null)
 				{
 					Item I=(Item)affected;
-					MOB following=null;
-					if(I.owner() instanceof MOB)
+					MOB following=getFollowing(I);
+					if(following==null)
 					{
-						following=((MOB)I.owner());
-						if(!CMLib.flags().isInTheGame(following,true))
-						{
-							norecurse=false;
-							return;
-						}
+						norecurse=false;
+						return;
 					}
 							
 					CagedAnimal C=(CagedAnimal)affected;
@@ -173,7 +212,7 @@ public class Age extends StdAbility
 		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
 		{
 			MOB babe=(MOB)affected;
-			MOB following=babe.amFollowing();
+            MOB following=getFollowing(babe);
 		    if(myRace==null) myRace=babe.charStats().getMyRace();
 			if((babe.getLiegeID().length()==0)&&(!following.getLiegeID().equals(affected.Name())))
 				babe.setLiegeID(following.Name());
@@ -195,8 +234,8 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
 					babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,6);
 					babe.baseCharStats().setStat(CharStats.STAT_WISDOM,6);
-					if(babe.amFollowing()!=null)
-						babe.copyFactions(babe.amFollowing());
+					if(following!=null)
+						babe.copyFactions(following);
 					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*5);
 					babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*5);
 					babe.baseState().setHitPoints(4);
