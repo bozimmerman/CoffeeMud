@@ -97,9 +97,9 @@ public class Thief_Shadow extends ThiefSkill
 		&&(msg.amITarget(shadowing.location()))
 		&&(!CMLib.flags().isSneaking(shadowing))
 		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Exit))
+		&&(msg.tool() instanceof Exit)
+        &&((shadowing.riding()==null)||(msg.source().riding()!=shadowing.riding())))
 		{
-
 			int dir=-1;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				if(shadowing.location().getReverseExit(d)==msg.tool())
