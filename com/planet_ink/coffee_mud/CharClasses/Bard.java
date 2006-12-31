@@ -206,7 +206,7 @@ public class Bard extends StdCharClass
                 if(pub)
                 {
                     if(CMLib.leveler().postExperience((MOB)host,null,null,50,true))
-                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have discovered a new pub, you gain "+50+" experience."));
+                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"You have discovered a new pub, you gain "+50+" experience.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                 }
                 if(!((MOB)host).playerStats().hasVisited(A))
                 {
@@ -214,7 +214,7 @@ public class Bard extends StdCharClass
                     int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
                     if(xp>250) xp=250;
                     if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have discovered '"+A.name()+"', you gain "+xp+" experience."));
+                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"You have discovered '"+A.name()+"', you gain "+xp+" experience.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                 }
                 else
                 {
@@ -226,7 +226,7 @@ public class Bard extends StdCharClass
                         int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
                         if(xp>125) xp=125;
                         if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have familiarized yourself with '"+A.name()+"', you gain "+xp+" experience."));
+                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"You have familiarized yourself with '"+A.name()+"', you gain "+xp+" experience.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                     }
                     else
                     if((pctBefore<90)&&(pctAfter>=90))
@@ -234,7 +234,7 @@ public class Bard extends StdCharClass
                         int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
                         if(xp>250) xp=250;
                         if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"You have explored '"+A.name()+"', you gain "+xp+" experience."));
+                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"You have explored '"+A.name()+"', you gain "+xp+" experience.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                     }
                     
                 }

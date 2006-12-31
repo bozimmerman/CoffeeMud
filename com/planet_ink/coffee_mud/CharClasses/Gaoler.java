@@ -203,10 +203,10 @@ public class Gaoler extends StdCharClass
                 {
                     done[1]+=xp;
                     CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
-                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"The sweet screams of your victim earns you "+xp+" experience points."));
+                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"The sweet screams of your victim earns you "+xp+" experience points.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                 }
                 else
-                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,CMMsg.MSG_OK_VISUAL,"The screams of your victims bore you now."));
+                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"The screams of your victims bore you now.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                 msg.addTrailerMsg(msg2);
             }
         }
