@@ -112,7 +112,7 @@ CRIMINAL@x1=Criminal Deviousness @x2,10,LEVEL,-SKILLFLAG +CRIMINAL,-MAXCLASSLEVE
 HELP_=<EXPERTISE>Improved devious mind for accomplishing more powerful crimes.
 
 FITNESS@x1=Fitness @x2,10,LEVEL,-SKILLFLAG +FITNESS,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>Ability to keep both mind and body in top shape for all occassions.
+HELP_=<EXPERTISE>Ability to keep both mind and body in top shape so that fitness domain skills are performed at top efficiency.
 
 AXESTRIKE@x1=Axe Striking @x2,10,LEVEL,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an axe.

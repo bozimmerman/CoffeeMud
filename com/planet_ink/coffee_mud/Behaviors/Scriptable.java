@@ -274,7 +274,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			int y=parse.toUpperCase().indexOf("LOAD=");
 			if(y>=0)
 			{
-                if(parse.substring(0,y).trim().endsWith("#"))
+                if(parse.substring(0,y).trim().endsWith("#")||parse.substring(0,y).trim().toUpperCase().endsWith("SCRIPTABLE"))
                 {
                     results.append(parse.substring(0,y+1));
                     parse=parse.substring(y+1);
