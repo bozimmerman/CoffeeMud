@@ -103,7 +103,7 @@ public class Patroller extends ActiveTicker
 	    &&(!rideFlag)
 	    &&(rideOk)
 	    &&(host instanceof Rideable)
-	    &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+	    &&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 	    &&(msg.source()!=host)
 	    &&(msg.source().riding()==host))
 	    {
