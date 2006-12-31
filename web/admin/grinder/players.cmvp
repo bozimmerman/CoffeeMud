@@ -29,21 +29,24 @@
 </head>
 <body BGCOLOR=BLACK>
 	<TABLE WIDTH=100% BORDER=0><TR>
-	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
-		@if?CheckAuthCode?AUTH_BAN=true@
-		<INPUT TYPE=BUTTON NAME=BANNED VALUE="Banned List" ONCLICK="Clicked('banners.cmvp');">
-		<BR>
-		@endif@
-		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
-		<INPUT TYPE=BUTTON NAME=BANNED VALUE="Bank Accounts" ONCLICK="Clicked('bankaccts.cmvp');">
-		<BR>
-		@endif@
-	</TD>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
 		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
 	</TD>
 	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
-		<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		
+		@if?CheckAuthCode?AUTH_BAN=true@
+			<TR><TD><a href="javascript:Clicked('banners.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Banned List</B></FONT></A></TD></TR>
+		@endif@
+		
+		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+			<TR><TD><a href="javascript:Clicked('bankaccts.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Bank Accounts</B></FONT></A></TD></TR>
+		@endif@
+		<TR><TD><a href="javascript:Sort('@RequestParameter?SORTBY@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
 	</TD>
 	</TR>
 	</TABLE>

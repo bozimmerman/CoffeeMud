@@ -93,11 +93,19 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
-<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=25%><BR></TD>
-<TD WIDTH=50% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-<TD WIDTH=25% VALIGN=TOP>
-	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
-</TD></TR></TABLE>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+	
 	<CENTER>
 	<FONT COLOR=RED><B>@if?!CheckReqParm?FIELD=&QUERY=@ @ControlPanel?QUERY=@@RequestParameter?QUERY@@&FIELD=@@RequestParameter?FIELD@@&VALUE=@@RequestParameter?VALUE@@ @ @endif@</B></FONT></CENTER>
 	<TABLE WIDTH=100% BORDER=1>

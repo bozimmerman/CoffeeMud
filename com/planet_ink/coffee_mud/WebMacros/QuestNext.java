@@ -49,12 +49,12 @@ public class QuestNext extends StdWebMacro
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
 			Quest Q=CMLib.quests().fetchQuest(q);
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!Q.name().equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!(""+Q).equals(lastID))))
 			{
-				httpReq.addRequestParameters("QUEST",Q.name());
+				httpReq.addRequestParameters("QUEST",""+Q);
 				return "";
 			}
-			lastID=Q.name();
+			lastID=""+Q;
 		}
 		httpReq.addRequestParameters("QUEST","");
 		if(parms.containsKey("EMPTYOK"))

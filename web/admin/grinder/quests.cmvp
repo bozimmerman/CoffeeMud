@@ -49,10 +49,20 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
-	<TABLE WIDTH=100% BORDER=0><TR><TD WIDTH=33% ALIGN=LEFT VALIGN=TOP>
-	</TD>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked2('/grinder/loggedin.cmvp');"></TD></TR>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Load('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Quest('');"><FONT COLOR=WHITE SIZE=-1><B>New Quest Script</B></FONT></A></TD></TR>
+		<!--<TR><TD><a href="javascript:QuestWizard();"><FONT COLOR=WHITE SIZE=-1><B>Quest Wizard</B></FONT></A></TD></TR>-->
+		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
 	</TABLE>
 <CENTER>
 <FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="quests.cmvp">
@@ -96,11 +106,11 @@
 	</TD>
 	<TD>
 	@if?QuestData?RUNNING@
-		<INPUT TYPE=BUTTON NAME=Stop VALUE=Stop ONCLICK="Clicked('@QuestData?NAME@','STOP');">
+		<INPUT TYPE=BUTTON NAME=Stop VALUE=Stop ONCLICK="Clicked('@QuestData?ID@','STOP');">
 	@else@
-		<INPUT TYPE=BUTTON NAME=Start VALUE=Start ONCLICK="Clicked('@QuestData?NAME@','START');">
+		<INPUT TYPE=BUTTON NAME=Start VALUE=Start ONCLICK="Clicked('@QuestData?ID@','START');">
 	@endif@
-	<INPUT TYPE=BUTTON NAME=Delete VALUE=Delete ONCLICK="Clicked('@QuestData?NAME@','DELETE');">
+	<INPUT TYPE=BUTTON NAME=Delete VALUE=Delete ONCLICK="Clicked('@QuestData?ID@','DELETE');">
 	</TD>
 	</TR>
 	@back@
@@ -111,9 +121,7 @@
 	<TD WIDTH=33% ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=Create VALUE="New Quest" ONCLICK="Quest('');">
 	</TD>
-	<TD WIDTH=33% ALIGN=CENTER>
-	<!--<INPUT TYPE=BUTTON NAME=Qizard VALUE="Quest Maker" ONCLICK="QuestWizard('');">-->
-	</TD>
+	<TD WIDTH=33% ALIGN=CENTER><BR></TD>
 	<TD WIDTH=33% ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();">
 	</TD>
