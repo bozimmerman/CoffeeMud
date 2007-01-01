@@ -423,6 +423,7 @@ public interface RawMaterial extends Item
 	"ATLANTITE",//161
 	"CHEESE",//162
 	"BEANS",//163
+    "CRANBERRIES", // 164
 	};
 	
 	public final static int DATA_CODE=0;

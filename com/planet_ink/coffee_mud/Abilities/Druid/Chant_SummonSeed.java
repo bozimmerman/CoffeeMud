@@ -40,6 +40,13 @@ public class Chant_SummonSeed extends Chant
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 
+    public static final Integer[] NON_SEEDS={new Integer(RawMaterial.RESOURCE_ASH),
+                                            new Integer(RawMaterial.RESOURCE_SOAP),
+                                            new Integer(RawMaterial.RESOURCE_CHEESE),
+                                            new Integer(RawMaterial.RESOURCE_BREAD),
+                                            new Integer( RawMaterial.RESOURCE_CRACKER),
+    };
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String s=CMParms.combine(commands,0);
@@ -50,8 +57,9 @@ public class Chant_SummonSeed extends Chant
 		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
 			String str=RawMaterial.RESOURCE_DESCS[i];
-			if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-			{
+			if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+            &&(!CMParms.makeVector(NON_SEEDS).contains(new Integer(RawMaterial.RESOURCE_DATA[i][0]))))			
+            {
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{
 					material=RawMaterial.RESOURCE_DATA[i][0];
