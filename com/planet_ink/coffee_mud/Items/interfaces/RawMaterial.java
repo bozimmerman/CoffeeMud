@@ -254,6 +254,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_ATLANTEANSTEEL=MATERIAL_MITHRIL|161;
 	public final static int RESOURCE_CHEESE=MATERIAL_VEGETATION|162;
 	public final static int RESOURCE_BEANS=MATERIAL_VEGETATION|163;
+    public final static int RESOURCE_CRANBERRIES=MATERIAL_VEGETATION|164;
 	public final static int RESOURCE_MASK=255;	
 
 	
@@ -596,6 +597,7 @@ public interface RawMaterial extends Item
 	{RESOURCE_ATLANTEANSTEEL,1500,1,6,	850},
 	{RESOURCE_CHEESE,		25,	0,	1,	640}, 
 	{RESOURCE_BEANS,		1,	15,	1,	750}, 
+    {RESOURCE_CRANBERRIES,  10, 1,  1,  750},
 	};
 	
 	
@@ -615,7 +617,8 @@ public interface RawMaterial extends Item
 	RESOURCE_RASPBERRIES,
 	RESOURCE_BOYSENBERRIES,
 	RESOURCE_BLACKBERRIES,
-	RESOURCE_SMURFBERRIES
+	RESOURCE_SMURFBERRIES,
+    RESOURCE_CRANBERRIES
 	};
 	
 	public final static String[] RESOURCE_SMELLS={
@@ -783,7 +786,8 @@ public interface RawMaterial extends Item
 		"strong fragrant",//RESOURCE_PERFUME
 		"",//RESOURCE_ATLANTEANSTEEL
 		"mild cheesy",
-		""
+		"",
+        "sweet berry",//RESOURCE_CRANERRIES  
 		};
     
 }

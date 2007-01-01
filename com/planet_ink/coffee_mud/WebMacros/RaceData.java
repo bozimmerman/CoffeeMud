@@ -641,9 +641,6 @@ public class RaceData extends StdWebMacro
 				MOB mob=CMClass.getMOB("StdMOB");
 				MOB mob2=CMClass.getMOB("StdMOB");
 				mob.setSession((Session)CMClass.getCommon("DefaultSession"));
-                mob.baseCharStats().setAllValues(0);
-                mob.baseEnvStats().setAllValues(0);
-                mob.baseState().setAllValues(0);
 				mob.baseCharStats().setMyRace(R);
 				mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 				R.startRacing(mob,false);
@@ -655,14 +652,62 @@ public class RaceData extends StdWebMacro
 				mob2.recoverEnvStats();
 				mob2.recoverMaxState();
 				mob.setSession(null);
-                if(parms.containsKey("ESTATS"))
-                    str.append(estats(mob.envStats(),'E',httpReq,parms,0)+", ");
-                if(parms.containsKey("CSTATS"))
-                    str.append(cstats(mob.charStats(),'S',httpReq,parms,0)+", ");
-                if(parms.containsKey("ASTATS"))
-                    str.append(cstats(mob.charStats(),'A',httpReq,parms,0)+", ");
-                if(parms.containsKey("ASTATE"))
-                    str.append(cstate(mob.curState(),'A',httpReq,parms,0)+", ");
+                
+                if(parms.containsKey("STATS"))
+                {
+                    for(int c=0;c<CharStats.NUM_STATS;c++)
+                    {
+                        int oldStat=mob2.charStats().getStat(c);
+                        int newStat=mob.charStats().getStat(c);
+                        if(oldStat>newStat)
+                            str.append(CharStats.STAT_DESCS[c].toLowerCase()+"-"+(oldStat-newStat)+", ");
+                        else
+                        if(newStat>oldStat)
+                            str.append(CharStats.STAT_DESCS[c].toLowerCase()+"+"+(newStat-oldStat)+", ");
+                    }
+                }
+                
+                if(parms.containsKey("ESTATS")||parms.containsKey("CSTATS")||parms.containsKey("ASTATS")||parms.containsKey("ASTATE")||parms.containsKey("STARTASTATE"))
+                {
+                    R=R.makeGenRace();
+                    
+                    if(parms.containsKey("ESTATS"))
+                    {
+                        String eStats=R.getStat("ESTATS");
+                        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0);
+                        if(eStats.length()>0){ CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
+                        str.append(estats(adjEStats,'E',httpReq,parms,0)+", ");
+                    }
+                    if(parms.containsKey("CSTATS"))
+                    {
+                        CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
+                        String cStats=R.getStat("CSTATS");
+                        if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
+                        str.append(cstats(setStats,'S',httpReq,parms,0)+", ");
+                    }
+                    if(parms.containsKey("ASTATS"))
+                    {
+                        CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
+                        String cStats=R.getStat("ASTATS");
+                        if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
+                        str.append(cstats(mob.charStats(),'A',httpReq,parms,0)+", ");
+                    }
+                    if(parms.containsKey("ASTATE"))
+                    {
+                        CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
+                        String aState=R.getStat("ASTATE");
+                        if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
+                        str.append(cstate(adjState,'A',httpReq,parms,0)+", ");
+                    }
+                    if(parms.containsKey("STARTASTATE"))
+                    {
+                        CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
+                        String saState=R.getStat("STARTASTATE");
+                        if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+                        str.append(cstate(startAdjState,'A',httpReq,parms,0)+", ");
+                    }
+                }
+                
                 if(parms.containsKey("OUTFIT"))
                     str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
                 if(parms.containsKey("WEAPON"))
@@ -678,10 +723,6 @@ public class RaceData extends StdWebMacro
                 {
                     //TODO: whether race disappears when killed
                 }
-                if(parms.containsKey("STARTASTATE"))
-                {
-                    //TODO: starting race state on creation?
-                }
                 if(parms.containsKey("DISFLAGS"))
                 {
                     //TODO: race disable flags
@@ -691,19 +732,6 @@ public class RaceData extends StdWebMacro
                     //TODO: race aging chart
                 }
                 
-				if(parms.containsKey("STATS"))
-				{
-					for(int c=0;c<CharStats.NUM_STATS;c++)
-					{
-						int oldStat=mob2.charStats().getStat(c);
-						int newStat=mob.charStats().getStat(c);
-						if(oldStat>newStat)
-							str.append(CharStats.STAT_DESCS[c].toLowerCase()+"-"+(oldStat-newStat)+", ");
-						else
-						if(newStat>oldStat)
-							str.append(CharStats.STAT_DESCS[c].toLowerCase()+"+"+(newStat-oldStat)+", ");
-					}
-				}
 				if(parms.containsKey("SENSES"))
 				{
 					if(!CMLib.flags().canHear(mob))
