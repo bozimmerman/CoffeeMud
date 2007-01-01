@@ -126,9 +126,35 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
-    public String otherBonuses(){return "Benefits from animal followers leveling.";}
+    public String otherBonuses(){return "Benefits from animal followers leveling.  Gets experience for selling unique animals.";}
 	public String otherLimitations(){return "Sneak and Hide attempts will fail outside of the wild.";}
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
+    public void executeMsg(Environmental host, CMMsg msg)
+    { 
+        super.executeMsg(host,msg); 
+        Druid.doAnimalFollowerLevelingCheck(this,host,msg);
+        if(host instanceof MOB)
+        {
+            MOB myChar=(MOB)host;
+            if(msg.amISource(myChar)
+            &&(!myChar.isMonster())
+            &&(msg.tool() instanceof Ability)
+            &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+            &&(myChar.location()!=null)
+            &&(myChar.isMine(msg.tool()))
+            &&(msg.tool().ID().equalsIgnoreCase("AnimalTrading"))
+            &&(msg.value()<0)
+            &&(msg.target() instanceof MOB)
+            &&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
+            &&(((MOB)msg.target()).getStartRoom()!=null)
+            &&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
+            {
+                int xp=(int)Math.round(10.0*CMath.div(msg.target().envStats().level(),host.envStats().level()));
+                if(xp>125) xp=125;
+                if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+                    msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"You gain "+xp+" experience for selling "+msg.target().name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+            }
+        }
+    }
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);

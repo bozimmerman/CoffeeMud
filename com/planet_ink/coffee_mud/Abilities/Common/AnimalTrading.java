@@ -40,6 +40,7 @@ public class AnimalTrading extends CommonSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
     public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+    protected Vector recentlyTraded=new Vector();
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -129,9 +130,18 @@ public class AnimalTrading extends CommonSkill
 		if(proficiencyCheck(mob,0,auto))
 		{
 			CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
-			if(mob.location().okMessage(mob,msg))
+            CMMsg msg2=CMClass.getMsg(mob,M,this,CMMsg.MSG_NOISYMOVEMENT,null);
+            if(!recentlyTraded.contains(mob.Name()))
+            {
+                while(recentlyTraded.size()>30)
+                    recentlyTraded.removeElementAt(0);
+                recentlyTraded.addElement(M.Name());
+                msg2.setValue(-1);
+            }
+			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
+                mob.location().send(mob,msg2);
 				if(taming instanceof Item)
 					((Item)taming).destroy();
 			}

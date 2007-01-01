@@ -250,9 +250,9 @@ public class Bard extends StdCharClass
 		if(mob.playerStats()==null)
 		{
 			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
-												mob.charStats().getClassLevel(ID()),
-												false,
-												false);
+                    										 mob.charStats().getClassLevel(ID()),
+                    										 false,
+                    										 false);
 			for(Enumeration a=V.elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
