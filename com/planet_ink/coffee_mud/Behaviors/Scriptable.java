@@ -5858,7 +5858,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
                 String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
+				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				Behavior A=null;
 				if((cast!=null)&&(newTarget!=null))
 				{
