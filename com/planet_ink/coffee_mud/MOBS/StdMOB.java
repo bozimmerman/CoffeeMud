@@ -1972,7 +1972,9 @@ public class StdMOB implements MOB
 
 				if((!mayIFight(mob))
 				&&((!(msg.tool() instanceof Ability))
-				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE))
+                   ||(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+				       &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE))
+                   ||((mob==this)&&(mob.isMonster()))))
 				{
 					mob.tell("You are not allowed to attack "+name()+".");
 					mob.setVictim(null);
