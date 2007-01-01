@@ -285,8 +285,21 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+mob.location().getArea().name()).toLowerCase();
-			building.setReadableText(mob.location().getArea().name());
+            LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
+            Area A2=CMLib.law().getLegalObject(mob.location().getArea());
+            if((B==null)||(A2==null))
+            {
+                commonTell(mob,"This area is controlled by the Archons -- you can't build that here.");
+                return false;
+            }
+            if((B.rulingClan().length()==0)||(!mob.getClanID().equalsIgnoreCase(B.rulingClan())))
+            {
+                commonTell(mob,"This area is not controlled by "+mob.getClanID()+" -- you can't build that here.");
+                return false;
+            }
+            
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
+			building.setReadableText(A2.name());
 		}
 		itemName=CMStrings.startWithAorAn(itemName);
 		building.setName(itemName);
