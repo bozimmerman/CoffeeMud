@@ -90,6 +90,12 @@ public class BaseItemParser extends StdCommand
                     	}
                     }
                     else
+                    if(mob.isMine(fromWhat)&&mob.isMine(toWhat))
+                    {
+                        mob.tell("Ok");
+                        return -1;
+                    }
+                    else
                     if(commands.size()==1)
                         commands.addElement(toWhat.name());
                     else
