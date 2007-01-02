@@ -1207,13 +1207,16 @@ public class StdAbility implements Ability
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
-		if((practicesRequired()>0)&&(student.getPractices()<practicesRequired()))
+        int[] ptReqs=new int[]{practicesRequired(),trainsRequired()};
+        if(CMLib.ableMapper().getPracTrainCost(student,ID())!=null)
+            ptReqs=CMLib.ableMapper().getPracTrainCost(student,ID());
+		if((ptReqs[0]>0)&&(student.getPractices()<ptReqs[0]))
 		{
 			teacher.tell(student.name()+" does not have enough practice points to learn '"+name()+"'.");
 			student.tell("You do not have enough practice points.");
 			return false;
 		}
-		if((trainsRequired()>0)&&(student.getTrains()<trainsRequired()))
+		if((ptReqs[1]>0)&&(student.getTrains()<ptReqs[1]))
 		{
 			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
 			student.tell("You do not have enough training sessions.");
@@ -1413,9 +1416,12 @@ public class StdAbility implements Ability
 
 	public void teach(MOB teacher, MOB student)
 	{
-		if((practicesRequired()>0)&&(student.getPractices()<practicesRequired()))
+        int[] ptReqs=new int[]{practicesRequired(),trainsRequired()};
+        if(CMLib.ableMapper().getPracTrainCost(student,ID())!=null)
+            ptReqs=CMLib.ableMapper().getPracTrainCost(student,ID());
+        if((ptReqs[0]>0)&&(student.getPractices()<ptReqs[0]))
 			return;
-		if((trainsRequired()>0)&&(student.getTrains()<trainsRequired())) 
+        if((ptReqs[1]>0)&&(student.getPractices()<ptReqs[1]))
 			return;
 		if(student.fetchAbility(ID())==null)
 		{

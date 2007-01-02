@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -131,6 +132,17 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean secret,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
+    
+    public void addCharAbilityMapping(String ID, 
+                                      int qualLevel,
+                                      String ability, 
+                                      int defaultProficiency,
+                                      String defaultParam,
+                                      boolean autoGain,
+                                      boolean secret,
+                                      Vector preReqSkillsList,
+                                      String extraMask)
+    { addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
 	
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
 	{
@@ -236,7 +248,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean autoGain,
 									  boolean secret,
 									  Vector preReqSkillsList,
-									  String extraMask)
+									  String extraMask,
+                                      int[] pracTrainCost)
 	{
 		delCharAbilityMapping(ID,ability);
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
@@ -248,6 +261,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.defaultParm=defaultParam;
 		able.defaultProficiency=defaultProficiency;
 		able.extraMask=extraMask;
+        able.pracTrainCost=pracTrainCost;
 		
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(ability,preReqSkillsList,extraMask);
@@ -902,16 +916,22 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 	
 	
-	public AbilityMapping getAllAbleMap(String ability)
-	{
-		if(completeAbleMap.containsKey("All"))
-		{
-			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
-			if(ableMap.containsKey(ability))
-				return (AbilityMapping)ableMap.get(ability);
-		}
-		return null;
-	}
+    /**
+     * @param ID
+     * @param ability
+     * @return
+     */
+    public AbilityMapping getAbleMap(String ID, String ability)
+    {
+        if(completeAbleMap.containsKey(ID))
+        {
+            Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+            if(ableMap.containsKey(ability))
+                return (AbilityMapping)ableMap.get(ability);
+        }
+        return null;
+    }
+	public AbilityMapping getAllAbleMap(String ability){ return getAbleMap("All",ability);}
 	
 	public boolean getSecretSkill(String ID, boolean checkAll, String ability)
 	{
@@ -1009,6 +1029,84 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return secretFound;
 	}
 	
+    public int[] getPracTrainCost(String ID, boolean checkAll, String ability)
+    {
+        int[] found=null;
+        if(completeAbleMap.containsKey(ID))
+        {
+            Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+            if(ableMap.containsKey(ability))
+                found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+        }
+        if((checkAll)&&(found==null))
+        {
+            AbilityMapping AB=getAllAbleMap(ability);
+            if(AB!=null) found=AB.pracTrainCost;
+        }
+        return found;
+    }
+    
+    public int[] getAllPracTrainCost(String ability)
+    {
+        AbilityMapping AB=getAllAbleMap(ability);
+        if(AB!=null) return AB.pracTrainCost;
+        return null;
+    }
+    
+    public int[] getPracTrainCost(MOB mob, String ability)
+    {
+        int[] found=null;
+        for(int c=0;c<mob.charStats().numClasses();c++)
+        {
+            String charClass=mob.charStats().getMyClass(c).ID();
+            if(completeAbleMap.containsKey(charClass))
+            {
+                Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+                if((ableMap.containsKey(ability))&&(found==null))
+                    found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+            }
+        }
+        if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
+        {
+            Hashtable ableMap=(Hashtable)completeAbleMap.get(mob.charStats().getMyRace().ID());
+            if((ableMap.containsKey(ability))&&(found==null))
+                found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+        }
+        AbilityMapping AB=getAllAbleMap(ability);
+        if((AB!=null)&&(found==null))
+            return found=AB.pracTrainCost;
+        return found;
+    }
+    
+    public int[] getPracTrainCost(String ability)
+    {
+        int[] found=null;
+        for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+        {
+            String charClass=((CharClass)e.nextElement()).ID();
+            if(completeAbleMap.containsKey(charClass)&&(!charClass.equals("Archon")))
+            {
+                Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+                if((ableMap.containsKey(ability))&&(found==null))
+                    found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+            }
+        }
+        for(Enumeration e=CMClass.races();e.hasMoreElements();)
+        {
+            String ID=((Race)e.nextElement()).ID();
+            if(completeAbleMap.containsKey(ID))
+            {
+                Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+                if((ableMap.containsKey(ability))&&(found==null))
+                    found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+            }
+        }
+        AbilityMapping AB=getAllAbleMap(ability);
+        if((AB!=null)&&(found==null))
+            return found=AB.pracTrainCost;
+        return found;
+    }
+    
 	public String getDefaultParm(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))

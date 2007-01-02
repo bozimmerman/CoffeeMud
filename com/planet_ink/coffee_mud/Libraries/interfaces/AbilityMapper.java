@@ -49,6 +49,7 @@ public interface AbilityMapper extends CMLibrary
         public boolean isSecret=false;
         public DVector skillPreReqs=new DVector(2);
         public String extraMask="";
+        public int[] pracTrainCost=new int[2];
     }
     
     /**
@@ -156,6 +157,21 @@ public interface AbilityMapper extends CMLibrary
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
     								  String defaultParam, boolean autoGain, boolean secret,
     								  Vector preReqSkillsList, String extraMask);
+    /**
+     * @param ID
+     * @param qualLevel
+     * @param ability
+     * @param defaultProficiency
+     * @param defaultParam
+     * @param autoGain
+     * @param secret
+     * @param preReqSkillsList
+     * @param extraMask
+     * @param pracTrainCost
+     */
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+                                      String defaultParam, boolean autoGain, boolean secret,
+                                      Vector preReqSkillsList, String extraMask, int[] pracTrainCost);
     /**
      * @param ID
      * @param ability
@@ -330,6 +346,12 @@ public interface AbilityMapper extends CMLibrary
     public AbilityMapping getAllAbleMap(String ability);
     /**
      * @param ID
+     * @param ability
+     * @return
+     */
+    public AbilityMapping getAbleMap(String ID, String ability);
+    /**
+     * @param ID
      * @param checkAll
      * @param ability
      * @return
@@ -351,6 +373,29 @@ public interface AbilityMapper extends CMLibrary
      * @return
      */
     public boolean getSecretSkill(String ability);
+    /**
+     * @param ID
+     * @param checkAll
+     * @param ability
+     * @return
+     */
+    public int[] getPracTrainCost(String ID, boolean checkAll, String ability);
+    /**
+     * @param ability
+     * @return
+     */
+    public int[] getAllPracTrainCost(String ability);
+    /**
+     * @param mob
+     * @param ability
+     * @return
+     */
+    public int[] getPracTrainCost(MOB mob, String ability);
+    /**
+     * @param ability
+     * @return
+     */
+    public int[] getPracTrainCost(String ability);
     /**
      * @param ID
      * @param checkAll
