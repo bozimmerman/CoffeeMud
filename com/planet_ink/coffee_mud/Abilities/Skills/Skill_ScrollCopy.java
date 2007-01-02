@@ -33,11 +33,11 @@ import java.util.*;
 public class Skill_ScrollCopy extends StdSkill
 {
 	public String ID() { return "Skill_ScrollCopy"; }
-	public String name(){ return "Scroll Copy";}
+	public String name(){ return "Memorize";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"COPY","SCROLLCOPY"};
+	private static final String[] triggerStrings = {"MEMORIZE"};
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 
@@ -46,7 +46,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(commands.size()<2)
 		{
-			mob.tell("Copy what from what?");
+			mob.tell("Memorize what from what?");
 			return false;
 		}
 		Item target=mob.fetchCarried(null,CMParms.combine(commands,1));
@@ -58,7 +58,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(!(target instanceof Scroll))
 		{
-			mob.tell("You can't copy from that.");
+			mob.tell("You can't memorize from that.");
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(success)
 		{
-			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> cop(ys) '"+thisSpell.name()+"' from <O-NAME>."))
+			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> memorize(s) '"+thisSpell.name()+"' from <O-NAME>."))
             {
 				thisSpell.teach(T,mob);
                 if((mob.fetchAbility(thisSpell.ID())!=null)
@@ -122,7 +122,7 @@ public class Skill_ScrollCopy extends StdSkill
             }
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to copy '"+thisSpell.name()+"' from "+target.name()+", but fail(s).");
+			mob.location().show(mob,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to memorize '"+thisSpell.name()+"' from "+target.name()+", but fail(s).");
 		return success;
 	}
 
