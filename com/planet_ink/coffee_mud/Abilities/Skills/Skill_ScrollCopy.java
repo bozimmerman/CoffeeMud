@@ -115,9 +115,13 @@ public class Skill_ScrollCopy extends StdSkill
                 &&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
                 &&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
                 {
-                    int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
-                    if(xp>=0)
-                        CMLib.leveler().postExperience(mob,null,null,xp,false);
+                    int[] ptCost=(int[])CMLib.ableMapper().getPracTrainCost(mob,thisSpell.ID());
+                    if((ptCost==null)||((ptCost[0]>0)||(ptCost[1])>0))
+                    {
+                        int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
+                        if(xp>=0)
+                            CMLib.leveler().postExperience(mob,null,null,xp,false);
+                    }
                 }
             }
 		}

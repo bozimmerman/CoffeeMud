@@ -57,16 +57,19 @@ public class Wizard extends Mage
             &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
             {
                 int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
-                if(level>=0) continue;
-                level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-                if((!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
-                &&((level>0)&&(level<25)))
+                if(level<0)
                 {
-                    boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
-                    CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
+                    level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+                    if((level>0)&&(level<25))
+                    {
+                        boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
+                        CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
+                    }
                 }
                 AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
-                if(able!=null) able.pracTrainCost=new int[]{0,0};
+                if((able!=null) 
+                &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+                    able.pracTrainCost=new int[]{0,0};
             }
         }
     }
@@ -86,6 +89,57 @@ public class Wizard extends Mage
         return super.qualifiesForThisClass(mob,quiet);
     }
 
+    public void executeMsg(Environmental myHost, CMMsg msg)
+    {
+        super.executeMsg(myHost,msg);
+        if((myHost==null)||(!(myHost instanceof MOB)))
+           return;
+        MOB mob=(MOB)myHost;
+        if(msg.amISource(mob)&&(msg.tool()!=null))
+        {
+            if(msg.tool() instanceof Ability)
+            {
+                Ability A=mob.fetchAbility(msg.tool().ID());
+                if((A!=null)&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID()))
+                &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
+                {
+                    mob.delAbility(A);
+                    mob.recoverMaxState();
+                }
+            }
+        }
+    }
+
+    public void affectCharState(MOB mob, CharState state)
+    {
+        super.affectCharState(mob,state);
+        if(mob.charStats().getCurrentClass()==this)
+        {
+            Ability A=null;
+            for(int a=0;a<mob.numLearnedAbilities();a++)
+            {
+                A=mob.fetchAbility(a);
+                if((A!=null)
+                &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+                &&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID())))
+                {
+                    int[] cost=A.usageCost(mob);
+                    if(cost[Ability.USAGE_MANA]>0)
+                    {
+                        if(state.getMana()<cost[Ability.USAGE_MANA])
+                        {
+                            mob.delAbility(A);
+                            a--;
+                        }
+                        else
+                            state.setMana(state.getMana()-cost[Ability.USAGE_MANA]);
+                    }
+                }
+                
+            }
+        }
+    }
+    
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
         if(!(myHost instanceof MOB)) 
