@@ -905,35 +905,35 @@ public class StdRace implements Race
 
 		race1.racialAbilities(null);
 		race2.racialAbilities(null);
-		Vector data1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
-		Vector data2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
+		DVector dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
+		DVector dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
 		// kill half of them.
-		for(int i=1;i<data1.size();i++)
-			data1.removeElementAt(i);
-		for(int i=1;i<data2.size();i++)
-			data2.removeElementAt(i);
+		for(int i=1;i<dvata1.size();i++)
+			dvata1.removeElementAt(i);
+		for(int i=1;i<dvata2.size();i++)
+			dvata2.removeElementAt(i);
 
-		if((data1.size()+data2.size())>0)
-			GR.setStat("NUMRABLE",""+(data1.size()+data2.size()));
+		if((dvata1.size()+dvata2.size())>0)
+			GR.setStat("NUMRABLE",""+(dvata1.size()+dvata2.size()));
 		else
 			GR.setStat("NUMRABLE","");
-		for(int i=0;i<data1.size();i++)
+		for(int i=0;i<dvata1.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,(String)data1.elementAt(i));
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)data1.elementAt(i))));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETRABLE"+i,(String)dvata1.elementAt(i,1));
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)dvata1.elementAt(i,1)));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)dvata1.elementAt(i,1))));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)dvata1.elementAt(i,1)));
 		}
-		for(int i=0;i<data2.size();i++)
+		for(int i=0;i<dvata2.size();i++)
 		{
-			GR.setStat("GETRABLE"+(i+data1.size()),(String)data2.elementAt(i));
-			GR.setStat("GETRABLELVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
-			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)data2.elementAt(i))));
-			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETRABLE"+(i+dvata1.size()),(String)dvata2.elementAt(i,1));
+			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)dvata2.elementAt(i,1)));
+			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)dvata2.elementAt(i,1))));
+			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.elementAt(i,1)));
 		}
 
-		data1=race1.racialEffects(null);
-		data2=race2.racialEffects(null);
+		Vector data1=race1.racialEffects(null);
+		Vector data2=race2.racialEffects(null);
 		// kill half of them.
 		for(int i=1;i<data1.size();i++)
 			data1.removeElementAt(i);
@@ -998,11 +998,11 @@ public class StdRace implements Race
 			level=new Integer(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return (Vector)racialAbilityMap.get(level);
-		Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
+		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
 		Vector finalV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=CMClass.getAbility((String)V.elementAt(v));
+			Ability A=CMClass.getAbility((String)V.elementAt(v,1));
 			if(A!=null)
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));

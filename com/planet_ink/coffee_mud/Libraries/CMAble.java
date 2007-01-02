@@ -39,6 +39,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
 	public Hashtable allows=new Hashtable();
     public Hashtable completeDomainMap=new Hashtable();
+    public Hashtable reverseAbilityMap=new Hashtable();
 
 	public void addCharAbilityMapping(String ID, 
 									  int qualLevel,
@@ -100,11 +101,19 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		if(ableMap.containsKey(ability))
 			ableMap.remove(ability);
+		DVector reV=(DVector)reverseAbilityMap.get(ability);
+		if(reV!=null) reV.removeElement(ID);
 	}
 	public void delCharMappings(String ID)
 	{
 		if(completeAbleMap.containsKey(ID))
 			completeAbleMap.remove(ID);
+		for(Enumeration e=reverseAbilityMap.keys();e.hasMoreElements();)
+		{
+			String ability=(String)e.nextElement();
+			DVector reV=(DVector)reverseAbilityMap.get(ability);
+			reV.removeElement(ID);
+		}
 	}
 	
 	public Enumeration getClassAbles(String ID)
@@ -209,27 +218,33 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return V.contains(new Integer(acode));
     }
     
-    public Vector getClassAllowsList(String classID)
+    public DVector getClassAllowsList(String classID)
     {
-        Vector V=(Vector)allows.get("NONABLE-"+classID);
-        if(V!=null) return V;
-        Vector ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
-        V=new Vector();
-        allows.put("NONABLE-"+classID,V);
-        HashSet alreadyDone=new HashSet();
+        DVector ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
+        Hashtable alreadyDone=new Hashtable();
+        DVector DV=new DVector(2);
+    	AbilityMapping able=null;
         Vector V2=null;
+        Integer Ix=null;
         for(int a=0;a<ABLES.size();a++)
         {
-            V2=getAbilityAllowsList((String)ABLES.elementAt(a));
+            V2=getAbilityAllowsList((String)ABLES.elementAt(a,1));
             if((V2==null)||(V2.size()==0)) continue;
+            able=(AbilityMapping)ABLES.elementAt(a,2);
             for(int v2=0;v2<V2.size();v2++)
-            if((!alreadyDone.contains(V2.elementAt(v2))&&(!ABLES.contains(V2.elementAt(v2)))))
             {
-                alreadyDone.add(V2.elementAt(v2));
-                V.addElement(V2.elementAt(v2));
+            	Ix=(Integer)alreadyDone.get(V2.elementAt(v2));
+            	if(Ix==null)
+            	{
+	                alreadyDone.put(V2.elementAt(v2), new Integer(DV.size()));
+	                DV.addElement(V2.elementAt(v2),new Integer(able.qualLevel));
+            	}
+            	else
+            	if(((Integer)DV.elementAt(Ix.intValue(),2)).intValue()>able.qualLevel)
+            		DV.setElementAt(Ix.intValue(),2,new Integer(able.qualLevel));
             }
         }
-        return V;
+        return DV;
     }
     
 	public Vector getAbilityAllowsList(String ableID)
@@ -309,6 +324,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if((lowLevel==null)
 		||(qualLevel<lowLevel.intValue()))
 			lowestQualifyingLevelMap.put(ability,new Integer(qualLevel));
+		DVector reV=(DVector)reverseAbilityMap.get(ability);
+		if(reV==null){ reV=new DVector(2); reverseAbilityMap.put(ability,reV);}
+		if(!reV.contains(ID)) reV.addElement(ID, able);
 	}
 	
 	public boolean qualifiesByAnyCharClass(String abilityID)
@@ -428,9 +446,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return V;
 	}
-	public Vector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
+	public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
 	{
-		Vector V=new Vector();
+		DVector DV=new DVector(2);
 		if(completeAbleMap.containsKey(ID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
@@ -440,7 +458,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				AbilityMapping able=(AbilityMapping)ableMap.get(key);
 				if((able.qualLevel<=level)
 				&&((!gainedOnly)||(able.autoGain)))
-					V.addElement(key);
+					DV.addElement(key,able);
 			}
 		}
 		if((completeAbleMap.containsKey("All"))&&(!ignoreAll))
@@ -451,12 +469,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				String key=(String)e.nextElement();
 				AbilityMapping able=(AbilityMapping)ableMap.get(key);
 				if((able.qualLevel<=level)
-				&&(!V.contains(key))
+				&&(!DV.contains(key))
 				&&((!gainedOnly)||(able.autoGain)))
-					V.addElement(key);
+					DV.addElement(key,able);
 			}
 		}
-		return V;
+		return DV;
 	}
 	
 	public int getQualifyingLevel(String ID, boolean checkAll, String ability)

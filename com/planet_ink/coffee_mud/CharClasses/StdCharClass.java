@@ -449,12 +449,12 @@ public class StdCharClass implements CharClass
         affectCharState(fakeMOB,CS);
         CR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-        Vector data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+        DVector data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
         DVector completeSet=new DVector(6);
         String aID=null;
         for(int i=0;i<data1.size();i++)
         {
-            aID=(String)data1.elementAt(i);
+            aID=(String)data1.elementAt(i,1);
             completeSet.addElement(aID,
                                    new Integer(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
                                    new Integer(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),

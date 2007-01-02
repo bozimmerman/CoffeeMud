@@ -231,7 +231,7 @@ public interface AbilityMapper extends CMLibrary
      * @param ableID
      * @return
      */
-    public Vector getClassAllowsList(String ID);
+    public DVector getClassAllowsList(String ID);
     /**
      * @param ID
      * @param checkAll
@@ -246,7 +246,7 @@ public interface AbilityMapper extends CMLibrary
      * @param gainedOnly
      * @return
      */
-    public Vector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
+    public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
     /**
      * @param ID
      * @param checkAll

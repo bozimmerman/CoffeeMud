@@ -63,7 +63,7 @@
 			@back@
 			@loop@ @ExpertiseNext@ 
 			<TR><TD WIDTH=35%>(Expertise)</TD>
-			<TD WIDTH=15% ALIGN=RIGHT><BR></TD>
+			<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
 			<TD WIDTH=50%>&nbsp;
 			<a href="javascript:openEdu('@ExpertiseID@');">(@ExpertiseData?name@)</a> 
 			</TD></TR>

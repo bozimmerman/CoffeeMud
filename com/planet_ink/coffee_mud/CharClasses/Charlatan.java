@@ -265,11 +265,11 @@ public class Charlatan extends StdCharClass
 		}
 		else
 		{
-			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration a=V.elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

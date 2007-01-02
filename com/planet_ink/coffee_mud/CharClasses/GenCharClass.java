@@ -582,10 +582,10 @@ public class GenCharClass extends StdCharClass
 	protected DVector getAbleSet()
 	{
 		DVector VA=new DVector(6);
-		Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(int v=0;v<V.size();v++)
 		{
-			String AID=(String)V.elementAt(v);
+			String AID=(String)V.elementAt(v,1);
 			VA.addElement(AID,
 						  ""+CMLib.ableMapper().getQualifyingLevel(ID(),true,AID),
 						  ""+CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
