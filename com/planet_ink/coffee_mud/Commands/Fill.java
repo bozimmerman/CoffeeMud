@@ -74,7 +74,7 @@ public class Fill extends BaseItemParser
     			commands.removeElementAt(commands.size()-1);
 		}
 
-        int maxToFill=super.calculateMaxToGive(mob,commands,true,mob);
+        int maxToFill=super.calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToFill<0) return false;
 
 		String thingToFill=CMParms.combine(commands,0);

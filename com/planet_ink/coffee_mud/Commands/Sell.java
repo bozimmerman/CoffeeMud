@@ -47,7 +47,7 @@ public class Sell extends BaseItemParser
 			return false;
 		}
 
-        int maxToDo=super.calculateMaxToGive(mob,commands,true,mob);
+        int maxToDo=super.calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToDo<0) return false;
 
 

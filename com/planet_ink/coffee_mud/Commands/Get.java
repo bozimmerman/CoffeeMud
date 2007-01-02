@@ -127,7 +127,7 @@ public class Get extends BaseItemParser
 		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_ANY,true);
 		int c=0;
 
-		int maxToGet=calculateMaxToGive(mob,commands,containers.size()==0,R);
+		int maxToGet=calculateMaxToGive(mob,commands,containers.size()==0,R,true);
         if(maxToGet<0) return false;
 
 		String whatToGet=CMParms.combine(commands,0);

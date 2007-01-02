@@ -136,7 +136,7 @@ public class At extends StdCommand
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(CMLib.english().containsString(R.displayText(),areaName))
+						if(CMLib.english().containsString(CMStrings.removeColors(R.displayText()),areaName))
 						{
 						   room=R;
 						   break;
@@ -149,7 +149,7 @@ public class At extends StdCommand
 							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R=(Room)r.nextElement();
-								if(CMLib.english().containsString(R.description(),areaName))
+								if(CMLib.english().containsString(CMStrings.removeColors(R.description()),areaName))
 								{
 								   room=R;
 								   break;

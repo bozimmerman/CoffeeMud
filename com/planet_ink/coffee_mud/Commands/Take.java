@@ -71,7 +71,7 @@ public class Take extends BaseItemParser
 			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("from")))
 				commands.removeElementAt(commands.size()-1);
 
-            int maxToGive=super.calculateMaxToGive(mob,commands,true,victim);
+            int maxToGive=super.calculateMaxToGive(mob,commands,true,victim,false);
             if(maxToGive<0) return false;
 
 			String thingToGive=CMParms.combine(commands,0);

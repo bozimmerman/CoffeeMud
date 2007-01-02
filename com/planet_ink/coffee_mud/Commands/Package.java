@@ -50,7 +50,7 @@ public class Package extends BaseItemParser
         String whatName="";
         if(commands.size()>0)
             whatName=(String)commands.lastElement();
-        int maxToGet=super.calculateMaxToGive(mob,commands,true,mob);
+        int maxToGet=super.calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToGet<0) return false;
         
         String whatToGet=CMParms.combine(commands,0);

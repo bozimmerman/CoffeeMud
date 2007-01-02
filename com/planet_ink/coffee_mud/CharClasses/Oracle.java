@@ -226,6 +226,7 @@ public class Oracle extends Cleric
 						&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
 						&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
 					    &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+                        &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
 						&&(mob.fetchAbility(A.ID())==null))
 						{
 							newOne=A;

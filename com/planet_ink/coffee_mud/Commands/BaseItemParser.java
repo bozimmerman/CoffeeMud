@@ -47,7 +47,7 @@ public class BaseItemParser extends StdCommand
         return true;
     }
     
-    public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat)
+    public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat, boolean getOnly)
     {
         int maxToGive=Integer.MAX_VALUE;
         if((commands.size()>1)
@@ -90,7 +90,7 @@ public class BaseItemParser extends StdCommand
                     	}
                     }
                     else
-                    if(mob.isMine(fromWhat)&&mob.isMine(toWhat))
+                    if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
                     {
                         mob.tell("Ok");
                         return -1;

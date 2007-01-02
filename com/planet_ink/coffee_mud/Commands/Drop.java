@@ -88,7 +88,7 @@ public class Drop extends BaseItemParser
 		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
 
 
-		int maxToDrop=calculateMaxToGive(mob,commands,true,mob);
+		int maxToDrop=calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToDrop<0) return false;
         
 		whatToDrop=CMParms.combine(commands,0);

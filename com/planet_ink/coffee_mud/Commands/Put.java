@@ -109,7 +109,7 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		int maxToPut=super.calculateMaxToGive(mob,commands,true,mob);
+		int maxToPut=super.calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToPut<0) return false;
         
 		String thingToPut=CMParms.combine(commands,0);

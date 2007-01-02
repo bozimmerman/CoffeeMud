@@ -476,6 +476,27 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
+    protected Vector allAbles(Race R)
+    {
+        Vector ables=R.racialAbilities(null);
+        if(ables==null) ables=new Vector();
+        else ables=(Vector)ables.clone();
+        DVector cables=R.culturalAbilities();
+        Ability A=null;
+        if(cables!=null)
+        {
+            for(int c=0;c<cables.size();c++)
+            {
+                A=CMClass.getAbility((String)cables.elementAt(c,1));
+                if(A!=null)
+                {
+                    A.setProficiency(((Integer)cables.elementAt(c,2)).intValue());
+                    ables.addElement(A);
+                }
+            }
+        }
+        return ables;
+    }
     
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -814,11 +835,12 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("ABILITIES"))
 				{
-					Vector ables=R.racialAbilities(null);
+                    Vector ables=allAbles(R);
+                    Ability A=null;
 					for(int i=0;i<ables.size();i++)
 					{
-						Ability A=(Ability)ables.elementAt(i);
-						if(A!=null)
+						A=(Ability)ables.elementAt(i);
+						if((A!=null)&&(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
 						{
 							if(A.proficiency()==0)
 								str.append(A.Name()+", ");
@@ -838,19 +860,23 @@ public class RaceData extends StdWebMacro
 							str.append(A.Name()+", ");
 					}
 				}
-				if(parms.containsKey("LANGS"))
-				{
-					for(int i=0;i<mob.numLearnedAbilities();i++)
-					{
-						Ability A=mob.fetchAbility(i);
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
-							if(A.proficiency()==0)
-								str.append(A.Name()+", ");
-							else
-								str.append(A.Name()+"("+A.proficiency()+"%), ");
-					}
+                if(parms.containsKey("LANGS"))
+                {
+                    Vector ables=allAbles(R);
+                    Ability A=null;
+                    for(int i=0;i<ables.size();i++)
+                    {
+                        A=(Ability)ables.elementAt(i);
+                        if((A!=null)&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)))
+                        {
+                            if(A.proficiency()==0)
+                                str.append(A.Name()+", ");
+                            else
+                                str.append(A.Name()+"("+A.proficiency()+"%), ");
+                        }
+                    }
 
-				}
+                }
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)
