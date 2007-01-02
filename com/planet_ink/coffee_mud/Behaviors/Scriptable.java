@@ -269,18 +269,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		StringBuffer results=new StringBuffer("");
 		String parse=text;
 		if(depth>10) return "";  // no including off to infinity
+        String p=null;
 		while(parse.length()>0)
 		{
 			int y=parse.toUpperCase().indexOf("LOAD=");
 			if(y>=0)
 			{
-                if(parse.substring(0,y).trim().endsWith("#")||parse.substring(0,y).trim().toUpperCase().endsWith("SCRIPTABLE"))
+                p=parse.substring(0,y).trim();
+                if((!p.endsWith(";"))
+                &&(!p.endsWith("\n"))
+                &&(!p.endsWith("\r"))
+                &&(p.length()>0))
                 {
                     results.append(parse.substring(0,y+1));
                     parse=parse.substring(y+1);
                     continue;
                 }
-                results.append(parse.substring(0,y).trim()+"\n");
+                results.append(p+"\n");
 				int z=parse.indexOf("~",y);
 				while((z>0)&&(parse.charAt(z-1)=='\\'))
 				    z=parse.indexOf("~",z+1);

@@ -108,6 +108,7 @@ public class Chant_SummonHail extends Chant
                 {
                     C.setNextWeatherType(Climate.WEATHER_HAIL);
                     C.forceWeatherTick(mob.location().getArea());
+                    Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
                 }
             }
         }
