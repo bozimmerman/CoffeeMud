@@ -117,10 +117,10 @@ public interface ExpertiseLibrary extends CMLibrary
         public int timeCost=0;
         public String costDescription(){
         	StringBuffer cost=new StringBuffer("");
-        	if(practiceCost>0) cost.append(practiceCost+" practices, ");
-        	if(trainCost>0) cost.append(trainCost+" training sessions, ");
-        	if(expCost>0) cost.append(expCost+" experience points, ");
-        	if(qpCost>0) cost.append(qpCost+" quest points, ");
+        	if(practiceCost>0) cost.append(practiceCost+" practice"+((practiceCost>1)?"s":"")+", ");
+        	if(trainCost>0) cost.append(trainCost+" train"+((trainCost>1)?"s":"")+", ");
+        	if(expCost>0) cost.append(expCost+" experience point"+((expCost>1)?"s":"")+", ");
+        	if(qpCost>0) cost.append(qpCost+" quest point"+((qpCost>1)?"s":"")+", ");
         	if(cost.length()==0) return "";
         	return cost.substring(0,cost.length()-2);
         }

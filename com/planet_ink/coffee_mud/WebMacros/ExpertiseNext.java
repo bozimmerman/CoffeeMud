@@ -75,6 +75,7 @@ public class ExpertiseNext extends StdWebMacro
             }
             httpReq.getRequestObjects().put("SORTED_EXPERTISE",experts);
         }
+        Integer qualLevel=null;
         String levelName=httpReq.getRequestParameter("LEVEL");
         int levelCheck=((levelName!=null)&&(levelName.length()>0))?CMath.s_int(levelName):-1;
         String className=httpReq.getRequestParameter("CLASS");
@@ -89,10 +90,20 @@ public class ExpertiseNext extends StdWebMacro
                 DVector DV=CMLib.ableMapper().getClassAllowsList(className);
                 if(DV!=null)
                 	for(int v=0;v<DV.size();v++)
-	                    expertsAllows.put(DV.elementAt(v,1),DV.elementAt(v,2));
+                	{
+                		String xpertise=(String)DV.elementAt(v,1);
+            			E=(ExpertiseLibrary.ExpertiseDefinition)CMLib.expertises().getDefinition(xpertise);
+            			if(E!=null)
+            			{
+            				qualLevel=(Integer)DV.elementAt(v,2);
+                        	int minLevel=E.getMinimumLevel();
+                        	if((qualLevel==null)&&(minLevel<qualLevel.intValue()))
+                        		minLevel=qualLevel.intValue();
+		                    expertsAllows.put(xpertise,new Integer(minLevel));
+            			}
+                	}
             }
         }
-        Integer qualLevel=null;
 		for(Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
 		{
 			E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
@@ -100,15 +111,12 @@ public class ExpertiseNext extends StdWebMacro
             {
     			qualLevel=(Integer)expertsAllows.get(E.ID);
     			if(qualLevel==null) continue;
-            }
-            if(levelCheck>=0)
-            {
-            	int minLevel=E.getMinimumLevel();
-            	if((qualLevel==null)&&(minLevel<qualLevel.intValue()))
-            		minLevel=qualLevel.intValue();
-            	if(minLevel!=levelCheck)
+                if((levelCheck>=0)&&(levelCheck!=qualLevel.intValue()))
 	                continue;
             }
+            else
+            if((levelCheck>=0)&&(levelCheck!=E.getMinimumLevel()))
+            	continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
 			{
 				httpReq.addRequestParameters("EXPERTISE",E.ID);

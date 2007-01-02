@@ -47,6 +47,7 @@ public class WillQualify extends BaseAbleLister{
 		int highestLevel = maxLevel;
 		StringBuffer msg = new StringBuffer("");
 		int col = 0;
+        DVector DV=CMLib.ableMapper().getClassAllowsList(Class);
 		for (int l = 0; l <= highestLevel; l++) 
 		{
 			StringBuffer thisLine = new StringBuffer("");
@@ -67,6 +68,30 @@ public class WillQualify extends BaseAbleLister{
     					        + CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
     					        + CMStrings.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? 12 : 13));
                     }
+				}
+			}
+			ExpertiseLibrary.ExpertiseDefinition E=null;
+			Integer qualLevel=null;
+			for(int d=0;d<DV.size();d++)
+			{
+				qualLevel=(Integer)DV.elementAt(d,2);
+				E=CMLib.expertises().getDefinition((String)DV.elementAt(d,1));
+				if(E!=null)
+				{
+	            	int minLevel=E.getMinimumLevel();
+	            	if(minLevel<qualLevel.intValue())
+	            		minLevel=qualLevel.intValue();
+	            	if(minLevel==l)
+	            	{
+						if ( (++col) > 2) 
+						{
+						    thisLine.append("\n\r");
+						    col = 1;
+						}
+						thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
+						        + CMStrings.padRight("^<HELP^>"+E.name+"^</HELP^>", 19) + " "
+						        + CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
+	            	}
 				}
 			}
 			if (thisLine.length() > 0) 

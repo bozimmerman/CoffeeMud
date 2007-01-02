@@ -55,7 +55,10 @@ public class Archon_Hush extends ArchonSkill
 
 		if(((msg.sourceMinor()==CMMsg.TYP_TELL)
 			||((msg.othersMajor()&CMMsg.MASK_CHANNEL)>0))
-		&&(msg.source()==affected))
+		&&((msg.source()==affected)
+			||((msg.source().location()==CMLib.map().roomLocation(affected))
+				&&(msg.source().isMonster())
+				&&(msg.source().willFollowOrdersOf((MOB)affected)))))
 		{
 			msg.source().tell("Your message drifts into oblivion.");
 			return false;
