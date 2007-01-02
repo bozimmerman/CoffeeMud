@@ -29,7 +29,7 @@
 			@AddRequestParameter?SHOWN=FALSE@
 			@LevelNext?reset@ 
 			@loop@ 
-				@LevelNext@ 
+				@LevelNext?30@ 
 				@AbilityNext?reset@	
 				@loop@ @AbilityNext?spell@ 
 					@AddRequestParameter?SHOWN=TRUE@

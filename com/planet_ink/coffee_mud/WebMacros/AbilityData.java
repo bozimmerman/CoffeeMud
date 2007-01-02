@@ -134,7 +134,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ALLOWS"))
 				{
-					Vector allows=CMLib.ableMapper().getAllowsList(A.ID());
+					Vector allows=CMLib.ableMapper().getAbilityAllowsList(A.ID());
 					Ability A2=null;
 					if((allows!=null)&&(allows.size()>0))
 					{

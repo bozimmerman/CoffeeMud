@@ -23,7 +23,7 @@
 (<a href="spells3.cmvp">View the spells alphabetically</a>)<P>
 <BR>
 	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
-	@loop@ @LevelNext@
+	@loop@ @LevelNext?30@
 	<TR><TD WIDTH=10% ALIGN=TOP BGCOLOR=GREEN><H1><FONT COLOR=WHITE>@LevelNumber@</FONT></H1></TD>
 	<TD WIDTH=90%>@AbilityNext?reset@
 	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>

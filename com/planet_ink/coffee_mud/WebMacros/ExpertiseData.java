@@ -82,7 +82,7 @@ public class ExpertiseData extends StdWebMacro
 				if(parms.containsKey("REQUIRES")) str.append(CMLib.masking().maskDesc(E.allRequirements())+", ");
 				if(parms.containsKey("ALLOWS"))
 				{
-					Vector allows=CMLib.ableMapper().getAllowsList(E.ID);
+					Vector allows=CMLib.ableMapper().getAbilityAllowsList(E.ID);
 					if((allows!=null)&&(allows.size()>0))
 					{
 						ExpertiseLibrary.ExpertiseDefinition def=null;

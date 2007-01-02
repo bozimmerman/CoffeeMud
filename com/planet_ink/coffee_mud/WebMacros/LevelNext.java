@@ -44,12 +44,20 @@ public class LevelNext extends StdWebMacro
 			if(last!=null) httpReq.removeRequestParameter("LEVEL");
 			return "";
 		}
+        int lastLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
+        String s=null;
+        for(Enumeration e=parms.keys();e.hasMoreElements();)
+        {
+            s=(String)e.nextElement();
+            if(CMath.isInteger(s))
+                lastLevel=CMath.s_int(s);
+        }
 		if((last==null)||(last.length()>0))
 		{
 			int level=0;
 			if(last!=null) level=CMath.s_int(last);
 			level++;
-			if(level<=30)
+			if(level<=lastLevel)
 			{
 				httpReq.addRequestParameters("LEVEL",""+level);
 				return "";

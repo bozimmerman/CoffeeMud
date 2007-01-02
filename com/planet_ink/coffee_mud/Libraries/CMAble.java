@@ -209,7 +209,30 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return V.contains(new Integer(acode));
     }
     
-	public Vector getAllowsList(String ID)
+    public Vector getClassAllowsList(String classID)
+    {
+        Vector V=(Vector)allows.get("NONABLE-"+classID);
+        if(V!=null) return V;
+        Vector ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
+        V=new Vector();
+        allows.put("NONABLE-"+classID,V);
+        HashSet alreadyDone=new HashSet();
+        Vector V2=null;
+        for(int a=0;a<ABLES.size();a++)
+        {
+            V2=getAbilityAllowsList((String)ABLES.elementAt(a));
+            if((V2==null)||(V2.size()==0)) continue;
+            for(int v2=0;v2<V2.size();v2++)
+            if((!alreadyDone.contains(V2.elementAt(v2))&&(!ABLES.contains(V2.elementAt(v2)))))
+            {
+                alreadyDone.add(V2.elementAt(v2));
+                V.addElement(V2.elementAt(v2));
+            }
+        }
+        return V;
+    }
+    
+	public Vector getAbilityAllowsList(String ableID)
 	{
 		String KEYID=null;
 		String abilityID=null;
@@ -222,7 +245,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				abilityID=(String)allows.get(KEYID);
 				if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(",")>0))
 				{
-					Vector orset=getOrSet(ID,abilityID);
+					Vector orset=getOrSet(ableID,abilityID);
 					if(orset.size()!=0)
 					{
 						String KEYID2=KEYID;
@@ -237,7 +260,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(remove!=null)
 			for(int r=0;r<remove.size();r++)
 				allows.remove(remove.elementAt(r));
-		return (Vector)allows.get(ID);
+		return (Vector)allows.get(ableID);
 	}
 	
 	public void addCharAbilityMapping(String ID, 

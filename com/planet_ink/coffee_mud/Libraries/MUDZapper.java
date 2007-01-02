@@ -530,31 +530,31 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public Vector levelCompiledHelper(String str, char c, Vector entry)
 	{
 		if(entry==null) entry=new Vector();
-		if(str.startsWith(c+">="))
+		if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGE"));
 			entry.addElement(new Integer(CMath.s_int(str.substring(3).trim())));
 		}
 		else
-		if(str.startsWith(c+"<="))
+		if(str.startsWith(c+"<=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLLE"));
 			entry.addElement(new Integer(CMath.s_int(str.substring(3).trim())));
 		}
 		else
-		if(str.startsWith(c+">"))
+		if(str.startsWith(c+">")&&(CMath.isNumber(str.substring(2).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGR"));
 			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
 		}
 		else
-		if(str.startsWith(c+"<"))
+		if(str.startsWith(c+"<")&&(CMath.isNumber(str.substring(2).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLLT"));
 			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
 		}
 		else
-		if(str.startsWith(c+"="))
+		if(str.startsWith(c+"=")&&(CMath.isNumber(str.substring(2).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLEQ"));
 			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
@@ -564,23 +564,41 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	
 	public StringBuffer levelHelp(String lvl, char c, String append)
 	{
-		if(lvl.startsWith(c+">="))
+		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
 			return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
 		else
-		if(lvl.startsWith(c+"<="))
+		if(lvl.startsWith(c+"<=")&&(CMath.isNumber(lvl.substring(3).trim())))
 			return new StringBuffer(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
 		else
-		if(lvl.startsWith(c+">"))
+		if(lvl.startsWith(c+">")&&(CMath.isNumber(lvl.substring(2).trim())))
 			return new StringBuffer(append+"levels greater than "+lvl.substring(2).trim()+".  ");
 		else
-		if(lvl.startsWith(c+"<"))
+		if(lvl.startsWith(c+"<")&&(CMath.isNumber(lvl.substring(2).trim())))
 			return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
 		else
-		if(lvl.startsWith(c+"="))
+		if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
 			return new StringBuffer(append+"level "+lvl.substring(2).trim()+" players.  ");
 		return new StringBuffer("");
 	}
 	
+    public int levelMinHelp(String lvl, char c, int minMinLevel, boolean reversed)
+    {
+        if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
+            return reversed?minMinLevel:CMath.s_int(lvl.substring(3).trim());
+        else
+        if(lvl.startsWith(c+"<=")&&(CMath.isNumber(lvl.substring(3).trim())))
+            return reversed?CMath.s_int(lvl.substring(3).trim())+1:minMinLevel;
+        else
+        if(lvl.startsWith(c+">")&&(CMath.isNumber(lvl.substring(2).trim())))
+            return reversed?minMinLevel:CMath.s_int(lvl.substring(2).trim())+1;
+        else
+        if(lvl.startsWith(c+"<")&&(CMath.isNumber(lvl.substring(2).trim())))
+            return reversed?CMath.s_int(lvl.substring(2).trim()):minMinLevel;
+        else
+        if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
+            return reversed?minMinLevel:CMath.s_int(lvl.substring(2).trim());
+        return Integer.MIN_VALUE;
+    }
 	
 	public boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
 	{
@@ -2115,7 +2133,109 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		return preReqs;
 	}
-	
+
+    public int minMaskLevel(String text, int minMinLevel)
+    {
+        int level=minMinLevel;
+        Vector cset=preCompiled(text);
+        for(int c=0;c<cset.size();c++)
+        {
+            Vector V=(Vector)cset.elementAt(c);
+            if(V.size()>0)
+            switch(((Integer)V.firstElement()).intValue())
+            {
+            case 5: // -level
+            {
+                for(int v=1;v<V.size();v+=2)
+                    if((v+1)<V.size())
+                    switch(((Integer)V.elementAt(v)).intValue())
+                    {
+                        case 37: // +lvlgr
+                            level=((Integer)V.elementAt(v+1)).intValue()+1;
+                            break;
+                        case 38: // +lvlge
+                            level=((Integer)V.elementAt(v+1)).intValue();
+                            break;
+                        case 39: // +lvlt
+                            level=minMinLevel;
+                            break;
+                        case 40: // +lvlle
+                            level=minMinLevel;
+                            break;
+                        case 41: // +lvleq
+                            level=((Integer)V.elementAt(v+1)).intValue();
+                            break;
+                    }
+            }
+            break;
+            case 6: // -classlevel
+                {
+                    for(int v=1;v<V.size();v+=2)
+                        if((v+1)<V.size())
+                        switch(((Integer)V.elementAt(v)).intValue())
+                        {
+                        case 37: // +lvlgr
+                            level=((Integer)V.elementAt(v+1)).intValue()+1;
+                            break;
+                        case 38: // +lvlge
+                            level=((Integer)V.elementAt(v+1)).intValue();
+                            break;
+                        case 39: // +lvlt
+                            level=minMinLevel;
+                            break;
+                        case 40: // +lvlle
+                            level=minMinLevel;
+                            break;
+                        case 41: // +lvleq
+                            level=((Integer)V.elementAt(v+1)).intValue();
+                            break;
+                        }
+                }
+                break;
+            case 103: // -maxclasslevel
+                {
+                    for(int v=1;v<V.size();v+=2)
+                        if((v+1)<V.size())
+                        switch(((Integer)V.elementAt(v)).intValue())
+                        {
+                        case 37: // +lvlgr
+                            level=((Integer)V.elementAt(v+1)).intValue()+1;
+                            break;
+                        case 38: // +lvlge
+                            level=((Integer)V.elementAt(v+1)).intValue();
+                            break;
+                        case 39: // +lvlt
+                            level=minMinLevel;
+                            break;
+                        case 40: // +lvlle
+                            level=minMinLevel;
+                            break;
+                        case 41: // +lvleq
+                            level=((Integer)V.elementAt(v+1)).intValue();
+                            break;
+                        }
+                }
+                break;
+            case 37: // +lvlgr
+                level=minMinLevel;
+                break;
+            case 38: // +lvlge
+                level=minMinLevel;
+                break;
+            case 39: // +lvlt
+                level=((Integer)V.elementAt(1)).intValue();
+                break;
+            case 40: // +lvlle
+                level=((Integer)V.elementAt(1)).intValue()+1;
+                break;
+            case 41: // +lvleq
+                level=minMinLevel;
+                break;
+            }
+        }
+        return level;
+    }
+    
 	public Vector maskCompile(String text)
 	{
 		Vector buf=new Vector();

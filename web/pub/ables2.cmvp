@@ -25,7 +25,7 @@
 	<TABLE WIDTH=100% BORDER=1>	@AbilityDomainNext?reset@ 
 		@loop@ @AbilityDomainNext@ @LevelNext?reset@ 
 			@AddRequestParameter?SHOWN=FALSE@
-			@loop@ @LevelNext@ 
+			@loop@ @LevelNext?30@ 
 				@AbilityNext?reset@	
 				@loop@ @AbilityNext@ 
 					@AddRequestParameter?SHOWN=TRUE@

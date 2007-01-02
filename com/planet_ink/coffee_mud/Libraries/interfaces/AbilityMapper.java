@@ -223,10 +223,15 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
 	/**
-	 * @param ID
+	 * @param ableID
 	 * @return
 	 */
-	public Vector getAllowsList(String ID);
+	public Vector getAbilityAllowsList(String ableID);
+    /**
+     * @param ableID
+     * @return
+     */
+    public Vector getClassAllowsList(String ID);
     /**
      * @param ID
      * @param checkAll

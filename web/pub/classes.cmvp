@@ -13,6 +13,12 @@
 		w=window.open("ability.cmvp?ABILITY="+named,
 		            "Ability",strFeatures, false);
 	}
+	function openEdu(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("edu.cmvp?EXPERTISE="+named,
+		            "Expertise",strFeatures, false);
+	}
 	//-->
 	</SCRIPT>
 </head>
@@ -46,15 +52,22 @@
 	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
 	@loop@ @LevelNext@
 	<TR><TD WIDTH=10%>@LevelNumber@</TD>
-	<TD WIDTH=90%>@AbilityNext?reset@
-	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
-		@loop@ @AbilityNext?skill&common skill&spell&prayer&song&thief skill&chant@ 
-		<TR><TD WIDTH=35%>(@AbilityData?typendomain@)</TD>
-		<TD WIDTH=15% ALIGN=RIGHT>@AbilityData?qualifyQ@</TD>
-		<TD WIDTH=50%>&nbsp;
-		<a href="javascript:openUp('@AbilityID@');">@AbilityName@</a> 
-		</TD></TR>
-		@back@
+	<TD WIDTH=90%>@AbilityNext?reset@ @ExpertiseNext?RESET@
+		<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+			@loop@ @AbilityNext?skill&common skill&spell&prayer&song&thief skill&chant@ 
+			<TR><TD WIDTH=35%>(@AbilityData?typendomain@)</TD>
+			<TD WIDTH=15% ALIGN=RIGHT>@AbilityData?qualifyQ@</TD>
+			<TD WIDTH=50%>&nbsp;
+			<a href="javascript:openUp('@AbilityID@');">@AbilityName@</a> 
+			</TD></TR>
+			@back@
+			@loop@ @ExpertiseNext@ 
+			<TR><TD WIDTH=35%>(Expertise)</TD>
+			<TD WIDTH=15% ALIGN=RIGHT><BR></TD>
+			<TD WIDTH=50%>&nbsp;
+			<a href="javascript:openEdu('@ExpertiseID@');">(@ExpertiseData?name@)</a> 
+			</TD></TR>
+			@back@
 		</TABLE>
 	</TD>
 	</TR>

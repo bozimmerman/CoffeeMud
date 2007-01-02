@@ -57,6 +57,14 @@ public interface ExpertiseLibrary extends CMLibrary
         private String uncompiledFinalMask="";
         public ExpertiseDefinition parent=null;
         private Vector compiledFinalMask=null;
+        private int minLevel=Integer.MIN_VALUE+1;
+        public int getMinimumLevel()
+        {
+            if(minLevel==Integer.MIN_VALUE+1)
+                minLevel=CMLib.masking().minMaskLevel(allRequirements(),0);
+            return minLevel;
+        }
+        
         public Vector compiledListMask()
         {
             if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))

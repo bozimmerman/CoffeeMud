@@ -158,7 +158,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     }
 	private void appendAllowed(StringBuffer prepend, String ID)
 	{
-		Vector allows=CMLib.ableMapper().getAllowsList(ID);
+		Vector allows=CMLib.ableMapper().getAbilityAllowsList(ID);
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		Ability A=null;
 		if((allows!=null)&&(allows.size()>0))

@@ -75,9 +75,29 @@ public class ExpertiseNext extends StdWebMacro
             }
             httpReq.getRequestObjects().put("SORTED_EXPERTISE",experts);
         }
+        String levelName=httpReq.getRequestParameter("LEVEL");
+        int levelCheck=((levelName!=null)&&(levelName.length()>0))?CMath.s_int(levelName):-1;
+        String className=httpReq.getRequestParameter("CLASS");
+        HashSet expertsAllows=null;
+        if((className!=null)&&(className.length()>0))
+        {
+            expertsAllows=(HashSet)httpReq.getRequestObjects().get("EXPERT-"+className.toUpperCase().trim());
+            if(expertsAllows==null)
+            {
+                expertsAllows=new HashSet();
+                httpReq.getRequestObjects().put("EXPERT-"+className.toUpperCase().trim(),expertsAllows);
+                Vector V=CMLib.ableMapper().getClassAllowsList(className);
+                if((V!=null)&&(V.size()>0))
+                    expertsAllows.addAll(V);
+            }
+        }
 		for(Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
 		{
 			E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+            if((levelCheck>=0)&&(E.getMinimumLevel()!=levelCheck))
+                continue;
+            if((expertsAllows!=null)&&(!expertsAllows.contains(E.ID)))
+                continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
 			{
 				httpReq.addRequestParameters("EXPERTISE",E.ID);
