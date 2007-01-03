@@ -59,12 +59,18 @@
 						<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
 						@loop@ @LevelNext@
 						<TR><TD WIDTH=10%>@LevelNumber@</TD>
-						<TD WIDTH=90%>@AbilityNext?reset@
+						<TD WIDTH=90%>@AbilityNext?reset@ @ExpertiseNext?reset@
 						<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 							@loop@ @AbilityNext?skill&common skill&spell&prayer&song&thief skill&chant@ 
 							<TR><TD WIDTH=35%>(@AbilityData?typendomain@)</TD>
 							<TD WIDTH=15% ALIGN=RIGHT>@AbilityData?qualifyQ@</TD>
 							<TD WIDTH=50%>&nbsp;@AbilityName@</TD></TR>
+							@back@
+							@loop@ @ExpertiseNext@ 
+							<TR><TD WIDTH=35%>(Expertise)</TD>
+							<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+							<TD WIDTH=50%>&nbsp;(@ExpertiseData?name@)</a> 
+							</TD></TR>
 							@back@
 							</TABLE>
 						</TD>
