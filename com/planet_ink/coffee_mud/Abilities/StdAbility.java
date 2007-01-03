@@ -1421,7 +1421,7 @@ public class StdAbility implements Ability
             ptReqs=CMLib.ableMapper().getPracTrainCost(student,ID());
         if((ptReqs[0]>0)&&(student.getPractices()<ptReqs[0]))
 			return;
-        if((ptReqs[1]>0)&&(student.getPractices()<ptReqs[1]))
+        if((ptReqs[1]>0)&&(student.getTrains()<ptReqs[1]))
 			return;
 		if(student.fetchAbility(ID())==null)
 		{

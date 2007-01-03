@@ -662,7 +662,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		else
 		{
-	    	if(!mob) areaThing=meMOB.fetchInventory(thisName); 
+	    	if(!mob) 
+	    		areaThing=(meMOB!=null)?meMOB.fetchInventory(thisName):null; 
 		    try
 		    {
 		    	if(areaThing==null)
@@ -811,6 +812,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			str=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,str);
 			Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORNREQ_ANY);
 			if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Item.WORNREQ_ANY);
+			if(E==null) E=lastKnownLocation.fetchAnyItem(str);
+			if((E==null)&&(monster!=null)) E=monster.fetchInventory(str);
 			return E;
 		}
 		return null;
