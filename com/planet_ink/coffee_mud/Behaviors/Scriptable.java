@@ -2070,7 +2070,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(M==null) continue;
                         if(MASK!=null)
                         {
-                            if(CMLib.masking().maskCheck(MASK,M))
+                            if(CMLib.masking().maskCheck(MASK,M,true))
                                 num++;
                         }
                         else
@@ -2105,7 +2105,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             if(M==null) continue;
                             if(MASK!=null)
                             {
-                                if(CMLib.masking().maskCheck(MASK,M))
+                                if(CMLib.masking().maskCheck(MASK,M,true))
                                     num++;
                             }
                             else
@@ -2179,7 +2179,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(E==null)
 					returnable=false;
 				else
-					returnable=CMLib.masking().maskCheck(arg2, E);
+					returnable=CMLib.masking().maskCheck(arg2, E,false);
 				break;
 			}
             case 86: // strcontains
@@ -2316,7 +2316,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                 if(M==null) continue;
                                 if(MASK!=null)
                                 {
-                                    if(CMLib.masking().maskCheck(MASK,M))
+                                    if(CMLib.masking().maskCheck(MASK,M,true))
                                         num++;
                                 }
                                 else
@@ -3885,7 +3885,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(M==null) continue;
                         if(MASK!=null)
                         {
-                            if(CMLib.masking().maskCheck(MASK,M))
+                            if(CMLib.masking().maskCheck(MASK,M,true))
                                 num++;
                         }
                         else
@@ -3918,7 +3918,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             if(M==null) continue;
                             if(MASK!=null)
                             {
-                                if(CMLib.masking().maskCheck(MASK,M))
+                                if(CMLib.masking().maskCheck(MASK,M,true))
                                     num++;
                             }
                             else
@@ -4069,7 +4069,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             if(M==null) continue;
                             if(MASK!=null)
                             {
-                                if(CMLib.masking().maskCheck(MASK,M))
+                                if(CMLib.masking().maskCheck(MASK,M,true))
                                     num++;
                             }
                             else

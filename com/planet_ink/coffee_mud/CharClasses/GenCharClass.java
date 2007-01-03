@@ -184,7 +184,7 @@ public class GenCharClass extends StdCharClass
 			return false;
 		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
 		{
-			if(!CMLib.masking().maskCheck(qualifications,mob))
+			if(!CMLib.masking().maskCheck(qualifications,mob,true))
 			{
 				if(!quiet)
 					mob.tell("You must meet the following qualifications to be a "+name()+":\n"+statQualifications());

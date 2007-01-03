@@ -100,7 +100,7 @@ public class CorpseEater extends ActiveTicker
                         ||(getParms().toUpperCase().indexOf("-MOB")>=0))
                             continue;
                         MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
-						if(!CMLib.masking().maskCheck(getParms(),mob2))
+						if(!CMLib.masking().maskCheck(getParms(),mob2,false))
                         {
                             mob2.destroy();
 							continue;

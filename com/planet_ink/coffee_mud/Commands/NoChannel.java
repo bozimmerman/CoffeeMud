@@ -62,7 +62,7 @@ public class NoChannel extends StdCommand
             }
         }
 		if((channelNum<0)
-		||(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelNum),mob)))
+		||(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelNum),mob,true)))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;

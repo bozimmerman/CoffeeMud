@@ -108,7 +108,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         }
 		
 		if((!M.playerStats().getIgnored().contains(sender.Name()))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
+		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)
 		   ||(R.getArea()==sender.location().getArea()))
@@ -152,7 +152,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((!ses.killFlag())
 		&&(R!=null)
 		&&(!M.playerStats().getIgnored().contains(senderName))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
+		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)
 		   ||(R.getArea()==sender.location().getArea()))
@@ -173,7 +173,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		    return false;
 
 		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
+		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
 		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;

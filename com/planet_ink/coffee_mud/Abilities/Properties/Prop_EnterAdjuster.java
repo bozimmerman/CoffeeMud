@@ -56,7 +56,7 @@ public class Prop_EnterAdjuster extends Property
 		if((affected!=null)
 		&&(((msg.targetMinor()==CMMsg.TYP_ENTER)&&((affected instanceof Room)||(affected instanceof Exit)))
 		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable)))
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,msg.source()))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,msg.source(),true))))
         {
             MOB mob=msg.source();
             String[] strs=separateMask(text());

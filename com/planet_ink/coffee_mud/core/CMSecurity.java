@@ -106,7 +106,7 @@ public class CMSecurity
 	
 	public static boolean isASysOp(MOB mob)
 	{
-		return CMLib.masking().maskCheck(compiledSysop,mob)
+		return CMLib.masking().maskCheck(compiledSysop,mob,true)
 				||((mob.soulMate()!=null)
 					&&(CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))
 					&&(isASysOp(mob.soulMate())));

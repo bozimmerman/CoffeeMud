@@ -85,7 +85,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_WIELD:
 			break;
 		case CMMsg.TYP_GET:
-			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,false))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 				return false;
@@ -93,7 +93,7 @@ public class Prop_HaveZapper extends Property
 			break;
 		case CMMsg.TYP_EAT:
 		case CMMsg.TYP_DRINK:
-			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,false))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
 				return false;

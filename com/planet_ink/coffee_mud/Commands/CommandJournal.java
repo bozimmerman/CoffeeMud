@@ -125,7 +125,7 @@ public class CommandJournal extends StdCommand
             mob.tell("!!!!!");
             return false;
         }
-        if((journalNum>=0)&&(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(journalNum),mob)))
+        if((journalNum>=0)&&(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(journalNum),mob,true)))
         {
             mob.tell("This command is not available to you.");
             return false;

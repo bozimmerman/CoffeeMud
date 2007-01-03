@@ -46,7 +46,7 @@ public class VeryAggressive extends Aggressive
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return CMLib.masking().maskCheck(getParms(),M);
+		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
 	public static void tickVeryAggressively(Tickable ticking,
@@ -100,7 +100,7 @@ public class VeryAggressive extends Aggressive
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(CMLib.flags().canSenseMoving(inhab,mob))
-						&&(CMLib.masking().maskCheck(zapStr,inhab))
+						&&(CMLib.masking().maskCheck(zapStr,inhab,false))
 						&&((zapStr.length()>0)
 						||((inhab.envStats().level()<(mob.envStats().level()+15))
 						   &&(inhab.envStats().level()>(mob.envStats().level()-15)))))

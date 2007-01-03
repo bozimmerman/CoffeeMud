@@ -94,7 +94,7 @@ public class Channel extends BaseChanneler
 			if(s.indexOf(" ")>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
-		if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelInt),mob))
+		if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelInt),mob,true))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;

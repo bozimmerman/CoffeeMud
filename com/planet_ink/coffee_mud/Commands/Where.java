@@ -215,7 +215,7 @@ public class Where extends StdCommand
 									Item I=R.fetchItem(i);
                                     if((zapperMask)&&(itemOnly))
                                     {
-                                        if(CMLib.masking().maskCheck(compiledZapperMask,I))
+                                        if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
                                         {
                                             lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
                                             lines.append(R.roomTitle());
@@ -226,7 +226,7 @@ public class Where extends StdCommand
                                     else
                                     if((zapperMask2)&&(itemOnly))
                                     {
-                                        if(CMLib.masking().maskCheck(who,I))
+                                        if(CMLib.masking().maskCheck(who,I,true))
                                         {
                                             lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
                                             lines.append(R.roomTitle());
@@ -253,7 +253,7 @@ public class Where extends StdCommand
 									if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
                                         if((zapperMask)&&(mobOnly))
                                         {
-                                            if(CMLib.masking().maskCheck(compiledZapperMask,M))
+                                            if(CMLib.masking().maskCheck(compiledZapperMask,M,true))
                                             {
                                                 lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
                                                 lines.append(R.roomTitle());
@@ -264,7 +264,7 @@ public class Where extends StdCommand
                                         else
                                         if((zapperMask2)&&(mobOnly))
                                         {
-                                            if(CMLib.masking().maskCheck(who,M))
+                                            if(CMLib.masking().maskCheck(who,M,true))
                                             {
                                                 lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
                                                 lines.append(R.roomTitle());
@@ -289,7 +289,7 @@ public class Where extends StdCommand
 											Item I=M.fetchInventory(i);
                                             if((zapperMask)&&(itemOnly))
                                             {
-                                                if(CMLib.masking().maskCheck(compiledZapperMask,I))
+                                                if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
                                                 {
                                                     lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
                                                     lines.append("INV: "+M.name());
@@ -300,7 +300,7 @@ public class Where extends StdCommand
                                             else
                                             if((zapperMask2)&&(itemOnly))
                                             {
-                                                if(CMLib.masking().maskCheck(who,I))
+                                                if(CMLib.masking().maskCheck(who,I,true))
                                                 {
                                                     lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
                                                     lines.append("INV: "+M.name());
@@ -327,7 +327,7 @@ public class Where extends StdCommand
 											Environmental E=(Environmental)V.elementAt(i);
                                             if((zapperMask)&&(E instanceof Item)&&(itemOnly))
                                             {
-                                                if(CMLib.masking().maskCheck(compiledZapperMask,E))
+                                                if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
                                                 {
                                                     lines.append("^!"+CMStrings.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
@@ -338,7 +338,7 @@ public class Where extends StdCommand
                                             else
                                             if((zapperMask)&&(E instanceof MOB)&&(mobOnly))
                                             {
-                                                if(CMLib.masking().maskCheck(compiledZapperMask,E))
+                                                if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
                                                 {
                                                     lines.append("^!"+CMStrings.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
@@ -349,7 +349,7 @@ public class Where extends StdCommand
                                             else
                                             if((zapperMask2)&&(E instanceof Item)&&(itemOnly))
                                             {
-                                                if(CMLib.masking().maskCheck(who,E))
+                                                if(CMLib.masking().maskCheck(who,E,true))
                                                 {
                                                     lines.append("^!"+CMStrings.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
@@ -360,7 +360,7 @@ public class Where extends StdCommand
                                             else
                                             if((zapperMask2)&&(E instanceof MOB)&&(mobOnly))
                                             {
-                                                if(CMLib.masking().maskCheck(who,E))
+                                                if(CMLib.masking().maskCheck(who,E,true))
                                                 {
                                                     lines.append("^!"+CMStrings.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());

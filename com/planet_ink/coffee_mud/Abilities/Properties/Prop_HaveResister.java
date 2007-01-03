@@ -94,7 +94,7 @@ public class Prop_HaveResister extends Property
 		ensureStarted();
         if((!ignoreCharStats)
         &&(canResist(affectedMOB))
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,affectedMOB))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,affectedMOB,false))))
             for(int i=0;i<stats.length;i++)
                 affectedStats.setStat(((Integer)stats[i][0]).intValue(),affectedStats.getStat(((Integer)stats[i][0]).intValue())+adjCharStats.getStat(((Integer)stats[i][0]).intValue()));
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -151,7 +151,7 @@ public class Prop_HaveResister extends Property
 		{
 			if(checkProtection("weapons"))
             {
-                if((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob)))
+                if((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false)))
     				msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("weapons"),100.0))));
             }
 			else
@@ -159,15 +159,15 @@ public class Prop_HaveResister extends Property
 				Weapon W=(Weapon)msg.tool();
 				if((W.weaponType()==Weapon.TYPE_BASHING)
                 &&(checkProtection("blunt"))
-                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
 					msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("blunt"),100.0))));
 				if((W.weaponType()==Weapon.TYPE_PIERCING)
                 &&(checkProtection("pierce"))
-                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
 					msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("pierce"),100.0))));
 			    if((W.weaponType()==Weapon.TYPE_SLASHING)
                 &&(checkProtection("slash"))
-                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
 			    	msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("slash"),100.0))));
 			}
 			return;
@@ -190,7 +190,7 @@ public class Prop_HaveResister extends Property
 				if(CMath.bset(A.flags(),Ability.FLAG_TRANSPORTING))
 				{
 					if((checkProtection("teleport"))
-                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
 					{
 						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
 						return false;
@@ -202,7 +202,7 @@ public class Prop_HaveResister extends Property
 				&&(!CMath.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
 					if((checkProtection("holy"))
-                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
 					{
 						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
 						return false;

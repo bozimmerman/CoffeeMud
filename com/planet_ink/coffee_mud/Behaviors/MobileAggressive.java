@@ -53,7 +53,7 @@ public class MobileAggressive extends Mobile
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return true;
-		return CMLib.masking().maskCheck(getParms(),M);
+		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

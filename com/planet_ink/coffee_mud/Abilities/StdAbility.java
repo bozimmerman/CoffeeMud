@@ -1295,7 +1295,7 @@ public class StdAbility implements Ability
 		}
 		
 		String extraMask=CMLib.ableMapper().getApplicableMask(student,this);
-		if((extraMask.length()>0)&&(!CMLib.masking().maskCheck(extraMask,student)))
+		if((extraMask.length()>0)&&(!CMLib.masking().maskCheck(extraMask,student,true)))
 		{
 			String reason="requirements: "+CMLib.masking().maskDesc(extraMask);
 			student.tell("You may not learn '"+name()+"' at this time due to the "+reason+".");

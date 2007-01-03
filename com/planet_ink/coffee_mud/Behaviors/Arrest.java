@@ -1388,7 +1388,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		// is the victim a protected race?
 		if((victim!=null)&&(!(victim instanceof Deity)))
 		{
-			if(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim))
+			if(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim,false))
 			{
 				if(CMSecurity.isDebugging("ARREST")) 
 				    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Victim is not a protected race!");
@@ -1541,14 +1541,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         
         if((laws.basicCrimes().containsKey("TRESPASSING"))
-        &&((CMLib.masking().maskCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),testMOB))
+        &&((CMLib.masking().maskCheck(laws.getMessage(Law.MSG_TRESPASSERMASK),testMOB,false))
             ||(testMOB.isMonster()
                 &&(testMOB.getStartRoom()!=null)
                 &&(testMOB.getStartRoom().getArea()!=R.getArea())
                 &&(CMLib.flags().isPossiblyAggressive(testMOB))
                 &&((testMOB.amFollowing()==null)
                         ||((!testMOB.amFollowing().isMonster())&&(testMOB.amFollowing().location()==testMOB.location())))
-                &&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),testMOB)))))
+                &&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),testMOB,false)))))
         {
             String[] info=(String[])laws.basicCrimes().get("TRESPASSING");
             fillOutWarrant(testMOB,

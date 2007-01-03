@@ -41,7 +41,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
     public boolean canApply(MOB mob)
     {
         if((affected!=null)
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,true))))
             return true;
         return false;
     }

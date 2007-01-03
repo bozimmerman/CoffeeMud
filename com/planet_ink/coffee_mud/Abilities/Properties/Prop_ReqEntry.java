@@ -49,7 +49,7 @@ public class Prop_ReqEntry extends Property
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		return CMLib.masking().maskCheck(text(),mob);
+		return CMLib.masking().maskCheck(text(),mob,false);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

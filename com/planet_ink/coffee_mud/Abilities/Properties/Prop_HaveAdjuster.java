@@ -161,7 +161,7 @@ public class Prop_HaveAdjuster extends Property
         if((affected!=null)
         &&(affected instanceof Item)
         &&(!((Item)affected).amDestroyed())
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,true))))
             return true;
         return false;
     }

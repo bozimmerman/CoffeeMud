@@ -696,7 +696,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    MOB M2=R2.fetchInhabitant(i);
 	                                    if((M2!=null)&&(M2.isMonster()))
 	                                    {
-	                                        if(!CMLib.masking().maskCheck(mask,M2))
+	                                        if(!CMLib.masking().maskCheck(mask,M2,true))
 	                                            continue;
 	                                        choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
 	                                    }
@@ -759,7 +759,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    Item I2=R2.fetchItem(i);
 	                                    if(I2!=null)
 	                                    {
-	                                        if(!CMLib.masking().maskCheck(mask,I2))
+	                                        if(!CMLib.masking().maskCheck(mask,I2,true))
 	                                            continue;
 	                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
 	                                    }
@@ -1080,7 +1080,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                     Room R2=(Room)e.nextElement();
                                     String display=R2.displayText().toUpperCase();
                                     String desc=R2.description().toUpperCase();
-                                    if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2))) 
+                                    if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2,true))) 
                                         continue;
                                     if(localeName.equalsIgnoreCase("any"))
                                     {
@@ -1170,7 +1170,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                MOB M2=(MOB)e.nextElement();
 	                                if((M2!=null)&&(M2.isMonster()))
 	                                {
-	                                    if(!CMLib.masking().maskCheck(mask,M2))
+	                                    if(!CMLib.masking().maskCheck(mask,M2,true))
 	                                        continue;
 	                                    choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
 	                                }
@@ -1188,7 +1188,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                        MOB M2=R2.fetchInhabitant(i);
 	                                        if((M2!=null)&&(M2.isMonster()))
 	                                        {
-	                                            if(!CMLib.masking().maskCheck(mask,M2))
+	                                            if(!CMLib.masking().maskCheck(mask,M2,true))
 	                                                continue;
 	                                            choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
 	                                        }
@@ -1261,7 +1261,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                Item I2=(Item)e.nextElement();
 	                                if(I2!=null)
 	                                {
-	                                    if(!CMLib.masking().maskCheck(mask,I2))
+	                                    if(!CMLib.masking().maskCheck(mask,I2,true))
 	                                        continue;
 	                                    choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
 	                                }
@@ -1277,7 +1277,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    Item I2=R2.fetchItem(i);
 	                                    if(I2!=null)
 	                                    {
-	                                        if(!CMLib.masking().maskCheck(mask,I2))
+	                                        if(!CMLib.masking().maskCheck(mask,I2,true))
 	                                            continue;
 	                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
 	                                    }
@@ -2057,7 +2057,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<q.loadedMobs.size();i++)
                         {
                             MOB M2=(MOB)q.loadedMobs.elementAt(i);
-                            if(!CMLib.masking().maskCheck(mask,M2))
+                            if(!CMLib.masking().maskCheck(mask,M2,true))
                                 continue;
                             if((mobName.equalsIgnoreCase("any"))
                             ||(CMLib.english().containsString(M2.name(),mobName))
@@ -3035,7 +3035,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             for(int s=CMLib.sessions().size()-1;s>=0;s--)
             {
                 Session S=CMLib.sessions().elementAt(s);
-                if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob())))
+                if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob(),true)))
                     numElligiblePlayers++;
             }
         }

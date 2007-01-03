@@ -296,7 +296,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             factorMask=priceFactors[p].trim();
             x=factorMask.indexOf(' ');
             if(x<0) continue;
-            if(CMLib.masking().maskCheck(factorMask.substring(x+1).trim(),E))
+            if(CMLib.masking().maskCheck(factorMask.substring(x+1).trim(),E,false))
                 factor*=CMath.s_double(factorMask.substring(0,x).trim());
         }
         if(E instanceof Item)
@@ -1162,7 +1162,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores)
     {
-        if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob)))
+        if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob,false)))
         {
             mob.tell(whoIgnores,null,null,"<S-NAME> appear(s) to be ignoring you.");
             return false;

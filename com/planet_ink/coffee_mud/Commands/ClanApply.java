@@ -50,9 +50,9 @@ public class ClanApply extends BaseClanner
 				Clan C=CMLib.clans().findClan(qual);
 				if(C!=null)
 				{
-					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob))
+					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 					{
-                        if(CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob))
+                        if(CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
                         {
                         	int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
                         	int numMembers=C.getSize();

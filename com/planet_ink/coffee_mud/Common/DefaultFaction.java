@@ -318,7 +318,7 @@ public class DefaultFaction implements Faction, MsgListener
                 if(CMath.isInteger((String)choices.elementAt(i)))
                     mine.addElement(new Integer(CMath.s_int((String)choices.elementAt(i))));
                 else
-                if(CMLib.masking().maskCheck((String)choices.elementAt(i), mob)) 
+                if(CMLib.masking().maskCheck((String)choices.elementAt(i), mob,false)) 
                 {
                     Vector v=CMParms.parse((String)choices.elementAt(i));
                     for(int j=0;j<v.size();j++) 
@@ -410,7 +410,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             for(int i=0;i<defaults.size();i++) 
             {
-                if(CMLib.masking().maskCheck((String)defaults.elementAt(i), mob)) 
+                if(CMLib.masking().maskCheck((String)defaults.elementAt(i), mob,false)) 
                 {
                     Vector v=CMParms.parse((String)defaults.elementAt(i));
                     for(int j=0;j<v.size();j++) 
@@ -435,7 +435,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             for(int i=0;i<autoDefaults.size();i++) 
             {
-                if(CMLib.masking().maskCheck((String)autoDefaults.elementAt(i), mob)) 
+                if(CMLib.masking().maskCheck((String)autoDefaults.elementAt(i), mob,false)) 
                 {
                     Vector v=CMParms.parse((String)autoDefaults.elementAt(i));
                     for(int j=0;j<v.size();j++) 
@@ -501,7 +501,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             Vector factor=(Vector)factors.elementAt(i);
             if((factor.size()>2)
-            &&(CMLib.masking().maskCheck(((String)factor.elementAt(2)),mob))) 
+            &&(CMLib.masking().maskCheck(((String)factor.elementAt(2)),mob,false))) 
             {
                  if(gain)
                      return CMath.s_double(((String)factor.elementAt(1)));
@@ -924,7 +924,7 @@ public class DefaultFaction implements Faction, MsgListener
         public boolean applies(MOB mob) 
         {
             if(zapper==null) return true;
-            return CMLib.masking().maskCheck(zapper,mob);
+            return CMLib.masking().maskCheck(zapper,mob,false);
         }
     }
 

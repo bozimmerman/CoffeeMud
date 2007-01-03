@@ -138,7 +138,7 @@ public class ProtectedCitizens extends ActiveTicker
 			return false;
 		}
 
-		if(!CMLib.masking().maskCheck(getProtectedZapper(),mob))
+		if(!CMLib.masking().maskCheck(getProtectedZapper(),mob,false))
 			return false;
 
 		int assistance=0;
@@ -213,7 +213,7 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(!assMOBS.contains(M))
 					&&(canFreelyBehaveNormal(M))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M))
-					&&(CMLib.masking().maskCheck(getCityguardZapper(),M))
+					&&(CMLib.masking().maskCheck(getCityguardZapper(),M,false))
 					&&(!CMLib.flags().isATrackingMonster(M))
 					&&(CMLib.flags().canHear(M))))
 					{

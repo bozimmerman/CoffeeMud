@@ -212,7 +212,7 @@ public class DefaultPoll implements Poll
         if(mob==null) return false;
         if(!CMath.bset(bitmap,FLAG_ACTIVE))
             return false;
-        if(!CMLib.masking().maskCheck(qualZapper,mob))
+        if(!CMLib.masking().maskCheck(qualZapper,mob,true))
             return false;
         if((expiration>0)&&(System.currentTimeMillis()>expiration))
         {
@@ -227,7 +227,7 @@ public class DefaultPoll implements Poll
     public boolean mayISeeResults(MOB mob)
     {
         if(mob==null) return false;
-        if(!CMLib.masking().maskCheck(qualZapper,mob))
+        if(!CMLib.masking().maskCheck(qualZapper,mob,true))
             return false;
         if(CMath.bset(bitmap,FLAG_HIDERESULTS)&&(!CMSecurity.isAllowedAnywhere(mob,"POLLS")))
             return false;

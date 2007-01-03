@@ -1204,7 +1204,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			
 			// if they fail the zappermask, its like the req is NOT even there...
 			if((((String)req.elementAt(i,6)).length()>0)
-			&&(!CMLib.masking().maskCheck((String)req.elementAt(i,6),mob)))
+			&&(!CMLib.masking().maskCheck((String)req.elementAt(i,6),mob,true)))
 				continue;
 			amt=((Integer)req.elementAt(i,4)).intValue();
 			O=req.elementAt(i,5);
@@ -1385,7 +1385,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         if(r>0) buf.append((((Boolean)req.elementAt(r,1)).booleanValue()?", and ":", or "));
         if((mob!=null)
         &&(((String)req.elementAt(r,6)).length()>0)
-        &&(!CMLib.masking().maskCheck((String)req.elementAt(r,6),mob)))
+        &&(!CMLib.masking().maskCheck((String)req.elementAt(r,6),mob,true)))
             return "";
         if(mob==null)
         {

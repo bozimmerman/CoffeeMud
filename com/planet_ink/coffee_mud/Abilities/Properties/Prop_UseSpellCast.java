@@ -43,7 +43,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
         Vector V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
-        ||((compiledMask!=null))&&(compiledMask.size()>0)&&(!CMLib.masking().maskCheck(compiledMask,target)))
+        ||((compiledMask!=null))&&(compiledMask.size()>0)&&(!CMLib.masking().maskCheck(compiledMask,target,true)))
             return false;
         
         MOB qualMOB=getInvokerMOB(source,target);

@@ -113,7 +113,7 @@ public class GateGuard extends StdBehavior
 			if((M!=null)
 			&&(!M.isMonster())
 			&&(CMLib.flags().canBeSeenBy(M,mob))
-			&&(CMLib.masking().maskCheck(getParms(),M)))
+			&&(CMLib.masking().maskCheck(getParms(),M,false)))
 				num++;
 		}
 		return num;
@@ -134,7 +134,7 @@ public class GateGuard extends StdBehavior
 			{
 				int dir=findGate(mob);
 				if((dir>=0)
-				&&(CMLib.masking().maskCheck(getParms(),msg.source())))
+				&&(CMLib.masking().maskCheck(getParms(),msg.source(),false)))
 				{
 					Exit e=mob.location().getExitInDir(dir);
 					if(msg.amITarget(e))

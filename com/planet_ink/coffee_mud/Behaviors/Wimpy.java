@@ -65,7 +65,7 @@ public class Wimpy extends StdBehavior
 			for(int m=0;m<monster.location().numInhabitants();m++)
 			{
 				MOB M=monster.location().fetchInhabitant(m);
-				if((M!=null)&&(M!=monster)&&(CMLib.masking().maskCheck(getParms(),M)))
+				if((M!=null)&&(M!=monster)&&(CMLib.masking().maskCheck(getParms(),M,false)))
 				{
 					if(M.getVictim()==monster)
 					{

@@ -37,24 +37,12 @@ public interface MaskingLibrary extends CMLibrary
     public Hashtable getMaskCodes();
     public String rawMaskHelp();
     public String maskHelp(String CR, String word);
-    public boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R);
-    public boolean levelCheck(String text, char prevChar, int lastPlace, int lvl);
-    public Vector levelCompiledHelper(String str, char c, Vector entry);
 	public Vector getAbilityEduReqs(String text);
-    public StringBuffer levelHelp(String str, char c, String append);
-    public boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find);
-    public boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob);
-    public boolean nameCheck(Vector V, char plusMinus, int fromHere, Environmental E);
-    public boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E);
-    public boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R);
-    public boolean wornCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R);
-    public boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find);
-    public boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find);
     public String maskDesc(String text);
 	public String maskDesc(String text, boolean skipFirstWord);
 	public Vector maskCompile(String text);
-    public boolean maskCheck(Vector cset, Environmental E);
-    public boolean maskCheck(String text, Environmental E);
+    public boolean maskCheck(Vector cset, Environmental E, boolean actual);
+    public boolean maskCheck(String text, Environmental E, boolean actual);
     public int minMaskLevel(String text, int minMinLevel);
     
     public final String DEFAULT_MASK_HELP =

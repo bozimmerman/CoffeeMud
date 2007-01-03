@@ -45,7 +45,7 @@ public class Channels extends StdCommand
 		int col=0;
 		String[] names=CMLib.channels().getChannelNames();
 		for(int x=0;x<names.length;x++)
-			if(CMLib.masking().maskCheck(CMLib.channels().getChannelMask(x),mob))
+			if(CMLib.masking().maskCheck(CMLib.channels().getChannelMask(x),mob,true))
 			{
 				if((++col)>3)
 				{

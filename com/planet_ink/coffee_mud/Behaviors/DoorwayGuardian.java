@@ -99,7 +99,7 @@ public class DoorwayGuardian extends StdBehavior
 
 				if((msg.targetMinor()!=CMMsg.TYP_CLOSE)
 				&&(msg.targetMinor()!=CMMsg.TYP_LOCK)
-				&&(CMLib.masking().maskCheck(getParms(),mob)))
+				&&(CMLib.masking().maskCheck(getParms(),mob,false)))
 				{
 					CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
 					if(monster.location().okMessage(monster,msgs))
@@ -113,7 +113,7 @@ public class DoorwayGuardian extends StdBehavior
 			if((msg.tool()!=null)
 			&&(msg.target() instanceof Room)
 			&&(msg.tool() instanceof Exit)
-			&&(CMLib.masking().maskCheck(getParms(),mob)))
+			&&(CMLib.masking().maskCheck(getParms(),mob,false)))
 			{
 				Exit exit=(Exit)msg.tool();
 				Exit texit[]=getParmExits(monster);

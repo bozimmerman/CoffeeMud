@@ -47,7 +47,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
     
-    public Vector preCompiled(String str)
+    protected Vector preCompiled(String str)
     {
         Hashtable H=(Hashtable)Resources.getResource("SYSTEM_HASHED_MASKS");
         if(H==null){ H=new Hashtable(); Resources.submitResource("SYSTEM_HASHED_MASKS",H); }
@@ -250,66 +250,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return copy;
 	}
 
-	public boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R)
-	{
-		String tattoo=null;
-		for(int v=0;v<mob.numTattoos();v++)
-		{
-			tattoo=mob.fetchTattoo(v);
-			if((tattoo!=null)
-			&&(tattoo.length()>0)
-			&&(Character.isDigit(tattoo.charAt(0)))
-			&&(tattoo.indexOf(" ")>0)
-			&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
-			   tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-			if(fromHereEqual(V,plusMinus,fromHere,tattoo))
-				return true;
-		}
-        if(R!=null)
-            try
-            {
-                int num=R.getArea().numAllBlurbFlags();
-                String flag=null;
-                for(int n=0;n<num;n++)
-                {
-                    flag=R.getArea().getBlurbFlag(n);
-                    if(fromHereEqual(V,plusMinus,fromHere,flag))
-                        return true;
-                }
-            }catch(Exception e){}
-		return false;
-	}
-
-	public boolean skillCheck(Vector V, char plusMinus, int fromHere, MOB mob)
-	{
-		Ability A=null;
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			A=mob.fetchAbility(a);
-			if(A==null) return false;
-			for(int v=fromHere;v<V.size();v++)
-			{
-				String str=(String)V.elementAt(v);
-				if(str.length()==0) continue;
-				if(getMaskCodes().containsKey(str))
-					return false;
-				if(str.toUpperCase().startsWith(plusMinus+A.ID().toUpperCase()))
-				{
-					if(str.equalsIgnoreCase(plusMinus+A.ID())) return true;
-					String sub=str.substring(A.ID().length()+1).trim();
-					if(sub.startsWith("("))
-					{
-						int x=sub.lastIndexOf(")");
-						if(x<0) return true;
-						x=CMath.s_int(sub.substring(1,x));
-						return (A.proficiency()<x);
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 	protected Object makeSkillFlagObject(String str)
 	{
         Object o=null;
@@ -415,7 +355,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 	
 	
-    public boolean skillFlagCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	protected boolean skillFlagCheck(Vector V, char plusMinus, int fromHere, MOB mob)
     {
         Ability A=null;
         Object o=null;
@@ -438,96 +378,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return false;
     }
 
-	public boolean quallvlcheck(Vector V, int fromHere, MOB mob)
-	{
-		if(fromHere>=V.size()) return false;
-		
-		String able=(String)V.elementAt(fromHere);
-		Ability A=CMClass.getAbility(able);
-		if(A==null) return false;
-		int adjustment=0;
-		if(((fromHere+1)<V.size())&&(CMath.isInteger((String)V.elementAt(fromHere+1))))
-			adjustment=CMath.s_int((String)V.elementAt(fromHere+1));
-		int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
-		int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
-		return lvl>clvl;
-	}
-	
-	public boolean eduCheck(Vector V, char plusMinus, int fromHere, MOB mob)
-	{
-		if(mob==null) return false;
-		for(int v=0;v<mob.numExpertises();v++)
-			if(fromHereEqual(V,plusMinus,fromHere,mob.fetchExpertise(v)))
-				return true;
-		return false;
-	}
-
-	public boolean securityCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R)
-	{
-		if(mob==null) return false;
-		Vector sec=CMSecurity.getSecurityCodes(mob,R);
-		for(int v=0;v<sec.size();v++)
-			if(fromHereEqual(V,plusMinus,fromHere,(String)sec.elementAt(v)))
-				return true;
-		return false;
-	}
-	
-	public boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
-	{
-		int x=0;
-		while(x>=0)
-		{
-			x=text.indexOf(">",lastPlace);
-			if(x<0)	x=text.indexOf("<",lastPlace);
-			if(x<0)	x=text.indexOf("=",lastPlace);
-			if(x>=0)
-			{
-				char prev='+';
-				if(x>0) prev=text.charAt(x-1);
-
-				char primaryChar=text.charAt(x);
-				x++;
-				boolean andEqual=false;
-				if(text.charAt(x)=='=')
-				{
-					andEqual=true;
-					x++;
-				}
-				lastPlace=x;
-
-				if(prev==prevChar)
-				{
-					boolean found=false;
-					String cmpString="";
-					while((x<text.length())&&
-						  (((text.charAt(x)==' ')&&(cmpString.length()==0))
-						   ||(Character.isDigit(text.charAt(x)))))
-					{
-						if(Character.isDigit(text.charAt(x)))
-							cmpString+=text.charAt(x);
-						x++;
-					}
-					if(cmpString.length()>0)
-					{
-						int cmpLevel=CMath.s_int(cmpString);
-						if((cmpLevel==lvl)&&(andEqual))
-							found=true;
-						else
-						switch(primaryChar)
-						{
-						case '>': found=(lvl>cmpLevel); break;
-						case '<': found=(lvl<cmpLevel); break;
-						case '=': found=(lvl==cmpLevel); break;
-						}
-					}
-					if(found) return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public Vector levelCompiledHelper(String str, char c, Vector entry)
+	protected Vector levelCompiledHelper(String str, char c, Vector entry)
 	{
 		if(entry==null) entry=new Vector();
 		if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
@@ -562,7 +413,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return entry;
 	}
 	
-	public StringBuffer levelHelp(String lvl, char c, String append)
+	protected StringBuffer levelHelp(String lvl, char c, String append)
 	{
 		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
 			return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
@@ -581,7 +432,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return new StringBuffer("");
 	}
 	
-    public int levelMinHelp(String lvl, char c, int minMinLevel, boolean reversed)
+	protected int levelMinHelp(String lvl, char c, int minMinLevel, boolean reversed)
     {
         if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
             return reversed?minMinLevel:CMath.s_int(lvl.substring(3).trim());
@@ -600,7 +451,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return Integer.MIN_VALUE;
     }
 	
-	public boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
+	protected boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
@@ -613,86 +464,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-	public boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob)
-	{
-		for(int v=fromHere;v<V.size();v++)
-		{
-			String str=((String)V.elementAt(v)).toUpperCase();
-			if(str.length()>0)
-			{
-				if(getMaskCodes().containsKey(str))
-					return false;
-				if((str.charAt(0)==plusMinus)
-				&&(CMLib.factions().isFactionedThisWay(mob,str.substring(1))))
-				    return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean nameCheck(Vector V, char plusMinus, int fromHere, Environmental E)
-	{
-        if(fromHereEqual(V,plusMinus,fromHere,E.name()))
-            return true;
-		Vector names=CMParms.parse(E.name().toUpperCase());
-		for(int v=0;v<names.size();v++)
-			if(fromHereEqual(V,plusMinus,fromHere,(String)names.elementAt(v)))
-				return true;
-        if(fromHereEqual(V,plusMinus,fromHere,E.displayText()))
-            return true;
-		names=CMParms.parse(E.displayText().toUpperCase());
-		for(int v=0;v<names.size();v++)
-			if(fromHereEqual(V,plusMinus,fromHere,(String)names.elementAt(v)))
-				return true;
-		return false;
-	}
-
-	public boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E)
-	{
-		Area A=CMLib.map().areaLocation(E);
-		if(A==null) return false;
-		return fromHereStartsWith(V,plusMinus,fromHere,A.name());
-	}
-
-    public boolean homeCheck(Vector V, char plusMinus, int fromHere, Environmental E)
-    {
-        Area A=CMLib.map().getStartArea(E);
-        if(A==null) return false;
-        return fromHereStartsWith(V,plusMinus,fromHere,A.name());
-    }
-    
-	public boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R)
-	{
-		if((mob==null)||(R==null)) return false;
-		for(int v=fromHere;v<V.size();v++)
-		{
-			String str=(String)V.elementAt(v);
-			if(str.length()==0) continue;
-			if(getMaskCodes().containsKey(str))
-				return false;
-			if(mob.fetchInventory(str)!=null)
-				return true;
-		}
-		return false;
-	}
-	
-    public boolean wornCheck(Vector V, char plusMinus, int fromHere, MOB mob, Room R)
-    {
-        if((mob==null)||(R==null)) return false;
-        Item I=null;
-        for(int v=fromHere;v<V.size();v++)
-        {
-            String str=(String)V.elementAt(v);
-            if(str.length()==0) continue;
-            if(getMaskCodes().containsKey(str))
-                return false;
-            I=mob.fetchInventory(str);
-            if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
-                return true;
-        }
-        return false;
-    }
-	public boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find)
+	protected boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
@@ -705,7 +477,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-    public boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find)
+	protected boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find)
     {
         for(int v=fromHere;v<V.size();v++)
         {
@@ -718,8 +490,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return false;
     }
-	public String maskDesc(String text){return maskDesc(text,false);}
 	
+	public String maskDesc(String text){return maskDesc(text,false);}
 	
 	public String maskDesc(String text, boolean skipFirstWord)
 	{
@@ -2267,12 +2039,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						Vector entry=new Vector();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
+						HashSet seenBase=new HashSet();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass())
-							&&(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))))
-								entry.addElement(C.baseClass());
+							if(!seenBase.contains(C.baseClass()))
+							{
+								seenBase.add(C.baseClass());
+								if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
+									entry.addElement(C.baseClass());
+							}
 						}
 					}
 					break;
@@ -2933,7 +2709,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf;
 	}
     
-    public Room outdoorRoom(Area A)
+	protected Room outdoorRoom(Area A)
     {
         Room R=null;
         for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
@@ -2943,8 +2719,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return A.getRandomMetroRoom();
     }
-    
-	public boolean maskCheck(Vector cset, Environmental E)
+
+	protected CharStats getBaseCharStats(CharStats base, MOB mob)
+	{
+        if(base==null)
+        {
+        	base=(CharStats)mob.baseCharStats().copyOf(); 
+        	base.getMyRace().affectCharStats(mob,base);
+        }
+		return base;
+	}
+	
+	public boolean maskCheck(String text, Environmental E, boolean actual){ return maskCheck(preCompiled(text),E,actual);}
+	public boolean maskCheck(Vector cset, Environmental E, boolean actual)
 	{
 		if(E==null) return true;
 		if((cset==null)||(cset.size()==0)) return true;
@@ -2981,15 +2768,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     return false;
                 break;
 			case 0: // -class
-				if(!V.contains(mob.baseCharStats().getCurrentClass().name()))
+			{
+				if(!V.contains(actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
 					return false;
 				break;
+			}
 			case 1: // -baseclass
-				if(!V.contains(mob.baseCharStats().getCurrentClass().baseClass()))
+			{
+				String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
+				if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
+				{
+					CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
+					if(C!=null) baseClass=C.baseClass();
+				}
+				if(!V.contains(baseClass))
 					return false;
 				break;
+			}
 			case 2: // -race
-				if(!V.contains(mob.baseCharStats().getMyRace().name()))
+				if(!V.contains(actual?mob.baseCharStats().getMyRace().name():mob.charStats().raceName()))
 					return false;
 				break;
 			case 3: // -alignment
@@ -2997,35 +2794,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 4: // -gender
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
-				if(!V.contains(""+((char)base.getStat(CharStats.STAT_GENDER))))
+			{
+		        base=getBaseCharStats(base,mob);
+				if(!V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(mob.charStats().genderName().charAt(0)))))
 					return false;
 				break;
+			}
 			case 5: // -level
 				{
+					int level=actual?E.baseEnvStats().level():E.envStats().level();
 					boolean found=false;
 					for(int v=1;v<V.size();v+=2)
 						if((v+1)<V.size())
 						switch(((Integer)V.elementAt(v)).intValue())
 						{
 							case 37: // +lvlgr
-								if(E.baseEnvStats().level()>((Integer)V.elementAt(v+1)).intValue())
+								if(level>((Integer)V.elementAt(v+1)).intValue())
 								   found=true;
 								break;
 							case 38: // +lvlge
-								if(E.baseEnvStats().level()>=((Integer)V.elementAt(v+1)).intValue())
+								if(level>=((Integer)V.elementAt(v+1)).intValue())
 								   found=true;
 								break;
 							case 39: // +lvlt
-								if(E.baseEnvStats().level()<((Integer)V.elementAt(v+1)).intValue())
+								if(level<((Integer)V.elementAt(v+1)).intValue())
 								   found=true;
 								break;
 							case 40: // +lvlle
-								if(E.baseEnvStats().level()<=((Integer)V.elementAt(v+1)).intValue())
+								if(level<=((Integer)V.elementAt(v+1)).intValue())
 								   found=true;
 								break;
 							case 41: // +lvleq
-								if(E.baseEnvStats().level()==((Integer)V.elementAt(v+1)).intValue())
+								if(level==((Integer)V.elementAt(v+1)).intValue())
 								   found=true;
 								break;
 						}
@@ -3035,7 +2835,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 6: // -classlevel
 				{
 					boolean found=false;
-					int cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+					int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
+								 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 					for(int v=1;v<V.size();v+=2)
 						if((v+1)<V.size())
 						switch(((Integer)V.elementAt(v)).intValue())
@@ -3067,12 +2868,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 103: // -maxclasslevel
                 {
                     boolean found=false;
-                    int cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
+                    int cl=0;
                     int c2=0;
-                    for(int v=1;v<mob.baseCharStats().numClasses();v++)
+                    if(actual)
                     {
-                        c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
-                        if(c2>cl) cl=c2;
+                    	cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
+	                    for(int v=1;v<mob.baseCharStats().numClasses();v++)
+	                    {
+	                        c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
+	                        if(c2>cl) cl=c2;
+	                    }
+                    }
+                    else
+                    {
+                    	cl=mob.charStats().getClassLevel(mob.charStats().getMyClass(0));
+	                    for(int v=1;v<mob.charStats().numClasses();v++)
+	                    {
+	                        c2=mob.charStats().getClassLevel(mob.charStats().getMyClass(v));
+	                        if(c2>cl) cl=c2;
+	                    }
                     }
                     for(int v=1;v<V.size();v+=2)
                         if((v+1)<V.size())
@@ -3215,8 +3029,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 9: // -names
 				{
 					boolean found=false;
+					String name=actual?E.Name():E.name();
 					for(int v=1;v<V.size();v++)
-						if(E.Name().equalsIgnoreCase((String)V.elementAt(v)))
+						if(name.equalsIgnoreCase((String)V.elementAt(v)))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -3228,13 +3043,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				if(mob.isMonster()) return false;
 				break;
 			case 12: // -racecat
-				if(!V.contains(mob.baseCharStats().getMyRace().racialCategory()))
+			{
+				String raceCat=mob.baseCharStats().getMyRace().racialCategory();
+				if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
+				{
+					Race R2=CMClass.getRace(mob.charStats().raceName());
+					if(R2!=null) raceCat=R2.racialCategory();
+				}
+				if(!V.contains(raceCat))
 					return false;
 				break;
+			}
 			case 13: // +racecat
-				if(V.contains(mob.baseCharStats().getMyRace().racialCategory()))
+			{
+				String raceCat=mob.baseCharStats().getMyRace().racialCategory();
+				if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
+				{
+					Race R2=CMClass.getRace(mob.charStats().raceName());
+					if(R2!=null) raceCat=R2.racialCategory();
+				}
+				if(V.contains(raceCat))
 					return false;
 				break;
+			}
 			case 14: // -clan
 				{
                     String clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
@@ -3510,24 +3341,45 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 16: // +name
 				{
+					String name=actual?E.Name():E.name();
 					for(int v=1;v<V.size();v++)
-                        if(E.Name().equalsIgnoreCase((String)V.elementAt(v)))
+                        if(name.equalsIgnoreCase((String)V.elementAt(v)))
 						{ return false;}
 				}
 				break;
 			case 17: // -anyclass
 				{
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
-						{ found=true; break;}
+					if(actual)
+					{
+						for(int v=1;v<V.size();v++)
+							if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
+							{ found=true; break;}
+					}
+					else
+					{
+						for(int v=1;v<V.size();v++)
+							if((mob.charStats().getClassLevel((String)V.elementAt(v))>=0)
+							||(mob.charStats().displayClassName().equalsIgnoreCase((String)V.elementAt(v))))
+							{ found=true; break;}
+					}
 					if(!found) return false;
 				}
 				break;
 			case 18: // +anyclass
-				for(int v=1;v<V.size();v++)
-					if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
-					{ return false;}
+				if(actual)
+				{
+					for(int v=1;v<V.size();v++)
+						if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
+						{ return false;}
+				}
+				else
+				{
+					for(int v=1;v<V.size();v++)
+						if((mob.charStats().getClassLevel((String)V.elementAt(v))>=0)
+						||(mob.charStats().displayClassName().equalsIgnoreCase((String)V.elementAt(v))))
+						{ return false; }
+				}
 				break;
 			case 19: // +adjstr
 				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
@@ -3578,62 +3430,62 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				   return false;
 				break;
 			case 87: // +str
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 88: // +int
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 89: // +wis
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 90: // +dex
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 91: // +con
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 92: // +cha
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 93: // -str
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 94: // -int
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 95: // -wis
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 96: // -dex
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 97: // -con
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 98: // -cha
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
+		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
@@ -3768,7 +3620,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         return false;
                 break;
 			case 34: // +class
-				if(V.contains(mob.baseCharStats().getCurrentClass().name()))
+				if(V.contains(actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
 					return false;
 				break;
 			case 35: // +alignment
@@ -3776,28 +3628,28 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 36: // +gender
-		        if(base==null){ base=(CharStats)mob.baseCharStats().copyOf(); base.getMyRace().affectCharStats(mob,base);}
-				if(V.contains(""+((char)base.getStat(CharStats.STAT_GENDER))))
+		        base=getBaseCharStats(base,mob);
+				if(V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+mob.charStats().genderName().charAt(0))))
 					return false;
 				break;
 			case 37: // +lvlgr
-				if((V.size()>1)&&(E.baseEnvStats().level()>((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())>((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 38: // +lvlge
-				if((V.size()>1)&&(E.baseEnvStats().level()>=((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())>=((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 39: // +lvlt
-				if((V.size()>1)&&(E.baseEnvStats().level()<((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())<((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 40: // +lvlle
-				if((V.size()>1)&&(E.baseEnvStats().level()<=((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())<=((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 41: // +lvleq
-				if((V.size()>1)&&(E.baseEnvStats().level()==((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())==((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			}
@@ -3806,639 +3658,4 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 	
-	public boolean maskCheckCompiled(String text, Environmental E){ return maskCheck(preCompiled(text),E);}
-    public boolean maskCheck(String text, Environmental E)
-	{
-		if(E==null) return true;
-		if(text.trim().length()==0) return true;
-        Hashtable zapCodes=getMaskCodes();
-
-        String mobClass=null;
-        String mobRaceCat=null;
-        String mobRace=null;
-        String mobAlign=null;
-        String mobGender=null;
-        CharStats base=null;
-        Vector V=CMParms.parse(text.toUpperCase());
-        MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
-        Item item=(E instanceof Item)?(Item)E:null;
-        Room R=(E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E);
-        String clanID=null;
-        
-        if(mob!=null)
-        {
-            if(mob.charStats()==null) return true;
-            mobClass=CMStrings.padRight(mob.charStats().displayClassName(),4).toUpperCase().trim();
-            mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
-    		if(!mob.charStats().getMyRace().name().equals(mob.charStats().raceName()))
-    		{
-    			Race race=CMClass.getRace(mob.charStats().raceName());
-    			if(race!=null) mobRaceCat=race.racialCategory().toUpperCase();
-    			else mobRaceCat=mob.charStats().raceName().toUpperCase();
-    		}
-    		if(mobRaceCat.length()>6) mobRaceCat=mobRaceCat.substring(0,6);
-    		mobRace=mob.charStats().raceName().toUpperCase();
-    		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
-    		mobAlign=CMLib.flags().getAlignmentName(mob).substring(0,3);
-    		mobGender=mob.charStats().genderName().toUpperCase();
-	        base=(CharStats)mob.baseCharStats().copyOf(); 
-	        base.getMyRace().affectCharStats(mob,base);
-        }
-		int level=E.envStats().level();
-		for(int v=0;v<V.size();v++)
-		{
-			String str=(String)V.elementAt(v);
-			int val=-1;
-            try
-            {
-			if(zapCodes.containsKey(str))
-				switch(((Integer)zapCodes.get(str)).intValue())
-				{
-                case 108: // +sysop
-                    if(CMSecurity.isASysOp(mob))
-                        return true;
-                    break;
-                case 109: // -sysop
-                    if(CMSecurity.isASysOp(mob))
-                        return false;
-                    break;
-                case 110: // +subop
-                    if(CMSecurity.isASysOp(mob)
-                    ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
-                        return true;
-                    break;
-                case 111: // -subop
-                    if(CMSecurity.isASysOp(mob)
-                    ||((R!=null)&&(R.getArea().amISubOp(mob.Name()))))
-                        return false;
-                    break;
-				case 0: // -class
-					if(!fromHereStartsWith(V,'+',v+1,mobClass)) return false;
-					break;
-				case 1: // -baseclass
-					if((!fromHereStartsWith(V,'+',v+1,CMStrings.padRight(mob.charStats().getCurrentClass().baseClass(),4).toUpperCase().trim()))
-					&&(!fromHereStartsWith(V,'+',v+1,mobClass))) return false;
-					break;
-				case 2: // -Race
-					if(!fromHereStartsWith(V,'+',v+1,mobRace))
-						return false;
-					break;
-				case 3: // -Alignment
-					if(!fromHereStartsWith(V,'+',v+1,mobAlign)) return false;
-					break;
-				case 4: // -Gender
-					if(!fromHereStartsWith(V,'+',v+1,mobGender)) return false;
-					break;
-				case 5: // -Levels
-					if(!levelCheck(CMParms.combine(V,v+1),'+',0,level)) return false;
-					break;
-				case 6: // -ClassLevels
-                {
-                    int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-					if(!levelCheck(CMParms.combine(V,v+1),'+',0,classLevel)) return false;
-					break;
-                }
-                case 103: // -MaxClassLevels
-                {
-                    int cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
-                    int c2=0;
-                    for(int c3=1;c3<mob.baseCharStats().numClasses();c3++)
-                    {
-                        c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
-                        if(c2>cl) cl=c2;
-                    }
-                    if(!levelCheck(CMParms.combine(V,v+1),'+',0,cl)) return false;
-                    break;
-                }
-				case 7: // -tattoos
-					if(!tattooCheck(V,'+',v+1,mob,R)) return false;
-					break;
-				case 8: // +tattoos
-					if(tattooCheck(V,'-',v+1,mob,R)) return false;
-					break;
-				case 79: // -security
-					if(!securityCheck(V,'+',v+1,mob,R)) return false;
-					break;
-				case 80: // +security
-					if(securityCheck(V,'-',v+1,mob,R)) return false;
-					break;
-				case 81: // -expertises
-					if(!eduCheck(V,'+',v+1,mob)) return false;
-					break;
-				case 82: // +expertises
-					if(eduCheck(V,'-',v+1,mob)) return false;
-					break;
-				case 83: // -skills
-					if(!skillCheck(V,'+',v+1,mob)) return false;
-					break;
-				case 84: // +skills
-					if(skillCheck(V,'-',v+1,mob)) return false;
-					break;
-                case 101: // -skillflag
-                    if(!skillFlagCheck(V,'+',v+1,mob)) return false;
-                    break;
-                case 102: // +skillflag
-                    if(skillFlagCheck(V,'-',v+1,mob)) return false;
-                    break;
-				case 9: // -names
-					if(!nameCheck(V,'+',v+1,E)) return false;
-					break;
-				case 10: // -Player
-					if(!mob.isMonster()) return false;
-					break;
-				case 11: // -MOB
-					if(mob.isMonster()) return false;
-					break;
-				case 12: // -Racecat
-					if(!fromHereStartsWith(V,'+',v+1,mobRaceCat))
-						return false;
-					break;
-				case 13: // +Racecat
-					if(fromHereStartsWith(V,'-',v+1,mobRaceCat))
-						return false;
-					break;
-				case 14: // -Clan
-                {
-                    if(clanID==null) clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-					if((clanID.length()==0)
-					||(!fromHereStartsWith(V,'+',v+1,clanID.toUpperCase())))
-						return false;
-					break;
-                }
-				case 15: // +Clan
-                {
-                    if(clanID==null) clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-					if((clanID.length()>0)
-					&&(fromHereStartsWith(V,'-',v+1,clanID.toUpperCase())))
-						return false;
-					break;
-                }
-				case 44: // -Deity
-					if((mob.getWorshipCharID().length()==0)
-					||(!fromHereStartsWith(V,'+',v+1,mob.getWorshipCharID().toUpperCase())))
-						return false;
-					break;
-				case 45: // +Deity
-					if((mob.getWorshipCharID().length()>0)
-					&&(fromHereStartsWith(V,'-',v+1,mob.getWorshipCharID().toUpperCase())))
-						return false;
-					break;
-                case 49: // +material
-                    if(fromHereStartsWith(V,'-',v+1,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
-                        return false;
-                    break;
-                case 50: // -material
-                    if(!fromHereStartsWith(V,'+',v+1,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
-                        return false;
-                    break;
-                case 51: // +resource
-                    if(fromHereStartsWith(V,'-',v+1,RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
-                        return false;
-                    break;
-                case 52: // -resource
-                    if(!fromHereStartsWith(V,'+',v+1,RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
-                        return false;
-                    break;
-                case 53: // -JavaClass
-                    if(!fromHereStartsWith(V,'+',v+1,E.ID().toUpperCase()))
-                        return false;
-                    break;
-                case 54: // +JavaClass
-                    if(fromHereStartsWith(V,'-',v+1,E.ID().toUpperCase()))
-                        return false;
-                    break;
-				case 16: // +names
-					if(nameCheck(V,'-',v+1,E))
-						return false;
-					break;
-				case 17: // -anyclass
-					{
-						boolean found=false;
-						for(int c=0;c<mob.charStats().numClasses();c++)
-							if((fromHereStartsWith(V,'+',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
-                            ||(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
-								found=true;
-						if(!found) return false;
-					}
-					break;
-				case 18: // +anyclass
-					for(int c=0;c<mob.charStats().numClasses();c++)
-						if((fromHereStartsWith(V,'-',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
-                        ||(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
-							return false;
-					break;
-				case 19: // +adjstr
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<val)
-						return false;
-					break;
-				case 20: // +adjint
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<val)
-						return false;
-					break;
-				case 21: // +adjwis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_WISDOM)<val)
-						return false;
-					break;
-				case 22: // +adjdex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<val)
-						return false;
-					break;
-				case 23: // -adjcha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<val)
-						return false;
-					break;
-				case 24: // +adjcha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_CHARISMA)<val)
-						return false;
-					break;
-				case 25: // -adjstr
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_STRENGTH)>val)
-						return false;
-					break;
-				case 26: // -adjint
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>val)
-						return false;
-					break;
-				case 27: // -adjwis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_WISDOM)>val)
-						return false;
-					break;
-				case 28: // -adjdex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>val)
-						return false;
-					break;
-				case 29: // -adjcon
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>val)
-						return false;
-					break;
-				case 30: // -adjcha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STAT_CHARISMA)>val)
-						return false;
-					break;
-				case 87: // +str
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_STRENGTH)<val)
-						return false;
-					break;
-				case 88: // +int
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_INTELLIGENCE)<val)
-						return false;
-					break;
-				case 89: // +wis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_WISDOM)<val)
-						return false;
-					break;
-				case 90: // +dex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_DEXTERITY)<val)
-						return false;
-					break;
-				case 91: // +con
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_CONSTITUTION)<val)
-						return false;
-					break;
-				case 92: // +cha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_CHARISMA)<val)
-						return false;
-					break;
-				case 93: // -str
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_STRENGTH)>val)
-						return false;
-					break;
-				case 94: // -int
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_INTELLIGENCE)>val)
-						return false;
-					break;
-				case 95: // -wis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_WISDOM)>val)
-						return false;
-					break;
-				case 96: // -dex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_DEXTERITY)>val)
-						return false;
-					break;
-				case 97: // -con
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_CONSTITUTION)>val)
-						return false;
-					break;
-				case 98: // -cha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(base.getStat(CharStats.STAT_CHARISMA)>val)
-						return false;
-					break;
-                case 55: // +able
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().ability()>val)
-                        return false;
-                    break;
-                case 56: // -able
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().ability()<val)
-                        return false;
-                    break;
-                case 59: // +value
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if((mob!=null)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)>val))
-                        return false;
-                    else
-                    if((item!=null)&&(item.baseGoldValue()>val))
-                        return false;
-                    break;
-                case 60: // -value
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if((mob!=null)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)<val))
-                        return false;
-                    else
-                    if((item!=null)&&(item.baseGoldValue()<val))
-                        return false;
-                    break;
-                case 61: // +weight
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().weight()>val)
-                        return false;
-                    break;
-                case 62: // -weight
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().weight()<val)
-                        return false;
-                    break;
-                case 63: // +armor
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().armor()>val)
-                        return false;
-                    break;
-                case 64: // -armor
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().armor()<val)
-                        return false;
-                    break;
-                case 65: // +damage
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().damage()>val)
-                        return false;
-                    break;
-                case 66: // -damage
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().damage()<val)
-                        return false;
-                    break;
-                case 67: // +attack
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().attackAdjustment()>val)
-                        return false;
-                    break;
-                case 68: // -attack
-                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-                    if(E.envStats().attackAdjustment()<val)
-                        return false;
-                    break;
-				case 31: // +area
-					if(areaCheck(V,'-',v+1,E))
-						return false;
-					break;
-				case 32: // -area
-					if(!areaCheck(V,'+',v+1,E)) return false;
-					break;
-                case 99: // +home
-                    if(homeCheck(V,'-',v+1,E))
-                        return false;
-                    break;
-                case 100: // -home
-                    if(!homeCheck(V,'+',v+1,E)) return false;
-                    break;
-				case 33: // +item
-					if(!itemCheck(V,'-',v+1,mob,R)) return false;
-                    if(!itemCheck(V,'+',v+1,mob,R)) return false;
-					break;
-				case 85: // +quallvl
-					if(!quallvlcheck(V,v+1,mob)) return false;
-					break;
-				case 86: // -quallvl
-					if(quallvlcheck(V,v+1,mob)) return false;
-					break;
-                case 48: // +worn
-                    if(mob!=null)
-                    {
-                        if(!wornCheck(V,'+',v+1,mob,R)) 
-                            return false;
-                        if(!wornCheck(V,'-',v+1,mob,R)) 
-                            return false;
-                    }
-                    else
-                    if(E instanceof Item)
-                        if(((Item)E).amWearingAt(Item.IN_INVENTORY))
-                            return false;
-                    break;
-				case 43: // -Effects
-				{
-					boolean found=false;
-					for(int a=0;a<E.numEffects();a++)
-					{
-						Ability A=E.fetchEffect(a);
-						if((A!=null)&&(fromHereStartsWith(V,'+',v+1,A.Name().toUpperCase())))
-						{ found=true; break;}
-					}
-                    if(!found)
-                        for(int a=0;a<E.numBehaviors();a++)
-                        {
-                            Behavior B=E.fetchBehavior(a);
-                            if((B!=null)&&(fromHereStartsWith(V,'+',v+1,B.name().toUpperCase())))
-                            { found=true; break;}
-                        }
-					if(!found) return false;
-					break;
-				}
-				case 42: // +Effects
-					for(int a=0;a<E.numEffects();a++)
-					{
-						Ability A=E.fetchEffect(a);
-						if((A!=null)&&(fromHereStartsWith(V,'-',v+1,A.Name().toUpperCase())))
-							return false;
-					}
-                    for(int a=0;a<E.numBehaviors();a++)
-                    {
-                        Behavior B=E.fetchBehavior(a);
-                        if((B!=null)&&(fromHereStartsWith(V,'-',v+1,B.name().toUpperCase())))
-                            return false;
-                    }
-					break;
-				case 46: // -Faction
-					if(!factionCheck(V,'+',v+1,mob)) 
-					    return false;
-					break;
-                case 57: // +wornOn
-                    for(int i=0;i<Item.WORN_CODES.length;i++)
-                        if(((item.rawProperLocationBitmap()&Item.WORN_CODES[i])>0)
-                        &&(fromHereEndsWith(V,'-',v+1,Item.WORN_DESCS[i].toUpperCase())))
-                            return false;
-                    break;
-                case 58: // -wornOn
-                    {
-                        boolean found=false;
-                        for(int i=0;i<Item.WORN_CODES.length;i++)
-                            if(((item.rawProperLocationBitmap()&Item.WORN_CODES[i])>0)
-                            &&(fromHereEndsWith(V,'+',v+1,Item.WORN_DESCS[i].toUpperCase())))
-                            { found=true; break;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 69: // +disposition
-                    for(int i=0;i<EnvStats.dispositionsNames.length;i++)
-                        if((CMath.isSet(E.envStats().disposition(),i))
-                        &&(fromHereEndsWith(V,'-',v+1,EnvStats.dispositionsNames[i])))
-                            return false;
-                    break;
-                case 70: // -disposition
-                    {
-                        boolean found=false;
-                        for(int i=0;i<EnvStats.dispositionsNames.length;i++)
-                            if((CMath.isSet(E.envStats().disposition(),i))
-                            &&(fromHereEndsWith(V,'+',v+1,EnvStats.dispositionsNames[i])))
-                            { found=true; break;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 71: // +senses
-                    for(int i=0;i<EnvStats.sensesNames.length;i++)
-                        if((CMath.isSet(E.envStats().sensesMask(),i))
-                        &&(fromHereEndsWith(V,'-',v+1,EnvStats.sensesNames[i])))
-                            return false;
-                    break;
-                case 72: // -senses
-                    {
-                        boolean found=false;
-                        for(int i=0;i<EnvStats.sensesNames.length;i++)
-                            if((CMath.isSet(E.envStats().sensesMask(),i))
-                            &&(fromHereEndsWith(V,'+',v+1,EnvStats.sensesNames[i])))
-                            { found=true; break;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 73: // +hour
-                    {
-                        if((R!=null)
-                        &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
-                            return false;
-                        break;
-                    }
-                case 74: // -hour
-                    {
-                        boolean found=false;
-                        if((R!=null)
-                        &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
-                        { found=true;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 75: // +season
-                    {
-                        if((R!=null)
-                        &&((fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
-                            ||(fromHereEndsWith(V,'-',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
-                            return false;
-                        break;
-                    }
-                case 76: // -season
-                    {
-                        boolean found=false;
-                        if((R!=null)
-                        &&((fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
-                            ||(fromHereEndsWith(V,'+',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
-                            { found=true;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 104: // +weather
-                    {
-                        if((R!=null)
-                        &&(R.getArea().getClimateObj().weatherType(R)>=0)
-                        &&((fromHereEqual(V,'-',v+1,""+Climate.WEATHER_DESCS[R.getArea().getClimateObj().weatherType(R)]))))
-                            return false;
-                        break;
-                    }
-                case 105: // -weather
-                    {
-                        boolean found=false;
-                        if((R!=null)
-                        &&(R.getArea().getClimateObj().weatherType(R)>=0)
-                        &&((fromHereEqual(V,'+',v+1,""+Climate.WEATHER_DESCS[R.getArea().getClimateObj().weatherType(R)]))))
-                        { found=true;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 77: // +month
-                    {
-                        if((R!=null)
-                        &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getMonth())))
-                            return false;
-                        break;
-                    }
-                case 78: // -month
-                    {
-                        boolean found=false;
-                        if((R!=null)
-                        &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getMonth())))
-                        { found=true;}
-                        if(!found) return false;
-                    }
-                    break;
-                case 106: // +day
-                    {
-                        if((R!=null)
-                        &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getDayOfMonth())))
-                            return false;
-                        break;
-                    }
-                case 107: // -day
-                    {
-                        boolean found=false;
-                        if((R!=null)
-                        &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getDayOfMonth())))
-                        { found=true;}
-                        if(!found) return false;
-                    }
-                    break;
-				}
-			else
-			if(str.startsWith("-"+mobClass)) return false;
-			else
-			if(str.startsWith("-"+mobRace)) return false;
-			else
-			if(str.startsWith("-"+mobAlign)) return false;
-			else
-			if(str.startsWith("-"+mobGender)) return false;
-			else
-			if(levelCheck(str,'-',0,level)) return false;
-			else
-			if(str.startsWith("-")
-            &&(mob!=null)
-			&&(CMLib.factions().isFactionedThisWay(mob,str.substring(1))))
-				return false;
-            }
-            catch(NullPointerException n){}
-		}
-		return true;
-	}
-
 }

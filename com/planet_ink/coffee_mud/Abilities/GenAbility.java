@@ -195,7 +195,7 @@ public class GenAbility extends StdAbility
     {
     	if((!auto)
     	&&(((String)V(ID,V_CMSK)).length()>0)
-    	&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob)))
+    	&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob,true)))
     	{
     		mob.tell(CMLib.masking().maskDesc((String)V(ID,V_CMSK)));
     		return false;
@@ -259,7 +259,7 @@ public class GenAbility extends StdAbility
     	if((!auto)
     	&&(target!=null)
     	&&(((String)V(ID,V_TMSK)).length()>0)
-    	&&(!CMLib.masking().maskCheck((String)V(ID,V_TMSK), target)))
+    	&&(!CMLib.masking().maskCheck((String)V(ID,V_TMSK), target,true)))
     	{
     		mob.tell("The target is invalid: "+CMLib.masking().maskDesc((String)V(ID,V_TMSK)));
     		return false;

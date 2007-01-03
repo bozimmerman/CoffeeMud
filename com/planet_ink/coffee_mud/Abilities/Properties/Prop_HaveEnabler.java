@@ -52,7 +52,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting)
 	{
         if((!(target instanceof MOB))
-        ||((compiledMask!=null)&&(compiledMask.size()>0)&&(!CMLib.masking().maskCheck(compiledMask,target))))
+        ||((compiledMask!=null)&&(compiledMask.size()>0)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
             return false;
         MOB newMOB=(MOB)target;
 		Vector V=getMySpellsV();

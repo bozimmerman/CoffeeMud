@@ -82,7 +82,7 @@ public class Follower extends ActiveTicker
 			&&(msg.othersMessage()!=null)
 			&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
 			 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
-			&&(CMLib.masking().maskCheck(getParms(),mob))
+			&&(CMLib.masking().maskCheck(getParms(),mob,false))
 			&&(CMLib.dice().rollPercentage()<chance))
 			{
 				String directionWent=msg.othersMessage();
@@ -113,7 +113,7 @@ public class Follower extends ActiveTicker
 				&&(M!=ticking)
 				&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
 				&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
-				&&(CMLib.masking().maskCheck(getParms(),M)))
+				&&(CMLib.masking().maskCheck(getParms(),M,false)))
 					return M;
 			}
 		}
@@ -145,7 +145,7 @@ public class Follower extends ActiveTicker
 			Item I=(Item)ticking;
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
-			&&(CMLib.masking().maskCheck(getParms(),I.owner()))
+			&&(CMLib.masking().maskCheck(getParms(),I.owner(),false))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDMOBS"))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDROOMS")))
 				lastOwner=(MOB)I.owner();

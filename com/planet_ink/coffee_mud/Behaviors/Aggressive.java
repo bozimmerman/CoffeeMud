@@ -46,7 +46,7 @@ public class Aggressive extends StdBehavior
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return true;
-		return CMLib.masking().maskCheck(getParms(),M);
+		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
 	public void setParms(String newParms)
@@ -109,7 +109,7 @@ public class Aggressive extends StdBehavior
 				MOB mob=R.fetchInhabitant(i);
 				if((mob!=null)
 	            &&(mob!=observer)
-	            &&(CMLib.masking().maskCheck(zapStr,mob))
+	            &&(CMLib.masking().maskCheck(zapStr,mob,false))
 	            &&(!groupMembers.contains(mob))
 	            &&(startFight(observer,mob,mobKiller,misBehave)))			
 	                return true;

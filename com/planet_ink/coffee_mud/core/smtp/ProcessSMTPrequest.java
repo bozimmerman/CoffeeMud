@@ -739,7 +739,7 @@ public class ProcessSMTPrequest extends Thread
 											{
 												MOB M=CMLib.map().getPlayer(from);
 												if((M==null)
-												||(!CMLib.masking().maskCheck(server.getJournalCriteria(name),M)))
+												||(!CMLib.masking().maskCheck(server.getJournalCriteria(name),M,false)))
 												{
 													replyData=("552 User '"+from+"' may not send emails to '"+name+"'."+cr).getBytes();
 													jerror=true;

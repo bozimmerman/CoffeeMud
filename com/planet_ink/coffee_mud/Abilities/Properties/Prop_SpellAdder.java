@@ -209,7 +209,7 @@ public class Prop_SpellAdder extends Property
         ||(V.size()==0)
         ||((compiledMask!=null)
             &&(compiledMask.size()>0)
-            &&(!CMLib.masking().maskCheck(compiledMask,target))))
+            &&(!CMLib.masking().maskCheck(compiledMask,target,true))))
                 return false;
 		Vector VTOO=convertToV2(V,target);
         if(VTOO.size()==0) return false;

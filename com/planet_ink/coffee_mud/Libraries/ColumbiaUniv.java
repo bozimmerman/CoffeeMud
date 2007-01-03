@@ -100,8 +100,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	for(Enumeration e=definitions();e.hasMoreElements();)
     	{
     		D=(ExpertiseDefinition)e.nextElement();
-    		if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob)))
-    		&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob))))
+    		if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob,true)))
+    		&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true))))
     			V.addElement(D);
     	}
     	return V;
@@ -113,7 +113,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	for(Enumeration e=definitions();e.hasMoreElements();)
     	{
     		D=(ExpertiseDefinition)e.nextElement();
-    		if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob)))
+    		if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
     			V.addElement(D);
     	}
     	return V;

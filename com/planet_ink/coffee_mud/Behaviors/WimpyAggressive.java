@@ -42,7 +42,7 @@ public class WimpyAggressive extends Aggressive
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return ((M!=null)&&(CMLib.flags().isSleeping(M)))&&
-			CMLib.masking().maskCheck(getParms(),M);
+			CMLib.masking().maskCheck(getParms(),M,false);
 	}
 	public void setParms(String newParms)
 	{

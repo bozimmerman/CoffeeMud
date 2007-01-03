@@ -50,7 +50,7 @@ public class CombatAssister extends StdBehavior
 		&&(!monster.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(target,monster))
-		&&(CMLib.masking().maskCheck(getParms(),target)))
+		&&(CMLib.masking().maskCheck(getParms(),target,false)))
 			Aggressive.startFight(monster,mob,true,false);
 	}
 }

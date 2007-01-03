@@ -57,8 +57,8 @@ public class StdBook extends StdItem
 		case CMMsg.TYP_WRITE:
         {
             String adminReq=getAdminReq().trim();
-            boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source());
-			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source()))
+            boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
+			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
             &&(!admin)
             &&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 			{
@@ -85,9 +85,9 @@ public class StdBook extends StdItem
 			&&(mob.playerStats()!=null))
 			{
                 String adminReq=getAdminReq().trim();
-                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob);
+                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
 				long lastTime=mob.playerStats().lastDateTime();
-				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob)))
+				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
 					return;
@@ -129,7 +129,7 @@ public class StdBook extends StdItem
 					mob.tell(entry.toString()+"\n\r");
 					if((entry.toString().trim().length()>0)
 					&&(which>0)
-					&&(CMLib.masking().maskCheck(getWriteReq(),mob)
+					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
                         ||(admin)
                         ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 					{
@@ -145,7 +145,7 @@ public class StdBook extends StdItem
 			try
 			{
                 String adminReq=getAdminReq().trim();
-                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob);
+                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
 				if(!mob.isMonster())
 				{
 					String to="ALL";

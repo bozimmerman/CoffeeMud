@@ -57,8 +57,8 @@ public class StdJournal extends StdItem
 		case CMMsg.TYP_WRITE:
         {
             String adminReq=getAdminReq().trim();
-            boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source());
-			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source()))
+            boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
+			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
             &&(!admin)
             &&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 			{
@@ -85,9 +85,9 @@ public class StdJournal extends StdItem
 			&&(mob.playerStats()!=null))
 			{
                 String adminReq=getAdminReq().trim();
-                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob);
+                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
 				long lastTime=mob.playerStats().lastDateTime();
-				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob)))
+				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
 					return;
@@ -134,7 +134,7 @@ public class StdJournal extends StdItem
 					mob.tell(entry.toString()+"\n\r");
 					if((entry.toString().trim().length()>0)
 					&&(which>0)
-					&&(CMLib.masking().maskCheck(getWriteReq(),mob)
+					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
                         ||(admin)
                         ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 					{
@@ -146,7 +146,7 @@ public class StdJournal extends StdItem
 							{
 								String prompt="";
                                 String cmds="";
-                                if(CMLib.masking().maskCheck(getReplyReq(),mob)
+                                if(CMLib.masking().maskCheck(getReplyReq(),mob,true)
                                 ||admin
                                 ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
                                 {
@@ -300,7 +300,7 @@ public class StdJournal extends StdItem
 			try
 			{
                 String adminReq=getAdminReq().trim();
-                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob);
+                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
 				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
 				   &&(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")||admin)
 				   &&(!mob.isMonster()))
@@ -363,7 +363,7 @@ public class StdJournal extends StdItem
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(owner instanceof Room)
 		&&(msg.source().playerStats()!=null)
-		&&(CMLib.masking().maskCheck(getReadReq(),msg.source())))
+		&&(CMLib.masking().maskCheck(getReadReq(),msg.source(),true)))
 		{
 			long lastDate=CMLib.database().DBReadNewJournalDate(Name(),msg.source().Name());
 			if((lastDate>msg.source().playerStats().lastDateTime())
@@ -379,7 +379,7 @@ public class StdJournal extends StdItem
 		&&(msg.target() instanceof Room)
 		&&(msg.source()==owner)
 		&&(msg.source().playerStats()!=null)
-		&&(CMLib.masking().maskCheck(getReadReq(),msg.source())))
+		&&(CMLib.masking().maskCheck(getReadReq(),msg.source(),true)))
 		{
 			long lastDate=CMLib.database().DBReadNewJournalDate(Name(),msg.source().Name());
 			if((lastDate>msg.source().playerStats().lastDateTime())

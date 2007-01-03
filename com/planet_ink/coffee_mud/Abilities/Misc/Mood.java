@@ -746,7 +746,7 @@ public class Mood extends StdAbility
             return false;
         }
 		
-		if((mask.length()>0)&&(!CMLib.masking().maskCheck(mask,mob)))
+		if((mask.length()>0)&&(!CMLib.masking().maskCheck(mask,mob,true)))
 		{
             if(origEntered.equalsIgnoreCase("RANDOM"))
                 return false;

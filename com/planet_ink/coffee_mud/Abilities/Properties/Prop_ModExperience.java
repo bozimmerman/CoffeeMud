@@ -68,12 +68,12 @@ public class Prop_ModExperience extends Property
 				if(affected instanceof Item)
 				{
 					if((mask.length()>0)
-					&&((msg.target()==null)||(!(msg.target() instanceof MOB))||(!CMLib.masking().maskCheck(mask,msg.target()))))
+					&&((msg.target()==null)||(!(msg.target() instanceof MOB))||(!CMLib.masking().maskCheck(mask,msg.target(),true))))
 						return super.okMessage(myHost,msg);
 				}
 				else
 				if((mask.length()>0)
-				&&(!CMLib.masking().maskCheck(mask,msg.source())))
+				&&(!CMLib.masking().maskCheck(mask,msg.source(),true)))
 					return super.okMessage(myHost,msg);
 			}
 

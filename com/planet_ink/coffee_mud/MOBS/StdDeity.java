@@ -329,7 +329,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 			{
-				if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source()))
+				if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source(),true))
 				{
 					msg.source().tell("You are unworthy of serving "+name()+".");
                     if(msg.source().isMonster())
@@ -338,7 +338,7 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 			else
-			if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source()))
+			if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source(),true))
 			{
 				msg.source().tell("You are unworthy of "+name()+".");
                 if(msg.source().isMonster())
@@ -728,7 +728,7 @@ public class StdDeity extends StdMOB implements Deity
                     break;
                 }
 				case TRIGGER_CHECK:
-					if(CMLib.masking().maskCheck(DT.parm1,msg.source()))
+					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
 					   yup=true;
 					break;
 				case TRIGGER_PUTTHING:
@@ -1110,7 +1110,7 @@ public class StdDeity extends StdMOB implements Deity
 				{
                     if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
                     {
-                        if(!CMLib.masking().maskCheck(getClericRequirements(),M))
+                        if(!CMLib.masking().maskCheck(getClericRequirements(),M,true))
                         {
                             if((blacklist==M)&&((++blackmarks)>30))
                             {
@@ -1136,7 +1136,7 @@ public class StdDeity extends StdMOB implements Deity
                             if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
                     }
                     else
-                    if(!CMLib.masking().maskCheck(getWorshipRequirements(),M))
+                    if(!CMLib.masking().maskCheck(getWorshipRequirements(),M,true))
                     {
                         if((blacklist==M)&&((++blackmarks)>30))
                         {

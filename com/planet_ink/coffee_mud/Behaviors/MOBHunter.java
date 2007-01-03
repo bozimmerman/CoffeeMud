@@ -75,7 +75,7 @@ public class MOBHunter extends ActiveTicker
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if(CMLib.masking().maskCheck(getParms(),M))
+				if(CMLib.masking().maskCheck(getParms(),M,false))
 				{
 					prey=M;
 					break;

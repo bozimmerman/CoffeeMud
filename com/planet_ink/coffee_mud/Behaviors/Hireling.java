@@ -179,7 +179,7 @@ public class Hireling extends StdBehavior
 			&&(msg.tool() != null)
 			&&(msg.tool() instanceof Coins))
 			{
-				if(!CMLib.masking().maskCheck(zapper(),source))
+				if(!CMLib.masking().maskCheck(zapper(),source,false))
 				{
 					CMLib.commands().postSay(observer,null,"I wouldn't work for the likes of you.",false,false);
 					return false;
