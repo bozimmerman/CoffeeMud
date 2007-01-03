@@ -1425,8 +1425,8 @@ public class StdAbility implements Ability
 			return;
 		if(student.fetchAbility(ID())==null)
 		{
-			student.setPractices(student.getPractices()-practicesRequired());
-			student.setTrains(student.getTrains()-trainsRequired());
+			student.setPractices(student.getPractices()-ptReqs[0]);
+			student.setTrains(student.getTrains()-ptReqs[1]);
 			Ability newAbility=(Ability)newInstance();
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.proficiency()>75)
