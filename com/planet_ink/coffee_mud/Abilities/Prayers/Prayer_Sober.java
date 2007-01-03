@@ -48,13 +48,7 @@ public class Prayer_Sober extends Prayer
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
-				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
-				&&((A.ID().toUpperCase().indexOf("INEBRIA")>=0)
-				   ||(A.ID().toUpperCase().indexOf("ALCOHOL")>=0)
-				   ||(A.ID().toUpperCase().indexOf("POLKA")>=0)
-				   ||(A.ID().toUpperCase().indexOf("DRUNKEN")>=0)
-				   ||(A.ID().toUpperCase().indexOf("LIQUOR")>=0)
-				   ||(A.ID().toUpperCase().indexOf("FIREBREATHER")>=0))
+				if((CMath.bset(A.flags(),Ability.FLAG_INTOXICATING))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
 					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+20+(2*super.getXLEVELLevel(caster)))))))

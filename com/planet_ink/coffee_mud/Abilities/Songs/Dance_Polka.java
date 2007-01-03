@@ -37,6 +37,7 @@ public class Dance_Polka extends Dance
 	public String ID() { return "Dance_Polka"; }
 	public String name(){ return "Polka";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

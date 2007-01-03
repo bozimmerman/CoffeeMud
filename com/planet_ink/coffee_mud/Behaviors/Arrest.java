@@ -1699,6 +1699,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			Ability A=msg.source().fetchEffect(a);
 			if((A!=null)
 			&&(!A.isAutoInvoked())
+			&&((A.canBeUninvoked()||(!msg.source().isMonster())))
 			&&((laws.abilityCrimes().containsKey("$"+A.ID().toUpperCase()))
                 ||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityType(A)))
                 ||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityDomain(A)))))
