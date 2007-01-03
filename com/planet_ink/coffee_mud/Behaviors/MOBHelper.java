@@ -39,18 +39,18 @@ public class MOBHelper extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
-		MOB mob=msg.source();
+		MOB attacker=msg.source();
 		MOB monster=(MOB)affecting;
-		MOB target=(MOB)msg.target();
+		MOB victim=(MOB)msg.target();
 
-		if((mob!=monster)
-		&&(target!=monster)
-		&&(mob!=target)
+		if((attacker!=monster)
+		&&(victim!=monster)
+		&&(attacker!=victim)
 		&&(!monster.isInCombat())
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		&&(CMLib.flags().canBeSeenBy(mob,monster))
-		&&(CMLib.flags().canBeSeenBy(target,monster))
-		&&(target.isMonster()))
-			Aggressive.startFight(monster,mob,true,false);
+		&&(CMLib.flags().canBeSeenBy(attacker,monster))
+		&&(CMLib.flags().canBeSeenBy(victim,monster))
+		&&(victim.isMonster()))
+			Aggressive.startFight(monster,attacker,true,false,null);
 	}
 }

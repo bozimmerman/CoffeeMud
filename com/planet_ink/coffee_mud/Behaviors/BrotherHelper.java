@@ -84,9 +84,7 @@ public class BrotherHelper extends StdBehavior
 						||(CMLib.law().isLegalOfficialHere(target));
 			if(yep&&((numAllowed==0)||(numInFray<numAllowed)))
             {
-				yep=Aggressive.startFight(observer,source,true,false);
-    			if(yep)
-    				CMLib.commands().postSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
+				yep=Aggressive.startFight(observer,source,true,false,"DON'T HURT MY FRIEND!");
             }
 		}
 	}

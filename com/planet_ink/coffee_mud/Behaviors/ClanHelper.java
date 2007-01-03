@@ -71,15 +71,11 @@ public class ClanHelper extends StdBehavior
 		{
 			if(observer.getClanID().equalsIgnoreCase(target.getClanID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,true,false);
-				if(yep)
-				{
-					String reason="WE ARE UNDER ATTACK!! CHARGE!!";
-					if((observer.getClanID().equals(target.getClanID()))
-					&&(!observer.getClanID().equals(source.getClanID())))
-						reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
-					CMLib.commands().postSay(observer,null,reason,false,false);
-				}
+				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
+				if((observer.getClanID().equals(target.getClanID()))
+				&&(!observer.getClanID().equals(source.getClanID())))
+					reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
+				boolean yep=Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}
 	}

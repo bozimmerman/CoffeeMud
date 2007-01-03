@@ -86,10 +86,8 @@ public class GoodExecutioner  extends StdBehavior
     				reason="A THIEF";
                 MOB oldFollowing=source.amFollowing();
     			source.setFollowing(null);
-    			boolean yep=Aggressive.startFight(observer,source,true,false);
-    			if(yep)
-    				CMLib.commands().postSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
-                else
+    			boolean yep=Aggressive.startFight(observer,source,true,false,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!");
+    			if(!yep)
                 if(oldFollowing!=null)
                     source.setFollowing(oldFollowing);
     		}

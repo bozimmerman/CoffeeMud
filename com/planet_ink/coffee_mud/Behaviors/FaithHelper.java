@@ -68,12 +68,11 @@ public class FaithHelper extends StdBehavior
 		{
 			if(observer.getWorshipCharID().equalsIgnoreCase(target.getWorshipCharID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,true,false);
 				String reason="THAT`S MY FRIEND!! CHARGE!!";
 				if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
 				&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
 					reason="BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
-				if(yep)	CMLib.commands().postSay(observer,null,reason,false,false);
+				boolean yep=Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}
 	}

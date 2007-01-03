@@ -37,7 +37,7 @@ public class VeryAggressive extends Aggressive
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
-
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -54,7 +54,8 @@ public class VeryAggressive extends Aggressive
 											boolean wander,
 											boolean mobKiller,
 											boolean misBehave,
-											String zapStr)
+											String zapStr,
+											String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
@@ -117,7 +118,7 @@ public class VeryAggressive extends Aggressive
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
 			CMLib.tracking().move(mob,dirCode,false,false);
-			pickAFight(mob,zapStr,mobKiller,misBehave);
+			pickAFight(mob,zapStr,mobKiller,misBehave,attackMsg);
 		}
 	}
 
@@ -131,7 +132,8 @@ public class VeryAggressive extends Aggressive
 								 wander,
 								 mobkill,
 								 misbehave,
-								 getParms());
+								 getParms(),
+								 attackMessage);
 		}
 		return true;
 	}

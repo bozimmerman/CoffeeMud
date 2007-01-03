@@ -51,6 +51,6 @@ public class PlayerHelper extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(target,monster))
 		&&(!target.isMonster()))
-			Aggressive.startFight(monster,mob,false,false);
+			Aggressive.startFight(monster,mob,false,false,null);
 	}
 }
