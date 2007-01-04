@@ -324,10 +324,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						break;
 					}
 					prepend.append(": "+A.name());
-                    if((forMOB.session()!=null)&&(!forMOB.session().killFlag()))
+                    if((forMOB!=null)&&(forMOB.session()!=null)&&(!forMOB.session().killFlag()))
                     {
                     	Ability A2=forMOB.fetchAbility(A.ID());
-                    	if(A2!=null) prepend.append("   (Profficiency: "+A.proficiency()+"%)");
+                    	if(A2!=null) prepend.append("   (Profficiency: "+A2.proficiency()+"%)");
                     }
                     if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
                     {
