@@ -224,6 +224,8 @@ public interface ScriptingEngine extends Behavior
         "ISLIKE", //85
         "STRCONTAINS", //86
         "ISBIRTHDAY", //87
+        "MOOD", //88
+        "ISRECALL", //89
     };
     public static final String[] methods={
         "MPASOUND", //1

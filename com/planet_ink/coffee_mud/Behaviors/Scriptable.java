@@ -2626,6 +2626,42 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+            case 89: // isrecall
+            {
+                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String comp="==";
+                Environmental E=monster;
+                if((" == >= > < <= => =< != ".indexOf(" "+CMParms.getCleanBit(evaluable.substring(y+1,z),1)+" ")>=0))
+                {
+                    E=getArgumentItem(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                    comp=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+                    arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+                }
+                else
+                {
+                    scriptableError(scripted,"ISRECALL","Syntax",evaluable);
+                    return returnable;
+                }
+                Room R=null;
+                if(arg2.startsWith("$"))
+                    R=CMLib.map().getStartRoom(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+                if(R==null)
+                    R=getRoom(arg2,lastKnownLocation);
+                if(E==null)
+                    returnable=false;
+                else
+                {
+                    Room R2=CMLib.map().getStartRoom(E);
+                    if((R==null)&&((arg2.length()==0)||(R2==null)))
+                        returnable=true;
+                    else
+                    if((R==null)||(R2==null))
+                        returnable=false;
+                    else
+                        returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"ISRECALL");
+                }
+                break;
+            }
 			case 37: // inlocale
 			{
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
@@ -3043,6 +3079,36 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+            case 88: // mood 
+            {
+                String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+                String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(arg2.length()==0)
+                {
+                    scriptableError(scripted,"MOOD","Syntax",evaluable);
+                    return returnable;
+                }
+                if((E==null)||(!(E instanceof MOB)))
+                    returnable=false;
+                else
+                if(E.fetchEffect("Mood")!=null)
+                {
+                    String sex=E.fetchEffect("Mood").text();
+                    if(arg2.equals("=="))
+                        returnable=sex.equalsIgnoreCase(arg3);
+                    else
+                    if(arg2.equals("!="))
+                        returnable=!sex.equalsIgnoreCase(arg3);
+                    else
+                    {
+                        scriptableError(scripted,"MOOD","Syntax",evaluable);
+                        return returnable;
+                    }
+                }
+                break;
+            }
 			case 21: // class
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4274,6 +4340,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					results.append(CMLib.map().getExtendedRoomID(lastKnownLocation));
 				break;
 			}
+            case 89: // isrecall
+            {
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(E!=null) results.append(CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom(E)));
+                break;
+            }
 			case 37: // inlocale
 			{
 				if(lastKnownLocation!=null)
@@ -4513,6 +4586,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+            case 88: // mood
+            {
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if((E!=null)&&(E instanceof MOB)&&(E.fetchEffect("Mood")!=null))
+                    results.append(CMStrings.capitalizeAndLower(E.fetchEffect("Mood").text()));
+                break;
+            }
 			case 22: // baseclass
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
@@ -4563,7 +4644,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
-			case 89: // exp
+			case 78: // exp
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
