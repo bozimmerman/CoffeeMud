@@ -42,6 +42,75 @@ public class CommandJournal extends StdCommand
         access=CMLib.journals().getCommandJournalNames();
         return access;
     }
+
+    public boolean transfer(MOB mob,
+                            String journalID,
+                            String journalWord,
+                            Vector commands,
+                            String security)
+    {
+        String first=(String)commands.elementAt(1);
+        String second=(commands.size()>2)?(String)commands.elementAt(2):"";
+        String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
+        if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
+           return false;
+        if((!CMSecurity.isAllowed(mob,mob.location(),security))
+        &&(!CMSecurity.isAllowed(mob,mob.location(),"KILL"+security+"S")))
+        {
+            mob.tell("Transfer not allowed.");
+            return true;
+        }
+        if((second.length()>0)&&(!CMath.isNumber(second)))
+        {
+            mob.tell(second+" is not a number");
+            return true;
+        }
+        int count=CMath.s_int(second);
+        Vector journal=CMLib.database().DBReadJournal(journalID);
+        int size=0;
+        if(journal!=null) size=journal.size();
+        if(size<=0)
+        {
+            mob.tell("There are no "+journalWord+" listed at this time.");
+            return true;
+        }
+        if(count>size)
+        {
+            mob.tell("Maximum count of "+journalWord+" is "+size+".");
+            return true;
+        }
+        String realName=null;
+        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
+            if(rest.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i))
+            ||rest.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i)+"s"))
+            {
+                realName="SYSTEM_"+CMLib.journals().getCommandJournalName(i).toUpperCase()+"S";
+                break;
+            }
+        if(realName==null)
+            realName=CMLib.database().DBGetRealJournalName(rest);
+        if(realName==null)
+            realName=CMLib.database().DBGetRealJournalName(rest.toUpperCase());
+        if(realName==null)
+        {
+            mob.tell(rest+" is not a journal");
+            return true;
+        }
+        Vector journal2=CMLib.database().DBReadJournal(journalID);
+        Vector entry2=(Vector)journal2.elementAt(count-1);
+        String from2=(String)entry2.elementAt(1);
+        String to=(String)entry2.elementAt(3);
+        String subject=(String)entry2.elementAt(4);
+        String message=(String)entry2.elementAt(5);
+        CMLib.database().DBDeleteJournal(journalID,count-1);
+        CMLib.database().DBWriteJournal(realName,
+                                          from2,
+                                          to,
+                                          subject,
+                                          message,-1);
+        mob.tell("Message transferred.");
+        return true;
+    }
     
     public boolean review(MOB mob,
                           String journalID, 
@@ -132,7 +201,8 @@ public class CommandJournal extends StdCommand
         }
         if(CMParms.combine(commands,1).length()>0)
         {
-            if(!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
+            if((!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
+            &&(!transfer(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord)))
             {
                 String prePend="";
                 if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey("ADDROOM")))

@@ -124,13 +124,15 @@ public class Announce extends StdCommand
 			else
 			{
 				boolean found=false;
+                String name=(String)commands.elementAt(1);
 				for(int s=0;s<CMLib.sessions().size();s++)
 				{
 					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))
-					&&(CMLib.english().containsString(S.mob().name(),(String)commands.elementAt(1))))
+                    &&(((name.equalsIgnoreCase("here"))&&(S.mob().location()==mob.location()))
+                        ||(CMLib.english().containsString(S.mob().name(),name))))
 					{
 						sendAnnounce(mob,CMParms.combine(commands,2),S);
 						found=true;
@@ -142,7 +144,7 @@ public class Announce extends StdCommand
 			}
 		}
 		else
-			mob.tell("Usage ANNOUNCETO [ALL|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r");
+			mob.tell("Usage ANNOUNCETO [ALL|HERE|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r");
 		return false;
 	}
 	
