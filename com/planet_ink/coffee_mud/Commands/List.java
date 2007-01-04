@@ -1175,19 +1175,28 @@ public class List extends StdCommand
                 {
                     MOB M=TR.fetchInhabitant(m);
                     if(M==null) continue;
-                    buf.append("^M"+M.ID()+": "+M.displayText()+"^N\n\r");
+                    buf.append("^M"+CMStrings.padRight(M.ID(),15)+": "+CMStrings.padRight(M.displayText(),35)+": "
+                    			+CMStrings.padRight(M.envStats().level()+"",3)+": "
+                    			+CMLib.flags().getAlignmentName(M)
+		                		+"^N\n\r");
                     for(int i=0;i<M.inventorySize();i++)
                     {
                         Item I=M.fetchInventory(i);
                         if(I!=null)
-                            buf.append("    ^I"+I.ID()+": "+(I.displayText().length()>0?I.displayText():I.Name())+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+                            buf.append("    ^I"+CMStrings.padRight(I.ID(),15)
+                            		+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
+                        			+CMStrings.padRight(I.envStats().level()+"",3)+": "
+                            		+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                     }
                 }
                 for(int i=0;i<TR.numItems();i++)
                 {
                     Item I=TR.fetchItem(i);
                     if(I!=null)
-                        buf.append("^I"+I.ID()+": "+(I.displayText().length()>0?I.displayText():I.Name())+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+                        buf.append("^I"+CMStrings.padRight(I.ID(),15)+": "
+                        		+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
+                    			+CMStrings.padRight(I.envStats().level()+"",3)+": "
+                        		+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                 }
                 TR.destroy();
             }

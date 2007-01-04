@@ -98,7 +98,7 @@ public class DefaultTimeClock implements TimeClock
             x=x+getDayOfMonth();
             timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
         }
-        timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
+        timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
         timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
         if(getYearNames().length>0)
             timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
@@ -159,7 +159,7 @@ public class DefaultTimeClock implements TimeClock
 			x=x+getDayOfMonth();
 			timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
 		}
-		timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
+		timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
 		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
@@ -188,21 +188,6 @@ public class DefaultTimeClock implements TimeClock
 			}
 		}
 		return timeDesc.toString();
-	}
-
-	protected String numAppendage(int num)
-	{
-        if((num<11)||(num>13))
-        {
-            String strn=""+num;
-    		switch(strn.charAt(strn.length()-1))
-    		{
-    		case '1': return "st";
-    		case '2': return "nd";
-    		case '3': return "rd";
-    		}
-        }
-		return "th";
 	}
 
 	public int getYear(){return year;}

@@ -39,21 +39,6 @@ public class Time extends StdCommand
 	public String[] getAccessWords(){return access;}
 	
 	
-	protected String numAppendage(int num)
-	{
-        if((num<11)||(num>13))
-        {
-            String strn=""+num;
-            switch(strn.charAt(strn.length()-1))
-            {
-            case '1': return "st";
-            case '2': return "nd";
-            case '3': return "rd";
-            }
-        }
-        return "th";
-	}
-
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -79,7 +64,7 @@ public class Time extends StdCommand
 				x=x+bmonth;
 				timeDesc.append(C.getWeekNames()[(int)(x%C.getDaysInWeek())]+", ");
 			}
-			timeDesc.append("the "+bday+numAppendage(bday));
+			timeDesc.append("the "+bday+CMath.numAppendage(bday));
 			timeDesc.append(" day of "+C.getMonthNames()[bmonth-1]);
 			if(C.getYearNames().length>0)
 				timeDesc.append(", "+CMStrings.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));

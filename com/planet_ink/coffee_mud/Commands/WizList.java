@@ -40,10 +40,12 @@ public class WizList extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer head=new StringBuffer("");
+		boolean isArchonLooker=CMSecurity.isASysOp(mob);
 		head.append("^x[");
 		head.append(CMStrings.padRight("Race",8)+" ");
 		head.append(CMStrings.padRight("Lvl",4)+" ");
-		head.append(CMStrings.padRight("Last",18)+" ");
+		if(isArchonLooker)
+			head.append(CMStrings.padRight("Last",18)+" ");
 		head.append("] Archon Character Name^.^?\n\r");
 		mob.tell("^x["+CMStrings.centerPreserve("The Archons of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
 		Vector allUsers=CMLib.database().getExtendedUserList();
@@ -59,7 +61,8 @@ public class WizList extends StdCommand
     				head.append(CMStrings.padRight((String)U.elementAt(3),4)+" ");
                 else
                     head.append(CMStrings.padRight("    ",4)+" ");
-				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" ");
+                if(isArchonLooker)
+					head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" ");
 				head.append("] "+CMStrings.padRight((String)U.elementAt(0),25));
 				head.append("\n\r");
 			}

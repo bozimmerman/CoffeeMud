@@ -97,6 +97,21 @@ public class CMath
         return x;
     }
 
+    public static String numAppendage(int num)
+	{
+        if((num<11)||(num>13))
+        {
+            String strn=""+num;
+            switch(strn.charAt(strn.length()-1))
+            {
+            case '1': return "st";
+            case '2': return "nd";
+            case '3': return "rd";
+            }
+        }
+        return "th";
+	}
+
     public static boolean isRomanDigit(char c){ return ROMAN_ALL.indexOf(c)>=0;}
     
     public static boolean isRomanNumeral(String s)

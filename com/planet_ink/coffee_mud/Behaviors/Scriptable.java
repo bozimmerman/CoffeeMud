@@ -1704,6 +1704,30 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=((MOB)E).isMonster();
 				break;
 			}
+			case 87: // isbirthday
+			{
+				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					MOB mob=(MOB)E;
+		            int tage=mob.baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]
+		                                                                     +CMClass.globalClock().getYear()
+		                                                                     -mob.playerStats().getBirthday()[2];
+	                 int month=CMClass.globalClock().getMonth();
+	                 int day=CMClass.globalClock().getDayOfMonth();
+	                 int bday=mob.playerStats().getBirthday()[0];
+	                 int bmonth=mob.playerStats().getBirthday()[1];
+	                 if((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
+	                 &&((month==bmonth)&&(day==bday)))
+                    	 returnable=true;
+                     else
+                    	 returnable=false;
+				}
+				break;
+			}
 			case 5: // ispc
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
@@ -3612,6 +3636,38 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 5: // ispc
 				results.append("[unimplemented function]");
 				break;
+			case 87: // isbirthday
+			{
+				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getBirthday()!=null))
+				{
+					MOB mob=(MOB)E;
+				    TimeClock C=CMClass.globalClock();
+				    int day=C.getDayOfMonth();
+				    int month=C.getMonth();
+				    int year=C.getYear();
+				    int bday=mob.playerStats().getBirthday()[0];
+				    int bmonth=mob.playerStats().getBirthday()[1];
+				    if((month>bmonth)||((month==bmonth)&&(day>bday)))
+				        year++;
+				    
+				    StringBuffer timeDesc=new StringBuffer("");
+					if(C.getDaysInWeek()>0)
+					{
+						long x=((long)year)*((long)C.getMonthsInYear())*C.getDaysInMonth();
+						x=x+((long)(bmonth-1))*((long)C.getDaysInMonth());
+						x=x+bmonth;
+						timeDesc.append(C.getWeekNames()[(int)(x%C.getDaysInWeek())]+", ");
+					}
+					timeDesc.append("the "+bday+CMath.numAppendage(bday));
+					timeDesc.append(" day of "+C.getMonthNames()[bmonth-1]);
+					if(C.getYearNames().length>0)
+						timeDesc.append(", "+CMStrings.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));
+					results.append(timeDesc.toString());
+				}
+				break;
+			}
 			case 6: // isgood
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
