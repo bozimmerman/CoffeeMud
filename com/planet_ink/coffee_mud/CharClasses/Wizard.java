@@ -108,6 +108,11 @@ public class Wizard extends Mage
                     mob.recoverMaxState();
                 }
             }
+            else
+            if(msg.tool().ID().equalsIgnoreCase("Skill_ScrollCopy"))
+            {
+                
+            }
         }
     }
 
