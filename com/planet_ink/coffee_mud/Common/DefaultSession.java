@@ -218,10 +218,11 @@ public class DefaultSession extends Thread implements Session
             telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
             telnetSupportSet.add(new Integer(Session.TELNET_BINARY));
             telnetSupportSet.add(new Integer(Session.TELNET_ECHO));
-            telnetSupportSet.add(new Integer(Session.TELNET_SUPRESS_GO_AHEAD));
+            //telnetSupportSet.add(new Integer(Session.TELNET_SUPRESS_GO_AHEAD));
             telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
             telnetSupportSet.add(new Integer(Session.TELNET_NAWS));
             //telnetSupportSet.add(new Integer(Session.TELNET_COMPRESS2));
+            //telnetSupportSet.add(new Integer(Session.TELNET_LINEMODE));
         }
         return telnetSupportSet.contains(new Integer(telnetCode));
     }
