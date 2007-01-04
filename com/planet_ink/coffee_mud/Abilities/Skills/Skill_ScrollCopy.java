@@ -109,7 +109,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(success)
 		{
-			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> memorize(s) '"+thisSpell.name()+"' from <O-NAME>."))
+			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> memorize(s) '"+thisSpell.name()+"' from <T-NAME>."))
             {
 				thisSpell.teach(T,mob);
                 if((mob.fetchAbility(thisSpell.ID())!=null)
