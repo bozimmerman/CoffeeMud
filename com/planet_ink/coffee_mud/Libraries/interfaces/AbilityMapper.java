@@ -41,6 +41,11 @@ public interface AbilityMapper extends CMLibrary
      */
     public static class AbilityMapping
     {
+    	public static final int COST_PRAC=0;
+    	public static final int COST_TRAIN=1;
+    	public static final int COST_MANA=2;
+    	public static final int COST_PRACPRAC=3;
+    	public static final int COST_NUM=4;
         public String abilityName="";
         public int qualLevel=-1;
         public boolean autoGain=false;
@@ -49,7 +54,7 @@ public interface AbilityMapper extends CMLibrary
         public boolean isSecret=false;
         public DVector skillPreReqs=new DVector(2);
         public String extraMask="";
-        public int[] pracTrainCost=new int[2];
+        public Integer[] costOverrides=new Integer[COST_NUM];
     }
     
     /**
@@ -167,11 +172,11 @@ public interface AbilityMapper extends CMLibrary
      * @param secret
      * @param preReqSkillsList
      * @param extraMask
-     * @param pracTrainCost
+     * @param costOverrides
      */
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
                                       String defaultParam, boolean autoGain, boolean secret,
-                                      Vector preReqSkillsList, String extraMask, int[] pracTrainCost);
+                                      Vector preReqSkillsList, String extraMask, Integer[] costOverrides);
     /**
      * @param ID
      * @param ability
@@ -384,23 +389,23 @@ public interface AbilityMapper extends CMLibrary
      * @param ability
      * @return
      */
-    public int[] getPracTrainCost(String ID, boolean checkAll, String ability);
+    public Integer[] getCostOverrides(String ID, boolean checkAll, String ability);
     /**
      * @param ability
      * @return
      */
-    public int[] getAllPracTrainCost(String ability);
+    public Integer[] getAllCostOverrides(String ability);
     /**
      * @param mob
      * @param ability
      * @return
      */
-    public int[] getPracTrainCost(MOB mob, String ability);
+    public Integer[] getCostOverrides(MOB mob, String ability);
     /**
      * @param ability
      * @return
      */
-    public int[] getPracTrainCost(String ability);
+    public Integer[] getCostOverrides(String ability);
     /**
      * @param ID
      * @param checkAll

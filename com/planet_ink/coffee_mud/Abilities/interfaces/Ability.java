@@ -151,6 +151,20 @@ public interface Ability extends Environmental
 	public boolean putInCommandlist();
 
 	/**
+	 * Returns practices required to learn this skill
+	 * @see Ability#trainsRequired(MOB)
+	 * @return number of practices to learn this skill
+	 */
+	public int practicesRequired(MOB mob);
+	
+	/**
+	 * Returns trains required to learn this skill
+	 * @see Ability#practicesRequired(MOB)
+	 * @return number of trains to learn this skill
+	 */
+	public int trainsRequired(MOB mob);
+	
+	/**
 	 * A set of the command strings the user types to access
 	 * this command when it is listed as a skill ability.
 	 * @see Ability#putInCommandlist()

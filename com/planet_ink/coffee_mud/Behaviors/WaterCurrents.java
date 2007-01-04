@@ -228,6 +228,8 @@ public class WaterCurrents extends ActiveTicker
 		public void setAbilityCode(int newCode){}
 		public int adjustedLevel(MOB mob, int asLevel){return -1;}
 		public boolean bubbleAffect(){return false;}
+	    public int practicesRequired(MOB mob){return 0;}
+	    public int trainsRequired(MOB mob){return 0;}
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}

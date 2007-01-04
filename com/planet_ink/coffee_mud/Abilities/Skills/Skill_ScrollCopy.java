@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -116,8 +117,7 @@ public class Skill_ScrollCopy extends StdSkill
                 &&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
                 &&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
                 {
-                    int[] ptCost=(int[])CMLib.ableMapper().getPracTrainCost(mob,thisSpell.ID());
-                    if((ptCost==null)||((ptCost[0]>0)||(ptCost[1])>0))
+                	if((thisSpell.practicesRequired(mob)>0)||(thisSpell.trainsRequired(mob)>0))
                     {
                         int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
                         if(xp>=0)

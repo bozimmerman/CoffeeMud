@@ -69,7 +69,10 @@ public class Wizard extends Mage
                 AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
                 if((able!=null) 
                 &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-                    able.pracTrainCost=new int[]{0,0};
+                {
+                    able.costOverrides=new Integer[]{new Integer(0),new Integer(0),new Integer(0),new Integer(0)};
+                    able.defaultProficiency=100;
+                }
             }
         }
     }

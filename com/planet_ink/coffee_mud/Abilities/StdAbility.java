@@ -50,9 +50,39 @@ public class StdAbility implements Ability
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}
-	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
-	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
-	protected int practicesToPractice(){return 1;}
+	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
+	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
+	public int trainsRequired(MOB mob)
+	{
+		if(mob!=null)
+		{
+			Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
+			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_TRAIN]!=null))
+				return O[AbilityMapper.AbilityMapping.COST_TRAIN].intValue();
+		}
+		return iniTrainsRequired();
+	}
+	public int practicesRequired(MOB mob)
+	{
+		if(mob!=null)
+		{
+			Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
+			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_PRAC]!=null))
+				return O[AbilityMapper.AbilityMapping.COST_PRAC].intValue();
+		}
+		return iniPracticesRequired();
+	}
+	public int practicesToPractice(MOB mob)
+	{
+		if(mob!=null)
+		{
+			Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
+			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_PRACPRAC]!=null))
+				return O[AbilityMapper.AbilityMapping.COST_PRACPRAC].intValue();
+		}
+		return iniPracticesToPractice();
+	}
+	protected int iniPracticesToPractice(){return 1;}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long flags(){return 0;}
 	protected short[] expertise=null;
@@ -768,6 +798,8 @@ public class StdAbility implements Ability
 			if(lowest<0) lowest=0;
 		}
 
+		Integer[] costOverrides=null;
+		if(mob!=null) costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 		int consumed=CMProps.getMaxManaException(ID());
 		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
@@ -778,6 +810,8 @@ public class StdAbility implements Ability
 		if(consumed<minimum) 
 			consumed=minimum;
 		if(overrideMana()>=0) consumed=overrideMana();
+		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
 		return buildCostArray(mob,consumed);
 	}
 
@@ -1188,18 +1222,18 @@ public class StdAbility implements Ability
 	public String requirements()
 	{
 		String returnable="";
-		if(trainsRequired()==1)
+		if(iniTrainsRequired()==1)
 			returnable="1 train";
 		else
-		if(trainsRequired()>1)
-			returnable=trainsRequired()+" trains";
-		if((returnable.length()>0)&&(practicesRequired()>0))
+		if(iniTrainsRequired()>1)
+			returnable=iniTrainsRequired()+" trains";
+		if((returnable.length()>0)&&(iniPracticesRequired()>0))
 			returnable+=", ";
-		if(practicesRequired()==1)
+		if(iniPracticesRequired()==1)
 			returnable+="1 practice";
 		else
-		if(practicesRequired()>1)
-			returnable+=practicesRequired()+" practices";
+		if(iniPracticesRequired()>1)
+			returnable+=iniPracticesRequired()+" practices";
 		if(returnable.length()==0)
 			return "free!";
 		return returnable;
@@ -1207,16 +1241,13 @@ public class StdAbility implements Ability
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
-        int[] ptReqs=new int[]{practicesRequired(),trainsRequired()};
-        if(CMLib.ableMapper().getPracTrainCost(student,ID())!=null)
-            ptReqs=CMLib.ableMapper().getPracTrainCost(student,ID());
-		if((ptReqs[0]>0)&&(student.getPractices()<ptReqs[0]))
+		if((practicesRequired(student)>0)&&(student.getPractices()<practicesRequired(student)))
 		{
 			teacher.tell(student.name()+" does not have enough practice points to learn '"+name()+"'.");
 			student.tell("You do not have enough practice points.");
 			return false;
 		}
-		if((ptReqs[1]>0)&&(student.getTrains()<ptReqs[1]))
+		if((trainsRequired(student)>0)&&(student.getPractices()<trainsRequired(student)))
 		{
 			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
 			student.tell("You do not have enough training sessions.");
@@ -1340,7 +1371,7 @@ public class StdAbility implements Ability
 	
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
-		if((practicesToPractice()>0)&&(student.getPractices()<practicesToPractice()))
+		if((practicesToPractice(student)>0)&&(student.getPractices()<practicesToPractice(student)))
 		{
 			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
 			student.tell("You do not have enough practices.");
@@ -1416,17 +1447,14 @@ public class StdAbility implements Ability
 
 	public void teach(MOB teacher, MOB student)
 	{
-        int[] ptReqs=new int[]{practicesRequired(),trainsRequired()};
-        if(CMLib.ableMapper().getPracTrainCost(student,ID())!=null)
-            ptReqs=CMLib.ableMapper().getPracTrainCost(student,ID());
-        if((ptReqs[0]>0)&&(student.getPractices()<ptReqs[0]))
+		if((practicesRequired(student)>0)&&(student.getPractices()<practicesRequired(student)))
 			return;
-        if((ptReqs[1]>0)&&(student.getTrains()<ptReqs[1]))
+		if((trainsRequired(student)>0)&&(student.getPractices()<trainsRequired(student)))
 			return;
 		if(student.fetchAbility(ID())==null)
 		{
-			student.setPractices(student.getPractices()-ptReqs[0]);
-			student.setTrains(student.getTrains()-ptReqs[1]);
+			student.setPractices(student.getPractices()-practicesRequired(student));
+			student.setTrains(student.getTrains()-trainsRequired(student));
 			Ability newAbility=(Ability)newInstance();
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.proficiency()>75)
@@ -1438,7 +1466,7 @@ public class StdAbility implements Ability
 
 	public void practice(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesToPractice())
+		if(student.getPractices()<practicesToPractice(student))
 			return;
 
 		Ability yourAbility=student.fetchAbility(ID());
@@ -1446,7 +1474,7 @@ public class StdAbility implements Ability
 		{
 			if(yourAbility.proficiency()<75)
 			{
-				student.setPractices(student.getPractices()-practicesToPractice());
+				student.setPractices(student.getPractices()-practicesToPractice(student));
 				yourAbility.setProficiency(yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0))));
 				if(yourAbility.proficiency()>75)
 					yourAbility.setProficiency(75);

@@ -72,7 +72,7 @@ public class FaithHelper extends StdBehavior
 				if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
 				&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
 					reason="BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
-				boolean yep=Aggressive.startFight(observer,source,true,false,reason);
+				Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}
 	}

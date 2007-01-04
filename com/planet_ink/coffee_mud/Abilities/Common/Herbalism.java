@@ -40,8 +40,8 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Herbalism";}
 	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
-	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
+	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
+	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
 	String oldName="";
 	private Ability theSpell=null;

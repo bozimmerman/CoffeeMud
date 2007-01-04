@@ -44,8 +44,8 @@ public class Language extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGTRAINCOST);}
-	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGPRACCOST);}
+	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGTRAINCOST);}
+	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGPRACCOST);}
 	public int classificationCode(){return Ability.ACODE_LANGUAGE;}
 
 	private static Hashtable emptyHash=new Hashtable();

@@ -75,7 +75,7 @@ public class ClanHelper extends StdBehavior
 				if((observer.getClanID().equals(target.getClanID()))
 				&&(!observer.getClanID().equals(source.getClanID())))
 					reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
-				boolean yep=Aggressive.startFight(observer,source,true,false,reason);
+				Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}
 	}

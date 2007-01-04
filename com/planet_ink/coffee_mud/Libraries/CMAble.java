@@ -287,7 +287,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean secret,
 									  Vector preReqSkillsList,
 									  String extraMask,
-                                      int[] pracTrainCost)
+                                      Integer[] costOverrides)
 	{
 		delCharAbilityMapping(ID,ability);
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
@@ -299,7 +299,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.defaultParm=defaultParam;
 		able.defaultProficiency=defaultProficiency;
 		able.extraMask=extraMask;
-        able.pracTrainCost=pracTrainCost;
+        able.costOverrides=costOverrides;
 		
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(ability,preReqSkillsList,extraMask);
@@ -1070,33 +1070,33 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return secretFound;
 	}
 	
-    public int[] getPracTrainCost(String ID, boolean checkAll, String ability)
+    public Integer[] getCostOverrides(String ID, boolean checkAll, String ability)
     {
-        int[] found=null;
+    	Integer[] found=null;
         if(completeAbleMap.containsKey(ID))
         {
             Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
             if(ableMap.containsKey(ability))
-                found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+                found=((AbilityMapping)ableMap.get(ability)).costOverrides;
         }
         if((checkAll)&&(found==null))
         {
             AbilityMapping AB=getAllAbleMap(ability);
-            if(AB!=null) found=AB.pracTrainCost;
+            if(AB!=null) found=AB.costOverrides;
         }
         return found;
     }
     
-    public int[] getAllPracTrainCost(String ability)
+    public Integer[] getAllCostOverrides(String ability)
     {
         AbilityMapping AB=getAllAbleMap(ability);
-        if(AB!=null) return AB.pracTrainCost;
+        if(AB!=null) return AB.costOverrides;
         return null;
     }
     
-    public int[] getPracTrainCost(MOB mob, String ability)
+    public Integer[] getCostOverrides(MOB mob, String ability)
     {
-        int[] found=null;
+    	Integer[] found=null;
         for(int c=0;c<mob.charStats().numClasses();c++)
         {
             String charClass=mob.charStats().getMyClass(c).ID();
@@ -1104,24 +1104,24 @@ public class CMAble extends StdLibrary implements AbilityMapper
             {
                 Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
                 if((ableMap.containsKey(ability))&&(found==null))
-                    found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+                    found=((AbilityMapping)ableMap.get(ability)).costOverrides;
             }
         }
         if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
         {
             Hashtable ableMap=(Hashtable)completeAbleMap.get(mob.charStats().getMyRace().ID());
             if((ableMap.containsKey(ability))&&(found==null))
-                found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+                found=((AbilityMapping)ableMap.get(ability)).costOverrides;
         }
         AbilityMapping AB=getAllAbleMap(ability);
         if((AB!=null)&&(found==null))
-            return found=AB.pracTrainCost;
+            return found=AB.costOverrides;
         return found;
     }
     
-    public int[] getPracTrainCost(String ability)
+    public Integer[] getCostOverrides(String ability)
     {
-        int[] found=null;
+    	Integer[] found=null;
         for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
         {
             String charClass=((CharClass)e.nextElement()).ID();
@@ -1129,7 +1129,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
             {
                 Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
                 if((ableMap.containsKey(ability))&&(found==null))
-                    found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+                    found=((AbilityMapping)ableMap.get(ability)).costOverrides;
             }
         }
         for(Enumeration e=CMClass.races();e.hasMoreElements();)
@@ -1139,12 +1139,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
             {
                 Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
                 if((ableMap.containsKey(ability))&&(found==null))
-                    found=((AbilityMapping)ableMap.get(ability)).pracTrainCost;
+                    found=((AbilityMapping)ableMap.get(ability)).costOverrides;
             }
         }
         AbilityMapping AB=getAllAbleMap(ability);
         if((AB!=null)&&(found==null))
-            return found=AB.pracTrainCost;
+            return found=AB.costOverrides;
         return found;
     }
     
