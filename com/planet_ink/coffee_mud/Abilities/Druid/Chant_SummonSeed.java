@@ -58,7 +58,7 @@ public class Chant_SummonSeed extends Chant
 		{
 			String str=RawMaterial.RESOURCE_DESCS[i];
 			if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-            &&(!CMParms.makeVector(NON_SEEDS).contains(new Integer(RawMaterial.RESOURCE_DATA[i][0]))))			
+            &&(!CMParms.makeVector(NON_SEEDS).contains(new Integer(RawMaterial.RESOURCE_DATA[i][0]))))	
             {
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{

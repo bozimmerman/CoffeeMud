@@ -7710,6 +7710,20 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					return;
 				}
 				break;
+			case 44: // kill prog
+				if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(44)
+				&&((msg.tool()==affecting)||(!(affecting instanceof MOB))))
+				{
+					MOB ded=msg.source();
+					MOB src=lastToHurtMe;
+                    if(msg.tool() instanceof MOB)
+                        src=(MOB)msg.tool();
+					if((src==null)||(src.location()!=monster.location()))
+					   src=ded;
+					execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[10]);
+					return;
+				}
+				break;
 			case 26: // damage prog
 				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
 				&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))

@@ -62,19 +62,31 @@ public class Chant_GrowFood extends Chant
 		Vector choices=new Vector();
 		String s=CMParms.combine(commands,0);
 
+		int col=0;
+		StringBuffer buf=new StringBuffer("Food types known:\n\r");
 		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
 			int code=RawMaterial.RESOURCE_DATA[i][0];
-			if(((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
+			if((((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
+            &&(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(new Integer(RawMaterial.RESOURCE_DATA[i][0]))))	
 			{
+				String str=RawMaterial.RESOURCE_DESCS[i];
 				choices.addElement(new Integer(code));
 				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
 					material=code;
+				if(col==4){ buf.append("\n\r"); col=0;}
+				col++;
+				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(str),15));
 			}
+		}
+		if(s.equalsIgnoreCase("list"))
+		{
+			mob.tell(buf.toString()+"\n\r\n\r");
+			return true;
 		}
 		if((material<0)&&(s.length()>0))
 		{
-			mob.tell("'"+s+"' is not a recognized form of food or herbs!");
+			mob.tell("'"+s+"' is not a recognized form of food or herbs!    Try LIST as a parameter...");
 			return false;
 		}
 

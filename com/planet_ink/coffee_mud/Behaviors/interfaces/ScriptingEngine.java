@@ -133,6 +133,7 @@ public interface ScriptingEngine extends Behavior
         "EXECMSG_PROG", // 41
         "CNCLMSG_PROG", // 42
         "IMASK_PROG", // 43
+        "KILL_PROG", //44
     };
     
     public static final String[] funcs={

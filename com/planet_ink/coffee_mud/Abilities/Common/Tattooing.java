@@ -105,6 +105,7 @@ public class Tattooing extends CommonSkill
 		        		  Item.WORN_LEFT_WRIST,
 		        		  Item.WORN_RIGHT_WRIST,
 		        		  Item.WORN_NECK,
+		        		  Item.WORN_BACK,
 		        		  Item.WORN_TORSO};
 		for(int i=0;i<Item.WORN_DESCS.length;i++)
 		{
