@@ -75,6 +75,7 @@ public class Wizard extends Mage
     }
 
     public int availabilityCode(){return 0;}
+    //public int availabilityCode(){return Area.THEME_FANTASY;}
     public String otherBonuses()
     {
         return "Can memorize any spell for casting without expending a training point.";

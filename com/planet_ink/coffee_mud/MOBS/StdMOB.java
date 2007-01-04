@@ -542,8 +542,11 @@ public class StdMOB implements MOB
 		baseState.copyInto(maxState);
 		if(charStats.getMyRace()!=null)	charStats.getMyRace().affectCharState(this,maxState);
 		if(riding()!=null) riding().affectCharState(this,maxState);
+        int num=charStats.numClasses();
+        for(int c=0;c<num;c++)
+            charStats.getMyClass(c).affectCharStats(this,charStats);
         Ability effect=null;
-        int num=numAllEffects();
+        num=numAllEffects();
 		for(int a=0;a<num;a++)
 		{
 			effect=fetchEffect(a);
