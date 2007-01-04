@@ -393,7 +393,7 @@ public class DefaultPlayerStats implements PlayerStats
         
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
-            +((t.length()>0)?"<INTROS>"+i+"</INTROS>":"")
+            +((t.length()>0)?"<INTROS>"+t+"</INTROS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+getTitleXML()
             +getAliasXML()
