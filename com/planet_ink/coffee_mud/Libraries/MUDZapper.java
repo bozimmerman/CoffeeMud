@@ -55,6 +55,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         if(V==null)
         {
             V=maskCompile(str);
+            V.trimToSize();
             H.put(str.toLowerCase().trim(),V);
         }
         return V;

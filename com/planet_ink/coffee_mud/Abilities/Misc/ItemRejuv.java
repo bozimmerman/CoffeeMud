@@ -80,6 +80,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			item.addEffect(ability);
 		ability.setSavable(false);
 		loadContent(ability,item,room);
+		contents.trimToSize();
+		ccontents.trimToSize();
 		CMLib.threads().startTickDown(ability,Tickable.TICKID_ROOM_ITEM_REJUV,item.envStats().rejuv());
 	}
 
@@ -93,12 +95,12 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public String accountForYourself()
 	{ return ""; }
 
-	public void verifyFixContents(Item item, Room room)
+	public void verifyFixContents()
 	{
 		for(int i=0;i<contents.size();i++)
 		{
 			Item thisItem=(Item)contents.elementAt(i);
-			if(!room.isContent(thisItem))
+			if(!myProperLocation.isContent(thisItem))
 			{
 				Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
 
@@ -118,7 +120,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
 				}
 				thisItem.setExpirationDate(0);
-				room.addItem(thisItem);
+				myProperLocation.addItem(thisItem);
 			}
 			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 		}
@@ -134,7 +136,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
-			verifyFixContents(item,myProperLocation);
+			verifyFixContents();
 			if(!myProperLocation.isContent(item))
 			{
 				unloadIfNecessary(item);

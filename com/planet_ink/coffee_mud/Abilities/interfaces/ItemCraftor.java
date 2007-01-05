@@ -42,42 +42,78 @@ import java.util.*;
 public interface ItemCraftor extends Ability
 {
 	/**
-	 * @return
+	 * A Vector containing an entry for each craftable recipe
+	 * Each craftable recipe is also a vector of strings.
+	 * @return a vector of vectors
 	 */
 	public Vector fetchRecipes();
+	
 	/**
-	 * @param recipeName
-	 * @param beLoose
-	 * @return
+	 * Returns a vector containing an entry for each craftable recipe
+	 * whose name matches the given name.  Each entry is also a vector.
+	 * @param recipeName the name of the recipe to craft
+	 * @param beLoose whether to be specific or "loose" with name matching
+	 * @return a vector of vectors
 	 */
 	public Vector matchingRecipeNames(String recipeName, boolean beLoose);
+	
 	/**
-	 * @param material
-	 * @return
+	 * Crafts a random item of a type supported by this class of 
+	 * the given resource code.
+	 * Returns a vector containing the finished Item.  A second element is
+	 * rare, but will occur when a key is required and also generated.
+	 * @param material the rawmaterial code to make the item out of
+	 * @return a vector of Item(s)
 	 */
 	public Vector craftAnyItem(int material);
+	
 	/**
-	 * @param material
-	 * @return
+	 * Crafts every item of a type supported by this class of 
+	 * the given resource code.  Each finished item is represented
+	 * as a vector in the returned vector. The item vector usually
+	 * only contains the finished item, but a second element will
+	 * occur when a key is required and also generated.
+	 * @param material the rawmaterial code to make the item out of
+	 * @return a vector of vectors of item(s)
 	 */
 	public Vector craftAllItemsVectors(int material);
+	
 	/**
-	 * @return
+	 * Crafts every item of a type supported by this class of 
+	 * every supported material.  Each finished item is represented
+	 * as a vector in the returned vector. The item vector usually
+	 * only contains the finished item, but a second element will
+	 * occur when a key is required and also generated.
+	 * @return a vector of vectors of item(s)
 	 */
 	public Vector craftAllItemsVectors();
+	
 	/**
-	 * @param recipe
-	 * @return
+	 * Crafts the item specified by the recipe name, of a supported
+	 * material type which this class can produce.
+	 * Returns a vector containing the finished Item.  A second element is
+	 * rare, but will occur when a key is required and also generated.
+	 * @param recipe the name of the item to make
+	 * @return a vector of Item(s)
 	 */
 	public Vector craftItem(String recipe);
+	
 	/**
-	 * @param recipe
-	 * @param material
-	 * @return
+	 * Crafts the item specified by the recipe name, of the specified
+	 * material type which this class can produce.
+	 * Returns a vector containing the finished Item.  A second element is
+	 * rare, but will occur when a key is required and also generated.
+	 * @param recipe the name of the item to make
+	 * @param material the rawmaterial code to make the item out of
+	 * @return a vector of Item(s)
 	 */
 	public Vector craftItem(String recipe, int material);
+	
 	/**
-	 * @return
+	 * Returns a Vector of Integer objects where each Integer
+	 * is a fully qualified RawMaterial code.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @return a vector of integers
 	 */
 	public Vector myResources();
 }
