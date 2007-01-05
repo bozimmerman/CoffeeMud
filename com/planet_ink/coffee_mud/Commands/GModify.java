@@ -42,6 +42,14 @@ public class GModify extends StdCommand
     private static final int FLAG_SUBSTRING=2;
     private static final int FLAG_OR=4;
     private static final int FLAG_AND=8;
+    private static final int EQUATOR_$=0;
+    private static final int EQUATOR_EQ=1;
+    private static final int EQUATOR_NEQ=2;
+    private static final int EQUATOR_GT=3;
+    private static final int EQUATOR_LT=4;
+    private static final int EQUATOR_LTEQ=5;
+    private static final int EQUATOR_GTEQ=6;
+    private static final Hashtable EQUATORS=CMStrings.makeNumericHash(new String[]{"$","=","!=",">","<","<=",">="});
 
     public static String getStat(Environmental E, String stat)
     {
@@ -100,29 +108,34 @@ public class GModify extends StdCommand
             int matchStart=-1;
             int matchEnd=-1;
             stat=getStat(E,field);
-            if(equator.equals("$")&&(pattern!=null))
+            Integer EQ=(Integer)EQUATORS.get(equator);
+            if(EQ!=null)
+            switch(EQ.intValue())
             {
-                if(!CMath.bset(codes,FLAG_SUBSTRING))
+            case EQUATOR_$:
+                if(pattern!=null)
                 {
-                    if(stat.matches(value))
+                    if(!CMath.bset(codes,FLAG_SUBSTRING))
                     {
-                        matchStart=0;
-                        matchEnd=stat.length();
+                        if(stat.matches(value))
+                        {
+                            matchStart=0;
+                            matchEnd=stat.length();
+                        }
+                    }
+                    else
+                    {
+                        M=pattern.matcher(stat);
+                        M.reset();
+                        if(M.find())
+                        {
+                            matchStart=M.start();
+                            matchEnd=M.end();
+                        }
                     }
                 }
-                else
-                {
-                    M=pattern.matcher(stat);
-                    M.reset();
-                    if(M.find())
-                    {
-                        matchStart=M.start();
-                        matchEnd=M.end();
-                    }
-                }
-            }
-            else
-            if(equator.equals("="))
+                break;
+            case EQUATOR_EQ:
             {
                 if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
@@ -140,9 +153,9 @@ public class GModify extends StdCommand
                     matchStart=0;
                     matchEnd=stat.length();
                 }
+                break;
             }
-            else
-            if(equator.equals("!="))
+            case EQUATOR_NEQ:
             {
                 if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
@@ -163,9 +176,9 @@ public class GModify extends StdCommand
                     matchStart=0;
                     matchEnd=stat.length();
                 }
+                break;
             }
-            else
-            if(equator.equals(">"))
+            case EQUATOR_GT:
             {
                 if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
@@ -176,9 +189,9 @@ public class GModify extends StdCommand
                     matchStart=(CMath.s_long(stat)>CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)>0)?0:-1;
+                break;
             }
-            else
-            if(equator.equals("<"))
+            case EQUATOR_LT:
             {
                 if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
@@ -189,9 +202,9 @@ public class GModify extends StdCommand
                     matchStart=(CMath.s_long(stat)<CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)<0)?0:-1;
+                break;
             }
-            else
-            if(equator.equals("<="))
+            case EQUATOR_LTEQ:
             {
                 if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
@@ -202,9 +215,9 @@ public class GModify extends StdCommand
                     matchStart=(CMath.s_long(stat)<=CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)<=0)?0:-1;
+                break;
             }
-            else
-            if(equator.equals(">="))
+            case EQUATOR_GTEQ:
             {
                 if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
@@ -215,6 +228,8 @@ public class GModify extends StdCommand
                     matchStart=(CMath.s_long(stat)>=CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)>=0)?0:-1;
+                break;
+            }
             }
             if(matchStart>=0)
                 matches.addElement(field,new Integer(matchStart),new Integer(matchEnd));

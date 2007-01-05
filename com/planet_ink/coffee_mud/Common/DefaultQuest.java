@@ -2110,6 +2110,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        runtimeRegisterObject(q.mob);
 	                        q.room.recoverRoomStats();
 	                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                            if(q.mob!=null)
+                                q.mob.setStartRoom(null); // necessary to tell qm to clean him UP!
                         }
                         q.envObject=mobsToDo.clone();
                         if(q.room!=null)
