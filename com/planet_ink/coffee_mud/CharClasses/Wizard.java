@@ -42,11 +42,11 @@ public class Wizard extends Mage
     public void initializeClass()
     {
         super.initializeClass();
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Spellcraft",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_ScrollCopy",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Spellcraft",50,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_ScrollCopy",100,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicMissile",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ResistMagicMissiles",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",100,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",false);
         
@@ -57,21 +57,15 @@ public class Wizard extends Mage
             &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
             {
                 int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
-                if(level<0)
+                if(level>0)
                 {
-                    level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-                    if((level>0)&&(level<25))
-                    {
-                        boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
-                        CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
-                    }
-                }
-                AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
-                if((able!=null) 
-                &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-                {
-                    able.costOverrides=new Integer[]{new Integer(0),new Integer(0),new Integer(0),new Integer(0)};
-                    able.defaultProficiency=100;
+	                AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
+	                if((able!=null) 
+	                &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+	                {
+	                    able.costOverrides=new Integer[]{new Integer(0),new Integer(0),new Integer(0),new Integer(0)};
+	                    able.defaultProficiency=100;
+	                }
                 }
             }
         }
