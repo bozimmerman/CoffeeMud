@@ -433,27 +433,27 @@ public class CombatAbilities extends StdBehavior
 			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
 			{
 				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))
-                ||(mob.curState().getMana() < tryThisOne.usageCost(mob)[0]))
+                ||(mob.curState().getMana() < tryThisOne.usageCost(mob,false)[0]))
 				{
                    if((CMLib.dice().rollPercentage()>30)
 				   ||(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)<=0)
 				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
                         return true;
-				   mob.curState().adjMana(tryThisOne.usageCost(mob)[0],mob.maxState());
+				   mob.curState().adjMana(tryThisOne.usageCost(mob,false)[0],mob.maxState());
 				}
 				mob.curState().adjMana(5,mob.maxState());
 			}
 			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
 			{
 				if((Math.random()>CMath.div(mob.curState().getMovement(),mob.maxState().getMovement()))
-				||(mob.curState().getMovement()<tryThisOne.usageCost(mob)[1]))
+				||(mob.curState().getMovement()<tryThisOne.usageCost(mob,false)[1]))
 					return true;
 				mob.curState().adjMovement(5,mob.maxState());
 			}
 			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
 			{
 				if((Math.random()>CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
-				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob)[2]))
+				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob,false)[2]))
 					return true;
 			}
 

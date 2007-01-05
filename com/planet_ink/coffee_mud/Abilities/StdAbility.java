@@ -694,7 +694,7 @@ public class StdAbility implements Ability
 	}
 	public void setInvoker(MOB mob){invoker=mob;}
 
-	protected int[] buildCostArray(MOB mob, int consumed)
+	protected int[] buildCostArray(MOB mob, int consumed, int minimum)
 	{
 		int[] usageCosts=new int[3];
 		int costDown=0;
@@ -729,7 +729,7 @@ public class StdAbility implements Ability
 			else
 			{
 				usageCosts[0]=(consumed-costDown)/divider;
-				if(usageCosts[0]<5)	usageCosts[0]=5;
+				if(usageCosts[0]<minimum)	usageCosts[0]=minimum;
 			}
 		}
 		if(useMoves){
@@ -745,7 +745,7 @@ public class StdAbility implements Ability
 			else
 			{
 				usageCosts[1]=(consumed-costDown)/divider;
-				if(usageCosts[1]<5)	usageCosts[1]=5;
+				if(usageCosts[1]<minimum)	usageCosts[1]=minimum;
 			}
 		}
 		if(useHits){
@@ -761,13 +761,13 @@ public class StdAbility implements Ability
 			else
 			{
 				usageCosts[2]=(consumed-costDown)/divider;
-				if(usageCosts[2]<5)	usageCosts[2]=5;
+				if(usageCosts[2]<minimum)	usageCosts[2]=minimum;
 			}
 		}
 		return usageCosts;
 	}
 
-	public int[] usageCost(MOB mob)
+	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
 		if(mob==null)
 		{
@@ -799,7 +799,8 @@ public class StdAbility implements Ability
 		}
 
 		Integer[] costOverrides=null;
-		if(mob!=null) costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
+		if((mob!=null)&&(!ignoreClassOverride)) 
+			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 		int consumed=CMProps.getMaxManaException(ID());
 		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
@@ -811,8 +812,11 @@ public class StdAbility implements Ability
 			consumed=minimum;
 		if(overrideMana()>=0) consumed=overrideMana();
 		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+		{
 			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-		return buildCostArray(mob,consumed);
+			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+		}
+		return buildCostArray(mob,consumed,minimum);
 	}
 
 	public void helpProficiency(MOB mob)
@@ -883,26 +887,26 @@ public class StdAbility implements Ability
 				return false;
 			}
 			
-			int[] consumed=usageCost(mob);
-			if(mob.curState().getMana()<consumed[0])
+			int[] consumed=usageCost(mob,false);
+			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
-				if(mob.maxState().getMana()==consumed[0])
+				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
 					mob.tell("You must be at full mana to do that.");
 				else
 					mob.tell("You don't have enough mana to do that.");
 				return false;
 			}
-			if(mob.curState().getMovement()<consumed[1])
+			if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
 			{
-				if(mob.maxState().getMovement()==consumed[1])
+				if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
 					mob.tell("You must be at full movement to do that.");
 				else
 					mob.tell("You don't have enough movement to do that.  You are too tired.");
 				return false;
 			}
-			if(mob.curState().getHitPoints()<consumed[2])
+			if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
 			{
-				if(mob.maxState().getHitPoints()==consumed[2])
+				if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
 					mob.tell("You must be at full health to do that.");
 				else
 					mob.tell("You don't have enough hit points to do that.");
@@ -1459,9 +1463,15 @@ public class StdAbility implements Ability
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.proficiency()>75)
 				newAbility.setProficiency(75);
+			int defProfficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
+			if((defProfficiency>0)&&(defProfficiency>newAbility.proficiency()))
+				newAbility.setProficiency(defProfficiency);
 			student.addAbility(newAbility);
 			newAbility.autoInvocation(student);
 		}
+		student.recoverCharStats();
+		student.recoverEnvStats();
+		student.recoverMaxState();
 	}
 
 	public void practice(MOB teacher, MOB student)

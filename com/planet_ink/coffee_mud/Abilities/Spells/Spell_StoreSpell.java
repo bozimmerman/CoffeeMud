@@ -173,7 +173,7 @@ public class Spell_StoreSpell extends Spell
 			return false;
 		}
         if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-        ||(((StdAbility)wandThis).usageCost(null)[0]>45))
+        ||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
 			mob.tell("That spell is too powerful to store.");
 			return false;
@@ -194,7 +194,7 @@ public class Spell_StoreSpell extends Spell
 		int x=A.text().indexOf("/");
 		if(x>=0) charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
-		int mana=usageCost(mob)[0]+wandThis.usageCost(mob)[0];
+		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];
 		if(mana>mob.maxState().getMana())
 			mana=mob.maxState().getMana();
 		overridemana=mana;

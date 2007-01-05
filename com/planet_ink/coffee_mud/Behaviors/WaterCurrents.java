@@ -399,7 +399,7 @@ public class WaterCurrents extends ActiveTicker
 		{ return true;	}
 		public void makeLongLasting(){}
 		public void makeNonUninvokable(){}
-		public int[] usageCost(MOB mob){return cost;}
+		public int[] usageCost(MOB mob, boolean ignoreClassOverride){return cost;}
 
 
 		public void addEffect(Ability to){}

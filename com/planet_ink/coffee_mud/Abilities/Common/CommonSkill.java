@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -199,7 +200,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	
-	public int[] usageCost(MOB mob)
+	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
 		if(mob==null)
 		{
@@ -213,6 +214,9 @@ public class CommonSkill extends StdAbility
 
 		int consumed=25;
 		int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
+		Integer[] costOverrides=null;
+		if((mob!=null)&&(!ignoreClassOverride)) 
+			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 		if(diff>0)
 		switch(diff)
 		{
@@ -224,7 +228,13 @@ public class CommonSkill extends StdAbility
 		default: consumed=5; break;
 		}
 		if(overrideMana()>=0) consumed=overrideMana();
-		return buildCostArray(mob,consumed);
+		int minimum=5;
+		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+		{
+			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
+			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+		}
+		return buildCostArray(mob,consumed,minimum);
 	}
 	public int xlevel(MOB mob){ return mob.envStats().level()+(2*getXLEVELLevel(mob));}
     public int dxlevel(MOB mob){return (mob.envStats().level()+(2*getXTIMELevel(mob)))/2;}
@@ -289,26 +299,26 @@ public class CommonSkill extends StdAbility
 		// if you can't move, you can't do anything!
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
-		int[] consumed=usageCost(mob);
-		if(mob.curState().getMana()<consumed[0])
+		int[] consumed=usageCost(mob,false);
+		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{
-			if(mob.maxState().getMana()==consumed[0])
+			if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
 				mob.tell("You must be at full mana to do that.");
 			else
 				mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
-		if(mob.curState().getMovement()<consumed[1])
+		if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
 		{
-			if(mob.maxState().getMovement()==consumed[1])
+			if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
 				mob.tell("You must be at full movement to do that.");
 			else
 				mob.tell("You don't have enough movement to do that.  You are too tired.");
 			return false;
 		}
-		if(mob.curState().getHitPoints()<consumed[2])
+		if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
 		{
-			if(mob.maxState().getHitPoints()==consumed[2])
+			if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
 				mob.tell("You must be at full health to do that.");
 			else
 				mob.tell("You don't have enough hit points to do that.");

@@ -83,7 +83,7 @@ public class Spell_EnchantWand extends Spell
 		}
 
         if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-        ||(((StdAbility)wandThis).usageCost(null)[0]>45))
+        ||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
         {
             mob.tell("That spell is too powerful to enchant into wands.");
             return false;

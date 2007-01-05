@@ -175,12 +175,12 @@ public class Spell_Spellbinding extends Spell
 		{
 			if(((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
 			||(A.ID().equals(ID()))
-			||(A.usageCost(mob)[Ability.USAGEINDEX_MANA]>50))
+			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
 				mob.tell("You can't bind '"+A.ID()+"'.");
 				return false;
 			}
-			V.addElement(A.ID(),new Integer(25+A.usageCost(mob)[Ability.USAGEINDEX_MANA]));
+			V.addElement(A.ID(),new Integer(25+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 		}
 		else
 		for(int v=0;v<commands.size();v++)
@@ -189,12 +189,12 @@ public class Spell_Spellbinding extends Spell
 			if((A==null)
 			||(A.ID().equals(ID()))
 			||((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
-			||(A.usageCost(mob)[Ability.USAGEINDEX_MANA]>50))
+			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
 				mob.tell("You can't bind '"+((String)commands.elementAt(v))+"'.");
 				return false;
 			}
-			V.addElement(A.ID(),new Integer(50+A.usageCost(mob)[Ability.USAGEINDEX_MANA]));
+			V.addElement(A.ID(),new Integer(50+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 		}
 
 		int totalcost=0;

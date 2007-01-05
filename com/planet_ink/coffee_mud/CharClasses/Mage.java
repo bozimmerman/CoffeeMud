@@ -56,6 +56,7 @@ public class Mage extends StdCharClass
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+	protected boolean grantSomeSpells(){return true;}
 
 	public Mage()
 	{
@@ -361,6 +362,8 @@ public class Mage extends StdCharClass
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
+		if(!grantSomeSpells())
+			return;
 
 		Vector grantable=new Vector();
 

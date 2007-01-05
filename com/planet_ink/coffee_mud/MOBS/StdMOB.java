@@ -544,7 +544,7 @@ public class StdMOB implements MOB
 		if(riding()!=null) riding().affectCharState(this,maxState);
         int num=charStats.numClasses();
         for(int c=0;c<num;c++)
-            charStats.getMyClass(c).affectCharStats(this,charStats);
+            charStats.getMyClass(c).affectCharState(this,maxState);
         Ability effect=null;
         num=numAllEffects();
 		for(int a=0;a<num;a++)

@@ -117,7 +117,7 @@ public class Dance extends StdAbility
 		||(!CMLib.flags().aliveAwakeMobile(invoker(),true))
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
 			return possiblyUndance(mob,null,false);
-		if(invokerManaCost<0) invokerManaCost=usageCost(invoker())[1];
+		if(invokerManaCost<0) invokerManaCost=usageCost(invoker(),false)[1];
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
 			mob.tell("The dancing exhausts you.");

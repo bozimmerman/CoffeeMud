@@ -329,14 +329,15 @@ public interface Ability extends Environmental
 	 * @see Ability#usageType()
 	 * @see Ability
 	 * @param mob the invoker of the skill
+	 * @param boolean whether to ignore Class Overrides
 	 * @return an array of costs, indexed by Ability.USAGEINDEX_*
 	 */
-	public int[] usageCost(MOB mob);
+	public int[] usageCost(MOB mob, boolean ignoreClassOverride);
 	
 	/**
 	 * Returns a bitmap made up of constants defined by
 	 * Ability.USAGE_*.  It lets the system know which of the
-	 * values in the usageCost(MOB) method are relevant.  It
+	 * values in the usageCost(MOB,boolean) method are relevant.  It
 	 * determines whether this skill requires mana, movement,
 	 * hit points, or some combination of the three.
 	 * @see Ability
@@ -585,11 +586,11 @@ public interface Ability extends Environmental
 	/** constant descriptions for the USAGE_* values @see Ability#usageType() */
 	public final static String[] USAGE_DESCS={"MANA","MOVEMENT","HITPOINTS"};
 	
-	/** index into usageCost(MOB) array for the amount of mana this skill costs @see Ability#usageCost(MOB) */
+	/** index into usageCost(MOB,boolean) array for the amount of mana this skill costs @see Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_MANA=0;
-	/** index into usageCost(MOB) array for the amount of moves this skill costs @see Ability#usageCost(MOB) */
+	/** index into usageCost(MOB,boolean) array for the amount of moves this skill costs @see Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_MOVEMENT=1;
-	/** index into usageCost(MOB) array for the amount of hp this skill costs @see Ability#usageCost(MOB) */
+	/** index into usageCost(MOB,boolean) array for the amount of hp this skill costs @see Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_HITPOINTS=2;
 
 	/** constant returned by classificationCode() designating this ability as a Skill @see Ability#classificationCode() */

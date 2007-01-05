@@ -73,7 +73,7 @@ public class Thief_Autosneak extends ThiefSkill
 					noRepeat=true;
 					if(A.invoke(mob,CMParms.parse(Directions.getDirectionName(dir)),null,false,0))
 					{
-						int[] usage=A.usageCost(mob);
+						int[] usage=A.usageCost(mob,false);
 						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGEINDEX_HITPOINTS]>0))
 							mob.curState().adjHitPoints(usage[USAGEINDEX_HITPOINTS]/2,mob.maxState());
 						if(CMath.bset(A.usageType(),Ability.USAGE_MANA)&&(usage[USAGEINDEX_MANA]>0))

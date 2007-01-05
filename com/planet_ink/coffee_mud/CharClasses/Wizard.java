@@ -37,7 +37,7 @@ public class Wizard extends Mage
     public String ID(){return "Wizard";}
     public String name(){return "Wizard";}
     public String baseClass(){return "Mage";}
-    protected final static Hashtable memorizeLists=new Hashtable();
+	protected boolean grantSomeSpells(){return false;}
 
     public void initializeClass()
     {
@@ -77,8 +77,8 @@ public class Wizard extends Mage
         }
     }
 
-    public int availabilityCode(){return 0;}
-    //public int availabilityCode(){return Area.THEME_FANTASY;}
+    //public int availabilityCode(){return 0;}
+    public int availabilityCode(){return Area.THEME_FANTASY;}
     public String otherBonuses()
     {
         return "Can memorize any spell for casting without expending a training point.";
@@ -122,7 +122,7 @@ public class Wizard extends Mage
     public void affectCharState(MOB mob, CharState state)
     {
         super.affectCharState(mob,state);
-        if(mob.charStats().getCurrentClass()==this)
+        if(mob.baseCharStats().getCurrentClass()==this)
         {
             Ability A=null;
             for(int a=0;a<mob.numLearnedAbilities();a++)
@@ -132,20 +132,22 @@ public class Wizard extends Mage
                 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
                 &&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID())))
                 {
-                    int[] cost=A.usageCost(mob);
-                    if(cost[Ability.USAGE_MANA]>0)
+                    int[] cost=A.usageCost(mob,true);
+                    int manaCost=cost[Ability.USAGEINDEX_MANA];
+                    if(manaCost>0)
                     {
-                        if(state.getMana()<cost[Ability.USAGE_MANA])
+                        if(state.getMana()<manaCost)
                         {
                             mob.delAbility(A);
                             a--;
                         }
                         else
-                            state.setMana(state.getMana()-cost[Ability.USAGE_MANA]);
+                            state.setMana(state.getMana()-manaCost);
                     }
                 }
-                
             }
+            if(mob.curState().getMana()>state.getMana())
+            	mob.curState().setMana(state.getMana());
         }
     }
     
