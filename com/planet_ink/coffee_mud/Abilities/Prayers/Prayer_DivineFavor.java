@@ -89,7 +89,7 @@ public class Prayer_DivineFavor extends Prayer
             if(deityM!=null)
             {
                 struckDownToday=true;
-                ((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!");
+                ((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,deityM.name()+" strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!");
                 CMLib.combat().postDeath(deityM,((MOB)affected).getVictim(),null);
             }
         }
