@@ -6092,7 +6092,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						range=""+(themob.fetchFaction(faction)-CMath.s_int(range.substring(2).trim()));
 					else
 					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
-						range=""+(themob.fetchFaction(faction)-CMath.s_int(range.substring(1).trim()));
+						range=""+(themob.fetchFaction(faction)+CMath.s_int(range.substring(1).trim()));
                     if(CMath.isInteger(range.trim()))
                         themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
                     else
