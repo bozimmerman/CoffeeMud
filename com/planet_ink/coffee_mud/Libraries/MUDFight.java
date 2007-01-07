@@ -1012,6 +1012,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 }
                 if((target.soulMate()==null)&&(target.playerStats()!=null)&&(target.location()!=null))
                     target.playerStats().adjHygiene(PlayerStats.HYGIENE_FIGHTDIRTY);
+                
+                if((attacker.isMonster())&&(!attacker.isInCombat()))
+                    attacker.setVictim(target);
             }
             else
             if((msg.tool()!=null)
