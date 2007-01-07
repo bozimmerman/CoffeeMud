@@ -823,11 +823,11 @@ public class StdRace implements Race
         
         CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
         ADJSTAT1.setAllValues(0);
-        CMLib.coffeeMaker().setCharStats(ADJSTAT1,race1.getStat("CSTATS"));
+        CMLib.coffeeMaker().setCharStats(ADJSTAT1,race1.getStat("ASTATS"));
         
         CharStats ADJSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
         ADJSTAT2.setAllValues(0);
-        CMLib.coffeeMaker().setCharStats(ADJSTAT2,race2.getStat("CSTATS"));
+        CMLib.coffeeMaker().setCharStats(ADJSTAT2,race2.getStat("ASTATS"));
         
         CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
         ADJSTAT.setAllValues(0);
