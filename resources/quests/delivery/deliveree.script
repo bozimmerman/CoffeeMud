@@ -2,7 +2,7 @@
 
 SPEECH_PROG 'I have a delivery from'
 	if has($n 'a post-marked package')
-		say "$n" Thank you very much, go ahead and give it to me
+		say "$n" Thank you very much, go ahead and give it to me.
 	endif
 ~
 	
