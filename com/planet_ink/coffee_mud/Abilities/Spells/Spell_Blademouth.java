@@ -41,16 +41,22 @@ public class Spell_Blademouth extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public Vector limbsToRemove=new Vector();
+    protected boolean noRecurse=false;
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 	    if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+        &&(!noRecurse)
         &&(affected instanceof MOB)
         &&(invoker!=null)
         &&(msg.amISource((MOB)affected))
         &&(msg.source().location()!=null)
 	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0))
-	        CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <S-YOUPOSS> mouth <DAMAGE> <S-HIM-HER>!");
+        {
+	        noRecurse=true;
+            try{CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <S-YOUPOSS> mouth <DAMAGE> <S-HIM-HER>!");
+            }finally{noRecurse=false;}
+        }
 	    super.executeMsg(host,msg);
 	}
 	

@@ -1079,6 +1079,32 @@ public class Destroy extends BaseItemParser
             Log.sysOut("CreateEdit",mob.Name()+" deleted Holiday "+name+".");
         }
 		else
+        if(commandType.equals("TICKS"))
+        {
+            if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+            String which=CMParms.combine(commands,2);
+            Vector V=null;
+            if(which.length()>0)
+            {
+                V=CMLib.threads().getNamedTickingObjects(which);
+                if(V.size()==0) V=null;
+            }
+            if(V==null)
+                mob.tell("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects.");
+            else
+            {
+                StringBuffer list=new StringBuffer("");
+                for(int v=0;v<V.size();v++)
+                    list.append(((Tickable)V.elementAt(v)).name()+", ");
+                if((mob.session()!=null)&&(mob.session().confirm("Destroy the following ticking objects: "+list.substring(0,list.length()-2)+"  (y/N)? ","N")))
+                {
+                    for(int v=0;v<V.size();v++)
+                        CMLib.threads().deleteTick((Tickable)V.elementAt(v),-1);
+                    Log.sysOut("CreateEdit",mob.Name()+" destroyed ticks named '"+which+"'.");
+                }
+            }
+        }
+        else
 		if(commandType.equals("BAN"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"BAN")) return errorOut(mob);
@@ -1352,7 +1378,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

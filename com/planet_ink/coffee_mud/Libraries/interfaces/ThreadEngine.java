@@ -54,4 +54,5 @@ public interface ThreadEngine extends CMLibrary
 	public Enumeration tickGroups();
     public String getTickStatusSummary(Tickable obj);
     public String getServiceThreadSummary(Thread T);
+    public Vector getNamedTickingObjects(String name);
 }

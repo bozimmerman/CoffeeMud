@@ -789,8 +789,8 @@ public class List extends StdCommand
 		    whichTickTock="";
 		}
 		if(!activeOnly)
-			msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",25)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10));
-		msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",25)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10)+"\n\r");
+			msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",20)+" "+CMStrings.padRight("ID",3)+CMStrings.padRight("Status",8));
+		msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",20)+" "+CMStrings.padRight("ID",3)+CMStrings.padRight("Status",8)+"\n\r");
 		int col=0;
 		int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		int whichTick=-1;
@@ -800,6 +800,7 @@ public class List extends StdCommand
 		if(whichTickTock.length()>0)
 			mask=whichTickTock.toUpperCase().trim();
 		if((mask!=null)&&(mask.length()==0)) mask=null;
+        String chunk=null;
 		for(int v=0;v<numGroups;v++)
 		{
 			int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+v));
@@ -817,15 +818,16 @@ public class List extends StdCommand
 						String id=CMLib.threads().tickInfo("tickerID"+v+"-"+t);
 						String status=CMLib.threads().tickInfo("tickercodeword"+v+"-"+t);
 						boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+v+"-"+t));
-						if(((col++)==2)||(activeOnly))
+						if(((col++)>=2)||(activeOnly))
 						{
 							msg.append("\n\r");
 							col=1;
 						}
-						msg.append(CMStrings.padRight(""+v,4)
-								   +CMStrings.padRight(name,25)
-								   +" "+CMStrings.padRight(id+"",5)
-								   +(activeOnly?(status+(suspended?"*":"")):CMStrings.padRight(status+(suspended?"*":""),10)));
+                        chunk=CMStrings.padRight(""+v,4)
+                           +CMStrings.padRight(name,22)
+                           +" "+CMStrings.padRight(id+"",3)
+                           +CMStrings.padRight((activeOnly?(status+(suspended?"*":"")):status+(suspended?"*":"")),8);
+						msg.append(chunk);
 					}
 				}
 			}

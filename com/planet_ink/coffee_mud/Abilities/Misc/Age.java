@@ -423,7 +423,8 @@ public class Age extends StdAbility
                 }
             }
 			if((affected instanceof Item)
-			&&((msg.target()==affected)||(msg.tool()==affected)))
+			&&((msg.target()==affected)||(msg.tool()==affected))
+            &&(CMLib.flags().isInTheGame(affected,true)))
 			{
 				Behavior B=affected.fetchBehavior("Emoter");
 				Item baby=(Item)affected;

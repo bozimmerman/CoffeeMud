@@ -1091,7 +1091,10 @@ public class StdItem implements Item
 		{
 			Ability aff=fetchEffect(a);
 			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
+            {
 				aff.unInvoke();
+                aff.delEffect(aff);
+            }
 		}
 		for(int b=numBehaviors()-1;b>=0;b--)
 			delBehavior(fetchBehavior(b));

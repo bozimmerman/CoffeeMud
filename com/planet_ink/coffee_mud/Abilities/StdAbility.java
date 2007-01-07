@@ -1251,7 +1251,7 @@ public class StdAbility implements Ability
 			student.tell("You do not have enough practice points.");
 			return false;
 		}
-		if((trainsRequired(student)>0)&&(student.getPractices()<trainsRequired(student)))
+		if((trainsRequired(student)>0)&&(student.getTrains()<trainsRequired(student)))
 		{
 			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
 			student.tell("You do not have enough training sessions.");

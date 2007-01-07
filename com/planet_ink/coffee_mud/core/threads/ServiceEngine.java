@@ -574,6 +574,27 @@ public class ServiceEngine implements ThreadEngine
 		}
 	}
     
+    public Vector getNamedTickingObjects(String name)
+    {
+        Vector V=new Vector();
+        Tick almostTock=null;
+        TockClient C=null;
+        name=name.toUpperCase().trim();
+        for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
+        {
+            almostTock=(Tick)v.nextElement();
+            for(Iterator e=almostTock.tickers();e.hasNext();)
+            {
+                C=(TockClient)e.next();
+                if((C.clientObject!=null)
+                &&(C.clientObject.name().toUpperCase().indexOf(name)>=0)
+                &&(!V.contains(C.clientObject)))
+                    V.addElement(C.clientObject);
+            }
+        }
+        return V;
+    }
+    
     public String getTickStatusSummary(Tickable obj)
     {
         if(obj==null) return "";

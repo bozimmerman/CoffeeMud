@@ -44,9 +44,13 @@ public class Wizard extends Mage
         super.initializeClass();
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Spellcraft",50,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_ScrollCopy",100,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Scribe",75,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Papermaking",75,true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",100,true);
+
+        
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicMissile",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ResistMagicMissiles",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",100,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",false);
         
@@ -71,8 +75,8 @@ public class Wizard extends Mage
         }
     }
 
-    //public int availabilityCode(){return 0;}
-    public int availabilityCode(){return Area.THEME_FANTASY;}
+    public int availabilityCode(){return 0;}
+    //public int availabilityCode(){return Area.THEME_FANTASY;}
     public String otherBonuses()
     {
         return "Can memorize any spell for casting without expending a training point.";

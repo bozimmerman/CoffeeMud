@@ -725,7 +725,7 @@ public class RaceData extends StdWebMacro
                         CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
                         String saState=R.getStat("STARTASTATE");
                         if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
-                        str.append(cstate(startAdjState,'A',httpReq,parms,0)+", ");
+                        str.append(cstate(startAdjState,'S',httpReq,parms,0)+", ");
                     }
                 }
                 
@@ -742,7 +742,13 @@ public class RaceData extends StdWebMacro
                 }
                 if(parms.containsKey("BODYKILL"))
                 {
-                    //TODO: whether race disappears when killed
+                    String old=httpReq.getRequestParameter("BODYKILL");
+                    boolean bodyKill=false;
+                    if(old==null) 
+                        bodyKill=CMath.s_bool(R.makeGenRace().getStat("BODYKILL"));
+                    else
+                        bodyKill=old.equalsIgnoreCase("on");
+                    if(bodyKill) str.append(" CHECKED ");
                 }
                 if(parms.containsKey("DISFLAGS"))
                 {
