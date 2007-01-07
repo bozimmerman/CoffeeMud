@@ -1453,7 +1453,7 @@ public class StdAbility implements Ability
 	{
 		if((practicesRequired(student)>0)&&(student.getPractices()<practicesRequired(student)))
 			return;
-		if((trainsRequired(student)>0)&&(student.getPractices()<trainsRequired(student)))
+		if((trainsRequired(student)>0)&&(student.getTrains()<trainsRequired(student)))
 			return;
 		if(student.fetchAbility(ID())==null)
 		{

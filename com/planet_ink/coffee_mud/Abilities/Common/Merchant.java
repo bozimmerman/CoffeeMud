@@ -338,7 +338,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                 &&(merchantM.location()!=null))
                 {
 			        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom());
-			        if(item!=null) CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item);
+			        if(item!=null) CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,!merchantM.isMonster());
 			        
                     Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom());
                     if(products.size()==0) break;

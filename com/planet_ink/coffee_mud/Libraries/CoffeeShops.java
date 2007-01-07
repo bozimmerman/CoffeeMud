@@ -844,7 +844,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     public void transactMoneyOnly(MOB seller,
                                   MOB buyer,
                                   ShopKeeper shop,
-                                  Environmental product)
+                                  Environmental product,
+                                  boolean sellerGetsPaid)
     {
         if((seller==null)||(seller.location()==null)||(buyer==null)||(shop==null)||(product==null))
             return;
@@ -884,6 +885,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                                                     totalFunds);
                 }
             }
+            if(sellerGetsPaid)
+                CMLib.beanCounter().giveSomeoneMoney(seller,seller,CMLib.beanCounter().getCurrency(seller),totalFunds);
         }
         if(price.questPointPrice>0) buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
         if(price.experiencePrice>0) CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
