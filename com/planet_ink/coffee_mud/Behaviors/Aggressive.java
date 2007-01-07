@@ -92,7 +92,7 @@ public class Aggressive extends StdBehavior
 						monster.enqueCommand(CMParms.makeVector(A.triggerStrings()[0],R.getContextName(mob)),0);
 					}
 				}
-				if(attackMsg!=null)
+				if((attackMsg!=null)&&(monster.getVictim()!=mob))
 					monster.enqueCommand(CMParms.makeVector("SAY",attackMsg),0);
 				// normal attack
 				monster.enqueCommand(CMParms.makeVector("KILL",R.getContextName(mob)),0);
