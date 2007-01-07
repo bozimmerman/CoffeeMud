@@ -103,6 +103,7 @@ public interface EnvStats extends CMCommon
 	public final static int IS_LIGHTSOURCE=65536;
 	public final static int IS_BOUND=131072;
 	public final static int IS_CLOAKED=262144;
+    public final static int IS_UNSAVABLE=524288;
 
 	public int sensesMask(); // mobs
 	public int disposition(); // items, mobs
@@ -217,7 +218,8 @@ public interface EnvStats extends CMCommon
 													"ISFALLING",
 													"ISLIGHT",
 													"ISBOUND",
-													"ISCLOAKED"};
+													"ISCLOAKED",
+                                                    "ISUNSAVABLE"};
 	public static final String[] dispositionsDesc= {"Is never seen",
 													"Is hidden",
 													"Is invisible",
@@ -236,7 +238,8 @@ public interface EnvStats extends CMCommon
 													"Is falling",
 													"Is a light source",
 													"Is binding",
-													"Is Cloaked"};
+													"Is Cloaked",
+                                                    "Is never saved"};
 	public static final String[] dispositionsVerb= {"Causes Nondetectability",
 													"Causes hide",
 													"Causes invisibility",
@@ -255,5 +258,6 @@ public interface EnvStats extends CMCommon
 													"Causes falling",
 													"Causes a light source",
 													"Causes binding",
-													"Causes cloaking"};
+													"Causes cloaking",
+                                                    "Causes disappearance"};
 }

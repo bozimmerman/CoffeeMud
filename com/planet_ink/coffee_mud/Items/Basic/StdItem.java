@@ -546,7 +546,7 @@ public class StdItem implements Item
 		myUses=newUses;
 	}
 
-	public boolean savable(){return CMLib.flags().canBeSaved(this);}
+	public boolean savable(){return CMLib.flags().isSavable(this);}
 
 	protected boolean canWearComplete(MOB mob)
 	{

@@ -3028,6 +3028,8 @@ public class StdMOB implements MOB
 	{
 		if((!isMonster())&&(soulMate()==null)) 
             return false;
+        if(!CMLib.flags().isSavable(this))
+            return false;
         if(CMLib.utensils().getMobPossessingAnother(this)!=null)
             return false;
 		MOB followed=amFollowing();

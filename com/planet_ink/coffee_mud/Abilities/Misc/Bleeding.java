@@ -105,8 +105,7 @@ public class Bleeding extends StdAbility
         				+Directions.getDirectionName(lastDir)+" to "+Directions.getDirectionName(dir)+".");
 	        	else
 	        		I.setDisplayText("A faint trail of blood leads "+Directions.getDirectionName(dir)+".");
-        		I.envStats().setDisposition(I.envStats().disposition()|EnvStats.IS_HIDDEN);
-                I.envStats().setSensesMask(I.envStats().sensesMask()|EnvStats.SENSE_ITEMNEVERSAVED);
+        		I.envStats().setDisposition(I.envStats().disposition()|EnvStats.IS_HIDDEN|EnvStats.IS_UNSAVABLE);
         		I.setSecretIdentity(msg.source().Name()+"`s blood.");
         		R.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
         	}

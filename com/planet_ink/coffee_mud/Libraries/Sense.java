@@ -41,8 +41,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
 	public boolean canBeLocated(Environmental E)
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)==0); }
-    public boolean canBeSaved(Item E)
-    { return (E==null)||((E.envStats().sensesMask()&EnvStats.SENSE_ITEMNEVERSAVED)==0); }
+    public boolean isSavable(Environmental E)
+    { return (E==null)||((E.envStats().disposition()&EnvStats.IS_UNSAVABLE)==0); }
 	public boolean canSeeHidden(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
 	public boolean canSeeInvisible(MOB E)
