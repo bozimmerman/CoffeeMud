@@ -87,16 +87,16 @@ public class After extends StdCommand implements Tickable
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		String s=(String)commands.elementAt(0);
-		if(s.equalsIgnoreCase("ticks"))
+		if("ticks".startsWith(s.toLowerCase()))
 			time=time*Tickable.TIME_TICK;
 		else
-		if(s.equalsIgnoreCase("seconds"))
+        if("seconds".startsWith(s.toLowerCase()))
 			time=time*1000;
 		else
-		if(s.equalsIgnoreCase("minutes"))
+        if("minutes".startsWith(s.toLowerCase()))
 			time=time*1000*60;
 		else
-		if(s.equalsIgnoreCase("hours"))
+        if("hours".startsWith(s.toLowerCase()))
 			time=time*1000*60*60;
 		else
 		{

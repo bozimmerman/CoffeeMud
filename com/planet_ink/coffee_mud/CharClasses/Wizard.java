@@ -116,7 +116,7 @@ public class Wizard extends Mage
     public void affectCharState(MOB mob, CharState state)
     {
         super.affectCharState(mob,state);
-        if(mob.baseCharStats().getCurrentClass()==this)
+        if(mob.baseCharStats().getCurrentClass().ID().equals(ID()))
         {
             Ability A=null;
             for(int a=0;a<mob.numLearnedAbilities();a++)

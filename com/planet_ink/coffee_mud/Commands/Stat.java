@@ -229,7 +229,7 @@ public class Stat extends BaseAbleLister
 		String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
 		String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
 		if(s1.equalsIgnoreCase("TODAY"))
-			return showTableStats(mob,0,1,CMParms.combine(commands,1));
+			return showTableStats(mob,1,1,CMParms.combine(commands,1));
 		else
 		if(commands.size()>1)
 		{

@@ -781,7 +781,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         &&(speaker.playerStats()!=null)
         &&(msg!=null)
         &&(!me.playerStats().isIntroducedTo(speaker.Name()))
-        &&(CMLib.english().containsString(msg,speaker.Name())))
+        &&(CMLib.english().containsString(CMStrings.getSayFromMessage(msg),speaker.Name())))
             me.playerStats().introduceTo(speaker.Name());
     }
     

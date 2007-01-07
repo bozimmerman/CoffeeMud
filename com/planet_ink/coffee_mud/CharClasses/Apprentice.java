@@ -137,7 +137,7 @@ public class Apprentice extends StdCharClass
         &&(ticking instanceof MOB)
         &&(!((MOB)ticking).isMonster()))
         {
-            if(((MOB)ticking).baseCharStats().getCurrentClass()==this)
+            if(((MOB)ticking).baseCharStats().getCurrentClass().ID().equals(ID()))
             {
                 if(!currentApprentices.contains(ticking))
                     currentApprentices.add(ticking);

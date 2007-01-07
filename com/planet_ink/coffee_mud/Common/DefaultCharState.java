@@ -219,9 +219,9 @@ public class DefaultCharState implements CharState
 		//double lvlby2=CMath.div(lvl,2.0);
 		//double lvlby3=CMath.div(lvl,3.0);
 
-		double hpGain=(con>1.0)?((con/40.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
-		double manaGain=(man>2.0)?((man/80.0)*lvl)+(man/4.5)+2.0:1.0;
-		double moveGain=(str>1.0)?((str/40.0)*lvl)+(str/3.0)+5.0:1.0;
+		double hpGain=(con>1.0)?((con/50.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
+		double manaGain=(man>2.0)?((man/90.0)*lvlby1p5)+(man/4.5)+2.0:1.0;
+		double moveGain=(str>1.0)?((str/50.0)*lvl)+(str/3.0)+5.0:1.0;
 
 		if(CMLib.flags().isSleeping(mob))
 		{

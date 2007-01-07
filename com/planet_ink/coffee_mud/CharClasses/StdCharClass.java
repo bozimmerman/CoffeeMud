@@ -587,7 +587,7 @@ public class StdCharClass implements CharClass
 	{
 		if(affectableStats.getCurrentClass().ID().equals(ID()))
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-			affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)+maxStatAdj[i]);
+			affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)+maxStatAdjustments()[i]);
 	}
 
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
