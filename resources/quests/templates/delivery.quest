@@ -1,0 +1,90 @@
+set name delivery
+
+set wait 30
+set interval 1
+set spawnable true
+#quiet
+
+import items item.xml
+set area 
+set room
+set mobgroup
+set mob <<<<DELIVERER MOBS NAME GOES HERE>>>>>
+give behavior Scriptable LOAD=deliverer.script
+load item
+give item
+
+set area
+set room
+set mobgroup
+set mob <<<<DELIVEREE MOBS NAME GOES HERE>>>>>
+give behavior Scriptable LOAD=deliveree.script
+
+set duration 175
+
+#!~!BEGINFILEXML!~!
+<FILE><NAME>item.xml</NAME><DATA><<<<DELIVERABLE ITEM DEFINED HERE>>>>></DATA></FILE>
+<FILE><NAME>deliverer.script</NAME>
+<DATA>
+# this script is for the human chosen to be the note bearer
+GREET_PROG 100
+	if has($i '$[* 0]')
+		sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details. A small stipend is involved.
+	endif
+~
+
+SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
+	if has($i '$[* 0]')
+		sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details. A small stipend is involved.
+	endif
+~
+
+SPEECH_PROG p i accept
+	if has($i '$[* 0]') and !has($n '$[* 0]')
+		mpoload '$[* 0]'
+		give "$[* 0]" "$n"
+		sayto "$n" This is for ${2 *}.  Thanks for doing this for us!
+		mpqset REMAINING 175
+	else
+		if has($n '$[* 0]')
+		sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
+		endif
+	endif
+~
+	
+
+GIVE_PROG any
+	if EVAL($o == '$[* 0]')
+		sayto "$n" So, you refuse?  Help me find someone else then.  Ok?
+		mpjunk $o
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>deliveree.script</NAME>
+<DATA>
+ENTER_PROG 100
+	if has($n '$[* 0]')
+		say "$n" Ah, I see you are here to deliver 
+	endif
+~
+	
+
+GIVE_PROG any
+	if EVAL($o == '$[* 0]')
+		sayto "$n" Thank you.  Here's the stipend you were promised.
+		if !QUESTWINNER($n *)
+			mpexp $n 10%
+			mpoload QuestPoint
+			give "a quest point" "$n"
+			mpquestwin $n *
+		endif
+		mpoload 100
+		give 100 "$n"
+		mpendquest *
+	else
+		sayto "$n" What's this?
+		give "$o" "$n"
+	endif
+	
+~
+</DATA></FILE>
