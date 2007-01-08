@@ -1987,3 +1987,42 @@ Mechanism for how standard races set their "default stats" (the way birds have a
 Really a consequence of the GenRace changes, but auto-Mixed races (from breeding) will be a much more accurate mix of the races now.
 Prancer class renamed to Dancer
 Special/Reserved Quest called holidays can be added to/modified on an area-by-area basis using LIST/CREATE/MODIFY HOLIDAY <name>
+# Build 5.2.11 Released Jan 7, 2007
+1. New language user output parsing abilities.. see resources/translation*.properties
+2. New language user input parsing abilities.. see resources/parser*.properties
+3. New Chant (internal) Druidic Connection -- to support new no-kill xp stuff
+4. Druids now get xp from leveling animal followers, forcing weather calmness, and filling an area with their plants over time
+5. Aggressive behavior(s) now support MESSAGE= parm to set the mobs attack challenge
+6. New Scriptable trigger: KILL_PROG
+7. New Scriptable functions: STRCONTAINS, ISBIRTHDAY, INROOM, ISRECALL, MOOD
+8. New Scriptable command: SWITCH/ENDSWITCH
+9. Archon command ANNOUNCETO now supports HERE param
+10. New Property: Prop_Adjuster -- for modifying the stats of something directly
+11. Properties *SpellCast now supports NOUNINVOKE to make spells uninvoable
+12. ScrollCopy renamed to Memorize, and now gives xp for use by Mages
+13. PROMPT command now supports codes for tanks name, and health str
+14. REPORT ALL will show all skills/spells/stats/affects/etc
+15. Areas now support override economic flags.. designate economy at the Area/Parent Area level!
+16. Deities now support Cleric-Only blessing/curse designations
+17. StdMap display size now tied to player column-width settings
+18. New resource: cranberries
+19. GenSuperPill is now an Archon item, and Player-Changing Scriptable commands are now logged when executed
+20. Expertises now listed on WILLQUAL and on Class-Info pages on the built-in web site
+21. Can now destroy TICKS (ticking objects)
+22. CommandJournals now supports TRANSFER parameter to quickly transfer entries from one journal to another
+23. Internal: *all* zapper-masks are now compiled and cached for performance.  We no longer have string-parsed interpreted mask checks.
+24. Can now SAVE <playername> directly (yes, that should have been in 1.0 -- sue me)
+25. RESET ROOM/AREA commands now give an emote to players in the area/room
+26. New MUDGrinder editor: Clan Editor
+27. Internal: classes can now have their own custom mana requirements, and ability cost requirements for skills.  Not exposed to GenClasses yet.
+28. Behavior GetsAllEquipped can now be used as an auto-looting behavior
+29. Fighter get non-kill xp when their clan conquers an area that they are in at the time.
+30. Rangers now get xp from leveling animal followers
+31. Bards get exploration XP, including a bump for finding a new pub
+32. Gaolers get extra xp whenever they make someone scream
+33. Clerics can extra xp for Christening children
+34. Trappers get extra xp for selling animals to shops
+35. Druids get extra xp for freeing animals from cities(shops) into the country
+36. Really kindof a bug fix, but CMFS is now TRUELY case-insensitive -- even on unix systems!
+37. A surge of new bug-destroying troops was ordered into the code.
+
