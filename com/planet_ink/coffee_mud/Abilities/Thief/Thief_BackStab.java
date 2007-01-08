@@ -47,7 +47,7 @@ public class Thief_BackStab extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		int factor=(int)Math.round(CMath.div(adjustedLevel((MOB)affected,0),2.0))+2;
+		int factor=(int)Math.round(CMath.div(adjustedLevel((MOB)affected,0),6.0))+2;
 		affectableStats.setDamage(affectableStats.damage()*factor);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
 	}
