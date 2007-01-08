@@ -50,6 +50,7 @@ public interface Quest extends Tickable, CMCommon
 	public void setScript(String parm);
     public void setVars(Vector script, int startAtLine);
 	public String script();
+    public static final String FILE_XML_BOUNDARY="#!~!BEGINFILEXML!~!";
 	
 	// this will execute the quest script.  If the quest is running, it 
 	// will call stopQuest first to shut it down.

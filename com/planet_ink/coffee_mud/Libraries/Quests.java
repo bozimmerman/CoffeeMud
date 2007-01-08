@@ -1118,6 +1118,15 @@ public class Quests extends StdLibrary implements QuestManager
             line=CMParms.parse(((String)script.elementAt(v)).toUpperCase().trim());
             if(line.size()==0) continue;
             cmd=((String)line.firstElement()).toUpperCase().trim();
+            if(cmd.equals(Quest.FILE_XML_BOUNDARY))
+            {
+                if(scr.toString().trim().length()>0)
+                    parsed.addElement(scr.toString());
+                scr=new StringBuffer(((String)script.elementAt(v))+"\n\r");
+                while((++v)<script.size())
+                    scr.append(((String)script.elementAt(v))+"\n\r");
+                break;
+            }
             if(rawLineInput)
                 scr.append(((String)script.elementAt(v))+"\n\r");
             else

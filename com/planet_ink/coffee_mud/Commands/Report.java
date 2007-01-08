@@ -60,9 +60,15 @@ public class Report extends BaseAbleLister
 		{
 			int level=parseOutLevel(commands);
 			String s=CMParms.combine(commands,1).toUpperCase();
-			if("SPELLS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
-				CMLib.commands().postSay(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,-1,false,level)),false,false);
-			else
+            StringBuffer say=new StringBuffer("");
+            if("AFFECTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
+            {
+                
+                StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
+                Command C=CMClass.getCommand("Affect");
+                if(C!=null) C.execute(mob,CMParms.makeVector(aff));
+                say.append(aff.toString());
+            }
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
 			{
 				StringBuffer stats=new StringBuffer("");
@@ -74,40 +80,52 @@ public class Report extends BaseAbleLister
 		        stats.append("^cWis: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+", ");
 		        stats.append("^cCon: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+", ");
 		        stats.append("^cCha: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)));
-				CMLib.commands().postSay(mob,null,"^NMy stats:^? "+stats.toString(),false,false);
+				say.append("\n\r^NMy stats:^? "+stats.toString());
 			}
-			else
-			if("SKILLS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
+            if(s.equalsIgnoreCase("ALL"))
+            {
+                
+                Vector V=new Vector();
+                V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
+                V.addElement(new Integer(Ability.ACODE_SKILL));
+                V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
+                V.addElement(new Integer(Ability.ACODE_SPELL));
+                V.addElement(new Integer(Ability.ACODE_PRAYER));
+                V.addElement(new Integer(Ability.ACODE_SUPERPOWER));
+                V.addElement(new Integer(Ability.ACODE_CHANT));
+                V.addElement(new Integer(Ability.ACODE_SONG));
+                say.append("\n\r^NMy skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,false,level));
+            }
+            else
+            if("SPELLS".startsWith(s))
+                say.append("\n\r^NMy spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,-1,false,level));
+            else
+			if("SKILLS".startsWith(s))
 			{
 				Vector V=new Vector();
 				V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
 				V.addElement(new Integer(Ability.ACODE_SKILL));
 				V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
-				CMLib.commands().postSay(mob,null,("^NMy skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,false,level)),false,false);
+				say.append("\n\r^NMy skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,false,level));
 			}
-			else
-			if("AFFECTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
-			{
-				
-				StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
-				Command C=CMClass.getCommand("Affect");
-				if(C!=null) C.execute(mob,CMParms.makeVector(aff));
-				CMLib.commands().postSay(mob,null,aff.toString(),false,false);
-			}
-			else
-			if("PRAYERS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
-				CMLib.commands().postSay(mob,null,("^NMy prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,-1,false,level)),false,false);
-			else
+            else
+			if("PRAYERS".startsWith(s))
+				say.append("\n\r^NMy prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,-1,false,level));
+            else
 			if(("POWERS".startsWith(s))||("SUPER POWERS".startsWith(s)))
-				CMLib.commands().postSay(mob,null,("^NMy super powers:^? "+getAbilities(mob,Ability.ACODE_SUPERPOWER,-1,false,level)),false,false);
-			else
-			if("CHANTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
-				CMLib.commands().postSay(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.ACODE_CHANT,-1,false,level)),false,false);
-			else
-			if("SONGS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
-				CMLib.commands().postSay(mob,null,("^NMy songs:^? "+getAbilities(mob,Ability.ACODE_SONG,-1,false,level)),false,false);
-			else
+				say.append("\n\r^NMy super powers:^? "+getAbilities(mob,Ability.ACODE_SUPERPOWER,-1,false,level));
+            else
+			if("CHANTS".startsWith(s))
+				say.append("\n\r^NMy chants:^? "+getAbilities(mob,Ability.ACODE_CHANT,-1,false,level));
+            else
+			if("SONGS".startsWith(s))
+				say.append("\n\r^NMy songs:^? "+getAbilities(mob,Ability.ACODE_SONG,-1,false,level));
+            
+            
+            if(say.length()==0)
 				mob.tell("'"+s+"' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.");
+            else
+                CMLib.commands().postSay(mob,null,say.toString(),false,false);
 		}
 		return false;
 	}
