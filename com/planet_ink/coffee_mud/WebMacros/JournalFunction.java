@@ -59,7 +59,7 @@ public class JournalFunction extends StdWebMacro
 		{
 			String to=httpReq.getRequestParameter("TO");
 			if((to==null)||(M==null)||(to.equalsIgnoreCase("all"))) to="ALL";
-			if(!to.equals("ALL"))
+			if((!to.equals("ALL"))&&(!to.toUpperCase().trim().startsWith("MASK=")))
 			{
 				if(!CMLib.database().DBUserSearch(null,to))
 					return "Post not submitted -- TO user does not exist.  Try 'All'.";
@@ -156,10 +156,10 @@ public class JournalFunction extends StdWebMacro
                         return  "The journal '"+journal+"' does not presently exist.  Aborted.";
                     Vector journal2=CMLib.database().DBReadJournal(last);
                     Vector entry2=(Vector)journal2.elementAt(num);
-                    String from2=(String)entry2.elementAt(1);
-                    String to2=(String)entry2.elementAt(3);
-                    String subject=(String)entry2.elementAt(4);
-                    String message=(String)entry2.elementAt(5);
+                    String from2=(String)entry2.elementAt(DatabaseEngine.JOURNAL_FROM);
+                    String to2=(String)entry2.elementAt(DatabaseEngine.JOURNAL_TO);
+                    String subject=(String)entry2.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+                    String message=(String)entry2.elementAt(DatabaseEngine.JOURNAL_MSG);
                     CMLib.database().DBDeleteJournal(last,num);
                     CMLib.database().DBWriteJournal(realName,
                                                       from2,

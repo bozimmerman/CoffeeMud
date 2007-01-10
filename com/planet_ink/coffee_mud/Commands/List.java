@@ -477,11 +477,11 @@ public class List extends StdCommand
 			for(int j=0;j<V.size();j++)
 			{
 				Vector entry=(Vector)V.elementAt(j);
-				String from=(String)entry.elementAt(1);
+				String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
 				//String date=(String)entry.elementAt(2);
 				//String to=(String)entry.elementAt(3);
 				//String subject=(String)entry.elementAt(4);
-				String message=(String)entry.elementAt(5);
+				String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
 				buf.append(CMStrings.padRight((j+1)+"",3)+") "+CMStrings.padRight(from,10)+" "+message+"\n\r");
 			}
 		}

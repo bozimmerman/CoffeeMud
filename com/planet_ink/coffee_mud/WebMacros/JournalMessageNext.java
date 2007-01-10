@@ -102,10 +102,12 @@ public class JournalMessageNext extends StdWebMacro
                     return "<!--EMPTY-->";
                 return " @break@";
             }
-            String to=((String)((Vector)info.elementAt(CMath.s_int(last))).elementAt(3));
+            String to=((String)((Vector)info.elementAt(CMath.s_int(last))).elementAt(DatabaseEngine.JOURNAL_TO));
             if(to.equalsIgnoreCase("all")
             ||((M!=null)
-                &&(priviledged||(to.equalsIgnoreCase(M.Name())))))
+                &&(priviledged
+                        ||to.equalsIgnoreCase(M.Name())
+                        ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
                 break;
         }
 		

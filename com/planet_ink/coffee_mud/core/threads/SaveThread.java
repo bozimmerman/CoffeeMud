@@ -96,12 +96,12 @@ public class SaveThread extends Thread
                     for(int i=items.size()-1;i>=0;i--)
                     {
                         Vector entry=(Vector)items.elementAt(i);
-                        long compdate=CMath.s_long((String)entry.elementAt(6));
+                        long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
                         compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
                         if(System.currentTimeMillis()>compdate)
                         {
-                            String from=(String)entry.elementAt(1);
-                            String message=(String)entry.elementAt(5);
+                            String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
+                            String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
                             Log.sysOut("SaveThread","Expired "+CMLib.journals().getCommandJournalName(j)+" from "+from+": "+message);
                             CMLib.database().DBDeleteJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(j)+"S",i);
                         }

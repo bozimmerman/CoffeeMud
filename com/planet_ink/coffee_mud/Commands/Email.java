@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -62,15 +63,16 @@ public class Email extends StdCommand
                     for(int num=0;num<msgs.size();num++)
                     {
                         Vector thismsg=(Vector)msgs.elementAt(num);
-                        String to=((String)thismsg.elementAt(3));
-                        if(to.equalsIgnoreCase("all")
-                        ||to.equalsIgnoreCase(mob.Name()))
+                        String to=((String)thismsg.elementAt(DatabaseEngine.JOURNAL_TO));
+                        if(to.equalsIgnoreCase("ALL")
+                        ||to.equalsIgnoreCase(mob.Name())
+                        ||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
                         {
                             mymsgs.addElement(thismsg);
                             messages.append(CMStrings.padRight(""+mymsgs.size(),4)
-                                    +CMStrings.padRight(((String)thismsg.elementAt(1)),16)
-                                    +CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)thismsg.elementAt(2))),21)
-                                    +((String)thismsg.elementAt(4))
+                                    +CMStrings.padRight(((String)thismsg.elementAt(DatabaseEngine.JOURNAL_FROM)),16)
+                                    +CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)thismsg.elementAt(DatabaseEngine.JOURNAL_DATE))),21)
+                                    +((String)thismsg.elementAt(DatabaseEngine.JOURNAL_SUBJ))
                                     +"\n\r");
                         }
                     }
@@ -94,11 +96,11 @@ public class Email extends StdCommand
                     {
                         Vector thismsg=(Vector)mymsgs.elementAt(num-1);
                         String key=(String)thismsg.elementAt(0);
-                        String from=(String)thismsg.elementAt(1);
-                        String date=(String)thismsg.elementAt(2);
+                        String from=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_FROM);
+                        String date=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_DATE);
                         date=CMLib.time().date2String(CMath.s_long(date));
-                        String subj=(String)thismsg.elementAt(4);
-                        String message=(String)thismsg.elementAt(5);
+                        String subj=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+                        String message=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_MSG);
                         messages=new StringBuffer("");
                         messages.append("^XMessage :^?^."+num+"\n\r");
                         messages.append("^XFrom    :^?^."+from+"\n\r");

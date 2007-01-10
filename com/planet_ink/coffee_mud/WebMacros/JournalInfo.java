@@ -63,27 +63,35 @@ public class JournalInfo extends StdWebMacro
 		if(M==null)
 			M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
-		String to=((String)((Vector)info.elementAt(num)).elementAt(3));
-		if(to.equalsIgnoreCase("all")||((M!=null)&&(priviledged||(to.equalsIgnoreCase(M.Name())))))
+		String to=((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_TO));
+		if(to.equalsIgnoreCase("all")
+        ||((M!=null)
+           &&(priviledged
+               ||to.equalsIgnoreCase(M.Name())
+               ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
 		{
 			if(parms.containsKey("KEY"))
-                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(0)));
+                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_KEY)));
 			else
 			if(parms.containsKey("FROM"))
-                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(1)));
+                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_FROM)));
 			else
 			if(parms.containsKey("DATE"))
-				return CMLib.time().date2String(CMath.s_long((String)((Vector)info.elementAt(num)).elementAt(2)));
+				return CMLib.time().date2String(CMath.s_long((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_DATE)));
 			else
 			if(parms.containsKey("TO"))
+            {
+                if(to.toUpperCase().trim().startsWith("MASK="))
+                    to=CMLib.masking().maskDesc(to.trim().substring(5),true);
                 return clearWebMacros(to);
+            }
 			else
 			if(parms.containsKey("SUBJECT"))
-                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(4)));
+                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_SUBJ)));
 			else
 			if(parms.containsKey("MESSAGE"))
 			{
-				String s=((String)((Vector)info.elementAt(num)).elementAt(5));
+				String s=((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_MSG));
 				if(parms.containsKey("NOREPLIES"))
 				{
 					int x=s.indexOf(DatabaseEngine.JOURNAL_BOUNDARY);

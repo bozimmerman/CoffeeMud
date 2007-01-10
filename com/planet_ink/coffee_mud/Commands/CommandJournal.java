@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -98,10 +99,10 @@ public class CommandJournal extends StdCommand
         }
         Vector journal2=CMLib.database().DBReadJournal(journalID);
         Vector entry2=(Vector)journal2.elementAt(count-1);
-        String from2=(String)entry2.elementAt(1);
-        String to=(String)entry2.elementAt(3);
-        String subject=(String)entry2.elementAt(4);
-        String message=(String)entry2.elementAt(5);
+        String from2=(String)entry2.elementAt(DatabaseEngine.JOURNAL_FROM);
+        String to=(String)entry2.elementAt(DatabaseEngine.JOURNAL_TO);
+        String subject=(String)entry2.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+        String message=(String)entry2.elementAt(DatabaseEngine.JOURNAL_MSG);
         CMLib.database().DBDeleteJournal(journalID,count-1);
         CMLib.database().DBWriteJournal(realName,
                                           from2,

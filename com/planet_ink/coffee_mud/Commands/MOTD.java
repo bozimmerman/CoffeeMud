@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -64,21 +65,29 @@ public class MOTD extends StdCommand
 				for(int which=0;which<journal.size();which++)
 				{
 					Vector entry=(Vector)journal.elementAt(which);
-					String from=(String)entry.elementAt(1);
-					long last=CMath.s_long((String)entry.elementAt(2));
-					String to=(String)entry.elementAt(3);
-					String subject=(String)entry.elementAt(4);
-					String message=(String)entry.elementAt(5);
-					long compdate=CMath.s_long((String)entry.elementAt(6));
-					boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
-					if((compdate>mob.playerStats().lastDateTime())
-					&&(to.equals("ALL")||mineAble))
-					{
-						if(message.startsWith("<cmvp>"))
-							message=new String(CMLib.httpUtils().doVirtualPage(message.substring(6).getBytes()));
-						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\rFROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
-						buf.append("\n\r--------------------------------------\n\r");
-					}
+					String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
+					long last=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE));
+					String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
+					String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+					String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+					long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
+                    if(compdate>mob.playerStats().lastDateTime())
+                    {
+    					boolean allMine=to.equalsIgnoreCase(mob.Name())
+                                        ||from.equalsIgnoreCase(mob.Name());
+                        if(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true))
+                        {
+                            allMine=true;
+                            to=CMLib.masking().maskDesc(to.trim().substring(5),true);
+                        }
+    					if(to.equalsIgnoreCase("ALL")||allMine)
+    					{
+    						if(message.startsWith("<cmvp>"))
+    							message=new String(CMLib.httpUtils().doVirtualPage(message.substring(6).getBytes()));
+    						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\rFROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+    						buf.append("\n\r--------------------------------------\n\r");
+    					}
+                    }
 				}
                 Vector postalChains=new Vector();
                 Vector postalBranches=new Vector();
@@ -142,9 +151,9 @@ public class MOTD extends StdCommand
                     for(int i=0;i<items.size();i++)
                     {
                         Vector entry=(Vector)items.elementAt(i);
-                        String from=(String)entry.elementAt(1);
-                        String message=(String)entry.elementAt(5);
-                        long compdate=CMath.s_long((String)entry.elementAt(6));
+                        String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
+                        String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+                        long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
                         if(compdate>mob.playerStats().lastDateTime())
                         {
                             buf.append("\n\rNEW "+CMLib.journals().getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
@@ -164,7 +173,9 @@ public class MOTD extends StdCommand
                     {
                         Vector thismsg=(Vector)msgs.elementAt(num);
                         String to=((String)thismsg.elementAt(3));
-                        if(to.equalsIgnoreCase("all")||to.equalsIgnoreCase(mob.Name()))
+                        if(to.equalsIgnoreCase("all")
+                        ||to.equalsIgnoreCase(mob.Name())
+                        ||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
                             mymsgs++;
                     }
                     if(mymsgs>0)

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -108,7 +109,7 @@ public class StdJournal extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 					    all=true;
 				}
-				Vector read=DBRead(Name(),mob.Name(),which-1,lastTime, newOnly, all);
+				Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while(megaRepeat)
 				{
@@ -173,7 +174,7 @@ public class StdJournal extends StdItem
 								    while(entry!=null)
 								    {
 								        which++;
-										read=DBRead(Name(),mob.Name(),which-1,lastTime, newOnly, all);
+										read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 										entry=(StringBuffer)read.lastElement();
 										if(entry.toString().trim().length()>0)
 										{
@@ -241,10 +242,10 @@ public class StdJournal extends StdItem
 								        {
 											Vector journal2=CMLib.database().DBReadJournal(Name());
 											Vector entry2=(Vector)journal2.elementAt(which-1);
-											String from2=(String)entry2.elementAt(1);
-											String to=(String)entry2.elementAt(3);
-											String subject=(String)entry2.elementAt(4);
-											String message=(String)entry2.elementAt(5);
+											String from2=(String)entry2.elementAt(DatabaseEngine.JOURNAL_FROM);
+											String to=(String)entry2.elementAt(DatabaseEngine.JOURNAL_TO);
+											String subject=(String)entry2.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+											String message=(String)entry2.elementAt(DatabaseEngine.JOURNAL_MSG);
 											CMLib.database().DBDeleteJournal(Name(),which-1);
 											CMLib.database().DBWriteJournal(realName,
 																			  from2,
@@ -318,7 +319,9 @@ public class StdJournal extends StdItem
 					if(mob.session().confirm("Is this a private message (y/N)?","N"))
 					{
 						to=mob.session().prompt("To whom:");
-						if(!CMLib.database().DBUserSearch(null,to))
+                        if(((!to.toUpperCase().trim().startsWith("MASK=")
+                                ||(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")&&(!admin))))
+						&&(!CMLib.database().DBUserSearch(null,to)))
 						{
 							mob.tell("I'm sorry, there is no such user.");
 							return;
@@ -393,7 +396,7 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector DBRead(String Journal, String username, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Vector DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
 		Vector reply=new Vector();
@@ -421,21 +424,29 @@ public class StdJournal extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(((Vector)journal.firstElement()).elementAt(1));
-				reply.addElement(((Vector)journal.firstElement()).elementAt(4));
+				reply.addElement(((Vector)journal.firstElement()).elementAt(DatabaseEngine.JOURNAL_FROM));
+				reply.addElement(((Vector)journal.firstElement()).elementAt(DatabaseEngine.JOURNAL_SUBJ));
 			}
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
 				Vector entry=(Vector)journal.elementAt(j);
-				String from=(String)entry.elementAt(1);
-				String date=(String)entry.elementAt(2);
-				String to=(String)entry.elementAt(3);
-				String subject=(String)entry.elementAt(4);
+				String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
+				String date=(String)entry.elementAt(DatabaseEngine.JOURNAL_DATE);
+				String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
+				String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
 				// message is 5, but dont matter.
-				String compdate=(String)entry.elementAt(6);
+				String compdate=(String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2);
 				StringBuffer selection=new StringBuffer("");
-				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
+                boolean mayRead=(to.equals("ALL")
+                                ||to.equalsIgnoreCase(reader.Name())
+                                ||from.equalsIgnoreCase(reader.Name()));
+                if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
+                {
+                    mayRead=true;
+                    to=CMLib.masking().maskDesc(to.trim().substring(5),true);
+                }
+				if(mayRead)
 				{
 					if(CMath.s_long(compdate)>lastTimeDate)
 					    selection.append("*");
@@ -479,18 +490,23 @@ public class StdJournal extends StdItem
 		else
 		{
 			Vector entry=(Vector)journal.elementAt(which);
-			String from=(String)entry.elementAt(1);
-			String date=(String)entry.elementAt(2);
-			String to=(String)entry.elementAt(3);
-			String subject=(String)entry.elementAt(4);
-			String message=(String)entry.elementAt(5);
+			String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
+			String date=(String)entry.elementAt(DatabaseEngine.JOURNAL_DATE);
+			String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
+			String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+			String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
 			
-			reply.addElement(entry.elementAt(1));
-			reply.addElement(entry.elementAt(4));
+			reply.addElement(entry.elementAt(DatabaseEngine.JOURNAL_FROM));
+			reply.addElement(entry.elementAt(DatabaseEngine.JOURNAL_SUBJ));
 			
-			//String compdate=(String)entry.elementAt(6);
-			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
-			if(mineAble)
+            boolean allMine=(to.equalsIgnoreCase(reader.Name())
+                            ||from.equalsIgnoreCase(reader.Name()));
+            if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
+            {
+                allMine=true;
+                to=CMLib.masking().maskDesc(to.trim().substring(5),true);
+            }
+			if(allMine)
 				buf.append("*");
 			else
 				buf.append(" ");
@@ -501,7 +517,7 @@ public class StdJournal extends StdItem
 			}
 			catch(HTTPRedirectException e){}
 
-			if(to.equals("ALL")||mineAble)
+			if((allMine)||(to.equals("ALL")))
 				buf.append("\n\r^<JRNL \""+name()+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to

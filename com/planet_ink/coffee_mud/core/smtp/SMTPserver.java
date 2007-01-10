@@ -569,7 +569,7 @@ public class SMTPserver extends Thread implements Tickable
 			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
 			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
 			
-			if(to.equalsIgnoreCase("ALL")) continue;
+			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK="))) continue;
 			
 			if(!rightTimeToSendEmail(date)) continue;
 			
