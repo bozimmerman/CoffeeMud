@@ -50,7 +50,7 @@ public class Siplet extends Applet
 
     public String info()
     {
-        return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2006 Bo Zimmerman";
+        return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2007 Bo Zimmerman";
     }
     
     public void start() 
