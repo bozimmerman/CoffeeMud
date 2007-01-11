@@ -202,6 +202,7 @@ public class Conquerable extends Arrest
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		||(CMSecurity.isDisabled("CONQUEST")))
 			return;
+        String worship=getManadatoryWorshipID();
         prevHoldingClan=holdingClan;
 		for(int v=0;v<clanItems.size();v++)
 		{
@@ -215,7 +216,11 @@ public class Conquerable extends Arrest
 				{
 					M.delInventory(I);
 					if(M.getClanID().equals(holdingClan))
+                    {
 						M.setClanID("");
+                        if((worship!=null)&&(M.getWorshipCharID().equals(worship))) 
+                            M.setWorshipCharID("");
+                    }
 					I.setRawWornCode(0);
 					I.setContainer(null);
 					M.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
@@ -236,7 +241,11 @@ public class Conquerable extends Arrest
 					&&(M.getStartRoom()!=null)
 					&&(myArea.inMyMetroArea(M.getStartRoom().getArea()))
 					&&(M.getClanID().equals(holdingClan)))
+                    {
 						M.setClanID("");
+                        if((worship!=null)&&(M.getWorshipCharID().equals(worship))) 
+                            M.setWorshipCharID("");
+                    }
 				}
 			}
 			if(holdingClan.length()>0)
@@ -563,9 +572,24 @@ public class Conquerable extends Arrest
 		return true;
 	}
 
+    protected String getManadatoryWorshipID()
+    {
+        if(holdingClan.length()==0) return null; 
+        Clan C=CMLib.clans().getClan(holdingClan);
+        if(C==null) return null;
+        if(C.getGovernment()==Clan.GVT_THEOCRACY)
+        {
+            MOB M=C.getResponsibleMember();
+            if((M!=null)&&(M.getWorshipCharID().length()>0))
+                return M.getWorshipCharID();
+        }
+        return null;
+    }
+    
 	public void recalculateControlPoints(Area A)
 	{
 		totalControlPoints=0;
+        String worship=getManadatoryWorshipID();
 		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
@@ -580,7 +604,10 @@ public class Conquerable extends Arrest
 				{
 					if((M.getClanID().length()==0)
 					&&(holdingClan.length()>0))
+                    {
 						M.setClanID(holdingClan);
+                        if(worship!=null) M.setWorshipCharID(worship);
+                    }
 					totalControlPoints+=M.envStats().level();
 				}
 			}
@@ -747,6 +774,7 @@ public class Conquerable extends Arrest
 		}
 		if(myArea!=null)
 		{
+            String worship=getManadatoryWorshipID();
 			for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
@@ -759,7 +787,11 @@ public class Conquerable extends Arrest
 					&&(myArea.inMyMetroArea(M.getStartRoom().getArea()))
 					&&(!CMLib.flags().isAnimalIntelligence(M))
 					&&(M.getClanID().length()==0))
+                    {
 						M.setClanID(holdingClan);
+                        if(worship!=null)
+                            M.setWorshipCharID(worship);
+                    }
 				}
 			}
             Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
@@ -1028,7 +1060,11 @@ public class Conquerable extends Arrest
 			&&(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source()))
 			&&(!msg.source().getClanID().equals(holdingClan)))
-			   msg.source().setClanID(holdingClan);
+            {
+                String worship=getManadatoryWorshipID();
+			    msg.source().setClanID(holdingClan);
+                if(worship!=null) msg.source().setWorshipCharID(worship);
+            }
 
 			if(msg.tool() instanceof ClanItem)
 				registerClanItem(msg.tool());
