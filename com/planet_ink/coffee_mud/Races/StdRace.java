@@ -301,6 +301,12 @@ public class StdRace implements Race
 						{
 							if(A.proficiency()>0) A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
+							if(CMLib.flags().isChild(mob))
+							{
+								A=mob.fetchAbility("Common");
+								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
+								if(A!=null) A.setProficiency(100);
+							}
 						}
 					}
 				}
