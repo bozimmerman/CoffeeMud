@@ -612,13 +612,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 6: // -ClassLevels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class level ":"Allows only class level "));
+							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class "));
 					}
 					break;
                 case 103: // -MaxclassLevels
                     {
                         for(int v2=v+1;v2<V.size();v2++)
-                            buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only highest class level ":"Allows only highest class level "));
+                            buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only highest class ":"Allows only highest class "));
                     }
                     break;
 				case 7: // -Tattoos
