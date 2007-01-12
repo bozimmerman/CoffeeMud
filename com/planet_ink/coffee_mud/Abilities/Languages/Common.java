@@ -49,16 +49,30 @@ public class Common extends Language
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		boolean anythingDone=false;
 		for(int a=0;a<mob.numAllEffects();a++)
 		{
 			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Language))
-				((Language)A).setBeingSpoken(false);
+				if(((Language)A).beingSpoken())
+				{
+					anythingDone=true;
+					((Language)A).setBeingSpoken(false);
+				}
 
 		}
 		isAnAutoEffect=false;
 		if(!auto)
-			mob.tell("You are now speaking "+name()+".");
+		{
+			String msg=null;
+			if(!anythingDone)
+				msg="already speaking "+name()+".";
+			else
+				msg="now speaking "+name()+".";
+			mob.tell("You are "+msg);
+			if((mob.isMonster())&&(mob.amFollowing()!=null))
+				CMLib.commands().postSay(mob,"I am "+msg);
+		}
 		return true;
 	}
 }
