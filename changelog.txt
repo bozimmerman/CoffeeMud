@@ -213,7 +213,7 @@ The only new features are the addition of the Amputation Ability, a few new Cler
    6. INI File entries ITEMS, MOBS, BEHAVIORS, ABILITIES, etc.. now REQUIRED! You should default them all to %DEFAULT%. See the coffeemud.ini file in the distribution for more information on this.
    7. Recursive bug fixed in sky creation that was filling up the stack whenever someone tried to load 14,000 rooms. :)
    8. FAKEDB ResultSet updated to implement getRow, beforeFirst, and last methods. Now functional!
-   9. Bugs fixed in Swipe, Steal. Also, profficiency leak plugged in Swipe, Steal, Bribe.
+   9. Bugs fixed in Swipe, Steal. Also, proficiency leak plugged in Swipe, Steal, Bribe.
   10. Entire WORLD can now be exported/imported as a .CMARE file.
   11. Unique World/Area/Room WEAPONS, ITEMS, ARMOR, MOBS can now be exported as a .CMARE file. They cannot be imported yet, however. Still trying to figure out how that is going to work.
   12. Feather Fall spell now traps attempts to pick up more than you can carry. This is the world's oldest CoffeeMud bug, kept in because of extreme popularity with players.
@@ -221,7 +221,7 @@ The only new features are the addition of the Amputation Ability, a few new Cler
   14. Spell lists updated for the Import of ROM/CircleMUD/etc area files.
   15. RoomForSale will now update room MOBs on shutdown of system, provided the MOB is 1. not rejuvinating, and 2. has the room as a starting room.
   16. Prop_Retainable property added to make MOBs 1. not rejuvinating, 2. to make their current room the starting room, and 3. Cost more/less when purchased by shopkeepers. Recommend this be applied to MOBs sold by shopkeepers.
-  17. Profficiency leak plugged in detect/remove traps.
+  17. Proficiency leak plugged in detect/remove traps.
   18. Bug fixed in grantAbilities of Mage class.
   19. LOTS more done on the Scriptable Behavior. Still havn't had a chance to test/debug it, but presumably it is done now (or, at least hacked).
   20. MUDGrinder's ability to properly identify mobs and items being edited has been greatly enhanced, thereby also enhancing it's general reliability.
@@ -808,7 +808,7 @@ Yep -- more bug fixes, numerous new races added for madrom are file import suppo
   20. Bug: Residual CONTROL trigger word was still in the Turn Undead skill. Was removed.
   21. Duration field in Smokables set through editor is now meaningful.
   22. Bug fixed which allowed Charlatans to disguise themselves as Archons.
-  23. Bug: Smoke Rings was not gaining profficiency through practice. Fixed.
+  23. Bug: Smoke Rings was not gaining proficiency through practice. Fixed.
   24. Bug: Default Z level will remain selected in MUDGrinder now.
   25. Bug: Can no longer backstab with a flailed weapon.
   26. Bug: Dagger was overlooked as a handled weapon type in Cleric subclasses.
@@ -828,7 +828,7 @@ Yep -- more bug fixes, numerous new races added for madrom are file import suppo
   40. Bug: Weaponsmith items with ' characters in their names were renamed to avoid bugs.
   41. Shutdowns are now much more chatty.
   42. Bug: NP exception in Flank skill fixed.
-  43. Bug: Avoid Traps skill now gains profficiency over time as it ought.
+  43. Bug: Avoid Traps skill now gains proficiency over time as it ought.
   44. Following now use level difference instead of absolute levels to weight difficulty: Laughter Spell, Hold Spell, Flesh Stone, Dismissal, Disintegrate, Flesh Rock, Demonic Consumption, Treemorph, Hold Animal, Domesticate
   45. Races can now be designated fertile/infertile.
   46. Bug: Racial Categories Amphibian and Fish never ever drown or need to tread water.
@@ -847,7 +847,7 @@ Yep -- more bug fixes, numerous new races added for madrom are file import suppo
   59. Bug: Certain crafted items could previously be repeatedly removed from banks. This is now fixed.
   60. Bug: Can no longer Distract when on the ground.
   61. Bug: Can no longer Con someone while in combat with them.
-  62. Bug: Analyze Mark now autogains in profficiency
+  62. Bug: Analyze Mark now autogains in proficiency
   63. Bug: Detect Ambush was over enthusiastic in its reports.
   64. Bug: Linked Health can now only be cast on group members.
   65. The following spells can now have a player/mob name placed in their parameters in order to use as a kind of hard-coded charming/following: Charm Animal, Enthrall, Charm, Sermon
@@ -1735,13 +1735,13 @@ Here it is, and every bit as late as I promised. Hopefully something in there ya
 huge swabs of rooms at once.
 3. Languages being spoken can now cause problems for ORDERing, and Shopkeeper/Banker/Postman interactions.
 4. Serious optomizations in all tracking-related behaviors and skills.
-5. New command: Replay (sort of a command-line scrollbar) 6. Many common skills now have attribute and other skill and profficiency requirements. This is the stick -- the next version will have tons of enhancements to them through Education flags.
+5. New command: Replay (sort of a command-line scrollbar) 6. Many common skills now have attribute and other skill and proficiency requirements. This is the stick -- the next version will have tons of enhancements to them through Education flags.
 7. Default non-combat commands & skills/round changed from 4 to 10 and 4 to 6 respectively (in INI file).
 8. A first in the history of CoffeeMud! An INI entry has been REMOVED (MINMOVETIME). It's redundant now with the round timing code.
 9. New INI entry: AUTOAREAPROPS for automatically adding properties or behaviors to new/old Areas.
 10. Disease Obesity has been toned down slightly. No pun intended.
 11. Some networking issues with the HTTP/web server have been worked out. Pretty important bug fix.
-12. Prop_ReqCapacity has a new parameter: indoor 13. Skills/Spells/etc can now have requirements that include: other skills, profficiency in other skills, and ANY other Zapper masks.
+12. Prop_ReqCapacity has a new parameter: indoor 13. Skills/Spells/etc can now have requirements that include: other skills, proficiency in other skills, and ANY other Zapper masks.
 These requirements can be built on a class-by-class basis instead of being global to a skill.
 14. ItemGenerator behavior now weighs its random selections by value (more valuable == less likely) 15. MudChat behavior can now have combat-only message/response handling.
 16. You can now export and import areas from the MUDGrinder.
@@ -1752,7 +1752,7 @@ These requirements can be built on a class-by-class basis instead of being globa
 21. CoffeeMud now supports MCCP (text compression), and it supports it reliably and well. There is another jar file in the LIB directory to make sure is in the classpath, however.
 22. DEFAULT PROMPT now includes the combat opponents health text.
 It was removed from its previous place. Old players will have to update their prompts.
-23. Due to the mudmagic.com coding context, CoffeeMud now has a configurable and expandable Extended English Parsing system. You can enter all kinds of complex things like: get the third axe ; get the axe and the sword ; get the sword and wield it ; get sword, axe, and helmet and put all in the bag 24. Zapper mask now includes SKILLS (including optional profficiency checks), EDUCATIONS, SECURITY flags (but only if they are defined in your ini file) 25. (Internal) CoffeeMud is now FAR stingier with threads, and has been drastically optimized for speed without costing another byte in memory (heck, perhaps using even less in the process).
+23. Due to the mudmagic.com coding context, CoffeeMud now has a configurable and expandable Extended English Parsing system. You can enter all kinds of complex things like: get the third axe ; get the axe and the sword ; get the sword and wield it ; get sword, axe, and helmet and put all in the bag 24. Zapper mask now includes SKILLS (including optional proficiency checks), EDUCATIONS, SECURITY flags (but only if they are defined in your ini file) 25. (Internal) CoffeeMud is now FAR stingier with threads, and has been drastically optimized for speed without costing another byte in memory (heck, perhaps using even less in the process).
 26. If your muds been up long enough, you can actually start reviewing your players leveling-dates from the MUDGrinder Player List.
 27. Siplet also supports MCCP now, and has had a few Firefox/Browser related issues addressed.
 28. The MUDGrinder main menu has been shuffled a tiny bit. A minor change to the Threads listing makes it a bit more useful.
@@ -1829,7 +1829,7 @@ Observation score (see hidden) is also shown when avail.
 5. Scriptable changes: We now have FOR loops!! (use the temporary variables described above)
 6. Scriptable functions: QUESTPOINTS, QVAR, TRAINS, PRACS
 7. Scriptable methods: MPQUESTPOINTS, QVAR, MPTRAINS, MPPRACS, MPARGSET, MPLOADQUESTOBJ, MPQSET
-8. Scriptable changes: MPENABLE now supports ++, -- for adjusting profficiency
+8. Scriptable changes: MPENABLE now supports ++, -- for adjusting proficiency
 9. RECORD command can now be used when player is offline, and will resume when they logoff/logon.
 10. New Thief skills: Hide Other, Woodland Creep
 11. (Internal): The words proficient/proficiency now spelled correctly in the source code.

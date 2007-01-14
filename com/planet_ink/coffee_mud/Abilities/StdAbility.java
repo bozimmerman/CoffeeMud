@@ -1463,9 +1463,9 @@ public class StdAbility implements Ability
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.proficiency()>75)
 				newAbility.setProficiency(75);
-			int defProfficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
-			if((defProfficiency>0)&&(defProfficiency>newAbility.proficiency()))
-				newAbility.setProficiency(defProfficiency);
+			int defProficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
+			if((defProficiency>0)&&(defProficiency>newAbility.proficiency()))
+				newAbility.setProficiency(defProficiency);
 			student.addAbility(newAbility);
 			newAbility.autoInvocation(student);
 		}
