@@ -311,6 +311,20 @@ public class Conquerable extends Arrest
         
     }
     
+    protected void announceToArea(Area area, String clanID, int amount)
+    {
+        Session S=null;
+        for(int s=CMLib.sessions().size()-1;s>=0;s--)
+        {
+            S=CMLib.sessions().elementAt(s);
+            if(S==null) continue;
+            if((S.mob()!=null)
+            &&(S.mob().location()!=null)
+            &&(area.inMyMetroArea(S.mob().location().getArea())))
+                S.println(clanID+" "+(amount<0?"loses "+(-amount):"gains "+amount)+" control points.");
+        }
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
@@ -892,8 +906,7 @@ public class Conquerable extends Arrest
             &&(CMLib.clans().getClanRelations(clanID,holdingClan)!=Clan.REL_WAR)
             &&(CMLib.clans().getClanRelations(holdingClan,clanID)!=Clan.REL_WAR))
                 return false;
-            if(notifyRoom!=null)
-                notifyRoom.showHappens(CMMsg.MSG_OK_VISUAL,clanID+" "+(amount<0?"lose "+(-amount):"gain "+amount)+" control points.");
+            announceToArea(myArea,clanID,amount);
 			if(index<0)
 			{
 				if((holdingClan.length()>0)
@@ -938,12 +951,12 @@ public class Conquerable extends Arrest
             {
                 index=clanControlPoints.indexOf(clanID);
                 if(index<0)
-                    Log.debugOut(clanID+" is not getting their points calculted.");
+                    Log.debugOut(clanID+" is not getting their points calculated.");
                 else
                 {
                     int[] i=(int[])clanControlPoints.elementAt(index,2);
                     if(i==null)
-                        Log.debugOut(clanID+" is not getting their points calculted.");
+                        Log.debugOut(clanID+" is not getting their points calculated.");
                     else
                         Log.debugOut(clanID+" now has "+i[0]+" control points of "+totalControlPoints+" in "+myArea.name()+".");
                 }
