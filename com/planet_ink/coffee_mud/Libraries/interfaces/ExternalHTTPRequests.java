@@ -47,6 +47,7 @@ public interface ExternalHTTPRequests extends CMLibrary
 	public String getHTTPclientIP();
 	public String getWebServerPartialName();
 	public CMFile grabFile(String filename);
+    public String getMimeType(String a_extension);
 	public MudHost getMUD();
 	public boolean isRequestParameter(String key);
 	public String getRequestParameter(String key);

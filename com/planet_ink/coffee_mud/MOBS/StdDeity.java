@@ -1087,6 +1087,8 @@ public class StdDeity extends StdMOB implements Deity
         undoService(parishaners);
         int exp=(int)Math.round(CMath.div(totalLevels,mob.envStats().level())*10.0);
         CMLib.leveler().postExperience(mob,null,null,exp,false);
+        trigServiceParts.remove(mob.Name());
+        trigServiceTimes.remove(mob.Name());
         return true;
     }
 

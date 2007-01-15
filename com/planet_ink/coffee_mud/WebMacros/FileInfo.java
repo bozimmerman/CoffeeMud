@@ -58,6 +58,24 @@ public class FileInfo extends StdWebMacro
                 return ""+(F.isLocalFile()&&(!F.canVFSEquiv()));
             if(parms.containsKey("ISVFS"))
                 return ""+(F.isVFSFile()&&(!F.canLocalEquiv()));
+            if(parms.containsKey("ISTEXT"))
+            {
+                int x=F.getName().lastIndexOf('.');
+                if(x<0) return "false";
+                String mime=httpReq.getMimeType(F.getName().substring(x));
+                if(mime.toUpperCase().startsWith("TEXT"))
+                    return "true";
+                return "false";
+            }
+            if(parms.containsKey("ISBINARY"))
+            {
+                int x=F.getName().lastIndexOf('.');
+                if(x<0) return "true";
+                String mime=httpReq.getMimeType(F.getName().substring(x));
+                if(mime.toUpperCase().startsWith("TEXT"))
+                    return "false";
+                return "true";
+            }
 			if(parms.containsKey("NAME"))
 				return ""+F.getName();
 			if(parms.containsKey("DATA"))

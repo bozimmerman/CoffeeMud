@@ -59,6 +59,10 @@
 			}
 			document.BROWSE.submit();			
 		}
+		function DownloadFile(action)
+		{
+			document.location.href='/FileData?'+action;
+		}
 	//-->
 	</script>
 </head>
@@ -91,10 +95,14 @@
 @loop@
 @FileNext@
 	@if?!FileInfo?ISDIRECTORY@ @if?FileInfo?ISFILE@
-	<a href="javascript:OpenFile('@RequestParametersEncoded@')"  style="text-decoration:none">
-	@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
+	@if?FileInfo?ISTEXT@
+		<a href="javascript:OpenFile('@RequestParametersEncoded@')"  style="text-decoration:none">
+	@else@
+		<a href="javascript:DownloadFile('@RequestParametersEncoded@')"  style="text-decoration:none">
+	@endif@
+		@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
 		<FONT COLOR=WHITE>@RequestParameter?FILE@</FONT>
-	@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
+		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
 	</a>
 	<BR>
 	@endif@ @endif@
