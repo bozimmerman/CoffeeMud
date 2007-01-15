@@ -400,7 +400,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
 	{
 		if(mob==null) return;
-		if(Log.combatChannelOn())
+		if((Log.combatChannelOn())
+        &&((mob.location()!=null)
+            ||((victim!=null)&&(victim.location()!=null))))
 		{
         	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():victim.location());
         	String mobName=(mob!=null)?mob.Name():"null";

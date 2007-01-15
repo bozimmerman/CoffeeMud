@@ -703,6 +703,8 @@ public class StdAbility implements Ability
 			costDown=getXLOWCOSTLevel(mob);
 			if(costDown>=consumed) 
 				costDown=consumed/2;
+            minimum=minimum-costDown;
+            if(minimum<5) minimum=5;
 		}
 		boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
 		boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
@@ -805,7 +807,8 @@ public class StdAbility implements Ability
 		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
 		int minimum=CMProps.getMinManaException(ID());
-		if(minimum==Integer.MIN_VALUE) minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
+		if(minimum==Integer.MIN_VALUE) 
+            minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
 		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
 		if(consumed<minimum) 
