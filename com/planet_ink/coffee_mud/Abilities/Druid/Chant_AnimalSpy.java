@@ -70,7 +70,6 @@ public class Chant_AnimalSpy extends Chant
 				if(A!=null)
 					invoker.delEffect(A);
 				invoker.tell("Your connection with '"+spy.name()+"' fades.");
-Log.errOut("AnimalSpy",new Exception());
 			}
 		}
 		super.unInvoke();

@@ -686,7 +686,7 @@ public class DefaultCharStats implements CharStats
 	public void setStat(int abilityCode, int value)
 	{
         if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
-            Log.errOut("Value out of range",new Exception());
+            Log.errOut("Value out of range",new Exception("Value out of range: "+value+" for "+abilityCode));
 		stats[abilityCode]=(short)value;
 	}
 
