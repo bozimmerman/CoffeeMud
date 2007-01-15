@@ -418,21 +418,21 @@ public class Socials extends StdLibrary implements SocialsList
                 while(!ok)
                 {
                     int showNumber=0;
-                    soc.setYou_see(CMLib.english().promptText(mob,soc.You_see(),++showNumber,showFlag,"You-see string",false,true));
+                    soc.setYou_see(CMLib.english().prompt(mob,soc.You_see(),++showNumber,showFlag,"You-see string",false,true));
                     if(soc.sourceCode()==CMMsg.MSG_OK_ACTION) soc.setSourceCode(CMMsg.MSG_HANDS);
                     modifySocialSourceCode(mob,soc,++showNumber,showFlag);
-                    soc.setThird_party_sees(CMLib.english().promptText(mob,soc.Third_party_sees(),++showNumber,showFlag,"Others-see string",false,true));
+                    soc.setThird_party_sees(CMLib.english().prompt(mob,soc.Third_party_sees(),++showNumber,showFlag,"Others-see string",false,true));
                     if(soc.othersCode()==CMMsg.MSG_OK_ACTION) soc.setOthersCode(CMMsg.MSG_HANDS);
                     modifySocialOthersCode(mob,soc,++showNumber,showFlag);
                     if(soc.Name().endsWith(" <T-NAME>"))
                     {
-                        soc.setTarget_sees(CMLib.english().promptText(mob,soc.Target_sees(),++showNumber,showFlag,"Target-sees string",false,true));
+                        soc.setTarget_sees(CMLib.english().prompt(mob,soc.Target_sees(),++showNumber,showFlag,"Target-sees string",false,true));
                         if(soc.targetCode()==CMMsg.MSG_OK_ACTION) soc.setTargetCode(CMMsg.MSG_HANDS);
                         modifySocialTargetCode(mob,soc,++showNumber,showFlag);
                     }
                     if(soc.Name().endsWith(" <T-NAME>")||(soc.Name().endsWith(" ALL")))
-                        soc.setSee_when_no_target(CMLib.english().promptText(mob,soc.See_when_no_target(),++showNumber,showFlag,"You-see when no target",false,true));
-                    soc.setMSPfile(CMLib.english().promptText(mob,soc.MSPfile(),++showNumber,showFlag,"Sound file",true,false));
+                        soc.setSee_when_no_target(CMLib.english().prompt(mob,soc.See_when_no_target(),++showNumber,showFlag,"You-see when no target",false,true));
+                    soc.setMSPfile(CMLib.english().prompt(mob,soc.MSPfile(),++showNumber,showFlag,"Sound file",true,false));
                     resaveSocials=true;
                     if(showFlag<-900){ ok=true; break;}
                     if(showFlag>0){ showFlag=-1; continue;}

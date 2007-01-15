@@ -303,31 +303,31 @@ public class DefaultPoll implements Poll
         while(!ok)
         {
             int showNumber=0;
-            String possName=CMLib.english().promptText(mob,name,++showNumber,showFlag,"Name");
+            String possName=CMLib.english().prompt(mob,name,++showNumber,showFlag,"Name");
             while((!possName.equalsIgnoreCase(name))&&(CMLib.polls().getPoll(possName)!=null))
                 possName=possName+"!";
             name=possName;
-            description=CMLib.english().promptText(mob,description,++showNumber,showFlag,"Introduction");
-            subject=CMLib.english().promptText(mob,subject,++showNumber,showFlag,"Results Header");
+            description=CMLib.english().prompt(mob,description,++showNumber,showFlag,"Introduction");
+            subject=CMLib.english().prompt(mob,subject,++showNumber,showFlag,"Results Header");
             if(subject.length()>250) subject=subject.substring(0,250);
             if(author.length()==0) author=mob.Name();
-            qualZapper=CMLib.english().promptText(mob,qualZapper,++showNumber,showFlag,"Qual. Mask",true);
-            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_ACTIVE),++showNumber,showFlag,"Poll Active"))?
+            qualZapper=CMLib.english().prompt(mob,qualZapper,++showNumber,showFlag,"Qual. Mask",true);
+            bitmap=(CMLib.english().prompt(mob,CMath.bset(bitmap,FLAG_ACTIVE),++showNumber,showFlag,"Poll Active"))?
                 CMath.setb(bitmap,FLAG_ACTIVE):CMath.unsetb(bitmap,FLAG_ACTIVE);
-            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_PREVIEWRESULTS),++showNumber,showFlag,"Preview Results"))?
+            bitmap=(CMLib.english().prompt(mob,CMath.bset(bitmap,FLAG_PREVIEWRESULTS),++showNumber,showFlag,"Preview Results"))?
                     CMath.setb(bitmap,FLAG_PREVIEWRESULTS):CMath.unsetb(bitmap,FLAG_PREVIEWRESULTS);
-            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
+            bitmap=(CMLib.english().prompt(mob,CMath.bset(bitmap,FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
                     CMath.setb(bitmap,FLAG_ABSTAIN):CMath.unsetb(bitmap,FLAG_ABSTAIN);
-            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
+            bitmap=(CMLib.english().prompt(mob,CMath.bset(bitmap,FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
                     CMath.setb(bitmap,FLAG_VOTEBYIP):CMath.unsetb(bitmap,FLAG_VOTEBYIP);
-            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
+            bitmap=(CMLib.english().prompt(mob,CMath.bset(bitmap,FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
                     CMath.setb(bitmap,FLAG_HIDERESULTS):CMath.unsetb(bitmap,FLAG_HIDERESULTS);
-            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_NOTATLOGIN),++showNumber,showFlag,"POLL CMD only"))?
+            bitmap=(CMLib.english().prompt(mob,CMath.bset(bitmap,FLAG_NOTATLOGIN),++showNumber,showFlag,"POLL CMD only"))?
                     CMath.setb(bitmap,FLAG_NOTATLOGIN):CMath.unsetb(bitmap,FLAG_NOTATLOGIN);
             String expirationDate="NA";
             if(expiration>0) expirationDate=CMLib.time().date2String(expiration);
             
-            expirationDate=CMLib.english().promptText(mob,expirationDate,++showNumber,showFlag,"Exp. Date (MM/DD/YYYY HH:MM AP)",true);
+            expirationDate=CMLib.english().prompt(mob,expirationDate,++showNumber,showFlag,"Exp. Date (MM/DD/YYYY HH:MM AP)",true);
             if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
                 expiration=0;
             else
@@ -337,7 +337,7 @@ public class DefaultPoll implements Poll
             for(int i=0;i<options.size();i++)
             {
                 PollOption PO=(PollOption)options.elementAt(i);
-                PO.text=CMLib.english().promptText(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
+                PO.text=CMLib.english().prompt(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
                 if(PO.text.length()==0) del.addElement(PO);
             }
             for(int i=0;i<del.size();i++)
@@ -347,7 +347,7 @@ public class DefaultPoll implements Poll
             while((PO!=null)&&(!mob.session().killFlag()))
             {
                 PO=new PollOption();
-                PO.text=CMLib.english().promptText(mob,PO.text,++showNumber,showFlag,"New Vote Option",true);
+                PO.text=CMLib.english().prompt(mob,PO.text,++showNumber,showFlag,"New Vote Option",true);
                 if(PO.text.length()==0) 
                     break;
                 options.addElement(PO);

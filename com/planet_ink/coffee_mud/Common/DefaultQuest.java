@@ -3676,7 +3676,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	}
     }
     
-	public String[] getCodes()
+	public String[] getStatCodes()
 	{
 		String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
 		for(int i=0;i<QCODES.length;i++)
@@ -3686,9 +3686,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return QCODES;
 	}
 	
+    public int getSaveStatIndex(){return getStatCodes().length;}
 	protected int getCodeNum(String code)
 	{
-		String[] CCODES=getCodes();
+		String[] CCODES=getStatCodes();
 		for(int i=0;i<CCODES.length;i++)
 			if(code.equalsIgnoreCase(CCODES[i])) return i;
 		return -1;
@@ -3696,7 +3697,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	
 	public boolean sameAs(DefaultQuest E)
 	{
-		String[] CCODES=getCodes();
+		String[] CCODES=getStatCodes();
 		for(int i=0;i<CCODES.length;i++)
 			if(!E.getStat(CCODES[i]).equals(getStat(CCODES[i])))
 			   return false;

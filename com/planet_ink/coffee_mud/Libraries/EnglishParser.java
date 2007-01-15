@@ -1379,32 +1379,61 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
+    public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
+    throws IOException
+    { promptStatInt(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
+    public void promptStatInt(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null);
+        E.setStat(Field,""+prompt(mob,CMath.s_long(E.getStat(Field)),showNumber,showFlag,FieldDisp,help));
     }
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    
+    public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
+    throws IOException
+    { promptStatBool(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
+    public void promptStatBool(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help);
+        E.setStat(Field,""+prompt(mob,CMath.s_bool(E.getStat(Field)),showNumber,showFlag,FieldDisp,help));
     }
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
+    
+    public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
+    throws IOException
+    { promptStatStr(mob,E,null,showNumber,showFlag,FieldDisp,Field,true);}
+    
+    public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+        E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help));
     }
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
+    
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null);
     }
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
-        return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help);
     }
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
+    throws IOException
+    {
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+    }
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
+    throws IOException
+    {
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);
+    }
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
+    throws IOException
+    {
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+    }
+    
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1416,7 +1445,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         String newName="?";
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            newName=mob.session().prompt("Enter a new value "+(emptyOK?"(or NULL)":"")+"\n\r:","");
+            newName=mob.session().prompt("Enter a new value "+(emptyOK?"(or NULL)":"")+(help!=null?" (?)":"")+"\n\r:","");
             if((newName.equalsIgnoreCase("null"))&&(emptyOK))
                 return "";
             else
@@ -1431,12 +1460,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
+    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return promptBool(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
     }
-    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1445,12 +1474,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         String newName="?";
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            newName=mob.session().prompt("Enter true or false:","");
+            newName=mob.session().prompt("Enter true or false"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
                 mob.tell(help);
             else
             if(newName.toUpperCase().startsWith("T")||newName.toUpperCase().startsWith("F"))
                 return newName.toUpperCase().startsWith("T");
+            else
+            if(newName.toUpperCase().startsWith("Y")||newName.toUpperCase().startsWith("N"))
+                return newName.toUpperCase().startsWith("Y");
             else
                 break;
         }
@@ -1458,12 +1490,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return oldVal;
     }
     
-    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
+    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return promptDouble(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
     }
-    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1472,7 +1504,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         String newName="?";
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            newName=mob.session().prompt("Enter a new value:","");
+            newName=mob.session().prompt("Enter a new value"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
                 mob.tell(help);
             else
@@ -1485,13 +1517,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return oldVal;
     }
     
-    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
+    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return promptInteger(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
     }
     
-    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1500,7 +1532,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         String newName="?";
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            newName=mob.session().prompt("Enter a new value:","");
+            newName=mob.session().prompt("Enter a new value"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
                 mob.tell(help);
             else
@@ -1513,13 +1545,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return oldVal;
     }
     
-    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
+    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return promptLong(mob,oldVal,showNumber,showFlag,FieldDisp,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
     }
     
-    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1528,7 +1560,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         String newName="?";
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            newName=mob.session().prompt("Enter a new value:","");
+            newName=mob.session().prompt("Enter a new value"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
                 mob.tell(help);
             else

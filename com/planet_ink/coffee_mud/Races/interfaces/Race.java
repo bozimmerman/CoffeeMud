@@ -32,7 +32,7 @@ import java.util.*;
  * A, well, Race
  * @author Bo Zimmerman
  */
-public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
+public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable
 {
     /** Age constant for an infant */
 	public final static int AGE_INFANT=0;

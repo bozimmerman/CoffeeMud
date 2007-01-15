@@ -1224,10 +1224,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     break;
                 }
             if(!found)
-            for(int i=0;i<M.envStats().getCodes().length;i++)
-                if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+            for(int i=0;i<M.envStats().getStatCodes().length;i++)
+                if(M.envStats().getStatCodes()[i].equalsIgnoreCase(arg2))
                 {
-                    val=M.envStats().getStat(M.envStats().getCodes()[i]);
+                    val=M.envStats().getStat(M.envStats().getStatCodes()[i]);
                     found=true;
                     break;
                 }
@@ -1294,10 +1294,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         break;
                     }
                 if(!found)
-                for(int i=0;i<M.envStats().getCodes().length;i++)
-                    if(M.envStats().getCodes()[i].equalsIgnoreCase(arg2))
+                for(int i=0;i<M.envStats().getStatCodes().length;i++)
+                    if(M.envStats().getStatCodes()[i].equalsIgnoreCase(arg2))
                     {
-                        val=M.envStats().getStat(M.envStats().getCodes()[i]);
+                        val=M.envStats().getStat(M.envStats().getStatCodes()[i]);
                         found=true;
                         break;
                     }
@@ -5255,8 +5255,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								break;
 							}
 						if(!found)
-						for(int i=0;i<M.baseEnvStats().getCodes().length;i++)
-							if(M.baseEnvStats().getCodes()[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<M.baseEnvStats().getStatCodes().length;i++)
+							if(M.baseEnvStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
 								M.baseEnvStats().setStat(arg2,arg3);
 								found=true;
@@ -5405,9 +5405,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								}
 							}
 							if(!found)
-							for(int i=0;i<M.baseEnvStats().getCodes().length;i++)
+							for(int i=0;i<M.baseEnvStats().getStatCodes().length;i++)
 							{
-								if(M.baseEnvStats().getCodes()[i].equalsIgnoreCase(arg2))
+								if(M.baseEnvStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
 									M.baseEnvStats().setStat(arg2,arg3);
 									found=true;

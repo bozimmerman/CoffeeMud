@@ -1156,6 +1156,7 @@ public class DefaultSession extends Thread implements Session
 	public boolean confirm(String Message, String Default, long maxTime)
 	throws IOException
 	{
+        if(Default.toUpperCase().startsWith("T")) Default="Y";
 		String YN=choose(Message,"YN",Default,maxTime);
 		if(YN.equals("Y"))
 			return true;
@@ -1164,6 +1165,7 @@ public class DefaultSession extends Thread implements Session
 	public boolean confirm(String Message, String Default)
 	throws IOException
 	{
+        if(Default.toUpperCase().startsWith("T")) Default="Y";
 		String YN=choose(Message,"YN",Default,-1);
 		if(YN.equals("Y"))
 			return true;

@@ -707,6 +707,7 @@ public class StdCharClass implements CharClass
 	public String classParms(){ return "";}
 	public void setClassParms(String parms){}
 	protected static String[] CODES={"CLASS","PARMS"};
+    public int getSaveStatIndex(){return CODES.length;}
 	public String getStat(String code){
 		switch(getCodeNum(code))
 		{

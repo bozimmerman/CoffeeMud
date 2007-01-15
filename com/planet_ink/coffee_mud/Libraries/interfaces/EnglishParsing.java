@@ -66,33 +66,25 @@ public interface EnglishParsing extends CMLibrary
     public Item bestPossibleGold(MOB mob, Container container, String itemID);
     public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode, boolean withContentOnly);
     public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode);
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
-        throws IOException;
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
-        throws IOException;
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
-        throws IOException;
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
-        throws IOException;
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
-        throws IOException;
-    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
-        throws IOException;
-    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
-        throws IOException;
-    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
-        throws IOException;
-    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
-        throws IOException;
-    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
-        throws IOException;
-    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
-        throws IOException;
-    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
-        throws IOException;
-    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
-	    throws IOException;
-    public long promptLong(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
-        throws IOException;
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK) throws IOException;
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint) throws IOException;
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help) throws IOException;
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help) throws IOException;
+    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
+    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
+    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
+    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
+    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
+    public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException;
+    public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
+    public void promptStatInt(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
+    public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
+    public void promptStatBool(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
     public String returnTime(long millis, long ticks);
 }

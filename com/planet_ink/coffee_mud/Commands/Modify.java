@@ -220,7 +220,7 @@ public class Modify extends BaseGenerics
 				genBehaviors(mob,R,++showNumber,showFlag);
 				genAffects(mob,R,++showNumber,showFlag);
                 for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
-                    R.setStat(R.getStatCodes()[x],CMLib.english().promptText(mob,R.getStat(R.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(R.getStatCodes()[x])));
+                    R.setStat(R.getStatCodes()[x],CMLib.english().prompt(mob,R.getStat(R.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(R.getStatCodes()[x])));
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -425,7 +425,7 @@ public class Modify extends BaseGenerics
 				genAffects(mob,myArea,++showNumber,showFlag);
 				genImage(mob,myArea,++showNumber,showFlag);
                 for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
-                    myArea.setStat(myArea.getStatCodes()[x],CMLib.english().promptText(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
+                    myArea.setStat(myArea.getStatCodes()[x],CMLib.english().prompt(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
                 if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))
                     mob.tell("*** Area Economics settings: ");
                     genCurrency(mob,myArea,++showNumber,showFlag);
@@ -1244,7 +1244,7 @@ public class Modify extends BaseGenerics
                 if(!mob.isMonster())
                 {
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+F.name()+".");
-                    modifyFaction(mob,F);
+                    CMLib.factions().modifyFaction(mob,F);
                     Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name()+" ("+F.factionID()+").");
                 }
             }

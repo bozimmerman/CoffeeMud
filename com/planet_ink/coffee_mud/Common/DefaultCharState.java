@@ -349,6 +349,7 @@ public class DefaultCharState implements CharState
 	private final static String[] CODES={
 		"HITS","MANA","MOVE",
 		"HUNGER","THIRST","FATIGUE"};
+    public int getSaveStatIndex(){return CODES.length;}
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code)
 	{

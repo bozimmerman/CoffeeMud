@@ -125,8 +125,8 @@ public class DefaultEnvStats implements EnvStats
     		((DefaultEnvStats)intoStats).replacementName=replacementName;
     	}
     	else
-    	for(int i=0;i<getCodes().length;i++)
-    		intoStats.setStat(getCodes()[i],getStat(getCodes()[i]));
+    	for(int i=0;i<getStatCodes().length;i++)
+    		intoStats.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
     }
 	public CMObject copyOf()
 	{
@@ -145,7 +145,8 @@ public class DefaultEnvStats implements EnvStats
 		"SENSES","DISPOSITION","LEVEL",
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
 		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
-	public String[] getCodes(){return CODES;}
+    public int getSaveStatIndex(){return CODES.length;}
+	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)

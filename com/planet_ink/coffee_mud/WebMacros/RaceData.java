@@ -82,9 +82,9 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            for(int i=0;i<E.getCodes().length;i++)
-                if(CMath.s_int(E.getStat(E.getCodes()[i]))!=0)
-                    theclasses.addElement(E.getCodes()[i],new Integer(CMath.s_int(E.getStat(E.getCodes()[i]))).toString());
+            for(int i=0;i<E.getStatCodes().length;i++)
+                if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
+                    theclasses.addElement(E.getStatCodes()[i],new Integer(CMath.s_int(E.getStat(E.getStatCodes()[i]))).toString());
         }
         str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
         for(int i=0;i<theclasses.size();i++)
@@ -104,9 +104,9 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"ESTATS"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-        for(int i=0;i<E.getCodes().length;i++)
-            if(CMath.isNumber(E.getStat(E.getCodes()[i])))
-                str.append("<OPTION VALUE=\""+E.getCodes()[i]+"\">"+E.getCodes()[i]);
+        for(int i=0;i<E.getStatCodes().length;i++)
+            if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
+                str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=65%>");

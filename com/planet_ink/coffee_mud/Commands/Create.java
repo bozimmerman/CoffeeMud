@@ -858,7 +858,7 @@ public class Create extends BaseGenerics
                     Resources.saveFileResource(name,null,template);
                     F=(Faction)CMClass.getCommon("DefaultFaction");
                     F.initializeFaction(template,name);
-                    modifyFaction(mob,F);
+                    CMLib.factions().modifyFaction(mob,F);
                     Log.sysOut("CreateEdit",mob.Name()+" created Faction "+F.name()+" ("+F.factionID()+").");
                 }
             }

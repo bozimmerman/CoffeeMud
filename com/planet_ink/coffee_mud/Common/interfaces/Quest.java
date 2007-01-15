@@ -30,7 +30,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Quest extends Tickable, CMCommon
+public interface Quest extends Tickable, CMCommon, CMModifiable
 {
 	// the unique name of the quest
 	public String name();
@@ -136,8 +136,6 @@ public interface Quest extends Tickable, CMCommon
     public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
     
 	public boolean isStat(String code);
-	public String getStat(String code);
-	public void setStat(String code, String val);
 	
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE"};

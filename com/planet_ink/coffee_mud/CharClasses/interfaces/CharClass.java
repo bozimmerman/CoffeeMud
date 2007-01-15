@@ -35,7 +35,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
  * @author Bo Zimmerman
  */
-public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject
+public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable
 {
 	/**
 	 * Returns the generally displayable name of this class.  Usually deferred to

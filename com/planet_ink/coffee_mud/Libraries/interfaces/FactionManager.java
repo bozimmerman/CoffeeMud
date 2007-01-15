@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -64,4 +65,5 @@ public interface FactionManager extends CMLibrary, Tickable
     public int getAlignThingie(int AlignEq);
     public int isFactionTag(String tag);
     public int getAlignEquiv(String str);
+    public void modifyFaction(MOB mob, Faction me) throws IOException;
 }
