@@ -1010,6 +1010,18 @@ public class CMParms
         return s.toString().substring(2);
     }
 
+    public static String toStringList(Object[] V)
+    {
+        if((V==null)||(V.length==0)){
+            return "";
+        }
+        StringBuffer s=new StringBuffer("");
+        for(int v=0;v<V.length;v++)
+            s.append(", "+V[v]);
+        if(s.length()==0) return "";
+        return s.toString().substring(2);
+    }
+
     public static String toStringList(Enumeration e)
     {
         if(!e.hasMoreElements()) return "";
@@ -1246,6 +1258,18 @@ public class CMParms
         return -1;
     }
     public static boolean contains(String[] supported, String expertise)
+    { return indexOf(supported,expertise)>=0;}
+    
+    public static int indexOf(Object[] supported, Object expertise)
+    {
+        if(supported==null) return -1;
+        if(expertise==null) return -1;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].equals(expertise))
+                return i;
+        return -1;
+    }
+    public static boolean contains(Object[] supported, Object expertise)
     { return indexOf(supported,expertise)>=0;}
     
     public static boolean startsWith(String[] supported, String expertise)

@@ -422,7 +422,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
 				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
                 if(((DeadBody)E).savedMOB()!=null)
-                    text.append("<MOBS>"+getMOBXML(((DeadBody)E).savedMOB())+"</MOBS>");
+                    text.append("<MOBS>"+getMobXML(((DeadBody)E).savedMOB())+"</MOBS>");
 				if(((DeadBody)E).killingTool()==null) text.append("<KLTOOL />");
 				else
 				{
@@ -1120,85 +1120,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         return R;
     }
 
-	public StringBuffer getRoomMobs(Room room, 
-    							    HashSet custom, 
-    							    HashSet files, 
-    							    Hashtable found)
-	{
-		StringBuffer buf=new StringBuffer("");
-        room=makeNewRoomContent(room);
-		if(room==null) return buf;
-		Vector mobs=new Vector();
-		for(int i=0;i<room.numInhabitants();i++)
-			mobs.addElement(room.fetchInhabitant(i));
-		for(int i=0;i<mobs.size();i++)
-		{
-			MOB mob=(MOB)mobs.elementAt(i);
-			if(mob.savable())
-			{
-				Vector dups=(Vector)found.get(mob.Name()+mob.displayText());
-				if(dups==null)
-				{
-					dups=new Vector();
-					found.put(mob.Name()+mob.displayText(),dups);
-					dups.addElement(mob);
-				}
-				else
-				{
-					boolean matched=false;
-					for(int v=0;v<dups.size();v++)
-					{
-						MOB dup=(MOB)dups.elementAt(v);
-						int oldHeight=mob.baseEnvStats().height();
-						int oldWeight=mob.baseEnvStats().weight();
-						int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
-						dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
-						dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
-						dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
-						if(CMClass.classID(mob).equals(CMClass.classID(dup))
-						&&(mob.baseEnvStats().level()==dup.baseEnvStats().level())
-						&&(mob.baseEnvStats().ability()==dup.baseEnvStats().ability())
-						&&(mob.text().equals(dup.text())))
-							matched=true;
-						dup.baseEnvStats().setHeight(oldHeight);
-						dup.baseEnvStats().setWeight(oldWeight);
-						dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
-						if(matched) break;
-					}
-					if(!matched)
-					{
-						for(int v=0;v<dups.size();v++)
-						{
-							MOB dup=(MOB)dups.elementAt(v);
-							int oldHeight=mob.baseEnvStats().height();
-							int oldWeight=mob.baseEnvStats().weight();
-							int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
-							dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
-							dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
-							dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
-							if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
-								logDiff(mob,dup);
-							dup.baseEnvStats().setHeight(oldHeight);
-							dup.baseEnvStats().setWeight(oldWeight);
-							dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
-						}
-						dups.addElement(mob);
-					}
-					else
-						continue;
-				}
-                buf.append(getMOBXML(mob));
-                if((mob.baseCharStats().getMyRace().isGeneric())
-                &&(!custom.contains(mob.baseCharStats().getMyRace())))
-                   custom.add(mob.baseCharStats().getMyRace());
-                fillFileSet(mob,files);
-			}
-		}
-        room.destroy();
-		return buf;
-	}
-
-    public StringBuffer getMOBXML(MOB mob)
+    
+    public StringBuffer getMobXML(MOB mob)
     {
         StringBuffer buf=new StringBuffer("");
         buf.append("<MOB>");
@@ -1211,6 +1134,94 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         return buf;
     }
     
+    public StringBuffer getMobsXML(Vector mobs,
+                                   HashSet custom, 
+                                   HashSet files, 
+                                   Hashtable found)
+    {
+        StringBuffer buf=new StringBuffer("");
+        for(int i=0;i<mobs.size();i++)
+        {
+            MOB mob=(MOB)mobs.elementAt(i);
+            if(mob.savable())
+            {
+                Vector dups=(Vector)found.get(mob.Name()+mob.displayText());
+                if(dups==null)
+                {
+                    dups=new Vector();
+                    found.put(mob.Name()+mob.displayText(),dups);
+                    dups.addElement(mob);
+                }
+                else
+                {
+                    boolean matched=false;
+                    for(int v=0;v<dups.size();v++)
+                    {
+                        MOB dup=(MOB)dups.elementAt(v);
+                        int oldHeight=mob.baseEnvStats().height();
+                        int oldWeight=mob.baseEnvStats().weight();
+                        int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
+                        dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
+                        dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+                        dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+                        if(CMClass.classID(mob).equals(CMClass.classID(dup))
+                        &&(mob.baseEnvStats().level()==dup.baseEnvStats().level())
+                        &&(mob.baseEnvStats().ability()==dup.baseEnvStats().ability())
+                        &&(mob.text().equals(dup.text())))
+                            matched=true;
+                        dup.baseEnvStats().setHeight(oldHeight);
+                        dup.baseEnvStats().setWeight(oldWeight);
+                        dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
+                        if(matched) break;
+                    }
+                    if(!matched)
+                    {
+                        for(int v=0;v<dups.size();v++)
+                        {
+                            MOB dup=(MOB)dups.elementAt(v);
+                            int oldHeight=mob.baseEnvStats().height();
+                            int oldWeight=mob.baseEnvStats().weight();
+                            int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
+                            dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
+                            dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+                            dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+                            if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
+                                logDiff(mob,dup);
+                            dup.baseEnvStats().setHeight(oldHeight);
+                            dup.baseEnvStats().setWeight(oldWeight);
+                            dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
+                        }
+                        dups.addElement(mob);
+                    }
+                    else
+                        continue;
+                }
+                buf.append(getMobXML(mob));
+                if((mob.baseCharStats().getMyRace().isGeneric())
+                &&(!custom.contains(mob.baseCharStats().getMyRace())))
+                   custom.add(mob.baseCharStats().getMyRace());
+                fillFileSet(mob,files);
+            }
+        }
+        return buf;
+    }
+    
+	public StringBuffer getRoomMobs(Room room, 
+    							    HashSet custom, 
+    							    HashSet files, 
+    							    Hashtable found)
+	{
+		StringBuffer buf=new StringBuffer("");
+        room=makeNewRoomContent(room);
+		if(room==null) return buf;
+		Vector mobs=new Vector();
+		for(int i=0;i<room.numInhabitants();i++)
+			mobs.addElement(room.fetchInhabitant(i));
+        buf.append(getMobsXML(mobs,custom,files,found));
+        room.destroy();
+		return buf;
+	}
+
 	public StringBuffer getUniqueItemXML(Item item, 
     									 int type, 
     									 Hashtable found,
@@ -1262,22 +1273,29 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 				dups.addElement(item);
 			}
-			buf.append("<ITEM>");
-			buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
-			buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
-			buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
-			buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-			buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
-			buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
-			buf.append("</ITEM>\n\r");
+            buf.append(getItemXML(item));
 			fillFileSet(item,files);
 		}
 		return buf;
 	}
 
+    public StringBuffer getItemXML(Item item)
+    {
+        StringBuffer buf=new StringBuffer("");
+        buf.append("<ITEM>");
+        buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
+        buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
+        buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
+        buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+        buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
+        buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
+        buf.append("</ITEM>\n\r");
+        return buf;
+    }
+    
 	public String addItemsFromXML(String xmlBuffer,
-										 Vector addHere,
-										 Session S)
+								  Vector addHere,
+								  Session S)
 	{
 		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null) return unpackErr("Items","null 'xml'");

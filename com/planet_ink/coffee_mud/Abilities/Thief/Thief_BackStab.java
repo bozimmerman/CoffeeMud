@@ -43,6 +43,7 @@ public class Thief_BackStab extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+    protected String lastMOB="";
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -67,6 +68,11 @@ public class Thief_BackStab extends ThiefSkill
 			mob.tell(target.name()+" is watching you too closely to do that.");
 			return false;
 		}
+        if(lastMOB.equals(target+""))
+        {
+            mob.tell(target,null,null,target.name()+" is watching <S-HIS-HER> back too closely to do that again.");
+            return false;
+        }
 		if(mob.isInCombat())
 		{
 			mob.tell("You are too busy to focus on backstabbing right now.");
@@ -114,6 +120,7 @@ public class Thief_BackStab extends ThiefSkill
 			CMLib.combat().postAttack(mob,target,weapon);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
+            lastMOB=""+target;
 		}
 		else
 			success=false;

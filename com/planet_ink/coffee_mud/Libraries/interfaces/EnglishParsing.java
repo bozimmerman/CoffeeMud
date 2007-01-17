@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -37,6 +38,8 @@ public interface EnglishParsing extends CMLibrary
     public static final int FLAG_STR=0;
     public static final int FLAG_DOT=1;
     public static final int FLAG_ALL=2;
+    
+    public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
     
     public boolean isAnArticle(String s);
     public String cleanArticles(String s);
@@ -80,6 +83,16 @@ public interface EnglishParsing extends CMLibrary
     public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public String prompt(MOB mob, 
+                        String oldVal, 
+                        int showNumber, 
+                        int showFlag, 
+                        String FieldDisp, 
+                        boolean emptyOK, 
+                        boolean rawPrint, 
+                        String help, 
+                        CMEval eval,
+                        String[] choices) throws IOException;
     public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
     public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException;
     public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;

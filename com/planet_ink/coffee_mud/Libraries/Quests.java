@@ -1151,5 +1151,292 @@ public class Quests extends StdLibrary implements QuestManager
             parsed.addElement(scr);
         return parsed;
     }
+ 
+    public DVector getQuestTemplate(MOB mob, String fileToGet)
+    {
+        CMFile tempF=new CMFile(Resources.makeFileResourceName("quests/templates"),mob,true,false);
+        if((!tempF.exists())||(!tempF.isDirectory()))
+            return null;
+        CMFile[] files=tempF.listFiles();
+        DVector templatesDV=new DVector(4);
+        boolean parsePages=fileToGet!=null;
+        if(files.length==0) return null;
+        for(int f=0;f<files.length;f++)
+        {
+            if((files[f].getName().toUpperCase().endsWith(".QUEST"))
+            &&((fileToGet==null)||(files[f].getName().toUpperCase().startsWith(fileToGet.toUpperCase().trim()))))
+            {
+                Vector V=Resources.getFileLineVector(files[f].text());
+                String s=null;
+                boolean foundStart=false;
+                boolean foundQuestScript=false;
+                DVector pageDV=null;
+                StringBuffer script=null;
+                for(int v=0;v<V.size();v++)
+                {
+                    s=((String)V.elementAt(v)).trim();
+                    if(foundQuestScript)
+                        script.append(s+"\n\r");
+                    else
+                    if(s.startsWith("#"))
+                    {
+                        s=s.substring(1).trim();
+                        if(s.startsWith("!"))
+                        {
+                            s=s.substring(1).trim();
+                            if(s.startsWith("QUESTMAKER_START_SCRIPT"))
+                            {
+                                String name=s.substring(23).trim();
+                                foundStart=true;
+                                script=new StringBuffer("");
+                                templatesDV.addElement(name,"",files[f].getName(),new Vector(),script);
+                            }
+                            else
+                            if(s.startsWith("QUESTMAKER_END_SCRIPT")&&(foundStart))
+                            {
+                                foundStart=false;
+                                foundQuestScript=true;
+                                break;
+                            }
+                            else
+                            if(s.startsWith("QUESTMAKER_PAGE")&&(foundStart))
+                            {
+                                if(!parsePages) break;
+                                String name=s.substring(15).trim();
+                                pageDV=new DVector(4);
+                                pageDV.addElement(new Integer(QuestManager.QM_COMMAND_$TITLE),name,"","");
+                                ((Vector)templatesDV.elementAt(templatesDV.size()-1,4)).addElement(pageDV);
+                            }
+                            else
+                            if(s.trim().length()>0)
+                                Log.errOut("Quests","Unrecognized meta-questmaker command: "+s);
+                        }
+                        else
+                        if(s.startsWith("$")&&(foundStart))
+                        {
+                            if(parsePages)
+                            {
+                                int x=s.indexOf("=");
+                                if(x<0)
+                                    Log.errOut("Quests","Illegal QuestMaker variable syntax: "+s);
+                                else
+                                if(pageDV==null)
+                                    Log.errOut("Quests","QuestMaker syntax error, QUESTMAKER_PAGE not yet designated: "+s);
+                                else
+                                {
+                                    int y=s.indexOf("=",x+1);
+                                    if(y>=0)
+                                        pageDV.addElement(s.substring(x+1,y).trim(),s.substring(0,x),s.substring(y+1),"");
+                                    else
+                                        pageDV.addElement(s.substring(x+1).trim(),s.substring(0,x),"","");
+                                    String cmd=(String)pageDV.elementAt(pageDV.size()-1,1);
+                                    int mask=0;
+                                    if(cmd.startsWith("(")&&cmd.endsWith(")"))
+                                    {
+                                        mask=mask|QuestManager.QM_COMMAND_OPTIONAL;
+                                        cmd=cmd.substring(1,cmd.length()-1);
+                                    }
+                                    int code=CMParms.indexOf(QuestManager.QM_COMMAND_TYPES,cmd);
+                                    if(code<0)
+                                    {
+                                        Log.errOut("Quests","QuestMaker syntax error, '"+cmd+"' is an unknown command");
+                                        pageDV.removeElementsAt(pageDV.size()-1);
+                                    }
+                                    else
+                                        pageDV.setElementAt(pageDV.size()-1,1,new Integer(code|mask));
+                                }
+                            }
+                        }
+                        else
+                        if(foundStart)
+                        {
+                            if(pageDV==null)
+                            {
+                                if(s.length()==0)
+                                    templatesDV.setElementAt(templatesDV.size()-1,2,((String)templatesDV.elementAt(templatesDV.size()-1,2))+"\n\r\n\r");
+                                else
+                                    templatesDV.setElementAt(templatesDV.size()-1,2,((String)templatesDV.elementAt(templatesDV.size()-1,2))+s+" ");
+                            }
+                            else
+                            if(parsePages)
+                            {
+                                if((pageDV.size()<2)
+                                ||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$TITLE)
+                                ||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$LABEL))
+                                {
+                                    if(s.length()==0)
+                                        pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+"\n\r\n\r");
+                                    else
+                                        pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+s+" ");
+                                }
+                                else
+                                    pageDV.addElement(new Integer(QuestManager.QM_COMMAND_$LABEL),"",s,"");
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+        if((templatesDV==null)||(templatesDV.size()==0))
+            return null;
+        return templatesDV;
+    }
     
+    public Quest questMaker(MOB mob)
+    {
+        if(mob.isMonster()) return null;
+        DVector questTemplates=getQuestTemplate(mob,null);
+        try
+        {
+            if((questTemplates==null)||(questTemplates.size()==0))
+            {
+                mob.tell("No valid quest templates found in resources/quests/templates!");
+                return null;
+            }
+            int questIndex=-1;
+            while((questIndex<0)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                String choice=mob.session().prompt("Select a quest template (?): ","");
+                if(choice.equals("?"))
+                {
+                    StringBuffer fullList=new StringBuffer("");
+                    for(int t=0;t<questTemplates.size();t++)
+                        fullList.append("\n\r^H"+(String)questTemplates.elementAt(t,1)+"^N\n\r"+(String)questTemplates.elementAt(t,2)+"\n\r");
+                    mob.tell(fullList.toString());
+                }
+                else
+                if(choice.length()==0)
+                    return null;
+                else
+                {
+                    StringBuffer list=new StringBuffer("");
+                    for(int t=0;t<questTemplates.size();t++)
+                        if(choice.equalsIgnoreCase((String)questTemplates.elementAt(t,2)))
+                            questIndex=t;
+                        else
+                            list.append(((String)questTemplates.elementAt(t,2))+", ");
+                    if(questIndex<0)
+                        mob.tell("'"+choice+"' is not a valid quest name, use ? for a list, or select from the following: "+list.toString().substring(0,list.length()-2));
+                }
+            }
+            if((mob.session()==null)||(mob.session().killFlag())||(questIndex<0))
+                return null;
+            DVector qFDV=getQuestTemplate(mob,(String)questTemplates.elementAt(questIndex,3));
+            if((qFDV==null)||(qFDV.size()==0)) return null;
+            String questTemplateName=(String)qFDV.elementAt(0,1);
+            Vector qPages=(Vector)qFDV.elementAt(0,4);
+            mob.tell("^Z"+questTemplateName+"^.^N");
+            mob.tell((String)qFDV.elementAt(0,2));
+            for(int page=0;page<qPages.size();page++)
+            {
+                DVector pageDV=(DVector)qPages.elementAt(page);
+                String pageName=(String)pageDV.elementAt(0,2);
+                String pageInstructions=(String)pageDV.elementAt(0,3);
+                mob.tell("^HPage #"+(page+1)+": ^N"+pageName);
+                mob.tell("^N"+pageInstructions);
+                boolean ok=false;
+                int showFlag=-1;
+                for(int step=1;step<pageDV.size();step++)
+                {
+                    showFlag=-999;
+                    while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+                    {
+                        int showNumber=0;
+                        String lastLabel=null;
+                        Integer stepType=(Integer)pageDV.elementAt(step,1);
+                        String parm1=(String)pageDV.elementAt(step,2);
+                        String parm2=(String)pageDV.elementAt(step,3);
+                        //String parm3=(String)pageDV.elementAt(step,4);
+                        boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
+                        int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
+                        switch(inputCode)
+                        {
+                        case QM_COMMAND_$TITLE: break;
+                        case QM_COMMAND_$LABEL: lastLabel=parm2; break;
+                        case QM_COMMAND_$EXPRESSION:
+                        case QM_COMMAND_$UNIQUE_QUEST_NAME:
+                        case QM_COMMAND_$STRING:
+                        case QM_COMMAND_$ROOMID:
+                        case QM_COMMAND_$AREA:
+                        {
+                            String s=CMLib.english().prompt(mob,parm2,++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],null);
+                            pageDV.setElementAt(step,4,s);
+                            break;
+                        }
+                        case QM_COMMAND_$CHOOSE:
+                        {
+                            String s=CMLib.english().prompt(mob,"",++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            CMParms.toStringArray(CMParms.parseCommas(parm2.toUpperCase(),true)));
+                            pageDV.setElementAt(step,4,s);
+                            break;
+                        }
+                        case QM_COMMAND_$ITEMXML:
+                        {
+                            Item I=null;
+                            Vector choices=new Vector();
+                            Room R=mob.location();
+                            if(R!=null)
+                            for(int i=0;i<R.numItems();i++)
+                            {
+                                I=R.fetchItem(i);
+                                if((I!=null)&&(I.container()==null)&&(I.savable())) choices.addElement(R.getContextName(I));
+                            }
+                            String s=CMLib.english().prompt(mob,"",++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            CMParms.toStringArray(CMParms.parseCommas(parm2.toUpperCase(),true)));
+                            I=R.fetchItem(null,s);
+                            if(I!=null) pageDV.setElementAt(step,4,CMLib.coffeeMaker().getItemXML(I).toString());
+                            break;
+                        }
+                        case QM_COMMAND_$MOBXML:
+                        {
+                            MOB M=null;
+                            Vector choices=new Vector();
+                            Room R=mob.location();
+                            if(R!=null)
+                            for(int i=0;i<R.numInhabitants();i++)
+                            {
+                                M=R.fetchInhabitant(i);
+                                if((M!=null)&&(M.savable())) choices.addElement(R.getContextName(M));
+                            }
+                            String s=CMLib.english().prompt(mob,"",++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            CMParms.toStringArray(CMParms.parseCommas(parm2.toUpperCase(),true)));
+                            M=R.fetchInhabitant(s);
+                            if(M!=null) pageDV.setElementAt(step,4,CMLib.coffeeMaker().getMobXML(M).toString());
+                            break;
+                        }
+                        }
+                    }
+                    if(showFlag<-900){ ok=false; showFlag=0; mob.tell("\n\r^ZNow verify this page's selections:^.^N"); continue;}
+                    if(showFlag>0){ showFlag=-1; continue;}
+                    showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+                    if(showFlag<=0)
+                    {
+                        showFlag=-1;
+                        ok=true;
+                        // all done
+                    }
+                }
+                if((mob.session()==null)||(mob.session().killFlag()))
+                    return null;
+            }
+            String name="";
+            if((mob.session()!=null)&&(!mob.session().killFlag())
+            &&(mob.session().confirm("Create the new quest: "+name+" (y/N)? ","N")))
+            {
+                
+                Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+                
+            }
+            return null;
+        }
+        catch(java.io.IOException e)
+        {
+            return null;
+        }
+    }
 }

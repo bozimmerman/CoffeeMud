@@ -1,4 +1,9 @@
-#!QUESTMAKER_SCRIPT
+#!QUESTMAKER_START_SCRIPT Delivery #1
+#This quest will allow you to designate an existing mob on your map
+#as needing an item, which you will create, to be delivered to another
+#existing mob on your map.  When the player does this, an optional reward is given.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
 #
 #Quest Name:
 #Enter a unique name for your delivery quest:
@@ -24,7 +29,7 @@
 #ticks.
 #$DURATION=$EXPRESSION=175
 #
-#Specify the Deliverer:
+#!QUESTMAKER_PAGE Specify the Deliverer
 #The Deliverer is the mob who will be holding the item initially. This must
 #be an existing mob in your world.  
 #
@@ -32,7 +37,8 @@
 #Specify below the name of the area that your deliverer mob will be located
 #in and/or the room in which the mob can be found.  You may leave both blank
 #to force the quest manager to find the mob somewhere in the world, but this
-#will hurt the performance of your mud, so use with care.  
+#will hurt the performance of your mud, so use with care.
+#  
 #Deliverer Area:
 #$DELIVERER_AREA=($AREA)
 #Deliverer Room ID:
@@ -48,7 +54,7 @@
 #be started.
 #$DELIVERER_NAME=$STRING
 #
-#Deliverer reaons
+#Deliverer reasons
 #You may optionally specify some additional bit of speech the deliverer 
 #mob will say to players when the item is handed over for delivery.  The
 #deliverer will already be specifying the name of the mob to deliver to,
@@ -56,7 +62,7 @@
 #about the reward, or whatever.
 #$REASONING=($STRING)
 #
-#Specify the Deliveree:
+#!QUESTMAKER_PAGE Specify the Deliveree
 #The Deliveree is the mob to which the item will be delivered. 
 #
 #Deliveree Area/Room
@@ -79,14 +85,15 @@
 #be started.
 #$DELIVEREE_NAME=$STRING
 #
-#Deliverable item
+#!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
 #be taken and given to the deliveree mob.  You may specify more than
 #one item, but the Quest Manager will only select one of the items at
 #random when the quest is started.
+#
 #$DELIVERABLE_ITEM=$ITEMXML
-#!
-#Completion Reward
+#
+#!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for delivering the item:
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
@@ -97,6 +104,7 @@
 #
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
+#QUESTMAKER_END_SCRIPT Delivery
 
 set name $QUEST_NAME
 

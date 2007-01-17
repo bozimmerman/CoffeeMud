@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1404,23 +1405,23 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
     throws IOException
     {
-        E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help));
+        E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help,null,null));
     }
     
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null,null,null);
     }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help,null,null);
     }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
     throws IOException
     {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null);
     }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
     throws IOException
@@ -1430,10 +1431,24 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
     throws IOException
     {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null);
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null);
     }
     
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
+    throws IOException
+    {
+        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,help,null,null);
+    }
+    public String prompt(MOB mob, 
+                         String oldVal, 
+                         int showNumber, 
+                         int showFlag, 
+                         String FieldDisp, 
+                         boolean emptyOK, 
+                         boolean rawPrint, 
+                         String help, 
+                         CMEval eval,
+                         String[] choices)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1446,16 +1461,34 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
             newName=mob.session().prompt("Enter a new value "+(emptyOK?"(or NULL)":"")+(help!=null?" (?)":"")+"\n\r:","");
-            if((newName.equalsIgnoreCase("null"))&&(emptyOK))
-                return "";
-            else
             if(newName.equals("?")&&(help!=null))
                 mob.tell(help);
             else
-            if(newName.length()>0)
+            {
+                boolean noEntry=(newName.trim().length()==0);
+                if(noEntry) 
+                    newName=oldVal;
+                else
+                if((newName.equalsIgnoreCase("null"))&&(emptyOK)) 
+                    newName="";
+                
+                if(eval!=null)
+                try
+                {
+                    Object value=eval.eval(newName,choices,emptyOK);
+                    if(value instanceof String)
+                        newName=(String)value;
+                }
+                catch(CMException e)
+                {
+                    mob.tell(e.getMessage());
+                    newName="?";
+                    continue;
+                }
+                if((noEntry)&&(newName.equals(oldVal)))
+                    break;
                 return newName;
-            else
-                break;
+            }
         }
         mob.tell("(no change)");
         return oldVal;
