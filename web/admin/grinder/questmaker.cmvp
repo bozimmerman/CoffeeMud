@@ -15,12 +15,6 @@
 		}
 		function ClickedNext()
 		{
-			if(document.QUESTS.QMEVAL.value!='')
-			{
-				var confirmed=true;
-				eval('confirmed='+document.QUESTS.QMEVAL.value);
-				if(!confirmed) return;
-			}
 			document.QUESTS.FUNCTION.value='NEXT';
 			document.QUESTS.submit();
 		}
@@ -40,150 +34,20 @@
 	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="Close('');"></TD>
 	</TR>
 	</TABLE>
-<FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
-@QuestMaker?@@RequestParameter?FUNCTION@@ @ <!-- this will update qmstate and qmdisplay! -->
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
-<INPUT TYPE=HIDDEN NAME=QMSTATE VALUE="@QuestMaker?QMSTATE@">
-<INPUT TYPE=HIDDEN NAME=QMDISPLAY VALUE="@RequestParameter?QMDISPLAY@">
-<INPUT TYPE=HIDDEN NAME=QMNEXT VALUE="@RequestParameter?QMDISPLAY@">
-<INPUT TYPE=HIDDEN NAME=QMPROCESS VALUE="">
-<INPUT TYPE=HIDDEN NAME=QMEVAL VALUE="">
-<FONT COLOR=WHITE>
-	<!-- qmdisplay state = '' means welcome! -->
-	@if?CheckReqParm?QMDISPLAY=@
-		Welcome to the QuestMaker.  Our first step will be to choose a name for your quest.  
-		This name must be unique among all the quests, so if you have a lot of them, you might
-		want to look over the list.  This name will never be displayed, so its not important that
-		it look right.  In fact, using short names with no spaces is the best idea; something like:
-		myfirstquest would do nicely.<P>
-		<CENTER>
-		Quest name:	<INPUT TYPE=TEXT NAME=QMNAME SIZE=20 VALUE="@RequestParameter?QMNAME@">
-		<P>
-		Just hit next to proceed.
-		</CENTER>
-		<SCRIPT LANGUAGE=JavaScript>
-		<!--
-			document.QUESTS.QMEVAL.value='next()';
-			function next()
-			{
-				if(document.QUESTS.QMNAME.value=='')
-				{
-					window.alert('Please enter some sort of name.  That would be really good.');
-					return false;
-				}
-				document.QUESTS.QMNEXT.value='QUESTTIME';
-				return true;
-			}
-		//-->
-		</SCRIPT>
-	@endif@
 	
-	<!-- qmdisplay state = '' means welcome! -->
-	@if?CheckReqParm?QMDISPLAY=QUESTTIME@
-		OK! Now we're going to decide how often our quest runs by select quest start conditions.
-		<P>
+		<FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
+		@QuestMaker?@@RequestParameter?FUNCTION@@ @ <!-- this will update qmpage?-->
+		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+		<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
+		<INPUT TYPE=HIDDEN NAME=QMPAGE VALUE="@QuestMaker?QMPAGE@">
+		<FONT COLOR=WHITE>
+		page instructions?<P>
 		<TABLE WIDTH=100%><TR><TD WIDTH=10%><BR></TD><TD VALIGN=TOP ALIGN=LEFT>
 		<FONT COLOR=WHITE>
+		other stuff
 		<P>
-		<INPUT TYPE=RADIO NAME=QMSTARTTYPE VALUE="DATE" @if?CheckReqParm?QMSTARTTYPE=DATE@CHECKED@endif@>
-		The quest starts automatically, once a year, on a real-life date in format DAYNUMBER-MONTHNUMBER
-		<INPUT TYPE=TEXT NAME=RLDATE SIZE=5 VALUE="@if?CheckReqParm?QMSTARTTYPE=DATE@ @RequestParameter?QMSTARTVAL@ @endif@">
-		<P>
-		<INPUT TYPE=RADIO NAME=QMSTARTTYPE VALUE="MUDDAY" @if?CheckReqParm?QMSTARTTYPE=MUDDAY@CHECKED@endif@>
-		The quest starts automatically, once per standard mud-year, on a mud date in format DAYNUMBER-MONTHNUMBER
-		<INPUT TYPE=TEXT NAME=MUDDATE SIZE=5 VALUE="@if?CheckReqParm?QMSTARTTYPE=MUDDAY@ @RequestParameter?QMSTARTVAL@ @endif@">
-		<P>
-		<INPUT TYPE=RADIO NAME=QMSTARTTYPE VALUE="INTERVAL" @if?CheckReqParm?QMSTARTTYPE=INTERVAL@CHECKED@endif@  @if?CheckReqParm?QMSTARTTYPE=@CHECKED@endif@>
-		The quest starts automatically, on an interval equal to  
-		<INPUT TYPE=TEXT NAME=TICK1 SIZE=5 VALUE="@if?CheckReqParm?QMSTARTTYPE=INTERVAL@ @RequestParameter?QMSTARTVAL@ @endif@">
-		ticks, plus a random number of ticks from 1 to 
-		<INPUT TYPE=TEXT NAME=TICK2 SIZE=5 VALUE="@if?CheckReqParm?QMSTARTTYPE=INTERVAL@ @RequestParameter?QMSTARTVAL2@ @endif@">
-		ticks (4 second periods)
-		<P>
-		<INPUT TYPE=RADIO NAME=QMSTARTTYPE VALUE="TRIGGER" @if?CheckReqParm?QMSTARTTYPE=TRIGGER@CHECKED@endif@>
-		The quest starts from a custom trigger (select and click next to define this trigger)
-		<P>
-		<INPUT TYPE=RADIO NAME=QMSTARTTYPE VALUE="ALWAYS" @if?CheckReqParm?QMSTARTTYPE=ALWAYS@CHECKED@endif@>
-		The quest starts immediately as soon as the mud boots.
-		<P>
-		<INPUT TYPE=HIDDEN NAME=QMSTARTVAL VALUE="@RequestParameter?QMSTARTVAL@">
-		<INPUT TYPE=HIDDEN NAME=QMSTARTVAL2 VALUE="@RequestParameter?QMSTARTVAL2@">
 		</FONT>
 		</TD></TR></TABLE>
-		<SCRIPT LANGUAGE=JavaScript>
-		<!--
-			document.QUESTS.QMEVAL.value='next()';
-			function next()
-			{
-				var value='';
-				for(var i=0;i<document.QUESTS.QMSTARTTYPE.length;i++)
-					if(document.QUESTS.QMSTARTTYPE[i].checked)
-						value=document.QUESTS.QMSTARTTYPE[i].value;
-				document.QUESTS.QMNEXT.value='QUESTTYPE';
-				if(value=='DATE')
-				{
-					if(document.QUESTS.RLDATE.value=='')
-					{
-						window.alert('Please enter a date.');
-						return false;
-					}
-					document.QUESTS.QMSTARTVAL.value=document.QUESTS.RLDATE.value;
-					document.QUESTS.QMSTARTVAL2.value='';
-				}
-				if(value=='MUDDAY')
-				{
-					if(document.QUESTS.MUDDATE.value=='')
-					{
-						window.alert('Please enter a date.');
-						return false;
-					}
-					document.QUESTS.QMSTARTVAL.value=document.QUESTS.MUDDATE.value;
-					document.QUESTS.QMSTARTVAL2.value='';
-				}
-				if(value=='INTERVAL')
-				{
-					if((document.QUESTS.TICK1.value=='')||(document.QUESTS.TICK2.value==''))
-					{
-						window.alert('Please fill in the interval values.');
-						return false;
-					}
-					document.QUESTS.QMSTARTVAL.value=document.QUESTS.TICK1.value;
-					document.QUESTS.QMSTARTVAL2.value=document.QUESTS.TICK2.value;
-				}
-				if(value=='TRIGGER')
-				{
-					document.QUESTS.QMNEXT.value='QUESTTRIGGER1';
-					document.QUESTS.QMSTARTVAL.value='';
-					document.QUESTS.QMSTARTVAL2.value='';
-				}
-				if(value=='ALWAYS')
-				{
-					document.QUESTS.QMSTARTVAL.value='';
-					document.QUESTS.QMSTARTVAL2.value='';
-				}
-				return true;
-			}
-		//-->
-		</SCRIPT>
-	@endif@
-	
-	@if?CheckReqParm?QMDISPLAY=QUESTTYPE@
-		<P>
-		<CENTER>
-		Just hit next to proceed.
-		</CENTER>
-		<SCRIPT LANGUAGE=JavaScript>
-		<!--
-			document.QUESTS.QMEVAL.value='next()';
-			function next()
-			{
-				document.QUESTS.QMNEXT.value='QUESTTIME';
-				return true;
-			}
-		//-->
-		</SCRIPT>
-	@endif@
 	
 	<TABLE WIDTH=100% BORDER=0><TR>
 	@if?CheckReqParm?!QMDISPLAY=@
