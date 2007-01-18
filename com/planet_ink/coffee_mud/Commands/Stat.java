@@ -171,7 +171,7 @@ public class Stat extends BaseAbleLister
 		{
 			lastCur=curTime;
             Calendar C2=Calendar.getInstance();
-            C.setTimeInMillis(curTime);
+            C2.setTimeInMillis(curTime);
 			C2.add(Calendar.DATE,-(scale));
 			curTime=C2.getTimeInMillis();
 			C2.set(Calendar.HOUR_OF_DAY,23);

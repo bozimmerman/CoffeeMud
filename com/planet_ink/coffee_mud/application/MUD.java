@@ -890,7 +890,7 @@ public class MUD extends Thread implements MudHost
 				Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
 			}
 			CMProps.setVar(CMProps.SYSTEM_INIPATH,iniFile,false);
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,name);
+			CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,name.replace('\'','`'));
 			try
 			{
 				isOK = true;

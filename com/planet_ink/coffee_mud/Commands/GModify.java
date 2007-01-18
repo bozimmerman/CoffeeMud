@@ -586,7 +586,7 @@ public class GModify extends StdCommand
 	    	synchronized(("SYNC"+R.roomID()).intern())
 	    	{
 	    		R=CMLib.map().getRoom(R);
-	            if((mob.session()==null)||(mob.session().killFlag()))
+	            if((mob.session()==null)||(mob.session().killFlag())||(R.getArea()==null))
 	            	return false;
 	            boolean oldMobility=R.getArea().getMobility();
 	            if(changes.size()==0)
@@ -644,8 +644,12 @@ public class GModify extends StdCommand
         }
 
         if(mob.session()!=null) mob.session().rawPrintln("!\n\rDone!");
+        Area A=null;
         for(int i=0;i<placesToDo.size();i++)
-            ((Room)placesToDo.elementAt(i)).getArea().toggleMobility(true);
+        {
+            A=((Room)placesToDo.elementAt(i)).getArea();
+            if(A!=null) A.toggleMobility(true);
+        }
         return false;
     }
     
