@@ -87,7 +87,7 @@ public interface QuestManager extends CMLibrary
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if((str==null)||(((String)str).trim().length()==0)){
                 if(emptyOK) return "";
-                throw new CMException("You must enter a value!");
+                throw new CMException("You must enter an expression!");
             }
             if(!CMath.isMathExpression((String)str)) 
                 throw new CMException("Invalid mathematical expression.  Use numbers,+,-,*,/,(), and ? only."); 
@@ -97,8 +97,13 @@ public interface QuestManager extends CMLibrary
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if((str==null)||(((String)str).trim().length()==0)){
                 if(emptyOK) return "";
-                throw new CMException("You must enter a value!");
+                throw new CMException("You must enter a quest name!");
             }
+            for(int i=0;i<((String)str).length();i++)
+                if((!Character.isLetterOrDigit(((String)str).charAt(i)))
+                &&(((String)str).charAt(i)!='_'))
+                    throw new CMException("Quest names may only contain letters, digits, or _ -- no spaces or special characters.");
+            
             if(CMLib.quests().fetchQuest(((String)str).trim())!=null)
                 throw new CMException("A quest of that name already exists.  Enter another.");
             return ((String)str).trim();

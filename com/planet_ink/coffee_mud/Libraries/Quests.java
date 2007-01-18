@@ -1158,7 +1158,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((!tempF.exists())||(!tempF.isDirectory()))
             return null;
         CMFile[] files=tempF.listFiles();
-        DVector templatesDV=new DVector(4);
+        DVector templatesDV=new DVector(5);
         boolean parsePages=fileToGet!=null;
         if(files.length==0) return null;
         for(int f=0;f<files.length;f++)
@@ -1413,7 +1413,16 @@ public class Quests extends StdLibrary implements QuestManager
                     }
                     if(showFlag<-900){ ok=false; showFlag=0; mob.tell("\n\r^ZNow verify this page's selections:^.^N"); continue;}
                     if(showFlag>0){ showFlag=-1; continue;}
-                    showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+                    String what=mob.session().prompt("Edit which (enter 0 to cancel)? ","");
+                    if(what.trim().equals("0"))
+                    {
+                        if(mob.session().confirm("Are you sure you want to abort (y/N)? ","N"))
+                        {
+                            mob.tell("Aborted.");
+                            return null;
+                        }
+                    }
+                    showFlag=CMath.s_int(what);
                     if(showFlag<=0)
                     {
                         showFlag=-1;
@@ -1425,12 +1434,36 @@ public class Quests extends StdLibrary implements QuestManager
                     return null;
             }
             String name="";
+            String script=((StringBuffer)qFDV.elementAt(0,5)).toString();
+            String var=null;
+            String val=null;
+            for(int page=0;page<qPages.size();page++)
+            {
+                DVector pageDV=(DVector)qPages.elementAt(page);
+                for(int v=0;v<pageDV.size();v++)
+                {
+                    var=(String)pageDV.elementAt(v,2);
+                    val=(String)pageDV.elementAt(v,4);
+                    if(((String)pageDV.elementAt(v,1)).equalsIgnoreCase(QM_COMMAND_TYPES[QM_COMMAND_$UNIQUE_QUEST_NAME]))
+                        name=val;
+                    script=CMStrings.replaceAll(script,var,val);
+                }
+            }
             if((mob.session()!=null)&&(!mob.session().killFlag())
             &&(mob.session().confirm("Create the new quest: "+name+" (y/N)? ","N")))
             {
-                
                 Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
-                
+                CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),mob,true,false);
+                newQF.saveText(script);
+                Q.setScript(script);
+                if((Q.name().trim().length()==0)||(Q.duration()<0))
+                {
+                    mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
+                    return null;
+                }
+                CMLib.quests().addQuest(Q);
+                CMLib.quests().save();
+                return Q;
             }
             return null;
         }
