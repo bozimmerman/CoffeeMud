@@ -721,7 +721,8 @@ public class Conquerable extends Arrest
 		&&(!((MOB)msg.target()).isInCombat())
 		&&(msg.source().getVictim()!=msg.target())
 		&&(((MOB)msg.target()).getClanID().equals(holdingClan))
-		&&(noMultiFollows.contains(msg.target())))
+		&&(noMultiFollows.contains(msg.target()))
+        &&(flagFound((Area)myHost,msg.source().getClanID())))
 		{
 			noMultiFollows.remove(msg.target());
             if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.target().envStats().level())+" points by harming "+msg.target().name());
@@ -1050,8 +1051,9 @@ public class Conquerable extends Arrest
                         }
 					}
 					else // a foreigner was killed
-					if((killer.getClanID().equals(holdingClan))
-					&&(msg.source().getClanID().length()>0)
+					if((killer.getClanID().equals(holdingClan)) // killer is from holding clan
+                    &&(holdingClan.length()>0)
+					&&(msg.source().getClanID().length()>0)     // killed is a conquesting one
 					&&(flagFound((Area)myHost,msg.source().getClanID())))
                     {
                         if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.source().envStats().level())+" points by allowing the death of "+msg.source().name());
