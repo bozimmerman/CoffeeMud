@@ -306,6 +306,30 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		return fixRejuvItem(I);
 	}
 
+    public boolean toneDownValue(Item I)
+    {
+        int hands=0;
+        int weaponClass=0;
+        if(I instanceof Coins) return false;
+        if(I instanceof Weapon)
+        {
+            hands=I.rawLogicalAnd()?2:1;
+            weaponClass=((Weapon)I).weaponClassification();
+        }
+        else
+        if(!(I instanceof Armor))
+            return false;
+        Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),
+                                        I.baseEnvStats().weight(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+        int newValue=CMath.s_int((String)H.get("VALUE"));
+        if((I.baseGoldValue()>newValue)&&(newValue>0))
+        {
+            I.setBaseValue(newValue);
+            return true;
+        }
+        return false;
+    }
+    
 	public void balanceItemByLevel(Item I)
 	{
 		int hands=0;
