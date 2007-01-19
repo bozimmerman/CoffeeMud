@@ -38,6 +38,19 @@ public class QuestMaker extends StdWebMacro
         if((parms==null)||(parms.size()==0)) return "";
         String qState=httpReq.getRequestParameter("QMSTATE");
         if((qState==null)||(qState.length()==0)) qState="";
+        // qmfunction
+        // qmpage (#)
+        // qmlastpage (true/false)
+        // qmtemplate
+        // qmstate
+        // qmpagetitle
+        // qmpageinstr
+        // qmerrors
+        // qmpagefields
+        String template=httpReq.getRequestParameter("QMTEMPLATE");
+        String pageStr=httpReq.getRequestParameter("QMPAGE");
+        String page=httpReq.getRequestParameter("QMPAGE");
+        
         if(parms.containsKey("QMSTATE")) return qState;
         else
         if(parms.containsKey("NEXT"))
@@ -47,10 +60,7 @@ public class QuestMaker extends StdWebMacro
             for(int v=0;v<V.size();v++)
             {
                 String key=(String)V.elementAt(v);
-                if((key.equalsIgnoreCase("QMSTATE"))
-                ||(key.equalsIgnoreCase("QMPROCESS"))
-                ||(key.equalsIgnoreCase("QMNEXT"))
-                ||(key.equalsIgnoreCase("QMEVAL")))
+                if((!key.startsWith("AT_")))
                     continue;
                 newState.append("<"+key.toUpperCase()+">");
                 newState.append(CMLib.xml().parseOutAngleBrackets(httpReq.getRequestParameter(key)));
@@ -58,7 +68,6 @@ public class QuestMaker extends StdWebMacro
             }
             newState.append("</STATE>");
             httpReq.addRequestParameters("QMSTATE",qState+newState.toString());
-            httpReq.addRequestParameters("QMDISPLAY",httpReq.getRequestParameter("QMNEXT"));
             // this should add new data to the qmstate from the page and
             // proceed on the assumption that the page knows its next display state
             // from QMDISPLAY
