@@ -77,6 +77,14 @@ public class Deviations extends StdCommand
 		return str.toString();
 	}
 
+	public boolean alreadyDone(Environmental E, Vector itemsDone)
+	{
+		for(int i=0;i<itemsDone.size();i++)
+			if(((Environmental)itemsDone.elementAt(i)).sameAs(E))
+				return true;
+		return false;
+	}
+	
 	private void fillCheckDeviations(Room R, String type, Vector check)
 	{
 		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
@@ -84,7 +92,7 @@ public class Deviations extends StdCommand
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(M.savable()))
+				if((M!=null)&&(M.savable())&&(!alreadyDone(M,check)))
 					check.addElement(M);
 			}
 		}
@@ -94,7 +102,8 @@ public class Deviations extends StdCommand
 			{
 				Item I=R.fetchItem(i);
 				if((I!=null)
-				&&((I instanceof Armor)||(I instanceof Weapon)))
+				&&((I instanceof Armor)||(I instanceof Weapon))
+				&&(!alreadyDone(I,check)))
 					check.addElement(I);
 			}
 			for(int m=0;m<R.numInhabitants();m++)
@@ -106,7 +115,8 @@ public class Deviations extends StdCommand
 					{
 						Item I=M.fetchInventory(i);
 						if((I!=null)
-						&&((I instanceof Armor)||(I instanceof Weapon)))
+						&&((I instanceof Armor)||(I instanceof Weapon))
+						&&(!alreadyDone(I,check)))
 							check.addElement(I);
 					}
 					ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(M);
@@ -117,7 +127,8 @@ public class Deviations extends StdCommand
 							if(V.elementAt(i) instanceof Item)
 							{
 								Item I=(Item)V.elementAt(i);
-								if((I instanceof Armor)||(I instanceof Weapon))
+								if(((I instanceof Armor)||(I instanceof Weapon))
+								&&(!alreadyDone(I,check)))
 									check.addElement(I);
 							}
 					}
@@ -135,11 +146,12 @@ public class Deviations extends StdCommand
 	}
 	protected String getDeviation(int val, int val2)
 	{
+		
 		if(val==val2) return "0%";
-		int oval=val-val2;
-		if(oval>0) 
-            return "+"+oval;
-        return ""+oval;
+		int oval=val2-val;
+		int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
+		if(oval>0) return "-"+pval+"%";
+        return "+"+pval+"%";
 	}
 
 	public StringBuffer deviations(MOB mob, String rest)
@@ -171,6 +183,15 @@ public class Deviations extends StdCommand
 		if(where.equalsIgnoreCase("area"))
 		{
 			for(Enumeration r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				fillCheckDeviations(R,type,check);
+			}
+		}
+		else
+		if(where.equalsIgnoreCase("world"))
+		{
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				fillCheckDeviations(R,type,check);
