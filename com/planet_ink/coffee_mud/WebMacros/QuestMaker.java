@@ -38,39 +38,69 @@ public class QuestMaker extends StdWebMacro
         if((parms==null)||(parms.size()==0)) return "";
         String qState=httpReq.getRequestParameter("QMSTATE");
         if((qState==null)||(qState.length()==0)) qState="";
-        // qmfunction
-        // qmpage (#)
-        // qmlastpage (true/false)
-        // qmtemplate
-        // qmstate
-        // qmpagetitle
-        // qmpageinstr
         // qmerrors
         // qmpagefields
-        String template=httpReq.getRequestParameter("QMTEMPLATE");
-        String pageStr=httpReq.getRequestParameter("QMPAGE");
-        String page=httpReq.getRequestParameter("QMPAGE");
+        String qTemplate=httpReq.getRequestParameter("QMTEMPLATE");
+        String qPageStr=httpReq.getRequestParameter("QMPAGE");
+        String qPageErrors=httpReq.getRequestParameter("QMPAGEERRORS");
         
+        if(parms.containsKey("QMPAGETITLE"))
+        {
+            // should load the template, and page
+            // then return the pages title, if there is one
+            return "not yet implemented";
+        }
+        else
+        if(parms.containsKey("QMPAGEINSTR"))
+        {
+            // should load the template, and page
+            // and return the pages instructions, if there is any
+            return "not yet implemented";
+        }
+        else
+        if(parms.containsKey("QMPAGEFIELDS"))
+        {
+            // should load the template, and page
+            // and build the fields, labels, and so forth
+            // for each input field. this will be BIG
+            return "not yet implemented";
+        }
+        else
+        if(parms.containsKey("QMLASTPAGE"))
+        {
+            // should load the template, and compare QMPAGE to
+            // # of pages to return true or false
+            return "false";
+        }
+        else
+        if(parms.containsKey("QMPAGEERRORS")) return (qPageErrors==null)?"":qPageErrors;
+        else
+        if(parms.containsKey("QMTEMPLATE")) return qTemplate;
+        else
+        if(parms.containsKey("QMPAGE")) return qPageStr;
+        else
         if(parms.containsKey("QMSTATE")) return qState;
         else
         if(parms.containsKey("NEXT"))
         {
-            Vector V=httpReq.getAllRequestParameterKeys("^QM(.+)");
+            Vector V=httpReq.getAllRequestParameterKeys("^AT_(.+)");
+            // this should EVALUATE the data submitted and populate QMERRORS
+            // **HERE***
+            // have it update all the above fields (esp qmpage, qmpageerrors
+            // including the NEXT pages default data
             StringBuffer newState=new StringBuffer("<STATE>");
             for(int v=0;v<V.size();v++)
             {
                 String key=(String)V.elementAt(v);
                 if((!key.startsWith("AT_")))
                     continue;
+                key=key.substring(3);
                 newState.append("<"+key.toUpperCase()+">");
                 newState.append(CMLib.xml().parseOutAngleBrackets(httpReq.getRequestParameter(key)));
                 newState.append("</"+key.toUpperCase()+">");
             }
             newState.append("</STATE>");
             httpReq.addRequestParameters("QMSTATE",qState+newState.toString());
-            // this should add new data to the qmstate from the page and
-            // proceed on the assumption that the page knows its next display state
-            // from QMDISPLAY
         }
         else
         if(parms.containsKey("BACK"))
@@ -87,7 +117,7 @@ public class QuestMaker extends StdWebMacro
                 for(int t=0;t<tagsFrom.contents.size();t++)
                 {
                     XMLLibrary.XMLpiece tag=(XMLLibrary.XMLpiece)tagsFrom.contents.elementAt(t);
-                    String tagName=tag.tag;
+                    String tagName="AT_"+tag.tag;
                     String tagValue=CMLib.xml().restoreAngleBrackets(tag.value);
                     httpReq.addRequestParameters(tagName,tagValue);
                 }
