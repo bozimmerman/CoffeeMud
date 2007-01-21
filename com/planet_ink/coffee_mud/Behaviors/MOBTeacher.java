@@ -366,6 +366,12 @@ public class MOBTeacher extends CombatAbilities
                     }
                     if(theExpertise!=null)
                     {
+                        if(student.fetchExpertise(theExpertise.ID)!=null)
+                        {
+                            monster.tell(student.name()+" already knows "+theExpertise.name);
+                            CMLib.commands().postSay(monster,student,"You already know "+theExpertise.name,true,false);
+                            return;
+                        }
                         if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
                         {
                             monster.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()));
