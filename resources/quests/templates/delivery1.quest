@@ -1,7 +1,6 @@
 #!QUESTMAKER_START_SCRIPT Delivery #1
-#This quest will allow you to designate an existing mob on your map
-#as needing an item, which you will create, to be delivered to another
-#existing mob on your map.  When the player does this, an optional reward is given.
+#The player delivers a custom-Item from one existing mob in your world
+#to another.  A reward is given upon delivery.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
