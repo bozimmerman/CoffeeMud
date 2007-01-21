@@ -4,6 +4,7 @@
 #existing mob on your map.  When the player does this, an optional reward is given.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name and starting time/duration for your new quest.
 #
 #Quest Name:
 #Enter a unique name for your delivery quest:
@@ -45,9 +46,10 @@
 #$DELIVERER_ROOM=($ROOMID)
 #
 #Deliverer mob name
-#Specify the name of the mob who will act as the deliverer mob.  If you
-#specified an area or room above, then the mob must be located there. You
-#may optionally have the quest manager select a 'random' mob by entering
+#Specify the name of the mob who will act as the deliverer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
 #a mob name of ANY MASK= followed by a Zapper Mask (see help on 
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
@@ -76,9 +78,10 @@
 #$DELIVEREE_ROOM=($ROOMID)
 #
 #Deliveree mob name
-#Specify the name of the mob who will act as the deliveree mob.  If you
-#specified an area or room above, then the mob must be located there. You
-#may optionally have the quest manager select a 'random' mob by entering
+#Specify the name of the mob who will act as the deliveree mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there. 
+#You may optionally have the quest manager select a 'random' mob by entering
 #a mob name of ANY MASK= followed by a Zapper Mask (see help on 
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
@@ -87,9 +90,8 @@
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
-#be taken and given to the deliveree mob.  You may specify more than
-#one item, but the Quest Manager will only select one of the items at
-#random when the quest is started.
+#be taken and given to the deliveree mob.  You may select from the
+#available items below or create a new item just for this quest.
 #
 #$DELIVERABLE_ITEM=$ITEMXML
 #
@@ -104,7 +106,7 @@
 #
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
-#QUESTMAKER_END_SCRIPT Delivery
+#!QUESTMAKER_END_SCRIPT Delivery #1
 
 set name $QUEST_NAME
 
@@ -118,7 +120,7 @@ set room $DELIVERER_ROOM
 set mobgroup
 set mob $DELIVERER_NAME
 give behavior Scriptable LOAD=deliverer.script
-load item
+load item any
 give item
 
 set area $DELIVEREE_AREA
@@ -130,16 +132,16 @@ give behavior Scriptable LOAD=deliveree.script
 set duration $DURATION
 
 #!~!BEGINFILEXML!~!
-<FILE><NAME>item.xml</NAME><DATA>$DELIVERABLE_ITEM</DATA></FILE>
+<FILE><NAME>item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
 <FILE><NAME>deliverer.script</NAME>
 <DATA>
 # this script is for the human chosen to be the note bearer
 GREET_PROG 100
 	if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-		if has($n '$[* 0]')
-				sayto "$n" What are you doing back here?  Deliver $[* 0] to ${2 *}!
+		if has($n '$[1 *]')
+				sayto "$n" What are you doing back here?  Deliver $[1 *] to ${2 *}!
 		else
-			if has($i '$[* 0]')
+			if has($i '$[1 *]')
 				sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
 			endif
 		endif
@@ -148,10 +150,10 @@ GREET_PROG 100
 
 SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
 	if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-		if has($n '$[* 0]')
-				sayto "$n" Just deliver $[* 0] to ${2 *}!
+		if has($n '$[1 *]')
+				sayto "$n" Just deliver $[1 *] to ${2 *}!
 		else
-			if has($i '$[* 0]')
+			if has($i '$[1 *]')
 				sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
 			endif
 		endif
@@ -160,13 +162,13 @@ SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to d
 
 SPEECH_PROG p i accept
 	if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-		if has($i '$[* 0]') and !has($n '$[* 0]')
-#			mpoload '$[* 0]'
-			give "$[* 0]" "$n"
+		if has($i '$[1 *]') and !has($n '$[1 *]')
+#			mpoload '$[1 *]'
+			give "$[1 *]" "$n"
 			sayto "$n" Please deliver this to ${2 *}.  $REASONING
-			mpqset REMAINING $DURATION
+			mpqset * REMAINING $DURATION
 		else
-			if has($n '$[* 0]')
+			if has($n '$[1 *]')
 				sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
 			endif
 		endif
@@ -174,8 +176,8 @@ SPEECH_PROG p i accept
 ~
 	
 
-GIVE_PROG any
-	if EVAL($o == '$[* 0]')
+GIVE_PROG all
+	if EVAL($o == '$[1 *]')
 		sayto "$n" So, you refuse?  Help me find someone else then.  Ok?
 		mpjunk $o
 	endif
@@ -183,19 +185,19 @@ GIVE_PROG any
 </DATA></FILE>
 <FILE><NAME>deliveree.script</NAME>
 <DATA>
-ENTER_PROG 100
-	if has($n '$[* 0]')
-		say "$n" Ah, I see you are here to deliver $[* 0].  Go ahead and give it to me.
+GREET_PROG 100
+	if has($n '$[1 *]')
+		say "$n" Ah, I see you are here to deliver $[1 *].  Go ahead and give it to me.
 	endif
 ~
 	
 
-GIVE_PROG any
+GIVE_PROG all
 	if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 		sayto "$n" What's this?
 		give "$o" "$n"
 	else
-		if EVAL($o == '$[* 0]')
+		if EVAL($o == '$[1 *]')
 			sayto "$n" Thank you.
 			if EVAL('$EXP' != '')
 				mpexp $n 10%

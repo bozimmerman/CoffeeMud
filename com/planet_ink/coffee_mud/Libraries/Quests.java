@@ -1196,7 +1196,7 @@ public class Quests extends StdLibrary implements QuestManager
                             {
                                 foundStart=false;
                                 foundQuestScript=true;
-                                break;
+                                continue;
                             }
                             else
                             if(s.startsWith("QUESTMAKER_PAGE")&&(foundStart))
@@ -1300,22 +1300,22 @@ public class Quests extends StdLibrary implements QuestManager
                 String choice=mob.session().prompt("Select a quest template (?): ","");
                 if(choice.equals("?"))
                 {
-                    StringBuffer fullList=new StringBuffer("");
+                    StringBuffer fullList=new StringBuffer("\n\r^HCANCEL^N -- to cancel.\n\r");
                     for(int t=0;t<questTemplates.size();t++)
                         fullList.append("\n\r^H"+(String)questTemplates.elementAt(t,1)+"^N\n\r"+(String)questTemplates.elementAt(t,2)+"\n\r");
                     mob.tell(fullList.toString());
                 }
                 else
-                if(choice.length()==0)
+                if((choice.length()==0)||(choice.equalsIgnoreCase("CANCEL")))
                     return null;
                 else
                 {
                     StringBuffer list=new StringBuffer("");
                     for(int t=0;t<questTemplates.size();t++)
-                        if(choice.equalsIgnoreCase((String)questTemplates.elementAt(t,2)))
+                        if(choice.equalsIgnoreCase((String)questTemplates.elementAt(t,1)))
                             questIndex=t;
                         else
-                            list.append(((String)questTemplates.elementAt(t,2))+", ");
+                            list.append(((String)questTemplates.elementAt(t,1))+", ");
                     if(questIndex<0)
                         mob.tell("'"+choice+"' is not a valid quest name, use ? for a list, or select from the following: "+list.toString().substring(0,list.length()-2));
                 }
@@ -1336,40 +1336,43 @@ public class Quests extends StdLibrary implements QuestManager
                 mob.tell("^HPage #"+(page+1)+": ^N"+pageName);
                 mob.tell("^N"+pageInstructions);
                 boolean ok=false;
-                int showFlag=-1;
-                for(int step=1;step<pageDV.size();step++)
+                int showFlag=-999;
+                while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
                 {
-                    showFlag=-999;
-                    while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+                    int showNumber=0;
+                    String lastLabel=null;
+                    for(int step=1;step<pageDV.size();step++)
                     {
-                        int showNumber=0;
-                        String lastLabel=null;
                         Integer stepType=(Integer)pageDV.elementAt(step,1);
-                        String parm1=(String)pageDV.elementAt(step,2);
-                        String parm2=(String)pageDV.elementAt(step,3);
-                        //String parm3=(String)pageDV.elementAt(step,4);
+                        String keyName=(String)pageDV.elementAt(step,2);
+                        String defValue=(String)pageDV.elementAt(step,3);
+                        String parm1Fixed=CMStrings.capitalizeAndLower(keyName.replace('_',' '));
+                        if(parm1Fixed.startsWith("$")) parm1Fixed=parm1Fixed.substring(1);
+                        
                         boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
                         int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
                         switch(inputCode)
                         {
                         case QM_COMMAND_$TITLE: break;
-                        case QM_COMMAND_$LABEL: lastLabel=parm2; break;
+                        case QM_COMMAND_$LABEL: lastLabel=defValue; break;
                         case QM_COMMAND_$EXPRESSION:
                         case QM_COMMAND_$UNIQUE_QUEST_NAME:
                         case QM_COMMAND_$STRING:
                         case QM_COMMAND_$ROOMID:
                         case QM_COMMAND_$AREA:
                         {
-                            String s=CMLib.english().prompt(mob,parm2,++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                            String showValue=(showFlag<-900)?defValue:(String)pageDV.elementAt(step,4);
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],null);
                             pageDV.setElementAt(step,4,s);
                             break;
                         }
                         case QM_COMMAND_$CHOOSE:
                         {
-                            String s=CMLib.english().prompt(mob,"",++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],
-                                                            CMParms.toStringArray(CMParms.parseCommas(parm2.toUpperCase(),true)));
+                                                            CMParms.toStringArray(CMParms.parseCommas(defValue.toUpperCase(),true)));
                             pageDV.setElementAt(step,4,s);
                             break;
                         }
@@ -1382,13 +1385,40 @@ public class Quests extends StdLibrary implements QuestManager
                             for(int i=0;i<R.numItems();i++)
                             {
                                 I=R.fetchItem(i);
-                                if((I!=null)&&(I.container()==null)&&(I.savable())) choices.addElement(R.getContextName(I));
+                                if((I!=null)&&(I.container()==null)&&(I.savable())) 
+                                    choices.addElement(I);
                             }
-                            String s=CMLib.english().prompt(mob,"",++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                            Vector allItemNames=new Vector();
+                            CMClass.addAllItemClassNames(allItemNames,true,false);
+                            Vector newItems=new Vector();
+                            for(int a=0;a<allItemNames.size();a++)
+                            {
+                                I=CMClass.getItem((String)allItemNames.elementAt(a));
+                                if((I!=null)&&(I.isGeneric()))
+                                {
+                                    newItems.addElement(I);
+                                    I.setName("A NEW "+I.ID().toUpperCase());
+                                    choices.addElement(I);
+                                }
+                            }
+                            Item canItem=CMClass.getItem("StdItem");
+                            canItem.setName("CANCEL");
+                            choices.addElement(canItem);
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],
-                                                            CMParms.toStringArray(CMParms.parseCommas(parm2.toUpperCase(),true)));
-                            I=R.fetchItem(null,s);
+                                                            choices.toArray());
+                            canItem.destroy();
+                            if(s.equalsIgnoreCase("CANCEL")) return null;
+                            I=(Item)CMLib.english().fetchEnvironmental(choices,s,false);
+                            if((I!=null)&&(newItems.contains(I)))
+                            {
+                                Command C=CMClass.getCommand("Modify");
+                                if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",I));
+                                // modify it!
+                            }
                             if(I!=null) pageDV.setElementAt(step,4,CMLib.coffeeMaker().getItemXML(I).toString());
+                            for(int n=0;n<newItems.size();n++) ((Item)newItems.elementAt(n)).destroy();
                             break;
                         }
                         case QM_COMMAND_$MOBXML:
@@ -1400,13 +1430,39 @@ public class Quests extends StdLibrary implements QuestManager
                             for(int i=0;i<R.numInhabitants();i++)
                             {
                                 M=R.fetchInhabitant(i);
-                                if((M!=null)&&(M.savable())) choices.addElement(R.getContextName(M));
+                                if((M!=null)&&(M.savable())) 
+                                    choices.addElement(M);
                             }
-                            String s=CMLib.english().prompt(mob,"",++showNumber,showFlag,parm1,optionalEntry,false,lastLabel,
+                            Vector newMobs=new Vector();
+                            for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+                            {
+                                M=(MOB)e.nextElement();
+                                if(M.isGeneric())
+                                {
+                                    M=(MOB)M.copyOf();
+                                    newMobs.addElement(M);
+                                    M.setName("A NEW "+M.ID().toUpperCase());
+                                    choices.addElement(M);
+                                }
+                            }
+                            MOB canMOB=CMClass.getMOB("StdMOB");
+                            canMOB.setName("CANCEL");
+                            choices.addElement(canMOB);
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],
-                                                            CMParms.toStringArray(CMParms.parseCommas(parm2.toUpperCase(),true)));
-                            M=R.fetchInhabitant(s);
+                                                            choices.toArray());
+                            canMOB.destroy();
+                            if(s.equalsIgnoreCase("CANCEL")) return null;
+                            M=(MOB)CMLib.english().fetchEnvironmental(choices,s,false);
+                            if((M!=null)&&(newMobs.contains(M)))
+                            {
+                                Command C=CMClass.getCommand("Modify");
+                                if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",M));
+                                // modify it!
+                            }
                             if(M!=null) pageDV.setElementAt(step,4,CMLib.coffeeMaker().getMobXML(M).toString());
+                            for(int n=0;n<newMobs.size();n++) ((MOB)newMobs.elementAt(n)).destroy();
                             break;
                         }
                         }
@@ -1444,7 +1500,7 @@ public class Quests extends StdLibrary implements QuestManager
                 {
                     var=(String)pageDV.elementAt(v,2);
                     val=(String)pageDV.elementAt(v,4);
-                    if(((String)pageDV.elementAt(v,1)).equalsIgnoreCase(QM_COMMAND_TYPES[QM_COMMAND_$UNIQUE_QUEST_NAME]))
+                    if(((Integer)pageDV.elementAt(v,1)).intValue()==QM_COMMAND_$UNIQUE_QUEST_NAME)
                         name=val;
                     script=CMStrings.replaceAll(script,var,val);
                 }
@@ -1455,7 +1511,7 @@ public class Quests extends StdLibrary implements QuestManager
                 Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
                 CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),mob,true,false);
                 newQF.saveText(script);
-                Q.setScript(script);
+                Q.setScript("LOAD=quests/"+name+".quest");
                 if((Q.name().trim().length()==0)||(Q.duration()<0))
                 {
                     mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");

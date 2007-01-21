@@ -157,6 +157,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return val;
     }
 
+    private StringBuffer getResourceFileData(String named)
+    {
+        int index=-1;
+        if(getQuest("*")!=null) return getQuest("*").getResourceFileData(named);
+        return new CMFile(Resources.makeFileResourceName(named),null,true).text();
+    }
+
+    
     protected static class JScriptEvent extends ScriptableObject
     {
         public String getClassName(){ return "JScriptEvent";}
@@ -249,13 +257,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
 					filenames.addElement(filename);
-                    parseParmFilenames(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),filenames,depth+1);
+                    parseParmFilenames(getResourceFileData(filename).toString(),filenames,depth+1);
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
 					filenames.addElement(filename);
-					parseParmFilenames(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),filenames,depth+1);
+					parseParmFilenames(getResourceFileData(filename).toString(),filenames,depth+1);
 					break;
 				}
 			}
@@ -293,12 +301,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
-					results.append(parseLoads(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),depth+1));
+					results.append(parseLoads(getResourceFileData(filename).toString(),depth+1));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
-					results.append(parseLoads(new CMFile(Resources.makeFileResourceName(filename),null,true).text().toString(),depth+1));
+					results.append(parseLoads(getResourceFileData(filename).toString(),depth+1));
 					break;
 				}
 			}
@@ -552,7 +560,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		filename=filename.trim();
 		Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null) return monsters;
-		StringBuffer buf=new CMFile(filename,null,true).text();
+		StringBuffer buf=getResourceFileData(filename);
 		String thangName="null";
 		Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -591,7 +599,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		filename=filename.trim();
 		Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null) return items;
-		StringBuffer buf=new CMFile(filename,null,true).text();
+		StringBuffer buf=getResourceFileData(filename);
 		String thangName="null";
 		Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -2863,7 +2871,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Quest Q=getQuest(arg1);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
-					scriptableError(scripted,"QUESTPOINTS","Syntax",evaluable);
+					scriptableError(scripted,"QVAR","Syntax",evaluable);
 					return returnable;
 				}
 				if(Q==null)
@@ -5515,7 +5523,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				Quest Q=getQuest(qstr);
 				if(Q==null)
-                    scriptableError(scripted,"QUESTPOINTS","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
+                    scriptableError(scripted,"MPQSET","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
 				else
 					Q.setStat(var,val);
 				break;
@@ -5546,7 +5554,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					CMLib.commands().postChannel(monster,channel,val,sysmsg);
 				break;
 			}
-            case 68: // cd
+            case 68: // unload
             {
                 String scriptname=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
                 if(!new CMFile(Resources.makeFileResourceName(scriptname),null,false,true).exists())
@@ -7729,7 +7737,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(10).trim();
-					if(trigger.toUpperCase().startsWith("ANY"))
+					if(trigger.toUpperCase().startsWith("ANY")||trigger.toUpperCase().startsWith("ALL"))
 						trigger=trigger.substring(3).trim();
 					else
 	                if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
@@ -7740,7 +7748,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					else
 					    t=new Integer(CMath.s_int(trigger.trim())).doubleValue();
 					if((((Coins)msg.tool()).getTotalValue()>=t)
-					||(trigger.equalsIgnoreCase("ALL")))
+					||(trigger.equalsIgnoreCase("ALL"))
+                    ||(trigger.equalsIgnoreCase("ANY")))
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
 						return;

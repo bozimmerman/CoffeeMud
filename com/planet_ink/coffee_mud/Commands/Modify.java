@@ -1032,7 +1032,16 @@ public class Modify extends BaseGenerics
 	{
 		String commandType="";
 		if(commands.size()>1)
+        {
+            if(commands.elementAt(1) instanceof Environmental)
+            {
+                genMiscSet(mob,(Environmental)commands.elementAt(1));
+                ((Environmental)commands.elementAt(1)).recoverEnvStats();
+                ((Environmental)commands.elementAt(1)).text();
+                return true;
+            }
 			commandType=((String)commands.elementAt(1)).toUpperCase();
+        }
 		if(commandType.equals("ITEM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);

@@ -635,6 +635,30 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+    public String getContextName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
+    public String getContextName(Vector list, Environmental E)
+    {
+        if(list==null) return E.name();
+        Vector V=(Vector)list.clone();
+        int context=0;
+        for(int v=0;v<V.size();v++)
+            if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
+            ||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
+            {
+                if(V.elementAt(v)==E)
+                {
+                    if(context==0)
+                        return E.name();
+                    return E.name()+"."+context;
+                }
+                if((!(V.elementAt(v) instanceof Item))
+                ||(!(E instanceof Item))
+                ||(((Item)E).container()==((Item)V.elementAt(v)).container()))
+                    context++;
+            }
+        return null;
+    }
+    
 	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
@@ -1385,60 +1409,52 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     { promptStatInt(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
     public void promptStatInt(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
-    {
-        E.setStat(Field,""+prompt(mob,CMath.s_long(E.getStat(Field)),showNumber,showFlag,FieldDisp,help));
-    }
-    
+    { E.setStat(Field,""+prompt(mob,CMath.s_long(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
     public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
     throws IOException
     { promptStatBool(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
     public void promptStatBool(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
-    {
-        E.setStat(Field,""+prompt(mob,CMath.s_bool(E.getStat(Field)),showNumber,showFlag,FieldDisp,help));
-    }
-    
+    { E.setStat(Field,""+prompt(mob,CMath.s_bool(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
     public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
     throws IOException
     { promptStatStr(mob,E,null,showNumber,showFlag,FieldDisp,Field,true);}
-    
     public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
     throws IOException
-    {
-        E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help,null,null));
-    }
-    
+    { E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help,null,null)); }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null,null,null);
-    }
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null,null,null); }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help,null,null);
-    }
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help,null,null); }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
     throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null);
-    }
+    {return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null); }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
     throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);
-    }
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);}
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
     throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null);
-    }
-    
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null);}
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
     throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,help,null,null);
-    }
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,help,null,null);}
+    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null); }
+    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null); }
+    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);}
+    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
+    throws IOException
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);}
+    
+    
+    
     public String prompt(MOB mob, 
                          String oldVal, 
                          int showNumber, 
@@ -1448,7 +1464,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                          boolean rawPrint, 
                          String help, 
                          CMEval eval,
-                         String[] choices)
+                         Object[] choices)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1493,11 +1509,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
-    }
+    
     public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1523,11 +1535,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return oldVal;
     }
     
-    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
-    }
     public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1550,12 +1557,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return oldVal;
     }
     
-    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
-    }
-    
     public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1576,12 +1577,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
         mob.tell("(no change)");
         return oldVal;
-    }
-    
-    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);
     }
     
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)

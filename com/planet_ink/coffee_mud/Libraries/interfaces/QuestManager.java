@@ -51,6 +51,7 @@ public interface QuestManager extends CMLibrary
     public Object getHolidayFile();
     public Vector getEncodedHolidayData(String dataFromStepsFile);
     public DVector getQuestTemplate(MOB mob, String fileToGet);
+    public Quest questMaker(MOB mob);
 
     public final static int QM_COMMAND_$TITLE=0;
     public final static int QM_COMMAND_$LABEL=1;
@@ -121,7 +122,22 @@ public interface QuestManager extends CMLibrary
             return choices[x];
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml
-            return str;
+            if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            StringBuffer choiceNames=new StringBuffer("");
+            for(int c=0;c<choices.length;c++)
+                choiceNames.append(((Environmental)choices[c]).Name()+", ");
+            if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
+            if((str==null)||(((String)str).trim().length()==0)){
+                if(emptyOK) return "";
+                throw new CMException("You must enter one of the following: "+choiceNames.toString());
+            }
+            Environmental[] ES=new Environmental[choices.length];
+            for(int e=0;e<choices.length;e++) ES[e]=(Environmental)choices[e];
+            Environmental E=CMLib.english().fetchEnvironmental(ES,(String)str,false);
+            if(E==null)
+                throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
+            return CMLib.english().getContextName(choices,E);
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
@@ -171,15 +187,32 @@ public interface QuestManager extends CMLibrary
             if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
             Vector V=CMParms.parse((String)str);
             if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");}
+            StringBuffer returnStr=new StringBuffer("");
             for(int v=0;v<V.size();v++)
             {
                 Area A=CMLib.map().findArea((String)V.elementAt(v));
                 if(A==null) throw new CMException("'"+((String)V.elementAt(v))+"' is not a valid area name.");
+                returnStr.append("\""+A.name()+"\" ");
             }
-            return str;
+            return returnStr.toString().trim();
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //mobxml
-            return str;
+            if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            StringBuffer choiceNames=new StringBuffer("");
+            for(int c=0;c<choices.length;c++)
+                choiceNames.append(((Environmental)choices[c]).Name()+", ");
+            if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
+            if((str==null)||(((String)str).trim().length()==0)){
+                if(emptyOK) return "";
+                throw new CMException("You must enter one of the following: "+choiceNames.toString());
+            }
+            Environmental[] ES=new Environmental[choices.length];
+            for(int e=0;e<choices.length;e++) ES[e]=(Environmental)choices[e];
+            Environmental E=CMLib.english().fetchEnvironmental(ES,(String)str,false);
+            if(E==null)
+                throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
+            return CMLib.english().getContextName(choices,E);
         }},
     };
     

@@ -18,9 +18,9 @@
 			document.QUESTS.FUNCTION.value='NEXT';
 			document.QUESTS.submit();
 		}
-		function ClickedNext()
+		function ClickedFinish()
 		{
-			document.QUESTS.FUNCTION.value='NEXT';
+			document.QUESTS.FUNCTION.value='FINISH';
 			document.QUESTS.submit();
 		}
 		function Close(val)
@@ -75,7 +75,7 @@
 	</TD>
 	@if?CheckReqParm?QMLASTPAGE=@
 		<CENTER><FONT COLOR=YELLOW>Click Finish to Create your Quest!</FONT></CENTER>
-		<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=FINISH VALUE="Finish" ONCLICK="ClickedNext();"></TD>
+		<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=FINISH VALUE="Finish" ONCLICK="ClickedFinish();"></TD>
 	@else@
 		<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=NEXT VALUE="Next" ONCLICK="ClickedNext();"></TD>
 	@endif@

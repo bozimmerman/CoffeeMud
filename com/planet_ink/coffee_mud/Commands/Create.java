@@ -897,7 +897,12 @@ public class Create extends BaseGenerics
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
-				mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
+            {
+                if((mob.session()!=null)&&(mob.session().confirm("Create a new Quest using the Quest Maker Wizard (y/N)? ","N")))
+                    CMLib.quests().questMaker(mob);
+                else
+    				mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
+            }
 			else
 			{
 				String script=CMParms.combine(commands,2);

@@ -74,6 +74,8 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
     public void setSpawn(int spawnFlag);
     public int getSpawn();
     
+    public StringBuffer getResourceFileData(String named);
+    
 	// these refer the objects designated during the quest
 	public int wasQuestMob(String name);
 	public int wasQuestItem(String name);

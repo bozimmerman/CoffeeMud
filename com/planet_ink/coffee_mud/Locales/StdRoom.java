@@ -1525,40 +1525,14 @@ public class StdRoom implements Room
 		else
 		if(E instanceof MOB)
 		{
-			if(inhabitants==null) return E.name();
-			Vector V=(Vector)inhabitants.clone();
-			int context=0;
-			for(int v=0;v<V.size();v++)
-				if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
-				||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
-				{
-					if(V.elementAt(v)==E)
-					{
-						if(context==0)
-							return E.name();
-						return E.name()+"."+context;
-					}
-					context++;
-				}
+            String ctxName=CMLib.english().getContextName(inhabitants,E);
+            if(ctxName!=null) return ctxName;
 		}
 		else
 		if(E instanceof Item)
 		{
-			if(contents==null) return E.name();
-			Vector V=(Vector)contents.clone();
-			int context=0;
-			for(int v=0;v<V.size();v++)
-				if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
-				||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
-				{
-					if(V.elementAt(v)==E)
-					{
-						if(context==0)
-							return E.name();
-						return E.name()+"."+context;
-					}
-					context++;
-				}
+            String ctxName=CMLib.english().getContextName(inhabitants,E);
+            if(ctxName!=null) return ctxName;
 		}
 		else
 		if(E!=null)

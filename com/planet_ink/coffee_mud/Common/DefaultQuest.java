@@ -178,11 +178,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
     
-    private StringBuffer getQuestFile(String named)
+    public StringBuffer getResourceFileData(String named)
     {
         int index=-1;
-        if(internalFiles!=null) index=internalFiles.indexOf(named.toUpperCase().trim());
-        if(index>=0) return (StringBuffer)internalFiles.elementAt(index,2);
+        if(internalFiles!=null){
+            index=internalFiles.indexOf(named.toUpperCase().trim());
+            if(index>=0) return (StringBuffer)internalFiles.elementAt(index,2);
+        }
         StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,true).text();
         return buf;
     }
@@ -1963,7 +1965,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             errorOccurred(q,isQuiet,"Quest '"+name()+"', no IMPORT MOBS file.");
                             break;
                         }
-                        StringBuffer buf=getQuestFile(CMParms.combine(p,2));
+                        StringBuffer buf=getResourceFileData(CMParms.combine(p,2));
                         if((buf==null)||((buf!=null)&&(buf.length()<20)))
                         {
                         	errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
@@ -1995,7 +1997,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             errorOccurred(q,isQuiet,"Quest '"+name()+"', no import filename!");
                             break;
                         }
-                        StringBuffer buf=getQuestFile(CMParms.combine(p,2));
+                        StringBuffer buf=getResourceFileData(CMParms.combine(p,2));
                         if((buf==null)||((buf!=null)&&(buf.length()<20)))
                         {
                         	errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
@@ -3334,7 +3336,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        			Object O=getObjectIfSpecified(parms,oldArgs,0,1);
         				args.addElement((O==null)?"":O);
 	        		}
-		            StringBuffer buf=getQuestFile(filename);
+		            StringBuffer buf=getResourceFileData(filename);
 		            if(buf!=null) text=buf.toString();
         		}catch(CMException ex){
         			Log.errOut("DefaultQuest","'"+text+"' either has a space in the filename, or unknown parms.");
@@ -3346,7 +3348,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             String xml=text.substring(x+FILE_XML_BOUNDARY.length()).trim();
             text=text.substring(0,x);
-            if(xml.length()>0)
+            if((xml.length()>0)&&(internalFiles==null))
             {
                 Vector topXMLV=CMLib.xml().parseAllXML(xml);
                 for(int t=0;t<topXMLV.size();t++)
@@ -3722,7 +3724,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             break;
 		default:
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
-                ticksRemaining=CMath.s_int(val);
+                ticksRemaining=CMath.s_parseIntExpression(val);
             else
             {
     			int x=questState.vars.indexOf(code.toUpperCase().trim());

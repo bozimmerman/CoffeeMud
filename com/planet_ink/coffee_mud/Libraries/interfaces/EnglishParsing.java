@@ -57,6 +57,8 @@ public interface EnglishParsing extends CMLibrary
     public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly);
     public Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly);
+    public String getContextName(Vector list, Environmental E);
+    public String getContextName(Object[] list, Environmental E);
     public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly);
     public Environmental parseShopkeeper(MOB mob, Vector commands, String error);
     public Vector fetchItemList(Environmental from, MOB mob, Item container, Vector commands, int preferredLoc, boolean visionMatters);
@@ -92,7 +94,7 @@ public interface EnglishParsing extends CMLibrary
                         boolean rawPrint, 
                         String help, 
                         CMEval eval,
-                        String[] choices) throws IOException;
+                        Object[] choices) throws IOException;
     public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
     public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException;
     public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
