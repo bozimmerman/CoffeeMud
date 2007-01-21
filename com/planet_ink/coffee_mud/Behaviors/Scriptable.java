@@ -6529,9 +6529,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							if(val==null) val="";
 						}
                         if(val.length()>0)
-    						CMLib.database().DBReCreateData(which,"SCRIPTABLEVARS",arg2,val);
+    						CMLib.database().DBReCreateData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
                         else
-                            CMLib.database().DBDeleteData(which,"SCRIPTABLEVARS",arg2);
+                            CMLib.database().DBDeleteData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					}
 				}
 				break;
@@ -6548,12 +6548,18 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(arg2.equals("*"))
 						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS");
 					else
-						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS",arg2);
+						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
                     if((V!=null)&&(V.size()>0))
+                    for(int v=0;v<V.size();v++)
                     {
-                        V=(Vector)V.firstElement();
-    					if(V.size()>3)
-    						mpsetvar(which,arg2,(String)V.elementAt(3));
+                        Vector VAR=(Vector)V.elementAt(v);
+    					if(VAR.size()>3)
+                        {
+                            String varName=(String)VAR.elementAt(2);
+                            if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
+                                varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
+    						mpsetvar(which,varName,(String)VAR.elementAt(3));
+                        }
                     }
 				}
 				break;
