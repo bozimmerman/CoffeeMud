@@ -38,10 +38,11 @@ public class Prop_HaveResister extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public boolean bubbleAffect(){return true;}
     protected CharStats adjCharStats=null;
-    protected Vector mask=new Vector();
     protected String maskString="";
     protected String parmString="";
     protected boolean ignoreCharStats=true;
+    protected long lastProtection=0;
+    protected int remainingProtection=0;
 
     public static Object[][] stats={
             {new Integer(CharStats.STAT_SAVE_MAGIC),"magic"},
@@ -71,14 +72,11 @@ public class Prop_HaveResister extends Property
             if(adjCharStats.getStat(((Integer)stats[i][0]).intValue())!=0)
                 ignoreCharStats=false;
         }
-        mask=new Vector();
         parmString=newText;
         int maskindex=newText.toUpperCase().indexOf("MASK=");
         if(maskindex>0)
         {
             maskString=newText.substring(maskindex+5).trim();
-            if(maskString.length()>0)
-                CMParms.addToVector(CMLib.masking().maskCompile(maskString),mask);
             parmString=newText.substring(0,maskindex).trim();
         }
 	}
@@ -94,23 +92,14 @@ public class Prop_HaveResister extends Property
 		ensureStarted();
         if((!ignoreCharStats)
         &&(canResist(affectedMOB))
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,affectedMOB,false))))
+        &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,affectedMOB,false))))
             for(int i=0;i<stats.length;i++)
                 affectedStats.setStat(((Integer)stats[i][0]).intValue(),affectedStats.getStat(((Integer)stats[i][0]).intValue())+adjCharStats.getStat(((Integer)stats[i][0]).intValue()));
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
 
-	public boolean checkProtection(String protType)
-	{
-		int prot=getProtection(protType);
-		if(prot==0) return false;
-		if(prot<5) prot=5;
-		if(prot>95) prot=95;
-		if(CMLib.dice().rollPercentage()<prot)
-			return true;
-		return false;
-	}
+	public boolean checkProtection(String protType){ return getProtection(protType)!=0;}
 
 	public int getProtection(String protType)
 	{
@@ -137,8 +126,19 @@ public class Prop_HaveResister extends Property
 		}
 		return tot;
 	}
+
+    protected int weaponProtection(String kind, int damage, int myLevel, int hisLevel)
+    {
+        int protection=remainingProtection;
+        if((System.currentTimeMillis()-lastProtection)>=Tickable.TIME_TICK)
+        {    protection=(getProtection(kind)+(myLevel-hisLevel)); lastProtection=System.currentTimeMillis();}
+        if(protection<=0) return damage;
+        remainingProtection=protection-100;
+        if(protection>=100){ return 0;}
+        return (int)Math.round(CMath.mul(damage,1.0-CMath.div(protection,100.0)));
+    }
     
-	public void resistAffect(CMMsg msg, MOB mob, Ability me, Vector mask)
+	public void resistAffect(CMMsg msg, MOB mob, Ability me, String maskString)
 	{
 		if(mob.location()==null) return;
 		if(mob.amDead()) return;
@@ -151,24 +151,24 @@ public class Prop_HaveResister extends Property
 		{
 			if(checkProtection("weapons"))
             {
-                if((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false)))
-    				msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("weapons"),100.0))));
+                if((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
+    				msg.setValue(weaponProtection("weapons",msg.value(),mob.envStats().level(),msg.source().envStats().level()));
             }
 			else
 			{
 				Weapon W=(Weapon)msg.tool();
 				if((W.weaponType()==Weapon.TYPE_BASHING)
                 &&(checkProtection("blunt"))
-                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
-					msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("blunt"),100.0))));
+                &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+                    msg.setValue(weaponProtection("blunt",msg.value(),mob.envStats().level(),msg.source().envStats().level()));
 				if((W.weaponType()==Weapon.TYPE_PIERCING)
                 &&(checkProtection("pierce"))
-                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
-					msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("pierce"),100.0))));
+                &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+                    msg.setValue(weaponProtection("pierce",msg.value(),mob.envStats().level(),msg.source().envStats().level()));
 			    if((W.weaponType()==Weapon.TYPE_SLASHING)
                 &&(checkProtection("slash"))
-                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
-			    	msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("slash"),100.0))));
+                &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+                    msg.setValue(weaponProtection("slash",msg.value(),mob.envStats().level(),msg.source().envStats().level()));
 			}
 			return;
 		}
@@ -177,7 +177,7 @@ public class Prop_HaveResister extends Property
     public String accountForYourself()
     { return "The owner gains resistances: "+describeResistance(text());}
 
-	public boolean isOk(CMMsg msg, Ability me, MOB mob, Vector mask)
+	public boolean isOk(CMMsg msg, Ability me, MOB mob, String maskString)
 	{
 		if(!CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			return true;
@@ -190,7 +190,7 @@ public class Prop_HaveResister extends Property
 				if(CMath.bset(A.flags(),Ability.FLAG_TRANSPORTING))
 				{
 					if((checkProtection("teleport"))
-                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
+                    &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					{
 						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
 						return false;
@@ -202,7 +202,7 @@ public class Prop_HaveResister extends Property
 				&&(!CMath.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
 					if((checkProtection("holy"))
-                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,false))))
+                    &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					{
 						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
 						return false;
@@ -233,15 +233,13 @@ public class Prop_HaveResister extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-        if(canResist(msg.target()))
+        if((canResist(msg.target()))
+        &&(msg.target() instanceof MOB)
+        &&(((MOB)msg.target()).location()!=null))
 		{
-			MOB mob=(MOB)msg.target();
-			if((msg.amITarget(mob))&&(mob.location()!=null))
-			{
-				if((msg.value()<=0)&&(!isOk(msg,this,mob,mask)))
-					return false;
-				resistAffect(msg,mob,this,mask);
-			}
+			if((msg.value()<=0)&&(!isOk(msg,this,(MOB)msg.target(),maskString)))
+				return false;
+			resistAffect(msg,(MOB)msg.target(),this,maskString);
 		}
 		return true;
 	}
