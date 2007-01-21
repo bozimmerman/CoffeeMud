@@ -54,7 +54,7 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
-#$DELIVERER_NAME_WORDS=$NAME
+#$DELIVERER_NAME=$NAME
 #
 #Deliverer reasons
 #You may optionally specify some additional bit of speech the deliverer 
@@ -86,7 +86,12 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
-#$DELIVEREE_NAME_WORDS=$NAME
+#$DELIVEREE_NAME=$NAME
+#
+#Deliveree response
+#You may optionally specify some additional bit of speech the deliveree 
+#mob will say to the players after the item is handed over. 
+#$DELIVER_RESPONSE=($STRING)=Thank you.
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
@@ -118,7 +123,7 @@ import items item.xml
 set area $DELIVERER_AREA
 set room $DELIVERER_ROOM
 set mobgroup
-set mob $DELIVERER_NAME_WORDS
+set mob $DELIVERER_NAME
 give behavior Scriptable LOAD=deliverer.script
 load item any
 give item
@@ -126,7 +131,7 @@ give item
 set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM
 set mobgroup
-set mob $DELIVEREE_NAME_WORDS
+set mob $DELIVEREE_NAME
 give behavior Scriptable LOAD=deliveree.script
 
 set duration $DURATION
@@ -198,7 +203,6 @@ GIVE_PROG all
 		give "$o" "$n"
 	else
 		if EVAL($o == '$[1 *]')
-			sayto "$n" Thank you.
 			if EVAL('$EXP' != '')
 				mpexp $n 10%
 			endif
@@ -212,6 +216,7 @@ GIVE_PROG all
 			endif
 			mpquestwin $n *
 			mpjunk $o
+			sayto "$n" $DELIVER_RESPONSE
 			mpendquest *
 		else
 			sayto "$n" What's this?
