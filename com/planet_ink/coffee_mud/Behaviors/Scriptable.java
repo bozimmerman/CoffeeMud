@@ -159,7 +159,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 
     private StringBuffer getResourceFileData(String named)
     {
-        int index=-1;
         if(getQuest("*")!=null) return getQuest("*").getResourceFileData(named);
         return new CMFile(Resources.makeFileResourceName(named),null,true).text();
     }

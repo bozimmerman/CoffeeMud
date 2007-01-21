@@ -399,7 +399,7 @@ public class OffLine extends Thread implements MudHost
                 System.out.println();
                 System.out.println("CoffeeMud Off-Line");
                 System.out.println("(C) 2000-2007 Bo Zimmerman");
-                System.out.println("http://coffeemud.zimmers.net");
+                System.out.println("http://www.coffeemud.org");
 
                 if(OffLine.isOK)
                 {

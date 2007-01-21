@@ -797,8 +797,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("ARCHON HELP FILE");
 
 		// also the intro page
-		if(Resources.getResource("text/intro.txt")!=null)
-			Resources.removeResource("text/intro.txt");
+        CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
+        if(introDir.isDirectory())
+        {
+            CMFile[] files=introDir.listFiles();
+            for(int f=0;f<files.length;f++)
+                if(files[f].getName().toLowerCase().startsWith("intro")
+                &&files[f].getName().toLowerCase().endsWith(".txt"))
+                    Resources.removeResource("text/"+files[f].getName());
+        }
 
 		if(Resources.getResource("text/offline.txt")!=null)
 			Resources.removeResource("text/offline.txt");

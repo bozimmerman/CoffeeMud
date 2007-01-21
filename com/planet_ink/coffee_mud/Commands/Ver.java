@@ -42,7 +42,7 @@ public class Ver extends StdCommand
 		mob.tell("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));
 		mob.tell("(C) 2000-2007 Bo Zimmerman");
 		mob.tell("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>");
-		mob.tell("^<A HREF=\"http://coffeemud.zimmers.net\"^>http://coffeemud.zimmers.net^</A^>");
+		mob.tell("^<A HREF=\"http://www.coffeemud.org\"^>http://www.coffeemud.org^</A^>");
 		return false;
 	}
 	

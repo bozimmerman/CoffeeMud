@@ -466,7 +466,20 @@ public class MUD extends Thread implements MudHost
 					else
 					{
                         state=2;
-						StringBuffer introText=Resources.getFileResource("text/intro.txt",true);
+                        // also the intro page
+                        CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
+                        String introFilename="text/intro.txt";
+                        if(introDir.isDirectory())
+                        {
+                            CMFile[] files=introDir.listFiles();
+                            Vector choices=new Vector();
+                            for(int f=0;f<files.length;f++)
+                                if(files[f].getName().toLowerCase().startsWith("intro")
+                                &&files[f].getName().toLowerCase().endsWith(".txt"))
+                                    choices.addElement("text/"+files[f].getName());
+                            if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                        }
+						StringBuffer introText=Resources.getFileResource(introFilename,true);
                         Session S=(Session)CMClass.getCommon("DefaultSession");
                         S.initializeSession(sock, introText != null ? introText.toString() : null);
 						S.start();
@@ -999,7 +1012,7 @@ public class MUD extends Thread implements MudHost
 			System.out.println();
 			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2007 Bo Zimmerman");
-			Log.sysOut(Thread.currentThread().getName(),"http://coffeemud.zimmers.net");
+			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 			HostGroup joinable=null;
 			for(int i=0;i<iniFiles.size();i++)
 			{
