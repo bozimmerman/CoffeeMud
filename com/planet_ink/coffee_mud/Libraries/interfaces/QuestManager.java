@@ -63,6 +63,7 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$ROOMID=7;
     public final static int QM_COMMAND_$AREA=8;
     public final static int QM_COMMAND_$MOBXML=9;
+    public final static int QM_COMMAND_$NAME=9;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -75,7 +76,8 @@ public interface QuestManager extends CMLibrary
         "$STRING",
         "$ROOMID",
         "$AREA",
-        "$MOBXML"
+        "$MOBXML",
+        "$NAME"
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -213,6 +215,18 @@ public interface QuestManager extends CMLibrary
             if(E==null)
                 throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
             return CMLib.english().getContextName(choices,E);
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //designame
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            if((str==null)||(((String)str).trim().length()==0)){
+                if(emptyOK) return "";
+                throw new CMException("You must enter a value!");
+            }
+            if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
+            if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+            if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
+                throw new CMException("Multiple-word names must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
+            return str;
         }},
     };
     

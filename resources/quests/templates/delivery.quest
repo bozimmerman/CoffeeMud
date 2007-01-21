@@ -54,7 +54,7 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
-#$DELIVERER_NAME_WORDS=$STRING
+#$DELIVERER_NAME_WORDS=$NAME
 #
 #Deliverer reasons
 #You may optionally specify some additional bit of speech the deliverer 
@@ -86,7 +86,7 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
-#$DELIVEREE_NAME_WORDS=$STRING
+#$DELIVEREE_NAME_WORDS=$NAME
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
