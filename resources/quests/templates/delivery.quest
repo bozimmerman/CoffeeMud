@@ -54,7 +54,7 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
-#$DELIVERER_NAME=$STRING
+#$DELIVERER_NAME_WORDS=$STRING
 #
 #Deliverer reasons
 #You may optionally specify some additional bit of speech the deliverer 
@@ -86,7 +86,7 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
-#$DELIVEREE_NAME=$STRING
+#$DELIVEREE_NAME_WORDS=$STRING
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
@@ -118,7 +118,7 @@ import items item.xml
 set area $DELIVERER_AREA
 set room $DELIVERER_ROOM
 set mobgroup
-set mob $DELIVERER_NAME
+set mob $DELIVERER_NAME_WORDS
 give behavior Scriptable LOAD=deliverer.script
 load item any
 give item
@@ -126,7 +126,7 @@ give item
 set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM
 set mobgroup
-set mob $DELIVEREE_NAME
+set mob $DELIVEREE_NAME_WORDS
 give behavior Scriptable LOAD=deliveree.script
 
 set duration $DURATION
