@@ -78,7 +78,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
+		mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()-1)+500);
 	}
 
 	public int envFlags(Environmental E)

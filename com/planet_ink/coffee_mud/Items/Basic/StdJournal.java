@@ -58,7 +58,8 @@ public class StdJournal extends StdItem
 		case CMMsg.TYP_WRITE:
         {
             String adminReq=getAdminReq().trim();
-            boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
+            boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true))
+                            ||CMSecurity.isAllowed(msg.source(),msg.source().location(),Name());
 			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
             &&(!admin)
             &&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
@@ -86,7 +87,8 @@ public class StdJournal extends StdItem
 			&&(mob.playerStats()!=null))
 			{
                 String adminReq=getAdminReq().trim();
-                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+                boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
+                                ||CMSecurity.isAllowed(mob,mob.location(),Name());
 				long lastTime=mob.playerStats().lastDateTime();
 				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
@@ -301,7 +303,8 @@ public class StdJournal extends StdItem
 			try
 			{
                 String adminReq=getAdminReq().trim();
-                boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+                boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
+                                ||CMSecurity.isAllowed(mob,mob.location(),Name());
 				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
 				   &&(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")||admin)
 				   &&(!mob.isMonster()))
