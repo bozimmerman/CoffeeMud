@@ -146,7 +146,7 @@ public class Apprentice extends StdCharClass
             if(currentApprentices.contains(ticking))
             {
                 currentApprentices.remove(ticking);
-                ((MOB)ticking).tell("You are no longer an apprentice!");
+                ((MOB)ticking).tell("\n\r\n\r^ZYou are no longer an apprentice!!!!^N\n\r\n\r");
                 CMLib.leveler().postExperience((MOB)ticking,null,null,1000,false);
             }
         }
