@@ -353,6 +353,26 @@ public class HTTPserver extends Thread implements MudHost
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     
+    public Vector getOverdueThreads()
+    {
+    	Vector V=new Vector();
+    	long time=System.currentTimeMillis();
+    	synchronized(activeRequests)
+    	{
+	    	for(int a=activeRequests.size()-1;a>=0;a--)
+	    	{
+	    		ProcessHTTPrequest P=(ProcessHTTPrequest)activeRequests.elementAt(a, 1);
+	    		long pTime=((Long)activeRequests.elementAt(a,2)).longValue();
+	    		if((time-pTime)>(60*1000*60))
+	    		{
+	    			V.addElement(P);
+	    			activeRequests.removeElementsAt(a);
+	    		}
+	    	}
+    	}
+    	return V;
+    }
+    
     public String executeCommand(String cmd)
         throws Exception
     {

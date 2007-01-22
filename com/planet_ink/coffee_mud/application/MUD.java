@@ -970,6 +970,18 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 	
+    public Vector getOverdueThreads()
+    {
+    	Vector V=new Vector();
+    	for(int w=0;w<webServers.size();w++)
+    		V.addAll(((HTTPserver)webServers.elementAt(w)).getOverdueThreads());
+    	//smtpServerThread -- handled as a Tickable
+    	//databases aren't a thread
+    	//utiliThread and saveThread aren't a bad idea...
+    	//imserver is a GREAT idea
+    	return V;
+    }
+    
 	public static void main(String a[])
 	{
 		String nameID="";

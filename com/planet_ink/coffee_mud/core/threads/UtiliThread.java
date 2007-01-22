@@ -285,6 +285,7 @@ public class UtiliThread extends Thread
                     CMLib.database().DBUpdatePlayerStatsOnly(M);
             }
         }
+        
         status("checking player sessions.");
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
@@ -364,6 +365,27 @@ public class UtiliThread extends Thread
 				}
 			}
 		}
+		
+		status("Checking mud threads");
+		for(int m=0;m<CMLib.mudThreads.size();m++)
+		{
+			Vector badThreads=((MudHost)CMLib.mudThreads.elementAt(m)).getOverdueThreads();
+			if(badThreads.size()>0)
+			{
+				for(int b=0;b<badThreads.size();b++)
+				{
+					Thread T=(Thread)badThreads.elementAt(b);
+					String threadName=T.getName();
+					if(T instanceof Tickable)
+						threadName=((Tickable)T).name()+" ("+((Tickable)T).ID()+"): "+((Tickable)T).getTickStatus();
+					status("Killing "+threadName);
+					Log.errOut("Killing stray thread: "+threadName);
+					CMLib.killThread(T,100,1);
+				}
+			}
+		}
+		
+		status("Done checking threads");
 	}
 
 	public void shutdown()
