@@ -84,11 +84,23 @@ public class Prayer_DrunkenStupor extends Prayer
 		return true;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		Ability A=getInebriation();
+		if(A!=null) A.executeMsg(myHost, msg);
+		super.executeMsg(myHost, msg);
+	}
+
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
 
+		Ability A=getInebriation();
+		if((A==null)||(!A.okMessage(myHost, msg)))
+			return false;
+		
 		if(msg.source()!=affected)
 			return true;
 		if(msg.source().location()==null)
