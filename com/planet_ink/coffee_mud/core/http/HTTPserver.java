@@ -35,21 +35,21 @@ import java.util.*;
 */
 public class HTTPserver extends Thread implements MudHost
 {
-	public CMProps page=null;
+    protected CMProps page=null;
 
-	public static final float HOST_VERSION_MAJOR=(float)1.0;
-	public static final float HOST_VERSION_MINOR=(float)0.3;
-	public static CMProps webCommon=null;
+    protected static final float HOST_VERSION_MAJOR=(float)1.0;
+    protected static final float HOST_VERSION_MINOR=(float)0.3;
+    protected static CMProps webCommon=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
 	public final static String ServerVersionString = "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
-	public boolean isOK = false;
+    protected boolean isOK = false;
 
-	public boolean isAdminServer = false;
+    protected boolean isAdminServer = false;
 
-	public ServerSocket servsock=null;
+    protected ServerSocket servsock=null;
 
 	private MudHost mud;
 	protected String partialName;
@@ -59,11 +59,12 @@ public class HTTPserver extends Thread implements MudHost
     private int myServerNumber=0;
     private boolean acceptConnections=true;
 
-	String serverDir = null;
-	String serverTemplateDir = null;
+    protected String serverDir = null;
+    protected String serverTemplateDir = null;
 
-	public FileGrabber pageGrabber=new FileGrabber(this);
-	public FileGrabber templateGrabber=new FileGrabber(this);
+    protected FileGrabber pageGrabber=new FileGrabber(this);
+    protected FileGrabber templateGrabber=new FileGrabber(this);
+    public DVector activeRequests=new DVector(2);
 
 	public HTTPserver(MudHost a_mud, String a_name, int num)
 	{

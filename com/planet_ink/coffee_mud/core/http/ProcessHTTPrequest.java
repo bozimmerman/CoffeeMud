@@ -120,7 +120,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		isAdminServer = a_isAdminServer;
 
 		if (page != null && sock != null)
+        {
+            synchronized(a_webServer.activeRequests){
+    		    a_webServer.activeRequests.addElement(this,new Long(System.currentTimeMillis()));
+            }
 			this.start();
+        }
 	}
 
 	public Hashtable getVirtualDirectories(){return webServer.getVirtualDirectories();}
@@ -876,6 +881,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	public void run()
 	{
+        try
+        {
 		String hdrRedirectTo = null;
 		processStartTime=System.currentTimeMillis();
 		
@@ -1159,6 +1166,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 		}
 		catch (Exception e)	{}
+        }
+        finally
+        {
+            synchronized(this.webServer.activeRequests){
+                webServer.activeRequests.removeElement(this);
+            }
+        }
 	}
 	public String getHTTPclientIP()
 	{
