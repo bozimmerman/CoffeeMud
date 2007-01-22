@@ -55,6 +55,7 @@ public class Scavenger extends ActiveTicker
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
+            if(origItems<0) origItems=mob.inventorySize();
             if((mob.envStats().weight()>=mob.maxCarry())||(mob.inventorySize()>=mob.maxItems()))
             {
                 if(CMLib.flags().isATrackingMonster(mob)) return true;
@@ -92,10 +93,16 @@ public class Scavenger extends ActiveTicker
                         A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
                 }
                 else
-                while((origItems>=0)&&(mob.inventorySize()>origItems))
+                if((origItems>=0)&&(mob.inventorySize()>origItems))
                 {
-                    Item I=mob.fetchInventory(origItems);
-                    I.destroy();
+	                while((origItems>=0)&&(mob.inventorySize()>origItems))
+	                {
+	                    Item I=mob.fetchInventory(origItems);
+	                    I.destroy();
+	                }
+	                mob.recoverEnvStats();
+	                mob.recoverCharStats();
+	                mob.recoverMaxState();
                 }
             }
 			if((thisRoom==null)||(thisRoom.numItems()==0))
@@ -113,7 +120,6 @@ public class Scavenger extends ActiveTicker
 					choices.addElement(thisItem);
 			}
             if(choices.size()==0) return true;
-            if(origItems<0) origItems=mob.inventorySize();
             Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
             if(I!=null)
     			mob.doCommand(CMParms.makeVector("GET",I.Name()));
