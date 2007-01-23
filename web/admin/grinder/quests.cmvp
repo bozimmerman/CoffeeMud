@@ -28,7 +28,7 @@
 		function QuestWizard(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("questmaker.cmvp?AUTH=@Authenticate?AUTH@&QUEST="+action,"Quest",strFeatures, false);
+			w=window.open("questmaker.cmvp?AUTH=@Authenticate?AUTH@","Quest",strFeatures, false);
 		}
 		function Clicked(quest, action)
 		{
@@ -58,7 +58,7 @@
 		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
 		<TR><TD><a href="javascript:Load('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:Quest('');"><FONT COLOR=WHITE SIZE=-1><B>New Quest Script</B></FONT></A></TD></TR>
-		<!--<TR><TD><a href="javascript:QuestWizard();"><FONT COLOR=WHITE SIZE=-1><B>Quest Wizard</B></FONT></A></TD></TR>-->
+		<TR><TD><a href="javascript:QuestWizard();"><FONT COLOR=WHITE SIZE=-1><B>Quest Maker Wizard</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>

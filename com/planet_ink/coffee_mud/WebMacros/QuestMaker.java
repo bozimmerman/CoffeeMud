@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -45,19 +46,17 @@ public class QuestMaker extends StdWebMacro
     		httpReq.getRequestObjects().put("QM_PAGE_LIST",pageList);
     		return pageList;
     	}
-    	else
-    	{
-    		int pageNumber=CMath.s_int(page)-1;
-    		if(filePages==null)
-    		{
-    			filePages=CMLib.quests().getQuestTemplate(mob, template);
-        		httpReq.getRequestObjects().put("QM_FILE_PAGES",filePages);
-    		}
-            Vector qPages=(Vector)filePages.elementAt(0,4);
-            if(pageNumber<=0) return (DVector)qPages.firstElement();
-            if(pageNumber>=qPages.size()) return (DVector)qPages.lastElement();
-            return (DVector)qPages.elementAt(pageNumber);
-    	}
+        
+		int pageNumber=CMath.s_int(page)-1;
+		if(filePages==null)
+		{
+			filePages=CMLib.quests().getQuestTemplate(mob, template);
+    		httpReq.getRequestObjects().put("QM_FILE_PAGES",filePages);
+		}
+        Vector qPages=(Vector)filePages.elementAt(0,4);
+        if(pageNumber<=0) return (DVector)qPages.firstElement();
+        if(pageNumber>=qPages.size()) return (DVector)qPages.lastElement();
+        return (DVector)qPages.elementAt(pageNumber);
     }
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
@@ -120,6 +119,15 @@ public class QuestMaker extends StdWebMacro
                 String key=(String)V.elementAt(v);
                 if((!key.startsWith("AT_")))
                     continue;
+                boolean thisPage=false;
+                for(int step=1;step<pageData.size();step++)
+                {
+                    String keyName=(String)pageData.elementAt(step,2);
+                    if(keyName.startsWith("$")
+                    &&(key.substring(3).toUpperCase().equals(keyName.substring(1))))
+                    { thisPage=true; break;}
+                }
+                if(thisPage) continue;
                 String oldVal=(String)httpReq.getRequestParameter(key);
                 if(oldVal==null) oldVal="";
                 list.append("<INPUT TYPE=HIDDEN NAME="+key+" VALUE=\""+oldVal+"\">\n\r");
@@ -196,29 +204,28 @@ public class QuestMaker extends StdWebMacro
                 }
                 case QuestManager.QM_COMMAND_$ITEMXML:
                 {
-    				Vector rawitemlist=RoomData.contributeItems(new Vector());
+                    if(oldValue==null) oldValue=defValue;
+                    Item oldItem=null;
+                    Vector itemList=new Vector();
+                    if(oldValue.length()>0)
+                    {
+                        oldItem=CMLib.coffeeMaker().getItemFromXML(oldValue);
+                        if(oldItem!=null)
+                            itemList.addElement(oldItem);
+                    }
+    				itemList=RoomData.contributeItems((Vector)itemList.clone());
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
         			list.append("<TD><SELECT NAME="+httpKeyName+">");
-        			DVector itemList=new DVector(2);
-        			for(int i=0;i<rawitemlist.size();i++)
-        			{
-        				Item I=(Item)rawitemlist.elementAt(i);
-        				itemList.addElement(""+I,I.Name()+" ("+I.ID()+")");
-        			}
-        			if(optionalEntry)
-        				if(itemList.size()==0)
-	        				itemList.addElement("","");
-        				else
-	        				itemList.insertElementAt(0,"","");
+        			if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
         			for(int o=0;o<itemList.size();o++)
         			{
-        				String val=(String)itemList.elementAt(o,1);
-        				String name=(String)itemList.elementAt(o,2);
-            			list.append("<OPTION VALUE=\""+val+"\" ");
-        				if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
-            			list.append(name);
+                        Item I=(Item)itemList.elementAt(o);
+            			list.append("<OPTION VALUE=\""+I+"\" ");
+        				if((oldItem!=null)&&(oldItem.sameAs(I)))
+                            list.append("SELECTED");
+            			list.append(I.Name()+" ("+I.ID()+")");
         			}
         			list.append("</SELECT>");
         			list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
@@ -226,34 +233,35 @@ public class QuestMaker extends StdWebMacro
                 	break;
                 }
                 case QuestManager.QM_COMMAND_$MOBXML:
-    				Vector rawmoblist=RoomData.contributeMOBs(new Vector());
-        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
-        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
-        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
-        			list.append("<TD><SELECT NAME="+httpKeyName+">");
-        			DVector itemList=new DVector(2);
-        			for(int i=0;i<rawmoblist.size();i++)
-        			{
-        				MOB M2=(MOB)rawmoblist.elementAt(i);
-        				itemList.addElement(""+M2,M2.Name()+" ("+M2.ID()+")");
-        			}
-        			if(optionalEntry)
-        				if(itemList.size()==0)
-	        				itemList.addElement("","");
-        				else
-	        				itemList.insertElementAt(0,"","");
-        			for(int o=0;o<itemList.size();o++)
-        			{
-        				String val=(String)itemList.elementAt(o,1);
-        				String name=(String)itemList.elementAt(o,2);
-            			list.append("<OPTION VALUE=\""+val+"\" ");
-        				if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
-            			list.append(name);
-        			}
-        			list.append("</SELECT>");
-        			list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
-        			list.append("</TD></TR>");
+                {
+                    if(oldValue==null) oldValue=defValue;
+                    MOB oldMob=null;
+                    Vector mobList=new Vector();
+                    if(oldValue.length()>0)
+                    {
+                        oldMob=CMLib.coffeeMaker().getMobFromXML(oldValue);
+                        if(oldMob!=null)
+                            mobList.addElement(oldMob);
+                    }
+                    mobList=RoomData.contributeMOBs((Vector)mobList.clone());
+                    list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+                    list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+                    list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+                    list.append("<TD><SELECT NAME="+httpKeyName+">");
+                    if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+                    for(int o=0;o<mobList.size();o++)
+                    {
+                        MOB M2=(MOB)mobList.elementAt(o);
+                        list.append("<OPTION VALUE=\""+M2+"\" ");
+                        if((oldMob!=null)&&(oldMob.sameAs(M2)))
+                            list.append("SELECTED");
+                        list.append(M2.Name()+" ("+M2.ID()+")");
+                    }
+                    list.append("</SELECT>");
+                    list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
+                    list.append("</TD></TR>");
                 	break;
+                }
                 }
             }
             return list.toString();
@@ -262,8 +270,9 @@ public class QuestMaker extends StdWebMacro
         if(parms.containsKey("QMLASTPAGE"))
         {
         	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
-        	if(pageData==null) return "[error -- no page selected!]";
+        	if(pageData==null) return "false";
         	DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
+            if(filePages==null) return "false";
         	return(((Vector)filePages.elementAt(0,4)).lastElement()==pageData)?"true":"false";
         }
         else
@@ -273,7 +282,7 @@ public class QuestMaker extends StdWebMacro
         else
         if(parms.containsKey("QMTEMPLATE")) return qTemplate;
         else
-        if(parms.containsKey("QMPAGE")) return qPageStr.length()==0?"1":qPageStr;
+        if(parms.containsKey("QMPAGE")) return qPageStr;
         else
         if(parms.containsKey("NEXT")||parms.containsKey("FINISH"))
         {
@@ -286,13 +295,86 @@ public class QuestMaker extends StdWebMacro
         	}
         	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
         	if(pageData==null) return "[error - no page data?!]";
-        	
+            StringBuffer errors=new StringBuffer("");
+            for(int step=1;step<pageData.size();step++)
+            {
+                Integer stepType=(Integer)pageData.elementAt(step,1);
+                String keyName=(String)pageData.elementAt(step,2);
+                String defValue=(String)pageData.elementAt(step,3);
+                String httpKeyName=keyName;
+                if(httpKeyName.startsWith("$")) httpKeyName=httpKeyName.substring(1);
+                String keyNameFixed=CMStrings.capitalizeAndLower(httpKeyName.replace('_',' '));
+                httpKeyName="AT_"+httpKeyName;
+                boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
+                int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
+                String oldValue=(String)httpReq.getRequestParameter(httpKeyName);
+                EnglishParsing.CMEval eval= QuestManager.QM_COMMAND_TESTS[inputCode];
+                try
+                {
+                    switch(inputCode)
+                    {
+                    case QuestManager.QM_COMMAND_$TITLE: break;
+                    case QuestManager.QM_COMMAND_$LABEL: break;
+                    case QuestManager.QM_COMMAND_$ITEMXML: 
+                    {
+                        Vector rawitemlist=RoomData.contributeItems(new Vector());
+                        if(oldValue==null) oldValue="";
+                        Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
+                        if(I2!=null) oldValue=CMLib.english().getContextName(rawitemlist,I2);
+                        Object[] choices=rawitemlist.toArray();
+                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
+                        httpReq.addRequestParameters(httpKeyName,newVal);
+                        break;
+                    }
+                    case QuestManager.QM_COMMAND_$MOBXML: 
+                    {
+                        Vector rawmoblist=RoomData.contributeMOBs(new Vector());
+                        if(oldValue==null) oldValue="";
+                        MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
+                        if(M2!=null) oldValue=CMLib.english().getContextName(rawmoblist,M2);
+                        Object[] choices=rawmoblist.toArray();
+                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
+                        httpReq.addRequestParameters(httpKeyName,newVal);
+                        break;
+                    }
+                    case QuestManager.QM_COMMAND_$CHOOSE:
+                    {
+                        if(oldValue==null) oldValue="";
+                        Object[] choices=CMParms.parseCommas(defValue.toUpperCase(),true).toArray();
+                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
+                        httpReq.addRequestParameters(httpKeyName,newVal);
+                        break;
+                    }
+                    default:
+                    {
+                        if(oldValue==null) oldValue="";
+                        String newVal=(String)eval.eval(oldValue,null,optionalEntry);
+                        httpReq.addRequestParameters(httpKeyName,newVal);
+                        break;
+                    }
+                    }
+                }
+                catch(CMException e)
+                {
+                    errors.append("Error in field '"+keyNameFixed+"': "+e.getMessage()+"<BR>");
+                }
+            }
+            httpReq.addRequestParameters("QMPAGEERRORS",errors.toString());
+            if(errors.toString().length()>0) return "";
     		httpReq.addRequestParameters("QMPAGE",""+(CMath.s_int(qPageStr)+1));
         	return "";
         }
         else
         if(parms.containsKey("BACK"))
         {
+            int pageNumber=CMath.s_int(qPageStr);
+            if(pageNumber>1)
+                httpReq.addRequestParameters("QMPAGE",""+(CMath.s_int(qPageStr)-1));
+            else
+            {
+                httpReq.addRequestParameters("QMTEMPLATE","");
+                httpReq.addRequestParameters("QMPAGE","");
+            }
         }
         return "";
     }

@@ -77,6 +77,8 @@ public interface CMObjectBuilder extends CMLibrary
     public StringBuffer getUniqueItemXML(Item item, int type, Hashtable found, HashSet files);
     public String addItemsFromXML(String xmlBuffer, Vector addHere, Session S);
     public String addMOBsFromXML(String xmlBuffer, Vector addHere, Session S);
+    public MOB getMobFromXML(String xmlBuffer);
+    public Item getItemFromXML(String xmlBuffer);
     // TYPE= 0=item, 1=weapon, 2=armor
     public StringBuffer getRoomItems(Room room, Hashtable found, HashSet files, int type); 
     public StringBuffer getItemXML(Item item);

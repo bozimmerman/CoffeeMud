@@ -1292,6 +1292,26 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         buf.append("</ITEM>\n\r");
         return buf;
     }
+
+    public Item getItemFromXML(String xmlBuffer)
+    {
+        Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
+        if((xml==null)||(xml.size()==0)) return null;
+        XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xml.firstElement();
+        if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
+            return null;
+        String itemClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
+        Item newItem=CMClass.getItem(itemClass);
+        if(newItem==null) return null;
+        newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
+        newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
+        newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
+        newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
+        newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
+        newItem.setContainer(null);
+        newItem.recoverEnvStats();
+        return newItem;
+    }
     
 	public String addItemsFromXML(String xmlBuffer,
 								  Vector addHere,
@@ -1322,6 +1342,29 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return "";
 	}
 
+    public MOB getMobFromXML(String xmlBuffer)
+    {
+        Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
+        if((xml==null)||(xml.size()==0)) return null;
+        XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece)xml.firstElement();
+        if((!mblk.tag.equalsIgnoreCase("MOB"))||(mblk.contents==null))
+            return null;
+        String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
+        MOB newMOB=CMClass.getMOB(mClass);
+        if(newMOB==null) return null;
+        String text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
+        newMOB.setMiscText(text);
+        newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+        newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+        newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
+        newMOB.recoverCharStats();
+        newMOB.recoverEnvStats();
+        newMOB.recoverMaxState();
+        newMOB.resetToMaxState();
+        return newMOB;
+    }
+    
+    
 	public String addMOBsFromXML(String xmlBuffer,
 								 Vector addHere,
 								 Session S)
