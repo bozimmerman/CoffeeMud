@@ -1358,6 +1358,7 @@ public class Quests extends StdLibrary implements QuestManager
                         case QM_COMMAND_$EXPRESSION:
                         case QM_COMMAND_$UNIQUE_QUEST_NAME:
                         case QM_COMMAND_$STRING:
+                        case QM_COMMAND_$LONG_STRING:
                         case QM_COMMAND_$ROOMID:
                         case QM_COMMAND_$AREA:
                         {

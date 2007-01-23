@@ -32,98 +32,267 @@ public class QuestMaker extends StdWebMacro
 {
     public String name()    {return "QuestMaker";}
 
+    public DVector getPage(MOB mob, ExternalHTTPRequests httpReq, String template, String page)
+    {
+    	DVector pageList=(DVector)httpReq.getRequestObjects().get("QM_PAGE_LIST");
+    	DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
+    	if(template.length()==0)
+    	{ 
+    		httpReq.removeRequestParameter("QM_FILE_PAGES"); 
+    		filePages=null;
+    		if(pageList!=null) return pageList;
+    		pageList=CMLib.quests().getQuestTemplate(mob, null);
+    		httpReq.getRequestObjects().put("QM_PAGE_LIST",pageList);
+    		return pageList;
+    	}
+    	else
+    	{
+    		int pageNumber=CMath.s_int(page)-1;
+    		if(filePages==null)
+    		{
+    			filePages=CMLib.quests().getQuestTemplate(mob, template);
+        		httpReq.getRequestObjects().put("QM_FILE_PAGES",filePages);
+    		}
+            Vector qPages=(Vector)filePages.elementAt(0,4);
+            if(pageNumber<=0) return (DVector)qPages.firstElement();
+            if(pageNumber>=qPages.size()) return (DVector)qPages.lastElement();
+            return (DVector)qPages.elementAt(pageNumber);
+    	}
+    }
+    
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
         Hashtable parms=parseParms(parm);
         if((parms==null)||(parms.size()==0)) return "";
-        String qState=httpReq.getRequestParameter("QMSTATE");
-        if((qState==null)||(qState.length()==0)) qState="";
-        // qmerrors
-        // qmpagefields
+		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		if(M==null) return "[error -- no authenticated mob!]";
+		
         String qTemplate=httpReq.getRequestParameter("QMTEMPLATE");
+        if((qTemplate==null)||(qTemplate.length()==0)) qTemplate="";
         String qPageStr=httpReq.getRequestParameter("QMPAGE");
+        if((qPageStr==null)||(qPageStr.length()==0)) qPageStr="";
         String qPageErrors=httpReq.getRequestParameter("QMPAGEERRORS");
+        if((qPageErrors==null)||(qPageErrors.length()==0)) qPageErrors="";
         
         if(parms.containsKey("QMPAGETITLE"))
         {
-            // should load the template, and page
-            // then return the pages title, if there is one
-            return "not yet implemented";
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	if(pageData==null) return "[error -- no page selected!]";
+            return (String)pageData.elementAt(0,2);
         }
         else
         if(parms.containsKey("QMPAGEINSTR"))
         {
-            // should load the template, and page
-            // and return the pages instructions, if there is any
-            return "not yet implemented";
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	if(pageData==null) return "[error -- no page selected!]";
+            return (String)pageData.elementAt(0,3);
         }
         else
         if(parms.containsKey("QMPAGEFIELDS"))
         {
-            // should load the template, and page
-            // and build the fields, labels, and so forth
-            // for each input field. this will be BIG
-            return "not yet implemented";
-        }
-        else
-        if(parms.containsKey("QMLASTPAGE"))
-        {
-            // should load the template, and compare QMPAGE to
-            // # of pages to return true or false
-            return "false";
-        }
-        else
-        if(parms.containsKey("QMPAGEERRORS")) return (qPageErrors==null)?"":qPageErrors;
-        else
-        if(parms.containsKey("QMTEMPLATE")) return qTemplate;
-        else
-        if(parms.containsKey("QMPAGE")) return qPageStr;
-        else
-        if(parms.containsKey("QMSTATE")) return qState;
-        else
-        if(parms.containsKey("NEXT"))
-        {
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	if(pageData==null) return "[error - no page data?!]";
+    		String labelColor=(String)parms.get("LABELCOLOR");
+    		if(labelColor==null) labelColor="<FONT COLOR=YELLOW><B>";
+    		String descColor=(String)parms.get("DESCCOLOR");
+    		if(descColor==null) descColor="<FONT COLOR=WHITE><I>";
+    		StringBuffer list=new StringBuffer("");
+        	if(qTemplate.length()==0)
+        	{
+        		String oldTemplate=(String)httpReq.getRequestParameter("QMOLDTEMPLATE");
+                if((oldTemplate==null)||(oldTemplate.length()==0)) oldTemplate="";
+        		for(int d=0;d<pageData.size();d++)
+        		{
+        			list.append("<TR><TD COLSPAN=2><INPUT TYPE=RADIO NAME=QMTEMPLATE VALUE=\""+pageData.elementAt(d,3)+"\"");
+        			if(pageData.elementAt(d,3).equals(oldTemplate))
+        				list.append(" CHECKED");
+        			list.append("> "+labelColor+(String)pageData.elementAt(d,1)+"</B></FONT></I></TD></TR>");
+        			list.append("<TR><TD><BR></TD><TD>"+descColor+(String)pageData.elementAt(d,2)+"</B></FONT></I></TD></TR>");
+        			list.append("<TR><TD><BR></TD><TD><BR></TD></TR>");
+        		}
+                return list.toString();
+        	}
+
             Vector V=httpReq.getAllRequestParameterKeys("^AT_(.+)");
-            // this should EVALUATE the data submitted and populate QMERRORS
-            // **HERE***
-            // have it update all the above fields (esp qmpage, qmpageerrors
-            // including the NEXT pages default data
-            StringBuffer newState=new StringBuffer("<STATE>");
+			list.append("<TR><TD COLSPAN=2>");
             for(int v=0;v<V.size();v++)
             {
                 String key=(String)V.elementAt(v);
                 if((!key.startsWith("AT_")))
                     continue;
-                key=key.substring(3);
-                newState.append("<"+key.toUpperCase()+">");
-                newState.append(CMLib.xml().parseOutAngleBrackets(httpReq.getRequestParameter(key)));
-                newState.append("</"+key.toUpperCase()+">");
+                String oldVal=(String)httpReq.getRequestParameter(key);
+                if(oldVal==null) oldVal="";
+                list.append("<INPUT TYPE=HIDDEN NAME="+key+" VALUE=\""+oldVal+"\">\n\r");
             }
-            newState.append("</STATE>");
-            httpReq.addRequestParameters("QMSTATE",qState+newState.toString());
+            list.append("</TD></TR>\n\r");
+            
+            String lastLabel=null;
+            for(int step=1;step<pageData.size();step++)
+            {
+                Integer stepType=(Integer)pageData.elementAt(step,1);
+                String keyName=(String)pageData.elementAt(step,2);
+                String defValue=(String)pageData.elementAt(step,3);
+                String httpKeyName=keyName;
+                if(httpKeyName.startsWith("$")) httpKeyName=httpKeyName.substring(1);
+                String keyNameFixed=CMStrings.capitalizeAndLower(httpKeyName.replace('_',' '));
+                httpKeyName="AT_"+httpKeyName;
+                boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
+                int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
+    			String oldValue=(String)httpReq.getRequestParameter(httpKeyName);
+                switch(inputCode)
+                {
+                case QuestManager.QM_COMMAND_$TITLE: break;
+                case QuestManager.QM_COMMAND_$LABEL: lastLabel=defValue; break;
+                case QuestManager.QM_COMMAND_$EXPRESSION:
+                case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
+                {
+        			if(oldValue==null) oldValue=defValue;
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><INPUT TYPE=TEXT SIZE=10 NAME="+httpKeyName+" ");
+        			list.append(" VALUE=\""+oldValue+"\"></TD></TR>");
+                	break;
+                }
+                case QuestManager.QM_COMMAND_$LONG_STRING:
+                {
+        			if(oldValue==null) oldValue=defValue;
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><TEXTAREA ROWS=3 COLS=60 NAME="+httpKeyName+">");
+        			list.append(oldValue+"</TEXTAREA></TD></TR>");
+                	break;
+                }
+                case QuestManager.QM_COMMAND_$STRING:
+                case QuestManager.QM_COMMAND_$ROOMID:
+                case QuestManager.QM_COMMAND_$AREA:
+                {
+        			if(oldValue==null) oldValue=defValue;
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><INPUT TYPE=TEXT SIZE=60 NAME="+httpKeyName+" ");
+        			list.append(" VALUE=\""+oldValue+"\"></TD></TR>");
+                	break;
+                }
+                case QuestManager.QM_COMMAND_$CHOOSE:
+                {
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><SELECT NAME="+httpKeyName+">");
+        			Vector options=CMParms.parseCommas(defValue.toUpperCase(),true);
+        			if(optionalEntry) options.insertElementAt("",0);
+        			for(int o=0;o<options.size();o++)
+        			{
+        				String val=(String)options.elementAt(o);
+            			list.append("<OPTION VALUE=\""+val+"\" ");
+        				if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
+            			list.append(val);
+        			}
+        			list.append("</SELECT></TD></TR>");
+                	break;
+                }
+                case QuestManager.QM_COMMAND_$ITEMXML:
+                {
+    				Vector rawitemlist=RoomData.contributeItems(new Vector());
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><SELECT NAME="+httpKeyName+">");
+        			DVector itemList=new DVector(2);
+        			for(int i=0;i<rawitemlist.size();i++)
+        			{
+        				Item I=(Item)rawitemlist.elementAt(i);
+        				itemList.addElement(""+I,I.Name()+" ("+I.ID()+")");
+        			}
+        			if(optionalEntry)
+        				if(itemList.size()==0)
+	        				itemList.addElement("","");
+        				else
+	        				itemList.insertElementAt(0,"","");
+        			for(int o=0;o<itemList.size();o++)
+        			{
+        				String val=(String)itemList.elementAt(o,1);
+        				String name=(String)itemList.elementAt(o,2);
+            			list.append("<OPTION VALUE=\""+val+"\" ");
+        				if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
+            			list.append(name);
+        			}
+        			list.append("</SELECT>");
+        			list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
+        			list.append("</TD></TR>");
+                	break;
+                }
+                case QuestManager.QM_COMMAND_$MOBXML:
+    				Vector rawmoblist=RoomData.contributeMOBs(new Vector());
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><SELECT NAME="+httpKeyName+">");
+        			DVector itemList=new DVector(2);
+        			for(int i=0;i<rawmoblist.size();i++)
+        			{
+        				MOB M2=(MOB)rawmoblist.elementAt(i);
+        				itemList.addElement(""+M2,M2.Name()+" ("+M2.ID()+")");
+        			}
+        			if(optionalEntry)
+        				if(itemList.size()==0)
+	        				itemList.addElement("","");
+        				else
+	        				itemList.insertElementAt(0,"","");
+        			for(int o=0;o<itemList.size();o++)
+        			{
+        				String val=(String)itemList.elementAt(o,1);
+        				String name=(String)itemList.elementAt(o,2);
+            			list.append("<OPTION VALUE=\""+val+"\" ");
+        				if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
+            			list.append(name);
+        			}
+        			list.append("</SELECT>");
+        			list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
+        			list.append("</TD></TR>");
+                	break;
+                }
+            }
+            return list.toString();
+        }
+        else
+        if(parms.containsKey("QMLASTPAGE"))
+        {
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	if(pageData==null) return "[error -- no page selected!]";
+        	DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
+        	return(((Vector)filePages.elementAt(0,4)).lastElement()==pageData)?"true":"false";
+        }
+        else
+        if(parms.containsKey("QMPAGEERRORS")) return (qPageErrors==null)?"":qPageErrors;
+        else
+        if(parms.containsKey("QMERRORS")) return (qPageErrors==null)?"":qPageErrors;
+        else
+        if(parms.containsKey("QMTEMPLATE")) return qTemplate;
+        else
+        if(parms.containsKey("QMPAGE")) return qPageStr.length()==0?"1":qPageStr;
+        else
+        if(parms.containsKey("NEXT")||parms.containsKey("FINISH"))
+        {
+        	if((qTemplate.length()>0)&&(CMath.s_int(qPageStr)<=0))
+        	{
+        		httpReq.addRequestParameters("QMPAGE","1");
+        		httpReq.addRequestParameters("QMERRORS","");
+        		httpReq.addRequestParameters("QMPAGEERRORS","");
+        		return "";
+        	}
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	if(pageData==null) return "[error - no page data?!]";
+        	
+    		httpReq.addRequestParameters("QMPAGE",""+(CMath.s_int(qPageStr)+1));
+        	return "";
         }
         else
         if(parms.containsKey("BACK"))
         {
-            Vector V=CMLib.xml().parseAllXML(qState);
-            if(V.size()>0)
-            {
-                StringBuffer newBuf=new StringBuffer("");
-                XMLLibrary.XMLpiece tagsFrom=(XMLLibrary.XMLpiece)V.lastElement();
-                for(int v=0;v<V.size()-1;v++)
-                    newBuf.append("<STATE>"+((XMLLibrary.XMLpiece)V.elementAt(v)).value+"</STATE>");
-                httpReq.addRequestParameters("QMSTATE",qState+newBuf.toString());
-                if(tagsFrom.contents!=null)
-                for(int t=0;t<tagsFrom.contents.size();t++)
-                {
-                    XMLLibrary.XMLpiece tag=(XMLLibrary.XMLpiece)tagsFrom.contents.elementAt(t);
-                    String tagName="AT_"+tag.tag;
-                    String tagValue=CMLib.xml().restoreAngleBrackets(tag.value);
-                    httpReq.addRequestParameters(tagName,tagValue);
-                }
-                // this should remove the previous data from the qmstate, re-set the
-                // QMDISPLAY parm to its previous value, and return.
-            }
         }
         return "";
     }

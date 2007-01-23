@@ -61,7 +61,7 @@
 #deliverer will already be specifying the name of the mob to deliver to,
 #but you might want to say what its for, or where the mob is, or something
 #about the reward, or whatever.
-#$REASONING=($STRING)
+#$REASONING=($LONG_STRING)
 #
 #!QUESTMAKER_PAGE Specify the Deliveree
 #The Deliveree is the mob to which the item will be delivered. 
@@ -90,7 +90,7 @@
 #Deliveree response
 #You may optionally specify some additional bit of speech the deliveree 
 #mob will say to the players after the item is handed over. 
-#$DELIVER_RESPONSE=($STRING)=Thank you.
+#$DELIVER_RESPONSE=($LONG_STRING)=Thank you.
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
