@@ -5169,7 +5169,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					while(monster.inventorySize()>0)
 					{
 						Item I=monster.fetchInventory(0);
-						if(I!=null) I.destroy();
+						if(I!=null) 
+							I.destroy();
+						else
+							break;
 					}
 				}
 				else
