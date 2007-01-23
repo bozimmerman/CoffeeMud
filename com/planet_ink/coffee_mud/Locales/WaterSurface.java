@@ -62,16 +62,22 @@ public class WaterSurface extends StdRoom implements Drink
 		if((rawDoors()[Directions.DOWN]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+		&&(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)!=0))
 		{
-			Exit o=CMClass.getExit("StdOpenDoorway");
+			Exit dnE=null;
+			Exit upE=CMClass.getExit("StdOpenDoorway");
+			if(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)>0)
+				dnE=upE;
+			else
+				dnE=CMClass.getExit("UnseenWalkway");
 			GridLocale sea=(GridLocale)CMClass.getLocale(UnderWaterLocaleID());
 			sea.setRoomID("");
 			sea.setArea(getArea());
 			rawDoors()[Directions.DOWN]=sea;
-			rawExits()[Directions.DOWN]=o;
+			rawExits()[Directions.DOWN]=dnE;
 			sea.rawDoors()[Directions.UP]=this;
-			sea.rawExits()[Directions.UP]=o;
+			sea.rawExits()[Directions.UP]=upE;
 			for(int d=0;d<4;d++)
 			{
 				Room thatRoom=rawDoors()[d];
@@ -89,7 +95,7 @@ public class WaterSurface extends StdRoom implements Drink
 					sea.rawExits()[d]=rawExits()[d];
 					thatSea.rawDoors()[Directions.getOpDirectionCode(d)]=sea;
 					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
-					if((xo==null)||(xo.hasADoor())) xo=o;
+					if((xo==null)||(xo.hasADoor())) xo=upE;
 					thatSea.rawExits()[Directions.getOpDirectionCode(d)]=xo;
 					((GridLocale)thatSea).clearGrid(null);
 				}

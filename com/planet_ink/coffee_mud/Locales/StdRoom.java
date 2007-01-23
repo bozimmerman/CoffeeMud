@@ -296,16 +296,23 @@ public class StdRoom implements Room
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-		&&(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)>0))
+		&&(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)!=0))
 		{
-			Exit o=CMClass.getExit("StdOpenDoorway");
+			Exit upE=null;
+			Exit dnE=CMClass.getExit("StdOpenDoorway");
+			if(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)>0)
+				upE=dnE;
+			else
+				upE=CMClass.getExit("UnseenWalkway");
+				
+					
 			GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
 			sky.setRoomID("");
 			sky.setArea(getArea());
 			rawDoors()[Directions.UP]=sky;
-			rawExits()[Directions.UP]=o;
+			rawExits()[Directions.UP]=upE;
 			sky.rawDoors()[Directions.DOWN]=this;
-			sky.rawExits()[Directions.DOWN]=o;
+			sky.rawExits()[Directions.DOWN]=dnE;
 			for(int d=0;d<4;d++)
 			{
 				Room thatRoom=rawDoors()[d];
@@ -320,11 +327,11 @@ public class StdRoom implements Room
 				{
 					sky.rawDoors()[d]=thatSky;
 					Exit xo=rawExits()[d];
-					if((xo==null)||(xo.hasADoor())) xo=o;
-					sky.rawExits()[d]=o;
+					if((xo==null)||(xo.hasADoor())) xo=dnE;
+					sky.rawExits()[d]=dnE;
 					thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
 					xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
-					if((xo==null)||(xo.hasADoor())) xo=o;
+					if((xo==null)||(xo.hasADoor())) xo=dnE;
 					thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
 					((GridLocale)thatSky).clearGrid(null);
 				}
