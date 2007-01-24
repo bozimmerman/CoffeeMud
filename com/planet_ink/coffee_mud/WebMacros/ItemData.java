@@ -133,10 +133,16 @@ public class ItemData extends StdWebMacro
             else
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
-				M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
+                if(R!=null)
+    				M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
+                else
+                    M=(MOB)httpReq.getRequestObjects().get(mobNum);
 				if(M==null)
 				{
-					M=RoomData.getMOBFromCode(R,mobNum);
+                    if(R!=null)
+    					M=RoomData.getMOBFromCode(R,mobNum);
+                    else
+                        M=RoomData.getMOBFromCode(RoomData.mobs,mobNum);
 					if(M==null)
 					{
 						StringBuffer str=new StringBuffer("No MOB?!");
@@ -150,9 +156,15 @@ public class ItemData extends StdWebMacro
 						}
 	                    return clearWebMacros(str);
 					}
-					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
+                    if(R!=null)
+    					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
+                    else
+                        httpReq.getRequestObjects().put(mobNum,M);
 				}
-				I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
+                if(R!=null)
+    				I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
+                else
+                    I=(Item)httpReq.getRequestObjects().get(mobNum+"/"+itemCode);
 				if(I==null)
 				{
 					if(itemCode.equals("NEW"))
@@ -160,7 +172,12 @@ public class ItemData extends StdWebMacro
 					else
 						I=RoomData.getItemFromCode(M,itemCode);
 					if(I!=null)
-						httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
+                    {
+                        if(R!=null)
+    						httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
+                        else
+                            httpReq.getRequestObjects().put(mobNum+"/"+itemCode,I);
+                    }
 				}
 			}
 			else

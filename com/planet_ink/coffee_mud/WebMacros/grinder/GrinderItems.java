@@ -81,21 +81,22 @@ public class GrinderItems
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
 				if(R!=null)
-				{
 					M=RoomData.getMOBFromCode(R,mobNum);
-					if(M==null)
+                else
+                    M=RoomData.getMOBFromCode(RoomData.mobs,mobNum);
+				if(M==null)
+				{
+					StringBuffer str=new StringBuffer("No MOB?!");
+					str.append(" Got: "+mobNum);
+					str.append(", Includes: ");
+                    if(R!=null)
+					for(int m=0;m<R.numInhabitants();m++)
 					{
-						StringBuffer str=new StringBuffer("No MOB?!");
-						str.append(" Got: "+mobNum);
-						str.append(", Includes: ");
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							MOB M2=R.fetchInhabitant(m);
-							if((M2!=null)&&(M2.savable()))
-							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
-						}
-						return str.toString();
+						MOB M2=R.fetchInhabitant(m);
+						if((M2!=null)&&(M2.savable()))
+						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
+					return str.toString();
 				}
 			}
 			if(itemCode.equals("NEW"))
@@ -131,7 +132,10 @@ public class GrinderItems
 			Item copyItem=(Item)I.copyOf();
 			Item oldI=I;
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(I))))
+            {
 				I=CMClass.getItem(newClassID);
+                if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
+            }
 	
 			for(int o=0;o<okparms.length;o++)
 			{
@@ -598,7 +602,7 @@ public class GrinderItems
 				}
 				else
 					I.wearAt(Item.IN_INVENTORY);
-                if(playerM==null)
+                if((R!=null)&&(playerM==null))
                 {
     				CMLib.database().DBUpdateMOBs(R);
     				httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));

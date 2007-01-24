@@ -103,6 +103,7 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(Room R, String code)
 	{
+        if(R==null) return getItemFromCode(items,code);
 		for(int i=0;i<R.numItems();i++)
 			if(getItemCode(R,R.fetchItem(i)).equals(code))
 				return R.fetchItem(i);
@@ -127,6 +128,7 @@ public class RoomData extends StdWebMacro
 
 	public static MOB getMOBFromCode(Room R, String code)
 	{
+        if(R==null) return getMOBFromCode(mobs,code);
 		for(int i=0;i<R.numInhabitants();i++)
 			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
 				return R.fetchInhabitant(i);
@@ -180,6 +182,28 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
+    public static MOB getReferenceMOB(MOB M)
+    {
+        if(M==null) return null;
+        for(int m=0;m<mobs.size();m++)
+        {
+            MOB M2=(MOB)mobs.elementAt(m);
+            if(M.sameAs(M2)) return M2;
+        }
+        return null;
+    }
+    
+    public static Item getReferenceItem(Item I)
+    {
+        if(I==null) return null;
+        for(int i=0;i<items.size();i++)
+        {
+            Item I2=(Item)mobs.elementAt(i);
+            if(I.sameAs(I2)) return I2;
+        }
+        return null;
+    }
+    
 	public static Vector contributeMOBs(Vector inhabs)
 	{
 		for(int i=0;i<inhabs.size();i++)
@@ -187,14 +211,7 @@ public class RoomData extends StdWebMacro
 			MOB M=(MOB)inhabs.elementAt(i);
 			if(M.isGeneric())
 			{
-				boolean found=false;
-				for(int m=0;m<mobs.size();m++)
-				{
-					MOB M2=(MOB)mobs.elementAt(m);
-					if(M.sameAs(M2))
-					{	found=true;	break;	}
-				}
-				if((!found)&&(M.savable()))
+				if((getReferenceMOB(M)==null)&&(M.savable()))
 				{
 					MOB M3=(MOB)M.copyOf();
 					mobs.addElement(M3);

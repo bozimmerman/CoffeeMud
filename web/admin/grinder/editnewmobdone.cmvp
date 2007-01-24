@@ -2,23 +2,17 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
-@MUDGrinder?EDITITEM@
+@MUDGrinder?EDITMOB@
 <HTML>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 </head>
-@if?CheckReqParm?MOB=@
-	<SCRIPT LANGUAGE=JavaScript>
-	<!--
-		opener.EditItemDone();
-		window.close();
-	//-->
-	</SCRIPT>
-@else@
-
-	@AddRequestParameter?ROOM=ANY@
-	@AddFile?/grinder/editmobform.cmvp@
-@endif@
-	</HTML>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	opener.EditItemDone();
+	window.close();
+//-->
+</SCRIPT>
+</HTML>
 @endif@
 @endif@

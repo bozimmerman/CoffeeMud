@@ -671,7 +671,8 @@ public class GrinderMobs
 			if(R==null)
 			{
 				RoomData.contributeMOBs(CMParms.makeVector(M));
-				newMobCode=RoomData.getMOBCode(RoomData.mobs,M);
+                MOB M2=RoomData.getReferenceMOB(M);
+				newMobCode=RoomData.getMOBCode(RoomData.mobs,M2);
 			}
 			else
 			{
