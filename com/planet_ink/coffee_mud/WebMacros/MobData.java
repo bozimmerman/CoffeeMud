@@ -885,28 +885,39 @@ public class MobData extends StdWebMacro
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
-			R=CMLib.map().getRoom(last);
-			if(R==null)
-				return "No Room?!";
-			CMLib.map().resetRoom(R);
-			httpReq.getRequestObjects().put(last,R);
+			if((last!=null)&&(last.equalsIgnoreCase("ANY")))
+			{
+		
+			}
+			else
+			{
+				R=CMLib.map().getRoom(last);
+				if(R==null)
+					return "No Room?!";
+				CMLib.map().resetRoom(R);
+				httpReq.getRequestObjects().put(last,R);
+			}
 		}
 		MOB M=null;
-    	synchronized(("SYNC"+R.roomID()).intern())
+    	synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
     	{
-    		R=CMLib.map().getRoom(R);
+    		if(R!=null) R=CMLib.map().getRoom(R);
     		M=(MOB)httpReq.getRequestObjects().get(mobCode);
 			if(M==null)
 			{
 				if(mobCode.equals("NEW"))
 					M=CMClass.getMOB("GenMob");
 				else
+				if(R!=null)
 					M=RoomData.getMOBFromCode(R,mobCode);
+				else
+					M=RoomData.getMOBFromCode(RoomData.mobs,mobCode);
 				if((M==null)||(!M.savable()))
 				{
 					StringBuffer str=new StringBuffer("No MOB?!");
 					str.append(" Got: "+mobCode);
 					str.append(", Includes: ");
+					if(R!=null)
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M2=R.fetchInhabitant(m);

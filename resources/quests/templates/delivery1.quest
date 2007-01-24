@@ -94,13 +94,15 @@
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
-#be taken and given to the deliveree mob.  You may select from the
-#available items below or create a new item just for this quest.
+#be taken and given to the deliveree mob.  
 #
+#You may select from the available items below or create a 
+#new item just for this quest.
 #$DELIVERABLE_ITEM=$ITEMXML
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for delivering the item:
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank)
@@ -110,6 +112,22 @@
 #
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
+#
+#
+#!QUESTMAKER_PAGE Delete Me
+#This page is just for testing mobs -- delete it!
+#
+#You may select from the available mobs below or create a 
+#new mob just for this quest.
+#$DELIVERABLE_MOB1=$MOBXML
+#
+#!QUESTMAKER_PAGE Delete Me2
+#This page is just for testing mobs AGAIN -- delete it!
+#
+#You may select from the available mobs below or create a 
+#new mob just for this quest.
+#$DELIVERABLE_MOB2=$MOBXML
+#
 #!QUESTMAKER_END_SCRIPT Delivery #1
 
 set name $QUEST_NAME

@@ -100,11 +100,14 @@ public class ItemData extends StdWebMacro
             R=(Room)httpReq.getRequestObjects().get(last);
 		if((R==null)&&(player==null))
 		{
-			R=CMLib.map().getRoom(last);
-			if(R==null)
-				return "No Room?!";
-			CMLib.map().resetRoom(R);
-			httpReq.getRequestObjects().put(last,R);
+			if(!last.equalsIgnoreCase("ANY"))
+			{
+				R=CMLib.map().getRoom(last);
+				if(R==null)
+					return "No Room?!";
+				CMLib.map().resetRoom(R);
+				httpReq.getRequestObjects().put(last,R);
+			}
 		}
 		Item I=null;
 		MOB M=null;
@@ -161,6 +164,7 @@ public class ItemData extends StdWebMacro
 				}
 			}
 			else
+			if(R!=null)
 			{
 				I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+itemCode);
 				if(I==null)
@@ -173,6 +177,20 @@ public class ItemData extends StdWebMacro
 						httpReq.getRequestObjects().put(R.roomID()+"/"+itemCode,I);
 				}
 			}
+			else
+			{
+				I=(Item)httpReq.getRequestObjects().get(itemCode);
+				if(I==null)
+				{
+					if(itemCode.equals("NEW"))
+						I=CMClass.getItem("GenItem");
+					else
+						I=RoomData.getItemFromAnywhere(RoomData.items,itemCode);
+					if(I!=null)
+						httpReq.getRequestObjects().put(itemCode,I);
+				}
+			}
+				
     	}
 
 		if(I==null)
@@ -653,10 +671,12 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 57:
+				if((M!=null)||(R!=null))
+				{
 					Vector oldContents=new Vector();
 					if(oldI instanceof Container)
 						oldContents=((Container)oldI).getContents();
-					if(M==null)
+					if((M==null)&&(R!=null))
 					{
 						if((firstTime)&&(I.container()!=null))
 							old=""+RoomData.getItemCode(R,I.container());
@@ -676,6 +696,7 @@ public class ItemData extends StdWebMacro
 						}
 					}
 					else
+					if(M!=null)
 					{
 						if((firstTime)&&(I.container()!=null))
 							old=""+RoomData.getItemCode(M,I.container());
@@ -694,7 +715,10 @@ public class ItemData extends StdWebMacro
 							}
 						}
 					}
-					break;
+					else
+	                    str.append("");
+				}
+				break;
 				case 58: // is light
 					if(I instanceof Light) return "true";
                     return "false";

@@ -28,6 +28,29 @@
 			if(window.confirm('Cancelling will lose all your hard work.  Are you SURE?!'))
 				window.close();
 		}
+		function AddNewMob()
+		{
+		}
+		function AddNewItem()
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY","Quest Item",strFeatures, false);
+		}
+		function EditItemDone()
+		{
+			document.QUESTS.FUNCTION.value='RESHOW';
+			document.QUESTS.submit();
+		}
+		function AddNewMob()
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&MOB=NEW&ROOM=ANY","Quest MOB",strFeatures, false);
+		}
+		function EditMobDone()
+		{
+			document.QUESTS.FUNCTION.value='RESHOW';
+			document.QUESTS.submit();
+		}
 	//-->
 	</SCRIPT>
 </head>

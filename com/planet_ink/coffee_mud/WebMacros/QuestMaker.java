@@ -174,6 +174,7 @@ public class QuestMaker extends StdWebMacro
                 }
                 case QuestManager.QM_COMMAND_$STRING:
                 case QuestManager.QM_COMMAND_$ROOMID:
+                case QuestManager.QM_COMMAND_$NAME:
                 case QuestManager.QM_COMMAND_$AREA:
                 {
         			if(oldValue==null) oldValue=defValue;
@@ -197,6 +198,7 @@ public class QuestMaker extends StdWebMacro
         				String val=(String)options.elementAt(o);
             			list.append("<OPTION VALUE=\""+val+"\" ");
         				if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
+            			list.append(">");
             			list.append(val);
         			}
         			list.append("</SELECT></TD></TR>");
@@ -216,9 +218,10 @@ public class QuestMaker extends StdWebMacro
         			for(int o=0;o<itemList.size();o++)
         			{
                         Item I=(Item)itemList.elementAt(o);
-            			list.append("<OPTION VALUE=\""+I+"\" ");
+            			list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
         				if((oldItem!=null)&&(oldItem.sameAs(I)))
                             list.append("SELECTED");
+        				list.append(">");
             			list.append(I.Name()+" ("+I.ID()+")");
         			}
         			list.append("</SELECT>");
@@ -240,9 +243,10 @@ public class QuestMaker extends StdWebMacro
                     for(int o=0;o<mobList.size();o++)
                     {
                         MOB M2=(MOB)mobList.elementAt(o);
-                        list.append("<OPTION VALUE=\""+M2+"\" ");
+                        list.append("<OPTION VALUE=\""+RoomData.getMOBCode(mobList, M2)+"\" ");
                         if((oldMob!=null)&&(oldMob.sameAs(M2)))
                             list.append("SELECTED");
+        				list.append(">");
                         list.append(M2.Name()+" ("+M2.ID()+")");
                     }
                     list.append("</SELECT>");
@@ -313,11 +317,8 @@ public class QuestMaker extends StdWebMacro
                         String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
                         if(newVal.length()>0)
                         {
-                        	Item I3=CMLib.coffeeMaker().getItemFromXML(newVal);
-                        	if(I3!=null)
-                        	for(int i=0;i<rawitemlist.size();i++)
-                        		if(I3.sameAs((Item)rawitemlist.elementAt(i)))
-                        		{ newVal=""+rawitemlist.elementAt(i); break;}
+                        	Item I3=(Item)CMLib.english().fetchEnvironmental(rawitemlist, newVal, false);
+                        	if(I3!=null) newVal=RoomData.getItemCode(rawitemlist, I3);
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
                         break;
@@ -332,11 +333,8 @@ public class QuestMaker extends StdWebMacro
                         String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
                         if(newVal.length()>0)
                         {
-                        	MOB M3=CMLib.coffeeMaker().getMobFromXML(newVal);
-                        	if(M3!=null)
-                            	for(int i=0;i<rawmoblist.size();i++)
-                            		if(M3.sameAs((MOB)rawmoblist.elementAt(i)))
-                            		{ newVal=""+rawmoblist.elementAt(i); break;}
+                        	MOB M3=(MOB)CMLib.english().fetchEnvironmental(rawmoblist, newVal, false);
+                        	if(M3!=null) newVal=RoomData.getMOBCode(rawmoblist, M3);
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
                         break;

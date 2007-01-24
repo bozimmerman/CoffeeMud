@@ -18,6 +18,8 @@
 	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+		var properTarget='MAP';
+		
 		function EditBehavior(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -59,7 +61,7 @@
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/edititemform.cmvp';
-			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.target=properTarget;
 			document.AREAEDIT.submit();
 		}
 		
@@ -69,19 +71,33 @@
 <BODY>
 <CENTER>
 @if?CheckReqParm?PLAYER=@
-	<h3>Modify Item in room '@RoomID@'.</H3>
+	@if?CheckReqParm?ROOM=ANY@
+		<h3>Create/Modify an Item.</H3>
+	@else@
+		<h3>Modify Item in room '@RoomID@'.</H3>
+	@endif@
 @else@
 	<h3>Modify Item of player '@PlayerID@'.</H3>
 @endif@
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
 @if?CheckReqParm?PLAYER=@
-	<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
-	<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
-	<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
-	<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-	<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
-	<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+	@if?CheckReqParm?ROOM=ANY@
+		<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editnewitemdone.cmvp">
+		<INPUT TYPE=HIDDEN NAME=ROOM VALUE="ANY">
+		<SCRIPT LANGUAGE=JavaScript>
+		<!--
+			properTarget='_top';
+		//-->
+		</SCRIPT>
+	@else@
+		<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
+		<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
+		<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
+		<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+		<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+		<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+	@endif@
 @else@
 	<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editplayeritemdone.cmvp">
 	<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerID@">

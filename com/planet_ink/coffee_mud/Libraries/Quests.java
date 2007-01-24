@@ -1265,7 +1265,12 @@ public class Quests extends StdLibrary implements QuestManager
                                 ||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$LABEL))
                                 {
                                     if(s.length()==0)
-                                        pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+"\n\r\n\r");
+                                    {
+                                        if(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$TITLE)
+                                            pageDV.addElement(new Integer(QuestManager.QM_COMMAND_$LABEL),"",s,"");
+                                        else
+	                                        pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+"\n\r\n\r");
+                                    }
                                     else
                                         pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+s+" ");
                                 }
@@ -1359,6 +1364,7 @@ public class Quests extends StdLibrary implements QuestManager
                         case QM_COMMAND_$UNIQUE_QUEST_NAME:
                         case QM_COMMAND_$STRING:
                         case QM_COMMAND_$LONG_STRING:
+                        case QM_COMMAND_$NAME:
                         case QM_COMMAND_$ROOMID:
                         case QM_COMMAND_$AREA:
                         {

@@ -290,11 +290,13 @@ public class GrinderMobs
 		if(mobCode==null) return "@break@";
 
 		String newClassID=httpReq.getRequestParameter("CLASSES");
-    	synchronized(("SYNC"+R.roomID()).intern())
+    	synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
     	{
-    		R=CMLib.map().getRoom(R);
-	
-			CMLib.map().resetRoom(R);
+    		if(R!=null)
+    		{
+	    		R=CMLib.map().getRoom(R);
+				CMLib.map().resetRoom(R);
+    		}
 	
 			MOB M=null;
 			if(mobCode.equals("NEW"))
@@ -665,21 +667,32 @@ public class GrinderMobs
 			M.recoverMaxState();
 			M.resetToMaxState();
 			M.text();
-			if(mobCode.equals("NEW"))
-				M.bringToLife(R,true);
-			else
-			if(M!=oldM)
+			String newMobCode=null;
+			if(R==null)
 			{
-				oldM.destroy();
-				R.delInhabitant(oldM);
-				M.bringToLife(R,true);
+				RoomData.contributeMOBs(CMParms.makeVector(M));
+				newMobCode=RoomData.getMOBCode(RoomData.mobs,M);
 			}
-			R.recoverRoomStats();
-			CMLib.database().DBUpdateMOBs(R);
-			String newMobCode=RoomData.getMOBCode(R,M);
+			else
+			{
+				if(mobCode.equals("NEW"))
+				{
+					M.bringToLife(R,true);
+				}
+				else
+				if(M!=oldM)
+				{
+					oldM.destroy();
+					R.delInhabitant(oldM);
+					M.bringToLife(R,true);
+				}
+				R.recoverRoomStats();
+				CMLib.database().DBUpdateMOBs(R);
+				newMobCode=RoomData.getMOBCode(R,M);
+			}
 			httpReq.addRequestParameters("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
-				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+" in room "+R.roomID()+".");
+				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+((R!=null)?" in room "+R.roomID():"")+".");
     	}
 		return "";
 	}

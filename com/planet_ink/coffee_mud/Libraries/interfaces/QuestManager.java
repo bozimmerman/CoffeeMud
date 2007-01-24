@@ -63,8 +63,8 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$ROOMID=7;
     public final static int QM_COMMAND_$AREA=8;
     public final static int QM_COMMAND_$MOBXML=9;
-    public final static int QM_COMMAND_$NAME=9;
-    public final static int QM_COMMAND_$LONG_STRING=10;
+    public final static int QM_COMMAND_$NAME=10;
+    public final static int QM_COMMAND_$LONG_STRING=11;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={

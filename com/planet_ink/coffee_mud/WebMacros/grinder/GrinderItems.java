@@ -64,7 +64,7 @@ public class GrinderItems
 		String mobNum=httpReq.getRequestParameter("MOB");
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-        String sync=((R==null)?"SYNC"+playerM.Name():R.roomID());
+        String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
     	synchronized(sync.intern())
     	{
     		if(R!=null)
@@ -80,19 +80,22 @@ public class GrinderItems
             else
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
-				M=RoomData.getMOBFromCode(R,mobNum);
-				if(M==null)
+				if(R!=null)
 				{
-					StringBuffer str=new StringBuffer("No MOB?!");
-					str.append(" Got: "+mobNum);
-					str.append(", Includes: ");
-					for(int m=0;m<R.numInhabitants();m++)
+					M=RoomData.getMOBFromCode(R,mobNum);
+					if(M==null)
 					{
-						MOB M2=R.fetchInhabitant(m);
-						if((M2!=null)&&(M2.savable()))
-						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+						StringBuffer str=new StringBuffer("No MOB?!");
+						str.append(" Got: "+mobNum);
+						str.append(", Includes: ");
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M2=R.fetchInhabitant(m);
+							if((M2!=null)&&(M2.savable()))
+							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+						}
+						return str.toString();
 					}
-					return str.toString();
 				}
 			}
 			if(itemCode.equals("NEW"))
@@ -109,11 +112,14 @@ public class GrinderItems
 				str.append(" Got: "+itemCode);
 				str.append(", Includes: ");
 				if(M==null)
+				{
+					if(R!=null)
 					for(int i=0;i<R.numItems();i++)
 					{
 						Item I2=R.fetchItem(i);
 						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 					}
+				}
 				else
 					for(int i=0;i<M.inventorySize();i++)
 					{
@@ -502,8 +508,15 @@ public class GrinderItems
 			{
 				if(M==null)
 				{
-					R.addItem(I);
-					R.recoverRoomStats();
+					if(R==null)
+					{
+						
+					}
+					else
+					{
+						R.addItem(I);
+						R.recoverRoomStats();
+					}
 				}
 				else
 				{
@@ -519,18 +532,25 @@ public class GrinderItems
 				Environmental oldOwner=oldI.owner();
 				if(M==null)
 				{
-					R.delItem(oldI);
-					R.addItem(I);
-					R.recoverRoomStats();
-					for(int i=0;i<R.numItems();i++)
+					if(R==null)
 					{
-						Item I2=R.fetchItem(i);
-						if((I2.container()!=null)
-						&&(I2.container()==oldI))
-							if(I instanceof Container)
-								I2.setContainer(I);
-							else
-								I2.setContainer(null);
+						
+					}
+					else
+					{
+						R.delItem(oldI);
+						R.addItem(I);
+						R.recoverRoomStats();
+						for(int i=0;i<R.numItems();i++)
+						{
+							Item I2=R.fetchItem(i);
+							if((I2.container()!=null)
+							&&(I2.container()==oldI))
+								if(I instanceof Container)
+									I2.setContainer(I);
+								else
+									I2.setContainer(null);
+						}
 					}
 				}
 				else
@@ -551,14 +571,22 @@ public class GrinderItems
 								I2.setContainer(null);
 					}
 				}
-				oldI.setOwner(oldOwner); // necesssary for destroythis to work.
+				oldI.setOwner(oldOwner); // necesssary for destroy this to work.
 				oldI.destroy();
 			}
 			if(M==null)
 			{
-				CMLib.database().DBUpdateItems(R);
-				httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
-				R.startItemRejuv();
+				if(R==null)
+				{
+					RoomData.contributeItems(CMParms.makeVector(I));
+					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.items,I));
+				}
+				else
+				{
+					CMLib.database().DBUpdateItems(R);
+					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
+					R.startItemRejuv();
+				}
 			}
 			else
 			{
