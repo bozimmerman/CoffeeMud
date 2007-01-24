@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1288,6 +1289,113 @@ public class Quests extends StdLibrary implements QuestManager
         return templatesDV;
     }
     
+    protected String addXMLQuestMob(MOB mob, 
+									int showFlag, 
+									DVector pageDV,
+									String showValue,
+									String parm1Fixed,
+									String lastLabel,
+									boolean optionalEntry,
+									int step, 
+									int showNumber)
+	throws IOException
+	{
+        MOB M=null;
+        Vector choices=new Vector();
+        Room R=mob.location();
+        if(R!=null)
+        for(int i=0;i<R.numInhabitants();i++)
+        {
+            M=R.fetchInhabitant(i);
+            if((M!=null)&&(M.savable())) 
+                choices.addElement(M);
+        }
+        Vector newMobs=new Vector();
+        for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+        {
+            M=(MOB)e.nextElement();
+            if(M.isGeneric())
+            {
+                M=(MOB)M.copyOf();
+                newMobs.addElement(M);
+                M.setName("A NEW "+M.ID().toUpperCase());
+                choices.addElement(M);
+            }
+        }
+        MOB canMOB=CMClass.getMOB("StdMOB");
+        canMOB.setName("CANCEL");
+        choices.addElement(canMOB);
+        String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
+                                        QuestManager.QM_COMMAND_TESTS[QuestManager.QM_COMMAND_$MOBXML],
+                                        choices.toArray());
+        canMOB.destroy();
+        if(s.equalsIgnoreCase("CANCEL")) return null;
+        M=(MOB)CMLib.english().fetchEnvironmental(choices,s,false);
+        if((M!=null)&&(newMobs.contains(M)))
+        {
+            Command C=CMClass.getCommand("Modify");
+            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",M));
+            // modify it!
+        }
+        String newValue=(M!=null)?CMLib.coffeeMaker().getMobXML(M).toString():showValue;
+        for(int n=0;n<newMobs.size();n++) ((MOB)newMobs.elementAt(n)).destroy();
+        return newValue;
+	}
+    
+    protected String addXMLQuestItem(MOB mob, 
+    								 int showFlag, 
+    								 DVector pageDV,
+    								 String showValue,
+    								 String parm1Fixed,
+    								 String lastLabel,
+    								 boolean optionalEntry,
+    								 int step, 
+    								 int showNumber)
+    throws IOException
+    {
+        Item I=null;
+        Vector choices=new Vector();
+        Room R=mob.location();
+        if(R!=null)
+        for(int i=0;i<R.numItems();i++)
+        {
+            I=R.fetchItem(i);
+            if((I!=null)&&(I.container()==null)&&(I.savable())) 
+                choices.addElement(I);
+        }
+        Vector allItemNames=new Vector();
+        CMClass.addAllItemClassNames(allItemNames,true,false);
+        Vector newItems=new Vector();
+        for(int a=0;a<allItemNames.size();a++)
+        {
+            I=CMClass.getItem((String)allItemNames.elementAt(a));
+            if((I!=null)&&(I.isGeneric()))
+            {
+                newItems.addElement(I);
+                I.setName("A NEW "+I.ID().toUpperCase());
+                choices.addElement(I);
+            }
+        }
+        Item canItem=CMClass.getItem("StdItem");
+        canItem.setName("CANCEL");
+        choices.addElement(canItem);
+        String s=CMLib.english().prompt(mob,showValue,showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
+                                        QuestManager.QM_COMMAND_TESTS[QuestManager.QM_COMMAND_$ITEMXML],
+                                        choices.toArray());
+        canItem.destroy();
+        if(s.equalsIgnoreCase("CANCEL")) return null;
+        I=(Item)CMLib.english().fetchEnvironmental(choices,s,false);
+        if((I!=null)&&(newItems.contains(I)))
+        {
+            Command C=CMClass.getCommand("Modify");
+            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",I));
+            // modify it!
+        }
+        String newValue=(I!=null)?CMLib.coffeeMaker().getItemXML(I).toString():showValue;
+        for(int n=0;n<newItems.size();n++) ((Item)newItems.elementAt(n)).destroy();
+        return newValue;
+    }
+    
     public Quest questMaker(MOB mob)
     {
         if(mob.isMonster()) return null;
@@ -1385,92 +1493,31 @@ public class Quests extends StdLibrary implements QuestManager
                         }
                         case QM_COMMAND_$ITEMXML:
                         {
-                            Item I=null;
-                            Vector choices=new Vector();
-                            Room R=mob.location();
-                            if(R!=null)
-                            for(int i=0;i<R.numItems();i++)
-                            {
-                                I=R.fetchItem(i);
-                                if((I!=null)&&(I.container()==null)&&(I.savable())) 
-                                    choices.addElement(I);
-                            }
-                            Vector allItemNames=new Vector();
-                            CMClass.addAllItemClassNames(allItemNames,true,false);
-                            Vector newItems=new Vector();
-                            for(int a=0;a<allItemNames.size();a++)
-                            {
-                                I=CMClass.getItem((String)allItemNames.elementAt(a));
-                                if((I!=null)&&(I.isGeneric()))
-                                {
-                                    newItems.addElement(I);
-                                    I.setName("A NEW "+I.ID().toUpperCase());
-                                    choices.addElement(I);
-                                }
-                            }
-                            Item canItem=CMClass.getItem("StdItem");
-                            canItem.setName("CANCEL");
-                            choices.addElement(canItem);
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
-                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
-                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
-                                                            choices.toArray());
-                            canItem.destroy();
-                            if(s.equalsIgnoreCase("CANCEL")) return null;
-                            I=(Item)CMLib.english().fetchEnvironmental(choices,s,false);
-                            if((I!=null)&&(newItems.contains(I)))
-                            {
-                                Command C=CMClass.getCommand("Modify");
-                                if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",I));
-                                // modify it!
-                            }
-                            if(I!=null) pageDV.setElementAt(step,4,CMLib.coffeeMaker().getItemXML(I).toString());
-                            for(int n=0;n<newItems.size();n++) ((Item)newItems.elementAt(n)).destroy();
+                            String newValue=addXMLQuestItem(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
+                            pageDV.setElementAt(step,4,newValue);
+                        	break;
+                        }
+                        case QM_COMMAND_$ITEMXML_ONEORMORE:
+                        {
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            String newValue=addXMLQuestItem(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
+                            pageDV.setElementAt(step,4,newValue);
                             break;
                         }
                         case QM_COMMAND_$MOBXML:
                         {
-                            MOB M=null;
-                            Vector choices=new Vector();
-                            Room R=mob.location();
-                            if(R!=null)
-                            for(int i=0;i<R.numInhabitants();i++)
-                            {
-                                M=R.fetchInhabitant(i);
-                                if((M!=null)&&(M.savable())) 
-                                    choices.addElement(M);
-                            }
-                            Vector newMobs=new Vector();
-                            for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
-                            {
-                                M=(MOB)e.nextElement();
-                                if(M.isGeneric())
-                                {
-                                    M=(MOB)M.copyOf();
-                                    newMobs.addElement(M);
-                                    M.setName("A NEW "+M.ID().toUpperCase());
-                                    choices.addElement(M);
-                                }
-                            }
-                            MOB canMOB=CMClass.getMOB("StdMOB");
-                            canMOB.setName("CANCEL");
-                            choices.addElement(canMOB);
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
-                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
-                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
-                                                            choices.toArray());
-                            canMOB.destroy();
-                            if(s.equalsIgnoreCase("CANCEL")) return null;
-                            M=(MOB)CMLib.english().fetchEnvironmental(choices,s,false);
-                            if((M!=null)&&(newMobs.contains(M)))
-                            {
-                                Command C=CMClass.getCommand("Modify");
-                                if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",M));
-                                // modify it!
-                            }
-                            if(M!=null) pageDV.setElementAt(step,4,CMLib.coffeeMaker().getMobXML(M).toString());
-                            for(int n=0;n<newMobs.size();n++) ((MOB)newMobs.elementAt(n)).destroy();
+                            String newValue=addXMLQuestMob(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
+                            pageDV.setElementAt(step,4,newValue);
                             break;
+                        }
+                        case QM_COMMAND_$MOBXML_ONEORMORE:
+                        {
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            String newValue=addXMLQuestMob(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
+                            pageDV.setElementAt(step,4,newValue);
+                        	break;
                         }
                         }
                     }

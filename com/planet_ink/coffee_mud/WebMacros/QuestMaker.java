@@ -205,6 +205,7 @@ public class QuestMaker extends StdWebMacro
                 	break;
                 }
                 case QuestManager.QM_COMMAND_$ITEMXML:
+                case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
                 {
                     if(oldValue==null) oldValue=defValue;
                     Vector itemList=new Vector();
@@ -230,6 +231,7 @@ public class QuestMaker extends StdWebMacro
                 	break;
                 }
                 case QuestManager.QM_COMMAND_$MOBXML:
+                case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                 {
                     if(oldValue==null) oldValue=defValue;
                     Vector mobList=new Vector();
@@ -307,6 +309,22 @@ public class QuestMaker extends StdWebMacro
                     {
                     case QuestManager.QM_COMMAND_$TITLE: break;
                     case QuestManager.QM_COMMAND_$LABEL: break;
+                    case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE: 
+                    {
+                        Vector rawitemlist=RoomData.contributeItems(new Vector());
+                        if(oldValue==null) oldValue="";
+                        Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
+                        if(I2!=null) oldValue=CMLib.english().getContextName(rawitemlist,I2);
+                        Object[] choices=rawitemlist.toArray();
+                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
+                        if(newVal.length()>0)
+                        {
+                        	Item I3=(Item)CMLib.english().fetchEnvironmental(rawitemlist, newVal, false);
+                        	if(I3!=null) newVal=RoomData.getItemCode(rawitemlist, I3);
+                        }
+                        httpReq.addRequestParameters(httpKeyName,newVal);
+                        break;
+                    }
                     case QuestManager.QM_COMMAND_$ITEMXML: 
                     {
                         Vector rawitemlist=RoomData.contributeItems(new Vector());
@@ -319,6 +337,22 @@ public class QuestMaker extends StdWebMacro
                         {
                         	Item I3=(Item)CMLib.english().fetchEnvironmental(rawitemlist, newVal, false);
                         	if(I3!=null) newVal=RoomData.getItemCode(rawitemlist, I3);
+                        }
+                        httpReq.addRequestParameters(httpKeyName,newVal);
+                        break;
+                    }
+                    case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
+                    {
+                        Vector rawmoblist=RoomData.contributeMOBs(new Vector());
+                        if(oldValue==null) oldValue="";
+                        MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
+                        if(M2!=null) oldValue=CMLib.english().getContextName(rawmoblist,M2);
+                        Object[] choices=rawmoblist.toArray();
+                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
+                        if(newVal.length()>0)
+                        {
+                        	MOB M3=(MOB)CMLib.english().fetchEnvironmental(rawmoblist, newVal, false);
+                        	if(M3!=null) newVal=RoomData.getMOBCode(rawmoblist, M3);
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
                         break;

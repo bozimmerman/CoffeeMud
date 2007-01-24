@@ -62,11 +62,14 @@ public class Spell_Delay extends Spell
 			newCaster.recoverEnvStats();
 			newCaster.recoverCharStats();
 			newCaster.setLocation((Room)affected);
+			newCaster.addAbility(shooter);
 			try
 			{
-				shooter.invoke(newCaster,parameters,null,true,0);
+				shooter.setProficiency(100);
+				shooter.invoke(newCaster,parameters,null,false,invoker.envStats().level()+(2*getXLEVELLevel(invoker)));
 			}
 			catch(Exception e){Log.errOut("DELAY/"+CMParms.combine(parameters,0),e);}
+			newCaster.delAbility(shooter);
 			newCaster.setLocation(null);
 			newCaster.destroy();
 		}

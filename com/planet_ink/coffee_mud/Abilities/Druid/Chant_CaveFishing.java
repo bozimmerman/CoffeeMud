@@ -40,7 +40,18 @@ public class Chant_CaveFishing extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-
+	protected int previousResource=-1;
+	
+	public void unInvoke()
+	{
+		if((affected instanceof Room)
+		&&(this.canBeUninvoked()))
+		{
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The fish start to disappear!");
+			((Room)affected).setResource(previousResource);
+		}
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
@@ -97,7 +108,14 @@ public class Chant_CaveFishing extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
-					target.setResource(RawMaterial.FISHES[CMLib.dice().roll(1,RawMaterial.FISHES.length,-1)]);
+					beneficialAffect(mob, target, asLevel,0);
+					Chant_CaveFishing A=(Chant_CaveFishing)target.fetchEffect(ID());
+					if(A!=null)
+					{
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
+						A.previousResource=target.myResource();
+						target.setResource(RawMaterial.FISHES[CMLib.dice().roll(1,RawMaterial.FISHES.length,-1)]);
+					}
 				}
 			}
 		}
