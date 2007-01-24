@@ -2097,6 +2097,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         while((mobsToDo.size()>maxToLoad)&&(maxToLoad>0))
                         	mobsToDo.removeElementAt(CMLib.dice().roll(1,mobsToDo.size(),-1));
+                        while((mobsToDo.size()<maxToLoad)&&(maxToLoad>0)&&(maxToLoad<Integer.MAX_VALUE))
+                        	mobsToDo.addElement(((CMObject)mobsToDo.elementAt(CMLib.dice().roll(1,mobsToDo.size(),-1))).copyOf());
                         Room choiceRoom=q.room;
                         for(int m=0;m<mobsToDo.size();m++)
                         {
@@ -2180,6 +2182,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         while((itemsToDo.size()>maxToLoad)&&(maxToLoad>0))
                         	itemsToDo.removeElementAt(CMLib.dice().roll(1,itemsToDo.size(),-1));
+                        while((itemsToDo.size()<maxToLoad)&&(maxToLoad>0)&&(maxToLoad<Integer.MAX_VALUE))
+                        	itemsToDo.addElement(((CMObject)itemsToDo.elementAt(CMLib.dice().roll(1,itemsToDo.size(),-1))).copyOf());
                         Room choiceRoom=q.room;
                         for(int m=0;m<itemsToDo.size();m++)
                         {
