@@ -397,6 +397,70 @@ public class QuestMaker extends StdWebMacro
             }
             httpReq.addRequestParameters("QMPAGEERRORS",errors.toString());
             if(errors.toString().length()>0) return "";
+            if(parms.containsKey("FINISH"))
+            {
+                String name="";
+            	DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
+                String script=((StringBuffer)filePages.elementAt(0,5)).toString();
+                String var=null;
+                String val=null;
+                Vector qPages=(Vector)filePages.elementAt(0,4);
+                for(int page=0;page<qPages.size();page++)
+                {
+                    DVector pageDV=(DVector)qPages.elementAt(page);
+                    for(int v=0;v<pageDV.size();v++)
+                    {
+                        var=(String)pageDV.elementAt(v,2);
+                        String httpKeyName=var;
+                        if(httpKeyName.startsWith("$")) httpKeyName=httpKeyName.substring(1);
+                        httpKeyName="AT_"+httpKeyName;
+                        val=(String)httpReq.getRequestParameter(httpKeyName);
+                        if(val==null) val="";
+                        switch(((Integer)pageDV.elementAt(v,1)).intValue())
+                        {
+                        	case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
+                                name=val;
+                        		break;
+                        	case QuestManager.QM_COMMAND_$ITEMXML:
+                        		if(val.length()>0)
+                        			val=CMLib.coffeeMaker().getItemXML(RoomData.getItemFromCode(RoomData.items,val)).toString();
+                        		break;
+                        	case QuestManager.QM_COMMAND_$MOBXML:
+                        		if(val.length()>0)
+                        			val=CMLib.coffeeMaker().getMobXML(RoomData.getMOBFromCode(RoomData.mobs,val)).toString();
+                        		break;
+                        	case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
+                        	{
+                        		Vector V=CMParms.parseSemicolons(val,true);
+                        		val="";
+                        		for(int v1=0;v1<V.size();v1++)
+                        			val+=CMLib.coffeeMaker().getItemXML(RoomData.getItemFromCode(RoomData.items,(String)V.elementAt(v1))).toString();
+                        		break;
+                        	}
+                        	case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
+                        	{
+                        		Vector V=CMParms.parseSemicolons(val,true);
+                        		val="";
+                        		for(int v1=0;v1<V.size();v1++)
+                        			val+=CMLib.coffeeMaker().getMobXML(RoomData.getMOBFromCode(RoomData.mobs,(String)V.elementAt(v1))).toString();
+                        		break;
+                        	}
+                        }
+                        script=CMStrings.replaceAll(script,var,val);
+                    }
+                }
+                Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+                CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),M,true,false);
+                newQF.saveText(script);
+                Q.setScript("LOAD=quests/"+name+".quest");
+                if((Q.name().trim().length()==0)||(Q.duration()<0))
+                {
+                    httpReq.addRequestParameters("QMPAGEERRORS","Unable to create your quest.  Please consult the log.");
+                    return "";
+                }
+                CMLib.quests().addQuest(Q);
+                CMLib.quests().save();
+            }
     		httpReq.addRequestParameters("QMPAGE",""+(CMath.s_int(qPageStr)+1));
         	return "";
         }

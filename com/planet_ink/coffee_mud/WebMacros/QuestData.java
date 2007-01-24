@@ -45,14 +45,17 @@ public class QuestData extends StdWebMacro
 		{
 			Quest Q=CMLib.quests().fetchQuest(last);
             if(Q==null)
-            for(int q=0;q<CMLib.quests().numQuests();q++)
-                if((""+CMLib.quests().fetchQuest(q)).equals(last))
-                { Q=CMLib.quests().fetchQuest(q); break;}
+            {
+            	String newLast=CMStrings.replaceAll(last,"*","@");
+	            for(int q=0;q<CMLib.quests().numQuests();q++)
+	                if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
+	                { Q=CMLib.quests().fetchQuest(q); break;}
+            }
 			if(Q==null) return "";
 			if(parms.containsKey("NAME"))
                 return clearWebMacros(Q.name());
             if(parms.containsKey("ID"))
-                return clearWebMacros(""+Q);
+                return clearWebMacros(CMStrings.replaceAll(""+Q,"@","*"));
 			if(parms.containsKey("DURATION"))
 				return ""+Q.duration();
 			if(parms.containsKey("WAIT"))

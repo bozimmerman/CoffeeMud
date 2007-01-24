@@ -51,20 +51,40 @@
 			document.QUESTS.FUNCTION.value='RESHOW';
 			document.QUESTS.submit();
 		}
+		function openUp(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			var w2=window.open("/ahelp.cmvp?HELPTOPIC="+named,"Help",strFeatures,false);
+		}
 	//-->
 	</SCRIPT>
 </head>
 <body BGCOLOR=BLACK>
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
-	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP><FONT COLOR=WHITE><B>QuestMaker!</B></FONT></TD>
-	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="Close('');"></TD>
+	<TD WIDTH=10% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=20 HEIGHT=30 ALT="" BORDER="0"></TD>
+	<TD WIDTH=20% ALIGN=LEFT VALIGN=TOP><FONT COLOR=WHITE><B>QuestMaker!</B></FONT></TD>
+	<TD WIDTH=50% ALIGN=RIGHT VALIGN=TOP>
+		<A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A><BR>
+		<A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>quest help</I></FONT></A><BR>
+		<A href="javascript:openUp('Prop_HaveZapper');"><FONT COLOR=PINK><I>zapper-mask help</I></FONT></A><BR>
+	</TD>
+	<TD WIDTH=20% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="Close('');"></TD>
 	</TR>
 	</TABLE>
 	
 		<FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
 		@QuestMaker?@@RequestParameter?FUNCTION@@ @ <!-- this will update qmpage?-->
+		@if?CheckReqParm?FUNCTION=FINISH@
+		@if?CheckReqParm?QMPAGEERRORS=@
+			<SCRIPT LANGUAGE=JavaScript>
+			<!--
+				window.opener.Refresh();
+				window.close();
+			//-->
+			</SCRIPT>
+		@endif@
+		@endif@
 		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 		<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
 		<INPUT TYPE=HIDDEN NAME=QMPAGE VALUE="@QuestMaker?QMPAGE@">
@@ -81,14 +101,11 @@
 			<INPUT TYPE=HIDDEN NAME=QMTEMPLATE VALUE="@QuestMaker?QMTEMPLATE@">
 			<FONT COLOR=YELLOW><H3>@QuestMaker?QMPAGETITLE@</H3></FONT>
 			<FONT COLOR=WHITE><I>@QuestMaker?QMPAGEINSTR@</I></FONT>
-			<P>
 		@endif@
-		<FONT COLOR=RED><B>@QuestMaker?QMERRORS@</B></FONT>
-		<TABLE WIDTH=100%><TR><TD WIDTH=20%><BR></TD><TD VALIGN=TOP ALIGN=LEFT>
-		<FONT COLOR=WHITE>
-			<FONT COLOR=WHITE>@QuestMaker?QMPAGEFIELDS&LABELCOLOR=<FONT COLOR=YELLOW><B>&DESCCOLOR=<FONT COLOR=WHITE>@</FONT>
-		</FONT>
-		</TD></TR></TABLE>
+		@if?!CheckReqParm?QMPAGEERRORS=@<P><BR><FONT COLOR=RED><B>@QuestMaker?QMERRORS@</B></FONT><BR>@endif@
+		<TABLE WIDTH=100%><TR HEIGHT=1><TD WIDTH=20%  HEIGHT=1></TD><TD WIDTH=80% VALIGN=TOP ALIGN=LEFT HEIGHT=1></TD></TR>
+		@QuestMaker?QMPAGEFIELDS&LABELCOLOR=<FONT COLOR=YELLOW><B>&DESCCOLOR=<FONT COLOR=WHITE>@
+		</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=0><TR>
 	@if?CheckReqParm?!QMTEMPLATE=@
@@ -97,7 +114,7 @@
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
 	</TD>
 	@if?QuestMaker?QMLASTPAGE@
-		<CENTER><FONT COLOR=YELLOW>Click Finish to Create your Quest!</FONT></CENTER>
+		<CENTER><FONT COLOR=PINK><H3>Click Finish to Create your Quest!</H3></FONT></CENTER>
 		<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=FINISH VALUE="Finish" ONCLICK="ClickedFinish();"></TD>
 	@else@
 		<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><INPUT TYPE=BUTTON NAME=NEXT VALUE="Next" ONCLICK="ClickedNext();"></TD>

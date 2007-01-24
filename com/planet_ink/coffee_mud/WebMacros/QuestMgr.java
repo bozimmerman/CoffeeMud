@@ -57,9 +57,12 @@ public class QuestMgr extends StdWebMacro
 		{
 			Q=CMLib.quests().fetchQuest(last);
             if(Q==null)
+            {
+            	String newLast=CMStrings.replaceAll(last,"*","@");
                 for(int q=0;q<CMLib.quests().numQuests();q++)
-                    if((""+CMLib.quests().fetchQuest(q)).equals(last))
+                    if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
                     { Q=CMLib.quests().fetchQuest(q); break;}
+            }
 			if(Q==null) return "";
 			if(parms.containsKey("MODIFY"))
 			{
