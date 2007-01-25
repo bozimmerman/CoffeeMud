@@ -76,7 +76,13 @@ public class QuestMgr extends StdWebMacro
 				CMLib.quests().delQuest(Q);
 				CMLib.quests().save();
 				httpReq.addRequestParameters("QUEST","");
-				return "Quest '"+Q.name()+"' deleted.";
+				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),null,false,true);
+				if(F.exists())
+				{
+					if(F.delete())
+						return "Quest script file '"+Resources.makeFileResourceName("quests/"+Q.name()+".quest")+"' deleted.";
+				}
+				return "Quest '"+Q.name()+"' removed from quests list.";
 			}
 			if(parms.containsKey("START"))
 			{

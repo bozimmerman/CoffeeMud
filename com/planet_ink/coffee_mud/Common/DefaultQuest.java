@@ -2668,8 +2668,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 }
                 Environmental E=(Environmental)questState.stuff.elementAt(i,1);
                 questState.stuff.removeElementAt(i);
+                
                 if(E instanceof Item)
-                    ((Item)E).destroy();
+                {
+                	if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+	                    ((Item)E).destroy();
+                }
                 else
                 if(E instanceof MOB)
                 {
@@ -2680,10 +2684,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     if(R==null)
                     {
                         CMLib.tracking().wanderAway(M,true,false);
-                        if(M.location()!=null)
-                            M.location().delInhabitant(M);
-                        M.setLocation(null);
-                        M.destroy();
+                    	if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+                    	{
+	                        if(M.location()!=null)
+	                            M.location().delInhabitant(M);
+	                        M.setLocation(null);
+	                        M.destroy();
+                    	}
                     }
                     else
                         CMLib.tracking().wanderAway(M,false,true);
@@ -2920,11 +2927,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // if the quest has a winner, this is him.
     public void declareWinner(String name)
     {
+    	if(name==null) return;
         name=name.trim();
-        if(name.length()==0)
-            return;
+        if(name.length()==0) return;
         Quest Q=getMainQuestObject();
-        if(Q.wasWinner(name))
+        if(!Q.wasWinner(name))
         {
             Q.getWinners().addElement(name);
             CMLib.database().DBUpdateQuest(Q);
@@ -2996,6 +3003,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // was a previous winner
     public boolean wasWinner(String name)
     {
+    	if(name==null) return false;
+        name=name.trim();
+        if(name.length()==0) return false;
         Quest Q=getMainQuestObject();
         Vector V=Q.getWinners();
         for(int i=0;i<V.size();i++)
