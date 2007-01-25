@@ -10,24 +10,27 @@
 #$QUEST_NAME=$UNIQUE_QUEST_NAME=delivery_1
 #
 #Quest Frequency:
-#A quest starts and stops on timed intervals.  Enter below the amount of time 
-#that this quest will remain unavailable between periods of availability.
-#This time is expressed in "ticks" (4 second periods).  You may enter math 
-#expressions, and use the special ? operator to generate random numbers.
-#For instance, a frequency of 5 + 3?10 would generate a frequency of 8-15 
-#ticks.
+#A quest starts and stops on timed intervals.  Enter the amount of time 
+#that this quest will remain unavailable between runs. This number is in 
+#"ticks" (4 second periods).  You may enter math expressions, and use the 
+# special ? operator to generate random numbers.  A frequency of
+#5 + 3?10 would generate a frequency of 8-15 ticks.
 #$FREQUENCY=$EXPRESSION=400
 #
 #Quest Duration:
-#A quest starts and stops on timed intervals.  Enter below the amount of time 
-#that this quest will run and remain available after it is started.
-#This time is also the amount of time a player has to delivery the item
-#after they have retreived it from the deliverer mob.  
+#Enter the amount of time that this quest will run and remain available 
+#after it is started.  This time is also the amount of time a player has 
+#to delivery the item after they have retreived it from the deliverer mob.
 #This time is expressed in "ticks" (4 second periods).  You may enter math 
 #expressions, and use the special ? operator to generate random numbers.
-#For instance, a duration of 5 + 3?10 would generate a duration of 8-15 
-#ticks.
+#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
 #$DURATION=$EXPRESSION=175
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
 #
 #!QUESTMAKER_PAGE Specify the Deliverer
 #The Deliverer is the mob who will be holding the item initially. This must
@@ -50,18 +53,24 @@
 #If you specified an area or room above, then the mob must be located there.
 #You may optionally have the quest manager select a 'random' mob by entering
 #a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#Prop_HaveZapper for information on zapper mask syntax).
+#ZAPPERMASKS for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
 #$DELIVERER_NAME=$NAME
 #
 #Deliverer reasons: 
-#You may optionally specify some additional bit of speech the deliverer 
+#Specify some additional bit of speech the deliverer 
 #mob will say to players when the item is handed over for delivery.  The
 #deliverer will already be specifying the name of the mob to deliver to,
 #but you might want to say what its for, or where the mob is, or something
 #about the reward, or whatever.
 #$REASONING=($LONG_STRING)
+#
+#Deliverer announcement:
+#This is an initial annoucement by the deliverer over the QUESTCHAT channel
+#whenever the quest starts running. Leave it blank if you only want him to 
+#talk to people who enter the room with him.
+#$QUEST_ANNOUNCEMENT=($STRING)
 #
 #!QUESTMAKER_PAGE Specify the Deliveree
 #The Deliveree is the mob to which the item will be delivered. 
@@ -122,12 +131,15 @@ set wait $FREQUENCY
 set interval 1
 #quiet
 
-import items item.xml
+set minplayers 1
+set playermask $QUEST_CRITERIA
+
+import items $QUEST_NAME_item.xml
 set area $DELIVERER_AREA
 set room $DELIVERER_ROOM
 set mobgroup
 set mob $DELIVERER_NAME
-give behavior Scriptable LOAD=deliverer.script
+give behavior Scriptable LOAD=$QUEST_NAME_deliverer.script
 load item any
 give item
 
@@ -135,49 +147,60 @@ set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM
 set mobgroup
 set mob $DELIVEREE_NAME
-give behavior Scriptable LOAD=deliveree.script
+give behavior Scriptable LOAD=$QUEST_NAME_deliveree.script
 
 set duration $DURATION
 
 #!~!BEGINFILEXML!~!
-<FILE><NAME>item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
-<FILE><NAME>deliverer.script</NAME>
+<FILE><NAME>$QUEST_NAME_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_NAME_deliverer.script</NAME>
 <DATA>
+ONCE_PROG 100
+	QUESTCHAT $QUEST_ANNOUNCEMENT
+
+~
+
 # this script is for the human chosen to be the note bearer
 GREET_PROG 100
-	if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-		if has($n '$[1 *]')
-				sayto "$n" What are you doing back here?  Deliver $[1 *] to ${2 *}!
-		else
-			if has($i '$[1 *]')
-				sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
+	if ISLIKE($n '$QUEST_CRITERIA')
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if has($n '$[1 *]')
+					sayto "$n" What are you doing back here?  Deliver $[1 *] to ${2 *}!
+			else
+				if has($i '$[1 *]')
+					sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
+				endif
 			endif
 		endif
 	endif
 ~
 
 SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
-	if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-		if has($n '$[1 *]')
-				sayto "$n" Just deliver $[1 *] to ${2 *}!
-		else
-			if has($i '$[1 *]')
-				sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
+	if ISLIKE($n '$QUEST_CRITERIA')
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if has($n '$[1 *]')
+					sayto "$n" Just deliver $[1 *] to ${2 *}!
+			else
+				if has($i '$[1 *]')
+					sayto "$n" I have something I need to be delivered to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
+				endif
 			endif
 		endif
 	endif
 ~
 
 SPEECH_PROG p i accept
-	if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-		if has($i '$[1 *]') and !has($n '$[1 *]')
-#			mpoload '$[1 *]'
-			give "$[1 *]" "$n"
-			sayto "$n" Please deliver this to ${2 *}.  $REASONING
-			mpqset * REMAINING $DURATION
-		else
-			if has($n '$[1 *]')
-				sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
+	if ISLIKE($n '$QUEST_CRITERIA')
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if has($i '$[1 *]') and !has($n '$[1 *]')
+	#			mpoload '$[1 *]'
+				give "$[1 *]" "$n"
+				sayto "$n" Please deliver this to ${2 *}.  $REASONING
+				mpqset * REMAINING $DURATION
+			else
+				if has($n '$[1 *]')
+					sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
+				endif
 			endif
 		endif
 	endif
@@ -191,7 +214,7 @@ GIVE_PROG all
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>deliveree.script</NAME>
+<FILE><NAME>$QUEST_NAME_deliveree.script</NAME>
 <DATA>
 GREET_PROG 100
 	if has($n '$[1 *]')
@@ -201,30 +224,35 @@ GREET_PROG 100
 	
 
 GIVE_PROG all
-	if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-		sayto "$n" What's this?
-		give "$o" "$n"
-	else
-		if EVAL($o == '$[1 *]')
-			if EVAL('$EXP' != '')
-				mpexp $n 10%
-			endif
-			if EVAL('$QUEST_POINT' == 'YES')
-				mpoload QuestPoint
-				give "a quest point" "$n"
-			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpoload $GOLD
-				give $GOLD "$n"
-			endif
-			mpquestwin $n *
-			mpjunk $o
-			sayto "$n" $DELIVER_RESPONSE
-			mpendquest *
-		else
+	if ISLIKE($n '$QUEST_CRITERIA')
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 			sayto "$n" What's this?
 			give "$o" "$n"
+		else
+			if EVAL($o == '$[1 *]')
+				if EVAL('$EXP' != '')
+					mpexp $n 10%
+				endif
+				if EVAL('$QUEST_POINT' == 'YES')
+					mpoload QuestPoint
+					give "a quest point" "$n"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$n"
+				endif
+				mpquestwin $n *
+				mpjunk $o
+				sayto "$n" $DELIVER_RESPONSE
+				mpendquest *
+			else
+				sayto "$n" What's this?
+				give "$o" "$n"
+			endif
 		endif
+	else
+		sayto "$n" What's this?
+		give "$o" "$n"
 	endif
 ~
 </DATA></FILE>
