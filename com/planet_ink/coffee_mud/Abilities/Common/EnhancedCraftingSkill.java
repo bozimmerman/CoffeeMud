@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "EnhancedCraftingSkill"; }
 	public String name(){ return "Enhanced Crafting Skill";}
-	
+
 	protected int materialAdjustments=0;
     protected static final int TYPE_LITECRAFT=0;
     protected static final int TYPE_DURACRAFT=1;
@@ -52,7 +52,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
         {"Damaging","Brutal","Lethal"},
         {"Even","Balanced","Counterbalanced"},
     };
-    
+
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,
@@ -147,7 +147,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				req2Required,req2Desc,req2,
 				bundle,autoGeneration,expMods);
 	}
-	
+
 	private final static int atLeast1(int value, double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));
@@ -173,7 +173,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
                 return i;
         return -1;
     }
-    
+
 	protected String applyName(String name, String word)
 	{
 		Vector V=CMParms.parse(name);
@@ -191,7 +191,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 		return CMParms.combineWithQuotes(V,0);
 	}
-	
+
 	protected void applyName(Item item, String word)
 	{
 		String oldName=item.Name();
@@ -202,7 +202,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		displayText=CMStrings.replaceAll(displayText,oldName,item.Name());
 		//startStr=CMStrings.replaceAll(startStr,oldName,item.Name());
 	}
-	
+
     public Vector getThisSkillsExpertises()
     {
         Vector V=new Vector();
@@ -213,7 +213,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
         }
         return V;
     }
-    
+
 	public void enhanceList(MOB mob)
 	{
 		StringBuffer extras=new StringBuffer("");
@@ -287,7 +287,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 		return types;
 	}
-	
+
 	public void addStatAdjustment(Item item, String stat, String adjustment)
 	{
 		stat=stat.toUpperCase().trim();
@@ -323,7 +323,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
                 WA.setMiscText(spell+"("+parm+")");
         }
     }
-	
+
 	public void enhanceItem(MOB mob, Item item, DVector types)
 	{
 		if(types==null) return;
@@ -334,6 +334,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		&&(!affect.mending)
 		&&(item!=null))
 		{
+			int origTickdown=affect.tickDown;
 			for(int t=0;t<types.size();t++)
 			{
 				int type=((Integer)types.elementAt(t,1)).intValue();
@@ -350,13 +351,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.0));
-						affect.tickDown*=2;
+						affect.tickDown+=origTickdown*=2;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
 						//addStatAdjustment(item,"DEX","+1");
-						affect.tickDown*=4;
+						affect.tickDown+=origTickdown*=4;
 						break;
 					}
 					break;
@@ -375,14 +376,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
-						affect.tickDown*=2;
+						affect.tickDown+=origTickdown*=2;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
 						//addStatAdjustment(item,"CON","+1");
-						affect.tickDown*=4;
+						affect.tickDown+=origTickdown*=4;
 						break;
 					}
 					break;
@@ -392,12 +393,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 0:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
-						affect.tickDown*=2;
+						affect.tickDown+=origTickdown*=2;
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.0));
-						affect.tickDown*=3;
+						affect.tickDown+=origTickdown*=3;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
@@ -405,7 +406,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
                         if((item instanceof Armor)
                         &&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
     						addSpellAdjustment(item,"Spell_WellDressed","1");
-						affect.tickDown*=4;
+						affect.tickDown+=origTickdown*=4;
 						break;
 					}
 					break;
@@ -419,21 +420,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.05));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
-						affect.tickDown*=2;
+						affect.tickDown+=origTickdown*=2;
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.1));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.0));
 						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
-						affect.tickDown*=3;
+						affect.tickDown+=origTickdown*=3;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.15)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),4.0));
 						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
-						affect.tickDown*=5;
+						affect.tickDown+=origTickdown*=5;
 						break;
 					}
 					break;
@@ -447,21 +448,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+5);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
-						affect.tickDown*=2;
+						affect.tickDown+=origTickdown*=2;
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+10);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
 						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.05));
-						affect.tickDown*=3;
+						affect.tickDown+=origTickdown*=3;
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+20);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),5.0));
 						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
-						affect.tickDown*=5;
+						affect.tickDown+=origTickdown*=5;
 						break;
 					}
 					break;
@@ -470,5 +471,5 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			item.recoverEnvStats();
 		}
 	}
-	
+
 }
