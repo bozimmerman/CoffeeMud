@@ -165,6 +165,8 @@ public interface QuestManager extends CMLibrary
             }
             if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
             if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+            if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
+                throw new CMException("Multiple-word room names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
             Vector V=CMParms.parse((String)str);
             if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");}
             String s=null;
@@ -195,6 +197,8 @@ public interface QuestManager extends CMLibrary
             }
             if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
             if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+            if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
+                throw new CMException("Multiple-word area names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
             Vector V=CMParms.parse((String)str);
             if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");}
             StringBuffer returnStr=new StringBuffer("");
