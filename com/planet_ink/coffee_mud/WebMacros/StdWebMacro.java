@@ -344,6 +344,97 @@ public class StdWebMacro implements WebMacro
 		}
 		return requestParms;
 	}
+	
+	protected String htmlIncomingFilter(String buf){return htmlIncomingFilter(new StringBuffer(buf)).toString();}
+	protected StringBuffer htmlIncomingFilter(StringBuffer buf)
+	{
+		int loop=0;
+
+		while(buf.length()>loop)
+		{
+			if((buf.charAt(loop)=='&')
+			&&(loop<buf.length()-3))
+			{
+				int endloop=loop+1;
+				while((endloop<buf.length())&&(endloop<loop+10)&&(buf.charAt(endloop)!=';'))
+					endloop++;
+				if(endloop<buf.length())
+				{
+					String s=buf.substring(loop,endloop+1);
+					if(s.equalsIgnoreCase("&gt;"))
+					{
+						buf.setCharAt(loop,'>');
+						buf.delete(loop+1,endloop+1);
+					}
+					else
+					if(s.equalsIgnoreCase("&lt;"))
+					{
+						buf.setCharAt(loop,'<');
+						buf.delete(loop+1,endloop+1);
+					}
+					else
+					if(s.equalsIgnoreCase("&amp;"))
+					{
+						buf.setCharAt(loop,'&');
+						buf.delete(loop+1,endloop+1);
+					}
+					else
+					if(s.equalsIgnoreCase("&quot;"))
+					{
+						buf.setCharAt(loop,'\"');
+						buf.delete(loop+1,endloop+1);
+					}
+				}
+			}
+			loop++;
+		}
+		return buf;
+	}
+	protected String htmlOutgoingFilter(String buf){return htmlOutgoingFilter(new StringBuffer(buf)).toString();}
+	protected StringBuffer htmlOutgoingFilter(StringBuffer buf)
+	{
+		int loop=0;
+
+		while(buf.length()>loop)
+		{
+			switch(buf.charAt(loop))
+			{
+			case '>':
+				buf.delete(loop,loop+1);
+				buf.insert(loop,"&gt;".toCharArray());
+				loop+=3;
+			    break;
+			case '"':
+				buf.delete(loop,loop+1);
+				buf.insert(loop,"&quot;".toCharArray());
+				loop+=5;
+			    break;
+			case '&':
+				if((loop+3>=buf.length())
+				||((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
+					&&(!buf.substring(loop,loop+3).equalsIgnoreCase("amp;"))
+					&&(!buf.substring(loop,loop+3).equalsIgnoreCase("quot;"))
+					&&(!buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))))
+				{
+					buf.delete(loop,loop+1);
+					buf.insert(loop,"&amp;".toCharArray());
+					loop+=4;
+				}
+				else
+					loop++;
+				break;
+			case '<':
+				buf.delete(loop,loop+1);
+				buf.insert(loop,"&lt;".toCharArray());
+				loop+=3;
+			    break;
+			default:
+				loop++;
+			}
+		}
+		return buf;
+	}
+	
 	protected Hashtable parseParms(String parm)
 	{
 		Hashtable requestParms=new Hashtable();

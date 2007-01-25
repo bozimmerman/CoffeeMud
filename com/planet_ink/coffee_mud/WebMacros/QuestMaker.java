@@ -102,7 +102,7 @@ public class QuestMaker extends StdWebMacro
                 if((oldTemplate==null)||(oldTemplate.length()==0)) oldTemplate="";
         		for(int d=0;d<pageData.size();d++)
         		{
-        			list.append("<TR><TD COLSPAN=2><INPUT TYPE=RADIO NAME=QMTEMPLATE VALUE=\""+pageData.elementAt(d,3)+"\"");
+        			list.append("<TR><TD COLSPAN=2><INPUT TYPE=RADIO NAME=QMTEMPLATE VALUE=\""+htmlOutgoingFilter((String)pageData.elementAt(d,3))+"\"");
         			if(pageData.elementAt(d,3).equals(oldTemplate))
         				list.append(" CHECKED");
         			list.append("> "+labelColor+(String)pageData.elementAt(d,1)+"</B></FONT></I></TD></TR>");
@@ -132,7 +132,7 @@ public class QuestMaker extends StdWebMacro
                 if(thisPage) continue;
                 String oldVal=(String)httpReq.getRequestParameter(key);
                 if(oldVal==null) oldVal="";
-                list.append("<INPUT TYPE=HIDDEN NAME="+key+" VALUE=\""+oldVal+"\">\n\r");
+                list.append("<INPUT TYPE=HIDDEN NAME="+key+" VALUE=\""+htmlOutgoingFilter(oldVal)+"\">\n\r");
             }
             list.append("</TD></TR>\n\r");
             
@@ -161,7 +161,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
         			list.append("<TD><INPUT TYPE=TEXT SIZE=10 NAME="+httpKeyName+" ");
-        			list.append(" VALUE=\""+oldValue+"\"></TD></TR>");
+        			list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
                 	break;
                 }
                 case QuestManager.QM_COMMAND_$LONG_STRING:
@@ -185,7 +185,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
         			list.append("<TD><INPUT TYPE=TEXT SIZE=60 NAME="+httpKeyName+" ");
-        			list.append(" VALUE=\""+oldValue+"\"></TD></TR>");
+        			list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
                 	break;
                 }
                 case QuestManager.QM_COMMAND_$CHOOSE:

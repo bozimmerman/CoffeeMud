@@ -74,8 +74,8 @@
 #talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
 #
-#!QUESTMAKER_PAGE Specify the Container
-#The destination should be some sort of  
+#!QUESTMAKER_PAGE Specify the Destination
+#The destination is either a room or a container item.
 #
 #Destination Area/Room: 
 #Specify below the name of the area and room to take the item to.
