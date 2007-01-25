@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public class Scavenger extends ActiveTicker
 	public String ID(){return "Scavenger";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
     int origItems=-1;
-    
+
 	public Scavenger()
 	{
         super();
@@ -50,7 +50,7 @@ public class Scavenger extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-            
+
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
@@ -98,7 +98,14 @@ public class Scavenger extends ActiveTicker
 	                while((origItems>=0)&&(mob.inventorySize()>origItems))
 	                {
 	                    Item I=mob.fetchInventory(origItems);
-	                    I.destroy();
+	                    if(I==null)
+	                    {
+	                    	if(origItems>0)
+	                    		origItems--;
+	                    	break;
+						}
+	                    else
+							I.destroy();
 	                }
 	                mob.recoverEnvStats();
 	                mob.recoverCharStats();

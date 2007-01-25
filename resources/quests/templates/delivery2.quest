@@ -77,30 +77,30 @@
 #!QUESTMAKER_PAGE Specify the Container
 #The destination should be some sort of  
 #
-#Deliveree Area/Room: 
-#Specify below the name of the area that your deliveree room or container is located
-#You may leave this is blankto force the quest manager to find them somewhere in 
+#Destination Area/Room: 
+#Specify below the name of the area and room to take the item to.
+#You may leave area blank to force the quest manager to find them somewhere in 
 #the world, but this will hurt the performance of your mud, so use with care.  
-#Use double-quotes around multi-word areas.
+#Use double-quotes around multi-word area/rooms.
 #
-#Deliveree Area:
+#Destination Area:
 #$DELIVEREE_AREA=($AREA)
+#Destination Room:
+#$DELIVEREE_ROOM=$ROOMID
 #
-#Deliveree type:
-#Specify below whether you are delivering to a ROOM or an ITEM (container).
-#$DELIVEREE_TYPE=$CHOOSE=ROOM,ITEM
+#Destination item:
+#Specify below the name of the container item from the above room where
+#the item must be deposited to complete the quest.  If you just want 
+#the player to drop the item in the room, leave this field blank.
+#$DELIVEREE_NAME=($NAME)
 #
-#Deliveree ITEM Room:
-#If you just chose Item above, you can specify the room the item is in
-#here if you like.  If you chose room, just keep this blank.
-#$DELIVEREE_ROOM=($ROOMID)
+#Destination Description:
+#Specify below the name of the destination as it will be described by
+#the mob handing over the item.  This should be a short descriptive name
+#like "the pit at the temple" or "the mayors headstone at the graveyard"
+#$DELIVEREE_DESC=$STRING
 #
-#Deliveree name:
-#Specify below the name of the room or container from the above area where
-#the item must be deposited to complete the quest.
-#$DELIVEREE_NAME=$NAME
-#
-#Deliveree response: 
+#Destination response: 
 #You may optionally specify some additional bit of text said to
 #the players after the item is placed. 
 #$DELIVER_RESPONSE=($LONG_STRING)=Your task is complete.
@@ -149,7 +149,7 @@ give item
 
 set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM
-set $DELIVEREE_TYPE $DELIVEREE_NAME
+set item $DELIVEREE_NAME
 give behavior Scriptable LOAD=$QUEST_NAME_deliveree.script
 
 set duration $DURATION
@@ -168,10 +168,10 @@ GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA')
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
-					sayto "$n" What are you doing back here?  Take $[1 *] to ${2 *}!
+					sayto "$n" What are you doing back here?  Take $[1 *] to $DELIVEREE_DESC!
 			else
 				if has($i '$[1 *]')
-					sayto "$n" I have something I need to be taken to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
+					sayto "$n" I have something I need to be taken to $DELIVEREE_DESC.  If you'll deliver it for me, say 'I accept', and I will give you the details.
 				endif
 			endif
 		endif
@@ -182,10 +182,10 @@ SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to d
 	if ISLIKE($n '$QUEST_CRITERIA')
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
-					sayto "$n" Just take $[1 *] to ${2 *}!
+					sayto "$n" Just take $[1 *] to $DELIVEREE_DESC!
 			else
 				if has($i '$[1 *]')
-					sayto "$n" I have something I need to be taken to ${2 *}.  If you'll deliver it for me, say 'I accept', and I will give you the details.
+					sayto "$n" I have something I need to be taken to $DELIVEREE_DESC.  If you'll deliver it for me, say 'I accept', and I will give you the details.
 				endif
 			endif
 		endif
@@ -196,13 +196,13 @@ SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA')
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($i '$[1 *]') and !has($n '$[1 *]')
-	#			mpoload '$[1 *]'
+#				mpoload '$[1 *]'
 				give "$[1 *]" "$n"
-				sayto "$n" Please deliver this to ${2 *}.  $REASONING
+				sayto "$n" Please deliver this to $DELIVEREE_DESC.  $REASONING
 				mpqset * REMAINING $DURATION
 			else
 				if has($n '$[1 *]')
-					sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
+					sayto "$n" Yes, I know.  Now deliver it to $DELIVEREE_DESC.
 				endif
 			endif
 		endif
@@ -219,18 +219,42 @@ GIVE_PROG all
 </DATA></FILE>
 <FILE><NAME>$QUEST_NAME_deliveree.script</NAME>
 <DATA>
-GREET_PROG 100
-	if has($n '$[1 *]')
-		say "$n" Ah, I see you are here to deliver $[1 *].  Go ahead and give it to me.
+
+PUT_PROG all
+	if EVAL($o == '$[1 *]') AND EVAL($p == '$[2 *]')
+		if ISLIKE($n '$QUEST_CRITERIA')
+			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+				# do nothing
+			else
+				if EVAL($o == '$[1 *]')
+					if EVAL('$EXP' != '')
+						mpexp $n 10%
+					endif
+					if EVAL('$QUEST_POINT' == 'YES')
+						mpoload QuestPoint
+						give "a quest point" "$n"
+					endif
+					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+						mpoload $GOLD
+						give $GOLD "$n"
+					endif
+					mpquestwin $n *
+					mpjunk $o
+					mpecho $DELIVER_RESPONSE
+					mpendquest *
+				endif
+			endif
+		endif
 	endif
 ~
-	
 
-GIVE_PROG all
+DROP_PROG all
+	if EVAL('$[2 *]' != '') AND EVAL('$[2 *]' != 'null')
+		RETURN
+	ENDIF
 	if ISLIKE($n '$QUEST_CRITERIA')
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			sayto "$n" What's this?
-			give "$o" "$n"
+			# do nothing
 		else
 			if EVAL($o == '$[1 *]')
 				if EVAL('$EXP' != '')
@@ -246,16 +270,10 @@ GIVE_PROG all
 				endif
 				mpquestwin $n *
 				mpjunk $o
-				sayto "$n" $DELIVER_RESPONSE
+				mpecho $DELIVER_RESPONSE
 				mpendquest *
-			else
-				sayto "$n" What's this?
-				give "$o" "$n"
 			endif
 		endif
-	else
-		sayto "$n" What's this?
-		give "$o" "$n"
 	endif
 ~
 </DATA></FILE>
