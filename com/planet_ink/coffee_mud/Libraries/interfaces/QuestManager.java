@@ -67,6 +67,7 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$LONG_STRING=11;
     public final static int QM_COMMAND_$MOBXML_ONEORMORE=12;
     public final static int QM_COMMAND_$ITEMXML_ONEORMORE=13;
+    public final static int QM_COMMAND_$ZAPPERMASK=14;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -84,6 +85,7 @@ public interface QuestManager extends CMLibrary
         "$LONG_STRING",
         "$MOBXML_ONEORMORE",
         "$ITEMXML_ONEORMORE",
+        "$ZAPPERMASK"
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -251,6 +253,10 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml_1ormore
         	return QuestManager.QM_COMMAND_TESTS[QM_COMMAND_$ITEMXML].eval(str,choices,emptyOK);
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            return str;
         }},
     };
     

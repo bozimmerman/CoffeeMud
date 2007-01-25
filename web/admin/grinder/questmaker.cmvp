@@ -46,6 +46,11 @@
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
 			w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&MOB=NEW&ROOM=ANY","Quest MOB",strFeatures, false);
 		}
+		function Refresh()
+		{
+			document.QUESTS.FUNCTION.value='RESHOW';
+			document.QUESTS.submit();
+		}
 		function EditMobDone()
 		{
 			document.QUESTS.FUNCTION.value='RESHOW';
@@ -67,7 +72,7 @@
 	<TD WIDTH=50% ALIGN=RIGHT VALIGN=TOP>
 		<A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A><BR>
 		<A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>quest help</I></FONT></A><BR>
-		<A href="javascript:openUp('Prop_HaveZapper');"><FONT COLOR=PINK><I>zapper-mask help</I></FONT></A><BR>
+		<A href="javascript:openUp('ZAPPERMASKS');"><FONT COLOR=PINK><I>zapper-mask help</I></FONT></A><BR>
 	</TD>
 	<TD WIDTH=20% ALIGN=RIGHT VALIGN=TOP><INPUT TYPE=BUTTON NAME=BACK VALUE="Cancel" ONCLICK="Close('');"></TD>
 	</TR>

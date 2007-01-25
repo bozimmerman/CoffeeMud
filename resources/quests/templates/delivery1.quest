@@ -114,21 +114,6 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#
-#!QUESTMAKER_PAGE Delete Me
-#This page is just for testing mobs -- delete it!
-#
-#You may select from the available mobs below or create a 
-#new mob just for this quest.
-#$DELIVERABLE_MOB1=$MOBXML
-#
-#!QUESTMAKER_PAGE Delete Me2
-#This page is just for testing mobs AGAIN -- delete it!
-#
-#You may select from the available mobs below or create a 
-#new mob just for this quest.
-#$DELIVERABLE_MOB2=$MOBXML_ONEORMORE
-#
 #!QUESTMAKER_END_SCRIPT Delivery #1
 
 set name $QUEST_NAME

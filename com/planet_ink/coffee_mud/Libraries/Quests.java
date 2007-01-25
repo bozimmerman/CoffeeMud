@@ -1302,13 +1302,22 @@ public class Quests extends StdLibrary implements QuestManager
 	{
         MOB M=null;
         Vector choices=new Vector();
+        MOB baseM=((showValue!=null)?baseM=CMLib.coffeeMaker().getMobFromXML(showValue):null);
+        StringBuffer choiceDescs=new StringBuffer("");
+        if(baseM!=null){
+        	choices.addElement(baseM);
+        	choiceDescs.append(baseM.name()+", ");
+        }
         Room R=mob.location();
         if(R!=null)
         for(int i=0;i<R.numInhabitants();i++)
         {
             M=R.fetchInhabitant(i);
             if((M!=null)&&(M.savable())) 
+            {
                 choices.addElement(M);
+                choiceDescs.append(M.name()+", ");
+            }
         }
         Vector newMobs=new Vector();
         for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
@@ -1320,12 +1329,17 @@ public class Quests extends StdLibrary implements QuestManager
                 newMobs.addElement(M);
                 M.setName("A NEW "+M.ID().toUpperCase());
                 choices.addElement(M);
+                choiceDescs.append(M.name()+", ");
             }
         }
         MOB canMOB=CMClass.getMOB("StdMOB");
         canMOB.setName("CANCEL");
+        choiceDescs.append("CANCEL");
         choices.addElement(canMOB);
-        String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
+        String showName=showValue;
+        if(baseM!=null) showName=CMLib.english().getContextName(choices,baseM);
+        lastLabel=((lastLabel==null)?"":lastLabel)+"\n\rChoices: "+choiceDescs.toString();
+        String s=CMLib.english().prompt(mob,showName,showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                         QuestManager.QM_COMMAND_TESTS[QuestManager.QM_COMMAND_$MOBXML],
                                         choices.toArray());
         canMOB.destroy();
@@ -1339,7 +1353,7 @@ public class Quests extends StdLibrary implements QuestManager
         }
         String newValue=(M!=null)?CMLib.coffeeMaker().getMobXML(M).toString():showValue;
         for(int n=0;n<newMobs.size();n++) ((MOB)newMobs.elementAt(n)).destroy();
-        return newValue;
+        return newValue.trim();
 	}
     
     protected String addXMLQuestItem(MOB mob, 
@@ -1355,13 +1369,22 @@ public class Quests extends StdLibrary implements QuestManager
     {
         Item I=null;
         Vector choices=new Vector();
+        Item baseI=((showValue!=null)?baseI=CMLib.coffeeMaker().getItemFromXML(showValue):null);
+        StringBuffer choiceDescs=new StringBuffer("");
+        if(baseI!=null){
+        	choices.addElement(baseI);
+        	choiceDescs.append(baseI.name()+", ");
+        }
         Room R=mob.location();
         if(R!=null)
         for(int i=0;i<R.numItems();i++)
         {
             I=R.fetchItem(i);
             if((I!=null)&&(I.container()==null)&&(I.savable())) 
+            {
                 choices.addElement(I);
+            	choiceDescs.append(I.name()+", ");
+            }
         }
         Vector allItemNames=new Vector();
         CMClass.addAllItemClassNames(allItemNames,true,false);
@@ -1374,12 +1397,17 @@ public class Quests extends StdLibrary implements QuestManager
                 newItems.addElement(I);
                 I.setName("A NEW "+I.ID().toUpperCase());
                 choices.addElement(I);
+            	choiceDescs.append(I.name()+", ");
             }
         }
+    	choiceDescs.append("CANCEL");
         Item canItem=CMClass.getItem("StdItem");
         canItem.setName("CANCEL");
         choices.addElement(canItem);
-        String s=CMLib.english().prompt(mob,showValue,showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
+        String showName=showValue;
+        if(baseI!=null) showName=CMLib.english().getContextName(choices,baseI);
+        lastLabel=((lastLabel==null)?"":lastLabel)+"\n\rChoices: "+choiceDescs.toString();
+        String s=CMLib.english().prompt(mob,showName,showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                         QuestManager.QM_COMMAND_TESTS[QuestManager.QM_COMMAND_$ITEMXML],
                                         choices.toArray());
         canItem.destroy();
@@ -1393,7 +1421,7 @@ public class Quests extends StdLibrary implements QuestManager
         }
         String newValue=(I!=null)?CMLib.coffeeMaker().getItemXML(I).toString():showValue;
         for(int n=0;n<newItems.size();n++) ((Item)newItems.elementAt(n)).destroy();
-        return newValue;
+        return newValue.trim();
     }
     
     public Quest questMaker(MOB mob)
@@ -1446,7 +1474,7 @@ public class Quests extends StdLibrary implements QuestManager
                 DVector pageDV=(DVector)qPages.elementAt(page);
                 String pageName=(String)pageDV.elementAt(0,2);
                 String pageInstructions=(String)pageDV.elementAt(0,3);
-                mob.tell("^HPage #"+(page+1)+": ^N"+pageName);
+                mob.tell("\n\r\n\r^HPage #"+(page+1)+": ^N"+pageName);
                 mob.tell("^N"+pageInstructions);
                 boolean ok=false;
                 int showFlag=-999;
@@ -1473,10 +1501,13 @@ public class Quests extends StdLibrary implements QuestManager
                         case QM_COMMAND_$STRING:
                         case QM_COMMAND_$LONG_STRING:
                         case QM_COMMAND_$NAME:
+                        case QM_COMMAND_$ZAPPERMASK:
                         case QM_COMMAND_$ROOMID:
                         case QM_COMMAND_$AREA:
                         {
                             String showValue=(showFlag<-900)?defValue:(String)pageDV.elementAt(step,4);
+                            if(inputCode==QM_COMMAND_$ZAPPERMASK)
+                            	lastLabel=(lastLabel==null?"":lastLabel)+"\n\r"+CMLib.masking().maskHelp("\n\r","disallows");
                             String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],null);
                             pageDV.setElementAt(step,4,s);
@@ -1485,7 +1516,8 @@ public class Quests extends StdLibrary implements QuestManager
                         case QM_COMMAND_$CHOOSE:
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
-                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
+                            String label=((lastLabel==null)?"":lastLabel)+"\n\rChoices: "+defValue;
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],
                                                             CMParms.toStringArray(CMParms.parseCommas(defValue.toUpperCase(),true)));
                             pageDV.setElementAt(step,4,s);
@@ -1495,33 +1527,84 @@ public class Quests extends StdLibrary implements QuestManager
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             String newValue=addXMLQuestItem(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
-                            pageDV.setElementAt(step,4,newValue);
+                            if(newValue!=null) pageDV.setElementAt(step,4,newValue);
                         	break;
                         }
                         case QM_COMMAND_$ITEMXML_ONEORMORE:
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
-                            String newValue=addXMLQuestItem(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
-                            pageDV.setElementAt(step,4,newValue);
+                            Vector itemXMLs=new Vector();
+                            int x=showValue.indexOf("</ITEM><ITEM>");
+                            while(x>=0)
+                            {
+                            	String xml=showValue.substring(0,x+7).trim();
+                            	if(xml.length()>0) itemXMLs.addElement(xml);
+                            	showValue=showValue.substring(x+7);
+                            	x=showValue.indexOf("</ITEM><ITEM>");
+                            }
+                            if(showValue.trim().length()>0)
+                            	itemXMLs.addElement(showValue.trim());
+                            String newValue=null;
+                            for(int i=0;i<=itemXMLs.size();i++)
+                            {
+                            	showValue=(i<itemXMLs.size())?(String)itemXMLs.elementAt(i):"";
+                            	boolean optional=(i==0)?optionalEntry:true;
+	                            String thisValue=addXMLQuestItem(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optional, step, ++showNumber);
+	                            if(thisValue!=null)
+	                            {
+	                            	if(newValue==null) newValue="";
+	                            	newValue+=thisValue;
+	                            	if((thisValue.length()>0)
+	                            	&&(i==itemXMLs.size()))
+	                            		itemXMLs.addElement(thisValue);
+	                            }
+                            }
+                            if(newValue!=null) pageDV.setElementAt(step,4,newValue);
                             break;
                         }
                         case QM_COMMAND_$MOBXML:
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             String newValue=addXMLQuestMob(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
-                            pageDV.setElementAt(step,4,newValue);
+                            if(newValue!=null) pageDV.setElementAt(step,4,newValue);
                             break;
                         }
                         case QM_COMMAND_$MOBXML_ONEORMORE:
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
-                            String newValue=addXMLQuestMob(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
-                            pageDV.setElementAt(step,4,newValue);
+                            Vector mobXMLs=new Vector();
+                            int x=showValue.indexOf("</MOB><MOB>");
+                            while(x>=0)
+                            {
+                            	String xml=showValue.substring(0,x+6).trim();
+                            	if(xml.length()>0) mobXMLs.addElement(xml);
+                            	showValue=showValue.substring(x+6);
+                            	x=showValue.indexOf("</MOB><MOB>");
+                            }
+                            if(showValue.trim().length()>0)
+                            	mobXMLs.addElement(showValue.trim());
+                            	
+                            String newValue=null;
+                            for(int i=0;i<=mobXMLs.size();i++)
+                            {
+                            	showValue=(i<mobXMLs.size())?(String)mobXMLs.elementAt(i):"";
+                            	boolean optional=(i==0)?optionalEntry:true;
+                                String thisValue=addXMLQuestMob(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optional, step, ++showNumber);
+	                            if(thisValue!=null)
+	                            {
+	                            	if(newValue==null) newValue="";
+	                            	newValue+=thisValue;
+	                            	if((thisValue.length()>0)
+	                            	&&(i==mobXMLs.size()))
+	                            		mobXMLs.addElement(thisValue);
+	                            }
+                            }
+                            if(newValue!=null) pageDV.setElementAt(step,4,newValue);
                         	break;
                         }
                         }
                     }
-                    if(showFlag<-900){ ok=false; showFlag=0; mob.tell("\n\r^ZNow verify this page's selections:^.^N"); continue;}
+                    if(showFlag<-900){ ok=false; showFlag=0; mob.tell("\n\r^HNow verify this page's selections:^.^N"); continue;}
                     if(showFlag>0){ showFlag=-1; continue;}
                     String what=mob.session().prompt("Edit which (enter 0 to cancel)? ","");
                     if(what.trim().equals("0"))

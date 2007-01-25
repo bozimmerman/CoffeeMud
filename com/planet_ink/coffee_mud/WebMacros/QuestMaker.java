@@ -124,7 +124,9 @@ public class QuestMaker extends StdWebMacro
                 {
                     String keyName=(String)pageData.elementAt(step,2);
                     if(keyName.startsWith("$")
-                    &&(key.substring(3).toUpperCase().equals(keyName.substring(1))))
+                    &&(key.substring(3).toUpperCase().equals(keyName.substring(1))
+                		||(key.substring(3).toUpperCase().startsWith(keyName.substring(1)+"_")
+                				&&CMath.isNumber(key.substring(3+keyName.length())))))
                     { thisPage=true; break;}
                 }
                 if(thisPage) continue;
@@ -175,6 +177,7 @@ public class QuestMaker extends StdWebMacro
                 case QuestManager.QM_COMMAND_$STRING:
                 case QuestManager.QM_COMMAND_$ROOMID:
                 case QuestManager.QM_COMMAND_$NAME:
+                case QuestManager.QM_COMMAND_$ZAPPERMASK:
                 case QuestManager.QM_COMMAND_$AREA:
                 {
         			if(oldValue==null) oldValue=defValue;
@@ -205,7 +208,6 @@ public class QuestMaker extends StdWebMacro
                 	break;
                 }
                 case QuestManager.QM_COMMAND_$ITEMXML:
-                case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
                 {
                     if(oldValue==null) oldValue=defValue;
                     Vector itemList=new Vector();
@@ -230,8 +232,52 @@ public class QuestMaker extends StdWebMacro
         			list.append("</TD></TR>");
                 	break;
                 }
+                case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
+                {
+                    if(oldValue==null) oldValue=defValue;
+                    Vector itemList=new Vector();
+    				itemList=RoomData.contributeItems((Vector)itemList.clone());
+                    Vector oldValues=new Vector();
+                    int which=1;
+                    oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                    while(oldValue!=null)
+                    {
+                    	if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+                        	oldValues.addElement(oldValue);
+                    	which++;
+                        oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                    }
+                    oldValues.addElement("");
+                    for(int i=0;i<oldValues.size();i++)
+                    {
+                    	oldValue=(String)oldValues.elementAt(i);
+	                    Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
+	                    if(i==0)
+	                    {
+		        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+		        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+	                    }
+	        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+	        			list.append("<TD><SELECT NAME="+httpKeyName+"_"+(i+1)+" ONCHANGE=\"Refresh();\">");
+                        if(i<oldValues.size()-1)  list.append("<OPTION VALUE=\"DELETE\">Delete!");
+                        if(oldValue.length()==0) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+	        			for(int o=0;o<itemList.size();o++)
+	        			{
+	                        Item I=(Item)itemList.elementAt(o);
+	            			list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
+	        				if((oldItem!=null)&&(oldItem.sameAs(I)))
+	                            list.append("SELECTED");
+	        				list.append(">");
+	            			list.append(I.Name()+" ("+I.ID()+")");
+	        			}
+	        			list.append("</SELECT>");
+	        			if(i==oldValues.size()-1)
+		        			list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
+	        			list.append("</TD></TR>");
+                    }
+                	break;
+                }
                 case QuestManager.QM_COMMAND_$MOBXML:
-                case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                 {
                     if(oldValue==null) oldValue=defValue;
                     Vector mobList=new Vector();
@@ -254,6 +300,51 @@ public class QuestMaker extends StdWebMacro
                     list.append("</SELECT>");
                     list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
                     list.append("</TD></TR>");
+                	break;
+                }
+                case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
+                {
+                    if(oldValue==null) oldValue=defValue;
+                    Vector mobList=new Vector();
+                    mobList=RoomData.contributeMOBs((Vector)mobList.clone());
+                    Vector oldValues=new Vector();
+                    int which=1;
+                    oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                    while(oldValue!=null)
+                    {
+                    	if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+                        	oldValues.addElement(oldValue);
+                    	which++;
+                        oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                    }
+                    oldValues.addElement("");
+                    for(int i=0;i<oldValues.size();i++)
+                    {
+                    	oldValue=(String)oldValues.elementAt(i);
+	                    MOB oldMob=(oldValue.length()>0)?RoomData.getMOBFromCode(mobList,oldValue):null;
+	                    if(i==0)
+	                    {
+		                    list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+	                    	list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+	                    }
+	                    list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+	                    list.append("<TD><SELECT NAME="+httpKeyName+"_"+(i+1)+" ONCHANGE=\"Refresh();\">");
+	                    if(i<oldValues.size()-1)  list.append("<OPTION VALUE=\"DELETE\">Delete!");
+	                    if(oldValue.length()==0) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+	                    for(int o=0;o<mobList.size();o++)
+	                    {
+	                        MOB M2=(MOB)mobList.elementAt(o);
+	                        list.append("<OPTION VALUE=\""+RoomData.getMOBCode(mobList, M2)+"\" ");
+	                        if((oldMob!=null)&&(oldMob.sameAs(M2)))
+	                            list.append("SELECTED");
+	        				list.append(">");
+	                        list.append(M2.Name()+" ("+M2.ID()+")");
+	                    }
+	                    list.append("</SELECT>");
+	                    if(i==oldValues.size()-1)
+		                    list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
+	                    list.append("</TD></TR>");
+                    }
                 	break;
                 }
                 }
@@ -312,15 +403,30 @@ public class QuestMaker extends StdWebMacro
                     case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE: 
                     {
                         Vector rawitemlist=RoomData.contributeItems(new Vector());
-                        if(oldValue==null) oldValue="";
-                        Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
-                        if(I2!=null) oldValue=CMLib.english().getContextName(rawitemlist,I2);
-                        Object[] choices=rawitemlist.toArray();
-                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
-                        if(newVal.length()>0)
+                        Vector oldValues=new Vector();
+                        int which=1;
+                        oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                        while(oldValue!=null)
                         {
-                        	Item I3=(Item)CMLib.english().fetchEnvironmental(rawitemlist, newVal, false);
-                        	if(I3!=null) newVal=RoomData.getItemCode(rawitemlist, I3);
+                        	if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+	                        	oldValues.addElement(oldValue);
+                        	which++;
+                            oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                        }
+                        if(oldValues.size()==0) oldValues.addElement("");
+                        String newVal="";
+                        for(int i=0;i<oldValues.size();i++)
+                        {
+                        	oldValue=(String)oldValues.elementAt(i);
+	                        Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
+	                        if(I2!=null) oldValue=CMLib.english().getContextName(rawitemlist,I2);
+	                        Object[] choices=rawitemlist.toArray();
+	                        String thisVal=(String)eval.eval(oldValue,choices,optionalEntry);
+	                        if(thisVal.length()>0)
+	                        {
+	                        	Item I3=(Item)CMLib.english().fetchEnvironmental(rawitemlist, thisVal, false);
+	                        	if(I3!=null) newVal+=RoomData.getItemCode(rawitemlist, I3)+";";
+	                        }
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
                         break;
@@ -344,15 +450,30 @@ public class QuestMaker extends StdWebMacro
                     case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                     {
                         Vector rawmoblist=RoomData.contributeMOBs(new Vector());
-                        if(oldValue==null) oldValue="";
-                        MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
-                        if(M2!=null) oldValue=CMLib.english().getContextName(rawmoblist,M2);
-                        Object[] choices=rawmoblist.toArray();
-                        String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
-                        if(newVal.length()>0)
+                        Vector oldValues=new Vector();
+                        int which=1;
+                        oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                        while(oldValue!=null)
                         {
-                        	MOB M3=(MOB)CMLib.english().fetchEnvironmental(rawmoblist, newVal, false);
-                        	if(M3!=null) newVal=RoomData.getMOBCode(rawmoblist, M3);
+                        	if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+	                        	oldValues.addElement(oldValue);
+                        	which++;
+                            oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
+                        }
+                        if(oldValues.size()==0) oldValues.addElement("");
+                        String newVal="";
+                        for(int i=0;i<oldValues.size();i++)
+                        {
+                        	oldValue=(String)oldValues.elementAt(i);
+	                        MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
+	                        if(M2!=null) oldValue=CMLib.english().getContextName(rawmoblist,M2);
+	                        Object[] choices=rawmoblist.toArray();
+	                        String thisVal=(String)eval.eval(oldValue,choices,optionalEntry);
+	                        if(thisVal.length()>0)
+	                        {
+	                        	MOB M3=(MOB)CMLib.english().fetchEnvironmental(rawmoblist, thisVal, false);
+	                        	if(M3!=null) newVal+=RoomData.getMOBCode(rawmoblist, M3)+";";
+	                        }
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
                         break;
