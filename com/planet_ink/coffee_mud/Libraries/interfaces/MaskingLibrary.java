@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public interface MaskingLibrary extends CMLibrary
     public boolean maskCheck(Vector cset, Environmental E, boolean actual);
     public boolean maskCheck(String text, Environmental E, boolean actual);
     public int minMaskLevel(String text, int minMinLevel);
-    
+
     public final String DEFAULT_MASK_HELP =
         "+SYSOP (allow archons to bypass the rules)  <BR>"
         +"-SYSOP (always <WORD> archons)  <BR>"
@@ -168,7 +168,7 @@ public interface MaskingLibrary extends CMLibrary
         +"-MONTH +X (<WORD> those only when month number is X)  <BR>"
         +"+MONTH -X (<WORD> those whenever the month number is X)"
         +"-DAY +X (<WORD> those only when day number is X)  <BR>"
-        +"+DAY -X (<WORD> those whenever the day number is X)"
+        +"+DAY -X (<WORD> those whenever the day number is X)  <BR>"
         +"-WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)  <BR>"
         +"+WEATHER -BLIZZARD (<WORD> those whenever the weather is BLIZZARD) <BR>"
         +"-SKILLFLAG (<WORD> anyone, even those with no skills) <BR>"

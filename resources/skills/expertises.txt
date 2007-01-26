@@ -91,7 +91,7 @@ STREETLORE@x1=Street Lore @x2,10,LEVEL,-SKILLFLAG +STREET_SMARTS,-MAXCLASSLEVEL 
 HELP_=<EXPERTISE>Better knowledge of the streets and how to get the most from it.
 
 NATURELORE@x1=Nature Lore @x2,10,LEVEL,-SKILLFLAG +NATURE_LORE,-MAXCLASSLEVEL +>={16+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>Better knowledge of the streets and how to get the most from it.
+HELP_=<EXPERTISE>Better knowledge of the natural world and how to get the most from nature-lore domain skills.
 
 DIRTYFIGHT@x1=Dirty Fighting @x2,10,LEVEL,-SKILLFLAG +DIRTY_FIGHTING,-MAXCLASSLEVEL +>={19+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when fighting dirty.
