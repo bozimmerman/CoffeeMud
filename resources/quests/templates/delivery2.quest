@@ -161,7 +161,7 @@ set duration $DURATION
 <FILE><NAME>$QUEST_NAME_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_NAME_deliverable.script</NAME>
 <DATA>
-QUEST_TIME_PROG 1
+QUEST_TIME_PROG * 1
 	mpechoat $w You have less than a minute left to deliver $i.
 ~
 </DATA></FILE>
