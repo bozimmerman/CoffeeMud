@@ -59,6 +59,7 @@
 		<TR><TD><a href="javascript:Load('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:Quest('');"><FONT COLOR=WHITE SIZE=-1><B>New Quest Script</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:QuestWizard();"><FONT COLOR=WHITE SIZE=-1><B>Quest Maker Wizard</B></FONT></A></TD></TR>
+		<TR><TD><A HREF="javascript:Browse('/resources/quests/');"><FONT COLOR=WHITE SIZE=-1><B>Browse Quests</B></FONT></a></TD></TR>
 		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>
@@ -84,7 +85,7 @@
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Quests Manager</H2></FONT></TD></TR>
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Name</FONT></B></TD>
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Status</FONT></B></TD>
-	<TD WIDTH=30%>(<A HREF="javascript:Browse('/resources/quests/');"><FONT COLOR=WHITE><B>Browse Quests</B></FONT></a>)
+	<TD WIDTH=30%><B><FONT COLOR=YELLOW>Control</FONT></B></TD>
 	</TD>
 	</TR>
 	@QuestNext?RESET@

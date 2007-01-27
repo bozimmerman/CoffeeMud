@@ -190,6 +190,7 @@ public class QuestMaker extends StdWebMacro
                 }
                 case QuestManager.QM_COMMAND_$ABILITY:
                 {
+        			if(oldValue==null) oldValue=defValue;
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
@@ -202,7 +203,7 @@ public class QuestMaker extends StdWebMacro
             			list.append("<OPTION VALUE=\""+A.ID()+"\" ");
         				if(oldValue.equals(A.ID())) list.append("SELECTED");
         				list.append(">");
-            			list.append(A.name());
+            			list.append(A.ID());
         			}
         			list.append("</SELECT>");
         			list.append("</TD></TR>");

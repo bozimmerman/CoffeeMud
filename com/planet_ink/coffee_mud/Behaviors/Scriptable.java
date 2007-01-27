@@ -122,6 +122,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     						 String rawHost, 
     						 MOB source, 
     						 Environmental target,
+    						 Environmental scripted,
                              MOB monster, 
                              Item primaryItem, 
                              Item secondaryItem, 
@@ -131,7 +132,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         if(!rawHost.equals("*"))
         {
             if(E==null)
-                rawHost=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,rawHost);
+                rawHost=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,rawHost);
             else
             if(E instanceof Room)
                 rawHost=CMLib.map().getExtendedRoomID((Room)E);
@@ -142,8 +143,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     }
     
     public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
-                         MOB monster, Item primaryItem, Item secondaryItem, String msg, Object[] tmp)
-    { return getVar(getVarHost(E,rawHost,source,target,monster,primaryItem,secondaryItem,msg,tmp),var); }
+    				     Environmental scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg, 
+    				     Object[] tmp)
+    { return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var); }
              
     public static String getVar(String host, String var)
     {
@@ -752,7 +754,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					Vector V=(Vector)O;
 					String back=str.substring(2);
 	                if(back.charAt(1)=='$')
-	                    back=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,back);
+	                    back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
 	    			if((back.length()>1)&&Character.isDigit(back.charAt(1)))
 	    			{
 	    				int x=1;
@@ -816,7 +818,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		if(lastKnownLocation!=null)
 		{
-			str=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,str);
+			str=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,str);
 			Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORNREQ_ANY);
 			if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Item.WORNREQ_ANY);
 			if(E==null) E=lastKnownLocation.fetchAnyItem(str);
@@ -864,6 +866,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	
 	public String varify(MOB source, 
 						 Environmental target, 
+						 Environmental scripted,
 						 MOB monster, 
 						 Item primaryItem, 
 						 Item secondaryItem, 
@@ -887,6 +890,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			else
 			switch(c)
 			{
+			case '@': 
+				if((t<varifyable.length()-2)&&Character.isLetter(varifyable.charAt(t+2)))
+				{
+					Environmental E=getArgumentItem("$"+varifyable.charAt(t+2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					middle=(E==null)?"null":""+E;
+				}
+				break;
 			case 'a':
 				if(lastKnownLocation!=null)
 					middle=lastKnownLocation.getArea().name();
@@ -1033,7 +1043,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							mid=mid.substring(y+1).trim();
 						}
                         if(arg1.length()>0)
-                            middle=getVar(E,arg1,mid,source,target,monster,primaryItem,secondaryItem,msg,tmp);
+                            middle=getVar(E,arg1,mid,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
                         back=back.substring(x+1);
 					}
 				}
@@ -1127,7 +1137,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             &&(back.length()>1))
             {
                 if(back.charAt(1)=='$')
-                    back=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,back);
+                    back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
 				if(back.equalsIgnoreCase("#LENGTH#"))
 					middle=""+CMParms.parse(middle).size();
 				else
@@ -1576,7 +1586,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 2: // has
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
@@ -1612,9 +1622,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 74: // hasnum
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-                String item=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+                String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 String cmp=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-                String value=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
+                String value=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
                 {
@@ -1666,7 +1676,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 67: // hastitle
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
@@ -1685,7 +1695,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 3: // worn
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
@@ -1927,7 +1937,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 7: // isname
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
 					returnable=false;
@@ -1939,7 +1949,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
 					returnable=false;
@@ -1951,7 +1961,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E==null)
                     returnable=false;
@@ -1961,16 +1971,16 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 61: // strin
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Vector V=CMParms.parse(arg1.toUpperCase());
 				returnable=V.contains(arg2.toUpperCase());
 				break;
 			}
 			case 62: // callfunc
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				String found=null;
 				boolean validFunc=false;
 				Vector scripts=getScripts();
@@ -1993,7 +2003,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									primaryItem,
 									secondaryItem,
 									script2,
-									varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,arg2),
+									varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2),
 									tmp);
 							if(found==null) found="";
 							break;
@@ -2009,7 +2019,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 14: // affected
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
 					returnable=false;
@@ -2020,7 +2030,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 69: // isbehave
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
 					returnable=false;
@@ -2032,7 +2042,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB))||(((MOB)E).isMonster()))
                     returnable=false;
@@ -2042,7 +2052,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 28: // questwinner
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				Quest Q=getQuest(arg2);
@@ -2057,7 +2067,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 29: // questmob
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Quest Q=getQuest(arg2);
 				if(Q==null)
@@ -2068,7 +2078,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 31: // isquestmobalive
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Quest Q=getQuest(arg2);
 				if(Q==null)
@@ -2087,9 +2097,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 32: // nummobsinarea
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
                 Vector MASK=null;
                 if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
@@ -2120,9 +2130,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 33: // nummobs
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
                 Vector MASK=null;
                 if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
@@ -2156,9 +2166,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 34: // numracesinarea
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
 				Room R=null;
 				MOB M=null;
@@ -2177,9 +2187,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 35: // numraces
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
 				try
 				{
@@ -2199,7 +2209,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 30: // questobj
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Quest Q=getQuest(arg2);
 				if(Q==null)
@@ -2210,7 +2220,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 85: // islike
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
@@ -2221,7 +2231,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 86: // strcontains
             { 
-                String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
                 returnable=CMParms.stringContains(arg1,arg2)>=0;
                 break;
@@ -2230,7 +2240,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2249,7 +2259,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 50: // isseason
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				returnable=false;
 				if(monster.location()!=null)
 				for(int a=0;a<TimeClock.SEASON_DESCS.length;a++)
@@ -2260,7 +2270,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 51: // isweather
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				returnable=false;
 				if(monster.location()!=null)
 				for(int a=0;a<Climate.WEATHER_DESCS.length;a++)
@@ -2271,7 +2281,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 57: // ismoon
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				returnable=false;
 				if(monster.location()!=null)
 				{
@@ -2290,7 +2300,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 38: // istime
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				if(monster.location()==null)
 					returnable=false;
 				else
@@ -2318,7 +2328,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 39: // isday
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getDayOfMonth()==CMath.s_int(arg1.trim())))
 					returnable=true;
 				else
@@ -2364,24 +2374,24 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         }
                     }
                 }
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),startbit));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),startbit));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),startbit));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),startbit));
 				if(lastKnownLocation!=null)
 					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMMOBSROOM");
 				break;
 			}
 			case 63: // numpcsroom
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				if(lastKnownLocation!=null)
 					returnable=simpleEval(scripted,""+lastKnownLocation.numPCInhabitants(),arg2,arg1,"NUMPCSROOM");
 				break;
 			}
 			case 79: // numpcsarea
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				if(lastKnownLocation!=null)
 				{
 					int num=0;
@@ -2397,10 +2407,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 77: // explored
             {
-                String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-                String where=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
-                String cmp=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),2));
-                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
+                String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+                String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),2));
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
                 Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB)))
                 {
@@ -2433,10 +2443,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
             case 72: // faction
             {
-                String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-                String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
-                String cmp=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),2));
-                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),3));
+                String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+                String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),2));
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),3));
                 Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 Faction F=CMLib.factions().getFaction(arg1);
                 if((E==null)||(!(E instanceof MOB)))
@@ -2473,8 +2483,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 46: // numitemsroom
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				int ct=0;
 				if(lastKnownLocation!=null)
 				for(int i=0;i<lastKnownLocation.numItems();i++)
@@ -2488,9 +2498,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 47: //mobitem
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				MOB M=null;
 				if(lastKnownLocation!=null)
 					M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
@@ -2534,9 +2544,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 48: // numitemsmob
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				MOB which=null;
 				if(lastKnownLocation!=null)
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
@@ -2553,8 +2563,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 43: // roommob
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental which=null;
 				if(lastKnownLocation!=null)
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
@@ -2568,8 +2578,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 44: // roomitem
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental which=null;
 				int ct=1;
 				if(lastKnownLocation!=null)
@@ -2593,7 +2603,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 36: // ishere
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				if(lastKnownLocation!=null)
 					returnable=((lastKnownLocation.fetchAnyItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
 				else
@@ -2602,14 +2612,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 17: // inroom
 			{
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String comp="==";
 				Environmental E=monster;
 				if((" == >= > < <= => =< != ".indexOf(" "+CMParms.getCleanBit(evaluable.substring(y+1,z),1)+" ")>=0))
 				{
 					E=getArgumentItem(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					comp=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-					arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				}
 				else
 				{
@@ -2638,14 +2648,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 89: // isrecall
             {
-                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String comp="==";
                 Environmental E=monster;
                 if((" == >= > < <= => =< != ".indexOf(" "+CMParms.getCleanBit(evaluable.substring(y+1,z),1)+" ")>=0))
                 {
                     E=getArgumentItem(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                     comp=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-                    arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+                    arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
                 }
                 else
                 {
@@ -2674,7 +2684,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 37: // inlocale
 			{
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental E=monster;
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
@@ -2690,7 +2700,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 18: // sex
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0).toUpperCase());
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0).toUpperCase());
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase();
 				if(CMath.isNumber(arg3.trim()))
@@ -2729,7 +2739,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),2));
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),2));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2762,7 +2772,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),2));
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),2));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2828,7 +2838,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2848,7 +2858,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2867,9 +2877,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 83: // qvar
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
 				Quest Q=getQuest(arg1);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2884,9 +2894,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 84: // math
             {
-                String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
                 if(!CMath.isMathExpression(arg1))
                 {
                     scriptableError(scripted,"MATH","Syntax",evaluable);
@@ -2904,7 +2914,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2924,7 +2934,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2944,7 +2954,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -2964,7 +2974,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
@@ -2994,7 +3004,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2).toUpperCase());
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3005,7 +3015,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB))
 				    clanID=((MOB)E).getClanID();
 				else
-					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,arg1);
+					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
 				Clan C=CMLib.clans().findClan(clanID);
 				if(C!=null)
 				{
@@ -3064,7 +3074,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
@@ -3093,7 +3103,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
@@ -3123,7 +3133,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3152,7 +3162,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3181,7 +3191,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3210,7 +3220,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3239,7 +3249,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3273,7 +3283,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3293,9 +3303,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-                String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
+                String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
                 if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
                 {
                     scriptableError(scripted,"VALUE","Syntax",evaluable);
@@ -3336,7 +3346,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -3366,14 +3376,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1).toUpperCase();
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),2));
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),2));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"VAR","Syntax",evaluable);
 					return returnable;
 				}
-                String val=getVar(E,arg1,arg2,source,target,monster,primaryItem,secondaryItem,msg,tmp);
+                String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 				if(arg3.equals("=="))
 					returnable=val.equals(arg4);
 				else
@@ -3400,9 +3410,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 41: // eval
 			{
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
 				if(arg3.length()==0)
 				{
 					scriptableError(scripted,"EVAL","Syntax",evaluable);
@@ -3434,7 +3444,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 40: // number
 			{
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).trim();
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).trim();
 				boolean isnumber=(val.length()>0);
 				for(int i=0;i<val.length();i++)
 					if(!Character.isDigit(val.charAt(i)))
@@ -3444,14 +3454,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 42: // randnum
 			{
-				String arg1s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
+				String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
 				int arg1=0;
 				if(CMath.isMathExpression(arg1s.trim()))
 					arg1=CMath.s_parseIntExpression(arg1s.trim());
 				else
 					arg1=CMParms.parse(arg1s.trim()).size();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
+				String arg3s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
 				int arg3=0;
 				if(CMath.isMathExpression(arg3s.trim()))
 					arg3=CMath.s_parseIntExpression(arg3s.trim());
@@ -3463,14 +3473,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 71: // rand0num
             {
-				String arg1s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
+				String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase().trim();
 				int arg1=0;
 				if(CMath.isMathExpression(arg1s))
 					arg1=CMath.s_parseIntExpression(arg1s);
 				else
 					arg1=CMParms.parse(arg1s).size();
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
+				String arg3s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1)).trim();
 				int arg3=0;
 				if(CMath.isMathExpression(arg3s))
 					arg3=CMath.s_parseIntExpression(arg3s);
@@ -3597,7 +3607,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 2: // has
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				Vector choices=new Vector();
 				if(E==null)
@@ -3636,7 +3646,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 74: // hasnum
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-                String item=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+                String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((item.length()==0)||(E==null))
                     scriptableError(scripted,"HASNUM","Syntax",evaluable);
@@ -3682,7 +3692,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 3: // worn
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				Vector choices=new Vector();
 				if(E==null)
@@ -3855,8 +3865,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 62: // callfunc
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				String found=null;
 				boolean validFunc=false;
 				Vector scripts=getScripts();
@@ -3879,7 +3889,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									primaryItem,
 									secondaryItem,
 									script2,
-									varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,arg2),
+									varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2),
 									tmp);
 							if(found==null) found="";
 							break;
@@ -3894,8 +3904,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 61: // strin
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Vector V=CMParms.parse(arg1.toUpperCase());
 				results.append(V.indexOf(arg2.toUpperCase()));
 				break;
@@ -4002,7 +4012,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				break;
 			case 32: // nummobsinarea
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				int num=0;
                 Vector MASK=null;
                 if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
@@ -4034,7 +4044,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 33: // nummobs
 			{
 				int num=0;
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
                 Vector MASK=null;
                 if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
                 { 
@@ -4068,7 +4078,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 34: // numracesinarea
 			{
 				int num=0;
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Room R=null;
 				MOB M=null;
 				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
@@ -4087,7 +4097,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 35: // numraces
 			{
 				int num=0;
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Room R=null;
 				MOB M=null;
 				try
@@ -4153,7 +4163,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 43: // roommob
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental which=null;
 				if(lastKnownLocation!=null)
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
@@ -4163,7 +4173,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 44: // roomitem
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				Environmental which=null;
 				int ct=1;
 				if(lastKnownLocation!=null)
@@ -4187,7 +4197,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 if(lastKnownLocation!=null)
                 {
                     num=lastKnownLocation.numInhabitants();
-                    String name=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+                    String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
                     if((name.length()>0)&&(!name.equalsIgnoreCase("*")))
                     {
                         num=0;
@@ -4240,8 +4250,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 77: // explored
             {
-                String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-                String where=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
+                String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E instanceof MOB)
                 {
@@ -4299,8 +4309,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 47: //mobitem
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				MOB M=null;
 				if(lastKnownLocation!=null)
 					M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
@@ -4323,7 +4333,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 48: // numitemsmob
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
 				MOB which=null;
 				if(lastKnownLocation!=null)
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
@@ -4445,7 +4455,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 83: // qvar
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				if((arg1.length()!=0)&&(arg2.length()!=0))
 				{
 					Quest Q=getQuest(arg1);
@@ -4494,7 +4504,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB))
 				    clanID=((MOB)E).getClanID();
 				else
-					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,arg1);
+					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
 				Clan C=CMLib.clans().findClan(clanID);
 				if(C!=null)
 				{
@@ -4549,7 +4559,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 67: // hastitle
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()>0)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null))
 				{
@@ -4740,7 +4750,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0).toUpperCase();
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                String val=getVar(E,arg1,arg2,source,target,monster,primaryItem,secondaryItem,msg,tmp);
+                String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 				results.append(val);
 				break;
 			}
@@ -4749,7 +4759,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				break;
 			case 40: // number
 			{
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).trim();
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).trim();
 				boolean isnumber=(val.length()>0);
 				for(int i=0;i<val.length();i++)
 					if(!Character.isDigit(val.charAt(i)))
@@ -4760,7 +4770,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 42: // randnum
 			{
-				String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
+				String arg1String=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
 				int arg1=0;
 				if(CMath.isMathExpression(arg1String))
 					arg1=CMath.s_parseIntExpression(arg1String.trim());
@@ -4771,7 +4781,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 71: // rand0num
             {
-                String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
+                String arg1String=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
 				int arg1=0;
 				if(CMath.isMathExpression(arg1String))
 					arg1=CMath.s_parseIntExpression(arg1String.trim());
@@ -4974,7 +4984,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 70: // switch
 			{
-				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
+				String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
 				Vector V=new Vector();
 				V.addElement("");
 				int depth=0;
@@ -5004,7 +5014,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					else
 					if(cmd.equals("CASE")&&(depth==0))
 					{
-						s2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
+						s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
 						inCase=var.equalsIgnoreCase(s2);
 						matchedCase=matchedCase||inCase;
 					}
@@ -5073,8 +5083,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				String from=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3).trim()).trim();
-				String to=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,4).trim()).trim();
+				String from=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3).trim()).trim();
+				String to=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,4).trim()).trim();
 				if((!CMath.isInteger(from))||(!CMath.isInteger(to)))
 				{
 					scriptableError(scripted,"FOR","Syntax","'"+from+"-"+to+"' is illegal range!");
@@ -5153,7 +5163,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				return null;
 			case 1: // mpasound
 			{
-				String echo=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(8).trim());
+				String echo=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(8).trim());
 				//lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,echo);
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
@@ -5166,7 +5176,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 4: // mpjunk
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim());
+				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim());
 				if(s.equalsIgnoreCase("all"))
 				{
 					while(monster.inventorySize()>0)
@@ -5189,7 +5199,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 2: // mpecho
 			{
 				if(lastKnownLocation!=null)
-					lastKnownLocation.show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim()));
+					lastKnownLocation.show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim()));
 				break;
 			}
 			case 13: // mpunaffect
@@ -5231,7 +5241,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=CMParms.getCleanBit(s,2);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
                 if(newTarget!=null)
 				{
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
@@ -5327,8 +5337,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				Object O=getArgumentMOB(arg2,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(O==null) O=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((O==null)&&(!arg2.trim().startsWith("$"))) 
-					O=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,arg2);
+				if((O==null)
+				&&((!arg2.trim().startsWith("$"))
+					||(arg2.length()<2)
+					||((!Character.isDigit(arg2.charAt(1)))&&(!Character.isLetter(arg2.charAt(1))))))
+					O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
 				char c=arg1.charAt(1);
 				if(Character.isDigit(c))
 				{
@@ -5363,7 +5376,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String arg2=CMParms.getCleanBit(s,2);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
 				if(newTarget!=null)
 				{
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
@@ -5485,7 +5498,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 11: // mpexp
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String amtStr=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1)).trim();
+				String amtStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1)).trim();
 				int t=CMath.s_int(amtStr);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
@@ -5505,7 +5518,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 59: // mpquestpoints
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(newTarget instanceof MOB)
 				{
 					if(CMath.isNumber(val.trim())) 
@@ -5523,9 +5536,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 65: // MPQSET
 			{
-				String qstr=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
-				String var=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
+				String qstr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				Quest Q=getQuest(qstr);
 				if(Q==null)
                     scriptableError(scripted,"MPQSET","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
@@ -5536,8 +5549,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 66: // MPLOG
 			{
 				String type=CMParms.getCleanBit(s,1).toUpperCase();
-				String head=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
+				String head=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				if(type.startsWith("E")) Log.errOut(head,val);
 				else
 				if(type.startsWith("I")||type.startsWith("S")) Log.infoOut(head,val);
@@ -5549,10 +5562,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 67: // MPCHANNEL
 			{
-				String channel=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String channel=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				boolean sysmsg=channel.startsWith("!");
 				if(sysmsg) channel=channel.substring(1);
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(CMLib.channels().getChannelCodeNumber(channel)<0)
                     scriptableError(scripted,"MPCHANNEL","Syntax","Unknown channel "+channel+" for "+scripted.Name());
 				else
@@ -5561,7 +5574,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 68: // unload
             {
-                String scriptname=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                String scriptname=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
                 if(!new CMFile(Resources.makeFileResourceName(scriptname),null,false,true).exists())
                     scriptableError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
                 else
@@ -5587,7 +5600,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 60: // trains
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(newTarget instanceof MOB)
 				{
 					if(CMath.isNumber(val.trim())) 
@@ -5606,7 +5619,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 61: // pracs
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(newTarget instanceof MOB)
 				{
 					if(CMath.isNumber(val.trim())) 
@@ -5624,7 +5637,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 5: // mpmload
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 				Vector Ms=new Vector();
 				MOB m=CMClass.getMOB(s);
 				if(m!=null) Ms.addElement(m);
@@ -5652,7 +5665,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				// if not mob
 				if(scripted instanceof MOB)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+					s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 					int containerIndex=s.toUpperCase().indexOf(" INTO ");
 					Container container=null;
 					if(containerIndex>=0)
@@ -5716,7 +5729,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 41: // mpoloadroom
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 				if(lastKnownLocation!=null)
 				{
 					Vector Is=new Vector();
@@ -5786,7 +5799,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 58: // mpreset
             {
-                String arg=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
+                String arg=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
                 if(arg.equalsIgnoreCase("area"))
                 {
                     if(lastKnownLocation!=null) 
@@ -5919,7 +5932,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 48: // return
                 tickStatus=Tickable.STATUS_END;
-                return varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim());
+                return varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim());
 			case 7: // mpechoat
 			{
                 String parm=CMParms.getCleanBit(s,1);
@@ -5928,44 +5941,44 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 {
                     s=CMParms.getPastBit(s,1).trim();
                     if(newTarget==monster)
-                        lastKnownLocation.showSource(monster,null,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                        lastKnownLocation.showSource(monster,null,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
                     else
-                        lastKnownLocation.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s),CMMsg.NO_EFFECT,null);
+                        lastKnownLocation.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s),CMMsg.NO_EFFECT,null);
                 }
                 else
                 if(parm.equalsIgnoreCase("world"))
                 {
-                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
                     }
                 }
                 else
                 if(parm.equalsIgnoreCase("area")&&(lastKnownLocation!=null))
                 {
-                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
                     }
                 }
                 else
                 if(CMLib.map().getRoom(parm)!=null)
-                    CMLib.map().getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
+                    CMLib.map().getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                 else
                 if(CMLib.map().findArea(parm)!=null)
                 {
-                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     for(Enumeration e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     }
                 }
 				break;
@@ -5976,13 +5989,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
 				{
 					s=CMParms.getPastBit(s,1).trim();
-					lastKnownLocation.showOthers((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+					lastKnownLocation.showOthers((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
 				}
 				break;
 			}
 			case 9: // mpcast
 			{
-				String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				Ability A=null;
 				if(cast!=null) A=CMClass.findAbility(cast);
@@ -5995,9 +6008,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 30: // mpaffect
 			{
-                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
+				String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
 				Ability A=null;
 				if(cast!=null) A=CMClass.findAbility(cast);
 				if((newTarget!=null)&&(A!=null))
@@ -6014,9 +6027,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 31: // mpbehave
 			{
-                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
+				String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				Behavior A=null;
 				if((cast!=null)&&(newTarget!=null))
 				{
@@ -6035,7 +6048,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 32: // mpunbehave
 			{
-                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(newTarget!=null)
 				{
@@ -6049,7 +6062,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 33: // mptattoo
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String tattooName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String tattooName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
 				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
 				{
 					MOB themob=(MOB)newTarget;
@@ -6074,8 +6087,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 55: // mpnotrigger
             {
-                String trigger=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
-                String time=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+                String trigger=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                String time=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
                 int triggerCode=-1;
                 for(int i=0;i<progs.length;i++)
                     if(trigger.equalsIgnoreCase(progs[i]))
@@ -6095,8 +6108,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 54: // mpfaction
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                String faction=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-                String range=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
+                String faction=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+                String range=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
                 Faction F=CMLib.factions().getFaction(faction);
 				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
 				{
@@ -6169,7 +6182,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				    clanID=((MOB)newTarget).getClanID();
 				else
-					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				String clanvar=CMParms.getCleanBit(s,2);
 				String clanval=CMParms.getPastBitClean(s,2);
 				Clan C=CMLib.clans().getClan(clanID);
@@ -6276,7 +6289,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(s.startsWith("$"))
 						goHere=CMLib.map().roomLocation(this.getArgumentItem(s,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
 					if(goHere==null)
-						goHere=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s),lastKnownLocation);
+						goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s),lastKnownLocation);
 					if(goHere!=null)
 					{
 						if(scripted instanceof MOB)
@@ -6308,7 +6321,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(roomName.startsWith("$"))
 						goHere=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
 					if(goHere==null)
-						goHere=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
+						goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(goHere!=null)
 					{
 						goHere.bringMobHere(monster,true);
@@ -6344,7 +6357,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(roomName.length()>0)
 				{
 					if(newRoom==null)
-						newRoom=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
+						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(newRoom!=null)
 					{
 						Vector V=new Vector();
@@ -6355,7 +6368,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						}
 						if(V.size()==0)
 						{
-							mobName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,mobName);
+							mobName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,mobName);
 							if(mobName.equalsIgnoreCase("all"))
 							{
 								if(lastKnownLocation!=null)
@@ -6450,11 +6463,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Room newRoom=null;
 				if((roomName.length()>0)&&(lastKnownLocation!=null))
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
+					s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
 					if(roomName.startsWith("$"))
 						newRoom=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
 					if(newRoom==null)
-						newRoom=getRoom(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
+						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if((newRoom!=null)&&(lastKnownLocation!=null))
 					{
 						Vector V=new Vector();
@@ -6486,7 +6499,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 18: // mpforce
 			{
 				Environmental newTarget=getArgumentMOB(CMParms.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
+				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					Vector V=CMParms.parse(s);
@@ -6497,12 +6510,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String which=CMParms.getCleanBit(s,1);
 				Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,2));
 				if(!which.equals("*"))
 				{
 					if(E==null)
-					    which=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,which);
+					    which=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,which);
 					else
 					if(E instanceof Room)
 					    which=CMLib.map().getExtendedRoomID((Room)E);
@@ -6518,7 +6531,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String which=CMParms.getCleanBit(s,1);
 				String arg2=CMParms.getCleanBit(s,2).toUpperCase();
 				Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                which=getVarHost(E,which,source,target,monster,primaryItem,secondaryItem,msg,tmp);
+                which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 				if((which.length()>0)&&(arg2.length()>0))
 				{
 					DVector V=getScriptVarSet(which,arg2);
@@ -6549,7 +6562,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(arg2.length()>0)
 				{
 					Vector V=null;
-                    which=getVarHost(E,which,source,target,monster,primaryItem,secondaryItem,msg,tmp);
+                    which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 					if(arg2.equals("*"))
 						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS");
 					else
@@ -6615,9 +6628,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 28: // mpdamage
 			{
 				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3));
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,3));
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3));
+				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,3));
 				if((newTarget!=null)&&(arg2.length()>0))
 				{
 					if(newTarget instanceof MOB)
@@ -6670,7 +6683,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 29: // mptrackto
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,0));
 				Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)	
 				{
@@ -6682,7 +6695,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 53: // mpwalkto
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
 				Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)	
 				{
@@ -6694,7 +6707,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 21: //MPENDQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 				Quest Q=getQuest(s);
 				if(Q!=null) Q.stopQuest();
 				else
@@ -6703,7 +6716,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
             case 69: // MPSTEPQUEST
             {
-                s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+                s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
                 Quest Q=getQuest(s);
                 if(Q!=null) Q.stepQuest();
                 else
@@ -6712,7 +6725,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 23: //MPSTARTQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
 				Quest Q=getQuest(s);
 				if(Q!=null) Q.startQuest();
 				else
@@ -6722,14 +6735,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 64: //MPLOADQUESTOBJ
 			{
 				String questName=CMParms.getCleanBit(s,1).trim();
-				questName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,questName);
+				questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
 				Quest Q=getQuest(questName);
 				if(Q==null)
 				{
 					scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Quest: "+questName);
 					break;
 				}
-				Object O=Q.getQuestObject(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2)));
+				Object O=Q.getQuestObject(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2)));
 				if(O==null)
 				{
 					scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Unknown var "+CMParms.getCleanBit(s,2)+" for Quest: "+questName);
@@ -6770,7 +6783,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 22: //MPQUESTWIN
 			{
-				String whoName=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String whoName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				MOB M=null;
 				if(lastKnownLocation!=null)
 					M=lastKnownLocation.fetchInhabitant(whoName);
@@ -6811,7 +6824,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									primaryItem,
 									secondaryItem,
 									script2,
-									varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,parms),
+									varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
 									tmp);
 							break;
 						}
@@ -6864,7 +6877,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 26: // MPALARM
 			{
-				String time=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+				String time=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				String parms=CMParms.getPastBit(s,1).trim();
 				if(CMath.s_int(time.trim())<=0)
 				{
@@ -6885,9 +6898,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 37: // mpenable
 			{
 				Environmental newTarget=getArgumentMOB(CMParms.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg,tmp);
-                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
-				String p2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3));
-				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,3));
+                String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+				String p2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3));
+				String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,3));
 				Ability A=null;
 				if(cast!=null)
 				{
@@ -6924,7 +6937,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 38: // mpdisable
 			{
 				Environmental newTarget=getArgumentMOB(CMParms.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg,tmp);
-                String cast=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+                String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					Ability A=((MOB)newTarget).findAbility(cast);
@@ -6940,7 +6953,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			default:
 				if(cmd.length()>0)
 				{
-					Vector V=CMParms.parse(varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,s));
+					Vector V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
 					if(V.size()>0)
 						monster.doCommand(V);
 				}

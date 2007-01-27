@@ -162,7 +162,6 @@ set duration $DURATION
 <DATA>
 ONCE_PROG 100
 	QUESTCHAT $QUEST_ANNOUNCEMENT
-
 ~
 
 # this script is for the human chosen to be the note bearer

@@ -1,5 +1,5 @@
 #!QUESTMAKER_START_SCRIPT Dispel #1
-#The player must dispel or otherwise remove a spell, disease, or
+#The player must dispel or otherwise remove a spell, disease, poison, or
 #other affect from 1 or more affected mobs on your map.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
@@ -42,7 +42,8 @@
 #needs them.  Most don't, but you'd need to consult the help files to
 #be sure.
 #$DISPEL_SPELL=$ABILITY=Disease_Plague
-#$DISPEL_SPELLPARMS=($STRING)
+#Optinal parameters:
+#$DISPEL_SPELL_PARMS=($STRING)
 #
 #Affect one MOB or a GROUP of mobs.
 #Specify here whether a single MOB will be affected by a disease, or
@@ -54,7 +55,7 @@
 #order to complete the quest.  You may enter a numeric expression, but
 #make sure it evaluates to something >= 1!  Also, if you specified that
 #numerous mobs will be affected above by selecting MOBGROUP, you might
-#also consider 
+#also consider making this number even larger than 1. :)
 #$NUMBER_TO_DISPEL=$EXPRESSION=1
 #
 #!QUESTMAKER_PAGE Specify the Announcer
@@ -101,7 +102,7 @@
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=There are lots of people in some area affected by some affect that need it to go away.  Please go make it go away for them. (Your announcement should be more specific)
 #
 #Announcer QUESTCHAT announcement:
-#This is an initial annoucement by the deliverer over the QUESTCHAT channel
+#This is an initial annoucement over the QUESTCHAT channel
 #whenever the quest starts running. Leave it blank if you only want him to 
 #talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
@@ -190,7 +191,7 @@ give behavior Scriptable LOAD=$QUEST_NAME_dispelannouncer.script
 set area $DISPELEE_AREA
 set room $DISPELEE_ROOM
 set $DISPELEE_TYPE $DISPELEE_NAME
-give affect $DISPEL_SPELL $DISPEL_SPELLPARMS
+give affect $DISPEL_SPELL $DISPEL_SPELL_PARMS
 give behavior Scriptable LOAD=$QUEST_NAME_dispel.script
 
 set duration $DURATION
@@ -200,23 +201,20 @@ set duration $DURATION
 <DATA>
 ONCE_PROG 100
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_HISCOUNT ''
-	MPSETVAR * $QUEST_NAME_SAVIOR ''
-	MPSETVAR * $QUEST_NAME_HISCOUNT ''
+	MPSETVAR * $QUEST_NAME_COUNT ''
+	MPSETVAR * $QUEST_NAME_CURED ''
 	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	QUESTCHAT $QUEST_ANNOUNCEMENT
 ~
 
-QUEST_TIME_PROG -1
+QUEST_TIME_PROG -1 *
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_HISCOUNT ''
-	MPSETVAR * $QUEST_NAME_SAVIOR ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_HISCOUNT ''
+	MPSETVAR * $QUEST_NAME_CURED ''
+	MPSETVAR * $QUEST_NAME_COUNT ''
 	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
 ~
 
-QUEST_TIME_PROG 1
+QUEST_TIME_PROG 1 *
 	mpsetvar $i $QUEST_NAME_NUMPARTICIPANTS '$<$i $QUEST_NAME_PARTICIPANTS>.#LENGTH#'
 	for $0 = 1 to '$<$i $QUEST_NAME_NUMPARTICIPANTS>'
    		tell $<$i $QUEST_NAME_PARTICIPANTS>.$0 You have less than a minute left.
@@ -236,9 +234,8 @@ GREET_PROG 100
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_ACCEPTED == '')
+			if VAR($n $QUEST_NAME_COUNT == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpsetvar $n $QUEST_NAME_ACCEPTED 'ACCEPTED'
 				mpsetvar $i $QUEST_NAME_PARTICIPANTS '$<$i $QUEST_NAME_PARTICIPANTS> $n'
 				mpsetvar $n $QUEST_NAME_COUNT 0
 				mpqset * REMAINING $DURATION
@@ -252,45 +249,46 @@ SPEECH_PROG p i accept
 <FILE><NAME>$QUEST_NAME_dispel.script</NAME>
 <DATA>
 ALL_GREET_PROG 99
-	if affected($i $DISPEL_SPELL) and ISPC($n)
+	if affected($i $DISPEL_SPELL) and ISPC($n) and VAR($@i $QUEST_NAME_CURED == '')
+		wake
+		stand
 		say "$n" $DISPELEE_GREETING
 	endif
 ~
 
 RAND_PROG 99
-	if !affected($i $DISPEL_SPELL)
-		mpsetvar $i $QUEST_NAME_SAVIOR ''
+	if !affected($i $DISPEL_SPELL) and VAR($@i $QUEST_NAME_CURED == '')
+		mpsetvar $@i $QUEST_NAME_CURED 'TRUE'
+		mpargset $1 ''
 		for $0 = 1 to '$%NUMMOBSROOM(*)%'
-		   if VAR($%ROOMMOB($0)% $QUEST_NAME_ACCEPTED != '')
-		   		mpsetvar $i $QUEST_NAME_SAVIOR $%ROOMMOB($0)%
+		   if VAR($%ROOMMOB($0)% $QUEST_NAME_COUNT != '')
+		   		mpargset $1 $%ROOMMOB($0)%
 		   endif
 		next
-		if VAR($i $QUEST_NAME_SAVIOR != '')
-			mpsetvar '$<$i $QUEST_NAME_SAVIOR>' $QUEST_NAME_COUNT ++
-			mpsetvar $i $QUEST_NAME_HISCOUNT $%VAR('$<$i $QUEST_NAME_SAVIOR>' $QUEST_NAME_COUNT)%
-			sayto "$n" $DISPELEE_RESPONSE_1
-			if VAR($i $QUEST_NAME_HISCOUNT >= $NUMBER_TO_DISPEL)
-				wake
-				stand
+		if EVAL($1 != '')
+			mpsetvar $1 $QUEST_NAME_COUNT ++
+			mpargset $2 '$<$1 $QUEST_NAME_COUNT>'
+			wake
+			stand
+			sayto "$1" $DISPELEE_RESPONSE_1
+			if EVAL($2 >= $NUMBER_TO_DISPEL)
+				sayto "$1" $DISPELEE_RESPONSE_2
 				if EVAL('$EXP' != '')
-					mpexp '$<$i $QUEST_NAME_SAVIOR>' $EXP
+					mpexp $1 $EXP
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint
-					give "a quest point" "$<$i $QUEST_NAME_SAVIOR>"
+					give "a quest point" "$1"
 				endif
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoload $GOLD
-					give $GOLD "$<$i $QUEST_NAME_SAVIOR>"
+					give $GOLD "$1"
 				endif
-				mpquestwin '$<$i $QUEST_NAME_SAVIOR>' *
-				sayto "$<$i $QUEST_NAME_SAVIOR>" $DISPELEE_RESPONSE_2
+				mpquestwin '$1' *
 				mpendquest *
 			else
-				mpechoat '$<$i $QUEST_NAME_SAVIOR>' Total done: $<$i $QUEST_NAME_HISCOUNT>'/$NUMBER_TO_DISPEL>
+				mpechoat '$1' Total done: $2/$NUMBER_TO_DISPEL
 			endif
-			mpsetvar $i $QUEST_NAME_HISCOUNT ''
-			mpsetvar $i $QUEST_NAME_SAVIOR ''
 		endif
 	endif
 ~
