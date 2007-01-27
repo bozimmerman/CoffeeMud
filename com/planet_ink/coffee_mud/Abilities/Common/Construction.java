@@ -514,7 +514,7 @@ public class Construction extends CraftingSkill
 		designTitle="";
 		designDescription="";
 		String startStr=null;
-		int completion=35;
+		int duration=35;
 		doingCode=-1;
 		workingOn=-1;
 		dir=-1;
@@ -526,7 +526,7 @@ public class Construction extends CraftingSkill
 		if(str.equalsIgnoreCase("help"))
 		{
 			messedUp=!proficiencyCheck(mob,0,auto);
-			completion=25;
+			duration=25;
 			commands.removeElementAt(0);
 			MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
 			if(targetMOB==null) return false;
@@ -553,7 +553,7 @@ public class Construction extends CraftingSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,asLevel,completion);
+				beneficialAffect(mob,mob,asLevel,duration);
 			}
 			return true;
 		}
@@ -774,13 +774,13 @@ public class Construction extends CraftingSkill
 		messedUp=!proficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
         playSound="hammer.wav";
-		if(completion<25) completion=25;
+		if(duration<25) duration=25;
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

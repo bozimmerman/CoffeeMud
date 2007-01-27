@@ -141,7 +141,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		String prefix="";
         bundling=false;
 		int multiplier=4;
-		int completion=4;
+		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("");
@@ -402,7 +402,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((xlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			duration=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
@@ -518,12 +518,12 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<4) completion=4;
+		if(duration<4) duration=4;
 
 		if(bundling)
 		{
 			messedUp=false;
-			completion=1;
+			duration=1;
 			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
@@ -540,7 +540,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 			enhanceItem(mob,building,enhancedTypes);
 		}
 		else

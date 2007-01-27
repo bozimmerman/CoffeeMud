@@ -2584,7 +2584,9 @@ public class StdMOB implements MOB
 			{
 				// handle variable equipment!
 				if((lastTickedDateTime<0)
-				&&isMonster()&&location().getMobility()&&location().getArea().getMobility())
+				&&isMonster()
+                &&location().getMobility()
+                &&(location().getArea().getAreaFlags()<Area.FLAG_FROZEN))
 				{
 					if(lastTickedDateTime==-1)
 						lastTickedDateTime=processVariableEquipment();

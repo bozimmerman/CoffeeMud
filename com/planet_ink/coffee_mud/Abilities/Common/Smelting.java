@@ -109,7 +109,7 @@ public class Smelting extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		int completion=4;
+		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Lvl "+CMStrings.padRight("Metal #1",16)+" Metal #2\n\r");
@@ -201,7 +201,7 @@ public class Smelting extends CraftingSkill
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null);
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null);
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
@@ -210,14 +210,14 @@ public class Smelting extends CraftingSkill
 		verb="smelting "+doneResourceDesc.toLowerCase();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<4) completion=4;
+		if(duration<4) duration=4;
 
 		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

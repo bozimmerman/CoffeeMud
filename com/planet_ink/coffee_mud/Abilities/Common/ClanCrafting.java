@@ -144,7 +144,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		int completion=4;
+		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("");
@@ -271,7 +271,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
@@ -388,7 +388,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<6) completion=6;
+		if(duration<6) duration=6;
 
 		if(autoGenerate>0)
 		{
@@ -400,7 +400,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

@@ -1097,12 +1097,12 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public void resetArea(Area area)
     {
-        boolean mobile=area.getMobility();
-        area.toggleMobility(false);
+        int oldFlag=area.getAreaFlags();
+        area.setAreaFlags(Area.FLAG_FROZEN);
         for(Enumeration r=area.getProperMap();r.hasMoreElements();)
             resetRoom((Room)r.nextElement());
         area.fillInAreaRooms();
-        area.toggleMobility(mobile);
+        area.setAreaFlags(oldFlag);
     }
     
 	public void obliteratePlayer(MOB deadMOB, boolean quiet)

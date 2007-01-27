@@ -465,7 +465,7 @@ public class Reset extends StdCommand
 		    	synchronized(("SYNC"+R.roomID()).intern())
 		    	{
 		    		R=CMLib.map().getRoom(R);
-					R.getArea().toggleMobility(false);
+					R.getArea().setAreaFlags(Area.FLAG_FROZEN);
 					CMLib.map().resetRoom(R);
 					boolean somethingDone=false;
 					for(int m=0;m<R.numInhabitants();m++)
@@ -487,7 +487,8 @@ public class Reset extends StdCommand
 						mob.tell("Room "+R.roomID()+" done.");
 						CMLib.database().DBUpdateMOBs(R);
 					}
-					R.getArea().toggleMobility(true);
+                    if(R.getArea().getAreaFlags()>Area.FLAG_ACTIVE)
+    					R.getArea().setAreaFlags(Area.FLAG_ACTIVE);
 		    	}
 			}
 
@@ -532,7 +533,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.toggleMobility(false);
+				A.setAreaFlags(Area.FLAG_FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -563,7 +564,7 @@ public class Reset extends StdCommand
 							CMLib.database().DBUpdateMOBs(R);
 			    	}
 				}
-				A.toggleMobility(true);
+				if(A.getAreaFlags()>Area.FLAG_ACTIVE) A.setAreaFlags(Area.FLAG_ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -575,7 +576,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.toggleMobility(false);
+				A.setAreaFlags(Area.FLAG_FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -602,7 +603,7 @@ public class Reset extends StdCommand
 							CMLib.database().DBUpdateMOBs(R);
 			    	}
 				}
-				A.toggleMobility(true);
+				if(A.getAreaFlags()>Area.FLAG_ACTIVE) A.setAreaFlags(Area.FLAG_ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -680,7 +681,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.toggleMobility(false);
+				A.setAreaFlags(Area.FLAG_FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -733,7 +734,7 @@ public class Reset extends StdCommand
 						}
 					}
 				}
-				A.toggleMobility(true);
+				if(A.getAreaFlags()>Area.FLAG_ACTIVE) A.setAreaFlags(Area.FLAG_ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -745,7 +746,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.toggleMobility(false);
+				A.setAreaFlags(Area.FLAG_FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -806,7 +807,7 @@ public class Reset extends StdCommand
 				    	}
 					}
 				}
-				A.toggleMobility(true);
+				if(A.getAreaFlags()>Area.FLAG_ACTIVE) A.setAreaFlags(Area.FLAG_ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -818,7 +819,7 @@ public class Reset extends StdCommand
             for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
             {
                 Area A=(Area)a.nextElement();
-                A.toggleMobility(false);
+                A.setAreaFlags(Area.FLAG_FROZEN);
                 for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
@@ -879,7 +880,7 @@ public class Reset extends StdCommand
                         }
                     }
                 }
-                A.toggleMobility(true);
+                if(A.getAreaFlags()>Area.FLAG_ACTIVE) A.setAreaFlags(Area.FLAG_ACTIVE);
             }
             mob.session().println("done!");
         }
@@ -892,7 +893,7 @@ public class Reset extends StdCommand
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
             CMLib.map().resetArea(A);
-			A.toggleMobility(false);
+			A.setAreaFlags(Area.FLAG_FROZEN);
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();
 			try{
@@ -1067,7 +1068,7 @@ public class Reset extends StdCommand
 			}
 			}
 			catch(java.io.IOException e){}
-			A.toggleMobility(true);
+			if(A.getAreaFlags()>Area.FLAG_ACTIVE) A.setAreaFlags(Area.FLAG_ACTIVE);
 			mob.tell("Done.");
 		}
 		else

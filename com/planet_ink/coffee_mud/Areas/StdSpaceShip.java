@@ -114,7 +114,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected String description="";
 	protected String miscText="";
 	protected Vector myRooms=new Vector();
-	protected boolean mobility=true;
+	protected int flag=Area.FLAG_ACTIVE;
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected String author=""; // will be used for owner, I guess.
 	public void setAuthorID(String authorID){author=authorID;}
@@ -178,8 +178,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public String getArchivePath(){return "";}
 	public void setArchivePath(String pathFile){}
 	
-	public boolean getMobility(){return mobility;}
-	public void toggleMobility(boolean onoff){mobility=onoff;}
+    public void setAreaFlags(int flagBits)
+    {
+        if((flagBits==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+            CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
+        flag=flagBits;
+    }
+    public int getAreaFlags(){return flag;}
 	public boolean amISubOp(String username){return false;}
 	public String getSubOpList(){return "";}
 	public void setSubOpList(String list){}
@@ -273,7 +278,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
-		if((!mobility)||(!CMLib.flags().allowsMovement(this)))
+		if((flag>=Area.FLAG_FROZEN)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -402,19 +407,6 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 	}
 
-    protected boolean stopTicking=false;
-	public void tickControl(boolean start)
-	{
-		if(start)
-		{
-			stopTicking=false;
-			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-		}
-		else
-			stopTicking=true;
-
-	}
-
 	public Enumeration getCompleteMap(){return getProperMap();}
 	public Vector getMetroCollection(){return (Vector)myRooms.clone();}
 	
@@ -431,7 +423,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public long getTickStatus(){ return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(stopTicking) return false;
+		if(flag>=Area.FLAG_STOPPED) return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{

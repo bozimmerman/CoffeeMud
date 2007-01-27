@@ -286,8 +286,8 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			building.text();
             playSound="hotspring.wav";
 
-			int completion=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(completion<10) completion=10;
+			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
+			if(duration<10) duration=10;
 
 			messedUp=!proficiencyCheck(mob,0,auto);
 			if(autoGenerate>0)
@@ -301,7 +301,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			{
 				mob.location().send(mob,msg);
 				building=(Item)msg.target();
-				beneficialAffect(mob,mob,asLevel,completion);
+				beneficialAffect(mob,mob,asLevel,duration);
 			}
 		}
 		return true;

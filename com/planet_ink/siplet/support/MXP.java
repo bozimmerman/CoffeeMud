@@ -900,7 +900,7 @@ public class MXP
                 String parm="";
                 if(x>0)
                 {
-                    tag=request.substring(0,x).trim();;
+                    tag=request.substring(0,x).trim();
                     parm=request.substring(x+1).trim();
                 }
                 MXPElement RE=(MXPElement)elements.get(tag);

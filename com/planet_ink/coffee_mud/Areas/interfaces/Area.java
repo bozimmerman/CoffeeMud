@@ -126,10 +126,9 @@ public interface Area extends Environmental, Economics
 	
 	public String getNewRoomID(Room startRoom, int direction);
 	
-	public void toggleMobility(boolean onoff);
-	public boolean getMobility();
-	public void tickControl(boolean start);
-	
+	public void setAreaFlags(int flagBits);
+	public int getAreaFlags();
+    
 	public void addSubOp(String username);
 	public void delSubOp(String username);
 	public boolean amISubOp(String username);
@@ -151,6 +150,12 @@ public interface Area extends Environmental, Economics
     public final static int AREASTAT_VISITABLEROOMS=9;
 	public final static int AREASTAT_NUMBER=10;
 	
+    public final static int FLAG_ACTIVE=0;
+    public final static int FLAG_PASSIVE=1;
+    public final static int FLAG_FROZEN=2;
+    public final static int FLAG_STOPPED=3;
+    public final static long TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
+    
     // Partition Necessary
     public void addChildToLoad(String str);
     public void addParentToLoad(String str);

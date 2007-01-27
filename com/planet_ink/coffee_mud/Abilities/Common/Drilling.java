@@ -182,7 +182,7 @@ public class Drilling extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
-		int duration=35-dxlevel(mob);
+		int duration=35-xtime(mob);
 		if(duration<10) duration=10;
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) drilling.");
 		if(mob.location().okMessage(mob,msg))

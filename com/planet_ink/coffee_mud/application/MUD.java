@@ -598,10 +598,7 @@ public class MUD extends Thread implements MudHost
 		try
 		{
 			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-			{
-			    Area A=(Area)e.nextElement();
-			    A.toggleMobility(false);
-			}
+                ((Area)e.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -642,7 +639,7 @@ public class MUD extends Thread implements MudHost
 			CMLib.threads().tickAllTickers(null);
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
 			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-				((Area)e.nextElement()).toggleMobility(false);
+				((Area)e.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
 			int roomCounter=0;
 			Room R=null;
 			for(Enumeration e=roomSet.elements();e.hasMoreElements();)

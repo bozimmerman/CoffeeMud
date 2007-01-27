@@ -291,8 +291,8 @@ public class Alchemy extends CraftingSkill
 			building.recoverEnvStats();
 			building.text();
 
-			int completion=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(completion<10) completion=10;
+			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
+			if(duration<10) duration=10;
 			messedUp=!proficiencyCheck(mob,0,auto);
 
 			CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,null);
@@ -300,7 +300,7 @@ public class Alchemy extends CraftingSkill
 			{
 				mob.location().send(mob,msg);
 				building=(Item)msg.target();
-				beneficialAffect(mob,mob,asLevel,completion);
+				beneficialAffect(mob,mob,asLevel,duration);
 			}
 		}
 		return true;

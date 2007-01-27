@@ -279,10 +279,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             WKID=CMStrings.replaceAll(WKID,"@X2",""+CMath.convertToRoman(l));
             WKname=CMStrings.replaceAll(name,"@x1",""+l);
             WKname=CMStrings.replaceAll(WKname,"@x2",""+CMath.convertToRoman(l));
-            WKlistMask=CMStrings.replaceAll(listMask,"@x1",""+l);;
-            WKlistMask=CMStrings.replaceAll(WKlistMask,"@x2",""+CMath.convertToRoman(l));;
-            WKfinalMask=CMStrings.replaceAll(finalMask,"@x1",""+l);;
-            WKfinalMask=CMStrings.replaceAll(WKfinalMask,"@x2",""+CMath.convertToRoman(l));;
+            WKlistMask=CMStrings.replaceAll(listMask,"@x1",""+l);
+            WKlistMask=CMStrings.replaceAll(WKlistMask,"@x2",""+CMath.convertToRoman(l));
+            WKfinalMask=CMStrings.replaceAll(finalMask,"@x1",""+l);
+            WKfinalMask=CMStrings.replaceAll(WKfinalMask,"@x2",""+CMath.convertToRoman(l));
             if((l>1)&&(listMask.toUpperCase().indexOf("-EXPERT")<0))
             {
                 s=CMStrings.replaceAll(ID,"@X1",""+(l-1));

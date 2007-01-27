@@ -114,7 +114,7 @@ public class Engraving extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		int duration=30-(dxlevel(mob));
+		int duration=30-(xtime(mob));
 		if(duration<3) duration=3;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) engraving on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))

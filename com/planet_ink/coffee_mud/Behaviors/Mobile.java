@@ -179,7 +179,12 @@ public class Mobile extends ActiveTicker
 			Vector objections=null;
 			MOB mob=(MOB)ticking;
 			Room room=mob.location();
-			if(room!=null)
+			if(room==null) return true;
+            
+            if((room.getArea()!=null)
+            &&(room.getArea().getAreaFlags()>=Area.FLAG_PASSIVE))
+                return true;
+            
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
                 tickStatus=Tickable.STATUS_MISC2+3;

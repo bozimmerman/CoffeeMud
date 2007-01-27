@@ -237,7 +237,7 @@ public class CommonSkill extends StdAbility
 		return buildCostArray(mob,consumed,minimum);
 	}
 	public int xlevel(MOB mob){ return mob.envStats().level()+(2*getXLEVELLevel(mob));}
-    public int dxlevel(MOB mob){return (mob.envStats().level()+(2*getXTIMELevel(mob)))/2;}
+    public int xtime(MOB mob){return (mob.envStats().level()+(2*getXTIMELevel(mob)));}
     
 	public boolean confirmPossibleMaterialLocation(int resource, Room location)
 	{

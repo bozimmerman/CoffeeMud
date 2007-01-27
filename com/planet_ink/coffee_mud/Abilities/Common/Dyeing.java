@@ -154,7 +154,7 @@ public class Dyeing extends CommonSkill
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-(dxlevel(mob));
+		int duration=30-(xtime(mob));
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		if(duration<6) duration=6;

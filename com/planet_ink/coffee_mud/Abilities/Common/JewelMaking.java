@@ -186,7 +186,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 		String startStr=null;
 		fireRequired=true;
         bundling=false;
-		int completion=4;
+		int duration=4;
 		String misctype="";
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -276,13 +276,13 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			beingDone.addElement(jewelI);
 			messedUp=!proficiencyCheck(mob,0,auto);
-			completion=10;
+			duration=10;
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				jewelI.destroy();
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,asLevel,completion);
+				beneficialAffect(mob,mob,asLevel,duration);
 				return true;
 			}
 			return false;
@@ -400,7 +400,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=null;
 			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
@@ -497,12 +497,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<8) completion=8;
+		if(duration<8) duration=8;
 
 		if(bundling)
 		{
 			messedUp=false;
-			completion=1;
+			duration=1;
 			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
@@ -519,7 +519,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 			enhanceItem(mob,building,enhancedTypes);
 			return true;
 		}

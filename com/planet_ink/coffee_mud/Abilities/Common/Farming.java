@@ -285,7 +285,7 @@ public class Farming extends GatheringSkill
 		}
         
 		mine.destroy();
-		int duration=45-(dxlevel(mob));
+		int duration=45-(xtime(mob));
 		if(duration<25) duration=25;
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
 		verb="planting "+foundShortName;

@@ -550,7 +550,7 @@ public class Masonry extends CraftingSkill
 		designTitle="";
 		designDescription="";
 		String startStr=null;
-		int completion=15;
+		int duration=15;
 		workingOn=-1;
 		doingCode=-1;
 		dir=-1;
@@ -564,7 +564,7 @@ public class Masonry extends CraftingSkill
 		if(firstWord.equalsIgnoreCase("help"))
 		{
 			messedUp=!proficiencyCheck(mob,0,auto);
-			completion=25;
+			duration=25;
 			commands.removeElementAt(0);
 			MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
 			if(targetMOB==null) return false;
@@ -591,7 +591,7 @@ public class Masonry extends CraftingSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,asLevel,completion);
+				beneficialAffect(mob,mob,asLevel,duration);
 			}
 			return true;
 		}
@@ -816,13 +816,13 @@ public class Masonry extends CraftingSkill
 		messedUp=!proficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
         playSound="stone.wav";
-		if(completion<15) completion=15;
+		if(duration<15) duration=15;
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

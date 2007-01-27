@@ -44,10 +44,10 @@ public class StdArea implements Area
 	protected Vector properRooms=new Vector();
     protected Vector blurbFlags=new Vector();
 	//protected Vector metroRooms=new Vector();
-	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
-	protected boolean stopTicking=false;
 	protected long expirationDate=0;
+    protected long lastPlayerTime=System.currentTimeMillis();
+    protected int flag=Area.FLAG_ACTIVE;
 	protected RoomnumberSet properRoomIDSet=null;
 	protected RoomnumberSet metroRoomIDSet=null;
 
@@ -273,8 +273,14 @@ public class StdArea implements Area
     public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 
-	public boolean getMobility(){return mobility;}
-	public void toggleMobility(boolean onoff){mobility=onoff;}
+    public void setAreaFlags(int flagBits)
+    {
+        if((flagBits==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+            CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
+        flag=flagBits;
+    }
+    public int getAreaFlags(){return flag;}
+    
 	public boolean amISubOp(String username)
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
@@ -546,7 +552,16 @@ public class StdArea implements Area
 			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
-		if((!mobility)||(!CMLib.flags().allowsMovement(this)))
+        if(!msg.source().isMonster())
+        {
+            lastPlayerTime=System.currentTimeMillis();
+            if((flag==Area.FLAG_PASSIVE)
+            &&((msg.sourceMinor()==CMMsg.TYP_ENTER)
+            ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+            ||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
+                flag=Area.FLAG_ACTIVE;
+        }
+		if((flag>=Area.FLAG_FROZEN)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -653,26 +668,17 @@ public class StdArea implements Area
 			((Area)parents.elementAt(i)).executeMsg(myHost,msg);
 	}
 
-	public void tickControl(boolean start)
-	{
-		if(start)
-		{
-			stopTicking=false;
-			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-		}
-		else
-			stopTicking=true;
-
-	}
-
 	public long getTickStatus(){ return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(stopTicking) return false;
+		if(flag>=Area.FLAG_STOPPED) 
+            return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{
+            if((flag<=Area.FLAG_ACTIVE)&&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
+                flag=Area.FLAG_PASSIVE;
 			tickStatus=Tickable.STATUS_ALIVE;
 			getClimateObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_REBIRTH;

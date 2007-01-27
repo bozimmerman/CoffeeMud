@@ -181,7 +181,7 @@ public class LockSmith extends CraftingSkill
 		}
         keyCode=""+Math.random();
 		String startStr=null;
-		int completion=8;
+		int duration=8;
 		building=null;
 		boolean keyFlag=false;
 		workingOn=null;
@@ -301,8 +301,8 @@ public class LockSmith extends CraftingSkill
 			return false;
 		}
         if((makeResource>=0)&&(building!=null)) building.setMaterial(makeResource);
-		completion=15-((xlevel(mob)-workingOn.envStats().level()));
-		if(keyFlag) completion=completion/2;
+		duration=15-((xtime(mob)-workingOn.envStats().level()));
+		if(keyFlag) duration=duration/2;
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
 		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.name();
@@ -325,7 +325,7 @@ public class LockSmith extends CraftingSkill
 		if(workingOn.envStats().level()>xlevel(mob))
 			proficiencyAddition=workingOn.envStats().level()-xlevel(mob);
 		messedUp=!proficiencyCheck(mob,proficiencyAddition*5,auto);
-		if(completion<8) completion=8;
+		if(duration<8) duration=8;
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
@@ -333,7 +333,7 @@ public class LockSmith extends CraftingSkill
 			mob.location().send(mob,msg);
 			boltlock=lboltlock;
             delock=ldelock;
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

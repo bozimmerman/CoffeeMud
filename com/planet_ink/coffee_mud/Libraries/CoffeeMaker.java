@@ -993,8 +993,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
-		boolean mobile=area.getMobility();
-		area.toggleMobility(false);
+		int oldFlag=area.getAreaFlags();
+		area.setAreaFlags(Area.FLAG_FROZEN);
 		buf.append("<AREA>");
 		buf.append(CMLib.xml().convertXMLtoTag("ACLAS",area.ID()));
 		buf.append(CMLib.xml().convertXMLtoTag("ANAME",area.Name()));
@@ -1028,7 +1028,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		}
 		fillFileSet(area,files);
 		buf.append("</AREA>");
-		area.toggleMobility(mobile);
+        area.setAreaFlags(oldFlag);
 		return buf;
 	}
 

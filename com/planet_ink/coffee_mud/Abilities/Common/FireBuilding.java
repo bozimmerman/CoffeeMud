@@ -128,7 +128,7 @@ public class FireBuilding extends CommonSkill
 
 		String name=CMParms.combine(commands,0);
 		int proficiencyAdjustment=0;
-		int completion=6;
+		int duration=6;
 		if(name.equalsIgnoreCase("fire"))
 		{
 			lighting=null;
@@ -149,7 +149,7 @@ public class FireBuilding extends CommonSkill
 				commonTell(mob,"You can't seem to find any dry deadwood around here.");
 				return false;
 			}
-			completion=25-(dxlevel(mob));
+			duration=25-(xtime(mob));
 			durationOfBurn=150+(xlevel(mob)*5);
 			verb="building a fire";
 			displayText="You are building a fire.";
@@ -205,7 +205,7 @@ public class FireBuilding extends CommonSkill
 				return false;
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-				completion=25-(dxlevel(mob));
+				duration=25-(xtime(mob));
 			verb="lighting "+lighting.name();
 			displayText="You are lighting "+lighting.name()+".";
 		}
@@ -236,13 +236,13 @@ public class FireBuilding extends CommonSkill
 		failed=!proficiencyCheck(mob,proficiencyAdjustment,auto);
 
 		durationOfBurn=durationOfBurn*abilityCode();
-		if(completion<4) completion=4;
+		if(duration<4) duration=4;
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

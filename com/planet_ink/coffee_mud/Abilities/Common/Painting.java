@@ -124,7 +124,7 @@ public class Painting extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int completion=25;
+		int duration=25;
 		if(str.equalsIgnoreCase("wall"))
 		{
 			String name=S.prompt("Enter the key words (not the description) for this work.\n\r:","");
@@ -183,15 +183,15 @@ public class Painting extends CommonSkill
 		building.recoverEnvStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		completion=completion-(dxlevel(mob)+5);
-		if(completion<10) completion=10;
+		duration=duration-(xtime(mob)+5);
+		if(duration<10) duration=10;
 
 		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		}catch(java.io.IOException e){return false;}
 		return true;

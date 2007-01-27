@@ -139,7 +139,7 @@ public class Chopping extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
-		int duration=40-dxlevel(mob);
+		int duration=40-xtime(mob);
 		if(duration<15) duration=15;
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) looking for a good tree to chop.");
 		if(mob.location().okMessage(mob,msg))

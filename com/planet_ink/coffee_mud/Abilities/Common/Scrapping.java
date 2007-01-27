@@ -189,7 +189,7 @@ public class Scrapping extends CommonSkill
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int duration=35-dxlevel(mob);
+		int duration=35-xtime(mob);
 		if(duration<10) duration=10;
 		messedUp=!proficiencyCheck(mob,0,auto);
 		found=CMLib.materials().makeItemResource(I.material());

@@ -111,7 +111,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		int completion=4;
+		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",22)+" Lvl Material required\n\r");
@@ -178,7 +178,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xlevel(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		itemName=CMStrings.startWithAorAn(itemName);
 		building.setName(itemName);
@@ -204,7 +204,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<20) completion=20;
+		if(duration<20) duration=20;
 
 		if(autoGenerate>0)
 		{
@@ -217,7 +217,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 	}

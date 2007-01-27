@@ -196,7 +196,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		String str=(String)commands.elementAt(0);
         bundling=false;
 		String startStr=null;
-		int completion=4;
+		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
@@ -309,7 +309,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			itemName=CMStrings.startWithAorAn(itemName);
 			building.setName(itemName);
@@ -345,12 +345,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<6) completion=6;
+		if(duration<6) duration=6;
 
 		if(bundling)
 		{
 			messedUp=false;
-			completion=1;
+			duration=1;
 			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
@@ -367,7 +367,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			mob.location().send(mob,msg);
 			building=(Item)msg.target();
-			beneficialAffect(mob,mob,asLevel,completion);
+			beneficialAffect(mob,mob,asLevel,duration);
 			enhanceItem(mob,building,enhancedTypes);
 		}
 		else
