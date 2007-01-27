@@ -188,6 +188,26 @@ public class QuestMaker extends StdWebMacro
         			list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
                 	break;
                 }
+                case QuestManager.QM_COMMAND_$ABILITY:
+                {
+        			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+        			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+        			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+        			list.append("<TD><SELECT NAME="+httpKeyName+">");
+        			if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+        			Ability A=null;
+        			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+        			{
+        				A=(Ability)e.nextElement();
+            			list.append("<OPTION VALUE=\""+A.ID()+"\" ");
+        				if(oldValue.equals(A.ID())) list.append("SELECTED");
+        				list.append(">");
+            			list.append(A.name());
+        			}
+        			list.append("</SELECT>");
+        			list.append("</TD></TR>");
+                	break;
+                }
                 case QuestManager.QM_COMMAND_$CHOOSE:
                 {
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");

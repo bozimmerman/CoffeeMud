@@ -167,7 +167,7 @@ ONCE_PROG 100
 
 # this script is for the human chosen to be the note bearer
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
 					sayto "$n" What are you doing back here?  Deliver $[1 *] to ${2 *}!
@@ -181,7 +181,7 @@ GREET_PROG 100
 ~
 
 SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
-	if ISLIKE($n '$QUEST_CRITERIA')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
 					sayto "$n" Just deliver $[1 *] to ${2 *}!
@@ -195,7 +195,7 @@ SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to d
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($i '$[1 *]') and !has($n '$[1 *]')
 	#			mpoload '$[1 *]'
@@ -235,14 +235,14 @@ GREET_PROG 100
 	
 
 GIVE_PROG all
-	if ISLIKE($n '$QUEST_CRITERIA')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 			sayto "$n" What's this?
 			give "$o" "$n"
 		else
 			if EVAL($o == '$[1 *]')
 				if EVAL('$EXP' != '')
-					mpexp $n 10%
+					mpexp $n $EXP
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint

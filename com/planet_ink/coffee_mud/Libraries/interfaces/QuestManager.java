@@ -68,6 +68,7 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$MOBXML_ONEORMORE=12;
     public final static int QM_COMMAND_$ITEMXML_ONEORMORE=13;
     public final static int QM_COMMAND_$ZAPPERMASK=14;
+    public final static int QM_COMMAND_$ABILITY=15;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -85,7 +86,8 @@ public interface QuestManager extends CMLibrary
         "$LONG_STRING",
         "$MOBXML_ONEORMORE",
         "$ITEMXML_ONEORMORE",
-        "$ZAPPERMASK"
+        "$ZAPPERMASK",
+        "$ABILITY",
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -261,6 +263,21 @@ public interface QuestManager extends CMLibrary
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             return str;
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //expression
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            StringBuffer list=new StringBuffer("");
+            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            	list.append(((Ability)e.nextElement()).ID()+", ");
+            if((str==null)||(((String)str).trim().length()==0)){
+                if(emptyOK) return "";
+                throw new CMException("You must enter an ability ID, choose from the following: "+list.toString());
+            }
+            Ability A=CMClass.getAbility((String)str);
+            if(A==null) A=CMClass.findAbility((String)str);
+            if(A==null)
+                throw new CMException("Invalid ability id, choose from the following: "+list.toString()); 
+            return A.ID();
         }},
     };
     

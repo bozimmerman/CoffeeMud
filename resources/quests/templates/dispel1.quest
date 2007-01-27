@@ -1,0 +1,299 @@
+#!QUESTMAKER_START_SCRIPT Dispel #1
+#The player must dispel or otherwise remove a spell, disease, or
+#other affect from 1 or more affected mobs on your map.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name and starting time/duration for your new quest.
+#
+#Quest Name:
+#Enter a unique name for your delivery quest:
+#$QUEST_NAME=$UNIQUE_QUEST_NAME=dispel_1
+#
+#Quest Frequency:
+#A quest starts and stops on timed intervals.  Enter the amount of time 
+#that this quest will remain unavailable between runs. This number is in 
+#"ticks" (4 second periods).  You may enter math expressions, and use the 
+# special ? operator to generate random numbers.  A frequency of
+#5 + 3?10 would generate a frequency of 8-15 ticks.
+#$FREQUENCY=$EXPRESSION=400
+#
+#Quest Duration:
+#Enter the amount of time that this quest will run and remain available 
+#after it is started.  This time is also the amount of time a player has 
+#to complete the quest after they have accepted it from the announcer mob.
+#This time is expressed in "ticks" (4 second periods).  You may enter math 
+#expressions, and use the special ? operator to generate random numbers.
+#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
+#$DURATION=$EXPRESSION=175
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Dispel Quest Basics
+#Here's where you specify the basic shape and form of your quest.
+#
+#The Thing To Dispel: 
+#Specify the Ability ID of the spell/disease/poison/affect/whatever that
+#the player needs to dispel in order to complete the quest.  You may
+#also optionally include some parameters in case the ability you choose
+#needs them.  Most don't, but you'd need to consult the help files to
+#be sure.
+#$DISPEL_SPELL=$ABILITY=Disease_Plague
+#$DISPEL_SPELLPARMS=($STRING)
+#
+#Affect one MOB or a GROUP of mobs.
+#Specify here whether a single MOB will be affected by a disease, or
+#whether you would potentially like a whole MOBGROUP to be affected.
+#$DISPELEE_TYPE=$CHOOSE=MOB,MOBGROUP
+#
+#The Number To Dispel: 
+#Specify the number of affected mobs the player will need to dispel in
+#order to complete the quest.  You may enter a numeric expression, but
+#make sure it evaluates to something >= 1!  Also, if you specified that
+#numerous mobs will be affected above by selecting MOBGROUP, you might
+#also consider 
+#$NUMBER_TO_DISPEL=$EXPRESSION=1
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be announcing the quest initially. This must
+#be an existing mob in your world.  They will announce the quest to players
+#once, and then mark whether the player says they accept the quest
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your Announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the Announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Announcer greetings/instructions
+#Here's where you specify any special text said by the announcer regarding
+#your quest
+#
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I have some work I need done.
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=There are lots of people in some area affected by some affect that need it to go away.  Please go make it go away for them. (Your announcement should be more specific)
+#
+#Announcer QUESTCHAT announcement:
+#This is an initial annoucement by the deliverer over the QUESTCHAT channel
+#whenever the quest starts running. Leave it blank if you only want him to 
+#talk to people who enter the room with him.
+#$QUEST_ANNOUNCEMENT=($STRING)
+#
+#!QUESTMAKER_PAGE Specify the Dispelee(s)
+#The Dispelee(s) is the mob or group of mobs who will be affected by the
+#spell/disease/poison/whatever.  These are the ones whom the player needs
+#to "cure" in order to complete the quest.
+#
+#Dispelee Area/Room: 
+#Specify below the name of the area that your Dispelee mob(s) will be located
+#in and/or the room in which the mob(s) can be found.  You may leave both blank
+#to force the quest manager to find the mob(s) all over the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Dispelee(s) Area:
+#$DISPELEE_AREA=($AREA)
+#Dispelee(s) Room ID:
+#$DISPELEE_ROOM=($ROOMID)
+#
+#Dispelee(s) mob name(s): 
+#Specify the name(s) of the mob(s) who will act as the Dispelees.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob(s) must be located there.
+#You may optionally have the quest manager select multiple mob(s) by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mobs, the quest will not
+#be started.  And if they can't find enough to specify the number of dispellees
+#your mentioned above, the players won't be able to finish the quest!
+#$DISPELEE_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Dispelee greetings/responses
+#Here's where you specify any special text said by the dispelee(s) before,
+#after, or during the quest.
+#
+#Dispelee greeting: 
+#Specify what the Dispelee says to people when they enter the room.  You
+#may leave this blank to keep it a secret.
+#$DISPELEE_GREETING=$LONG_STRING=I've got a disease or poison or something.
+#
+#Dispelee response #1: 
+#Specify what the dispelee says to players who successfully remove the 
+#disease/poison/spell/whatever from them, EVEN if they are not yet done
+#with the quest because they have more to do.  You may leave this blank
+#if you like.
+#$DISPELEE_RESPONSE_1=($LONG_STRING)=Wow.  It's gone from me.
+#
+#Dispelee response #2: 
+#Specify what the dispelee says to players who successfully complete the
+#whole quest. You may leave this blank
+#if you like.
+#$DISPELEE_RESPONSE_2=($LONG_STRING)=Wow. You've completed the quest.
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the quest:
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Select whether a player may complete this quest multiple times:
+#$MULTIPLE=$CHOOSE=YES,NO
+#
+#!QUESTMAKER_END_SCRIPT Delivery #1
+
+set name $QUEST_NAME
+
+set wait $FREQUENCY
+set interval 1
+#quiet
+
+set minplayers 1
+set playermask $QUEST_CRITERIA
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob $ANNOUNCER_NAME
+give behavior Scriptable LOAD=$QUEST_NAME_dispelannouncer.script
+
+set area $DISPELEE_AREA
+set room $DISPELEE_ROOM
+set $DISPELEE_TYPE $DISPELEE_NAME
+give affect $DISPEL_SPELL $DISPEL_SPELLPARMS
+give behavior Scriptable LOAD=$QUEST_NAME_dispel.script
+
+set duration $DURATION
+
+#!~!BEGINFILEXML!~!
+<FILE><NAME>$QUEST_NAME_dispelannouncer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_NAME_HISCOUNT ''
+	MPSETVAR * $QUEST_NAME_SAVIOR ''
+	MPSETVAR * $QUEST_NAME_HISCOUNT ''
+	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+~
+
+QUEST_TIME_PROG -1
+	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_NAME_HISCOUNT ''
+	MPSETVAR * $QUEST_NAME_SAVIOR ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_NAME_HISCOUNT ''
+	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
+~
+
+QUEST_TIME_PROG 1
+	mpsetvar $i $QUEST_NAME_NUMPARTICIPANTS '$<$i $QUEST_NAME_PARTICIPANTS>.#LENGTH#'
+	for $0 = 1 to '$<$i $QUEST_NAME_NUMPARTICIPANTS>'
+   		tell $<$i $QUEST_NAME_PARTICIPANTS>.$0 You have less than a minute left.
+	next
+~
+
+GREET_PROG 100
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
+				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
+				MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> $n'
+			endif
+		endif
+	endif
+~
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if VAR($n $QUEST_NAME_ACCEPTED == '')
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpsetvar $n $QUEST_NAME_ACCEPTED 'ACCEPTED'
+				mpsetvar $i $QUEST_NAME_PARTICIPANTS '$<$i $QUEST_NAME_PARTICIPANTS> $n'
+				mpsetvar $n $QUEST_NAME_COUNT 0
+				mpqset * REMAINING $DURATION
+			else
+				sayto "$n" Yes, yes, I know .. thanks again.
+			endif
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_NAME_dispel.script</NAME>
+<DATA>
+ALL_GREET_PROG 99
+	if affected($i $DISPEL_SPELL) and ISPC($n)
+		say "$n" $DISPELEE_GREETING
+	endif
+~
+
+RAND_PROG 99
+	if !affected($i $DISPEL_SPELL)
+		mpsetvar $i $QUEST_NAME_SAVIOR ''
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+		   if VAR($%ROOMMOB($0)% $QUEST_NAME_ACCEPTED != '')
+		   		mpsetvar $i $QUEST_NAME_SAVIOR $%ROOMMOB($0)%
+		   endif
+		next
+		if VAR($i $QUEST_NAME_SAVIOR != '')
+			mpsetvar '$<$i $QUEST_NAME_SAVIOR>' $QUEST_NAME_COUNT ++
+			mpsetvar $i $QUEST_NAME_HISCOUNT $%VAR('$<$i $QUEST_NAME_SAVIOR>' $QUEST_NAME_COUNT)%
+			sayto "$n" $DISPELEE_RESPONSE_1
+			if VAR($i $QUEST_NAME_HISCOUNT >= $NUMBER_TO_DISPEL)
+				wake
+				stand
+				if EVAL('$EXP' != '')
+					mpexp '$<$i $QUEST_NAME_SAVIOR>' $EXP
+				endif
+				if EVAL('$QUEST_POINT' == 'YES')
+					mpoload QuestPoint
+					give "a quest point" "$<$i $QUEST_NAME_SAVIOR>"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$<$i $QUEST_NAME_SAVIOR>"
+				endif
+				mpquestwin '$<$i $QUEST_NAME_SAVIOR>' *
+				sayto "$<$i $QUEST_NAME_SAVIOR>" $DISPELEE_RESPONSE_2
+				mpendquest *
+			else
+				mpechoat '$<$i $QUEST_NAME_SAVIOR>' Total done: $<$i $QUEST_NAME_HISCOUNT>'/$NUMBER_TO_DISPEL>
+			endif
+			mpsetvar $i $QUEST_NAME_HISCOUNT ''
+			mpsetvar $i $QUEST_NAME_SAVIOR ''
+		endif
+	endif
+~
+</DATA></FILE>
+
+

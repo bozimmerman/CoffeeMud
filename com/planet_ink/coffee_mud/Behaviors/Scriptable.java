@@ -1128,6 +1128,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 if(back.charAt(1)=='$')
                     back=varify(source,target,monster,primaryItem,secondaryItem,msg,tmp,back);
+				if(back.equalsIgnoreCase("#LENGTH#"))
+					middle=""+CMParms.parse(middle).size();
+				else
     			if((back.length()>1)&&Character.isDigit(back.charAt(1)))
     			{
     				int x=1;
