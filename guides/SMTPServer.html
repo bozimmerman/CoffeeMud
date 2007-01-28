@@ -1,23 +1,70 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head>
+<head>
+
+
+  
+    
+  
+  
   <title>The CoffeeMud SMTP Server</title>
-    <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-    <!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors -->
-  </head>
-  <body>
-    <center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr>
-      <td width=100% colspan=2 bgcolor=#DFDFDF align=left>
-        <h1>The CoffeeMud SMTP Server</h1>
-      </td></tr><tr><td width=20% valign=top align=left>
-        <ul>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors -->
+</head>
+
+
+<body>
+
+
+    
+<center>
+<table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
+
+  <tbody>
+
+    <tr>
+
+
+      <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
+        
+      
+      <h1>The CoffeeMud SMTP Server</h1>
+
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td align="left" valign="top" width="20%">
+        
+      
+      <ul>
+
+
           <li><a href="#connect">How to Connect</a></li>
+
+
           <li><a href="#limits">What it does and doesn't do</a></li>
+
+
           <li><a href="#security">Security</a></li>
+
+
           <li><a href="#configuration">Configuration</a></li>
-        </ul>
-     </td><td valign=top align=left>
+
+
+        
+      
+      </ul>
+
+
+     </td>
+
+      <td align="left" valign="top">
+      
+      
       <p>
        The CoffeeMud SMTP Server is a simple mail transfer program
        which acts as server that runs as part of CoffeeMud.
@@ -26,8 +73,16 @@
        lists and other email related functions.
       </p>
 
+
+
+      
+      
       <h2><a name="connect">How to Connect</a></h2>
 
+
+
+      
+      
       <p>
        By default, the SMTP server listens on port port 25 by
        default. Changing this port value is generally a bad idea which
@@ -35,61 +90,119 @@
        mail from others.
       </p>
 
+
+
+      
+      
       <p>
        Messages sent either directly or indirectly to the CoffeeMud SMTP
        Server MUST follow ALL of these rules or face rejection:
       </p>
 
+
+
+      
+      
       <ul>
+
+
        <li>The email MUST be formatted in PLAIN TEXT
        </li>
+
+
        <li>The DOMAIN must be correctly defined in the SMTP Server INI file
        (email.ini)
        </li>
+
+
        <li>The email must be from:
-        <ul>
+        
+          
+          <ul>
+
+
          <li>a CoffeeMud journal name listed under JOURNALS in the SMTP
          Server INI file (email.ini)
          </li>
+
+
          <li>
           <strong>OR</strong> a CoffeeMud journal name at the
-          local domain: example: <a href=
-          "mailto:My_Journal@CoffeeMud.homeip.net">My_Journal@CoffeeMud.homeip.net</a>
+          local domain: example: <a href="mailto:My_Journal@CoffeeMud.homeip.net">My_Journal@CoffeeMud.homeip.net</a>
          </li>
+
+
          <li>
           <strong>OR</strong> a local player name
          </li>
-         <li>
-          <strong>OR</strong> a local player name at the local domain:
-          example: <a href=
-          "mailto:brutus@CoffeeMud.homeip.net">brutus@CoffeeMud.homeip.net</a>
-         </li>
-         <li>
-          <strong>OR</strong> the email address which a player has on
-          file in their account.
-         </li>
-        </ul>
-       </li>
-       <li>The email must be addressed to:
-        <ul>
-         <li>a CoffeeMud journal name at the local domain: example:
-         <a href="mailto:My_Journal@CoffeeMud.homeip.net">My_Journal@CoffeeMud.homeip.net</a>
-         </li>
+
+
          <li>
           <strong>OR</strong> a local player name at the local domain:
           example: <a href="mailto:brutus@CoffeeMud.homeip.net">brutus@CoffeeMud.homeip.net</a>
          </li>
+
+
          <li>
           <strong>OR</strong> the email address which a player has on
           file in their account.
          </li>
-        </ul>
+
+
+        
+          
+          </ul>
+
+
        </li>
+
+
+       <li>The email must be addressed to:
+        
+          
+          <ul>
+
+
+         <li>a CoffeeMud journal name at the local domain: example:
+         <a href="mailto:My_Journal@CoffeeMud.homeip.net">My_Journal@CoffeeMud.homeip.net</a>
+         </li>
+
+
+         <li>
+          <strong>OR</strong> a local player name at the local domain:
+          example: <a href="mailto:brutus@CoffeeMud.homeip.net">brutus@CoffeeMud.homeip.net</a>
+         </li>
+
+
+         <li>
+          <strong>OR</strong> the email address which a player has on
+          file in their account.
+         </li>
+
+
+        
+          
+          </ul>
+
+
+       </li>
+
+
+      
+      
       </ul>
 
-       <h2><a name="limits">What it does and doesn't do</a></h2>
 
-       <p>
+
+       
+      
+      <h2><a name="limits">What it does and doesn't do</a></h2>
+
+
+
+       
+      
+      <p>
        It accepts mail for
        storage and eventual delivery if the security conditions are
        met. It maintains mailing lists for journals. It provides
@@ -99,28 +212,52 @@
        list messages to where they need to go.
       </p>
 
+
+
+      
+      
       <p>
        It does not handle SMTP compliant mailing lists, and will only deal
        with plain text messages due to journal interactions.
       </p>
 
+
+
+      
+      
       <p>
        It supports HELO, EHLO, RCPT, MAIL, HELP, QUIT, NOOP, RSET, DATA, and
        DSN.
       </p>
 
+
+
+      
+      
       <p>
        It does not support EXPN, VRFY, VERB, ETRN, or any expanded
        parameters to either MAIL or RCPT.
       </p>
 
+
+
+      
+      
       <h2><a name="security">Security</a></h2>
 
+
+
+      
+      
       <p>
        The SMTP Server may be bound to 127.0.0.1 (localhost) - this
        means it will not accept external connections.
       </p>
 
+
+
+      
+      
       <p>
        The SMTP Server only allows messages FROM valid users or journals TO
        valid users or journals. All security checking is done as the
@@ -129,55 +266,106 @@
        secure than that.
       </p>
 
+
+
+      
+      
       <h2><a name="configuration">Configuration</a></h2>
 
+
+
+      
+      
       <p>
        The default installation of CoffeeMud has two inbuilt web servers,
        named 'pub' and 'admin'. The web servers are enabled with the line
        'RUNWEBSERVERS=true' in 'CoffeeMud.ini'; any other value or the
-       absence of this line will cause the web servers not to be loaded.
+       absence of this line will cause the web servers not to be loaded.</p>
+      <p>Normally, CofeeMud's SMTP server will send mail directly to
+the recipients mail servers. &nbsp;If you wish to use your own relay
+server, you should set the SMTPSERVERNAME field in your coffeemud.ini
+file to the address of your relay server. &nbsp;Obviously this server
+and CoffeeMud's can not exist on the same machine, as they will be
+listening on the same ports.
       </p>
 
+
+
+      
+      
       <p>
-       INI files for the web servers live in the 'web/' directory off the
-       CoffeeMud root; by default, all pages to be served go in
-       <em>web/(servername)/</em>, though this can be overridden. Options are
-       placed in either 'web/common.ini' or 'web/(servername).ini'; an option
-       in the latter will override one in common. The options are:
+       INI files for the email server lives in the 'web/' directory off the
+       CoffeeMud root. &nbsp;The file is called email.ini, and contains the following entries:
       </p>
 
+
+
+      
+      
       <ul>
+
+
        <li>
         <b>PORT</b>=xx : <b>[REQUIRED]</b> <em>(e.g.25)</em>
-        <p>
+        
+          
+          <p>
           Sets the port
           number the server will listen for SMTP requests on; this cannot
           be the same port as the main MUD server or web servers. Identical to
           MUD server usage. There is normally no good reason to
           change from 25, as that is what email clients will expect.
         </p>
+
+
        </li>
+
+
        <li>
         <b>BACKLOG</b>=xx : <em>(e.g.10)</em>
-        <p>
+        
+          
+          <p>
         Sets the number of requests that
         can be queued by the internal TCP/IP stack. Identical to MUD server
         usage.
         </p>
+
+
        </li>
+
+
        <li>
         <b>BIND</b>=addr : <em>(e.g.127.0.0.1)</em>
-        <p>
+        
+          
+          <p>
         Causes the server to be
         bound to a specific address; this is useful on multi-homed machines
         or if you wish to prevent public access to the pages. Identical to
-        MUD server usage.
-        </p>
-       </li>
-       <li>
-        <strong>FORWARD</strong>=trueorfalse <em>(e.g. TRUE)</em>
-        <p>
-        Should be
+        MUD server usage.</p>
+
+        </li>
+
+        <li><b>RELAYSERVER</b>=addr : <em>(e.g.127.0.0.1)</em><em></em>
+        
+          
+          <p> Normally the CoffeeMud server will attempt to send mail
+directly to the recipients. &nbsp;If you have another SMTP mail server
+that you would like to use to relay messages through, you should set
+this value to the address of that SMTP relay server. &nbsp;Since they
+will be sharing ports, this server should obviously be on a different
+machine than CoffeeMud's SMTP server.</p>
+
+        </li>
+
+        <li>
+          
+          <p><strong>FORWARD</strong>=trueorfalse (e.g. TRUE)<br />
+
+          <br />
+
+Should be
         set to true or false. If TRUE, mail will be forwarded to
         players and mailing lists as the mail becomes available. A
         player will have their mail forwarded to them ONLY if their
@@ -185,10 +373,16 @@
         will not forward mail no matter what the players AUTOFORWARD flag is,
         but will act as a mail accumulator only.
         </p>
-       </li>
+
+        </li>
+
+
+       
        <li>
         <strong>MAILBOX</strong>=journalname <em>(e.g. The EMail Box)</em>
-        <p>
+        
+          
+          <p>
         This is the name of your private email Journal. All private
         email, from player to player, is stored in this journal. A
         GenJournal item of this name can be created in-game to provide
@@ -197,46 +391,76 @@
         AUTOFORWARD turned on, email will remain in this box only until it
         can be successfully sent to the players private email address.
         </p>
+
+
        </li>
+
+
        <li>
         <strong>EMAILDAYS</strong>=xx <em>(e.g. 30)</em>
-        <p>
+        
+          
+          <p>
         This is the maximum
         number of days a message will remain in the MAILBOX above for any
         reason.
         </p>
+
+
        </li>
+
+
 
        <li>
         <strong>FAILUREDAYS</strong>=xx <em>(e.g. 5)</em>
-        <p>
+        
+          
+          <p>
         This is the number
         of days that your server will attempt to forward a message to a
         private email address before giving up.
         </p>
+
+
        </li>
+
+
        <li>
         <strong>MAXMSGS</strong>=xx <em>(e.g. 100)</em>
-        <p>
+        
+          
+          <p>
         This is the maximum
         number of private emails which will be stored in the MAILBOX for each
         player. Use 0 for unlimited.
         </p>
+
+
        </li>
+
+
 
        <li>
         <strong>MAXMSGSIZE</strong>=xx <em>(e.g. 20000)</em>
-        <p>
+        
+          
+          <p>
         This is the
         maximum number of bytes for each email sent. No email arriving
         through your server may exceed this size.
         </p>
+
+
        </li>
+
+
        <li>
         <strong>JOURNALS</strong>=coded list <em>(e.g. Local Chat, The Elf Journal (forward keepall -RACE +Elf),
         Announcements (forward) )</em>
 
-        <p>
+        
+          
+          <p>
         This is the name of one of more GenJournal (see Archon
         Guide). Each entry should be comma delimited. The mails sent to
         a journal name will appear as TO ALL messages in the designated
@@ -244,16 +468,23 @@
         to your GenJournal names. Mail may be sent to journal names with
         spaces by substituting an underscore "_" for each space. For
         instance, to send an email to a journal called "The Journal" at
-        the domain "mydomain.com", you would address it as: <a href=
-        "mailto:The_Journal@mydomain.com">The_Journal@mydomain.com</a>.
+        the domain "mydomain.com", you would address it as: <a href="mailto:The_Journal@mydomain.com">The_Journal@mydomain.com</a>.
         </p>
 
-        <p>
+
+
+        
+          
+          <p>
         For each journal entry, parameters may follow the name, so long as
         they are enclosed in parenthesis. ().
         </p>
 
-        <p>
+
+
+        
+          
+          <p>
         The parameters may include the word 'forward' if you would like
         emails to be forwarded to the private mail boxes whose names are
         maintained in resources/emaillists.txt. Nonmembers may post a
@@ -262,14 +493,22 @@
         remove their names.
         </p>
 
-        <p>
+
+
+        
+          
+          <p>
         The Parameters should include the word 'subscribeonly' if posts to
         the list are not accepted, but subscribe/unsubscribe messages
         are. This parameter should always be used with the 'forward'
         parameter.
         </p>
 
-        <p>
+
+
+        
+          
+          <p>
         The Parameters should include the word 'keepall' if posts to the
         journal are saved in the journal archives instead of
         automatically deleted after forwarding. Like 'subscribeonly',
@@ -279,74 +518,130 @@
         even when 'keepall' is included.
         </p>
 
-        <p>
+
+
+        
+          
+          <p>
          Parameters may also include Zapper masks to control
         subscription and/or posting criteria. Use AHELP Prop_HaveZapper
         to list the valid Zapper mask parameters.
         </p>
+
+
        </li>
+
+
        <li>
         <strong>JOURNALDAYS</strong>= xx (e.g. 90)
-        <p>
+        
+          
+          <p>
         This is the number of
         maximum number of days a message will remain in an SMTP server
         managed JOURNAL before being deleted.
         </p>
+
+
        </li>
+
+
        <li>
         <strong>SUBSCRIBEDTITLE</strong>=xx <em>(e.g. You are now
         subscribed)</em>
-        <p>
+        
+          
+          <p>
         This is the title of the response your SMTP server
         will automatically send to users who subscribe to a journal by
         sending an email to the journal with "subscribe" as the title.
         </p>
+
+
        </li>
+
+
        <li>
 
         <strong>SUBSCRIBEDMSG</strong>=xx <em>(e.g. You are now subscribed to
         &lt;NAME&gt;)</em>
-        <p>
+        
+          
+          <p>
         This is the body of the response your SMTP server
         will automatically send to users who subscribe to a journal by
         sending an email to the journal with "subscribe" as the title. You
         may use the code &lt;NAME&gt; as a placeholder for your journals
         name.
         </p>
+
+
        </li>
+
+
        <li>
         <strong>UNSUBSCRIBEDTITLE</strong>=xx <em>(e.g. You are now
         unsubscribed)</em>
-        <p>
+        
+          
+          <p>
         This is the title of the response your SMTP server
         will automatically send to users who unsubscribe to a journal by
         sending an email to the journal with "unsubscribe" as the title.
         </p>
+
+
        </li>
+
+
 
        <li>
         <strong>UNSUBSCRIBEDMSG</strong>=xx <em>(e.g. You are now
         unsubscribed from &lt;NAME&gt;)</em>
-        <p>
+        
+          
+          <p>
         This is the body of the response
         your SMTP server will automatically send to users who unsubscribe to
         a journal by sending an email to the journal with "unsubscribe" as
         the title. You may use the code &lt;NAME&gt; as a placeholder for
         your journals name.
         </p>
+
+
        </li>
+
+
+      
+      
       </ul>
 
+
+
+      
+      
       <p>
        Not listed here, but even more important is the <strong>DOMAIN</strong>
        entry in your CoffeeMud.ini file. This is your servers domain for the
        purposes of interpreting local email addresses. It should be
        identical to your servers domain. For instance, if your server is
        myserver.myhost.com, then so should this value.
-       Email addressed to your mud would then be <a href=
-       "mailto:playername@myserver.myhost.com">playername@myserver.myhost.com</a>.
+       Email addressed to your mud would then be <a href="mailto:playername@myserver.myhost.com">playername@myserver.myhost.com</a>.
        This domain must match the incoming mail addresses to be accepted.
       </p>
-	</td></tr></table></center>
-  </body>
+
+
+	</td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+
+  
+</body>
 </html>
