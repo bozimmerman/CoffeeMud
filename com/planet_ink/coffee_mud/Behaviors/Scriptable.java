@@ -57,6 +57,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     private Hashtable noTrigger=new Hashtable();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Quest defaultQuest=null;
+    protected Environmental lastLoaded=null;
 
 	private Quest getQuest(String named)
 	{
@@ -779,6 +780,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			switch(str.charAt(1))
 			{
 			case 'a': return (lastKnownLocation!=null)?lastKnownLocation.getArea():null;
+            case 'B':
+            case 'b': return lastLoaded;
 			case 'N':
 			case 'n': return source;
 			case 'I':
@@ -901,6 +904,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(lastKnownLocation!=null)
 					middle=lastKnownLocation.getArea().name();
 				break;
+            case 'b': middle=lastLoaded!=null?lastLoaded.name():""; break;
+            case 'B': middle=lastLoaded!=null?lastLoaded.displayText():""; break;
 			case 'c':
 			case 'C':
 				randMOB=getFirstAnyone(monster,randMOB,lastKnownLocation);
@@ -1576,7 +1581,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 			case 1: // rand
 			{
-				int arg=CMath.s_int(evaluable.substring(y+1,z).trim());
+                String num=evaluable.substring(y+1,z).trim();
+                if(num.endsWith("%")) num=num.substring(0,num.length()-1);
+				int arg=CMath.s_int(num);
 				if(CMLib.dice().rollPercentage()<arg)
 					returnable=true;
 				else
@@ -5354,6 +5361,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 				case 'N': 
 				case 'n': if(O instanceof MOB) source=(MOB)O; break;
+                case 'B':
+                case 'b': if(O instanceof Environmental)
+                                lastLoaded=(Environmental)O;
+                          break;
 				case 'I':
 				case 'i': if(O instanceof Environmental) scripted=(Environmental)O;
 						  if(O instanceof MOB) monster=(MOB)O;
@@ -5538,11 +5549,24 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String qstr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
 				String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
+                Environmental obj=getArgumentItem(CMParms.getPastBitClean(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
 				Quest Q=getQuest(qstr);
 				if(Q==null)
                     scriptableError(scripted,"MPQSET","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
 				else
+                if(var.equalsIgnoreCase("QUESTOBJ"))
+                {
+                    if(obj==null)
+                        scriptableError(scripted,"MPQSET","Syntax","Unknown object "+CMParms.getPastBitClean(s,2)+" for "+scripted.Name());
+                    else
+                    {
+                        obj.baseEnvStats().setDisposition(obj.baseEnvStats().disposition()|EnvStats.IS_UNSAVABLE);
+                        obj.recoverEnvStats();
+                        Q.runtimeRegisterObject(obj);
+                    }
+                }
+                else
 					Q.setStat(var,val);
 				break;
 			}
@@ -5655,6 +5679,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							m.recoverCharStats();
 							m.resetToMaxState();
 							m.bringToLife(lastKnownLocation,true);
+                            lastLoaded=m;
 						}
 					}
 				}
@@ -5716,6 +5741,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 										((Room)container.owner()).addItemRefuse(m,Item.REFUSE_PLAYER_DROP);
 									else
 										monster.addInventory(m);
+                                    lastLoaded=m;
 								}
 							}
 						}
@@ -5779,6 +5805,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								    ((Coins)I).putCoinsBack();
 								if(I instanceof RawMaterial)
 									((RawMaterial)I).rebundle();
+                                lastLoaded=I;
 							}
 						}
 					}
@@ -6767,6 +6794,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				case 'i': if(O instanceof Environmental) scripted=(Environmental)O;
 						  if(O instanceof MOB) monster=(MOB)O;
 						  break;
+                case 'B':
+                case 'b': if(O instanceof Environmental)
+                                lastLoaded=(Environmental)O;
+                          break;
 				case 'T':
 				case 't': if(O instanceof Environmental) target=(Environmental)O; break;
 				case 'O':

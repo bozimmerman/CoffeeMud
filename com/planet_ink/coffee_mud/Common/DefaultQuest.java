@@ -2668,7 +2668,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 }
                 Environmental E=(Environmental)questState.stuff.elementAt(i,1);
                 questState.stuff.removeElementAt(i);
-                
                 if(E instanceof Item)
                 {
                 	if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
@@ -2679,18 +2678,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     MOB M=(MOB)E;
                     ScriptingEngine B=(ScriptingEngine)((MOB)E).fetchBehavior("Scriptable");
-                    if(B!=null) B.endQuest(E,M,name());
+                    if(B!=null)
+                        B.endQuest(E,M,name());
                     Room R=M.getStartRoom();
-                    if(R==null)
+                    if((R==null)||(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE)))
                     {
                         CMLib.tracking().wanderAway(M,true,false);
-                    	if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
-                    	{
-	                        if(M.location()!=null)
-	                            M.location().delInhabitant(M);
-	                        M.setLocation(null);
-	                        M.destroy();
-                    	}
+                        if(M.location()!=null)
+                            M.location().delInhabitant(M);
+                        M.setLocation(null);
+                        M.destroy();
                     }
                     else
                         CMLib.tracking().wanderAway(M,false,true);

@@ -554,11 +554,14 @@ public class QuestMaker extends StdWebMacro
                     {
                         var=(String)pageDV.elementAt(v,2);
                         String httpKeyName=var;
-                        if(httpKeyName.startsWith("$")) httpKeyName=httpKeyName.substring(1);
+                        if(httpKeyName.startsWith("$")) 
+                            httpKeyName=httpKeyName.substring(1);
+                        else
+                            continue;
                         httpKeyName="AT_"+httpKeyName;
                         val=(String)httpReq.getRequestParameter(httpKeyName);
                         if(val==null) val="";
-                        switch(((Integer)pageDV.elementAt(v,1)).intValue())
+                        switch(((Integer)pageDV.elementAt(v,1)).intValue()&QuestManager.QM_COMMAND_MASK)
                         {
                         	case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
                                 name=val;

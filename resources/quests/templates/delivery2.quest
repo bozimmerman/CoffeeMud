@@ -127,7 +127,7 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#!QUESTMAKER_END_SCRIPT Delivery #1
+#!QUESTMAKER_END_SCRIPT Delivery #2
 
 set name $QUEST_NAME
 
