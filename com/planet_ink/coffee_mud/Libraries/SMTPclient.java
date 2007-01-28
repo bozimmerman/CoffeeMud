@@ -278,6 +278,41 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		String rstr;
 		String sstr;
+        StringBuffer fixMsg=new StringBuffer(message);
+        for(int f=0;f<fixMsg.length();f++)
+        {
+            if((fixMsg.charAt(f)=='\n')
+            &&(f>0)
+            &&(fixMsg.charAt(f-1)!='\r'))
+            {
+                if((f<fixMsg.length()-1)&&(fixMsg.charAt(f+1)=='\r'))
+                {
+                    fixMsg.setCharAt(f,'\r');
+                    fixMsg.setCharAt(f+1,'\n');
+                }
+                else
+                {
+                    fixMsg.insert(f,'\r');
+                    f++;
+                }
+            }
+            else
+            if((fixMsg.charAt(f)=='\r')
+            &&(f<fixMsg.length()-1)
+            &&(fixMsg.charAt(f+1)!='\n'))
+            {
+                if((f>0)&&(fixMsg.charAt(f-1)=='\n'))
+                {
+                    fixMsg.setCharAt(f-1,'\r');
+                    fixMsg.setCharAt(f,'\n');
+                }
+                else
+                {
+                    fixMsg.insert(f+1,'\n');
+                    f++;
+                }
+            }
+        }
 
 		InetAddress local;
 		try {

@@ -183,7 +183,7 @@ public class Poison extends StdAbility
 						&&(msg.target() instanceof MOB))
 						{
 							tickDown--;
-							catchIt((MOB)msg.target(),msg.target());
+							catchIt((MOB)msg.source(),msg.target());
 						}
 						break;
                     case CMMsg.TYP_FILL:
