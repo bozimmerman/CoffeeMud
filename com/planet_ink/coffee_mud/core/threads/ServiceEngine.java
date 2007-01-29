@@ -529,7 +529,7 @@ public class ServiceEngine implements ThreadEngine
 		int which=0;
 		while(tickGroup.size()>0)
 		{
-			Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
+			//Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
 			Tick tock=null;
 			synchronized(tickGroup){tock=(Tick)tickGroup.elementAt(0);}
 			if(tock!=null) tock.shutdown();
