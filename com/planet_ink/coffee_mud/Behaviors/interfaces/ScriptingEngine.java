@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public interface ScriptingEngine extends Behavior
                           String msg,
                           Object[] tmp);
 	public void dequeResponses();
-    
+
     public boolean eval(Environmental scripted,
                         MOB source,
                         Environmental target,
@@ -88,7 +88,7 @@ public interface ScriptingEngine extends Behavior
 
         public boolean checkTimeToExecute() { return ((--tickDelay)<=0); }
     }
-    
+
     public static final String[] progs={
         "GREET_PROG", //1
         "ALL_GREET_PROG", //2
@@ -135,7 +135,7 @@ public interface ScriptingEngine extends Behavior
         "IMASK_PROG", // 43
         "KILL_PROG", //44
     };
-    
+
     public static final String[] funcs={
         "RAND", //1
         "HAS", //2
@@ -197,7 +197,7 @@ public interface ScriptingEngine extends Behavior
         "ISABLE", // 58
         "ISOPEN", // 59
         "ISLOCKED", // 60
-        "STRIN", // 61 
+        "STRIN", // 61
         "CALLFUNC", // 62
         "NUMPCSROOM", // 63
         "DEITY", // 64
@@ -226,6 +226,7 @@ public interface ScriptingEngine extends Behavior
         "ISBIRTHDAY", //87
         "MOOD", //88
         "ISRECALL", //89
+        "INAREA", //90
     };
     public static final String[] methods={
         "MPASOUND", //1
@@ -281,7 +282,7 @@ public interface ScriptingEngine extends Behavior
         "MPSETCLANDATA", // 51
         "MPPLAYERCLASS", // 52
         "MPWALKTO", // 53
-        "MPFACTION", //54 
+        "MPFACTION", //54
         "MPNOTRIGGER", // 55
         "MPSTOP", // 56
         "<SCRIPT>", // 57

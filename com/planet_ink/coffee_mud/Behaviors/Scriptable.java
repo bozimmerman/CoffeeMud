@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,7 +75,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		return CMLib.quests().fetchQuest(named);
 	}
-	
+
 	public long getTickStatus()
 	{
 	    Tickable T=altStatusTickable;
@@ -118,15 +118,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	    parseParmFilenames(getParms(),xmlfiles,0);
 		return xmlfiles;
 	}
-	
-    public String getVarHost(Environmental E, 
-    						 String rawHost, 
-    						 MOB source, 
+
+    public String getVarHost(Environmental E,
+    						 String rawHost,
+    						 MOB source,
     						 Environmental target,
     						 Environmental scripted,
-                             MOB monster, 
-                             Item primaryItem, 
-                             Item secondaryItem, 
+                             MOB monster,
+                             Item primaryItem,
+                             Item secondaryItem,
                              String msg,
                              Object[] tmp)
     {
@@ -142,12 +142,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         }
         return rawHost;
     }
-    
+
     public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
-    				     Environmental scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg, 
+    				     Environmental scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
     				     Object[] tmp)
     { return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var); }
-             
+
     public static String getVar(String host, String var)
     {
         Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+host);
@@ -166,7 +166,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return new CMFile(Resources.makeFileResourceName(named),null,true).text();
     }
 
-    
+
     protected static class JScriptEvent extends ScriptableObject
     {
         public String getClassName(){ return "JScriptEvent";}
@@ -193,7 +193,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         public String getVar(String host, String var)
         { return Scriptable.getVar(host,var);}
         public String toJavaString(Object O){return Context.toString(O);}
-        
+
         public JScriptEvent(Environmental host,
                             MOB source,
                             Environmental target,
@@ -211,8 +211,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             message=msg;
         }
     }
-    
-    
+
+
 	public void setParms(String newParms)
 	{
 		newParms=CMStrings.replaceAll(newParms,"'","`");
@@ -234,7 +234,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         registeredSpecialEvents=new HashSet();
         noTrigger=new Hashtable();
 		super.setParms(newParms);
-		if(oncesDone.size()>0) 
+		if(oncesDone.size()>0)
 			oncesDone.clear();
 	}
 
@@ -273,7 +273,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				break;
 		}
 	}
-	
+
 	protected String parseLoads(String text, int depth)
 	{
 		StringBuffer results=new StringBuffer("");
@@ -513,7 +513,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(cmp.equalsIgnoreCase("==")) return (x==0);
 		else if(cmp.equalsIgnoreCase(">=")) return (x==0)||(x>0);
 		else if(cmp.equalsIgnoreCase("<=")) return (x==0)||(x<0);
-		else if(cmp.equalsIgnoreCase(">"))  return (x>0); 
+		else if(cmp.equalsIgnoreCase(">"))  return (x>0);
         else if(cmp.equalsIgnoreCase("<"))  return (x<0);
 		else if(cmp.equalsIgnoreCase("!=")) return (x!=0);
 		else
@@ -531,7 +531,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(cmp.equalsIgnoreCase("=="))      return (val1==val2);
 		else if(cmp.equalsIgnoreCase(">=")) return val1>=val2;
 		else if(cmp.equalsIgnoreCase("<=")) return val1<=val2;
-		else if(cmp.equalsIgnoreCase(">"))  return (val1>val2); 
+		else if(cmp.equalsIgnoreCase(">"))  return (val1>val2);
         else if(cmp.equalsIgnoreCase("<"))  return (val1<val2);
 		else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
 		else
@@ -548,7 +548,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         if(cmp.equalsIgnoreCase("=="))      return (val1==val2);
         else if(cmp.equalsIgnoreCase(">=")) return val1>=val2;
         else if(cmp.equalsIgnoreCase("<=")) return val1<=val2;
-        else if(cmp.equalsIgnoreCase(">"))  return (val1>val2); 
+        else if(cmp.equalsIgnoreCase(">"))  return (val1>val2);
         else if(cmp.equalsIgnoreCase("<"))  return (val1<val2);
         else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
         else
@@ -672,8 +672,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		else
 		{
-	    	if(!mob) 
-	    		areaThing=(meMOB!=null)?meMOB.fetchInventory(thisName):null; 
+	    	if(!mob)
+	    		areaThing=(meMOB!=null)?meMOB.fetchInventory(thisName):null;
 		    try
 		    {
 		    	if(areaThing==null)
@@ -719,25 +719,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return null;
 	}
 
-	public Environmental getArgumentMOB(String str, 
-										MOB source, 
-										MOB monster, 
-										Environmental target, 
-										Item primaryItem, 
-										Item secondaryItem, 
+	public Environmental getArgumentMOB(String str,
+										MOB source,
+										MOB monster,
+										Environmental target,
+										Item primaryItem,
+										Item secondaryItem,
 										String msg,
 										Object[] tmp)
 	{
         return getArgumentItem(str,source,monster,monster,target,primaryItem,secondaryItem,msg,tmp);
 	}
-	
-	public Environmental getArgumentItem(String str, 
-										 MOB source, 
-										 MOB monster, 
-										 Environmental scripted, 
-										 Environmental target, 
-										 Item primaryItem, 
-										 Item secondaryItem, 
+
+	public Environmental getArgumentItem(String str,
+										 MOB source,
+										 MOB monster,
+										 Environmental scripted,
+										 Environmental target,
+										 Item primaryItem,
+										 Item secondaryItem,
 										 String msg,
 										 Object[] tmp)
 	{
@@ -747,7 +747,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			if(Character.isDigit(str.charAt(1)))
 			{
 				Object O=tmp[CMath.s_int(Character.toString(str.charAt(1)))];
-				if(O instanceof Environmental) 
+				if(O instanceof Environmental)
 					return (Environmental)O;
 				else
 				if((O instanceof Vector)&&(str.length()>3)&&(str.charAt(2)=='.'))
@@ -792,7 +792,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 'o': return primaryItem;
 			case 'P':
 			case 'p': return secondaryItem;
-			case 'd': 
+			case 'd':
 			case 'D': return lastKnownLocation;
 			case 'F':
 			case 'f': if((monster!=null)&&(monster.amFollowing()!=null))
@@ -836,17 +836,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(O instanceof Vector)
 			return makeParsableString((Vector)O);
 		else
-		if(O instanceof Room) 
+		if(O instanceof Room)
 			return ((Room)O).roomTitle();
 		else
-		if(O instanceof Environmental) 
+		if(O instanceof Environmental)
 			return ((Environmental)O).Name();
 		else
-		if(O!=null) 
+		if(O!=null)
 			return O.toString();
 		return "";
 	}
-	
+
 	private String makeParsableString(Vector V)
 	{
 		if((V==null)||(V.size()==0)) return "";
@@ -866,13 +866,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		return ret.toString();
 	}
-	
-	public String varify(MOB source, 
-						 Environmental target, 
+
+	public String varify(MOB source,
+						 Environmental target,
 						 Environmental scripted,
-						 MOB monster, 
-						 Item primaryItem, 
-						 Item secondaryItem, 
+						 MOB monster,
+						 Item primaryItem,
+						 Item secondaryItem,
 						 String msg,
 						 Object[] tmp,
 						 String varifyable)
@@ -893,7 +893,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			else
 			switch(c)
 			{
-			case '@': 
+			case '@':
 				if((t<varifyable.length()-2)&&Character.isLetter(varifyable.charAt(t+2)))
 				{
 					Environmental E=getArgumentItem("$"+varifyable.charAt(t+2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -1000,10 +1000,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(secondaryItem!=null)
 					middle=secondaryItem.name();
 				break;
-			case 'w': 
+			case 'w':
 			    middle=primaryItem!=null?primaryItem.owner().Name():middle;
 			    break;
-			case 'W': 
+			case 'W':
 			    middle=secondaryItem!=null?secondaryItem.owner().Name():middle;
 			    break;
 			case 'l':
@@ -1216,7 +1216,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		return set;
 	}
-    
+
     public String getStatValue(Environmental E, String arg2)
     {
         boolean found=false;
@@ -1359,7 +1359,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         if(found) return val;
         return null;
     }
-    
+
 
 	public static void mpsetvar(String name, String key, String val)
 	{
@@ -2110,8 +2110,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				int num=0;
                 Vector MASK=null;
                 if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
-                { 
-                    arg3=arg3.substring(4).trim(); 
+                {
+                    arg3=arg3.substring(4).trim();
                     arg3=arg3.substring(1).trim();
                     MASK=CMLib.masking().maskCompile(arg3);
                 }
@@ -2143,8 +2143,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				int num=0;
                 Vector MASK=null;
                 if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
-                { 
-                    arg3=arg3.substring(4).trim(); 
+                {
+                    arg3=arg3.substring(4).trim();
                     arg3=arg3.substring(1).trim();
                     MASK=CMLib.masking().maskCompile(arg3);
                 }
@@ -2237,7 +2237,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				break;
 			}
             case 86: // strcontains
-            { 
+            {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
                 returnable=CMParms.stringContains(arg1,arg2)>=0;
@@ -2346,7 +2346,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
                 int num=0;
                 int startbit=0;
-                if(lastKnownLocation!=null) 
+                if(lastKnownLocation!=null)
                 {
                     num=lastKnownLocation.numInhabitants();
                     if((CMParms.numBits(evaluable.substring(y+1,z))>2)
@@ -2359,8 +2359,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             num=0;
                             Vector MASK=null;
                             if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
-                            { 
-                                name=name.substring(4).trim(); 
+                            {
+                                name=name.substring(4).trim();
                                 name=name.substring(1).trim();
                                 MASK=CMLib.masking().maskCompile(name);
                             }
@@ -2478,9 +2478,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     else
                     {
                         Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),myfac);
-                        if(FR==null) 
+                        if(FR==null)
                             value="";
-                        else 
+                        else
                             value=FR.name();
                     }
                 }
@@ -2650,6 +2650,24 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						returnable=false;
 					else
 						returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"INROOM");
+				}
+				break;
+			}
+			case 90: // inarea
+			{
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				Area A=lastKnownLocation.getArea();
+				if(A==null)
+					returnable=false;
+				else
+				{
+					Area A2=CMLib.map().findArea(arg2);
+					if(A2==null)
+					{
+						scriptableError(scripted,"INAREA","NO-AREA",arg2);
+						return returnable;
+					}
+					returnable=(A.Name().equals(A2.Name())||(A2.inMyMetroArea(A));
 				}
 				break;
 			}
@@ -2977,7 +2995,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
-			case 64: // deity 
+			case 64: // deity
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
@@ -3077,7 +3095,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
-			case 65: // clan 
+			case 65: // clan
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
@@ -3106,7 +3124,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
-            case 88: // mood 
+            case 88: // mood
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
@@ -3744,7 +3762,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				    int bmonth=mob.playerStats().getBirthday()[1];
 				    if((month>bmonth)||((month==bmonth)&&(day>bday)))
 				        year++;
-				    
+
 				    StringBuffer timeDesc=new StringBuffer("");
 					if(C.getDaysInWeek()>0)
 					{
@@ -4023,8 +4041,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				int num=0;
                 Vector MASK=null;
                 if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
-                { 
-                    arg1=arg1.substring(4).trim(); 
+                {
+                    arg1=arg1.substring(4).trim();
                     arg1=arg1.substring(1).trim();
                     MASK=CMLib.masking().maskCompile(arg1);
                 }
@@ -4054,8 +4072,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
                 Vector MASK=null;
                 if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
-                { 
-                    arg1=arg1.substring(4).trim(); 
+                {
+                    arg1=arg1.substring(4).trim();
                     arg1=arg1.substring(1).trim();
                     MASK=CMLib.masking().maskCompile(arg1);
                 }
@@ -4210,8 +4228,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         num=0;
                         Vector MASK=null;
                         if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
-                        { 
-                            name=name.substring(4).trim(); 
+                        {
+                            name=name.substring(4).trim();
                             name=name.substring(1).trim();
                             MASK=CMLib.masking().maskCompile(name);
                         }
@@ -4365,6 +4383,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				if(lastKnownLocation!=null)
 					results.append(CMLib.map().getExtendedRoomID(lastKnownLocation));
+				break;
+			}
+			case 90: // inarea
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.getArea().Name());
 				break;
 			}
             case 89: // isrecall
@@ -4980,7 +5004,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					//for(int v=0;v<V.size();v++)
 					//	source.tell("Statement "+((String)V.elementAt(v)));
 					String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
-					if(response!=null) 
+					if(response!=null)
                     {
                         tickStatus=Tickable.STATUS_END;
                         return response;
@@ -5051,7 +5075,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(V.size()>1)
 				{
 					String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
-					if(response!=null) 
+					if(response!=null)
                     {
                         tickStatus=Tickable.STATUS_END;
                         return response;
@@ -5155,7 +5179,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					}
 					tmp[whichVar]=" "+toInt;
 					response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
-					if(response!=null) 
+					if(response!=null)
                     {
                         tickStatus=Tickable.STATUS_END;
                         return response;
@@ -5189,7 +5213,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					while(monster.inventorySize()>0)
 					{
 						Item I=monster.fetchInventory(0);
-						if(I!=null) 
+						if(I!=null)
 							I.destroy();
 						else
 							break;
@@ -5309,7 +5333,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                     break;
                                 }
 					}
-					
+
 					if(!found)
 					{
 						scriptableError(scripted,"MPSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
@@ -5359,7 +5383,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				else
 				switch(arg1.charAt(1))
 				{
-				case 'N': 
+				case 'N':
 				case 'n': if(O instanceof MOB) source=(MOB)O; break;
                 case 'B':
                 case 'b': if(O instanceof Environmental)
@@ -5375,7 +5399,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				case 'o': if(O instanceof Item) primaryItem=(Item)O; break;
 				case 'P':
 				case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
-				case 'd': 
+				case 'd':
 				case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
 				default:
 					scriptableError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
@@ -5532,7 +5556,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(newTarget instanceof MOB)
 				{
-					if(CMath.isNumber(val.trim())) 
+					if(CMath.isNumber(val.trim()))
 						((MOB)newTarget).setQuestPoint(CMath.s_int(val.trim()));
 					else
 					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
@@ -5618,7 +5642,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         for(int i=0;i<delThese.size();i++)
                             Resources.removeResource((String)delThese.elementAt(i));
                 }
-                
+
                 break;
             }
 			case 60: // trains
@@ -5627,7 +5651,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(newTarget instanceof MOB)
 				{
-					if(CMath.isNumber(val.trim())) 
+					if(CMath.isNumber(val.trim()))
 						((MOB)newTarget).setTrains(CMath.s_int(val.trim()));
 					else
 					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
@@ -5646,7 +5670,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
 				if(newTarget instanceof MOB)
 				{
-					if(CMath.isNumber(val.trim())) 
+					if(CMath.isNumber(val.trim()))
 						((MOB)newTarget).setPractices(CMath.s_int(val.trim()));
 					else
 					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
@@ -5720,7 +5744,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					{
 						Vector Is=new Vector();
 						Item m=CMClass.getItem(s);
-						if(m!=null) 
+						if(m!=null)
 							Is.addElement(m);
 						else
 							findSomethingCalledThis(s,(MOB)scripted,lastKnownLocation,Is,false);
@@ -5785,7 +5809,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					else
 					{
 						Item I=CMClass.getItem(s);
-						if(I!=null) 
+						if(I!=null)
 							Is.addElement(I);
 						else
 							findSomethingCalledThis(s,monster,lastKnownLocation,Is,false);
@@ -5829,19 +5853,19 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 String arg=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
                 if(arg.equalsIgnoreCase("area"))
                 {
-                    if(lastKnownLocation!=null) 
+                    if(lastKnownLocation!=null)
                         CMLib.map().resetArea(lastKnownLocation.getArea());
                 }
                 else
                 if(arg.equalsIgnoreCase("room"))
                 {
-                    if(lastKnownLocation!=null) 
+                    if(lastKnownLocation!=null)
                         CMLib.map().resetRoom(lastKnownLocation);
                 }
                 else
                 {
                     Room R=CMLib.map().getRoom(arg);
-                    if(R!=null) 
+                    if(R!=null)
                         CMLib.map().resetRoom(R);
                     else
                     {
@@ -6241,7 +6265,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				    case 16: nosave=true; break; // topmember
 				    default:
 						scriptableError(scripted,"MPSETCLANDATA","RunTime",clanvar+" is not a valid clan variable.");
-					    nosave=true; 
+					    nosave=true;
 				    	break;
 				    }
 				    if(!nosave) C.update();
@@ -6712,7 +6736,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,0));
 				Ability A=CMClass.getAbility("Skill_Track");
-				if(A!=null)	
+				if(A!=null)
 				{
 				    altStatusTickable=A;
 				    A.invoke(monster,CMParms.parse(arg1),null,true,0);
@@ -6724,7 +6748,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
 				Ability A=CMClass.getAbility("Skill_Track");
-				if(A!=null)	
+				if(A!=null)
 				{
 				    altStatusTickable=A;
 				    A.invoke(monster,CMParms.parse(arg1+" LANDONLY"),null,true,0);
@@ -6781,14 +6805,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					scriptableError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
 					break;
 				}
-				
+
 				char c=varArg.charAt(1);
 				if(Character.isDigit(c))
 					tmp[CMath.s_int(Character.toString(c))]=O;
 				else
 				switch(c)
 				{
-				case 'N': 
+				case 'N':
 				case 'n': if(O instanceof MOB) source=(MOB)O; break;
 				case 'I':
 				case 'i': if(O instanceof Environmental) scripted=(Environmental)O;
@@ -6804,7 +6828,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				case 'o': if(O instanceof Item) primaryItem=(Item)O; break;
 				case 'P':
 				case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
-				case 'd': 
+				case 'd':
 				case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
 				default:
 					scriptableError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
@@ -6824,7 +6848,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					s=CMParms.getPastBitClean(s,1);
 					Quest Q=getQuest(s);
-					if(Q!=null) 
+					if(Q!=null)
                         Q.declareWinner(whoName);
 					else
 						scriptableError(scripted,"MYQUESTWIN","Unknown","Quest: "+s);
@@ -7031,7 +7055,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			return true;
 		return false;
 	}
-    
+
     private Item makeCheapItem(Environmental E)
     {
         Item product=null;
@@ -7054,7 +7078,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		if(!super.okMessage(affecting,msg)) return false;
 		if((affecting==null)||(msg.source()==null))
 			return true;
-		
+
 		Vector scripts=getScripts();
 		Vector script=null;
 		boolean tryIt=false;
@@ -7133,18 +7157,18 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		return true;
 	}
-		
+
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if((affecting==null)||(msg.source()==null)) 
+		if((affecting==null)||(msg.source()==null))
 			return;
-		
+
 		MOB monster=getScriptableMOB(affecting);
-		
+
 		if(lastKnownLocation==null) lastKnownLocation=msg.source().location();
 		if((monster==null)||(monster.amDead())||(lastKnownLocation==null)) return;
-		
+
 		Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
 		MOB eventMob=monster;
 		if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
@@ -7526,7 +7550,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_OPEN;
 			case 35: // close_prog
 				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_CLOSE;
-			case 36: // lock_prog 
+			case 36: // lock_prog
 				if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_LOCK;
 			case 37: // unlock_prog
 			{
@@ -7930,11 +7954,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 }
                 break;
 			case 12: // mask_prog
-				if(!canTrigger(12)) 
+				if(!canTrigger(12))
 					break;
 			case 18: // act_prog
 				if((!msg.amISource(monster))
-				||((triggerCode==18)&&(!canTrigger(18)))) 
+				||((triggerCode==18)&&(!canTrigger(18))))
 					break;
 			case 43: // imask_prog
 				if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
@@ -8030,7 +8054,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         if(str==null) break;
                         str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
                         int dex=str.indexOf("["+channel+"]");
-                        if(dex>0) 
+                        if(dex>0)
                             str=str.substring(dex+2+channel.length()).trim();
                         else
                         {
@@ -8177,7 +8201,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 		return mob;
 	}
-    
+
     public boolean canTrigger(int triggerCode)
     {
         Long L=(Long)noTrigger.get(new Integer(triggerCode));
@@ -8193,7 +8217,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		super.tick(ticking,tickID);
         if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
             return false;
-        
+
 		MOB mob=getScriptableMOB(ticking);
 		Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 
@@ -8384,7 +8408,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		altStatusTickable=null;
 		return true;
 	}
-	
+
 	public void dequeResponses()
 	{
 		try{
