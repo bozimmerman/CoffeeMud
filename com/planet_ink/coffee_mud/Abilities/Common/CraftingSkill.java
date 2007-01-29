@@ -44,6 +44,7 @@ public class CraftingSkill extends GatheringSkill
 	protected boolean mending=false;
 	protected boolean refitting=false;
 	protected boolean messedUp=false;
+	protected static Room fakeRoom=null;
 
 	public CraftingSkill(){super();}
 	
@@ -394,7 +395,8 @@ public class CraftingSkill extends GatheringSkill
 		Item building=null;
 		Item key=null;
 		int tries=0;
-		MOB mob=CMLib.map().god(CMLib.map().getRandomRoom());
+		if(fakeRoom==null){ fakeRoom=CMLib.map().getRandomRoom();}
+		MOB mob=CMLib.map().god(fakeRoom);
 		mob.baseEnvStats().setLevel(Integer.MAX_VALUE/2);
 		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		mob.recoverEnvStats();
@@ -438,20 +440,23 @@ public class CraftingSkill extends GatheringSkill
 		Vector allItems=new Vector();
 		Vector recipes=fetchRecipes();
 		Item built=null;
+		HashSet usedNames=new HashSet();
+		Vector items=null;
+		String s=null;
 		for(int r=0;r<recipes.size();r++)
 		{
-			String s=(String)(((Vector)recipes.elementAt(r)).firstElement());
+			s=(String)(((Vector)recipes.elementAt(r)).firstElement());
 			s=CMStrings.replaceAll(s,"%","").trim();
-			Vector items=craftItem(s,material);
+			items=craftItem(s,material);
 			if((items==null)||(items.size()==0)) continue;
 			built=(Item)items.firstElement();
-			for(int a=0;a<allItems.size();a++)
+			if(!usedNames.contains(built.Name()))
 			{
-				if(built.Name().equals(((Item)((Vector)allItems.elementAt(a)).firstElement()).Name()))
-				{ built=null; break;}
+				usedNames.add(built.Name());
+				allItems.addElement(items);
 			}
-			if(built!=null) allItems.addElement(items);
 		}
+		usedNames.clear();
 		return allItems;
 	}
 	
