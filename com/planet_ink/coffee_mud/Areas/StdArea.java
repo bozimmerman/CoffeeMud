@@ -677,8 +677,14 @@ public class StdArea implements Area
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{
-            if((flag<=Area.FLAG_ACTIVE)&&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
-                flag=Area.FLAG_PASSIVE;
+            if((flag<=Area.FLAG_ACTIVE)
+            &&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
+            {
+                if(CMSecurity.isDisabled("PASSIVEAREAS"))
+                    lastPlayerTime=System.currentTimeMillis();
+                else
+                    flag=Area.FLAG_PASSIVE;
+            }
 			tickStatus=Tickable.STATUS_ALIVE;
 			getClimateObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_REBIRTH;
