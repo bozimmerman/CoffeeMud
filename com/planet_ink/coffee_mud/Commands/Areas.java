@@ -40,14 +40,26 @@ public class Areas extends StdCommand
 		throws java.io.IOException
 	{
 		Vector areasVec=new Vector();
+        boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(CMLib.flags().canAccess(mob,A))
+            {
+                String name=A.name();
+                if(sysop)
+                switch(A.getAreaFlags())
+                {
+                case Area.FLAG_ACTIVE: break;
+                case Area.FLAG_PASSIVE: name="^Y"+name+"^?"; break;
+                case Area.FLAG_FROZEN: name="^P"+name+"^?"; break;
+                case Area.FLAG_STOPPED: name="^R"+name+"^?"; break;
+                }
 				if(!CMLib.flags().isHidden(A))
-					areasVec.addElement(" "+A.name());
+					areasVec.addElement(" "+name);
 				else
-					areasVec.addElement("("+A.name()+")");
+					areasVec.addElement("("+name+")");
+            }
 		}
 		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
 		int col=0;
