@@ -525,7 +525,7 @@ public class ServiceEngine implements ThreadEngine
 
 	public void shutdownAll()
 	{
-		int numTicks=tickGroup.size();
+		//int numTicks=tickGroup.size();
 		int which=0;
 		while(tickGroup.size()>0)
 		{
