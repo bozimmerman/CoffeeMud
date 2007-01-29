@@ -41,8 +41,6 @@ public class ItemGenerator extends ActiveTicker
 	protected int minItems=1;
 	protected int maxItems=1;
 	protected int avgItems=1;
-	protected double totalValue=0;
-	protected int maxValue=-1;
 	protected int enchantPct=10;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
@@ -208,8 +206,6 @@ public class ItemGenerator extends ActiveTicker
 		if(items==null)
 		{
 			Vector allItems=null;
-			totalValue=0;
-			maxValue=-1;
 			synchronized(ID().intern())
 			{
 				if(ItemGenerator.building) return null;
@@ -225,6 +221,8 @@ public class ItemGenerator extends ActiveTicker
 			items=new Vector();
   		    Item I=null;
 			Vector compiled=CMLib.masking().maskCompile(mask);
+			double totalValue=0;
+			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)
 			{
 				I=(Item)allItems.elementAt(a);
@@ -235,11 +233,15 @@ public class ItemGenerator extends ActiveTicker
 					items.addElement(I);
 				}
 			}
-			
 			for(int a=0;a<items.size();a++)
 			{
 				I=(Item)items.elementAt(a);
 				totalValue+=CMath.div(maxValue,I.value()+1);
+			}
+			if(items.size()>0)
+			{
+				items.insertElementAt(new Integer(maxValue),0);
+				items.insertElementAt(new Double(totalValue),0);
 			}
 			Resources.submitResource("ITEMGENERATOR-"+mask.toUpperCase().trim(),items);
 		}
@@ -274,9 +276,11 @@ public class ItemGenerator extends ActiveTicker
 				return false; 
 			if(maintained.size()<avgItems)
 			{
+				double totalValue=((Double)items.firstElement()).doubleValue();
+				int maxValue=((Integer)items.elementAt(1)).intValue();
 				double pickedTotal=Math.random()*totalValue;
 				double value=-1;
-				for(int i=0;i<items.size();i++)
+				for(int i=2;i<items.size();i++)
 				{
 					I=(Item)items.elementAt(i);
 					value=CMath.div(maxValue,I.value()+1.0);
