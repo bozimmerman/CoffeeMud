@@ -313,6 +313,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
                 }
             }
         }
+        message=fixMsg.toString();
 
 		InetAddress local;
 		try {

@@ -156,7 +156,7 @@ give behavior Scriptable LOAD=$QUEST_NAME_deliveree.script
 
 set duration $DURATION
 
-#!~!BEGINFILEXML!~!
+<?xml version="1.0"?>
 <FILE><NAME>$QUEST_NAME_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_NAME_deliverer.script</NAME>
 <DATA>

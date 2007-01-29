@@ -1765,8 +1765,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						justResisting=true;
 					else
 					if((!targetIsOfficer)
-					&&(W.victim()==msg.source())
 					&&(W.criminal()==msg.target())
+                    &&((W.victim()==msg.source())||((msg.source().amFollowing()!=null)&&(W.victim()==msg.source().amFollowing())))
 					&&(W.crime().equals(assaultInfo[Law.BIT_CRIMENAME])||W.crime().equals(murderInfo[Law.BIT_CRIMENAME]))
 					&&(isStillACrime(W,false)))
 						turnAbout=true;

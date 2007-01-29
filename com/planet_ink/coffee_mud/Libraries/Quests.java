@@ -1114,12 +1114,11 @@ public class Quests extends StdLibrary implements QuestManager
         Vector parsed=new Vector();
         StringBuffer scr=new StringBuffer("");
         boolean inScript=false;
+        String lineStr=null;
         for(int v=startLine;v<script.size();v++)
         {
-            line=CMParms.parse(((String)script.elementAt(v)).toUpperCase().trim());
-            if(line.size()==0) continue;
-            cmd=((String)line.firstElement()).toUpperCase().trim();
-            if(cmd.equals(Quest.FILE_XML_BOUNDARY))
+            lineStr=((String)script.elementAt(v)).trim();
+            if(lineStr.trim().equalsIgnoreCase(Quest.FILE_XML_BOUNDARY))
             {
                 if(scr.toString().trim().length()>0)
                     parsed.addElement(scr.toString());
@@ -1128,6 +1127,9 @@ public class Quests extends StdLibrary implements QuestManager
                     scr.append(((String)script.elementAt(v))+"\n\r");
                 break;
             }
+            line=CMParms.parse(lineStr.toUpperCase());
+            if(line.size()==0) continue;
+            cmd=((String)line.firstElement()).trim();
             if(rawLineInput)
                 scr.append(((String)script.elementAt(v))+"\n\r");
             else

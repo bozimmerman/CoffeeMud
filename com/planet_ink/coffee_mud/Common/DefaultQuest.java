@@ -3354,7 +3354,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         		}
         	}
         }
-        int x=text.toUpperCase().indexOf(FILE_XML_BOUNDARY);
+        int x=text.toLowerCase().indexOf(FILE_XML_BOUNDARY.toLowerCase());
         if(x>=0)
         {
             String xml=text.substring(x+FILE_XML_BOUNDARY.length()).trim();

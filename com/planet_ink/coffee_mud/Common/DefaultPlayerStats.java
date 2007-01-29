@@ -125,7 +125,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 16: wrap=CMath.s_int(val); break;
 		case 17: setBirthday(val); break;
 		case 18: accountExpiration=CMath.s_long(val); break;
-		case 19: introductions=getHashFrom(CMLib.xml().returnXMLValue(val,"INTROS"));
+		case 19: introductions=getHashFrom(CMLib.xml().returnXMLValue(val,"INTROS")); break;
 		}
 	}
 	public int getSaveStatIndex(){return getStatCodes().length;}

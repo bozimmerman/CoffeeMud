@@ -196,7 +196,7 @@ give behavior Scriptable LOAD=$QUEST_NAME_dispel.script
 
 set duration $DURATION
 
-#!~!BEGINFILEXML!~!
+<?xml version="1.0"?>
 <FILE><NAME>$QUEST_NAME_dispelannouncer.script</NAME>
 <DATA>
 ONCE_PROG 100
