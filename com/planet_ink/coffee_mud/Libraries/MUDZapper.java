@@ -235,6 +235,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-SYSOP",new Integer(109));
             zapCodes.put("+SUBOP",new Integer(110));
             zapCodes.put("-SUBOP",new Integer(111));
+            zapCodes.put("+RACE",new Integer(112));  // for compiled use ONLY
 		}
 		return zapCodes;
 	}
@@ -1436,6 +1437,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 11: // -MOB
 					buf.append("Disallows mobs/npcs.  ");
 					break;
+                case 112: // +races
+                    {
+                        buf.append("Disallows the following races: ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("-"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
 				case 13: // +racecats
 					{
 						buf.append("Disallows the following racial cat(s): ");
@@ -2108,6 +2125,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							entry.addElement(cats.elementAt(c));
 					}
 					break;
+                case 112: // +Race
+                    {
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get(str));
+                        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                        {
+                            Race R=(Race)r.nextElement();
+                            String cat=R.name().toUpperCase();
+                            if(fromHereStartsWith(V,'-',v+1,cat))
+                               entry.addElement(R.name());
+                        }
+                    }
+                    break;
 				case 3: // -Alignment
 					{
 						Vector entry=new Vector();
@@ -2626,6 +2657,98 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 			else
 			{
+                boolean found=false;
+                if(!found)
+                for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+                {
+                    CharClass C=(CharClass)c.nextElement();
+                    if(str.equals("-"+C.name().toUpperCase().trim()))
+                    {
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get("+CLASS"));
+                        entry.addElement(C.name());
+                        found=true;
+                        break;
+                    }
+                }
+                if(!found)
+                for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                {
+                    Race R=(Race)r.nextElement();
+                    String race=R.name().toUpperCase();
+                    if(str.equals("-"+race))
+                    {
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get("+RACE"));
+                        entry.addElement(R.name());
+                        found=true;
+                        break;
+                    }
+                }
+                if((!found)
+                &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toUpperCase())))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+ALIGNMENT"));
+                    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+                    found=true;
+                }
+                if((!found)
+                &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toUpperCase())))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+ALIGNMENT"));
+                    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+                    found=true;
+                }
+                if((!found)
+                &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toUpperCase())))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+ALIGNMENT"));
+                    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+                    found=true;
+                }
+                if((!found)&&(str.equals("-MALE")))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+GENDER"));
+                    entry.addElement("M");
+                    found=true;
+                }
+                if((!found)&&(str.equals("-FEMALE")))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+GENDER"));
+                    entry.addElement("F");
+                    found=true;
+                }
+                if((!found)&&(str.equals("-NEUTER")))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+GENDER"));
+                    entry.addElement("N");
+                    found=true;
+                }
+                if((!found)
+                &&(str.startsWith("-"))
+                &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+                {
+                    Vector entry=new Vector();
+                    buf.addElement(entry);
+                    entry.addElement(zapCodes.get("+FACTION"));
+                    entry.addElement(str.substring(1));
+                    found=true;
+                }
+                if(!found)
 				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C=(CharClass)c.nextElement();
@@ -2635,75 +2758,108 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get("+CLASS"));
 						entry.addElement(C.name());
+                        found=true;
+                        break;
 					}
 				}
-				Vector cats=new Vector();
+                if(!found)
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
-					String cat=R.racialCategory().toUpperCase();
-					if(cat.length()>6) cat=cat.substring(0,6);
-					if((str.startsWith("-"+cat))&&(!cats.contains(R.racialCategory())))
+					if(str.startsWith("-"+CMStrings.padRight(R.name(),6).toUpperCase().trim()))
 					{
 						Vector entry=new Vector();
 						buf.addElement(entry);
-						entry.addElement(zapCodes.get("+RACECAT"));
-						entry.addElement(R.racialCategory());
+						entry.addElement(zapCodes.get("+RACE"));
+						entry.addElement(R.name());
+                        found=true;
+                        break;
 					}
 				}
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+                if(!found)
+                for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                {
+                    Race R=(Race)r.nextElement();
+                    String cat=R.racialCategory().toUpperCase();
+                    if(cat.length()>6) cat=cat.substring(0,6);
+                    if(str.startsWith("-"+cat))
+                    {
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get("+RACECAT"));
+                        entry.addElement(R.racialCategory());
+                    }
+                }
+                if((!found)
+				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+ALIGNMENT"));
 					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+                    found=true;
 				}
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+                if((!found)
+				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+ALIGNMENT"));
 					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+                    found=true;
 				}
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+                if((!found)
+				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+ALIGNMENT"));
 					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+                    found=true;
 				}
-				if(str.startsWith("-MALE"))
+                if((!found)
+				&&(str.startsWith("-MALE")))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+GENDER"));
 					entry.addElement("M");
+                    found=true;
 				}
-				if(str.startsWith("-FEMALE"))
+                if((!found)
+				&&(str.startsWith("-FEMALE")))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+GENDER"));
 					entry.addElement("F");
+                    found=true;
 				}
-				if(str.startsWith("-NEUTER"))
+                if((!found)
+                &&(str.startsWith("-NEUTER")))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+GENDER"));
 					entry.addElement("N");
+                    found=true;
 				}
-				if((str.startsWith("-"))
-		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+                if((!found)
+				&&(str.startsWith("-"))
+ 		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+FACTION"));
 					entry.addElement(str.substring(1));
+                    found=true;
 				}
-				Vector entry=levelCompiledHelper(str,'-',null);
-				if((entry!=null)&&(entry.size()>0))
-					buf.addElement(entry);
+                if(!found)
+                {
+    				Vector entry=levelCompiledHelper(str,'-',null);
+    				if((entry!=null)&&(entry.size()>0))
+    					buf.addElement(entry);
+                }
 			}
 		}
 		buf.trimToSize();
@@ -3055,6 +3211,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			}
+            case 112: // +race
+            {
+                String race=mob.baseCharStats().getMyRace().name();
+                if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
+                    race=mob.charStats().raceName();
+                if(V.contains(race)) return false;
+                break;
+            }
 			case 13: // +racecat
 			{
 				String raceCat=mob.baseCharStats().getMyRace().racialCategory();

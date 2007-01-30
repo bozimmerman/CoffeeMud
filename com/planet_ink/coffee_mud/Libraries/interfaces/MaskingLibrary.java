@@ -174,5 +174,5 @@ public interface MaskingLibrary extends CMLibrary
         +"-SKILLFLAG (<WORD> anyone, even those with no skills) <BR>"
         +"-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag) <BR>"
         +"+SKILLFLAG (do not <WORD> anyone, even non skilled people) <BR>"
-        +"+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag) <BR>";
+        +"+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag)";
 }

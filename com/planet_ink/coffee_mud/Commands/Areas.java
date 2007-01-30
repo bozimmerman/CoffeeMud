@@ -46,19 +46,16 @@ public class Areas extends StdCommand
 			Area A=(Area)a.nextElement();
 			if(CMLib.flags().canAccess(mob,A))
             {
-                String name=A.name();
+                String name=(!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")";
                 if(sysop)
                 switch(A.getAreaFlags())
                 {
-                case Area.FLAG_ACTIVE: break;
-                case Area.FLAG_PASSIVE: name="^Y"+name+"^?"; break;
-                case Area.FLAG_FROZEN: name="^P"+name+"^?"; break;
-                case Area.FLAG_STOPPED: name="^R"+name+"^?"; break;
+                case Area.FLAG_ACTIVE: name="^w"+name+"^?";break;
+                case Area.FLAG_PASSIVE: name="^W"+name+"^?"; break;
+                case Area.FLAG_FROZEN: name="^b"+name+"^?"; break;
+                case Area.FLAG_STOPPED: name="^r"+name+"^?"; break;
                 }
-				if(!CMLib.flags().isHidden(A))
-					areasVec.addElement(" "+name);
-				else
-					areasVec.addElement("("+name+")");
+				areasVec.addElement(name);
             }
 		}
 		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");

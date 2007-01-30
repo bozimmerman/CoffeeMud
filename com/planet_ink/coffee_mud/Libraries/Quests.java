@@ -1445,7 +1445,7 @@ public class Quests extends StdLibrary implements QuestManager
                 {
                     StringBuffer fullList=new StringBuffer("\n\r^HCANCEL^N -- to cancel.\n\r");
                     for(int t=0;t<questTemplates.size();t++)
-                        fullList.append("\n\r^H"+(String)questTemplates.elementAt(t,1)+"^N\n\r"+(String)questTemplates.elementAt(t,2)+"\n\r");
+                        fullList.append("^H"+(String)questTemplates.elementAt(t,1)+"^N\n\r"+(String)questTemplates.elementAt(t,2)+"\n\r");
                     mob.tell(fullList.toString());
                 }
                 else
