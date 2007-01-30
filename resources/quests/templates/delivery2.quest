@@ -69,9 +69,9 @@
 #$REASONING=($LONG_STRING)
 #
 #Deliverer announcement:
-#This is an initial annoucement by the deliverer over the QUESTCHAT channel
-#whenever the quest starts running. Leave it blank if you only want him to 
-#talk to people who enter the room with him.
+#Select what type of annoucement the Deliverer will make when the quest starts.
+#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
 #
 #!QUESTMAKER_PAGE Specify the Destination
@@ -172,8 +172,7 @@ QUEST_TIME_PROG * 1
 <FILE><NAME>$QUEST_NAME_deliverer.script</NAME>
 <DATA>
 ONCE_PROG 100
-	QUESTCHAT $QUEST_ANNOUNCEMENT
-
+	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
 # this script is for the human chosen to be the note bearer

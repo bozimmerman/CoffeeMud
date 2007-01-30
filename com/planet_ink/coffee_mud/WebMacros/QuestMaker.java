@@ -170,7 +170,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
-        			list.append("<TD><TEXTAREA ROWS=3 COLS=60 NAME="+httpKeyName+">");
+        			list.append("<TD><TEXTAREA ROWS=3 COLS=40 NAME="+httpKeyName+">");
         			list.append(oldValue+"</TEXTAREA></TD></TR>");
                 	break;
                 }
@@ -184,7 +184,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
-        			list.append("<TD><INPUT TYPE=TEXT SIZE=60 NAME="+httpKeyName+" ");
+        			list.append("<TD><INPUT TYPE=TEXT SIZE=40 NAME="+httpKeyName+" ");
         			list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
                 	break;
                 }

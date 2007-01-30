@@ -97,10 +97,10 @@
 #if you like.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Take these folks to that one place.  Be careful!
 #
-#Announcer QUESTCHAT announcement:
-#This is an initial annoucement over the QUESTCHAT channel
-#whenever the quest starts running. Leave it blank if you only want him to 
-#talk to people who enter the room with him.
+#Announcer announcement:
+#Select what type of annoucement the Announcer will make when the quest starts.
+#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
 #
 #!QUESTMAKER_PAGE Quest Dangers
@@ -181,13 +181,13 @@ set duration $DURATION
 <FILE><NAME>$QUEST_NAME_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
-	QUESTCHAT $QUEST_ANNOUNCEMENT
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_NAME_REWARDED ''
 	MPSETVAR * $QUEST_NAME_WARNED ''
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 	MPSETVAR * $QUEST_NAME_CHECKEDROOM ''
 	MPSETVAR * $QUEST_NAME_ATTACKED ''
+	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
 QUEST_TIME_PROG -1 *

@@ -101,10 +101,10 @@
 #if you like.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=There are lots of people in some area affected by some affect that need it to go away.  Please go make it go away for them. (Your announcement should be more specific)
 #
-#Announcer QUESTCHAT announcement:
-#This is an initial annoucement over the QUESTCHAT channel
-#whenever the quest starts running. Leave it blank if you only want him to 
-#talk to people who enter the room with him.
+#Announcer announcement:
+#Select what type of annoucement the Announcer will make when the quest starts.
+#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
 #
 #!QUESTMAKER_PAGE Specify the Dispelee(s)
@@ -208,7 +208,7 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_NAME_COUNT ''
 	MPSETVAR * $QUEST_NAME_CURED ''
 	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
-	QUESTCHAT $QUEST_ANNOUNCEMENT
+	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
 QUEST_TIME_PROG -1 *
