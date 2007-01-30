@@ -1431,6 +1431,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				val=val.substring(1);
 				int amount=CMath.s_int(val.trim());
 				String num=(String)H.get(key);
+                if(num==null) num="0";
 				val=new Integer(CMath.s_int(num.trim())+amount).toString();
 			}
 			else
@@ -1440,6 +1441,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				val=val.substring(1);
 				int amount=CMath.s_int(val.trim());
 				String num=(String)H.get(key);
+                if(num==null) num="0";
 				val=new Integer(CMath.s_int(num.trim())-amount).toString();
 			}
 			else
@@ -1449,6 +1451,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				val=val.substring(1);
 				int amount=CMath.s_int(val.trim());
 				String num=(String)H.get(key);
+                if(num==null) num="0";
 				val=new Integer(CMath.s_int(num.trim())*amount).toString();
 			}
 			else
@@ -1458,6 +1461,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				val=val.substring(1);
 				int amount=CMath.s_int(val.trim());
 				String num=(String)H.get(key);
+                if(num==null) num="0";
 				val=new Integer(CMath.s_int(num.trim())/amount).toString();
 			}
 			if(H.containsKey(key))
