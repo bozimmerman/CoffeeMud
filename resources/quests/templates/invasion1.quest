@@ -8,7 +8,7 @@
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest Name:
-#Enter a unique name for your delivery quest:
+#Enter a unique name for your quest:
 #$QUEST_NAME=$UNIQUE_QUEST_NAME=invasion_1
 #
 #Quest Frequency:

@@ -8,7 +8,7 @@
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest Name:
-#Enter a unique name for your delivery quest:
+#Enter a unique name for your quest:
 #$QUEST_NAME=$UNIQUE_QUEST_NAME=escort_2
 #
 #Quest Frequency:
@@ -203,8 +203,10 @@ GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
-				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
-				MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> $n'
+				if VAR($i $QUEST_NAME_ACCEPTED == '')
+					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
+					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> $n'
+				endif
 			endif
 		endif
 	endif
@@ -227,7 +229,10 @@ SPEECH_PROG p i accept
 				   endif
 				next
 			else
-				sayto "$n" Yes, yes, I know .. now off with you.
+				if VAR($i $QUEST_NAME_ACCEPTED == $n)
+					sayto "$n" Yes, yes, I know .. now off with you.
+				else
+				endif
 			endif
 		endif
 	endif
