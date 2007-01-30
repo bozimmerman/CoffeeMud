@@ -2268,21 +2268,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         M2.setFollowing(q.mob);
                     }
                     else
-                    if(cmd.equals("ITEM"))
+                    if(cmd.equals("ITEM")||(cmd.equalsIgnoreCase("ITEMS")))
                     {
                         if((q.item==null)&&(q.itemGroup==null))
                         {
-                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item, no item set.");
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item(s), no item(s) set.");
                             break;
                         }
                         if((q.mob==null)&&(q.mobGroup==null))
                         {
-                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item, no mob set.");
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item(s), no mob set.");
                             break;
                         }
                         if(p.size()>2)
                         {
-                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+CMParms.combine(p,2)+"'.");
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item(s), parameter unnecessarily given: '"+CMParms.combine(p,2)+"'.");
                             break;
                         }
                         Vector toSet=new Vector();
@@ -2301,9 +2301,25 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         {
                             MOB M2=(MOB)toSet.elementAt(i);
                             runtimeRegisterObject(M2);
-                            for(int i3=0;i3<itemSet.size();i3++)
+                            if(cmd.equals("ITEMS"))
                             {
-                            	Item I3=(Item)itemSet.elementAt(i3);
+	                            for(int i3=0;i3<itemSet.size();i3++)
+	                            {
+	                            	Item I3=(Item)itemSet.elementAt(i3);
+	                                questifyScriptableBehavs(I3);
+		                            if(q.item==I3)
+		                            {
+			                            M2.giveItem(I3);
+			                            q.item=(Item)q.item.copyOf();
+		                            }
+		                            else
+			                            M2.giveItem((Item)I3.copyOf());
+	                            }
+                            }
+                            else
+                            if(cmd.equals("ITEM"))
+                            {
+                            	Item I3=(Item)itemSet.elementAt(CMLib.dice().roll(1,itemSet.size(),-1));
                                 questifyScriptableBehavs(I3);
 	                            if(q.item==I3)
 	                            {

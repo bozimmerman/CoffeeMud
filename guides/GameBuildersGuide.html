@@ -16,8 +16,10 @@
 
 
 
+
 <center>
 <table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
+
 
 
 
@@ -37,7 +39,9 @@
 
 
 
+
     <tr>
+
 
 
 
@@ -59,9 +63,11 @@
 
 
       
+      
       <h1>
           CoffeeMud 5.3 Game Builders Guide
         </h1>
+
 
 
 
@@ -82,6 +88,7 @@
 
 
 
+
     </tr>
 
 
@@ -92,7 +99,9 @@
 
 
 
+
     <tr>
+
 
 
 
@@ -113,7 +122,9 @@
 
 
       
+      
       <ul>
+
 
 
 
@@ -133,7 +144,9 @@
 
 
 
+
         <li><a href="#cmfs">CoffeeMud File System</a></li>
+
 
 
 
@@ -153,7 +166,9 @@
 
 
 
+
         <li><a href="#classes">Classes</a></li>
+
 
 
 
@@ -173,10 +188,13 @@
 
 
 
+
         <li><a href="#quests">Quests</a></li>
 
 
+
         <li><a href="#holidays">Holidays</a></li>
+
 
 
 
@@ -196,7 +214,9 @@
 
 
 
+
         <li><a href="#polls">Polls</a></li>
+
 
 
 
@@ -216,7 +236,9 @@
 
 
 
+
         <span style="text-decoration: underline;"><br>
+
 
 
 
@@ -236,7 +258,9 @@
 
 
       
+      
       </ul>
+
 
 
 
@@ -257,6 +281,7 @@
 
 
 
+
       <td align="left" valign="top">
 
 
@@ -267,7 +292,9 @@
 
 
       
+      
       <p style="text-align: center;" align="left"><strong><img src="images/mug.jpg"></strong></p>
+
 
 
 
@@ -290,7 +317,9 @@
 
 
 
+
       <br>
+
 
 
 
@@ -312,6 +341,7 @@ already covered in detail in the <a href="ArchonGuide.html">Archons Guide.</a><b
 
 
 
+
       <br>
 
 
@@ -330,6 +360,8 @@ already covered in detail in the <a href="ArchonGuide.html">Archons Guide.</a><b
 
 
 
+
+      
       
       <p><a name="cmfs"><strong><font color="#008000" size="5">&nbsp;The
          CoffeeMud File System (CMFS)</font></strong></a>&nbsp;</p>
@@ -355,6 +387,8 @@ already covered in detail in the <a href="ArchonGuide.html">Archons Guide.</a><b
 
 
 
+
+      
       
       <p>This is a complicated topic, but one that all builders  and Archons should
          understand.&nbsp; Sooner or later, every CoffeeMud  adminstrator
@@ -387,6 +421,8 @@ is   going      to want to modify some of the local files in the CoffeeMud
 
 
 
+
+      
       
       <p>Pretty soon, your directories are packed with stuff customized to your
           mud.&nbsp; This can create issues for back-ups, meaning that not
@@ -420,6 +456,8 @@ is  overlayed  in your  installation  directory.&nbsp; Lastly, this can create
 
 
 
+
+      
       
       <p>To help solve these problems, the CoffeeMud engine uses a kind of mirrored
           file system called <strong>CMFS</strong> to store some files in
@@ -458,6 +496,8 @@ file system, or  only the database VFS files  and folders.</p>
 
 
 
+
+      
       
       <p>The CMFS includes everything in your CoffeeMud installation directory/folder,
           and all the other folders therein.&nbsp; In fact, CoffeeMud is
@@ -488,6 +528,8 @@ utterly        unable  to  access any files OUTSIDE of your CoffeeMud installati
 
 
 
+
+      
       
       <p>CMFS employs the&nbsp;UNIX standard for separating directorys and folders.&nbsp;
           This means that the forward slash / character is used when separating
@@ -517,6 +559,8 @@ the resources  directory, which is in  your  CoffeeMud   installation  folder.</
 
 
 
+
+      
       
       <p>If that file had been previously copied into the same directory in the
          VFS  database, then the CMFS would prefer that version over the
@@ -548,6 +592,8 @@ copied  or saved there.&nbsp;  </p>
 
 
 
+
+      
       
       <p>If for some reason you absolutely need to ensure that ONLY&nbsp;the local
           file system version of a file or ONLY the VFS version of a file
@@ -588,6 +634,8 @@ the    VFS    file,  but will use the local file if a VFS file is unavailable.&n
 
 
 
+
+      
       
       <p>Files can be copied into the VFS from the local file system using the Archon
  SHELL command.&nbsp; If you were to go into the coffeemud resources folder
@@ -614,6 +662,8 @@ using  this command:</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell cd /resources</font></strong></p>
 
@@ -638,6 +688,8 @@ using  this command:</p>
 
 
 
+
+      
       
       <p>if you now view the directory</p>
 
@@ -662,6 +714,8 @@ using  this command:</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell dir</font></strong></p>
 
@@ -686,6 +740,8 @@ using  this command:</p>
 
 
 
+
+      
       
       <p>you'll see all the files in your local filesystem in the resources folder
          in  your coffeemud installation directory.&nbsp; Now, you may copy
@@ -713,6 +769,8 @@ using  this command:</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell copy *  ::/resources</font></strong></p>
 
@@ -737,6 +795,8 @@ using  this command:</p>
 
 
 
+
+      
       
       <p>the copy command here is followed by a wild-card character,  the&nbsp;asterisk,
          to designate ALL files in the resources directory.&nbsp; The  next
@@ -769,6 +829,8 @@ the  files themselves.&nbsp; Now, look at the  directory    again:</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell dir /resources</font></strong></p>
 
@@ -793,6 +855,8 @@ the  files themselves.&nbsp; Now, look at the  directory    again:</p>
 
 
 
+
+      
       
       <p>We displayed the directory this time using an absolute path name, just
          to  show you the syntax.&nbsp; You are still looking at the same
@@ -825,6 +889,8 @@ command:</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell delete  //resources/socials.txt</font></strong></p>
 
@@ -849,6 +915,8 @@ command:</p>
 
 
 
+
+      
       
       <p>Notice that we used the double-slash // to designate that we want to delete
           the LOCAL version.&nbsp; Had we not put those two slashes in front,
@@ -876,6 +944,8 @@ command:</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell dir *</font></strong></p>
 
@@ -900,6 +970,8 @@ command:</p>
 
 
 
+
+      
       
       <p>This time we displayed the directory using an * wildcard, just to demonstrate
           that we can use mask characters when displaying directories.&nbsp;
@@ -931,6 +1003,8 @@ can copy it back  to  our local file   system by  doing:&nbsp;</p>
 
 
 
+
+      
       
       <p><strong><font face="Courier New">shell copy&nbsp;::socials.txt  //</font></strong></p>
 
@@ -955,6 +1029,8 @@ can copy it back  to  our local file   system by  doing:&nbsp;</p>
 
 
 
+
+      
       
       <p>You'll see that I changed the syntax of the copy command around again to
  demonstrate some of the previous lessons.&nbsp; We use the :: characters
@@ -990,6 +1066,8 @@ means  that the file  socials.txt will   be copied into  the current folder,
 
 
 
+
+      
       
       <p>There are numerous other shell commands you can make use of, such as <strong><font face="Courier New">makedirectory</font></strong> to create new  folders,
    <strong><font face="Courier New">edit</font></strong> to modify a text
@@ -1020,6 +1098,8 @@ for  safety,     convenience,   and easy back-ups.</p>
 
 
 
+
+      
       
       <p>The last topic concerning the CMFS is about security.&nbsp; At the top
          of  this Guide, the subject of security codes was discussed.&nbsp;
@@ -1048,6 +1128,8 @@ for  safety,     convenience,   and easy back-ups.</p>
 
 
 
+
+      
       
       <p>By default, a user is not allowed to access any files in either file system,
           unless they are an Archon or have been given a CMFS security code.&nbsp;
@@ -1079,6 +1161,8 @@ to separate  directories  or to designate&nbsp;that the  last  file is really&nb
 
 
 
+
+      
       
       <p>For example, to give a user access ONLY to files in the VFS database folder
           /resources/text/, you would give the user security code <strong>VFS:
@@ -1114,12 +1198,15 @@ the VFS  database.&nbsp;  This user would not even be   able to copy existing
 
 
 
+
+      
       
       <p>To give the same user access to BOTH the local file system and VFS versions
           of the resources/text directory, the security code would need to
  changed        to  <strong>FS: RESOURCES/TEXT/&nbsp; </strong>Using FS instead
  of VFS    gives   the  user access to both local and database versions of
  those files.&nbsp;       </p>
+
 
 
 
@@ -1152,7 +1239,9 @@ Of course, by default, an Archon has access to both versions of the entire
 
 
       
+      
       <p style="text-align: center;" align="left"><strong></strong></p>
+
 
 
 
@@ -1174,6 +1263,7 @@ Of course, by default, an Archon has access to both versions of the entire
 
 
 
+      
       
       <p>In the lexicon of the Archons, the word "Ability" encompasses a
 great many powers and skills, both natural and man-made. &nbsp;An
@@ -1197,6 +1287,8 @@ ability may behave as an Affect, as a Skill, or as Both. &nbsp;</p>
 
 
 
+
+      
       
       <p>An ability behaving as an Affect means that it is acting as a
 discrete aspect of some existing thing, whether that thing is a room,
@@ -1225,6 +1317,8 @@ it is providing immunity or garbling speech. &nbsp;</p>
 
 
 
+
+      
       
       <p>An ability that is behaving as a Skill means that it allows its host
 (which is always a MOB in this case) to interact with the world around
@@ -1254,6 +1348,8 @@ described above (as catching on fire would).</p>
 
 
 
+
+      
       
       <p>CoffeeMud contains over a thousand different java-coded Abilities
 which fall into numerous other categories and genera of various
@@ -1291,6 +1387,8 @@ able to invoke the skill at a later date (by casting the spell).</p>
 
 
 
+
+      
       
       <p>CoffeeMud also allows you to define abilities outside of the
 java-realm. &nbsp;This can be done from the command line using the
@@ -1318,6 +1416,8 @@ for instance, you might enter:</p>
 
 
 
+
+      
       
       <p><strong>CREATE ABILITY Skill_Poke</strong></p>
 
@@ -1342,6 +1442,8 @@ for instance, you might enter:</p>
 
 
 
+
+      
       
       <p>And it would be done.&nbsp; &nbsp;The "Skill_Poke" is the abilities
 Ability ID. &nbsp;The fact that it starts with "Skill_" is merely for
@@ -1368,6 +1470,8 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
+      
       
       <p>Whenever creating or  modifying a new ability,
          the Archon is presented with a menu of selections and  options available
@@ -1394,8 +1498,11 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
+      
       
       <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
 
 
 
@@ -1423,7 +1530,9 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
                             <tr>
+
 
 
 
@@ -1451,7 +1560,9 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
                              <td width="75%"><strong>Description</strong></td>
+
 
 
 
@@ -1479,7 +1590,9 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
                            <tr>
+
 
 
 
@@ -1507,7 +1620,9 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
                              <td>the name of the ability. &nbsp;Make this anything you like, but uniqueness is important for making help file entries.</td>
+
 
 
 
@@ -1535,6 +1650,7 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
                            <tr>
 
 
@@ -1549,7 +1665,9 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 
 
 
+
                              <td><em>Type, Domain</em></td>
+
 
 
 
@@ -1579,7 +1697,9 @@ any). &nbsp;Enter the type, a comma, and a domain (or nothing).
 
 
 
+
                             </tr>
+
 
 
 
@@ -1607,7 +1727,9 @@ any). &nbsp;Enter the type, a comma, and a domain (or nothing).
 
 
 
+
                              <td><em>Command Words</em></td>
+
 
 
 
@@ -1639,7 +1761,9 @@ invocation words. &nbsp;This can be blank for Properties.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -1667,7 +1791,9 @@ invocation words. &nbsp;This can be blank for Properties.</td>
 
 
 
+
                              <td><em>Minimum Range</em></td>
+
 
 
 
@@ -1697,7 +1823,9 @@ get a list of possible values.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -1725,7 +1853,9 @@ get a list of possible values.</td>
 
 
 
+
                              <td><em>Maximum Range</em></td>
+
 
 
 
@@ -1754,8 +1884,10 @@ get a list of possible values.</td>
 
 
             
+            
             <p>for combat/targeted skills, how close the invoker must be to
 use the skill. &nbsp;Use ? to get a list of possible values.&nbsp; </p>
+
 
 
 
@@ -1783,7 +1915,9 @@ use the skill. &nbsp;Use ? to get a list of possible values.&nbsp; </p>
 
 
 
+
                             </tr>
+
 
 
 
@@ -1811,7 +1945,9 @@ use the skill. &nbsp;Use ? to get a list of possible values.&nbsp; </p>
 
 
 
+
                              <td><em>Affect String</em></td>
+
 
 
 
@@ -1841,7 +1977,9 @@ nothing, or&nbsp;NULL to show nothing at all.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -1869,7 +2007,9 @@ nothing, or&nbsp;NULL to show nothing at all.</td>
 
 
 
+
                              <td><em>Is Auto-invoking</em></td>
+
 
 
 
@@ -1900,6 +2040,7 @@ proceed directly to affecthood.</td>
 
 
 
+
                             </tr>
 
 
@@ -1914,7 +2055,9 @@ proceed directly to affecthood.</td>
 
 
 
+
                            <tr>
+
 
 
 
@@ -1942,7 +2085,9 @@ proceed directly to affecthood.</td>
 
 
 
+
                              <td>0 or more comma-delimeted flags that describe the affects of your skill to the rest of the mud engine. Use ? to get a list.</td>
+
 
 
 
@@ -1970,6 +2115,7 @@ proceed directly to affecthood.</td>
 
 
 
+
                            <tr>
 
 
@@ -1984,7 +2130,9 @@ proceed directly to affecthood.</td>
 
 
 
+
                              <td><em>Override cost</em></td>
+
 
 
 
@@ -2018,7 +2166,9 @@ of the mobs mana/move points. &nbsp;A value of 2147483647-100 to
 
 
 
+
                             </tr>
+
 
 
 
@@ -2046,7 +2196,9 @@ of the mobs mana/move points. &nbsp;A value of 2147483647-100 to
 
 
 
+
                              <td><em>Cost Type</em></td>
+
 
 
 
@@ -2076,7 +2228,9 @@ mana, hit points, or some combination. &nbsp;Enter ? for a list.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2104,7 +2258,9 @@ mana, hit points, or some combination. &nbsp;Enter ? for a list.</td>
 
 
 
+
                              <td><em>Can Affect</em></td>
+
 
 
 
@@ -2135,7 +2291,9 @@ list! &nbsp;Enter ? for a list.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2163,7 +2321,9 @@ list! &nbsp;Enter ? for a list.</td>
 
 
 
+
                              <td><em>Can Target</em></td>
+
 
 
 
@@ -2193,7 +2353,9 @@ target only the invoker. &nbsp;Enter ? for a list.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2221,7 +2383,9 @@ target only the invoker. &nbsp;Enter ? for a list.</td>
 
 
 
+
                              <td><em>Quality Code</em></td>
+
 
 
 
@@ -2253,7 +2417,9 @@ skils). &nbsp;Enter ? for a list.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2281,7 +2447,9 @@ skils). &nbsp;Enter ? for a list.</td>
 
 
 
+
                              <td><em>Affect Adjustments</em></td>
+
 
 
 
@@ -2313,7 +2481,9 @@ the syntax for this field. &nbsp;Entering ? will show you that help.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2341,7 +2511,9 @@ the syntax for this field. &nbsp;Entering ? will show you that help.</td>
 
 
 
+
                              <td><em>Caster Mask</em></td>
+
 
 
 
@@ -2372,7 +2544,9 @@ on Prop_HaveZapper for more information on the syntax for CoffeeMud
 
 
 
+
                             </tr>
+
 
 
 
@@ -2400,7 +2574,9 @@ on Prop_HaveZapper for more information on the syntax for CoffeeMud
 
 
 
+
                              <td><em>Scriptable Parm</em></td>
+
 
 
 
@@ -2436,7 +2612,9 @@ place to put damage commands for skills that do damage.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2464,7 +2642,9 @@ place to put damage commands for skills that do damage.</td>
 
 
 
+
                              <td><em>Target Mask</em></td>
+
 
 
 
@@ -2494,7 +2674,9 @@ information on the syntax for CoffeeMud "Zapper" masks.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2522,7 +2704,9 @@ information on the syntax for CoffeeMud "Zapper" masks.</td>
 
 
 
+
                              <td><em>Fizzle Message</em></td>
+
 
 
 
@@ -2553,7 +2737,9 @@ substitute for the name of the target.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2581,7 +2767,9 @@ substitute for the name of the target.</td>
 
 
 
+
                              <td><em>Auto-Cast Message</em></td>
+
 
 
 
@@ -2612,7 +2800,9 @@ and &lt;T-NAME&gt; as a substitute for the name of the target.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2640,7 +2830,9 @@ and &lt;T-NAME&gt; as a substitute for the name of the target.</td>
 
 
 
+
                              <td><em>Normal-Cast Message</em></td>
+
 
 
 
@@ -2670,7 +2862,9 @@ and &lt;T-NAME&gt; as a substitute for the name of the target.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2698,7 +2892,9 @@ and &lt;T-NAME&gt; as a substitute for the name of the target.</td>
 
 
 
+
                              <td><em>Post-Cast Message</em></td>
+
 
 
 
@@ -2730,7 +2926,9 @@ and &lt;T-NAME&gt; as a substitute for the name of the target.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2758,7 +2956,9 @@ and &lt;T-NAME&gt; as a substitute for the name of the target.</td>
 
 
 
+
                              <td><em>Attack-Type</em></td>
+
 
 
 
@@ -2791,7 +2991,9 @@ for a list.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -2843,6 +3045,7 @@ for a list.</td>
 
 
         
+        
         </tbody>
 
 
@@ -2852,6 +3055,7 @@ for a list.</td>
 
 
 
+      
       
       </table>
 
@@ -2876,6 +3080,8 @@ for a list.</td>
 
 
 
+
+      
       
       <p>As you can tell if you read through the above, most of the meat of the work done by Generic Abilities is </p>
 
@@ -2897,8 +3103,11 @@ for a list.</td>
 
 
 
+
+      
       
       <p style="text-align: center;" align="left"></p>
+
 
 
 
@@ -2922,6 +3131,7 @@ for a list.</td>
 
 
       
+      
       <p>A character class is a designation chosen by players that
 limits the scope of skills and abilities they will have available to
 them as they advance in level. &nbsp;</p>
@@ -2942,6 +3152,8 @@ them as they advance in level. &nbsp;</p>
 
 
 
+
+      
       
       <p>CoffeeMud supports several different class-systems through its
 coffeemud.ini file (the CLASSSYSTEM entry). One such option is the
@@ -2975,6 +3187,8 @@ more information on this feature.</p>
 
 
 
+
+      
       
       <p>CoffeeMud includes numerous character classes by default that
 give players access to the hundreds of skills in the CoffeeMud
@@ -2997,6 +3211,8 @@ improvement, or addition. &nbsp;</p>
 
 
 
+
+      
       
       <p>Customized player or mob classes can be used as skill templates for mobs created using  the
   Fighterness       (or similar) behaviors, or as genuine player classes
@@ -3023,6 +3239,8 @@ for   your  game.&nbsp;       Either way, here is how it is done:</p>
 
 
 
+
+      
       
       <p><strong>CREATE&nbsp;CLASS  Boxer</strong></p>
 
@@ -3047,6 +3265,8 @@ for   your  game.&nbsp;       Either way, here is how it is done:</p>
 
 
 
+
+      
       
       <p>And it would be done.&nbsp; The name Boxer is just an example.
 &nbsp;You can enter any non-space string to serve as an official ID for
@@ -3075,6 +3295,8 @@ select it, which effectively disables that character class.</p>
 
 
 
+
+      
       
       <p>After a character class is created using the CREATE CLASS
 command, it can be deleted or modified later using the DESTROY CLASS or
@@ -3096,6 +3318,8 @@ MODIFY CLASS commands.</p>
 
 
 
+
+      
       
       <p>Whenever creating or  modifying a new class,
          the Archon is presented with a menu of selections and  options available
@@ -3117,6 +3341,8 @@ MODIFY CLASS commands.</p>
 
 
 
+
+      
       
       <p></p>
 
@@ -3141,8 +3367,11 @@ MODIFY CLASS commands.</p>
 
 
 
+
+      
       
       <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
 
 
 
@@ -3170,7 +3399,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                             <tr>
+
 
 
 
@@ -3198,7 +3429,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                              <td width="75%"><strong>Description</strong></td>
+
 
 
 
@@ -3226,6 +3459,7 @@ MODIFY CLASS commands.</p>
 
 
 
+
                            <tr>
 
 
@@ -3240,7 +3474,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                              <td><em>Number of Names</em></td>
+
 
 
 
@@ -3269,7 +3505,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3297,7 +3535,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                              <td><em>Name #x</em></td>
+
 
 
 
@@ -3326,7 +3566,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3354,7 +3596,9 @@ MODIFY CLASS commands.</p>
 
 
 
+
                              <td><em>Name&nbsp;#x Class        Level</em></td>
+
 
 
 
@@ -3383,7 +3627,9 @@ name         begins    to  apply.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3411,7 +3657,9 @@ name         begins    to  apply.</td>
 
 
 
+
                              <td><em>Base Class</em></td>
+
 
 
 
@@ -3445,7 +3693,9 @@ field should be set to the class ID of the base class it falls under.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3473,7 +3723,9 @@ field should be set to the class ID of the base class it falls under.</td>
 
 
 
+
                              <td><em>Availability</em></td>
+
 
 
 
@@ -3502,8 +3754,10 @@ field should be set to the class ID of the base class it falls under.</td>
 
 
             
+            
             <p> whether or not players may access this class at creation, in spells,
          or never.&nbsp;&nbsp;&nbsp;                 </p>
+
 
 
 
@@ -3531,7 +3785,9 @@ field should be set to the class ID of the base class it falls under.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3559,7 +3815,9 @@ field should be set to the class ID of the base class it falls under.</td>
 
 
 
+
                              <td><em>HP Divisor</em></td>
+
 
 
 
@@ -3588,7 +3846,9 @@ is        divided     by  when  calculated hit point gains per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3616,7 +3876,9 @@ is        divided     by  when  calculated hit point gains per level.</td>
 
 
 
+
                              <td><em>HP Dice</em></td>
+
 
 
 
@@ -3645,7 +3907,9 @@ is        divided     by  when  calculated hit point gains per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3673,7 +3937,9 @@ is        divided     by  when  calculated hit point gains per level.</td>
 
 
 
+
                              <td><em>HP Die</em></td>
+
 
 
 
@@ -3702,7 +3968,9 @@ is        divided     by  when  calculated hit point gains per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3730,7 +3998,9 @@ is        divided     by  when  calculated hit point gains per level.</td>
 
 
 
+
                              <td><em>Mana Divisor</em></td>
+
 
 
 
@@ -3759,7 +4029,9 @@ is        divided     by  when  calculated mana gains per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3787,7 +4059,9 @@ is        divided     by  when  calculated mana gains per level.</td>
 
 
 
+
                              <td><em>Mana Dice</em></td>
+
 
 
 
@@ -3816,7 +4090,9 @@ is        divided     by  when  calculated mana gains per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3844,7 +4120,9 @@ is        divided     by  when  calculated mana gains per level.</td>
 
 
 
+
                              <td><em>Mana Die</em></td>
+
 
 
 
@@ -3873,7 +4151,9 @@ is        divided     by  when  calculated mana gains per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3901,7 +4181,9 @@ is        divided     by  when  calculated mana gains per level.</td>
 
 
 
+
                              <td><em>Practices/Level</em></td>
+
 
 
 
@@ -3930,7 +4212,9 @@ this         class   per   level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -3958,7 +4242,9 @@ this         class   per   level.</td>
 
 
 
+
                              <td><em>Attack/Level</em></td>
+
 
 
 
@@ -3987,7 +4273,9 @@ a        formula    based    on the mobs attack attribute, gained per level.</td
 
 
 
+
                             </tr>
+
 
 
 
@@ -4015,7 +4303,9 @@ a        formula    based    on the mobs attack attribute, gained per level.</td
 
 
 
+
                              <td><em>Attack Attribute</em></td>
+
 
 
 
@@ -4044,7 +4334,9 @@ a        formula    based    on the mobs attack attribute, gained per level.</td
 
 
 
+
                             </tr>
+
 
 
 
@@ -4072,7 +4364,9 @@ a        formula    based    on the mobs attack attribute, gained per level.</td
 
 
 
+
                              <td><em>Practices/1st      Level</em></td>
+
 
 
 
@@ -4101,7 +4395,9 @@ a        formula    based    on the mobs attack attribute, gained per level.</td
 
 
 
+
                             </tr>
+
 
 
 
@@ -4129,7 +4425,9 @@ a        formula    based    on the mobs attack attribute, gained per level.</td
 
 
 
+
                              <td><em>Trains/1st Level</em></td>
+
 
 
 
@@ -4158,7 +4456,9 @@ by this     class    at  first level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4186,7 +4486,9 @@ by this     class    at  first level.</td>
 
 
 
+
                              <td><em>Level/Dmg Pt</em></td>
+
 
 
 
@@ -4215,7 +4517,9 @@ point  of     base   damage.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4243,7 +4547,9 @@ point  of     base   damage.</td>
 
 
 
+
                              <td><em>Movement/Level</em></td>
+
 
 
 
@@ -4272,7 +4578,9 @@ by  a        formula    based   on the mobs strength, gained per level.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4300,7 +4608,9 @@ by  a        formula    based   on the mobs strength, gained per level.</td>
 
 
 
+
                              <td><em>Armor Restr.</em></td>
+
 
 
 
@@ -4329,7 +4639,9 @@ skills    in   this   class, if any.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4352,7 +4664,9 @@ skills    in   this   class, if any.</td>
 
 
 
+
             <td><span style="font-style: italic;">Armor Restr Spells</span></td>
+
 
 
 
@@ -4372,7 +4686,9 @@ only when a class spell/chant/prayer is cast.</td>
 
 
 
+
           </tr>
+
 
 
 
@@ -4395,7 +4711,9 @@ only when a class spell/chant/prayer is cast.</td>
 
 
 
+
                              <td><em>Limitations</em></td>
+
 
 
 
@@ -4424,7 +4742,9 @@ special    limitations      of the class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4452,7 +4772,9 @@ special    limitations      of the class.</td>
 
 
 
+
                              <td><em>Bonuses</em></td>
+
 
 
 
@@ -4481,7 +4803,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4509,7 +4833,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>Qualifications</em></td>
+
 
 
 
@@ -4539,7 +4865,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4567,7 +4895,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>EStat  Adjustments</em></td>
+
 
 
 
@@ -4596,7 +4926,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4624,7 +4956,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>CharStat      Adjustments</em></td>
+
 
 
 
@@ -4653,7 +4987,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4681,7 +5017,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>CharStat  Settings</em></td>
+
 
 
 
@@ -4710,7 +5048,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4738,7 +5078,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>CharState        Adjustments</em></td>
+
 
 
 
@@ -4767,7 +5109,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4795,7 +5139,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>Starting CharState        Adjustments</em></td>
+
 
 
 
@@ -4825,7 +5171,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4853,7 +5201,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>Extra Class  Flags</em></td>
+
 
 
 
@@ -4882,7 +5232,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4910,7 +5262,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>Weapon Restr.</em></td>
+
 
 
 
@@ -4939,7 +5293,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -4962,7 +5318,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
             <td><span style="font-style: italic;">Weapon Mat. Req.</span></td>
+
 
 
 
@@ -4980,7 +5338,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
           </tr>
+
 
 
 
@@ -5003,7 +5363,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>Outfit</em></td>
+
 
 
 
@@ -5032,7 +5394,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -5060,7 +5424,9 @@ special    bonuses      to being this class.</td>
 
 
 
+
                              <td><em>Class Abilities</em></td>
+
 
 
 
@@ -5094,7 +5460,9 @@ parameters    for  this skill.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -5122,7 +5490,9 @@ parameters    for  this skill.</td>
 
 
 
+
                              <td><em>Number of Security Code        Sets</em></td>
+
 
 
 
@@ -5155,7 +5525,9 @@ or  security        groups    (see above section on CoffeeMud Security).&nbsp;
 
 
 
+
                             </tr>
+
 
 
 
@@ -5183,7 +5555,9 @@ or  security        groups    (see above section on CoffeeMud Security).&nbsp;
 
 
 
+
                              <td><em>Security Codes in        Set#x</em></td>
+
 
 
 
@@ -5212,7 +5586,9 @@ or  security        groups    (see above section on CoffeeMud Security).&nbsp;
 
 
 
+
                             </tr>
+
 
 
 
@@ -5240,7 +5616,9 @@ or  security        groups    (see above section on CoffeeMud Security).&nbsp;
 
 
 
+
                              <td><em>Class Level for        Set#x</em></td>
+
 
 
 
@@ -5270,7 +5648,9 @@ or  security        groups    (see above section on CoffeeMud Security).&nbsp;
 
 
 
+
                             </tr>
+
 
 
 
@@ -5288,7 +5668,9 @@ or  security        groups    (see above section on CoffeeMud Security).&nbsp;
 
 
 
+
             <td>Stat-Modifying Class</td>
+
 
 
 
@@ -5313,7 +5695,9 @@ order to access the standard version.</td>
 
 
 
+
           </tr>
+
 
 
 
@@ -5331,7 +5715,9 @@ order to access the standard version.</td>
 
 
 
+
             <td>Special-Event Class</td>
+
 
 
 
@@ -5358,7 +5744,9 @@ access the standard version.</td>
 
 
 
+
           </tr>
+
 
 
 
@@ -5386,6 +5774,7 @@ access the standard version.</td>
 
 
         
+        
         </tbody>
 
 
@@ -5395,6 +5784,7 @@ access the standard version.</td>
 
 
 
+      
       
       </table>
 
@@ -5419,6 +5809,8 @@ access the standard version.</td>
 
 
 
+
+      
       
       <p></p>
 
@@ -5443,6 +5835,8 @@ access the standard version.</td>
 
 
 
+
+      
       
       <p><strong><font color="blue" size="5"><a name="factions">Factions</a></font></strong></p>
 
@@ -5467,6 +5861,8 @@ access the standard version.</td>
 
 
 
+
+      
       
       <p>A faction can be viewed very simply as a glorified tattoo with
 a number value. &nbsp;Normal Tattoos are simply flags which a mob or
@@ -5507,6 +5903,8 @@ between the mob or player, and evilness, goodness, or neutrality.</p>
 
 
 
+
+      
       
       <p>The faction system in CoffeeMud is a powerful engine for  defining what
          factions exist, how the factions are assigned, how the value of
@@ -5542,6 +5940,8 @@ above and more.</p>
 
 
 
+
+      
       
       <p>Now, as was said before, factions have numeric  values.&nbsp; These values
          can be positive, like 2389473, negative, or even  0.&nbsp; The range
@@ -5569,6 +5969,8 @@ limits     of   the divisions  or Ranges of a faction.&nbsp; </p>
 
 
 
+
+      
       
       <p>A <strong>Range</strong> is a  numeric division of a faction you have defined.&nbsp;
 A Range has a displayable  name, a special code name for use in Zapper Masks,
@@ -5603,6 +6005,8 @@ important part of a  faction.</p>
 
 
 
+
+      
       
       <p>Another important aspect are the range <strong>Change Triggers</strong>.&nbsp;
          One of the ways factions  differ from simple tattoos is that CoffeeMud
@@ -5658,6 +6062,8 @@ modifications of a change (based on experience or other factors)  and uses
 
 
 
+
+      
       
       <p>Now, lets discuss how to list existing factions:</p>
 
@@ -5682,6 +6088,8 @@ modifications of a change (based on experience or other factors)  and uses
 
 
 
+
+      
       
       <p><strong>LIST FACTIONS</strong></p>
 
@@ -5706,6 +6114,8 @@ modifications of a change (based on experience or other factors)  and uses
 
 
 
+
+      
       
       <p>The list that is shown with this command reflects the  list of those factions
          which have been loaded into CoffeeMuds memory.&nbsp;  Factions are
@@ -5739,6 +6149,8 @@ do the following:</p>
 
 
 
+
+      
       
       <p><strong>CREATE&nbsp;FACTION  orc_affinity.ini</strong></p>
 
@@ -5763,6 +6175,8 @@ do the following:</p>
 
 
 
+
+      
       
       <p>This command will create a new file in&nbsp;your  CoffeeMud/resources directory
 or folder for the new faction.&nbsp; This file  will contain the default
@@ -5791,6 +6205,8 @@ had wanted simply to modify an  existing faction, you might have entered:</p>
 
 
 
+
+      
       
       <p><strong>MODIFY FACTION  resources/reputation.ini</strong></p>
 
@@ -5815,6 +6231,8 @@ had wanted simply to modify an  existing faction, you might have entered:</p>
 
 
 
+
+      
       
       <p>The modify command will take you into the editor for an  existing faction,
          regardless of whether it appears on the LIST FACTIONS list, so
@@ -5843,6 +6261,8 @@ and interesting      fields  to change, which we will now describe.</p>
 
 
 
+
+      
       
       <p>
 
@@ -5854,7 +6274,9 @@ and interesting      fields  to change, which we will now describe.</p>
 
 
       
+      
       <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
 
 
 
@@ -5882,7 +6304,9 @@ and interesting      fields  to change, which we will now describe.</p>
 
 
 
+
                             <tr>
+
 
 
 
@@ -5910,7 +6334,9 @@ and interesting      fields  to change, which we will now describe.</p>
 
 
 
+
                              <td width="75%"><strong>Description</strong></td>
+
 
 
 
@@ -5938,6 +6364,7 @@ and interesting      fields  to change, which we will now describe.</p>
 
 
 
+
                            <tr>
 
 
@@ -5952,7 +6379,9 @@ and interesting      fields  to change, which we will now describe.</p>
 
 
 
+
                              <td><em>Name</em></td>
+
 
 
 
@@ -5981,7 +6410,9 @@ to be  confused       with its official identifier, which you may not change.</t
 
 
 
+
                             </tr>
+
 
 
 
@@ -6009,7 +6440,9 @@ to be  confused       with its official identifier, which you may not change.</t
 
 
 
+
                              <td><em>Division/Ranges      List</em></td>
+
 
 
 
@@ -6038,7 +6471,9 @@ to be  confused       with its official identifier, which you may not change.</t
 
 
 
+
                             </tr>
+
 
 
 
@@ -6066,7 +6501,9 @@ to be  confused       with its official identifier, which you may not change.</t
 
 
 
+
                              <td><em>Show In Score</em></td>
+
 
 
 
@@ -6097,7 +6534,9 @@ and values    regardless         of whether this setting is true or false.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6125,7 +6564,9 @@ and values    regardless         of whether this setting is true or false.</td>
 
 
 
+
                              <td><em>Show In MOB      Editor</em></td>
+
 
 
 
@@ -6157,7 +6598,9 @@ whether   this        setting is true  or false.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6185,7 +6628,9 @@ whether   this        setting is true  or false.</td>
 
 
 
+
                              <td><em>Automatic assigned        values</em></td>
+
 
 
 
@@ -6223,7 +6668,9 @@ number        (no  mask),  then everyone will receive this faction.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6251,7 +6698,9 @@ number        (no  mask),  then everyone will receive this faction.</td>
 
 
 
+
                              <td><em>Other default      values</em></td>
+
 
 
 
@@ -6285,7 +6734,9 @@ exists for every    possible player or mob.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6313,7 +6764,9 @@ exists for every    possible player or mob.</td>
 
 
 
+
                              <td><em>New player value        choice</em></td>
+
 
 
 
@@ -6346,7 +6799,9 @@ be  given this          faction at creation    time.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6374,7 +6829,9 @@ be  given this          faction at creation    time.</td>
 
 
 
+
                              <td><em>Choices introduction        text</em></td>
+
 
 
 
@@ -6405,7 +6862,9 @@ then this     field    will become available.&nbsp; It is the optional filename
 
 
 
+
                             </tr>
+
 
 
 
@@ -6433,7 +6892,9 @@ then this     field    will become available.&nbsp; It is the optional filename
 
 
 
+
                              <td><em>Rate Modifier</em></td>
+
 
 
 
@@ -6464,7 +6925,9 @@ any    other         way  by modifying this value.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6492,7 +6955,9 @@ any    other         way  by modifying this value.</td>
 
 
 
+
                              <td><em>Affect on      Experience</em></td>
+
 
 
 
@@ -6534,7 +6999,9 @@ and in        proportion  to how low the value of the monsters   faction
 
 
 
+
                             </tr>
+
 
 
 
@@ -6562,7 +7029,9 @@ and in        proportion  to how low the value of the monsters   faction
 
 
 
+
                              <td><em>Faction Change        Adjustments</em></td>
+
 
 
 
@@ -6596,7 +7065,9 @@ the   loss only.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6624,7 +7095,9 @@ the   loss only.</td>
 
 
 
+
                              <td><em>Cross-Faction        Relations</em></td>
+
 
 
 
@@ -6656,7 +7129,9 @@ other  factions       may  rise or fall when the value of this faction changes.&
 
 
 
+
                             </tr>
+
 
 
 
@@ -6684,7 +7159,9 @@ other  factions       may  rise or fall when the value of this faction changes.&
 
 
 
+
                              <td><em>Change Triggers</em></td>
+
 
 
 
@@ -6717,7 +7194,9 @@ for each Change   Trigger.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -6745,7 +7224,9 @@ for each Change   Trigger.</td>
 
 
 
+
                              <td><em>Ability      Allowances</em></td>
+
 
 
 
@@ -6782,6 +7263,7 @@ are overridden.</td>
 
 
 
+
                             </tr>
 
 
@@ -6809,6 +7291,8 @@ are overridden.</td>
 
 
 
+
+        
         
         </tbody>
 
@@ -6819,6 +7303,7 @@ are overridden.</td>
 
 
 
+      
       
       </table>
 
@@ -6834,7 +7319,9 @@ are overridden.</td>
 
 
 
+
                         </p>
+
 
 
 
@@ -6870,6 +7357,8 @@ are overridden.</td>
 
 
 
+
+      
       
       <p align="left"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"><span class="453251818-08032003"></span></span></span></span></span></span></span></span></span><strong><font color="green" size="5"><a name="quests">Quests</a></font></strong></p>
 
@@ -6894,6 +7383,8 @@ are overridden.</td>
 
 
 
+
+      
       
       <p>Quests are tasks which can be completed by players for  prizes, typically
          quest points, experience, money, or all three.&nbsp; Quest  tasks,
@@ -6921,6 +7412,8 @@ are overridden.</td>
 
 
 
+
+      
       
       <p>The built-in Quest system in CoffeeMud allows you to automatic all of
 the following processes:&nbsp;</p>
@@ -6946,8 +7439,11 @@ the following processes:&nbsp;</p>
 
 
 
+
+      
       
       <ul>
+
 
 
 
@@ -6968,8 +7464,10 @@ the following processes:&nbsp;</p>
 
 
 
+
         <li>setting special quest-start criteria based on the players currently
  online</li>
+
 
 
 
@@ -6990,8 +7488,10 @@ map  by various criteria</li>
 
 
 
+
         <li>the introduction of new mobs and/or items from saved text files,
  and thier automatic removal when the quest is done</li>
+
 
 
 
@@ -7012,8 +7512,10 @@ map  by various criteria</li>
 
 
 
+
         <li>adding scripts to any of the aforementioned objects and having
 those  scripts removed when the quest is done</li>
+
 
 
 
@@ -7042,6 +7544,8 @@ those  scripts removed when the quest is done</li>
 
 
 
+
+      
       
       </ul>
 
@@ -7066,6 +7570,8 @@ those  scripts removed when the quest is done</li>
 
 
 
+
+      
       
       <p>A quest is designated by a long set of&nbsp;definitions and pseudo-commands
  called a <span style="color: rgb(204, 0, 0);">QUEST-SCRIPT</span>. &nbsp;The
@@ -7098,6 +7604,8 @@ case) is as follows:</p>
 
 
 
+
+      
       
       <p><strong>CREATE QUEST</strong>  LOAD=quests/murdermystery/murdermystery.quest</p>
 
@@ -7122,6 +7630,8 @@ case) is as follows:</p>
 
 
 
+
+      
       
       <p>All LOAD commands use the resources directory inside your coffeemud
 install directory as the default path. &nbsp;Therefore, if you installed
@@ -7149,6 +7659,8 @@ file in C:\CoffeeMud\resources\quests\murdermystery\murdermystery.quest.</p>
 
 
 
+
+      
       
       <p>Quests may be&nbsp;started automatically (autoquests)  from inside the
          quest script by including&nbsp;the SET WAIT and SET INTERVAL  commands,
@@ -7176,6 +7688,8 @@ QUEST</strong>          [QUEST NAME] command. </p>
 
 
 
+
+      
       
       <p>Quests can be listed, to see their status, using the  <strong>LIST QUESTS</strong>
          command. </p>
@@ -7201,6 +7715,8 @@ QUEST</strong>          [QUEST NAME] command. </p>
 
 
 
+
+      
       
       <p>Quests can be removed from the list using the <strong>DESTROY QUEST</strong>
          [QUEST NAME] command.</p>
@@ -7226,6 +7742,8 @@ QUEST</strong>          [QUEST NAME] command. </p>
 
 
 
+
+      
       
       <p>Quests can be saved using the <strong>SAVE QUESTS</strong> command. Quests
  saved this way will be restored during the next CoffeeMud reboot. &nbsp;Any
@@ -7253,6 +7771,8 @@ SAVE QUESTS if you want your quest to remain. </p>
 
 
 
+
+      
       
       <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Quest
           Scripts</strong></font></p>
@@ -7278,6 +7798,8 @@ SAVE QUESTS if you want your quest to remain. </p>
 
 
 
+
+      
       
       <p>When creating a new quest using the <strong>CREATE QUEST</strong> [SCRIPT]
          command, whether you use the  load command to specify an external
@@ -7305,6 +7827,8 @@ the  quest script       commands are as follows:</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET NAME</span> <span style="color: rgb(102, 51, 102);">[QUEST NAME] </span>- the *unique* name
 of your quest.  This is a required         command! </p>
@@ -7330,6 +7854,8 @@ of your quest.  This is a required         command! </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET DURATION</span> <span style="color: rgb(102, 51, 102);">[#TICKS]</span> - # of ticks (4 second periods)
   the quest will last once started. This is a required command! </p>
@@ -7360,6 +7886,8 @@ of your quest.  This is a required         command! </p>
 
 
 
+
+      
       
       <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET
 WAIT</span><span style="color: rgb(102, 51, 102);"> [#TICKS]</span> - minimum
@@ -7382,6 +7910,8 @@ only!</p>
 
 
 
+
+      
       
       <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET SPAWNABLE <span style="color: rgb(102, 51, 102);">[TRUE/ALL]</span></span>
 - whether this quest will, when started, spawn a copy of itself and run
@@ -7409,6 +7939,8 @@ STEP and SET PRESERVE commands below.</p>
 
 
 
+
+      
       
       <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET
 DATE</span> <span style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH] </span>-
@@ -7436,6 +7968,8 @@ SET WAIT requirement.</p>
 
 
 
+
+      
       
       <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET
 MUDDAY</span>&nbsp;<span style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
@@ -7463,6 +7997,8 @@ mud calendar. This is a valid substitute  for   the    SET  WAIT requirement.</p
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET INTERVAL</span><span style="color: rgb(102, 51, 102);"> [#TICKS]</span> - random # ticks (1-#TICKS)
  to  wait between auto-starting         the quest, AFTER the WAIT period
@@ -7489,6 +8025,8 @@ mud calendar. This is a valid substitute  for   the    SET  WAIT requirement.</p
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MINPLAYERS</span><span style="color: rgb(102, 51, 102);"> [#PLAYERS]</span> - Minimum number of players
  who must be online         for a timed quest to automatically start. See
@@ -7515,6 +8053,8 @@ SET PLAYERMASK.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET PLAYERMASK</span> <span style="color: rgb(102, 51, 102);">[MASKSTRING]</span> - If this string is
 empty or not specified,         then anyone is considered a player for the
@@ -7543,6 +8083,8 @@ HELP Prop_HaveZapper for the list    of valid mask values   to put here.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET RUNLEVEL</span><span style="color: rgb(102, 51, 102);"> [#LEVEL]</span>
 - Normally, a timed quest will always run when its time comes up.
@@ -7568,6 +8110,8 @@ even when another of the same name (and runlevel) is active.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET PRESERVE</span><span style="color: rgb(102, 51, 102);"> [#STEPS]</span>-
 If a number greater than 0 is issued, then when a STEP command is
@@ -7581,6 +8125,7 @@ and specified by a quest, to continue being used in subsequent steps
 without being restored by the quest manager to a natural state.
 &nbsp;An MPSTOPQUEST command, or an expired duration, will always cause
 the entire quest to cease executing and all objects to be cleaned up.</p>
+
 
 
 
@@ -7607,6 +8152,7 @@ the entire quest to cease executing and all objects to be cleaned up.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">STEP&nbsp;</span>- The
 purpose of this command is to allow your quest to run in several
@@ -7637,6 +8183,8 @@ entire quest to cease executing and all objects to be cleaned up. &nbsp;See also
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">STEP <span style="color: rgb(102, 51, 102);">BREAK</span></span><span style="color: rgb(102, 51, 102);">-</span>
 This command will cause the quest script to stop evaluating any further
@@ -7659,6 +8207,8 @@ successfully run when this command is encountered.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span><span style="color: rgb(102, 51, 102);"> [XML FILE PATH]</span> - this will import
  a list of custom mobs from a .CMARE file generated using the EXPORT ROOM
@@ -7687,6 +8237,8 @@ then be accessed with the LOAD MOB, or LOAD MOBGROUP command. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">IMPORT ITEMS</span><span style="color: rgb(102, 51, 102);"> [XML FILE PATH] </span>- this will import
  a list of custom items from a .CMARE file generated using the EXPORT ROOM
@@ -7715,6 +8267,8 @@ can then be accessed with the LOAD ITEM or LOAD ITEMGROUP command. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span style="color: rgb(102, 51, 102);">([AREA NAME OR NAMES]) </span>- will set
  the current  designated area         to the area specified. Although this
@@ -7747,6 +8301,8 @@ on    how subsequent mob or item loading, or room   setting  commands work.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET AREA</span>&nbsp;<span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -7759,6 +8315,8 @@ on    how subsequent mob or item loading, or room   setting  commands work.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET AREAGROUP</span> <span style="color: rgb(102, 51, 102);">([AREA NAME OR NAMES]) </span>-
 essentially the same as set ROOMGROUP below, this will set the current
@@ -7772,6 +8330,7 @@ this will CLEAR the ROOMGROUP designation. This can have a profound
 impact
 on how subsequent mob or item loading, or room setting commands work.
 &nbsp;This command will automatically clear the AREA setting.</p>
+
 
 
 
@@ -7808,6 +8367,7 @@ on how subsequent mob or item loading, or room setting commands work.
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ROOMGROUP</span> <span style="color: rgb(102, 51, 102);">([ROOM NAME])</span> - will set the&nbsp;ROOMGROUP
  to the set specified. If an area has been previously designated, and not
@@ -7843,6 +8403,8 @@ ANY, followed by your other room name&nbsp;choices, separated by spaces.&nbsp;
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">ROOMGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -7869,6 +8431,8 @@ ANY, followed by your other room name&nbsp;choices, separated by spaces.&nbsp;
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span style="color: rgb(102, 51, 102);">([ROOM NAME]) </span>- will set the current
  designated room to the set specified. If a room or area has been previously
@@ -7904,6 +8468,8 @@ ANY, followed by your other room name&nbsp;choices, separated by spaces.&nbsp;
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -7932,6 +8498,8 @@ be  chosen.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ROOMGROUPAROUND</span> <span style="color: rgb(102, 51, 102);">[#RADIUS] ([ROOM NAME])</span>- will set
  the&nbsp;ROOMGROUP to the set of rooms up to RADIUS rooms from the previously
@@ -7967,6 +8535,8 @@ descriptions  of rooms.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET LOCALEGROUP</span> <span style="color: rgb(102, 51, 102);">([LOCALE])</span> - will set the ROOMGROUP
  to the ones with the specified class name. If an area has been previously
@@ -8002,6 +8572,8 @@ may be locale types such as stone, wooden, underwater, mountains, etc.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">LOCALEGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8028,6 +8600,8 @@ may be locale types such as stone, wooden, underwater, mountains, etc.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;LOCALEGROUPAROUND</span>
  <span style="color: rgb(102, 51, 102);">([#RADIUS]&nbsp;[LOCALE])</span> -
@@ -8065,6 +8639,8 @@ etc.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span><span style="color: rgb(102, 51, 102);"> ([LOCALE])</span> - will set the current
  designated  room to the one         with the specified class name. If a
@@ -8102,6 +8678,8 @@ etc.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8130,6 +8708,8 @@ be  chosen. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);">(RESELECT) ([MOB NAME]) </span>- will designate
  a set of mobs  with the given         name. If the name ends with MASK=...,
@@ -8166,6 +8746,8 @@ command.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">MOBGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8192,6 +8774,8 @@ command.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MOB</span><span style="color: rgb(102, 51, 102);"> </span>&nbsp;<span style="color: rgb(102, 51, 102);">(RESELECT) &nbsp;</span><span style="color: rgb(102, 51, 102);">([MOB NAME])</span> - will set the current
  mob to one with the given mob name. If the name ends with MASK=..., then
@@ -8231,6 +8815,8 @@ first  flag which, if specified, designates that a mob may be chosen if previous
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8259,6 +8845,8 @@ be  chosen. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span><span style="color: rgb(102, 51, 102);"> (RESELECT) ([CLASS])</span> - will set
 the current mob to one  with the given         class name. Ths mob chosen
@@ -8296,6 +8884,8 @@ or SET MOBTYPE command.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8324,6 +8914,8 @@ be  chosen. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);">(RESELECT) &nbsp;</span><span style="color: rgb(102, 51, 102);">([ITEM NAME]) </span>- will designate a
 set of items with the given name. If the name ends with MASK=..., then a
@@ -8359,6 +8951,8 @@ be placed in the itemgroup even if previously set, so long as the RESELECT
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">ITEMGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);"></span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8385,6 +8979,8 @@ be placed in the itemgroup even if previously set, so long as the RESELECT
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">(RESELECT) </span><span style="color: rgb(102, 51, 102);">([ITEM NAME])</span> - will set the current
  item to  one with the given         name. The item chosen will be selected
@@ -8421,6 +9017,8 @@ SET&nbsp;ITEM or SET&nbsp;ITEMTYPE command.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- serves the same purpose
  as the above command of the same name, but the argument is an object specifier.
@@ -8449,6 +9047,8 @@ be  chosen. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span> <span style="color: rgb(102, 51, 102);">(RESELECT) </span><span style="color: rgb(102, 51, 102);">([CLASS])</span> - will set the current
 item to one with the given class name. The item chosen will be selected from
@@ -8485,6 +9085,8 @@ flag was also used in the previous SET&nbsp;ITEM or SET&nbsp;ITEMTYPE command.
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span>&nbsp;<span style="color: rgb(102, 51, 102);">([#NUMBER]) [MOB NAME] </span>- will instantiate
  all (or optionally, the given number) mobs of the given name&nbsp;from the
@@ -8519,6 +9121,8 @@ the current  mob to the last one loaded. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">LOAD MOB</span> <span style="color: rgb(102, 51, 102);">[MOB NAME]</span> - will instantiate a mob
  of the  given name from the         list of mobs imported using the IMPORT
@@ -8551,6 +9155,8 @@ will    designate a random room and area. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span><span style="color: rgb(51, 102, 102);"></span>&nbsp;<span style="color: rgb(102, 51, 102);">([#NUMBER])</span> <span style="color: rgb(102, 51, 102);">[ITEM NAME] </span>- will instantiate all&nbsp;(or
  optionally, the given number)&nbsp;items of the given name from the list
@@ -8582,6 +9188,8 @@ the current item to the last one loaded.&nbsp;Use a name of ANY to load them all
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">LOAD ITEM</span> <span style="color: rgb(102, 51, 102);">[ITEM NAME]</span> - will instantiate an
  item of the  given name from         the list of items imported using the
@@ -8612,10 +9220,16 @@ designate     a  random room and area. &nbsp;Use a name of ANY to load a random 
 
 
 
+
       
-      <p><span style="color: rgb(51, 102, 102);">GIVE ITEM</span> - will give the
- currently  designated   item   (designated using the SET ITEM, or LOAD ITEM
- command)  to the last    designated mob or mobs (designated using the SET
+      
+      <p><span style="color: rgb(51, 102, 102);">GIVE ITEM</span> -
+will give a currently designated item (designated using the SET ITEM,
+SET ITEMGROUP, LOAD ITEM, or LOAD ITEMGROUP command) to the last
+designated mob or mobs (designated using the SET MOB, SET MOBGROUP,
+LOAD MOBGROUP, or LOAD MOB commands).</p>
+      <p><span style="color: rgb(51, 102, 102);">GIVE ITEMS</span> - will give all
+ currently  designated   items   (designated using the SET ITEM, SET ITEMGROUP, LOAD ITEM, or LOAD ITEMGROUP command)  to the last    designated mob or mobs (designated using the SET
  MOB, SET MOBGROUP, LOAD MOBGROUP, or LOAD  MOB commands).</p>
 
 
@@ -8630,12 +9244,15 @@ designate     a  random room and area. &nbsp;Use a name of ANY to load a random 
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">GIVE STAT<span style="color: rgb(102, 51, 102);"> [STAT ID] [VALUE]</span></span><span style="color: rgb(102, 51, 102);"> </span>-
 will give the currently designated object (designated using the SET
 ITEM/MOB/ROOM/AREA, or LOAD ITEM/MOB command) a new value for their
 internal stat designated by the STAT ID. &nbsp;This is an advanced
 coding feature; use it wisely.. </p>
+
 
 
 
@@ -8666,6 +9283,7 @@ coding feature; use it wisely.. </p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR ID] ([PARAMETERS]) </span>- The
  behavior ID must be a valid behavior class name. The parameters are any
@@ -8698,6 +9316,8 @@ in Parameters below  for more information on using this feature.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">  GIVE ABILITY</span><span style="color: rgb(102, 51, 102);"> [ABILITY ID] ([PARAMETERS]) </span>- The
  ability ID must be a valid ability class name. The parameters are any parameters
@@ -8729,6 +9349,8 @@ in Parameters  below for more information on using this feature. </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span> <span style="color: rgb(102, 51, 102);">[ABILITY ID] ([PARAMETERS]</span>) - The
  ability ID  must be a valid         ability class name. The parameters are
@@ -8761,6 +9383,8 @@ in Parameters  below for more information on using this feature.     </p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span> <span style="color: rgb(102, 51, 102);">[MOB NAME]</span> - The mob name is a mob
  which will be selected from the list of previously designated mobs (designated
@@ -8790,6 +9414,8 @@ mob  designation, nor does it change the location of either mob.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">TAKE BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR ID]</span>- The behavior ID must
  be a valid behavior class name.&nbsp; This command will take from the most
@@ -8817,6 +9443,8 @@ the  set or load commands), itemgroup, or roomgroup the above behavior.&nbsp;</p
 
 
 
+
+      
       
       <p>                 <span style="color: rgb(51, 102, 102);">TAKE</span><span style="color: rgb(51, 102, 102);"> ABILITY</span><span style="color: rgb(102, 51, 102);"> [ABILITY ID] </span>- The ability ID must
  be a valid ability class name. This command will take from the currently
@@ -8844,12 +9472,15 @@ above ability. </p>
 
 
 
+
+      
       
       <p>                 <span style="color: rgb(51, 102, 102);">TAKE</span><span style="color: rgb(51, 102, 102);"> AFFECT</span> <span style="color: rgb(102, 51, 102);">[ABILITY ID]&nbsp;</span> - The ability
 ID  must be a valid         ability class name. This command will take from
 the currently designated  mob, item, room, area, or mobgroup (designated
 using the set or load commands), itemgroup, or roomgroup the  above affect.&nbsp;
      </p>
+
 
 
 
@@ -8872,6 +9503,7 @@ using the set or load commands), itemgroup, or roomgroup the  above affect.&nbsp
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">RESET</span><span style="color: rgb(102, 51, 102);"></span>- If a ROOM has been designated using
  SET ROOM, or by any other previously described method, this command will
@@ -8904,6 +9536,8 @@ the process is completed.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">&lt;SCRIPT&gt;</span> - This designates
  the beginning of  embedded Javascript         in your quest script.&nbsp;
@@ -8931,6 +9565,8 @@ its  own line.&nbsp; See the next section  for   more  details.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">LOAD= <span style="color: rgb(102, 51, 102);">([QUEST FILE]) ([ARGUMENT] ... [ARGUMENT])
  &nbsp;</span></span>- This command will cause the specified external quest
@@ -8969,6 +9605,8 @@ a group of objects (such as MOBGROUP or ITEMGROUP). &nbsp;If that case occurs,
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">&lt;OPTION&gt; <span style="color: rgb(102, 51, 102);">([QUEST SCRIPT COMMANDS]) <span style="color: rgb(51, 102, 102);">&lt;/OPTION&gt;</span></span></span><span style="color: rgb(51, 102, 102);"><span style="color: rgb(102, 51, 102);">&nbsp;</span></span>-
  Putting quest script commands inside of &lt;OPTION&gt; tags means that, for
@@ -8998,6 +9636,8 @@ every execution of the quest script, only ONE&nbsp;of the &lt;OPTION&gt;
 
 
 
+
+      
       
       <p><span style="color: rgb(102, 0, 0); font-weight: bold;">* Note About #</span><span style="font-weight: bold;">. </span>&nbsp;In a quest script, anywhere the
  # sign is used above (such as [#TICKS] or [#PLAYERS], you may enter a normal
@@ -9026,6 +9666,8 @@ using real or integer numbers and any of the following operators: + - * \
 
 
 
+
+      
       
       <p><span style="color: rgb(102, 0, 0); font-weight: bold;"><a name="questcrobjsp"></a>* Object Specifiers</span><span style="font-weight: bold;">. </span>&nbsp;Many of the SET ... commands,
 such as SET MOBGROUP, SET MOB, SET ITEMGROUP, SET ROOM, etc, have forms which
@@ -9072,6 +9714,8 @@ specified ITEM.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(102, 0, 0); font-weight: bold;">* Object Specifiers
  in Parameters</span><span style="font-weight: bold;">.&nbsp;</span>When
@@ -9109,6 +9753,8 @@ article words from the name, or '|'  to replace all spaces in the name with
 
 
 
+
+      
       
       <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Mystery
  Objects in Quest  scripts:</strong></font></p>
@@ -9134,6 +9780,8 @@ article words from the name, or '|'  to replace all spaces in the name with
 
 
 
+
+      
       
       <p>In addition to the normal quest objects mentioned above, such as MOB,
 ITEM, ROOM and so forth, there are also extranous objects and groups intended
@@ -9161,6 +9809,8 @@ for use when building logic problem mysteries. &nbsp;The commands for setting
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET AGENT</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the AGENT variable
  to the [OBJECT]. &nbsp;Will also set the MOB object. &nbsp;See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
@@ -9188,6 +9838,8 @@ for use when building logic problem mysteries. &nbsp;The commands for setting
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the AGENTGROUP
  variable to the [OBJECT]. &nbsp;Will also set the MOBGROUP object to the
@@ -9216,6 +9868,8 @@ the MOB. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]&nbsp;</span>- Sets the AGENTGROUP
  variable to the currently set MOBGROUP, selecting at most NUMBER mobs randomly
@@ -9245,6 +9899,8 @@ well  as designate one random mob from the group as the AGENT and the MOB.
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHEREHAPPENED</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the WHEREHAPPENED
  variable to the [OBJECT]. &nbsp;Will also set the ROOM object. &nbsp;See
@@ -9273,6 +9929,8 @@ above this command listing.&nbsp; &nbsp;If the object resolves
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHEREHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the&nbsp;WHEREHAPPENEDGROUP
  variable to the [OBJECT]. &nbsp;Will also set the ROOMGROUP object to the
@@ -9301,6 +9959,8 @@ above this command listing.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHEREHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]&nbsp;</span>- Sets the&nbsp;WHEREHAPPENEDGROUP
  variable to the currently set ROOMGROUP, selecting at most NUMBER rooms randomly
@@ -9330,6 +9990,8 @@ well as designate one random room from the group as the&nbsp;WHEREHAPPENED
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHEREAT</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the WHEREAT
 variable to the [OBJECT]. &nbsp;Will also set the ROOM object. &nbsp;See
@@ -9358,6 +10020,8 @@ to a group of objects, a random one from the group will be chosen.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span style="color: rgb(102, 51, 102);">[</span><span style="color: rgb(102, 51, 102);">OBJECT]&nbsp;</span>- Sets the&nbsp;WHEREATGROUP
  variable to the [OBJECT]. &nbsp;Will also set the ROOMGROUP object to the
@@ -9386,6 +10050,8 @@ above this command listing.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span style="color: rgb(102, 51, 102);">[</span><span style="color: rgb(102, 51, 102);">#NUMBER]&nbsp;</span>- Sets the&nbsp;WHEREATGROUP
  variable to the currently set ROOMGROUP, selecting at most NUMBER rooms randomly
@@ -9415,6 +10081,8 @@ the ROOM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifier
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENHAPPENED</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the WHENHAPPENED
  variable to the timeclock [OBJECT]. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
@@ -9443,6 +10111,8 @@ the ROOM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifier
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENHAPPENED</span> <span style="color: rgb(102, 51, 102);">[#HOURS-DIFFERENCE]&nbsp;</span>- Sets the
  WHENHAPPENED variable to the current time plus or minus the hours difference
@@ -9450,6 +10120,7 @@ the ROOM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifier
  above this command listing.&nbsp;
 &nbsp;If the object resolves to a group of objects, a random one from the
 group will be chosen.</p>
+
 
 
 
@@ -9472,6 +10143,7 @@ group will be chosen.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the&nbsp;WHENHAPPENEDGROUP
  variable to the [OBJECT]. &nbsp;Will also&nbsp;designate one random time
@@ -9500,6 +10172,8 @@ this command listing.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">] ... </span><span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">]&nbsp;</span>- Sets the&nbsp;WHENHAPPENEDGROUP
  list to the current time plus or minus the list of hours-differences given.
@@ -9528,6 +10202,8 @@ this command listing.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the WHENHAPPENED
  variable to the timeclock [OBJECT]. &nbsp;See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
@@ -9556,6 +10232,8 @@ above this
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span style="color: rgb(102, 51, 102);">[#HOURS-DIFFERENCE]&nbsp;</span>- Sets the
  WHENAT variable to the current time plus or minus the hours difference specified.
@@ -9563,6 +10241,7 @@ above this
 above this command listing.&nbsp; &nbsp;If the
  object resolves to a group of objects, a random one from the group will
 be  chosen.</p>
+
 
 
 
@@ -9585,6 +10264,7 @@ be  chosen.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENATGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the&nbsp;WHENATGROUP
  variable to the [OBJECT]. &nbsp;Will also&nbsp;designate one random time
@@ -9613,6 +10293,8 @@ from the group as the&nbsp;WHENAT. &nbsp;See&nbsp;<a href="ArchonTome.html#quest
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET WHENATGROUP</span> <span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">] ... </span><span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">]&nbsp;</span>- Sets the&nbsp;WHENATGROUP
  list to the current time plus or minus the list of hours-differences given.
@@ -9641,6 +10323,8 @@ from the group as the&nbsp;WHENAT. &nbsp;See&nbsp;<a href="ArchonTome.html#quest
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the FACTION
 variable to the faction string [OBJECT]. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
@@ -9669,9 +10353,12 @@ a random one from the group will be chosen.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span style="color: rgb(102, 51, 102);">[FACTION NAME]&nbsp;</span>- Sets the FACTION
  variable to one of the given name or ANY to choose a random one.</p>
+
 
 
 
@@ -9694,6 +10381,7 @@ a random one from the group will be chosen.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET FACTIONGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the FACTIONGROUP
  variable to the [OBJECT]. &nbsp;Will also designate one random faction from
@@ -9713,6 +10401,7 @@ a random one from the group will be chosen.</p>
 
 
 
+
    <span style="color: rgb(51, 102, 102);"></span>
 
 
@@ -9722,6 +10411,7 @@ a random one from the group will be chosen.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET FACTIONGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]&nbsp;</span>- Sets the FACTIONGROUP
  variable to NUMBER random factions, or ALL to set it to all of them. &nbsp;Will
@@ -9741,6 +10431,7 @@ above this command listing.</p>
 
 
 
+
    <span style="color: rgb(51, 102, 102);"></span>
 
 
@@ -9750,6 +10441,7 @@ above this command listing.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET FACTIONGROUP</span> <span style="color: rgb(102, 51, 102);">[FACTION NAME] ... [FACTION NAME] </span>-
  Sets the FACTIONGROUP variable to the set of factions designated by the faction
@@ -9769,6 +10461,7 @@ double-quotes.&nbsp;</p>
 
 
 
+
    <span style="color: rgb(51, 102, 102);"></span>
 
 
@@ -9778,6 +10471,7 @@ double-quotes.&nbsp;</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET TARGET </span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the TARGET variable
  to the [OBJECT]. &nbsp;Will also set the MOB or ITEM object depending on
@@ -9807,6 +10501,8 @@ what gets designated. &nbsp;See <a href="ArchonTome.html#questcrobjsp">Object Sp
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET TARGETGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the TARGETGROUP
  variable to the [OBJECT]. &nbsp;Will also set the MOBGROUP or ITEMGROUP
@@ -9836,6 +10532,8 @@ the MOB or ITEM.  &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object S
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET TARGETGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]&nbsp;</span>- Sets the TARGETGROUP
  variable to the currently set MOBGROUP (if one is currently set) or ITEMGROUP
@@ -9844,6 +10542,7 @@ the MOB or ITEM.  &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object S
 well  as designate one random mob or item from the group as the TARGET and
 either  the MOB or ITEM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
  above this command listing.</p>
+
 
 
 
@@ -9866,6 +10565,7 @@ either  the MOB or ITEM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">O
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET TOOL </span><span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the TOOL variable
  to the [OBJECT]. &nbsp;Will also set the MOB or ITEM object depending on
@@ -9895,6 +10595,8 @@ what gets designated. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Obje
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the TOOLGROUP
  variable to the [OBJECT]. &nbsp;Will also set the MOBGROUP or ITEMGROUP
@@ -9924,6 +10626,8 @@ MOB or ITEM.  &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Speci
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]&nbsp;</span>- Sets the TOOLGROUP
  variable to the currently set MOBGROUP (if one is currently set) or ITEMGROUP
@@ -9954,6 +10658,8 @@ either  the MOB or ITEM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">O
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET MOTIVE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the MOTIVE variable
  to the&nbsp;string [OBJECT]. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
@@ -9982,9 +10688,12 @@ either  the MOB or ITEM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">O
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">MOTIVE</span> <span style="color: rgb(102, 51, 102);">[STRING]&nbsp;</span>- Sets the MOTIVE variable
  to the string.</p>
+
 
 
 
@@ -10008,10 +10717,12 @@ either  the MOB or ITEM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">O
 
 
       
+      
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">MOTIVE</span><span style="color: rgb(51, 102, 102);">GROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the MOTIVEGROUP
  variable to the [OBJECT]. &nbsp;Will also designate one random string from
  the group as the MOTIVE. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
  above this command listing.</p>
+
 
 
 
@@ -10035,10 +10746,12 @@ either  the MOB or ITEM. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">O
 
 
       
+      
       <p><span style="color: rgb(51, 102, 102);">SET&nbsp;</span><span style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span style="color: rgb(102, 51, 102);">[STRING] .. [STRING] </span>- Sets the MOTIVEGROUP
  to the set of strings specified. &nbsp;Will also designate one random string
  from the group as the MOTIVE. &nbsp;The strings are space delimited, and
 words grouped with double-quotes.</p>
+
 
 
 
@@ -10061,6 +10774,7 @@ words grouped with double-quotes.</p>
 
 
 
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET ACTION</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the ACTION variable
  to the&nbsp;string [OBJECT]. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
@@ -10089,9 +10803,12 @@ words grouped with double-quotes.</p>
 
 
 
+
+      
       
       <p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">ACTION</span> <span style="color: rgb(102, 51, 102);">[STRING]&nbsp;</span>- Sets the ACTION variable
  to the string.</p>
+
 
 
 
@@ -10115,10 +10832,12 @@ words grouped with double-quotes.</p>
 
 
       
+      
       <p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">ACTION</span><span style="color: rgb(51, 102, 102);">GROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]&nbsp;</span>- Sets the ACTIONGROUP
  variable to the [OBJECT]. &nbsp;Will also designate one random string from
  the group as the ACTION. &nbsp;See&nbsp;<a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
  above this command listing.</p>
+
 
 
 
@@ -10142,10 +10861,12 @@ words grouped with double-quotes.</p>
 
 
       
+      
       <p><span style="color: rgb(51, 102, 102);">SET </span><span style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span style="color: rgb(102, 51, 102);">[STRING] .. [STRING] </span>- Sets the ACTIONGROUP
  to the set of strings specified. &nbsp;Will also designate one random string
  from the group as the ACTION. &nbsp;The strings are space delimited, and
 words grouped with double-quotes.</p>
+
 
 
 
@@ -10168,6 +10889,7 @@ words grouped with double-quotes.</p>
 
 
 
+      
       
       <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>JavaScripting
          in Quest  scripts:</strong></font></p>
@@ -10193,6 +10915,8 @@ words grouped with double-quotes.</p>
 
 
 
+
+      
       
       <p>The CoffeeMud quest manager engine will allow you embed  Javascript into
          your quest scripts for the purpose of assisting in setting up  your
@@ -10221,6 +10945,8 @@ words grouped with double-quotes.</p>
 
 
 
+
+      
       
       <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font color="#000000"><font size="3">Javascript is a wholly different language
          than the standard  Scriptable/MOBPROG language OR the&nbsp;quest
@@ -10250,6 +10976,8 @@ itself: </font><a href="http://www.mozilla.org/js/"><font size="3">http://www.mo
 
 
 
+
+      
       
       <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font color="#000000" size="3"><span style="font-size: 14pt; color: blue;"><font color="#000000" size="3">Aside from  the above information about JavaScripting
          in CoffeeMud, there are still a few  more details to learn about
@@ -10282,6 +11010,8 @@ line   delimeter,    it must first   be escaped:  \;</font></span></font></span>
 
 
 
+
+      
       
       <p>The quest manager engine will also make a couple of  useful methods available
          to your Javascript for assisting in setting up your  quests.&nbsp;
@@ -10321,6 +11051,8 @@ Quest     interface  for more information on these   methods; they  are located
 
 
 
+
+      
       
       <p>Another method provided to Javascript by the quest  manager is the <font face="Courier New" size="2">QuestState  setupState() <font face="Times New Roman" size="3">method.&nbsp;&nbsp;The QuestState object
          made available by  this method contains information on the current
@@ -10354,6 +11086,8 @@ was executed.&nbsp;&nbsp;&nbsp;     The Vectors </font></font><font size="2"><fo
 
 
 
+
+      
       
       <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Final
          Quest  Notes:</strong></font></p>
@@ -10379,6 +11113,8 @@ was executed.&nbsp;&nbsp;&nbsp;     The Vectors </font></font><font size="2"><fo
 
 
 
+
+      
       
       <p>This stuff may seem complicated, but just make sure you  carefully examine
          the sample quests found in the CoffeeMud resources directory!  Also,
@@ -10405,8 +11141,11 @@ was executed.&nbsp;&nbsp;&nbsp;     The Vectors </font></font><font size="2"><fo
 
 
 
+
+      
       
       <p class="MsoNormal"><a name="holidays"><strong><font color="#008000" size="5">Holidays</font></strong></a></p>
+
 
 
 
@@ -10430,7 +11169,9 @@ was executed.&nbsp;&nbsp;&nbsp;     The Vectors </font></font><font size="2"><fo
       Holidays are a special/reserved quest defined by file /resources/quests/holidays/holidays.quest. <br>
 
 
+
       <br>
+
 
 
 They are very simple Scriptless quests that can be started at random
@@ -10440,7 +11181,9 @@ and only the mobs&nbsp;in those areas specified in the settings, and
 only with the features you specify.&nbsp; <br>
 
 
+
       <br>
+
 
 
 Use LIST HOLIDAYS to see a&nbsp;list of all defined holidays and the
@@ -10449,7 +11192,9 @@ related&nbsp;holidays are included which impact any area that meets
 their special criteria.&nbsp; <br>
 
 
+
       <br>
+
 
 
 You can use MODIFY HOLIDAY &lt;name&gt; to&nbsp;change the settings for
@@ -10458,66 +11203,88 @@ HOLIDAY name to create a new&nbsp;one that will automatically apply to
 the area the creator is standing in when it is created.<br>
 
 
+
       <br>
+
 
 
 Here are the standard settings for holidays:<br>
 
 
+
       <br>
 
 
+
       <br>
+
 
 
 
       
+      
       <table style="text-align: left; background-color: rgb(255, 255, 153); width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
 
 
         <tbody>
 
 
+
           <tr>
+
 
 
             <td><span style="font-weight: bold;">Property</span></td>
 
 
+
             <td><span style="font-weight: bold;">Description</span></td>
+
 
 
           </tr>
 
 
+
           <tr>
+
 
 
             <td style="font-style: italic;">Holiday Name</td>
 
 
+
             <td>A unique name for your holiday. &nbsp;It should be unique not only among holidays, but also among quests.</td>
+
 
 
           </tr>
 
 
+
           <tr>
+
 
 
             <td style="font-style: italic;">Schedule Type</td>
 
 
+
             <td>The type of time-trigger for the holiday, whether a random interval, a mud-date, or a real-life date.</td>
+
 
 
           </tr>
 
 
+
           <tr>
 
 
+
             <td style="font-style: italic;">Interval Ticks</td>
+
 
 
             <td>If the time trigger is a random interval, this is the
@@ -10526,61 +11293,81 @@ operators like +-/*(), as well as the special ? operator to generate a
 random number. &nbsp;1?5 would mean a random number between 1-5.</td>
 
 
+
           </tr>
 
 
+
           <tr>
+
 
 
             <td style="font-style: italic;">Mud-Day</td>
 
 
+
             <td>If the time trigger is a mud-date, this is that date in month-day numeric format (like 1-30).</td>
+
 
 
           </tr>
 
 
+
           <tr>
+
 
 
             <td style="font-style: italic;">Real Life Date</td>
 
 
+
             <td>If the time trigger is a real-life date, this is that date in month-day numeric format (like 12-31).</td>
+
 
 
           </tr>
 
 
+
           <tr>
+
 
 
             <td style="font-style: italic;">Duration Ticks</td>
 
 
+
             <td>The number of ticks (4 second periods) that the changes specified below will be in effect once the holiday triggers.</td>
+
 
 
           </tr>
 
 
+
           <tr>
+
 
 
             <td style="font-style: italic;">Areas List</td>
 
 
+
             <td>The list of areas to apply the holiday to. &nbsp;Area names are space separated, with multiple words grouped in double quotes.</td>
+
 
 
           </tr>
 
 
+
           <tr>
 
 
+
             <td style="font-style: italic;">Mask for mobs that apply</td>
+
 
 
             <td>A zapper-mask that determines which mobs inside the
@@ -10589,13 +11376,17 @@ designated area will benefit from the changes specified below.
 ? at the prompt here.</td>
 
 
+
           </tr>
+
 
 
           <tr>
 
 
+
             <td style="font-style: italic;">Mood setting</td>
+
 
 
             <td>If this entry is blank, it has no effect.
@@ -10603,13 +11394,17 @@ designated area will benefit from the changes specified below.
 in during your holiday. &nbsp;Use ? for a list.</td>
 
 
+
           </tr>
+
 
 
           <tr>
 
 
+
             <td style="font-style: italic;">Aggressive Setting</td>
+
 
 
             <td>If this entry is blank, it has no effect.
@@ -10618,13 +11413,17 @@ in during your holiday. &nbsp;Use ? for a list.</td>
 field must not be blank if you want it to work!</td>
 
 
+
           </tr>
+
 
 
           <tr>
 
 
+
             <td style="font-style: italic;">Price Factor</td>
+
 
 
             <td>This change will only apply to mob shopkeepers.
@@ -10634,13 +11433,17 @@ Price Factors. &nbsp;You can specify as many different price-factors
 for as many different types of items as you need to.</td>
 
 
+
           </tr>
+
 
 
           <tr>
 
 
+
             <td style="font-style: italic;">MudChat for words...</td>
+
 
 
             <td>This is a list of trigger words that mobs will respond
@@ -10651,13 +11454,17 @@ single digit weight, to show how often that selection should be chosen
 among the others.</td>
 
 
+
           </tr>
+
 
 
           <tr>
 
 
+
             <td style="font-style: italic;">MOB Behavior</td>
+
 
 
             <td>A list of Behaviors to apply to mobs during your
@@ -10666,13 +11473,17 @@ on this, as it works the exact same way. &nbsp;Use ? for a list, and ?
 will also work in the parameters for help.</td>
 
 
+
           </tr>
+
 
 
           <tr>
 
 
+
             <td style="font-style: italic;">MOB Property</td>
+
 
 
             <td>A list of Affects/Effects to apply to mobs during your
@@ -10681,13 +11492,17 @@ how this works. &nbsp;Use ? for a list, and ? will also work in the
 parameters for help.</td>
 
 
+
           </tr>
 
 
 
+
+        
         
         </tbody>
 
+      
       
       </table>
 
@@ -10712,6 +11527,8 @@ parameters for help.</td>
 
 
 
+
+      
       
       <p class="MsoNormal"><a name="socials"><strong><font color="#008000" size="5">Socials</font></strong></a></p>
 
@@ -10736,6 +11553,8 @@ parameters for help.</td>
 
 
 
+
+      
       
       <p>Socials are those miscellaneous and happy little emoting  blurbs that help
 make muds a more fun and realistic place for players to  interact.&nbsp; Without
@@ -10764,6 +11583,8 @@ editor:</p>
 
 
 
+
+      
       
       <p><strong><font style="background-color: moccasin;">CREATE SOCIAL  TWIGGLE</font></strong><br>
 
@@ -10779,7 +11600,9 @@ editor:</p>
 
 
 
+
                         <br>
+
 
 
 
@@ -10810,7 +11633,9 @@ and TWIGGLE (to&nbsp;a  target).&nbsp;     This is  type 1  of 4.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -10838,7 +11663,9 @@ and TWIGGLE (to&nbsp;a  target).&nbsp;     This is  type 1  of 4.<br>
 
 
 
+
                         Social name  'TWIGGLE' Enter new.<br>
+
 
 
 
@@ -10866,7 +11693,9 @@ and TWIGGLE (to&nbsp;a  target).&nbsp;     This is  type 1  of 4.<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -10896,7 +11725,9 @@ it.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -10924,7 +11755,9 @@ it.<br>
 
 
 
+
                         Target=NONE<br>
+
 
 
 
@@ -10952,7 +11785,9 @@ it.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -10981,7 +11816,9 @@ it.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11009,7 +11846,9 @@ it.<br>
 
 
 
+
                         You see 'null'.&nbsp; Enter new.<br>
+
 
 
 
@@ -11037,7 +11876,9 @@ it.<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11066,7 +11907,9 @@ perform  the   social.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11094,6 +11937,7 @@ perform  the   social.<br>
 
 
 
+
                         <br>
 
 
@@ -11108,7 +11952,9 @@ perform  the   social.<br>
 
 
 
+
                         <em>Your action type=MOVEMENT<br>
+
 
 
 
@@ -11137,7 +11983,9 @@ Movement&nbsp;<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11179,8 +12027,11 @@ a M)ovement.     Type "<strong>M</strong>"    for that.</p>
 
 
 
+
+      
       
       <p><em>Others see 'null'.&nbsp; Enter  new.<br>
+
 
 
 
@@ -11208,7 +12059,9 @@ a M)ovement.     Type "<strong>M</strong>"    for that.</p>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11237,7 +12090,9 @@ perform  a   social.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11266,7 +12121,9 @@ toes.</strong><br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11296,6 +12153,7 @@ end of   this tutorial      for you.<br>
 
 
 
+
                         <br>
 
 
@@ -11310,7 +12168,9 @@ end of   this tutorial      for you.<br>
 
 
 
+
                         <strong>Others Effect type=HANDS<br>
+
 
 
 
@@ -11339,7 +12199,9 @@ end of   this tutorial      for you.<br>
 
 
 
+
                         </strong><br>
+
 
 
 
@@ -11379,6 +12241,8 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
+      
       
       <p>And that concludes the creation of our TWIGGLE social,  type 1.<br>
 
@@ -11394,7 +12258,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         <br>
+
 
 
 
@@ -11422,7 +12288,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         <br>
+
 
 
 
@@ -11450,7 +12318,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         <br>
+
 
 
 
@@ -11478,7 +12348,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         Social name 'TWIGGLE' Enter new.<br>
+
 
 
 
@@ -11506,7 +12378,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11534,7 +12408,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         <br>
+
 
 
 
@@ -11562,7 +12438,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         Target=NONE<br>
+
 
 
 
@@ -11590,7 +12468,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11619,7 +12499,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         <br>
+
 
 
 
@@ -11647,6 +12529,7 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         : <br>
 
 
@@ -11661,7 +12544,9 @@ would  be left  for handshakes,  highfives,     etc.&nbsp;</p>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11690,7 +12575,9 @@ TWIGGLE   SELF.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11719,6 +12606,7 @@ TWIGGLE   SELF.<br>
 
 
 
+
                         <br>
 
 
@@ -11733,7 +12621,9 @@ TWIGGLE   SELF.<br>
 
 
 
+
                         <em>Your action type=MOVEMENT<br>
+
 
 
 
@@ -11762,7 +12652,9 @@ Movement<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11791,7 +12683,9 @@ Movement<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11819,6 +12713,7 @@ Movement<br>
 
 
 
+
                         :<br>
 
 
@@ -11833,7 +12728,9 @@ Movement<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11862,7 +12759,9 @@ the social.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -11891,6 +12790,7 @@ toes at  &lt;S-HIM-HERSELF&gt;.        Very odd.<br>
 
 
 
+
                         </strong><br>
 
 
@@ -11905,7 +12805,9 @@ toes at  &lt;S-HIM-HERSELF&gt;.        Very odd.<br>
 
 
 
+
                         <em>Others Effect type=HANDS<br>
+
 
 
 
@@ -11934,7 +12836,9 @@ toes at  &lt;S-HIM-HERSELF&gt;.        Very odd.<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -11972,6 +12876,8 @@ it's a <strong>V</strong>)isual         requirement.</p>
 
 
 
+
+      
       
       <p>And that concludes the creation of our type 2 TWIGGLE  social.</p>
 
@@ -11996,9 +12902,12 @@ it's a <strong>V</strong>)isual         requirement.</p>
 
 
 
+
+      
       
       <p><strong><font style="background-color: moccasin;">CREATE SOCIAL TWIGGLE
           ALL</font><br>
+
 
 
 
@@ -12026,7 +12935,9 @@ it's a <strong>V</strong>)isual         requirement.</p>
 
 
 
+
                         Yay!&nbsp;Type 3! The ALL is the Target Name.<br>
+
 
 
 
@@ -12054,7 +12965,9 @@ it's a <strong>V</strong>)isual         requirement.</p>
 
 
 
+
                         <em>You wave  your arms...<br>
+
 
 
 
@@ -12082,6 +12995,7 @@ it's a <strong>V</strong>)isual         requirement.</p>
 
 
 
+
                         : <br>
 
 
@@ -12096,7 +13010,9 @@ it's a <strong>V</strong>)isual         requirement.</p>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12125,7 +13041,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12153,7 +13071,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         Target=NONE<br>
+
 
 
 
@@ -12181,7 +13101,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12210,7 +13132,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12238,6 +13162,7 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         :<br>
 
 
@@ -12252,7 +13177,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12281,7 +13208,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12309,7 +13238,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12338,6 +13269,7 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
 
 
@@ -12352,7 +13284,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <em>Your action type=MOVEMENT<br>
+
 
 
 
@@ -12381,7 +13315,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12409,7 +13345,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12437,7 +13375,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         :<br>
+
 
 
 
@@ -12465,6 +13405,7 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         What those&nbsp;twiggled at  people&nbsp;witness.<br>
 
 
@@ -12479,7 +13420,9 @@ You have  type   one   and   two. Why  make 3 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12508,6 +13451,7 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         <br>
 
 
@@ -12522,7 +13466,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         <em>Others Effect type=HANDS<br>
+
 
 
 
@@ -12551,7 +13497,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12580,7 +13528,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12608,7 +13558,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12637,7 +13589,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12665,7 +13619,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         Social name  'TWIGGLE' Enter new.<br>
+
 
 
 
@@ -12693,7 +13649,9 @@ toes  at everyone.      Very   strange.</strong><br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12722,7 +13680,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12750,7 +13710,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         Target=NONE<br>
+
 
 
 
@@ -12778,7 +13740,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12807,7 +13771,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12835,6 +13801,7 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         :<br>
 
 
@@ -12849,7 +13816,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -12878,7 +13847,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12907,7 +13878,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -12936,6 +13909,7 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         <br>
 
 
@@ -12950,7 +13924,9 @@ You  have   type   one,   two,   and three. Why make&nbsp;4 different?<br>
 
 
 
+
                         <em>Your action type=MOVEMENT<br>
+
 
 
 
@@ -12979,7 +13955,9 @@ Movement<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -13007,7 +13985,9 @@ Movement<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13035,7 +14015,9 @@ Movement<br>
 
 
 
+
                         :<br>
+
 
 
 
@@ -13063,6 +14045,7 @@ Movement<br>
 
 
 
+
                         What those bystanders  witness.<br>
 
 
@@ -13077,7 +14060,9 @@ Movement<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13106,6 +14091,7 @@ toes  at  &lt;T-NAME&gt;.        Very strange.</strong><br>
 
 
 
+
                         <br>
 
 
@@ -13120,7 +14106,9 @@ toes  at  &lt;T-NAME&gt;.        Very strange.</strong><br>
 
 
 
+
                         <em>Others Effect type=HANDS<br>
+
 
 
 
@@ -13149,7 +14137,9 @@ toes  at  &lt;T-NAME&gt;.        Very strange.</strong><br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -13178,7 +14168,9 @@ toes  at  &lt;T-NAME&gt;.        Very strange.</strong><br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13206,6 +14198,7 @@ toes  at  &lt;T-NAME&gt;.        Very strange.</strong><br>
 
 
 
+
                         :<br>
 
 
@@ -13220,7 +14213,9 @@ toes  at  &lt;T-NAME&gt;.        Very strange.</strong><br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -13249,7 +14244,9 @@ you  would   see.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13278,6 +14275,7 @@ toes  at  you.</strong><br>
 
 
 
+
                         <br>
 
 
@@ -13292,7 +14290,9 @@ toes  at  you.</strong><br>
 
 
 
+
                         <em>Target Effect type=HEARING NOISE<br>
+
 
 
 
@@ -13321,7 +14321,9 @@ toes  at  you.</strong><br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -13350,7 +14352,9 @@ also  be <strong>V</strong>)isual.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13378,6 +14382,7 @@ also  be <strong>V</strong>)isual.<br>
 
 
 
+
                         :<br>
 
 
@@ -13392,7 +14397,9 @@ also  be <strong>V</strong>)isual.<br>
 
 
 
+
                         </em><br>
+
 
 
 
@@ -13421,7 +14428,9 @@ also  be <strong>V</strong>)isual.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13450,7 +14459,9 @@ also  be <strong>V</strong>)isual.<br>
 
 
 
+
                         <br>
+
 
 
 
@@ -13494,9 +14505,12 @@ social you want  to change and  change it  accordingly.</p>
 
 
 
+
+      
       
       <p><font style="background-color: moccasin;">======= AND NOW FOR THE LIST
          OF TAGS =======</font> <br>
+
 
 
 
@@ -13525,8 +14539,10 @@ social you want  to change and  change it  accordingly.</p>
 
 
 
+
                         &lt;S-HIM-HER&gt; Outputs 'You'  if Observer=Source,
  otherwise    'Him'/'Her'.      <br>
+
 
 
 
@@ -13555,8 +14571,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;S-NAMESELF&gt; Outputs 'Yourself' if  Observer=Source,
   otherwise     the   Name <br>
+
 
 
 
@@ -13585,7 +14603,9 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;S-SIRMADAM&gt; Outputs 'Sir'/'Madam' <br>
+
 
 
 
@@ -13614,8 +14634,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;S-HAS-HAVE&gt; Outputs 'Have' if  Observer=Source,
  otherwise     'Has'.    <br>
+
 
 
 
@@ -13644,8 +14666,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;S-HIM-HERSELF&gt; Outputs 'Yourself' if  Observer=Source,
     otherwise      the 'Himself'/'Herself' <br>
+
 
 
 
@@ -13674,8 +14698,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;T-HIS-HER&gt; Outputs 'You' if Observer=Target,
   otherwise    'His'/'Her'.      <br>
+
 
 
 
@@ -13704,8 +14730,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;T-NAME&gt; Outputs 'You' if Observer=Target,
 otherwise    the   Name.    <br>
+
 
 
 
@@ -13734,6 +14762,7 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;T-HE-SHE&gt;  Outputs 'You' if Observer=Target,
  otherwise    'He'/'She'      <br>
 
@@ -13749,7 +14778,9 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;T-SIRMADAM&gt; Outputs 'Sir'/'Madam' <br>
+
 
 
 
@@ -13778,8 +14809,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;T-HAS-HAVE&gt; Outputs 'Have' if  Observer=Target,
  otherwise     'Has'.    <br>
+
 
 
 
@@ -13808,8 +14841,10 @@ otherwise    the   Name.    <br>
 
 
 
+
                         &lt;T-HIM-HERSELF&gt; Outputs 'Yourself' if  Observer=Source,
     otherwise      the 'Himself'/'Herself' <br>
+
 
 
 
@@ -13847,6 +14882,8 @@ otherwise    the   Name.    <br>
 
 
 
+
+      
       
       <p class="MsoNormal"><a name="polls"><strong><font color="#008000" size="5">Polls</font></strong></a></p>
 
@@ -13871,6 +14908,8 @@ otherwise    the   Name.    <br>
 
 
 
+
+      
       
       <p>Polls can be an entertaining and sometimes amusing way  to&nbsp;measure
          the thoughts of players.&nbsp; CoffeeMud supports  single-selection
@@ -13900,6 +14939,8 @@ otherwise    the   Name.    <br>
 
 
 
+
+      
       
       <p><strong>CREATE POLL</strong></p>
 
@@ -13924,6 +14965,8 @@ otherwise    the   Name.    <br>
 
 
 
+
+      
       
       <p>This command will create a new blank poll.&nbsp; When a  poll is created
          or modified, you are presented with a list of properties to fill
@@ -13951,6 +14994,8 @@ The properties      include:</p>
 
 
 
+
+      
       
       <p>
 
@@ -13962,7 +15007,9 @@ The properties      include:</p>
 
 
       
+      
       <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
 
 
 
@@ -13990,7 +15037,9 @@ The properties      include:</p>
 
 
 
+
                             <tr>
+
 
 
 
@@ -14018,7 +15067,9 @@ The properties      include:</p>
 
 
 
+
                              <td width="75%"><strong>Description</strong></td>
+
 
 
 
@@ -14046,6 +15097,7 @@ The properties      include:</p>
 
 
 
+
                            <tr>
 
 
@@ -14060,7 +15112,9 @@ The properties      include:</p>
 
 
 
+
                              <td><em>Name</em></td>
+
 
 
 
@@ -14089,7 +15143,9 @@ The properties      include:</p>
 
 
 
+
                             </tr>
+
 
 
 
@@ -14117,7 +15173,9 @@ The properties      include:</p>
 
 
 
+
                              <td><em>Introduction</em></td>
+
 
 
 
@@ -14146,7 +15204,9 @@ The properties      include:</p>
 
 
 
+
                             </tr>
+
 
 
 
@@ -14174,7 +15234,9 @@ The properties      include:</p>
 
 
 
+
                              <td><em>Results Header</em></td>
+
 
 
 
@@ -14203,7 +15265,9 @@ The properties      include:</p>
 
 
 
+
                             </tr>
+
 
 
 
@@ -14231,7 +15295,9 @@ The properties      include:</p>
 
 
 
+
                              <td><em>Qual Mask</em></td>
+
 
 
 
@@ -14262,7 +15328,9 @@ described        in   the Prop_HaveZapper.&nbsp;   Enter HELP Prop_HaveZapper
 
 
 
+
                             </tr>
+
 
 
 
@@ -14290,7 +15358,9 @@ described        in   the Prop_HaveZapper.&nbsp;   Enter HELP Prop_HaveZapper
 
 
 
+
                              <td><em>Poll Active</em></td>
+
 
 
 
@@ -14322,7 +15392,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                             </tr>
+
 
 
 
@@ -14350,7 +15422,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                              <td><em>Preview Results</em></td>
+
 
 
 
@@ -14380,7 +15454,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                             </tr>
+
 
 
 
@@ -14408,7 +15484,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                              <td><em>Allow  Abstentions</em></td>
+
 
 
 
@@ -14437,7 +15515,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                             </tr>
+
 
 
 
@@ -14465,7 +15545,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                              <td><em>Use IP Addresses</em></td>
+
 
 
 
@@ -14495,7 +15577,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                             </tr>
+
 
 
 
@@ -14523,7 +15607,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                              <td><em>Hide Results</em></td>
+
 
 
 
@@ -14552,7 +15638,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                             </tr>
+
 
 
 
@@ -14580,7 +15668,9 @@ is used   and        passes.&nbsp;     Normally  a poll must be made inactive
 
 
 
+
                              <td><em>POLL CMD Only</em></td>
+
 
 
 
@@ -14610,7 +15700,9 @@ a  poll  either      at  login, or via the POLL command, this flag will make
 
 
 
+
                             </tr>
+
 
 
 
@@ -14638,7 +15730,9 @@ a  poll  either      at  login, or via the POLL command, this flag will make
 
 
 
+
                              <td><em>Expiration Date</em></td>
+
 
 
 
@@ -14669,7 +15763,9 @@ the MODIFY   POLL          command.</td>
 
 
 
+
                             </tr>
+
 
 
 
@@ -14697,7 +15793,9 @@ the MODIFY   POLL          command.</td>
 
 
 
+
                              <td><em>New Vote Options</em></td>
+
 
 
 
@@ -14726,6 +15824,7 @@ choose    between.</td>
 
 
 
+
                             </tr>
 
 
@@ -14753,6 +15852,8 @@ choose    between.</td>
 
 
 
+
+        
         
         </tbody>
 
@@ -14763,6 +15864,7 @@ choose    between.</td>
 
 
 
+      
       
       </table>
 
@@ -14778,7 +15880,9 @@ choose    between.</td>
 
 
 
+
                         </p>
+
 
 
 
@@ -14808,6 +15912,8 @@ choose    between.</td>
 
 
 
+
+      
       
       <p class="MsoNormal"><a name="clans"><strong><font color="#008000" size="5">Clans</font></strong></a></p>
 
@@ -14832,6 +15938,8 @@ choose    between.</td>
 
 
 
+
+      
       
       <p>Clans serve many purposes in the CoffeeMud engine. &nbsp;They provide
 a way for multiple players to own property, conquer areas, and exert control.
@@ -14842,6 +15950,7 @@ keep  a collective treasury, to collect taxes from other players, and to
 override  normal PK (playerkill) settings. &nbsp;Clans can be tyrannical,
 run by a select few, run by elected members, or run collectively. &nbsp;Clans
 can even be used as an alternative means of learning new Classes.<br>
+
 
 
 
@@ -14878,6 +15987,8 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <p>By default, clans can be created and managed entirely by players. &nbsp;This
   ability can be removed by disabling the several clan creation and management
@@ -14905,6 +16016,8 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <p><strong>CREATE CLAN &lt;clanname&gt;</strong></p>
 
@@ -14929,9 +16042,12 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <p>This command will create a clan with the given name.&nbsp; You can then
   enter the following commands at any time:<br>
+
 
 
 
@@ -14968,6 +16084,8 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <p><strong>DESTROY CLAN &lt;clanname&gt; </strong></p>
 
@@ -14992,6 +16110,8 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <p><strong>MODIFY CLAN &lt;clanname&gt;</strong></p>
 
@@ -15016,6 +16136,8 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <p>When a clan modified, you are presented with a list of properties to fill
    in.&nbsp;        Pressing enter will leave the property unchanged.&nbsp;
@@ -15042,8 +16164,11 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
+      
       
       <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
 
 
 
@@ -15071,7 +16196,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
              <tr>
+
 
 
 
@@ -15099,7 +16226,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                              <td width="75%"><strong>Description</strong></td>
+
 
 
 
@@ -15127,6 +16256,7 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                            <tr>
 
 
@@ -15141,7 +16271,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                              <td><em>Name</em></td>
+
 
 
 
@@ -15170,7 +16302,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15198,6 +16332,7 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                            <tr>
 
 
@@ -15212,7 +16347,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                              <td><em>Government Type</em></td>
+
 
 
 
@@ -15242,7 +16379,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15270,7 +16409,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -15298,7 +16439,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15326,7 +16469,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                             </tr>
+
 
 
 
@@ -15354,6 +16499,7 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                              <td><em>Clan Experience</em><br>
 
 
@@ -15368,7 +16514,9 @@ can even be used as an alternative means of learning new Classes.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15397,7 +16545,9 @@ has earned,  usually through taxation<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15425,7 +16575,9 @@ has earned,  usually through taxation<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -15453,7 +16605,9 @@ has earned,  usually through taxation<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15483,7 +16637,9 @@ of the members of the clan appear when they die. &nbsp;This room must be properl
 
 
 
+
                </td>
+
 
 
 
@@ -15511,6 +16667,7 @@ of the members of the clan appear when they die. &nbsp;This room must be properl
 
 
 
+
                            <tr>
 
 
@@ -15525,7 +16682,9 @@ of the members of the clan appear when they die. &nbsp;This room must be properl
 
 
 
+
                              <td><em>Clan Home RoomID</em></td>
+
 
 
 
@@ -15555,7 +16714,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15583,7 +16744,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -15611,7 +16774,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15641,7 +16806,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                             </tr>
+
 
 
 
@@ -15669,6 +16836,7 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                              <td><em>Clan Qualifications</em><br>
 
 
@@ -15683,7 +16851,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15714,7 +16884,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15742,7 +16914,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -15770,7 +16944,9 @@ be properly  owned by the Clan using a property like Prop_RoomForSale.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15800,7 +16976,9 @@ field  can be filled in when the Archon wishes to have clan based classes.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15828,7 +17006,9 @@ field  can be filled in when the Archon wishes to have clan based classes.<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -15856,7 +17036,9 @@ field  can be filled in when the Archon wishes to have clan based classes.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15887,7 +17069,9 @@ value to something  else can override that behavior.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15915,7 +17099,9 @@ value to something  else can override that behavior.<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -15943,7 +17129,9 @@ value to something  else can override that behavior.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -15976,7 +17164,9 @@ be   altered here.<br>
 
 
 
+
                </td>
+
 
 
 
@@ -16004,7 +17194,9 @@ be   altered here.<br>
 
 
 
+
                            <tr>
+
 
 
 
@@ -16032,9 +17224,11 @@ be   altered here.<br>
 
 
 
+
                              <td>the list of all current members and their
  position/rank/role  within the clan. &nbsp;This list can be altered manually
  here.</td>
+
 
 
 
@@ -16075,6 +17269,8 @@ be   altered here.<br>
 
 
 
+
+        
         
         </tbody>
 
@@ -16085,6 +17281,7 @@ be   altered here.<br>
 
 
 
+      
       
       </table>
 
@@ -16109,8 +17306,11 @@ be   altered here.<br>
 
 
 
+
+      
       
       <p><br>
+
 
 
 
@@ -16145,6 +17345,8 @@ be   altered here.<br>
 
 
 
+
+      
       
       <p style="text-align: left;"><strong></strong></p>
 
@@ -16167,6 +17369,8 @@ be   altered here.<br>
 
 
 
+
+      
       
       <p style="text-align: left;"><strong>
                    </strong></p>
@@ -16181,7 +17385,9 @@ be   altered here.<br>
 
 
 
+
       </td>
+
 
 
 
@@ -16209,6 +17415,8 @@ be   altered here.<br>
 
 
 
+
+  
   
   </tbody>
 </table>
@@ -16221,7 +17429,9 @@ be   altered here.<br>
 
 
 
+
 </center>
+
 
 
 
