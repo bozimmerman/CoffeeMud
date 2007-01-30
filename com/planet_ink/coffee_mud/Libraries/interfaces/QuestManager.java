@@ -69,6 +69,7 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$ITEMXML_ONEORMORE=13;
     public final static int QM_COMMAND_$ZAPPERMASK=14;
     public final static int QM_COMMAND_$ABILITY=15;
+    public final static int QM_COMMAND_$EXISTING_QUEST_NAME=16;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -88,6 +89,7 @@ public interface QuestManager extends CMLibrary
         "$ITEMXML_ONEORMORE",
         "$ZAPPERMASK",
         "$ABILITY",
+        "$EXISTING_QUEST_NAME",
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -278,6 +280,17 @@ public interface QuestManager extends CMLibrary
             if(A==null)
                 throw new CMException("Invalid ability id, choose from the following: "+list.toString()); 
             return A.ID();
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //existing quest name
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            if((str==null)||(((String)str).trim().length()==0)){
+                if(emptyOK) return "";
+                throw new CMException("You must enter a quest name!");
+            }
+            Quest Q=CMLib.quests().fetchQuest(((String)str).trim());
+            if(Q==null)
+                throw new CMException("A quest of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
+            return Q.name();
         }},
     };
     

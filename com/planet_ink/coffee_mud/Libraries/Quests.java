@@ -1501,18 +1501,52 @@ public class Quests extends StdLibrary implements QuestManager
                         case QM_COMMAND_$EXPRESSION:
                         case QM_COMMAND_$UNIQUE_QUEST_NAME:
                         case QM_COMMAND_$STRING:
-                        case QM_COMMAND_$ABILITY:
                         case QM_COMMAND_$LONG_STRING:
                         case QM_COMMAND_$NAME:
                         case QM_COMMAND_$ZAPPERMASK:
                         case QM_COMMAND_$ROOMID:
-                        case QM_COMMAND_$AREA:
                         {
                             String showValue=(showFlag<-900)?defValue:(String)pageDV.elementAt(step,4);
                             if(inputCode==QM_COMMAND_$ZAPPERMASK)
                             	lastLabel=(lastLabel==null?"":lastLabel)+"\n\r"+CMLib.masking().maskHelp("\n\r","disallows");
                             String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],null);
+                            pageDV.setElementAt(step,4,s);
+                            break;
+                        }
+                        case QM_COMMAND_$AREA:
+                        {
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
+                            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+                            	label.append("\""+((Area)e.nextElement())+"\" ");
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            null);
+                            pageDV.setElementAt(step,4,s);
+                            break;
+                        }
+                        case QM_COMMAND_$EXISTING_QUEST_NAME:
+                        {
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
+                            for(int q=0;q<CMLib.quests().numQuests();q++)
+                            	label.append("\""+CMLib.quests().fetchQuest(q)+"\" ");
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            null);
+                            pageDV.setElementAt(step,4,s);
+                            break;
+                        }
+                        case QM_COMMAND_$ABILITY:
+                        {
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
+                            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                            	label.append(((Ability)e.nextElement()).ID()+" ");
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            null);
                             pageDV.setElementAt(step,4,s);
                             break;
                         }

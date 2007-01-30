@@ -817,6 +817,40 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					return E;
 				}
 				return null;
+			case '[':
+				{
+					int x=str.substring(2).indexOf("]");
+					if(x>=0)
+					{
+						String mid=str.substring(2).substring(0,x);
+						int y=mid.indexOf(" ");
+						if(y>0)
+						{
+							int num=CMath.s_int(mid.substring(0,y).trim());
+							mid=mid.substring(y+1).trim();
+							Quest Q=getQuest(mid);
+							if(Q!=null)	return Q.getQuestItem(num);
+						}
+					}
+				}
+			break;
+			case '{':
+				{
+					int x=str.substring(2).indexOf("}");
+					if(x>=0)
+					{
+						String mid=str.substring(2).substring(0,x).trim();
+						int y=mid.indexOf(" ");
+						if(y>0)
+						{
+							int num=CMath.s_int(mid.substring(0,y).trim());
+							mid=mid.substring(y+1).trim();
+							Quest Q=getQuest(mid);
+							if(Q!=null)	return Q.getQuestMob(num);
+						}
+					}
+				}
+			break;
 			}
 		}
 		if(lastKnownLocation!=null)
@@ -2655,19 +2689,37 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 90: // inarea
 			{
-				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
-				Area A=lastKnownLocation.getArea();
-				if(A==null)
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+				String comp="==";
+				Environmental E=monster;
+				if((" == >= > < <= => =< != ".indexOf(" "+CMParms.getCleanBit(evaluable.substring(y+1,z),1)+" ")>=0))
+				{
+					E=getArgumentItem(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					comp=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
+				}
+				else
+				{
+					scriptableError(scripted,"INAREA","Syntax",evaluable);
+					return returnable;
+				}
+				Room R=null;
+				if(arg2.startsWith("$"))
+					R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+				if(R==null)
+					R=getRoom(arg2,lastKnownLocation);
+				if(E==null)
 					returnable=false;
 				else
 				{
-					Area A2=CMLib.map().findArea(arg2);
-					if(A2==null)
-					{
-						scriptableError(scripted,"INAREA","NO-AREA",arg2);
-						return returnable;
-					}
-					returnable=(A.Name().equals(A2.Name())||(A2.inMyMetroArea(A));
+					Room R2=CMLib.map().roomLocation(E);
+					if((R==null)&&((arg2.length()==0)||(R2==null)))
+						returnable=true;
+					else
+					if((R==null)||(R2==null))
+						returnable=false;
+					else
+						returnable=simpleEvalStr(scripted,R2.getArea().Name(),R.getArea().Name(),comp,"INAREA");
 				}
 				break;
 			}
@@ -4381,14 +4433,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 17: // inroom
 			{
-				if(lastKnownLocation!=null)
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if((E==null)||arg1.length()==0)
 					results.append(CMLib.map().getExtendedRoomID(lastKnownLocation));
+                else
+					results.append(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E)));
 				break;
 			}
 			case 90: // inarea
 			{
-				if(lastKnownLocation!=null)
-					results.append(lastKnownLocation.getArea().Name());
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if((E==null)||arg1.length()==0)
+					results.append(lastKnownLocation==null?"Nowhere":lastKnownLocation.getArea().Name());
+                else
+                {
+                	Room R=CMLib.map().roomLocation(E);
+					results.append(R==null?"Nowhere":R.getArea().Name());
+                }
 				break;
 			}
             case 89: // isrecall
@@ -5371,7 +5434,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((O==null)
 				&&((!arg2.trim().startsWith("$"))
 					||(arg2.length()<2)
-					||((!Character.isDigit(arg2.charAt(1)))&&(!Character.isLetter(arg2.charAt(1))))))
+					||((!Character.isDigit(arg2.charAt(1)))
+						&&(!Character.isLetter(arg2.charAt(1))))))
 					O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
 				char c=arg1.charAt(1);
 				if(Character.isDigit(c))

@@ -143,6 +143,9 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
+#If you choose, you may have completion of this quest automatically start another.
+#If this is what you want, enter the next quests name here:
+#$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
 #Escorted response: 
 #Specify what is emoted in the same room after the player successfully escorts the
@@ -260,7 +263,7 @@ RAND_PROG 99
 		RETURN
 	ENDIF
 	MPSETVAR $f $QUEST_NAME_CHECKEDROOM $d
-	if !INAREA($ESCORT_DESTINATION)
+	if !INAREA($i == '$ESCORT_DESTINATION')
 		if VAR($f $QUEST_NAME_ATTACKED == '')
 			if EVAL('$ATTACKER_PCT_CHANCE' != '') AND RAND($ATTACKER_PCT_CHANCE) AND EVAL('$ATTACKER_SIZE' >= 1)
 				mpsetvar $f $QUEST_NAME_ATTACKED ATTACKED!
@@ -292,6 +295,9 @@ RAND_PROG 99
 				mpquestwin $f *
 				mpecho $ESCORTED_RESPONSE
 				mpendquest *
+				IF EVAL('$NEXT_QUEST' != '')
+					mpstartquest $NEXT_QUEST
+				ENDIF
 			endif
 		endif
 	endif

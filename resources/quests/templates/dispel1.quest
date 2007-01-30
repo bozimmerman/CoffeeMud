@@ -171,6 +171,10 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
+#If you choose, you may have completion of this quest automatically start another.
+#If this is what you want, enter the next quests name here:
+#$NEXT_QUEST=($EXISTING_QUEST_NAME)
+#
 #!QUESTMAKER_END_SCRIPT Dispel #1
 
 set name $QUEST_NAME
@@ -286,6 +290,9 @@ RAND_PROG 99
 				endif
 				mpquestwin '$1' *
 				mpendquest *
+				IF EVAL('$NEXT_QUEST' != '')
+					mpstartquest $NEXT_QUEST
+				ENDIF
 			else
 				mpechoat '$1' Total done: $2/$NUMBER_TO_DISPEL
 			endif

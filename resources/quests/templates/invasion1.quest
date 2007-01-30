@@ -1,0 +1,297 @@
+#!QUESTMAKER_START_SCRIPT Invasion #1
+#This quest involves a set of mobs, which you will create, entering
+#an existing area and behaving aggressively towards players and mobs
+#there.  An Announcer mob will offer the quest to the first player
+#who accepts the quest and kills X of the mobs.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name and starting time/duration for your new quest.
+#
+#Quest Name:
+#Enter a unique name for your delivery quest:
+#$QUEST_NAME=$UNIQUE_QUEST_NAME=invasion_1
+#
+#Quest Frequency:
+#A quest starts and stops on timed intervals.  Enter the amount of time 
+#that this quest will remain unavailable between runs. This number is in 
+#"ticks" (4 second periods).  You may enter math expressions, and use the 
+# special ? operator to generate random numbers.  A frequency of
+#5 + 3?10 would generate a frequency of 8-15 ticks.
+#$FREQUENCY=$EXPRESSION=400
+#
+#Quest Duration:
+#Enter the amount of time that this quest will run and remain available 
+#after it is started.  The mobs will disappear after the duration expires.
+#This time is expressed in "ticks" (4 second periods).  You may enter math 
+#expressions, and use the special ? operator to generate random numbers.
+#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
+#$DURATION=$EXPRESSION=175
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be announcing the quest initially. This must
+#be an existing mob in your world.  They will announce the quest to players
+#once, and then mark whether the player says they accept the quest.  The Announcer
+#must be in the area that is being invaded.
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your Announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the Announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Announcer greetings/instructions
+#Here's where you specify any special text said by the announcer regarding
+#your quest
+#
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=Our city is being invaded by some things! 
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Kill some number of the invaders and then return to me for your reward.
+#
+#Announcer QUESTCHAT announcement:
+#This is an initial annoucement over the QUESTCHAT channel
+#whenever the quest starts running. Leave it blank if you only want him to 
+#talk to people who enter the room with him.
+#$QUEST_ANNOUNCEMENT=($STRING)=Invaders have entered the city! Help us!
+#
+#!QUESTMAKER_PAGE Invaders
+#Here's where you specify the invader mobs and where they launch their invasion
+#from.
+#
+#Invader Room: 
+#Specify below the name of the area or room that your Invader mobs will start off 
+#in.  This room MAY be outside the Announcer's area, but should be very close by to
+#allow the invasion to happen quickly.  The further this room is from the invaded area, 
+#the longer it will take for your mobs to reach it.
+#Use double-quotes around multi-word room ids/names.
+#$INVADER_ROOM=$ROOMID
+#
+#Invader mobs: 
+#Create or select the mobs below that the player must kill.  These mobs
+#will be aggressive, and will automatically track to random rooms in the
+#invaded area.  Include multiples of the same mobs to ensure duplicates.
+#$INVADER_MOBS=$MOBXML_ONEORMORE
+#
+#Invaders To Kill:
+#Enter the total number of invaders that the player must kill to complete
+#the quest. 
+#$INVADER_KILLS=$EXPRESSION=3
+#
+#!QUESTMAKER_PAGE Quest Screams
+#Select some sayings and emotes that will occur during the quest
+#
+#Invader scream:
+#Specify what the invaders yell infrequently during combat.  You may leave this blank.
+#$INVADER_SCREAM=($STRING)=Die native scum!
+#
+#Invasion warning type:
+#Specify how the announcer emotes if only 1 minute remains until the invasion is over:
+#$INVASION_WARNING_RESPONSE_TYPE=($CHOOSE)=QUESTCHAT,MPECHO,SAY,YELL
+#Invasion warning text:
+#Specify what is emoted by the announcer when only 1 minute remains until the invasion is over.
+#$INVASION_WARNING_RESPONSE_TEXT=($LONG_STRING)=Cityguards report that this invasion will be repelled in 1 minute.
+#
+#Invader loses type: 
+#Specify how the announcer emotes when/if a player completes the quest:
+#$INVADER_LOSES_RESPONSE_TYPE=($CHOOSE)=QUESTCHAT,MPECHO,SAY,YELL
+#Invader loses text: 
+#Specify what is emoted by the announcer when/if a player completes the quest:  
+#$INVADER_LOSES_RESPONSE_TEXT=($LONG_STRING)=The city has been made safe by $n.  Long live $n!
+#
+#Invader wins type: 
+#Specify how the announcer emotes if no player completes the quest in time:
+#$INVADER_WINS_RESPONSE_TYPE=($CHOOSE)=QUESTCHAT,MPECHO,SAY,YELL
+#Invader wins text: 
+#Specify what is emoted by the announcer if no player completes the quest:
+#$INVADER_WINS_RESPONSE_TEXT=($LONG_STRING)=The cityguards have repelled the invasion! Long live the cityguards!
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the quest:
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Select whether a player may complete this quest multiple times:
+#$MULTIPLE=$CHOOSE=YES,NO
+#
+#If you choose, you may have completion of this quest automatically start another.
+#If this is what you want, enter the next quests name here:
+#$NEXT_QUEST=($EXISTING_QUEST_NAME)
+#
+#!QUESTMAKER_END_SCRIPT Invasion #1
+
+set name $QUEST_NAME
+
+set wait $FREQUENCY
+set interval 1
+#quiet
+
+set minplayers 1
+set playermask $QUEST_CRITERIA
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob $ANNOUNCER_NAME
+give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
+
+set area 
+set mobgroup
+set mob
+set room $INVADER_ROOM
+import mobs $QUEST_NAME_invaders.xml
+load mobgroup all
+set mob
+give behavior Scriptable LOAD=$QUEST_NAME_invader.script
+give behavior Mobile min=1 max=10 chance=99
+
+set duration $DURATION
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_NAME_invaders.xml</NAME><DATA><MOBS>$INVADER_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_NAME_announcer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	QUESTCHAT $QUEST_ANNOUNCEMENT
+	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_NAME_REWARDED ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_NAME_KILLS ''
+~
+
+QUEST_TIME_PROG -1 *
+	IF VAR ($i $QUEST_NAME_REWARDED == '')
+		$INVADER_WINS_RESPONSE_TYPE $INVADER_WINS_RESPONSE_TEXT
+	ENDIF
+	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_NAME_REWARDED ''
+	MPSETVAR * $QUEST_NAME_KILLS ''
+~
+
+GREET_PROG 100
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if VAR($n $QUEST_NAME_KILLS >= $INVADER_KILLS)
+				if EVAL('$EXP' != '')
+					mpexp $n $EXP
+				endif
+				if EVAL('$QUEST_POINT' == 'YES')
+					mpoload QuestPoint
+					give "$n" "a quest point"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give "$n" GET $GOLD
+				endif
+				mpsetvar $i $QUEST_NAME_REWARDED $n
+				mpquestwin $n *
+				$INVADER_LOSES_RESPONSE_TYPE $INVADER_LOSES_RESPONSE_TEXT
+				mpendquest *
+				IF EVAL('$NEXT_QUEST' != '')
+					mpstartquest $NEXT_QUEST
+				ENDIF
+			else
+				if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
+					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
+					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> $n'
+				endif
+			endif
+		endif
+	endif
+~
+
+QUEST_TIME_PROG * 1
+	IF VAR ($i $QUEST_NAME_REWARDED == '')
+		$INVASION_WARNING_RESPONSE_TYPE $INVASION_WARNING_RESPONSE_TEXT
+	ENDIF
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if VAR($i $QUEST_NAME_ACCEPTED == '')
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				
+			else
+				sayto "$n" Yes, yes, I know .. now off with you.
+			endif
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_NAME_invader.script</NAME>
+<DATA>
+RAND_PROG 50
+	MPARGSET $0 '${1 *}'
+	if !INAREA($i == $0) 
+		IF ISFIGHT($i)
+			FLEE
+		ENDIF
+		IF !AFFECTED($i Skill_Track)
+			MPWALKTO $%INAREA($0)%
+		ENDIF
+	ELSE
+		IF !AFFECTED($i Skill_Track)
+			kill all
+		ENDIF
+	ENDIF
+~
+
+DEATH_PROG
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			IF ISPC($n)
+				MPSETVAR $n $QUEST_NAME_KILLS ++
+				mpechoat $n Killed $<$n $QUEST_NAME_KILLS>/$INVADER_KILLS
+			ELSE
+
+				IF ISPC($f)
+					MPSETVAR $f $QUEST_NAME_KILLS ++
+					mpechoat $n  Killed $<$n $QUEST_NAME_KILLS>/$INVADER_KILLS
+				ELSE
+					mpecho No Kill recorded.
+				ENDIF
+			ENDIF
+		ELSE
+			mpecho No Kill recorded.
+		ENDIF
+	ELSE
+		mpecho No Kill recorded.
+	ENDIF
+~
+
+</DATA></FILE>

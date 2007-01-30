@@ -127,6 +127,10 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
+#If you choose, you may have completion of this quest automatically start another.
+#If this is what you want, enter the next quests name here:
+#$NEXT_QUEST=($EXISTING_QUEST_NAME)
+#
 #!QUESTMAKER_END_SCRIPT Delivery #2
 
 set name $QUEST_NAME
@@ -250,6 +254,9 @@ PUT_PROG all
 					mpquestwin $n *
 					mpecho $DELIVER_RESPONSE
 					mpendquest *
+					IF EVAL('$NEXT_QUEST' != '')
+						mpstartquest $NEXT_QUEST
+					ENDIF
 				endif
 			endif
 		endif
@@ -279,6 +286,9 @@ DROP_PROG all
 				mpquestwin $n *
 				mpecho $DELIVER_RESPONSE
 				mpendquest *
+				IF EVAL('$NEXT_QUEST' != '')
+					mpstartquest $NEXT_QUEST
+				ENDIF
 			endif
 		endif
 	endif
