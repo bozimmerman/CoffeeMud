@@ -1,0 +1,124 @@
+$NUM_SUSPECTS
+$NUM_TOOLS
+$QUEST_NAME
+$FREQUENCY
+($QUEST_CRITERIA)
+$ANNOUNCER_AREA
+$VICTIM_ROOM
+$VICTIM_NAME
+
+set name $QUEST_NAME
+set wait $FREQUENCY
+set interval 1
+#quiet
+set minplayers 1
+set playermask $QUEST_CRITERIA
+
+set area $ANNOUNCER_AREA
+set room $VICTIM_ROOM
+set mob $VICTIM_NAME
+set target mob
+give stat rejuv 999999
+give behavior Scriptable LOAD=$QUEST_NAME_deadman.script
+set wherehappened room
+set whenhappened -1?-10
+
+#####################################
+# Select a suspects starting location
+#####################################
+set room
+set roomgroup
+set locale CityStreet
+set whereat room
+
+#####################################
+# Assign the suspects
+#####################################
+set room
+import mobs $QUEST_NAME_suspects.cmare
+load mobgroup $NUM_SUSPECTS any
+set agentgroup $NUM_SUSPECTS
+# change the mobgroup to be the agentgroup without the agent
+set mobgroup agentgroup-agent
+give behavior Mobile
+give affect Prop_SafePet
+# now set just the agent back in play
+set mob agent
+give behavior Mobile
+give affect Prop_SafePet
+
+#####################################
+# Assign the suspect motives
+#####################################
+# this should automatically select THE motive
+# probably need a way to narrow them down though...dammit, just make the list shorter!!
+set motivegroup "drunken anger" "jealous love" "insulted honor" 
+
+#####################################
+# Assign the suspect tools
+#####################################
+set mobgroup
+set room wherehappened
+# import the items
+import items $QUEST_NAME_tools.cmare
+load itemgroup $NUM_TOOLS any
+# will select any one of the toolgroup as THE tool 
+set toolgroup $NUM_TOOLS
+set itemgroup toolgroup-tool
+give behavior Scriptable LOAD=$QUEST_NAME_anyolditem.script
+# now put the regular tool back in play
+set item tool
+give behavior Scriptable LOAD=$QUEST_NAME_killeritem.script
+
+#####################################
+# Set up the announcer
+#####################################
+set roomgroup
+set room
+set mob hassan
+give behavior Scriptable LOAD=$QUEST_NAME_announcer.script~
+give behavior Scriptable +SPEECH_PROG mystery murder crime solve\;say Yes, $TARGET was murdered at $WHEREHAPPENED.  The murder weapons were left behind. You should go there and starting asking the folks in nearby rooms about those weapons, and any other clues you gather.  Then come back here and announce WHO you think did it, their MOTIVE, and what WEAPON they used.  No wrong guesses are allowed.  Questioning the people around that room will reveal all the clues you need.\;~\;
+give behavior Scriptable +ONCE_PROG\;QUESTCHAT Murder most foul! $TARGET was murdered at $WHEREHAPPENED on $WHENHAPPENED.  Come and ask me about the mystery!\;~\;
+give behavior Scriptable +SPEECH_PROG $&TOOL\;if VAR($n MM1_TOOL != '')\;say You have already made a guess on the weapon.\;return\;endif\;MPSETVAR $n MM1_TOOL '$TOOL'\;say Ok, so you think the weapon used was $TOOL.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
+give behavior Scriptable +SPEECH_PROG $&AGENT\;if VAR($n MM1_AGENT != '')\;say You have already made a guess on the killer.\;return\;endif\;MPSETVAR $n MM1_AGENT '$AGENT'\;say Ok, so you think the killer was $AGENT.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
+give behavior Scriptable +SPEECH_PROG $&MOTIVE\;if VAR($n MM1_MOTIVE != '')\;say You have already made a guess on the motive.\;return\;endif\;MPSETVAR $n MM1_MOTIVE '$MOTIVE'\;say Ok, so you think the motive was $MOTIVE.\;MPSETVAR $n MM1_CORRECT ++\;MPCALLFUNC winner\;~\;
+#give behavior Scriptable +GREET_PROG 100\;if VAR($n MM1_CORRECT > 0)\;say You have $<$n MM1_CORRECT> correct guessed.\;endif\;~\;
+LOAD=$QUEST_NAME_badagentguess.quest mob agentgroup-agent
+LOAD=$QUEST_NAME_badtoolguess.quest mob toolgroup-tool
+LOAD=$QUEST_NAME_badmotiveguess.quest mob motivegroup-motive
+
+#####################################
+# Now set up all the evidence
+#####################################
+# first the weapons<->suspects
+LOAD=$QUEST_NAME_toolagentmap.quest wherehappened toolgroup-tool agentgroup-agent
+LOAD=$QUEST_NAME_toolagentmap.quest wherehappened tool agentgroup-agent 
+LOAD=$QUEST_NAME_toolagentmap.quest wherehappened toolgroup-tool agent
+# now agents<->motives
+LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
+LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agent motivegroup-motive
+LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agentgroup-agent motive
+# lastly tools<->motives
+LOAD=$QUEST_NAME_toolmotivemap.quest wherehappened toolgroup-tool motivegroup-motive
+LOAD=$QUEST_NAME_toolmotivemap.quest wherehappened tool motivegroup-motive
+LOAD=$QUEST_NAME_toolmotivemap.quest wherehappened toolgroup-tool motive
+
+#####################################
+# Now install a second set to make things easier.
+#####################################
+# first the weapons<->suspects
+LOAD=toolagentmap.quest wherehappened toolgroup-tool agentgroup-agent
+LOAD=toolagentmap.quest wherehappened tool agentgroup-agent 
+LOAD=toolagentmap.quest wherehappened toolgroup-tool agent
+# now agents<->motives
+LOAD=agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
+LOAD=agentmotivemap.quest wherehappened agent motivegroup-motive
+LOAD=agentmotivemap.quest wherehappened agentgroup-agent motive
+# lastly tools<->motives
+LOAD=toolmotivemap.quest wherehappened toolgroup-tool motivegroup-motive
+LOAD=toolmotivemap.quest wherehappened tool motivegroup-motive
+LOAD=toolmotivemap.quest wherehappened toolgroup-tool motive
+
+set duration 800
+# the duration of the quest is 52 minutes (800 ticks).  The scripts on the mobs will
+# do the rest...

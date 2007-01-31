@@ -2730,7 +2730,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 {
                     String stat=(String)O;
                     String parms=(String)V.elementAt(2);
-                    E.setStat(stat,parms);
+                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
+	                    E.setStat(stat,parms);
+                    else
+                    if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat.toUpperCase().trim()))
+                    {
+                    	E.baseEnvStats().setStat(stat.toUpperCase().trim(),parms);
+                    	E.recoverEnvStats();
+                    }
+                    else
+                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat.toUpperCase().trim())))
+                    {
+                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat.toUpperCase().trim()),CMath.s_int(parms));
+                    	((MOB)E).recoverCharStats();
+                    }
+                    else
+                    if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
+                    {
+                    	((MOB)E).baseState().setStat(stat,parms);
+                    	((MOB)E).recoverMaxState();
+                    	((MOB)E).resetToMaxState();
+                    }
                 }
                 else
                 if(O instanceof Behavior)
@@ -3208,20 +3228,51 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         questState.addons.addElement(V,new Integer(questState.preserveState));
     }
     
-    public void runtimeRegisterStat(Environmental obj, String stat, String parms, boolean give)
+    public void runtimeRegisterStat(Environmental E, String stat, String parms, boolean give)
     {
-        if(obj==null) return;
-        runtimeRegisterObject(obj);
+        if(E==null) return;
+        runtimeRegisterObject(E);
         Vector V=new Vector();
-        V.addElement(obj);
+        V.addElement(E);
         stat=stat.toUpperCase().trim();
-        String oldVal=obj.getStat(stat);
+        String oldVal="";
+        if(CMStrings.contains(E.getStatCodes(),stat))
+            oldVal=E.getStat(stat);
+        else
+        if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat))
+        	oldVal=E.baseEnvStats().getStat(stat);
+        else
+        if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat)))
+        	oldVal=""+((MOB)E).baseCharStats().getStat(CMParms.indexOf(CharStats.STAT_NAMES,stat));
+        else
+        if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
+        	oldVal=((MOB)E).baseState().getStat(stat);
         V.addElement(stat);
         V.addElement(oldVal);
         if(!give) return;
         V.addElement(stat);
         V.addElement(oldVal);
-        obj.setStat(stat,parms);
+        if(CMStrings.contains(E.getStatCodes(),stat))
+        	E.setStat(stat,parms);
+        else
+        if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat))
+        {
+        	E.baseEnvStats().setStat(stat,parms);
+        	E.recoverEnvStats();
+        }
+        else
+        if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat)))
+        {
+        	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat),CMath.s_int(parms));
+        	((MOB)E).recoverCharStats();
+        }
+        else
+        if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
+        {
+        	((MOB)E).baseState().setStat(stat,parms);
+        	((MOB)E).recoverMaxState();
+        	((MOB)E).resetToMaxState();
+        }
         questState.addons.addElement(V,new Integer(questState.preserveState));
     }
     
