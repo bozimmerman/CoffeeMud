@@ -70,7 +70,8 @@ public class Poison extends StdAbility
 			MOB targetMOB=(MOB)target;
 			if(POISON_START_TARGETONLY().length()>0)
 			    targetMOB.tell(POISON_START_TARGETONLY());
-            CMMsg msg=CMClass.getMsg(poisoner,targetMOB,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START());
+            String startMsg=CMStrings.replaceAll(POISON_START(),"<S-","<T-");
+            CMMsg msg=CMClass.getMsg(poisoner,targetMOB,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,startMsg);
 			if((POISON_START_TARGETONLY().length()>0)
 			||((targetMOB.location()!=null)
     			&&(targetMOB.location().okMessage(targetMOB,msg))))
