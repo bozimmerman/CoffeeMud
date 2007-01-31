@@ -59,6 +59,7 @@ public class Spell_DetectSentience extends Spell
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
 				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,35+this.getXMAXRANGELevel(mob));
 				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
+                CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_CAST,null);
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -67,9 +68,14 @@ public class Spell_DetectSentience extends Spell
 						MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
 						{
-							lines.append("^!"+CMStrings.padRight(M.name(),25)+"^?| ");
-							lines.append(R.roomTitle());
-							lines.append("\n\r");
+                            msg2.setTarget(M);
+                            if(R.okMessage(mob,msg2))
+                            {
+                                R.send(mob,msg2);
+    							lines.append("^!"+CMStrings.padRight(M.name(),25)+"^?| ");
+    							lines.append(R.roomTitle());
+    							lines.append("\n\r");
+                            }
 						}
 					}
 				}
