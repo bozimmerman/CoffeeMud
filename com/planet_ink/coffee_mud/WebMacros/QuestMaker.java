@@ -419,6 +419,7 @@ public class QuestMaker extends StdWebMacro
         		httpReq.addRequestParameters("QMPAGEERRORS","");
         		return "";
         	}
+        	if((qTemplate==null)||(qTemplate.length()==0)) return "[error - no template chosen?!]";
         	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
         	if(pageData==null) return "[error - no page data?!]";
             StringBuffer errors=new StringBuffer("");
