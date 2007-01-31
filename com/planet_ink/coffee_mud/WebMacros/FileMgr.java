@@ -108,7 +108,12 @@ public class FileMgr extends StdWebMacro
 				String s=httpReq.getRequestParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not updated -- no buffer!";
                 if((!F.canWrite())||(!F.saveText(s)))
+                {
+            		F=new CMFile("::"+path+"/"+file,M,false);
+                    if((F.canWrite())&&(F.saveText(s)))
+        				return "File `"+last+"` updated.";
                     return "File `"+last+"` not updated -- error!";
+                }
 				return "File `"+last+"` updated.";
 			}
             else
@@ -166,7 +171,7 @@ public class FileMgr extends StdWebMacro
 					return "File exists! Directory not created!";
 				if(!F.mkdir())
 					return "Error creating directory!";
-				return "Created directory.";
+				return "Created dir //"+path+"/"+file;
 			}
             else
             if(parms.containsKey("DELETEDIR"))

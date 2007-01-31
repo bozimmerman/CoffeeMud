@@ -67,6 +67,7 @@ public class CMFile
     private File localFile=null;
     private boolean demandVFS=false;
     private boolean demandLocal=false;
+    private String parentDir=null;
     
     public CMFile(String filename, MOB user, boolean pleaseLogErrors)
     { super(); buildCMFile(filename,user,pleaseLogErrors,false);}
@@ -94,6 +95,7 @@ public class CMFile
             path=absolutePath.substring(0,x);
             name=absolutePath.substring(x+1);
         }
+        parentDir=path;
         localPath=path.replace('/',pathSeparator);
         // fill in all we can
         vfsBits=0;
@@ -105,6 +107,8 @@ public class CMFile
             File localDir=new File(".");
             int endZ=-1;
             boolean found=true;
+            if((localDir.exists())&&(localDir.isDirectory()))
+            	parentDir="//"+localPath;
             while((!localFile.exists())&&(endZ<ioPath.length())&&(localDir.exists())&&(localDir.isDirectory())&&(found))
             {
                 int startZ=endZ+1;
@@ -142,6 +146,9 @@ public class CMFile
                 }
             }
         }
+        else
+        	parentDir="::"+parentDir;
+        
         if((info!=null)&&((!demandLocal)||(!localFile.exists())))
         {
             vfsBits=vfsBits|((Integer)info.elementAt(CMFile.VFS_INFO_BITS)).intValue();
@@ -186,6 +193,8 @@ public class CMFile
             vfsBits=vfsBits|CMFile.VFS_MASK_ISLOCAL;
     }
 
+    public CMFile getParent(){return new CMFile(path,accessor,false,false);}
+    
     public boolean mustOverwrite()
     {
     	if(!isDirectory()) 

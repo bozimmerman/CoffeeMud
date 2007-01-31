@@ -63,6 +63,21 @@
 		{
 			document.location.href='/FileData?'+action;
 		}
+		function RefreshDir()
+		{
+			document.BROWSE.FUNCTION.value='';
+			document.BROWSE.FILE.value='';
+			document.BROWSE.submit();
+		}
+		function DeleteFile(action)
+		{
+			if(confirm('Delete file '+action+'?'))
+			{
+				document.BROWSE.FUNCTION.value='DELETE';
+				document.BROWSE.FILE.value=action;
+				document.BROWSE.submit();
+			}
+		}
 	//-->
 	</script>
 </head>
@@ -72,42 +87,54 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=FILE VALUE="">
+@if?CheckReqParm?FUNCTION=DELETE@<FONT COLOR=RED>@FileMgr?DELETE@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=NEWDIR@<FONT COLOR=RED>@FileMgr?CREATEDIR@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=UPLOAD@<FONT COLOR=RED>@FileMgr?UPLOAD@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=SEARCH@<FONT COLOR=RED>@FileMgr?SEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=NAMESEARCH@<FONT COLOR=RED>@FileMgr?NAMESEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
-<a href="javascript:CreateDir();"><FONT COLOR=YELLOW>*create new dir*</FONT></a>
-<a href="javascript:DeleteDir();"><FONT COLOR=YELLOW>*delete this dir*</FONT></a><P>
-<a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT></a><BR>
+<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0>
+<TR><TD ALIGN=LEFT WIDTH=75%>
+<a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT><IMG BORDER=0 SRC=images/folder_up.gif alt="Back"></a>
+</TD><TD WIDTH=5%>
+<a href="javascript:RefreshDir();" alt="Refresh directory"><IMG BORDER=0 SRC=images/folder_refresh.gif alt="Refresh directory"></a>
+</TD><TD COLSPAN=2 ALIGN=RIGHT>
+<a href="javascript:CreateDir();" alt="Add a new directory"><IMG BORDER=0 SRC=images/folder_add.gif alt="Add a new directory"></a>
+</TD><TD>
+<a href="javascript:DeleteDir();" alt="Delete this directory"><IMG BORDER=0 SRC=images/folder_delete.gif alt="Delete this directory"></a>
+</TD></TR>
 @FileNext?RESET@
 @loop@
 @FileNext@
 	@if?FileInfo?ISDIRECTORY@
+		<TR><TD COLSPAN=6>
 		<a href="javascript:NewDir('@RequestParameter?FILE@')"  style="text-decoration:none">
 		@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
 		<FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT>
 		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
 		</a>
-	<BR>
+		</TD></TR>
 	@endif@
 @back@
 @FileNext?RESET@
 @loop@
 @FileNext@
 	@if?!FileInfo?ISDIRECTORY@ @if?FileInfo?ISFILE@
-	@if?FileInfo?ISTEXT@
-		<a href="javascript:OpenFile('@RequestParametersEncoded@')"  style="text-decoration:none">
-	@else@
-		<a href="javascript:DownloadFile('@RequestParametersEncoded@')"  style="text-decoration:none">
-	@endif@
+		<TR><TD COLSPAN=2>
 		@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
 		<FONT COLOR=WHITE>@RequestParameter?FILE@</FONT>
 		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
-	</a>
-	<BR>
+		</TD><TD>
+		<a href="javascript:OpenFile('@RequestParametersEncoded@')"><IMG BORDER=0 SRC=images/edit.gif alt="Edit"></a>
+		</TD><TD>
+		<a href="javascript:DownloadFile('@RequestParametersEncoded@')"><IMG BORDER=0 SRC=images/download.gif alt="Download"></a>
+		</TD><TD>
+		<a href="javascript:DeleteFile('@RequestParameter?FILE@')"><IMG BORDER=0 SRC=images/delete.gif alt="Delete"></a>
+		</TD></TR>
 	@endif@ @endif@
 @back@
-<a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=AQUA>*create new file*</FONT></a><BR>
+</TABLE>
+<a href="javascript:NewFile('@RequestParametersEncoded@');"><IMG BORDER=0 SRC=images/document_new.gif alt="Create New File"><FONT COLOR=AQUA>*new file*</FONT></a><BR>
 </FORM>
 <HR>
 <FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
