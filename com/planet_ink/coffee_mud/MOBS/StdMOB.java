@@ -613,8 +613,12 @@ public class StdMOB implements MOB
 		while(inventorySize()>0)
 		{
 			Item I=fetchInventory(0);
-			I.destroy();
-			delInventory(I);
+            if(I!=null)
+            {
+                I.setOwner(this); 
+    			I.destroy();
+                delInventory(I);
+            }
 		}
         if(kickFlag)
         	CMLib.threads().deleteTick(this,-1);
@@ -2829,7 +2833,7 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (Item)inventory.elementAt(index);
+            return (Item)inventory.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;

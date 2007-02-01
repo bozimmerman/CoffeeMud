@@ -104,6 +104,7 @@ public class Scavenger extends ActiveTicker
 	                    		origItems--;
 	                    	break;
 						}
+                        if(I.owner()==null) I.setOwner(mob);
 						I.destroy();
 	                }
 	                mob.recoverEnvStats();

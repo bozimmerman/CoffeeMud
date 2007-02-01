@@ -1932,7 +1932,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			while(((MOB)E).inventorySize()>0)
 			{
 				Item I=((MOB)E).fetchInventory(0);
-				if(I!=null){ I.destroy(); ((MOB)E).delInventory(I);}
+				if(I!=null){ I.setOwner((MOB)E); I.destroy(); ((MOB)E).delInventory(I);}
 			}
 			if(E instanceof ShopKeeper)
 			{
@@ -3067,7 +3067,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				while(M.inventorySize()>0)
 				{
 					Item I=M.fetchInventory(0);
-					if(I!=null){ I.destroy(); M.delInventory(I);}
+					if(I!=null){ I.setOwner(M); I.destroy(); M.delInventory(I);}
 				}
 				setGenMobInventory(M,CMLib.xml().parseAllXML(val));
 			}

@@ -1515,7 +1515,7 @@ public class StdRoom implements Room
 	{
 		try
 		{
-			return (Item)contents.elementAt(i);
+            return (Item)contents.elementAt(i);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
