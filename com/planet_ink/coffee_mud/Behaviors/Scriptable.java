@@ -5349,6 +5349,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					{
 						if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
 						{
+                            if(arg3.equals("++")) arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))+1);
+                            if(arg3.equals("--")) arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))-1);
 							newTarget.setStat(arg2,arg3);
 							found=true;
 							break;
@@ -5360,6 +5362,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						for(int i=0;i<CharStats.STAT_DESCS.length;i++)
 							if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 							{
+                                if(arg3.equals("++")) arg3=""+(M.baseCharStats().getStat(i)+1);
+                                if(arg3.equals("--")) arg3=""+(M.baseCharStats().getStat(i)-1);
 								M.baseCharStats().setStat(i,CMath.s_int(arg3.trim()));
 								M.recoverCharStats();
                                 if(arg2.equalsIgnoreCase("RACE"))
@@ -5371,6 +5375,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						for(int i=0;i<M.curState().getStatCodes().length;i++)
 							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
 								M.curState().setStat(arg2,arg3);
 								found=true;
 								break;
@@ -5379,6 +5385,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						for(int i=0;i<M.baseEnvStats().getStatCodes().length;i++)
 							if(M.baseEnvStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))-1);
 								M.baseEnvStats().setStat(arg2,arg3);
 								found=true;
 								break;
@@ -5387,6 +5395,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						for(int i=0;i<M.playerStats().getStatCodes().length;i++)
 							if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
 								M.playerStats().setStat(arg2,arg3);
 								found=true;
 								break;
@@ -5395,6 +5405,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             for(int i=0;i<M.baseState().getStatCodes().length;i++)
                                 if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
                                 {
+                                    if(arg3.equals("++")) arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
+                                    if(arg3.equals("--")) arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
                                     M.baseState().setStat(arg2.substring(4),arg3);
                                     found=true;
                                     break;
@@ -5489,6 +5501,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
                         {
+                            if(arg3.equals("++")) arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))+1);
+                            if(arg3.equals("--")) arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))-1);
                             newTarget.setStat(newTarget.getStatCodes()[i],arg3);
                             found=true; break;
                         }
@@ -5500,6 +5514,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						{
 							if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i]))-1);
 								CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i],arg3);
 								found=true;
 								break;
@@ -5512,6 +5528,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							{
 								if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 								{
+                                    if(arg3.equals("++")) arg3=""+(M.baseCharStats().getStat(i)+1);
+                                    if(arg3.equals("--")) arg3=""+(M.baseCharStats().getStat(i)-1);
                                     if((arg3.length()==1)&&(Character.isLetter(arg3.charAt(0))))
     									M.baseCharStats().setStat(i,arg3.charAt(0));
                                     else
@@ -5528,6 +5546,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							{
 								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
+                                    if(arg3.equals("++")) arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
+                                    if(arg3.equals("--")) arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
 									M.curState().setStat(arg2,arg3);
 									found=true;
 									break;
@@ -5538,6 +5558,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							{
 								if(M.baseEnvStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
+                                    if(arg3.equals("++")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))+1);
+                                    if(arg3.equals("--")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))-1);
 									M.baseEnvStats().setStat(arg2,arg3);
 									found=true;
 									break;
@@ -5547,6 +5569,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							for(int i=0;i<M.playerStats().getStatCodes().length;i++)
 								if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
+                                    if(arg3.equals("++")) arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
+                                    if(arg3.equals("--")) arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
 									M.playerStats().setStat(arg2,arg3);
 									found=true;
 									break;
@@ -5555,6 +5579,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                 for(int i=0;i<M.baseState().getStatCodes().length;i++)
                                     if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
                                     {
+                                        if(arg3.equals("++")) arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
+                                        if(arg3.equals("--")) arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
                                         M.baseState().setStat(arg2.substring(4),arg3);
                                         found=true;
                                         break;
@@ -5568,6 +5594,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						{
 							if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i]))-1);
 								CMLib.coffeeMaker().setGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i],arg3);
 								found=true;
 								break;
@@ -5659,7 +5687,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     }
                 }
                 else
+                {
+                    if(val.equals("++")) val=""+(CMath.s_int(Q.getStat(var))+1);
+                    if(val.equals("--")) val=""+(CMath.s_int(Q.getStat(var))-1);
 					Q.setStat(var,val);
+                }
 				break;
 			}
 			case 66: // MPLOG
