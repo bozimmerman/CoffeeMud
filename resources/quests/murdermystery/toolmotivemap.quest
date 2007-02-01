@@ -75,6 +75,6 @@
 	set room
 	set mob reselect any MASK=+INT 6 +NAMES "-tax collector"
 	take behavior MudChat
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9If $ARG3 was involved, you canbe sure $ARG2 was not.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9If $ARG3 was involved, you can be sure $ARG2 was not.
 	give affect Spell_LedFoot
 </OPTION>
