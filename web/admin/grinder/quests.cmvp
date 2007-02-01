@@ -57,9 +57,9 @@
 		<TABLE WIDTH=50% BORDER=1>
 		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
 		<TR><TD><a href="javascript:Load('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-		<TR><TD><a href="javascript:Quest('');"><FONT COLOR=WHITE SIZE=-1><B>New Quest Script</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:QuestWizard();"><FONT COLOR=WHITE SIZE=-1><B>Quest Maker Wizard</B></FONT></A></TD></TR>
-		<TR><TD><A HREF="javascript:Browse('/resources/quests/');"><FONT COLOR=WHITE SIZE=-1><B>Browse Quests</B></FONT></a></TD></TR>
+		<TR><TD><a href="javascript:Quest('');"><FONT COLOR=WHITE SIZE=-1><B>New Quest Script</B></FONT></A></TD></TR>
+		<TR><TD><A HREF="javascript:Browse('/resources/quests/');"><FONT COLOR=WHITE SIZE=-1><B>Browse Quest Scripts</B></FONT></a></TD></TR>
 		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>

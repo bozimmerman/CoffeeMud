@@ -102,11 +102,11 @@ public class QuestMaker extends StdWebMacro
                 if((oldTemplate==null)||(oldTemplate.length()==0)) oldTemplate="";
         		for(int d=0;d<pageData.size();d++)
         		{
-        			list.append("<TR><TD COLSPAN=2><INPUT TYPE=RADIO NAME=QMTEMPLATE VALUE=\""+htmlOutgoingFilter((String)pageData.elementAt(d,3))+"\"");
+        			list.append("<TR><TD VALIGN=TOP><INPUT TYPE=RADIO NAME=QMTEMPLATE VALUE=\""+htmlOutgoingFilter((String)pageData.elementAt(d,3))+"\"");
         			if(pageData.elementAt(d,3).equals(oldTemplate))
         				list.append(" CHECKED");
-        			list.append("> "+labelColor+(String)pageData.elementAt(d,1)+"</B></FONT></I></TD></TR>");
-        			list.append("<TR><TD><BR></TD><TD>"+descColor+(String)pageData.elementAt(d,2)+"</B></FONT></I></TD></TR>");
+        			list.append("> "+labelColor+(String)pageData.elementAt(d,1)+"</B></FONT></I></TD>");
+        			list.append("<TD>"+descColor+(String)pageData.elementAt(d,2)+"</B></FONT></I></TD></TR>");
         			list.append("<TR><TD><BR></TD><TD><BR></TD></TR>");
         		}
                 return list.toString();

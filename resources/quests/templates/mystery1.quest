@@ -1,7 +1,7 @@
 #!QUESTMAKER_START_SCRIPT Mystery #1
-#This quest involves a 3X mystery where players must question _existing_ mobs to
+#A 3-Level mystery where players must question existing mobs from your world to
 #discover WHO did something, what ITEM they did it with, and what their MOTIVE was.
-#The victim and quest-announcer/manager are both existing mobs, and the victim
+#The victim and quest-announcer/manager are also existing mobs, and the victim
 #may optionally start off dead.  The suspects and items are CREATED by you.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
@@ -97,7 +97,7 @@
 #$VICTIM_DIES=$CHOOSE=TRUE,FALSE
 #
 #Victim greeting: 
-#Specify what the announcer says to people when they enter the room about their
+#Specify what the victim says to people when they enter the room about their
 #quest, assuming the above is FALSE.  Notice the use of special 
 #Scriptable functions to insert details about
 #the quest into the string.  TARGET is the victim, WHEREHAPPENED is where the
@@ -193,8 +193,6 @@
 #Use double-quotes around multi-word areas and room ids/names.  
 #If you want the suspects to be created where the victim is, leave the AREA 
 #blank and use WHEREHAPPENED as the room.
-#If you want the suspects to be created where the suspects are, leave the AREA 
-#blank and use WHEREAT as the room id.
 #You may also create them in a jail, or in a hidden room, since they dont 
 #actually DO anything during the quest except roam around (if they can).
 #  
@@ -249,7 +247,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Invasion #1
+#!QUESTMAKER_END_SCRIPT Mystery #1
 
 
 

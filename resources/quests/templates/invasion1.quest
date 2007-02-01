@@ -1,8 +1,8 @@
 #!QUESTMAKER_START_SCRIPT Invasion #1
-#This quest involves a set of mobs, which you will create, entering
-#an existing area and behaving aggressively towards players and mobs
-#there.  An Announcer mob will offer the quest to the first player
-#who accepts the quest and kills X of the mobs.
+#The player must repel an invasion by a set of mobs, which you will create, 
+#who will enter an existing area and behave aggressively towards the inhabitants.
+#An Announcer mob will offer an optional prize to the first player who 
+#accepts the quest and kills X of the mobs.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
