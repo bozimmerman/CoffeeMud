@@ -188,6 +188,8 @@ public class QuestMaker extends StdWebMacro
         			list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
                 	break;
                 }
+                case QuestManager.QM_COMMAND_$HIDDEN:
+                	break;
                 case QuestManager.QM_COMMAND_$ABILITY:
                 {
         			if(oldValue==null) oldValue=defValue;
@@ -442,6 +444,9 @@ public class QuestMaker extends StdWebMacro
                     {
                     case QuestManager.QM_COMMAND_$TITLE: break;
                     case QuestManager.QM_COMMAND_$LABEL: break;
+                    case QuestManager.QM_COMMAND_$HIDDEN: 
+                        httpReq.addRequestParameters(httpKeyName,defValue);
+                    	break;
                     case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE: 
                     {
                         Vector rawitemlist=RoomData.contributeItems(new Vector());

@@ -70,6 +70,7 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$ZAPPERMASK=14;
     public final static int QM_COMMAND_$ABILITY=15;
     public final static int QM_COMMAND_$EXISTING_QUEST_NAME=16;
+    public final static int QM_COMMAND_$HIDDEN=17;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -90,6 +91,7 @@ public interface QuestManager extends CMLibrary
         "$ZAPPERMASK",
         "$ABILITY",
         "$EXISTING_QUEST_NAME",
+        "$HIDDEN"
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -169,6 +171,8 @@ public interface QuestManager extends CMLibrary
             }
             if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
             if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+            if(CMStrings.contains(Quest.ROOM_REFERENCE_QCODES,((String) str).toUpperCase().trim()))
+            	return ((String) str).toUpperCase().trim();
             if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
                 throw new CMException("Multiple-word room names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
             Vector V=CMParms.parse((String)str);
@@ -291,6 +295,9 @@ public interface QuestManager extends CMLibrary
             if(Q==null)
                 throw new CMException("A quest of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
             return Q.name();
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //hidden
+            return str;
         }},
     };
     

@@ -325,6 +325,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return CMLib.map().rooms();
     }
     
+    private void sizeDownTo(Vector V, int num)
+    {
+    	if(num<0) return;
+    	if(num==0) V.clear();
+    	else
+    	while(V.size()>num)
+    		V.removeElementAt(CMLib.dice().roll(1,V.size(),-1));
+    }
+    
     public void parseQuestScript(Vector script, Vector args, int startLine)
     {
     	Vector finalScript=new Vector();
@@ -1661,11 +1670,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                     	if(q.mysteryData==null) q.mysteryData=new MysteryData();
                     	Vector V2=null;
+                    	int num=-1;
+                    	if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
+                    	{
+                    		num=CMath.s_parseIntExpression((String)p.elementAt(2));
+                    		p.removeElementAt(2);
+                    	}
                     	if(cmd.equals("MOTIVEGROUP"))
                     	{
 	                    	q.mysteryData.motiveGroup=null;
 	                        try{ 
-	                        	q.mysteryData.motiveGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	q.mysteryData.motiveGroup=(Vector)getObjectIfSpecified(p,args,2,1);
+	                        	sizeDownTo(q.mysteryData.motiveGroup,num);
 	                        	V2=q.mysteryData.motiveGroup;
 	                        	if((V2!=null)&&(V2.size()>0))
 		                    		q.mysteryData.motive=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
@@ -1677,6 +1693,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    	q.mysteryData.actionGroup=null;
 	                        try{ 
 	                        	q.mysteryData.actionGroup=(Vector)getObjectIfSpecified(p,args,2,1); 
+	                        	sizeDownTo(q.mysteryData.actionGroup,num);
 	                        	V2=q.mysteryData.actionGroup;
 	                        	if((V2!=null)&&(V2.size()>0))
 		                    		q.mysteryData.action=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
@@ -1700,6 +1717,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int pi=2;pi<p.size();pi++)
                         	if(!V2.contains(p.elementAt(pi)))
 	                        	V2.addElement(p.elementAt(pi));
+                    	sizeDownTo(V2,num);
                         if((V2.size()>0)&&(Mstr==null))
                         	Mstr=(String)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1));
                     	if(cmd.equals("MOTIVEGROUP"))

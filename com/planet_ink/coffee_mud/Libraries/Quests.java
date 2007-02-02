@@ -1497,6 +1497,9 @@ public class Quests extends StdLibrary implements QuestManager
                         switch(inputCode)
                         {
                         case QM_COMMAND_$TITLE: break;
+                        case QM_COMMAND_$HIDDEN: 
+                            pageDV.setElementAt(step,4,defValue==null?"":defValue);
+                        	break;
                         case QM_COMMAND_$LABEL: lastLabel=defValue; break;
                         case QM_COMMAND_$EXPRESSION:
                         case QM_COMMAND_$UNIQUE_QUEST_NAME:
@@ -1519,7 +1522,7 @@ public class Quests extends StdLibrary implements QuestManager
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
                             for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-                            	label.append("\""+((Area)e.nextElement())+"\" ");
+                            	label.append("\""+((Area)e.nextElement()).name()+"\" ");
                             String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],
                                                             null);
@@ -1531,7 +1534,7 @@ public class Quests extends StdLibrary implements QuestManager
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
                             for(int q=0;q<CMLib.quests().numQuests();q++)
-                            	label.append("\""+CMLib.quests().fetchQuest(q)+"\" ");
+                            	label.append("\""+CMLib.quests().fetchQuest(q).name()+"\" ");
                             String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],
                                                             null);
