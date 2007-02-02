@@ -158,4 +158,8 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 												 "WHENHAPPENED","WHENHAPPENEDGROUP",
 												 "WHENAT","WHENATGROUP",
 												 "TOOL","TOOLGROUP"};
+	public static final String[] ROOM_REFERENCE_QCODES={"WHEREHAPPENED","WHEREHAPPENEDGROUP",
+		"WHEREAT","WHEREATGROUP",
+		"ROOM","ROMGROUP"
+	};
 }
