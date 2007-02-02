@@ -3841,7 +3841,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
                 return ""+ticksRemaining;
 			int x=questState.vars.indexOf(code.toUpperCase().trim());
-			if(x>=0) return (String)questState.vars.elementAt(x,2);
+			if(x>=0) 
+				return (String)questState.vars.elementAt(x,2);
+			else
+			if(questState.isStat(code))
+			{
+				Object O=questState.getStat(code);
+				if(O instanceof Room) return ((Room)O).roomTitle();
+				if(O instanceof TimeClock) return ((TimeClock)O).getShortTimeDescription();
+				if(O instanceof Environmental) return ((Environmental)O).Name();
+				if(O instanceof Vector) return ""+((Vector)O).size();
+				if(O!=null) return O.toString();
+			}
 			return "";
 		}
 	}
