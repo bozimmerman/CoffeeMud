@@ -2277,7 +2277,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 86: // strcontains
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
-                String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
                 returnable=CMParms.stringContains(arg1,arg2)>=0;
                 break;
             }
