@@ -186,7 +186,9 @@ QUEST_TIME_PROG -1 *
 	MPSETVAR * $QUEST_NAME_REWARDED ''
 	MPSETVAR * $QUEST_NAME_WARNED ''
 	MPSETVAR * $QUEST_NAME_CAPTURED ''
-	$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
+	if VAR($i $QUEST_NAME_REWARDED == '')
+		$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
+	endif
 ~
 
 GREET_PROG 100
@@ -210,11 +212,11 @@ ALL_GREET_PROG 100
 				sayto "$n" Not YOU again
 				return
 			endif
-			if  VAR($9 $QUEST_NAME_REWARDED != '')
+			if  VAR($i $QUEST_NAME_REWARDED == $9)
 				sayto "$n" Not YOU again
 				return
 			endif
-			mpsetvar $9 $QUEST_NAME_REWARDED 'YEP'
+			mpsetvar $i $QUEST_NAME_REWARDED $n
 			mpforce $n follow self
 			mpforce $n follow $i
 			if var($9 $QUEST_NAME_CAPTURED >= $NUM_CAPTURABLES)
