@@ -1,0 +1,285 @@
+#!QUESTMAKER_START_SCRIPT Killer #1
+#An existing mob in your world needs one or more other existing mobs killed. 
+#A reward is given upon completion of the task and returning to the announcer.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name and starting time/duration for your new quest.
+#
+#Quest Name:
+#Enter a unique name for your quest:
+#$QUEST_NAME=$UNIQUE_QUEST_NAME=killer_1
+#
+#Quest Frequency:
+#A quest starts and stops on timed intervals.  Enter the amount of time 
+#that this quest will remain unavailable between runs. This number is in 
+#"ticks" (4 second periods).  You may enter math expressions, and use the 
+# special ? operator to generate random numbers.  A frequency of
+#5 + 3?10 would generate a frequency of 8-15 ticks.
+#$FREQUENCY=$EXPRESSION=400
+#
+#Quest Duration:
+#Enter the amount of time that this quest will run and remain available 
+#after it is started.  This time is also the amount of time a player has 
+#to kill the mobs after they have accepted the quest.
+#This time is expressed in "ticks" (4 second periods).  You may enter math 
+#expressions, and use the special ? operator to generate random numbers.
+#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
+#$DURATION=$EXPRESSION=175
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be wanting the other mobs killed. This must
+#be an existing mob in your world.  
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Announcer speaches
+#Specify here some optional things to say for the announcer before and after the quest.
+#
+#Announcer announcement:
+#Select what type of annoucement the announcer will make when the quest starts.
+#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
+#$QUEST_ANNOUNCEMENT=($STRING)=I have someones I need killed!
+#
+#Announcer Notification: 
+#Specify some additional bit of speech the announcer mob will say to players when they enter the room.
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have someones I need killed!  Are you game?
+#
+#Announcer Instructions: 
+#Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
+#
+#Announcer success:
+#Select what type of speech the announcer will make when a player returns to him after killing the mobs.
+#$QUEST_WINSPEECH_TYPE=$CHOOSE=SAY,MPECHO,QUESTCHAT,YELL
+#This is what the announcement says.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
+#
+#Announcer failure:
+#Select what type of speech the announcer will make when noone returns having killed the mobs.
+#$QUEST_LOSESPEECH_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#This is what the announcement says.
+#$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have wait for the law to get after them.
+#
+#!QUESTMAKER_PAGE Specify the Killable Mob or Mobs
+#The Killables are the mob or mobs which must be defeated.
+#
+#Killables Area/Room: 
+#Specify below the name of the area that your killable mob or mobs will be located
+#in and/or the room in which the mob or mobs can be found.  You may leave both blank
+#to force the quest manager to find the mobs somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.  
+#Use double-quotes around multi-word areas and room ids/names.  If you are trying to specify
+#
+#Killables Area:
+#$KILLABLES_AREA=($AREA)
+#Killables Room:
+#$KILLABLES_ROOMS=($ROOMID)
+#
+#Killables mob names: 
+#Specify the names of the mobs who will act as the killable mob or mobs.  
+#Use double-quotes around multi-word names.
+#If you specified an area or rooms above, then the mobs must be located there. 
+#You may optionally have the quest manager select a random mobs by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#Prop_HaveZapper for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mobs, the quest will not
+#be started.
+#$KILLABLES_NAMES=$NAME
+#
+#Num Killables:
+#Specify how many of the killable mobs must be killed.
+#$NUM_KILLABLES=($EXPRESSION)=1
+#
+#Killables response: 
+#You may optionally specify some additional bit of speech the killables 
+#mobs will say to the players when they enter the room with them. 
+#$KILLABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for killing the mobs:
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Select whether a player may complete this quest multiple times:
+#$MULTIPLE=$CHOOSE=YES,NO
+#
+#If you choose, you may have completion of this quest automatically start another.
+#If this is what you want, enter the next quests name here:
+#$NEXT_QUEST=($EXISTING_QUEST_NAME)
+#
+#!QUESTMAKER_END_SCRIPT Killer #1
+
+set name $QUEST_NAME
+
+set wait $FREQUENCY
+set interval 1
+#quiet
+
+set minplayers 1
+set playermask $QUEST_CRITERIA
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob $ANNOUNCER_NAME
+give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
+give stat charisma 100
+
+set area $KILLABLES_AREA
+set roomgroup $KILLABLES_ROOMS
+set room
+set mobgroup
+set mobgroup $KILLABLES_NAMES
+set mob
+give behavior Scriptable LOAD=$QUEST_NAME_killable.script
+
+set duration $DURATION
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_NAME_announcer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_NAME_REWARDED ''
+	MPSETVAR * $QUEST_NAME_WARNED ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_NAME_KILLED ''
+	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
+~
+
+QUEST_TIME_PROG 1 *
+	IF VAR($I $QUEST_NAME_ACCEPTED != '')
+		TELL "$QUEST_NAME_ACCEPTED" You have 1 minute to complete my quest.
+	ENDIF
+~
+
+QUEST_TIME_PROG -1 *
+	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_NAME_REWARDED ''
+	MPSETVAR * $QUEST_NAME_WARNED ''
+	MPSETVAR * $QUEST_NAME_KILLED ''
+	if VAR($i $QUEST_NAME_REWARDED == '')
+		$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
+	endif
+~
+
+ALL_GREET_PROG 100
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
+				if VAR($i $QUEST_NAME_ACCEPTED == '')
+					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
+					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
+				endif
+			endif
+		endif
+	endif
+
+	IF VAR($n $QUEST_NAME_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+			sayto "$n" Not YOU again
+			return
+		endif
+		if  VAR($i $QUEST_NAME_REWARDED == $n)
+			sayto "$n" Not YOU again
+			return
+		endif
+		if var($n $QUEST_NAME_KILLED >= $NUM_KILLABLES)
+			mpsetvar $i $QUEST_NAME_REWARDED $n
+			if EVAL('$EXP' != '')
+				mpexp $n $EXP
+			endif
+			if EVAL('$QUEST_POINT' == 'YES')
+				mpoload QuestPoint
+				give "a quest point" "$n"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoload $GOLD
+				give $GOLD "$n"
+			endif
+			mpquestwin $n *
+			$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
+			mpendquest *
+			IF EVAL('$NEXT_QUEST' != '')
+				mpstartquest $NEXT_QUEST
+			ENDIF
+		else
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if VAR($i $QUEST_NAME_ACCEPTED == '')
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpqset * REMAINING $DURATION
+				mpsetvar $i $QUEST_NAME_ACCEPTED $n
+				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
+				mpsetvar $n $QUEST_NAME_KILLED 0
+			else
+				if VAR($i $QUEST_NAME_ACCEPTED == $n)
+					sayto "$n" Yes, yes, I know .. now off with you.
+				else
+				endif
+			endif
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_NAME_killable.script</NAME>
+<DATA>
+GREET_PROG 100
+	if VAR($n $QUEST_NAME_ACCEPTED != '')
+		sayto "$n" $KILLABLES_RESPONSE
+	endif
+~
+	
+DEATH_PROG
+	mpargset $9 $n
+	if isfollow($n) and isnpc($n)
+		mpargset $9 $%ISFOLLOW($n)%
+	endif
+	if VAR($9 $QUEST_NAME_ACCEPTED != '')
+		mpsetvar $9 $QUEST_NAME_KILLED ++;
+		if EVAL($NUM_KILLABLES > 1)
+			mpechoat $9 Killed $<$9 $QUEST_NAME_KILLED>/$NUM_KILLABLES
+		else
+		endif
+	endif
+~
+</DATA></FILE>

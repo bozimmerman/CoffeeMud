@@ -7,7 +7,7 @@
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest Name:
-#Enter a unique name for your delivery quest:
+#Enter a unique name for your quest:
 #$QUEST_NAME=$UNIQUE_QUEST_NAME=capture_1
 #
 #Quest Frequency:
@@ -113,7 +113,7 @@
 #Prop_HaveZapper for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mobs, the quest will not
 #be started.
-#$CAPTURABLES_NAME=$NAME
+#$CAPTURABLES_NAMES=$NAME
 #
 #Num Capturables:
 #Specify how many of the capturable mobs must be brought in to complete the quest.
@@ -146,7 +146,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Delivery #1
+#!QUESTMAKER_END_SCRIPT Capture #1
 
 set name $QUEST_NAME
 
@@ -168,7 +168,7 @@ set area $CAPTURABLES_AREA
 set roomgroup $CAPTURABLES_ROOMS
 set room
 set mobgroup
-set mobgroup $CAPTURABLES_NAME
+set mobgroup $CAPTURABLES_NAMES
 set mob
 give behavior Scriptable LOAD=$QUEST_NAME_capturable.script
 
@@ -285,19 +285,13 @@ GREET_PROG 100
 ~
 	
 CNCLMSG_PROG DEATH ALL
-	mpecho $i
 	if ISFIGHT($i)
 		mpargset $9 '$%ISFIGHT($i)%'
 		if VAR($9 $QUEST_NAME_ACCEPTED != '')
 			mpgset $i HITS 1
-			flee NOWHERE
+			mpstop all
 			sayto "$9" $CAPTURABLES_SURRENDER
-			flee NOWHERE
 			follow "$9"
-			flee NOWHERE
-			if isfight($9)
-				mpforce $9 flee NOWHERE
-			endif
 			RETURN CANCEL
 		endif
 	endif

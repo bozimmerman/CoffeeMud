@@ -5983,22 +5983,39 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
             case 56: // mpstop
             {
-                Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(newTarget instanceof MOB)
-                {
-                    MOB mob=(MOB)newTarget;
-                    Ability A=null;
-                    for(int a=mob.numEffects();a>=0;a--)
-                    {
-                        A=mob.fetchEffect(a);
-                        if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-                        &&(A.canBeUninvoked())
-                        &&(!A.isAutoInvoked()))
-                            A.unInvoke();
-                    }
-                    mob.makePeace();
-                    if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
-                }
+            	Vector V=new Vector();
+            	String who=CMParms.getCleanBit(s,1);
+            	if(who.equalsIgnoreCase("all"))
+            	{
+            		for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+            			V.addElement(lastKnownLocation.fetchInhabitant(i));
+            	}
+            	else
+            	{
+	                Environmental newTarget=getArgumentItem(who,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+	                if(newTarget instanceof MOB)
+	                	V.addElement(newTarget);
+            	}
+            	for(int v=0;v<V.size();v++)
+            	{
+            		Environmental newTarget=(Environmental)V.elementAt(v);
+	                if(newTarget instanceof MOB)
+	                {
+	                    MOB mob=(MOB)newTarget;
+	                    Ability A=null;
+	                    for(int a=mob.numEffects()-1;a>=0;a--)
+	                    {
+	                        A=mob.fetchEffect(a);
+	                        if((A!=null)
+	                        &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+	                        &&(A.canBeUninvoked())
+	                        &&(!A.isAutoInvoked()))
+	                            A.unInvoke();
+	                    }
+	                    mob.makePeace();
+	                    if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+	                }
+            	}
                 break;
             }
 			case 43: // mpunhide

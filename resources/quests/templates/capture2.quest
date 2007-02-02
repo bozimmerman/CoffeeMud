@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Capture #1
+#!QUESTMAKER_START_SCRIPT Capture #2
 #An existing mob in your world needs one or more mobs which you will create captured 
 #and brought to him.  Finding and defeating the mob or mobs in combat will 
 #cause the captured mob to follow the player peacefully.  A reward is given upon delivery.
@@ -7,8 +7,8 @@
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest Name:
-#Enter a unique name for your delivery quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=capture_1
+#Enter a unique name for your quest:
+#$QUEST_NAME=$UNIQUE_QUEST_NAME=capture_2
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -94,7 +94,7 @@
 #
 #Capturables Area/Room: 
 #Specify below the name of the area that your capturable mob or mobs will be created
-#in and/or the rooms in which the mob or mobs can be found.  You may leave both blank
+#in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
 #to force the quest manager to create the mobs randomly throughout the world if you link.
 #Use double-quotes around multi-word areas and room ids/names.  If you are trying to specify
 #
@@ -145,7 +145,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Delivery #1
+#!QUESTMAKER_END_SCRIPT Capture #2
 
 set name $QUEST_NAME
 
@@ -167,6 +167,7 @@ set area $CAPTURABLES_AREA
 set roomgroup $CAPTURABLES_ROOMS
 set mobgroup
 set mob
+set room
 import mobs $QUEST_NAME_mobs.xml
 load mobgroup $CAPTURABLES_CREATED any
 set mob
@@ -175,7 +176,7 @@ give behavior Scriptable LOAD=$QUEST_NAME_capturable.script
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_NAME_mobs.xml</NAME><DATA><ITEMS>$CAPTURABLES_MOBS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_NAME_mobs.xml</NAME><DATA><MOBS>$CAPTURABLES_MOBS</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_NAME_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -286,19 +287,13 @@ GREET_PROG 100
 ~
 	
 CNCLMSG_PROG DEATH ALL
-	mpecho $i
 	if ISFIGHT($i)
 		mpargset $9 '$%ISFIGHT($i)%'
 		if VAR($9 $QUEST_NAME_ACCEPTED != '')
 			mpgset $i HITS 1
-			flee NOWHERE
 			sayto "$9" $CAPTURABLES_SURRENDER
-			flee NOWHERE
+			mpstop all
 			follow "$9"
-			flee NOWHERE
-			if isfight($9)
-				mpforce $9 flee NOWHERE
-			endif
 			RETURN CANCEL
 		endif
 	endif
