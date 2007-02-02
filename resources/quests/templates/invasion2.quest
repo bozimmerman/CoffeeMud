@@ -252,6 +252,8 @@ SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($i $QUEST_NAME_ACCEPTED == '')
+				mpsetvar $i $QUEST_NAME_ACCEPTED $n
+				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.

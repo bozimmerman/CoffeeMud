@@ -2701,6 +2701,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     continue;
                 }
                 Environmental E=(Environmental)questState.stuff.elementAt(i,1);
+            	Ability A=E.fetchEffect("QuestBound");
+            	if(A!=null)E.delEffect(A);
                 questState.stuff.removeElementAt(i);
                 if(E instanceof Item)
                 {
@@ -3169,7 +3171,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int x=questState.stuff.indexOf(object);
         if(x<0)
+        {
         	questState.stuff.addElement(object, new Integer(questState.preserveState));
+        	Ability A=CMClass.getAbility("QuestBound");
+        	A.setMiscText(""+this);
+        	object.addNonUninvokableEffect(A);
+        }
         else
         {
             Integer I=(Integer)questState.stuff.elementAt(x,2);

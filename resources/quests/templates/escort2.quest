@@ -218,6 +218,8 @@ SPEECH_PROG p i accept
 			if VAR($i $QUEST_NAME_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
+				mpsetvar $i $QUEST_NAME_ACCEPTED $n
+				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
 				for $0 = 1 to '$%NUMMOBSROOM(*)%'
 				   if QUESTMOB('$%ROOMMOB($0)%' *) AND EVAL('$%ROOMMOB($0)%' != $i)
 				   		mpforce '$%ROOMMOB($0)%' follow $n

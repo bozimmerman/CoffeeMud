@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Capture #1 - Not Quite Ready
+#!QUESTMAKER_START_SCRIPT Capture #1
 #An existing mob in your world needs one or more other existing mobs captured 
 #and brought to him.  Finding and defeating the mob or mobs in combat will 
 #cause the captured mob to follow the player peacefully.  A reward is given upon delivery.
@@ -75,7 +75,7 @@
 #
 #Announcer Instructions: 
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  Just beat them senseless, and they will yield to you.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.
 #
 #Announcer success:
 #Select what type of speech the announcer will make when a player returns to him with the captured mobs.
@@ -122,7 +122,12 @@
 #Capturables response: 
 #You may optionally specify some additional bit of speech the capturables 
 #mobs will say to the players when they enter the room with them. 
-#$CAPTURABLES_RESPONSE=($LONG_STRING)=So, you've come for me.  Come and get me.
+#$CAPTURABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#
+#Capturables surrender: 
+#You may optionally specify some additional bit of speech the capturables 
+#mobs will say to the players when they are defeated in combat.
+#$CAPTURABLES_SURRENDER=($STRING)=I surrender
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for delivering the mobs:
@@ -157,6 +162,7 @@ set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
 give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
+give stat charisma 100
 
 set area $CAPTURABLES_AREA
 set roomgroup $CAPTURABLES_ROOMS
@@ -180,6 +186,12 @@ ONCE_PROG 100
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
+QUEST_TIME_PROG 1 *
+	IF VAR($I $QUEST_NAME_ACCEPTED != '')
+		TELL "$QUEST_NAME_ACCEPTED" You have 1 minute to complete my quest.
+	ENDIF
+~
+
 QUEST_TIME_PROG -1 *
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
@@ -191,7 +203,7 @@ QUEST_TIME_PROG -1 *
 	endif
 ~
 
-GREET_PROG 100
+ALL_GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
@@ -202,25 +214,23 @@ GREET_PROG 100
 			endif
 		endif
 	endif
-~
 
-ALL_GREET_PROG 100
 	IF isnpc($n) and questmob($n *) and isfollow($n)
 		mpargset $9 '$%ISFOLLOW($n)%'
 		if ISLIKE($9 '$QUEST_CRITERIA') and ISPC($9)
-			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-				sayto "$n" Not YOU again
+			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($9 *)
+				sayto "$9" Not YOU again
 				return
 			endif
 			if  VAR($i $QUEST_NAME_REWARDED == $9)
-				sayto "$n" Not YOU again
+				sayto "$9" Not YOU again
 				return
 			endif
-			mpsetvar $i $QUEST_NAME_REWARDED $n
 			mpforce $n follow self
 			mpforce $n follow $i
+			mpsetvar $9 $QUEST_NAME_CAPTURED ++;
 			if var($9 $QUEST_NAME_CAPTURED >= $NUM_CAPTURABLES)
-				mpsetvar $9 $QUEST_NAME_CAPTURED ++;
+				mpsetvar $i $QUEST_NAME_REWARDED $9
 				if EVAL('$EXP' != '')
 					mpexp $9 $EXP
 				endif
@@ -253,6 +263,9 @@ SPEECH_PROG p i accept
 			if VAR($i $QUEST_NAME_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
+				mpsetvar $i $QUEST_NAME_ACCEPTED $n
+				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
+				mpsetvar $n $QUEST_NAME_CAPTURED 0
 			else
 				if VAR($i $QUEST_NAME_ACCEPTED == $n)
 					sayto "$n" Yes, yes, I know .. now off with you.
@@ -266,10 +279,27 @@ SPEECH_PROG p i accept
 <FILE><NAME>$QUEST_NAME_capturable.script</NAME>
 <DATA>
 GREET_PROG 100
-	if has($n '$[1 *]')
-		say "$n" Ah, I see you are here to deliver $[1 *].  Go ahead and give it to me.
+	if VAR($n $QUEST_NAME_ACCEPTED != '')
+		sayto "$n" $CAPTURABLES_RESPONSE
 	endif
 ~
 	
-
+CNCLMSG_PROG DEATH ALL
+	mpecho $i
+	if ISFIGHT($i)
+		mpargset $9 '$%ISFIGHT($i)%'
+		if VAR($9 $QUEST_NAME_ACCEPTED != '')
+			mpgset $i HITS 1
+			flee NOWHERE
+			sayto "$9" $CAPTURABLES_SURRENDER
+			flee NOWHERE
+			follow "$9"
+			flee NOWHERE
+			if isfight($9)
+				mpforce $9 flee NOWHERE
+			endif
+			RETURN CANCEL
+		endif
+	endif
+~
 </DATA></FILE>
