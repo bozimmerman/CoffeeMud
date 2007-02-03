@@ -96,14 +96,14 @@
 #Specify below the name of the area that your collectable item or items will be created
 #in and/or the rooms in which the item or items will be created.  You may leave both blank
 #to force the quest manager to create the items randomly throughout the world if you like.
-#Use double-quotes around multi-word areas and room ids/names.  If you are trying to specify
+#Use double-quotes around multi-word areas and room ids/names.
 #
 #Collectables Area:
 #$COLLECTABLES_AREA=($AREA)
 #Collectables Room:
 #$COLLECTABLES_ROOMS=($ROOMID)
 #
-#Collectables mobs: 
+#Collectables items: 
 #Specify the items who will act as the collectable item or items.
 #$COLLECTABLES_ITEMS=$ITEMXML_ONEORMORE
 #

@@ -2288,9 +2288,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                     if(cmd.equals("ITEM")||(cmd.equalsIgnoreCase("ITEMS")))
                     {
-                        if((q.item==null)&&(q.itemGroup==null))
+                        if((q.item==null)&&(q.itemGroup==null)&&(q.loadedItems==null))
                         {
-                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item(s), no item(s) set.");
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give item(s), no item(s) set or loaded.");
                             break;
                         }
                         if((q.mob==null)&&(q.mobGroup==null))
@@ -2315,6 +2315,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                         if(q.itemGroup!=null) 
                         	itemSet=q.itemGroup;
+                        else
+                        if(q.loadedItems!=null) 
+                            itemSet=q.loadedItems;
                         for(int i=0;i<toSet.size();i++)
                         {
                             MOB M2=(MOB)toSet.elementAt(i);

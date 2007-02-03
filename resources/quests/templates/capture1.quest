@@ -97,7 +97,7 @@
 #in and/or the room in which the mob or mobs can be found.  You may leave both blank
 #to force the quest manager to find the mobs somewhere in the world, but this
 #will hurt the performance of your mud, so use with care.  
-#Use double-quotes around multi-word areas and room ids/names.  If you are trying to specify
+#Use double-quotes around multi-word areas and room ids/names.
 #
 #Capturables Area:
 #$CAPTURABLES_AREA=($AREA)

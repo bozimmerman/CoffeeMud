@@ -274,7 +274,8 @@ public class ItemGenerator extends ActiveTicker
 			if(items==null) return true;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false; 
-			if(maintained.size()<avgItems)
+			if((maintained.size()<avgItems)
+            &&(items.size()>1))
 			{
 				double totalValue=((Double)items.firstElement()).doubleValue();
 				int maxValue=((Integer)items.elementAt(1)).intValue();

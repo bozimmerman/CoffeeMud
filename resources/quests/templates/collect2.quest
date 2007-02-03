@@ -1,13 +1,14 @@
-#!QUESTMAKER_START_SCRIPT Killer #1
-#An existing mob in your world needs one or more other existing mobs killed. 
-#A reward is given upon completion of the task and returning to the announcer.
+#!QUESTMAKER_START_SCRIPT Collect #2
+#An existing mob in your world needs one or more items which you will create brought back to him/her. 
+#The items will be scattered among existing mobs whom you will designate.
+#A reward is given upon completion of the task and returning the items to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest Name:
 #Enter a unique name for your quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=killer_1
+#$QUEST_NAME=$UNIQUE_QUEST_NAME=collect_2
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -20,7 +21,7 @@
 #Quest Duration:
 #Enter the amount of time that this quest will run and remain available 
 #after it is started.  This time is also the amount of time a player has 
-#to kill the mobs after they have accepted the quest.
+#to bring back the items after they have accepted the quest.
 #This time is expressed in "ticks" (4 second periods).  You may enter math 
 #expressions, and use the special ? operator to generate random numbers.
 #For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
@@ -33,7 +34,7 @@
 #$QUEST_CRITERIA=$ZAPPERMASK
 #
 #!QUESTMAKER_PAGE Specify the Announcer
-#The Announcer is the mob who will be wanting the other mobs killed. This must
+#The Announcer is the mob who will be wanting the items collected. This must
 #be an existing mob in your world.  
 #
 #Announcer Area/Room: 
@@ -66,65 +67,72 @@
 #Select what type of annoucement the announcer will make when the quest starts.
 #$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
-#$QUEST_ANNOUNCEMENT=($STRING)=I have someones I need killed!
+#$QUEST_ANNOUNCEMENT=($STRING)=I have some things I need collected
 #
 #Announcer Notification: 
 #Specify some additional bit of speech the announcer mob will say to players when they enter the room.
-#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have someones I need killed!  Are you game?
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have some things I need collected
 #
 #Announcer Instructions: 
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to collect some things.  They are somewhere around somewhere.
 #
 #Announcer success:
-#Select what type of speech the announcer will make when a player returns to him after killing the mobs.
+#Select what type of speech the announcer will make when a player returns to him after collecting the items.
 #$QUEST_WINSPEECH_TYPE=$CHOOSE=SAY,MPECHO,QUESTCHAT,YELL
 #This is what the announcement says.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations!
 #
 #Announcer failure:
-#Select what type of speech the announcer will make when noone returns having killed the mobs.
+#Select what type of speech the announcer will make when noone returns having collecting the items
 #$QUEST_LOSESPEECH_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the announcement says.
-#$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have wait for the law to get after them.
+#$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have fetch them myself
 #
-#!QUESTMAKER_PAGE Specify the Killable Mob or Mobs
-#The Killables are the mob or mobs which must be defeated.
+#!QUESTMAKER_PAGE Specify the Holders
+#The Holders are the mobs who will be holding the items jto collect. These must
+#be existing mobs in your world.  
 #
-#Killables Area/Room: 
-#Specify below the name of the area that your killable mob or mobs will be located
-#in and/or the room in which the mob or mobs can be found.  You may leave both blank
-#to force the quest manager to find the mobs somewhere in the world, but this
-#will hurt the performance of your mud, so use with care.  
+#Holders Area/Room: 
+#Specify below the name of the area that your holders mobs will be located
+#in and/or the room in which the mobs can be found.  You may leave both blank
+#to force the quest manager to find the mobs everywhere in the world, but this
+#will hurt the performance of your mud, so use with care.
 #Use double-quotes around multi-word areas and room ids/names.
+#  
+#Holders Area:
+#$HOLDERS_AREA=($AREA)
+#Holders Room ID:
+#$HOLDERS_ROOMS=($ROOMID)
 #
-#Killables Area:
-#$KILLABLES_AREA=($AREA)
-#Killables Room:
-#$KILLABLES_ROOMS=($ROOMID)
-#
-#Killables mob names: 
-#Specify the names of the mobs who will act as the killable mob or mobs.  
+#Holders mob names: 
+#Specify the names of the mobs who will act as the holders mobs.  
 #Use double-quotes around multi-word names.
-#If you specified an area or rooms above, then the mobs must be located there. 
-#You may optionally have the quest manager select a random mobs by entering
+#If you specified an area or room above, then the mobs must be located there.
+#You may optionally have the quest manager select mobs by entering
 #a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#Prop_HaveZapper for information on zapper mask syntax).
+#ZAPPERMASKS for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mobs, the quest will not
 #be started.
-#$KILLABLES_NAMES=$NAME
+#$HOLDERS_NAMES=$NAME
 #
-#Num Killables:
-#Specify how many of the killable mobs must be killed.
-#$NUM_KILLABLES=($EXPRESSION)=1
+#!QUESTMAKER_PAGE Specify the Collectables
+#The Collectables are the items that will be given to holders you specified.
 #
-#Killables response: 
-#You may optionally specify some additional bit of speech the killables 
-#mobs will say to the players when they enter the room with them. 
-#$KILLABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#Collectables items: 
+#Specify the items who will act as the collectable item or items.
+#$COLLECTABLES_ITEMS=$ITEMXML_ONEORMORE
+#
+#Collectables to create:
+#Specify how many collectable items will be created among the holders.
+#$COLLECTABLES_TOTAL=($EXPRESSION)=1
+#
+#Num Collectables:
+#Specify how many of the collectable items must be collected to complete the quest.
+#$NUM_COLLECTABLES=($EXPRESSION)=1
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for killing the mobs:
+#Select some rewards for bringing back the items.
 #
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
@@ -140,7 +148,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Killer #1
+#!QUESTMAKER_END_SCRIPT Collect #2
 
 set name $QUEST_NAME
 
@@ -156,19 +164,31 @@ set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
 give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
-give stat charisma 100
 
-set area $KILLABLES_AREA
-set roomgroup $KILLABLES_ROOMS
+set area $HOLDERS_AREA
+set roomgroup $HOLDERS_ROOMS
 set room
-set mobgroup
-set mobgroup $KILLABLES_NAMES
+set mobgroup $HOLDERS_NAMES
 set mob
-give behavior Scriptable LOAD=$QUEST_NAME_killable.script
+set roomgroup
+set agentgroup $COLLECTABLES_TOTAL 
+set mobgroup agentgroup
+set mob
+set item
+set room
+set area
+import items $QUEST_NAME_items.xml
+set itemgroup loadeditems
+set item
+give behavior Scriptable LOAD=$QUEST_NAME_item.script
+give item
+set item
+set mobgroup
 
 set duration $DURATION
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_NAME_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_NAME_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -176,7 +196,8 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_NAME_REWARDED ''
 	MPSETVAR * $QUEST_NAME_WARNED ''
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_KILLED ''
+	MPSETVAR * $QUEST_NAME_COLLECTED ''
+	MPSETVAR * $QUEST_NAME_GOT ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
@@ -191,7 +212,8 @@ QUEST_TIME_PROG -1 *
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 	MPSETVAR * $QUEST_NAME_REWARDED ''
 	MPSETVAR * $QUEST_NAME_WARNED ''
-	MPSETVAR * $QUEST_NAME_KILLED ''
+	MPSETVAR * $QUEST_NAME_COLLECTED ''
+	MPSETVAR * $QUEST_NAME_GOT ''
 	if VAR($i $QUEST_NAME_REWARDED == '')
 		$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
 	endif
@@ -208,7 +230,9 @@ ALL_GREET_PROG 100
 			endif
 		endif
 	endif
+~
 
+GIVE_PROG all
 	IF VAR($n $QUEST_NAME_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 			sayto "$n" Not YOU again
@@ -218,27 +242,38 @@ ALL_GREET_PROG 100
 			sayto "$n" Not YOU again
 			return
 		endif
-		if var($n $QUEST_NAME_KILLED >= $NUM_KILLABLES)
-			mpsetvar $i $QUEST_NAME_REWARDED $n
-			if EVAL('$EXP' != '')
-				mpexp $n $EXP
+		if questobj($o *)
+			mpsetvar $n $QUEST_NAME_COLLECTED ++
+			mpjunk $o
+			if var($n $QUEST_NAME_COLLECTED >= $NUM_COLLECTABLES)
+				mpsetvar $i $QUEST_NAME_REWARDED $n
+				if EVAL('$EXP' != '')
+					mpexp $n $EXP
+				endif
+				if EVAL('$QUEST_POINT' == 'YES')
+					mpoload QuestPoint
+					give "a quest point" "$n"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$n"
+				endif
+				mpquestwin $n *
+				$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
+				mpendquest *
+				IF EVAL('$NEXT_QUEST' != '')
+					mpstartquest $NEXT_QUEST
+				ENDIF
+			else
+				sayto "$n" That's $<$n $QUEST_NAME_COLLECTED>/$NUM_COLLECTABLES.
 			endif
-			if EVAL('$QUEST_POINT' == 'YES')
-				mpoload QuestPoint
-				give "a quest point" "$n"
-			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpoload $GOLD
-				give $GOLD "$n"
-			endif
-			mpquestwin $n *
-			$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
-			mpendquest *
-			IF EVAL('$NEXT_QUEST' != '')
-				mpstartquest $NEXT_QUEST
-			ENDIF
 		else
+			sayto "$n" What's this?
+			give "$o" "$n"
 		endif
+	else
+		sayto "$n" What's this?
+		give "$o" "$n"
 	endif
 ~
 
@@ -250,7 +285,8 @@ SPEECH_PROG p i accept
 				mpqset * REMAINING $DURATION
 				mpsetvar $i $QUEST_NAME_ACCEPTED $n
 				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
-				mpsetvar $n $QUEST_NAME_KILLED 0
+				mpsetvar $n $QUEST_NAME_COLLECTED 0
+				MPSETVAR * $QUEST_NAME_GOT 0
 			else
 				if VAR($i $QUEST_NAME_ACCEPTED == $n)
 					sayto "$n" Yes, yes, I know .. now off with you.
@@ -261,25 +297,20 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_killable.script</NAME>
+<FILE><NAME>$QUEST_NAME_item.script</NAME>
 <DATA>
-GREET_PROG 100
+GET_PROG all
 	if VAR($n $QUEST_NAME_ACCEPTED != '')
-		sayto "$n" $KILLABLES_RESPONSE
+		MPSETVAR $n $QUEST_NAME_GOT ++
+		mpechoat $n Picked up: $<$n $QUEST_NAME_GOT>/$NUM_COLLECTABLES.
 	endif
-~
 	
-DEATH_PROG
-	mpargset $9 $n
-	if isfollow($n) and isnpc($n)
-		mpargset $9 $%ISFOLLOW($n)%
-	endif
-	if VAR($9 $QUEST_NAME_ACCEPTED != '')
-		mpsetvar $9 $QUEST_NAME_KILLED ++;
-		if EVAL($NUM_KILLABLES > 1)
-			mpechoat $9 Killed $<$9 $QUEST_NAME_KILLED>/$NUM_KILLABLES
-		else
-		endif
-	endif
 ~
-</DATA></FILE>
+DROP_PROG all
+	if VAR($n $QUEST_NAME_ACCEPTED != '')
+		MPSETVAR $n $QUEST_NAME_GOT --
+	endif
+	
+~
+</DATA>
+</FILE>
