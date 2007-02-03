@@ -1,7 +1,9 @@
 #!QUESTMAKER_START_SCRIPT Capture #2
 #An existing mob in your world needs one or more mobs which you will create captured 
 #and brought to him.  Finding and defeating the mob or mobs in combat will 
-#cause the captured mob to follow the player peacefully.  A reward is given upon delivery.
+#cause the captured mob to follow the player peacefully.    There is also
+#a peaceful mode for finding lost mobs.
+#A reward is given upon delivery.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -117,6 +119,14 @@
 #Num Capturables:
 #Specify how many of the capturable mobs must be brought in to complete the quest.
 #$NUM_CAPTURABLES=($EXPRESSION)=5
+#
+#!QUESTMAKER_PAGE Capturables Behavior
+#Select some details about the capturable mobs
+#
+#Capturables peaceful: 
+#Set this to PEACEFUL if the capturable mobs will follow the player who discovers
+#them, and VIOLENT if the capturable mobs must be defeated in combat first.
+#$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
 #
 #Capturables response: 
 #You may optionally specify some additional bit of speech the capturables 
@@ -281,8 +291,13 @@ SPEECH_PROG p i accept
 <FILE><NAME>$QUEST_NAME_capturable.script</NAME>
 <DATA>
 GREET_PROG 100
-	if VAR($n $QUEST_NAME_ACCEPTED != '')
+	if VAR($n $QUEST_NAME_ACCEPTED != '') and !isfollow($i)
 		sayto "$n" $CAPTURABLES_RESPONSE
+		if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+			sayto "$n" $CAPTURABLES_SURRENDER
+			mpstop all
+			follow "$n"
+		endif
 	endif
 ~
 	
