@@ -57,6 +57,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     private Hashtable noTrigger=new Hashtable();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Quest defaultQuest=null;
+	protected CMMsg lastMsg=null;
     protected Environmental lastLoaded=null;
 
 	private Quest getQuest(String named)
@@ -7400,6 +7401,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.tool() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
+					if(lastMsg==msg) break;
+					lastMsg=msg;
 					trigger=trigger.substring(9).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7559,6 +7562,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
+					if(lastMsg==msg) break;
+					lastMsg=msg;
 					trigger=trigger.substring(8).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7595,6 +7600,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
+					if(lastMsg==msg) break;
+					lastMsg=msg;
 					trigger=trigger.substring(9).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7764,6 +7771,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
+					if(lastMsg==msg) break;
+					lastMsg=msg;
 					trigger=trigger.substring(8).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{

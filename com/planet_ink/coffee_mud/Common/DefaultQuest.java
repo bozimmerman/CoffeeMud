@@ -671,7 +671,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         if(q.mob==null)
                         {
-                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !mob '"+p+"'.");
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !mobtype '"+p+"'.");
                         	break;
                         }
                         if(reselect) q.reselectable.add(q.mob);
