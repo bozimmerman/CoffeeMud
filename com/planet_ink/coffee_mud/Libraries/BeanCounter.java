@@ -36,6 +36,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 {
     public String ID(){return "BeanCounter";}
     public Hashtable currencies=new Hashtable();
+    public static Hashtable defaultCurrencies=new Hashtable();
     public Vector allCurrencyNames=new Vector();
     public Hashtable allCurrencyDenominationNames=new Hashtable();
     
@@ -52,7 +53,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    }
 	}
 	
-	public DVector createCurrencySet(String currency)
+    public DVector createCurrencySet(String currency){ return createCurrencySet(currencies,currency);}
+	protected DVector createCurrencySet(Hashtable currencies, String currency)
 	{
 	    int x=currency.indexOf("=");
 	    if(x<0) return null;
@@ -113,19 +115,21 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	
 	public DVector getCurrencySet(String currency)
 	{
-	    if((currency==null)||(currencies==null)) return null; 
-	    if((currency.length()==0)&&(!currencies.containsKey("")))
-	    {
-	        createCurrencySet(defaultCurrencyDefinition);
-	        createCurrencySet(goldStandard);
-	        createCurrencySet(copperStandard);
-	    }
+	    if(currency==null) return null; 
 	    String code=currency.toUpperCase().trim();
 	    int x=code.indexOf("=");
 	    if(x<0)
 	    {
 	        if(currencies.containsKey(code))
 	            return (DVector)currencies.get(code);
+            if(defaultCurrencies.size()==0)
+            {
+                createCurrencySet(defaultCurrencies,defaultCurrencyDefinition);
+                createCurrencySet(defaultCurrencies,goldStandard);
+                createCurrencySet(defaultCurrencies,copperStandard);
+            }
+            if(defaultCurrencies.containsKey(code))
+                return (DVector)defaultCurrencies.get(code);
 	        return null;
 	    }
         code=code.substring(0,x).trim();
