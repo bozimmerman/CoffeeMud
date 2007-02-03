@@ -206,10 +206,6 @@ public class QuestBound implements Ability
 	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		return;
-	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((amDestroyed())||(affected==null)) return true;
@@ -244,6 +240,39 @@ public class QuestBound implements Ability
 		}
 		return true;
 	}
+    public void executeMsg(Environmental myHost, CMMsg msg)
+    {
+        if((amDestroyed())||(affected==null)) return;
+        if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)
+        ||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+            &&(msg.target()!=null)
+            &&((msg.target() instanceof Room)
+                ||(msg.target()==affected)
+                ||((affected instanceof Item)&&(((Item)affected).owner()==msg.target()))))
+        ||(msg.targetMinor()==CMMsg.TYP_ROOMRESET))
+        {
+            if(text().length()>0)
+            {
+                Quest Q=null;
+                Quest theQ=null;
+                for(int q=0;q<CMLib.quests().numQuests();q++)
+                {
+                    Q=CMLib.quests().fetchQuest(q);
+                    if((Q!=null)&&(""+Q).equals(text()))
+                    { theQ=Q; break;}
+                }
+                if((theQ==null)||(!Q.running()))
+                    affected.delEffect(this);
+                else
+                {
+                    Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[msg.targetMinor()]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to stop.");
+                    Q.stopQuest();
+                }
+            }
+            else
+                affected.delEffect(this);
+        }
+    }
 	public boolean tick(Tickable ticking, int tickID)
 	{ return true;	}
 	public void makeLongLasting(){}
