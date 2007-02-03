@@ -3085,7 +3085,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         if(tickID!=Tickable.TICKID_QUEST)
             return false;
-        if(CMSecurity.isDisabled("QUESTS")) return true;
+        if(CMSecurity.isDisabled("QUESTS")
+        ||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+        ||(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))) 
+            return true;
         
         tickStatus=Tickable.STATUS_START;
         if(running())
