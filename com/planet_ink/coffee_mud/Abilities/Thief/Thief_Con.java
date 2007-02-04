@@ -43,61 +43,99 @@ public class Thief_Con extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
+    public double castingTime(){return 5;}
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    {
+        if(commands!=null) commands=(Vector)commands.clone();
+        if(!conCheck(mob,commands,givenTarget,auto,asLevel))
+            return false;
+        Vector V=new Vector();
+        V.addElement(commands.elementAt(0));
+        MOB target=this.getTarget(mob,V,givenTarget);
+        if(target==null) return false;
+        commands.removeElementAt(0);
+        if(secondsElapsed>0)
+        {
+            if((secondsElapsed%4)==0)
+                return mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<S-NAME> continue(s) conning <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+            return true;
+        }
+        CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+        if(mob.location().okMessage(mob,msg))
+            mob.location().send(mob,msg);
+        else
+            return false;
+        return true;
+    }
 
+    public boolean conCheck(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        if(commands!=null) commands=(Vector)commands.clone();
+        if(commands.size()<1)
+        {
+            mob.tell("Con whom into doing what?");
+            return false;
+        }
+        Vector V=new Vector();
+        V.addElement(commands.elementAt(0));
+        MOB target=this.getTarget(mob,V,givenTarget);
+        if(target==null) return false;
+        
+        commands.removeElementAt(0);
+
+        if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
+        {
+            mob.tell("You can't con "+target.name()+".");
+            return false;
+        }
+
+        if(target.isInCombat())
+        {
+            mob.tell(target.name()+" is too busy fighting right now.");
+            return false;
+        }
+
+        if(mob.isInCombat())
+        {
+            mob.tell("You are too busy fighting right now.");
+            return false;
+        }
+
+        if(commands.size()<1)
+        {
+            mob.tell("Con "+target.charStats().himher()+" into doing what?");
+            return false;
+        }
+
+
+        if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
+        {
+            mob.tell("You can't con someone into following you.");
+            return false;
+        }
+        
+        Object O=CMLib.english().findCommand(target,commands);
+        if(O instanceof Command)
+        {
+            if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
+            {
+                mob.tell("You can't con someone into doing that.");
+                return false;
+            }
+        }
+        return true;
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(commands.size()<1)
-		{
-			mob.tell("Con whom into doing what?");
-			return false;
-		}
-		Vector V=new Vector();
-		V.addElement(commands.elementAt(0));
-		MOB target=this.getTarget(mob,V,givenTarget);
-		if(target==null) return false;
-
+        if(commands!=null) commands=(Vector)commands.clone();
+        if(!conCheck(mob,commands,givenTarget,auto,asLevel))
+            return false;
+        Vector V=new Vector();
+        V.addElement(commands.elementAt(0));
+        MOB target=this.getTarget(mob,V,givenTarget);
+        if(target==null) return false;
 		commands.removeElementAt(0);
-
-		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
-		{
-			mob.tell("You can't con "+target.name()+".");
-			return false;
-		}
-
-		if(target.isInCombat())
-		{
-			mob.tell(target.name()+" is too busy fighting right now.");
-			return false;
-		}
-
-		if(mob.isInCombat())
-		{
-			mob.tell("You are too busy fighting right now.");
-			return false;
-		}
-
-		if(commands.size()<1)
-		{
-			mob.tell("Con "+target.charStats().himher()+" into doing what?");
-			return false;
-		}
-
-
-		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
-		{
-			mob.tell("You can't con someone into following you.");
-			return false;
-		}
-		
-		Object O=CMLib.english().findCommand(target,commands);
-		if(O instanceof Command)
-		{
-			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
-			{
-				mob.tell("You can't con someone into doing that.");
-				return false;
-			}
-		}
 
 		int oldProficiency=proficiency();
 
@@ -110,13 +148,13 @@ public class Thief_Con extends ThiefSkill
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+CMParms.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> tr(ys) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> into '"+CMParms.combine(commands,0)+"'.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			mob.recoverEnvStats();
 			if((mob.location().okMessage(mob,msg))
             &&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))

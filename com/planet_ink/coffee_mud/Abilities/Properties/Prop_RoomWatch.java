@@ -73,7 +73,7 @@ public class Prop_RoomWatch extends Property
 					CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),
 								  CMMsg.NO_EFFECT,null,
 								  CMMsg.NO_EFFECT,null,
-								  msg.othersCode(),msg.othersMessage());
+								  CMMsg.MSG_OK_VISUAL,msg.othersMessage());
 					if(R.okMessage(msg.source(),msg2))
 					for(int i=0;i<R.numInhabitants();i++)
 					{
