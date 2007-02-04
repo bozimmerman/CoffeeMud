@@ -118,7 +118,8 @@ public class Thief_Con extends ThiefSkill
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> into '"+CMParms.combine(commands,0)+"'.^?");
 			mob.recoverEnvStats();
-			if(mob.location().okMessage(mob,msg))
+			if((mob.location().okMessage(mob,msg))
+            &&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
 			{
 				mob.location().send(mob,msg);
 				target.enqueCommand(commands,0);

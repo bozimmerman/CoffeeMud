@@ -78,7 +78,7 @@ public class Prop_Doppleganger extends Property
     {
         if((mob==affected)||(mob==null)) return false;
         if(mob.fetchEffect(ID())!=null) return false;
-        if(mob.isMonster()) return true;
+        if(mob.isMonster())return true;
         if((!CMSecurity.isAllowed(mob,R,"CMDMOBS"))
         &&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
             return true;
