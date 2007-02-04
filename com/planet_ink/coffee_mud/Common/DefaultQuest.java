@@ -119,7 +119,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 }
                 if(foundKey)
                     for(int d=0;d<delThese.size();d++)
-                        Resources.removeResource((String)delThese.elementAt(i));
+                        Resources.removeResource((String)delThese.elementAt(d));
             }
             internalFiles.clear();
             internalFiles=null;

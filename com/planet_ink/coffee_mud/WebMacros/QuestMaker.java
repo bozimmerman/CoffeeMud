@@ -174,10 +174,19 @@ public class QuestMaker extends StdWebMacro
         			list.append(oldValue+"</TEXTAREA></TD></TR>");
                 	break;
                 }
+                case QuestManager.QM_COMMAND_$ZAPPERMASK:
+                {
+                    if(oldValue==null) oldValue=defValue;
+                    list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+                    list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+                    list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+                    list.append("<TD><TEXTAREA COLS=40 ROWS=2 NAME="+httpKeyName+">");
+                    list.append(oldValue+"</TEXTAREA></TD></TR>");
+                    break;
+                }
                 case QuestManager.QM_COMMAND_$STRING:
                 case QuestManager.QM_COMMAND_$ROOMID:
                 case QuestManager.QM_COMMAND_$NAME:
-                case QuestManager.QM_COMMAND_$ZAPPERMASK:
                 case QuestManager.QM_COMMAND_$AREA:
                 {
         			if(oldValue==null) oldValue=defValue;
