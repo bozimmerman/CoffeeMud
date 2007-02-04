@@ -1160,6 +1160,30 @@ public class CMParms
             V.addElement(O[s]);
         return V;
     }
+    public static HashSet makeHashSet(Object[] O)
+    {
+        HashSet V=new HashSet();
+        if(O!=null)
+        for(int s=0;s<O.length;s++)
+            V.add(O[s]);
+        return V;
+    }
+    public static HashSet makeHashSet(String[] O)
+    {
+        HashSet V=new HashSet();
+        if(O!=null)
+        for(int s=0;s<O.length;s++)
+            V.add(O[s]);
+        return V;
+    }
+    public static HashSet makeHashSet(Vector O)
+    {
+        HashSet V=new HashSet();
+        if(O!=null)
+        for(int s=0;s<O.size();s++)
+            V.add(O.elementAt(s));
+        return V;
+    }
     public static Vector makeVector()
     { return new Vector();}
     public static Vector makeVector(Object O)

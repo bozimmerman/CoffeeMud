@@ -59,6 +59,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	private Quest defaultQuest=null;
 	protected CMMsg lastMsg=null;
     protected Environmental lastLoaded=null;
+    protected static HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
 
 	private Quest getQuest(String named)
 	{
@@ -1485,11 +1486,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						Object[] tmp,
 						String evaluable)
 	{
+        boolean anythingChanged=false;
 		Vector formatCheck=CMParms.parse(evaluable);
 		for(int i=1;i<(formatCheck.size()-1);i++)
-			if((" == >= > < <= => =< != ".indexOf(" "+((String)formatCheck.elementAt(i))+" ")>=0)
+            if((SIGNS.contains(formatCheck.elementAt(i)))
 			&&(((String)formatCheck.elementAt(i-1)).endsWith(")")))
 			{
+                anythingChanged=true;
 				String ps=(String)formatCheck.elementAt(i-1);
 				ps=ps.substring(0,ps.length()-1);
 				if(ps.length()==0) ps=" ";
@@ -1523,7 +1526,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				formatCheck.setElementAt(os,i+1);
 				i+=2;
 			}
-		evaluable=CMParms.combine(formatCheck,0);
+        if(anythingChanged)
+    		evaluable=CMParms.combine(formatCheck,0);
 		String uevaluable=evaluable.toUpperCase().trim();
 		boolean returnable=false;
 		boolean lastreturnable=true;
