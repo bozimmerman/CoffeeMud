@@ -64,6 +64,8 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	// will restart the waiting process
 	public void stopQuest();
 
+    public void internalQuestDelete();
+    
     public boolean stepQuest();
 
     public boolean enterDormantState();

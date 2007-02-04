@@ -148,11 +148,10 @@ public class Prancer extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-    public boolean okMessage(Environmental host, CMMsg msg)
+    public void executeMsg(Environmental host, CMMsg msg)
     {
-        if(!super.okMessage(host,msg))
-            return false;
-        return Bard.visitationBonusOKMessage(host,msg);
+        super.executeMsg(host,msg);
+        Bard.visitationBonusMessage(host,msg);
     }
     
 	public String statQualifications(){return "Charisma 9+, Strength 9+";}

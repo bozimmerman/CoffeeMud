@@ -86,6 +86,7 @@ public class Pour extends StdCommand
 			if(mob.location().okMessage(mob,fillMsg))
 				mob.location().send(mob,fillMsg);
 		}
+        if(out!=null) out.destroy();
 		return false;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

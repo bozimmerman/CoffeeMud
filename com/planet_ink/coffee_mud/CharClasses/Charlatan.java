@@ -183,11 +183,14 @@ public class Charlatan extends StdCharClass
 		return outfitChoices;
 	}
 
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        super.executeMsg(host,msg);
+        Bard.visitationBonusMessage(host,msg);
+    }
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-        if(!Bard.visitationBonusOKMessage(myHost,msg))
-            return false;
 		MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{

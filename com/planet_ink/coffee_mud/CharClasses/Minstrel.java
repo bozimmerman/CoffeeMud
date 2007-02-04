@@ -182,11 +182,10 @@ public class Minstrel extends StdCharClass
 		}
 	}
 
-    public boolean okMessage(Environmental host, CMMsg msg)
+    public void executeMsg(Environmental host, CMMsg msg)
     {
-        if(!super.okMessage(host,msg))
-            return false;
-        return Bard.visitationBonusOKMessage(host,msg);
+        super.executeMsg(host,msg);
+        Bard.visitationBonusMessage(host,msg);
     }
     
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)

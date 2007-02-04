@@ -89,10 +89,9 @@ public class Chant_Treehouse extends Chant
 			return false;
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
+        &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell("There really aren't enough trees here to chant to.");
 			return false;
 		}
 		if(mob.location().roomID().length()==0)

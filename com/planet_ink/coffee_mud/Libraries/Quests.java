@@ -93,6 +93,7 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			Q.stopQuest();
 			CMLib.threads().deleteTick(Q,Tickable.TICKID_QUEST);
+            Q.internalQuestDelete();
 			quests.removeElement(Q);
 		}
 	}

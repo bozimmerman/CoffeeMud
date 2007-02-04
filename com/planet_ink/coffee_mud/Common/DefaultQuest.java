@@ -100,6 +100,32 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return questState.getStat(named);
 	}
 
+    public void internalQuestDelete()
+    {
+        if(isCopy()) return;
+        if((internalFiles!=null)&&(internalFiles.size()>0))
+        {
+            for(int i=0;i<internalFiles.size();i++)
+            {
+                String filename=((String)internalFiles.elementAt(i,1)).toUpperCase();
+                Vector delThese=new Vector();
+                boolean foundKey=false;
+                Vector V=Resources.findResourceKeys(filename);
+                for(Enumeration e=V.elements();e.hasMoreElements();)
+                {
+                    String key=(String)e.nextElement();
+                    if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(filename)))
+                    { foundKey=true; delThese.addElement(key);}
+                }
+                if(foundKey)
+                    for(int d=0;d<delThese.size();d++)
+                        Resources.removeResource((String)delThese.elementAt(i));
+            }
+            internalFiles.clear();
+            internalFiles=null;
+        }
+    }
+    
     // the unique name of the quest
     public String startDate(){return startDate;}
     public void setStartDate(String newDate){
