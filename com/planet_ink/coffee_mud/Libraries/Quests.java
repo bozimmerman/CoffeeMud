@@ -1289,7 +1289,21 @@ public class Quests extends StdLibrary implements QuestManager
         }
         if((templatesDV==null)||(templatesDV.size()==0))
             return null;
-        return templatesDV;
+        DVector sortedTemplatesDV=new DVector(5);
+        while(templatesDV.size()>0)
+        {
+            int maxRow=0;
+            for(int t=1;t<templatesDV.size();t++)
+                if(((String)templatesDV.elementAt(t,1)).compareTo((String)templatesDV.elementAt(maxRow,1))<0)
+                    maxRow=t;
+            sortedTemplatesDV.addElement(templatesDV.elementAt(maxRow,1),
+                                         templatesDV.elementAt(maxRow,2),
+                                         templatesDV.elementAt(maxRow,3),
+                                         templatesDV.elementAt(maxRow,4),
+                                         templatesDV.elementAt(maxRow,5));
+            templatesDV.removeElementsAt(maxRow);
+        }
+        return sortedTemplatesDV;
     }
     
     protected String addXMLQuestMob(MOB mob, 
