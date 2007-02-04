@@ -475,5 +475,115 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         }
         return new Vector();
     }
+    
+    
+    public DVector parseLootPolicyFor(MOB mob)
+    {
+        if(mob==null) return new DVector(3);
+        Vector lootPolicy=(!mob.isMonster())?new Vector():CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY),true);
+        DVector policies=new DVector(3);
+        for(int p=0;p<lootPolicy.size();p++)
+        {
+            String s=((String)lootPolicy.elementAt(p)).toUpperCase().trim();
+            if(s.length()==0) continue;
+            Vector compiledMask=null;
+            int maskDex=s.indexOf("MASK=");
+            if(maskDex>=0)
+            {
+                s=s.substring(0,maskDex).trim();
+                compiledMask=CMLib.masking().maskCompile(((String)lootPolicy.elementAt(p)).substring(maskDex+5).trim());
+            }
+            else
+                compiledMask=new Vector();
+            Vector parsed=CMParms.parse(s);
+            int pct=100;
+            for(int x=0;x<parsed.size();x++)
+                if(CMath.isInteger((String)parsed.elementAt(x)))
+                    pct=CMath.s_int((String)parsed.elementAt(x));
+                else
+                if(CMath.isPct((String)parsed.elementAt(x)))
+                    pct=(int)Math.round(CMath.s_pct((String)parsed.elementAt(x))*100.0);
+            int flags=0;
+            if(parsed.contains("RUIN")) flags|=CMMiscUtils.LOOTFLAG_RUIN;
+            else
+            if(parsed.contains("LOSS")) flags|=CMMiscUtils.LOOTFLAG_LOSS;
+            if(flags==0) flags|=CMMiscUtils.LOOTFLAG_LOSS;
+            if(parsed.contains("WORN")) flags|=CMMiscUtils.LOOTFLAG_WORN;
+            else
+            if(parsed.contains("UNWORN")) flags|=CMMiscUtils.LOOTFLAG_UNWORN;
+            policies.addElement(new Integer(pct),new Integer(flags),compiledMask);
+        }
+        return policies;
+    }
+    
+    public Item isRuinedLoot(DVector policies, Item I)
+    {
+        if(I==null) return null;
+        if((CMath.bset(I.envStats().disposition(),EnvStats.IS_UNSAVABLE))
+        ||(I instanceof Coins))
+            return I;
+        for(int d=0;d<policies.size();d++)
+        {
+            if((((Vector)policies.elementAt(d,3)).size()>0)
+            &&(!CMLib.masking().maskCheck((Vector)policies.elementAt(d,3),I,true)))
+                continue;
+            if(CMLib.dice().rollPercentage()>((Integer)policies.elementAt(d,1)).intValue())
+                continue;
+            int flags=((Integer)policies.elementAt(d,2)).intValue();
+            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Item.IN_INVENTORY))
+                continue;
+            else
+            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_UNWORN)&&(!I.amWearingAt(Item.IN_INVENTORY)))
+                continue;
+            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_LOSS))
+                return null;
+            Item I2=CMClass.getItem("GenItem");
+            I2.baseEnvStats().setWeight(I.baseEnvStats().weight());
+            I2.setName(I.Name());
+            I2.setDisplayText(I.displayText());
+            I2.setDescription(I2.description());
+            I2.recoverEnvStats();
+            I2.setMaterial(I.material());
+            String ruinDescAdder=null;
+            switch(I2.material()&RawMaterial.MATERIAL_MASK)
+            {
+                case RawMaterial.MATERIAL_LEATHER:
+                case RawMaterial.MATERIAL_CLOTH:
+                case RawMaterial.MATERIAL_VEGETATION:
+                case RawMaterial.MATERIAL_FLESH:
+                case RawMaterial.MATERIAL_PAPER:
+                    ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is torn and ruined beyond repair."; 
+                    break;
+                case RawMaterial.MATERIAL_METAL:
+                case RawMaterial.MATERIAL_MITHRIL:
+                case RawMaterial.MATERIAL_WOODEN:
+                    ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is battered and ruined beyond repair."; 
+                    break;
+                case RawMaterial.MATERIAL_GLASS:
+                    ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is shattered and ruined beyond repair."; 
+                    break;
+                case RawMaterial.MATERIAL_ROCK:
+                case RawMaterial.MATERIAL_PRECIOUS:
+                case RawMaterial.MATERIAL_PLASTIC:
+                    ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is cracked and ruined beyond repair."; 
+                    break;
+                case RawMaterial.MATERIAL_UNKNOWN:
+                case RawMaterial.MATERIAL_ENERGY:
+                case RawMaterial.MATERIAL_LIQUID:
+                default:
+                    ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is ruined beyond repair."; 
+                    break;
+            }
+            I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
+            String oldName=I2.Name();
+            I2.setName(CMStrings.insertAdjective(I2.Name(),"ruined"));
+            int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
+            I2.setBaseValue(0);
+            if(x>=0)
+                I2.setDisplayText(I2.displayText().substring(0,x)+I2.Name()+I2.displayText().substring(x+oldName.length()));
+            return I2;
+        }
+        return I;
+    }
 }
 

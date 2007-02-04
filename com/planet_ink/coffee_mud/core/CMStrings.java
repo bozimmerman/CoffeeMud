@@ -74,6 +74,29 @@ public class CMStrings
     }
     
     
+    public static String insertAdjective(String str, String adjective)
+    {
+        if(str.length()==0) 
+            return str;
+        str=str.trim();
+        if((str.toUpperCase().startsWith("A "))
+        ||(str.toUpperCase().startsWith("AN ")))
+        {
+            if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
+                return "an "+adjective+" "+str;
+            return "a "+adjective+" "+str;
+        }
+        if((!str.toUpperCase().startsWith("THE "))
+        &&(!str.toUpperCase().startsWith("SOME ")))
+        {
+            if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
+                return "an "+adjective+" "+str;
+            return "a "+adjective+" "+str;
+        }
+        int x=str.indexOf(' ');
+        return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);
+    }
+    
     public static boolean isVowel(char c)
     { return (("aeiou").indexOf(Character.toLowerCase(c))>=0);}
     

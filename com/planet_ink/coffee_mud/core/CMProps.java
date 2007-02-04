@@ -102,7 +102,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_I3ROUTERS=53;
     public static final int SYSTEM_IDLETIMERS=54;
     public static final int SYSTEM_PRICEFACTORS=55;
-    public static final int NUM_SYSTEM=56;
+    public static final int SYSTEM_ITEMLOOTPOLICY=56;
+    public static final int NUM_SYSTEM=57;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -462,6 +463,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
         setVar(SYSTEM_PKILL,getStr("PLAYERKILL"));
         setVar(SYSTEM_PLAYERDEATH,getStr("PLAYERDEATH"));
+        setVar(SYSTEM_ITEMLOOTPOLICY,getStr("ITEMLOOTPOLICY"));
         setVar(SYSTEM_MOBDEATH,getStr("MOBDEATH"));
         setVar(SYSTEM_PLAYERFLEE,getStr("FLEE"));
         setVar(SYSTEM_SHOWDAMAGE,getStr("SHOWDAMAGE"));

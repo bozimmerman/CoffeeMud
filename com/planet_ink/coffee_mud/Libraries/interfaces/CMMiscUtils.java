@@ -35,6 +35,11 @@ import java.util.*;
 */
 public interface CMMiscUtils extends CMLibrary
 {
+    public static final int LOOTFLAG_RUIN=1;
+    public static final int LOOTFLAG_LOSS=2;
+    public static final int LOOTFLAG_WORN=4;
+    public static final int LOOTFLAG_UNWORN=8;
+    
     public String getFormattedDate(Environmental E);
     public double memoryUse ( Environmental E, int number );
     public String niceCommaList(Vector V, boolean andTOrF);
@@ -55,4 +60,7 @@ public interface CMMiscUtils extends CMLibrary
     public MOB getMobPossessingAnother(MOB mob);
     public void roomAffectFully(CMMsg msg, Room room, int dirCode);
     public Vector getDeadBodies(Environmental container);
+    
+    public Item isRuinedLoot(DVector policies, Item I);
+    public DVector parseLootPolicyFor(MOB mob);
 }

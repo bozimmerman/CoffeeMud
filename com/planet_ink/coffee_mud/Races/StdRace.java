@@ -468,6 +468,7 @@ public class StdRace implements Race
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
         Hashtable containerMap=new Hashtable();
         Hashtable itemMap=new Hashtable();
+        DVector lootPolicies=CMLib.utensils().parseLootPolicyFor(mob);
 		for(int i=0;i<mob.inventorySize();)
 		{
 			Item thisItem=mob.fetchInventory(i);
@@ -475,8 +476,11 @@ public class StdRace implements Race
 			{
 				if(mob.isMonster())
 				{
-					Item newItem=(Item)thisItem.copyOf();
-                    itemMap.put(thisItem,newItem);
+                    Item newItem=CMLib.utensils().isRuinedLoot(lootPolicies,thisItem);
+                    if(newItem==null){i++; continue;}
+                    if(newItem==thisItem) newItem=(Item)thisItem.copyOf();
+                    if(newItem instanceof Container)
+                        itemMap.put(thisItem,newItem);
                     if(thisItem.container()!=null)
                         containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
