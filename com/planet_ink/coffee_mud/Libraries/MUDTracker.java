@@ -306,12 +306,24 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         { ((Ability)V.elementAt(v)).unInvoke(); mob.delEffect((Ability)V.elementAt(v));}
     }
 
-	public boolean beMobile(MOB mob,
-						    boolean dooropen,
-						    boolean wander,
-						    boolean roomprefer, 
+    public boolean beMobile(MOB mob,
+                            boolean dooropen,
+                            boolean wander,
+                            boolean roomprefer, 
                             boolean roomobject,
                             long[] status,
+                            Vector rooms)
+    {
+        return beMobile(mob,dooropen,wander,roomprefer,roomobject,true,status,rooms);
+
+    }
+	private boolean beMobile(MOB mob,
+						     boolean dooropen,
+						     boolean wander,
+						     boolean roomprefer, 
+                             boolean roomobject,
+                             boolean sneakIfAble,
+                             long[] status,
                             Vector rooms)
 	{
         if(status!=null)status[0]=Tickable.STATUS_MISC7+0;
@@ -499,7 +511,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			mob.curState().setMovement(oldState.getMovement());
 		}
 		else
-		if(mob.fetchAbility("Thief_Sneak")!=null)
+		if((mob.fetchAbility("Thief_Sneak")!=null)&&(sneakIfAble))
 		{
             if(status!=null)status[0]=Tickable.STATUS_MISC7+19;
 			Ability A=mob.fetchAbility("Thief_Sneak");
@@ -557,7 +569,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(R==null) return;
 		int tries=0;
 		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(R.numPCInhabitants()>0)))
-			beMobile(M,true,true,false,false,null,null);
+			beMobile(M,true,true,false,false,false,null,null);
 		if((M.getStartRoom()!=null)&&(andGoHome))
 			M.getStartRoom().bringMobHere(M,true);
 	}

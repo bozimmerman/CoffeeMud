@@ -2755,6 +2755,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         M.destroy();
                     }
                     else
+                    if((R!=null)&&((M.location()!=R)||(!R.isInhabitant(M))))
                         CMLib.tracking().wanderAway(M,false,true);
                 }
                 i--;
