@@ -155,7 +155,6 @@ set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
 give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
-give stat charisma 100
 
 set area $KILLABLES_AREA
 set roomgroup $KILLABLES_ROOMS
