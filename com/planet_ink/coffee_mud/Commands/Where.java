@@ -144,38 +144,38 @@ public class Where extends StdCommand
 					who=who.substring(4).trim();
 				}
                 else
-                if(who.toUpperCase().startsWith("MOBMASK "))
+                if(who.toUpperCase().startsWith("MOBMASK ")||who.toUpperCase().startsWith("MOBMASK="))
                 {
                     mobOnly=true;
-                    zapperMask=true;
-                    who=who.substring(7).trim();
-                    mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
-                    compiledZapperMask=CMLib.masking().maskCompile(who);
-                }
-                else
-                if(who.toUpperCase().startsWith("ITEMMASK "))
-                {
-                    itemOnly=true;
                     zapperMask=true;
                     who=who.substring(8).trim();
                     mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
                     compiledZapperMask=CMLib.masking().maskCompile(who);
                 }
                 else
-                if(who.toUpperCase().startsWith("MOBMASK2 "))
-                {
-                    mobOnly=true;
-                    zapperMask2=true;
-                    mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
-                    who=who.substring(8).trim();
-                }
-                else
-                if(who.toUpperCase().startsWith("ITEMMASK2 "))
+                if(who.toUpperCase().startsWith("ITEMMASK ")||who.toUpperCase().startsWith("ITEMMASK="))
                 {
                     itemOnly=true;
+                    zapperMask=true;
+                    who=who.substring(9).trim();
+                    mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+                    compiledZapperMask=CMLib.masking().maskCompile(who);
+                }
+                else
+                if(who.toUpperCase().startsWith("MOBMASK2 ")||who.toUpperCase().startsWith("MOBMASK2="))
+                {
+                    mobOnly=true;
                     zapperMask2=true;
                     mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
                     who=who.substring(9).trim();
+                }
+                else
+                if(who.toUpperCase().startsWith("ITEMMASK2 ")||who.toUpperCase().startsWith("ITEMMASK2="))
+                {
+                    itemOnly=true;
+                    zapperMask2=true;
+                    mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+                    who=who.substring(10).trim();
                 }
 				try
 				{
