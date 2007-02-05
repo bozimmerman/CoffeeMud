@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,10 +41,11 @@ public class ItemGenerator extends ActiveTicker
 	protected int minItems=1;
 	protected int maxItems=1;
 	protected int avgItems=1;
+	protected int maxDups=1;
 	protected int enchantPct=10;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
-	
+
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
@@ -110,6 +111,7 @@ public class ItemGenerator extends ActiveTicker
 		super.setParms(newParms);
 		minItems=CMParms.getParmInt(parms,"minitems",1);
 		maxItems=CMParms.getParmInt(parms,"maxitems",1);
+		maxDups=CMParms.getParmInt(parms,"maxdups",Integer.MAX_VALUE);
 		if(minItems>maxItems) maxItems=minItems;
 		avgItems=CMLib.dice().roll(1,maxItems-minItems,minItems);
 		enchantPct=CMParms.getParmInt(parms,"enchanted",10);
@@ -130,7 +132,7 @@ public class ItemGenerator extends ActiveTicker
 		if(restrictedLocales==null) return true;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
-	
+
 	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
 	{
 		if((I==null)||(I.amDestroyed())) return false;
@@ -153,7 +155,7 @@ public class ItemGenerator extends ActiveTicker
     	return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
-	
+
 	protected class ItemGenerationTicker implements Tickable
 	{
 		public String ID(){return "ItemGenerationTicker";}
@@ -197,7 +199,7 @@ public class ItemGenerator extends ActiveTicker
 			return false;
 		}
 	}
-	
+
 	public synchronized Vector getItems(Tickable thang, String theseparms)
 	{
 		String mask=parms;
@@ -228,7 +230,7 @@ public class ItemGenerator extends ActiveTicker
 				I=(Item)allItems.elementAt(a);
 				if(CMLib.masking().maskCheck(compiled,I,true))
 				{
-					if(I.value()>maxValue) 
+					if(I.value()>maxValue)
 						maxValue=I.value();
 					items.addElement(I);
 				}
@@ -273,7 +275,8 @@ public class ItemGenerator extends ActiveTicker
 			Vector items=getItems(ticking,getParms());
 			if(items==null) return true;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
-				return false; 
+				return false;
+
 			if((maintained.size()<avgItems)
             &&(items.size()>1))
 			{
@@ -290,6 +293,17 @@ public class ItemGenerator extends ActiveTicker
 				}
 				if(I!=null)
 				{
+
+					if((maxDups<Integer.MAX_VALUE)&&(maxDups>=0))
+					{
+						int numDups=0;
+						for(int m=0;m<maintained.size();m++)
+							if(I.sameAs((Item)maintained.elementAt(m)))
+								numDups++;
+						if(numDups>=maxDups)
+							return true;
+					}
+
 					I=(Item)I.copyOf();
 					I.baseEnvStats().setRejuv(0);
 					I.recoverEnvStats();
@@ -356,7 +370,7 @@ public class ItemGenerator extends ActiveTicker
 							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
 							return true;
-							
+
 						if(room instanceof GridLocale)
 							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)
