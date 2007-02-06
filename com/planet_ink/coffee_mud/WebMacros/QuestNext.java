@@ -47,9 +47,24 @@ public class QuestNext extends StdWebMacro
 		}
 		if(last!=null) last=CMStrings.replaceAll(last,"*","@");
 		String lastID="";
+		
+		Vector V=new Vector();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
+			V.addElement(CMLib.quests().fetchQuest(q));
+		Vector sortedV=new Vector();
+		while(V.size()>0)
 		{
-			Quest Q=CMLib.quests().fetchQuest(q);
+			Quest lowQ=(Quest)V.firstElement();
+			for(int v=1;v<V.size();v++)
+				if(((Quest)V.elementAt(v)).name().toUpperCase().compareTo(lowQ.name().toUpperCase())<0)
+					lowQ=(Quest)V.elementAt(v);
+			V.remove(lowQ);
+			sortedV.addElement(lowQ);
+		}
+		
+		for(int q=0;q<sortedV.size();q++)
+		{
+			Quest Q=(Quest)sortedV.elementAt(q);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!(""+Q).equals(lastID))))
 			{
 				httpReq.addRequestParameters("QUEST",CMStrings.replaceAll(""+Q,"@","*"));
