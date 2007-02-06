@@ -566,8 +566,10 @@ public class GrinderFlatMap
 			{
 				GrinderRoom R=(GrinderRoom)V.elementAt(s);
 				xy=(int[])xys.get(R.roomID);
-		 		for(int d=0;d<4;d++)
-		 			if((R.doors[d]!=null)
+		 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		 			if((d!=Directions.UP)
+		 			&&(d!=Directions.DOWN)
+		 			&&(R.doors[d]!=null)
 		 			&&(R.doors[d].room!=null)
 				 	&&(R.doors[d].room.length()>0)
 		 			&&(!myRoomsDone.contains(R.doors[d].room))
