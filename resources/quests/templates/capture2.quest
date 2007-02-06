@@ -200,7 +200,7 @@ ONCE_PROG 100
 
 QUEST_TIME_PROG 1 *
 	IF VAR($I $QUEST_NAME_ACCEPTED != '')
-		TELL "$QUEST_NAME_ACCEPTED" You have 1 minute to complete my quest.
+		TELL "<$i $QUEST_NAME_ACCEPTED>" You have 1 minute to complete my quest.
 	ENDIF
 ~
 
