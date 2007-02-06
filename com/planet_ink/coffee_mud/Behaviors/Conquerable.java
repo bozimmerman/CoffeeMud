@@ -1139,7 +1139,11 @@ public class Conquerable extends Arrest
 		&&(myArea!=null)
 		&&(!CMSecurity.isDisabled("CONQUEST")))
 		{
-			waitToReload=System.currentTimeMillis()+60000;
+			
+			if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				waitToReload=0;
+			else
+				waitToReload=System.currentTimeMillis()+60000;
 			if((totalControlPoints>=0)
 			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
 			{
