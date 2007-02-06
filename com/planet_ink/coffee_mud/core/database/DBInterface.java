@@ -301,6 +301,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateAbility(String classID,String data)
 	{ DataLoader.DBCreateAbility(classID,data);}
 	
+	public void DBReadArtifacts()
+	{ DataLoader.DBReadArtifacts();}
+	
 	public Object DBReadStat(long startTime)
 	{ return StatLoader.DBRead(startTime);}
 	

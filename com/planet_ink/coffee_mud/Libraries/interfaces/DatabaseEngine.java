@@ -121,6 +121,7 @@ public interface DatabaseEngine extends CMLibrary
     public void DBReCreateData(String name, String section, String key, String xml);
 	public void DBDeleteData(String section);
 	public void DBCreateData(String player, String section, String key, String data);
+	public void DBReadArtifacts();
 	public Vector DBReadRaces();
 	public void DBDeleteRace(String raceID);
 	public void DBCreateRace(String raceID,String data);

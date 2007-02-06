@@ -578,4 +578,21 @@ public class DataLoader
 		 +"'"+data+" '"
 		 +")");
 	}
+	
+	public void DBReadArtifacts()
+	{
+		Vector itemSet=CMLib.database().DBReadData("ARTIFACTS");
+		for(int i=0;i<itemSet.size();i++)
+		{
+			Vector item=(Vector)itemSet.elementAt(i);
+			String itemID=(String)item.firstElement();
+			Ability A=CMClass.getAbility("Prop_Artifact");
+			if(A!=null)
+			{
+				A.setMiscText("BOOT;"+itemID);
+				if(!CMLib.threads().isTicking(A,Tickable.TICKID_ITEM_BOUNCEBACK))
+					CMLib.threads().startTickDown(A, Tickable.TICKID_ITEM_BOUNCEBACK,4);
+			}
+		}
+	}
 }

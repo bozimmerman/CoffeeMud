@@ -59,6 +59,12 @@ public class Prop_Artifact extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
+		if(text.startsWith("BOOT;"))
+		{
+			itemID=text.substring(5);
+			waitToReload=System.currentTimeMillis()+5000;
+			return;
+		}
 		int x=text.indexOf(";");
 		if(x>=0) text=text.substring(0,x);
 		autodrop=CMParms.getParmBool(text,"AUTODROP",true);
@@ -103,6 +109,7 @@ public class Prop_Artifact extends Property
 				if(room==null) room=CMLib.map().roomLocation(affected);
 				if(room!=null)
 					room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles around "+affected.Name()+" and is absorbed into the air.");
+				return false;
 			}
 			else
 			if(nocast&&(msg.tool() instanceof Ability))
