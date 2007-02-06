@@ -43,8 +43,9 @@ public class Prop_Artifact extends Property
 	private boolean nocast=true;
 	private boolean nolocate=true;
 	private boolean nomobs=true;
+	private boolean autoreset=false;
 	private long waitToReload=0;
-	
+
 	private String getItemID()
 	{
 		if(itemID==null)
@@ -55,7 +56,7 @@ public class Prop_Artifact extends Property
 		}
 		return itemID;
 	}
-	
+
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -71,6 +72,7 @@ public class Prop_Artifact extends Property
 		nocast=CMParms.getParmBool(text,"NOCAST",true);
 		nolocate=CMParms.getParmBool(text,"NOLOCATE",true);
 		nomobs=CMParms.getParmBool(text,"NOMOBS",true);
+		autoreset=CMParms.getParmBool(text,"AUTORESET",true);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -118,17 +120,23 @@ public class Prop_Artifact extends Property
 				return false;
 			}
 		}
-		
+
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
 		&&(msg.source()==((Item)affected).owner()))
 		{
 			msg.source().tell("^HYou lose your hold over "+affected.name()+"^?");
 			Room R=CMLib.map().roomLocation(msg.source());
 			R.bringItemHere((Item)affected,0,false);
+			if(autoreset)
+			{
+				waitToReload=System.currentTimeMillis()+60000;
+				if(!CMLib.threads().isTicking(this,Tickable.TICKID_ITEM_BOUNCEBACK))
+					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
+			}
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -158,6 +166,12 @@ public class Prop_Artifact extends Property
 			if((R!=null)
 			&&(!((Item)I).amDestroyed()))
 			{
+				if(autoreset)
+				{
+					Vector itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
+						return;
+				}
 				StringBuffer data=new StringBuffer("");
 				data.append("<ARTITEM>");
 				if(((Item)I).owner() instanceof Room)
@@ -195,6 +209,13 @@ public class Prop_Artifact extends Property
 		{
 			if(System.currentTimeMillis()>waitToReload)
 			{
+				if((affected instanceof Item)
+				&&(!affected.amDestroyed())
+				&&(((Item)affected).owner() instanceof MOB)
+				&&(!((MOB)((Item)affected).owner()).isMonster())
+				&&(CMLib.flags().isInTheGame(affected,true)))
+					return true;
+
 				waitToReload=0;
 				Vector itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
