@@ -5279,7 +5279,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 4: // mpjunk
 			{
-				s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim());
 				if(s.equalsIgnoreCase("all"))
 				{
 					while(monster.inventorySize()>0)
@@ -5296,7 +5295,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				else
 				{
-					Item I=monster.fetchInventory(s);
+                    Environmental E=getArgumentItem(s.substring(6).trim(),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					Item I=null;
+                    if(E instanceof Item)
+                    	I=(Item)E;
+                    if(I==null)
+						I=monster.fetchInventory(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim()));
+					if((I==null)&&(scripted instanceof Room))
+						I=((Room)scripted).fetchAnyItem(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s.substring(6).trim()));
 					if(I!=null)
 						I.destroy();
 				}

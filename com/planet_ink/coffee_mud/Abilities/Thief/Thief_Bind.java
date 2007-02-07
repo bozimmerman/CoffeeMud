@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -146,8 +146,8 @@ public class Thief_Bind extends ThiefSkill
 		    mob.tell(target.name()+" doesn't appear to be bound with ropes.");
 		    return false;
 	    }
-	            
-	            
+
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -189,7 +189,16 @@ public class Thief_Bind extends ThiefSkill
 						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 				}
 				if((mob.getVictim()==target)&&(!auto))
+				{
+					HashSet H=mob.getGroupMembers(new HashSet());
+					MOB M=null;
 					mob.makePeace();
+					for(Iterator i=H.iterator();i.hasNext();)
+					{
+						M=(MOB)i.next();
+						if(M.getVictim()==target) M.setVictim(null);
+					}
+				}
 			}
 		}
 		else

@@ -135,6 +135,7 @@ public class Concierge extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
+		&&(!CMSecurity.isAllowed(source,source.location(),"CMDMOBS"))
 		&&(msg.tool()!=null))
 		{
 			int destIndex=destinations.indexOf(source);

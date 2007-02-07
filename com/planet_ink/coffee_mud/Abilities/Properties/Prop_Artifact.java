@@ -50,9 +50,15 @@ public class Prop_Artifact extends Property
 	{
 		if(itemID==null)
 		{
-			if(affected!=null)
-				itemID=""+affected+"_"+Math.random();
-			super.setMiscText(text()+";"+itemID);
+			int x=miscText.indexOf(";");
+			if(x>=0)
+				itemID=miscText.substring(x+1);
+			else
+			{
+				if(affected!=null)
+					itemID=""+affected+"_"+Math.random();
+				super.setMiscText(text()+";"+itemID);
+			}
 		}
 		return itemID;
 	}
@@ -67,12 +73,37 @@ public class Prop_Artifact extends Property
 			return;
 		}
 		int x=text.indexOf(";");
-		if(x>=0) text=text.substring(0,x);
+		if(x>=0)
+		{
+			itemID=text.substring(x+1);
+			text=text.substring(0,x);
+		}
+		else
+		if(affected!=null)
+		{
+			itemID=""+affected+"_"+Math.random();
+			super.setMiscText(text()+";"+itemID);
+		}
 		autodrop=CMParms.getParmBool(text,"AUTODROP",true);
 		nocast=CMParms.getParmBool(text,"NOCAST",true);
 		nolocate=CMParms.getParmBool(text,"NOLOCATE",true);
 		nomobs=CMParms.getParmBool(text,"NOMOBS",true);
-		autoreset=CMParms.getParmBool(text,"AUTORESET",true);
+		autoreset=CMParms.getParmBool(text,"AUTORESET",false);
+	}
+	
+	public void unInvoke()
+	{
+		if((affected!=null)&&(getItemID().length()>0))
+		{
+			try{
+				java.io.ByteArrayOutputStream o=new java.io.ByteArrayOutputStream();
+				new Exception().printStackTrace(new java.io.PrintStream(o));
+				o.close();
+				if(o.toString().indexOf("Commands.Destroy.execute")>=0)
+	    			CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+			}catch(Exception e){}
+		}
+		super.unInvoke();
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -87,7 +118,9 @@ public class Prop_Artifact extends Property
 			||(msg.target()==(((Item)affected).container()))
 			||(msg.target()==(((Item)affected).ultimateContainer()))))
 		{
-			if((nomobs)&&(msg.targetMinor()==CMMsg.TYP_GET)&&(msg.source().isMonster()))
+			if((nomobs)
+			&&(msg.targetMinor()==CMMsg.TYP_GET)
+			&&(msg.source().isMonster()))
 			{
 				msg.source().tell("You are not allowed to possess "+affected.Name());
 				return false;
@@ -132,6 +165,7 @@ public class Prop_Artifact extends Property
 				waitToReload=System.currentTimeMillis()+60000;
 				if(!CMLib.threads().isTicking(this,Tickable.TICKID_ITEM_BOUNCEBACK))
 					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
+				affected.destroy();
 			}
 		}
 		return super.okMessage(myHost, msg);
@@ -209,14 +243,14 @@ public class Prop_Artifact extends Property
 		{
 			if(System.currentTimeMillis()>waitToReload)
 			{
+				waitToReload=0;
 				if((affected instanceof Item)
 				&&(!affected.amDestroyed())
 				&&(((Item)affected).owner() instanceof MOB)
 				&&(!((MOB)((Item)affected).owner()).isMonster())
 				&&(CMLib.flags().isInTheGame(affected,true)))
-					return true;
+					return false;
 
-				waitToReload=0;
 				Vector itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
 				{
@@ -250,7 +284,7 @@ public class Prop_Artifact extends Property
 										if(!registeredArtifacts.containsKey(getItemID()))
 											registeredArtifacts.put(getItemID(),newItem);
 										else
-											Log.errOut("Artifact","Possible duplicate artifact: "+newItem.name());
+											Log.errOut("Prop_Artifact","Possible duplicate artifact: "+newItem.name());
 										MOB foundMOB=null;
 										if(MOBname.length()>0)
 											for(int i=0;i<R.numInhabitants();i++)
@@ -279,30 +313,64 @@ public class Prop_Artifact extends Property
 													{ foundMOB=M; break;}
 												}
 											}
+                                        Item newItemMinusArtifact=(Item)newItem.copyOf();
+                                        Ability A2=newItemMinusArtifact.fetchEffect(ID());
+                                        if(A2!=null) newItemMinusArtifact.delEffect(A2);
+                                        Item I=null;
 										if(foundMOB!=null)
 										{
-	                                        boolean found=false;
 	                                        for(int i=0;i<foundMOB.inventorySize();i++)
-	                                            if(newItem.sameAs(foundMOB.fetchInventory(i)))
-	                                                found=true;
-	                                        if(!found)
 	                                        {
-	    										foundMOB.addInventory(newItem);
-	    										newItem.wearAt(newItem.rawProperLocationBitmap());
+	                                        	I=foundMOB.fetchInventory(i);
+	                                        	if(I==null) break;
+	                                        	if(I.Name().equals(newItemMinusArtifact.Name()))
+	                                        	{
+	                                        		I=(Item)I.copyOf();
+	                                                A2=I.fetchEffect(ID());
+	                                                if(A2!=null) I.delEffect(A2);
+		                                            if(newItemMinusArtifact.sameAs(I))
+		                                            	I.destroy();
+	                                        	}
 	                                        }
+    										foundMOB.addInventory(newItem);
+    										newItem.wearAt(newItem.rawProperLocationBitmap());
 										}
 										else
+										if(MOBname.length()==0)
+										{
+	                                        for(int i=0;i<R.numItems();i++)
+	                                        {
+	                                        	I=R.fetchItem(i);
+	                                        	if(I==null) break;
+	                                        	if(I.Name().equals(newItemMinusArtifact.Name()))
+	                                        	{
+	                                        		I=(Item)I.copyOf();
+	                                                A2=I.fetchEffect(ID());
+	                                                if(A2!=null) I.delEffect(A2);
+		                                            if(newItemMinusArtifact.sameAs(I))
+		                                            	I.destroy();
+	                                        	}
+	                                        }
 											R.addItem(newItem);
+										}
+										else
+										{
+                                        	Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getExtendedRoomID(R));
+                                        	waitToReload=System.currentTimeMillis()+10*60000;
+                                        	return true;
+										}
 									}
 								}
 								else
-									Log.errOut("Artifact","Unknown artifact room artifact: "+roomID+" for "+getItemID());
+									Log.errOut("Prop_Artifact","Unknown artifact room artifact: "+roomID+" for "+getItemID());
 							}
 						}
 					}
 				// my work is done, I can go away.
 				return false;
 			}
+			else
+				Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID());
 			return true;
 		}
 		return super.tick(ticking,tickID);
@@ -316,6 +384,7 @@ public class Prop_Artifact extends Property
 			if(nolocate)
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
 			if(((Item)affected).subjectToWearAndTear()) ((Item)affected).setUsesRemaining(100);
+			((Item)affected).setExpirationDate(0);
 		}
 	}
 }
