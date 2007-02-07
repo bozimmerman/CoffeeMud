@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -74,6 +75,32 @@ public class Auction extends Channel
 				return false;
 			}
 		}
+        if(commands.size()>1)
+        {
+            if(((String)commands.elementAt(1)).equalsIgnoreCase("LIST"))
+            {
+                commands.removeElementAt(1);
+                StringBuffer buf=new StringBuffer("^xUp for auction:^.^N\n\r");
+                if(auctionA!=null)
+                    buf.append(auctionA.accountForYourself()+"\n\r");
+                Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTIONS");
+                for(int o=0;o<otherAuctions.size();o++)
+                {
+                    Vector V=(Vector)otherAuctions.elementAt(o);
+                    String from=(String)V.elementAt(DatabaseEngine.JOURNAL_FROM);
+                    String to=(String)V.elementAt(DatabaseEngine.JOURNAL_TO);
+                    String key=(String)V.elementAt(DatabaseEngine.JOURNAL_KEY);
+                    String xml=(String)V.elementAt(DatabaseEngine.JOURNAL_MSG);
+                    String subj=(String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+                    String date=(String)V.elementAt(DatabaseEngine.JOURNAL_DATE);
+                    String date2=(String)V.elementAt(DatabaseEngine.JOURNAL_DATE2);
+                    
+                }
+                return false;
+            }
+            
+        }
+                
 		if(auctionA==null)
 		{
 			if(commands.size()==1)

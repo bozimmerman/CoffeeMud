@@ -36,7 +36,16 @@ public class Prop_Auction extends Property
 	public String ID() { return "Prop_Auction"; }
 	public String name(){ return "Auction Ticker";}
 	protected int canAffectCode(){return 0;}
-	public String accountForYourself(){ return "";	}
+	public String accountForYourself()
+    { 
+        if(auctioning!=null)
+        {
+            String bidWords=CMLib.beanCounter().nameCurrencyShort(currency,bid);
+            if(bidWords.length()==0) bidWords="0";
+            return "Up for live auction: "+auctioning.name()+".  The current bid is "+bidWords+".";
+        }
+        return "";	
+    }
 	public Environmental auctioning=null;
 	public MOB highBidder=null;
 	protected String currency="";
@@ -88,7 +97,7 @@ public class Prop_Auction extends Property
 			switch(state)
 			{
 			case STATE_RUNOUT:
-				V.addElement("The auction for "+auctioning.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
+				V.addElement("The live auction for "+auctioning.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(currency,bid)+".");
 				break;
 			case STATE_ONCE:
 				V.addElement(CMLib.beanCounter().nameCurrencyShort(currency,bid)+" for "+auctioning.name()+" going ONCE!");
@@ -107,7 +116,7 @@ public class Prop_Auction extends Property
 						M.doCommand(V);
 						if(!CMLib.flags().canMove(highBidder))
 						{
-							highBidder.tell("You have won the auction, but are unable to pay or collect.  Please contact "+M.displayName(highBidder)+" about this matter immediately.");
+							highBidder.tell("You have won the live auction, but are unable to pay or collect.  Please contact "+M.displayName(highBidder)+" about this matter immediately.");
 							M.tell(highBidder.name()+" is unable to pay or collect at this time. Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
@@ -182,7 +191,7 @@ public class Prop_Auction extends Property
 			setAbilityCode(STATE_START);
 			CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
 			String bidWords=CMLib.beanCounter().nameCurrencyShort(currency,bid);
-			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bidWords+".");
+			V.addElement("New live auction: "+auctioning.name()+".  The opening bid is "+bidWords+".");
 		}
 		else
 		{
@@ -213,13 +222,13 @@ public class Prop_Auction extends Property
 			String currencyName=CMLib.beanCounter().getDenominationName(currency);
 			if(sb.length()==0)
 			{
-				mob.tell("Up for auction: "+auctioning.name()+".  The current bid is "+bidWords+".");
+				mob.tell("Up for live auction: "+auctioning.name()+".  The current bid is "+bidWords+".");
 				return true;
 			}
 
 			if(!myCurrency.equals(currency))
 			{
-			    mob.tell("This auction is being bid in "+currencyName+" only.");
+			    mob.tell("This live auction is being bid in "+currencyName+" only.");
 				return false;
 			}
 			
