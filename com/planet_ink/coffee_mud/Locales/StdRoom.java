@@ -972,7 +972,7 @@ public class StdRoom implements Room
 			else
 				mob.setRiding(null);
 		}
-		if((andFollowers)&&(oldRoom!=null)&&(mob instanceof Rideable)&&(oldRoom!=this))
+		if((oldRoom!=null)&&(mob instanceof Rideable)&&(oldRoom!=this))
 		{
 			Rider RR=null;
 			for(int r=0;r<((Rideable)mob).numRiders();r++)
@@ -982,7 +982,7 @@ public class StdRoom implements Room
 				{
 					if(((Rideable)mob).isMobileRideBasis())
 					{
-						if(RR instanceof MOB)
+						if((RR instanceof MOB)&&(andFollowers))
 							bringMobHere((MOB)RR,andFollowers);
 						else
 						if(RR instanceof Item)

@@ -46,6 +46,7 @@ public class GoodGuardian extends StdBehavior
 			MOB inhab=room.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
+                if(inhab.isMonster())
 				for(int b=0;b<inhab.numBehaviors();b++)
 				{
 					Behavior B=inhab.fetchBehavior(b);
