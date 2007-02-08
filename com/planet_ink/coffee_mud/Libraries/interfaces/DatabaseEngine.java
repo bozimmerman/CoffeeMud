@@ -103,6 +103,7 @@ public interface DatabaseEngine extends CMLibrary
     public String DBGetRealJournalName(String possibleName);
 	public long DBReadNewJournalDate(String Journal, String name);
 	public void DBDeletePlayerJournals(String name);
+	public void DBUpdateJournal(String key, String subject, String msg);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);

@@ -309,6 +309,11 @@ public class JournalLoader
 		DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
 	}
 	
+	public synchronized void DBUpdateJournal(String key, String subject, String msg)
+	{
+		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"' WHERE CMJKEY='"+key+"'");
+	}
+	
 	public synchronized void DBDeletePlayerData(String name)
 	{
 		DBConnection D=null;
