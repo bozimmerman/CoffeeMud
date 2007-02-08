@@ -103,7 +103,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_IDLETIMERS=54;
     public static final int SYSTEM_PRICEFACTORS=55;
     public static final int SYSTEM_ITEMLOOTPOLICY=56;
-    public static final int NUM_SYSTEM=57;
+    public static final int SYSTEM_AUCTIONRATES=34;
+    public static final int NUM_SYSTEM=58;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -494,6 +495,8 @@ public class CMProps extends Properties
         setVar(SYSTEM_BUDGET,getStr("BUDGET"));
         setVar(SYSTEM_DEVALUERATE,getStr("DEVALUERATE"));
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
+        setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES"));
+        if(getVar(SYSTEM_AUCTIONRATES).length()==0) setVar(SYSTEM_AUCTIONRATES,"0,10,0.1%,10%,5%,168");
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
         setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
