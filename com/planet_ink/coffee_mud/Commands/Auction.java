@@ -303,7 +303,7 @@ public class Auction extends Channel implements Tickable
 			if((by==null)||(by.equals(liveAuctionInvoker.Name())))
 				keyAuctions.addElement("LIVE",liveAuctioningItem);
 		}
-        Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTIONS");
+        Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
         for(int o=0;o<otherAuctions.size();o++)
         {
             Vector V=(Vector)otherAuctions.elementAt(o);
@@ -314,7 +314,7 @@ public class Auction extends Channel implements Tickable
                 String key=(String)V.elementAt(DatabaseEngine.JOURNAL_KEY);
                 Item I=null;
                 Vector xmlV=CMLib.xml().parseAllXML(xml);
-                XMLLibrary.XMLpiece piece=null;
+                xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
                 for(int v=0;v<xmlV.size();v++)
                 {
                 	XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
@@ -356,21 +356,20 @@ public class Auction extends Channel implements Tickable
 		}
 
 		String cmd=null;
-		if(commands.size()<2)
+        commands.removeElementAt(0);
+		if(commands.size()<1)
 		{
 			cmd="";
 		}
 		else
 		{
-	        commands.removeElementAt(0);
 	        cmd=((String)commands.elementAt(0)).toUpperCase();
 	        commands.removeElementAt(0);
 		}
         
         if(cmd.equals("LIST"))
         {
-            commands.removeElementAt(1);
-            String rest=CMParms.combine(commands,1).toUpperCase().trim();
+            String rest=CMParms.combine(commands,0).toUpperCase().trim();
             StringBuffer buf=new StringBuffer("^xUp for auction:^.^N\n\r");
     		if((liveAuctioningItem!=null)&&(liveAuctionInvoker!=null))
             {
@@ -378,8 +377,8 @@ public class Auction extends Channel implements Tickable
             	buf.append(liveAuctionStatus()+"\n\r");
             }
             mob.tell(buf.toString());
-            buf.setLength(-1);
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTIONS");
+            buf.setLength(0);
+            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
             Vector auctionsToShow=new Vector();
             for(int o=0;o<otherAuctions.size();o++)
             {
@@ -389,7 +388,9 @@ public class Auction extends Channel implements Tickable
                 	auctionsToShow.addElement(V);
             }
             TimeClock T=mob.location().getArea().getTimeObj();
-            buf.append(CMStrings.padRight(CMStrings.padRight("Type",10)+" "+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Bid",10)+" Item",55));
+            buf.append(CMStrings.padRight("From",8)+" ");
+            buf.append(CMStrings.padRight(CMStrings.padRight("Type",5)+" "+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Bid",5)+" Item",50));
+            buf.append(" End\n\r");
             for(int a=0;a<auctionsToShow.size();a++)
             {
                 Vector V=(Vector)auctionsToShow.elementAt(a);
@@ -397,8 +398,9 @@ public class Auction extends Channel implements Tickable
                 String to=(String)V.elementAt(DatabaseEngine.JOURNAL_TO); // end date/time of the auction
                 String subj=(String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ); // Type Level Bid name in 55 chars!
                 T=(TimeClock)T.deriveClock(CMath.s_long(to)).copyOf();
-                buf.append(CMStrings.padRight(from,10)+" "+CMStrings.padRight(subj,55)+" "+T.getShortestTimeDescription()+"\n\r");
+                buf.append(CMStrings.padRight(from,8)+" "+CMStrings.padRight(subj,50)+" "+T.getShortestTimeDescription()+"\n\r");
             }
+            mob.session().wraplessPrintln(buf.toString());
             return true;
         }
         else
@@ -513,7 +515,7 @@ public class Auction extends Channel implements Tickable
     			return true;
     		}
         	Vector auctionData=null;
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTIONS");
+            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
             for(int o=0;o<otherAuctions.size();o++)
             {
                 Vector V=(Vector)otherAuctions.elementAt(o);
@@ -527,6 +529,7 @@ public class Auction extends Channel implements Tickable
             String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
             String subj=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_SUBJ);
             Vector xmlV=CMLib.xml().parseAllXML(xml);
+            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
             String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
             String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
             String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
@@ -541,22 +544,25 @@ public class Auction extends Channel implements Tickable
             data.liveAuctionStart=CMath.s_long(start);
             
             String[] resp=this.bid(mob,amount,data,(Item)E,new Vector());
-            if(resp[0]!=null) 
-            	mob.tell(resp[0]);
-            if((resp[1]!=null)&&(M!=null))
+            if(resp!=null)
             {
-            	if(CMLib.flags().isInTheGame(M,true))
-            		mob.tell(resp[1]);
-            	else
-            	if(M.playerStats()!=null)
-            	{
-                    CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-						                            "auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-						                            "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-						                            M.playerStats().getEmail(),
-						                            "Auction Update for item: "+E.name(),
-						                            resp[1]);
-            	}
+	            if(resp[0]!=null) 
+	            	mob.tell(resp[0]);
+	            if((resp[1]!=null)&&(M!=null))
+	            {
+	            	if(CMLib.flags().isInTheGame(M,true))
+	            		mob.tell(resp[1]);
+	            	else
+	            	if(M.playerStats()!=null)
+	            	{
+	                    CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
+							                            "auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+							                            "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+							                            M.playerStats().getEmail(),
+							                            "Auction Update for item: "+E.name(),
+							                            resp[1]);
+	            	}
+	            }
             }
             if((!(""+data.liveAuctionBid).equals(bid))||((!(""+data.liveAuctionBid).equals(maxBid))))
             {
@@ -570,6 +576,7 @@ public class Auction extends Channel implements Tickable
                 xmlBuf.append("</AUCTION>");
             	CMLib.database().DBUpdateJournal(key, getSubject((Item)E,data.liveAuctionCurrency,data.liveAuctionBid), xmlBuf.toString());
             }
+            return true;
         }
         else
 		if(cmd.equals("CLOSE"))
@@ -582,7 +589,7 @@ public class Auction extends Channel implements Tickable
         	String which=CMParms.combine(commands,0);
         	Environmental E=null;
     		String key=null;
-    		DVector auctions=getTimedAuctionNames(which);
+    		DVector auctions=getTimedAuctionNames(mob.Name());
         	if(which.equalsIgnoreCase("LIVE"))
         	{
         		if((liveAuctioningItem==null)||(liveAuctionInvoker!=mob))
@@ -621,7 +628,7 @@ public class Auction extends Channel implements Tickable
     			super.execute(mob,V);
     			return true;
     		}
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTIONS");
+            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
             for(int o=0;o<otherAuctions.size();o++)
             {
                 Vector V=(Vector)otherAuctions.elementAt(o);
@@ -634,6 +641,7 @@ public class Auction extends Channel implements Tickable
     	    			liveAuctionInvoker.giveItem((Item)E);
 	                String xml=(String)V.elementAt(DatabaseEngine.JOURNAL_MSG);
 	                Vector xmlV=CMLib.xml().parseAllXML(xml);
+	                xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
 	                String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
 	                String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
 	                if(highBidder.length()>0)
@@ -710,6 +718,7 @@ public class Auction extends Channel implements Tickable
     			mob.tell("Channeling is only allowed during live auctions.");
     			return false;
     		}
+    		commands.insertElementAt("AUCTION",0);
 			super.execute(mob,commands);
 			return true;
 		}
@@ -831,10 +840,10 @@ public class Auction extends Channel implements Tickable
 			subject="Pill";
 		else
 		if(I instanceof Potion)
-			subject="Potion";
+			subject="Pot.";
 		else
 		if(I instanceof Scroll)
-			subject="Scroll";
+			subject="Scrol";
 		else
 		if(I instanceof Drink)
 			subject="Drink";
@@ -852,37 +861,40 @@ public class Auction extends Channel implements Tickable
 			subject="Map";
 		else
 		if(I instanceof MiscMagic)
-			subject="MagicItem";
+			subject="Magic";
 		else
 		if(I instanceof Electronics)
-			subject="HighTech";
+			subject="Tech";
 		else
 		if(I instanceof InnKey)
-			subject="InnKey";
+			subject="InnKy";
 		else
 		if(I instanceof Key)
 			subject="Key";
 		else
 		if(I instanceof LandTitle)
-			subject="RealEstate";
+			subject="RlEst";
 		else
 		if(CMLib.flags().isReadable(I))
-			subject="Readable";
+			subject="Read";
 		else
 		if(I instanceof DeadBody)
-			subject="Corpse";
+			subject="Corps";
 		else
 		if(I instanceof Weapon)
-			subject="Weapon";
+			subject="Weapn";
 		else
 		if((I instanceof Container)&&(((Container)I).capacity()>0))
-			subject="Container";
+			subject="Cont.";
 		else
 		if(I instanceof Coins)
-			subject="Currency";
+			subject="Curr.";
 		else
-			subject="Unknown";
-        return CMStrings.padRight(subject,10)+" "+CMStrings.padRight(""+I.envStats().level(),3)+" "+CMStrings.padRight(CMLib.beanCounter().nameCurrencyShort(currency, price),10)+" "+I.name();
+		if(I instanceof RawMaterial)
+			subject="Resc.";
+		else
+			subject="Unkn.";
+        return CMStrings.padRight(subject,5)+" "+CMStrings.padRight(""+I.envStats().level(),3)+" "+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(currency, price),5)+" "+I.name();
 	}
 	
 	public boolean canBeOrdered(){return true;}
