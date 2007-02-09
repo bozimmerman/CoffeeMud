@@ -2735,7 +2735,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 questState.stuff.removeElementAt(i);
                 if(E instanceof Item)
                 {
-                	if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+                	if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+                	&&(!((Item)E).amDestroyed()))
 	                    ((Item)E).destroy();
                 }
                 else
@@ -2755,7 +2756,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         M.destroy();
                     }
                     else
-                    if((R!=null)&&((M.location()!=R)||(!R.isInhabitant(M))))
+                    if((R!=null)
+                    &&(!M.amDead())
+                    &&(!M.amDestroyed())
+                    &&((M.location()!=R)||(!R.isInhabitant(M))))
                         CMLib.tracking().wanderAway(M,false,true);
                 }
                 i--;
