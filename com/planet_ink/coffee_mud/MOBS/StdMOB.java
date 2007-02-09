@@ -17,7 +17,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class StdMOB implements MOB
 {
 	private static final Vector empty=new Vector();
-	
+
 	public String ID(){return "StdMOB";}
 	public String Username="";
 
@@ -83,7 +83,7 @@ public class StdMOB implements MOB
 	protected long AgeHours=0;
 	protected int Money=0;
 	protected int attributesBitmap=MOB.ATT_NOTEACH;
-    
+
     protected int tickCounter=0;
     private long expirationDate=0;
     private int manaConsumeCounter=CMLib.dice().roll(1,10,0);
@@ -113,7 +113,7 @@ public class StdMOB implements MOB
     protected boolean amDestroyed=false;
     protected boolean kickFlag=false;
     protected boolean imMobile=false;
-    
+
     public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
 	public int getExperience(){return Experience;}
@@ -163,10 +163,10 @@ public class StdMOB implements MOB
 	public void setTrains(int newVal){ Trains=newVal;}
 	public void setMoney(int newVal){ Money=newVal;}
 	public void setBitmap(int newVal){ attributesBitmap=newVal;}
-    public String getFactionListing() 
+    public String getFactionListing()
     {
         StringBuffer msg=new StringBuffer();
-        for(Enumeration e=fetchFactions();e.hasMoreElements();) 
+        for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
             Faction F=CMLib.factions().getFaction((String)e.nextElement());
             msg.append(F.name()+"("+fetchFaction(F.factionID())+");");
@@ -204,8 +204,8 @@ public class StdMOB implements MOB
 		}
 		return new StdMOB();
 	}
-	
-	public Room getStartRoom(){ 
+
+	public Room getStartRoom(){
 		return CMLib.map().getRoom(startRoomPossibly);
 	}
 	public void setStartRoom(Room room){
@@ -237,7 +237,7 @@ public class StdMOB implements MOB
             return charStats().ageName().toLowerCase()+" "+charStats().raceName().toLowerCase();
         return charStats().raceName().toLowerCase();
     }
-    
+
 	public String image()
     {
         if(imageName==null)
@@ -249,7 +249,7 @@ public class StdMOB implements MOB
     }
     public String rawImage()
     {
-        if(imageName==null) 
+        if(imageName==null)
             return "";
         return imageName;
     }
@@ -260,7 +260,7 @@ public class StdMOB implements MOB
         else
             imageName=newImage;
     }
-	
+
 	public StdMOB()
 	{
         super();
@@ -412,7 +412,7 @@ public class StdMOB implements MOB
 			return baseEnvStats().weight();
 		return charStats().getMyRace().lightestWeight()+charStats().getMyRace().weightVariance();
 	}
-	
+
 	public int maxCarry()
 	{
         if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
@@ -485,7 +485,7 @@ public class StdMOB implements MOB
 		        charStats.setStat(CharStats.STAT_CHARISMA,charStats.getStat(CharStats.STAT_CHARISMA)/2);
 	    }
 	}
-	
+
 	public void setBaseCharStats(CharStats newBaseCharStats)
 	{
 		baseCharStats=(CharStats)newBaseCharStats.copyOf();
@@ -573,12 +573,12 @@ public class StdMOB implements MOB
 	{
 		return !pleaseDestroy;
 	}
-    
+
     public void dispossess(boolean giveMsg)
     {
         MOB mate=soulMate();
         if(mate==null) return;
-        if(mate.soulMate()!=null) 
+        if(mate.soulMate()!=null)
             mate.dispossess(giveMsg);
         Session s=session();
         if(s!=null)
@@ -615,7 +615,7 @@ public class StdMOB implements MOB
 			Item I=fetchInventory(0);
             if(I!=null)
             {
-                I.setOwner(this); 
+                I.setOwner(this);
     			I.destroy();
                 delInventory(I);
             }
@@ -714,7 +714,7 @@ public class StdMOB implements MOB
 			}finally{ imMobile=false;}
 		}
 	}
-	
+
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
@@ -776,11 +776,11 @@ public class StdMOB implements MOB
             destroy();
             return;
         }
-		
+
 		location().recoverRoomStats();
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();
-		    
+
         location().showOthers(this,null,CMMsg.MSG_BRINGTOLIFE,null);
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");
@@ -1000,7 +1000,7 @@ public class StdMOB implements MOB
                 	Item I=fetchWieldedItem();
                 	Item VI=mob.fetchWieldedItem();
                 	Log.combatOut("STRT",Name()+":"+envStats().getCombatStats()+":"+curState().getCombatStats()+":"+((I==null)?"null":I.name())+":"+mob.Name()+":"+mob.envStats().getCombatStats()+":"+mob.curState().getCombatStats()+":"+((VI==null)?"null":VI.name()));
-                	
+
                 }
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
@@ -1316,7 +1316,7 @@ public class StdMOB implements MOB
 	                return true;
                 }
             }
-            
+
             synchronized(commandQue)
             {
                 if(commandQue.size()==0) return false;
@@ -1330,10 +1330,10 @@ public class StdMOB implements MOB
                 ((int[])ROW[4])[0]+=1;
                 int secondsElapsed=((int[])ROW[4])[0];
                 try
-                { 
+                {
 	                if(O instanceof Command)
 	                {
-	                    if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
+	                    if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff))
 	                    {
 	                        commandQue.removeElement(ROW);
 	                        return true;
@@ -1361,7 +1361,7 @@ public class StdMOB implements MOB
 	public void doCommand(Vector commands)
 	{
 		Object O=CMLib.english().findCommand(this,commands);
-		if(O!=null) 
+		if(O!=null)
 			doCommand(O,commands);
 		else
 			CMLib.commands().handleUnknownCommand(this,commands);
@@ -1414,7 +1414,7 @@ public class StdMOB implements MOB
         }
         return tickDelay;
     }
-    
+
     public void prequeCommand(Vector commands, double tickDelay)
     {
         if(commands==null) return;
@@ -1426,7 +1426,7 @@ public class StdMOB implements MOB
             doCommand(O,commands);
         else
         synchronized(commandQue)
-        { 
+        {
             long[] next=new long[1];
             next[0]=System.currentTimeMillis()-1;
             int[] seconds=new int[1];
@@ -1435,7 +1435,7 @@ public class StdMOB implements MOB
         }
         dequeCommand();
     }
-    
+
 	public void enqueCommand(Vector commands, double tickDelay)
 	{
 		if(commands==null) return;
@@ -1443,11 +1443,11 @@ public class StdMOB implements MOB
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
         tickDelay=calculateTickDelay(O,tickDelay);
         if(tickDelay<0.0) return;
-        if(tickDelay==0.0) 
+        if(tickDelay==0.0)
             doCommand(commands);
         else
         synchronized(commandQue)
-        { 
+        {
             long[] next=new long[1];
             next[0]=System.currentTimeMillis()-1;
             int[] seconds=new int[1];
@@ -1499,7 +1499,7 @@ public class StdMOB implements MOB
 		}
 
 		Faction F=null;
-        for(Enumeration e=fetchFactions();e.hasMoreElements();) 
+        for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
             F=CMLib.factions().getFaction((String)e.nextElement());
             if ((F!=null)&&(!F.okMessage(this, msg)))
@@ -1967,7 +1967,7 @@ public class StdMOB implements MOB
 			{
                 if(Log.combatChannelOn())
                     Log.combatOut(msg.source().Name()+":"+Name()+":"+CMMsg.TYPE_DESCS[msg.targetMinor()]+":"+((msg.tool()!=null)?msg.tool().Name():"null"));
-                
+
 				if((msg.amISource(this))
 				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
@@ -1983,7 +1983,7 @@ public class StdMOB implements MOB
 				       &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE))
                    ||((mob==this)&&(mob.isMonster()))))
 				{
-					mob.tell("You are not allowed to attack "+name()+".");
+					mob.tell("You may not attack "+name()+".");
 					mob.setVictim(null);
 					if(victim==mob) setVictim(null);
 					return false;
@@ -2218,7 +2218,7 @@ public class StdMOB implements MOB
 			default: break;
 		}
 
-        
+
 		// now go on to source activities
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
 		{
@@ -2248,7 +2248,7 @@ public class StdMOB implements MOB
                 }
                 break;
 			case CMMsg.TYP_DEATH:
-				CMLib.combat().handleDeath(msg); 
+				CMLib.combat().handleDeath(msg);
 			break;
 			case CMMsg.TYP_REBUKE:
 				if(((msg.target()==null)&&(getLiegeID().length()>0))
@@ -2450,7 +2450,7 @@ public class StdMOB implements MOB
 		}
 
         Faction F=null;
-        for(Enumeration e=fetchFactions();e.hasMoreElements();) 
+        for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
             F=CMLib.factions().getFaction((String)e.nextElement());
             F.executeMsg(this,msg);
@@ -2576,7 +2576,7 @@ public class StdMOB implements MOB
 						tickStatus=Tickable.STATUS_END;
  						if(soulMate()==null) destroy();
 						isOk=false;
-						
+
 					}
 				}
 				tickStatus=Tickable.STATUS_NOT;
@@ -2600,18 +2600,18 @@ public class StdMOB implements MOB
 
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
-				if(!isMonster()) 
+				if(!isMonster())
                     curState().expendEnergy(this,maxState,false);
-                
+
 				if((!CMLib.flags().canBreathe(this))&&(!CMLib.flags().isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CMProps.msp("choke.wav",10));
 					CMLib.combat().postDamage(this,this,null,(int)Math.round(CMath.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,null);
 				}
-                
+
                 if(commandQueSize()==0) setActions(actions()-Math.floor(actions()));
                 setActions(actions()+(CMLib.flags().isSitting(this)?envStats().speed()/2.0:envStats().speed()));
-                
+
 				if(isInCombat())
 				{
                     if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
@@ -2628,7 +2628,7 @@ public class StdMOB implements MOB
 					&&(CMLib.flags().aliveAwakeMobileUnbound(this,true)))
 						CMLib.commands().postSheath(this,true);
 				}
-                
+
 				tickStatus=Tickable.STATUS_OTHER;
 				if(!isMonster())
 				{
@@ -2652,7 +2652,7 @@ public class StdMOB implements MOB
 
 				if((riding()!=null)&&(CMLib.map().roomLocation(riding())!=location()))
 					setRiding(null);
-                
+
 				if((!isMonster())&&(soulMate()==null))
 				{
                     CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
@@ -2667,7 +2667,7 @@ public class StdMOB implements MOB
                     }
 				}
 			}
-            
+
             Vector aff=cloneEffects();
             if(aff!=null)
             {
@@ -2739,7 +2739,7 @@ public class StdMOB implements MOB
 	}
 
 	public boolean isMonster()
-	{	
+	{
 	    return (mySession==null);
 	}
 	public boolean isPossessing()
@@ -2757,7 +2757,7 @@ public class StdMOB implements MOB
 	    catch(Exception e){}
 	    return false;
 	}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void confirmWearability()
@@ -2792,7 +2792,7 @@ public class StdMOB implements MOB
 					else
 						reWearSet.insertElementAt(d,item,oldCode);
 				}
-					
+
 			}
 		}
 		for(int r=0;r<reWearSet.size();r++)
@@ -2838,9 +2838,9 @@ public class StdMOB implements MOB
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Item fetchFromInventory(Item goodLocation, 
-                                   String itemName, 
-                                   int wornCode, 
+	public Item fetchFromInventory(Item goodLocation,
+                                   String itemName,
+                                   int wornCode,
                                    boolean allowCoins,
                                    boolean respectLocationAndWornCode)
 	{
@@ -2869,7 +2869,7 @@ public class StdMOB implements MOB
 	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_ANY,true,true);}
 	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_UNWORNONLY,true,true);}
 	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORNREQ_WORNONLY,true,true);}
-	
+
 	public void addFollower(MOB follower, int order)
 	{
 		if(follower!=null)
@@ -2935,7 +2935,7 @@ public class StdMOB implements MOB
 			return true;
 		return false;
 	}
-    
+
 	public boolean willFollowOrdersOf(MOB mob)
 	{
         if((amFollowing()==mob)
@@ -2968,7 +2968,7 @@ public class StdMOB implements MOB
 		}
 		return false;
 	}
-    
+
     public MOB amUltimatelyFollowing()
     {
         MOB following=amFollowing;
@@ -3032,7 +3032,7 @@ public class StdMOB implements MOB
 
 	public boolean savable()
 	{
-		if((!isMonster())&&(soulMate()==null)) 
+		if((!isMonster())&&(soulMate()==null))
             return false;
         if(!CMLib.flags().isSavable(this))
             return false;
@@ -3144,12 +3144,12 @@ public class StdMOB implements MOB
 			to.setAffectedOne(null);
 	}
     protected Vector cloneEffects(){return (Vector)((affects.size()==0)?null:affects.clone());}
-	
+
 	public int numAllEffects()
 	{
 		return affects.size();//+charStats().getMyRace().racialEffects(this).size();
 	}
-	
+
 	public int numEffects()
 	{
 		return affects.size();
@@ -3309,7 +3309,7 @@ public class StdMOB implements MOB
 			for(int i=0;i<numExpertises();i++)
             {
 			    X=fetchExpertise(i);
-                if((X!=null)&&(X.equalsIgnoreCase(of))) 
+                if((X!=null)&&(X.equalsIgnoreCase(of)))
                     return X;
             }
 		}catch(Exception e){}
@@ -3326,7 +3326,7 @@ public class StdMOB implements MOB
 	}
 	public void delTattoo(String of)
 	{
-		if(tattoos==null) 
+		if(tattoos==null)
 			return;
 		synchronized(tattoos)
 		{
@@ -3338,7 +3338,7 @@ public class StdMOB implements MOB
 	public String fetchTattoo(int x){try{return (String)tattoos.elementAt(x);}catch(Exception e){} return null;}
 	public String fetchTattoo(String of)
 	{
-		
+
 		try{
 			if((of==null)||(of.length()==0)) return null;
 			int x=0;
@@ -3414,7 +3414,7 @@ public class StdMOB implements MOB
     }
     public void copyFactions(MOB source)
     {
-        for(Enumeration e=source.fetchFactions();e.hasMoreElements();) 
+        for(Enumeration e=source.fetchFactions();e.hasMoreElements();)
         {
             String fID=(String)e.nextElement();
             addFaction(fID,source.fetchFaction(fID));
@@ -3652,7 +3652,7 @@ public class StdMOB implements MOB
 			}
 		}while(!nothingDone);
 	}
-	
+
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 	public String getStat(String code){
 		switch(getCodeNum(code))
