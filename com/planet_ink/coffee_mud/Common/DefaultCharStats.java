@@ -152,6 +152,8 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setMyLevels(String levels)
 	{
+		if((levels.length()==0)&&(myClasses!=null)&&(myClasses.length>0)) 
+			levels="0";
 		int x=levels.indexOf(";");
 		Vector MyLevels=new Vector();
 		while(x>=0)

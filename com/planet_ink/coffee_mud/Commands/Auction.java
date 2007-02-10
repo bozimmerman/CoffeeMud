@@ -43,7 +43,7 @@ public class Auction extends Channel implements Tickable
     { 
         if(liveData!=null)
         {
-            String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid);
+            String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid);
             if(bidWords.length()==0) bidWords="0";
             return "Up for live auction: "+liveAuctioningItem.name()+".  The current bid is "+bidWords+".";
         }
@@ -53,13 +53,13 @@ public class Auction extends Channel implements Tickable
 	protected MOB           liveAuctionInvoker=null;
 	protected class AuctionData
 	{
-		protected MOB           liveAuctionHighBidder=null;
-		protected String        liveAuctionCurrency="";
-		protected double        liveAuctionHighBid=Double.MIN_VALUE;
-		protected double        liveAuctionBid=Double.MIN_VALUE;
-		protected int           liveAuctionState=-1;
-		protected long          liveAuctionTickDown=0;
-		protected long          liveAuctionStart=0;
+		protected MOB           highBidder=null;
+		protected String        currency="";
+		protected double        highBid=Double.MIN_VALUE;
+		protected double        bid=Double.MIN_VALUE;
+		protected int           state=-1;
+		protected long          tickDown=0;
+		protected long          start=0;
 	}
 	protected AuctionData   liveData=new AuctionData();
 	
@@ -82,79 +82,79 @@ public class Auction extends Channel implements Tickable
 
 	public void setLiveAuctionState(int code)
 	{
-		liveData.liveAuctionState=code;
-		liveData.liveAuctionTickDown=15000/Tickable.TIME_TICK;
+		liveData.state=code;
+		liveData.tickDown=15000/Tickable.TIME_TICK;
 	}
 
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((--liveData.liveAuctionTickDown)<=0)
+		if((--liveData.tickDown)<=0)
 		{
-			if((liveData.liveAuctionState==STATE_START)&&((System.currentTimeMillis()-liveData.liveAuctionStart)<(5*15000)))
+			if((liveData.state==STATE_START)&&((System.currentTimeMillis()-liveData.start)<(5*15000)))
 			{
-				if(((System.currentTimeMillis()-liveData.liveAuctionStart)>(3*15000))
-				&&((liveData.liveAuctionHighBidder==null)||(liveData.liveAuctionHighBidder==liveAuctionInvoker)))
+				if(((System.currentTimeMillis()-liveData.start)>(3*15000))
+				&&((liveData.highBidder==null)||(liveData.highBidder==liveAuctionInvoker)))
 					setLiveAuctionState(STATE_RUNOUT);
 				else
 					setLiveAuctionState(STATE_START);
 				return true;
 			}
-			setLiveAuctionState(liveData.liveAuctionState+1);
+			setLiveAuctionState(liveData.state+1);
 			Vector V=new Vector();
 			V.addElement("AUCTION");
 			V.addElement("CHANNEL");
 			MOB M=liveAuctionInvoker;
-			switch(liveData.liveAuctionState)
+			switch(liveData.state)
 			{
 			case STATE_RUNOUT:
-				V.addElement("The live auction for "+liveAuctioningItem.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+".");
+				V.addElement("The live auction for "+liveAuctioningItem.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 				break;
 			case STATE_ONCE:
-				V.addElement(CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+" for "+liveAuctioningItem.name()+" going ONCE!");
+				V.addElement(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" for "+liveAuctioningItem.name()+" going ONCE!");
 				break;
 			case STATE_TWICE:
-				V.addElement(CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+" for "+liveAuctioningItem.name()+" going TWICE!");
+				V.addElement(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" for "+liveAuctioningItem.name()+" going TWICE!");
 				break;
 			case STATE_THREE:
-				V.addElement(liveAuctioningItem.name()+" going for "+CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+"! Last chance!");
+				V.addElement(liveAuctioningItem.name()+" going for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+"! Last chance!");
 				break;
 			case STATE_CLOSED:
 				{
-					if((liveData.liveAuctionHighBidder!=null)&&(liveData.liveAuctionHighBidder!=liveAuctionInvoker))
+					if((liveData.highBidder!=null)&&(liveData.highBidder!=liveAuctionInvoker))
 					{
-						V.addElement(liveAuctioningItem.name()+" SOLD to "+liveData.liveAuctionHighBidder.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+".");
+						V.addElement(liveAuctioningItem.name()+" SOLD to "+liveData.highBidder.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 						M.doCommand(V);
 						if(liveAuctioningItem instanceof Item)
 						{
 							((Item)liveAuctioningItem).unWear();
-							liveData.liveAuctionHighBidder.location().bringItemHere((Item)liveAuctioningItem,Item.REFUSE_PLAYER_DROP,false);
+							liveData.highBidder.location().bringItemHere((Item)liveAuctioningItem,Item.REFUSE_PLAYER_DROP,false);
 							Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
 							while(ratesV.size()<RATE_NUM) ratesV.addElement("0");
-							double houseCut=Math.floor(liveData.liveAuctionBid*CMath.s_double((String)ratesV.elementAt(RATE_LIVECUT)));
-							double finalAmount=liveData.liveAuctionBid-houseCut;
-	                        returnMoney(liveData.liveAuctionHighBidder,liveData.liveAuctionCurrency,liveData.liveAuctionHighBid-liveData.liveAuctionBid);
-	                        returnMoney(M,liveData.liveAuctionCurrency,finalAmount);
-							M.tell(CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,finalAmount)+" has been transferred to you as payment from "+liveData.liveAuctionHighBidder.name()+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,houseCut)+".  The goods have also been transferred in exchange.");
-							if(CMLib.commands().postGet(liveData.liveAuctionHighBidder,null,(Item)liveAuctioningItem,false)
-	                        ||(liveData.liveAuctionHighBidder.isMine(liveAuctioningItem)))
+							double houseCut=Math.floor(liveData.bid*CMath.s_double((String)ratesV.elementAt(RATE_LIVECUT)));
+							double finalAmount=liveData.bid-houseCut;
+	                        returnMoney(liveData.highBidder,liveData.currency,liveData.highBid-liveData.bid);
+	                        returnMoney(M,liveData.currency,finalAmount);
+							M.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,finalAmount)+" has been transferred to you as payment from "+liveData.highBidder.name()+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)+".  The goods have also been transferred in exchange.");
+							if(CMLib.commands().postGet(liveData.highBidder,null,(Item)liveAuctioningItem,false)
+	                        ||(liveData.highBidder.isMine(liveAuctioningItem)))
 	                        {
-								liveData.liveAuctionHighBidder.tell(CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+" has been transferred to "+M.displayName(liveData.liveAuctionHighBidder)+".  You should have received the auctioned goods.  This auction is complete.");
+								liveData.highBidder.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" has been transferred to "+M.displayName(liveData.highBidder)+".  You should have received the auctioned goods.  This auction is complete.");
 	                            if(liveAuctioningItem instanceof LandTitle)
 	                            {
-	                                CMMsg msg=CMClass.getMsg(M,liveData.liveAuctionHighBidder,liveAuctioningItem,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
-	                                liveAuctioningItem.executeMsg(liveData.liveAuctionHighBidder,msg);
+	                                CMMsg msg=CMClass.getMsg(M,liveData.highBidder,liveAuctioningItem,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
+	                                liveAuctioningItem.executeMsg(liveData.highBidder,msg);
 	                            }
 	                        }
 	                        else
 	                        {
 	                            M.giveItem((Item)liveAuctioningItem);
-	                            M.tell("Your transaction could not be completed because "+liveData.liveAuctionHighBidder.name()+" was unable to collect the item.  Please contact "+liveData.liveAuctionHighBidder.name()+" about receipt of "+liveAuctioningItem.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+".");
-	                            liveData.liveAuctionHighBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.displayName(liveData.liveAuctionHighBidder)+" about receipt of "+liveAuctioningItem.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid)+".");
+	                            M.tell("Your transaction could not be completed because "+liveData.highBidder.name()+" was unable to collect the item.  Please contact "+liveData.highBidder.name()+" about receipt of "+liveAuctioningItem.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
+	                            liveData.highBidder.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+M.displayName(liveData.highBidder)+" about receipt of "+liveAuctioningItem.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 	                        }
-	                        liveData.liveAuctionHighBidder=null;
-	                        liveData.liveAuctionHighBid=0.0;
-	                        liveData.liveAuctionBid=0.0;
+	                        liveData.highBidder=null;
+	                        liveData.highBid=0.0;
+	                        liveData.bid=0.0;
 						}
 					}
 					if(M!=null)
@@ -180,7 +180,7 @@ public class Auction extends Channel implements Tickable
 		    myCurrency=CMLib.english().numPossibleGoldCurrency(mob,newBid);
 		    if(myCurrency!=null)
 		    {
-			    double denomination=CMLib.english().numPossibleGoldDenomination(null,auctionData.liveAuctionCurrency,newBid);
+			    double denomination=CMLib.english().numPossibleGoldDenomination(null,auctionData.currency,newBid);
 			    long num=CMLib.english().numPossibleGold(null,newBid);
 			    b=CMath.mul(denomination,num);
 			    bwords=CMLib.beanCounter().getDenominationName(myCurrency,denomination,num);
@@ -188,61 +188,61 @@ public class Auction extends Channel implements Tickable
 		    else
 		        myCurrency=CMLib.beanCounter().getCurrency(mob);
 	    }
-		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.liveAuctionCurrency,auctionData.liveAuctionBid);
+		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 		if(bidWords.length()==0) bidWords="0";
-		String currencyName=CMLib.beanCounter().getDenominationName(auctionData.liveAuctionCurrency);
+		String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
 		if(newBid.length()==0)
 			return new String[]{"Up for live auction: "+I.name()+".  The current bid is "+bidWords+".",null};
 
-		if(!myCurrency.equals(auctionData.liveAuctionCurrency))
+		if(!myCurrency.equals(auctionData.currency))
 		    return new String[]{"This live auction is being bid in "+currencyName+" only.",null};
 		
-		if(b>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.liveAuctionCurrency))
+		if(b>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.currency))
 			return new String[]{"You don't have enough "+currencyName+" on hand to cover that bid.",null};
 
-		if(b>auctionData.liveAuctionHighBid)
+		if(b>auctionData.highBid)
 		{
-            returnMoney(liveData.liveAuctionHighBidder,liveData.liveAuctionCurrency,liveData.liveAuctionHighBid);
-			auctionData.liveAuctionHighBidder=mob;
-			if(auctionData.liveAuctionHighBid<0.0) auctionData.liveAuctionHighBid=0.0;
-			auctionData.liveAuctionBid=auctionData.liveAuctionHighBid+1.0;
-			auctionData.liveAuctionHighBid=b;
-            returnMoney(liveData.liveAuctionHighBidder,liveData.liveAuctionCurrency,-b);
-			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.liveAuctionCurrency,auctionData.liveAuctionBid);
+            returnMoney(liveData.highBidder,liveData.currency,liveData.highBid);
+			auctionData.highBidder=mob;
+			if(auctionData.highBid<0.0) auctionData.highBid=0.0;
+			auctionData.bid=auctionData.highBid+1.0;
+			auctionData.highBid=b;
+            returnMoney(liveData.highBidder,liveData.currency,-b);
+			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
-			if((auctionData.liveAuctionHighBidder!=null)&&(auctionData.liveAuctionHighBidder==mob))
+			if((auctionData.highBidder!=null)&&(auctionData.highBidder==mob))
 				return new String[]{"You have submitted a new bid for "+I.name()+".",null};
 			else
-			if((auctionData.liveAuctionHighBidder!=null)&&(auctionData.liveAuctionHighBidder!=mob))
+			if((auctionData.highBidder!=null)&&(auctionData.highBidder!=mob))
 				return new String[]{"You have the high bid for "+I.name()+".","You have been outbid for "+I.name()+"."};
 			else
 				return new String[]{"You have submitted a bid for "+I.name()+".",null};
 		}
 		else
-		if((b<auctionData.liveAuctionBid)||(b==0))
+		if((b<auctionData.bid)||(b==0))
 		{
-			return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.liveAuctionBid>0)?" The current high bid is "+bidWords+".":""),null};
+			return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.bid>0)?" The current high bid is "+bidWords+".":""),null};
 		}
 		else
-		if((b==auctionData.liveAuctionBid)&&(auctionData.liveAuctionHighBidder!=null))
+		if((b==auctionData.bid)&&(auctionData.highBidder!=null))
 		{
 			return new String[]{"You must bid higher than "+bidWords+" to have your bid accepted.",null};
 		}
 		else
-		if((b==auctionData.liveAuctionHighBid)&&(auctionData.liveAuctionHighBidder!=null))
+		if((b==auctionData.highBid)&&(auctionData.highBidder!=null))
 		{
-			if((auctionData.liveAuctionHighBidder!=null)&&(auctionData.liveAuctionHighBidder!=mob))
+			if((auctionData.highBidder!=null)&&(auctionData.highBidder!=mob))
 			{
-				auctionData.liveAuctionBid=b;
-				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.liveAuctionCurrency,auctionData.liveAuctionBid);
+				auctionData.bid=b;
+				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 				auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
 				return new String[]{"You have been outbid by proxy for "+I.name()+".","Your high bid for "+I.name()+" has been reached."};
 			}
 		}
 		else
 		{
-			auctionData.liveAuctionBid=b;
-			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.liveAuctionCurrency,auctionData.liveAuctionBid);
+			auctionData.bid=b;
+			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
 			return new String[]{"You have been outbid by proxy for "+I.name()+".",null};
 		}
@@ -260,16 +260,16 @@ public class Auction extends Channel implements Tickable
 			liveAuctionInvoker=mob;
 			liveAuctioningItem=target;
 			String sb=CMParms.combine(commands,0);
-			liveData.liveAuctionCurrency=CMLib.english().numPossibleGoldCurrency(mob,sb);
-		    if(liveData.liveAuctionCurrency.length()==0) liveData.liveAuctionCurrency=CMLib.beanCounter().getCurrency(mob);
-		    double denomination=CMLib.english().numPossibleGoldDenomination(null,liveData.liveAuctionCurrency,sb);
+			liveData.currency=CMLib.english().numPossibleGoldCurrency(mob,sb);
+		    if(liveData.currency.length()==0) liveData.currency=CMLib.beanCounter().getCurrency(mob);
+		    double denomination=CMLib.english().numPossibleGoldDenomination(null,liveData.currency,sb);
 		    long num=CMLib.english().numPossibleGold(null,sb);
-		    liveData.liveAuctionBid=CMath.mul(denomination,num);
-		    liveData.liveAuctionHighBid=liveData.liveAuctionBid-1;
-		    liveData.liveAuctionStart=System.currentTimeMillis();
+		    liveData.bid=CMath.mul(denomination,num);
+		    liveData.highBid=liveData.bid-1;
+		    liveData.start=System.currentTimeMillis();
 			setLiveAuctionState(STATE_START);
 			CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
-			String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.liveAuctionCurrency,liveData.liveAuctionBid);
+			String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid);
 			if(target instanceof Item)
 				mob.delInventory((Item)target);
 			V.addElement("New live auction: "+liveAuctioningItem.name()+".  The opening bid is "+bidWords+".");
@@ -277,11 +277,11 @@ public class Auction extends Channel implements Tickable
 		}
 		else
 		{
-			if(liveData.liveAuctionState>0)	setLiveAuctionState(STATE_RUNOUT);
+			if(liveData.state>0)	setLiveAuctionState(STATE_RUNOUT);
 			String sb="";
 			if(commands!=null)
 			    sb=CMParms.combine(commands,0);
-			MOB M=liveData.liveAuctionHighBidder;
+			MOB M=liveData.highBidder;
 			String[] resp=this.bid(mob,sb,liveData,(Item)liveAuctioningItem,V);
 			if(resp!=null)
 			{
@@ -340,6 +340,24 @@ public class Auction extends Channel implements Tickable
 			if(!CMLib.flags().isInTheGame(to,true))
 				CMLib.database().DBUpdatePlayerItems(to);
 	}
+	
+	public void auctionNotify(MOB M, String resp, String regardingItem)
+	throws java.io.IOException
+	{
+    	if(CMLib.flags().isInTheGame(M,true))
+    		M.tell(resp);
+    	else
+    	if(M.playerStats()!=null)
+    	{
+            CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
+				                            "auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+				                            "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+				                            M.playerStats().getEmail(),
+				                            "Auction Update for item: "+regardingItem,
+				                            resp);
+    	}
+	}
+	
 	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -524,24 +542,26 @@ public class Auction extends Channel implements Tickable
                 { auctionData=V; break;}
             }
             if(auctionData==null){mob.tell("Error."); return false;}
+            Auction.AuctionData data=new Auction.AuctionData();
             String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
             String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
+            data.start=CMath.s_long(start);
             String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
             String subj=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_SUBJ);
             Vector xmlV=CMLib.xml().parseAllXML(xml);
             xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
             String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
+            double oldBid=CMath.s_double(bid);
+            data.bid=oldBid;
             String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
-            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
-            Auction.AuctionData data=new Auction.AuctionData();
-            data.liveAuctionBid=CMath.s_double(bid);
-            MOB invoker=CMLib.map().getLoadPlayer(from);
-			MOB M=liveData.liveAuctionHighBidder;
-            data.liveAuctionCurrency=CMLib.beanCounter().getCurrency(invoker);
-            data.liveAuctionHighBid=CMath.s_double(maxBid);
             if(highBidder.length()>0)
-	            data.liveAuctionHighBidder=CMLib.map().getLoadPlayer(highBidder);
-            data.liveAuctionStart=CMath.s_long(start);
+	            data.highBidder=CMLib.map().getLoadPlayer(highBidder);
+            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
+            double oldMaxBid=CMath.s_double(maxBid);
+            data.highBid=oldMaxBid;
+            MOB invoker=CMLib.map().getLoadPlayer(from);
+			MOB M=data.highBidder;
+            data.currency=CMLib.beanCounter().getCurrency(invoker);
             
             String[] resp=this.bid(mob,amount,data,(Item)E,new Vector());
             if(resp!=null)
@@ -549,32 +569,20 @@ public class Auction extends Channel implements Tickable
 	            if(resp[0]!=null) 
 	            	mob.tell(resp[0]);
 	            if((resp[1]!=null)&&(M!=null))
-	            {
-	            	if(CMLib.flags().isInTheGame(M,true))
-	            		mob.tell(resp[1]);
-	            	else
-	            	if(M.playerStats()!=null)
-	            	{
-	                    CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-							                            "auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-							                            "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-							                            M.playerStats().getEmail(),
-							                            "Auction Update for item: "+E.name(),
-							                            resp[1]);
-	            	}
-	            }
+	            	auctionNotify(M,resp[1],E.Name());
             }
-            if((!(""+data.liveAuctionBid).equals(bid))||((!(""+data.liveAuctionBid).equals(maxBid))))
+            
+            if((oldBid!=data.bid)||(oldMaxBid!=data.highBid))
             {
                 StringBuffer xmlBuf=new StringBuffer("<AUCTION>");
-                xmlBuf.append("<PRICE>"+data.liveAuctionBid+"</PRICE>");
-                xmlBuf.append("<BIDDER>"+((data.liveAuctionHighBidder!=null)?data.liveAuctionHighBidder.Name():"")+"</BIDDER>");
-                xmlBuf.append("<MAXBID>"+data.liveAuctionHighBid+"</MAXBID>");
+                xmlBuf.append("<PRICE>"+data.bid+"</PRICE>");
+                xmlBuf.append("<BIDDER>"+((data.highBidder!=null)?data.highBidder.Name():"")+"</BIDDER>");
+                xmlBuf.append("<MAXBID>"+data.highBid+"</MAXBID>");
                 xmlBuf.append("<AUCTIONITEM>");
                 xmlBuf.append(CMLib.coffeeMaker().getItemXML((Item)E).toString());
                 xmlBuf.append("</AUCTIONITEM>");
                 xmlBuf.append("</AUCTION>");
-            	CMLib.database().DBUpdateJournal(key, getSubject((Item)E,data.liveAuctionCurrency,data.liveAuctionBid), xmlBuf.toString());
+            	CMLib.database().DBUpdateJournal(key, getSubject((Item)E,data.currency,data.bid), xmlBuf.toString());
             }
             return true;
         }
@@ -622,7 +630,7 @@ public class Auction extends Channel implements Tickable
     			CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
     			if(E instanceof Item)
 	    			liveAuctionInvoker.giveItem((Item)E);
-    			returnMoney(liveData.liveAuctionHighBidder,liveData.liveAuctionCurrency,liveData.liveAuctionHighBid);
+    			returnMoney(liveData.highBidder,liveData.currency,liveData.highBid);
 				liveAuctionInvoker=null;
 				liveAuctioningItem=null;
     			super.execute(mob,V);
@@ -638,7 +646,7 @@ public class Auction extends Channel implements Tickable
                 &&(from.equalsIgnoreCase(mob.Name())))
                 {
         			if(E instanceof Item)
-    	    			liveAuctionInvoker.giveItem((Item)E);
+    	    			mob.giveItem((Item)E);
 	                String xml=(String)V.elementAt(DatabaseEngine.JOURNAL_MSG);
 	                Vector xmlV=CMLib.xml().parseAllXML(xml);
 	                xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
@@ -647,12 +655,17 @@ public class Auction extends Channel implements Tickable
 	                if(highBidder.length()>0)
 	                {
 	                	MOB M=CMLib.map().getLoadPlayer(highBidder);
-	                	if(M!=null) returnMoney(M,liveData.liveAuctionCurrency,CMath.s_double(maxBid));
+	                	if(M!=null) 
+                		{
+	    	            	auctionNotify(M,"The auction for "+E.Name()+" was closed early.  You have been refunded your max bid.",E.Name());
+                			returnMoney(M,liveData.currency,CMath.s_double(maxBid));
+                		}
 	                }
+	                CMLib.database().DBDeleteJournal(tkey);
+	        		mob.tell("Auction ended.");
 	                return true;
                 }
             }
-    		mob.tell("Not yet implemented");
     		return false;
 		}
         else
@@ -796,7 +809,7 @@ public class Auction extends Channel implements Tickable
             StringBuffer xml=new StringBuffer("<AUCTION>");
             xml.append("<PRICE>"+startPrice+"</PRICE>");
             xml.append("<BIDDER />");
-            xml.append("<MAXBID />");
+            xml.append("<MAXBID>0.0</MAXBID>");
             xml.append("<AUCTIONITEM>");
             xml.append(CMLib.coffeeMaker().getItemXML(I).toString());
             xml.append("</AUCTIONITEM>");
