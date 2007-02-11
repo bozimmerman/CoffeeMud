@@ -59,7 +59,10 @@ public class Thief_StrategicRetreat extends ThiefSkill
 
 		String where=CMParms.combine(commands,0);
 		if(!success)
+        {
+            mob.tell("Your attempt to flee with grace and honor FAILS!");
 			CMLib.commands().postFlee(mob,where);
+        }
 		else
 		{
 			int directionCode=-1;

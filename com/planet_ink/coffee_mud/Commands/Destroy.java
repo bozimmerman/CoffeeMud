@@ -389,6 +389,11 @@ public class Destroy extends BaseItemParser
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
+            if(srchMob!=null)
+                deadItem.setOwner(srchMob);
+            else
+            if(srchRoom!=null)
+                deadItem.setOwner(srchRoom);
             deadItem.destroy();
             mob.location().delItem(deadItem);
 			deadItem=null;
