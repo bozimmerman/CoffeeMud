@@ -40,7 +40,7 @@ public class Chant_DruidicConnection extends Chant
     public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
     protected int canAffectCode(){return CAN_AREAS;}
     protected int canTargetCode(){return 0;}
-    protected long startTime=System.currentTimeMillis();
+    protected long lastTime=System.currentTimeMillis();
     public boolean bubbleAffect(){return (affected instanceof Area);}
     
     public boolean tick(Tickable ticking, int tickID)
@@ -55,14 +55,14 @@ public class Chant_DruidicConnection extends Chant
             unInvoke();
             return false;
         }
-        long ellapsed=System.currentTimeMillis()-startTime;
+        long ellapsed=System.currentTimeMillis()-lastTime;
         if(affected instanceof Area)
         {
             int hoursPerDay=((Area)affected).getTimeObj().getHoursInDay();
             long millisPerHoursPerDay=hoursPerDay*Tickable.TIME_MILIS_PER_MUDHOUR;
             if(ellapsed>=millisPerHoursPerDay)
             {
-                ellapsed=System.currentTimeMillis();
+                lastTime=System.currentTimeMillis();
                 Vector V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
                 int pct=0;
                 if(((Area)affected).getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>10)
@@ -180,7 +180,7 @@ public class Chant_DruidicConnection extends Chant
                 {
                     A.setSavable(false);
                     A.makeLongLasting();
-                    A.startTime=System.currentTimeMillis();
+                    A.lastTime=System.currentTimeMillis();
                     for(Enumeration e=target.getMetroMap();e.hasMoreElements();)
                         ((Room)e.nextElement()).recoverRoomStats();
                 }
