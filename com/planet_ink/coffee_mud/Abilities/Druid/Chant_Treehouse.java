@@ -100,7 +100,7 @@ public class Chant_Treehouse extends Chant
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.UP)!=null)
-		&&(mob.location().getRoomInDir(Directions.UP).ID().length()>0))
+		&&(mob.location().getRoomInDir(Directions.UP).roomID().length()>0))
 		{
 			mob.tell("You can't create a treehouse here!");
 			return false;
