@@ -114,6 +114,10 @@ public interface Tickable extends CMObject
     public final static int TICKID_EMAIL=TICKMASK_SOLITARY|16;
     /** the tickid representing the impending stop of a service*/
     public final static int TICKID_READYTOSTOP=17;
+    /** the tickid for a live auction tick*/
+    public final static int TICKID_LIVEAUCTION=18;
+    /** the tickid for a slow auction service tick*/
+    public final static int TICKID_TIMEAUCTION=19;
     /** modifies a tickID to designate a longer wait before declaring dead.*/
     public final static int TICKID_LONGERMASK=256;
 

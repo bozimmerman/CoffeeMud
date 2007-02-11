@@ -129,7 +129,7 @@ public class Load extends StdCommand
 						mob.tell(unloadClassName+" was unloaded.");
 	        		if(CMClass.loadClass(what,name))
 	                {
-	        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was loaded.  Mind your casing in this string!");
+	        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was successfully loaded.");
 	                    return true;
 	                }
     	        }
