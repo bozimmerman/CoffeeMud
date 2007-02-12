@@ -40,6 +40,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Vector playersList = new Vector();
 	public Vector deitiesList = new Vector();
     public Vector postOfficeList=new Vector();
+    public Vector auctionHouseList=new Vector();
     public Vector bankList=new Vector();
 	public Hashtable startRooms=new Hashtable();
 	public Hashtable deathRooms=new Hashtable();
@@ -440,6 +441,39 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     public Enumeration postOffices() { return ((Vector)postOfficeList.clone()).elements(); }
+    
+    public Enumeration auctionHouses() { return ((Vector)auctionHouseList.clone()).elements(); }
+    public int numAuctionHouses() { return auctionHouseList.size(); }
+    public void addAuctionHouse(Auctioneer newOne)
+    {
+        if (!auctionHouseList.contains(newOne))
+        	auctionHouseList.add(newOne);
+    }
+    public void delAuctionHouse(Auctioneer oneToDel)
+    {
+    	auctionHouseList.remove(oneToDel);
+    }
+    public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
+    {
+    	Auctioneer C = null;
+        for (Enumeration i=auctionHouses(); i.hasMoreElements();)
+        {
+            C = (Auctioneer)i.nextElement();
+            if((C.auctionHouse().equalsIgnoreCase(chain))
+            &&(C.auctionHouse().equalsIgnoreCase(areaNameOrBranch)))
+                return C;
+        }
+        Area A=findArea(areaNameOrBranch);
+        if(A==null) return null;
+        for (Enumeration i=auctionHouses(); i.hasMoreElements();)
+        {
+            C = (Auctioneer)i.nextElement();
+            if((C.auctionHouse().equalsIgnoreCase(chain))
+            &&(CMLib.map().getStartArea(C)==A))
+                return C;
+        }
+        return null;
+    }
     
     public int numBanks() { return bankList.size(); }
     public void addBank(Banker newOne)

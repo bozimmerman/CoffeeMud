@@ -111,6 +111,11 @@ public interface WorldMap extends CMLibrary
     public Banker getBank(String chain, String areaNameOrBranch);
     public Enumeration banks();
 	public Iterator bankChains(Area AreaOrNull);
+    public int numAuctionHouses();
+    public void addAuctionHouse(Auctioneer newOne);
+    public void delAuctionHouse(Auctioneer oneToDel);
+    public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
+    public Enumeration auctionHouses();
     
     /************************************************************************/
     /**							 PLAYERS 	     							*/

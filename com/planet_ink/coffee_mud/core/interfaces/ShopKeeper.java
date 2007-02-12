@@ -96,6 +96,8 @@ public interface ShopKeeper extends Environmental, Economics
     public final static int DEAL_POSTMAN=28;
     /** shopkeeper type constant, means they handle mail for clans, and implement the Postman interface*/
     public final static int DEAL_CLANPOSTMAN=29;
+    /** shopkeeper type constant, means they handle auctions, and implement the Auctioneer interface*/
+    public final static int DEAL_AUCTIONEER=30;
 	
     /**
      * This class represents a given price for a given item in the shopkeepers inventory. It is usually
@@ -119,7 +121,8 @@ public interface ShopKeeper extends Environmental, Economics
 		"ANY TECHNOLOGY","CLAN LAND","FOODS","MEATS",
 	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER", 
-        "CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN"};
+        "CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
+        "AUCTIONEER"};
 
     /** 
      * the CoffeeShop method to access the shopkeepers store of goods 
