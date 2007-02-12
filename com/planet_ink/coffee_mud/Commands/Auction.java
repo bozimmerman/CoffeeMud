@@ -88,7 +88,7 @@ public class Auction extends Channel implements Tickable
 
     public void initializeClass()
     {
-        CMLib.threads().startTickDown(this,Tickable.TICKID_TIMEAUCTION,(int)(Tickable.TIME_MILIS_PER_MUDHOUR/Tickable.TIME_TICK));
+        //CMLib.threads().startTickDown(this,Tickable.TICKID_TIMEAUCTION,(int)(Tickable.TIME_MILIS_PER_MUDHOUR/Tickable.TIME_TICK));
         super.initializeClass();
     }
 
@@ -454,6 +454,8 @@ public class Auction extends Channel implements Tickable
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+        mob.tell("Auctions are currently closed for maintenance.  When it re-opens, this command will continue to remain available for live auctions, and new auctioneer mobs will be placed in the major cities for doing multi-day auctions, so keep your eyes open for that coming soon!");
+        if((mob!=null)||(commands!=null)) return false;
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 		int channelInt=CMLib.channels().getChannelIndex("AUCTION");
