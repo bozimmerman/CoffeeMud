@@ -6189,7 +6189,7 @@ public class BaseGenerics extends StdCommand
                 me.setStat(me.getStatCodes()[x],CMLib.english().prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
             if(me.playerStats()!=null)
             for(int x=me.playerStats().getSaveStatIndex();x<me.playerStats().getStatCodes().length;x++)
-                me.setStat(me.playerStats().getStatCodes()[x],CMLib.english().prompt(mob,me.playerStats().getStat(me.playerStats().getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.playerStats().getStatCodes()[x])));
+                me.playerStats().setStat(me.playerStats().getStatCodes()[x],CMLib.english().prompt(mob,me.playerStats().getStat(me.playerStats().getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.playerStats().getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
