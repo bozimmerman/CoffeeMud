@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,7 @@ public class StdTitle extends StdItem implements LandTitle
 		if(A==null)	return 0;
 		return A.landPrice()+A.backTaxes();
 	}
-	
+
 	public void setLandPrice(int price)
 	{
 		LandTitle A=fetchALandTitle();
@@ -72,7 +72,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setLandPrice(price);
 		A.updateTitle();
 	}
-	
+
 	public void setBackTaxes(int amount)
 	{
 		LandTitle A=fetchALandTitle();
@@ -92,7 +92,7 @@ public class StdTitle extends StdItem implements LandTitle
 		if(A==null)	return false;
 		return A.rentalProperty();
 	}
-	
+
 	public void setRentalProperty(boolean truefalse)
 	{
 		LandTitle A=fetchALandTitle();
@@ -100,7 +100,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setRentalProperty(truefalse);
 		A.updateTitle();
 	}
-	
+
 	public String landOwner()
 	{
 		LandTitle A=fetchALandTitle();
@@ -237,7 +237,7 @@ public class StdTitle extends StdItem implements LandTitle
 			        destroy();
 			        return false;
 			    }
-			        
+
 			}
 		}
 		else
@@ -286,9 +286,9 @@ public class StdTitle extends StdItem implements LandTitle
                 msg.source().tell("You can't see that!");
             msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),"CANCEL",msg.othersCode(),msg.othersMessage());
         }
-        
+
 		super.executeMsg(myHost,msg);
-        
+
 		if((msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool()==this)
 		&&(msg.target()!=null)
@@ -319,6 +319,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
+		&&(!(msg.target() instanceof Auctioneer))
         &&(!(msg.target() instanceof PostOffice)))
 		{
 			LandTitle A=fetchALandTitle();

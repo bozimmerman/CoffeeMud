@@ -427,56 +427,100 @@
 		    </TD>
 		</TR>
 	@else@
-		@if?MobData?ISPOSTMAN@
+		@if?MobData?ISAUCTION@
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Fee to open a new box:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTNEW SIZE=7 VALUE="@MobData?POSTNEW@">
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Auction Chain Name:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=AUCCHAIN SIZE=50 VALUE="@MobData?AUCCHAIN@">
+			    </TD>
+			</TR>
+			<TR><TD COLSPAN=2 ALIGN=CENTER><FONT COLOR="WHITE"><B>Timed Auctions</B></FONT></TD></TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Listing Cost:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=TIMELIST SIZE=7 VALUE="@MobData?TIMELIST@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Postal Chain Name:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTCHAIN SIZE=50 VALUE="@MobData?POSTCHAIN@">
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) List Cost (% price/day):</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=TIMELISTPCT SIZE=7 VALUE="@MobData?TIMELISTPCT@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Minimum postage cost:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTMIN SIZE=7 VALUE="@MobData?POSTMIN@">
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Final House Cut %:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=TIMECUT SIZE=7 VALUE="@MobData?TIMECUT@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Postage cost/pound after first pound:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTLBS SIZE=7 VALUE="@MobData?POSTLBS@">
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Minimum mud-days:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MINDAYS SIZE=7 VALUE="@MobData?MINDAYS@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Holding fee per pound per month:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTHOLD SIZE=7 VALUE="@MobData?POSTHOLD@">
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Maximum mud-days:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MAXDAYS SIZE=7 VALUE="@MobData?MAXDAYS@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Maximum months held:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTHELD SIZE=7 VALUE="@MobData?POSTHELD@">
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Live) Listing Cost:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LIVELIST SIZE=7 VALUE="@MobData?LIVELIST@">
+			    </TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Live) Final House Cut %:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LIVECUT SIZE=7 VALUE="@MobData?LIVECUT@">
 			    </TD>
 			</TR>
 		@else@
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
-				<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
-			    </TD>
-			</TR>
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
-				<a href="javascript:OpenUp('ihelp.cmvp','DEVALUERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
-			    </TD>
-			</TR>
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
-				<a href="javascript:OpenUp('ihelp.cmvp','INVRESETRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
-			    </TD>
-			</TR>
+			@if?MobData?ISPOSTMAN@
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Fee to open a new box:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTNEW SIZE=7 VALUE="@MobData?POSTNEW@">
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Postal Chain Name:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTCHAIN SIZE=50 VALUE="@MobData?POSTCHAIN@">
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Minimum postage cost:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTMIN SIZE=7 VALUE="@MobData?POSTMIN@">
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Postage cost/pound after first pound:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTLBS SIZE=7 VALUE="@MobData?POSTLBS@">
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Holding fee per pound per month:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTHOLD SIZE=7 VALUE="@MobData?POSTHOLD@">
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Maximum months held:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=POSTHELD SIZE=7 VALUE="@MobData?POSTHELD@">
+				    </TD>
+				</TR>
+			@else@
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+					<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
+					<a href="javascript:OpenUp('ihelp.cmvp','DEVALUERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+				    </TD>
+				</TR>
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
+					<a href="javascript:OpenUp('ihelp.cmvp','INVRESETRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+				    </TD>
+				</TR>
+			@endif@
 		@endif@
 	@endif@
 @endif@

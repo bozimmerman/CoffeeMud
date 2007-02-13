@@ -46,7 +46,7 @@ public class BaseGenerics extends StdCommand
 
 	protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
     {   E.setImage(CMLib.english().prompt(mob,E.rawImage(),showNumber,showFlag,"MXP Image filename",true,false,"This is the path/filename of your MXP image file for this object."));}
-    
+
 	protected void genCorpseData(MOB mob, DeadBody E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -398,7 +398,7 @@ public class BaseGenerics extends StdCommand
 					allitems.addElement(I);
 				oldR.delItem(I);
 			}
-	
+
 			for(int i=0;i<allitems.size();i++)
 			{
 				Item I=(Item)allitems.elementAt(i);
@@ -431,7 +431,7 @@ public class BaseGenerics extends StdCommand
 					M.destroy();
 				}
 			}
-	
+
 			try
 			{
 				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -514,7 +514,7 @@ public class BaseGenerics extends StdCommand
 
 	protected void genDescription(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
     {   E.setDescription(CMLib.english().prompt(mob,E.description(),showNumber,showFlag,"Description",true,false,null));}
-    
+
 	protected void genNotes(MOB mob, MOB E, int showNumber, int showFlag) throws IOException
     {
         if(E.playerStats()!=null)
@@ -567,7 +567,7 @@ public class BaseGenerics extends StdCommand
 		if((E instanceof Item)&&(E.displayText().length()==0))
 			mob.tell("(blended)");
 	}
-    
+
 	protected void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1234,8 +1234,8 @@ public class BaseGenerics extends StdCommand
             }
         }
     }
-    
-    
+
+
 	protected void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1752,8 +1752,8 @@ public class BaseGenerics extends StdCommand
 		E.setLayerAttributes((short)(E.getLayerAttributes()|(newSeeThrough?Armor.LAYERMASK_SEETHROUGH:0)));
 		E.setLayerAttributes((short)(E.getLayerAttributes()|(multiWear?Armor.LAYERMASK_MULTIWEAR:0)));
 	}
-	
-	
+
+
 	protected void genCapacity(MOB mob, Container E, int showNumber, int showFlag) throws IOException
     { E.setCapacity(CMLib.english().prompt(mob,E.capacity(),showNumber,showFlag,"Capacity")); }
 
@@ -1765,13 +1765,13 @@ public class BaseGenerics extends StdCommand
 
 	protected void genBanker1(MOB mob, Banker E, int showNumber, int showFlag) throws IOException
     { E.setCoinInterest(CMLib.english().prompt(mob,E.getCoinInterest(),showNumber,showFlag,"Coin Interest [% per real day]")); }
-    
+
 	protected void genBanker2(MOB mob, Banker E, int showNumber, int showFlag) throws IOException
     { E.setItemInterest(CMLib.english().prompt(mob,E.getItemInterest(),showNumber,showFlag,"Item Interest [% per real day]")); }
-    
+
 	protected void genBanker3(MOB mob, Banker E, int showNumber, int showFlag) throws IOException
     { E.setBankChain(CMLib.english().prompt(mob,E.bankChain(),showNumber,showFlag,"Bank Chain",false,false)); }
-    
+
 	protected void genBanker4(MOB mob, Banker E, int showNumber, int showFlag) throws IOException
     { E.setLoanInterest(CMLib.english().prompt(mob,E.getLoanInterest(),showNumber,showFlag,"Loan Interest [% per mud month]")); }
 
@@ -2643,6 +2643,18 @@ public class BaseGenerics extends StdCommand
             codes.append(c);
             buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
         }
+		else
+        if(E instanceof Auctioneer)
+        {
+            int r=ShopKeeper.DEAL_AUCTIONEER;
+            char c=codeStr.charAt(r);
+            codes.append(c);
+            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+            r=ShopKeeper.DEAL_AUCTIONEER;
+            c=codeStr.charAt(r);
+            codes.append(c);
+            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+        }
         else
 		for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
 		{
@@ -2789,10 +2801,10 @@ public class BaseGenerics extends StdCommand
         String[] prics=E.itemPricingAdjustments();
         if((showFlag!=showNumber)&&(showFlag>-999))
         {
-            if(prics.length<1) 
+            if(prics.length<1)
                 mob.tell(header+"''.");
             else
-            if(prics.length==1) 
+            if(prics.length==1)
                 mob.tell(header+"'"+prics[0]+"'.");
             else
                 mob.tell(header+prics.length+" defined..");
@@ -2826,7 +2838,7 @@ public class BaseGenerics extends StdCommand
                 String mask="?";
                 while(mask.equals("?"))
                 {
-                    mask=mob.session().prompt("Now enter a mask that describes the item (? for syntax)\n\r: "); 
+                    mask=mob.session().prompt("Now enter a mask that describes the item (? for syntax)\n\r: ");
                     if(mask.equals("?"))
                         mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
                 }
@@ -2844,7 +2856,7 @@ public class BaseGenerics extends StdCommand
         }
         E.setItemPricingAdjustments(prics);
     }
-    
+
     protected void genAreaBlurbs(MOB mob, Area E, int showNumber, int showFlag)
     throws IOException
     {
@@ -2853,10 +2865,10 @@ public class BaseGenerics extends StdCommand
         if((showFlag!=showNumber)&&(showFlag>-999))
         {
             int numFlags=E.numBlurbFlags();
-            if(numFlags<1) 
+            if(numFlags<1)
                 mob.tell(header+"''.");
             else
-            if(numFlags==1) 
+            if(numFlags==1)
                 mob.tell(header+"'"+E.getBlurbFlag(0)+": "+E.getBlurbFlag(E.getBlurbFlag(0))+"'.");
             else
                 mob.tell(header+numFlags+" defined..");
@@ -2891,13 +2903,13 @@ public class BaseGenerics extends StdCommand
             }
         }
     }
-    
+
 	protected void genEconomics3(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
     { E.setBudget(CMLib.english().prompt(mob,E.budget(),showNumber,showFlag,"Budget",true,false)); }
 
 	protected void genEconomics4(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
     { E.setDevalueRate(CMLib.english().prompt(mob,E.devalueRate(),showNumber,showFlag,"Devaluation rate(s)",true,false)); }
-    
+
 	protected void genEconomics5(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
     { E.setInvResetRate(CMLib.english().prompt(mob,E.invResetRate(),showNumber,showFlag,"Inventory reset rate [ticks]")); }
 
@@ -3022,7 +3034,7 @@ public class BaseGenerics extends StdCommand
 							index=members.size();
 							members.addElement(M.Name(),new Integer(Clan.POS_MEMBER),new Long(M.playerStats().lastDateTime()));
 						}
-						
+
 						int newRole=-1;
 						while((mob.session()!=null)&&(!mob.session().killFlag())&&(newRole<0))
 						{
@@ -3112,19 +3124,19 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-	
+
 	protected void genDeity1(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setClericRequirements(CMLib.english().prompt(mob,E.getClericRequirements(),showNumber,showFlag,"Cleric Requirements",false,false)); }
-    
+
 	protected void genDeity2(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setClericRitual(CMLib.english().prompt(mob,E.getClericRitual(),showNumber,showFlag,"Cleric Ritual",false,false)); }
-    
+
 	protected void genDeity3(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setWorshipRequirements(CMLib.english().prompt(mob,E.getWorshipRequirements(),showNumber,showFlag,"Worshiper Requirements",false,false)); }
-    
+
 	protected void genDeity4(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setWorshipRitual(CMLib.english().prompt(mob,E.getWorshipRitual(),showNumber,showFlag,"Worshiper Ritual",false,false)); }
-    
+
 	protected void genDeity5(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3331,16 +3343,16 @@ public class BaseGenerics extends StdCommand
 	}
 	protected void genDeity8(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setClericSin(CMLib.english().prompt(mob,E.getClericSin(),showNumber,showFlag,"Cleric Sin",false,false)); }
-    
+
 	protected void genDeity9(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setWorshipSin(CMLib.english().prompt(mob,E.getWorshipSin(),showNumber,showFlag,"Worshiper Sin",false,false)); }
-    
+
 	protected void genDeity0(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setClericPowerup(CMLib.english().prompt(mob,E.getClericPowerup(),showNumber,showFlag,"Cleric Power Ritual",false,false)); }
-    
+
     protected void genDeity11(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
     { E.setServiceRitual(CMLib.english().prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false)); }
-    
+
 	protected void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
     { E.setXGridSize(CMLib.english().prompt(mob,E.xGridSize(),showNumber,showFlag,"Size (X)")); }
 
@@ -3406,8 +3418,8 @@ public class BaseGenerics extends StdCommand
     { E.setThirstQuenched(CMLib.english().prompt(mob,E.thirstQuenched(),showNumber,showFlag,"Quenched/Drink")); }
 
 	protected void genDrinkHeld(MOB mob, Drink E, int showNumber, int showFlag) throws IOException
-    { 
-        E.setLiquidHeld(CMLib.english().prompt(mob,E.liquidHeld(),showNumber,showFlag,"Amount of Drink Held")); 
+    {
+        E.setLiquidHeld(CMLib.english().prompt(mob,E.liquidHeld(),showNumber,showFlag,"Amount of Drink Held"));
         E.setLiquidRemaining(E.liquidHeld());
     }
 
@@ -3463,7 +3475,7 @@ public class BaseGenerics extends StdCommand
 	}
 	protected void genClanAccept(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
     { E.setAcceptanceSettings(CMLib.english().prompt(mob,E.getAcceptanceSettings(),showNumber,showFlag,"Clan Qualifications",false,false,CMLib.masking().maskHelp("\n","disallow"))); }
-    
+
 	protected void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
 		throws IOException
 	{
@@ -3519,7 +3531,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-    
+
     protected void genWeaponMaterials(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
     throws IOException
     {
@@ -3528,7 +3540,7 @@ public class BaseGenerics extends StdCommand
         StringBuffer str=new StringBuffer("");
         for(int v=0;v<set.size();v++)
             str.append(" "+CMLib.materials().getMaterialDesc(CMath.s_int((String)set.elementAt(v))));
-    
+
         mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
@@ -3573,9 +3585,9 @@ public class BaseGenerics extends StdCommand
         else
             mob.tell("(no change)");
     }
-    
-    
-	
+
+
+
 	protected void genDisableFlags(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -3588,10 +3600,10 @@ public class BaseGenerics extends StdCommand
 			for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
 				if(CMath.isSet(flags,i))
 					disabled.append(Race.GENFLAG_DESCS[i]);
-			
+
 			mob.tell(showNumber+". Disabled: '"+disabled+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			
+
 			newName=mob.session().prompt("Enter flag to toggle (?)\n\r:","").toUpperCase();
 			if(newName.length()==0)
 				mob.tell("(no change)");
@@ -3617,7 +3629,7 @@ public class BaseGenerics extends StdCommand
 		}
 		E.setStat("DISFLAGS",""+flags);
 	}
-	
+
 	protected void genRaceWearFlags(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -3630,10 +3642,10 @@ public class BaseGenerics extends StdCommand
 			for(int i=1;i<Item.WORN_DESCS.length;i++)
 				if(CMath.isSet(flags,i-1))
 					wearable.append(Item.WORN_DESCS[i]+" ");
-			
+
 			mob.tell(showNumber+". UNWearable locations: '"+wearable+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			
+
 			newName=mob.session().prompt("Enter a location to toggle (?)\n\r:","").toUpperCase();
 			if(newName.length()==0)
 				mob.tell("(no change)");
@@ -3662,8 +3674,8 @@ public class BaseGenerics extends StdCommand
 		}
 		E.setStat("WEAR",""+flags);
 	}
-	
-	
+
+
 	protected void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3691,7 +3703,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
-	
+
     void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
     throws IOException
     {
@@ -3719,7 +3731,7 @@ public class BaseGenerics extends StdCommand
                 mob.tell("(no change)");
         }
     }
-    
+
 	protected void genCat(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3768,8 +3780,8 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	
-	
+
+
 	protected void genRaceBuddy(MOB mob, Race E, int showNumber, int showFlag, String prompt, String flag)
 		throws IOException
 	{
@@ -3803,7 +3815,7 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-    
+
     protected void genClassBuddy(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
     throws IOException
     {
@@ -3837,8 +3849,8 @@ public class BaseGenerics extends StdCommand
         else
             mob.tell("(no change)");
     }
-    
-    
+
+
 	protected void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4577,7 +4589,7 @@ public class BaseGenerics extends StdCommand
         if(x<0) return;
         fields.setElementAt(x,2,value);
     }
-    
+
 	protected void genAgingChart(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -4838,11 +4850,11 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-    
+
     protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
     throws IOException
     {
-        
+
         Integer level=null;
         if(origLevelIndex>=0)
         {
@@ -4883,7 +4895,7 @@ public class BaseGenerics extends StdCommand
             set.removeElementAt(origAbleIndex);
             origAbleIndex=-1;
         }
-        
+
         int newlevelIndex=sets.indexOf(level);
         DVector levelSet=null;
         if(newlevelIndex<0)
@@ -4901,7 +4913,7 @@ public class BaseGenerics extends StdCommand
         levelSet.addElement(ableID,gained,prof,secret,parms);
         return sets;
     }
-    
+
 	protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4972,7 +4984,7 @@ public class BaseGenerics extends StdCommand
                                         );
                 }
             }
-                
+
 			mob.session().wraplessPrintln(header+parts.toString());
 			String newName=mob.session().prompt("Enter an ability name to add or remove (?)\n\r:","");
 			if(newName.equalsIgnoreCase("?"))
@@ -5023,7 +5035,7 @@ public class BaseGenerics extends StdCommand
                         mob.tell(aID+" removed.");
                         numAbles--;
                     }
-                    
+
 					updateList=true;
 				}
 				if(updateList)
@@ -5191,11 +5203,11 @@ public class BaseGenerics extends StdCommand
 			CMLib.english().promptStatInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
 			CMLib.english().promptStatInt(mob,me,++showNumber,showFlag,"Moves/Level","LVLMOVE");
 			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
-            
+
             int armorMinorCode=CMath.s_int(me.getStat("ARMORMINOR"));
             boolean newSpells=CMLib.english().prompt(mob,armorMinorCode>0,++showNumber,showFlag,"Armor restricts only spells");
             me.setStat("ARMORMINOR",""+(newSpells?CMMsg.TYP_CAST_SPELL:-1));
-            
+
             CMLib.english().promptStatStr(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
             CMLib.english().promptStatStr(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
 			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
@@ -5288,7 +5300,7 @@ public class BaseGenerics extends StdCommand
             CMLib.english().promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
                     CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Extra castings","POSTCASTABILITY",true);
             CMLib.english().promptStatStr(mob,me,"Enter a damage or healing formula. Use +-*/()?. @x1=caster level, @x2=target level.  Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,"Damage/Healing Formula","POSTCASTDAMAGE",true);
-		    
+
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -5342,7 +5354,7 @@ public class BaseGenerics extends StdCommand
         set.setElementAt(setDex,2,newName);
         return true;
     }
-    
+
     protected boolean modifyComponent(MOB mob, DVector components, int componentIndex)
     throws IOException
     {
@@ -5376,7 +5388,7 @@ public class BaseGenerics extends StdCommand
         CMLib.ableMapper().setAbilityComponentCodedFromDecodedDVector(decoded,components,componentIndex);
         return true;
     }
-    
+
     protected void modifyComponents(MOB mob, String componentID)
     throws IOException
     {
@@ -5430,7 +5442,7 @@ public class BaseGenerics extends StdCommand
             }
         }
     }
-    
+
 	protected void modifyGenRace(MOB mob, Race me)
 		throws IOException
 	{
@@ -6214,7 +6226,7 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	
+
 	protected void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -6239,7 +6251,7 @@ public class BaseGenerics extends StdCommand
 			break;
 		}
 	}
-	
+
 	protected void genClanGovt(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -6273,6 +6285,35 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 	
+	protected double genAuctionPrompt(MOB mob, double oldVal, int showNumber, int showFlag, String msg, boolean pct)
+	throws IOException
+	{
+		String oldStr=(oldVal<0)?"":(pct?""+(oldVal*100.0)+"%":""+oldVal);
+		String newStr=CMLib.english().prompt(mob,oldStr,showNumber,showFlag,msg);
+		if(newStr.trim().length()==0)
+			return -1.0;
+		if((pct)&&(!CMath.isPct(newStr))&&(!CMath.isNumber(newStr)))
+			return -1.0;
+		else
+	    if((!pct)&&(!CMath.isNumber(newStr)))
+	    	return -1.0;
+		if(pct) return CMath.s_pct(newStr);
+		return CMath.s_double(newStr);
+	}
+	
+	protected int genAuctionPrompt(MOB mob, int oldVal, int showNumber, int showFlag, String msg)
+	throws IOException
+	{
+		String oldStr=(oldVal<0)?"":""+oldVal;
+		String newStr=CMLib.english().prompt(mob,oldStr,showNumber,showFlag,msg);
+		if(newStr.trim().length()==0)
+			return -1;
+	    if(!CMath.isNumber(newStr))
+			return -1;
+		return CMath.s_int(newStr);
+	}
+	
+
 	protected void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -6305,7 +6346,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected void genClanClass(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -6348,7 +6389,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	String genClanRoom(MOB mob, Clan C, String oldRoomID, String promptCode, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -6376,7 +6417,7 @@ public class BaseGenerics extends StdCommand
 		}
 		return oldRoomID;
 	}
-    
+
 	protected void modifyClan(MOB mob, Clan C)
 	throws IOException
 	{
@@ -6421,7 +6462,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected void modifyGenShopkeeper(MOB mob, ShopKeeper me)
 		throws IOException
 	{
@@ -6492,6 +6533,18 @@ public class BaseGenerics extends StdCommand
                 ((PostOffice)me).setPostagePerPound(CMLib.english().prompt(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,"Postage cost per pound after 1st pound"));
                 ((PostOffice)me).setHoldFeePerPound(CMLib.english().prompt(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,"Holding fee per pound per month"));
                 ((PostOffice)me).setMaxMudMonthsHeld(CMLib.english().prompt(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
+            }
+			else
+            if(me instanceof Auctioneer)
+            {
+                ((Auctioneer)me).setAuctionHouse(CMLib.english().prompt(mob,((Auctioneer)me).auctionHouse(),++showNumber,showFlag,"Auction house"));
+                ((Auctioneer)me).setLiveListingPrice(genAuctionPrompt(mob,((Auctioneer)me).liveListingPrice(),++showNumber,showFlag,"Flat fee for a live auction",false));
+                ((Auctioneer)me).setTimedListingPrice(genAuctionPrompt(mob,((Auctioneer)me).timedListingPrice(),++showNumber,showFlag,"Flat fee for a timed auction",false));
+                ((Auctioneer)me).setTimedListingPct(genAuctionPrompt(mob,((Auctioneer)me).timedListingPct(),++showNumber,showFlag,"Listing Cut/%Pct for timed auctions",true));
+                ((Auctioneer)me).setLiveFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).liveFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for live auctions",true));
+                ((Auctioneer)me).setTimedFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).timedFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for timed auctions",true));
+                ((Auctioneer)me).setMaxTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).maxTimedAuctionDays(),++showNumber,showFlag,"Maximum number of live-auction mud-days"));
+                ((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,"Minimum number of live-auction mud-days"));
             }
             else
 			{

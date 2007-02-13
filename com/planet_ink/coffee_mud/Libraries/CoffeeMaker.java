@@ -19,7 +19,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		}
 		return null;
 	}
-	
+
 	public void resetGenMOB(MOB mob, String newText)
 	{
 		newText=getGenMOBTextUnpacked(mob,newText);
@@ -84,7 +84,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	public int envFlags(Environmental E)
 	{
 		int f=0;
-		if(E instanceof Item) 
+		if(E instanceof Item)
 		{
 			Item item=(Item)E;
 			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
@@ -361,19 +361,19 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    text.append(CMLib.xml().convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
 		    text.append(CMLib.xml().convertXMLtoTag("RECIPE",""+((Recipe)E).getRecipeCodeLine()));
 		}
-		
+
 		if(E instanceof Light)
 			text.append(CMLib.xml().convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
-		
+
 		if(E instanceof Wand)
 			text.append(CMLib.xml().convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
-		
+
 		if(E instanceof Rideable)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
 			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
 		}
-		
+
 		if(E instanceof RawMaterial)
 			text.append(CMLib.xml().convertXMLtoTag("DOMN",((RawMaterial)E).domainSource()+""));
 
@@ -399,13 +399,13 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			text.append(CMLib.xml().convertXMLtoTag("LAYR",((Armor)E).getClothingLayer()));
 			text.append(CMLib.xml().convertXMLtoTag("LAYA",((Armor)E).getLayerAttributes()));
 		}
-		
+
 		if(E instanceof LandTitle)
 			text.append(CMLib.xml().convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
 
 		if(E instanceof Perfume)
 			text.append(CMLib.xml().convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
-		
+
 		if(E instanceof DeadBody)
 		{
 			if(((DeadBody)E).charStats()!=null)
@@ -466,6 +466,17 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                 text.append(CMLib.xml().convertXMLtoTag("POSTHOLD",""+((PostOffice)E).holdFeePerPound()));
                 text.append(CMLib.xml().convertXMLtoTag("POSTNEW",""+((PostOffice)E).feeForNewBox()));
                 text.append(CMLib.xml().convertXMLtoTag("POSTHELD",""+((PostOffice)E).maxMudMonthsHeld()));
+            }
+            if(E instanceof Auctioneer)
+            {
+                text.append(CMLib.xml().convertXMLtoTag("AUCHOUSE",""+((Auctioneer)E).auctionHouse()));
+                text.append(CMLib.xml().convertXMLtoTag("LIVEPRICE",""+((Auctioneer)E).liveListingPrice()));
+                text.append(CMLib.xml().convertXMLtoTag("TIMEPRICE",""+((Auctioneer)E).timedListingPrice()));
+                text.append(CMLib.xml().convertXMLtoTag("TIMEPCT",""+((Auctioneer)E).timedListingPct()));
+                text.append(CMLib.xml().convertXMLtoTag("LIVECUT",""+((Auctioneer)E).liveFinalCutPct()));
+                text.append(CMLib.xml().convertXMLtoTag("TIMECUT",""+((Auctioneer)E).timedFinalCutPct()));
+                text.append(CMLib.xml().convertXMLtoTag("MAXADAYS",""+((Auctioneer)E).maxTimedAuctionDays()));
+                text.append(CMLib.xml().convertXMLtoTag("MINADAYS",""+((Auctioneer)E).minTimedAuctionDays()));
             }
 			if(E instanceof Deity)
 			{
@@ -793,8 +804,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return "";
 	}
 
-	public String fillAreaAndCustomVectorFromXML(String buf, 
-    											 Vector area, 
+	public String fillAreaAndCustomVectorFromXML(String buf,
+    											 Vector area,
     											 Vector custom,
     											 Hashtable externalFiles)
 	{
@@ -808,7 +819,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			area.addElement(areaData.elementAt(a));
 		return "";
 	}
-	public String fillCustomVectorFromXML(String xml, 
+	public String fillCustomVectorFromXML(String xml,
 	        									 Vector custom,
      											 Hashtable externalFiles)
 	{
@@ -816,7 +827,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(xmlv==null) return unpackErr("Custom","null 'xmlv'");
 		return fillCustomVectorFromXML(xmlv,custom,externalFiles);
 	}
-	public String fillCustomVectorFromXML(Vector xml, 
+	public String fillCustomVectorFromXML(Vector xml,
 	        									 Vector custom,
      											 Hashtable externalFiles)
 	{
@@ -872,8 +883,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return "";
 	}
 
-	public String fillAreasVectorFromXML(String buf, 
-	        									Vector areas, 
+	public String fillAreasVectorFromXML(String buf,
+	        									Vector areas,
 	        									Vector custom,
     											Hashtable externalFiles)
 	{
@@ -925,7 +936,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	        		B=CMClass.getBehavior(prop);
 	        		if((B!=null)&&(newArea.fetchBehavior(B.ID())==null))
 	        		{
-	        			B.setSavable(false); 
+	        			B.setSavable(false);
 	        			newArea.addBehavior(B);
 	        			B.setParms(parms);
 	        		}
@@ -943,7 +954,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	        }
         }
     }
-    
+
 	public String unpackAreaFromXML(Vector aV, Session S, boolean andRooms)
 	{
 		String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
@@ -985,8 +996,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return unpackAreaFromXML(aV,S,andRooms);
 	}
 
-	public StringBuffer getAreaXML(Area area, 
-    							   Session S, 
+	public StringBuffer getAreaXML(Area area,
+    							   Session S,
     							   HashSet custom,
     							   HashSet files,
     							   boolean andRooms)
@@ -1108,7 +1119,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(Log.debugChannelOn())
 			Log.debugOut("CoffeeMaker",str.toString());
 	}
-    
+
     public Room makeNewRoomContent(Room room)
     {
         if(room==null) return null;
@@ -1120,7 +1131,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         return R;
     }
 
-    
+
     public StringBuffer getMobXML(MOB mob)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1133,10 +1144,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         buf.append("</MOB>\n\r");
         return buf;
     }
-    
+
     public StringBuffer getMobsXML(Vector mobs,
-                                   HashSet custom, 
-                                   HashSet files, 
+                                   HashSet custom,
+                                   HashSet files,
                                    Hashtable found)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1205,10 +1216,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         }
         return buf;
     }
-    
-	public StringBuffer getRoomMobs(Room room, 
-    							    HashSet custom, 
-    							    HashSet files, 
+
+	public StringBuffer getRoomMobs(Room room,
+    							    HashSet custom,
+    							    HashSet files,
     							    Hashtable found)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -1222,8 +1233,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return buf;
 	}
 
-	public StringBuffer getUniqueItemXML(Item item, 
-    									 int type, 
+	public StringBuffer getUniqueItemXML(Item item,
+    									 int type,
     									 Hashtable found,
     									 HashSet files)
 	{
@@ -1312,7 +1323,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         newItem.recoverEnvStats();
         return newItem;
     }
-    
+
 	public String addItemsFromXML(String xmlBuffer,
 								  Vector addHere,
 								  Session S)
@@ -1363,8 +1374,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         newMOB.resetToMaxState();
         return newMOB;
     }
-    
-    
+
+
 	public String addMOBsFromXML(String xmlBuffer,
 								 Vector addHere,
 								 Session S)
@@ -1441,9 +1452,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return buf;
 	}
 
-	public StringBuffer getRoomXML(Room room, 
-        							HashSet custom, 
-        							HashSet files, 
+	public StringBuffer getRoomXML(Room room,
+        							HashSet custom,
+        							HashSet files,
         							boolean andContent)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -1836,7 +1847,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		}
 		if(variableEq) M.flagVariableEq();
 	}
-	
+
 	public void populateShops(Environmental E, Vector buf)
 	{
 		boolean variableEq=false;
@@ -1920,7 +1931,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			Log.errOut("CoffeeMaker","MOB "+identifier(E,null)+" has malformed XML. Load aborted.");
 			return;
 		}
-		
+
 		if(E instanceof MOB)
 		{
 			while(((MOB)E).numLearnedAbilities()>0)
@@ -2069,16 +2080,16 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if((bo!=null)&&(bo.length()>0))
 				((Wand)E).setMaxUses(CMath.s_int(bo));
 		}
-		
+
 		if(E instanceof LandTitle)
 			((LandTitle)E).setLandPropertyID(CMLib.xml().getValFromPieces(buf,"LANDID"));
 
 		if(E instanceof Perfume)
 			((Perfume)E).setSmellList(CMLib.xml().getValFromPieces(buf,"SMELLLST"));
-		
+
 		if(E instanceof Food)
 			((Food)E).setNourishment(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
-		
+
 		if(E instanceof RawMaterial)
 			((RawMaterial)E).setDomainSource(CMLib.xml().getIntFromPieces(buf,"DOMN"));
 
@@ -2124,7 +2135,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                         String err=addMOBsFromXML("<MOBS>"+mobsXML+"</MOBS>",V,null);
                         if((err.length()==0)&&(V.size()>0))
                             ((DeadBody)E).setSavedMOB((MOB)V.firstElement());
-                        
+
                     }
 					Vector dblk=CMLib.xml().getContentsFromPieces(buf,"KLTOOL");
 					if((dblk!=null)&&(dblk.size()>0))
@@ -2171,7 +2182,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				String loanInt=CMLib.xml().getValFromPieces(buf,"LOANINT");
 				if(loanInt.length()>0) ((Banker)E).setLoanInterest(CMath.s_double(loanInt));
 			}
-            
+
             if(E instanceof PostOffice)
             {
                 ((PostOffice)E).setPostalChain(CMLib.xml().getValFromPieces(buf,"POSTCHAIN"));
@@ -2180,6 +2191,18 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                 ((PostOffice)E).setHoldFeePerPound(CMLib.xml().getDoubleFromPieces(buf,"POSTHOLD"));
                 ((PostOffice)E).setFeeForNewBox(CMLib.xml().getDoubleFromPieces(buf,"POSTNEW"));
                 ((PostOffice)E).setMaxMudMonthsHeld(CMLib.xml().getIntFromPieces(buf,"POSTHELD"));
+            }
+
+            if(E instanceof Auctioneer)
+            {
+                ((Auctioneer)E).setAuctionHouse(CMLib.xml().getValFromPieces(buf,"AUCHOUSE"));
+                ((Auctioneer)E).setLiveListingPrice(CMLib.xml().getDoubleFromPieces(buf,"LIVEPRICE"));
+                ((Auctioneer)E).setTimedListingPrice(CMLib.xml().getDoubleFromPieces(buf,"TIMEPRICE"));
+                ((Auctioneer)E).setTimedListingPct(CMLib.xml().getDoubleFromPieces(buf,"TIMEPCT"));
+                ((Auctioneer)E).setLiveFinalCutPct(CMLib.xml().getDoubleFromPieces(buf,"LIVECUT"));
+                ((Auctioneer)E).setTimedFinalCutPct(CMLib.xml().getDoubleFromPieces(buf,"TIMECUT"));
+                ((Auctioneer)E).setMaxTimedAuctionDays(CMLib.xml().getIntFromPieces(buf,"MAXADAYS"));
+                ((Auctioneer)E).setMinTimedAuctionDays(CMLib.xml().getIntFromPieces(buf,"MINADAYS"));
             }
 
 			if(E instanceof Deity)
@@ -2283,7 +2306,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			Vector V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
 			while(((MOB)E).numTattoos()>0)((MOB)E).delTattoo(((MOB)E).fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo((String)V9.elementAt(v));
-			
+
 			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
 			while(((MOB)E).numExpertises()>0)((MOB)E).delExpertise(((MOB)E).fetchExpertise(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addExpertise((String)V9.elementAt(v));
@@ -2292,9 +2315,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				populateShops(E,buf);
 		}
 	}
-	
-	public String getPlayerXML(MOB mob, 
-	        						  HashSet custom, 
+
+	public String getPlayerXML(MOB mob,
+	        						  HashSet custom,
 	        						  HashSet files)
 	{
 		if(mob==null) return "";
@@ -2327,7 +2350,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
-		
+
 		StringBuffer str=new StringBuffer("");
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
 		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.password()));
@@ -2372,15 +2395,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		str.append(CMLib.xml().convertXMLtoTag("PFIL",pfxml.toString()));
 		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getSavesAsString()));
 		str.append(CMLib.xml().convertXMLtoTag("DESC",mob.description()));
-		
+
 		str.append(getExtraEnvPropertiesStr(mob));
-		
+
 		str.append(getGenMobAbilities(mob));
-		
+
 		str.append(getGenMobInventory(mob));
-		
+
 		str.append(getFactionXML(mob));
-		
+
 		StringBuffer fols=new StringBuffer("");
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -2491,15 +2514,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			mob.baseCharStats().setSavesFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
 			mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
 			mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
-			
+
 			setExtraEnvProperties(mob,mblk.contents);
-			
+
 			setGenMobAbilities(mob,mblk.contents);
-			
+
 			setGenMobInventory(mob,mblk.contents);
-			
+
 			setFactionFromXML(mob,mblk.contents);
-			
+
 			Vector iV=CMLib.xml().getRealContentsFromPieces(mblk.contents,"FOLLOWERS");
 			if(iV==null) return unpackErr("PFols","null 'iV'");
 			for(int i=0;i<iV.size();i++)
@@ -2519,7 +2542,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				newFollower.resetToMaxState();
 				mob.addFollower(newFollower,-1);
 			}
-			
+
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			mob.recoverMaxState();
@@ -2534,8 +2557,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	public String getExtraEnvPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
-        
-        
+
+
         if(E instanceof Economics)
         {
             text.append(CMLib.xml().convertXMLtoTag("PREJFC",((Economics)E).prejudiceFactors()));
@@ -2554,7 +2577,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             }
 
         }
-        
+
 		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
 		StringBuffer behaviorstr=new StringBuffer("");
 		for(int b=0;b<E.numBehaviors();b++)
@@ -2765,7 +2788,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             return str.toString()+" of "+identifier(parent,null);
         return str.toString();
     }
-    
+
 	public void setExtraEnvProperties(Environmental E, Vector buf)
 	{
 
@@ -2927,7 +2950,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						 Behavior B=I.fetchBehavior(0);
 						 if(B!=null) I.delBehavior(B);
 					 }
-					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val)); 
+					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val));
 					 break;
 				 }
 		case 16: I.baseEnvStats().setDisposition(CMath.s_int(val)); break;
@@ -2965,8 +2988,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 5: return M.displayText();
 		case 6: return M.description();
 		case 7: {
-		    	String money=""+CMLib.beanCounter().getMoney(M); 
-		    	CMLib.beanCounter().clearZeroMoney(M,null); 
+		    	String money=""+CMLib.beanCounter().getMoney(M);
+		    	CMLib.beanCounter().clearZeroMoney(M,null);
 		    	return money;
 		    	}
 		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID());
@@ -3028,7 +3051,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 8: if(CMath.s_int(val)==Integer.MAX_VALUE)
 		    		M.removeFaction(CMLib.factions().AlignID());
 				else
-		        	M.addFaction(CMLib.factions().AlignID(),CMath.s_int(val)); 
+		        	M.addFaction(CMLib.factions().AlignID(),CMath.s_int(val));
 				break;
 		case 9: M.baseEnvStats().setDisposition(CMath.s_int(val)); break;
 		case 10: M.baseEnvStats().setSensesMask(CMath.s_int(val)); break;
@@ -3047,7 +3070,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						 Behavior B=M.fetchBehavior(0);
 						 if(B!=null) M.delBehavior(B);
 					 }
-					 setExtraEnvProperties(M,CMLib.xml().parseAllXML(val)); 
+					 setExtraEnvProperties(M,CMLib.xml().parseAllXML(val));
 					 break;
 				 }
 		case 16:
@@ -3087,7 +3110,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			break;
 		case 20: M.setImage(val); break;
-		case 21: 
+		case 21:
 		    {
 		    	Vector V10=CMParms.parseSemicolons(val,true);
 		    	for(int v=0;v<V10.size();v++)

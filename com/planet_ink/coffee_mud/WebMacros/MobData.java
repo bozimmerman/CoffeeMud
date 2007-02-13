@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,9 @@ public class MobData extends StdWebMacro
       "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
       "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
       "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-      "LOANINT","SVCRIT"};
+      "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
+      "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
+      "MINDAYS","ISAUCTION"};
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
 		Vector V=E.getShop().getStoreInventory();
@@ -195,7 +197,7 @@ public class MobData extends StdWebMacro
 			else
 			for(int e=0;e<E.numExpertises();e++)
 			{
-				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E.fetchExpertise(e)); 
+				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E.fetchExpertise(e));
 				theclasses.addElement(X.ID);
 			}
 			for(int i=0;i<theclasses.size();i++)
@@ -214,7 +216,7 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Expertise");
 			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
-				ExpertiseLibrary.ExpertiseDefinition X=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement(); 
+				ExpertiseLibrary.ExpertiseDefinition X=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 				str.append("<OPTION VALUE=\""+X.ID+"\">"+X.name);
 			}
 			str.append("</SELECT>");
@@ -373,7 +375,7 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(Enumeration e=E.fetchFactions();e.hasMoreElements();) 
+			for(Enumeration e=E.fetchFactions();e.hasMoreElements();)
 			{
 				Faction f=CMLib.factions().getFaction((String)e.nextElement());
 				if(f!=null)
@@ -417,7 +419,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddFaction(this);\" NAME=FACTION"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Faction");
-	
+
 			Object[] sortedB=null;
 			Vector sortMeB=new Vector();
 			for(Enumeration fID=CMLib.factions().factionSet().keys();fID.hasMoreElements();)
@@ -470,7 +472,7 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();) 
+			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 			{
 				CharClass C=(CharClass)e.nextElement();
 				if(C!=null)
@@ -502,7 +504,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddFaction(this);\" NAME=CHARCLASS"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Class");
-	
+
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
 				CharClass C=(CharClass)c.nextElement();
@@ -515,7 +517,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -627,11 +629,11 @@ public class MobData extends StdWebMacro
             str.append("<INPUT TYPE=TEXT SIZE=50 NAME=IPRICM"+(theprices.size()+1)+">");
             str.append("</TD></TR>");
             str.append("</TABLE>");
-            
+
         }
         return str;
     }
-    
+
 	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
         StringBuffer str=new StringBuffer("");
@@ -800,7 +802,7 @@ public class MobData extends StdWebMacro
                 if(oldM!=M)
                     for(int i=0;i<oldM.inventorySize();i++)
                         M.addInventory(oldM.fetchInventory(i));
-                            
+
 				itemlist=RoomData.items;
 				for(int i=1;;i++)
 				{
@@ -870,7 +872,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -887,7 +889,7 @@ public class MobData extends StdWebMacro
 		{
 			if((last!=null)&&(last.equalsIgnoreCase("ANY")))
 			{
-		
+
 			}
 			else
 			{
@@ -1101,8 +1103,8 @@ public class MobData extends StdWebMacro
 				break;
 			case 17: // money
 				if(firstTime)
-				{ 
-				    old=""+CMLib.beanCounter().getMoney(M); 
+				{
+				    old=""+CMLib.beanCounter().getMoney(M);
 				    CMLib.beanCounter().clearInventoryMoney(M,null);
 				}
 				str.append(old);
@@ -1311,6 +1313,57 @@ public class MobData extends StdWebMacro
                     old=((Deity)M).getServiceRitual();
                 str.append(old);
                 break;
+            case 54: // auction chain
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=((Auctioneer)M).auctionHouse();
+                str.append(old);
+                break;
+            case 55: // live list
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+((Auctioneer)M).liveListingPrice();
+                if(CMath.s_double(old)<0.0) old="";
+                str.append(old);
+                break;
+            case 56: // timed list
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+((Auctioneer)M).timedListingPrice();
+                if(CMath.s_double(old)<0.0) old="";
+                str.append(old);
+                break;
+            case 57: // timed list pct
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+(((Auctioneer)M).timedListingPct()*100.0)+"%";
+                if(CMath.s_pct(old)<0.0) 
+                	old="";
+                str.append(old);
+                break;
+            case 58: // live cut pct
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+(((Auctioneer)M).liveFinalCutPct()*100.0)+"%";
+                if(CMath.s_pct(old)<0.0) old="";
+                str.append(old);
+                break;
+            case 59: // timed cut pct
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+(((Auctioneer)M).timedFinalCutPct()*100.0)+"%";
+                if(CMath.s_pct(old)<0.0) old="";
+                str.append(old);
+                break;
+            case 60: // max days
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+((Auctioneer)M).maxTimedAuctionDays();
+                if(CMath.s_double(old)<0.0) old="";
+                str.append(old);
+                break;
+            case 61: // min days
+                if((firstTime)&&(M instanceof Auctioneer))
+                    old=""+((Auctioneer)M).minTimedAuctionDays();
+                if(CMath.s_double(old)<0.0) old="";
+                str.append(old);
+                break;
+            case 62: // is auction
+                if(M instanceof Auctioneer) return "true";
+                return "false";
 			}
 			if(firstTime)
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);

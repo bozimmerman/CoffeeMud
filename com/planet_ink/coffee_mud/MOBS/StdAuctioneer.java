@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,38 +61,37 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     }
 
 
-    protected String auctionHouse="SYSTEM_AUCTIONS";
-    public String auctionHouse(){return auctionHouse;}
-    public void setAuctionHouse(String named){auctionHouse=named;}
-
-    protected double liveListingPrice=0.0;
+    public String auctionHouse(){return text();}
+    public void setAuctionHouse(String named){setMiscText(named);}
+    
+    protected double liveListingPrice=-1.0;
     public double liveListingPrice(){return liveListingPrice;}
     public void setLiveListingPrice(double d){liveListingPrice=d;}
-    
-    protected double timedListingPrice=0.0;
+
+    protected double timedListingPrice=-1.0;
     public double timedListingPrice(){return timedListingPrice;}
     public void setTimedListingPrice(double d){timedListingPrice=d;}
-    
-    protected double timedListingPct=0.0;
+
+    protected double timedListingPct=-1.0;
     public double timedListingPct(){return timedListingPct;}
     public void setTimedListingPct(double d){timedListingPct=d;}
-    
-    protected double liveListingCutPct=0.0;
-    public double liveListingCutPct(){return liveListingCutPct;}
-    public void setLiveListingCutPct(double d){liveListingCutPct=d;}
-    
-    protected double timedListingCutPct=0.0;
-    public double timedListingCutPct(){return timedListingCutPct;}
-    public void setTimedListingCutPct(double d){timedListingCutPct=d;}
-    
-    protected int maxTimedAuctionDays=0;
+
+    protected double liveFinalCutPct=-1.0;
+    public double liveFinalCutPct(){return liveFinalCutPct;}
+    public void setLiveFinalCutPct(double d){liveFinalCutPct=d;}
+
+    protected double timedFinalCutPct=-1.0;
+    public double timedFinalCutPct(){return timedFinalCutPct;}
+    public void setTimedFinalCutPct(double d){timedFinalCutPct=d;}
+
+    protected int maxTimedAuctionDays=-1;
     public int maxTimedAuctionDays(){return maxTimedAuctionDays;}
     public void setMaxTimedAuctionDays(int d){maxTimedAuctionDays=d;}
-    
-    protected int minTimedAuctionDays=0;
+
+    protected int minTimedAuctionDays=-1;
     public int minTimedAuctionDays(){return minTimedAuctionDays;}
     public void setMinTimedAuctionDays(int d){minTimedAuctionDays=d;}
-    
+
     public void destroy()
     {
         super.destroy();
@@ -103,26 +102,23 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         super.bringToLife(newLocation,resetStats);
         CMLib.map().addAuctionHouse(this);
     }
-    
+
     public int whatIsSold(){return whatISell;}
     public void setWhatIsSold(int newSellCode){
-        if(newSellCode!=ShopKeeper.DEAL_CLANPOSTMAN)
-            whatISell=ShopKeeper.DEAL_POSTMAN;
-        else
-            whatISell=ShopKeeper.DEAL_CLANPOSTMAN;
+        whatISell=ShopKeeper.DEAL_AUCTIONEER;
     }
 
     public String postalChain(){return text();}
     public void setPostalChain(String name){setMiscText(name);}
     public String postalBranch(){return CMLib.map().getExtendedRoomID(getStartRoom());}
 
-    
+
     public boolean tick(Tickable ticking, int tickID)
     {
         if(!super.tick(ticking,tickID))
             return false;
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) return true;
-		
+
         return true;
     }
 
@@ -133,7 +129,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         msg2=CMClass.getMsg(tgt,I,null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
         location().send(this,msg2);
     }
-    
+
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();

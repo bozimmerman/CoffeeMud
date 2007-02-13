@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ public interface Auctioneer extends ShopKeeper
 	public static final int INIRATE_MAXDAYS=5;
 	public static final int INIRATE_MINDAYS=6;
 	public static final int INIRATE_NUM=7;
-	
+
 	public static final int STATE_START=0;
 	public static final int STATE_RUNOUT=1;
 	public static final int STATE_ONCE=2;
@@ -62,25 +62,25 @@ public interface Auctioneer extends ShopKeeper
 
     public String auctionHouse();
     public void setAuctionHouse(String named);
-    
+
     public double liveListingPrice();
     public void setLiveListingPrice(double d);
-    
+
     public double timedListingPrice();
     public void setTimedListingPrice(double d);
-    
+
     public double timedListingPct();
     public void setTimedListingPct(double d);
-    
-    public double liveListingCutPct();
-    public void setLiveListingCutPct(double d);
-    
-    public double timedListingCutPct();
-    public void setTimedListingCutPct(double d);
-    
+
+    public double liveFinalCutPct();
+    public void setLiveFinalCutPct(double d);
+
+    public double timedFinalCutPct();
+    public void setTimedFinalCutPct(double d);
+
     public int maxTimedAuctionDays();
     public void setMaxTimedAuctionDays(int d);
-    
+
     public int minTimedAuctionDays();
     public void setMinTimedAuctionDays(int d);
 }

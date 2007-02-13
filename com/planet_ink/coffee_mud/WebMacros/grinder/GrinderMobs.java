@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,9 @@ public class GrinderMobs
       "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
       "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
       "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-      "LOANINT","SVCRIT"};
+      "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
+      "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
+      "MINDAYS","ISAUCTION"};
 	public static String senses(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setSensesMask(0);
@@ -139,7 +141,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static String blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBlessings()>0)
@@ -195,7 +197,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static String expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numExpertises()>0) E.delExpertise(E.fetchExpertise(0));
@@ -217,8 +219,8 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
-	
+
+
 	public static String items(MOB M, Vector allitems, ExternalHTTPRequests httpReq)
 	{
 		if(httpReq.isRequestParameter("ITEM1"))
@@ -297,13 +299,13 @@ public class GrinderMobs
 	    		R=CMLib.map().getRoom(R);
 				CMLib.map().resetRoom(R);
     		}
-	
+
 			MOB M=null;
 			if(mobCode.equals("NEW"))
 				M=CMClass.getMOB(newClassID);
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
-	
+
 			if(M==null)
 			{
 				StringBuffer str=new StringBuffer("No MOB?!");
@@ -321,7 +323,7 @@ public class GrinderMobs
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(M))))
 				M=CMClass.getMOB(newClassID);
 			M.setStartRoom(R);
-	
+
 			Vector allitems=new Vector();
 			while(oldM.inventorySize()>0)
 			{
@@ -330,7 +332,7 @@ public class GrinderMobs
 				oldM.delInventory(I);
 			}
 			MOB copyMOB=(MOB)M.copyOf();
-	
+
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];
@@ -547,9 +549,64 @@ public class GrinderMobs
                     if(M instanceof Deity)
                         ((Deity)M).setServiceRitual(old);
                     break;
+	            case 56: // auction house
+	                if(M instanceof Auctioneer)
+	                    ((Auctioneer)M).setAuctionHouse(old);
+	                break;
+	            case 57: // live list
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setLiveListingPrice(-1.0);
+						else
+							((Auctioneer)M).setLiveListingPrice(CMath.s_double(old));
+	                break;
+	            case 58: // timed list
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setTimedListingPrice(-1.0);
+						else
+							((Auctioneer)M).setTimedListingPrice(CMath.s_double(old));
+	                break;
+	            case 59: // timed list pct
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setTimedListingPct(-1.0);
+						else
+							((Auctioneer)M).setTimedListingPct(CMath.s_pct(old));
+	                break;
+	            case 60: // live cut
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setLiveFinalCutPct(-1.0);
+						else
+							((Auctioneer)M).setLiveFinalCutPct(CMath.s_pct(old));
+	                break;
+	            case 61: // timed cut
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setTimedFinalCutPct(-1.0);
+						else
+							((Auctioneer)M).setTimedFinalCutPct(CMath.s_pct(old));
+	                break;
+	            case 62: // max days
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setMaxTimedAuctionDays(-1);
+						else
+							((Auctioneer)M).setMaxTimedAuctionDays(CMath.s_int(old));
+	                break;
+	            case 63: // min days
+	                if(M instanceof Auctioneer)
+	                	if(old.length()==0)
+							((Auctioneer)M).setMinTimedAuctionDays(-1);
+						else
+							((Auctioneer)M).setMinTimedAuctionDays(CMath.s_int(old));
+	                break;
+	            case 64: // is auction
+	                break;
 				}
 			}
-	
+
 			if(M.isGeneric())
 			{
 				String error=GrinderExits.dispositions(M,httpReq,parms);
@@ -571,17 +628,17 @@ public class GrinderMobs
 					error=GrinderMobs.powers((Deity)M,httpReq,parms);
 					if(error.length()>0) return error;
 				}
-	
+
 				error=GrinderMobs.items(M,allitems,httpReq);
 				if(error.length()>0) return error;
-	
+
 				if((M instanceof ShopKeeper)
 				&&(httpReq.isRequestParameter("SHP1")))
 				{
 					ShopKeeper K=(ShopKeeper)M;
 					Vector inventory=K.getShop().getStoreInventory();
 					K.getShop().emptyAllShelves();
-	
+
 					int num=1;
 					String MATCHING=httpReq.getRequestParameter("SHP"+num);
 					String theparm=httpReq.getRequestParameter("SDATA"+num);
@@ -639,7 +696,7 @@ public class GrinderMobs
 						theprice=httpReq.getRequestParameter("SPRIC"+num);
 					}
 				}
-                
+
                 int num=1;
                 if((M instanceof Economics)
                 &&(httpReq.isRequestParameter("IPRIC1")))
@@ -661,7 +718,7 @@ public class GrinderMobs
                     ((Economics)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
                 }
 			}
-	
+
 			M.recoverEnvStats();
 			M.recoverCharStats();
 			M.recoverMaxState();
