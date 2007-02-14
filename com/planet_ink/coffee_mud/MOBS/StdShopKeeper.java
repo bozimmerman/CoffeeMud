@@ -205,6 +205,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
                     return super.okMessage(myHost,msg);
                 return false;
 			}
+			case CMMsg.TYP_BID:
+			{
+                CMLib.commands().postSay(this,msg.source(),"I'm afraid my prices are firm.",false,false);
+                return false;
+			}
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{

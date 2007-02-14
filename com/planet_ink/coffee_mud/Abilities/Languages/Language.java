@@ -226,6 +226,7 @@ public class Language extends StdAbility
 				{
 				case CMMsg.TYP_ORDER:
 				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_BID:
 				case CMMsg.TYP_SELL:
 				case CMMsg.TYP_LIST:
 				case CMMsg.TYP_VIEW:

@@ -457,6 +457,7 @@ public class StdRoom implements Room
 				break;
             case CMMsg.TYP_LIST:
             case CMMsg.TYP_BUY:
+            case CMMsg.TYP_BID:
             case CMMsg.TYP_SELL:
             case CMMsg.TYP_VIEW:
             case CMMsg.TYP_VALUE:

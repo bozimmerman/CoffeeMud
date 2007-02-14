@@ -416,6 +416,7 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 			break;
 		case CMMsg.TYP_BUY:
+		case CMMsg.TYP_BID:
 		case CMMsg.TYP_SELL:
 			if(amRiding(msg.source()))
 			{

@@ -77,13 +77,14 @@ public class Prayer_HolyDay extends Prayer
 		}
 		else
 		if(((msg.sourceMinor()==CMMsg.TYP_BUY)
+			||(msg.sourceMinor()==CMMsg.TYP_BID)
 			||(msg.sourceMinor()==CMMsg.TYP_SELL)
 			||(msg.sourceMinor()==CMMsg.TYP_WITHDRAW)
 			||(msg.sourceMinor()==CMMsg.TYP_BORROW)
 			||(msg.sourceMinor()==CMMsg.TYP_DEPOSIT))
 		&&(msg.source()!=invoker()))
 		{
-			msg.source().tell("You are not allowed to work on the holy day of "+godName+".");
+			msg.source().tell("You are not allowed to work or do commerce on the holy day of "+godName+".");
 			return false;
 		}
 		else

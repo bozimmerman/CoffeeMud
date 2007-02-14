@@ -849,6 +849,7 @@ public class StdItem implements Item
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_BID:
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_GENERAL:
 			case CMMsg.TYP_REMOVE:
@@ -903,6 +904,7 @@ public class StdItem implements Item
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_BID:
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_GENERAL:
 			case CMMsg.TYP_REMOVE:
@@ -926,6 +928,7 @@ public class StdItem implements Item
 			}
 			return true;
 		case CMMsg.TYP_BUY:
+		case CMMsg.TYP_BID:
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_VALUE:
 		case CMMsg.TYP_VIEW:

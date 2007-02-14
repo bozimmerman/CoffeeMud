@@ -226,6 +226,7 @@ public interface CMMsg extends CMCommon
     public static final int TYP_BORROW=95;
     public static final int TYP_HUH=96;
     public static final int TYP_LIFE=97;
+    public static final int TYP_BID=98;
 
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
     public static final Object[][] MISC_DESCS={
@@ -245,7 +246,7 @@ public interface CMMsg extends CMCommon
         "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
         "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
         "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
-        "LIFE"
+        "LIFE","BID"
     };
     public static final String[] MASK_DESCS={
         "TOUCH","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"
@@ -352,4 +353,5 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_EAT_GROUND=MASK_MOUTH|TYP_EAT;
 	public static final int MSG_HUH=MASK_ALWAYS|TYP_HUH;
     public static final int MSG_BRINGTOLIFE=MASK_ALWAYS|TYP_LIFE;
+	public static final int MSG_BID=MSK_HAGGLE|TYP_BID;
 }

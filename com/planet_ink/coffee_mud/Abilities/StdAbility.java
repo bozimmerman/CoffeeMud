@@ -550,9 +550,9 @@ public class StdAbility implements Ability
 		if((givenTarget!=null)&&(givenTarget instanceof Item))
 			target=givenTarget;
 
-		if(location!=null)
+		if((location!=null)&&(target==null)&&(targetName!=null)&&(targetName.length()>0))
 			target=location.fetchFromRoomFavorItems(container,targetName,wornReqCode);
-		if(target==null)
+		if((target==null)&&(targetName!=null)&&(targetName.length()>0))
 		{
 			if(location!=null)
 				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornReqCode);

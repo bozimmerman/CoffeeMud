@@ -1629,6 +1629,7 @@ public class StdMOB implements MOB
 					if((CMLib.flags().isSitting(this))
 					&&(msg.sourceMinor()!=CMMsg.TYP_SITMOVE)
 					&&(msg.sourceMinor()!=CMMsg.TYP_BUY)
+					&&(msg.sourceMinor()!=CMMsg.TYP_BID)
 					&&(msg.targetCode()!=CMMsg.MSG_OK_VISUAL)
 					&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
 					&&((!CMLib.utensils().reachableItem(this,msg.target()))
@@ -1768,6 +1769,7 @@ public class StdMOB implements MOB
 						}
 					break;
 				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_BID:
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
 				case CMMsg.TYP_FILL:
 				case CMMsg.TYP_LIST:
@@ -1924,6 +1926,7 @@ public class StdMOB implements MOB
 			else
 			if((msg.tool()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_BUY)
+		    &&(msg.sourceMinor()!=CMMsg.TYP_BID)
 			&&(msg.sourceMinor()!=CMMsg.TYP_SELL)
 			&&(msg.sourceMinor()!=CMMsg.TYP_VIEW))
 			{

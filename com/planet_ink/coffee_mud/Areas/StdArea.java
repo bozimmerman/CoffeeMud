@@ -608,6 +608,7 @@ public class StdArea implements Area
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_BID:
 				case CMMsg.TYP_CLOSE:
 				case CMMsg.TYP_DEPOSIT:
 				case CMMsg.TYP_DROP:

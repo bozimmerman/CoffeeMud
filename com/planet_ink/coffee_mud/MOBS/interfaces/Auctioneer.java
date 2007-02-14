@@ -43,6 +43,7 @@ public interface Auctioneer extends ShopKeeper
 		public int           state=-1;
 		public long          tickDown=0;
 		public long          start=0;
+		public String		 auctionKey="";
 	}
 	public static final int INIRATE_LIVELIST=0;
 	public static final int INIRATE_TIMELIST=1;

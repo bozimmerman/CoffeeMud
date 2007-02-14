@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -33,7 +35,7 @@ import java.util.*;
 */
 public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 {
-    public String ID(){return "StdPostman";}
+    public String ID(){return "StdAuctioneer";}
 
     public StdAuctioneer()
     {
@@ -43,7 +45,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         setDisplayText("The local auctioneer is here calling prices.");
         CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
         setMoney(0);
-        whatISell=ShopKeeper.DEAL_POSTMAN;
+        whatISell=ShopKeeper.DEAL_AUCTIONEER;
         baseEnvStats.setWeight(150);
         setWimpHitPoint(0);
 
@@ -62,7 +64,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 
 
     public String auctionHouse(){return text();}
-    public void setAuctionHouse(String named){setMiscText(named);}
+    public void setAuctionHouse(String name){setMiscText(name);}
     
     protected double liveListingPrice=-1.0;
     public double liveListingPrice(){return liveListingPrice;}
@@ -103,14 +105,56 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         CMLib.map().addAuctionHouse(this);
     }
 
-    public int whatIsSold(){return whatISell;}
-    public void setWhatIsSold(int newSellCode){
-        whatISell=ShopKeeper.DEAL_AUCTIONEER;
+    public int whatIsSold(){return ShopKeeper.DEAL_AUCTIONEER;}
+    public void setWhatIsSold(int newSellCode){ }
+    
+    public Vector getAuctions(MOB forMe, String ofKey)
+    {
+    	Vector auctions=new Vector();
+    	String house="SYSTEM_AUCTIONS_"+auctionHouse().toUpperCase().trim();
+	    Vector otherAuctions=CMLib.database().DBReadJournal(house);
+	    for(int o=0;o<otherAuctions.size();o++)
+	    {
+	        Vector auctionData=(Vector)otherAuctions.elementAt(o);
+            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
+	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
+            String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
+	        if((forMe!=null)&&(!forMe.Name().equals(to)))
+	        	continue;
+	        if((ofKey!=null)&&(!ofKey.equals(key)))
+	        	continue;
+            AuctionData data=new AuctionData();
+            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
+            data.start=CMath.s_long(start);
+            data.tickDown=CMath.s_long(to);
+            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
+            Vector xmlV=CMLib.xml().parseAllXML(xml);
+            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
+            String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
+            double oldBid=CMath.s_double(bid);
+            data.bid=oldBid;
+            String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
+            if(highBidder.length()>0)
+                data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
+            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
+            double oldMaxBid=CMath.s_double(maxBid);
+            data.highBid=oldMaxBid;
+            data.auctioningM=CMLib.map().getLoadPlayer(from);
+            data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
+            for(int v=0;v<xmlV.size();v++)
+            {
+                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
+                if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
+                {
+                    data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);
+                    break;
+                }
+            }
+            auctions.addElement(data);
+	    }
+	    return auctions;
     }
 
-    public String postalChain(){return text();}
-    public void setPostalChain(String name){setMiscText(name);}
-    public String postalBranch(){return CMLib.map().getExtendedRoomID(getStartRoom());}
 
 
     public boolean tick(Tickable ticking, int tickID)
@@ -190,8 +234,22 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             case CMMsg.TYP_SELL:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
+					if(!(msg.tool() instanceof Item))
+					{
+	                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
+		                return false;
+					}
+					if(msg.source().isMonster())
+					{
+	                    CMLib.commands().postSay(this,mob,"You can't sell anything.",true,false);
+		                return false;
+					}
+                }
+                return true;
+            case CMMsg.TYP_BID:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                {
                     CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
-	                return false;
                 }
                 return false;
             case CMMsg.TYP_BUY:
@@ -200,16 +258,8 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                     CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
                 }
                 return false;
-            case CMMsg.TYP_VALUE:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-	            {
-	                CMLib.commands().postSay(this,mob,"That's for the people to decide.",true,false);
-	                return false;
-	            }
-                return false;
             case CMMsg.TYP_VIEW:
-                super.executeMsg(myHost,msg);
-                break;
+				return CMLib.flags().aliveAwakeMobileUnbound(mob,true);
             default:
                 break;
             }

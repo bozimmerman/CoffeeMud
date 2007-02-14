@@ -561,6 +561,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case CMMsg.TYP_BUY:
+		case CMMsg.TYP_BID:
 		case CMMsg.TYP_SELL:
 			if((amRiding(msg.source()))
             &&(rideBasis()!=Rideable.RIDEABLE_TABLE)

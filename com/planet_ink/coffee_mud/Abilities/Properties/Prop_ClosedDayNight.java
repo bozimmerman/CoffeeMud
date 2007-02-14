@@ -141,6 +141,7 @@ public class Prop_ClosedDayNight extends Property
 		&&(Home!=null)
 		&&(!CMLib.flags().isSleeping(affected))
 		&&((msg.targetMinor()==CMMsg.TYP_BUY)
+		   ||(msg.targetMinor()==CMMsg.TYP_BID)
 		   ||(msg.targetMinor()==CMMsg.TYP_SELL)
 		   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
 		   ||(msg.targetMinor()==CMMsg.TYP_DEPOSIT)

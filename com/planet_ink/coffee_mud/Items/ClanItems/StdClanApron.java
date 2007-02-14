@@ -62,6 +62,7 @@ public class StdClanApron extends StdClanItem
             case CMMsg.TYP_VALUE:
             case CMMsg.TYP_SELL:
             case CMMsg.TYP_BUY:
+            case CMMsg.TYP_BID:
             case CMMsg.TYP_VIEW:
             case CMMsg.TYP_LIST:
                 if((clanID().length()>0)

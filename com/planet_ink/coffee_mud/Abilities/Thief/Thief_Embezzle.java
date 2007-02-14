@@ -73,6 +73,7 @@ public class Thief_Embezzle extends ThiefSkill
 		   &&(mobs.contains(msg.source())))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_BUY)
+			   ||(msg.targetMinor()==CMMsg.TYP_BID)
 			   ||(msg.targetMinor()==CMMsg.TYP_SELL)
 			   ||(msg.targetMinor()==CMMsg.TYP_LIST)
 			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
