@@ -108,58 +108,6 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     public int whatIsSold(){return ShopKeeper.DEAL_AUCTIONEER;}
     public void setWhatIsSold(int newSellCode){ }
     
-    public Vector getAuctions(Object ofLike)
-    {
-    	Vector auctions=new Vector();
-    	String house="SYSTEM_AUCTIONS_"+auctionHouse().toUpperCase().trim();
-	    Vector otherAuctions=CMLib.database().DBReadJournal(house);
-	    for(int o=0;o<otherAuctions.size();o++)
-	    {
-	        Vector auctionData=(Vector)otherAuctions.elementAt(o);
-            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
-	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
-            String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
-	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
-	        	continue;
-	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
-	        	continue;
-            AuctionData data=new AuctionData();
-            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
-            data.start=CMath.s_long(start);
-            data.tickDown=CMath.s_long(to);
-            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
-            Vector xmlV=CMLib.xml().parseAllXML(xml);
-            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
-            String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
-            double oldBid=CMath.s_double(bid);
-            data.bid=oldBid;
-            String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
-            if(highBidder.length()>0)
-                data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
-            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
-            double oldMaxBid=CMath.s_double(maxBid);
-            data.highBid=oldMaxBid;
-            String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
-            data.buyOutPrice=CMath.s_double(buyOutPrice);
-            data.auctioningM=CMLib.map().getLoadPlayer(from);
-            data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
-            for(int v=0;v<xmlV.size();v++)
-            {
-                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
-                if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
-                {
-                    data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);
-                    break;
-                }
-            }
-            if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
-                continue;
-            auctions.addElement(data);
-	    }
-	    return auctions;
-    }
-
-    
 
     public boolean tick(Tickable ticking, int tickID)
     {
@@ -178,49 +126,6 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         location().send(this,msg2);
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
-    {
-        MOB mob=msg.source();
-        if(msg.amITarget(this))
-        {
-            switch(msg.targetMinor())
-            {
-            case CMMsg.TYP_GIVE:
-            case CMMsg.TYP_SELL:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-                {
-                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
-                }
-                return;
-            case CMMsg.TYP_BUY:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-                {
-                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
-                }
-                return;
-            case CMMsg.TYP_VALUE:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-	            {
-	                CMLib.commands().postSay(this,mob,"That's for the people to decide.",true,false);
-	            }
-                return;
-            case CMMsg.TYP_VIEW:
-                super.executeMsg(myHost,msg);
-                return;
-            case CMMsg.TYP_LIST:
-            {
-                super.executeMsg(myHost,msg);
-    			if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-    			{
-    			}
-                return;
-            }
-            default:
-                break;
-            }
-        }
-        super.executeMsg(myHost,msg);
-    }
 
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
@@ -240,7 +145,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                 {
 					if(!(msg.tool() instanceof Item))
 					{
-	                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
+	                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
 		                return false;
 					}
 					if(msg.source().isMonster())
@@ -295,9 +200,14 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                         return false;
 					if(msg.value()<0)
 					{
-	                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to do business with you.",true,false);
+	                    CMLib.commands().postSay(this,mob,"I can't seem to do business with you.",true,false);
 	                    return false;
 					}
+                    if(msg.tool().envStats().level()>msg.source().envStats().level())
+                    {
+                        CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
+                        return false;
+                    }
                 }
                 return false;
             case CMMsg.TYP_BUY:
@@ -307,7 +217,12 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                         return false;
                     if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
-                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
+                    if(msg.tool().envStats().level()>msg.source().envStats().level())
+                    {
+                        CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
+                        return false;
+                    }
+                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
                 }
                 return false;
             case CMMsg.TYP_VIEW:
@@ -322,5 +237,52 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             }
         }
         return super.okMessage(myHost,msg);
+    }
+    
+    public void executeMsg(Environmental myHost, CMMsg msg)
+    {
+        MOB mob=msg.source();
+        if(msg.amITarget(this))
+        {
+            switch(msg.targetMinor())
+            {
+            case CMMsg.TYP_GIVE:
+            case CMMsg.TYP_SELL:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                {
+                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
+                }
+                return;
+            case CMMsg.TYP_BUY:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                {
+                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
+                }
+                return;
+            case CMMsg.TYP_VALUE:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+	            {
+	                CMLib.commands().postSay(this,mob,"That's for the people to decide.",true,false);
+	            }
+                return;
+            case CMMsg.TYP_VIEW:
+				CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
+                return;
+            case CMMsg.TYP_LIST:
+            {
+                super.executeMsg(myHost,msg);
+    			if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+    			{
+					String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
+                    String s=CMLib.coffeeShops().getAuctionInventory(this,mob,this,forMask);
+					if(s.length()>0) mob.tell(s);
+    			}
+                return;
+            }
+            default:
+                break;
+            }
+        }
+        super.executeMsg(myHost,msg);
     }
 }

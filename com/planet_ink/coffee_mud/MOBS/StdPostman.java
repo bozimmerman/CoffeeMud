@@ -622,7 +622,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                             }
                         }
                         else
-                            CMLib.commands().postSay(this,mob,"Ugh, I can't seem to deliver "+msg.tool().name()+".",true,false);
+                            CMLib.commands().postSay(this,mob,"I can't seem to deliver "+msg.tool().name()+".",true,false);
                     }
                 }
                 return;

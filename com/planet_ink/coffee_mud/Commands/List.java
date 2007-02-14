@@ -1352,6 +1352,7 @@ public class List extends StdCommand
 	{
 		Vector V=new Vector();
         commands.removeElementAt(0);
+		String forWhat=null;
 		if(commands.size()==0)
 		{
 			if(getAnyCode(mob)>=0)
@@ -1363,6 +1364,17 @@ public class List extends StdCommand
 		}
 		else
 		{
+			Vector origCommands=(Vector)commands.clone();
+			for(int c=commands.size()-2;c>=0;c--)
+			{
+				if(((String)commands.elementAt(c)).equalsIgnoreCase("for"))
+				{
+					forWhat=CMParms.combine(commands,c+1);
+					for(int c1=commands.size()-1;c1>=c;c1--)
+						commands.removeElementAt(c1);
+					break;
+				}
+			}
             String what=CMParms.combine(commands,0);
             Vector V2=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
             Environmental shopkeeper=CMLib.english().fetchEnvironmental(V2,what,false);
@@ -1377,7 +1389,7 @@ public class List extends StdCommand
 			else
 			if(getAnyCode(mob)>=0)
 			{
-				archonlist(mob,commands);
+				archonlist(mob,origCommands);
 				return false;
 			}
 		}
@@ -1390,12 +1402,14 @@ public class List extends StdCommand
 		{
 			Environmental shopkeeper=(Environmental)V.elementAt(i);
             ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-            String str="<S-NAME> review(s) <T-YOUPOSS> inventory.";
+            String str="<S-NAME> review(s) <T-YOUPOSS> inventory";
             if(SHOP instanceof Banker)
-                str="<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>.";
+                str="<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>";
             else
             if(SHOP instanceof PostOffice)
-                str="<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>.";
+                str="<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>";
+            if(forWhat!=null)str+=" for '"+forWhat+"'";
+            str+=".";
 			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,str);
 			if(!mob.location().okMessage(mob,newMsg))
 				return false;

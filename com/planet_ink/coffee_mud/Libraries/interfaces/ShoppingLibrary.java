@@ -43,7 +43,7 @@ public interface ShoppingLibrary extends CMLibrary
     public double getSalesTax(Room homeRoom, MOB seller);
     public boolean standardSellEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
     public boolean standardBuyEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, boolean buyNotView);
-    public String getListInventory(MOB seller,  MOB buyer, Vector inventory, int limit, ShopKeeper shop);
+    public String getListInventory(MOB seller,  MOB buyer, Vector inventory, int limit, ShopKeeper shop, String mask);
     public String findInnRoom(InnKey key, String addThis, Room R);
     public MOB parseBuyingFor(MOB buyer, String message);
     public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
@@ -57,4 +57,6 @@ public interface ShoppingLibrary extends CMLibrary
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
 	public String[] bid(MOB mob, String newBid, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces);
 	public void returnMoney(MOB to, String currency, double amt);
+    public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
+    public String getListForMask(String targetMessage);
 }

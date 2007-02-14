@@ -195,7 +195,6 @@ public class Auction extends Channel implements Tickable
 							((Item)liveData.auctioningI).unWear();
                             Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
 							winnerM.location().bringItemHere((Item)liveData.auctioningI,Item.REFUSE_PLAYER_DROP,false);
-							Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
 							double houseCut=Math.floor(liveData.bid*aRates.liveCutPct);
 							double finalAmount=liveData.bid-houseCut;
 							CMLib.coffeeShops().returnMoney(winnerM,liveData.currency,liveData.highBid-liveData.bid);

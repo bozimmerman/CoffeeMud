@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer.AuctionData;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -164,8 +165,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public double rawSpecificGoldPrice(Environmental product, 
-                                        int whatISell, 
-                                        double numberOfThem)
+                                       int whatISell, 
+                                       double numberOfThem)
     {
         double price=0.0;
         if(product instanceof Item)
@@ -649,16 +650,122 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         CMLib.commands().postSay(seller,buyer,"I don't have that in stock.  Ask for my LIST.",true,false);
         return false;
     }
+
+    public Vector getAuctions(Object ofLike, String auctionHouse)
+    {
+    	Vector auctions=new Vector();
+    	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
+	    Vector otherAuctions=CMLib.database().DBReadJournal(house);
+	    for(int o=0;o<otherAuctions.size();o++)
+	    {
+	        Vector auctionData=(Vector)otherAuctions.elementAt(o);
+            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
+	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
+            String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
+	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
+	        	continue;
+	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
+	        	continue;
+            AuctionData data=new AuctionData();
+            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
+            data.start=CMath.s_long(start);
+            data.tickDown=CMath.s_long(to);
+            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
+            Vector xmlV=CMLib.xml().parseAllXML(xml);
+            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
+            String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
+            double oldBid=CMath.s_double(bid);
+            data.bid=oldBid;
+            String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
+            if(highBidder.length()>0)
+                data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
+            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
+            double oldMaxBid=CMath.s_double(maxBid);
+            data.highBid=oldMaxBid;
+            String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
+            data.buyOutPrice=CMath.s_double(buyOutPrice);
+            data.auctioningM=CMLib.map().getLoadPlayer(from);
+            data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
+            for(int v=0;v<xmlV.size();v++)
+            {
+                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
+                if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
+                {
+                    data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);
+                    break;
+                }
+            }
+            if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
+                continue;
+            auctions.addElement(data);
+	    }
+	    return auctions;
+    }
     
+    public String getListForMask(String targetMessage)
+    {
+    	if(targetMessage==null) return null;
+		int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
+		if(x>0)
+		{
+			int y=targetMessage.lastIndexOf("'");
+			if(y>x)
+				return targetMessage.substring(x+5,y);
+		}
+		return null;
+    }
     
+    public String getAuctionInventory(MOB seller,
+    								  MOB buyer,
+    								  Auctioneer auction,
+    								  String mask)
+    {
+        StringBuffer str=new StringBuffer("");
+        str.append("^x["+CMStrings.padRight("Bid",6)+"] "+CMStrings.padRight("Buy",6)+" "+CMStrings.padRight("Days",4)+" Item^.^N\n\r");
+        Vector auctions=getAuctions(null,auction.auctionHouse());
+        for(int v=0;v<auctions.size();v++)
+        {
+        	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(v);
+	        if(shownInInventory(data.auctioningI,buyer))
+	        {
+	        	if((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
+	        	{
+		            Area area=CMLib.map().getStartArea(seller);
+		            if(area==null) area=CMLib.map().getStartArea(buyer);
+		        	str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
+		        	if(data.buyOutPrice<=0.0)
+			        	str.append(CMStrings.padRight("-",6)+" ");
+		        	else
+			        	str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6)+" ");
+		        	long days=data.tickDown-System.currentTimeMillis();
+		        	days=Math.round(Math.floor(CMath.div(CMath.div(days,Tickable.TIME_MILIS_PER_MUDHOUR),area.getTimeObj().getHoursInDay())));
+		        	str.append(CMStrings.padRight(""+days,4)+" ");
+		        	str.append(data.auctioningI.name()+"\n\r");
+	        	}
+	        }
+        }
+        return "\n\r"+str.toString();
+    }
+
     public String getListInventory(MOB seller, 
-                                          MOB buyer, 
-                                          Vector inventory,
-                                          int limit,
-                                          ShopKeeper shop)
+                                   MOB buyer, 
+                                   Vector rawInventory,
+                                   int limit,
+                                   ShopKeeper shop,
+                                   String mask)
     {
         StringBuffer str=new StringBuffer("");
         int csize=0;
+        Vector inventory=new Vector();
+        Environmental E=null;
+        for(int i=0;i<rawInventory.size();i++)
+        {
+            E=(Environmental)inventory.elementAt(i);
+            if(shownInInventory(E,buyer)
+            &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
+            	inventory.addElement(E);
+        }
+        
         if(inventory.size()>0)
         {
             int totalCols=((shop.whatIsSold()==ShopKeeper.DEAL_LANDSELLER)
@@ -668,24 +775,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             int totalWidth=60/totalCols;
             String showPrice=null;
             ShopKeeper.ShopPrice price=null;
-            Environmental E=null;
             for(int i=0;i<inventory.size();i++)
             {
                 E=(Environmental)inventory.elementAt(i);
-                if(shownInInventory(E,buyer))
+                price=sellingPrice(seller,buyer,E,shop,true);
+                if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
+                    csize=(""+price.experiencePrice).length()-2;
+                else
+                if((price.questPointPrice>0)&&(((""+price.questPointPrice).length()+2)>(4+csize)))
+                    csize=(""+price.questPointPrice).length()-2;
+                else
                 {
-                    price=sellingPrice(seller,buyer,E,shop,true);
-                    if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
-                        csize=(""+price.experiencePrice).length()-2;
-                    else
-                    if((price.questPointPrice>0)&&(((""+price.questPointPrice).length()+2)>(4+csize)))
-                        csize=(""+price.questPointPrice).length()-2;
-                    else
-                    {
-                        showPrice=CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice);
-                        if(showPrice.length()>(4+csize))
-                            csize=showPrice.length()-4;
-                    }
+                    showPrice=CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice);
+                    if(showPrice.length()>(4+csize))
+                        csize=showPrice.length()-4;
                 }
             }
 
@@ -697,28 +800,24 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             for(int i=0;i<inventory.size();i++)
             {
                 E=(Environmental)inventory.elementAt(i);
-
-                if(shownInInventory(E,buyer))
+                price=sellingPrice(seller,buyer,E,shop,true);
+                col=null;
+                if(price.questPointPrice>0)
+                    col=CMStrings.padRight("["+price.questPointPrice+"qp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                else
+                if(price.experiencePrice>0)
+                    col=CMStrings.padRight("["+price.experiencePrice+"xp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                else
+                    col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                if((++colNum)>totalCols)
                 {
-                    price=sellingPrice(seller,buyer,E,shop,true);
-                    col=null;
-                    if(price.questPointPrice>0)
-                        col=CMStrings.padRight("["+price.questPointPrice+"qp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
-                    else
-                    if(price.experiencePrice>0)
-                        col=CMStrings.padRight("["+price.experiencePrice+"xp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
-                    else
-                        col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
-                    if((++colNum)>totalCols)
-                    {
-                        str.append("\n\r");
-                        rowNum++;
-                        if((limit>0)&&(rowNum>limit))
-                            break;
-                        colNum=1;
-                    }
-                    str.append(col);
+                    str.append("\n\r");
+                    rowNum++;
+                    if((limit>0)&&(rowNum>limit))
+                        break;
+                    colNum=1;
                 }
+                str.append(col);
             }
         }
         if(str.length()==0)
@@ -894,9 +993,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public boolean purchaseItems(Item baseProduct,
-                                        Vector products,
-                                        MOB seller,
-                                        MOB mobFor)
+                                 Vector products,
+                                 MOB seller,
+                                 MOB mobFor)
     {
         if((seller==null)||(seller.location()==null)||(mobFor==null))
             return false;
@@ -962,9 +1061,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
     
     public void purchaseAbility(Ability A, 
-                                       MOB seller,
-                                       ShopKeeper shop,
-                                       MOB mobFor)
+                                MOB seller,
+                                ShopKeeper shop,
+                                MOB mobFor)
     {
         if((seller==null)||(seller.location()==null)||(A==null)||(shop==null)||(mobFor==null))
             return ;

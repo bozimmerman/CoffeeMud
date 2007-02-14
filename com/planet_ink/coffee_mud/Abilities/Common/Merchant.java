@@ -367,7 +367,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				super.executeMsg(myHost,msg);
                 Vector inventory=getShop().getStoreInventory();
-                String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this);
+				String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
+                String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this,forMask);
                 if(s.length()>0)
                     mob.tell(s);
                 break;
