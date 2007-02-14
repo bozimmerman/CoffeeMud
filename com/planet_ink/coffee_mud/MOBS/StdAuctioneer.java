@@ -249,7 +249,11 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             case CMMsg.TYP_BID:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
+					if(msg.value()<0)
+					{
+	                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to do business with you.",true,false);
+	                    return false;
+					}
                 }
                 return false;
             case CMMsg.TYP_BUY:

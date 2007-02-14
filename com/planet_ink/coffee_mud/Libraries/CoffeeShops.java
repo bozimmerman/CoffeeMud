@@ -1336,4 +1336,103 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return false;
     }
 
+	public void returnMoney(MOB to, String currency, double amt)
+	{
+		if(amt>0)
+			CMLib.beanCounter().giveSomeoneMoney(to, currency, amt);
+		else
+			CMLib.beanCounter().subtractMoney(to, currency,-amt);
+		if(amt!=0)
+			if(!CMLib.flags().isInTheGame(to,true))
+				CMLib.database().DBUpdatePlayerItems(to);
+	}
+	
+	
+	public String[] bid(MOB mob, String newBid, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces)
+	{
+		double b=0;
+		String bwords="0";
+		String myCurrency=CMLib.beanCounter().getCurrency(mob);
+	    if(newBid.length()>0)
+	    {
+		    myCurrency=CMLib.english().numPossibleGoldCurrency(mob,newBid);
+		    if(myCurrency!=null)
+		    {
+			    double denomination=CMLib.english().numPossibleGoldDenomination(null,auctionData.currency,newBid);
+			    long num=CMLib.english().numPossibleGold(null,newBid);
+			    b=CMath.mul(denomination,num);
+			    bwords=CMLib.beanCounter().getDenominationName(myCurrency,denomination,num);
+		    }
+		    else
+		        myCurrency=CMLib.beanCounter().getCurrency(mob);
+	    }
+		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+		if(bidWords.length()==0) bidWords="0";
+		String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
+		if(newBid.length()==0)
+			return new String[]{"Up for live auction: "+I.name()+".  The current bid is "+bidWords+".",null};
+
+		if(!myCurrency.equals(auctionData.currency))
+		    return new String[]{"This live auction is being bid in "+currencyName+" only.",null};
+		
+		if(b>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.currency))
+			return new String[]{"You don't have enough "+currencyName+" on hand to cover that bid.",null};
+
+        if((b<auctionData.bid)||(b==0))
+        {
+            return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.bid>0)?" The current high bid is "+bidWords+".":""),null};
+        }
+        else
+		if((b>auctionData.highBid)||((b>auctionData.bid)&&(auctionData.highBid==0)))
+		{
+            MOB oldHighBider=auctionData.highBidderM;
+            if(auctionData.highBidderM!=null)
+                returnMoney(auctionData.highBidderM,auctionData.currency,auctionData.highBid);
+			auctionData.highBidderM=mob;
+			if(auctionData.highBid<=0.0)
+            {
+                if(auctionData.bid>0)
+                    auctionData.highBid=auctionData.bid;
+                else
+                    auctionData.highBid=0.0;
+            }
+			auctionData.bid=auctionData.highBid+1.0;
+			auctionData.highBid=b;
+            returnMoney(auctionData.highBidderM,auctionData.currency,-b);
+			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+			if((oldHighBider!=null)&&(oldHighBider==mob))
+				return new String[]{"You have submitted a new bid for "+I.name()+".",null};
+			else
+			if((oldHighBider!=null)&&(oldHighBider!=mob))
+				return new String[]{"You have the high bid for "+I.name()+".","You have been outbid for "+I.name()+"."};
+			else
+				return new String[]{"You have submitted a bid for "+I.name()+".",null};
+		}
+		else
+		if((b==auctionData.bid)&&(auctionData.highBidderM!=null))
+		{
+			return new String[]{"You must bid higher than "+bidWords+" to have your bid accepted.",null};
+		}
+		else
+		if((b==auctionData.highBid)&&(auctionData.highBidderM!=null))
+		{
+			if((auctionData.highBidderM!=null)&&(auctionData.highBidderM!=mob))
+			{
+				auctionData.bid=b;
+				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+				auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+				return new String[]{"You have been outbid by proxy for "+I.name()+".","Your high bid for "+I.name()+" has been reached."};
+			}
+		}
+		else
+		{
+			auctionData.bid=b;
+			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+			return new String[]{"You have been outbid by proxy for "+I.name()+".",null};
+		}
+		return null;
+	}
+
 }
