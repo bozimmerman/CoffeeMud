@@ -40,19 +40,12 @@ public interface Auctioneer extends ShopKeeper
 		public String        currency="";
 		public double        highBid=Double.MIN_VALUE;
 		public double        bid=Double.MIN_VALUE;
+        public double        buyOutPrice=0.0;
 		public int           state=-1;
 		public long          tickDown=0;
 		public long          start=0;
 		public String		 auctionKey="";
 	}
-	public static final int INIRATE_LIVELIST=0;
-	public static final int INIRATE_TIMELIST=1;
-	public static final int INIRATE_TIMEPCTD=2;
-	public static final int INIRATE_LIVECUT=3;
-	public static final int INIRATE_TIMECUT=4;
-	public static final int INIRATE_MAXDAYS=5;
-	public static final int INIRATE_MINDAYS=6;
-	public static final int INIRATE_NUM=7;
 
 	public static final int STATE_START=0;
 	public static final int STATE_RUNOUT=1;
@@ -84,4 +77,41 @@ public interface Auctioneer extends ShopKeeper
 
     public int minTimedAuctionDays();
     public void setMinTimedAuctionDays(int d);
+    
+    public static class AuctionRates
+    {
+        public double liveListPrice=0.0;
+        public double timeListPrice=0.0;
+        public double timeListPct=0.0;
+        public double liveCutPct=0.0;
+        public double timeCutPct=0.0;
+        public int maxDays=Integer.MAX_VALUE;
+        public int minDays=0;
+        public AuctionRates()
+        {
+            Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
+            while(ratesV.size()<6)ratesV.addElement("0");
+            liveListPrice=CMath.s_double((String)ratesV.elementAt(0));
+            timeListPrice=CMath.s_double((String)ratesV.elementAt(1));
+            timeListPct=CMath.s_pct((String)ratesV.elementAt(2));
+            liveCutPct=CMath.s_pct((String)ratesV.elementAt(3));
+            timeCutPct=CMath.s_pct((String)ratesV.elementAt(4));
+            maxDays=CMath.s_int((String)ratesV.elementAt(5));
+            minDays=CMath.s_int((String)ratesV.elementAt(6));
+            if(minDays>maxDays) minDays=maxDays; 
+        }
+        public AuctionRates(Auctioneer A)
+        {
+            if(A==null) return;
+            AuctionRates base=new AuctionRates();
+            liveListPrice=A.liveListingPrice()<0.0?base.liveListPrice:A.liveListingPrice();
+            timeListPrice=A.timedListingPrice()<0.0?base.timeListPrice:A.timedListingPrice();
+            timeListPct=A.timedListingPct()<0.0?base.timeListPct:A.timedListingPct();
+            liveCutPct=A.liveFinalCutPct()<0.0?base.liveCutPct:A.liveFinalCutPct();
+            timeCutPct=A.timedFinalCutPct()<0.0?base.timeCutPct:A.timedFinalCutPct();
+            maxDays=A.maxTimedAuctionDays()<0?base.maxDays:A.maxTimedAuctionDays();
+            minDays=A.minTimedAuctionDays()<0?base.minDays:A.minTimedAuctionDays();
+            if(minDays>maxDays) minDays=maxDays; 
+        }
+    }
 }

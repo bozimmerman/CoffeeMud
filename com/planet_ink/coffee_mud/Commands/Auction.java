@@ -58,14 +58,6 @@ public class Auction extends Channel implements Tickable
     protected static final int STATE_THREE=4;
     protected static final int STATE_CLOSED=5;
     
-    protected static final int RATE_LIVELIST=0;
-    protected static final int RATE_TIMELIST=1;
-    protected static final int RATE_TIMEPCTD=2;
-    protected static final int RATE_LIVECUT=3;
-    protected static final int RATE_TIMECUT=4;
-    protected static final int RATE_MAXDAYS=5;
-    protected static final int RATE_NUM=6;
-    
 	public long getTickStatus(){ return Tickable.STATUS_NOT;}
 
 	public void setLiveAuctionState(int code)
@@ -138,8 +130,8 @@ public class Auction extends Channel implements Tickable
                             }
                             else
                             {
-                                Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
-                                double houseCut=Math.floor(data.bid*CMath.s_double((String)ratesV.elementAt(RATE_TIMECUT)));
+                                Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
+                                double houseCut=Math.floor(data.bid*aRates.timeCutPct);
                                 double finalAmount=data.bid-houseCut;
                                 CMLib.coffeeShops().returnMoney(winnerM,data.currency,data.highBid-data.bid);
                                 CMLib.coffeeShops().returnMoney(auctioneerM,data.currency,finalAmount);
@@ -201,10 +193,10 @@ public class Auction extends Channel implements Tickable
 						if(liveData.auctioningI instanceof Item)
 						{
 							((Item)liveData.auctioningI).unWear();
+                            Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
 							winnerM.location().bringItemHere((Item)liveData.auctioningI,Item.REFUSE_PLAYER_DROP,false);
 							Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
-							while(ratesV.size()<RATE_NUM) ratesV.addElement("0");
-							double houseCut=Math.floor(liveData.bid*CMath.s_double((String)ratesV.elementAt(RATE_LIVECUT)));
+							double houseCut=Math.floor(liveData.bid*aRates.liveCutPct);
 							double finalAmount=liveData.bid-houseCut;
 							CMLib.coffeeShops().returnMoney(winnerM,liveData.currency,liveData.highBid-liveData.bid);
 							CMLib.coffeeShops().returnMoney(auctioneerM,liveData.currency,finalAmount);
@@ -442,9 +434,8 @@ public class Auction extends Channel implements Tickable
 				mob.tell(E.name()+" will have to be removed first.");
 				return false;
 			}
-			Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
-			while(ratesV.size()<RATE_NUM) ratesV.addElement("0");
-			double deposit=CMath.s_double((String)ratesV.elementAt(RATE_LIVELIST));
+            Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
+			double deposit=aRates.liveListPrice;
 			String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
 			
 			if(deposit>0.0)
@@ -743,9 +734,7 @@ public class Auction extends Channel implements Tickable
 				return false;
 			}
 			
-			Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
-			while(ratesV.size()<RATE_NUM) ratesV.addElement("0");
-			
+            Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
 			startingPrice=mob.session().prompt("Starting price: ("+startingPrice+"): ",startingPrice);
 			if((CMLib.english().numPossibleGold(mob,startingPrice)<=0)&&(!startingPrice.equals("0")))
 			{
@@ -756,7 +745,8 @@ public class Auction extends Channel implements Tickable
 			if(startPrice<0) startPrice=0;
 			
 			
-			int maxDays=CMath.s_int((String)ratesV.elementAt(RATE_MAXDAYS));
+			int maxDays=aRates.maxDays;
+            int minDays=aRates.minDays;
 			if(maxDays==0) maxDays=184;
 			String days=mob.session().prompt("Number of game-days to run the auction (max="+maxDays+"): ","5");
 			if((!CMath.isNumber(days))||(CMath.s_int(days)<=0))
@@ -769,8 +759,13 @@ public class Auction extends Channel implements Tickable
 				mob.tell("The maximum number of game-days you may run an auction is "+maxDays+".  Aborting.");
 				return false;
 			}
-			double deposit=CMath.s_double((String)ratesV.elementAt(RATE_TIMELIST));
-			deposit+=(CMath.s_pct((String)ratesV.elementAt(RATE_TIMEPCTD))*new Integer(CMath.mul(CMath.s_int(days),I.baseGoldValue())).doubleValue());
+            if((CMath.s_int(days)<minDays))
+            {
+                mob.tell("The minimum number of game-days you may run an auction is "+minDays+".  Aborting.");
+                return false;
+            }
+			double deposit=aRates.timeListPrice;
+			deposit+=(aRates.timeListPct*new Integer(CMath.mul(CMath.s_int(days),I.baseGoldValue())).doubleValue());
 			String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
 			
 			if((mob.isMonster())

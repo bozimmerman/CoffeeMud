@@ -108,7 +108,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     public int whatIsSold(){return ShopKeeper.DEAL_AUCTIONEER;}
     public void setWhatIsSold(int newSellCode){ }
     
-    public Vector getAuctions(MOB forMe, String ofKey)
+    public Vector getAuctions(Object ofLike)
     {
     	Vector auctions=new Vector();
     	String house="SYSTEM_AUCTIONS_"+auctionHouse().toUpperCase().trim();
@@ -119,9 +119,9 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
 	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
             String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
-	        if((forMe!=null)&&(!forMe.Name().equals(to)))
+	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
 	        	continue;
-	        if((ofKey!=null)&&(!ofKey.equals(key)))
+	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
 	        	continue;
             AuctionData data=new AuctionData();
             String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
@@ -139,6 +139,8 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
             double oldMaxBid=CMath.s_double(maxBid);
             data.highBid=oldMaxBid;
+            String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
+            data.buyOutPrice=CMath.s_double(buyOutPrice);
             data.auctioningM=CMLib.map().getLoadPlayer(from);
             data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
             for(int v=0;v<xmlV.size();v++)
@@ -150,12 +152,14 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                     break;
                 }
             }
+            if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
+                continue;
             auctions.addElement(data);
 	    }
 	    return auctions;
     }
 
-
+    
 
     public boolean tick(Tickable ticking, int tickID)
     {
@@ -244,11 +248,51 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 	                    CMLib.commands().postSay(this,mob,"You can't sell anything.",true,false);
 		                return false;
 					}
+                    Item I=(Item)msg.tool();
+                    if((I instanceof Container)&&(((Container)I).getContents().size()>0))
+                    {
+                        CMLib.commands().postSay(this,mob,I.name()+" will have to be emptied first.",true,false);
+                        return false;
+                    }
+                    if(!(I.amWearingAt(Item.IN_INVENTORY)))
+                    {
+                        CMLib.commands().postSay(this,mob,I.name()+" will have to be removed first.",true,false);
+                        return false;
+                    }
+                    AuctionRates aRates=new AuctionRates(this);
+                    CMLib.commands().postSay(this,mob,"Ok, so how many local days will your auction run for ("+aRates.minDays+"-"+aRates.maxDays+")?",true,false);
+                    int days=0;
+                    try{days=CMath.s_int(mob.session().prompt(":","",10000));}catch(Exception e){return false;}
+                    if(days==0) return false;
+                    if(days<aRates.minDays)
+                    {
+                        CMLib.commands().postSay(this,mob,"Minimum number of local days on an auction is "+aRates.minDays+".",true,false);
+                        return false;
+                    }
+                    if(days>aRates.maxDays)
+                    {
+                        CMLib.commands().postSay(this,mob,"Maximum number of local days on an auction is "+aRates.maxDays+".",true,false);
+                        return false;
+                    }
+                    double deposit=aRates.timeListPrice;
+                    deposit+=(aRates.timeListPct*new Integer(CMath.mul(days,I.baseGoldValue())).doubleValue());
+                    String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
+                    if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
+                    {
+                        CMLib.commands().postSay(this,mob,"You don't have enough to cover the listing fee of "+depositAmt+".  Sell a cheaper item, use fewer days, or come back later.",true,false);
+                        return false;
+                    }
+                    CMLib.commands().postSay(this,mob,"Auctioning "+I.name()+" will cost a listing fee of "+depositAmt+", proceed?",true,false);
+                    try{if(!mob.session().confirm("(Y/N):","Y",10000)) return false;}catch(Exception e){return false;}
                 }
                 return true;
             case CMMsg.TYP_BID:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                        return false;
+                    if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
+                        return false;
 					if(msg.value()<0)
 					{
 	                    CMLib.commands().postSay(this,mob,"Ugh, I can't seem to do business with you.",true,false);
@@ -259,11 +303,20 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             case CMMsg.TYP_BUY:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                        return false;
+                    if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
+                        return false;
                     CMLib.commands().postSay(this,mob,"Ugh, I can't seem to auction "+msg.tool().name()+".",true,false);
                 }
                 return false;
             case CMMsg.TYP_VIEW:
-				return CMLib.flags().aliveAwakeMobileUnbound(mob,true);
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                {
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                        return false;
+                }
+                return false;
             default:
                 break;
             }
