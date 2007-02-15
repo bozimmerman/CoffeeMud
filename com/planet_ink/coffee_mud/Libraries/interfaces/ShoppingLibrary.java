@@ -59,4 +59,6 @@ public interface ShoppingLibrary extends CMLibrary
 	public void returnMoney(MOB to, String currency, double amt);
     public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
     public String getListForMask(String targetMessage);
+    public Vector getAuctions(Object ofLike, String auctionHouse);
+	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse);
 }

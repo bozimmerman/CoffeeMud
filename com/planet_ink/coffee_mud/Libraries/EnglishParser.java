@@ -635,10 +635,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-    public String getContextName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
-    public String getContextName(Vector list, Environmental E)
+    public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(CMParms.makeVector(list),E);}
+    public int getContextNumber(Vector list, Environmental E)
     {
-        if(list==null) return E.name();
+        if(list==null) return 0;
         Vector V=(Vector)list.clone();
         int context=0;
         for(int v=0;v<V.size();v++)
@@ -646,17 +646,22 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             ||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
             {
                 if(V.elementAt(v)==E)
-                {
-                    if(context==0)
-                        return E.name();
-                    return E.name()+"."+context;
-                }
+                    return context;
                 if((!(V.elementAt(v) instanceof Item))
                 ||(!(E instanceof Item))
                 ||(((Item)E).container()==((Item)V.elementAt(v)).container()))
                     context++;
             }
-        return null;
+        return -1;
+    }
+    public String getContextName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
+    public String getContextName(Vector list, Environmental E)
+    {
+        if(list==null) return E.name();
+        int number=getContextNumber(list,E);
+        if(number<0) return null;
+        if(number==0) return E.name();
+        return E.name()+"."+number;
     }
     
 	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)

@@ -61,7 +61,14 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         recoverEnvStats();
         recoverCharStats();
     }
-
+    
+    public AuctionData lastMsgData=null;
+    
+    public CoffeeShop getShop(){
+    	shop=(CoffeeShop)CMClass.getCommon("AuctionCoffeeShop");
+    	shop.addStoreInventory(null,this);
+    	return shop;
+    }
 
     public String auctionHouse(){return text();}
     public void setAuctionHouse(String name){setMiscText(name);}
@@ -181,6 +188,13 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                     }
                     CMLib.commands().postSay(this,mob,"Auctioning "+I.name()+" will cost a listing fee of "+depositAmt+", proceed?",true,false);
                     try{if(!mob.session().confirm("(Y/N):","Y",10000)) return false;}catch(Exception e){return false;}
+                    lastMsgData=new AuctionData();
+                    lastMsgData.auctioningI=(Item)msg.tool();
+                    lastMsgData.auctioningM=msg.source();
+                    lastMsgData.currency=CMLib.beanCounter().getCurrency(msg.source());
+                    Area area=CMLib.map().getStartArea(this);
+                    if(area==null) area=CMLib.map().getStartArea(msg.source());
+                    lastMsgData.tickDown=System.currentTimeMillis()+(area.getTimeObj().getHoursInDay()*Tickable.TIME_MILIS_PER_MUDHOUR);
                 }
                 return true;
             case CMMsg.TYP_BID:
@@ -200,6 +214,23 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                         CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
                         return false;
                     }
+					String itemName=msg.tool().name();
+					if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
+						itemName+="."+((Item)msg.tool()).expirationDate();
+					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+					if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+					if(data==null)
+					{
+		                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
+		                return false;
+					}
+                    double bid=CMath.div(msg.value(),1000);
+					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<bid)
+					{
+						String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
+		                CMLib.commands().postSay(this,mob,"You don't have enough "+currencyName+" on hand to cover your bid.",true,false);
+		                return false;
+					}
                 }
                 return false;
             case CMMsg.TYP_BUY:
@@ -214,9 +245,31 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                         CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
                         return false;
                     }
-                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
+					String itemName=msg.tool().name();
+					if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
+						itemName+="."+((Item)msg.tool()).expirationDate();
+					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+					if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+					if(data==null)
+					{
+		                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
+		                return false;
+					}
+					else
+					if(data.buyOutPrice<=0.0)
+					{
+		                CMLib.commands().postSay(this,mob,"You'll have to BID on that.  BUY is not available for that particular item.",true,false);
+		                return false;
+					}
+					else
+					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<data.buyOutPrice)
+					{
+						String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
+		                CMLib.commands().postSay(this,mob,"You don't have enough "+currencyName+" on hand to buy that.",true,false);
+		                return false;
+					}
                 }
-                return false;
+                return true;
             case CMMsg.TYP_VIEW:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
@@ -242,23 +295,62 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
             case CMMsg.TYP_SELL:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
+					AuctionData thisData=lastMsgData;
+					if((thisData==null)||(thisData.auctioningM!=msg.source()))
+					{
+						lastMsgData=null;
+	                    CMLib.commands().postSay(this,mob,"I'm confused. Please try to SELL again.",true,false);
+					}
+					
                 }
                 return;
             case CMMsg.TYP_BUY:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
+					if(msg.tool() instanceof Item)
+					{
+						String itemName=msg.tool().name();
+						if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
+							itemName+="."+((Item)msg.tool()).expirationDate();
+						AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+						if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+						if(data==null)
+			                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
+						else
+						{
+							
+						}
+					}
+					else
+	                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
                 }
                 return;
             case CMMsg.TYP_VALUE:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 	            {
-	                CMLib.commands().postSay(this,mob,"That's for the people to decide.",true,false);
+	                CMLib.commands().postSay(this,mob,"That's for the people to decide.  Why don't you use the SELL command and see what you can get?",true,false);
+	                return;
 	            }
                 return;
             case CMMsg.TYP_VIEW:
-				CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
+				if(msg.tool() instanceof Item)
+				{
+					String itemName=msg.tool().name();
+					if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
+						itemName+="."+((Item)msg.tool()).expirationDate();
+					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+					if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+					if(data==null)
+		                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
+					else
+					{
+						String price=CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid);
+						String buyOut=(data.buyOutPrice<=0.0)?null:CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice);
+						StringBuffer str=new StringBuffer(CMLib.coffeeShops().getViewDescription(msg.tool())+"  The current bid on "+msg.tool().name()+" is "+price+". Use the BID command to place your own bid.  ");
+						if(buyOut!=null) str.append("You may also buy this item immediately for "+buyOut+" by using the BUY command.");
+		                CMLib.commands().postSay(this,mob,str.toString(),true,false);
+					}
+				}
                 return;
             case CMMsg.TYP_LIST:
             {

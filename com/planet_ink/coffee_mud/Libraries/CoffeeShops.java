@@ -354,6 +354,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             val.absoluteGoldPrice=1.0;
         else
             val.absoluteGoldPrice=CMLib.beanCounter().abbreviatedRePrice(seller,val.absoluteGoldPrice);
+        
+        // the magical aura discount for miscmagic (potions, anything else.. MUST be baseEnvStats tho!
+        if((CMath.bset(buyer.baseEnvStats().disposition(),EnvStats.IS_BONUS))
+        &&(product instanceof MiscMagic)
+        &&(val.absoluteGoldPrice>2.0))
+        	val.absoluteGoldPrice/=2;
+        	
         return val;
     }
 
@@ -649,102 +656,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         CMLib.commands().postSay(seller,buyer,"I don't have that in stock.  Ask for my LIST.",true,false);
         return false;
-    }
-
-    public Vector getAuctions(Object ofLike, String auctionHouse)
-    {
-    	Vector auctions=new Vector();
-    	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-	    Vector otherAuctions=CMLib.database().DBReadJournal(house);
-	    for(int o=0;o<otherAuctions.size();o++)
-	    {
-	        Vector auctionData=(Vector)otherAuctions.elementAt(o);
-            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
-	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
-            String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
-	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
-	        	continue;
-	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
-	        	continue;
-            AuctionData data=new AuctionData();
-            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
-            data.start=CMath.s_long(start);
-            data.tickDown=CMath.s_long(to);
-            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
-            Vector xmlV=CMLib.xml().parseAllXML(xml);
-            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
-            String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
-            double oldBid=CMath.s_double(bid);
-            data.bid=oldBid;
-            String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
-            if(highBidder.length()>0)
-                data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
-            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
-            double oldMaxBid=CMath.s_double(maxBid);
-            data.highBid=oldMaxBid;
-            String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
-            data.buyOutPrice=CMath.s_double(buyOutPrice);
-            data.auctioningM=CMLib.map().getLoadPlayer(from);
-            data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
-            for(int v=0;v<xmlV.size();v++)
-            {
-                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
-                if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
-                {
-                    data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);
-                    break;
-                }
-            }
-            if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
-                continue;
-            auctions.addElement(data);
-	    }
-	    return auctions;
-    }
-    
-    public String getListForMask(String targetMessage)
-    {
-    	if(targetMessage==null) return null;
-		int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
-		if(x>0)
-		{
-			int y=targetMessage.lastIndexOf("'");
-			if(y>x)
-				return targetMessage.substring(x+5,y);
-		}
-		return null;
-    }
-    
-    public String getAuctionInventory(MOB seller,
-    								  MOB buyer,
-    								  Auctioneer auction,
-    								  String mask)
-    {
-        StringBuffer str=new StringBuffer("");
-        str.append("^x["+CMStrings.padRight("Bid",6)+"] "+CMStrings.padRight("Buy",6)+" "+CMStrings.padRight("Days",4)+" Item^.^N\n\r");
-        Vector auctions=getAuctions(null,auction.auctionHouse());
-        for(int v=0;v<auctions.size();v++)
-        {
-        	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(v);
-	        if(shownInInventory(data.auctioningI,buyer))
-	        {
-	        	if((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
-	        	{
-		            Area area=CMLib.map().getStartArea(seller);
-		            if(area==null) area=CMLib.map().getStartArea(buyer);
-		        	str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
-		        	if(data.buyOutPrice<=0.0)
-			        	str.append(CMStrings.padRight("-",6)+" ");
-		        	else
-			        	str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6)+" ");
-		        	long days=data.tickDown-System.currentTimeMillis();
-		        	days=Math.round(Math.floor(CMath.div(CMath.div(days,Tickable.TIME_MILIS_PER_MUDHOUR),area.getTimeObj().getHoursInDay())));
-		        	str.append(CMStrings.padRight(""+days,4)+" ");
-		        	str.append(data.auctioningI.name()+"\n\r");
-	        	}
-	        }
-        }
-        return "\n\r"+str.toString();
     }
 
     public String getListInventory(MOB seller, 
@@ -1534,4 +1445,114 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return null;
 	}
 
+	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse)
+	{
+		Vector V=getAuctions(null,auctionHouse);
+		Vector V2=new Vector();
+		for(int v=0;v<V.size();v++)
+			V2.addElement(((Auctioneer.AuctionData)V.elementAt(v)).auctioningI);
+		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
+		if(!(E instanceof Item)) E=CMLib.english().fetchEnvironmental(V2,named,false);
+		if(E!=null)
+		for(int v=0;v<V.size();v++)
+			if(((Auctioneer.AuctionData)V.elementAt(v)).auctioningI==E)
+				return (Auctioneer.AuctionData)V.elementAt(v);
+		return null;
+	}
+	
+    public Vector getAuctions(Object ofLike, String auctionHouse)
+    {
+    	Vector auctions=new Vector();
+    	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
+	    Vector otherAuctions=CMLib.database().DBReadJournal(house);
+	    for(int o=0;o<otherAuctions.size();o++)
+	    {
+	        Vector auctionData=(Vector)otherAuctions.elementAt(o);
+            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
+	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
+            String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
+	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
+	        	continue;
+	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
+	        	continue;
+            AuctionData data=new AuctionData();
+            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
+            data.start=CMath.s_long(start);
+            data.tickDown=CMath.s_long(to);
+            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
+            Vector xmlV=CMLib.xml().parseAllXML(xml);
+            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
+            String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
+            double oldBid=CMath.s_double(bid);
+            data.bid=oldBid;
+            String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
+            if(highBidder.length()>0)
+                data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
+            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
+            double oldMaxBid=CMath.s_double(maxBid);
+            data.highBid=oldMaxBid;
+            String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
+            data.buyOutPrice=CMath.s_double(buyOutPrice);
+            data.auctioningM=CMLib.map().getLoadPlayer(from);
+            data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
+            for(int v=0;v<xmlV.size();v++)
+            {
+                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
+                if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
+                {
+                    data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);
+                    break;
+                }
+            }
+            if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
+                continue;
+            auctions.addElement(data);
+	    }
+	    return auctions;
+    }
+    
+    public String getListForMask(String targetMessage)
+    {
+    	if(targetMessage==null) return null;
+		int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
+		if(x>0)
+		{
+			int y=targetMessage.lastIndexOf("'");
+			if(y>x)
+				return targetMessage.substring(x+5,y);
+		}
+		return null;
+    }
+    
+    public String getAuctionInventory(MOB seller,
+    								  MOB buyer,
+    								  Auctioneer auction,
+    								  String mask)
+    {
+        StringBuffer str=new StringBuffer("");
+        str.append("^x["+CMStrings.padRight("Bid",6)+"] "+CMStrings.padRight("Buy",6)+" "+CMStrings.padRight("Days",4)+" Item^.^N\n\r");
+        Vector auctions=getAuctions(null,auction.auctionHouse());
+        for(int v=0;v<auctions.size();v++)
+        {
+        	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(v);
+	        if(shownInInventory(data.auctioningI,buyer))
+	        {
+	        	if((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
+	        	{
+		            Area area=CMLib.map().getStartArea(seller);
+		            if(area==null) area=CMLib.map().getStartArea(buyer);
+		        	str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
+		        	if(data.buyOutPrice<=0.0)
+			        	str.append(CMStrings.padRight("-",6)+" ");
+		        	else
+			        	str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6)+" ");
+		        	long days=data.tickDown-System.currentTimeMillis();
+		        	days=Math.round(Math.floor(CMath.div(CMath.div(days,Tickable.TIME_MILIS_PER_MUDHOUR),area.getTimeObj().getHoursInDay())));
+		        	str.append(CMStrings.padRight(""+days,4)+" ");
+		        	str.append(data.auctioningI.name()+"\n\r");
+	        	}
+	        }
+        }
+        return "\n\r"+str.toString();
+    }
 }
