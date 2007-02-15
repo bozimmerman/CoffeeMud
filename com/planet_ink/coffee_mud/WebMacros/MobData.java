@@ -1319,10 +1319,10 @@ public class MobData extends StdWebMacro
                 str.append(old);
                 break;
             case 55: // live list
-                if((firstTime)&&(M instanceof Auctioneer))
-                    old=""+((Auctioneer)M).liveListingPrice();
-                if(CMath.s_double(old)<0.0) old="";
-                str.append(old);
+                //if((firstTime)&&(M instanceof Auctioneer))
+                //    old=""+((Auctioneer)M).liveListingPrice();
+                //if(CMath.s_double(old)<0.0) old="";
+                //str.append(old);
                 break;
             case 56: // timed list
                 if((firstTime)&&(M instanceof Auctioneer))
@@ -1338,9 +1338,9 @@ public class MobData extends StdWebMacro
                 str.append(old);
                 break;
             case 58: // live cut pct
-                if((firstTime)&&(M instanceof Auctioneer))
-                    old=""+(((Auctioneer)M).liveFinalCutPct()*100.0)+"%";
-                if(CMath.s_pct(old)<0.0) old="";
+                //if((firstTime)&&(M instanceof Auctioneer))
+                //    old=""+(((Auctioneer)M).liveFinalCutPct()*100.0)+"%";
+                //if(CMath.s_pct(old)<0.0) old="";
                 str.append(old);
                 break;
             case 59: // timed cut pct

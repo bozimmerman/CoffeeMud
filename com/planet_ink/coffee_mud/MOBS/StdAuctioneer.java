@@ -66,10 +66,6 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     public String auctionHouse(){return text();}
     public void setAuctionHouse(String name){setMiscText(name);}
     
-    protected double liveListingPrice=-1.0;
-    public double liveListingPrice(){return liveListingPrice;}
-    public void setLiveListingPrice(double d){liveListingPrice=d;}
-
     protected double timedListingPrice=-1.0;
     public double timedListingPrice(){return timedListingPrice;}
     public void setTimedListingPrice(double d){timedListingPrice=d;}
@@ -77,10 +73,6 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     protected double timedListingPct=-1.0;
     public double timedListingPct(){return timedListingPct;}
     public void setTimedListingPct(double d){timedListingPct=d;}
-
-    protected double liveFinalCutPct=-1.0;
-    public double liveFinalCutPct(){return liveFinalCutPct;}
-    public void setLiveFinalCutPct(double d){liveFinalCutPct=d;}
 
     protected double timedFinalCutPct=-1.0;
     public double timedFinalCutPct(){return timedFinalCutPct;}

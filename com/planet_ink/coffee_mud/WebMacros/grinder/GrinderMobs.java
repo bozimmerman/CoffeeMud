@@ -554,11 +554,11 @@ public class GrinderMobs
 	                    ((Auctioneer)M).setAuctionHouse(old);
 	                break;
 	            case 57: // live list
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
-							((Auctioneer)M).setLiveListingPrice(-1.0);
-						else
-							((Auctioneer)M).setLiveListingPrice(CMath.s_double(old));
+	                //if(M instanceof Auctioneer)
+	                //	if(old.length()==0)
+					//		((Auctioneer)M).setLiveListingPrice(-1.0);
+					//	else
+					//		((Auctioneer)M).setLiveListingPrice(CMath.s_double(old));
 	                break;
 	            case 58: // timed list
 	                if(M instanceof Auctioneer)
@@ -575,11 +575,11 @@ public class GrinderMobs
 							((Auctioneer)M).setTimedListingPct(CMath.s_pct(old));
 	                break;
 	            case 60: // live cut
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
-							((Auctioneer)M).setLiveFinalCutPct(-1.0);
-						else
-							((Auctioneer)M).setLiveFinalCutPct(CMath.s_pct(old));
+	                //if(M instanceof Auctioneer)
+	                //	if(old.length()==0)
+					//		((Auctioneer)M).setLiveFinalCutPct(-1.0);
+					//	else
+					//		((Auctioneer)M).setLiveFinalCutPct(CMath.s_pct(old));
 	                break;
 	            case 61: // timed cut
 	                if(M instanceof Auctioneer)

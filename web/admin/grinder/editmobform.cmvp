@@ -433,40 +433,29 @@
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=AUCCHAIN SIZE=50 VALUE="@MobData?AUCCHAIN@">
 			    </TD>
 			</TR>
-			<TR><TD COLSPAN=2 ALIGN=CENTER><FONT COLOR="WHITE"><B>Timed Auctions</B></FONT></TD></TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Listing Cost:</B></FONT></TD>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Listing Cost:</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=TIMELIST SIZE=7 VALUE="@MobData?TIMELIST@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) List Cost (% price/day):</B></FONT></TD>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>List Cost (% price/day):</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=TIMELISTPCT SIZE=7 VALUE="@MobData?TIMELISTPCT@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Final House Cut %:</B></FONT></TD>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Final House Cut %:</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=TIMECUT SIZE=7 VALUE="@MobData?TIMECUT@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Minimum mud-days:</B></FONT></TD>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Minimum mud-days:</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MINDAYS SIZE=7 VALUE="@MobData?MINDAYS@">
 			    </TD>
 			</TR>
 			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Timed) Maximum mud-days:</B></FONT></TD>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Maximum mud-days:</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MAXDAYS SIZE=7 VALUE="@MobData?MAXDAYS@">
-			    </TD>
-			</TR>
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Live) Listing Cost:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LIVELIST SIZE=7 VALUE="@MobData?LIVELIST@">
-			    </TD>
-			</TR>
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>(Live) Final House Cut %:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LIVECUT SIZE=7 VALUE="@MobData?LIVECUT@">
 			    </TD>
 			</TR>
 		@else@

@@ -57,17 +57,18 @@ public interface Auctioneer extends ShopKeeper
     public String auctionHouse();
     public void setAuctionHouse(String named);
 
-    public double liveListingPrice();
+    /*public double liveListingPrice();
     public void setLiveListingPrice(double d);
+
+    public double liveFinalCutPct();
+    public void setLiveFinalCutPct(double d);
+    */
 
     public double timedListingPrice();
     public void setTimedListingPrice(double d);
 
     public double timedListingPct();
     public void setTimedListingPct(double d);
-
-    public double liveFinalCutPct();
-    public void setLiveFinalCutPct(double d);
 
     public double timedFinalCutPct();
     public void setTimedFinalCutPct(double d);
@@ -104,10 +105,10 @@ public interface Auctioneer extends ShopKeeper
         {
             if(A==null) return;
             AuctionRates base=new AuctionRates();
-            liveListPrice=A.liveListingPrice()<0.0?base.liveListPrice:A.liveListingPrice();
+            liveListPrice=base.liveListPrice;
             timeListPrice=A.timedListingPrice()<0.0?base.timeListPrice:A.timedListingPrice();
             timeListPct=A.timedListingPct()<0.0?base.timeListPct:A.timedListingPct();
-            liveCutPct=A.liveFinalCutPct()<0.0?base.liveCutPct:A.liveFinalCutPct();
+            liveCutPct=base.liveCutPct;
             timeCutPct=A.timedFinalCutPct()<0.0?base.timeCutPct:A.timedFinalCutPct();
             maxDays=A.maxTimedAuctionDays()<0?base.maxDays:A.maxTimedAuctionDays();
             minDays=A.minTimedAuctionDays()<0?base.minDays:A.minTimedAuctionDays();

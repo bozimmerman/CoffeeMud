@@ -84,15 +84,13 @@ public class GenAuctioneer extends StdAuctioneer
         case 0: return ""+whatIsSold();
         case 1: return prejudiceFactors();
         case 2: return auctionHouse();
-        case 3: return ""+liveListingPrice();
-        case 4: return ""+timedListingPrice();
-        case 5: return ""+timedListingPct();
-        case 6: return ""+liveFinalCutPct();
-        case 7: return ""+timedFinalCutPct();
-        case 8: return ""+maxTimedAuctionDays();
-        case 9: return ""+minTimedAuctionDays();
-        case 10: return ignoreMask();
-        case 11: return CMParms.toStringList(itemPricingAdjustments());
+        case 3: return ""+timedListingPrice();
+        case 4: return ""+timedListingPct();
+        case 5: return ""+timedFinalCutPct();
+        case 6: return ""+maxTimedAuctionDays();
+        case 7: return ""+minTimedAuctionDays();
+        case 8: return ignoreMask();
+        case 9: return CMParms.toStringList(itemPricingAdjustments());
         }
         return "";
     }
@@ -106,15 +104,13 @@ public class GenAuctioneer extends StdAuctioneer
         case 0: setWhatIsSold(CMath.s_int(val)); break;
         case 1: setPrejudiceFactors(val); break;
         case 2: setAuctionHouse(val); break;
-        case 3: setLiveListingPrice(CMath.s_double(val)); break;
-        case 4: setTimedListingPrice(CMath.s_double(val)); break;
-        case 5: setTimedListingPct(CMath.s_double(val)); break;
-        case 6: setLiveFinalCutPct(CMath.s_double(val)); break;
-        case 7: setTimedFinalCutPct(CMath.s_double(val)); break;
-        case 8: setMaxTimedAuctionDays(CMath.s_int(val)); break;
-        case 9: setMinTimedAuctionDays(CMath.s_int(val)); break;
-        case 10: setIgnoreMask(val); break;
-        case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+        case 3: setTimedListingPrice(CMath.s_double(val)); break;
+        case 4: setTimedListingPct(CMath.s_double(val)); break;
+        case 5: setTimedFinalCutPct(CMath.s_double(val)); break;
+        case 6: setMaxTimedAuctionDays(CMath.s_int(val)); break;
+        case 7: setMinTimedAuctionDays(CMath.s_int(val)); break;
+        case 8: setIgnoreMask(val); break;
+        case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
         }
     }
     protected int getCodeNum(String code){

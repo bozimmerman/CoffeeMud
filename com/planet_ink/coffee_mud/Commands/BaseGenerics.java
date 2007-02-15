@@ -6538,10 +6538,10 @@ public class BaseGenerics extends StdCommand
             if(me instanceof Auctioneer)
             {
                 ((Auctioneer)me).setAuctionHouse(CMLib.english().prompt(mob,((Auctioneer)me).auctionHouse(),++showNumber,showFlag,"Auction house"));
-                ((Auctioneer)me).setLiveListingPrice(genAuctionPrompt(mob,((Auctioneer)me).liveListingPrice(),++showNumber,showFlag,"Flat fee for a live auction",false));
+                //((Auctioneer)me).setLiveListingPrice(genAuctionPrompt(mob,((Auctioneer)me).liveListingPrice(),++showNumber,showFlag,"Flat fee for a live auction",false));
                 ((Auctioneer)me).setTimedListingPrice(genAuctionPrompt(mob,((Auctioneer)me).timedListingPrice(),++showNumber,showFlag,"Flat fee for a timed auction",false));
                 ((Auctioneer)me).setTimedListingPct(genAuctionPrompt(mob,((Auctioneer)me).timedListingPct(),++showNumber,showFlag,"Listing Cut/%Pct for timed auctions",true));
-                ((Auctioneer)me).setLiveFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).liveFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for live auctions",true));
+                //((Auctioneer)me).setLiveFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).liveFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for live auctions",true));
                 ((Auctioneer)me).setTimedFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).timedFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for timed auctions",true));
                 ((Auctioneer)me).setMaxTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).maxTimedAuctionDays(),++showNumber,showFlag,"Maximum number of live-auction mud-days"));
                 ((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,"Minimum number of live-auction mud-days"));
