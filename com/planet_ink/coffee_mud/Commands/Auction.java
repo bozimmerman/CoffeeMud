@@ -38,7 +38,7 @@ public class Auction extends Channel implements Tickable
 	private String[] access={"AUCTION"};
 	public String[] getAccessWords(){return access;}
 	public String name(){return "Auction";}
-	
+	protected final static String MESSAGE_NOAUCTION(){return "There is not currently a live auction.  Use AUCTION UP syntax to add one, or visit an auctioneer for a long auction.";}
 	public String liveAuctionStatus()
     { 
         if(liveData.auctioningI!=null)
@@ -66,93 +66,8 @@ public class Auction extends Channel implements Tickable
 		liveData.tickDown=15000/Tickable.TIME_TICK;
 	}
 
-    public void initializeClass()
-    {
-        //CMLib.threads().startTickDown(this,Tickable.TICKID_TIMEAUCTION,(int)(Tickable.TIME_MILIS_PER_MUDHOUR/Tickable.TIME_TICK));
-        super.initializeClass();
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        if(tickID==Tickable.TICKID_TIMEAUCTION)
-        {
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
-            for(int o=0;o<otherAuctions.size();o++)
-            {
-                Vector auctionData=(Vector)otherAuctions.elementAt(o);
-                String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
-                long time=CMath.s_long(to);
-                if(System.currentTimeMillis()>time)
-                {
-                    Auctioneer.AuctionData data=new Auctioneer.AuctionData();
-                    String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
-                    String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
-                    String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
-                    data.start=CMath.s_long(start);
-                    String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
-                    //String subj=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-                    Vector xmlV=CMLib.xml().parseAllXML(xml);
-                    xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
-                    String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
-                    double oldBid=CMath.s_double(bid);
-                    data.bid=oldBid;
-                    String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
-                    if(highBidder.length()>0)
-                        data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
-                    String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
-                    double oldMaxBid=CMath.s_double(maxBid);
-                    data.highBid=oldMaxBid;
-                    MOB winnerM=data.highBidderM;
-                    MOB auctioneerM=CMLib.map().getLoadPlayer(from);
-                    data.currency=CMLib.beanCounter().getCurrency(auctioneerM);
-                    Item I=null;
-                    for(int v=0;v<xmlV.size();v++)
-                    {
-                        XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
-                        if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
-                        {
-                            I=CMLib.coffeeMaker().getItemFromXML(X.value);
-                            break;
-                        }
-                    }
-                    if(I==null)
-                        Log.errOut("Auction","Unable to process item XML for "+from);
-                    else
-                    if(auctioneerM!=null)
-                    {
-                        try{
-                            if(winnerM==null)
-                            {
-                                auctionNotify(auctioneerM,"Your auction for "+I.name()+" ended unsuccessfully.",I.Name());
-                                auctioneerM.giveItem(I);
-                                if(!CMLib.flags().isInTheGame(auctioneerM,true))
-                                    CMLib.database().DBUpdatePlayerItems(auctioneerM);
-                            }
-                            else
-                            {
-                                Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
-                                double houseCut=Math.floor(data.bid*aRates.timeCutPct);
-                                double finalAmount=data.bid-houseCut;
-                                CMLib.coffeeShops().returnMoney(winnerM,data.currency,data.highBid-data.bid);
-                                CMLib.coffeeShops().returnMoney(auctioneerM,data.currency,finalAmount);
-                                auctionNotify(auctioneerM,"Your auction for "+I.name()+" sold to "+winnerM.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,finalAmount)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)+".",I.Name());
-                                auctionNotify(winnerM,"You won the auction for "+I.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  The difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") has been returned to you along with the winning item.",I.Name());
-                                winnerM.giveItem(I);
-                                if(I instanceof LandTitle)
-                                {
-                                    CMMsg msg=CMClass.getMsg(auctioneerM,winnerM,I,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
-                                    data.auctioningI.executeMsg(winnerM,msg);
-                                }
-                                if(!CMLib.flags().isInTheGame(winnerM,true))
-                                    CMLib.database().DBUpdatePlayerItems(winnerM);
-                            }
-                        }catch(java.io.IOException ioe){}
-                    }
-                    CMLib.database().DBDeleteJournal(key);
-                }
-            }
-        }
-        else
 		if((tickID==Tickable.TICKID_LIVEAUCTION)&&((--liveData.tickDown)<=0))
 		{
             MOB auctioneerM=liveData.auctioningM;
@@ -284,41 +199,6 @@ public class Auction extends Channel implements Tickable
 		return true;
 	}
 	
-	public DVector getTimedAuctionNames(String by)
-	{
-        DVector keyAuctions=new DVector(2);
-		if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
-		{
-			if((by==null)||(by.equals(liveData.auctioningM.Name())))
-				keyAuctions.addElement("LIVE",liveData.auctioningI);
-		}
-        Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
-        for(int o=0;o<otherAuctions.size();o++)
-        {
-            Vector V=(Vector)otherAuctions.elementAt(o);
-            String from=(String)V.elementAt(DatabaseEngine.JOURNAL_FROM);
-            String xml=(String)V.elementAt(DatabaseEngine.JOURNAL_MSG);
-            if((by==null)||(by.equalsIgnoreCase(from)))
-            {
-                String key=(String)V.elementAt(DatabaseEngine.JOURNAL_KEY);
-                Item I=null;
-                Vector xmlV=CMLib.xml().parseAllXML(xml);
-                xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
-                for(int v=0;v<xmlV.size();v++)
-                {
-                	XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
-                	if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
-                	{
-                		I=CMLib.coffeeMaker().getItemFromXML(X.value);
-                		break;
-                	}
-                }
-            	keyAuctions.addElement(key,I);
-            }
-        }
-        return keyAuctions;
-	}
-	
 	public void auctionNotify(MOB M, String resp, String regardingItem)
 	throws java.io.IOException
 	{
@@ -367,42 +247,19 @@ public class Auction extends Channel implements Tickable
         
         if(cmd.equals("LIST"))
         {
-            String rest=CMParms.combine(commands,0).toUpperCase().trim();
             StringBuffer buf=new StringBuffer("^xUp for auction:^.^N\n\r");
     		if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
             {
             	buf.append("\n\r^HCurrent *live* auction: ^N\n\r");
             	buf.append(liveAuctionStatus()+"\n\r");
             }
+            else
+                buf.append(MESSAGE_NOAUCTION());
             mob.tell(buf.toString());
-            buf.setLength(0);
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
-            Vector auctionsToShow=new Vector();
-            for(int o=0;o<otherAuctions.size();o++)
-            {
-                Vector V=(Vector)otherAuctions.elementAt(o);
-                String subj=(String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ); // type/level range/name
-                if((rest.length()==0)||(subj.toUpperCase().indexOf(rest)>=0))
-                	auctionsToShow.addElement(V);
-            }
-            TimeClock T=mob.location().getArea().getTimeObj();
-            buf.append(CMStrings.padRight("From",8)+" ");
-            buf.append(CMStrings.padRight(CMStrings.padRight("Type",5)+" "+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Bid",5)+" Item",50));
-            buf.append(" End\n\r");
-            for(int a=0;a<auctionsToShow.size();a++)
-            {
-                Vector V=(Vector)auctionsToShow.elementAt(a);
-                String from=(String)V.elementAt(DatabaseEngine.JOURNAL_FROM); // who is auctioning
-                String to=(String)V.elementAt(DatabaseEngine.JOURNAL_TO); // end date/time of the auction
-                String subj=(String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ); // Type Level Bid name in 55 chars!
-                T=(TimeClock)T.deriveClock(CMath.s_long(to)).copyOf();
-                buf.append(CMStrings.padRight(from,8)+" "+CMStrings.padRight(subj,50)+" "+T.getShortestTimeDescription()+"\n\r");
-            }
-            mob.session().wraplessPrintln(buf.toString());
             return true;
         }
         else
-        if(cmd.equals("LIVE"))
+        if(cmd.equals("UP"))
         {
     		if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
         	{
@@ -463,234 +320,59 @@ public class Auction extends Channel implements Tickable
         else
         if(cmd.equals("BID"))
         {
+            if((liveData.auctioningI==null)||(liveData.auctioningM==null))
+            {
+                mob.tell(MESSAGE_NOAUCTION());
+                return false;
+            }
         	if(commands.size()<2)
         	{
-        		mob.tell("Bid how much on WHAT?");
+        		mob.tell("Bid how much?");
         		return false;
         	}
-        	String amount=(String)commands.firstElement();
-        	String which=CMParms.combine(commands,1);
-        	if(((String)commands.lastElement()).equalsIgnoreCase("LIVE"))
-        	{
-        		commands.removeElementAt(commands.size()-1);
-        		which="LIVE";
-        		amount=CMParms.combine(commands,0);
-        	}
-        	Environmental E=null;
-    		String key=null;
-    		DVector auctions=getTimedAuctionNames(null);
-        	if(which.equalsIgnoreCase("LIVE"))
-        	{
-        		if(liveData.auctioningI==null)
-        		{
-        			mob.tell("A live auction is not currently running.");
-        			return false;
-        		}
-        		E=liveData.auctioningI;
-        		key="LIVE";
-        	}
-        	else
-        	{
-        		E=CMLib.english().fetchEnvironmental(auctions.getDimensionVector(2),which,true);
-        		if(E==null) E=CMLib.english().fetchEnvironmental(auctions.getDimensionVector(2),which,false);
-        		if(E!=null)
-        		for(int a=0;a<auctions.size();a++) 
-        			if(auctions.elementAt(a,2)==E) 
-        				key=(String)auctions.elementAt(a,1);
-        		if(key==null)
-        		{
-        			mob.tell("'"+which+"' is not up for auction.  Try AUCTION LIST.");
-        			return false;
-        		}
-        	}
-        	if(E==liveData.auctioningI)
-        	{
-        		doLiveAuction(mob,CMParms.makeVector(amount),null);
-    			return true;
-    		}
-        	Vector auctionData=null;
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
-            for(int o=0;o<otherAuctions.size();o++)
-            {
-                Vector V=(Vector)otherAuctions.elementAt(o);
-                String tkey=(String)V.elementAt(DatabaseEngine.JOURNAL_KEY);
-                if(tkey.equalsIgnoreCase(key))
-                { auctionData=V; break;}
-            }
-            if(auctionData==null){mob.tell("Error."); return false;}
-            Auctioneer.AuctionData data=new Auctioneer.AuctionData();
-            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
-            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
-            data.start=CMath.s_long(start);
-            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
-            //String subj=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-            Vector xmlV=CMLib.xml().parseAllXML(xml);
-            xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
-            String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
-            double oldBid=CMath.s_double(bid);
-            data.bid=oldBid;
-            String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
-            if(highBidder.length()>0)
-	            data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
-            String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
-            double oldMaxBid=CMath.s_double(maxBid);
-            data.highBid=oldMaxBid;
-            MOB invoker=CMLib.map().getLoadPlayer(from);
-			MOB M=data.highBidderM;
-            data.currency=CMLib.beanCounter().getCurrency(invoker);
-            
-			Object[] bidObjs=CMLib.english().parseMoneyStringSDL(mob,amount,liveData.currency);
-			String currency=(String)bidObjs[0];
-			double amt=CMath.mul(((Double)bidObjs[1]).doubleValue(),((Long)bidObjs[2]).doubleValue());
-            String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,data,(Item)E,new Vector());
-            if(resp!=null)
-            {
-	            if(resp[0]!=null) 
-	            	mob.tell(resp[0]);
-	            if((resp[1]!=null)&&(M!=null))
-	            	auctionNotify(M,resp[1],E.Name());
-            }
-            
-            if((oldBid!=data.bid)||(oldMaxBid!=data.highBid))
-            {
-                StringBuffer xmlBuf=new StringBuffer("<AUCTION>");
-                xmlBuf.append("<PRICE>"+data.bid+"</PRICE>");
-                xmlBuf.append("<BIDDER>"+((data.highBidderM!=null)?data.highBidderM.Name():"")+"</BIDDER>");
-                xmlBuf.append("<MAXBID>"+data.highBid+"</MAXBID>");
-                xmlBuf.append("<AUCTIONITEM>");
-                xmlBuf.append(CMLib.coffeeMaker().getItemXML((Item)E).toString());
-                xmlBuf.append("</AUCTIONITEM>");
-                xmlBuf.append("</AUCTION>");
-            	CMLib.database().DBUpdateJournal(key, getSubject((Item)E,data.currency,data.bid), xmlBuf.toString());
-            }
-            return true;
+        	String amount=CMParms.combine(commands,1);
+    		doLiveAuction(mob,CMParms.makeVector(amount),null);
+			return true;
         }
         else
 		if(cmd.equals("CLOSE"))
 		{
-        	if(commands.size()==0)
-        	{
-        		mob.tell("Close which auction? Try LIST.");
-        		return false;
-        	}
-        	String which=CMParms.combine(commands,0);
-        	Environmental E=null;
-    		String key=null;
-    		DVector auctions=getTimedAuctionNames(mob.Name());
-        	if(which.equalsIgnoreCase("LIVE"))
-        	{
-        		if((liveData.auctioningI==null)||(liveData.auctioningM!=mob))
-        		{
-        			mob.tell("You are not currently running a live auction.");
-        			return false;
-        		}
-        		E=liveData.auctioningI;
-        		key="LIVE";
-        	}
-        	else
-        	{
-        		E=CMLib.english().fetchEnvironmental(auctions.getDimensionVector(2),which,true);
-        		if(E==null) E=CMLib.english().fetchEnvironmental(auctions.getDimensionVector(2),which,false);
-        		if(E!=null)
-        		for(int a=0;a<auctions.size();a++) 
-        			if(auctions.elementAt(a,2)==E) 
-        				key=(String)auctions.elementAt(a,1);
-        		if(key==null)
-        		{
-        			mob.tell("'"+which+"' is not up for auction by you.  Try AUCTION LIST.");
-        			return false;
-        		}
-        	}
-    		if(E==liveData.auctioningI)
-    		{
-    			Vector V=new Vector();
-    			V.addElement("AUCTION");
-    			V.addElement("The auction has been closed.");
-    			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);
-    			if(E instanceof Item)
-	    			liveData.auctioningM.giveItem((Item)E);
-                if(liveData.highBid>0.0)
-                	CMLib.coffeeShops().returnMoney(liveData.highBidderM,liveData.currency,liveData.highBid);
-				liveData.auctioningM=null;
-				liveData.auctioningI=null;
-    			super.execute(mob,V);
-    			return true;
-    		}
-            Vector otherAuctions=CMLib.database().DBReadJournal("SYSTEM_AUCTION");
-            for(int o=0;o<otherAuctions.size();o++)
+            if((liveData.auctioningI==null)||(liveData.auctioningM==null))
             {
-                Vector V=(Vector)otherAuctions.elementAt(o);
-                String tkey=(String)V.elementAt(DatabaseEngine.JOURNAL_KEY);
-                String from=(String)V.elementAt(DatabaseEngine.JOURNAL_FROM);
-                if((tkey.equalsIgnoreCase(key))
-                &&(from.equalsIgnoreCase(mob.Name())))
-                {
-        			if(E instanceof Item)
-    	    			mob.giveItem((Item)E);
-	                String xml=(String)V.elementAt(DatabaseEngine.JOURNAL_MSG);
-	                Vector xmlV=CMLib.xml().parseAllXML(xml);
-	                xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
-	                String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
-	                String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
-	                if(highBidder.length()>0)
-	                {
-	                	MOB M=CMLib.map().getLoadPlayer(highBidder);
-	                	if(M!=null) 
-                		{
-	    	            	auctionNotify(M,"The auction for "+E.Name()+" was closed early.  You have been refunded your max bid.",E.Name());
-	    	            	CMLib.coffeeShops().returnMoney(M,liveData.currency,CMath.s_double(maxBid));
-                		}
-	                }
-	                CMLib.database().DBDeleteJournal(tkey);
-	        		mob.tell("Auction ended.");
-	                return true;
-                }
+                mob.tell(MESSAGE_NOAUCTION());
+                return false;
             }
-    		return false;
+            if((liveData.auctioningI==null)||(liveData.auctioningM!=mob))
+            {
+                mob.tell("You are not currently running a live auction.");
+                return false;
+            }
+			Vector V=new Vector();
+			V.addElement("AUCTION");
+			V.addElement("The auction has been closed.");
+			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);
+			if(liveData.auctioningI instanceof Item)
+    			liveData.auctioningM.giveItem((Item)liveData.auctioningI);
+            if(liveData.highBid>0.0)
+            	CMLib.coffeeShops().returnMoney(liveData.highBidderM,liveData.currency,liveData.highBid);
+			liveData.auctioningM=null;
+			liveData.auctioningI=null;
+			super.execute(mob,V);
+			return true;
 		}
         else
 		if(cmd.equals("INFO"))
 		{
-        	if(commands.size()==0)
-        	{
-        		mob.tell("Info on which auction? Try LIST.");
-        		return false;
-        	}
-        	String which=CMParms.combine(commands,0);
+            if((liveData.auctioningI==null)||(liveData.auctioningM==null))
+            {
+                mob.tell(MESSAGE_NOAUCTION());
+                return false;
+            }
         	Environmental E=null;
-    		String key=null;
-    		DVector auctions=getTimedAuctionNames(null);
-        	if(which.equalsIgnoreCase("LIVE"))
-        	{
-        		if(liveData.auctioningI==null)
-        		{
-        			mob.tell("A live auction is not currently running.");
-        			return false;
-        		}
-        		E=liveData.auctioningI;
-        		key="LIVE";
-        	}
-        	else
-        	{
-        		E=CMLib.english().fetchEnvironmental(auctions.getDimensionVector(2),which,true);
-        		if(E==null) E=CMLib.english().fetchEnvironmental(auctions.getDimensionVector(2),which,false);
-        		if(E!=null)
-        		for(int a=0;a<auctions.size();a++) 
-        			if(auctions.elementAt(a,2)==E) 
-        				key=(String)auctions.elementAt(a,1);
-        		if(key==null)
-        		{
-        			mob.tell("'"+which+"' is not up for auction.  Try AUCTION LIST.");
-        			return false;
-        		}
-        	}
+    		E=liveData.auctioningI;
         	mob.tell("Item: "+E.name());
         	CMLib.commands().handleBeingLookedAt(CMClass.getMsg(mob,CMMsg.MASK_ALWAYS|CMMsg.MSG_EXAMINE,null));
-        	Ability A=null;
-        	A=CMClass.getAbility("Spell_IdentifyObject");
-        	if(A!=null) A.invoke(mob,E,true,0);
-        	A=CMClass.getAbility("Spell_AnalyzeDweomer");
-        	if(A!=null) A.invoke(mob,E,true,0);
+            mob.tell(CMLib.coffeeShops().getViewDescription(E));
         	return true;
 		}
 		else
@@ -709,188 +391,12 @@ public class Auction extends Channel implements Tickable
     		commands.insertElementAt("AUCTION",0);
 			super.execute(mob,commands);
 			return true;
-		}
-        else
-        if(cmd.equals("ADD"))
-        {
-			String startingPrice="0";
-			if((commands.size()>2)
-			&&((CMLib.english().numPossibleGold(mob,(String)commands.lastElement())>0)
-				||(((String)commands.lastElement()).equals("0"))))
-			{
-				startingPrice=(String)commands.lastElement();
-				commands.removeElementAt(commands.size()-1);
-			}
-			String s=CMParms.combine(commands,0);
-			Item I=mob.fetchInventory(null,s);
-			if(I==null)
-			{
-				mob.tell(s+" is not an item you have to auction.");
-				return false;
-			}
-			if((I instanceof Container)&&(((Container)I).getContents().size()>0))
-			{
-				mob.tell(I.name()+" will have to be emptied first.");
-				return false;
-			}
-			if(!(I.amWearingAt(Item.IN_INVENTORY)))
-			{
-				mob.tell(I.name()+" will have to be removed first.");
-				return false;
-			}
-			
-            Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
-			startingPrice=mob.session().prompt("Starting price: ("+startingPrice+"): ",startingPrice);
-			if((CMLib.english().numPossibleGold(mob,startingPrice)<=0)&&(!startingPrice.equals("0")))
-			{
-				mob.tell("'"+startingPrice+"' is not a valid price.  Aborting.");
-				return false;
-			}
-			long startPrice=CMLib.english().numPossibleGold(mob,startingPrice);
-			if(startPrice<0) startPrice=0;
-			
-			
-			int maxDays=aRates.maxDays;
-            int minDays=aRates.minDays;
-			if(maxDays==0) maxDays=184;
-			String days=mob.session().prompt("Number of game-days to run the auction (max="+maxDays+"): ","5");
-			if((!CMath.isNumber(days))||(CMath.s_int(days)<=0))
-			{
-				mob.tell("'"+days+"' is not a valid number of days.  Aborting.");
-				return false;
-			}
-			if((CMath.s_int(days)>maxDays))
-			{
-				mob.tell("The maximum number of game-days you may run an auction is "+maxDays+".  Aborting.");
-				return false;
-			}
-            if((CMath.s_int(days)<minDays))
-            {
-                mob.tell("The minimum number of game-days you may run an auction is "+minDays+".  Aborting.");
-                return false;
-            }
-			double deposit=aRates.timeListPrice;
-			deposit+=(aRates.timeListPct*new Integer(CMath.mul(CMath.s_int(days),I.baseGoldValue())).doubleValue());
-			String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
-			
-			if((mob.isMonster())
-            ||(!mob.session().confirm("Auctioning "+I.name()+" will cost a listing fee of "+depositAmt+", proceed (Y/n)?","Y")))
-				return false;
-			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
-			{
-				mob.tell("You don't have enough "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(mob))+" to cover the listing fee!");
-				return false;
-			}
-			long endTime=System.currentTimeMillis();
-			endTime+=CMath.s_int(days)*(mob.location().getArea().getTimeObj().getHoursInDay()*Tickable.TIME_MILIS_PER_MUDHOUR);
-			CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getCurrency(mob), deposit);
-			if(I instanceof Container) ((Container)I).emptyPlease();
-            StringBuffer xml=new StringBuffer("<AUCTION>");
-            xml.append("<PRICE>"+startPrice+"</PRICE>");
-            xml.append("<BIDDER />");
-            xml.append("<MAXBID>0.0</MAXBID>");
-            xml.append("<AUCTIONITEM>");
-            xml.append(CMLib.coffeeMaker().getItemXML(I).toString());
-            xml.append("</AUCTIONITEM>");
-            xml.append("</AUCTION>");
-			String subject=getSubject(I,CMLib.beanCounter().getCurrency(mob),new Long(startPrice).doubleValue());
-			CMLib.database().DBWriteJournal("SYSTEM_AUCTION", 
-											mob.Name(), 
-											""+endTime,
-											subject, 
-											xml.toString(), 
-											-1);
-			Vector V=new Vector();
-			V.addElement("AUCTION");
-			V.addElement("New "+CMath.s_int(days)+" day auction: "+subject);
-			super.execute(mob,V);
-			I.destroy();
-    		return false;
         }
-        
-    	StringBuffer help=new StringBuffer("AUCTION Huh?  " +
-    									   "Try AUCTION LIST ([MASK]), " +
-    									   "AUCTION INFO [ITEM NAME], " +
-    									   "AUCTION BID [AMOUNT] [NAME], " +
-    									   "AUCTION BID [AMOUNT] LIVE, " +
-    									   "AUCTION ADD [ITEM] [PRICE], " +
-    									   "AUCTION LIVE [ITEM] [PRICE], " +
-    									   "AUCTION CHANNEL [MESSAGE], " +
-    									   "AUCTION CLOSE [ITEM NAME]" +
-    									   "AUCTION CLOSE LIVE");
-		mob.tell(help.toString());
+        commands.insertElementAt("AUCTION",0);
+        super.execute(mob,commands);
 		return false;
 	}
 
-	public String getSubject(Item I, String currency, double price)
-	{
-        String subject="";
-        if(I instanceof Armor)
-			subject="Armor";
-        else
-		if(I instanceof Pill)
-			subject="Pill";
-		else
-		if(I instanceof Potion)
-			subject="Pot.";
-		else
-		if(I instanceof Scroll)
-			subject="Scrol";
-		else
-		if(I instanceof Drink)
-			subject="Drink";
-		else
-		if(I instanceof Food)
-			subject="Food";
-		else
-		if(I instanceof Light)
-			subject="Light";
-		else
-		if(I instanceof Wand)
-			subject="Wand";
-		else
-		if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
-			subject="Map";
-		else
-		if(I instanceof MiscMagic)
-			subject="Magic";
-		else
-		if(I instanceof Electronics)
-			subject="Tech";
-		else
-		if(I instanceof InnKey)
-			subject="InnKy";
-		else
-		if(I instanceof Key)
-			subject="Key";
-		else
-		if(I instanceof LandTitle)
-			subject="RlEst";
-		else
-		if(CMLib.flags().isReadable(I))
-			subject="Read";
-		else
-		if(I instanceof DeadBody)
-			subject="Corps";
-		else
-		if(I instanceof Weapon)
-			subject="Weapn";
-		else
-		if((I instanceof Container)&&(((Container)I).capacity()>0))
-			subject="Cont.";
-		else
-		if(I instanceof Coins)
-			subject="Curr.";
-		else
-		if(I instanceof RawMaterial)
-			subject="Resc.";
-		else
-		if(I instanceof ClanItem)
-			subject="Clan";
-		else
-			subject="Unkn.";
-        return CMStrings.padRight(subject,5)+" "+CMStrings.padRight(""+I.envStats().level(),3)+" "+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(currency, price),5)+" "+I.name();
-	}
 	
 	public boolean canBeOrdered(){return true;}
 
