@@ -44,7 +44,25 @@ public interface Auctioneer extends ShopKeeper
 		public int           state=-1;
 		public long          tickDown=0;
 		public long          start=0;
-		public String		 auctionKey="";
+		public String        auctionDBKey="";
+		public int daysRemaining(MOB mob, MOB mob2)
+		{
+			if(System.currentTimeMillis()>=tickDown) return 0;
+			Area A=CMLib.map().getStartArea(mob);
+			if(A==null) A=CMLib.map().getStartArea(mob2);
+			long daysRemain=tickDown-System.currentTimeMillis();
+			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,Tickable.TIME_MILIS_PER_MUDHOUR),A.getTimeObj().getHoursInDay())));
+			return (int)daysRemain;
+		}
+		public int daysEllapsed(MOB mob, MOB mob2)
+		{
+			if(System.currentTimeMillis()<start) return 0;
+			Area A=CMLib.map().getStartArea(mob);
+			if(A==null) A=CMLib.map().getStartArea(mob2);
+			long daysRemain=System.currentTimeMillis()-start;
+			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,Tickable.TIME_MILIS_PER_MUDHOUR),A.getTimeObj().getHoursInDay())));
+			return (int)daysRemain;
+		}
 	}
 
 	public static final int STATE_START=0;

@@ -55,10 +55,13 @@ public interface ShoppingLibrary extends CMLibrary
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
     public String storeKeeperString(int whatISell);
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
-	public String[] bid(MOB mob, String newBid, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces);
+	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces);
 	public void returnMoney(MOB to, String currency, double amt);
     public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
     public String getListForMask(String targetMessage);
     public Vector getAuctions(Object ofLike, String auctionHouse);
 	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse);
+	public void auctionNotify(MOB M, String resp, String regardingItem);
+    public void cancelAuction(Auctioneer.AuctionData data);
+	public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly);
 }

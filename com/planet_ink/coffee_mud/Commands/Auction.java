@@ -268,7 +268,10 @@ public class Auction extends Channel implements Tickable
 			if(commands!=null)
 			    sb=CMParms.combine(commands,0);
 			MOB M=liveData.highBidderM;
-			String[] resp=CMLib.coffeeShops().bid(mob,sb,liveData,(Item)liveData.auctioningI,V);
+			Object[] bidObjs=CMLib.english().parseMoneyStringSDL(mob,sb,liveData.currency);
+			String currency=(String)bidObjs[0];
+			double amt=CMath.mul(((Double)bidObjs[1]).doubleValue(),((Long)bidObjs[2]).doubleValue());
+			String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,liveData,(Item)liveData.auctioningI,V);
 			if(resp!=null)
 			{
 				if(resp[0]!=null) mob.tell(resp[0]);
@@ -536,7 +539,10 @@ public class Auction extends Channel implements Tickable
 			MOB M=data.highBidderM;
             data.currency=CMLib.beanCounter().getCurrency(invoker);
             
-            String[] resp=CMLib.coffeeShops().bid(mob,amount,data,(Item)E,new Vector());
+			Object[] bidObjs=CMLib.english().parseMoneyStringSDL(mob,amount,liveData.currency);
+			String currency=(String)bidObjs[0];
+			double amt=CMath.mul(((Double)bidObjs[1]).doubleValue(),((Long)bidObjs[2]).doubleValue());
+            String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,data,(Item)E,new Vector());
             if(resp!=null)
             {
 	            if(resp[0]!=null) 

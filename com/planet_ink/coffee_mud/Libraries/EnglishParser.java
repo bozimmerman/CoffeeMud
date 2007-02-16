@@ -1625,4 +1625,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         hours-=(days*24);
         return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
     }
+    
+	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
+	{
+		double b=0;
+		String myCurrency=CMLib.beanCounter().getCurrency(mob);
+		double denomination=1.0;
+		if(correctCurrency==null) correctCurrency=myCurrency;
+	    if(amount.length()>0)
+	    {
+		    myCurrency=CMLib.english().numPossibleGoldCurrency(mob,amount);
+		    if(myCurrency!=null)
+		    {
+			    denomination=CMLib.english().numPossibleGoldDenomination(null,correctCurrency,amount);
+			    long num=CMLib.english().numPossibleGold(null,amount);
+			    b=CMath.mul(denomination,num);
+		    }
+		    else
+		        myCurrency=CMLib.beanCounter().getCurrency(mob);
+	    }
+	    return new Object[]{myCurrency,new Double(denomination),new Long(Math.round(b/denomination))};
+	}
 }

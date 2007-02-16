@@ -63,6 +63,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     }
     
     public AuctionData lastMsgData=null;
+    protected static final Hashtable lastCheckTimes=new Hashtable();
     
     public CoffeeShop getShop(){
     	shop=(CoffeeShop)CMClass.getCommon("AuctionCoffeeShop");
@@ -113,7 +114,42 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         if(!super.tick(ticking,tickID))
             return false;
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) return true;
-
+		if(CMLib.flags().isInTheGame(this,true))
+		synchronized(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim()).intern())
+		{
+			Long lastTime=(Long)StdAuctioneer.lastCheckTimes.get(auctionHouse().toUpperCase().trim());
+			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>10000)
+			{
+				StdAuctioneer.lastCheckTimes.remove(auctionHouse().toUpperCase().trim());
+				long thisTime=System.currentTimeMillis();
+				StdAuctioneer.lastCheckTimes.put(auctionHouse().toUpperCase().trim(),new Long(thisTime));
+				Vector auctions=CMLib.coffeeShops().getAuctions(null, auctionHouse());
+				for(int a=0;a<auctions.size();a++)
+				{
+					Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(a);
+					if(thisTime>=data.tickDown)
+					{
+						if((lastTime==null)||(data.tickDown>lastTime.longValue()))
+						{
+							if(data.highBidderM!=null)
+							{
+	                            //CMLib.coffeeShops().returnMoney(data.auctioningM,data.currency,finalAmount);
+	                            CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "+data.highBidderM.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  When the winner comes to claim his or her property, you will automatically receive your winnings along with another notice.",data.auctioningI.Name());
+	                            CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  Your winnings, along with the difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") will be given to you as soon as you come to "+name()+" at "+location().displayText()+" and claim your winnings by entering BUY [ITEMNAME].",data.auctioningI.Name());
+							}
+							else
+							{
+	                            CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" went unsold.  '"+data.auctioningI.name()+"' has been automatically returned to your inventory.",data.auctioningI.Name());
+	                            data.auctioningM.giveItem(data.auctioningI);
+                                if(!CMLib.flags().isInTheGame(data.auctioningM,true))
+                                    CMLib.database().DBUpdatePlayerItems(data.auctioningM);
+                                CMLib.coffeeShops().cancelAuction(data);
+							}
+						}
+					}
+				}
+			}
+		}
         return true;
     }
 
@@ -125,7 +161,21 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         location().send(this,msg2);
     }
 
-
+    protected String parseBidString(String targetMessage)
+    {
+        int x=-1;
+        if(targetMessage!=null)
+        	x=targetMessage.indexOf('\'');
+        if(x>=0)
+        {
+        	int y=targetMessage.indexOf('\'',x+1);
+        	if(y>x)
+        		return targetMessage.substring(x+1,y);
+        }
+        return null;
+    }
+    
+    
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
@@ -204,7 +254,8 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                         return false;
                     if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
-					if(msg.value()<0)
+                    String bidStr=parseBidString(msg.targetMessage());
+					if(bidStr==null)
 					{
 	                    CMLib.commands().postSay(this,mob,"I can't seem to do business with you.",true,false);
 	                    return false;
@@ -224,12 +275,55 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 		                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
 		                return false;
 					}
-                    double bid=CMath.div(msg.value(),1000);
-					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<bid)
+					if(data.auctioningM==msg.source())
 					{
-						String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
-		                CMLib.commands().postSay(this,mob,"You don't have enough "+currencyName+" on hand to cover your bid.",true,false);
-		                return false;
+						Auctioneer.AuctionRates rates=new Auctioneer.AuctionRates(this);
+						if((rates.minDays>0)&&(rates.minDays>=data.daysEllapsed(mob,this)))
+						{
+			                CMLib.commands().postSay(this,mob,"You may not close this auction until it has been active for "+rates.minDays+" days.",true,false);
+			                return false;
+						}
+						if(msg.source().session()!=null)
+						{
+							try{
+							if(!msg.source().session().confirm("This will cancel your auction on "+data.auctioningI.name()+", are you sure (y/N)?","N",10000))
+								return false;
+							}catch(Exception e){return false;}
+						}
+					}
+					else
+					if(System.currentTimeMillis()>=data.tickDown)
+					{
+						if(data.highBidderM==msg.source())
+						{
+			                CMLib.commands().postSay(this,mob,"You have won this auction -- use the BUY command to complete the transaction.",true,false);
+			                return false;
+						}
+						else
+						{
+			                CMLib.commands().postSay(this,mob,"That auction is closed.",true,false);
+			                return false;
+						}
+					}
+					else
+					{
+						Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.currency);
+						String myCurrency=(String)bidAmts[0];
+						double myDenomination=((Double)bidAmts[1]).doubleValue();
+						long myCoins=((Long)bidAmts[2]).longValue();
+						double bid=CMath.mul(myCoins,myDenomination);
+						if(!myCurrency.equals(data.currency))
+						{
+							String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
+			                CMLib.commands().postSay(this,mob,"This auction is being handled in "+currencyName+".",true,false);
+			                return false;
+						}
+						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<bid)
+						{
+							String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
+			                CMLib.commands().postSay(this,mob,"You don't have enough "+currencyName+" on hand to cover your bid.",true,false);
+			                return false;
+						}
 					}
                 }
                 return false;
@@ -256,17 +350,49 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 		                return false;
 					}
 					else
-					if(data.buyOutPrice<=0.0)
+					if(data.auctioningM==msg.source())
 					{
-		                CMLib.commands().postSay(this,mob,"You'll have to BID on that.  BUY is not available for that particular item.",true,false);
-		                return false;
+						Auctioneer.AuctionRates rates=new Auctioneer.AuctionRates(this);
+						if((rates.minDays>0)&&(rates.minDays>=data.daysEllapsed(mob,this)))
+						{
+			                CMLib.commands().postSay(this,mob,"You may not close this auction until it has been active for "+rates.minDays+" days.",true,false);
+			                return false;
+						}
+						if(msg.source().session()!=null)
+						{
+							try{
+							if(!msg.source().session().confirm("This will cancel your auction on "+data.auctioningI.name()+", are you sure (y/N)?","N",10000))
+								return false;
+							}catch(Exception e){return false;}
+						}
 					}
 					else
-					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<data.buyOutPrice)
+					if(System.currentTimeMillis()>=data.tickDown)
 					{
-						String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
-		                CMLib.commands().postSay(this,mob,"You don't have enough "+currencyName+" on hand to buy that.",true,false);
-		                return false;
+						if(data.highBidderM==msg.source())
+						{
+							
+						}
+						else
+						{
+			                CMLib.commands().postSay(this,mob,"That auction is closed.",true,false);
+			                return false;
+						}
+					}
+					else
+					{
+						if(data.buyOutPrice<=0.0)
+						{
+			                CMLib.commands().postSay(this,mob,"You'll have to BID on that.  BUY is not available for that particular item.",true,false);
+			                return false;
+						}
+						else
+						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<data.buyOutPrice)
+						{
+							String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
+			                CMLib.commands().postSay(this,mob,"You don't have enough "+currencyName+" on hand to buy that.",true,false);
+			                return false;
+						}
 					}
                 }
                 return true;
@@ -296,12 +422,31 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
 					AuctionData thisData=lastMsgData;
-					if((thisData==null)||(thisData.auctioningM!=msg.source()))
+					if((thisData==null)||(thisData.auctioningM!=msg.source())||(msg.source().isMonster()))
 					{
 						lastMsgData=null;
 	                    CMLib.commands().postSay(this,mob,"I'm confused. Please try to SELL again.",true,false);
 					}
-					
+					try{
+						double lowestDenom=CMLib.beanCounter().getLowestDenomination(thisData.currency);
+	                    CMLib.commands().postSay(this,mob,"What would you like your opening price to be (in "+CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)+"?",true,false);
+						String openPrice=mob.session().prompt(": ",30000);
+	                    CMLib.commands().postSay(this,mob,"What would you like your buy-now price to be (in "+CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)+"?",true,false);
+						String buyPrice=mob.session().prompt(": ",30000);
+						thisData.bid=CMath.s_double(openPrice)*lowestDenom;
+						if(thisData.bid<0.0) thisData.bid=0.0;
+						thisData.buyOutPrice=CMath.s_double(buyPrice)*lowestDenom;
+						if(thisData.buyOutPrice<=0.0) thisData.buyOutPrice=-1.0;
+						thisData.start=System.currentTimeMillis();
+						CMLib.coffeeShops().saveAuction(thisData, auctionHouse(),false);
+						CMLib.commands().postChannel(this,"AUCTION","New "+thisData.daysRemaining(thisData.auctioningM,msg.source())+" day auction: "+thisData.auctioningI.name(),true);
+	                    AuctionRates aRates=new AuctionRates(this);
+	                    double deposit=aRates.timeListPrice;
+	                    deposit+=(aRates.timeListPct*new Integer(CMath.mul(thisData.daysRemaining(mob,this),thisData.auctioningI.baseGoldValue())).doubleValue());
+	                    CMLib.beanCounter().subtractMoney(mob,deposit);
+						thisData.auctioningI.destroy();
+						CMLib.commands().postSay(this,mob,"Your auction for "+thisData.auctioningI.name()+" is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",true,false);
+					}catch(Exception e){}
                 }
                 return;
             case CMMsg.TYP_BUY:
@@ -317,8 +462,91 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 						if(data==null)
 			                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
 						else
+						if(data.auctioningM==mob)
 						{
-							
+							CMLib.coffeeShops().cancelAuction(data);
+			                CMLib.commands().postSay(this,mob,"Your auction for "+data.auctioningI.name()+" has been canceled.",true,false);
+						}
+						else
+						if((System.currentTimeMillis()>=data.tickDown)&&(data.highBidderM==mob))
+						{
+                            Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
+                            double houseCut=Math.floor(data.bid*aRates.timeCutPct);
+                            double finalAmount=data.bid-houseCut;
+                            CMLib.coffeeShops().returnMoney(data.auctioningM,data.currency,finalAmount);
+                            CMLib.coffeeShops().auctionNotify(data.auctioningM,data.highBidderM.Name()+", who won your auction for "+data.auctioningI.name()+" has claimed "+data.highBidderM.charStats().hisher()+" property.  You have been credited with "+CMLib.beanCounter().nameCurrencyShort(data.currency,finalAmount)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.currency,houseCut)+".",data.auctioningI.Name());
+                            //CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  The difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") has been returned to you along with the winning item.",data.auctioningI.Name());
+							if((data.highBid-data.bid)>0.0)
+				                CMLib.commands().postSay(this,mob,"Congratulations, and here is your "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+" and change as well.",true,false);
+							else
+				                CMLib.commands().postSay(this,mob,"Congratulations!",true,false);
+                            CMLib.coffeeShops().returnMoney(mob,data.currency,data.highBid-data.bid);
+                            CMLib.coffeeShops().purchaseItems(data.auctioningI,CMParms.makeVector(data.auctioningI),this,mob);
+    						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+    							mob.location().recoverRoomStats();
+					    	CMLib.database().DBDeleteJournal(data.auctionDBKey);
+						}
+						else
+						if(System.currentTimeMillis()<data.tickDown)
+						{
+                            Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
+                            double houseCut=Math.floor(data.buyOutPrice*aRates.timeCutPct);
+                            double finalAmount=data.buyOutPrice-houseCut;
+                            CMLib.coffeeShops().returnMoney(data.auctioningM,data.currency,finalAmount);
+                            CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "+mob.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.currency,houseCut)+".",data.auctioningI.Name());
+				            CMLib.beanCounter().subtractMoney(mob,data.currency,data.buyOutPrice);
+                            CMLib.coffeeShops().purchaseItems(data.auctioningI,CMParms.makeVector(data.auctioningI),this,mob);
+					    	CMLib.database().DBDeleteJournal(data.auctionDBKey);
+						}
+					}
+					else
+	                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
+                }
+                return;
+            case CMMsg.TYP_BID:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                {
+					if(msg.tool() instanceof Item)
+					{
+						String itemName=msg.tool().name();
+						if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
+							itemName+="."+((Item)msg.tool()).expirationDate();
+						AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+						if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+						if(data==null)
+			                CMLib.commands().postSay(this,mob,"That's not up for auction.",true,false);
+						else
+						if(data.auctioningM==mob)
+						{
+							CMLib.coffeeShops().cancelAuction(data);
+			                CMLib.commands().postSay(this,mob,"Your auction for "+data.auctioningI.name()+" has been canceled.",true,false);
+						}
+						else
+						{
+		                    String bidStr=parseBidString(msg.targetMessage());
+							if(bidStr==null)
+							{
+			                    CMLib.commands().postSay(this,mob,"I can't seem to do business with you.",true,false);
+			                    return;
+							}
+							Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.currency);
+							String myCurrency=(String)bidAmts[0];
+							double myDenomination=((Double)bidAmts[1]).doubleValue();
+							long myCoins=((Long)bidAmts[2]).longValue();
+							double bid=CMath.mul(myCoins,myDenomination);
+							MOB M=data.highBidderM;
+							double oldBid=data.bid;
+							double oldMaxBid=data.highBid;
+							String[] resp=CMLib.coffeeShops().bid(mob, bid, myCurrency,data, data.auctioningI,new Vector());
+							if(resp!=null)
+							{
+					            if(resp[0]!=null) 
+					            	mob.tell(resp[0]);
+					            if((resp[1]!=null)&&(M!=null))
+					            	CMLib.coffeeShops().auctionNotify(M,resp[1],data.auctioningI.name());
+							}
+				            if((oldBid!=data.bid)||(oldMaxBid!=data.highBid))
+				            	CMLib.coffeeShops().saveAuction(data, auctionHouse(),true);
 						}
 					}
 					else

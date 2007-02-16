@@ -67,6 +67,7 @@ public interface EnglishParsing extends CMLibrary
     public long numPossibleGold(Environmental mine, String itemID);
     public String numPossibleGoldCurrency(Environmental mine, String itemID);
     public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
+	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
     public String matchAnyCurrencySet(String itemID);
     public double matchAnyDenomination(String currency, String itemID);
     public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID);
