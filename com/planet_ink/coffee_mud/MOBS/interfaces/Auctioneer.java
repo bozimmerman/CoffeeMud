@@ -38,8 +38,8 @@ public interface Auctioneer extends ShopKeeper
 		public MOB			 auctioningM=null;
 		public MOB           highBidderM=null;
 		public String        currency="";
-		public double        highBid=Double.MIN_VALUE;
-		public double        bid=Double.MIN_VALUE;
+		public double        highBid=0.0;
+		public double        bid=0.0;
         public double        buyOutPrice=0.0;
 		public int           state=-1;
 		public long          tickDown=0;
@@ -109,14 +109,14 @@ public interface Auctioneer extends ShopKeeper
         public AuctionRates()
         {
             Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
-            while(ratesV.size()<6)ratesV.addElement("0");
+            while(ratesV.size()<7)ratesV.addElement("0");
             liveListPrice=CMath.s_double((String)ratesV.elementAt(0));
             timeListPrice=CMath.s_double((String)ratesV.elementAt(1));
             timeListPct=CMath.s_pct((String)ratesV.elementAt(2));
             liveCutPct=CMath.s_pct((String)ratesV.elementAt(3));
             timeCutPct=CMath.s_pct((String)ratesV.elementAt(4));
-            maxDays=CMath.s_int((String)ratesV.elementAt(5));
-            minDays=CMath.s_int((String)ratesV.elementAt(6));
+            minDays=CMath.s_int((String)ratesV.elementAt(5));
+            maxDays=CMath.s_int((String)ratesV.elementAt(6));
             if(minDays>maxDays) minDays=maxDays; 
         }
         public AuctionRates(Auctioneer A)

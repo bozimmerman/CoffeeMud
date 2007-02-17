@@ -146,6 +146,7 @@ public class MOBloader
         int oldDisposition=mob.baseEnvStats().disposition();
         mob.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
         mob.envStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
+        CMLib.map().addPlayer(mob);
         DBReadUserOnly(mob);
         Room oldLoc=mob.location();
         boolean inhab=false;
@@ -286,7 +287,6 @@ public class MOBloader
         mob.recoverMaxState();
         mob.resetToMaxState();
         // wont add if same name already exists
-        CMLib.map().addPlayer(mob);
     }
 
     public Vector getUserList()

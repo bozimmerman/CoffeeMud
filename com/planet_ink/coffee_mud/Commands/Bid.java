@@ -30,43 +30,38 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Buy extends StdCommand
+public class Bid extends StdCommand
 {
-	public Buy(){}
+	public Bid(){}
 
-	private String[] access={"BUY"};
+	private String[] access={"BID"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB mobFor=null;
-		if((commands.size()>2)
-		&&(((String)commands.elementAt(commands.size()-2)).equalsIgnoreCase("for")))
-		{
-			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
-			if(M==null)
-			{
-				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
-				return false;
-			}
-			commands.removeElementAt(commands.size()-1);
-			commands.removeElementAt(commands.size()-1);
-			mobFor=M;
-		}
-
-        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Buy what from whom?");
+        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
 		if(shopkeeper==null) return false;
-		if(commands.size()==0)
+		if(commands.size()<2)
 		{
-			mob.tell("Buy what?");
+			mob.tell("Bid how much on what?");
 			return false;
 		}
-		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
+		if(!(CMLib.coffeeShops().getShopKeeper(shopkeeper) instanceof Auctioneer))
 		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			mob.tell(shopkeeper.name()+" is not an auctioneer!");
 			return false;
 		}
 
+		String bidStr=(String)commands.firstElement();
+		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
+		{
+			mob.tell("It does not look like '"+bidStr+"' is enough to offer.");
+			return false;
+		}
+		Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
+		bidStr=CMLib.beanCounter().nameCurrencyShort((String)bidThang[0],CMath.mul(((Double)bidThang[1]).doubleValue(),((Long)bidThang[2]).longValue()));
+		commands.removeElementAt(0);
+		
 		int maxToDo=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(CMath.s_int((String)commands.firstElement())>0))
@@ -93,22 +88,17 @@ public class Buy extends StdCommand
 			++addendum;
 		}
 		while((allFlag)&&(addendum<=maxToDo));
-		String forName="";
-		if((mobFor!=null)&&(mobFor!=mob))
-		{
-			if(mobFor.name().indexOf(" ")>=0)
-				forName=" for '"+mobFor.Name()+"'";
-			else
-				forName=" for "+mobFor.Name();
-		}
-
 		if(V.size()==0)
-            mob.tell(mob,shopkeeper,null,"<T-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
+            mob.tell(mob,shopkeeper,null,"<T-NAME> doesn't appear to have any '"+whatName+"' available for auction.  Try LIST.");
         else
 		for(int v=0;v<V.size();v++)
 		{
 			Environmental thisThang=(Environmental)V.elementAt(v);
-			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
+			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
+					CMMsg.MSG_BID,"<S-NAME> bid(s) "+bidStr+" on <O-NAME> with <T-NAMESELF>.",
+					CMMsg.MSG_BID,"<S-NAME> bid(s) '"+bidStr+"' on <O-NAME> with <T-NAMESELF>.",
+					CMMsg.MSG_BID,"<S-NAME> place(s) a bid with <T-NAMESELF>."
+					);
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

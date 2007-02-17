@@ -1248,6 +1248,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return "My services as a Postman";
         case ShopKeeper.DEAL_CLANPOSTMAN:
             return "My services as a Postman for Clans";
+        case ShopKeeper.DEAL_AUCTIONEER:
+            return "My services as an Auctioneer";
         default:
             return "... I have no idea WHAT I sell";
         }
@@ -1359,7 +1361,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	
 	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces)
 	{
-		String bwords="0";
 		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 		String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
 		if(bid==0.0)
@@ -1373,6 +1374,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
         if((bid<auctionData.bid)||(bid==0))
         {
+    		String bwords=CMLib.beanCounter().nameCurrencyShort(bidCurrency, bid);
             return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.bid>0)?" The current high bid is "+bidWords+".":""),null};
         }
         else
@@ -1459,10 +1461,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         xml.append("</AUCTIONITEM>");
         xml.append("</AUCTION>");
         if(!updateOnly)
-			CMLib.database().DBWriteJournal("SYSTEM_AUCTION", 
+			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(), 
 											data.auctioningM.Name(), 
 											""+data.tickDown,
-											data.auctioningI.name(), 
+											CMStrings.limit(data.auctioningI.name(),38), 
 											xml.toString(), 
 											-1);
         else
@@ -1540,7 +1542,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     								  String mask)
     {
         StringBuffer str=new StringBuffer("");
-        str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",55)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight("Bid",6)+"] "+CMStrings.padRight("Buy",6)+"^.^N\n\r");
+        str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",50)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight("Bid",6)+"] Buy^.^N\n\r");
         Vector auctions=getAuctions(null,auction.auctionHouse());
         for(int v=0;v<auctions.size();v++)
         {
@@ -1548,13 +1550,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	        if(shownInInventory(data.auctioningI,buyer))
 	        {
 	        	if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
-	        	&&((data.tickDown<System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
+	        	&&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
 	        	{
 		            Area area=CMLib.map().getStartArea(seller);
 		            if(area==null) area=CMLib.map().getStartArea(buyer);
 		        	str.append(CMStrings.padRight(""+data.auctioningI.envStats().level(),3)+" ");
-		        	str.append(CMStrings.padRight(data.auctioningI.name(),55)+" ");
-		        	if(data.tickDown<System.currentTimeMillis())
+		        	str.append(CMStrings.padRight(data.auctioningI.name(),50)+" ");
+		        	if(data.tickDown>System.currentTimeMillis())
 		        	{
 			        	long days=data.daysRemaining(buyer,seller);
 			        	str.append(CMStrings.padRight(""+days,4)+" ");
@@ -1566,9 +1568,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		        		str.append("DONE ");
 		        	str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
 		        	if(data.buyOutPrice<=0.0)
-			        	str.append(CMStrings.padRight("-",6)+" ");
+			        	str.append(CMStrings.padRight("-",6));
 		        	else
-			        	str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6)+" ");
+			        	str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6));
 		        	str.append("\n\r");
 	        	}
 	        }

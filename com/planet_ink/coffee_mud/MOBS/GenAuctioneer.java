@@ -42,7 +42,7 @@ public class GenAuctioneer extends StdAuctioneer
     {
         super();
         Username="a generic auctioneer";
-        setDescription("He talks so fast, you have no idea what he\\'s saying.");
+        setDescription("He talks so fast, you have no idea what he`s saying.");
         setDisplayText("A generic auctioneer stands here.");
     }
 

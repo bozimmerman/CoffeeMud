@@ -118,7 +118,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 		synchronized(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim()).intern())
 		{
 			Long lastTime=(Long)StdAuctioneer.lastCheckTimes.get(auctionHouse().toUpperCase().trim());
-			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>10000)
+			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>(Tickable.TIME_MILIS_PER_MUDHOUR-5))
 			{
 				StdAuctioneer.lastCheckTimes.remove(auctionHouse().toUpperCase().trim());
 				long thisTime=System.currentTimeMillis();
@@ -244,9 +244,10 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                     lastMsgData.currency=CMLib.beanCounter().getCurrency(msg.source());
                     Area area=CMLib.map().getStartArea(this);
                     if(area==null) area=CMLib.map().getStartArea(msg.source());
-                    lastMsgData.tickDown=System.currentTimeMillis()+(area.getTimeObj().getHoursInDay()*Tickable.TIME_MILIS_PER_MUDHOUR);
+                    lastMsgData.tickDown=System.currentTimeMillis()+(days*area.getTimeObj().getHoursInDay()*Tickable.TIME_MILIS_PER_MUDHOUR)+60000;
+                    return true;
                 }
-                return true;
+                return false;
             case CMMsg.TYP_BID:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
@@ -325,6 +326,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 			                return false;
 						}
 					}
+	                return true;
                 }
                 return false;
             case CMMsg.TYP_BUY:
@@ -394,13 +396,23 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 			                return false;
 						}
 					}
+	                return true;
                 }
-                return true;
+                return false;
+            case CMMsg.TYP_VALUE:
+				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                {
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                        return false;
+                    return true;
+                }
+                return false;
             case CMMsg.TYP_VIEW:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
                     if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
                         return false;
+                    return true;
                 }
                 return false;
             default:
@@ -574,7 +586,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 					{
 						String price=CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid);
 						String buyOut=(data.buyOutPrice<=0.0)?null:CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice);
-						StringBuffer str=new StringBuffer(CMLib.coffeeShops().getViewDescription(msg.tool())+"  The current bid on "+msg.tool().name()+" is "+price+". Use the BID command to place your own bid.  ");
+						StringBuffer str=new StringBuffer(CMLib.coffeeShops().getViewDescription(msg.tool())+"\n\r\n\rThe current bid on "+msg.tool().name()+" is "+price+". Use the BID command to place your own bid.  ");
 						if(buyOut!=null) str.append("You may also buy this item immediately for "+buyOut+" by using the BUY command.");
 		                CMLib.commands().postSay(this,mob,str.toString(),true,false);
 					}
