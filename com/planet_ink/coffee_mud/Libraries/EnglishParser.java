@@ -640,13 +640,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     {
         if(list==null) return 0;
         Vector V=(Vector)list.clone();
-        int context=0;
+        int context=1;
         for(int v=0;v<V.size();v++)
             if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
             ||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
             {
                 if(V.elementAt(v)==E)
-                    return context;
+                    return context<2?0:context;
                 if((!(V.elementAt(v) instanceof Item))
                 ||(!(E instanceof Item))
                 ||(((Item)E).container()==((Item)V.elementAt(v)).container()))
@@ -660,8 +660,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(list==null) return E.name();
         int number=getContextNumber(list,E);
         if(number<0) return null;
-        if(number==0) return E.name();
-        return E.name()+"."+number;
+        if(number<2) return E.name();
+        return E.name()+"."+(number+1);
     }
     
 	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)

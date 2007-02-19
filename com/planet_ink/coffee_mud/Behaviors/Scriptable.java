@@ -1783,18 +1783,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				else
 				{
 					MOB mob=(MOB)E;
-		            int tage=mob.baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]
-		                                                                     +CMClass.globalClock().getYear()
-		                                                                     -mob.playerStats().getBirthday()[2];
-	                 int month=CMClass.globalClock().getMonth();
-	                 int day=CMClass.globalClock().getDayOfMonth();
-	                 int bday=mob.playerStats().getBirthday()[0];
-	                 int bmonth=mob.playerStats().getBirthday()[1];
-	                 if((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
-	                 &&((month==bmonth)&&(day==bday)))
-                    	 returnable=true;
-                     else
-                    	 returnable=false;
+                    if((mob.baseCharStats()==null)
+                    ||(mob.baseCharStats().getMyRace()==null)
+                    ||(mob.baseCharStats().getMyRace().getAgingChart()==null))
+                         returnable=false;
+                    else
+                    {
+    		            int tage=mob.baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]
+    		                                                                     +CMClass.globalClock().getYear()
+    		                                                                     -mob.playerStats().getBirthday()[2];
+    	                 int month=CMClass.globalClock().getMonth();
+    	                 int day=CMClass.globalClock().getDayOfMonth();
+    	                 int bday=mob.playerStats().getBirthday()[0];
+    	                 int bmonth=mob.playerStats().getBirthday()[1];
+    	                 if((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
+    	                 &&((month==bmonth)&&(day==bday)))
+                        	 returnable=true;
+                         else
+                        	 returnable=false;
+                    }
 				}
 				break;
 			}

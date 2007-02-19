@@ -18,7 +18,7 @@
 #"ticks" (4 second periods).  You may enter math expressions, and use the 
 # special ? operator to generate random numbers.  A frequency of
 #5 + 3?10 would generate a frequency of 8-15 ticks.
-#$FREQUENCY=$EXPRESSION=400
+#$FREQUENCY=$EXPRESSION=1350
 #
 #Quest Duration:
 #Enter the amount of time that this quest will run and remain available 

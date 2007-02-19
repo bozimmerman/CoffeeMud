@@ -135,7 +135,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 							{
 	                            //CMLib.coffeeShops().returnMoney(data.auctioningM,data.currency,finalAmount);
 	                            CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "+data.highBidderM.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  When the high bidder comes to claim "+data.highBidderM.charStats().hisher()+" property, you will automatically receive your payment along with another notice.",data.auctioningI.Name());
-	                            CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  Your winnings, along with the difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") will be given to you as soon as you come to "+name()+" at "+location().displayText()+" and claim your winnings by entering the BUY command for the item again (you will not be charged).",data.auctioningI.Name());
+	                            CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  Your winnings, along with the difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") will be given to you as soon as you claim your property.  To claim your winnings, come to "+name()+" at "+location().displayText()+" and enter the BUY command for the item again (you will not be charged).",data.auctioningI.Name());
 							}
 							else
 							{
@@ -300,11 +300,8 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 			                CMLib.commands().postSay(this,mob,"You have won this auction -- use the BUY command to complete the transaction.",true,false);
 			                return false;
 						}
-						else
-						{
-			                CMLib.commands().postSay(this,mob,"That auction is closed.",true,false);
-			                return false;
-						}
+		                CMLib.commands().postSay(this,mob,"That auction is closed.",true,false);
+		                return false;
 					}
 					else
 					{
@@ -489,7 +486,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                             CMLib.coffeeShops().auctionNotify(data.auctioningM,data.highBidderM.Name()+", who won your auction for "+data.auctioningI.name()+" has claimed "+data.highBidderM.charStats().hisher()+" property.  You have been credited with "+CMLib.beanCounter().nameCurrencyShort(data.currency,finalAmount)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.currency,houseCut)+".",data.auctioningI.Name());
                             //CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  The difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") has been returned to you along with the winning item.",data.auctioningI.Name());
 							if((data.highBid-data.bid)>0.0)
-				                CMLib.commands().postSay(this,mob,"Congratulations, and here is your "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+" and change as well.",true,false);
+				                CMLib.commands().postSay(this,mob,"Congratulations, and here is your "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+" in change as well.",true,false);
 							else
 				                CMLib.commands().postSay(this,mob,"Congratulations!",true,false);
                             CMLib.coffeeShops().returnMoney(mob,data.currency,data.highBid-data.bid);

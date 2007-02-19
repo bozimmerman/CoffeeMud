@@ -369,8 +369,7 @@ public class Prop_Artifact extends Property
 				// my work is done, I can go away.
 				return false;
 			}
-			else
-				Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID());
+			Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID());
 			return true;
 		}
 		return super.tick(ticking,tickID);

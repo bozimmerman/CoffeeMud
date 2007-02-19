@@ -1563,9 +1563,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		        	}
 		        	else
 		        	if(data.auctioningM==buyer)
-		        		str.append("WIN! ");
-		        	else
 		        		str.append("DONE ");
+		        	else
+		        		str.append("WON! ");
 		        	str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
 		        	if(data.buyOutPrice<=0.0)
 			        	str.append(CMStrings.padRight("-",6));
