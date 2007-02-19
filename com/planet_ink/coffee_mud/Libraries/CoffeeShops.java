@@ -671,7 +671,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         Environmental E=null;
         for(int i=0;i<rawInventory.size();i++)
         {
-            E=(Environmental)inventory.elementAt(i);
+            E=(Environmental)rawInventory.elementAt(i);
             if(shownInInventory(E,buyer)
             &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
             	inventory.addElement(E);
