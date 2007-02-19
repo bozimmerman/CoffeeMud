@@ -304,8 +304,8 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(set==commands) 
-            	reloadCommandWords();
+            if(set==commands) reloadCommandWords();
+            //if(set==libraries) CMLib.registerLibraries(libraries.elements());
 		}
 		else
 		if(set instanceof Hashtable)
@@ -356,9 +356,9 @@ public class CMClass extends ClassLoader
             Vector newSet=new Vector(new TreeSet((Vector)set));
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
-            if(set==commands) 
-            	reloadCommandWords();
-		}
+            if(set==commands) reloadCommandWords();
+            if(set==libraries) CMLib.registerLibraries(libraries.elements());
+}
 		else
 		if(set instanceof Hashtable)
 			((Hashtable)set).put(O.ID().trim().toUpperCase(), O);
@@ -408,6 +408,7 @@ public class CMClass extends ClassLoader
             ((Vector)set).clear();
             ((Vector)set).addAll(newSet);
             if(set==commands) reloadCommandWords();
+            if(set==libraries) CMLib.registerLibraries(libraries.elements());
         }
 		return true;
 	}
