@@ -45,8 +45,6 @@ public class Scavenger extends ActiveTicker
 		tickReset();
 	}
 
-
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
