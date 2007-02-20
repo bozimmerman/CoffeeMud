@@ -190,9 +190,12 @@ public class WeatherAffects extends PuddleMaker
         &&(weather==Climate.WEATHER_BLIZZARD))
         {
             Ability A=CMClass.getAbility("Spell_ObscureSelf");
-            A.setAffectedOne(msg.source());
-            if(!A.okMessage(msg.source(),msg))
-                return false;
+            if(A!=null)
+            {
+	            A.setAffectedOne(msg.source());
+	            if(!A.okMessage(msg.source(),msg))
+	                return false;
+            }
         }
 		return true;
 	}
