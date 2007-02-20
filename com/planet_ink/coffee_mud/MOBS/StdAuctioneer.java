@@ -188,6 +188,12 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         {
             switch(msg.targetMinor())
             {
+            case CMMsg.TYP_LIST:
+            {
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    return false;
+                return true;
+            }
             case CMMsg.TYP_GIVE:
             case CMMsg.TYP_SELL:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
