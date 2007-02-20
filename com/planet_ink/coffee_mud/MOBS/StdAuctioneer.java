@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdAuctioneer extends StdShopKeeper implements Auctioneer
+public class StdAuctioneer extends StdMOB implements Auctioneer
 {
     public String ID(){return "StdAuctioneer";}
 
@@ -45,7 +45,6 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         setDisplayText("The local auctioneer is here calling prices.");
         CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
         setMoney(0);
-        whatISell=ShopKeeper.DEAL_AUCTIONEER;
         baseEnvStats.setWeight(150);
         setWimpHitPoint(0);
 
@@ -66,7 +65,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
     protected static final Hashtable lastCheckTimes=new Hashtable();
     
     public CoffeeShop getShop(){
-    	shop=(CoffeeShop)CMClass.getCommon("AuctionCoffeeShop");
+    	CoffeeShop shop=(CoffeeShop)CMClass.getCommon("AuctionCoffeeShop");
     	shop.addStoreInventory(null,this);
     	return shop;
     }
@@ -188,12 +187,6 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
         {
             switch(msg.targetMinor())
             {
-            case CMMsg.TYP_LIST:
-            {
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
-                    return false;
-                return true;
-            }
             case CMMsg.TYP_GIVE:
             case CMMsg.TYP_SELL:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -251,7 +244,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                     Area area=CMLib.map().getStartArea(this);
                     if(area==null) area=CMLib.map().getStartArea(msg.source());
                     lastMsgData.tickDown=System.currentTimeMillis()+(days*area.getTimeObj().getHoursInDay()*Tickable.TIME_MILIS_PER_MUDHOUR)+60000;
-                    return true;
+                    return super.okMessage(myHost, msg);
                 }
                 return false;
             case CMMsg.TYP_BID:
@@ -329,7 +322,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 			                return false;
 						}
 					}
-	                return true;
+                    return super.okMessage(myHost, msg);
                 }
                 return false;
             case CMMsg.TYP_BUY:
@@ -399,7 +392,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 			                return false;
 						}
 					}
-	                return true;
+                    return super.okMessage(myHost, msg);
                 }
                 return false;
             case CMMsg.TYP_VALUE:
@@ -407,7 +400,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                 {
                     if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
                         return false;
-                    return true;
+                    return super.okMessage(myHost, msg);
                 }
                 return false;
             case CMMsg.TYP_VIEW:
@@ -415,7 +408,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                 {
                     if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
                         return false;
-                    return true;
+                    return super.okMessage(myHost, msg);
                 }
                 return false;
             default:
@@ -463,8 +456,10 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 						CMLib.commands().postSay(this,mob,"Your auction for "+thisData.auctioningI.name()+" is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",true,false);
 					}catch(Exception e){}
                 }
-                return;
+		        super.executeMsg(myHost,msg);
+				break;
             case CMMsg.TYP_BUY:
+    	        super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
 					if(msg.tool() instanceof Item)
@@ -517,8 +512,9 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 					else
 	                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
                 }
-                return;
+                break;
             case CMMsg.TYP_BID:
+    	        super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
 					if(msg.tool() instanceof Item)
@@ -567,15 +563,17 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 					else
 	                    CMLib.commands().postSay(this,mob,"I can't seem to auction "+msg.tool().name()+".",true,false);
                 }
-                return;
+                break;
             case CMMsg.TYP_VALUE:
+    	        super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 	            {
 	                CMLib.commands().postSay(this,mob,"That's for the people to decide.  Why don't you use the SELL command and see what you can get?",true,false);
 	                return;
 	            }
-                return;
+                break;
             case CMMsg.TYP_VIEW:
+    	        super.executeMsg(myHost,msg);
 				if(msg.tool() instanceof Item)
 				{
 					String itemName=msg.tool().name();
@@ -594,7 +592,7 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
 		                CMLib.commands().postSay(this,mob,str.toString(),true,false);
 					}
 				}
-                return;
+                break;
             case CMMsg.TYP_LIST:
             {
                 super.executeMsg(myHost,msg);
@@ -607,9 +605,63 @@ public class StdAuctioneer extends StdShopKeeper implements Auctioneer
                 return;
             }
             default:
+    	        super.executeMsg(myHost,msg);
                 break;
             }
         }
-        super.executeMsg(myHost,msg);
+        else
+	        super.executeMsg(myHost,msg);
     }
+    
+    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
+	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
+    protected Area getStartArea(){
+        Area A=CMLib.map().getStartArea(this);
+        if(A==null) CMLib.map().areaLocation(this);
+        if(A==null) A=(Area)CMLib.map().areas().nextElement();
+        return A;
+    }
+    
+    public String finalPrejudiceFactors(){ 
+        if(prejudiceFactors().length()>0) return prejudiceFactors();
+        return getStartArea().finalPrejudiceFactors();
+    }
+	public String prejudiceFactors(){return CMLib.encoder().decompressString(miscText);}
+	public void setPrejudiceFactors(String factors){miscText=CMLib.encoder().compressString(factors);}
+    
+    public String finalIgnoreMask(){ 
+        if(ignoreMask().length()>0) return ignoreMask();
+        return getStartArea().finalIgnoreMask();
+    }
+    public String ignoreMask(){return "";}
+    public void setIgnoreMask(String factors){}
+
+    public String[] finalItemPricingAdjustments(){ 
+        if((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
+            return itemPricingAdjustments();
+        return getStartArea().finalItemPricingAdjustments();
+    }
+    public String[] itemPricingAdjustments(){ return new String[0];}
+    public void setItemPricingAdjustments(String[] factors){;}
+    
+    public String finalBudget(){ 
+        if(budget().length()>0) return budget();
+        return getStartArea().finalBudget();
+    }
+	public String budget(){return "";}
+	public void setBudget(String factors){}
+	
+    public String finalDevalueRate(){
+        if(devalueRate().length()>0) return devalueRate();
+        return getStartArea().finalDevalueRate();
+    }
+	public String devalueRate(){return "";}
+	public void setDevalueRate(String factors){;}
+	
+    public int finalInvResetRate(){
+        if(invResetRate()!=0) return invResetRate();
+        return getStartArea().finalInvResetRate();
+    }
+	public int invResetRate(){return 0;}
+	public void setInvResetRate(int ticks){}
 }

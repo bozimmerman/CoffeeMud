@@ -736,6 +736,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if((shop.whatIsSold()!=ShopKeeper.DEAL_BANKER)
             &&(shop.whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
             &&(shop.whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
+            &&(shop.whatIsSold()!=ShopKeeper.DEAL_AUCTIONEER)
             &&(shop.whatIsSold()!=ShopKeeper.DEAL_POSTMAN))
                 return seller.name()+" has nothing for sale.";
             return "";
