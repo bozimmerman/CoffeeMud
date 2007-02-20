@@ -161,7 +161,7 @@ public class Say extends StdCommand
 					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 					{
 						Environmental tool=msg.tool();
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
+						msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
 						if((R2.okMessage(mob,msg))
 						&&((tool==null)||(tool.okMessage(mob,msg))))
 						{
