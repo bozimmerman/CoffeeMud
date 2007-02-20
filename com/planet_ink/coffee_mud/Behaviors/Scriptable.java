@@ -1783,9 +1783,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				else
 				{
 					MOB mob=(MOB)E;
-                    if((mob.baseCharStats()==null)
-                    ||(mob.baseCharStats().getMyRace()==null)
-                    ||(mob.baseCharStats().getMyRace().getAgingChart()==null))
+                    if(mob.playerStats()==null)
                          returnable=false;
                     else
                     {
