@@ -6512,10 +6512,13 @@ public class BaseGenerics extends StdCommand
 			genAbilities(mob,mme,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
-			genShopkeeper1(mob,me,++showNumber,showFlag);
-			genShopkeeper2(mob,me,++showNumber,showFlag);
-            genEconomics1(mob,me,++showNumber,showFlag);
-            genEconomics5(mob,me,++showNumber,showFlag);
+            if(!(me instanceof Auctioneer))
+            {
+    			genShopkeeper1(mob,me,++showNumber,showFlag);
+    			genShopkeeper2(mob,me,++showNumber,showFlag);
+	            genEconomics1(mob,me,++showNumber,showFlag);
+	            genEconomics5(mob,me,++showNumber,showFlag);
+            }
             genEconomics6(mob,me,++showNumber,showFlag);
 			if(me instanceof Banker)
 			{
@@ -6538,13 +6541,11 @@ public class BaseGenerics extends StdCommand
             if(me instanceof Auctioneer)
             {
                 ((Auctioneer)me).setAuctionHouse(CMLib.english().prompt(mob,((Auctioneer)me).auctionHouse(),++showNumber,showFlag,"Auction house"));
-                //((Auctioneer)me).setLiveListingPrice(genAuctionPrompt(mob,((Auctioneer)me).liveListingPrice(),++showNumber,showFlag,"Flat fee for a live auction",false));
-                ((Auctioneer)me).setTimedListingPrice(genAuctionPrompt(mob,((Auctioneer)me).timedListingPrice(),++showNumber,showFlag,"Flat fee for a timed auction",false));
-                ((Auctioneer)me).setTimedListingPct(genAuctionPrompt(mob,((Auctioneer)me).timedListingPct(),++showNumber,showFlag,"Listing Cut/%Pct for timed auctions",true));
-                //((Auctioneer)me).setLiveFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).liveFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for live auctions",true));
-                ((Auctioneer)me).setTimedFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).timedFinalCutPct(),++showNumber,showFlag,"Final Cut/%Pct for timed auctions",true));
-                ((Auctioneer)me).setMaxTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).maxTimedAuctionDays(),++showNumber,showFlag,"Maximum number of live-auction mud-days"));
-                ((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,"Minimum number of live-auction mud-days"));
+                ((Auctioneer)me).setTimedListingPrice(genAuctionPrompt(mob,((Auctioneer)me).timedListingPrice(),++showNumber,showFlag,"Flat fee per auction",false));
+                ((Auctioneer)me).setTimedListingPct(genAuctionPrompt(mob,((Auctioneer)me).timedListingPct(),++showNumber,showFlag,"Listing Cut/%Pct per day",true));
+                ((Auctioneer)me).setTimedFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).timedFinalCutPct(),++showNumber,showFlag,"Cut/%Pct of final price",true));
+                ((Auctioneer)me).setMaxTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).maxTimedAuctionDays(),++showNumber,showFlag,"Maximum number of auction mud-days"));
+                ((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,"Minimum number of auction mud-days"));
             }
             else
 			{
