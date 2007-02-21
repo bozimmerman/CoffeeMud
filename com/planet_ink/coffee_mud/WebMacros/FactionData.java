@@ -78,8 +78,46 @@ public class FactionData extends StdWebMacro
                 }
                 if(parms.containsKey("RANGES"))
                 {
-//TODO: ranges                    
+                    String oldName=httpReq.getRequestParameter("RANGENAME0");
+                    String oldLow=null;
+                    String oldHigh=null;
+                    if((oldName==null)&&(F.ranges()!=null))
+	        		    for(int v=0;v<F.ranges().size();v++)
+	        		    {
+            		        Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(v);
+	        		    	httpReq.addRequestParameters("RANGENAME"+v,FR.name());
+	        		    	httpReq.addRequestParameters("RANGELOW"+v,""+FR.low());
+	        		    	httpReq.addRequestParameters("RANGEHIGH"+v,""+FR.high());
+	        		    }
+                    
+                    int num=0;
+                    while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
+        		    {
+                        oldName=httpReq.getRequestParameter("RANGENAME"+num);
+                        if(oldName.length()>0)
+                        {
+	                        oldLow=httpReq.getRequestParameter("RANGELOW"+num);
+	                        oldHigh=httpReq.getRequestParameter("RANGEHIGH"+num);
+	                        if(CMath.s_int(oldHigh)<CMath.s_int(oldLow)) oldHigh=oldLow;
+	        		        str.append("<TR><TD>");
+	        		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+num+" SIZE=20 VALUE=\""+oldName+"\">");
+	        		        str.append("</TD><TD>");
+	        		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+num+" SIZE=8 VALUE=\""+oldLow+"\">");
+	        		        str.append("</TD><TD>");
+	        		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+num+" SIZE=8 VALUE=\""+oldHigh+"\">");
+	        		        str.append("</TR>");
+                        }
+        		        num++;
+        		    }
+    		        str.append("<TR><TD>");
+    		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+num+" SIZE=20 VALUE=\"\">");
+    		        str.append("</TD><TD>");
+    		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+num+" SIZE=8 VALUE=\"\">");
+    		        str.append("</TD><TD>");
+    		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+num+" SIZE=8 VALUE=\"\">");
+    		        str.append("</TR>");
                 }
+                
                 if(parms.containsKey("AUTOVALUES"))
                 {
 //TODO: autodefaults
